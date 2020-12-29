@@ -1,0 +1,7 @@
+{
+  "name": "conlang-toolbox",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
