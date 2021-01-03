@@ -1,0 +1,6 @@
+ion-row:nth-child(odd) {
+	margin: 16px 0;
+}
+.no-background {
+	background: transparent;
+}
