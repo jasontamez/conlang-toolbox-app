@@ -9,7 +9,7 @@ import {
 	IonTitle
 } from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
-import '../WordGen.css';
+import './WordGen.css';
 
 const WGCat = () => {
 	return (
