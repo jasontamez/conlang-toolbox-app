@@ -1,18 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 
-const select = (state: any) => {
-	return { articles: state.articles };
+const List = () => {
+	const articles = useSelector((state: any) => state.articles, shallowEqual);
+	return (
+		<ul>
+			{articles.map((el: any) => (
+				<li key={el.id}>{el.title}</li>
+			))}
+		</ul>
+	);
 };
-
-const ConnectedList = ({ articles }: any) => (
-	<ul>
-		{articles.map((el: any) => (
-			<li key={el.id}>{el.title}</li>
-		))}
-	</ul>
-);
-
-const List = connect(select)(ConnectedList);
 
 export default List;

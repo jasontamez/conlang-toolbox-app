@@ -8,9 +8,10 @@ import {
 	IonButtons,
 	IonTitle
 } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
-import './WordGen.css';
+//import ExploreContainer from '../../components/ExploreContainer';
+import '../WordGen.css';
 import List from '../../components/List';
+import Form from '../../components/Form';
 
 const WGCat = () => {
 	return (
@@ -24,7 +25,14 @@ const WGCat = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<List />
+				<div>
+					<h2>Articles</h2>
+					<List />
+				</div>
+				<div>
+					<h2>Add a new article</h2>
+					<Form />
+				</div>
 			</IonContent>
 		</IonPage>
 	);
