@@ -18,7 +18,7 @@ import {
 	IonFabButton
 } from '@ionic/react';
 import {
-	addCircleOutline
+	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 import '../WordGen.css';
@@ -50,11 +50,12 @@ const WGCat = () => {
 					consonants <I>lr</I> at the beginning of syllables. So you might choose them as categories, while keeping
 					all of them in a third category for general consonants.
 				</p>
-				<IonList className="categories">
+				<IonList className="categories" lines="none">
 					{categories.map((cat: any) => (
 						<IonItemSliding key={cat.label} className="wrapOverflow">
 							<IonItemOptions side="start">
 								<IonItemOption color="secondary">Edit</IonItemOption>
+								<IonItemOption color="danger">Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
 								<IonLabel className={checkDisplayStatus(cat.status)}>
@@ -65,19 +66,12 @@ const WGCat = () => {
 									<div className="categoryLongName">{cat.title}</div>
 								</IonLabel>
 							</IonItem>
-							<IonItemOptions side="end">
-								<IonItemOption color="danger">Delete</IonItemOption>
-							</IonItemOptions>
 						</IonItemSliding>
 					))}
-					<IonItem button={true} key="Add A Category" color="primary">
-						<IonIcon icon={addCircleOutline} />
-						<IonLabel>Add new category</IonLabel>
-					</IonItem>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton title="Add new category">
-						<IonIcon icon={addCircleOutline} />
+						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>
 			</IonContent>
