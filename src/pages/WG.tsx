@@ -9,12 +9,12 @@ import {
 	IonRouterOutlet
 } from '@ionic/react';
 import {
-	libraryOutline,
 	gridOutline,
 	optionsOutline,
 	swapHorizontalOutline,
 	documentTextOutline,
-	informationCircleOutline
+	informationCircleOutline,
+	fileTrayStackedOutline
 } from 'ionicons/icons';
 import WGCategories from "./wg/WGcategories";
 import WGRewrites from "./wg/WGrewrites";
@@ -64,7 +64,7 @@ const WG = () => { return (
 				<IonLabel>Info</IonLabel>
 			</IonTabButton>
 			<IonTabButton tab="categories" href="/wg/categories">
-				<IonIcon icon={libraryOutline} />
+				<IonIcon icon={fileTrayStackedOutline} />
 				<IonLabel>Categories</IonLabel>
 			</IonTabButton>
 			<IonTabButton tab="syllables" href="/wg/syllables">
