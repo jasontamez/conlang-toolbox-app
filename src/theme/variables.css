@@ -234,6 +234,10 @@ http://ionicframework.com/docs/theming/ */
 	--ion-font-family: "Noto Sans", "Times New Roman", sans-serif;
 	--ion-default-font: var(--ion-font-family);
 }
+#conlangToolbox p {
+	text-indent: 2em;
+	margin: 1em;
+}
 
 input[type=text],
 input[type=number],
