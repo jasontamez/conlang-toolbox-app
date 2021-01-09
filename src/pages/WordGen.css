@@ -1,0 +1,35 @@
+.categories ion-icon {
+	padding-right: 2em;
+}
+.categories .categoryLongName {
+	font-size: smaller;
+	font-style: italic;
+}
+.categories .categoryRun {
+	letter-spacing: 0.1em;
+	font-family: 'Noto Serif', 'Georgia', serif;
+}
+.categories .categoryRun .label {
+	font-weight: bold;
+}
+.categories .categoryRun .label::after {
+	font-weight: bold;
+	content: "=";
+}
+
+ion-item-option {
+	min-width: 5em;
+}
+
+i.ipa {
+	font-style: normal;
+	color: var(--ion-color-primary-contrast);
+	background-color: var(--ion-color-primary-shade);
+	padding: 0 0.1em;
+}
+
+@media screen and (max-width: 450px) {
+	ion-tab-bar ion-label {
+		display: none;
+	}
+}

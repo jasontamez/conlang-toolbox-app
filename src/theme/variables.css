@@ -65,6 +65,10 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-light-contrast-rgb: 0,0,0;
 	--ion-color-light-shade: #bce0e0;
 	--ion-color-light-tint: #daffff;
+
+	--ion-color-input-bg: var(--ion-color-light-shade);
+	--ion-color-input-fg: var(--ion-color-light-contrast);
+	--ion-color-input-border: var(--ion-color-dark-tint);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -136,7 +140,11 @@ http://ionicframework.com/docs/theming/ */
 		--ion-color-light-contrast-rgb: 0,0,0;
 		--ion-color-light-shade: #bce0e0;
 		--ion-color-light-tint: #daffff;
-	}
+
+		--ion-color-input-bg: var(--ion-color-dark-tint);
+		--ion-color-input-fg: var(--ion-color-dark-contrast);
+		--ion-color-input-border: var(--ion-color-light-shade);
+}
 
 	/*
 	 * iOS Dark Theme
@@ -225,4 +233,42 @@ http://ionicframework.com/docs/theming/ */
 #conlangToolbox {
 	--ion-font-family: "Noto Sans", "Times New Roman", sans-serif;
 	--ion-default-font: var(--ion-font-family);
+}
+#conlangToolbox p {
+	text-indent: 2em;
+	margin: 1em;
+}
+
+input[type=text],
+input[type=number],
+input[type=tel],
+input[type=date],
+input[type=time],
+input[type=datetime-local],
+input[type=url],
+input[type=search],
+input[type=email],
+input[type=month],
+textarea {
+	background: var(--ion-color-input-bg);
+	color: var(--ion-color-input-fg);
+	border-color: var(--ion-color-input-border);
+}
+input[type=submit],
+input[type=reset],
+input[type=button],
+button {
+	background: var(--ion-color-input-bg);
+	color: var(--ion-color-input-fg);
+	border: 2px outset var(--ion-color-input-border);
+	outline: 0;
+}
+input[type=submit]:active,
+input[type=reset]:active,
+input[type=button]:active,
+button:active {
+	filter: brightness(75%);
+	background: var(--ion-color-input-bg);
+	color: var(--ion-color-input-fg);
+	border: 2px inset var(--ion-color-input-border);
 }
