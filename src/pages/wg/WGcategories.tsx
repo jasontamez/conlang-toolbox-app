@@ -13,21 +13,42 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
+	IonButton,
 	IonTitle,
 	IonFab,
-	IonFabButton
+	IonFabButton,
+	IonModal
 } from '@ionic/react';
 import {
 	addOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import I from '../../components/IPA';
+///////////import { addCategory, openModal, closeModal } from '../../components/ReduxDucks';
+import { openModal, closeModal } from '../../components/ReduxDucks';
 
 const WGCat = () => {
+	let modalState = useSelector((state: any) => state.modalState, shallowEqual);
+	const dispatch = useDispatch();
 	const categories = useSelector((state: any) => state.categories, shallowEqual);
 	return (
 		<IonPage>
+			<IonModal isOpen={modalState}>
+				<IonHeader>
+					<IonToolbar color="primary">
+						<IonTitle>My Modal</IonTitle>
+						<IonButtons slot="end">
+							<IonButton onClick={() => dispatch(closeModal())}>
+								<IonIcon icon={addOutline} slot="icon-only" />
+							</IonButton>
+						</IonButtons>
+					</IonToolbar>
+				</IonHeader>
+				<IonContent>
+					<p>Yummy</p>
+				</IonContent>
+			</IonModal>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -64,7 +85,7 @@ const WGCat = () => {
 					))}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton title="Add new category">
+					<IonFabButton title="Add new category" onClick={() => dispatch(openModal())}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

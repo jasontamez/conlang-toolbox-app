@@ -1,8 +1,7 @@
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
-const ADD_ARTICLE = p+"ADD_ARTICLE";
-const ADD_TITLE = p+"ADD_TITLE";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
+const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
 interface Category {
 	title: string,
@@ -18,10 +17,12 @@ interface Category {
 // dropoffOverride: optional percentage that a given letter will be chosen
 // rateOverride: optional list of percentages for each letter
 
+interface StateObject {
+	categories: Category[],
+	modalState: boolean
+}
 
-export const initialState = {
-	articles: Array.of(),
-	title: '',
+const initialState: StateObject = {
 	categories: [
 		{
 			title: "Consonants",
@@ -33,12 +34,13 @@ export const initialState = {
 			label: "V",
 			run: "eaiou"
 		}
-	] as Category[]
+	],
+	modalState: false
 };
 
 interface ReduxAction {
 	type: string,
-	payload: any
+	payload?: any
 }
 
 
@@ -51,12 +53,20 @@ export function reducer(state = initialState, action: ReduxAction) {
 			return Object.assign({}, state, {
 				categories: state.categories.concat(payload)
 			});
+		case TOGGLE_MODAL:
+			return Object.assign({}, state, { modalState: payload });
 	}
 	return state;
 };
 
 // action creators
-export function addCategorty(payload: Category) {
+export function addCategory(payload: Category) {
 	return {type: ADD_CATEGORY, payload};
+}
+export function openModal() {
+	return {type: TOGGLE_MODAL, payload: true};
+}
+export function closeModal() {
+	return {type: TOGGLE_MODAL, payload: false};
 }
 
