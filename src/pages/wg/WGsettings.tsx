@@ -29,4 +29,6 @@ const WGSet = () => {
 	);
 };
 
+// Use ion-range for dropoffs
+
 export default WGSet;
