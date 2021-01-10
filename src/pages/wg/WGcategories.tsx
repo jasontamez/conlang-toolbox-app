@@ -22,16 +22,10 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 import '../WordGen.css';
-import { CategoryStatus } from '../../components/ReduxDucks';
 import I from '../../components/IPA';
 
 const WGCat = () => {
 	const categories = useSelector((state: any) => state.categories, shallowEqual);
-	const checkDisplayStatus =
-		(status: CategoryStatus = {}) => 
-			Object.getOwnPropertyNames(status)
-				.filter((prop: string) => status[prop as keyof CategoryStatus])
-					.join(" ");
 	return (
 		<IonPage>
 			<IonHeader>
@@ -58,7 +52,7 @@ const WGCat = () => {
 								<IonItemOption color="danger">Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
-								<IonLabel className={checkDisplayStatus(cat.status)}>
+								<IonLabel>
 									<div className="categoryRun">
 										<span className="label">{cat.label}</span>
 										<span className="run">{cat.run}</span>
