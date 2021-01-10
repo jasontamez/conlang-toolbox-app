@@ -4,13 +4,7 @@ const ADD_ARTICLE = p+"ADD_ARTICLE";
 const ADD_TITLE = p+"ADD_TITLE";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
 
-export interface CategoryStatus {
-	fullyDisplayed?: boolean
-	editing?: boolean
-}
-
 interface Category {
-	status: CategoryStatus,
 	title: string,
 	label: string,
 	run: string,
@@ -18,7 +12,6 @@ interface Category {
 	rateOverride?: number[]
 }
 // id: unique id
-// status: object with optional properties 'fullyDisplayed' and 'editing'
 // title: short description
 // label: 1-3 letters
 // run: letters in this category
@@ -31,13 +24,11 @@ export const initialState = {
 	title: '',
 	categories: [
 		{
-			status: {},
 			title: "Consonants",
 			label: "C",
 			run: "ptknmrf"
 		},
 		{
-			status: {},
 			title: "Vowels",
 			label: "V",
 			run: "eaiou"
@@ -53,48 +44,19 @@ interface ReduxAction {
 
 // reducer
 export function reducer(state = initialState, action: ReduxAction) {
-	if (action.type === ADD_ARTICLE) {
-		// make new object, copy props from state, overwrite articles prop with new array with old and new payload
-		return Object.assign({}, state, {
-			articles: state.articles.concat({
-				title: action.payload,
-				id: state.articles.length // horrible
-			})
-		});
-	}
-	if(action.type === ADD_TITLE) {
-		// make new object, copy props from state, overwrite articles prop with new array with old and new payload
-		return Object.assign({}, state, {
-			title: action.payload
-		});
-	}
-	if(action.type === ADD_CATEGORY) {
-		// make new object, copy props from state, overwrite prop with new array with old and new payload
-		//
-		//
-		// NOPE - get info before calling this, don't assign blank info
-		//
-		//
-		return Object.assign({}, state, {
-			categories: state.categories.concat(
-				action.payload
-				//{
-				//	status: {},
-				//	title: "",
-				//	label: "",
-				//	run: ""
-				//}
-			)
-		});
+	const payload = action.payload;
+	switch(action.type) {
+		case ADD_CATEGORY:
+			// make new object, copy props from state, overwrite prop with new array with old and new payload
+			return Object.assign({}, state, {
+				categories: state.categories.concat(payload)
+			});
 	}
 	return state;
 };
 
 // action creators
-export function addArticle(payload: any) {
-	return { type: ADD_ARTICLE, payload };
-};
-export function addTitle(payload: string) {
-	return {type: ADD_TITLE, payload};
+export function addCategorty(payload: Category) {
+	return {type: ADD_CATEGORY, payload};
 }
 
