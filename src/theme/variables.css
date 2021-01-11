@@ -253,6 +253,8 @@ http://ionicframework.com/docs/theming/ */
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border-color: var(--ion-color-input-border);
+	--padding-start: 0.5em;
+	--padding-end: 0.5em;
 }
 #conlangToolbox input[type=submit],
 #conlangToolbox input[type=reset],
