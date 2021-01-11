@@ -34,7 +34,7 @@ const WGCat = () => {
 	const categories = useSelector((state: any) => state.categories, shallowEqual);
 	return (
 		<IonPage>
-			<IonModal isOpen={modalState}>
+			<IonModal isOpen={modalState} onDidDismiss={() => dispatch(closeModal())}>
 				<IonHeader>
 					<IonToolbar color="primary">
 						<IonTitle>My Modal</IonTitle>
