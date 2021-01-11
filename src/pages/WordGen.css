@@ -2,7 +2,8 @@
 	font-size: smaller;
 	font-style: italic;
 }
-.categories .categoryRun {
+.categories .categoryRun,
+#conlangToolbox ion-modal ion-input.categoryRun {
 	letter-spacing: 0.1em;
 	font-family: 'Noto Serif', 'Georgia', serif;
 }

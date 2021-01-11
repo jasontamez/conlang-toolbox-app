@@ -239,34 +239,34 @@ http://ionicframework.com/docs/theming/ */
 	padding: 1em;
 }
 
-input[type=text],
-input[type=number],
-input[type=tel],
-input[type=date],
-input[type=time],
-input[type=datetime-local],
-input[type=url],
-input[type=search],
-input[type=email],
-input[type=month],
-textarea {
+#conlangToolbox input[type=text],
+#conlangToolbox input[type=number],
+#conlangToolbox input[type=tel],
+#conlangToolbox input[type=date],
+#conlangToolbox input[type=time],
+#conlangToolbox input[type=datetime-local],
+#conlangToolbox input[type=url],
+#conlangToolbox input[type=search],
+#conlangToolbox input[type=email],
+#conlangToolbox input[type=month],
+#conlangToolbox textarea {
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border-color: var(--ion-color-input-border);
 }
-input[type=submit],
-input[type=reset],
-input[type=button],
-button {
+#conlangToolbox input[type=submit],
+#conlangToolbox input[type=reset],
+#conlangToolbox input[type=button],
+#conlangToolbox button {
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border: 2px outset var(--ion-color-input-border);
 	outline: 0;
 }
-input[type=submit]:active,
-input[type=reset]:active,
-input[type=button]:active,
-button:active {
+#conlangToolbox input[type=submit]:active,
+#conlangToolbox input[type=reset]:active,
+#conlangToolbox input[type=button]:active,
+#conlangToolbox button:active {
 	filter: brightness(75%);
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);

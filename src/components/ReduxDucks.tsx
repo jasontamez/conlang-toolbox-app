@@ -3,7 +3,7 @@ const p = "conlangs-toolbox/reducer/";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
-interface Category {
+export interface CategoryObject {
 	title: string,
 	label: string,
 	run: string,
@@ -18,7 +18,7 @@ interface Category {
 // rateOverride: optional list of percentages for each letter
 
 interface StateObject {
-	categories: Category[],
+	categories: CategoryObject[],
 	modalState: boolean
 }
 
@@ -60,7 +60,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 };
 
 // action creators
-export function addCategory(payload: Category) {
+export function addCategory(payload: CategoryObject) {
 	return {type: ADD_CATEGORY, payload};
 }
 export function openModal() {
