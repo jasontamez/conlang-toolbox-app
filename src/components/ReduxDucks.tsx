@@ -20,7 +20,6 @@ export interface CategoryObject {
 // dropoffOverride: optional percentage that a given letter will be chosen
 // rateOverride: optional list of percentages for each letter
 
-
 interface CategoryStateObject {
 	list: CategoryObject[]
 	map: any
