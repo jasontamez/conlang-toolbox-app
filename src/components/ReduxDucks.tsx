@@ -1,8 +1,9 @@
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
-const EDIT_CATEGORY =p+"ADD_CATEGORY";
-const DELETE_CATEGORY =p+"ADD_CATEGORY";
+const START_EDIT_CATEGORY =p+"START_EDIT_CATEGORY";
+const DO_EDIT_CATEGORY =p+"DO_EDIT_CATEGORY";
+const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
 export interface CategoryObject {
@@ -23,6 +24,7 @@ export interface CategoryObject {
 interface CategoryStateObject {
 	list: CategoryObject[]
 	map: any
+	editing: null | string
 }
 
 interface StateObject {
@@ -46,7 +48,8 @@ let startingCategories = [
 const initialState: StateObject = {
 	categories: {
 		list: startingCategories,
-		map: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]])
+		map: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]]),
+		editing: null
 	},
 	modalState: false
 };
@@ -60,16 +63,52 @@ interface ReduxAction {
 // reducer
 export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
+	let CO, cMap;
 	switch(action.type) {
 		case ADD_CATEGORY:
-			let CO = state.categories;
-			let cMap = new Map(CO.map);
+			CO = state.categories;
+			cMap = new Map(CO.map);
 			cMap.set(payload.label, payload);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			return Object.assign({}, state, {
 				categories: {
-					list: CO.list.concat(payload),
-					map: cMap
+					list: CO.list.concat(payload).map(o => Object.assign({}, o)),
+					map: cMap,
+					editing: CO.editing
+				}
+			});
+		case START_EDIT_CATEGORY:
+			CO = state.categories;
+			cMap = new Map(CO.map);
+			return Object.assign({}, state, {
+				categories: {
+					list: CO.list.map(o => Object.assign({}, o)),
+					map: cMap,
+					editing: payload
+				}
+			});
+		case DO_EDIT_CATEGORY:
+			CO = state.categories;
+			cMap = new Map(CO.map);
+			let editing = CO.editing;
+			cMap.delete(editing);
+			cMap.set(payload.label, payload);
+			return Object.assign({}, state, {
+				categories: {
+					list: CO.list.map(o => o.label === editing ? payload : Object.assign({}, o)),
+					map: cMap,
+					editing: null
+				}
+			});
+		case DELETE_CATEGORY:
+			CO = state.categories;
+			cMap = new Map(CO.map);
+			cMap.delete(payload);
+			return Object.assign({}, state, {
+				categories: {
+					list: CO.list.slice().filter(o => o.label !== payload),
+					map: cMap,
+					editing: null
 				}
 			});
 		case TOGGLE_MODAL:
@@ -82,8 +121,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 export function addCategory(payload: CategoryObject) {
 	return {type: ADD_CATEGORY, payload};
 }
-export function editCategory(payload: CategoryObject) {
-	return {type: EDIT_CATEGORY, payload};
+export function startEditCategory(payload: CategoryObject) {
+	return {type: START_EDIT_CATEGORY, payload};
+}
+export function doEditCategory(payload: CategoryObject) {
+	return {type: DO_EDIT_CATEGORY, payload};
 }
 export function deleteCategory(payload: CategoryObject) {
 	return {type: DELETE_CATEGORY, payload};
