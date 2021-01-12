@@ -63,13 +63,14 @@ const WGCat = () => {
 		let v = $i("newCatTitle").value as string;
 		let cap = v.charAt(0).toUpperCase();
 		let label = cap;
+		let keepLooking = !cap;
 		// Check for 1-letter version
 		if(catMap.has(cap)) {
 			// Look for 2-letter version
-			v = v.replace(/ /g, "").slice(1).toLowerCase();
+			v = v.replace(/[^0-9a-zA-Z]/g, "").slice(1).toLowerCase();
 			let l = v.length;
 			let pointer = -1;
-			let keepLooking = true;
+			keepLooking = true;
 			do {
 				pointer++;
 				label = cap + v.charAt(pointer);
@@ -80,13 +81,36 @@ const WGCat = () => {
 			} while (pointer < l);
 			if(keepLooking) {
 				// Look for 3-letter version
-				//
-				//
-				//
+				pointer = -1;
+				do {
+					let p2 = ++pointer;
+					label = cap + v.charAt(pointer);
+					do {
+						p2++;
+						label = label + v.charAt(p2);
+						if(!catMap.has(label)) {
+							keepLooking = false;
+							p2 = l;
+						}
+					} while(p2 < l);
+				} while (pointer < l && keepLooking);
 			}
 		}
-		$i("shortLabel").value = label;
-	};
+		if(keepLooking) {
+			// No suitable label found
+			doAlert({
+				title: "Unable to suggest a unique label from the given descrption.",
+				customClass: {popup: 'warnToast'},
+				toast: true,
+				timer: 4000,
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		} else {
+			// Suitable label found
+			$i("shortLabel").value = label;
+		}
+};
 	const maybeSaveNewCat = () => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCat
@@ -121,7 +145,9 @@ const WGCat = () => {
 		doAlert({
 			title: "Category added!",
 			toast: true,
+			position: 'bottom',
 			timer: 2500,
+			timerProgressBar: true,
 			showConfirmButton: false
 		});
 	};
