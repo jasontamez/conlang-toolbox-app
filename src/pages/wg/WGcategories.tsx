@@ -31,7 +31,7 @@ import '../WordGen.css';
 import I from '../../components/IPA';
 import { CategoryObject, openModal, closeModal, addCategory } from '../../components/ReduxDucks';
 import doAlert from '../../components/Swal';
-import { $q, $i } from '../../components/DollarSignQueries';
+import { $q, $i } from '../../components/DollarSignExports';
 
 const WGCat = () => {
 	let newCat: CategoryObject = {

@@ -278,34 +278,3 @@ http://ionicframework.com/docs/theming/ */
 #conlangToolbox .invalidValue {
 	color: var(--ion-color-danger) !important;
 }
-
-.conlangToolboxSwal.swal2-popup {
-	background: var(--ion-background-color);
-}
-.conlangToolboxSwal.swal2-popup.swal2-toast,
-.conlangToolboxSwal.swal2-popup.swal2-toast #swal2-title {
-	background: var(--ion-color-primary);
-	color: var(--ion-color-primary-contrast);
-	box-shadow: 0 0 0.625em var(--ion-color-primary-tint);
-}
-.conlangToolboxSwal.swal2-popup .swal2-content {
-	color: var(--ion-color-primary-shade);
-}
-.conlangToolboxSwal.swal2-popup #swal2-title {
-	color: var(--ion-color-light);
-}
-.conlangToolboxSwal.swal2-popup .swal2-confirm {
-	background-color: var(--ion-color-success);
-	color: var(--ion-color-success-contrast);
-	border-color: var(--ion-color-success-shade);
-}
-.conlangToolboxSwal.swal2-popup .swal2-icon.swal2-error,
-.conlangToolboxSwal.swal2-popup .swal2-x-mark-line-left,
-.conlangToolboxSwal.swal2-popup .swal2-x-mark-line-right {
-	color: var(--ion-color-danger);
-	border-color: var(--ion-color-danger);
-}
-.conlangToolboxSwal.swal2-popup .swal2-x-mark .swal2-x-mark-line-left,
-.conlangToolboxSwal.swal2-popup .swal2-x-mark .swal2-x-mark-line-right {
-	background-color: var(--ion-color-danger);
-}

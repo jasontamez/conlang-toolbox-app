@@ -1,14 +1,19 @@
 import Swal from "sweetalert2";
+import './Swal.css';
+import { $delay } from './DollarSignExports';
 
 let queue = new Set();
 
-// Wrap setTimeout in a Promise
-export const $delay = (ms) => {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-const fireSwal = async (options = {}) => {
-	options.customClass = {popup: 'conlangToolboxSwal'};
+const fireSwal: any = async (options: any = {}) => {
+	if(options.customClass) {
+		if(options.customClass.popup) {
+			options.customClass.popup += ' conlangToolboxSwal';
+		} else {
+			options.customClass.popup = 'conlangToolboxSwal';
+		}
+	} else {
+		options.customClass = { popup: 'conlangToolboxSwal' };
+	}
 	if(Swal.isVisible()) {
 		// Delay this
 		queue.add(options);
