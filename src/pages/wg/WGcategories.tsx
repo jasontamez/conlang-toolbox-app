@@ -23,32 +23,107 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	addOutline
+	addOutline,
+	chevronBackOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import I from '../../components/IPA';
-///////////import { addCategory, openModal, closeModal } from '../../components/ReduxDucks';
-import { CategoryObject, openModal, closeModal } from '../../components/ReduxDucks';
+import { CategoryObject, openModal, closeModal, addCategory } from '../../components/ReduxDucks';
+import doAlert from '../../components/Swal';
+import { $q, $i } from '../../components/DollarSignQueries';
 
 const WGCat = () => {
-	let modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	let newCat: CategoryObject = {
 		title: "",
 		label: "",
 		run: ""
 	};
+	const hardReset = () => {
+		newCat = {
+			title: "",
+			label: "",
+			run: ""
+		};
+	};
 	const dispatch = useDispatch();
 	const categories = useSelector((state: any) => state.categories, shallowEqual);
+	const catMap = useSelector((state: any) => state.categoryMap, shallowEqual);
+	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof CategoryObject,
 		VAL extends CategoryObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		newCat[prop] = value;
+		// Remove danger color if present
+		$q("." + prop + "Label").classList.remove("invalidValue");
 	}
-	const testInfo = () => {
+	const generateLabel = () => {
+		let v = $i("newCatTitle").value as string;
+		let cap = v.charAt(0).toUpperCase();
+		let label = cap;
+		// Check for 1-letter version
+		if(catMap.has(cap)) {
+			// Look for 2-letter version
+			v = v.replace(/ /g, "").slice(1).toLowerCase();
+			let l = v.length;
+			let pointer = -1;
+			let keepLooking = true;
+			do {
+				pointer++;
+				label = cap + v.charAt(pointer);
+				if(!catMap.has(label)) {
+					keepLooking = false;
+					pointer = l;
+				}
+			} while (pointer < l);
+			if(keepLooking) {
+				// Look for 3-letter version
+				//
+				//
+				//
+			}
+		}
+		$i("shortLabel").value = label;
+	};
+	const maybeSaveNewCat = () => {
+		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCat
+		if(newCat.title === "") {
+			$q(".titleLabel").classList.add("invalidValue");
+			err.push("No title present");
+		}
+		if(newCat.run === "") {
+			$q(".runLabel").classList.add("invalidValue");
+			err.push("No run present");
+		}
+		if(newCat.label === "") {
+			$q(".labelLabel").classList.add("invalidValue");
+			err.push("No label present");
+		} else if (catMap.has(newCat.label)) {
+			$q(".labelLabel").classList.add("invalidValue");
+			err.push("There is already a label \"" + newCat.label + "\"");
+		}
+		if(err.length > 0) {
+			// Errors found.
+			doAlert({
+				title: "Error",
+				icon: "error",
+				text: err.join("; ")
+			});
+			return;
+		}
+		// Everything ok!
+		dispatch(closeModal());
+		dispatch(addCategory(newCat));
+		hardReset();
+		doAlert({
+			title: "Category added!",
+			toast: true,
+			timer: 2500,
+			showConfirmButton: false
+		});
 	};
 	return (
 		<IonPage>
@@ -66,22 +141,25 @@ const WGCat = () => {
 				<IonContent>
 					<IonList lines="none">
 						<IonItem>
-							<IonLabel position="stacked" style={ {"font-size": "20px"} }>Category Description:</IonLabel>
-							<IonInput className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!)} autocomplete="on" debounce={500} minlength={1}></IonInput>
+							<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
+							<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={500}></IonInput>
 						</IonItem>
 						<IonItem>
-							<IonLabel className="ion-margin-end">Short Label:</IonLabel>
-							<IonInput placeholder="1-3 characters" onIonChange={e => setNewInfo("label", e.detail.value!)} minlength={1} maxlength={3}></IonInput>
+							<IonLabel className="ion-margin-end labelLabel">Short Label:</IonLabel>
+							<IonInput id="shortLabel" placeholder="1-3 characters" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={3}></IonInput>
+							<IonButton slot="end" onClick={() => generateLabel()}>
+								<IonIcon icon={chevronBackOutline} />Suggest
+							</IonButton>
 						</IonItem>
 						<IonItem>
-							<IonLabel position="stacked" style={ {"font-size": "20px"} }>Letters/Characters:</IonLabel>
-							<IonInput className="categoryRun ion-margin-top" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!)} minlength={1}></IonInput>
+							<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
+							<IonInput className="categoryRun ion-margin-top" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
 						</IonItem>
 					</IonList>
 				</IonContent>
 				<IonFooter>
 					<IonToolbar>
-						<IonButton color="secondary" slot="end" onClick={() => {}}>
+						<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat()}>
 							<IonIcon icon={addOutline} slot="start" />
 							<IonLabel>Add Category</IonLabel>
 						</IonButton>
@@ -107,7 +185,7 @@ const WGCat = () => {
 				<IonList className="categories" lines="none">
 					{categories.map((cat: CategoryObject) => (
 						<IonItemSliding key={cat.label} className="wrapOverflow">
-							<IonItemOptions side="start">
+							<IonItemOptions side="end">
 								<IonItemOption color="secondary">Edit</IonItemOption>
 								<IonItemOption color="danger">Delete</IonItemOption>
 							</IonItemOptions>

@@ -275,6 +275,10 @@ http://ionicframework.com/docs/theming/ */
 	border: 2px inset var(--ion-color-input-border);
 }
 
+#conlangToolbox .invalidValue {
+	color: var(--ion-color-danger) !important;
+}
+
 .conlangToolboxSwal.swal2-popup {
 	background: var(--ion-background-color);
 }
