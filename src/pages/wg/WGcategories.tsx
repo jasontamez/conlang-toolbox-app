@@ -94,16 +94,16 @@ const WGCat = () => {
 			$q(".titleLabel").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(newCat.run === "") {
-			$q(".runLabel").classList.add("invalidValue");
-			err.push("No run present");
-		}
 		if(newCat.label === "") {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("No label present");
 		} else if (catMap.has(newCat.label)) {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("There is already a label \"" + newCat.label + "\"");
+		}
+		if(newCat.run === "") {
+			$q(".runLabel").classList.add("invalidValue");
+			err.push("No run present");
 		}
 		if(err.length > 0) {
 			// Errors found.
