@@ -1,6 +1,8 @@
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
+const EDIT_CATEGORY =p+"ADD_CATEGORY";
+const DELETE_CATEGORY =p+"ADD_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
 export interface CategoryObject {
@@ -69,6 +71,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 // action creators
 export function addCategory(payload: CategoryObject) {
 	return {type: ADD_CATEGORY, payload};
+}
+export function editCategory(payload: CategoryObject) {
+	return {type: EDIT_CATEGORY, payload};
+}
+export function deleteCategory(payload: CategoryObject) {
+	return {type: DELETE_CATEGORY, payload};
 }
 export function openModal() {
 	return {type: TOGGLE_MODAL, payload: true};
