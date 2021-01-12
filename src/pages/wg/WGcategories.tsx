@@ -47,8 +47,9 @@ const WGCat = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const categories = useSelector((state: any) => state.categories, shallowEqual);
-	const catMap = useSelector((state: any) => state.categoryMap, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const categories = categoryObject.list;
+	const catMap = categoryObject.map;
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof CategoryObject,
@@ -110,7 +111,7 @@ const WGCat = () => {
 			// Suitable label found
 			$i("shortLabel").value = label;
 		}
-};
+	};
 	const maybeSaveNewCat = () => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCat

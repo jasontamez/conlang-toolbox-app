@@ -19,9 +19,14 @@ export interface CategoryObject {
 // dropoffOverride: optional percentage that a given letter will be chosen
 // rateOverride: optional list of percentages for each letter
 
+
+interface CategoryStateObject {
+	list: CategoryObject[]
+	map: any
+}
+
 interface StateObject {
-	categories: CategoryObject[]
-	categoryMap: any
+	categories: CategoryStateObject
 	modalState: boolean
 }
 
@@ -39,8 +44,10 @@ let startingCategories = [
 ];
 
 const initialState: StateObject = {
-	categories: startingCategories,
-	categoryMap: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]]),
+	categories: {
+		list: startingCategories,
+		map: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]])
+	},
 	modalState: false
 };
 
@@ -55,12 +62,15 @@ export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
 	switch(action.type) {
 		case ADD_CATEGORY:
-			let cMap = new Map(state.categoryMap);
+			let CO = state.categories;
+			let cMap = new Map(CO.map);
 			cMap.set(payload.label, payload);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			return Object.assign({}, state, {
-				categories: state.categories.concat(payload),
-				categoryMap: cMap
+				categories: {
+					list: CO.list.concat(payload),
+					map: cMap
+				}
 			});
 		case TOGGLE_MODAL:
 			return Object.assign({}, state, { modalState: payload });
