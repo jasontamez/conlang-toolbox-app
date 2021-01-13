@@ -3,6 +3,7 @@ import './Swal.css';
 import { $delay } from './DollarSignExports';
 
 let queue = new Set();
+let toastActive = false;
 
 const fireSwal: any = async (options: any = {}) => {
 	if(options.customClass) {
@@ -14,7 +15,7 @@ const fireSwal: any = async (options: any = {}) => {
 	} else {
 		options.customClass = { popup: 'conlangToolboxSwal' };
 	}
-	if(Swal.isVisible()) {
+	if(Swal.isVisible() && !toastActive) {
 		// Delay this
 		queue.add(options);
 		return $delay(500).then(() => fireSwal(options));
@@ -35,6 +36,7 @@ const fireSwal: any = async (options: any = {}) => {
 			return $delay(500).then(() => fireSwal(options));
 		}
 	}
+	toastActive = !!options.toast;
 	return Swal.fire(options);
 }
 
