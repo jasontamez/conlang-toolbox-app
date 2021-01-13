@@ -17,7 +17,7 @@ export interface CategoryObject {
 }
 // id: unique id
 // title: short description
-// label: 1-3 letters
+// label: 1 letter
 // run: letters in this category
 // dropoffOverride: optional percentage that a given letter will be chosen
 // rateOverride: optional list of percentages for each letter

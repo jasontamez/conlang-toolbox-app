@@ -52,43 +52,18 @@ const EditCategoryModal = () => {
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		let v = $i("editingCatTitle").value as string;
-		let cap = v.charAt(0).toUpperCase();
-		let label = cap;
-		let keepLooking = !cap;
-		// Check for 1-letter version
-		if(catMap.has(cap)) {
-			// Look for 2-letter version
-			v = v.replace(/[^0-9a-zA-Z]/g, "").slice(1).toLowerCase();
-			let l = v.length;
-			let pointer = -1;
-			keepLooking = true;
-			do {
-				pointer++;
-				label = cap + v.charAt(pointer);
-				if(!catMap.has(label)) {
-					keepLooking = false;
-					pointer = l;
-				}
-			} while (pointer < l);
-			if(keepLooking) {
-				// Look for 3-letter version
-				pointer = -1;
-				do {
-					let p2 = ++pointer;
-					label = cap + v.charAt(pointer);
-					do {
-						p2++;
-						label = label + v.charAt(p2);
-						if(!catMap.has(label)) {
-							keepLooking = false;
-							p2 = l;
-						}
-					} while(p2 < l);
-				} while (pointer < l && keepLooking);
+		let v = ($i("newCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
+		let length = v.length;
+		let pos = 0;
+		let label = null;
+		while(!label && pos < length) {
+			let test = v.charAt(pos);
+			if(!catMap.has(test)) {
+				label = test;
 			}
+			pos++;
 		}
-		if(keepLooking) {
+		if(!label) {
 			// No suitable label found
 			fireSwal({
 				title: "Unable to suggest a unique label from the given descrption.",
@@ -100,7 +75,7 @@ const EditCategoryModal = () => {
 			});
 		} else {
 			// Suitable label found
-			$i("editingShortLabel").value = label;
+			$i("shortLabel").value = label;
 		}
 	};
 	const cancelEditing = () => {
@@ -167,7 +142,7 @@ const EditCategoryModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
-						<IonInput value={editingCat.label} id="editingShortLabel" placeholder="1-3 characters" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={3}></IonInput>
+						<IonInput value={editingCat.label} id="editingShortLabel" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
