@@ -16,6 +16,12 @@
 	color: var(--ion-color-warning-contrast);
 	box-shadow: 0 0 0.625em var(--ion-color-warning-tint);
 }
+.conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast,
+.conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast #swal2-title {
+	background: var(--ion-color-danger);
+	color: var(--ion-color-danger-contrast);
+	box-shadow: 0 0 0.625em var(--ion-color-danger-tint);
+}
 .conlangToolboxSwal.swal2-popup .swal2-content {
 	color: var(--ion-color-primary-shade);
 }
@@ -33,4 +39,9 @@
 .conlangToolboxSwal.swal2-popup .swal2-x-mark .swal2-x-mark-line-left,
 .conlangToolboxSwal.swal2-popup .swal2-x-mark .swal2-x-mark-line-right {
 	background-color: var(--ion-color-danger);
+}
+.conlangToolboxSwal.swal2-popup .swal2-icon.swal2-warning,
+.conlangToolboxSwal.swal2-popup .swal2-icon.swal2-warning .swal2-icon-content {
+	color: var(--ion-color-warning);
+	border-color: var(--ion-color-warning);
 }
