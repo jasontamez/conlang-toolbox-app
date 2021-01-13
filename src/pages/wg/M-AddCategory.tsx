@@ -49,7 +49,9 @@ const AddCategoryModal = () => {
 		// Set the property
 		newCat[prop] = value;
 		// Remove danger color if present
-		$q("." + prop + "Label").classList.remove("invalidValue");
+		// Debounce means this sometimes doesn't exist by the time this is called.
+		let where = $q("." + prop + "Label");
+		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		let v = $i("newCatTitle").value as string;
