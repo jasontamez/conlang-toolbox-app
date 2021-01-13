@@ -36,9 +36,9 @@ const WGSyl = () => {
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
 	const categories = categoryObject.list;
 	const editCategory = (label: any) => {
-		$q(".categories").closeSlidingItems();
+		$q(".syllables").closeSlidingItems();
 		dispatch(startEditCategory(label));
-		dispatch(openModal('EditCategory'));
+		dispatch(openModal('EditSyllable'));
 	};
 	const maybeDeleteCategory = (label: any) => {
 		fireSwal({
