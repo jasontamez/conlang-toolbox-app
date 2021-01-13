@@ -9,10 +9,10 @@ const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
 // helper functions and such
 export interface CategoryObject {
-	title: string,
-	label: string,
-	run: string,
-	dropoffOverride?: number,
+	title: string
+	label: string
+	run: string
+	dropoffOverride?: number
 	rateOverride?: number[]
 }
 // id: unique id
@@ -28,6 +28,18 @@ interface CategoryStateObject {
 	editing: null | string
 }
 
+interface SyllableObject {
+	components: string[]
+	rateOverride?: number[]
+}
+
+interface SyllableStateObject {
+	singleWord: SyllableObject
+	wordInitial: SyllableObject
+	wordMiddle: SyllableObject
+	wordFinal: SyllableObject
+}
+
 interface ModalStateObject {
 	AddCategory: boolean
 	EditCategory: boolean
@@ -37,6 +49,7 @@ interface ModalStateObject {
 interface StateObject {
 	categories: CategoryStateObject
 	modalState: ModalStateObject
+	syllables: SyllableStateObject
 }
 
 let startingCategories = [
@@ -58,6 +71,12 @@ const initialState: StateObject = {
 		map: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]]),
 		editing: null
 	},
+	syllables: {
+		singleWord: { components: [] },
+		wordInitial: { components: [] },
+		wordMiddle: { components: [] },
+		wordFinal: { components: [] }
+	},
 	modalState: {
 		AddCategory: false,
 		EditCategory: false,
@@ -70,72 +89,110 @@ interface ReduxAction {
 	payload?: any
 }
 
+const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = original.list) => {
+	let list: CategoryObject[] = [];
+	let map: any[] = [];
+	cats.map((c) => {
+		let o: CategoryObject = {...c};
+		if(o.rateOverride) {
+			o.rateOverride = [...o.rateOverride];
+		}
+		list.push(o);
+		map.push([o.label, o]);
+	});
+	return {
+		...original,
+		list: list,
+		map: new Map(map),
+		editing: original.editing
+	};
+};
+const reduceSyllables = (original: SyllableStateObject) => {
+	return {
+		singleWord: reduceSubSyllables(original.singleWord),
+		wordInitial: reduceSubSyllables(original.wordInitial),
+		wordMiddle: reduceSubSyllables(original.wordMiddle),
+		wordFinal: reduceSubSyllables(original.wordFinal)
+	};
+};
+const reduceSubSyllables = (original: SyllableObject) => {
+	let o: SyllableObject = {
+		components: [...original.components]
+	}
+	if(original.rateOverride) {
+		o.rateOverride = [...original.rateOverride];
+	}
+	return o;
+};
+const reduceModalState = (original: ModalStateObject) => {
+	return {...original};
+};
+
 
 // reducer
 export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
-	let CO, cMap;
+	let CO: CategoryStateObject;
+	let newCategories: CategoryStateObject;
 	switch(action.type) {
 		case ADD_CATEGORY:
 			CO = state.categories;
-			cMap = new Map(CO.map);
-			cMap.set(payload.label, payload);
+			newCategories = reduceCategory(CO, CO.list.concat(payload));
+			newCategories.map.set(payload.label, payload);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
-			return Object.assign({}, state, {
-				categories: {
-					list: CO.list.concat(payload).map(o => Object.assign({}, o)),
-					map: cMap,
-					editing: CO.editing
-				}
-			});
+			return {
+				...state,
+				categories: newCategories,
+				syllables: reduceSyllables(state.syllables),
+				modalState: reduceModalState(state.modalState)
+			};
 		case START_EDIT_CATEGORY:
 			CO = state.categories;
-			cMap = new Map(CO.map);
-			return Object.assign({}, state, {
-				categories: {
-					list: CO.list.map(o => Object.assign({}, o)),
-					map: cMap,
-					editing: payload
-				}
-			});
+			newCategories = reduceCategory(CO);
+			newCategories.editing = payload;
+			return {
+				...state,
+				categories: newCategories,
+				syllables: reduceSyllables(state.syllables),
+				modalState: reduceModalState(state.modalState)
+			};
 		case DO_EDIT_CATEGORY:
 			CO = state.categories;
-			cMap = new Map(CO.map);
-			let editing = CO.editing;
-			cMap.delete(editing);
-			cMap.set(payload.label, payload);
-			return Object.assign({}, state, {
-				categories: {
-					list: CO.list.map(o => o.label === editing ? payload : Object.assign({}, o)),
-					map: cMap,
-					editing: null
-				}
-			});
+			newCategories = reduceCategory(CO, CO.list.map(o => o.label === CO.editing ? payload : o));
+			return {
+				...state,
+				categories: newCategories,
+				syllables: reduceSyllables(state.syllables),
+				modalState: reduceModalState(state.modalState)
+			};
 		case CANCEL_EDIT_CATEGORY:
 			CO = state.categories;
-			cMap = new Map(CO.map);
-			return Object.assign({}, state, {
-				categories: {
-					list: CO.list.map(o => Object.assign({}, o)),
-					map: cMap,
-					editing: null
-				}
-			});
+			newCategories = reduceCategory(CO);
+			newCategories.editing = null;
+			return {
+				...state,
+				categories: newCategories,
+				syllables: reduceSyllables(state.syllables),
+				modalState: reduceModalState(state.modalState)
+			};
 		case DELETE_CATEGORY:
 			CO = state.categories;
-			cMap = new Map(CO.map);
-			cMap.delete(payload);
-			return Object.assign({}, state, {
-				categories: {
-					list: CO.list.slice().filter(o => o.label !== payload),
-					map: cMap,
-					editing: null
-				}
-			});
+			newCategories = reduceCategory(CO, CO.list.filter(o => o.label !== payload));
+			return {
+				...state,
+				categories: newCategories,
+				syllables: reduceSyllables(state.syllables),
+				modalState: reduceModalState(state.modalState)
+			};
 		case TOGGLE_MODAL:
-			let newModal: ModalStateObject = Object.assign({}, state.modalState);
+			let newModal: ModalStateObject = reduceModalState(state.modalState);
 			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
-			return Object.assign({}, state, { modalState: newModal });
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				modalState: newModal
+			};
 	}
 	return state;
 };
