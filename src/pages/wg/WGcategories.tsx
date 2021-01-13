@@ -23,10 +23,11 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import I from '../../components/IPA';
-import { CategoryObject, openModal, startEditCategory } from '../../components/ReduxDucks';
+import { CategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';
+import fireSwal from '../../components/Swal';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
@@ -37,7 +38,28 @@ const WGCat = () => {
 		dispatch(startEditCategory(label));
 		dispatch(openModal('EditCategory'));
 	};
-	const maybeDeleteCategory = (label: string) => {};
+	const maybeDeleteCategory = (label: any) => {
+		fireSwal({
+			title: "Delete " + label + "?",
+			text: "Are you sure? This cannot be undone.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: "Yes, delete it."
+		}).then((result: any) => {
+			if(result.isConfirmed) {
+				dispatch(deleteCategory(label));
+				fireSwal({
+					title: "Category deleted",
+					customClass: {popup: 'dangerToast'},
+					position: 'bottom',
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		});
+	};
 	return (
 		<IonPage>
 			<AddCategoryModal />
