@@ -242,6 +242,18 @@ http://ionicframework.com/docs/theming/ */
 #conlangToolbox p + p {
 	padding-top: 0;
 }
+#conlangToolbox .clickToExpand {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.1s ease-in;
+}
+#conlangToolbox .clickToExpand.expanded {
+	max-height: 10em;
+	transition: max-height 0.1s ease-out;
+}
+#conlangToolbox ion-button.helpy {
+	opacity: 0.5;
+}
 
 #conlangToolbox input[type=text],
 #conlangToolbox input[type=number],
