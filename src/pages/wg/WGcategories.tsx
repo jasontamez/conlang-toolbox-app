@@ -26,12 +26,14 @@ import I from '../../components/IPA';
 import { CategoryObject, openModal, startEditCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
+import { $q } from '../../components/DollarSignExports';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
 	const categories = categoryObject.list;
 	const editCategory = (label: any) => {
+		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategory(label));
 		dispatch(openModal('EditCategory'));
 	};
