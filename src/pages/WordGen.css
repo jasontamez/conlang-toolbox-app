@@ -18,18 +18,18 @@
 ion-item-option {
 	min-width: 5em;
 }
-ion-list.categories {
+ion-list.units {
 	background: transparent;
 	padding: 0;
 }
-.categories ion-item,
-.categories ion-item-option,
-.categories ion-item-option button {
+.units ion-item,
+.units ion-item-option,
+.units ion-item-option button {
 	border-bottom: 0.1em solid var(--ion-background-color);
 }
-.categories ion-item-sliding:first-of-type ion-item,
-.categories ion-item-sliding:first-of-type ion-item-option,
-.categories ion-item-sliding:first-of-type ion-item-option button {
+.units ion-item-sliding:first-of-type ion-item,
+.units ion-item-sliding:first-of-type ion-item-option,
+.units ion-item-sliding:first-of-type ion-item-option button {
 	border-top: 0.1em solid var(--ion-background-color);
 }
 

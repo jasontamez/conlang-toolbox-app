@@ -92,9 +92,9 @@ const WGCat = () => {
 						the <strong>Syllables</strong> tab to generate your words.
 					</p>
 				</div>
-				<IonList className="categories" lines="none">
+				<IonList className="categories units" lines="none">
 					{categories.map((cat: CategoryObject) => (
-						<IonItemSliding key={cat.label} className="wrapOverflow">
+						<IonItemSliding key={cat.label}>
 							<IonItemOptions side="end">
 								<IonItemOption color="secondary" onClick={() => editCategory(cat.label)}>Edit</IonItemOption>
 								<IonItemOption color="danger" onClick={() => maybeDeleteCategory(cat.label)}>Delete</IonItemOption>
