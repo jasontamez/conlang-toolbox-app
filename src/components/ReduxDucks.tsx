@@ -31,6 +31,7 @@ interface CategoryStateObject {
 interface ModalStateObject {
 	AddCategory: boolean
 	EditCategory: boolean
+	AddSyllable: boolean
 }
 
 interface StateObject {
@@ -59,7 +60,8 @@ const initialState: StateObject = {
 	},
 	modalState: {
 		AddCategory: false,
-		EditCategory: false
+		EditCategory: false,
+		AddSyllable: false
 	}
 };
 
