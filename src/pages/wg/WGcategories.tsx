@@ -78,8 +78,12 @@ const WGCat = () => {
 					are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
 					categories depending on how you want your language's syllables formed. For example,
 					the consonants <I>pbk</I> in English may be followed by the consonants <I>lr</I> at
-					the beginning of syllables. So you might choose them as categories, while keeping
-					all of them in a third category for general consonants.
+					the beginning of syllables. So you might choose them as categories, while also
+					putting <I>pbklr</I> in a third category for general consonants.
+				</p>
+				<p>
+					These <em>categories</em> of sounds will be used in the <strong>Syllables</strong> tab
+					to generate your words.
 				</p>
 				<IonList className="categories" lines="none">
 					{categories.map((cat: CategoryObject) => (
