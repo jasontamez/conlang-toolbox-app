@@ -237,6 +237,10 @@ http://ionicframework.com/docs/theming/ */
 #conlangToolbox p {
 	text-indent: 2em;
 	padding: 1em;
+	margin: 0 auto;
+}
+#conlangToolbox p + p {
+	padding-top: 0;
 }
 
 #conlangToolbox input[type=text],
