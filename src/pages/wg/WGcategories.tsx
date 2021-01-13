@@ -50,10 +50,11 @@ const WGCat = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<p>
-					This is where you define categories of sounds. The two simplest categories are <em>consonants</em> and
-					<em>vowels</em>, but you may want to create multiple categories depending on how you want your language's
-					syllables formed. For example, the consonants <I>pbk</I> in English may be followed by the
-					consonants <I>lr</I> at the beginning of syllables. So you might choose them as categories, while keeping
+					This is where you define categories of sounds. The two simplest categories
+					are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
+					categories depending on how you want your language's syllables formed. For example,
+					the consonants <I>pbk</I> in English may be followed by the consonants <I>lr</I> at
+					the beginning of syllables. So you might choose them as categories, while keeping
 					all of them in a third category for general consonants.
 				</p>
 				<IonList className="categories" lines="none">
