@@ -47,7 +47,7 @@ const EditCategoryModal = () => {
 		// Set the property
 		editingCat[prop] = value;
 		// Remove danger color if present
-		$q("." + prop + "Label").classList.remove("invalidValue");
+		$q("." + prop + "LabelEdit").classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		let v = $i("editingCatTitle").value as string;
@@ -109,18 +109,18 @@ const EditCategoryModal = () => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingCat
 		if(editingCat.title === "") {
-			$q(".editingTitleLabel").classList.add("invalidValue");
+			$q(".titleLabelEdit").classList.add("invalidValue");
 			err.push("No title present");
 		}
 		if(editingCat.label === "") {
-			$q(".editingLabelLabel").classList.add("invalidValue");
+			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
 		} else if (editing !== editingCat.label && catMap.has(editingCat.label)) {
-			$q(".editingLabelLabel").classList.add("invalidValue");
+			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("There is already a label \"" + editingCat.label + "\"");
 		}
 		if(editingCat.run === "") {
-			$q(".editingRunLabel").classList.add("invalidValue");
+			$q(".runLabelEdit").classList.add("invalidValue");
 			err.push("No run present");
 		}
 		if(err.length > 0) {
@@ -160,18 +160,18 @@ const EditCategoryModal = () => {
 			<IonContent>
 				<IonList lines="none">
 					<IonItem>
-						<IonLabel className="editingTitleLabel" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
+						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
 						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={500}></IonInput>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="ion-margin-end editingLabelLabel">Short Label:</IonLabel>
+						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
 						<IonInput value={editingCat.label} id="editingShortLabel" placeholder="1-3 characters" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={3}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="editingRunLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
+						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
 						<IonInput value={editingCat.run} className="categoryRun ion-margin-top" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
