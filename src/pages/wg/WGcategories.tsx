@@ -86,7 +86,7 @@ const WGCat = () => {
 						categories depending on how you want your language's syllables formed. For example,
 						the consonants <I>pbk</I> in English may be followed by the consonants <I>lr</I> at
 						the beginning of syllables. So you might choose them as categories, while also
-							putting <I>pbklr</I> in a third category for general consonants.
+						putting <I>pbklr</I> in a third category for general consonants.
 					</p><p>
 						These <strong>Categories</strong> of sounds will be used in
 						the <strong>Syllables</strong> tab to generate your words.
