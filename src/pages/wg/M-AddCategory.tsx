@@ -22,7 +22,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import { CategoryObject, closeModal, addCategory } from '../../components/ReduxDucks';
-import doAlert from '../../components/Swal';
+import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
 const AddCategoryModal = () => {
@@ -90,7 +90,7 @@ const AddCategoryModal = () => {
 		}
 		if(keepLooking) {
 			// No suitable label found
-			doAlert({
+			fireSwal({
 				title: "Unable to suggest a unique label from the given descrption.",
 				customClass: {popup: 'warnToast'},
 				toast: true,
@@ -123,7 +123,7 @@ const AddCategoryModal = () => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			doAlert({
+			fireSwal({
 				title: "Error",
 				icon: "error",
 				text: err.join("; ")
@@ -134,7 +134,7 @@ const AddCategoryModal = () => {
 		dispatch(closeModal('AddCategory'));
 		dispatch(addCategory(newCat));
 		hardReset();
-		doAlert({
+		fireSwal({
 			title: "Category added!",
 			toast: true,
 			position: 'bottom',
