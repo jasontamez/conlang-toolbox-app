@@ -23,7 +23,6 @@ import {
 	helpOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
 import I from '../../components/IPA';
 import { CategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
