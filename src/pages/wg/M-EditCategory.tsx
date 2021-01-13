@@ -47,7 +47,9 @@ const EditCategoryModal = () => {
 		// Set the property
 		editingCat[prop] = value;
 		// Remove danger color if present
-		$q("." + prop + "LabelEdit").classList.remove("invalidValue");
+		// Debounce means this sometimes doesn't exist by the time this is called.
+		let where = $q("." + prop + "LabelEdit");
+		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		let v = $i("editingCatTitle").value as string;
