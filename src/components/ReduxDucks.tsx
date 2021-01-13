@@ -6,6 +6,7 @@ const DO_EDIT_CATEGORY =p+"DO_EDIT_CATEGORY";
 const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 
+// helper functions and such
 export interface CategoryObject {
 	title: string,
 	label: string,
@@ -26,9 +27,14 @@ interface CategoryStateObject {
 	editing: null | string
 }
 
+interface ModalStateObject {
+	AddCategory: boolean
+	EditCategory: boolean
+}
+
 interface StateObject {
 	categories: CategoryStateObject
-	modalState: boolean
+	modalState: ModalStateObject
 }
 
 let startingCategories = [
@@ -50,7 +56,10 @@ const initialState: StateObject = {
 		map: new Map([["C", startingCategories[0]], ["V", startingCategories[1]]]),
 		editing: null
 	},
-	modalState: false
+	modalState: {
+		AddCategory: false,
+		EditCategory: false
+	}
 };
 
 interface ReduxAction {
@@ -111,10 +120,13 @@ export function reducer(state = initialState, action: ReduxAction) {
 				}
 			});
 		case TOGGLE_MODAL:
-			return Object.assign({}, state, { modalState: payload });
+			let newModal: ModalStateObject = Object.assign({}, state.modalState);
+			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
+			return Object.assign({}, state, { modalState: newModal });
 	}
 	return state;
 };
+
 
 // action creators
 export function addCategory(payload: CategoryObject) {
@@ -129,10 +141,10 @@ export function doEditCategory(payload: CategoryObject) {
 export function deleteCategory(payload: CategoryObject) {
 	return {type: DELETE_CATEGORY, payload};
 }
-export function openModal() {
-	return {type: TOGGLE_MODAL, payload: true};
+export function openModal(payload: keyof ModalStateObject) {
+	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: true}};
 }
-export function closeModal() {
-	return {type: TOGGLE_MODAL, payload: false};
+export function closeModal(payload: keyof ModalStateObject) {
+	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
 

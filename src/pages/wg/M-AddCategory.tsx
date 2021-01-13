@@ -131,7 +131,7 @@ const AddCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal());
+		dispatch(closeModal('AddCategory'));
 		dispatch(addCategory(newCat));
 		hardReset();
 		doAlert({
@@ -144,12 +144,12 @@ const AddCategoryModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState} onDidDismiss={() => dispatch(closeModal())}>
+		<IonModal isOpen={modalState.AddCategory} onDidDismiss={() => dispatch(closeModal('AddCategory'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Category</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal())}>
+						<IonButton onClick={() => dispatch(closeModal('AddCategory'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
