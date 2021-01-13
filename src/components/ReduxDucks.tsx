@@ -2,6 +2,7 @@
 const p = "conlangs-toolbox/reducer/";
 const ADD_CATEGORY =p+"ADD_CATEGORY";
 const START_EDIT_CATEGORY =p+"START_EDIT_CATEGORY";
+const CANCEL_EDIT_CATEGORY =p+"CANCEL_EDIT_CATEGORY";
 const DO_EDIT_CATEGORY =p+"DO_EDIT_CATEGORY";
 const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
@@ -108,6 +109,16 @@ export function reducer(state = initialState, action: ReduxAction) {
 					editing: null
 				}
 			});
+		case CANCEL_EDIT_CATEGORY:
+			CO = state.categories;
+			cMap = new Map(CO.map);
+			return Object.assign({}, state, {
+				categories: {
+					list: CO.list.map(o => Object.assign({}, o)),
+					map: cMap,
+					editing: null
+				}
+			});
 		case DELETE_CATEGORY:
 			CO = state.categories;
 			cMap = new Map(CO.map);
@@ -134,6 +145,9 @@ export function addCategory(payload: CategoryObject) {
 }
 export function startEditCategory(payload: CategoryObject) {
 	return {type: START_EDIT_CATEGORY, payload};
+}
+export function cancelEditCategory(payload: CategoryObject) {
+	return {type: CANCEL_EDIT_CATEGORY, payload};
 }
 export function doEditCategory(payload: CategoryObject) {
 	return {type: DO_EDIT_CATEGORY, payload};

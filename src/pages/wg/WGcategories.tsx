@@ -23,20 +23,23 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import I from '../../components/IPA';
-import { CategoryObject, openModal } from '../../components/ReduxDucks';
+import { CategoryObject, openModal, startEditCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
+import EditCategoryModal from './M-EditCategory';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
 	const categories = categoryObject.list;
-	const startEditCategory = (label: string) => {};
-	const finishEditCategory = (cat: CategoryObject) => {};
-	const cancelEditCategory = (label: string) => {};
+	const editCategory = (label: any) => {
+		dispatch(startEditCategory(label));
+		dispatch(openModal('EditCategory'));
+	};
 	const maybeDeleteCategory = (label: string) => {};
 	return (
 		<IonPage>
 			<AddCategoryModal />
+			<EditCategoryModal />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -57,8 +60,8 @@ const WGCat = () => {
 					{categories.map((cat: CategoryObject) => (
 						<IonItemSliding key={cat.label} className="wrapOverflow">
 							<IonItemOptions side="end">
-								<IonItemOption color="secondary">Edit</IonItemOption>
-								<IonItemOption color="danger">Delete</IonItemOption>
+								<IonItemOption color="secondary" onClick={() => editCategory(cat.label)}>Edit</IonItemOption>
+								<IonItemOption color="danger" onClick={() => maybeDeleteCategory(cat.label)}>Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
 								<IonLabel>
@@ -73,7 +76,7 @@ const WGCat = () => {
 					))}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal())}>
+					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddCategory'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>
