@@ -14,13 +14,12 @@ import {
 	IonItemOption,
 	IonItem,
 	IonLabel,
-	IonFab,
-	IonFabButton,
+	IonTextarea,
 	IonIcon,
-	IonToggle
+	IonToggle,
+	IonListHeader
 } from '@ionic/react';
 import {
-	addOutline,
 	helpOutline
 } from 'ionicons/icons';
 import '../WordGen.css';
@@ -64,6 +63,13 @@ const WGSyl = () => {
 			}
 		});
 	};
+	const toggleClass = (base: string = "") => {
+		let extra = " toggleable";
+		if(syllableObject.toggle) {
+			extra += " toggled";
+		}
+		return (base + extra).trim();
+	};
 	return (
 		<IonPage>
 			<AddSyllableModal />
@@ -102,6 +108,11 @@ const WGSyl = () => {
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
+					<header className={toggleClass("reverseToggle")}>Boops</header>
+					<header className={toggleClass()}>Doubled</header>
+					<IonItem>
+						<IonTextarea />
+					</IonItem>
 					{categories.map((cat: CategoryObject) => (
 						<IonItemSliding key={cat.label}>
 							<IonItemOptions side="end">
@@ -120,11 +131,6 @@ const WGSyl = () => {
 						</IonItemSliding>
 					))}
 				</IonList>
-				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddSyllable'))}>
-						<IonIcon icon={addOutline} />
-					</IonFabButton>
-				</IonFab>
 			</IonContent>
 		</IonPage>
 	);

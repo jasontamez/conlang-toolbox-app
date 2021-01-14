@@ -15,6 +15,38 @@
 	content: "=";
 }
 
+#conlangToolbox ion-list.syllables .toggleable {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.1s ease-in;
+}
+#conlangToolbox ion-list.syllables .toggleable.toggled {
+	max-height: 10em;
+	transition: max-height 0.1s ease-out;
+}
+#conlangToolbox ion-list.syllables header {
+	display: block;
+	font-weight: bold;
+	font-size: larger;
+	margin: 0.5em 1em 1em;
+}
+#conlangToolbox ion-list.syllables header.toggleable {
+	margin: 0;
+	transition: none;
+}
+#conlangToolbox ion-list.syllables header.toggleable.toggled {
+	margin: 0.5em 1em 1em;
+	transition: none;
+}
+#conlangToolbox ion-list.syllables header.toggleable.reverseToggle {
+	max-height: 10em;
+	margin: 0.5em 1em 1em;
+}
+#conlangToolbox ion-list.syllables header.toggleable.reverseToggle.toggled {
+	max-height: 0;
+	margin: 0;
+}
+
 ion-item-option {
 	min-width: 5em;
 }
