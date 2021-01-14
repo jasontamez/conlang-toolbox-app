@@ -234,26 +234,6 @@ http://ionicframework.com/docs/theming/ */
 	--ion-font-family: "Noto Sans", "Times New Roman", sans-serif;
 	--ion-default-font: var(--ion-font-family);
 }
-#conlangToolbox p {
-	text-indent: 2em;
-	padding: 1em;
-	margin: 0 auto;
-}
-#conlangToolbox p + p {
-	padding-top: 0;
-}
-#conlangToolbox .clickToExpand {
-	overflow: hidden;
-	max-height: 0;
-	transition: max-height 0.1s ease-in;
-}
-#conlangToolbox .clickToExpand.expanded {
-	max-height: 10em;
-	transition: max-height 0.1s ease-out;
-}
-#conlangToolbox ion-button.helpy {
-	opacity: 0.5;
-}
 
 #conlangToolbox input[type=text],
 #conlangToolbox input[type=number],
