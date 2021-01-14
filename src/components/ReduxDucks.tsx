@@ -6,6 +6,7 @@ const CANCEL_EDIT_CATEGORY =p+"CANCEL_EDIT_CATEGORY";
 const DO_EDIT_CATEGORY =p+"DO_EDIT_CATEGORY";
 const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
+const TOGGLE_SYLLABLES = p+"TOGGLE_SYLLABLES";
 
 // helper functions and such
 export interface CategoryObject {
@@ -34,6 +35,7 @@ interface SyllableObject {
 }
 
 interface SyllableStateObject {
+	toggle: boolean
 	singleWord: SyllableObject
 	wordInitial: SyllableObject
 	wordMiddle: SyllableObject
@@ -73,6 +75,7 @@ const initialState: StateObject = {
 		editing: null
 	},
 	syllables: {
+		toggle: false,
 		singleWord: { components: [] },
 		wordInitial: { components: [] },
 		wordMiddle: { components: [] },
@@ -111,6 +114,7 @@ const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = 
 };
 const reduceSyllables = (original: SyllableStateObject) => {
 	return {
+		toggle: original.toggle,
 		singleWord: reduceSubSyllables(original.singleWord),
 		wordInitial: reduceSubSyllables(original.wordInitial),
 		wordMiddle: reduceSubSyllables(original.wordMiddle),
@@ -136,6 +140,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
 	let CO: CategoryStateObject;
 	let newCategories: CategoryStateObject;
+	let SO: SyllableStateObject;
 	switch(action.type) {
 		case ADD_CATEGORY:
 			CO = state.categories;
@@ -195,6 +200,15 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				modalState: newModal
 			};
+		case TOGGLE_SYLLABLES:
+			SO = reduceSyllables(state.syllables);
+			SO.toggle = !SO.toggle;
+			return {
+				...state,
+				syllables: SO,
+				categories: reduceCategory(state.categories),
+				modalState: reduceModalState(state.modalState)
+			};
 	}
 	return state;
 };
@@ -222,4 +236,6 @@ export function openModal(payload: keyof ModalStateObject) {
 export function closeModal(payload: keyof ModalStateObject) {
 	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
-
+export function toggleSyllables() {
+	return {type: TOGGLE_SYLLABLES, payload: null}
+}

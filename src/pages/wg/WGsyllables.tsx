@@ -16,7 +16,8 @@ import {
 	IonLabel,
 	IonFab,
 	IonFabButton,
-	IonIcon
+	IonIcon,
+	IonToggle
 } from '@ionic/react';
 import {
 	addOutline,
@@ -26,13 +27,14 @@ import '../WordGen.css';
 import { $q, $togID } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import I from '../../components/IPA';
-import { CategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
+import { CategoryObject, openModal, startEditCategory, deleteCategory, toggleSyllables } from '../../components/ReduxDucks';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import AddSyllableModal from './M-AddSyllable';
 import EditSyllableModal from './M-EditSyllable';
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
+	const syllableObject = useSelector((state: any) => state.syllables, shallowEqual);
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
 	const categories = categoryObject.list;
 	const editCategory = (label: any) => {
@@ -67,7 +69,7 @@ const WGSyl = () => {
 			<AddSyllableModal />
 			<EditSyllableModal />
 			<IonHeader>
-			<IonToolbar>
+				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
@@ -93,6 +95,12 @@ const WGSyl = () => {
 						the <strong>Syllables</strong> tab to generate your words.
 					</p>
 				</div>
+				<IonList lines="none">
+					<IonItem class="ion-text-end">
+						<IonLabel>Use multiple syllable types</IonLabel>
+						<IonToggle checked={syllableObject.toggle} onIonChange={() => dispatch(toggleSyllables())} />
+					</IonItem>
+				</IonList>
 				<IonList className="syllables units" lines="none">
 					{categories.map((cat: CategoryObject) => (
 						<IonItemSliding key={cat.label}>
