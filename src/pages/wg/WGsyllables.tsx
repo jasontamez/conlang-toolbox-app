@@ -9,24 +9,19 @@ import {
 	IonButton,
 	IonTitle,
 	IonList,
-	IonItemSliding,
-	IonItemOptions,
-	IonItemOption,
 	IonItem,
 	IonLabel,
 	IonTextarea,
 	IonIcon,
-	IonToggle,
-	IonListHeader
+	IonToggle
 } from '@ionic/react';
 import {
 	helpOutline
 } from 'ionicons/icons';
 import '../WordGen.css';
-import { $q, $togID } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
+import { $togID } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
-import { CategoryObject, openModal, startEditCategory, deleteCategory, toggleSyllables } from '../../components/ReduxDucks';
+import { toggleSyllables } from '../../components/ReduxDucks';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import AddSyllableModal from './M-AddSyllable';
 import EditSyllableModal from './M-EditSyllable';
@@ -34,36 +29,7 @@ import EditSyllableModal from './M-EditSyllable';
 const WGSyl = () => {
 	const dispatch = useDispatch();
 	const syllableObject = useSelector((state: any) => state.syllables, shallowEqual);
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
-	const categories = categoryObject.list;
-	const editCategory = (label: any) => {
-		$q(".syllables").closeSlidingItems();
-		dispatch(startEditCategory(label));
-		dispatch(openModal('EditSyllable'));
-	};
-	const maybeDeleteCategory = (label: any) => {
-		fireSwal({
-			title: "Delete " + label + "?",
-			text: "Are you sure? This cannot be undone.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, delete it."
-		}).then((result: any) => {
-			if(result.isConfirmed) {
-				dispatch(deleteCategory(label));
-				fireSwal({
-					title: "Category deleted",
-					customClass: {popup: 'dangerToast'},
-					position: 'bottom',
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
-		});
-	};
-	const toggleClass = (base: string = "") => {
+	const toggleableClassName = (base: string = "") => {
 		let extra = " toggleable";
 		if(syllableObject.toggle) {
 			extra += " toggled";
@@ -77,7 +43,7 @@ const WGSyl = () => {
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
-						 <IonMenuButton />
+							<IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Syllables</IonTitle>
 					<IonButtons slot="end">
@@ -108,28 +74,23 @@ const WGSyl = () => {
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
-					<header className={toggleClass("reverseToggle")}>Boops</header>
-					<header className={toggleClass()}>Doubled</header>
 					<IonItem>
+						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
+						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
 						<IonTextarea />
 					</IonItem>
-					{categories.map((cat: CategoryObject) => (
-						<IonItemSliding key={cat.label}>
-							<IonItemOptions side="end">
-								<IonItemOption color="secondary" onClick={() => editCategory(cat.label)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteCategory(cat.label)}>Delete</IonItemOption>
-							</IonItemOptions>
-							<IonItem>
-								<IonLabel>
-									<div className="categoryRun">
-										<span className="label">{cat.label}</span>
-										<span className="run">{cat.run}</span>
-									</div>
-									<div className="categoryLongName">{cat.title}</div>
-								</IonLabel>
-							</IonItem>
-						</IonItemSliding>
-					))}
+					<IonItem className={toggleableClassName()}>
+						<div className="header">Word-Initial<br />Syllables</div>
+						<IonTextarea />
+					</IonItem>
+					<IonItem className={toggleableClassName()}>
+						<div className="header">Mid-Word<br />Syllables</div>
+						<IonTextarea />
+					</IonItem>
+					<IonItem className={toggleableClassName()}>
+						<div className="header">Word-Final<br />Syllables</div>
+						<IonTextarea />
+					</IonItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
