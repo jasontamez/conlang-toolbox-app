@@ -36,36 +36,30 @@
 	content: "=";
 }
 
-#conlangToolbox ion-list.syllables .toggleable {
-	overflow: hidden;
-	max-height: 0;
-	transition: max-height 0.1s ease-in;
-}
-#conlangToolbox ion-list.syllables .toggleable.toggled {
-	max-height: 10em;
-	transition: max-height 0.1s ease-out;
-}
-#conlangToolbox ion-list.syllables header {
+#conlangToolbox ion-list.syllables div.header {
 	display: block;
 	font-weight: bold;
 	font-size: larger;
 	margin: 0.5em 1em 1em;
 }
-#conlangToolbox ion-list.syllables header.toggleable {
-	margin: 0;
-	transition: none;
+#conlangToolbox ion-list.syllables .toggleable {
+	overflow: hidden;
+	display: none;
 }
-#conlangToolbox ion-list.syllables header.toggleable.toggled {
-	margin: 0.5em 1em 1em;
-	transition: none;
+#conlangToolbox ion-list.syllables .toggleable.toggled,
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle {
+	display: block;
 }
-#conlangToolbox ion-list.syllables header.toggleable.reverseToggle {
-	max-height: 10em;
-	margin: 0.5em 1em 1em;
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle.toggled {
+	display: none;
 }
-#conlangToolbox ion-list.syllables header.toggleable.reverseToggle.toggled {
-	max-height: 0;
-	margin: 0;
+#conlangToolbox ion-list.syllables div.header.toggleable,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle.toggled {
+	display: none;
+}
+#conlangToolbox ion-list.syllables div.header.toggleable.toggled,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle {
+	display: block;
 }
 
 ion-item-option {
