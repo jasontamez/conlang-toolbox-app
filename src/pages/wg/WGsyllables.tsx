@@ -21,7 +21,7 @@ import {
 import '../WordGen.css';
 import { $togID } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
-import { toggleSyllables } from '../../components/ReduxDucks';
+import { toggleSyllables, editSyllables, SyllableStateObject } from '../../components/ReduxDucks';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 const WGSyl = () => {
@@ -33,6 +33,13 @@ const WGSyl = () => {
 			extra += " toggled";
 		}
 		return (base + extra).trim();
+	};
+	const singleWord = syllableObject.objects.singleWord.components.join("\n");
+	const wordInitial = syllableObject.objects.wordInitial.components.join("\n");
+	const wordMiddle = syllableObject.objects.wordMiddle.components.join("\n");
+	const wordFinal = syllableObject.objects.wordFinal.components.join("\n");
+	const updateSyllables = (base: keyof SyllableStateObject["objects"], value: string) => {
+		dispatch(editSyllables(base, value.split(/\s*\r?\n\s*/)));
 	};
 	return (
 		<IonPage>
@@ -73,19 +80,19 @@ const WGSyl = () => {
 					<IonItem>
 						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
 						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
-						<IonTextarea />
+						<IonTextarea onIonChange={e => updateSyllables('singleWord', e.detail.value!)} value={singleWord} autoGrow={singleWord.length > 0} debounce={500} inputmode="text" placeholder="Use category labels to construct syllables" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Initial<br />Syllables</div>
-						<IonTextarea />
+						<IonTextarea onIonChange={e => updateSyllables('wordInitial', e.detail.value!)} value={wordInitial} autoGrow={wordInitial.length > 0} debounce={500} inputmode="text" placeholder="These syllables are used to begin words" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Mid-Word<br />Syllables</div>
-						<IonTextarea />
+						<IonTextarea onIonChange={e => updateSyllables('wordMiddle', e.detail.value!)} value={wordMiddle} autoGrow={wordMiddle.length > 0} debounce={500} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Final<br />Syllables</div>
-						<IonTextarea />
+						<IonTextarea onIonChange={e => updateSyllables('wordFinal', e.detail.value!)} value={wordFinal} autoGrow={wordFinal.length > 0} debounce={500} inputmode="text" placeholder="These syllables are used to end words" />
 					</IonItem>
 				</IonList>
 			</IonContent>

@@ -7,6 +7,7 @@ const DO_EDIT_CATEGORY =p+"DO_EDIT_CATEGORY";
 const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 const TOGGLE_SYLLABLES = p+"TOGGLE_SYLLABLES";
+const EDIT_SYLLABLES = p+"EDIT_SYLLABLES";
 
 // helper functions and such
 export interface CategoryObject {
@@ -34,12 +35,14 @@ interface SyllableObject {
 	rateOverride?: number[]
 }
 
-interface SyllableStateObject {
+export interface SyllableStateObject {
 	toggle: boolean
-	singleWord: SyllableObject
-	wordInitial: SyllableObject
-	wordMiddle: SyllableObject
-	wordFinal: SyllableObject
+	objects: {
+		singleWord: SyllableObject
+		wordInitial: SyllableObject
+		wordMiddle: SyllableObject
+		wordFinal: SyllableObject
+	}
 }
 
 interface ModalStateObject {
@@ -76,10 +79,12 @@ const initialState: StateObject = {
 	},
 	syllables: {
 		toggle: false,
-		singleWord: { components: [] },
-		wordInitial: { components: [] },
-		wordMiddle: { components: [] },
-		wordFinal: { components: [] }
+		objects: {
+			singleWord: { components: [] },
+			wordInitial: { components: [] },
+			wordMiddle: { components: [] },
+			wordFinal: { components: [] }
+		}
 	},
 	modalState: {
 		AddCategory: false,
@@ -112,12 +117,15 @@ const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = 
 	};
 };
 const reduceSyllables = (original: SyllableStateObject) => {
+	const oo = original.objects;
 	return {
 		toggle: original.toggle,
-		singleWord: reduceSubSyllables(original.singleWord),
-		wordInitial: reduceSubSyllables(original.wordInitial),
-		wordMiddle: reduceSubSyllables(original.wordMiddle),
-		wordFinal: reduceSubSyllables(original.wordFinal)
+		objects: {
+			singleWord: reduceSubSyllables(oo.singleWord),
+			wordInitial: reduceSubSyllables(oo.wordInitial),
+			wordMiddle: reduceSubSyllables(oo.wordMiddle),
+			wordFinal: reduceSubSyllables(oo.wordFinal)
+		}
 	};
 };
 const reduceSubSyllables = (original: SyllableObject) => {
@@ -208,6 +216,15 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				modalState: reduceModalState(state.modalState)
 			};
+		case EDIT_SYLLABLES:
+			SO = reduceSyllables(state.syllables);
+			SO.objects[payload.key as keyof SyllableStateObject["objects"]].components = payload.syllables;
+			return {
+				...state,
+				syllables: SO,
+				categories: reduceCategory(state.categories),
+				modalState: reduceModalState(state.modalState)
+			};
 	}
 	return state;
 };
@@ -237,4 +254,7 @@ export function closeModal(payload: keyof ModalStateObject) {
 }
 export function toggleSyllables() {
 	return {type: TOGGLE_SYLLABLES, payload: null}
+}
+export function editSyllables(payload1: keyof SyllableStateObject["objects"], payload2: string[]) {
+	return {type: EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
 }
