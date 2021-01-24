@@ -23,8 +23,6 @@ import { $togID } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
 import { toggleSyllables } from '../../components/ReduxDucks';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import AddSyllableModal from './M-AddSyllable';
-import EditSyllableModal from './M-EditSyllable';
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
@@ -38,8 +36,6 @@ const WGSyl = () => {
 	};
 	return (
 		<IonPage>
-			<AddSyllableModal />
-			<EditSyllableModal />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
