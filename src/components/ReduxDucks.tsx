@@ -96,14 +96,13 @@ interface ReduxAction {
 
 const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = original.list) => {
 	let list: CategoryObject[] = [];
-	let map: any[] = [];
-	cats.map((c) => {
+	let map: any[] = cats.map((c) => {
 		let o: CategoryObject = {...c};
 		if(o.rateOverride) {
 			o.rateOverride = [...o.rateOverride];
 		}
 		list.push(o);
-		map.push([o.label, o]);
+		return [o.label, o];
 	});
 	return {
 		...original,
