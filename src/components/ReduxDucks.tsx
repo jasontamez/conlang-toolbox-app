@@ -13,6 +13,7 @@ const START_EDIT_REWRITE_RULE =p+"START_EDIT_REWRITE_RULE";
 const CANCEL_EDIT_REWRITE_RULE =p+"CANCEL_EDIT_REWRITE_RULE";
 const DO_EDIT_REWRITE_RULE =p+"DO_EDIT_REWRITE_RULE";
 const DELETE_REWRITE_RULE =p+"DELETE_REWRITE_RULE";
+const REORDER_REWRITE_RULE =p+"REORDER_REWRITE_RULE";
 
 // helper functions and such
 export interface CategoryObject {
@@ -326,6 +327,20 @@ export function reducer(state = initialState, action: ReduxAction) {
 				rewriteRules: RO,
 				modalState: reduceModalState(state.modalState)
 			};
+		case REORDER_REWRITE_RULE:
+			let SRR = state.rewriteRules;
+			let map = new Map(SRR.list.map(rr => [rr.key, rr]));
+			RO = {
+				list: payload.map((key: string) => map.get(key)),
+				editing: SRR.editing
+			};
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
 		// Modals
 		case TOGGLE_MODAL:
 			let newModal: ModalStateObject = reduceModalState(state.modalState);
@@ -382,6 +397,9 @@ export function doEditRewriteRule(payload: RewriteRuleObject) {
 }
 export function deleteRewriteRule(payload: RewriteRuleObject) {
 	return {type: DELETE_REWRITE_RULE, payload};
+}
+export function reorderRewriteRules(payload: RewriteRuleObject["key"][]) {
+	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
 // Modals
 export function openModal(payload: keyof ModalStateObject) {
