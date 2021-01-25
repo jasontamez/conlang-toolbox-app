@@ -8,6 +8,11 @@ const DELETE_CATEGORY =p+"DELETE_CATEGORY";
 const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 const TOGGLE_SYLLABLES = p+"TOGGLE_SYLLABLES";
 const EDIT_SYLLABLES = p+"EDIT_SYLLABLES";
+const ADD_REWRITE_RULE =p+"ADD_REWRITE_RULE";
+const START_EDIT_REWRITE_RULE =p+"START_EDIT_REWRITE_RULE";
+const CANCEL_EDIT_REWRITE_RULE =p+"CANCEL_EDIT_REWRITE_RULE";
+const DO_EDIT_REWRITE_RULE =p+"DO_EDIT_REWRITE_RULE";
+const DELETE_REWRITE_RULE =p+"DELETE_REWRITE_RULE";
 
 // helper functions and such
 export interface CategoryObject {
@@ -45,17 +50,30 @@ export interface SyllableStateObject {
 	}
 }
 
+export interface RewriteRuleObject {
+	key: string
+	seek: string
+	replace: string
+	description: string
+}
+
+interface RewriteRuleStateObject {
+	list: RewriteRuleObject[]
+	editing: null | string
+}
+
 interface ModalStateObject {
 	AddCategory: boolean
 	EditCategory: boolean
-	AddSyllable: boolean
-	EditSyllable: boolean
+	AddRewriteRule: boolean
+	EditRewriteRule: boolean
 }
 
 interface StateObject {
 	categories: CategoryStateObject
-	modalState: ModalStateObject
 	syllables: SyllableStateObject
+	rewriteRules: RewriteRuleStateObject
+	modalState: ModalStateObject
 }
 
 let startingCategories = [
@@ -86,11 +104,15 @@ const initialState: StateObject = {
 			wordFinal: { components: [] }
 		}
 	},
+	rewriteRules: {
+		list: [],
+		editing: null
+	},
 	modalState: {
 		AddCategory: false,
 		EditCategory: false,
-		AddSyllable: false,
-		EditSyllable: false
+		AddRewriteRule: false,
+		EditRewriteRule: false
 	}
 };
 
@@ -137,6 +159,36 @@ const reduceSubSyllables = (original: SyllableObject) => {
 	}
 	return o;
 };
+const reduceRewriteRulesState = (original: RewriteRuleStateObject, mod: string = "", rule: any = null) => {
+	// mod = 'add' -> add new rule (object)
+	// mod = 'del' -> delete rule (key)
+	// mod = 'edit' -> replace rule (object)
+	// mod = '' -> do nothing
+	let list;
+	switch (mod) {
+		case 'add':
+			list = original.list.map(rr => reduceRewriteRules(rr));
+			list.push(rule);
+			break;
+		case 'del':
+			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRules(rr));
+			break;
+		case 'edit':
+			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRules(rr));
+			break;
+		default:
+			list = original.list.map(rr => reduceRewriteRules(rr));
+	}
+	return {
+		list: list,
+		editing: original.editing
+	};
+};
+const reduceRewriteRules = (original: RewriteRuleObject) => {
+	return {
+		...original
+	};
+};
 const reduceModalState = (original: ModalStateObject) => {
 	return {...original};
 };
@@ -148,7 +200,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 	let CO: CategoryStateObject;
 	let newCategories: CategoryStateObject;
 	let SO: SyllableStateObject;
+	let RO: RewriteRuleStateObject;
 	switch(action.type) {
+		// Category
 		case ADD_CATEGORY:
 			CO = state.categories;
 			newCategories = reduceCategory(CO, CO.list.concat(payload));
@@ -158,6 +212,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
 		case START_EDIT_CATEGORY:
@@ -168,6 +223,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
 		case DO_EDIT_CATEGORY:
@@ -177,6 +233,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
 		case CANCEL_EDIT_CATEGORY:
@@ -187,6 +244,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
 		case DELETE_CATEGORY:
@@ -196,17 +254,10 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
-		case TOGGLE_MODAL:
-			let newModal: ModalStateObject = reduceModalState(state.modalState);
-			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
-			return {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				modalState: newModal
-			};
+		// Syllables
 		case TOGGLE_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
 			SO.toggle = !SO.toggle;
@@ -214,6 +265,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				syllables: SO,
 				categories: reduceCategory(state.categories),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
 			};
 		case EDIT_SYLLABLES:
@@ -223,7 +275,67 @@ export function reducer(state = initialState, action: ReduxAction) {
 				...state,
 				syllables: SO,
 				categories: reduceCategory(state.categories),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				modalState: reduceModalState(state.modalState)
+			};
+		// Rewrite Rules
+		case ADD_REWRITE_RULE:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'add', payload);
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
+		case START_EDIT_REWRITE_RULE:
+			RO = reduceRewriteRulesState(state.rewriteRules);
+			RO.editing = payload;
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
+		case DO_EDIT_REWRITE_RULE:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
+		case CANCEL_EDIT_REWRITE_RULE:
+			RO = reduceRewriteRulesState(state.rewriteRules);
+			RO.editing = null;
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
+		case DELETE_REWRITE_RULE:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: RO,
+				modalState: reduceModalState(state.modalState)
+			};
+		// Modals
+		case TOGGLE_MODAL:
+			let newModal: ModalStateObject = reduceModalState(state.modalState);
+			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				modalState: newModal
 			};
 	}
 	return state;
@@ -231,6 +343,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 
 
 // action creators
+//
+// Category
 export function addCategory(payload: CategoryObject) {
 	return {type: ADD_CATEGORY, payload};
 }
@@ -246,15 +360,33 @@ export function doEditCategory(payload: CategoryObject) {
 export function deleteCategory(payload: CategoryObject) {
 	return {type: DELETE_CATEGORY, payload};
 }
-export function openModal(payload: keyof ModalStateObject) {
-	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: true}};
-}
-export function closeModal(payload: keyof ModalStateObject) {
-	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
-}
+// Syllables
 export function toggleSyllables() {
 	return {type: TOGGLE_SYLLABLES, payload: null}
 }
 export function editSyllables(payload1: keyof SyllableStateObject["objects"], payload2: string[]) {
 	return {type: EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
+}
+// Rewrite Rules
+export function addRewriteRule(payload: RewriteRuleObject) {
+	return {type: ADD_REWRITE_RULE, payload};
+}
+export function startEditRewriteRule(payload: RewriteRuleObject) {
+	return {type: START_EDIT_REWRITE_RULE, payload};
+}
+export function cancelEditRewriteRule(payload: RewriteRuleObject) {
+	return {type: CANCEL_EDIT_REWRITE_RULE, payload};
+}
+export function doEditRewriteRule(payload: RewriteRuleObject) {
+	return {type: DO_EDIT_REWRITE_RULE, payload};
+}
+export function deleteRewriteRule(payload: RewriteRuleObject) {
+	return {type: DELETE_REWRITE_RULE, payload};
+}
+// Modals
+export function openModal(payload: keyof ModalStateObject) {
+	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: true}};
+}
+export function closeModal(payload: keyof ModalStateObject) {
+	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
