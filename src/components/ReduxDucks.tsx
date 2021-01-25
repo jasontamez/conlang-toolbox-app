@@ -420,7 +420,7 @@ export function deleteRewriteRule(payload: RewriteRuleObject) {
 	return {type: DELETE_REWRITE_RULE, payload};
 }
 export function reorderRewriteRules(payload: RewriteRuleObject["key"][]) {
-	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
+	return {type: REORDER_REWRITE_RULE, payload};
 }
 // Modals
 export function openModal(payload: keyof ModalStateObject) {
