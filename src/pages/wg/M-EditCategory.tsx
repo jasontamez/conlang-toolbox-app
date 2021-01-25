@@ -16,8 +16,8 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	addOutline,
-	chevronBackOutline
+	chevronBackOutline,
+	saveOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
@@ -156,7 +156,7 @@ const EditCategoryModal = () => {
 			<IonFooter>
 				<IonToolbar>
 					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
-						<IonIcon icon={addOutline} slot="start" />
+						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Category</IonLabel>
 					</IonButton>
 				</IonToolbar>
