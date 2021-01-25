@@ -77,6 +77,27 @@ interface StateObject {
 	modalState: ModalStateObject
 }
 
+let startingRules = [
+	{
+		key: "1",
+		seek: "S",
+		replace: "sh",
+		description: ""
+	},
+	{
+		key: "2",
+		seek: "T",
+		replace: "th",
+		description: "dental fricatives"
+	},
+	{
+		key: "3",
+		seek: "C",
+		replace: "ch",
+		description: ""
+	},
+];
+
 let startingCategories = [
 	{
 		title: "Consonants",
@@ -106,7 +127,7 @@ const initialState: StateObject = {
 		}
 	},
 	rewriteRules: {
-		list: [],
+		list: startingRules,
 		editing: null
 	},
 	modalState: {
