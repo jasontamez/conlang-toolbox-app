@@ -16,9 +16,9 @@ const WGRew = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton />
+					</IonButtons>
 					<IonTitle>Rewrite Rules</IonTitle>
 				</IonToolbar>
 			</IonHeader>

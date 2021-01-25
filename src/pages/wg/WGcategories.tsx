@@ -67,9 +67,9 @@ const WGCat = () => {
 			<EditCategoryModal />
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton />
+					</IonButtons>
 					<IonTitle>Categories</IonTitle>
 					<IonButtons slot="end">
 						<IonButton className="helpy" onClick={() => $togID('expanded', 'categoryCTE')} size="small" shape="round" color="primary" fill="outline">

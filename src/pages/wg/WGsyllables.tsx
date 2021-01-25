@@ -45,9 +45,9 @@ const WGSyl = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-							<IonMenuButton />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton />
+					</IonButtons>
 					<IonTitle>Syllables</IonTitle>
 					<IonButtons slot="end">
 						<IonButton className="helpy" onClick={() => $togID('expanded', 'syllablesCTE')} size="small" shape="round" color="primary" fill="outline">
