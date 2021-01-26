@@ -14,14 +14,35 @@ const CANCEL_EDIT_REWRITE_RULE = p+"CANCEL_EDIT_REWRITE_RULE";
 const DO_EDIT_REWRITE_RULE = p+"DO_EDIT_REWRITE_RULE";
 const DELETE_REWRITE_RULE = p+"DELETE_REWRITE_RULE";
 const REORDER_REWRITE_RULE = p+"REORDER_REWRITE_RULE";
+const SET_MONO_RATE = p+"SET_MONO_RATE";
+const SET_MAX_SYLLABLES = p+"SET_MAX_SYLLABLES";
+const SET_CATEGORY_DROPOFF = p+"SET_CATEGORY_DROPOFF";
+const SET_SYLLABLE_DROPOFF = p+"SET_SYLLABLE_DROPOFF";
+const SET_OUTPUT = p+"SET_OUTPUT";
+const SET_SYLLABLE_BREAKS = p+"SET_SYLLABLE_BREAKS";
+const SET_NUMBER_OF_SENTENCES = p+"SET_NUMBER_OF_SENTENCES";
+const SET_DECLARATIVE_PRE = p+"SET_DECLARATIVE_PRE";
+const SET_DECLARATIVE_POST = p+"SET_DECLARATIVE_POST";
+const SET_INTERROGATIVE_PRE = p+"SET_INTERROGATIVE_PRE";
+const SET_INTERROGATIVE_POST = p+"SET_INTERROGATIVE_POST";
+const SET_EXCLAMATORY_PRE = p+"SET_EXCLAMATORY_PRE";
+const SET_EXCLAMATORY_POST = p+"SET_EXCLAMATORY_POST";
+const SET_WORD_CAPITALIZATION = p+"SET_WORD_CAPITALIZATION";
+const SET_WORDLIST_MULTICOLUMN = p+"SET_WORDLIST_MULTICOLUMN";
 
 // helper functions and such
+type Zero_OneHundred = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100;
+type Two_Fifteen = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
+type Zero_Fifty = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50;
+type Five_OneHundred = 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100;
+type OutputTypes = "text" | "wordlist" | "syllables";
+
 export interface WGCategoryObject {
 	title: string
 	label: string
 	run: string
-	dropoffOverride?: number
-	rateOverride?: number[]
+	dropoffOverride?: Zero_OneHundred
+	rateOverride?: Zero_OneHundred[]
 }
 // id: unique id
 // title: short description
@@ -38,7 +59,7 @@ interface WGCategoryStateObject {
 
 interface WGSyllableObject {
 	components: string[]
-	rateOverride?: number[]
+	rateOverride?: Zero_OneHundred[]
 }
 
 export interface WGSyllableStateObject {
@@ -64,13 +85,13 @@ interface WGRewriteRuleStateObject {
 }
 
 interface WGSettingsObject {
-	monosyllablesRate: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100
-	maxSyllablesPerWord: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
-	categoryRunDropoff: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
-	syllableBoxDropoff: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
-	output: "text" | "wordlist" | "syllables"
+	monosyllablesRate: Zero_OneHundred
+	maxSyllablesPerWord: Two_Fifteen
+	categoryRunDropoff: Zero_Fifty
+	syllableBoxDropoff: Zero_Fifty
+	output: OutputTypes
 	showSyllableBreaks: boolean
-	sentencesPerText: 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100
+	sentencesPerText: Five_OneHundred
 	declarativeSentencePre: string
 	declarativeSentencePost: string
 	interrogativeSentencePre: string
@@ -471,6 +492,52 @@ export function deleteRewriteRule(payload: WGRewriteRuleObject) {
 }
 export function reorderRewriteRules(payload: WGRewriteRuleObject["key"][]) {
 	return {type: REORDER_REWRITE_RULE, payload};
+}
+// Wordgen Settings
+export function setMonoRate(payload: Zero_OneHundred) {
+	return {type: SET_MONO_RATE, payload};
+}
+export function setMaxSyllables(payload: Two_Fifteen) {
+	return {type: SET_MAX_SYLLABLES, payload};
+}
+export function setCategoryDropoff(payload: Zero_Fifty) {
+	return {type: SET_CATEGORY_DROPOFF, payload};
+}
+export function setSyllableDropoff(payload: Zero_Fifty) {
+	return {type: SET_SYLLABLE_DROPOFF, payload};
+}
+export function setOutputType(payload: OutputTypes) {
+	return {type: SET_OUTPUT, payload};
+}
+export function setSyllableBreaks(payload: boolean) {
+	return {type: SET_SYLLABLE_BREAKS, payload};
+}
+export function setSentencesPerText(payload: Five_OneHundred) {
+	return {type: SET_NUMBER_OF_SENTENCES, payload};
+}
+export function setDeclarativePre(payload: string) {
+	return {type: SET_DECLARATIVE_PRE, payload};
+}
+export function setDeclarativePost(payload: string) {
+	return {type: SET_DECLARATIVE_POST, payload};
+}
+export function setInterrogativePre(payload: string) {
+	return {type: SET_INTERROGATIVE_PRE, payload};
+}
+export function setInterrogativePost(payload: string) {
+	return {type: SET_INTERROGATIVE_POST, payload};
+}
+export function setExclamatoryPre(payload: string) {
+	return {type: SET_EXCLAMATORY_PRE, payload};
+}
+export function setExclamatoryPost(payload: string) {
+	return {type: SET_EXCLAMATORY_POST, payload};
+}
+export function setCapitalizeWords(payload: boolean) {
+	return {type: SET_WORD_CAPITALIZATION, payload};
+}
+export function setWordlistMulticolium(payload: boolean) {
+	return {type: SET_WORDLIST_MULTICOLUMN, payload};
 }
 // Modals
 export function openModal(payload: keyof ModalStateObject) {
