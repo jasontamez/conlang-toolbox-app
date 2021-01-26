@@ -118,16 +118,10 @@ const WGSet = () => {
 						<IonLabel>Capitalize words</IonLabel>
 						<IonToggle />
 					</IonItem>
-					<IonRadioGroup value="multi">
-						<IonItem>
-							<IonLabel>Single-Column</IonLabel>
-							<IonRadio value="single" />
-						</IonItem>
-						<IonItem>
-							<IonLabel>Multi-Column</IonLabel>
-							<IonRadio value="multi" />
-						</IonItem>
-					</IonRadioGroup>
+					<IonItem>
+						<IonLabel>Multi-Column layout</IonLabel>
+						<IonToggle checked={true} />
+					</IonItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
