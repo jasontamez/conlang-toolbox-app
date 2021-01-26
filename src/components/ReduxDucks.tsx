@@ -432,6 +432,187 @@ export function reducer(state = initialState, action: ReduxAction) {
 				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
+		// Wordgen Settings
+		case SET_MONO_RATE:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					monosyllablesRate: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_MAX_SYLLABLES:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					maxSyllablesPerWord: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_CATEGORY_DROPOFF:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					categoryRunDropoff: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_SYLLABLE_DROPOFF:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					syllableBoxDropoff: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_OUTPUT:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					output: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_SYLLABLE_BREAKS:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					showSyllableBreaks: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_NUMBER_OF_SENTENCES:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					sentencesPerText: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_DECLARATIVE_PRE:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					declarativeSentencePre: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_DECLARATIVE_POST:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					declarativeSentencePost: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_INTERROGATIVE_PRE:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					interrogativeSentencePre: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_INTERROGATIVE_POST:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					interrogativeSentencePost: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_EXCLAMATORY_PRE:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					exclamatorySentencePre: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_EXCLAMATORY_POST:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					exclamatorySentencePost: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_WORD_CAPITALIZATION:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					capitalizeWords: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
+		case SET_WORDLIST_MULTICOLUMN:
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					wordlistMultiColumn: payload
+				},
+				modalState: reduceModalState(state.modalState)
+			};
 		// Modals
 		case TOGGLE_MODAL:
 			let newModal: ModalStateObject = reduceModalState(state.modalState);
