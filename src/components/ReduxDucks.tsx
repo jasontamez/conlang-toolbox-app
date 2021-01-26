@@ -63,6 +63,24 @@ interface RewriteRuleStateObject {
 	editing: null | string
 }
 
+interface GlobalSettingsObject {
+	monosyllablesRate: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100
+	maxSyllablesPerWord: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
+	categoryRunDropoff: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
+	syllableBoxDropoff: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
+	output: "text" | "wordlist" | "syllables"
+	showSyllableBreaks: boolean
+	sentencesPerText: 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100
+	declarativeSentencePre: string
+	declarativeSentencePost: string
+	interrogativeSentencePre: string
+	interrogativeSentencePost: string
+	exclamatorySentencePre: string
+	exclamatorySentencePost: string
+	capitalizeWords: boolean
+	wordlistMultiColumn: boolean
+}
+
 interface ModalStateObject {
 	AddCategory: boolean
 	EditCategory: boolean
@@ -74,6 +92,7 @@ interface StateObject {
 	categories: CategoryStateObject
 	syllables: SyllableStateObject
 	rewriteRules: RewriteRuleStateObject
+	globalSettings: GlobalSettingsObject
 	modalState: ModalStateObject
 }
 
@@ -129,6 +148,23 @@ const initialState: StateObject = {
 	rewriteRules: {
 		list: startingRules,
 		editing: null
+	},
+	globalSettings: {
+		monosyllablesRate: 20,
+		maxSyllablesPerWord: 6,
+		categoryRunDropoff: 30,
+		syllableBoxDropoff: 25,
+		output: "text",
+		showSyllableBreaks: false,
+		sentencesPerText: 30,
+		declarativeSentencePre: "",
+		declarativeSentencePost: ".",
+		interrogativeSentencePre: "",
+		interrogativeSentencePost: "?",
+		exclamatorySentencePre: "",
+		exclamatorySentencePost: "!",
+		capitalizeWords: false,
+		wordlistMultiColumn: true	
 	},
 	modalState: {
 		AddCategory: false,
@@ -235,6 +271,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case START_EDIT_CATEGORY:
@@ -246,6 +283,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DO_EDIT_CATEGORY:
@@ -256,6 +294,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case CANCEL_EDIT_CATEGORY:
@@ -267,6 +306,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DELETE_CATEGORY:
@@ -277,6 +317,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Syllables
@@ -288,6 +329,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: SO,
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case EDIT_SYLLABLES:
@@ -298,6 +340,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: SO,
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Rewrite Rules
@@ -308,6 +351,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case START_EDIT_REWRITE_RULE:
@@ -318,6 +362,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DO_EDIT_REWRITE_RULE:
@@ -327,6 +372,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case CANCEL_EDIT_REWRITE_RULE:
@@ -337,6 +383,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DELETE_REWRITE_RULE:
@@ -346,6 +393,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case REORDER_REWRITE_RULE:
@@ -360,6 +408,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
+				globalSettings: { ...state.globalSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Modals
@@ -371,6 +420,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				globalSettings: { ...state.globalSettings },
 				modalState: newModal
 			};
 	}
