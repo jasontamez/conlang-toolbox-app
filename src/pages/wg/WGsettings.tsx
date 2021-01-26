@@ -50,14 +50,14 @@ const WGSet = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Category run dropoff</IonLabel>
-						<IonRange min={0} max={50} value={30} snaps={true} ticks={true} step={1}>
+						<IonRange min={0} max={50} value={30} pin={true}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Syllable box dropoff</IonLabel>
-						<IonRange min={0} max={50} value={25} snaps={true} ticks={true} step={1}>
+						<IonRange min={0} max={50} value={25} pin={true}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -77,11 +77,11 @@ const WGSet = () => {
 							<IonRadio value="syllables" />
 						</IonItem>
 					</IonRadioGroup>
-					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel>Show syllable breaks</IonLabel>
 						<IonToggle />
 					</IonItem>
+					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
 						<IonRange min={5} max={100} value={30} pin={true}>
