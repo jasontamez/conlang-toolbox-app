@@ -18,9 +18,34 @@ import {
 	IonToggle,
 	IonInput
 } from '@ionic/react';
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import {
+	setMonoRate,
+	setMaxSyllables,
+	setCategoryDropoff,
+	setSyllableDropoff,
+	setOutputType,
+	setSyllableBreaks,
+	setSentencesPerText,
+	setDeclarativePre,
+	setDeclarativePost,
+	setInterrogativePre,
+	setInterrogativePost,
+	setExclamatoryPre,
+	setExclamatoryPost,
+	setCapitalizeWords,
+	setWordlistMulticolium,
+	Zero_OneHundred,
+	Two_Fifteen,
+	Zero_Fifty,
+	Five_OneHundred,
+	OutputTypes
+} from '../../components/ReduxDucks';
 import '../WordGen.css';
 
 const WGSet = () => {
+	const dispatch = useDispatch();
+	const settingsWG = useSelector((state: any) => state.wordgenSettings, shallowEqual);
 	return (
 		<IonPage>
 			<IonHeader>
@@ -36,34 +61,34 @@ const WGSet = () => {
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Rate of monosyllable words</IonLabel>
-						<IonRange min={0} max={100} value={20} pin={true}>
+						<IonRange min={0} max={100} value={settingsWG.monosyllablesRate} pin={true} onIonChange={e => dispatch(setMonoRate(e.detail.value! as Zero_OneHundred))}>
 							<IonLabel slot="start">Never</IonLabel>
 							<IonLabel slot="end">Always</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Maximum number of syllables per word</IonLabel>
-						<IonRange min={2} max={15} value={6} pin={true} snaps={true} ticks={true} step={1}>
+						<IonRange min={2} max={15} value={settingsWG.maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} onIonChange={e => dispatch(setMaxSyllables(e.detail.value! as Two_Fifteen))}>
 							<IonLabel slot="start">2</IonLabel>
 							<IonLabel slot="end">15</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Category run dropoff</IonLabel>
-						<IonRange min={0} max={50} value={30} pin={true}>
+						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} onIonChange={e => dispatch(setCategoryDropoff(e.detail.value! as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Syllable box dropoff</IonLabel>
-						<IonRange min={0} max={50} value={25} pin={true}>
+						<IonRange min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} onIonChange={e => dispatch(setSyllableDropoff(e.detail.value! as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItemDivider>Output Controls</IonItemDivider>
-					<IonRadioGroup value="text">
+					<IonRadioGroup value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
 						<IonItem>
 							<IonLabel>Psuedo-text</IonLabel>
 							<IonRadio value="text" />
@@ -79,48 +104,48 @@ const WGSet = () => {
 					</IonRadioGroup>
 					<IonItem>
 						<IonLabel>Show syllable breaks</IonLabel>
-						<IonToggle />
+						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
 					</IonItem>
 					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
-						<IonRange min={5} max={100} value={30} pin={true}>
+						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerText(e.detail.value! as Five_OneHundred))}>
 							<IonLabel slot="start">5</IonLabel>
 							<IonLabel slot="end">100</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Declarative sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="" />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePre} onIonChange={e => dispatch(setDeclarativePre(e.detail.value! as string))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Declarative sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="." />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePost} onIonChange={e => dispatch(setDeclarativePost(e.detail.value! as string))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Interrogative sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="" />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePre} onIonChange={e => dispatch(setInterrogativePre(e.detail.value! as string))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Interrogative sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="?" />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePost} onIonChange={e => dispatch(setInterrogativePost(e.detail.value! as string))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Exclamatory sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="" />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePre} onIonChange={e => dispatch(setExclamatoryPre(e.detail.value! as string))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Exclamatory sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value="!" />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePost} onIonChange={e => dispatch(setExclamatoryPost(e.detail.value! as string))} />
 					</IonItem>
 					<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel>Capitalize words</IonLabel>
-						<IonToggle />
+						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel>Multi-Column layout</IonLabel>
-						<IonToggle checked={true} />
+						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolium(e.detail.checked))} />
 					</IonItem>
 				</IonList>
 			</IonContent>
