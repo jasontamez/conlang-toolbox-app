@@ -21,12 +21,12 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { CategoryObject, closeModal, addCategory } from '../../components/ReduxDucks';
+import { WGCategoryObject, closeModal, addCategory } from '../../components/ReduxDucks';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
 const AddCategoryModal = () => {
-	let newCat: CategoryObject = {
+	let newCat: WGCategoryObject = {
 		title: "",
 		label: "",
 		run: ""
@@ -43,8 +43,8 @@ const AddCategoryModal = () => {
 	const catMap = categoryObject.map;
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
-		KEY extends keyof CategoryObject,
-		VAL extends CategoryObject[KEY]
+		KEY extends keyof WGCategoryObject,
+		VAL extends WGCategoryObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		newCat[prop] = value;

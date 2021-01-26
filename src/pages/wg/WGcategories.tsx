@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import I from '../../components/IPA';
-import { CategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
+import { WGCategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q, $togID } from '../../components/DollarSignExports';
@@ -93,7 +93,7 @@ const WGCat = () => {
 					</p>
 				</div>
 				<IonList className="categories units" lines="none">
-					{categories.map((cat: CategoryObject) => (
+					{categories.map((cat: WGCategoryObject) => (
 						<IonItemSliding key={cat.label}>
 							<IonItemOptions side="end">
 								<IonItemOption color="secondary" onClick={() => editCategory(cat.label)}>Edit</IonItemOption>

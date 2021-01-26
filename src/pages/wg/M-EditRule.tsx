@@ -20,7 +20,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { RewriteRuleObject, closeModal, doEditRewriteRule, cancelEditRewriteRule } from '../../components/ReduxDucks';
+import { WGRewriteRuleObject, closeModal, doEditRewriteRule, cancelEditRewriteRule } from '../../components/ReduxDucks';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
 
@@ -37,13 +37,13 @@ const EditRewriteRuleModal = () => {
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	const rewritesObject = useSelector((state: any) => state.rewriteRules, shallowEqual);
 	const editing = rewritesObject.editing;
-	let editingRule: RewriteRuleObject = {
+	let editingRule: WGRewriteRuleObject = {
 		key: "",
 		seek: "",
 		replace: "",
 		description: ""
 	};
-	rewritesObject.list.every((rr: RewriteRuleObject) => {
+	rewritesObject.list.every((rr: WGRewriteRuleObject) => {
 		if(rr.key === editing) {
 			editingRule = {
 				...rr
@@ -57,8 +57,8 @@ const EditRewriteRuleModal = () => {
 		dispatch(closeModal('EditRewriteRule'));
 	};
 	function setNewInfo<
-		KEY extends keyof RewriteRuleObject,
-		VAL extends RewriteRuleObject[KEY]
+		KEY extends keyof WGRewriteRuleObject,
+		VAL extends WGRewriteRuleObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		editingRule[prop] = value;

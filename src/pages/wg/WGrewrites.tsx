@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import I from '../../components/IPA';
-import { RewriteRuleObject, openModal, startEditRewriteRule, deleteRewriteRule, reorderRewriteRules } from '../../components/ReduxDucks';
+import { WGRewriteRuleObject, openModal, startEditRewriteRule, deleteRewriteRule, reorderRewriteRules } from '../../components/ReduxDucks';
 import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
 import { $q, $togID } from '../../components/DollarSignExports';
@@ -37,7 +37,7 @@ const WGRew = () => {
 	const dispatch = useDispatch();
 	const rulesObject = useSelector((state: any) => state.rewriteRules, shallowEqual);
 	const rules = rulesObject.list;
-	const keys = rules.map((r: RewriteRuleObject) => r.key);
+	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
 		dispatch(startEditRewriteRule(label));
@@ -111,7 +111,7 @@ const WGRew = () => {
 					</p>
 				</div>
 				<IonList className="rewriterules units" lines="none">
-					{rules.map((rr: RewriteRuleObject, i: number) => (
+					{rules.map((rr: WGRewriteRuleObject, i: number) => (
 						<IonItemSliding key={rr.key}>
 							<IonItemOptions side="end">
 								<IonItemOption color="tertiary" onClick={() => editRewriteRule(rr.key)}>Edit</IonItemOption>

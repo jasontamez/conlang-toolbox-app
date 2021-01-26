@@ -21,7 +21,7 @@ import {
 import '../WordGen.css';
 import { $togID } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
-import { toggleSyllables, editSyllables, SyllableStateObject } from '../../components/ReduxDucks';
+import { toggleSyllables, editSyllables, WGSyllableStateObject } from '../../components/ReduxDucks';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 const WGSyl = () => {
@@ -38,7 +38,7 @@ const WGSyl = () => {
 	const wordInitial = syllableObject.objects.wordInitial.components.join("\n");
 	const wordMiddle = syllableObject.objects.wordMiddle.components.join("\n");
 	const wordFinal = syllableObject.objects.wordFinal.components.join("\n");
-	const updateSyllables = (base: keyof SyllableStateObject["objects"], value: string) => {
+	const updateSyllables = (base: keyof WGSyllableStateObject["objects"], value: string) => {
 		dispatch(editSyllables(base, value.split(/\s*\r?\n\s*/)));
 	};
 	return (

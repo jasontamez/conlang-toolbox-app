@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { CategoryObject, closeModal, doEditCategory, cancelEditCategory } from '../../components/ReduxDucks';
+import { WGCategoryObject, closeModal, doEditCategory, cancelEditCategory } from '../../components/ReduxDucks';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
@@ -32,7 +32,7 @@ const EditCategoryModal = () => {
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	let editingCat: CategoryObject = Object.assign({}, catMap.get(editing));
+	let editingCat: WGCategoryObject = Object.assign({}, catMap.get(editing));
 	const hardReset = () => {
 		editingCat = {
 			title: "",
@@ -41,8 +41,8 @@ const EditCategoryModal = () => {
 		};
 	};
 	function setNewInfo<
-		KEY extends keyof CategoryObject,
-		VAL extends CategoryObject[KEY]
+		KEY extends keyof WGCategoryObject,
+		VAL extends WGCategoryObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		editingCat[prop] = value;

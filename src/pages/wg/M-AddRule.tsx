@@ -20,13 +20,13 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { RewriteRuleObject, closeModal, addRewriteRule } from '../../components/ReduxDucks';
+import { WGRewriteRuleObject, closeModal, addRewriteRule } from '../../components/ReduxDucks';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddRewriteRuleModal = () => {
-	let newRule: RewriteRuleObject = {
+	let newRule: WGRewriteRuleObject = {
 		key: "",
 		seek: "",
 		replace: "",
@@ -43,8 +43,8 @@ const AddRewriteRuleModal = () => {
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
-		KEY extends keyof RewriteRuleObject,
-		VAL extends RewriteRuleObject[KEY]
+		KEY extends keyof WGRewriteRuleObject,
+		VAL extends WGRewriteRuleObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		newRule[prop] = value;

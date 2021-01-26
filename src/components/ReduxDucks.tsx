@@ -16,7 +16,7 @@ const DELETE_REWRITE_RULE = p+"DELETE_REWRITE_RULE";
 const REORDER_REWRITE_RULE = p+"REORDER_REWRITE_RULE";
 
 // helper functions and such
-export interface CategoryObject {
+export interface WGCategoryObject {
 	title: string
 	label: string
 	run: string
@@ -30,40 +30,40 @@ export interface CategoryObject {
 // dropoffOverride: optional percentage that a given letter will be chosen
 // rateOverride: optional list of percentages for each letter
 
-interface CategoryStateObject {
-	list: CategoryObject[]
+interface WGCategoryStateObject {
+	list: WGCategoryObject[]
 	map: any
 	editing: null | string
 }
 
-interface SyllableObject {
+interface WGSyllableObject {
 	components: string[]
 	rateOverride?: number[]
 }
 
-export interface SyllableStateObject {
+export interface WGSyllableStateObject {
 	toggle: boolean
 	objects: {
-		singleWord: SyllableObject
-		wordInitial: SyllableObject
-		wordMiddle: SyllableObject
-		wordFinal: SyllableObject
+		singleWord: WGSyllableObject
+		wordInitial: WGSyllableObject
+		wordMiddle: WGSyllableObject
+		wordFinal: WGSyllableObject
 	}
 }
 
-export interface RewriteRuleObject {
+export interface WGRewriteRuleObject {
 	key: string
 	seek: string
 	replace: string
 	description: string
 }
 
-interface RewriteRuleStateObject {
-	list: RewriteRuleObject[]
+interface WGRewriteRuleStateObject {
+	list: WGRewriteRuleObject[]
 	editing: null | string
 }
 
-interface GlobalSettingsObject {
+interface WGSettingsObject {
 	monosyllablesRate: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100
 	maxSyllablesPerWord: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
 	categoryRunDropoff: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
@@ -89,10 +89,10 @@ interface ModalStateObject {
 }
 
 interface StateObject {
-	categories: CategoryStateObject
-	syllables: SyllableStateObject
-	rewriteRules: RewriteRuleStateObject
-	globalSettings: GlobalSettingsObject
+	categories: WGCategoryStateObject
+	syllables: WGSyllableStateObject
+	rewriteRules: WGRewriteRuleStateObject
+	wordgenSettings: WGSettingsObject
 	modalState: ModalStateObject
 }
 
@@ -149,7 +149,7 @@ const initialState: StateObject = {
 		list: startingRules,
 		editing: null
 	},
-	globalSettings: {
+	wordgenSettings: {
 		monosyllablesRate: 20,
 		maxSyllablesPerWord: 6,
 		categoryRunDropoff: 30,
@@ -179,10 +179,10 @@ interface ReduxAction {
 	payload?: any
 }
 
-const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = original.list) => {
-	let list: CategoryObject[] = [];
+const reduceCategory = (original: WGCategoryStateObject, cats: WGCategoryObject[] = original.list) => {
+	let list: WGCategoryObject[] = [];
 	let map: any[] = cats.map((c) => {
-		let o: CategoryObject = {...c};
+		let o: WGCategoryObject = {...c};
 		if(o.rateOverride) {
 			o.rateOverride = [...o.rateOverride];
 		}
@@ -196,7 +196,7 @@ const reduceCategory = (original: CategoryStateObject, cats: CategoryObject[] = 
 		editing: original.editing
 	};
 };
-const reduceSyllables = (original: SyllableStateObject) => {
+const reduceSyllables = (original: WGSyllableStateObject) => {
 	const oo = original.objects;
 	return {
 		toggle: original.toggle,
@@ -208,8 +208,8 @@ const reduceSyllables = (original: SyllableStateObject) => {
 		}
 	};
 };
-const reduceSubSyllables = (original: SyllableObject) => {
-	let o: SyllableObject = {
+const reduceSubSyllables = (original: WGSyllableObject) => {
+	let o: WGSyllableObject = {
 		components: [...original.components]
 	}
 	if(original.rateOverride) {
@@ -217,7 +217,7 @@ const reduceSubSyllables = (original: SyllableObject) => {
 	}
 	return o;
 };
-const reduceRewriteRulesState = (original: RewriteRuleStateObject, mod: string = "", rule: any = null) => {
+const reduceRewriteRulesState = (original: WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
 	// mod = 'add' -> add new rule (object)
 	// mod = 'del' -> delete rule (key)
 	// mod = 'edit' -> replace rule (object)
@@ -242,7 +242,7 @@ const reduceRewriteRulesState = (original: RewriteRuleStateObject, mod: string =
 		editing: original.editing
 	};
 };
-const reduceRewriteRules = (original: RewriteRuleObject) => {
+const reduceRewriteRules = (original: WGRewriteRuleObject) => {
 	return {
 		...original
 	};
@@ -255,10 +255,10 @@ const reduceModalState = (original: ModalStateObject) => {
 // reducer
 export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
-	let CO: CategoryStateObject;
-	let newCategories: CategoryStateObject;
-	let SO: SyllableStateObject;
-	let RO: RewriteRuleStateObject;
+	let CO: WGCategoryStateObject;
+	let newCategories: WGCategoryStateObject;
+	let SO: WGSyllableStateObject;
+	let RO: WGRewriteRuleStateObject;
 	switch(action.type) {
 		// Category
 		case ADD_CATEGORY:
@@ -271,7 +271,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case START_EDIT_CATEGORY:
@@ -283,7 +283,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DO_EDIT_CATEGORY:
@@ -294,7 +294,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case CANCEL_EDIT_CATEGORY:
@@ -306,7 +306,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DELETE_CATEGORY:
@@ -317,7 +317,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Syllables
@@ -329,18 +329,18 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: SO,
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case EDIT_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
-			SO.objects[payload.key as keyof SyllableStateObject["objects"]].components = payload.syllables;
+			SO.objects[payload.key as keyof WGSyllableStateObject["objects"]].components = payload.syllables;
 			return {
 				...state,
 				syllables: SO,
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Rewrite Rules
@@ -351,7 +351,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case START_EDIT_REWRITE_RULE:
@@ -362,7 +362,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DO_EDIT_REWRITE_RULE:
@@ -372,7 +372,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case CANCEL_EDIT_REWRITE_RULE:
@@ -383,7 +383,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case DELETE_REWRITE_RULE:
@@ -393,7 +393,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		case REORDER_REWRITE_RULE:
@@ -408,7 +408,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: reduceModalState(state.modalState)
 			};
 		// Modals
@@ -420,7 +420,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				globalSettings: { ...state.globalSettings },
+				wordgenSettings: { ...state.wordgenSettings },
 				modalState: newModal
 			};
 	}
@@ -431,45 +431,45 @@ export function reducer(state = initialState, action: ReduxAction) {
 // action creators
 //
 // Category
-export function addCategory(payload: CategoryObject) {
+export function addCategory(payload: WGCategoryObject) {
 	return {type: ADD_CATEGORY, payload};
 }
-export function startEditCategory(payload: CategoryObject) {
+export function startEditCategory(payload: WGCategoryObject) {
 	return {type: START_EDIT_CATEGORY, payload};
 }
-export function cancelEditCategory(payload: CategoryObject) {
+export function cancelEditCategory(payload: WGCategoryObject) {
 	return {type: CANCEL_EDIT_CATEGORY, payload};
 }
-export function doEditCategory(payload: CategoryObject) {
+export function doEditCategory(payload: WGCategoryObject) {
 	return {type: DO_EDIT_CATEGORY, payload};
 }
-export function deleteCategory(payload: CategoryObject) {
+export function deleteCategory(payload: WGCategoryObject) {
 	return {type: DELETE_CATEGORY, payload};
 }
 // Syllables
 export function toggleSyllables() {
 	return {type: TOGGLE_SYLLABLES, payload: null}
 }
-export function editSyllables(payload1: keyof SyllableStateObject["objects"], payload2: string[]) {
+export function editSyllables(payload1: keyof WGSyllableStateObject["objects"], payload2: string[]) {
 	return {type: EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
 }
 // Rewrite Rules
-export function addRewriteRule(payload: RewriteRuleObject) {
+export function addRewriteRule(payload: WGRewriteRuleObject) {
 	return {type: ADD_REWRITE_RULE, payload};
 }
-export function startEditRewriteRule(payload: RewriteRuleObject) {
+export function startEditRewriteRule(payload: WGRewriteRuleObject) {
 	return {type: START_EDIT_REWRITE_RULE, payload};
 }
-export function cancelEditRewriteRule(payload: RewriteRuleObject) {
+export function cancelEditRewriteRule(payload: WGRewriteRuleObject) {
 	return {type: CANCEL_EDIT_REWRITE_RULE, payload};
 }
-export function doEditRewriteRule(payload: RewriteRuleObject) {
+export function doEditRewriteRule(payload: WGRewriteRuleObject) {
 	return {type: DO_EDIT_REWRITE_RULE, payload};
 }
-export function deleteRewriteRule(payload: RewriteRuleObject) {
+export function deleteRewriteRule(payload: WGRewriteRuleObject) {
 	return {type: DELETE_REWRITE_RULE, payload};
 }
-export function reorderRewriteRules(payload: RewriteRuleObject["key"][]) {
+export function reorderRewriteRules(payload: WGRewriteRuleObject["key"][]) {
 	return {type: REORDER_REWRITE_RULE, payload};
 }
 // Modals
