@@ -89,17 +89,17 @@ interface WGSettingsObject {
 	maxSyllablesPerWord: Two_Fifteen
 	categoryRunDropoff: Zero_Fifty
 	syllableBoxDropoff: Zero_Fifty
-	output: OutputTypes
-	showSyllableBreaks: boolean
-	sentencesPerText: Five_OneHundred
+	output?: OutputTypes
+	showSyllableBreaks?: boolean
+	sentencesPerText?: Five_OneHundred
 	declarativeSentencePre: string
 	declarativeSentencePost: string
 	interrogativeSentencePre: string
 	interrogativeSentencePost: string
 	exclamatorySentencePre: string
 	exclamatorySentencePost: string
-	capitalizeWords: boolean
-	wordlistMultiColumn: boolean
+	capitalizeWords?: boolean
+	wordlistMultiColumn?: boolean
 }
 
 interface ModalStateObject {
