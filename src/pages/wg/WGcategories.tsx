@@ -43,6 +43,7 @@ const WGCat = () => {
 		fireSwal({
 			title: "Delete " + label + "?",
 			text: "Are you sure? This cannot be undone.",
+			customClass: {popup: 'deleteConfirm'},
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonText: "Yes, delete it."
