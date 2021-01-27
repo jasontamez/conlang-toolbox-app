@@ -52,13 +52,13 @@ const EditCategoryModal = () => {
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		let v = ($i("newCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
+		let v = ($i("editingCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
 		let length = v.length;
 		let pos = 0;
 		let label = null;
 		while(!label && pos < length) {
 			let test = v.charAt(pos);
-			if(!catMap.has(test)) {
+			if(editing === test || !catMap.has(test)) {
 				label = test;
 			}
 			pos++;
@@ -75,7 +75,7 @@ const EditCategoryModal = () => {
 			});
 		} else {
 			// Suitable label found
-			$i("shortLabel").value = label;
+			$i("editingShortLabel").value = label;
 		}
 	};
 	const cancelEditing = () => {
