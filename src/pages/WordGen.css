@@ -104,6 +104,19 @@ ion-list.units {
 	border-top: 0.1em solid var(--ion-background-color);
 }
 
+#outerOutputPane {
+	display: flex;
+	flex-flow: column;
+	min-height: 100%;
+}
+.collapse {
+	flex: 0 1 auto;
+}
+#outputPane {
+	margin: 1em 2em;
+	flex: 1 1 auto;
+}
+
 i.ipa {
 	font-style: normal;
 	color: var(--ion-color-primary-contrast);

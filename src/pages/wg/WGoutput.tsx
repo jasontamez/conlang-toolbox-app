@@ -6,12 +6,18 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
-	IonTitle
+	IonTitle,
+	IonList,
+	IonButton
 } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
 import '../WordGen.css';
 
 const WGOut = () => {
+	let textWidthTester = document.createElement("canvas").getContext("2d");
+	textWidthTester!.font = "var(--ion-default-font)";
+	const determineWidth = (input: string) => {
+		return Math.ceil(textWidthTester!.measureText(input).width);
+	};
 	return (
 		<IonPage>
 			<IonHeader>
@@ -23,7 +29,10 @@ const WGOut = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<ExploreContainer name="Output page" />
+				<IonList id="outerOutputPane">
+					<IonButton className="collapse ion-margin-horizontal" expand="block" color="primary" strong={true} onClick={() => determineWidth("text")}>Generate</IonButton>
+					<div id="outputPane">...output...</div>
+				</IonList>
 			</IonContent>
 		</IonPage>
 	);
