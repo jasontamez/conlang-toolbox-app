@@ -151,6 +151,13 @@ let startingCategories = [
 	}
 ];
 
+let startingSyllables = [
+	"CV",
+	"CVC",
+	"VC",
+	"V"
+];
+
 const initialState: StateObject = {
 	categories: {
 		list: startingCategories,
@@ -160,7 +167,7 @@ const initialState: StateObject = {
 	syllables: {
 		toggle: false,
 		objects: {
-			singleWord: { components: [] },
+			singleWord: { components: startingSyllables },
 			wordInitial: { components: [] },
 			wordMiddle: { components: [] },
 			wordFinal: { components: [] }
