@@ -43,10 +43,11 @@ const WGRew = () => {
 		dispatch(startEditRewriteRule(label));
 		dispatch(openModal('EditRewriteRule'));
 	};
-	const maybeDeleteRewriteRule = (label: any) => {
+	const maybeDeleteRewriteRule = (label: any, seek: any, replace: any) => {
 		fireSwal({
-			title: "Delete " + label + "?",
+			title: "Delete " + seek + "➜" + replace + "?",
 			text: "Are you sure? This cannot be undone.",
+			customClass: {popup: 'deleteConfirm'},
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonText: "Yes, delete it."
@@ -115,7 +116,7 @@ const WGRew = () => {
 						<IonItemSliding key={rr.key}>
 							<IonItemOptions side="end">
 								<IonItemOption color="tertiary" onClick={() => editRewriteRule(rr.key)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteRewriteRule(rr.key)}>Delete</IonItemOption>
+								<IonItemOption color="danger" onClick={() => maybeDeleteRewriteRule(rr.key, rr.seek, rr.replace)}>Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
 								<div className="upDownButtons ion-margin-end">
