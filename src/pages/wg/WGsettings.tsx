@@ -13,8 +13,6 @@ import {
 	IonLabel,
 	IonItemDivider,
 	IonIcon,
-	IonRadioGroup,
-	IonRadio,
 	IonToggle,
 	IonInput
 } from '@ionic/react';
@@ -24,8 +22,6 @@ import {
 	setMaxSyllables,
 	setCategoryDropoff,
 	setSyllableDropoff,
-	setOutputType,
-	setSyllableBreaks,
 	setSentencesPerText,
 	setCapitalizeSentences,
 	setDeclarativePre,
@@ -34,16 +30,10 @@ import {
 	setInterrogativePost,
 	setExclamatoryPre,
 	setExclamatoryPost,
-	setCapitalizeWords,
-	setWordlistMulticolium,
-	setWordsPerWordlist,
-	setSortWordlist,
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
-	Five_OneHundred,
-	Fifty_OneThousand,
-	OutputTypes
+	Five_OneHundred
 } from '../../components/ReduxDucks';
 import '../WordGen.css';
 
@@ -91,25 +81,6 @@ const WGSet = () => {
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					<IonItemDivider>Output Controls</IonItemDivider>
-					<IonRadioGroup value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
-						<IonItem>
-							<IonLabel>Psuedo-text</IonLabel>
-							<IonRadio value="text" />
-						</IonItem>
-						<IonItem>
-							<IonLabel>Wordlist</IonLabel>
-							<IonRadio value="wordlist" />
-						</IonItem>
-						<IonItem>
-							<IonLabel>All possible syllables</IonLabel>
-							<IonRadio value="syllables" />
-						</IonItem>
-					</IonRadioGroup>
-					<IonItem>
-						<IonLabel>Show syllable breaks</IonLabel>
-						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
-					</IonItem>
 					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
@@ -145,26 +116,6 @@ const WGSet = () => {
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Exclamatory sentence ending</IonLabel>
 						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePost} onIonChange={e => dispatch(setExclamatoryPost(e.detail.value! as string))} />
-					</IonItem>
-					<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
-					<IonItem>
-						<IonLabel>Capitalize words</IonLabel>
-						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
-					</IonItem>
-					<IonItem>
-						<IonLabel>Sort output</IonLabel>
-						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlist(e.detail.checked))} />
-					</IonItem>
-					<IonItem>
-						<IonLabel>Multi-Column layout</IonLabel>
-						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolium(e.detail.checked))} />
-					</IonItem>
-					<IonItem>
-						<IonLabel>Number of words in a wordlist</IonLabel>
-						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlist(e.detail.value! as Fifty_OneThousand))}>
-							<IonLabel slot="start">50</IonLabel>
-							<IonLabel slot="end">1000</IonLabel>
-						</IonRange>
 					</IonItem>
 				</IonList>
 			</IonContent>

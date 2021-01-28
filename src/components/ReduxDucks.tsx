@@ -5,7 +5,6 @@ const START_EDIT_CATEGORY = p+"START_EDIT_CATEGORY";
 const CANCEL_EDIT_CATEGORY = p+"CANCEL_EDIT_CATEGORY";
 const DO_EDIT_CATEGORY = p+"DO_EDIT_CATEGORY";
 const DELETE_CATEGORY = p+"DELETE_CATEGORY";
-const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 const TOGGLE_SYLLABLES = p+"TOGGLE_SYLLABLES";
 const EDIT_SYLLABLES = p+"EDIT_SYLLABLES";
 const ADD_REWRITE_RULE = p+"ADD_REWRITE_RULE";
@@ -32,6 +31,8 @@ const SET_WORD_CAPITALIZATION = p+"SET_WORD_CAPITALIZATION";
 const SET_SORT_WORDLIST = p+"SET_SORT_WORDLIST";
 const SET_WORDLIST_MULTICOLUMN = p+"SET_WORDLIST_MULTICOLUMN";
 const SET_WORDS_PER_WORDLIST = p+"SET_WORDS_PER_WORDLIST";
+const TOGGLE_MODAL = p+"TOGGLE_MODAL";
+const TOGGLE_POPOVER = p+"TOGGLE_POPOVER";
 
 // helper functions and such
 export type Zero_OneHundred = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100;
@@ -117,12 +118,18 @@ interface ModalStateObject {
 	EditRewriteRule: boolean
 }
 
+interface PopoverStateObject {
+	event: any
+	flag: boolean
+}
+
 interface StateObject {
 	categories: WGCategoryStateObject
 	syllables: WGSyllableStateObject
 	rewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
 	modalState: ModalStateObject
+	popoverState: PopoverStateObject
 }
 
 let startingRules = [
@@ -213,6 +220,10 @@ const initialState: StateObject = {
 		EditCategory: false,
 		AddRewriteRule: false,
 		EditRewriteRule: false
+	},
+	popoverState: {
+		flag: false,
+		event: undefined
 	}
 };
 
@@ -292,6 +303,9 @@ const reduceRewriteRules = (original: WGRewriteRuleObject) => {
 const reduceModalState = (original: ModalStateObject) => {
 	return {...original};
 };
+const reducePopoverState = (original: PopoverStateObject) => {
+	return {...original};
+};
 
 
 // reducer
@@ -314,7 +328,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case START_EDIT_CATEGORY:
 			CO = state.categories;
@@ -326,7 +341,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case DO_EDIT_CATEGORY:
 			CO = state.categories;
@@ -337,7 +353,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case CANCEL_EDIT_CATEGORY:
 			CO = state.categories;
@@ -349,7 +366,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case DELETE_CATEGORY:
 			CO = state.categories;
@@ -360,7 +378,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		// Syllables
 		case TOGGLE_SYLLABLES:
@@ -372,7 +391,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case EDIT_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
@@ -383,7 +403,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				categories: reduceCategory(state.categories),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		// Rewrite Rules
 		case ADD_REWRITE_RULE:
@@ -394,7 +415,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case START_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
@@ -405,7 +427,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case DO_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
@@ -415,7 +438,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case CANCEL_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
@@ -426,7 +450,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case DELETE_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
@@ -436,7 +461,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case REORDER_REWRITE_RULE:
 			let SRR = state.rewriteRules;
@@ -451,7 +477,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: RO,
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		// Wordgen Settings
 		case SET_MONO_RATE:
@@ -464,7 +491,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					monosyllablesRate: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_MAX_SYLLABLES:
 			return {
@@ -476,7 +504,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					maxSyllablesPerWord: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_CATEGORY_DROPOFF:
 			return {
@@ -488,7 +517,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					categoryRunDropoff: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_SYLLABLE_DROPOFF:
 			return {
@@ -500,7 +530,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					syllableBoxDropoff: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_OUTPUT:
 			return {
@@ -512,7 +543,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					output: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_SYLLABLE_BREAKS:
 			return {
@@ -524,7 +556,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					showSyllableBreaks: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_NUMBER_OF_SENTENCES:
 			return {
@@ -536,7 +569,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					sentencesPerText: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 			case SET_SENTENCE_CAPITALIZATION:
 				return {
@@ -548,7 +582,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 						...state.wordgenSettings,
 						capitalizeSentences: payload
 					},
-					modalState: reduceModalState(state.modalState)
+					modalState: reduceModalState(state.modalState),
+					popoverState: reducePopoverState(state.popoverState)
 				};
 			case SET_DECLARATIVE_PRE:
 			return {
@@ -560,7 +595,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					declarativeSentencePre: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_DECLARATIVE_POST:
 			return {
@@ -572,7 +608,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					declarativeSentencePost: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_INTERROGATIVE_PRE:
 			return {
@@ -584,7 +621,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					interrogativeSentencePre: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_INTERROGATIVE_POST:
 			return {
@@ -596,7 +634,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					interrogativeSentencePost: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_EXCLAMATORY_PRE:
 			return {
@@ -608,7 +647,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					exclamatorySentencePre: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_EXCLAMATORY_POST:
 			return {
@@ -620,7 +660,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					exclamatorySentencePost: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_WORD_CAPITALIZATION:
 			return {
@@ -632,7 +673,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					capitalizeWords: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_SORT_WORDLIST:
 			return {
@@ -644,7 +686,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					sortWordlist: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_WORDLIST_MULTICOLUMN:
 			return {
@@ -656,7 +699,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					wordlistMultiColumn: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		case SET_WORDS_PER_WORDLIST:
 			return {
@@ -668,7 +712,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 					...state.wordgenSettings,
 					wordsPerWordlist: payload
 				},
-				modalState: reduceModalState(state.modalState)
+				modalState: reduceModalState(state.modalState),
+				popoverState: reducePopoverState(state.popoverState)
 			};
 		// Modals
 		case TOGGLE_MODAL:
@@ -680,7 +725,21 @@ export function reducer(state = initialState, action: ReduxAction) {
 				syllables: reduceSyllables(state.syllables),
 				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
 				wordgenSettings: { ...state.wordgenSettings },
-				modalState: newModal
+				modalState: newModal,
+				popoverState: reducePopoverState(state.popoverState)
+			};
+		case TOGGLE_POPOVER:
+			let newPopover: PopoverStateObject = reducePopoverState(state.popoverState);
+			newPopover.flag = payload.flag;
+			newPopover.event = payload.event;
+			return {
+				...state,
+				categories: reduceCategory(state.categories),
+				syllables: reduceSyllables(state.syllables),
+				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				wordgenSettings: { ...state.wordgenSettings },
+				modalState: reduceModalState(state.modalState),
+				popoverState: newPopover
 			};
 	}
 	return state;
@@ -780,7 +839,7 @@ export function setCapitalizeWords(payload: boolean) {
 export function setSortWordlist(payload: boolean) {
 	return {type: SET_SORT_WORDLIST, payload};
 }
-export function setWordlistMulticolium(payload: boolean) {
+export function setWordlistMulticolumn(payload: boolean) {
 	return {type: SET_WORDLIST_MULTICOLUMN, payload};
 }
 export function setWordsPerWordlist(payload: Fifty_OneThousand) {
@@ -792,4 +851,10 @@ export function openModal(payload: keyof ModalStateObject) {
 }
 export function closeModal(payload: keyof ModalStateObject) {
 	return {type: TOGGLE_MODAL, payload: {modal: payload, flag: false}};
+}
+export function openPopover(payload: any) {
+	return {type: TOGGLE_POPOVER, payload: {flag: true, event: payload}};
+}
+export function closePopover() {
+	return {type: TOGGLE_POPOVER, payload: {flag: false, event: undefined}};
 }

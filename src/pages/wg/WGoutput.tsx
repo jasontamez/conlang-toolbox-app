@@ -8,14 +8,37 @@ import {
 	IonButtons,
 	IonTitle,
 	IonList,
-	IonButton
+	IonButton,
+	IonItemDivider,
+	IonItem,
+	IonLabel,
+	IonToggle,
+	IonRange,
+	IonSelect,
+	IonSelectOption,
+	IonPopover,
+	IonIcon
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
-import { shallowEqual, useSelector } from "react-redux";
-import { WGRewriteRuleObject } from '../../components/ReduxDucks';
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import {
+	WGRewriteRuleObject,
+	OutputTypes,
+	Fifty_OneThousand,
+	setOutputType,
+	setSyllableBreaks,
+	setCapitalizeWords,
+	setSortWordlist,
+	setWordlistMulticolumn,
+	setWordsPerWordlist,
+	openPopover,
+	closePopover
+} from '../../components/ReduxDucks';
+import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
 import '../WordGen.css';
 
 const WGOut = () => {
+	const dispatch = useDispatch();
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
@@ -32,7 +55,8 @@ const WGOut = () => {
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
 	const rewriteRules = stateObject.rewriteRules.list;
-	const settings = stateObject.wordgenSettings;
+	const settingsWG = stateObject.wordgenSettings;
+	const popoverState = stateObject.popoverState;
 	
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
@@ -46,7 +70,7 @@ const WGOut = () => {
 	
 	const generateOutput = (output: HTMLElement) => {
 		let text: string[] = [];
-		let type = settings.output;
+		let type = settingsWG.output;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
 			output.removeChild(output.firstChild);
@@ -57,17 +81,15 @@ const WGOut = () => {
 			text = generatePseudoText();
 			output.style.columnWidth = "auto";
 		} else if (type === "syllables") {
-			// all possible syllables, eliminating dupes
-			let noDupes = new Set(getEverySyllable(settings.capitalizeWords));
-			text = [];
-			noDupes.forEach(t => text.push(t));
+			// all possible syllables
+			text = getEverySyllable(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settings.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
 		} else {
 			// wordlist
-			text = makeWordlist();
+			text = makeWordlist(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settings.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
 		}
 		// Add to screen.
 		text.forEach(bit => output.append($d(bit)));
@@ -79,14 +101,14 @@ const WGOut = () => {
 	// // //
 	const generatePseudoText = () => {
 		let text = [];
-		let numberOfSentences = settings.sentencesPerText;
-		let capitalize = settings.capitalizeSentences;
-		let d1 = settings.declarativeSentencePre;
-		let d2 = settings.declarativeSentencePost;
-		let i1 = settings.interrogativeSentencePre;
-		let i2 = settings.interrogativeSentencePost;
-		let e1 = settings.exclamatorySentencePre;
-		let e2 = settings.exclamatorySentencePost;
+		let numberOfSentences = settingsWG.sentencesPerText;
+		let capitalize = settingsWG.capitalizeSentences;
+		let d1 = settingsWG.declarativeSentencePre;
+		let d2 = settingsWG.declarativeSentencePost;
+		let i1 = settingsWG.interrogativeSentencePre;
+		let i2 = settingsWG.interrogativeSentencePost;
+		let e1 = settingsWG.exclamatorySentencePre;
+		let e2 = settingsWG.exclamatorySentencePost;
 		let sentenceNumber = 0;
 		while(sentenceNumber < numberOfSentences) {
 			let sentence = [];
@@ -124,16 +146,16 @@ const WGOut = () => {
 	// Generate Syllables
 	// // //
 	const makeMonosyllable = () => {
-		return makeSyllable(allSyllables.singleWord.components, settings.syllableBoxDropoff);
+		return makeSyllable(allSyllables.singleWord.components, settingsWG.syllableBoxDropoff);
 	};
 	const makeFirstSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordInitial" : "singleWord"].components, settings.syllableBoxDropoff);
+		return makeSyllable(allSyllables[syllToggle ? "wordInitial" : "singleWord"].components, settingsWG.syllableBoxDropoff);
 	};
 	const makeMidSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordMiddle" : "singleWord"].components, settings.syllableBoxDropoff);
+		return makeSyllable(allSyllables[syllToggle ? "wordMiddle" : "singleWord"].components, settingsWG.syllableBoxDropoff);
 	};
 	const makeLastSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordFinal" : "singleWord"].components, settings.syllableBoxDropoff);
+		return makeSyllable(allSyllables[syllToggle ? "wordFinal" : "singleWord"].components, settingsWG.syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
 		let max = syllList.length - 1;
@@ -151,7 +173,7 @@ const WGOut = () => {
 	const translateSyllable = (syll: string) => {
 		let chars = syll.split("");
 		let output: string = "";
-		let rate = settings.categoryRunDropoff;
+		let rate = settingsWG.categoryRunDropoff;
 		while(chars.length > 0) {
 			let current = chars.shift();
 			let category = catMap.get(current);
@@ -181,9 +203,9 @@ const WGOut = () => {
 		let word: string[] = [];
 		let output: string;
 		// Determine number of syllables
-		if(Math.floor(Math.random() * 100) > settings.monosyllablesRate) {
+		if(Math.floor(Math.random() * 100) > settingsWG.monosyllablesRate) {
 			// More than 1. Add syllables, favoring a lower number of syllables.
-			let max = settings.maxSyllablesPerWord - 2;
+			let max = settingsWG.maxSyllablesPerWord - 2;
 			let toAdd = 0;
 			numberOfSyllables++;
 			for(toAdd = 0; true; toAdd = (toAdd + 1) % max) {
@@ -212,7 +234,7 @@ const WGOut = () => {
 			}
 		}
 		// Check for syllable break insertion
-		if(settings.showSyllableBreaks) {
+		if(settingsWG.showSyllableBreaks) {
 			output = word.join("\u00b7");
 		} else {
 			output = word.join("");
@@ -255,10 +277,14 @@ const WGOut = () => {
 		output = output.map(word => doRewrite(word));
 		// Capitalize if needed
 		if(capitalize) {
-			return output.map(word => (word.charAt(0).toUpperCase() + word.slice(1)));
+			output = output.map(word => (word.charAt(0).toUpperCase() + word.slice(1)));
 		}
+		// Remove duplicates
+		let noDupes = new Set(output);
+		output = [];
+		noDupes.forEach(t => output.push(t));
 		// Sort if needed
-		if(settings.sortWordlist) {
+		if(settingsWG.sortWordlist) {
 			output.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
 		return output;
@@ -290,15 +316,14 @@ const WGOut = () => {
 	// Wordlist
 	// // //
 	
-	const makeWordlist = () => {
-		let capitalize = settings.capitalizeWords;
+	const makeWordlist = (capitalize: boolean) => {
 		let n = 0;
 		let words = [];
-		for (n = 0;n < settings.wordsPerWordlist; n++) {
+		for (n = 0;n < settingsWG.wordsPerWordlist; n++) {
 			words.push(makeOneWord(capitalize));
 		}
 		// Sort if needed
-		if(settings.sortWordlist) {
+		if(settingsWG.sortWordlist) {
 			words.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
 		return words;
@@ -314,8 +339,46 @@ const WGOut = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList id="outerOutputPane">
-					<IonButton className="collapse ion-margin-horizontal" expand="block" color="primary" strong={true} onClick={() => generateOutput(outputPane)}>Generate</IonButton>
+				<IonList id="outerOutputPane" lines="none">
+					<IonPopover event={popoverState.event} isOpen={popoverState.flag} onDidDismiss={() => dispatch(closePopover())}>
+						<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
+							<IonSelectOption value="text">Generate psuedo-text</IonSelectOption>
+							<IonSelectOption value="wordlist">Generate wordlist</IonSelectOption>
+							<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
+						</IonSelect>
+						<IonItem>
+							<IonLabel>Show syllable breaks</IonLabel>
+							<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
+						</IonItem>
+						<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
+						<IonItem>
+							<IonLabel>Capitalize words</IonLabel>
+							<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
+						</IonItem>
+						<IonItem>
+							<IonLabel>Sort output</IonLabel>
+							<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlist(e.detail.checked))} />
+						</IonItem>
+						<IonItem>
+							<IonLabel>Multi-Column layout</IonLabel>
+							<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumn(e.detail.checked))} />
+						</IonItem>
+						<IonItem>
+							<IonLabel position="stacked">Wordlist size</IonLabel>
+							<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlist(e.detail.value! as Fifty_OneThousand))}>
+								<IonLabel slot="start">50</IonLabel>
+								<IonLabel slot="end">1000</IonLabel>
+							</IonRange>
+						</IonItem>
+					</IonPopover>
+					<IonItem className="collapse">
+						<IonButton expand="block" strong={true} className="ion-margin-horizontal" color="secondary" onClick={(e:any) => { e.persist(); dispatch(openPopover(e)); console.log(popoverState); }}>
+							<IonIcon icon={settingsOutline} style={ { marginRight: "0.5em" } } /> Options
+						</IonButton>
+						<IonButton expand="block" strong={true} className="ion-margin-horizontal" color="primary" onClick={() => generateOutput(outputPane)}>
+							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.5em" } } />
+						</IonButton>
+					</IonItem>
 					<div id="outputPane"></div>
 				</IonList>
 			</IonContent>
