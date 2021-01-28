@@ -27,6 +27,7 @@ import {
 	setOutputType,
 	setSyllableBreaks,
 	setSentencesPerText,
+	setCapitalizeSentences,
 	setDeclarativePre,
 	setDeclarativePost,
 	setInterrogativePre,
@@ -35,10 +36,13 @@ import {
 	setExclamatoryPost,
 	setCapitalizeWords,
 	setWordlistMulticolium,
+	setWordsPerWordlist,
+	setSortWordlist,
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
 	Five_OneHundred,
+	Fifty_OneThousand,
 	OutputTypes
 } from '../../components/ReduxDucks';
 import '../WordGen.css';
@@ -115,6 +119,10 @@ const WGSet = () => {
 						</IonRange>
 					</IonItem>
 					<IonItem>
+						<IonLabel>Capitalize sentences</IonLabel>
+						<IonToggle checked={settingsWG.capitalizeSentences} onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))} />
+					</IonItem>
+					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Declarative sentence beginning</IonLabel>
 						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePre} onIonChange={e => dispatch(setDeclarativePre(e.detail.value! as string))} />
 					</IonItem>
@@ -144,8 +152,19 @@ const WGSet = () => {
 						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
+						<IonLabel>Sort output</IonLabel>
+						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlist(e.detail.checked))} />
+					</IonItem>
+					<IonItem>
 						<IonLabel>Multi-Column layout</IonLabel>
 						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolium(e.detail.checked))} />
+					</IonItem>
+					<IonItem>
+						<IonLabel>Number of words in a wordlist</IonLabel>
+						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlist(e.detail.value! as Fifty_OneThousand))}>
+							<IonLabel slot="start">50</IonLabel>
+							<IonLabel slot="end">1000</IonLabel>
+						</IonRange>
 					</IonItem>
 				</IonList>
 			</IonContent>
