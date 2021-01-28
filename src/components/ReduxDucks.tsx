@@ -130,19 +130,22 @@ let startingRules = [
 		key: "1",
 		seek: "S",
 		replace: "sh",
-		description: ""
+		description: "",
+		regex: /S/g
 	},
 	{
 		key: "2",
 		seek: "T",
 		replace: "th",
-		description: "dental fricatives"
+		description: "dental fricatives",
+		regex: /T/g
 	},
 	{
 		key: "3",
 		seek: "C",
 		replace: "ch",
-		description: ""
+		description: "",
+		regex: /C/g
 	},
 ];
 
