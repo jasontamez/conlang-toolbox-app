@@ -341,9 +341,10 @@ const WGOut = () => {
 			<IonContent fullscreen>
 				<IonList id="outerOutputPane" lines="none">
 					<IonPopover event={popoverState.event} isOpen={popoverState.flag} onDidDismiss={() => dispatch(closePopover())}>
+						<IonItemDivider>What to Generate:</IonItemDivider>
 						<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
-							<IonSelectOption value="text">Generate psuedo-text</IonSelectOption>
-							<IonSelectOption value="wordlist">Generate wordlist</IonSelectOption>
+							<IonSelectOption value="text">Pseudo-text</IonSelectOption>
+							<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
 							<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
 						</IonSelect>
 						<IonItem>
@@ -372,11 +373,9 @@ const WGOut = () => {
 						</IonItem>
 					</IonPopover>
 					<IonItem className="collapse">
-						<IonButton expand="block" strong={true} className="ion-margin-horizontal" color="secondary" onClick={(e:any) => { e.persist(); dispatch(openPopover(e)); console.log(popoverState); }}>
-							<IonIcon icon={settingsOutline} style={ { marginRight: "0.5em" } } /> Options
-						</IonButton>
-						<IonButton expand="block" strong={true} className="ion-margin-horizontal" color="primary" onClick={() => generateOutput(outputPane)}>
-							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.5em" } } />
+						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={(e:any) => { e.persist(); dispatch(openPopover(e)); }}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
+							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 					</IonItem>
 					<div id="outputPane"></div>
