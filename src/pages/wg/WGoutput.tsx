@@ -158,7 +158,7 @@ const WGOut = () => {
 		return makeSyllable(allSyllables[syllToggle ? "wordFinal" : "singleWord"].components, settingsWG.syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
-		let max = syllList.length - 1;
+		let max = syllList.length;
 		let toPick = 0;
 		let chosen;
 		for(toPick = 0; true; toPick = (toPick + 1) % max) {
