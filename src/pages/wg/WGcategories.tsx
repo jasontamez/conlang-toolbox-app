@@ -13,21 +13,18 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
-	IonButton,
 	IonTitle,
 	IonFab,
 	IonFabButton
 } from '@ionic/react';
 import {
-	addOutline,
-	helpOutline
+	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import I from '../../components/IPA';
 import { WGCategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
-import { $q, $togID } from '../../components/DollarSignExports';
+import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 
 const WGCat = () => {
@@ -72,27 +69,9 @@ const WGCat = () => {
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Categories</IonTitle>
-					<IonButtons slot="end">
-						<IonButton className="helpy" onClick={() => $togID('expanded', 'categoryCTE')} size="small" shape="round" color="primary" fill="outline">
-							<IonIcon icon={helpOutline} size="small" />
-						</IonButton>
-					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<div className="clickToExpand" id="categoryCTE">
-					<p>
-						This is where you define categories of sounds. The two simplest categories
-						are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
-						categories depending on how you want your language's syllables formed. For example,
-						the consonants <I>pbk</I> in English may be followed by the consonants <I>lr</I> at
-						the beginning of syllables. So you might choose them as categories, while also
-						putting <I>pbklr</I> in a third category for general consonants.
-					</p><p>
-						These <strong>Categories</strong> of sounds will be used in
-						the <strong>Syllables</strong> tab to generate your words.
-					</p>
-				</div>
 				<IonList className="categories units" lines="none">
 					{categories.map((cat: WGCategoryObject) => (
 						<IonItemSliding key={cat.label}>
