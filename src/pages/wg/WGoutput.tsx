@@ -126,15 +126,15 @@ const WGOut = () => {
 				sentence.push(makeOneWord(wordNumber < 2 && capitalize));
 			}
 			let full = sentence.join(" ");
-			let type = Math.random() * 10;
-			if(type < 5) {
-				// Declarative half the time
+			let type = Math.random() * 12;
+			if(type < 9) {
+				// Declarative three-fourths the time
 				full = d1 + full + d2;
-			} else if (type < 8) {
-				// Interrogative three-tenths the time
+			} else if (type < 11) {
+				// Interrogative one-sixth the time
 				full = i1 + full + i2;
 			} else {
-				// Exclamatory one-fifth the time
+				// Exclamatory one-twelfth the time
 				full = e1 + full + e2;
 			}
 			text.push(full);
