@@ -142,14 +142,14 @@ const EditCategoryModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
-						<IonInput value={editingCat.label} id="editingShortLabel" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={1}></IonInput>
+						<IonInput value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput value={editingCat.run} className="categoryRun ion-margin-top" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
+						<IonInput value={editingCat.run} className="categoryRun ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

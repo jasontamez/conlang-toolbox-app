@@ -82,19 +82,19 @@ const WGSyl = () => {
 					<IonItem>
 						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
 						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
-						<IonTextarea id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord')} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use category labels to construct syllables" />
+						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord')} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use category labels to construct syllables" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Initial<br />Syllables</div>
-						<IonTextarea id="Syl-wordInitial" onIonBlur={e => updateSyllables('wordInitial')} value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
+						<IonTextarea className="serifChars" id="Syl-wordInitial" onIonBlur={e => updateSyllables('wordInitial')} value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Mid-Word<br />Syllables</div>
-						<IonTextarea id="Syl-wordMiddle" onIonBlur={e => updateSyllables('wordMiddle')} value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
+						<IonTextarea className="serifChars" id="Syl-wordMiddle" onIonBlur={e => updateSyllables('wordMiddle')} value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Final<br />Syllables</div>
-						<IonTextarea id="Syl-wordFinal" onIonBlur={e => updateSyllables('wordFinal')} value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
+						<IonTextarea className="serifChars" id="Syl-wordFinal" onIonBlur={e => updateSyllables('wordFinal')} value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
 					</IonItem>
 				</IonList>
 			</IonContent>

@@ -24,10 +24,7 @@
 	font-size: smaller;
 	font-style: italic;
 }
-.categories .categoryRun,
-.rewriterules .ruleExpression,
-#conlangToolbox ion-modal ion-input.categoryRun,
-#conlangToolbox ion-list.syllables textarea {
+#conlangToolbox .serifChars {
 	letter-spacing: 0.1em;
 	font-family: 'Noto Serif', 'Georgia', serif;
 }

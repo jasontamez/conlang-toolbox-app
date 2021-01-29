@@ -102,7 +102,7 @@ const WGCat = () => {
 							</IonItemOptions>
 							<IonItem>
 								<IonLabel>
-									<div className="categoryRun">
+									<div className="categoryRun serifChars">
 										<span className="label">{cat.label}</span>
 										<span className="run">{cat.run}</span>
 									</div>
