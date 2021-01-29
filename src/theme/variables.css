@@ -231,7 +231,7 @@ http://ionicframework.com/docs/theming/ */
 }
 
 #conlangToolbox {
-	--ion-font-family: "Noto Sans", "Times New Roman", sans-serif;
+	--ion-font-family: "Noto Sans", "Helvetica", "Arial", sans-serif;
 	--ion-default-font: var(--ion-font-family);
 }
 
