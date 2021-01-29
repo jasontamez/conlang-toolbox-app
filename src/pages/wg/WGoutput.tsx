@@ -182,7 +182,7 @@ const WGOut = () => {
 			} else {
 				let toPick = 0;
 				let choices = category.run;
-				let max = choices.length - 1;
+				let max = choices.length;
 				for(toPick = 0; true; toPick = (toPick + 1) % max) {
 					// The 'true' in there means this loop never ends on its own.
 					if ((Math.random() * 100) < rate) {
