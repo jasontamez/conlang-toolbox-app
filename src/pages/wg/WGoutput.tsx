@@ -25,8 +25,10 @@ import {
 	WGRewriteRuleObject,
 	OutputTypes,
 	Fifty_OneThousand,
+	Five_OneHundred,
 	setOutputType,
 	setSyllableBreaks,
+	setSentencesPerText,
 	setCapitalizeWords,
 	setSortWordlist,
 	setWordlistMulticolumn,
@@ -410,6 +412,14 @@ const WGOut = () => {
 						<IonItem>
 							<IonLabel>Show syllable breaks</IonLabel>
 							<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
+						</IonItem>
+						<IonItemDivider>Pseudo-text Controls</IonItemDivider>
+						<IonItem>
+							<IonLabel position="stacked">Number of sentences</IonLabel>
+							<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerText(e.detail.value! as Five_OneHundred))}>
+								<IonLabel slot="start">5</IonLabel>
+								<IonLabel slot="end">100</IonLabel>
+							</IonRange>
 						</IonItem>
 						<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
 						<IonItem>

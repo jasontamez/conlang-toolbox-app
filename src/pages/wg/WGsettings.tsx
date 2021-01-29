@@ -22,7 +22,6 @@ import {
 	setMaxSyllables,
 	setCategoryDropoff,
 	setSyllableDropoff,
-	setSentencesPerText,
 	setCapitalizeSentences,
 	setDeclarativePre,
 	setDeclarativePost,
@@ -32,8 +31,7 @@ import {
 	setExclamatoryPost,
 	Zero_OneHundred,
 	Two_Fifteen,
-	Zero_Fifty,
-	Five_OneHundred
+	Zero_Fifty
 } from '../../components/ReduxDucks';
 import '../WordGen.css';
 
@@ -82,13 +80,6 @@ const WGSet = () => {
 						</IonRange>
 					</IonItem>
 					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
-					<IonItem>
-						<IonLabel position="stacked">Number of sentences</IonLabel>
-						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerText(e.detail.value! as Five_OneHundred))}>
-							<IonLabel slot="start">5</IonLabel>
-							<IonLabel slot="end">100</IonLabel>
-						</IonRange>
-					</IonItem>
 					<IonItem>
 						<IonLabel>Capitalize sentences</IonLabel>
 						<IonToggle checked={settingsWG.capitalizeSentences} onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))} />
