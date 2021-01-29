@@ -19,6 +19,12 @@
 	opacity: 0.5;
 }
 
+.emphasizedList {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .categories .categoryLongName,
 .rewriterules .description {
 	font-size: smaller;
@@ -37,12 +43,14 @@
 	content: "=";
 }
 .rewriterules .ruleExpression .seek,
-.rewriterules .ruleExpression .replace {
+.rewriterules .ruleExpression .replace,
+#conlangToolbox .boxed {
 	display: inline-block;
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-input-border);
 }
-.rewriterules .ruleExpression .arrow {
+.rewriterules .ruleExpression .arrow,
+#conlangToolbox .separateBoxes {
 	display: inline-block;
 	font-weight: bold;
 	padding: 0 0.5em;
