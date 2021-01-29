@@ -160,7 +160,7 @@ let startingCategories = [
 	{
 		title: "Consonants",
 		label: "C",
-		run: "ptknmrf"
+		run: "ptksnmSrfCT"
 	},
 	{
 		title: "Vowels",
