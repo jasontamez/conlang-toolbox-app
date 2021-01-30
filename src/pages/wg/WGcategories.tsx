@@ -30,7 +30,9 @@ import fireSwal from '../../components/Swal';
 const WGCat = () => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
-	const categories = categoryObject.list;
+	const map = categoryObject.map;
+	var categories: WGCategoryObject[] = [];
+	map.forEach((c: WGCategoryObject, label: string) => categories.push({...c, label: label }));
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategory(label));

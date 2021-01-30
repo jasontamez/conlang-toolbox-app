@@ -122,6 +122,12 @@ ion-list.units {
 	flex: 1 1 auto;
 }
 
+#conlangToolbox .presetPopup .action-sheet-group-cancel,
+#conlangToolbox .presetPopup .action-sheet-cancel {
+	background: var(--ion-color-danger-shade);
+	color: var(--ion-color-danger-contrast);
+}
+
 i.ipa {
 	font-style: normal;
 	color: var(--ion-color-primary-contrast);
