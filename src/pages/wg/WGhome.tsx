@@ -15,10 +15,13 @@ import {
 } from '@ionic/react';
 import {
 	gridOutline,
-	//optionsOutline,
+	optionsOutline,
 	swapHorizontalOutline,
-	//documentTextOutline,
-	fileTrayStackedOutline
+	documentTextOutline,
+	fileTrayStackedOutline,
+	chevronDownCircleOutline,
+	chevronUpCircleOutline,
+	settingsOutline
 } from 'ionicons/icons';
 import I from '../../components/IPA';
 import '../WordGen.css';
@@ -132,8 +135,8 @@ const WGHome = () => {
 						</p><p>
 							When you make a new <em>rewrite rule</em>, you provide
 							a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
-							a <em>rule description</em> for your own benefit. Both expressions can use
-							<strong>regular expressions</strong>, which are beyond the scope of this
+							a <em>rule description</em> for your own benefit. Both expressions can
+							use <strong>regular expressions</strong>, which are beyond the scope of this
 							tutorial. You can also use the special expression %C to indicate any character
 							in category C's run, or !%C to indicate any character <em>not</em> in that run.
 						</p><p>
@@ -146,9 +149,84 @@ const WGHome = () => {
 						</div>
 						<p>
 							When you make more than one rule, arrows will appear that will allow you to move
-							rules up or down. The first rule in the list will be run first, the second rule
-							second, and so on down the list. This may cause unintended effects, so the arrows
-							are provided so you can reorganize your rules to avoid any such effects.
+							rules <IonIcon icon={chevronUpCircleOutline} size="small" /> up
+							or <IonIcon icon={chevronDownCircleOutline} size="small" /> down. The first rule in
+							the list will be run first, the second rule second, and so on down the list. This
+							may cause unintended effects, so the arrows are provided so you can reorganize your
+							rules to avoid any such effects.
+						</p>
+					</IonCardContent>
+				</IonCard>
+				<IonCard>
+					<IonItem>
+						<IonIcon icon={documentTextOutline} slot="start" color="primary" />
+						<IonLabel>Output Tab</IonLabel>
+					</IonItem>
+					<IonCardContent>
+						<p>
+							This is where the magic happens. Click the <strong>Generate</strong> button and your
+							output will appear below. Press the button again and a new set of output
+							will replace it.
+						</p><p>
+							Click on the gear icon <IonIcon icon={settingsOutline} size="small" /> to open a
+							list of options. The first is a drop-down menu where you can select what to output.
+							The choices are <strong>Pseudo-text</strong>, <strong>Wordlist</strong> and <strong>All
+							possible syllables</strong>.
+						</p><p>
+							The <strong>pseudo-text</strong> will create words and put them into sentences, making a
+							block of text you might find in a book. You can determine how many sentences are made by
+							adjusting the <strong>numer of sentences</strong> slider.
+						</p><p>
+							The <strong>wordlist</strong> outputs a list of words devoid of context. You can choose
+							a number of options to modify this list. <strong>Capitalize words</strong> will capitalize
+							every word. <strong>Sort output</strong> will alphabetize the list, and <strong>multi-column
+							layout</strong> will arrange the list in multiple columns instead of one long column. At
+							the bottom, there is a <strong>wordlist size</strong> slider that controls how many words
+							are generated.
+						</p><p>
+							<strong>All possible syllables</strong>, as you might guess, outputs a list of every
+							possible syllable your categories, syllables and rewrite rules allow.
+							The <em>capitalize</em>, <em>sort</em> and <em>multi-column</em> options above will
+							also work on this syllable list.
+						</p><p>
+							At the top of the settings, you can choose to <strong>show syllable breaks</strong>, which
+							will in·sert a dot be·tween eve·ry syl·la·ble in each word. While this option can be useful,
+							please note that it will break any <em>rewrite rules</em> that try to work across syllable
+							boundaries.
+						</p>
+					</IonCardContent>
+				</IonCard>
+				<IonCard>
+					<IonItem>
+						<IonIcon icon={optionsOutline} slot="start" color="primary" />
+						<IonLabel>Settings Tab</IonLabel>
+					</IonItem>
+					<IonCardContent>
+						<p>
+							This final pane fine-tweaks the output. These can make a huge difference in
+							how your conlang appears.
+						</p><p>
+							The <strong>Rate of monosyllable words</strong> determines how often a one-syllable
+							word is created. It's a percentage from 0 (never) to 100 (always).
+						</p><p>
+							<strong>Maximum number of syllables per word</strong> sets an upper limit on how long
+							your words can grow.
+						</p><p>
+							<strong>Category run dropoff</strong> and <strong>syllable run dropoff</strong> run
+							from 0 to 50. At zero (flat), category and syllable choices are all equiprobable.
+							Otherwise, the number becomes a percentage. A random number is generated, and if it's
+							lower than the percentage, the first choice is picked. If not, a new number is
+							generated for the second choice, and so on down the line until a choice is made. (If
+							all choices are exhausted without one being chosen, the cycle begins from the first
+							choice again.)
+						</p><p>
+							The remaining options only apply to <em>pseudo-texts</em>. The first
+							option, <strong>capitalize sentences</strong>, determines if each sentence starts
+							with a capital letter. The remaining options determine what your sentences
+							look like. By default, three-fourths of all sentences will
+							be <em>declarative</em>, one-sixth will be <em>interrogative</em> (questions),
+							and one-twelfth will be <em>exclamatory</em>. You can put special punctuation
+							before and after these sentences if you wish.
 						</p>
 					</IonCardContent>
 				</IonCard>
