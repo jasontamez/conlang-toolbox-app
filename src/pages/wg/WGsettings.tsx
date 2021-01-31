@@ -15,8 +15,7 @@ import {
 	IonIcon,
 	IonToggle,
 	IonInput,
-	IonButton,
-	IonActionSheet
+	IonButton
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
@@ -34,14 +33,11 @@ import {
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
-	openModal,
-	closeModal,
-	loadPreset
+	openModal
 } from '../../components/ReduxDucks';
 import { Plugins } from '@capacitor/core';
-import { closeCircleSharp } from 'ionicons/icons';
-import fireSwal from '../../components/Swal';
 import { $i } from '../../components/DollarSignExports';
+import MaybeLoadPreset from './M-MaybeLoadPreset';
 import '../WordGen.css';
 
 const WGSet = () => {
@@ -50,33 +46,12 @@ const WGSet = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settingsWG = state.wordgenSettings;
-	const presetPopup = state.modalState.PresetPopup;
-	const maybeLoadPreset = (preset: string) => {
-		fireSwal({
-			title: "Load " + preset + " preset?",
-			text: "This will clear and overwrite all current categories, syllables, rules and settings.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, load it."
-		}).then((result: any) => {
-			if(result.isConfirmed) {
-				dispatch(loadPreset(preset));
-				fireSwal({
-					title: "Preset \"" + preset + "\" loaded",
-					toast: true,
-					position: 'bottom',
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
-		});
-	};
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
 	return (
 		<IonPage>
+			<MaybeLoadPreset />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -90,39 +65,6 @@ const WGSet = () => {
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
 					<IonItem>
 						<IonButton className="ion-padding-horizontal" onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load a preset</IonButton>
-						<IonActionSheet
-							isOpen={presetPopup}
-							onDidDismiss={() => dispatch(closeModal("PresetPopup"))}
-							cssClass="presetPopup"
-							buttons={[
-								{
-									text: "Simple",
-									handler: () => maybeLoadPreset("Simple")
-								},
-								{
-									text: "Latinate",
-									handler: () => maybeLoadPreset("Latinate")
-								},
-								{
-									text: "Chinese",
-									handler: () => maybeLoadPreset("Chinese")
-								},
-								{
-									text: "Large Inventory",
-									handler: () => maybeLoadPreset("Large Inventory")
-								},
-								{
-									text: "Complex",
-									handler: () => maybeLoadPreset("Complex")
-								},
-								{
-									text: "Cancel",
-									role: "cancel",
-									icon: closeCircleSharp,
-									handler: () => {}
-								},
-							]}
-						/>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>
