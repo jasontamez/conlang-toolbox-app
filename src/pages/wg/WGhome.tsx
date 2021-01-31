@@ -73,6 +73,9 @@ const WGHome = () => {
 							the second more likely than the third, and so on. This mimics natural languages, which
 							tend to use certain sounds more than others. You can adjust this <em>dropoff rate</em>, or
 							eliminate it entirely, on the <strong>Settings</strong> tab.
+						</p><p>
+							<strong>Swipe left</strong> on a category to find the options
+							to <em>Edit</em> or <em>Delete</em> that category.
 						</p>
 					</IonCardContent>
 				</IonCard>
@@ -154,6 +157,9 @@ const WGHome = () => {
 							the list will be run first, the second rule second, and so on down the list. This
 							may cause unintended effects, so the arrows are provided so you can reorganize your
 							rules to avoid any such effects.
+						</p><p>
+							<strong>Swipe left</strong> on a rewrite tule to find the options
+							to <em>Edit</em> or <em>Delete</em> that rule.
 						</p>
 					</IonCardContent>
 				</IonCard>
