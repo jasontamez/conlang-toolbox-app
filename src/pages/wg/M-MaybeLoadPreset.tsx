@@ -10,8 +10,7 @@ import {
 	IonButtons,
 	IonButton,
 	IonTitle,
-	IonModal,
-	IonFooter
+	IonModal
 } from '@ionic/react';
 import {
 	closeCircleOutline,
