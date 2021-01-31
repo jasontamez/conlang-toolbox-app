@@ -6,6 +6,60 @@ const Presets: PresetObject = new Map([
 			map: new Map([
 				["C", {
 					title: "Consonants",
+					run: "ptkbdg"
+				}],
+				["V", {
+					title: "Vowels",
+					run: "ieaou"
+				}],
+				["L", {
+					title: "Liquids",
+					run: "rl"
+				}]
+			]),
+			editing: null
+		},
+		syllables: {
+			toggle: false,
+			objects: {
+				singleWord: { components: ["CV","V","CLV"] },
+				wordInitial: { components: [] },
+				wordMiddle: { components: [] },
+				wordFinal: { components: [] }
+			}
+		},
+		rewriteRules: {
+			list: [
+				{
+					key: "0",
+					seek: "ki",
+					replace: "ci",
+					description: "",
+					regex: /ki/g
+
+				}
+			],
+			editing: null
+		},
+		wordgenSettings: {
+			monosyllablesRate: 20,
+			maxSyllablesPerWord: 6,
+			categoryRunDropoff: 30,
+			syllableBoxDropoff: 25,
+			capitalizeSentences: true,
+			declarativeSentencePre: "",
+			declarativeSentencePost: ".",
+			interrogativeSentencePre: "",
+			interrogativeSentencePost: "?",
+			exclamatorySentencePre: "",
+			exclamatorySentencePost: "!"
+		}
+	}],
+	["Medium", {
+		categories: {
+			map: new Map([
+				["C", {
+					title: "Consonants",
 					run: "tpknlrsmʎbdgñfh"
 				}],
 				["V", {
@@ -96,7 +150,7 @@ const Presets: PresetObject = new Map([
 			exclamatorySentencePost: "!"
 		}
 	}],
-	["Latinate", {
+	["Pseudo-Latin", {
 		categories: {
 			map: new Map([
 				["C", {
@@ -182,7 +236,7 @@ const Presets: PresetObject = new Map([
 			exclamatorySentencePost: "!"
 		}
 	}],
-	["Chinese", {
+	["Pseudo-Chinese", {
 		categories: {
 			map: new Map([
 				["C", {
@@ -322,6 +376,309 @@ const Presets: PresetObject = new Map([
 			maxSyllablesPerWord: 6,
 			categoryRunDropoff: 30,
 			syllableBoxDropoff: 25,
+			capitalizeSentences: true,
+			declarativeSentencePre: "",
+			declarativeSentencePost: ".",
+			interrogativeSentencePre: "",
+			interrogativeSentencePost: "?",
+			exclamatorySentencePre: "",
+			exclamatorySentencePost: "!"
+		}
+	}],
+	["Pseudo-English", {
+		categories: {
+			map: new Map([
+				["C", {
+					title: "Consonants",
+					run: "tnsrdlSmTqwfgWypbCcvhPBkjxqz"
+				}],
+				["V", {
+					title: "Vowels",
+					run: "eaoeaoiuOIiEAUuy"
+				}],
+				["P", {
+					title: "Plosives",
+					run: "tpkc"
+				}],
+				["L", {
+					title: "Liquids",
+					run: "rl"
+				}],
+				["N", {
+					title: "Nasals",
+					run: "nmN"
+				}],
+				["F", {
+					title: "Post-nasal or -liquid Final Consonants",
+					run: "TS"
+				}]
+			]),
+			editing: null
+		},
+		syllables: {
+			toggle: true,
+			objects: {
+				singleWord: { components: ["CV","CVC","VC","V","PLVC"] },
+				wordInitial: { components: ["CVC","CV","VC","PLV","sPLV","V"] },
+				wordMiddle: { components: ["CV","VC","V"] },
+				wordFinal: { components: ["CV","VC","CVC","V","VLF","VNF","CVgh","Vgh"] }
+			}
+		},
+		rewriteRules: {
+			list: [
+				{
+					key: "0",
+					seek: "T+",
+					replace: "th",
+					description: "",
+					regex: /T+/g
+				},
+				{
+					key: "1",
+					seek: "S+",
+					replace: "sh",
+					description: "",
+					regex: /S+/g
+				},
+				{
+					key: "2",
+					seek: "C+",
+					replace: "ch",
+					description: "",
+					regex: /C+/g
+				},
+				{
+					key: "3",
+					seek: "q+",
+					replace: "qu",
+					description: "q is always followed by u",
+					regex: /q+/g
+				},
+				{
+					key: "4",
+					seek: "qu\\b",
+					replace: "que",
+					description: "qu at word-end becomes que",
+					regex: /qu\b/g
+				},
+				{
+					key: "5",
+					seek: "N+",
+					replace: "ng",
+					description: "",
+					regex: /N+/g
+				},
+				{
+					key: "15",
+					seek: "([^g])\\Bh",
+					replace: "k",
+					description: "change non-initial h to k if not preceeded by a g",
+					regex: /([^g])\Bh/g
+				},
+				{
+					key: "6",
+					seek: "w*W+w*(%V)",
+					replace: "wh$1",
+					description: "W-vowel becomes wh-vowel",
+					regex: /w*W+w*%V/g
+				},
+				{
+					key: "6.1",
+					seek: "w*W+w*",
+					replace: "w",
+					description: "remaining Ws become w",
+					regex: /w*W+w*/g
+				},
+				{
+					key: "7",
+					seek: "(%V)ch",
+					replace: "$1tch",
+					description: "vowel-ch becomes vowel-tch",
+					regex: /(%V)ch/g
+				},
+				{
+					key: "8",
+					seek: "P+",
+					replace: "ph",
+					description: "",
+					regex: /P+/g
+				},
+				{
+					key: "9",
+					seek: "(%V)B(\\b|!%V)",
+					replace: "$1ble$2",
+					description: "vowel-ble-nonvowel",
+					regex: /(%V)B(\\b|!%V)/g
+				},
+				{
+					key: "9.1",
+					seek: "(%V)B",
+					replace: "$1bl",
+					description: "vowel-bl",
+					regex: /(%V)B/g
+				},
+				{
+					key: "9.2",
+					seek: "B",
+					replace: "",
+					description: "eliminate remaining Bs",
+					regex: /B/g
+				},
+				{
+					key: "10",
+					seek: "%V*O+%V*",
+					replace: "oo",
+					description: "",
+					regex: /%V*O+%V*/g
+				},
+				{
+					key: "11",
+					seek: "%V*U+%V*",
+					replace: "ou",
+					description: "",
+					regex: /%V*U+%V*/g
+				},
+				{
+					key: "12",
+					seek: "%V*I+%V*",
+					replace: "oi",
+					description: "",
+					regex: /%V*I+%V*/g
+				},
+				{
+					key: "13",
+					seek: "%V*A+%V*",
+					replace: "au",
+					description: "",
+					regex: /%V*A+%V*/g
+				},
+				{
+					key: "13.1",
+					seek: "%V*E+%V*",
+					replace: "ei",
+					description: "",
+					regex: /%V*E+%V*/g
+				},
+				{
+					key: "13.2",
+					seek: "([^c])ei",
+					replace: "$1ie",
+					description: "i before e except after c",
+					regex: /([^c])ei/g
+				},
+				{
+					key: "14",
+					seek: "([^aeiou])(o|au)\\b",
+					replace: "$1ow",
+					description: "change word-final o or au to ow",
+					regex: /([^aeiou])(o|au)\b/g
+				},
+				{
+					key: "14.1",
+					seek: "([^aeiou])(ou)\\b",
+					replace: "$1ough",
+					description: "change word-final ou to ough",
+					regex: /([^aeiou])ou\b/g
+				},
+				{
+					key: "16",
+					seek: "y+",
+					replace: "y",
+					description: "eliminate duplicate ys",
+					regex: /y+/g
+				},
+				{
+					key: "17",
+					seek: "(\\b|[^aeiou])tl",
+					replace: "$1t",
+					description: "reduce tl cluster to t after non-vowel",
+					regex: /(\b|[^aeiou])tl/g
+				},
+				{
+					key: "17.1",
+					seek: "tl(\\b|%C)",
+					replace: "t$1",
+					description: "reduce tl cluster to t before consonant or word-end",
+					regex: /tl(\b|%C)/g
+				},
+				{
+					key: "18",
+					seek: "(.)\\1{2,}",
+					replace: "$1$1",
+					description: "reduce triple-letter clusters to two",
+					regex: /(.)\1{2,}/g
+				},
+				{
+					key: "18.1",
+					seek: "[aeiou]([aeiou]\\1)",
+					replace: "$1",
+					description: "reduce triple vowels, where the last two vowels match, to the final vowels",
+					regex: /[aeiou]([aeiou]\\1)/g
+				},
+				{
+					key: "18.2",
+					seek: "([aeiou]\\1)[aeiou]",
+					replace: "$1",
+					description: "reduce triple vowels, where the first two vowels match, to the first vowels",
+					regex: /([aeiou]\\1)[aeiou]/g
+				},
+				{
+					key: "19",
+					seek: "c\\b",
+					replace: "ck",
+					description: "word-final c becomes ck",
+					regex: /c\b/g
+				},
+				{
+					key: "20",
+					seek: "aa",
+					replace: "a",
+					description: "change double a to a",
+					regex: /aa/g
+				},
+				{
+					key: "20.1",
+					seek: "ii",
+					replace: "i",
+					description: "change double i to i",
+					regex: /ii/g
+				},
+				{
+					key: "20.2",
+					seek: "uu",
+					replace: "u",
+					description: "change double u to u",
+					regex: /uu/g
+				},
+				{
+					key: "21",
+					seek: "m[kt]\\b",
+					replace: "mp",
+					description: "word-final mk or mt becomes mp",
+					regex: /m[kt]\b/g
+				},
+				{
+					key: "21.1",
+					seek: "n[kp]\\b",
+					replace: "nt",
+					description: "word-final nk or np becomes nt",
+					regex: /n[kp]\b/g
+				},
+				{
+					key: "21.2",
+					seek: "ng[kt]",
+					replace: "nk",
+					description: "ngk and ngt become nk",
+					regex: /ng[kt]/g
+				}
+			],
+			editing: null
+		},
+		wordgenSettings: {
+			monosyllablesRate: 20,
+			maxSyllablesPerWord: 6,
+			categoryRunDropoff: 30,
+			syllableBoxDropoff: 20,
 			capitalizeSentences: true,
 			declarativeSentencePre: "",
 			declarativeSentencePost: ".",
