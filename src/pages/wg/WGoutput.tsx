@@ -244,9 +244,12 @@ const WGOut = () => {
 		return makeSyllable(allSyllables[syllToggle ? "wordFinal" : "singleWord"].components, settingsWG.syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
-		let max = syllList.length;
-		let toPick = 0;
 		let chosen;
+		let max = syllList.length;
+		if(rate === 0) {
+			return translateSyllable(syllList[Math.floor(Math.random() * max)]);
+		}
+		let toPick = 0;
 		for(toPick = 0; true; toPick = (toPick + 1) % max) {
 			// The 'true' in there means this loop never ends on its own.
 			if ((Math.random() * 100) < rate) {
@@ -266,14 +269,18 @@ const WGOut = () => {
 			if(category === undefined) {
 				output += current;
 			} else {
-				let toPick = 0;
 				let choices = category.run;
 				let max = choices.length;
-				for(toPick = 0; true; toPick = (toPick + 1) % max) {
-					// The 'true' in there means this loop never ends on its own.
-					if ((Math.random() * 100) < rate) {
-						output += choices[toPick];
-						break;
+				if(rate === 0) {
+					output += choices[Math.floor(Math.random() * max)];
+				} else {
+					let toPick = 0;
+					for(toPick = 0; true; toPick = (toPick + 1) % max) {
+						// The 'true' in there means this loop never ends on its own.
+						if ((Math.random() * 100) < rate) {
+							output += choices[toPick];
+							break;
+						}
 					}
 				}
 			}
