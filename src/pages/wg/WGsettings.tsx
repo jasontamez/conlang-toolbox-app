@@ -33,11 +33,13 @@ import {
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
-	openModal
+	openModal,
+	clearEverything
 } from '../../components/ReduxDucks';
 import { Plugins } from '@capacitor/core';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
+import fireSwal from '../../components/Swal';
 import '../WordGen.css';
 
 const WGSet = () => {
@@ -48,6 +50,27 @@ const WGSet = () => {
 	const settingsWG = state.wordgenSettings;
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
+	};
+	const maybeClearEverything = () => {
+		fireSwal({
+			title: "Clear Everything?",
+			text: "This will delete all current categories, syllables and rewrite rules.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: "Yes, clear everything."
+		}).then((result: any) => {
+			if(result.isConfirmed) {
+				dispatch(clearEverything());
+				fireSwal({
+					title: "Categories, Syllables and Rules deleted.",
+					toast: true,
+					position: 'bottom',
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		});
 	};
 	return (
 		<IonPage>
@@ -65,6 +88,7 @@ const WGSet = () => {
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
 					<IonItem>
 						<IonButton className="ion-padding-horizontal" onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load a preset</IonButton>
+						<IonButton className="ion-padding-horizontal" onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Reset Everything</IonButton>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>

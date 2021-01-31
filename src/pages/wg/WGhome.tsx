@@ -203,8 +203,18 @@ const WGHome = () => {
 					</IonItem>
 					<IonCardContent>
 						<p>
-							This final pane fine-tweaks the output. These can make a huge difference in
+							This final pane fine-tunes the output. These can make a huge difference in
 							how your conlang appears.
+						</p><p>
+							The <strong>Load Presets</strong> button brings up a menu where you can choose from
+							several pre-loaded options. The initial settings when you open the app are
+							the <em>Simple</em> preset. The others are offered to give you ideas of what's
+							possible with the app. They will load <em>categories</em>, <em>syllables</em>, <em>rewrite
+							rules</em> and possibly change the remaining settings on this page, too.
+						</p><p>
+							The <strong>Reset Everything</strong> button clears
+							all <em>categories</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
+							affect any other settings.
 						</p><p>
 							The <strong>Rate of monosyllable words</strong> determines how often a one-syllable
 							word is created. It's a percentage from 0 (never) to 100 (always).
