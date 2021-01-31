@@ -218,7 +218,7 @@ const WGHome = () => {
 							possible with the app. They will load <em>categories</em>, <em>syllables</em>, <em>rewrite
 							rules</em> and possibly change the remaining settings on this page, too.
 						</p><p>
-							The <strong>Reset Everything</strong> button clears
+							The <strong>Clear All Fields</strong> button clears
 							all <em>categories</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
 							affect any other settings.
 						</p><p>

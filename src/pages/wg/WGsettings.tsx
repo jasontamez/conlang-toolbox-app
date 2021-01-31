@@ -88,7 +88,7 @@ const WGSet = () => {
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
 					<IonItem>
 						<IonButton className="ion-padding-horizontal" onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load a preset</IonButton>
-						<IonButton className="ion-padding-horizontal" onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Reset Everything</IonButton>
+						<IonButton className="ion-padding-horizontal" onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Clear All Fields</IonButton>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>
