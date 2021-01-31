@@ -126,9 +126,33 @@ const WGOut = () => {
 	const generateOutput = (output: HTMLElement) => {
 		let text: string[] = [];
 		let type = settingsWG.output;
+		let endEarly = false;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
 			output.removeChild(output.firstChild);
+		}
+		// Sanity check
+		if(categoriesObject.map.size === 0) {
+			output.append($d("You have no categories defined."));
+			endEarly = true;
+		}
+		if (!syllToggle && allSyllables.singleWord.components.length === 0) {
+			output.append($d("You have no syllables defined."));
+			endEarly = true;
+		}
+		if (syllToggle && 
+			(
+				(settingsWG.monosyllablesRate > 0 && allSyllables.singleWord.components.length === 0)
+				|| allSyllables.wordInitial.components.length === 0
+				|| allSyllables.wordMiddle.components.length === 0
+				|| allSyllables.wordFinal.components.length === 0
+			)
+		) {
+			output.append($d("You are missing one or more types of syllables."));
+			endEarly = true;
+		}
+		if(endEarly) {
+			return;
 		}
 		// Check rewrite rules for %Category references and update them if needed
 		rewriteRules.forEach((rule: WGRewriteRuleObject) => {
@@ -265,11 +289,11 @@ const WGOut = () => {
 		let word: string[] = [];
 		let output: string;
 		// Determine number of syllables
-		if(Math.floor(Math.random() * 100) > settingsWG.monosyllablesRate) {
+		if((Math.random() * 100) >= settingsWG.monosyllablesRate) {
 			// More than 1. Add syllables, favoring a lower number of syllables.
 			let max = settingsWG.maxSyllablesPerWord - 2;
 			let toAdd = 0;
-			numberOfSyllables++;
+			numberOfSyllables = 2;
 			for(toAdd = 0; true; toAdd = (toAdd + 1) % max) {
 				// The 'true' in there means this loop never ends on its own.
 				if ((Math.random() * 100) < 50) {
