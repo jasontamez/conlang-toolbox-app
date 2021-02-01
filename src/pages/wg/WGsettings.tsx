@@ -36,15 +36,12 @@ import {
 	openModal,
 	clearEverything
 } from '../../components/ReduxDucks';
-import { Plugins } from '@capacitor/core';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import fireSwal from '../../components/Swal';
 import '../WordGen.css';
 
 const WGSet = () => {
-	// eslint-disable-next-line
-	const { Storage } = Plugins;
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settingsWG = state.wordgenSettings;

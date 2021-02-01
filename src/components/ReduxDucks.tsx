@@ -1,4 +1,5 @@
 import Presets from './Presets';
+import { Plugins } from '@capacitor/core';
 
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
@@ -37,6 +38,7 @@ const TOGGLE_MODAL = p+"TOGGLE_MODAL";
 const TOGGLE_POPOVER = p+"TOGGLE_POPOVER";
 const LOAD_PRESET = p+"LOAD_PRESET";
 const CLEAR_EVERYTHING = p+"CLEAR_EVERYTHING";
+const OVERWRITE_STATE = p+"OVERWRITE_STATE";
 
 // helper functions and such
 export type Zero_OneHundred = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100;
@@ -145,7 +147,7 @@ interface StateObject {
 }
 
 const simple: Preset = Presets.get("Simple")!;
-const initialState: StateObject = {
+export const initialAppState: StateObject = {
 	categories: simple.categories,
 	syllables: simple.syllables,
 	rewriteRules: simple.rewriteRules,
@@ -171,7 +173,48 @@ const initialState: StateObject = {
 		event: undefined
 	}
 };
+export const blankAppState: StateObject = {
+	categories: {
+		map: [],
+		editing: null
+	},
+	syllables: {
+		toggle: false,
+		objects: {
+			singleWord: { components: [] },
+			wordInitial: { components: [] },
+			wordMiddle: { components: [] },
+			wordFinal: { components: [] }
+		}
+	},
+	rewriteRules: {
+		list: [],
+		editing: null
+	},
+	wordgenSettings: {
+		...simple.wordgenSettings,
+		output: "text",
+		showSyllableBreaks: false,
+		sentencesPerText: 30,
+		capitalizeWords: false,
+		sortWordlist: true,
+		wordlistMultiColumn: true,
+		wordsPerWordlist: 250
+	},
+	modalState: {
+		AddCategory: false,
+		EditCategory: false,
+		AddRewriteRule: false,
+		EditRewriteRule: false,
+		PresetPopup: false
+	},
+	popoverState: {
+		flag: false,
+		event: undefined
+	}
+};
 
+// eslint-disable-next-line
 interface ReduxAction {
 	type: string,
 	payload?: any
@@ -254,14 +297,50 @@ const reducePopoverState = (original: PopoverStateObject) => {
 };
 
 
+// Storage
+const { Storage } = Plugins;
+// eslint-disable-next-line
+const saveCurrentState = (state: StateObject) => {
+	let stringified = JSON.stringify(state);
+	Storage.set({key: "currentState", value: stringified});
+};
+export const checkIfState = (possibleState: StateObject | any): possibleState is StateObject => {
+	const check = (possibleState as StateObject);
+	if(
+		check.categories
+		&& check.syllables
+		&& check.rewriteRules
+		&& check.wordgenSettings
+		&& check.modalState
+		&& check.popoverState
+	) {
+		return true;
+	}
+	return false;
+};
+//const getCurrentState = async () => {
+//	const {value} = await Storage.get({ key: "currentState" });
+//	const dispatch = useDispatch();
+//	if(value !== null) {
+//		const state = JSON.parse(value);
+//		if(checkIfState(state)) {
+//			return dispatch(overwriteState(state));
+//		}
+//	}
+//	return dispatch(overwriteState(initialAppState));
+//}
+const initialState: StateObject = blankAppState;
+//getCurrentState();
+
 // reducer
-export function reducer(state = initialState, action: ReduxAction) {
+export function reducer(state: StateObject = initialState, action: any) {
 	const payload = action.payload;
 	let CO: WGCategoryStateObject;
 	let Cmap: CategoryMap[] = [];
 	let newCategories: WGCategoryStateObject;
 	let SO: WGSyllableStateObject;
 	let RO: WGRewriteRuleStateObject;
+	let final: StateObject = state;
 	switch(action.type) {
 		// Category
 		case ADD_CATEGORY:
@@ -272,7 +351,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 			Cmap.push([label, payload]);
 			newCategories = reduceCategory(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
-			return {
+			final = {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
@@ -281,11 +360,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case START_EDIT_CATEGORY:
 			CO = state.categories;
 			newCategories = reduceCategory(CO);
 			newCategories.editing = payload;
-			return {
+			final = {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
@@ -294,6 +374,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case DO_EDIT_CATEGORY:
 			CO = state.categories;
 			Cmap = CO.map.map(item => {
@@ -305,7 +386,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				return[label, cat];
 			});
 			newCategories = reduceCategory(CO, Cmap);
-			return {
+			final = {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
@@ -314,11 +395,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case CANCEL_EDIT_CATEGORY:
 			CO = state.categories;
 			newCategories = reduceCategory(CO);
 			newCategories.editing = null;
-			return {
+			final = {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
@@ -327,12 +409,13 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case DELETE_CATEGORY:
 			CO = state.categories;
 			Cmap = CO.map.map((item: CategoryMap) => [item[0], item[1]]);
 			Cmap = CO.map.filter((item: CategoryMap) => item[0] !== payload).map((item: CategoryMap) => [item[0], item[1]]);
 			newCategories = reduceCategory(CO, Cmap);
-			return {
+			final = {
 				...state,
 				categories: newCategories,
 				syllables: reduceSyllables(state.syllables),
@@ -341,11 +424,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		// Syllables
 		case TOGGLE_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
 			SO.toggle = !SO.toggle;
-			return {
+			final = {
 				...state,
 				syllables: SO,
 				categories: reduceCategory(state.categories),
@@ -354,10 +438,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case EDIT_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
 			SO.objects[payload.key as keyof WGSyllableStateObject["objects"]].components = payload.syllables;
-			return {
+			final = {
 				...state,
 				syllables: SO,
 				categories: reduceCategory(state.categories),
@@ -366,10 +451,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		// Rewrite Rules
 		case ADD_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'add', payload);
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -378,10 +464,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case START_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = payload;
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -390,9 +477,10 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case DO_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -401,10 +489,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case CANCEL_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = null;
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -413,9 +502,10 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case DELETE_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -424,6 +514,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case REORDER_REWRITE_RULE:
 			let SRR = state.rewriteRules;
 			let map = new Map(SRR.list.map(rr => [rr.key, rr]));
@@ -431,7 +522,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 				list: payload.map((key: string) => map.get(key)),
 				editing: SRR.editing
 			};
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -440,9 +531,10 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		// Wordgen Settings
 		case SET_MONO_RATE:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -454,8 +546,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_MAX_SYLLABLES:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -467,8 +560,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_CATEGORY_DROPOFF:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -480,8 +574,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_SYLLABLE_DROPOFF:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -493,8 +588,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_OUTPUT:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -506,8 +602,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_SYLLABLE_BREAKS:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -519,8 +616,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_NUMBER_OF_SENTENCES:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -532,8 +630,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_SENTENCE_CAPITALIZATION:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -545,8 +644,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_DECLARATIVE_PRE:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -558,8 +658,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_DECLARATIVE_POST:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -571,8 +672,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_INTERROGATIVE_PRE:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -584,8 +686,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_INTERROGATIVE_POST:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -597,8 +700,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_EXCLAMATORY_PRE:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -610,8 +714,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_EXCLAMATORY_POST:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -623,8 +728,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_WORD_CAPITALIZATION:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -636,8 +742,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_SORT_WORDLIST:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -649,8 +756,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_WORDLIST_MULTICOLUMN:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -662,8 +770,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case SET_WORDS_PER_WORDLIST:
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -675,11 +784,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		// Modals
 		case TOGGLE_MODAL:
 			let newModal: ModalStateObject = reduceModalState(state.modalState);
 			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -688,11 +798,12 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: newModal,
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case TOGGLE_POPOVER:
 			let newPopover: PopoverStateObject = reducePopoverState(state.popoverState);
 			newPopover.flag = payload.flag;
 			newPopover.event = payload.event;
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(state.categories),
 				syllables: reduceSyllables(state.syllables),
@@ -701,10 +812,11 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: newPopover
 			};
+			break;
 		// Presets
 		case LOAD_PRESET:
 			let newInfo: any = Presets.get(payload);
-			return {
+			final = {
 				...state,
 				categories: reduceCategory(newInfo.categories),
 				syllables: reduceSyllables(newInfo.syllables),
@@ -716,8 +828,9 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
 		case CLEAR_EVERYTHING:
-			return {
+			final = {
 				...state,
 				categories: {
 					map: [],
@@ -740,8 +853,13 @@ export function reducer(state = initialState, action: ReduxAction) {
 				modalState: reduceModalState(state.modalState),
 				popoverState: reducePopoverState(state.popoverState)
 			};
+			break;
+		case OVERWRITE_STATE:
+			final = { ...payload };
+			break;
 	}
-	return state;
+	// Some sort of store-state function goes here
+	return final;
 };
 
 
@@ -863,4 +981,7 @@ export function loadPreset(payload: string) {
 }
 export function clearEverything() {
 	return {type: CLEAR_EVERYTHING, payload: null};
+}
+export function overwriteState(payload: StateObject) {
+	return {type: OVERWRITE_STATE, payload };
 }

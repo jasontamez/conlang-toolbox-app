@@ -35,6 +35,11 @@ import WebfontLoader from '@dr-kobros/react-webfont-loader';
 /* Theme variables */
 import './theme/variables.css';
 
+import { checkIfState, initialAppState, overwriteState } from './components/ReduxDucks';
+import store from './components/ReduxStore';
+import { Plugins } from '@capacitor/core';
+
+
 /* WebfontLoader config */
 const WFLconfig = {
 	google: {
@@ -42,22 +47,42 @@ const WFLconfig = {
 	}
 };
 
-const App = () => (
-	<WebfontLoader config={WFLconfig}>
-		<IonApp id="conlangToolbox">
-			<IonReactRouter>
-				<IonSplitPane contentId="main" when="xl">
-					<Menu />
-					<IonRouterOutlet id="main">
-						<Route path="/wg" render={() => <WG />} />
-						<Route path="/we"  render={() => <WE />} />
-						<Route path="/ls" component={WG} />
-						<Route path="/" component={HomePage} exact={true} />
-					</IonRouterOutlet>
-				</IonSplitPane>
-			</IonReactRouter>
-		</IonApp>
-	</WebfontLoader>
-);
+const App = () => {
+	const { Storage } = Plugins;
+	const maybeSetState = () => {
+		return (dispatch: any) => {
+			return Storage.get({ key: "currentState" }).then((result) => {
+				const value = result.value;
+				if(value !== null) {
+					const state = JSON.parse(value);
+					if(checkIfState(state)) {
+						console.log("State found");
+						return dispatch(overwriteState(state));
+					}
+				}
+				console.log("No state found");
+				return dispatch(overwriteState(initialAppState));
+			});
+		}
+	};
+	store.dispatch(maybeSetState());
+	return (
+		<WebfontLoader config={WFLconfig}>
+			<IonApp id="conlangToolbox">
+				<IonReactRouter>
+					<IonSplitPane contentId="main" when="xl">
+						<Menu />
+						<IonRouterOutlet id="main">
+							<Route path="/wg" render={() => <WG />} />
+							<Route path="/we"  render={() => <WE />} />
+							<Route path="/ls" component={WG} />
+							<Route path="/" component={HomePage} exact={true} />
+						</IonRouterOutlet>
+					</IonSplitPane>
+				</IonReactRouter>
+			</IonApp>
+		</WebfontLoader>
+	)
+};
 
 export default App;
