@@ -52,6 +52,7 @@ type Preset = {
 	wordgenSettings: WGSettingsObject
 };
 export type PresetObject = Map<string, Preset>;
+export type CategoryMap = [string, WGCategoryObject];
 
 export interface WGCategoryObject {
 	title: string
@@ -68,7 +69,7 @@ export interface WGCategoryObject {
 // rateOverride: optional list of percentages for each letter
 
 interface WGCategoryStateObject {
-	map: Map<string, WGCategoryObject>
+	map: CategoryMap[]
 	editing: null | string
 }
 
@@ -176,16 +177,15 @@ interface ReduxAction {
 	payload?: any
 }
 
-const reduceCategory = (original: WGCategoryStateObject, newMap: Map<string, WGCategoryObject> = original.map) => {
-	let map: Map<string, WGCategoryObject>;
+const reduceCategory = (original: WGCategoryStateObject, newMap: CategoryMap[]= original.map) => {
+	let map: CategoryMap[] = [];
 	if(newMap === original.map) {
-		map = new Map();
-		newMap.forEach((c, label) => {
-			let o: WGCategoryObject = {...c};
+		newMap.forEach(item => {
+			let o: WGCategoryObject = {...item[1]};
 			if(o.rateOverride) {
 				o.rateOverride = [...o.rateOverride];
 			}
-			map.set(label, o);
+			map.push([item[0], o]);
 		});
 	} else {
 		map = newMap;
@@ -258,7 +258,7 @@ const reducePopoverState = (original: PopoverStateObject) => {
 export function reducer(state = initialState, action: ReduxAction) {
 	const payload = action.payload;
 	let CO: WGCategoryStateObject;
-	let Cmap: Map<string, WGCategoryObject> = new Map();
+	let Cmap: CategoryMap[] = [];
 	let newCategories: WGCategoryStateObject;
 	let SO: WGSyllableStateObject;
 	let RO: WGRewriteRuleStateObject;
@@ -266,12 +266,10 @@ export function reducer(state = initialState, action: ReduxAction) {
 		// Category
 		case ADD_CATEGORY:
 			CO = state.categories;
-			CO.map.forEach((cat, label) => {
-				Cmap.set(label, cat);
-			});
+			Cmap = CO.map.map((item: CategoryMap) => [item[0], item[1]]);
 			let label = payload.label;
 			delete payload.label;
-			Cmap.set(label, payload);
+			Cmap.push([label, payload]);
 			newCategories = reduceCategory(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			return {
@@ -298,13 +296,13 @@ export function reducer(state = initialState, action: ReduxAction) {
 			};
 		case DO_EDIT_CATEGORY:
 			CO = state.categories;
-			CO.map.forEach((cat, label) => {
+			Cmap = CO.map.map(item => {
+				let [label, cat] = item;
 				if(label === CO.editing) {
 					delete payload.label;
-					Cmap.set(label, payload);
-				} else {
-					Cmap.set(label, cat);
+					return [label, payload];
 				}
+				return[label, cat];
 			});
 			newCategories = reduceCategory(CO, Cmap);
 			return {
@@ -331,11 +329,8 @@ export function reducer(state = initialState, action: ReduxAction) {
 			};
 		case DELETE_CATEGORY:
 			CO = state.categories;
-			CO.map.forEach((cat, label) => {
-				if(label !== payload) {
-					Cmap.set(label, cat);
-				}
-			});
+			Cmap = CO.map.map((item: CategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: CategoryMap) => item[0] !== payload).map((item: CategoryMap) => [item[0], item[1]]);
 			newCategories = reduceCategory(CO, Cmap);
 			return {
 				...state,
@@ -725,7 +720,7 @@ export function reducer(state = initialState, action: ReduxAction) {
 			return {
 				...state,
 				categories: {
-					map: new Map(),
+					map: [],
 					editing: null
 				},
 				syllables: {

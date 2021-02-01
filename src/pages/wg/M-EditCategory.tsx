@@ -28,11 +28,11 @@ import { $q, $i } from '../../components/DollarSignExports';
 const EditCategoryModal = () => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
-	const catMap = categoryObject.map;
+	const catMap: Map<string, WGCategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	let editingCat: WGCategoryObject = Object.assign({}, catMap.get(editing));
+	let editingCat: WGCategoryObject = {...catMap.get(editing)!};
 	const hardReset = () => {
 		editingCat = {
 			title: "",
@@ -92,7 +92,7 @@ const EditCategoryModal = () => {
 		if(editingCat.label === "") {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (editing !== editingCat.label && catMap.has(editingCat.label)) {
+		} else if (editing !== editingCat.label && catMap.has(editingCat.label!)) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("There is already a label \"" + editingCat.label + "\"");
 		}

@@ -3,7 +3,7 @@ import { PresetObject } from './ReduxDucks';
 const Presets: PresetObject = new Map([
 	["Simple", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "ptkbdg"
@@ -16,7 +16,7 @@ const Presets: PresetObject = new Map([
 					title: "Liquids",
 					run: "rl"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -57,7 +57,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Medium", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "tpknlrsmʎbdgñfh"
@@ -70,7 +70,7 @@ const Presets: PresetObject = new Map([
 					title: "Nasals",
 					run: "nŋ"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -152,7 +152,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Pseudo-Latin", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "tkpnslrmfbdghvyh"
@@ -177,7 +177,7 @@ const Presets: PresetObject = new Map([
 					title: "Syllable-final consonants",
 					run: "nsrmltc"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -238,7 +238,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Pseudo-Chinese", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "ptknlsmšywčhfŋ"
@@ -259,7 +259,7 @@ const Presets: PresetObject = new Map([
 					title: "Aspirated Consonants",
 					run: "ptkč"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -327,7 +327,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Large Inventory", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "ptknslrmbdgfvwyhšzñxčžŊ"
@@ -340,7 +340,7 @@ const Presets: PresetObject = new Map([
 					title: "Liquids",
 					run: "rly"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -387,7 +387,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Pseudo-English", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "tnsrdlSmTqwfgWypbCcvhPBkjxqz"
@@ -412,7 +412,7 @@ const Presets: PresetObject = new Map([
 					title: "Post-nasal or -liquid Final Consonants",
 					run: "TS"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {
@@ -690,7 +690,7 @@ const Presets: PresetObject = new Map([
 	}],
 	["Complex", {
 		categories: {
-			map: new Map([
+			map: [
 				["C", {
 					title: "Consonants",
 					run: "kstSplrLnstmTNfh"
@@ -711,7 +711,7 @@ const Presets: PresetObject = new Map([
 					title: "Word-ending consonants",
 					run: "sfSnmNktpTh"
 				}]
-			]),
+			],
 			editing: null
 		},
 		syllables: {

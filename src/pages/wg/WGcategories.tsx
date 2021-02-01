@@ -21,7 +21,7 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WGCategoryObject, openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucks';
+import { openModal, startEditCategory, deleteCategory, CategoryMap } from '../../components/ReduxDucks';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';
@@ -30,9 +30,7 @@ import fireSwal from '../../components/Swal';
 const WGCat = () => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
-	const map = categoryObject.map;
-	var categories: WGCategoryObject[] = [];
-	map.forEach((c: WGCategoryObject, label: string) => categories.push({...c, label: label }));
+	var categories: CategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategory(label));
@@ -75,23 +73,26 @@ const WGCat = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="categories units" lines="none">
-					{categories.map((cat: WGCategoryObject) => (
-						<IonItemSliding key={cat.label}>
-							<IonItemOptions side="end">
-								<IonItemOption color="secondary" onClick={() => editCategory(cat.label)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteCategory(cat.label)}>Delete</IonItemOption>
-							</IonItemOptions>
-							<IonItem>
-								<IonLabel>
-									<div className="categoryRun serifChars">
-										<span className="label">{cat.label}</span>
-										<span className="run">{cat.run}</span>
-									</div>
-									<div className="categoryLongName">{cat.title}</div>
-								</IonLabel>
-							</IonItem>
-						</IonItemSliding>
-					))}
+					{categories.map((item: CategoryMap) => {
+						let [label, cat] = item;
+						return (
+							<IonItemSliding key={label}>
+								<IonItemOptions side="end">
+									<IonItemOption color="secondary" onClick={() => editCategory(label)}>Edit</IonItemOption>
+									<IonItemOption color="danger" onClick={() => maybeDeleteCategory(label)}>Delete</IonItemOption>
+								</IonItemOptions>
+								<IonItem>
+									<IonLabel>
+										<div className="categoryRun serifChars">
+											<span className="label">{label}</span>
+											<span className="run">{cat.run}</span>
+										</div>
+										<div className="categoryLongName">{cat.title}</div>
+									</IonLabel>
+								</IonItem>
+							</IonItemSliding>
+						);
+					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddCategory'))}>

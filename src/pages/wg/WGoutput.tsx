@@ -23,6 +23,7 @@ import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	WGRewriteRuleObject,
+	WGCategoryObject,
 	OutputTypes,
 	Fifty_OneThousand,
 	Five_OneHundred,
@@ -53,7 +54,7 @@ const WGOut = () => {
 	
 	const stateObject = useSelector((state: any) => state, shallowEqual);
 	const categoriesObject = stateObject.categories;
-	const catMap = categoriesObject.map;
+	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
 	const syllablesObject = stateObject.syllables;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
@@ -132,7 +133,7 @@ const WGOut = () => {
 			output.removeChild(output.firstChild);
 		}
 		// Sanity check
-		if(categoriesObject.map.size === 0) {
+		if(catMap.size === 0) {
 			output.append($d("You have no categories defined."));
 			endEarly = true;
 		}
@@ -260,12 +261,12 @@ const WGOut = () => {
 		return translateSyllable(chosen);
 	};
 	const translateSyllable = (syll: string) => {
-		let chars = syll.split("");
+		let chars: string[] = syll.split("");
 		let output: string = "";
 		let rate = settingsWG.categoryRunDropoff;
 		while(chars.length > 0) {
 			let current = chars.shift();
-			let category = catMap.get(current);
+			let category = catMap.get(current!);
 			if(category === undefined) {
 				output += current;
 			} else {
