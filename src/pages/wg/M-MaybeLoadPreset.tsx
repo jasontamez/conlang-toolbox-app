@@ -40,7 +40,6 @@ const MaybeLoadPresetModal = () => {
 				fireSwal({
 					title: "Preset \"" + preset + "\" loaded",
 					toast: true,
-					position: 'bottom',
 					timer: 2500,
 					timerProgressBar: true,
 					showConfirmButton: false

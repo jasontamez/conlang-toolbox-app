@@ -97,7 +97,6 @@ const EditRewriteRuleModal = () => {
 		fireSwal({
 			title: "Rewrite Rule saved!",
 			toast: true,
-			position: 'bottom',
 			timer: 2500,
 			timerProgressBar: true,
 			showConfirmButton: false

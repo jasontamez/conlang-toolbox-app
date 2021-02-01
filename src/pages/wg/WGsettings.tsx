@@ -64,7 +64,6 @@ const WGSet = () => {
 				fireSwal({
 					title: "Categories, Syllables and Rules deleted.",
 					toast: true,
-					position: 'bottom',
 					timer: 2500,
 					timerProgressBar: true,
 					showConfirmButton: false

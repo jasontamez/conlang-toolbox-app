@@ -86,7 +86,6 @@ const AddRewriteRuleModal = () => {
 		fireSwal({
 			title: "Rewrite Rule added!",
 			toast: true,
-			position: 'bottom',
 			timer: 2500,
 			timerProgressBar: true,
 			showConfirmButton: false

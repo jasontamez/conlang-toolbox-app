@@ -54,7 +54,6 @@ const WGRew = () => {
 				fireSwal({
 					title: "Rewrite Rule deleted",
 					customClass: {popup: 'dangerToast'},
-					position: 'bottom',
 					toast: true,
 					timer: 2500,
 					timerProgressBar: true,

@@ -116,7 +116,6 @@ const EditCategoryModal = () => {
 		fireSwal({
 			title: "Category saved!",
 			toast: true,
-			position: 'bottom',
 			timer: 2500,
 			timerProgressBar: true,
 			showConfirmButton: false

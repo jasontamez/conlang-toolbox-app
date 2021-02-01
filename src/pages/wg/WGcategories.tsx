@@ -50,7 +50,6 @@ const WGCat = () => {
 				fireSwal({
 					title: "Category deleted",
 					customClass: {popup: 'dangerToast'},
-					position: 'bottom',
 					toast: true,
 					timer: 2500,
 					timerProgressBar: true,
