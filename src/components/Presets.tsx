@@ -37,6 +37,13 @@ const Presets: PresetObject = new Map([
 					description: "",
 					regex: /ki/g
 
+				},
+				{
+					key: "1",
+					seek: "(.)\\1+",
+					replace: "$1$1",
+					description: "",
+					regex: /(.)\1+/g
 				}
 			],
 			editing: null
