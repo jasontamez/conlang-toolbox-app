@@ -23,18 +23,14 @@ import fireSwal from '../../components/Swal';
 
 const MaybeLoadPresetModal = () => {
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
+	const state = useSelector((state: any) => state, shallowEqual);
+	const modalState = state.modalState;
 	const cancelLoadPreset = () => {
 		dispatch(closeModal('PresetPopup'));
 	};
+	const settings = state.appSettings;
 	const maybeLoadPreset = (preset: string) => {
-		fireSwal({
-			title: "Load " + preset + " preset?",
-			text: "This will clear and overwrite all current categories, syllables, rules and settings.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, load it."
-		}).then((result: any) => {
+		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(loadPreset(preset));
 				fireSwal({
@@ -46,7 +42,18 @@ const MaybeLoadPresetModal = () => {
 				});
 				dispatch(closeModal('PresetPopup'));
 			}
-		});
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Load " + preset + " preset?",
+				text: "This will clear and overwrite all current categories, syllables, rules and settings.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, load it."
+			}).then(thenFunc);
+		}
 	};
 	return (
 		<IonModal isOpen={modalState.PresetPopup} onDidDismiss={() => dispatch(closeModal('PresetPopup'))}>

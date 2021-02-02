@@ -45,17 +45,12 @@ const WGSet = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settingsWG = state.wordgenSettings;
+	const settings = state.appSettings;
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
 	const maybeClearEverything = () => {
-		fireSwal({
-			title: "Clear Everything?",
-			text: "This will delete all current categories, syllables and rewrite rules.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, clear everything."
-		}).then((result: any) => {
+		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(clearEverything());
 				fireSwal({
@@ -66,7 +61,18 @@ const WGSet = () => {
 					showConfirmButton: false
 				});
 			}
-		});
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Clear Everything?",
+				text: "This will delete all current categories, syllables and rewrite rules.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, clear everything."
+			}).then(thenFunc);
+		}
 	};
 	return (
 		<IonPage>

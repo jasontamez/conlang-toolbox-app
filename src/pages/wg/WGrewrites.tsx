@@ -32,7 +32,8 @@ import '../WordGen.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
-	const rulesObject = useSelector((state: any) => state.rewriteRules, shallowEqual);
+	const state = useSelector((state: any) => state, shallowEqual);
+	const rulesObject = state.rewriteRules;
 	const rules = rulesObject.list;
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const editRewriteRule = (label: any) => {
@@ -40,15 +41,9 @@ const WGRew = () => {
 		dispatch(startEditRewriteRule(label));
 		dispatch(openModal('EditRewriteRule'));
 	};
+	const settings = state.appSettings;
 	const maybeDeleteRewriteRule = (label: any, seek: any, replace: any) => {
-		fireSwal({
-			title: "Delete " + seek + "➜" + replace + "?",
-			text: "Are you sure? This cannot be undone.",
-			customClass: {popup: 'deleteConfirm'},
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, delete it."
-		}).then((result: any) => {
+		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(deleteRewriteRule(label));
 				fireSwal({
@@ -60,7 +55,19 @@ const WGRew = () => {
 					showConfirmButton: false
 				});
 			}
-		});
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Delete " + seek + "➜" + replace + "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
 	};
 	const moveUp = (i: number) => {
 		let begin = keys.slice(0, i);

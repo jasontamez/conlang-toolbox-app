@@ -29,22 +29,17 @@ import fireSwal from '../../components/Swal';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const state = useSelector((state: any) => state, shallowEqual);
+	const categoryObject = state.categories;
 	var categories: CategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategory(label));
 		dispatch(openModal('EditCategory'));
 	};
+	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
-		fireSwal({
-			title: "Delete " + label + "?",
-			text: "Are you sure? This cannot be undone.",
-			customClass: {popup: 'deleteConfirm'},
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, delete it."
-		}).then((result: any) => {
+		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(deleteCategory(label));
 				fireSwal({
@@ -56,7 +51,19 @@ const WGCat = () => {
 					showConfirmButton: false
 				});
 			}
-		});
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Delete " + label + "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
 	};
 	return (
 		<IonPage>
