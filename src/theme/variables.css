@@ -235,6 +235,9 @@ http://ionicframework.com/docs/theming/ */
 	--ion-default-font: var(--ion-font-family);
 }
 
+#conlangToolbox .evenBackground {
+	--background: var(--ion-item-background);
+}
 #conlangToolbox input[type=text],
 #conlangToolbox input[type=number],
 #conlangToolbox input[type=tel],

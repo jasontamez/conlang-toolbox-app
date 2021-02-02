@@ -47,7 +47,7 @@ const WGSyl = () => {
 					<IonTitle>Syllables</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent fullscreen className="evenBackground">
 				<IonList lines="none">
 					<IonItem class="ion-text-end">
 						<IonLabel>Use multiple syllable types</IonLabel>
