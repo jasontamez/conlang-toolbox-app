@@ -51,7 +51,7 @@ const WGSyl = () => {
 				<IonList lines="none">
 					<IonItem class="ion-text-end">
 						<IonLabel>Use multiple syllable types</IonLabel>
-						<IonToggle checked={syllableObject.toggle} onIonChange={() => dispatch(toggleSyllables())} />
+						<IonToggle checked={syllableObject.toggle} onIonChange={e => dispatch(toggleSyllables(e.detail.checked))} />
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
