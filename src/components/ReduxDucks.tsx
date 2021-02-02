@@ -137,6 +137,86 @@ interface PopoverStateObject {
 	flag: boolean
 }
 
+const reduceCategory = (original: WGCategoryStateObject, newMap: CategoryMap[]= original.map) => {
+	let map: CategoryMap[] = [];
+	if(newMap === original.map) {
+		newMap.forEach(item => {
+			let o: WGCategoryObject = {...item[1]};
+			if(o.rateOverride) {
+				o.rateOverride = [...o.rateOverride];
+			}
+			map.push([item[0], o]);
+		});
+	} else {
+		map = newMap;
+	}
+	return {
+		map: map,
+		editing: original.editing
+	};
+};
+const reduceSyllables = (original: WGSyllableStateObject) => {
+	const oo = original.objects;
+	return {
+		toggle: original.toggle,
+		objects: {
+			singleWord: reduceSubSyllables(oo.singleWord),
+			wordInitial: reduceSubSyllables(oo.wordInitial),
+			wordMiddle: reduceSubSyllables(oo.wordMiddle),
+			wordFinal: reduceSubSyllables(oo.wordFinal)
+		}
+	};
+};
+const reduceSubSyllables = (original: WGSyllableObject) => {
+	let o: WGSyllableObject = {
+		components: [...original.components]
+	}
+	if(original.rateOverride) {
+		o.rateOverride = [...original.rateOverride];
+	}
+	return o;
+};
+const reduceRewriteRulesState = (original: WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
+	// mod = 'add' -> add new rule (object)
+	// mod = 'del' -> delete rule (key)
+	// mod = 'edit' -> replace rule (object)
+	// mod = '' -> do nothing
+	let list;
+	switch (mod) {
+		case 'add':
+			list = original.list.map(rr => reduceRewriteRules(rr));
+			list.push(rule);
+			break;
+		case 'del':
+			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRules(rr));
+			break;
+		case 'edit':
+			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRules(rr));
+			break;
+		default:
+			list = original.list.map(rr => reduceRewriteRules(rr));
+	}
+	return {
+		list: list,
+		editing: original.editing
+	};
+};
+const reduceRewriteRules = (original: WGRewriteRuleObject) => {
+	return {
+		...original
+	};
+};
+const reduceWGSettings = (original: WGSettingsObject) => {
+	return {...original};
+};
+const reduceModalState = (original: ModalStateObject) => {
+	return {...original};
+};
+const reducePopoverState = (original: PopoverStateObject) => {
+	return {...original};
+};
+
+
 interface StateObject {
 	categories: WGCategoryStateObject
 	syllables: WGSyllableStateObject
@@ -145,7 +225,34 @@ interface StateObject {
 	modalState: ModalStateObject
 	popoverState: PopoverStateObject
 }
+const stateObjectProps: [(keyof StateObject), Function][] = [
 
+	["categories", reduceCategory],
+	["syllables", reduceSyllables],
+	["rewriteRules", reduceRewriteRules],
+	["wordgenSettings", reduceWGSettings],
+	["modalState", reduceModalState],
+	["popoverState", reducePopoverState]
+];
+export const checkIfState = (possibleState: StateObject | any): possibleState is StateObject => {
+	const check = (possibleState as StateObject);
+	if(stateObjectProps.every(pair => check[pair[0]])) {
+		return true;
+	}
+	return false;
+};
+const reduceAllBut = (props: (keyof StateObject)[], state: StateObject) => {
+	let check: any = {};
+	let output: any = {};
+	props.forEach(prop => { check[prop] = true; });
+	stateObjectProps.forEach(pair => {
+		let [prop, func] = pair;
+		if(!check[prop]) {
+			output[prop] = func(state[prop]);
+		}
+	});
+	return output;
+};
 const simple: Preset = Presets.get("Simple")!;
 export const initialAppState: StateObject = {
 	categories: simple.categories,
@@ -220,83 +327,6 @@ interface ReduxAction {
 	payload?: any
 }
 
-const reduceCategory = (original: WGCategoryStateObject, newMap: CategoryMap[]= original.map) => {
-	let map: CategoryMap[] = [];
-	if(newMap === original.map) {
-		newMap.forEach(item => {
-			let o: WGCategoryObject = {...item[1]};
-			if(o.rateOverride) {
-				o.rateOverride = [...o.rateOverride];
-			}
-			map.push([item[0], o]);
-		});
-	} else {
-		map = newMap;
-	}
-	return {
-		map: map,
-		editing: original.editing
-	};
-};
-const reduceSyllables = (original: WGSyllableStateObject) => {
-	const oo = original.objects;
-	return {
-		toggle: original.toggle,
-		objects: {
-			singleWord: reduceSubSyllables(oo.singleWord),
-			wordInitial: reduceSubSyllables(oo.wordInitial),
-			wordMiddle: reduceSubSyllables(oo.wordMiddle),
-			wordFinal: reduceSubSyllables(oo.wordFinal)
-		}
-	};
-};
-const reduceSubSyllables = (original: WGSyllableObject) => {
-	let o: WGSyllableObject = {
-		components: [...original.components]
-	}
-	if(original.rateOverride) {
-		o.rateOverride = [...original.rateOverride];
-	}
-	return o;
-};
-const reduceRewriteRulesState = (original: WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
-	// mod = 'add' -> add new rule (object)
-	// mod = 'del' -> delete rule (key)
-	// mod = 'edit' -> replace rule (object)
-	// mod = '' -> do nothing
-	let list;
-	switch (mod) {
-		case 'add':
-			list = original.list.map(rr => reduceRewriteRules(rr));
-			list.push(rule);
-			break;
-		case 'del':
-			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRules(rr));
-			break;
-		case 'edit':
-			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRules(rr));
-			break;
-		default:
-			list = original.list.map(rr => reduceRewriteRules(rr));
-	}
-	return {
-		list: list,
-		editing: original.editing
-	};
-};
-const reduceRewriteRules = (original: WGRewriteRuleObject) => {
-	return {
-		...original
-	};
-};
-const reduceModalState = (original: ModalStateObject) => {
-	return {...original};
-};
-const reducePopoverState = (original: PopoverStateObject) => {
-	return {...original};
-};
-
-
 // Storage
 const { Storage } = Plugins;
 // eslint-disable-next-line
@@ -304,33 +334,7 @@ const saveCurrentState = (state: StateObject) => {
 	let stringified = JSON.stringify(state);
 	Storage.set({key: "currentState", value: stringified});
 };
-export const checkIfState = (possibleState: StateObject | any): possibleState is StateObject => {
-	const check = (possibleState as StateObject);
-	if(
-		check.categories
-		&& check.syllables
-		&& check.rewriteRules
-		&& check.wordgenSettings
-		&& check.modalState
-		&& check.popoverState
-	) {
-		return true;
-	}
-	return false;
-};
-//const getCurrentState = async () => {
-//	const {value} = await Storage.get({ key: "currentState" });
-//	const dispatch = useDispatch();
-//	if(value !== null) {
-//		const state = JSON.parse(value);
-//		if(checkIfState(state)) {
-//			return dispatch(overwriteState(state));
-//		}
-//	}
-//	return dispatch(overwriteState(initialAppState));
-//}
 const initialState: StateObject = blankAppState;
-//getCurrentState();
 
 // reducer
 export function reducer(state: StateObject = initialState, action: any) {
@@ -352,13 +356,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			newCategories = reduceCategory(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			final = {
-				...state,
-				categories: newCategories,
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
 			};
 			break;
 		case START_EDIT_CATEGORY:
@@ -366,13 +365,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			newCategories = reduceCategory(CO);
 			newCategories.editing = payload;
 			final = {
-				...state,
-				categories: newCategories,
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
 			};
 			break;
 		case DO_EDIT_CATEGORY:
@@ -387,13 +381,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			});
 			newCategories = reduceCategory(CO, Cmap);
 			final = {
-				...state,
-				categories: newCategories,
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
 			};
 			break;
 		case CANCEL_EDIT_CATEGORY:
@@ -401,13 +390,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			newCategories = reduceCategory(CO);
 			newCategories.editing = null;
 			final = {
-				...state,
-				categories: newCategories,
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
 			};
 			break;
 		case DELETE_CATEGORY:
@@ -416,13 +400,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			Cmap = CO.map.filter((item: CategoryMap) => item[0] !== payload).map((item: CategoryMap) => [item[0], item[1]]);
 			newCategories = reduceCategory(CO, Cmap);
 			final = {
-				...state,
-				categories: newCategories,
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
 			};
 			break;
 		// Syllables
@@ -430,89 +409,54 @@ export function reducer(state: StateObject = initialState, action: any) {
 			SO = reduceSyllables(state.syllables);
 			SO.toggle = !SO.toggle;
 			final = {
-				...state,
-				syllables: SO,
-				categories: reduceCategory(state.categories),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["syllables"], state),
+				syllables: SO
 			};
 			break;
 		case EDIT_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
 			SO.objects[payload.key as keyof WGSyllableStateObject["objects"]].components = payload.syllables;
 			final = {
-				...state,
-				syllables: SO,
-				categories: reduceCategory(state.categories),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["syllables"], state),
+				syllables: SO
 			};
 			break;
 		// Rewrite Rules
 		case ADD_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'add', payload);
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		case START_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = payload;
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		case DO_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		case CANCEL_EDIT_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = null;
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		case DELETE_REWRITE_RULE:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		case REORDER_REWRITE_RULE:
@@ -523,266 +467,171 @@ export function reducer(state: StateObject = initialState, action: any) {
 				editing: SRR.editing
 			};
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: RO,
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
 			};
 			break;
 		// Wordgen Settings
 		case SET_MONO_RATE:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					monosyllablesRate: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_MAX_SYLLABLES:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					maxSyllablesPerWord: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_CATEGORY_DROPOFF:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					categoryRunDropoff: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_SYLLABLE_DROPOFF:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					syllableBoxDropoff: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_OUTPUT:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					output: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_SYLLABLE_BREAKS:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					showSyllableBreaks: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_NUMBER_OF_SENTENCES:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					sentencesPerText: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_SENTENCE_CAPITALIZATION:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					capitalizeSentences: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_DECLARATIVE_PRE:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					declarativeSentencePre: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_DECLARATIVE_POST:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					declarativeSentencePost: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_INTERROGATIVE_PRE:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					interrogativeSentencePre: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_INTERROGATIVE_POST:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					interrogativeSentencePost: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_EXCLAMATORY_PRE:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					exclamatorySentencePre: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_EXCLAMATORY_POST:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					exclamatorySentencePost: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_WORD_CAPITALIZATION:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					capitalizeWords: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_SORT_WORDLIST:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					sortWordlist: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_WORDLIST_MULTICOLUMN:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					wordlistMultiColumn: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case SET_WORDS_PER_WORDLIST:
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
+				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					wordsPerWordlist: payload
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		// Modals
@@ -790,13 +639,8 @@ export function reducer(state: StateObject = initialState, action: any) {
 			let newModal: ModalStateObject = reduceModalState(state.modalState);
 			newModal[payload.modal as keyof ModalStateObject] = payload.flag;
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: newModal,
-				popoverState: reducePopoverState(state.popoverState)
+				...reduceAllBut(["modalState"], state),
+				modalState: newModal
 			};
 			break;
 		case TOGGLE_POPOVER:
@@ -804,12 +648,7 @@ export function reducer(state: StateObject = initialState, action: any) {
 			newPopover.flag = payload.flag;
 			newPopover.event = payload.event;
 			final = {
-				...state,
-				categories: reduceCategory(state.categories),
-				syllables: reduceSyllables(state.syllables),
-				rewriteRules: reduceRewriteRulesState(state.rewriteRules),
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
+				...reduceAllBut(["popoverState"], state),
 				popoverState: newPopover
 			};
 			break;
@@ -817,21 +656,19 @@ export function reducer(state: StateObject = initialState, action: any) {
 		case LOAD_PRESET:
 			let newInfo: any = Presets.get(payload);
 			final = {
-				...state,
+				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
 				categories: reduceCategory(newInfo.categories),
 				syllables: reduceSyllables(newInfo.syllables),
 				rewriteRules: reduceRewriteRulesState(newInfo.rewriteRules),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					...newInfo.wordgenSettings
-				},
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case CLEAR_EVERYTHING:
 			final = {
-				...state,
+				...reduceAllBut(["categories", "syllables", "rewriteRules"], state),
 				categories: {
 					map: [],
 					editing: null
@@ -848,10 +685,7 @@ export function reducer(state: StateObject = initialState, action: any) {
 				rewriteRules: {
 					list: [],
 					editing: null
-				},
-				wordgenSettings: { ...state.wordgenSettings },
-				modalState: reduceModalState(state.modalState),
-				popoverState: reducePopoverState(state.popoverState)
+				}
 			};
 			break;
 		case OVERWRITE_STATE:
