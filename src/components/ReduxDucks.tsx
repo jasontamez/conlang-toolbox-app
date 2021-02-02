@@ -448,7 +448,7 @@ export function reducer(state: StateObject = initialState, action: any) {
 		// Syllables
 		case TOGGLE_SYLLABLES:
 			SO = reduceSyllables(state.syllables);
-			SO.toggle = !SO.toggle;
+			SO.toggle = payload;
 			final = {
 				...reduceAllBut(["syllables"], state),
 				syllables: SO
@@ -764,8 +764,8 @@ export function deleteCategory(payload: WGCategoryObject) {
 	return {type: DELETE_CATEGORY, payload};
 }
 // Syllables
-export function toggleSyllables() {
-	return {type: TOGGLE_SYLLABLES, payload: null}
+export function toggleSyllables(payload: boolean) {
+	return {type: TOGGLE_SYLLABLES, payload }
 }
 export function editSyllables(payload1: keyof WGSyllableStateObject["objects"], payload2: string[]) {
 	return {type: EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
