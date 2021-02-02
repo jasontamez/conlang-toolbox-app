@@ -43,6 +43,7 @@ const WGRew = () => {
 	};
 	const settings = state.appSettings;
 	const maybeDeleteRewriteRule = (label: any, seek: any, replace: any) => {
+		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(deleteRewriteRule(label));
