@@ -36,7 +36,8 @@ import WebfontLoader from '@dr-kobros/react-webfont-loader';
 /* Theme variables */
 import './theme/variables.css';
 
-import { checkIfState, initialAppState, overwriteState } from './components/ReduxDucks';
+import { checkIfState, initialAppState } from './components/ReduxDucks';
+import { overwriteState } from './components/ReduxDucksFuncs';
 import store from './components/ReduxStore';
 import { Plugins } from '@capacitor/core';
 

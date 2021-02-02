@@ -27,6 +27,8 @@ import {
 	OutputTypes,
 	Fifty_OneThousand,
 	Five_OneHundred,
+} from '../../components/ReduxDucksTypes';
+import {
 	setOutputType,
 	setSyllableBreaks,
 	setSentencesPerText,
@@ -36,7 +38,7 @@ import {
 	setWordsPerWordlist,
 	openPopover,
 	closePopover
-} from '../../components/ReduxDucks';
+} from '../../components/ReduxDucksFuncs';
 import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import '../WordGen.css';

@@ -1,4 +1,4 @@
-import { PresetObject } from './ReduxDucks';
+import { PresetObject } from './ReduxDucksTypes';
 
 const Presets: PresetObject = new Map([
 	["Simple", {

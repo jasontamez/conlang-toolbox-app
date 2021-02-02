@@ -18,7 +18,7 @@ import {
 	checkmarkCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, changeTheme } from '../components/ReduxDucks';
+import { closeModal, changeTheme } from '../components/ReduxDucksFuncs';
 //import fireSwal from '../components/Swal';
 
 const MaybeLoadPresetModal = () => {

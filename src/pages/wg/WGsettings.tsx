@@ -30,12 +30,14 @@ import {
 	setInterrogativePost,
 	setExclamatoryPre,
 	setExclamatoryPost,
+	openModal,
+	clearEverything
+} from '../../components/ReduxDucksFuncs';
+import {
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
-	openModal,
-	clearEverything
-} from '../../components/ReduxDucks';
+} from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import fireSwal from '../../components/Swal';

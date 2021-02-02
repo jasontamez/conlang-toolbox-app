@@ -21,7 +21,8 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, startEditCategory, deleteCategory, CategoryMap } from '../../components/ReduxDucks';
+import { openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucksFuncs';
+import { CategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';

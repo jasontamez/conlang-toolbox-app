@@ -23,7 +23,8 @@ import {
 	chevronDownCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WGRewriteRuleObject, openModal, startEditRewriteRule, deleteRewriteRule, reorderRewriteRules } from '../../components/ReduxDucks';
+import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
+import { openModal, startEditRewriteRule, deleteRewriteRule, reorderRewriteRules } from '../../components/ReduxDucksFuncs';
 import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
 import { $q } from '../../components/DollarSignExports';

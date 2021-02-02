@@ -15,7 +15,8 @@ import {
 } from '@ionic/react';
 import '../WordGen.css';
 import { $i } from '../../components/DollarSignExports';
-import { toggleSyllables, editSyllables, WGSyllableStateObject } from '../../components/ReduxDucks';
+import { toggleSyllables, editSyllables } from '../../components/ReduxDucksFuncs';
+import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 const WGSyl = () => {

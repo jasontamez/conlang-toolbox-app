@@ -18,7 +18,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { closeModal, loadPreset } from '../../components/ReduxDucks';
+import { closeModal, loadPreset } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 
 const MaybeLoadPresetModal = () => {

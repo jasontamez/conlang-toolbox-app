@@ -25,7 +25,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	toggleDisableConfirm,
 	openModal
-} from '../components/ReduxDucks';
+} from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
 
 
