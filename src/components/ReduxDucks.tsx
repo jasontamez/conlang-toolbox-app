@@ -1,5 +1,6 @@
 import Presets from './Presets';
 import { Plugins } from '@capacitor/core';
+import maybeUpdateTheme from './MaybeUpdateTheme';
 
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
@@ -268,7 +269,7 @@ const reduceAllBut = (props: (keyof StateObject)[], state: StateObject) => {
 const simple: Preset = Presets.get("Simple")!;
 export const initialAppState: StateObject = {
 	appSettings: {
-		theme: "",
+		theme: "Default",
 		disableConfirms: false
 	},
 	categories: simple.categories,
@@ -299,7 +300,7 @@ export const initialAppState: StateObject = {
 };
 export const blankAppState: StateObject = {
 	appSettings: {
-		theme: "",
+		theme: "Default",
 		disableConfirms: false
 	},
 	categories: {
@@ -377,6 +378,7 @@ export function reducer(state: StateObject = initialState, action: any) {
 					theme: payload
 				}
 			};
+			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
 			break;
 		case TOGGLE_DISABLE_CONFIRM:
 			final = {
@@ -731,6 +733,7 @@ export function reducer(state: StateObject = initialState, action: any) {
 			break;
 		case OVERWRITE_STATE:
 			final = { ...payload };
+			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
 			break;
 	}
 	// Some sort of store-state function goes here

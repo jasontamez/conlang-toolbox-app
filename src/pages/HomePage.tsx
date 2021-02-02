@@ -10,13 +10,16 @@ import {
 	IonCol,
 	IonItem,
 	IonLabel,
-	IonCard
+	IonCard,
+	IonButtons,
+	IonMenuButton
 } from '@ionic/react';
 import {
 	createSharp,
 	shuffleSharp,
 	listSharp
 } from 'ionicons/icons';
+import { shallowEqual, useSelector } from "react-redux";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,8 +43,11 @@ import './HomePage.css';
 
 
 const Home = () => {
+	const state = useSelector((state: any) => state, shallowEqual);
+	const theme = state.appSettings.theme.replace(/ /g, "") + "Theme";
+
 	return (
-		<IonPage>
+		<IonPage className={theme}>
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle className="ion-text-center">Conlang Toolbox</IonTitle>
