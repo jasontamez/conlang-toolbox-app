@@ -50,6 +50,9 @@ const Home = () => {
 		<IonPage className={theme}>
 			<IonHeader>
 				<IonToolbar>
+					 <IonButtons slot="start">
+						 <IonMenuButton />
+					 </IonButtons>
 					<IonTitle className="ion-text-center">Conlang Toolbox</IonTitle>
 				</IonToolbar>
 			</IonHeader>
