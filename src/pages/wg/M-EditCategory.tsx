@@ -33,6 +33,7 @@ const EditCategoryModal = () => {
 	//const sourceCat = catMap.get(editing);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	let editingCat: WGCategoryObject = {...catMap.get(editing)!};
+	editingCat.label = editing;
 	const hardReset = () => {
 		editingCat = {
 			title: "",
@@ -40,12 +41,26 @@ const EditCategoryModal = () => {
 			run: ""
 		};
 	};
-	function setNewInfo<
-		KEY extends keyof WGCategoryObject,
-		VAL extends WGCategoryObject[KEY]
-	>(prop: KEY, value: VAL) {
+	const makeString = (input: any) => {
+		if(input) {
+			return input as string;
+		}
+		return "";
+	};
+	function setNewInfo (prop: keyof WGCategoryObject, value: any) {
 		// Set the property
-		editingCat[prop] = value;
+		let madeString = makeString(value).trim();
+		switch(prop) {
+			case "title":
+				editingCat.title = madeString;
+				break;
+			case "run":
+				editingCat.run = madeString;
+				break;
+			case "label":
+				editingCat.label = madeString;
+				break;
+		}
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		let where = $q("." + prop + "LabelEdit");
@@ -137,18 +152,18 @@ const EditCategoryModal = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
-						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={500}></IonInput>
+						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={500}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
-						<IonInput value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value!.trim())} maxlength={1}></IonInput>
+						<IonInput value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput value={editingCat.run} className="categoryRun ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
+						<IonInput value={editingCat.run} className="categoryRun ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
