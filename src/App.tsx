@@ -11,6 +11,7 @@ import Menu from './components/Menu';
 import HomePage from "./pages/HomePage";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
+import Settings from "./pages/AppSettings";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -76,6 +77,8 @@ const App = () => {
 							<Route path="/wg" render={() => <WG />} />
 							<Route path="/we"  render={() => <WE />} />
 							<Route path="/ls" component={WG} />
+							<Route path="/settings" render={() => <Settings />} />
+							<Route path="/about" component={WG} />
 							<Route path="/" component={HomePage} exact={true} />
 						</IonRouterOutlet>
 					</IonSplitPane>

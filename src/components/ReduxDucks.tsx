@@ -3,6 +3,8 @@ import { Plugins } from '@capacitor/core';
 
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
+const CHANGE_THEME = p+"CHANGE_THEME";
+const TOGGLE_DISABLE_CONFIRM = p+"TOGGLE_DISABLE_CONFIRM";
 const ADD_CATEGORY = p+"ADD_CATEGORY";
 const START_EDIT_CATEGORY = p+"START_EDIT_CATEGORY";
 const CANCEL_EDIT_CATEGORY = p+"CANCEL_EDIT_CATEGORY";
@@ -125,6 +127,7 @@ interface WGSettingsObject {
 }
 
 interface ModalStateObject {
+	AppTheme: boolean
 	AddCategory: boolean
 	EditCategory: boolean
 	AddRewriteRule: boolean
@@ -137,6 +140,14 @@ interface PopoverStateObject {
 	flag: boolean
 }
 
+interface AppSettings {
+	theme: string,
+	disableConfirms: boolean
+}
+
+const reduceAppSettings = (original: AppSettings) => {
+	return {...original};
+};
 const reduceCategory = (original: WGCategoryStateObject, newMap: CategoryMap[]= original.map) => {
 	let map: CategoryMap[] = [];
 	if(newMap === original.map) {
@@ -218,6 +229,7 @@ const reducePopoverState = (original: PopoverStateObject) => {
 
 
 interface StateObject {
+	appSettings: AppSettings
 	categories: WGCategoryStateObject
 	syllables: WGSyllableStateObject
 	rewriteRules: WGRewriteRuleStateObject
@@ -226,7 +238,7 @@ interface StateObject {
 	popoverState: PopoverStateObject
 }
 const stateObjectProps: [(keyof StateObject), Function][] = [
-
+	["appSettings", reduceAppSettings],
 	["categories", reduceCategory],
 	["syllables", reduceSyllables],
 	["rewriteRules", reduceRewriteRules],
@@ -255,6 +267,10 @@ const reduceAllBut = (props: (keyof StateObject)[], state: StateObject) => {
 };
 const simple: Preset = Presets.get("Simple")!;
 export const initialAppState: StateObject = {
+	appSettings: {
+		theme: "",
+		disableConfirms: false
+	},
 	categories: simple.categories,
 	syllables: simple.syllables,
 	rewriteRules: simple.rewriteRules,
@@ -269,6 +285,7 @@ export const initialAppState: StateObject = {
 		wordsPerWordlist: 250
 	},
 	modalState: {
+		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
 		AddRewriteRule: false,
@@ -281,6 +298,10 @@ export const initialAppState: StateObject = {
 	}
 };
 export const blankAppState: StateObject = {
+	appSettings: {
+		theme: "",
+		disableConfirms: false
+	},
 	categories: {
 		map: [],
 		editing: null
@@ -309,6 +330,7 @@ export const blankAppState: StateObject = {
 		wordsPerWordlist: 250
 	},
 	modalState: {
+		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
 		AddRewriteRule: false,
@@ -346,6 +368,25 @@ export function reducer(state: StateObject = initialState, action: any) {
 	let RO: WGRewriteRuleStateObject;
 	let final: StateObject = state;
 	switch(action.type) {
+		// App Settings
+		case CHANGE_THEME:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					theme: payload
+				}
+			};
+			break;
+		case TOGGLE_DISABLE_CONFIRM:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					disableConfirms: payload
+				}
+			};
+			break;
 		// Category
 		case ADD_CATEGORY:
 			CO = state.categories;
@@ -699,6 +740,13 @@ export function reducer(state: StateObject = initialState, action: any) {
 
 // action creators
 //
+// AppSettings
+export function changeTheme(payload: string) {
+	return {type: CHANGE_THEME, payload};
+}
+export function toggleDisableConfirm(payload: boolean) {
+	return {type: TOGGLE_DISABLE_CONFIRM, payload};
+}
 // Category
 export function addCategory(payload: WGCategoryObject) {
 	return {type: ADD_CATEGORY, payload};
