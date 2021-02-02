@@ -193,12 +193,6 @@ export const blankAppState: types.StateObject = {
 	}
 };
 
-// eslint-disable-next-line
-interface ReduxAction {
-	type: string,
-	payload?: any
-}
-
 // Storage
 const { Storage } = Plugins;
 // eslint-disable-next-line
