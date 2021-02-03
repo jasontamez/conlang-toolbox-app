@@ -15,7 +15,8 @@ import {
 	IonSelect,
 	IonSelectOption,
 	IonModal,
-	IonIcon
+	IonIcon,
+	IonFooter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
@@ -44,7 +45,7 @@ const OutputOptionsModal = () => {
 	const modalState = state.modalState;
 	const settingsWG = state.wordgenSettings;
 	return (
-		<IonModal isOpen={modalState.PresetPopup} onDidDismiss={() => dispatch(closeModal('OutputOptions'))}>
+		<IonModal isOpen={modalState.OutputOptions} onDidDismiss={() => dispatch(closeModal('OutputOptions'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Output Options</IonTitle>
@@ -95,11 +96,13 @@ const OutputOptionsModal = () => {
 							<IonLabel slot="end">1000</IonLabel>
 						</IonRange>
 					</IonItem>
-					<IonItem button={true} onClick={() => dispatch(closeModal('OutputOptions'))} color="primary">
-						<IonLabel>Done</IonLabel>
-					</IonItem>
 				</IonList>
 			</IonContent>
+			<IonFooter>
+				<IonItem button={true} onClick={() => dispatch(closeModal('OutputOptions'))} color="success">
+					<IonLabel>Done</IonLabel>
+				</IonItem>
+			</IonFooter>
 		</IonModal>
 	);
 };
