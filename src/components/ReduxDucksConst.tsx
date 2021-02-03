@@ -1,7 +1,3 @@
-import Presets from './Presets';
-import { Plugins } from '@capacitor/core';
-import maybeUpdateTheme from './MaybeUpdateTheme';
-
 // constants (actions)
 const p = "conlangs-toolbox/reducer/";
 export const CHANGE_THEME = p+"CHANGE_THEME";
