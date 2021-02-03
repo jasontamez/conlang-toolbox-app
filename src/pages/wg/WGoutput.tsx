@@ -62,7 +62,7 @@ const WGOut = () => {
 	const allSyllables = syllablesObject.objects;
 	const rewriteRules = stateObject.rewriteRules.list;
 	const settingsWG = stateObject.wordgenSettings;
-	const popoverState = stateObject.popoverState;
+	const regExpMap: Map<string, RegExp> = new Map();
 	
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
@@ -74,8 +74,8 @@ const WGOut = () => {
 		return Math.ceil(max).toString() + "px";
 	};
 
-	const recalculateRewriteRuleRegex = (rule: WGRewriteRuleObject) => {
-		// Check rewrite rules for %Category references and update the rule's .regex as needed
+	const calculateCategoryReferenceRegex = (rule: WGRewriteRuleObject) => {
+		// Check rewrite rules for %Category references
 		// %% condenses to %, so split on those to begin with.
 		let broken = rule.seek.split("%%");
 		// Create a variable to hold the pieces as they are handled
@@ -123,7 +123,7 @@ const WGOut = () => {
 			final.push(reformed);
 		}
 		// Reform info with %% reduced back to % and save as regexp
-		rule.regex = new RegExp(final.join("%"), "g");
+		return new RegExp(final.join("%"), "g");
 	};
 	
 	const generateOutput = (output: HTMLElement) => {
@@ -159,10 +159,14 @@ const WGOut = () => {
 		}
 		// Check rewrite rules for %Category references and update them if needed
 		rewriteRules.forEach((rule: WGRewriteRuleObject) => {
+			let regex: RegExp;
 			if(rule.seek.indexOf("%") !== -1) {
 				// Found a possibility.
-				recalculateRewriteRuleRegex(rule);
+				regex = calculateCategoryReferenceRegex(rule);
+			} else {
+				regex = new RegExp(rule.seek, "g");
 			}
+			regExpMap.set(rule.key, regex);
 		});
 		// Determine what we're making.
 		if(type === "text") {
@@ -350,7 +354,7 @@ const WGOut = () => {
 	// // //
 	const doRewrite = (word: string) => {
 		rewriteRules.forEach((rule: WGRewriteRuleObject) => {
-			word = word.replace(rule.regex, rule.replace);
+			word = word.replace(regExpMap.get(rule.key)!, rule.replace);
 		});
 		return word;
 	};

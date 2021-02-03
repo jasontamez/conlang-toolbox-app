@@ -72,9 +72,7 @@ const reduceRewriteRulesState = (original: types.WGRewriteRuleStateObject, mod: 
 	};
 };
 const reduceRewriteRules = (original: types.WGRewriteRuleObject) => {
-	return {
-		...original
-	};
+	return {...original};
 };
 const reduceWGSettings = (original: types.WGSettingsObject) => {
 	return {...original};
@@ -82,19 +80,15 @@ const reduceWGSettings = (original: types.WGSettingsObject) => {
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
-const reducePopoverState = (original: types.PopoverStateObject) => {
-	return {...original};
-};
 
 
-export const stateObjectProps: [(keyof types.StateObject), Function][] = [
+const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["appSettings", reduceAppSettings],
 	["categories", reduceCategory],
 	["syllables", reduceSyllables],
 	["rewriteRules", reduceRewriteRules],
 	["wordgenSettings", reduceWGSettings],
-	["modalState", reduceModalState],
-	["popoverState", reducePopoverState]
+	["modalState", reduceModalState]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
@@ -140,11 +134,8 @@ export const initialAppState: types.StateObject = {
 		EditCategory: false,
 		AddRewriteRule: false,
 		EditRewriteRule: false,
-		PresetPopup: false
-	},
-	popoverState: {
-		flag: false,
-		event: undefined
+		PresetPopup: false,
+		OutputOptions: false
 	}
 };
 export const blankAppState: types.StateObject = {
@@ -185,11 +176,8 @@ export const blankAppState: types.StateObject = {
 		EditCategory: false,
 		AddRewriteRule: false,
 		EditRewriteRule: false,
-		PresetPopup: false
-	},
-	popoverState: {
-		flag: false,
-		event: undefined
+		PresetPopup: false,
+		OutputOptions: false
 	}
 };
 
@@ -527,15 +515,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["modalState"], state),
 				modalState: newModal
-			};
-			break;
-		case consts.TOGGLE_POPOVER:
-			let newPopover: types.PopoverStateObject = reducePopoverState(state.popoverState);
-			newPopover.flag = payload.flag;
-			newPopover.event = payload.event;
-			final = {
-				...reduceAllBut(["popoverState"], state),
-				popoverState: newPopover
 			};
 			break;
 		// Presets

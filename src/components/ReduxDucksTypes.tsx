@@ -49,7 +49,6 @@ export interface WGRewriteRuleObject {
 	seek: string
 	replace: string
 	description: string
-	regex: RegExp
 }
 
 export interface WGRewriteRuleStateObject {
@@ -85,11 +84,7 @@ export interface ModalStateObject {
 	AddRewriteRule: boolean
 	EditRewriteRule: boolean
 	PresetPopup: boolean
-}
-
-export interface PopoverStateObject {
-	event: any
-	flag: boolean
+	OutputOptions: boolean
 }
 
 export interface AppSettings {
@@ -104,5 +99,5 @@ export interface StateObject {
 	rewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
 	modalState: ModalStateObject
-	popoverState: PopoverStateObject
 }
+// Be sure to change stateObjectProps in ReducksDucks, too.

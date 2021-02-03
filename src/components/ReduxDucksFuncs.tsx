@@ -114,12 +114,6 @@ export function openModal(payload: keyof types.ModalStateObject) {
 export function closeModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
-export function openPopover(payload: any) {
-	return {type: consts.TOGGLE_POPOVER, payload: {flag: true, event: payload}};
-}
-export function closePopover() {
-	return {type: consts.TOGGLE_POPOVER, payload: {flag: false, event: undefined}};
-}
 // Presets
 export function loadPreset(payload: string) {
 	return {type: consts.LOAD_PRESET, payload};

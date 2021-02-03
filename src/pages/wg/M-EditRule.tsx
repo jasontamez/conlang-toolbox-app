@@ -30,8 +30,7 @@ const EditRewriteRuleModal = () => {
 			key: "",
 			seek: "",
 			replace: "",
-			description: "",
-			regex: new RegExp("")
+			description: ""
 		};
 	};
 	const dispatch = useDispatch();
@@ -42,8 +41,7 @@ const EditRewriteRuleModal = () => {
 		key: "",
 		seek: "",
 		replace: "",
-		description: "",
-		regex: new RegExp("")
+		description: ""
 	};
 	rewritesObject.list.every((rr: WGRewriteRuleObject) => {
 		if(rr.key === editing) {
@@ -90,7 +88,6 @@ const EditRewriteRuleModal = () => {
 			return;
 		}
 		// Everything ok!
-		editingRule.regex = new RegExp(editingRule.seek, "g");
 		dispatch(closeModal('EditRewriteRule'));
 		dispatch(doEditRewriteRule(editingRule));
 		hardReset();

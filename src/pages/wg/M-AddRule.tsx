@@ -30,16 +30,14 @@ const AddRewriteRuleModal = () => {
 		key: "",
 		seek: "",
 		replace: "",
-		description: "",
-		regex: new RegExp("")
+		description: ""
 	};
 	const hardReset = () => {
 		newRule = {
 			key: "",
 			seek: "",
 			replace: "",
-			description: "",
-			regex: new RegExp("")
+			description: ""
 		};
 	};
 	const dispatch = useDispatch();
@@ -78,8 +76,6 @@ const AddRewriteRuleModal = () => {
 		// Everything ok!
 		// Create unique ID for this rule
 		newRule.key = uuidv4();
-		// Create RegExp for the seek
-		newRule.regex = new RegExp(newRule.seek, "g");
 		dispatch(closeModal('AddRewriteRule'));
 		dispatch(addRewriteRule(newRule));
 		hardReset();
