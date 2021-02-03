@@ -21,7 +21,8 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { WGCategoryObject, closeModal, addCategory } from '../../components/ReduxDucks';
+import { WGCategoryObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addCategory } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 

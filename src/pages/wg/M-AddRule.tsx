@@ -20,7 +20,8 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { WGRewriteRuleObject, closeModal, addRewriteRule } from '../../components/ReduxDucks';
+import { closeModal, addRewriteRule } from '../../components/ReduxDucksFuncs';
+import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
