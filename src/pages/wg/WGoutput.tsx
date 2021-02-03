@@ -9,38 +9,19 @@ import {
 	IonTitle,
 	IonList,
 	IonButton,
-	IonItemDivider,
 	IonItem,
-	IonLabel,
-	IonToggle,
-	IonRange,
-	IonSelect,
-	IonSelectOption,
-	IonPopover,
 	IonIcon
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	WGRewriteRuleObject,
-	WGCategoryObject,
-	OutputTypes,
-	Fifty_OneThousand,
-	Five_OneHundred,
+	WGCategoryObject
 } from '../../components/ReduxDucksTypes';
-import {
-	setOutputType,
-	setSyllableBreaks,
-	setSentencesPerText,
-	setCapitalizeWords,
-	setSortWordlist,
-	setWordlistMulticolumn,
-	setWordsPerWordlist,
-	openPopover,
-	closePopover
-} from '../../components/ReduxDucksFuncs';
+import { openModal } from '../../components/ReduxDucksFuncs';
 import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
+import OutputOptionsModal from './M-OutputOptions';
 import '../WordGen.css';
 
 const WGOut = () => {
@@ -430,6 +411,7 @@ const WGOut = () => {
 	};
 	return (
 		<IonPage>
+			<OutputOptionsModal />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -440,48 +422,8 @@ const WGOut = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList id="outerOutputPane" lines="none">
-					<IonPopover event={popoverState.event} isOpen={popoverState.flag} onDidDismiss={() => dispatch(closePopover())}>
-						<IonItemDivider>What to Generate:</IonItemDivider>
-						<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
-							<IonSelectOption value="text">Pseudo-text</IonSelectOption>
-							<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
-							<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
-						</IonSelect>
-						<IonItem>
-							<IonLabel>Show syllable breaks</IonLabel>
-							<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
-						</IonItem>
-						<IonItemDivider>Pseudo-text Controls</IonItemDivider>
-						<IonItem>
-							<IonLabel position="stacked">Number of sentences</IonLabel>
-							<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerText(e.detail.value! as Five_OneHundred))}>
-								<IonLabel slot="start">5</IonLabel>
-								<IonLabel slot="end">100</IonLabel>
-							</IonRange>
-						</IonItem>
-						<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
-						<IonItem>
-							<IonLabel>Capitalize words</IonLabel>
-							<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
-						</IonItem>
-						<IonItem>
-							<IonLabel>Sort output</IonLabel>
-							<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlist(e.detail.checked))} />
-						</IonItem>
-						<IonItem>
-							<IonLabel>Multi-Column layout</IonLabel>
-							<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumn(e.detail.checked))} />
-						</IonItem>
-						<IonItem>
-							<IonLabel position="stacked">Wordlist size</IonLabel>
-							<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlist(e.detail.value! as Fifty_OneThousand))}>
-								<IonLabel slot="start">50</IonLabel>
-								<IonLabel slot="end">1000</IonLabel>
-							</IonRange>
-						</IonItem>
-					</IonPopover>
 					<IonItem className="collapse">
-						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={(e:any) => { e.persist(); dispatch(openPopover(e)); }}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("OutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
