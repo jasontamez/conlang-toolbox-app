@@ -3,6 +3,7 @@ import { Plugins } from '@capacitor/core';
 import maybeUpdateTheme from './MaybeUpdateTheme';
 import * as consts from './ReduxDucksConst';
 import * as types from './ReduxDucksTypes';
+import debounce from './Debounce';
 
 const reduceAppSettings = (original: types.AppSettings) => {
 	return {...original};
@@ -183,7 +184,6 @@ export const blankAppState: types.StateObject = {
 
 // Storage
 const { Storage } = Plugins;
-// eslint-disable-next-line
 const saveCurrentState = (state: types.StateObject) => {
 	let stringified = JSON.stringify(state);
 	Storage.set({key: "currentState", value: stringified});
@@ -559,6 +559,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 	}
 	// Some sort of store-state function goes here
+	debounce(saveCurrentState, [final]);
 	return final;
 };
 
