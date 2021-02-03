@@ -589,7 +589,7 @@ const Presets: PresetObject = new Map([
 				},
 				{
 					key: "20",
-					seek: "([aiu])\1",
+					seek: "([aiu])\\1",
 					replace: "$1",
 					description: "change double a/i/u to single"
 				},
