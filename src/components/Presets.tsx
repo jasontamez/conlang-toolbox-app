@@ -34,16 +34,14 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "ki",
 					replace: "ci",
-					description: "",
-					regex: /ki/g
+					description: ""
 
 				},
 				{
 					key: "1",
 					seek: "(.)\\1+",
 					replace: "$1$1",
-					description: "",
-					regex: /(.)\1+/g
+					description: ""
 				}
 			],
 			editing: null
@@ -95,50 +93,43 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "aa",
 					replace: "ā",
-					description: "",
-					regex: /aa/g
+					description: ""
 				},
 				{
 					key: "1",
 					seek: "ii",
 					replace: "ī",
-					description: "",
-					regex: /ii/g
+					description: ""
 				},
 				{
 					key: "2",
 					seek: "uu",
 					replace: "ū",
-					description: "",
-					regex: /uu/g
+					description: ""
 				},
 				{
 					key: "3",
 					seek: "ee",
 					replace: "ē",
-					description: "",
-					regex: /ee/g
+					description: ""
 				},
 				{
 					key: "4",
 					seek: "oo",
 					replace: "ō",
-					description: "",
-					regex: /oo/g
+					description: ""
 				},
 				{
 					key: "5",
 					seek: "nb",
 					replace: "mb",
-					description: "",
-					regex: /nb/g
+					description: ""
 				},
 				{
 					key: "6",
 					seek: "np",
 					replace: "mp",
-					description: "",
-					regex: /np/g
+					description: ""
 				}
 			],
 			editing: null
@@ -202,29 +193,25 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "ka",
 					replace: "ca",
-					description: "",
-					regex: /ka/g
+					description: ""
 				},
 				{
 					key: "1",
 					seek: "nko",
 					replace: "co",
-					description: "",
-					regex: /nko/g
+					description: ""
 				},
 				{
 					key: "2",
 					seek: "nku",
 					replace: "cu",
-					description: "",
-					regex: /nku/g
+					description: ""
 				},
 				{
 					key: "3",
 					seek: "nkr",
 					replace: "cr",
-					description: "",
-					regex: /nkr/g
+					description: ""
 				}
 			],
 			editing: null
@@ -284,36 +271,31 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "uu",
 					replace: "wo",
-					description: "",
-					regex: /uu/g
+					description: ""
 				},
 				{
 					key: "1",
 					seek: "oo",
 					replace: "ou",
-					description: "",
-					regex: /oo/g
+					description: ""
 				},
 				{
 					key: "2",
 					seek: "ii",
 					replace: "iu",
-					description: "",
-					regex: /ii/g
+					description: ""
 				},
 				{
 					key: "3",
 					seek: "aa",
 					replace: "ia",
-					description: "",
-					regex: /aa/g
+					description: ""
 				},
 				{
 					key: "4",
 					seek: "ee",
 					replace: "ie",
-					description: "",
-					regex: /ee/g
+					description: ""
 				}
 			],
 			editing: null
@@ -365,15 +347,13 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "â",
 					replace: "ai",
-					description: "",
-					regex: /â/g
+					description: ""
 				},
 				{
 					key: "1",
 					seek: "ô",
 					replace: "au",
-					description: "",
-					regex: /ô/g
+					description: ""
 				}
 			],
 			editing: null
@@ -437,246 +417,199 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "T+",
 					replace: "th",
-					description: "",
-					regex: /T+/g
+					description: ""
 				},
 				{
 					key: "1",
 					seek: "S+",
 					replace: "sh",
-					description: "",
-					regex: /S+/g
+					description: ""
 				},
 				{
 					key: "2",
 					seek: "C+",
 					replace: "ch",
-					description: "",
-					regex: /C+/g
+					description: ""
 				},
 				{
 					key: "3",
 					seek: "q+",
 					replace: "qu",
-					description: "q is always followed by u",
-					regex: /q+/g
+					description: "q is always followed by u"
 				},
 				{
 					key: "4",
 					seek: "qu\\b",
 					replace: "que",
-					description: "qu at word-end becomes que",
-					regex: /qu\b/g
+					description: "qu at word-end becomes que"
 				},
 				{
 					key: "5",
 					seek: "N+",
 					replace: "ng",
-					description: "",
-					regex: /N+/g
+					description: ""
 				},
 				{
 					key: "15",
 					seek: "([^g])\\Bh",
 					replace: "k",
-					description: "change non-initial h to k if not preceeded by a g",
-					regex: /([^g])\Bh/g
+					description: "change non-initial h to k if not preceeded by a g"
 				},
 				{
 					key: "6",
 					seek: "w*W+w*(%V)",
 					replace: "wh$1",
-					description: "W-vowel becomes wh-vowel",
-					regex: /w*W+w*%V/g
+					description: "W-vowel becomes wh-vowel"
 				},
 				{
 					key: "6.1",
 					seek: "w*W+w*",
 					replace: "w",
-					description: "remaining Ws become w",
-					regex: /w*W+w*/g
+					description: "remaining Ws become w"
 				},
 				{
 					key: "7",
 					seek: "(%V)ch",
 					replace: "$1tch",
-					description: "vowel-ch becomes vowel-tch",
-					regex: /(%V)ch/g
+					description: "vowel-ch becomes vowel-tch"
 				},
 				{
 					key: "8",
 					seek: "P+",
 					replace: "ph",
-					description: "",
-					regex: /P+/g
+					description: ""
 				},
 				{
 					key: "9",
 					seek: "(%V)B(\\b|!%V)",
 					replace: "$1ble$2",
-					description: "vowel-ble-nonvowel",
-					regex: /(%V)B(\\b|!%V)/g
+					description: "vowel-ble-nonvowel"
 				},
 				{
 					key: "9.1",
 					seek: "(%V)B",
 					replace: "$1bl",
-					description: "vowel-bl",
-					regex: /(%V)B/g
+					description: "vowel-bl"
 				},
 				{
 					key: "9.2",
 					seek: "B",
 					replace: "",
-					description: "eliminate remaining Bs",
-					regex: /B/g
+					description: "eliminate remaining Bs"
 				},
 				{
 					key: "10",
 					seek: "%V*O+%V*",
 					replace: "oo",
-					description: "",
-					regex: /%V*O+%V*/g
+					description: ""
 				},
 				{
 					key: "11",
 					seek: "%V*U+%V*",
 					replace: "ou",
-					description: "",
-					regex: /%V*U+%V*/g
+					description: ""
 				},
 				{
 					key: "12",
 					seek: "%V*I+%V*",
 					replace: "oi",
-					description: "",
-					regex: /%V*I+%V*/g
+					description: ""
 				},
 				{
 					key: "13",
 					seek: "%V*A+%V*",
 					replace: "au",
-					description: "",
-					regex: /%V*A+%V*/g
+					description: ""
 				},
 				{
 					key: "13.1",
 					seek: "%V*E+%V*",
 					replace: "ei",
-					description: "",
-					regex: /%V*E+%V*/g
+					description: ""
 				},
 				{
 					key: "13.2",
 					seek: "([^c])ei",
 					replace: "$1ie",
-					description: "i before e except after c",
-					regex: /([^c])ei/g
+					description: "i before e except after c"
 				},
 				{
 					key: "14",
 					seek: "([^aeiou])(o|au)\\b",
 					replace: "$1ow",
-					description: "change word-final o or au to ow",
-					regex: /([^aeiou])(o|au)\b/g
+					description: "change word-final o or au to ow"
 				},
 				{
 					key: "14.1",
 					seek: "([^aeiou])(ou)\\b",
 					replace: "$1ough",
-					description: "change word-final ou to ough",
-					regex: /([^aeiou])ou\b/g
+					description: "change word-final ou to ough"
 				},
 				{
 					key: "16",
 					seek: "y+",
 					replace: "y",
-					description: "eliminate duplicate ys",
-					regex: /y+/g
+					description: "eliminate duplicate ys"
 				},
 				{
 					key: "17",
 					seek: "(\\b|[^aeiou])tl",
 					replace: "$1t",
-					description: "reduce tl cluster to t after non-vowel",
-					regex: /(\b|[^aeiou])tl/g
+					description: "reduce tl cluster to t after non-vowel"
 				},
 				{
 					key: "17.1",
 					seek: "tl(\\b|%C)",
 					replace: "t$1",
-					description: "reduce tl cluster to t before consonant or word-end",
-					regex: /tl(\b|%C)/g
+					description: "reduce tl cluster to t before consonant or word-end"
 				},
 				{
 					key: "18",
 					seek: "(.)\\1{2,}",
 					replace: "$1$1",
-					description: "reduce triple-letter clusters to two",
-					regex: /(.)\1{2,}/g
+					description: "reduce triple-letter clusters to two"
 				},
 				{
 					key: "18.1",
 					seek: "[aeiou]([aeiou]\\1)",
 					replace: "$1",
-					description: "reduce triple vowels, where the last two vowels match, to the final vowels",
-					regex: /[aeiou]([aeiou]\\1)/g
+					description: "reduce triple vowels, where the last two vowels match, to the final vowels"
 				},
 				{
 					key: "18.2",
 					seek: "([aeiou]\\1)[aeiou]",
 					replace: "$1",
-					description: "reduce triple vowels, where the first two vowels match, to the first vowels",
-					regex: /([aeiou]\\1)[aeiou]/g
+					description: "reduce triple vowels, where the first two vowels match, to the first vowels"
 				},
 				{
 					key: "19",
 					seek: "c\\b",
 					replace: "ck",
-					description: "word-final c becomes ck",
-					regex: /c\b/g
+					description: "word-final c becomes ck"
 				},
 				{
 					key: "20",
-					seek: "aa",
-					replace: "a",
-					description: "change double a to a",
-					regex: /aa/g
-				},
-				{
-					key: "20.1",
-					seek: "ii",
-					replace: "i",
-					description: "change double i to i",
-					regex: /ii/g
-				},
-				{
-					key: "20.2",
-					seek: "uu",
-					replace: "u",
-					description: "change double u to u",
-					regex: /uu/g
+					seek: "([aiu])\1",
+					replace: "$1",
+					description: "change double a/i/u to single"
 				},
 				{
 					key: "21",
 					seek: "m[kt]\\b",
 					replace: "mp",
-					description: "word-final mk or mt becomes mp",
-					regex: /m[kt]\b/g
+					description: "word-final mk or mt becomes mp"
 				},
 				{
 					key: "21.1",
 					seek: "n[kp]\\b",
 					replace: "nt",
-					description: "word-final nk or np becomes nt",
-					regex: /n[kp]\b/g
+					description: "word-final nk or np becomes nt"
 				},
 				{
 					key: "21.2",
 					seek: "ng[kt]",
 					replace: "nk",
-					description: "ngk and ngt become nk",
-					regex: /ng[kt]/g
+					description: "ngk and ngt become nk"
 				}
 			],
 			editing: null
@@ -736,351 +669,301 @@ const Presets: PresetObject = new Map([
 					key: "0",
 					seek: "([aeiou])\\1{2,}",
 					replace: "$1$1",
-					description: "change triple-vowels to double vowels",
-					regex: /([aeiou])\1{2,}/g
+					description: "change triple-vowels to double vowels"
 				},
 				{
 					key: "1",
 					seek: "([AEOU])\\1+",
 					replace: "$1",
-					description: "change double-dipthongs to single",
-					regex: /([AEOU])\1+/g
+					description: "change double-dipthongs to single"
 				},
 				{
 					key: "2",
 					seek: "(%V{2})%V+",
 					replace: "$1",
-					description: "eliminate third vowel in a row",
-					regex: /(%V{2})%V+/g
+					description: "eliminate third vowel in a row"
 				},
 				{
 					key: "3",
 					seek: "h+",
 					replace: "h",
-					description: "reduce multiple h to single",
-					regex: /h+/g
+					description: "reduce multiple h to single"
 				},
 				{
 					key: "4",
 					seek: "h(?=%V(%E|%C{0,2}%V)\\b)",
 					replace: "H",
-					description: "save h before accented syllable",
-					regex: /h(?=%V(%E|%C{0,2}%V)\b)/g
+					description: "save h before accented syllable"
 				},
 				{
 					key: "5",
 					seek: "(%V)h(?=%V\\b)",
 					replace: "$1H",
-					description: "save h before accented syllable",
-					regex: /(%V)h(?=%V\b)/g
+					description: "save h before accented syllable"
 				},
 				{
 					key: "6",
 					seek: "\\bh",
 					replace: "H",
-					description: "save word-initial h",
-					regex: /\bh/g
+					description: "save word-initial h"
 				},
 				{
 					key: "7",
 					seek: "h\\b",
 					replace: "H",
-					description: "save word-final h",
-					regex: /h\b/g
+					description: "save word-final h"
 				},
 				{
 					key: "8",
 					seek: "h",
 					replace: "",
-					description: "eliminate all other h",
-					regex: /h/g
+					description: "eliminate all other h"
 				},
 				{
 					key: "9",
 					seek: "H",
 					replace: "h",
-					description: "restore saved h",
-					regex: /H/g
+					description: "restore saved h"
 				},
 				{
 					key: "10",
 					seek: "A",
 					replace: "aĭ",
-					description: "dipthong",
-					regex: /A/g
+					description: "dipthong"
 				},
 				{
 					key: "11",
 					seek: "O",
 					replace: "oĭ",
-					description: "dipthong",
-					regex: /O/g
+					description: "dipthong"
 				},
 				{
 					key: "12",
 					seek: "U",
 					replace: "uĭ",
-					description: "dipthong",
-					regex: /U/g
+					description: "dipthong"
 				},
 				{
 					key: "13",
 					seek: "E",
 					replace: "eĭ",
-					description: "dipthong",
-					regex: /E/g
+					description: "dipthong"
 				},
 				{
 					key: "14",
 					seek: "ĭi",
 					replace: "i",
-					description: "eliminate dipthong before i",
-					regex: /ĭi/g
+					description: "eliminate dipthong before i"
 				},
 				{
 					key: "15",
 					seek: "ĭT",
 					replace: "ĭt",
-					description: "de-retroflex t after a dipthong",
-					regex: /ĭT/g
+					description: "de-retroflex t after a dipthong"
 				},
 				{
 					key: "16",
 					seek: "ĭS",
 					replace: "ĭs",
-					description: "de-retroflex s after a dipthong",
-					regex: /ĭS/g
+					description: "de-retroflex s after a dipthong"
 				},
 				{
 					key: "17",
 					seek: "ĭL",
 					replace: "ĭl",
-					description: "de-retroflex l after a dipthong",
-					regex: /ĭL/g
+					description: "de-retroflex l after a dipthong"
 				},
 				{
 					key: "18",
 					seek: "ĭN",
 					replace: "ĭn",
-					description: "de-retroflex n after a dipthong",
-					regex: /ĭN/g
+					description: "de-retroflex n after a dipthong"
 				},
 				{
 					key: "19",
 					seek: "(.\\B[aeou])i",
 					replace: "$1ĭ",
-					description: "change certain non-word-initial vowel-i pairs to dipthongs",
-					regex: /(.\B[aeou])i/g
+					description: "change certain non-word-initial vowel-i pairs to dipthongs"
 				},
 				{
 					key: "20",
 					seek: "(%C)\\1",
 					replace: "$1",
-					description: "reduce double consonants to one",
-					regex: /(%C)\1/g
+					description: "reduce double consonants to one"
 				},
 				{
 					key: "21",
 					seek: "[tkpT]r",
 					replace: "r",
-					description: "remove plosive before an r",
-					regex: /[tkpT]r/g
+					description: "remove plosive before an r"
 				},
 				{
 					key: "22",
 					seek: "n[pTk]",
 					replace: "nt",
-					description: "change n-plosive to nt",
-					regex: /n[pTk]/g
+					description: "change n-plosive to nt"
 				},
 				{
 					key: "23",
 					seek: "m[tTk]",
 					replace: "mp",
-					description: "change m-plosive to mp",
-					regex: /m[tTk]/g
+					description: "change m-plosive to mp"
 				},
 				{
 					key: "24",
 					seek: "N[ptk]",
 					replace: "NT",
-					description: "retroflex plosive after retroflex n",
-					regex: /N[ptk]/g
+					description: "retroflex plosive after retroflex n"
 				},
 				{
 					key: "25",
 					seek: "k[nmN]",
 					replace: "k",
-					description: "remove nasal after k",
-					regex: /k[nmN]/g
+					description: "remove nasal after k"
 				},
 				{
 					key: "26",
 					seek: "p[nN]",
 					replace: "pm",
-					description: "change p-nasal to pm",
-					regex: /p[nN]/g
+					description: "change p-nasal to pm"
 				},
 				{
 					key: "27",
 					seek: "t[mN]",
 					replace: "tn",
-					description: "change t-nasal to tn",
-					regex: /t[mN]/g
+					description: "change t-nasal to tn"
 				},
 				{
 					key: "28",
 					seek: "T[nm]",
 					replace: "TN",
-					description: "make post-retroflex t nasal retroflex n",
-					regex: /T[nm]/g
+					description: "make post-retroflex t nasal retroflex n"
 				},
 				{
 					key: "29",
 					seek: "p[sSh]",
 					replace: "pf",
-					description: "change p-fricative to pf",
-					regex: /p[sSh]/g
+					description: "change p-fricative to pf"
 				},
 				{
 					key: "30",
 					seek: "t[fSh]",
 					replace: "ts",
-					description: "change t-fricative to ts",
-					regex: /t[fSh]/g
+					description: "change t-fricative to ts"
 				},
 				{
 					key: "31",
 					seek: "T[fsh]",
 					replace: "TS",
-					description: "change post-retroflex t fricative to retroflex s",
-					regex: /T[fsh]/g
+					description: "change post-retroflex t fricative to retroflex s"
 				},
 				{
 					key: "32",
 					seek: "k[fsS]",
 					replace: "kh",
-					description: "change k-fricative to kh",
-					regex: /k[fsS]/g
+					description: "change k-fricative to kh"
 				},
 				{
 					key: "33",
 					seek: "f[sSh]",
 					replace: "fp",
-					description: "change f-fricative to fp",
-					regex: /f[sSh]/g
+					description: "change f-fricative to fp"
 				},
 				{
 					key: "34",
 					seek: "s[fSh]",
 					replace: "st",
-					description: "change s-fricative to st",
-					regex: /s[fSh]/g
+					description: "change s-fricative to st"
 				},
 				{
 					key: "35",
 					seek: "S[fsh]",
 					replace: "ST",
-					description: "change post-retroflex s fricative to retroflex t",
-					regex: /S[fsh]/g
+					description: "change post-retroflex s fricative to retroflex t"
 				},
 				{
 					key: "36",
 					seek: "h[fsS]",
 					replace: "hk",
-					description: "change h-fricative to hk",
-					regex: /h[fsS]/g
+					description: "change h-fricative to hk"
 				},
 				{
 					key: "37",
 					seek: "ft",
 					replace: "fp",
-					description: "change ft to fp",
-					regex: /ft/g
+					description: "change ft to fp"
 				},
 				{
 					key: "38",
 					seek: "sT",
 					replace: "st",
-					description: "de-retroflex t after s",
-					regex: /sT/g
+					description: "de-retroflex t after s"
 				},
 				{
 					key: "39",
 					seek: "St",
 					replace: "ST",
-					description: "make t after retroflex s into retroflex t",
-					regex: /St/g
+					description: "make t after retroflex s into retroflex t"
 				},
 				{
 					key: "40",
 					seek: "([TSLN])[tsln]",
 					replace: "$1",
-					description: "eliminate non-retroflex consonant after retroflex consonants",
-					regex: /([TSLN])[tsln]/g
+					description: "eliminate non-retroflex consonant after retroflex consonants"
 				},
 				{
 					key: "41",
 					seek: "([tsln])[TSLN]",
 					replace: "$1",
-					description: "eliminate retroflex consonant after non-retroflex consonant",
-					regex: /([tsln])[TSLN]/g
+					description: "eliminate retroflex consonant after non-retroflex consonant"
 				},
 				{
 					key: "42",
 					seek: "NT",
 					replace: "nT",
-					description: "de-retroflex n before retroflex t",
-					regex: /NT/g
+					description: "de-retroflex n before retroflex t"
 				},
 				{
 					key: "43",
 					seek: "TN",
 					replace: "tN",
-					description: "de-retroflex t before retroflex n",
-					regex: /TN/g
+					description: "de-retroflex t before retroflex n"
 				},
 				{
 					key: "44",
 					seek: "ST",
 					replace: "sT",
-					description: "de-retroflex s before retroflex t",
-					regex: /ST/g
+					description: "de-retroflex s before retroflex t"
 				},
 				{
 					key: "45",
 					seek: "TS",
 					replace: "tS",
-					description: "de-retroflex t before retroflex s",
-					regex: /TS/g
+					description: "de-retroflex t before retroflex s"
 				},
 				{
 					key: "46",
 					seek: "T",
 					replace: "t́",
-					description: "mark retroflex t with accent",
-					regex: /T/g
+					description: "mark retroflex t with accent"
 				},
 				{
 					key: "47",
 					seek: "L",
 					replace: "ĺ",
-					description: "mark retroflex l with accent",
-					regex: /L/g
+					description: "mark retroflex l with accent"
 				},
 				{
 					key: "48",
 					seek: "S",
 					replace: "ś",
-					description: "mark retroflex s with accent",
-					regex: /S/g
+					description: "mark retroflex s with accent"
 				},
 				{
 					key: "49",
 					seek: "N",
 					replace: "ń",
-					description: "mark retroflex n with accent",
-					regex: /N/g
+					description: "mark retroflex n with accent"
 				}
 			],
 			editing: null
