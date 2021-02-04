@@ -107,6 +107,9 @@ export function setWordlistMulticolumn(payload: boolean) {
 export function setWordsPerWordlist(payload: types.Fifty_OneThousand) {
 	return {type: consts.SET_WORDS_PER_WORDLIST, payload};
 }
+export function setCustomInfo(payload: string[]) {
+	return {type: consts.SET_CUSTOM_INFO, payload};
+}
 // Modals
 export function openModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
@@ -123,4 +126,7 @@ export function clearEverything() {
 }
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload };
+}
+export function loadCustomInfo(payload: types.CustomInfo) {
+	return {type: consts.LOAD_CUSTOM_INFO, payload };
 }

@@ -8,7 +8,7 @@ import debounce from './Debounce';
 const reduceAppSettings = (original: types.AppSettings) => {
 	return {...original};
 };
-const reduceCategory = (original: types.WGCategoryStateObject, newMap: types.CategoryMap[]= original.map) => {
+const reduceCategory = (original: types.WGCategoryStateObject, newMap: types.CategoryMap[] = original.map) => {
 	let map: types.CategoryMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
@@ -127,7 +127,8 @@ export const initialAppState: types.StateObject = {
 		capitalizeWords: false,
 		sortWordlist: true,
 		wordlistMultiColumn: true,
-		wordsPerWordlist: 250
+		wordsPerWordlist: 250,
+		customInfo: []
 	},
 	modalState: {
 		AppTheme: false,
@@ -136,7 +137,8 @@ export const initialAppState: types.StateObject = {
 		AddRewriteRule: false,
 		EditRewriteRule: false,
 		PresetPopup: false,
-		OutputOptions: false
+		OutputOptions: false,
+		ManageCustomInfo: false
 	}
 };
 export const blankAppState: types.StateObject = {
@@ -169,7 +171,8 @@ export const blankAppState: types.StateObject = {
 		capitalizeWords: false,
 		sortWordlist: true,
 		wordlistMultiColumn: true,
-		wordsPerWordlist: 250
+		wordsPerWordlist: 250,
+		customInfo: []
 	},
 	modalState: {
 		AppTheme: false,
@@ -178,7 +181,8 @@ export const blankAppState: types.StateObject = {
 		AddRewriteRule: false,
 		EditRewriteRule: false,
 		PresetPopup: false,
-		OutputOptions: false
+		OutputOptions: false,
+		ManageCustomInfo: false
 	}
 };
 
@@ -508,6 +512,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
+		case consts.SET_CUSTOM_INFO:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					customInfo: payload
+				}
+			};
+			break;
 		// Modals
 		case consts.TOGGLE_MODAL:
 			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
@@ -556,6 +569,18 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.OVERWRITE_STATE:
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
+			break;
+		case consts.LOAD_CUSTOM_INFO:
+			final = {
+				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
+				categories: payload[0],
+				syllables: payload[1],
+				rewriteRules: payload[2],
+				wordgenSettings: {
+					...state.wordgenSettings,
+					...payload[3]
+				}
+			};
 			break;
 	}
 	// Some sort of store-state function goes here

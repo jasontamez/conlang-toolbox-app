@@ -40,6 +40,7 @@ import {
 } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
+import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
 import '../WordGen.css';
 
@@ -79,6 +80,7 @@ const WGSet = () => {
 	return (
 		<IonPage>
 			<MaybeLoadPreset />
+			<ManageCustomInfo />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -94,8 +96,7 @@ const WGSet = () => {
 						<div style={ { display: "flex", justifyContent: "center", alignContent: "flex-start", alignItems: "center", flexFlow: "row wrap" } }>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load Preset</IonButton>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Clear All Fields</IonButton>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="primary" shape="round">Save Custom Info</IonButton>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="warning" shape="round">Load Custom Info</IonButton>
+							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => dispatch(openModal("ManageCustomInfo"))} strong={true} color="primary" shape="round">Save/Load Custom Info</IonButton>
 						</div>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>

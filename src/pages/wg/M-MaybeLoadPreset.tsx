@@ -10,7 +10,8 @@ import {
 	IonButtons,
 	IonButton,
 	IonTitle,
-	IonModal
+	IonModal,
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -25,9 +26,6 @@ const MaybeLoadPresetModal = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const modalState = state.modalState;
-	const cancelLoadPreset = () => {
-		dispatch(closeModal('PresetPopup'));
-	};
 	const settings = state.appSettings;
 	const maybeLoadPreset = (preset: string) => {
 		const thenFunc = (result: any) => {
@@ -61,7 +59,7 @@ const MaybeLoadPresetModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Load Preset</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => cancelLoadPreset()}>
+						<IonButton onClick={() => dispatch(closeModal('PresetPopup'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -90,12 +88,14 @@ const MaybeLoadPresetModal = () => {
 					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-English')}>
 						<IonLabel>Pseudo-English</IonLabel>
 					</IonItem>
-					<IonItem color="danger" button={true} onClick={() => cancelLoadPreset()}>
-						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
-					</IonItem>
 				</IonList>
 			</IonContent>
+			<IonFooter>
+				<IonItem color="danger" button={true} onClick={() => dispatch(closeModal('PresetPopup'))}>
+					<IonIcon icon={closeCircleSharp} slot="start" />
+					<IonLabel>Cancel</IonLabel>
+				</IonItem>
+			</IonFooter>
 		</IonModal>
 	);
 };

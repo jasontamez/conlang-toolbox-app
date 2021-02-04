@@ -8,7 +8,6 @@ export type OutputTypes = "text" | "wordlist" | "syllables";
 export type PresetObject = Map<string, Preset>;
 export type CategoryMap = [string, WGCategoryObject];
 
-// helper functions and such
 export type Preset = {
 	categories: WGCategoryStateObject
 	syllables: WGSyllableStateObject
@@ -75,6 +74,7 @@ export interface WGSettingsObject {
 	sortWordlist?: boolean
 	wordlistMultiColumn?: boolean
 	wordsPerWordlist?: Fifty_OneThousand
+	customInfo?: string[]
 }
 
 export interface ModalStateObject {
@@ -85,7 +85,10 @@ export interface ModalStateObject {
 	EditRewriteRule: boolean
 	PresetPopup: boolean
 	OutputOptions: boolean
+	ManageCustomInfo: boolean
 }
+
+export type CustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
 
 export interface AppSettings {
 	theme: string,
