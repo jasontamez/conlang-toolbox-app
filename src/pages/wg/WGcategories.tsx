@@ -44,7 +44,7 @@ const WGCat = () => {
 	};
 	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
-		$q(".rewriterules").closeSlidingItems();
+		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				dispatch(deleteCategory(label));
