@@ -129,8 +129,8 @@ export function clearEverything() {
 	return {type: consts.CLEAR_EVERYTHING, payload: null};
 }
 export function overwriteState(payload: types.StateObject) {
-	return {type: consts.OVERWRITE_STATE, payload };
+	return {type: consts.OVERWRITE_STATE, payload};
 }
 export function loadCustomInfo(payload: types.CustomInfo) {
-	return {type: consts.LOAD_CUSTOM_INFO, payload };
+	return {type: consts.LOAD_CUSTOM_INFO, payload};
 }

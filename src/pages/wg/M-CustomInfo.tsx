@@ -39,7 +39,6 @@ const ManageCustomInfo = () => {
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
 		let newInfo: string[] = [];
-		console.log(title);
 		if(title === "") {
 			// Do nothing
 			return;
@@ -147,7 +146,7 @@ const ManageCustomInfo = () => {
 						</IonItemDivider>
 						<IonItem>
 							<IonInput id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
-							<IonButton slot="end" onClick={() => maybeSaveInfo()} color="success">Save</IonButton>
+							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup>
