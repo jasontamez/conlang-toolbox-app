@@ -5,8 +5,12 @@ ion-row:nth-child(odd) {
 	background: transparent;
 }
 
-#conlangToolbox #appSettingsPage p {
+#conlangToolbox .possiblyLargeLabel p,
+#conlangToolbox .possiblyLargeLabel h2 {
 	padding: 0;
 	text-indent: 0;
 	white-space: normal;
+}
+#conlangToolbox .important {
+	color: var(--ion-text-color);
 }

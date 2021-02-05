@@ -155,8 +155,11 @@ const ManageCustomInfo = () => {
 						</IonItemDivider>
 						{customInfo.map((title: string) => {
 							return (
-								<IonItem key={title} button={true} onClick={() => maybeLoadInfo(title)}>
-									<IonLabel>{title}</IonLabel>
+								<IonItem key={title}>
+									<IonLabel className="possiblyLargeLabel">
+										<h2 className="important">{title}</h2>
+									</IonLabel>
+									<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
 								</IonItem>
 							);
 						})}
