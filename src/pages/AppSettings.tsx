@@ -63,9 +63,9 @@ const WG = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList id="appSettingsPage">
+				<IonList>
 					<IonItem>
-						<IonLabel>
+						<IonLabel className="possiblyLargeLabel">
 							<h2>Disable Confirmation Prompts</h2>
 							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>
 						</IonLabel>
