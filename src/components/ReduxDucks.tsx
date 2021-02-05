@@ -81,6 +81,9 @@ const reduceWGSettings = (original: types.WGSettingsObject) => {
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
+const reduceViewState = (original: types.ViewStateObject) => {
+	return {...original};
+}
 
 
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
@@ -89,7 +92,8 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["syllables", reduceSyllables],
 	["rewriteRules", reduceRewriteRules],
 	["wordgenSettings", reduceWGSettings],
-	["modalState", reduceModalState]
+	["modalState", reduceModalState],
+	["viewState", reduceViewState]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
@@ -139,6 +143,11 @@ export const initialAppState: types.StateObject = {
 		PresetPopup: false,
 		OutputOptions: false,
 		ManageCustomInfo: false
+	},
+	viewState: {
+		wg: 'home',
+		we: 'home',
+		ls: 'home'
 	}
 };
 export const blankAppState: types.StateObject = {
@@ -183,6 +192,11 @@ export const blankAppState: types.StateObject = {
 		PresetPopup: false,
 		OutputOptions: false,
 		ManageCustomInfo: false
+	},
+	viewState: {
+		wg: 'home',
+		we: 'home',
+		ls: 'home'
 	}
 };
 
@@ -528,6 +542,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["modalState"], state),
 				modalState: newModal
+			};
+			break;
+		// Views
+		case consts.CHANGE_VIEW:
+			let newView: types.ViewStateObject = reduceViewState(state.viewState);
+			newView[payload.app as keyof types.ViewStateObject] = payload.page;
+			final = {
+				...reduceAllBut(["viewState"], state),
+				viewState: newView
 			};
 			break;
 		// Presets

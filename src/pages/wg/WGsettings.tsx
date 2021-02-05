@@ -15,7 +15,8 @@ import {
 	IonIcon,
 	IonToggle,
 	IonInput,
-	IonButton
+	IonButton,
+	useIonViewDidEnter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
@@ -31,7 +32,8 @@ import {
 	setExclamatoryPre,
 	setExclamatoryPost,
 	openModal,
-	clearEverything
+	clearEverything,
+	changeView
 } from '../../components/ReduxDucksFuncs';
 import {
 	Zero_OneHundred,
@@ -46,6 +48,9 @@ import '../WordGen.css';
 
 const WGSet = () => {
 	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'settings'));
+	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settingsWG = state.wordgenSettings;
 	const settings = state.appSettings;

@@ -39,3 +39,4 @@ export const LOAD_PRESET = p+"LOAD_PRESET";
 export const CLEAR_EVERYTHING = p+"CLEAR_EVERYTHING";
 export const OVERWRITE_STATE = p+"OVERWRITE_STATE";
 export const LOAD_CUSTOM_INFO = p+"LOAD_CUSTOM_INFO";
+export const CHANGE_VIEW = p+"CHANGE_VIEW";

@@ -88,6 +88,12 @@ export interface ModalStateObject {
 	ManageCustomInfo: boolean
 }
 
+export interface ViewStateObject {
+	wg: string
+	we: string
+	ls: string
+}
+
 export type CustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
 
 export interface AppSettings {
@@ -102,5 +108,6 @@ export interface StateObject {
 	rewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
 	modalState: ModalStateObject
+	viewState: ViewStateObject
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.

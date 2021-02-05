@@ -117,6 +117,10 @@ export function openModal(payload: keyof types.ModalStateObject) {
 export function closeModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
+// Views
+export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
+	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
+}
 // Presets
 export function loadPreset(payload: string) {
 	return {type: consts.LOAD_PRESET, payload};

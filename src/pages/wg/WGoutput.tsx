@@ -10,7 +10,8 @@ import {
 	IonList,
 	IonButton,
 	IonItem,
-	IonIcon
+	IonIcon,
+	useIonViewDidEnter
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -18,7 +19,7 @@ import {
 	WGRewriteRuleObject,
 	WGCategoryObject
 } from '../../components/ReduxDucksTypes';
-import { openModal } from '../../components/ReduxDucksFuncs';
+import { openModal, changeView } from '../../components/ReduxDucksFuncs';
 import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import OutputOptionsModal from './M-OutputOptions';
@@ -26,7 +27,10 @@ import '../WordGen.css';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
-	// Pseudo-text needs no special formatting, wrap entirely in a <div>
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'output'));
+	});
+		// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
 	const $d = (text: string) => {

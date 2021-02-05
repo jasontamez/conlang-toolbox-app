@@ -11,16 +11,20 @@ import {
 	IonItem,
 	IonLabel,
 	IonTextarea,
-	IonToggle
+	IonToggle,
+	useIonViewDidEnter
 } from '@ionic/react';
 import '../WordGen.css';
 import { $i } from '../../components/DollarSignExports';
-import { toggleSyllables, editSyllables } from '../../components/ReduxDucksFuncs';
+import { toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'syllables'));
+	});
 	const syllableObject = useSelector((state: any) => state.syllables, shallowEqual);
 	const toggleableClassName = (base: string = "") => {
 		let extra = " toggleable";

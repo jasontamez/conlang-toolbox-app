@@ -15,7 +15,8 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	IonItem,
-	IonLabel
+	IonLabel,
+	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline,
@@ -24,7 +25,13 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
-import { openModal, startEditRewriteRule, deleteRewriteRule, reorderRewriteRules } from '../../components/ReduxDucksFuncs';
+import {
+	openModal,
+	startEditRewriteRule,
+	deleteRewriteRule,
+	reorderRewriteRules,
+	changeView
+} from '../../components/ReduxDucksFuncs';
 import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
 import { $q } from '../../components/DollarSignExports';
@@ -33,6 +40,9 @@ import '../WordGen.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'rewriterules'));
+	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const rulesObject = state.rewriteRules;
 	const rules = rulesObject.list;

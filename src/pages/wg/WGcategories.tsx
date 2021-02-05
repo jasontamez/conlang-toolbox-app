@@ -15,13 +15,14 @@ import {
 	IonButtons,
 	IonTitle,
 	IonFab,
-	IonFabButton
+	IonFabButton,
+	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, startEditCategory, deleteCategory } from '../../components/ReduxDucksFuncs';
+import { openModal, startEditCategory, deleteCategory, changeView } from '../../components/ReduxDucksFuncs';
 import { CategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
@@ -30,6 +31,9 @@ import fireSwal from '../../components/Swal';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'categories'));
+	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const categoryObject = state.categories;
 	var categories: CategoryMap[] = categoryObject.map;

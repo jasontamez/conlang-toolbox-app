@@ -11,7 +11,8 @@ import {
 	IonCardContent,
 	IonIcon,
 	IonItem,
-	IonLabel
+	IonLabel,
+	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	gridOutline,
@@ -23,10 +24,16 @@ import {
 	chevronUpCircleOutline,
 	settingsOutline
 } from 'ionicons/icons';
+import { useDispatch } from "react-redux";
+import { changeView } from '../../components/ReduxDucksFuncs';
 import I from '../../components/IPA';
 import '../WordGen.css';
 
 const WGHome = () => {
+	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('wg', 'home'));
+	});	
 	return (
 		<IonPage>
 			<IonHeader>
