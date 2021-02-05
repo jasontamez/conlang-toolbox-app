@@ -97,11 +97,12 @@ export interface ViewStateObject {
 export type CustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
 
 export interface AppSettings {
-	theme: string,
+	theme: string
 	disableConfirms: boolean
 }
 
 export interface StateObject {
+	currentVersion: string
 	appSettings: AppSettings
 	categories: WGCategoryStateObject
 	syllables: WGSyllableStateObject

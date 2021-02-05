@@ -1,4 +1,8 @@
 // constants (actions)
+export const VERSION = {
+	current: "1.0"
+};
+
 const p = "conlangs-toolbox/reducer/";
 export const CHANGE_THEME = p+"CHANGE_THEME";
 export const TOGGLE_DISABLE_CONFIRM = p+"TOGGLE_DISABLE_CONFIRM";

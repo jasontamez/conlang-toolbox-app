@@ -87,6 +87,7 @@ const reduceViewState = (original: types.ViewStateObject) => {
 
 
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
+	["currentVersion", (v: string) => v],
 	["appSettings", reduceAppSettings],
 	["categories", reduceCategory],
 	["syllables", reduceSyllables],
@@ -116,6 +117,7 @@ const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObje
 };
 const simple: types.Preset = Presets.get("Simple")!;
 export const initialAppState: types.StateObject = {
+	currentVersion: "0.1",
 	appSettings: {
 		theme: "Default",
 		disableConfirms: false
@@ -151,6 +153,7 @@ export const initialAppState: types.StateObject = {
 	}
 };
 export const blankAppState: types.StateObject = {
+	currentVersion: "0.1",
 	appSettings: {
 		theme: "Default",
 		disableConfirms: false

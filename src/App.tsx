@@ -38,6 +38,8 @@ import './theme/variables.css';
 
 import { checkIfState, initialAppState } from './components/ReduxDucks';
 import { overwriteState } from './components/ReduxDucksFuncs';
+import { VERSION } from './components/ReduxDucksConst';
+import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { Plugins } from '@capacitor/core';
 
@@ -57,9 +59,15 @@ const App = () => {
 				const value = result.value;
 				if(value !== null) {
 					const state = JSON.parse(value);
-					if(checkIfState(state)) {
-						console.log("State found");
-						return dispatch(overwriteState(state));
+					if(state && typeof state === "object") {
+						state.currentVersion = VERSION.current;
+						if (compareVersions.compare(state.currentVersion, VERSION.current, "<=")) {
+							// Do stuff to possibly bring state up to date
+						}
+						if(checkIfState(state)) {
+							console.log("State found");
+							return dispatch(overwriteState(state));
+						}
 					}
 				}
 				console.log("No state found");
