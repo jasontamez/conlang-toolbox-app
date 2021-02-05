@@ -570,7 +570,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.CLEAR_EVERYTHING:
+		case consts.CLEAR_EVERYTHING_WG:
 			final = {
 				...reduceAllBut(["categories", "syllables", "rewriteRules"], state),
 				categories: {

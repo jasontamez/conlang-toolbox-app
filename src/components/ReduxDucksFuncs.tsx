@@ -126,7 +126,7 @@ export function loadPreset(payload: string) {
 	return {type: consts.LOAD_PRESET, payload};
 }
 export function clearEverything() {
-	return {type: consts.CLEAR_EVERYTHING, payload: null};
+	return {type: consts.CLEAR_EVERYTHING_WG, payload: null};
 }
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload};
