@@ -61,10 +61,10 @@ const AddRewriteRuleModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(newRule.replace === "") {
-			$q(".replaceLabel").classList.add("invalidValue");
-			err.push("No replacement expression present");
-		}
+		//if(newRule.replace === "") {
+		//	$q(".replaceLabel").classList.add("invalidValue");
+		//	err.push("No replacement expression present");
+		//}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({
