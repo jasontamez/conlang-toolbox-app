@@ -81,7 +81,7 @@ const AddCategoryModal = () => {
 			$i("shortLabel").value = label;
 		}
 	};
-	const maybeSaveNewCat = () => {
+	const maybeSaveNewCat = (close: boolean = true) => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCat
 		if(newCat.title === "") {
@@ -109,7 +109,7 @@ const AddCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('AddCategory'));
+		close && dispatch(closeModal('AddCategory'));
 		dispatch(addCategory(newCat));
 		hardReset();
 		fireSwal({
@@ -153,9 +153,13 @@ const AddCategoryModal = () => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat()}>
+				<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Category</IonLabel>
+					</IonButton>
+					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCat()}>
+						<IonIcon icon={addOutline} slot="start" />
+						<IonLabel>Add Category and Close</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

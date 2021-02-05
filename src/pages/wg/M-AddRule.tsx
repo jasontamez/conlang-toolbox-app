@@ -54,7 +54,7 @@ const AddRewriteRuleModal = () => {
 		let where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const maybeSaveNewRule = () => {
+	const maybeSaveNewRule = (close: boolean = true) => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the newRule
 		if(newRule.seek === "") {
@@ -77,7 +77,7 @@ const AddRewriteRuleModal = () => {
 		// Everything ok!
 		// Create unique ID for this rule
 		newRule.key = uuidv4();
-		dispatch(closeModal('AddRewriteRule'));
+		close && dispatch(closeModal('AddRewriteRule'));
 		dispatch(addRewriteRule(newRule));
 		hardReset();
 		fireSwal({
@@ -118,9 +118,13 @@ const AddRewriteRuleModal = () => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRule()}>
+				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRule(false)}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Rule</IonLabel>
+					</IonButton>
+					<IonButton color="success" slot="end" onClick={() => maybeSaveNewRule()}>
+						<IonIcon icon={addOutline} slot="start" />
+						<IonLabel>Add Rule and Close</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
