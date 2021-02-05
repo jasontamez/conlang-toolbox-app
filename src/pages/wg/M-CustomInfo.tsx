@@ -19,7 +19,8 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	closeCircleSharp
+	closeCircleSharp,
+	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
@@ -120,11 +121,38 @@ const ManageCustomInfo = () => {
 			thenFunc();
 		} else {
 			fireSwal({
-				title: "Load " + title + "?",
+				title: "Load \"" + title + "\"?",
 				text: "This will clear and overwrite all current categories, syllables, rules and settings.",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: "Yes, load it."
+			}).then((result: any) => { result.isConfirmed && thenFunc() });
+		}
+	};
+	const maybeDeleteInfo = (title: string) => {
+		const thenFunc = () => {
+			let newCI: string[] = customInfo.filter(item => item !== title);
+			dispatch(setCustomInfo(newCI));
+			Storage.remove({key: "customInfo"+title}).then(() => {
+				fireSwal({
+					title: "\"" + title + "\" deleted",
+					toast: true,
+					timer: 2500,
+					customClass: {popup: 'dangerToast'},
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			});
+		};
+		if(settings.disableConfirms) {
+			thenFunc();
+		} else {
+			fireSwal({
+				title: "Delete \"" + title + "\"?",
+				text: "This cannot be undone.",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
 			}).then((result: any) => { result.isConfirmed && thenFunc() });
 		}
 	};
@@ -162,6 +190,7 @@ const ManageCustomInfo = () => {
 										<h2 className="important">{title}</h2>
 									</IonLabel>
 									<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
+									<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
 								</IonItem>
 							);
 						})}
