@@ -30,7 +30,7 @@ const WGOut = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'output'));
 	});
-		// Pseudo-text needs no special formatting, wrap entirely in a <div>
+	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
 	const $d = (text: string) => {
