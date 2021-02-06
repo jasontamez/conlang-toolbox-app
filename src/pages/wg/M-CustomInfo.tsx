@@ -23,7 +23,7 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
+import '../App.css';
 import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
 import { WGCustomInfo } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';

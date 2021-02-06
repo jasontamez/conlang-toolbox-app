@@ -36,7 +36,7 @@ import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../WordGen.css';
+import '../App.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();

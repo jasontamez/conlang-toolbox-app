@@ -23,7 +23,7 @@ import { openModal, changeView } from '../../components/ReduxDucksFuncs';
 import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import OutputOptionsModal from './M-OutputOptions';
-import '../WordGen.css';
+import '../App.css';
 
 const WGOut = () => {
 	const dispatch = useDispatch();

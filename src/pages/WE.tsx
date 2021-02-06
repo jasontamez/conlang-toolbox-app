@@ -25,6 +25,7 @@ import WEOutput from "./we/WEoutput";
 import WESettings from "./we/WEsettings";
 import WEHome from "./we/WEhome";
 import { shallowEqual, useSelector } from "react-redux";
+import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';

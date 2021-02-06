@@ -44,7 +44,7 @@ import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
-import '../WordGen.css';
+import '../App.css';
 
 const WGSet = () => {
 	const dispatch = useDispatch();

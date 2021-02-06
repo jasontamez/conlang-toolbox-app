@@ -14,7 +14,7 @@ import {
 	IonToggle,
 	useIonViewDidEnter
 } from '@ionic/react';
-import '../WordGen.css';
+import '../App.css';
 import { $i } from '../../components/DollarSignExports';
 import { toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';

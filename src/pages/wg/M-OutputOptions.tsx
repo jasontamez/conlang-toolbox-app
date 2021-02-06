@@ -37,7 +37,7 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { closeModal } from '../../components/ReduxDucksFuncs';
-import '../WordGen.css';
+import '../App.css';
 
 const OutputOptionsModal = () => {
 	const dispatch = useDispatch();

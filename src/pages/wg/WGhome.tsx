@@ -27,7 +27,7 @@ import {
 import { useDispatch } from "react-redux";
 import { changeView } from '../../components/ReduxDucksFuncs';
 import I from '../../components/IPA';
-import '../WordGen.css';
+import '../App.css';
 
 const WGHome = () => {
 	const dispatch = useDispatch();

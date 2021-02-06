@@ -9,7 +9,7 @@ import {
 	IonTitle
 } from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
-import '../WordEvolve.css';
+import '../App.css';
 
 const WESyl = () => {
 	return (

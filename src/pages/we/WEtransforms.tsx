@@ -36,7 +36,7 @@ import AddTransformModal from './M-AddTransform';
 import EditTransformModal from './M-EditTransform';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../WordEvolve.css';
+import '../App.css';
 
 const WERew = () => {
 	const dispatch = useDispatch();

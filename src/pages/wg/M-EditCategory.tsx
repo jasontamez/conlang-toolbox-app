@@ -20,7 +20,7 @@ import {
 	saveOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
+import '../App.css';
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
 import { closeModal, doEditCategoryWG, cancelEditCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';

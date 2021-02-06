@@ -26,7 +26,8 @@
 }
 
 .categories .categoryLongName,
-.rewriterules .description {
+.rewriterules .description,
+.transforms .description {
 	font-size: smaller;
 	font-style: italic;
 }
@@ -35,7 +36,8 @@
 	font-family: 'Noto Serif', 'Georgia', serif;
 }
 .categories .categoryRun .label,
-.rewriterules .ruleExpression {
+.rewriterules .ruleExpression,
+.transforms .transformExpression {
 	font-weight: bold;
 }
 .categories .categoryRun .label::after {
@@ -44,23 +46,28 @@
 }
 .rewriterules .ruleExpression .seek,
 .rewriterules .ruleExpression .replace,
+.transforms .transformExpression .seek,
+.transforms .transformExpression .replace,
 #conlangToolbox .boxed {
 	display: inline-block;
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-input-border);
 }
 .rewriterules .ruleExpression .arrow,
+.transforms .transformExpression .arrow,
 #conlangToolbox .separateBoxes {
 	display: inline-block;
 	font-weight: bold;
 	padding: 0 0.5em;
 	letter-spacing: 0;
 }
-.rewriterules .upDownButtons {
+.rewriterules .upDownButtons,
+.transforms .upDownButtons {
 	width: 4em;
 	text-align: center;
 }
-.rewriterules .upDownButtons ion-icon {
+.rewriterules .upDownButtons ion-icon,
+.transforms .upDownButtons ion-icon {
 	font-size: 32px;
 	color: var(--ion-color-tertiary-shade);
 }
