@@ -189,6 +189,11 @@ export const initialAppState: types.StateObject = {
 		list: [],
 		editing: null
 	},
+	wordevolveSoundChanges: {
+		list: [],
+		editing: null
+	},
+	wordevolveInput: [],
 	modalState: {
 		AppTheme: false,
 		AddCategory: false,
@@ -251,6 +256,11 @@ export const blankAppState: types.StateObject = {
 		list: [],
 		editing: null
 	},
+	wordevolveSoundChanges: {
+		list: [],
+		editing: null
+	},
+	wordevolveInput: [],
 	modalState: {
 		AppTheme: false,
 		AddCategory: false,

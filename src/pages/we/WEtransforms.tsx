@@ -41,7 +41,7 @@ import '../WordEvolve.css';
 const WERew = () => {
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'transforms'));
+		dispatch(changeView('we', 'transforms'));
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const transformObject = state.wordevolveTransforms;

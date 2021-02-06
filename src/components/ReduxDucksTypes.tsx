@@ -107,6 +107,22 @@ export interface WETransformStateObject {
 	editing: null | string
 }
 
+export interface WESoundChangesObject {
+	key: string
+	seek: string
+	replace: string
+	context: string
+	anticontext: string
+	description: string
+}
+
+export interface WESoundchangesStateObject {
+	list: WESoundChangesObject[]
+	editing: null | string
+}
+
+type WEInputObject = string[]
+
 
 export interface ModalStateObject {
 	AppTheme: boolean
@@ -144,6 +160,8 @@ export interface StateObject {
 	wordgenSettings: WGSettingsObject
 	wordevolveCategories: WECategoryStateObject
 	wordevolveTransforms: WETransformStateObject
+	wordevolveSoundChanges: WESoundchangesStateObject
+	wordevolveInput: WEInputObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
 }
