@@ -32,8 +32,8 @@ import {
 	reorderTransformsWE,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-//import AddTransformModal from './M-AddTransform';
-//import EditTransformModal from './M-EditTransform';
+import AddTransformModal from './M-AddTransform';
+import EditTransformModal from './M-EditTransform';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import '../WordEvolve.css';
@@ -41,7 +41,7 @@ import '../WordEvolve.css';
 const WERew = () => {
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'transforms'));
+		dispatch(changeView('we', 'transformations'));
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const transformObject = state.wordevolveTransforms;
@@ -53,11 +53,14 @@ const WERew = () => {
 		dispatch(openModal('EditTransform'));
 	};
 	const settings = state.appSettings;
-	const maybeDeleteTransform = (label: any, seek: any, replace: any) => {
+	const makeArrow = (dir: string) => {
+		return dir === "in" ? "⟶" : (dir === "out" ? "⟵" : "⟷");
+	};
+	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteTransformWE(label));
+				dispatch(deleteTransformWE(trans));
 				fireSwal({
 					title: "Rewrite Rule deleted",
 					customClass: {popup: 'dangerToast'},
@@ -72,7 +75,7 @@ const WERew = () => {
 			thenFunc({isConfirmed: true});
 		} else {
 			fireSwal({
-				title: "Delete " + seek + "➜" + replace + "?",
+				title: "Delete " + trans.seek + " " + makeArrow(trans.direction) + " " + trans.replace + "?",
 				text: "Are you sure? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
@@ -95,8 +98,6 @@ const WERew = () => {
 		let moving = keys[i];
 		dispatch(reorderTransformsWE(begin.concat(moved, moving, end)));
 	};
-	let AddTransformModal = () => ( <div style={ { display: "none" } }></div> );
-	let EditTransformModal = () => ( <div style={ { display: "none" } }></div> );
 	return (
 		<IonPage>
 			<AddTransformModal />
@@ -111,33 +112,33 @@ const WERew = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="transforms units" lines="none">
-					{transform.map((rr: WETransformObject, i: number) => (
-						<IonItemSliding key={rr.key}>
+					{transform.map((trans: WETransformObject, i: number) => (
+						<IonItemSliding key={trans.key}>
 							<IonItemOptions side="end">
-								<IonItemOption color="tertiary" onClick={() => editTransform(rr.key)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteTransform(rr.key, rr.seek, rr.replace)}>Delete</IonItemOption>
+								<IonItemOption color="tertiary" onClick={() => editTransform(trans.key)}>Edit</IonItemOption>
+								<IonItemOption color="danger" onClick={() => maybeDeleteTransform(trans)}>Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
 								<div className="upDownButtons ion-margin-end">
 									{(transform.length === 1) ? ""
-										: ((i === 0) ? (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} style={ { marginLeft: "32px" } } />)
-											: ((i + 1 === transform.length) ? (<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} style={ { marginRight: "32px" } } />)
-												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} />)]))}
+										: ((i === 0) ? (<IonIcon icon={chevronDownCircleOutline} key={"d_"+trans.key} onClick={() => moveDown(i)} style={ { marginLeft: "32px" } } />)
+											: ((i + 1 === transform.length) ? (<IonIcon icon={chevronUpCircleOutline} key={"u_"+trans.key} onClick={() => moveUp(i)} style={ { marginRight: "32px" } } />)
+												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+trans.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+trans.key} onClick={() => moveDown(i)} />)]))}
 								</div>
 								<IonLabel>
-									<div className="ruleExpression serifChars">
-										<span className="seek">{rr.seek}</span>
-										<span className="arrow">➜</span>
-										<span className="replace">{rr.replace}</span>
+									<div className="transformExpression serifChars">
+										<span className="seek">{trans.seek}</span>
+										<span className="arrow">{makeArrow(trans.direction)}</span>
+										<span className="replace">{trans.replace}</span>
 									</div>
-									<div className="description">{rr.description}</div>
+									<div className="description">{trans.description}</div>
 								</IonLabel>
 							</IonItem>
 						</IonItemSliding>
 					))}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new rewrite rule" onClick={() => dispatch(openModal('AddTransform'))}>
+					<IonFabButton color="tertiary" title="Add new transform" onClick={() => dispatch(openModal('AddTransform'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

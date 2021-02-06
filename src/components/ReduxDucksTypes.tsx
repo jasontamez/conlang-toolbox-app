@@ -99,6 +99,7 @@ export interface WETransformObject {
 	key: string
 	seek: string
 	replace: string
+	direction: "both" | "in" | "out"
 	description: string
 }
 
