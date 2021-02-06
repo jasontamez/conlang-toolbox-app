@@ -22,7 +22,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, addCategory } from '../../components/ReduxDucksFuncs';
+import { closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
@@ -110,7 +110,7 @@ const AddCategoryModal = () => {
 		}
 		// Everything ok!
 		close && dispatch(closeModal('AddCategory'));
-		dispatch(addCategory(newCat));
+		dispatch(addCategoryWG(newCat));
 		hardReset();
 		fireSwal({
 			title: "Category added!",

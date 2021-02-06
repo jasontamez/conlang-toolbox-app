@@ -21,7 +21,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditRewriteRule, cancelEditRewriteRule } from '../../components/ReduxDucksFuncs';
+import { closeModal, doEditRewriteRuleWG, cancelEditRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
 
@@ -54,7 +54,7 @@ const EditRewriteRuleModal = () => {
 		return true;
 	});
 	const cancelEditing = () => {
-		dispatch(cancelEditRewriteRule(editing));
+		dispatch(cancelEditRewriteRuleWG(editing));
 		dispatch(closeModal('EditRewriteRule'));
 	};
 	function setNewInfo<
@@ -90,7 +90,7 @@ const EditRewriteRuleModal = () => {
 		}
 		// Everything ok!
 		dispatch(closeModal('EditRewriteRule'));
-		dispatch(doEditRewriteRule(editingRule));
+		dispatch(doEditRewriteRuleWG(editingRule));
 		hardReset();
 		fireSwal({
 			title: "Rewrite Rule saved!",

@@ -27,9 +27,9 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import {
 	openModal,
-	startEditRewriteRule,
-	deleteRewriteRule,
-	reorderRewriteRules,
+	startEditRewriteRuleWG,
+	deleteRewriteRuleWG,
+	reorderRewriteRulesWG,
 	changeView
 } from '../../components/ReduxDucksFuncs';
 import AddRewriteRuleModal from './M-AddRule';
@@ -49,7 +49,7 @@ const WGRew = () => {
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
-		dispatch(startEditRewriteRule(label));
+		dispatch(startEditRewriteRuleWG(label));
 		dispatch(openModal('EditRewriteRule'));
 	};
 	const settings = state.appSettings;
@@ -57,7 +57,7 @@ const WGRew = () => {
 		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteRewriteRule(label));
+				dispatch(deleteRewriteRuleWG(label));
 				fireSwal({
 					title: "Rewrite Rule deleted",
 					customClass: {popup: 'dangerToast'},
@@ -86,14 +86,14 @@ const WGRew = () => {
 		let moved = begin.pop();
 		let moving = keys[i];
 		let end = keys.slice(i + 1);
-		dispatch(reorderRewriteRules(begin.concat(moving, moved, end)));
+		dispatch(reorderRewriteRulesWG(begin.concat(moving, moved, end)));
 	};
 	const moveDown = (i: number) => {
 		let begin = keys.slice(0, i);
 		let end = keys.slice(i + 1);
 		let moved = end.shift();
 		let moving = keys[i];
-		dispatch(reorderRewriteRules(begin.concat(moved, moving, end)));
+		dispatch(reorderRewriteRulesWG(begin.concat(moved, moving, end)));
 	};
 	return (
 		<IonPage>

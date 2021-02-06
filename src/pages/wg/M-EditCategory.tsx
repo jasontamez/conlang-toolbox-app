@@ -22,7 +22,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditCategory, cancelEditCategory } from '../../components/ReduxDucksFuncs';
+import { closeModal, doEditCategoryWG, cancelEditCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
@@ -95,7 +95,7 @@ const EditCategoryModal = () => {
 		}
 	};
 	const cancelEditing = () => {
-		dispatch(cancelEditCategory(editing));
+		dispatch(cancelEditCategoryWG(editing));
 		dispatch(closeModal('EditCategory'));
 	};
 	const maybeSaveNewInfo = () => {
@@ -127,7 +127,7 @@ const EditCategoryModal = () => {
 		}
 		// Everything ok!
 		dispatch(closeModal('EditCategory'));
-		dispatch(doEditCategory(editingCat));
+		dispatch(doEditCategoryWG(editingCat));
 		hardReset();
 		fireSwal({
 			title: "Category saved!",

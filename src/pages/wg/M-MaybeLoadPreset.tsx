@@ -19,7 +19,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { closeModal, loadPreset } from '../../components/ReduxDucksFuncs';
+import { closeModal, loadPresetWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 
 const MaybeLoadPresetModal = () => {
@@ -30,7 +30,7 @@ const MaybeLoadPresetModal = () => {
 	const maybeLoadPreset = (preset: string) => {
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(loadPreset(preset));
+				dispatch(loadPresetWG(preset));
 				fireSwal({
 					title: "Preset \"" + preset + "\" loaded",
 					toast: true,

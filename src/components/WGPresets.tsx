@@ -1,6 +1,6 @@
 import { PresetObject } from './ReduxDucksTypes';
 
-const Presets: PresetObject = new Map([
+const WGPresets: PresetObject = new Map([
 	["Simple", {
 		categories: {
 			map: [
@@ -984,4 +984,4 @@ const Presets: PresetObject = new Map([
 	}]
 ]);
 
-export default Presets;
+export default WGPresets;

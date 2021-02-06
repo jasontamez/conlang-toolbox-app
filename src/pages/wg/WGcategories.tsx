@@ -22,7 +22,7 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, startEditCategory, deleteCategory, changeView } from '../../components/ReduxDucksFuncs';
+import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
 import { CategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
@@ -39,7 +39,7 @@ const WGCat = () => {
 	var categories: CategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
-		dispatch(startEditCategory(label));
+		dispatch(startEditCategoryWG(label));
 		dispatch(openModal('EditCategory'));
 	};
 	const settings = state.appSettings;
@@ -47,7 +47,7 @@ const WGCat = () => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteCategory(label));
+				dispatch(deleteCategoryWG(label));
 				fireSwal({
 					title: "Category deleted",
 					customClass: {popup: 'dangerToast'},

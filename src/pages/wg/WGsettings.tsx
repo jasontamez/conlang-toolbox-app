@@ -20,17 +20,17 @@ import {
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	setMonoRate,
-	setMaxSyllables,
-	setCategoryDropoff,
-	setSyllableDropoff,
-	setCapitalizeSentences,
-	setDeclarativePre,
-	setDeclarativePost,
-	setInterrogativePre,
-	setInterrogativePost,
-	setExclamatoryPre,
-	setExclamatoryPost,
+	setMonoRateWG,
+	setMaxSyllablesWG,
+	setCategoryDropoffWG,
+	setSyllableDropoffWG,
+	setCapitalizeSentencesWG,
+	setDeclarativePreWG,
+	setDeclarativePostWG,
+	setInterrogativePreWG,
+	setInterrogativePostWG,
+	setExclamatoryPreWG,
+	setExclamatoryPostWG,
 	openModal,
 	clearEverything,
 	changeView
@@ -107,28 +107,28 @@ const WGSet = () => {
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Rate of monosyllable words</IonLabel>
-						<IonRange min={0} max={100} value={settingsWG.monosyllablesRate} pin={true} id="monoRate" onIonBlur={() => doOnBlur(setMonoRate, $i("monoRate").value as Zero_OneHundred)}>
+						<IonRange min={0} max={100} value={settingsWG.monosyllablesRate} pin={true} id="monoRate" onIonBlur={() => doOnBlur(setMonoRateWG, $i("monoRate").value as Zero_OneHundred)}>
 							<IonLabel slot="start">Never</IonLabel>
 							<IonLabel slot="end">Always</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Maximum number of syllables per word</IonLabel>
-						<IonRange min={2} max={15} value={settingsWG.maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} id="maxSyllables" onIonBlur={() => doOnBlur(setMaxSyllables, $i("maxSyllables").value as Two_Fifteen)}>
+						<IonRange min={2} max={15} value={settingsWG.maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} id="maxSyllables" onIonBlur={() => doOnBlur(setMaxSyllablesWG, $i("maxSyllables").value as Two_Fifteen)}>
 							<IonLabel slot="start">2</IonLabel>
 							<IonLabel slot="end">15</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Category run dropoff</IonLabel>
-						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoff, $i("categoryDropoff").value as Zero_Fifty)}>
+						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoffWG, $i("categoryDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Syllable box dropoff</IonLabel>
-						<IonRange min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} id="syllableDropoff" onIonBlur={() => doOnBlur(setSyllableDropoff, $i("syllableDropoff").value as Zero_Fifty)}>
+						<IonRange min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} id="syllableDropoff" onIonBlur={() => doOnBlur(setSyllableDropoffWG, $i("syllableDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -136,31 +136,31 @@ const WGSet = () => {
 					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel>Capitalize sentences</IonLabel>
-						<IonToggle checked={settingsWG.capitalizeSentences} onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))} />
+						<IonToggle checked={settingsWG.capitalizeSentences} onIonChange={e => dispatch(setCapitalizeSentencesWG(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Declarative sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePre} id="decPre" onIonBlur={() => doOnBlur(setDeclarativePre, $i("decPre").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePre} id="decPre" onIonBlur={() => doOnBlur(setDeclarativePreWG, $i("decPre").value as string)} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Declarative sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePost} id="decPost" onIonBlur={() => doOnBlur(setDeclarativePost, $i("decPost").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.declarativeSentencePost} id="decPost" onIonBlur={() => doOnBlur(setDeclarativePostWG, $i("decPost").value as string)} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Interrogative sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePre} id="interPre" onIonBlur={() => doOnBlur(setInterrogativePre, $i("interPre").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePre} id="interPre" onIonBlur={() => doOnBlur(setInterrogativePreWG, $i("interPre").value as string)} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Interrogative sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePost} id="interPost" onIonBlur={() => doOnBlur(setInterrogativePost, $i("interPost").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.interrogativeSentencePost} id="interPost" onIonBlur={() => doOnBlur(setInterrogativePostWG, $i("interPost").value as string)} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Exclamatory sentence beginning</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePre} id="exclPre" onIonBlur={() => doOnBlur(setExclamatoryPre, $i("exclPre").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePre} id="exclPre" onIonBlur={() => doOnBlur(setExclamatoryPreWG, $i("exclPre").value as string)} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Exclamatory sentence ending</IonLabel>
-						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePost} id="exclPost" onIonBlur={() => doOnBlur(setExclamatoryPost, $i("exclPost").value as string)} />
+						<IonInput inputmode="text" maxlength={5} minlength={0} size={3} value={settingsWG.exclamatorySentencePost} id="exclPost" onIonBlur={() => doOnBlur(setExclamatoryPostWG, $i("exclPost").value as string)} />
 					</IonItem>
 				</IonList>
 			</IonContent>

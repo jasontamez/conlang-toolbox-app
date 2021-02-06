@@ -20,7 +20,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { closeModal, addRewriteRule } from '../../components/ReduxDucksFuncs';
+import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
@@ -78,7 +78,7 @@ const AddRewriteRuleModal = () => {
 		// Create unique ID for this rule
 		newRule.key = uuidv4();
 		close && dispatch(closeModal('AddRewriteRule'));
-		dispatch(addRewriteRule(newRule));
+		dispatch(addRewriteRuleWG(newRule));
 		hardReset();
 		fireSwal({
 			title: "Rewrite Rule added!",

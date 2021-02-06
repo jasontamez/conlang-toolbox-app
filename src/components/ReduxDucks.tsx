@@ -1,4 +1,4 @@
-import Presets from './Presets';
+import WGPresets from './WGPresets';
 import { Plugins } from '@capacitor/core';
 import maybeUpdateTheme from './MaybeUpdateTheme';
 import * as consts from './ReduxDucksConst';
@@ -115,7 +115,7 @@ const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObje
 	});
 	return output;
 };
-const simple: types.Preset = Presets.get("Simple")!;
+const simple: types.Preset = WGPresets.get("Simple")!;
 export const initialAppState: types.StateObject = {
 	currentVersion: "0.1",
 	appSettings: {
@@ -242,7 +242,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		// Category
-		case consts.ADD_CATEGORY:
+		case consts.ADD_CATEGORY_WG:
 			CO = state.categories;
 			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
 			let label = payload.label;
@@ -255,7 +255,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				categories: newCategories
 			};
 			break;
-		case consts.START_EDIT_CATEGORY:
+		case consts.START_EDIT_CATEGORY_WG:
 			CO = state.categories;
 			newCategories = reduceCategory(CO);
 			newCategories.editing = payload;
@@ -264,7 +264,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				categories: newCategories
 			};
 			break;
-		case consts.DO_EDIT_CATEGORY:
+		case consts.DO_EDIT_CATEGORY_WG:
 			CO = state.categories;
 			Cmap = CO.map.map(item => {
 				let [label, cat] = item;
@@ -280,7 +280,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				categories: newCategories
 			};
 			break;
-		case consts.CANCEL_EDIT_CATEGORY:
+		case consts.CANCEL_EDIT_CATEGORY_WG:
 			CO = state.categories;
 			newCategories = reduceCategory(CO);
 			newCategories.editing = null;
@@ -289,7 +289,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				categories: newCategories
 			};
 			break;
-		case consts.DELETE_CATEGORY:
+		case consts.DELETE_CATEGORY_WG:
 			CO = state.categories;
 			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
 			Cmap = CO.map.filter((item: types.CategoryMap) => item[0] !== payload).map((item: types.CategoryMap) => [item[0], item[1]]);
@@ -317,14 +317,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		// Rewrite Rules
-		case consts.ADD_REWRITE_RULE:
+		case consts.ADD_REWRITE_RULE_WG:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'add', payload);
 			final = {
 				...reduceAllBut(["rewriteRules"], state),
 				rewriteRules: RO
 			};
 			break;
-		case consts.START_EDIT_REWRITE_RULE:
+		case consts.START_EDIT_REWRITE_RULE_WG:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = payload;
 			final = {
@@ -332,14 +332,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				rewriteRules: RO
 			};
 			break;
-		case consts.DO_EDIT_REWRITE_RULE:
+		case consts.DO_EDIT_REWRITE_RULE_WG:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
 			final = {
 				...reduceAllBut(["rewriteRules"], state),
 				rewriteRules: RO
 			};
 			break;
-		case consts.CANCEL_EDIT_REWRITE_RULE:
+		case consts.CANCEL_EDIT_REWRITE_RULE_WG:
 			RO = reduceRewriteRulesState(state.rewriteRules);
 			RO.editing = null;
 			final = {
@@ -347,14 +347,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				rewriteRules: RO
 			};
 			break;
-		case consts.DELETE_REWRITE_RULE:
+		case consts.DELETE_REWRITE_RULE_WG:
 			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
 			final = {
 				...reduceAllBut(["rewriteRules"], state),
 				rewriteRules: RO
 			};
 			break;
-		case consts.REORDER_REWRITE_RULE:
+		case consts.REORDER_REWRITE_RULE_WG:
 			let SRR = state.rewriteRules;
 			let map = new Map(SRR.list.map(rr => [rr.key, rr]));
 			RO = {
@@ -367,7 +367,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		// Wordgen Settings
-		case consts.SET_MONO_RATE:
+		case consts.SET_MONO_RATE_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -376,7 +376,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_MAX_SYLLABLES:
+		case consts.SET_MAX_SYLLABLES_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -385,7 +385,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_CATEGORY_DROPOFF:
+		case consts.SET_CATEGORY_DROPOFF_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -394,7 +394,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_SYLLABLE_DROPOFF:
+		case consts.SET_SYLLABLE_DROPOFF_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -403,7 +403,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_OUTPUT:
+		case consts.SET_OUTPUT_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -412,7 +412,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_SYLLABLE_BREAKS:
+		case consts.SET_SYLLABLE_BREAKS_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -421,7 +421,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_NUMBER_OF_SENTENCES:
+		case consts.SET_NUMBER_OF_SENTENCES_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -430,7 +430,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_SENTENCE_CAPITALIZATION:
+		case consts.SET_SENTENCE_CAPITALIZATION_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -439,7 +439,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_DECLARATIVE_PRE:
+		case consts.SET_DECLARATIVE_PRE_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -448,7 +448,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_DECLARATIVE_POST:
+		case consts.SET_DECLARATIVE_POST_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -457,7 +457,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_INTERROGATIVE_PRE:
+		case consts.SET_INTERROGATIVE_PRE_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -466,7 +466,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_INTERROGATIVE_POST:
+		case consts.SET_INTERROGATIVE_POST_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -475,7 +475,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_EXCLAMATORY_PRE:
+		case consts.SET_EXCLAMATORY_PRE_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -484,7 +484,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_EXCLAMATORY_POST:
+		case consts.SET_EXCLAMATORY_POST_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -493,7 +493,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_WORD_CAPITALIZATION:
+		case consts.SET_WORD_CAPITALIZATION_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -502,7 +502,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_SORT_WORDLIST:
+		case consts.SET_SORT_WORDLIST_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -511,7 +511,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_WORDLIST_MULTICOLUMN:
+		case consts.SET_WORDLIST_MULTICOLUMN_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -520,7 +520,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_WORDS_PER_WORDLIST:
+		case consts.SET_WORDS_PER_WORDLIST_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -529,7 +529,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_CUSTOM_INFO:
+		case consts.SET_CUSTOM_INFO_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
@@ -557,8 +557,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		// Presets
-		case consts.LOAD_PRESET:
-			let newInfo: any = Presets.get(payload);
+		case consts.LOAD_PRESET_WG:
+			let newInfo: any = WGPresets.get(payload);
 			final = {
 				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
 				categories: reduceCategory(newInfo.categories),
@@ -596,7 +596,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
 			break;
-		case consts.LOAD_CUSTOM_INFO:
+		case consts.LOAD_CUSTOM_INFO_WG:
 			final = {
 				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
 				categories: payload[0],

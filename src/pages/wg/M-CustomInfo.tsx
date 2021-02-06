@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
-import { closeModal, loadCustomInfo, setCustomInfo } from '../../components/ReduxDucksFuncs';
+import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
 import { CustomInfo } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import { Plugins } from '@capacitor/core';
@@ -55,7 +55,7 @@ const ManageCustomInfo = () => {
 			];
 			Storage.set({key: "customInfo", value: JSON.stringify(newInfo)});
 			Storage.set({key: "customInfo"+title, value: JSON.stringify(save)});
-			dispatch(setCustomInfo(newInfo));
+			dispatch(setCustomInfoWG(newInfo));
 			fireSwal({
 				title: "\"" + title + "\" " + msg,
 				toast: true,
@@ -99,7 +99,7 @@ const ManageCustomInfo = () => {
 				let value = result.value;
 				if(value) {
 					let info = JSON.parse(value);
-					dispatch(loadCustomInfo(info));
+					dispatch(loadCustomInfoWG(info));
 					fireSwal({
 						title: "Preset \"" + title + "\" loaded",
 						toast: true,
@@ -132,7 +132,7 @@ const ManageCustomInfo = () => {
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
 			let newCI: string[] = customInfo.filter(item => item !== title);
-			dispatch(setCustomInfo(newCI));
+			dispatch(setCustomInfoWG(newCI));
 			Storage.remove({key: "customInfo"+title}).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",
