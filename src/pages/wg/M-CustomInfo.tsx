@@ -25,7 +25,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../WordGen.css';
 import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
-import { CustomInfo } from '../../components/ReduxDucksTypes';
+import { WGCustomInfo } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import { Plugins } from '@capacitor/core';
 import fireSwal from '../../components/Swal';
@@ -47,7 +47,7 @@ const ManageCustomInfo = () => {
 		const doSave = (newInfo: string[], title: string, msg: string = "saved") => {
 			let setts = state.wordgenSettings;
 			delete setts.customInfo;
-			const save: CustomInfo = [
+			const save: WGCustomInfo = [
 				state.categories,
 				state.syllables,
 				state.rewriteRules,

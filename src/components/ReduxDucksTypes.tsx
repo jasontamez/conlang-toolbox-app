@@ -9,9 +9,9 @@ export type PresetObject = Map<string, Preset>;
 export type CategoryMap = [string, WGCategoryObject];
 
 export type Preset = {
-	categories: WGCategoryStateObject
-	syllables: WGSyllableStateObject
-	rewriteRules: WGRewriteRuleStateObject
+	wordgenCategories: WGCategoryStateObject
+	wordgenSyllables: WGSyllableStateObject
+	wordgenRewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
 };
 
@@ -94,7 +94,7 @@ export interface ViewStateObject {
 	ls: string
 }
 
-export type CustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
+export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
 
 export interface AppSettings {
 	theme: string
@@ -104,9 +104,9 @@ export interface AppSettings {
 export interface StateObject {
 	currentVersion: string
 	appSettings: AppSettings
-	categories: WGCategoryStateObject
-	syllables: WGSyllableStateObject
-	rewriteRules: WGRewriteRuleStateObject
+	wordgenCategories: WGCategoryStateObject
+	wordgenSyllables: WGSyllableStateObject
+	wordgenRewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject

@@ -134,6 +134,6 @@ export function clearEverything() {
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload};
 }
-export function loadCustomInfoWG(payload: types.CustomInfo) {
+export function loadCustomInfoWG(payload: types.WGCustomInfo) {
 	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
 }
