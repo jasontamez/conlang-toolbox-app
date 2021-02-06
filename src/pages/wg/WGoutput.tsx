@@ -40,12 +40,12 @@ const WGOut = () => {
 	};
 	
 	const stateObject = useSelector((state: any) => state, shallowEqual);
-	const categoriesObject = stateObject.categories;
+	const categoriesObject = stateObject.wordgenCategories;
 	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
-	const syllablesObject = stateObject.syllables;
+	const syllablesObject = stateObject.wordgenSyllables;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
-	const rewriteRules = stateObject.rewriteRules.list;
+	const rewriteRules = stateObject.wordgenRewriteRules.list;
 	const settingsWG = stateObject.wordgenSettings;
 	const regExpMap: Map<string, RegExp> = new Map();
 	
