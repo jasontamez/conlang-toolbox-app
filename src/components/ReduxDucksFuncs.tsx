@@ -124,7 +124,7 @@ export function loadCustomInfoWG(payload: types.WGCustomInfo) {
 	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
 }
 //
-// WORDGEN
+// WORDEVOLVE
 //
 // Category
 export function addCategoryWE(payload: types.WGCategoryObject) {
@@ -142,6 +142,26 @@ export function doEditCategoryWE(payload: types.WGCategoryObject) {
 export function deleteCategoryWE(payload: types.WGCategoryObject) {
 	return {type: consts.DELETE_CATEGORY_WE, payload};
 }
+// Transforms
+export function addTransformWE(payload: types.WETransformObject) {
+	return {type: consts.ADD_TRANSFORM_WE, payload};
+}
+export function startEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.START_EDIT_TRANSFORM_WE, payload};
+}
+export function cancelEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.CANCEL_EDIT_TRANSFORM_WE, payload};
+}
+export function doEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.DO_EDIT_TRANSFORM_WE, payload};
+}
+export function deleteTransformWE(payload: types.WETransformObject) {
+	return {type: consts.DELETE_TRANSFORM_WE, payload};
+}
+export function reorderTransformsWE(payload: types.WETransformObject["key"][]) {
+	return {type: consts.REORDER_TRANSFORM_WE, payload};
+}
+
 // Modals
 export function openModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};

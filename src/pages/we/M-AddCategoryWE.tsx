@@ -26,7 +26,7 @@ import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
-const AddCategoryModal = () => {
+const AddCategoryWEModal = () => {
 	let newCat: WECategoryObject = {
 		title: "",
 		label: "",
@@ -40,7 +40,7 @@ const AddCategoryModal = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
 	const catMap = new Map(categoryObject.map);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
@@ -109,7 +109,7 @@ const AddCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		close && dispatch(closeModal('AddCategory'));
+		close && dispatch(closeModal('AddCategoryWE'));
 		dispatch(addCategoryWE(newCat));
 		hardReset();
 		fireSwal({
@@ -121,12 +121,12 @@ const AddCategoryModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddCategory} onDidDismiss={() => dispatch(closeModal('AddCategory'))}>
+		<IonModal isOpen={modalState.AddCategoryWE} onDidDismiss={() => dispatch(closeModal('AddCategoryWE'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Category</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('AddCategory'))}>
+						<IonButton onClick={() => dispatch(closeModal('AddCategoryWE'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -167,4 +167,4 @@ const AddCategoryModal = () => {
 	);
 };
 
-export default AddCategoryModal;
+export default AddCategoryWEModal;

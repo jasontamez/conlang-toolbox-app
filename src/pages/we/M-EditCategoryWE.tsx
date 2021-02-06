@@ -26,9 +26,9 @@ import { closeModal, doEditCategoryWE, cancelEditCategoryWE } from '../../compon
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
-const EditCategoryModal = () => {
+const EditCategoryWEModal = () => {
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
 	const catMap: Map<string, WECategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
@@ -96,7 +96,7 @@ const EditCategoryModal = () => {
 	};
 	const cancelEditing = () => {
 		dispatch(cancelEditCategoryWE(editing));
-		dispatch(closeModal('EditCategory'));
+		dispatch(closeModal('EditCategoryWE'));
 	};
 	const maybeSaveNewInfo = () => {
 		let err: string[] = [];
@@ -126,7 +126,7 @@ const EditCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('EditCategory'));
+		dispatch(closeModal('EditCategoryWE'));
 		dispatch(doEditCategoryWE(editingCat));
 		hardReset();
 		fireSwal({
@@ -138,7 +138,7 @@ const EditCategoryModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.EditCategory} onDidDismiss={() => cancelEditing()}>
+		<IonModal isOpen={modalState.EditCategoryWE} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Category</IonTitle>
@@ -180,4 +180,4 @@ const EditCategoryModal = () => {
 	);
 };
 
-export default EditCategoryModal;
+export default EditCategoryWEModal;

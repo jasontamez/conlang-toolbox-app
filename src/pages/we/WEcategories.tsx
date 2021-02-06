@@ -24,8 +24,8 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWE, deleteCategoryWE, changeView } from '../../components/ReduxDucksFuncs';
 import { WECategoryMap } from '../../components/ReduxDucksTypes';
-import AddCategoryModal from './M-AddCategory';
-import EditCategoryModal from './M-EditCategory';
+import AddCategoryWEModal from './M-AddCategoryWE';
+import EditCategoryWEModal from './M-EditCategoryWE';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import '../WordEvolve.css';
@@ -33,15 +33,15 @@ import '../WordEvolve.css';
 const WECat = () => {
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'categories'));
+		dispatch(changeView('we', 'categories'));
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
-	const categoryObject = state.categories;
+	const categoryObject = state.wordevolveCategories;
 	var categories: WECategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWE(label));
-		dispatch(openModal('EditCategory'));
+		dispatch(openModal('EditCategoryWE'));
 	};
 	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
@@ -74,8 +74,8 @@ const WECat = () => {
 	};
 	return (
 		<IonPage>
-			<AddCategoryModal />
-			<EditCategoryModal />
+			<AddCategoryWEModal />
+			<EditCategoryWEModal />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -108,7 +108,7 @@ const WECat = () => {
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddCategory'))}>
+					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddCategoryWE'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

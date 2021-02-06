@@ -95,6 +95,18 @@ export interface WECategoryStateObject {
 	editing: null | string
 }
 
+export interface WETransformObject {
+	key: string
+	seek: string
+	replace: string
+	description: string
+}
+
+export interface WETransformStateObject {
+	list: WETransformObject[]
+	editing: null | string
+}
+
 
 export interface ModalStateObject {
 	AppTheme: boolean
@@ -102,9 +114,13 @@ export interface ModalStateObject {
 	EditCategory: boolean
 	AddRewriteRule: boolean
 	EditRewriteRule: boolean
-	PresetPopup: boolean
 	OutputOptions: boolean
+	PresetPopup: boolean
 	ManageCustomInfo: boolean
+	AddCategoryWE: boolean
+	EditCategoryWE: boolean
+	AddTransform: boolean
+	EditTransform: boolean
 }
 
 export interface ViewStateObject {
@@ -126,6 +142,8 @@ export interface StateObject {
 	wordgenSyllables: WGSyllableStateObject
 	wordgenRewriteRules: WGRewriteRuleStateObject
 	wordgenSettings: WGSettingsObject
+	wordevolveCategories: WECategoryStateObject
+	wordevolveTransforms: WETransformStateObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
 }
