@@ -25,13 +25,13 @@ import {
 	Five_OneHundred,
 } from '../../components/ReduxDucksTypes';
 import {
-	setOutputType,
-	setSyllableBreaks,
-	setSentencesPerText,
-	setCapitalizeWords,
-	setSortWordlist,
-	setWordlistMulticolumn,
-	setWordsPerWordlist
+	setOutputTypeWG,
+	setSyllableBreaksWG,
+	setSentencesPerTextWG,
+	setCapitalizeWordsWG,
+	setSortWordlistWG,
+	setWordlistMulticolumnWG,
+	setWordsPerWordlistWG
 } from '../../components/ReduxDucksFuncs';
 import {
 	closeCircleOutline
@@ -59,19 +59,19 @@ const OutputOptionsModal = () => {
 			<IonContent>
 				<IonList>
 					<IonItemDivider>What to Generate:</IonItemDivider>
-					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputType(e.detail.value! as OutputTypes))}>
+					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value! as OutputTypes))}>
 						<IonSelectOption value="text">Pseudo-text</IonSelectOption>
 						<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
 						<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
 					</IonSelect>
 					<IonItem>
 						<IonLabel>Show syllable breaks</IonLabel>
-						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaks(e.detail.checked))} />
+						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))} />
 					</IonItem>
 					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
-						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerText(e.detail.value! as Five_OneHundred))}>
+						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value! as Five_OneHundred))}>
 							<IonLabel slot="start">5</IonLabel>
 							<IonLabel slot="end">100</IonLabel>
 						</IonRange>
@@ -79,19 +79,19 @@ const OutputOptionsModal = () => {
 					<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel>Capitalize words</IonLabel>
-						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWords(e.detail.checked))} />
+						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWordsWG(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel>Sort output</IonLabel>
-						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlist(e.detail.checked))} />
+						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel>Multi-Column layout</IonLabel>
-						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumn(e.detail.checked))} />
+						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumnWG(e.detail.checked))} />
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Wordlist size</IonLabel>
-						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlist(e.detail.value! as Fifty_OneThousand))}>
+						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value! as Fifty_OneThousand))}>
 							<IonLabel slot="start">50</IonLabel>
 							<IonLabel slot="end">1000</IonLabel>
 						</IonRange>
