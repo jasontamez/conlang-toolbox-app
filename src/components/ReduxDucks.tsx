@@ -1,100 +1,616 @@
-// constants (actions)
-const p = "conlangs-toolbox/reducer/";
-const ADD_ARTICLE = p+"ADD_ARTICLE";
-const ADD_TITLE = p+"ADD_TITLE";
-const ADD_CATEGORY =p+"ADD_CATEGORY";
+import WGPresets from './WGPresets';
+import { Plugins } from '@capacitor/core';
+import maybeUpdateTheme from './MaybeUpdateTheme';
+import * as consts from './ReduxDucksConst';
+import * as types from './ReduxDucksTypes';
+import debounce from './Debounce';
 
-export interface CategoryStatus {
-	fullyDisplayed?: boolean
-	editing?: boolean
-}
-
-interface Category {
-	status: CategoryStatus,
-	title: string,
-	label: string,
-	run: string,
-	dropoffOverride?: number,
-	rateOverride?: number[]
-}
-// id: unique id
-// status: object with optional properties 'fullyDisplayed' and 'editing'
-// title: short description
-// label: 1-3 letters
-// run: letters in this category
-// dropoffOverride: optional percentage that a given letter will be chosen
-// rateOverride: optional list of percentages for each letter
-
-
-export const initialState = {
-	articles: Array.of(),
-	title: '',
-	categories: [
-		{
-			status: {},
-			title: "Consonants",
-			label: "C",
-			run: "ptknmrf"
-		},
-		{
-			status: {},
-			title: "Vowels",
-			label: "V",
-			run: "eaiou"
+const reduceAppSettings = (original: types.AppSettings) => {
+	return {...original};
+};
+const reduceCategory = (original: types.WGCategoryStateObject, newMap: types.CategoryMap[] = original.map) => {
+	let map: types.CategoryMap[] = [];
+	if(newMap === original.map) {
+		newMap.forEach(item => {
+			let o: types.WGCategoryObject = {...item[1]};
+			if(o.rateOverride) {
+				o.rateOverride = [...o.rateOverride];
+			}
+			map.push([item[0], o]);
+		});
+	} else {
+		map = newMap;
+	}
+	return {
+		map: map,
+		editing: original.editing
+	};
+};
+const reduceSyllables = (original: types.WGSyllableStateObject) => {
+	const oo = original.objects;
+	return {
+		toggle: original.toggle,
+		objects: {
+			singleWord: reduceSubSyllables(oo.singleWord),
+			wordInitial: reduceSubSyllables(oo.wordInitial),
+			wordMiddle: reduceSubSyllables(oo.wordMiddle),
+			wordFinal: reduceSubSyllables(oo.wordFinal)
 		}
-	] as Category[]
+	};
+};
+const reduceSubSyllables = (original: types.WGSyllableObject) => {
+	let o: types.WGSyllableObject = {
+		components: [...original.components]
+	}
+	if(original.rateOverride) {
+		o.rateOverride = [...original.rateOverride];
+	}
+	return o;
+};
+const reduceRewriteRulesState = (original: types.WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
+	// mod = 'add' -> add new rule (object)
+	// mod = 'del' -> delete rule (key)
+	// mod = 'edit' -> replace rule (object)
+	// mod = '' -> do nothing
+	let list;
+	switch (mod) {
+		case 'add':
+			list = original.list.map(rr => reduceRewriteRules(rr));
+			list.push(rule);
+			break;
+		case 'del':
+			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRules(rr));
+			break;
+		case 'edit':
+			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRules(rr));
+			break;
+		default:
+			list = original.list.map(rr => reduceRewriteRules(rr));
+	}
+	return {
+		list: list,
+		editing: original.editing
+	};
+};
+const reduceRewriteRules = (original: types.WGRewriteRuleObject) => {
+	return {...original};
+};
+const reduceWGSettings = (original: types.WGSettingsObject) => {
+	return {...original};
+};
+const reduceModalState = (original: types.ModalStateObject) => {
+	return {...original};
+};
+const reduceViewState = (original: types.ViewStateObject) => {
+	return {...original};
+}
+
+
+const stateObjectProps: [(keyof types.StateObject), Function][] = [
+	["currentVersion", (v: string) => v],
+	["appSettings", reduceAppSettings],
+	["categories", reduceCategory],
+	["syllables", reduceSyllables],
+	["rewriteRules", reduceRewriteRules],
+	["wordgenSettings", reduceWGSettings],
+	["modalState", reduceModalState],
+	["viewState", reduceViewState]
+];
+export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
+	const check = (possibleState as types.StateObject);
+	if(stateObjectProps.every(pair => check[pair[0]])) {
+		return true;
+	}
+	return false;
+};
+const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObject) => {
+	let check: any = {};
+	let output: any = {};
+	props.forEach(prop => { check[prop] = true; });
+	stateObjectProps.forEach(pair => {
+		let [prop, func] = pair;
+		if(!check[prop]) {
+			output[prop] = func(state[prop]);
+		}
+	});
+	return output;
+};
+const simple: types.Preset = WGPresets.get("Simple")!;
+export const initialAppState: types.StateObject = {
+	currentVersion: "0.1",
+	appSettings: {
+		theme: "Default",
+		disableConfirms: false
+	},
+	categories: simple.categories,
+	syllables: simple.syllables,
+	rewriteRules: simple.rewriteRules,
+	wordgenSettings: {
+		...simple.wordgenSettings,
+		output: "text",
+		showSyllableBreaks: false,
+		sentencesPerText: 30,
+		capitalizeWords: false,
+		sortWordlist: true,
+		wordlistMultiColumn: true,
+		wordsPerWordlist: 250,
+		customInfo: []
+	},
+	modalState: {
+		AppTheme: false,
+		AddCategory: false,
+		EditCategory: false,
+		AddRewriteRule: false,
+		EditRewriteRule: false,
+		PresetPopup: false,
+		OutputOptions: false,
+		ManageCustomInfo: false
+	},
+	viewState: {
+		wg: 'home',
+		we: 'home',
+		ls: 'home'
+	}
+};
+export const blankAppState: types.StateObject = {
+	currentVersion: "0.1",
+	appSettings: {
+		theme: "Default",
+		disableConfirms: false
+	},
+	categories: {
+		map: [],
+		editing: null
+	},
+	syllables: {
+		toggle: false,
+		objects: {
+			singleWord: { components: [] },
+			wordInitial: { components: [] },
+			wordMiddle: { components: [] },
+			wordFinal: { components: [] }
+		}
+	},
+	rewriteRules: {
+		list: [],
+		editing: null
+	},
+	wordgenSettings: {
+		...simple.wordgenSettings,
+		output: "text",
+		showSyllableBreaks: false,
+		sentencesPerText: 30,
+		capitalizeWords: false,
+		sortWordlist: true,
+		wordlistMultiColumn: true,
+		wordsPerWordlist: 250,
+		customInfo: []
+	},
+	modalState: {
+		AppTheme: false,
+		AddCategory: false,
+		EditCategory: false,
+		AddRewriteRule: false,
+		EditRewriteRule: false,
+		PresetPopup: false,
+		OutputOptions: false,
+		ManageCustomInfo: false
+	},
+	viewState: {
+		wg: 'home',
+		we: 'home',
+		ls: 'home'
+	}
 };
 
-interface ReduxAction {
-	type: string,
-	payload: any
-}
-
+// Storage
+const { Storage } = Plugins;
+const saveCurrentState = (state: types.StateObject) => {
+	let stringified = JSON.stringify(state);
+	Storage.set({key: "currentState", value: stringified});
+};
+const initialState: types.StateObject = blankAppState;
 
 // reducer
-export function reducer(state = initialState, action: ReduxAction) {
-	if (action.type === ADD_ARTICLE) {
-		// make new object, copy props from state, overwrite articles prop with new array with old and new payload
-		return Object.assign({}, state, {
-			articles: state.articles.concat({
-				title: action.payload,
-				id: state.articles.length // horrible
-			})
-		});
+export function reducer(state: types.StateObject = initialState, action: any) {
+	const payload = action.payload;
+	let CO: types.WGCategoryStateObject;
+	let Cmap: types.CategoryMap[] = [];
+	let newCategories: types.WGCategoryStateObject;
+	let SO: types.WGSyllableStateObject;
+	let RO: types.WGRewriteRuleStateObject;
+	let final: types.StateObject = state;
+	switch(action.type) {
+		// App Settings
+		case consts.CHANGE_THEME:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					theme: payload
+				}
+			};
+			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
+			break;
+		case consts.TOGGLE_DISABLE_CONFIRM:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					disableConfirms: payload
+				}
+			};
+			break;
+		// Category
+		case consts.ADD_CATEGORY_WG:
+			CO = state.categories;
+			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
+			let label = payload.label;
+			delete payload.label;
+			Cmap.push([label, payload]);
+			newCategories = reduceCategory(CO, Cmap);
+			// make new object, copy props from state, overwrite prop(s) with new object with new payload
+			final = {
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
+			};
+			break;
+		case consts.START_EDIT_CATEGORY_WG:
+			CO = state.categories;
+			newCategories = reduceCategory(CO);
+			newCategories.editing = payload;
+			final = {
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
+			};
+			break;
+		case consts.DO_EDIT_CATEGORY_WG:
+			CO = state.categories;
+			Cmap = CO.map.map(item => {
+				let [label, cat] = item;
+				if(label === CO.editing) {
+					delete payload.label;
+					return [label, payload];
+				}
+				return[label, cat];
+			});
+			newCategories = reduceCategory(CO, Cmap);
+			final = {
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
+			};
+			break;
+		case consts.CANCEL_EDIT_CATEGORY_WG:
+			CO = state.categories;
+			newCategories = reduceCategory(CO);
+			newCategories.editing = null;
+			final = {
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
+			};
+			break;
+		case consts.DELETE_CATEGORY_WG:
+			CO = state.categories;
+			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.CategoryMap) => item[0] !== payload).map((item: types.CategoryMap) => [item[0], item[1]]);
+			newCategories = reduceCategory(CO, Cmap);
+			final = {
+				...reduceAllBut(["categories"], state),
+				categories: newCategories
+			};
+			break;
+		// Syllables
+		case consts.TOGGLE_SYLLABLES:
+			SO = reduceSyllables(state.syllables);
+			SO.toggle = payload;
+			final = {
+				...reduceAllBut(["syllables"], state),
+				syllables: SO
+			};
+			break;
+		case consts.EDIT_SYLLABLES:
+			SO = reduceSyllables(state.syllables);
+			SO.objects[payload.key as keyof types.WGSyllableStateObject["objects"]].components = payload.syllables;
+			final = {
+				...reduceAllBut(["syllables"], state),
+				syllables: SO
+			};
+			break;
+		// Rewrite Rules
+		case consts.ADD_REWRITE_RULE_WG:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'add', payload);
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		case consts.START_EDIT_REWRITE_RULE_WG:
+			RO = reduceRewriteRulesState(state.rewriteRules);
+			RO.editing = payload;
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		case consts.DO_EDIT_REWRITE_RULE_WG:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'edit', payload);
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		case consts.CANCEL_EDIT_REWRITE_RULE_WG:
+			RO = reduceRewriteRulesState(state.rewriteRules);
+			RO.editing = null;
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		case consts.DELETE_REWRITE_RULE_WG:
+			RO = reduceRewriteRulesState(state.rewriteRules, 'del', payload);
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		case consts.REORDER_REWRITE_RULE_WG:
+			let SRR = state.rewriteRules;
+			let map = new Map(SRR.list.map(rr => [rr.key, rr]));
+			RO = {
+				list: payload.map((key: string) => map.get(key)),
+				editing: SRR.editing
+			};
+			final = {
+				...reduceAllBut(["rewriteRules"], state),
+				rewriteRules: RO
+			};
+			break;
+		// Wordgen Settings
+		case consts.SET_MONO_RATE_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					monosyllablesRate: payload
+				}
+			};
+			break;
+		case consts.SET_MAX_SYLLABLES_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					maxSyllablesPerWord: payload
+				}
+			};
+			break;
+		case consts.SET_CATEGORY_DROPOFF_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					categoryRunDropoff: payload
+				}
+			};
+			break;
+		case consts.SET_SYLLABLE_DROPOFF_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					syllableBoxDropoff: payload
+				}
+			};
+			break;
+		case consts.SET_OUTPUT_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					output: payload
+				}
+			};
+			break;
+		case consts.SET_SYLLABLE_BREAKS_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					showSyllableBreaks: payload
+				}
+			};
+			break;
+		case consts.SET_NUMBER_OF_SENTENCES_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					sentencesPerText: payload
+				}
+			};
+			break;
+		case consts.SET_SENTENCE_CAPITALIZATION_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					capitalizeSentences: payload
+				}
+			};
+			break;
+		case consts.SET_DECLARATIVE_PRE_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					declarativeSentencePre: payload
+				}
+			};
+			break;
+		case consts.SET_DECLARATIVE_POST_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					declarativeSentencePost: payload
+				}
+			};
+			break;
+		case consts.SET_INTERROGATIVE_PRE_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					interrogativeSentencePre: payload
+				}
+			};
+			break;
+		case consts.SET_INTERROGATIVE_POST_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					interrogativeSentencePost: payload
+				}
+			};
+			break;
+		case consts.SET_EXCLAMATORY_PRE_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					exclamatorySentencePre: payload
+				}
+			};
+			break;
+		case consts.SET_EXCLAMATORY_POST_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					exclamatorySentencePost: payload
+				}
+			};
+			break;
+		case consts.SET_WORD_CAPITALIZATION_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					capitalizeWords: payload
+				}
+			};
+			break;
+		case consts.SET_SORT_WORDLIST_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					sortWordlist: payload
+				}
+			};
+			break;
+		case consts.SET_WORDLIST_MULTICOLUMN_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					wordlistMultiColumn: payload
+				}
+			};
+			break;
+		case consts.SET_WORDS_PER_WORDLIST_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					wordsPerWordlist: payload
+				}
+			};
+			break;
+		case consts.SET_CUSTOM_INFO_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					customInfo: payload
+				}
+			};
+			break;
+		// Modals
+		case consts.TOGGLE_MODAL:
+			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
+			newModal[payload.modal as keyof types.ModalStateObject] = payload.flag;
+			final = {
+				...reduceAllBut(["modalState"], state),
+				modalState: newModal
+			};
+			break;
+		// Views
+		case consts.CHANGE_VIEW:
+			let newView: types.ViewStateObject = reduceViewState(state.viewState);
+			newView[payload.app as keyof types.ViewStateObject] = payload.page;
+			final = {
+				...reduceAllBut(["viewState"], state),
+				viewState: newView
+			};
+			break;
+		// Presets
+		case consts.LOAD_PRESET_WG:
+			let newInfo: any = WGPresets.get(payload);
+			final = {
+				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
+				categories: reduceCategory(newInfo.categories),
+				syllables: reduceSyllables(newInfo.syllables),
+				rewriteRules: reduceRewriteRulesState(newInfo.rewriteRules),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					...newInfo.wordgenSettings
+				}
+			};
+			break;
+		case consts.CLEAR_EVERYTHING_WG:
+			final = {
+				...reduceAllBut(["categories", "syllables", "rewriteRules"], state),
+				categories: {
+					map: [],
+					editing: null
+				},
+				syllables: {
+					toggle: false,
+					objects: {
+						singleWord: { components: [] },
+						wordInitial: { components: [] },
+						wordMiddle: { components: [] },
+						wordFinal: { components: [] }
+					}
+				},
+				rewriteRules: {
+					list: [],
+					editing: null
+				}
+			};
+			break;
+		case consts.OVERWRITE_STATE:
+			final = { ...payload };
+			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
+			break;
+		case consts.LOAD_CUSTOM_INFO_WG:
+			final = {
+				...reduceAllBut(["categories", "syllables", "rewriteRules", "wordgenSettings"], state),
+				categories: payload[0],
+				syllables: payload[1],
+				rewriteRules: payload[2],
+				wordgenSettings: {
+					...state.wordgenSettings,
+					...payload[3]
+				}
+			};
+			break;
 	}
-	if(action.type === ADD_TITLE) {
-		// make new object, copy props from state, overwrite articles prop with new array with old and new payload
-		return Object.assign({}, state, {
-			title: action.payload
-		});
-	}
-	if(action.type === ADD_CATEGORY) {
-		// make new object, copy props from state, overwrite prop with new array with old and new payload
-		//
-		//
-		// NOPE - get info before calling this, don't assign blank info
-		//
-		//
-		return Object.assign({}, state, {
-			categories: state.categories.concat(
-				action.payload
-				//{
-				//	status: {},
-				//	title: "",
-				//	label: "",
-				//	run: ""
-				//}
-			)
-		});
-	}
-	return state;
+	// Some sort of store-state function goes here
+	debounce(saveCurrentState, [final]);
+	return final;
 };
-
-// action creators
-export function addArticle(payload: any) {
-	return { type: ADD_ARTICLE, payload };
-};
-export function addTitle(payload: string) {
-	return {type: ADD_TITLE, payload};
-}
 

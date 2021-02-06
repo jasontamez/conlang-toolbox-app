@@ -1,24 +1,131 @@
-.categories ion-icon {
-	padding-right: 2em;
+#conlangToolbox p {
+	text-indent: 2em;
+	padding: 1em;
+	margin: 0 auto;
 }
-.categories .categoryLongName {
+#conlangToolbox p + p {
+	padding-top: 0;
+}
+#conlangToolbox .clickToExpand {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.1s ease-in;
+}
+#conlangToolbox .clickToExpand.expanded {
+	max-height: 10em;
+	transition: max-height 0.1s ease-out;
+}
+#conlangToolbox ion-button.helpy {
+	opacity: 0.5;
+}
+
+.emphasizedList {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.categories .categoryLongName,
+.rewriterules .description {
 	font-size: smaller;
 	font-style: italic;
 }
-.categories .categoryRun {
+#conlangToolbox .serifChars {
 	letter-spacing: 0.1em;
 	font-family: 'Noto Serif', 'Georgia', serif;
 }
-.categories .categoryRun .label {
+.categories .categoryRun .label,
+.rewriterules .ruleExpression {
 	font-weight: bold;
 }
 .categories .categoryRun .label::after {
 	font-weight: bold;
 	content: "=";
 }
+.rewriterules .ruleExpression .seek,
+.rewriterules .ruleExpression .replace,
+#conlangToolbox .boxed {
+	display: inline-block;
+	padding: 0.25em 0.5em;
+	border: 1px solid var(--ion-color-input-border);
+}
+.rewriterules .ruleExpression .arrow,
+#conlangToolbox .separateBoxes {
+	display: inline-block;
+	font-weight: bold;
+	padding: 0 0.5em;
+	letter-spacing: 0;
+}
+.rewriterules .upDownButtons {
+	width: 4em;
+	text-align: center;
+}
+.rewriterules .upDownButtons ion-icon {
+	font-size: 32px;
+	color: var(--ion-color-tertiary-shade);
+}
+
+#conlangToolbox ion-list.syllables div.header {
+	display: block;
+	font-weight: bold;
+	font-size: larger;
+	margin: 0.5em 1em 1em;
+}
+#conlangToolbox ion-list.syllables .toggleable {
+	overflow: hidden;
+	display: none;
+}
+#conlangToolbox ion-list.syllables .toggleable.toggled,
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle {
+	display: block;
+}
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle.toggled {
+	display: none;
+}
+#conlangToolbox ion-list.syllables div.header.toggleable,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle.toggled {
+	display: none;
+}
+#conlangToolbox ion-list.syllables div.header.toggleable.toggled,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle {
+	display: block;
+}
 
 ion-item-option {
 	min-width: 5em;
+}
+ion-list.units {
+	background: transparent;
+	padding: 0;
+}
+.units ion-item,
+.units ion-item-option,
+.units ion-item-option button {
+	border-bottom: 0.1em solid var(--ion-background-color);
+}
+.units ion-item-sliding:first-of-type ion-item,
+.units ion-item-sliding:first-of-type ion-item-option,
+.units ion-item-sliding:first-of-type ion-item-option button {
+	border-top: 0.1em solid var(--ion-background-color);
+}
+
+#outerOutputPane {
+	display: flex;
+	flex-flow: column;
+	min-height: 100%;
+}
+.collapse {
+	flex: 0 1 auto;
+}
+#outputPane {
+	margin: 1em 2em;
+	flex: 1 1 auto;
+}
+
+#conlangToolbox .presetPopup .action-sheet-group-cancel,
+#conlangToolbox .presetPopup .action-sheet-cancel {
+	background: var(--ion-color-danger-shade);
+	color: var(--ion-color-danger-contrast);
 }
 
 i.ipa {

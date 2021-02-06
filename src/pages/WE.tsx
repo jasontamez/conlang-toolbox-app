@@ -74,7 +74,7 @@ const WE = () => { return (
 				<IonIcon icon={syncOutline} />
 				<IonLabel>Transformations</IonLabel>
 			</IonTabButton>
-			<IonTabButton tab="syllables" href="/we/soundchanges">
+			<IonTabButton tab="soundchanges" href="/we/soundchanges">
 				<IonIcon icon={megaphoneOutline} />
 				<IonLabel>Sound Changes</IonLabel>
 			</IonTabButton>
