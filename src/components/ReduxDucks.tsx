@@ -589,6 +589,68 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
+		//
+		// WORDEVOLVE
+		//
+		// Category
+		case consts.ADD_CATEGORY_WE:
+			CO = state.wordgenCategories;
+			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
+			label = payload.label;
+			delete payload.label;
+			Cmap.push([label, payload]);
+			newCategories = reduceCategoryWG(CO, Cmap);
+			// make new object, copy props from state, overwrite prop(s) with new object with new payload
+			final = {
+				...reduceAllBut(["wordgenCategories"], state),
+				wordgenCategories: newCategories
+			};
+			break;
+		case consts.START_EDIT_CATEGORY_WE:
+			CO = state.wordgenCategories;
+			newCategories = reduceCategoryWG(CO);
+			newCategories.editing = payload;
+			final = {
+				...reduceAllBut(["wordgenCategories"], state),
+				wordgenCategories: newCategories
+			};
+			break;
+		case consts.DO_EDIT_CATEGORY_WE:
+			CO = state.wordgenCategories;
+			Cmap = CO.map.map(item => {
+				let [label, cat] = item;
+				if(label === CO.editing) {
+					delete payload.label;
+					return [label, payload];
+				}
+				return[label, cat];
+			});
+			newCategories = reduceCategoryWG(CO, Cmap);
+			final = {
+				...reduceAllBut(["wordgenCategories"], state),
+				wordgenCategories: newCategories
+			};
+			break;
+		case consts.CANCEL_EDIT_CATEGORY_WE:
+			CO = state.wordgenCategories;
+			newCategories = reduceCategoryWG(CO);
+			newCategories.editing = null;
+			final = {
+				...reduceAllBut(["wordgenCategories"], state),
+				wordgenCategories: newCategories
+			};
+			break;
+		case consts.DELETE_CATEGORY_WE:
+			CO = state.wordgenCategories;
+			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WECategoryMap) => item[0] !== payload).map((item: types.WECategoryMap) => [item[0], item[1]]);
+			newCategories = reduceCategoryWG(CO, Cmap);
+			final = {
+				...reduceAllBut(["wordgenCategories"], state),
+				wordgenCategories: newCategories
+			};
+			break;
+		// Overwrite State
 		case consts.OVERWRITE_STATE:
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);

@@ -7,6 +7,7 @@ export type Fifty_OneThousand = 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 
 export type OutputTypes = "text" | "wordlist" | "syllables";
 export type PresetObject = Map<string, Preset>;
 export type WGCategoryMap = [string, WGCategoryObject];
+export type WECategoryMap = [string, WECategoryObject];
 
 export type Preset = {
 	wordgenCategories: WGCategoryStateObject
@@ -77,6 +78,23 @@ export interface WGSettingsObject {
 	wordsPerWordlist?: Fifty_OneThousand
 	customInfo?: string[]
 }
+
+export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
+
+// WORDEVOLVE
+export interface WECategoryObject {
+	title: string
+	label?: string
+	run: string
+	dropoffOverride?: Zero_OneHundred
+	rateOverride?: Zero_OneHundred[]
+}
+
+export interface WECategoryStateObject {
+	map: WECategoryMap[]
+	editing: null | string
+}
+
 
 export interface ModalStateObject {
 	AppTheme: boolean

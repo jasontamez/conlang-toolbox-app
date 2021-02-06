@@ -123,6 +123,25 @@ export function clearEverything() {
 export function loadCustomInfoWG(payload: types.WGCustomInfo) {
 	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
 }
+//
+// WORDGEN
+//
+// Category
+export function addCategoryWE(payload: types.WGCategoryObject) {
+	return {type: consts.ADD_CATEGORY_WE, payload};
+}
+export function startEditCategoryWE(payload: types.WGCategoryObject) {
+	return {type: consts.START_EDIT_CATEGORY_WE, payload};
+}
+export function cancelEditCategoryWE(payload: types.WGCategoryObject) {
+	return {type: consts.CANCEL_EDIT_CATEGORY_WE, payload};
+}
+export function doEditCategoryWE(payload: types.WGCategoryObject) {
+	return {type: consts.DO_EDIT_CATEGORY_WE, payload};
+}
+export function deleteCategoryWE(payload: types.WGCategoryObject) {
+	return {type: consts.DELETE_CATEGORY_WE, payload};
+}
 // Modals
 export function openModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};

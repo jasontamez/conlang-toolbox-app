@@ -23,7 +23,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
-import { CategoryMap } from '../../components/ReduxDucksTypes';
+import { WGCategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';
@@ -36,7 +36,7 @@ const WGCat = () => {
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
 	const categoryObject = state.categories;
-	var categories: CategoryMap[] = categoryObject.map;
+	var categories: WGCategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWG(label));
@@ -85,7 +85,7 @@ const WGCat = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="categories units" lines="none">
-					{categories.map((item: CategoryMap) => {
+					{categories.map((item: WGCategoryMap) => {
 						let [label, cat] = item;
 						return (
 							<IonItemSliding key={label}>
