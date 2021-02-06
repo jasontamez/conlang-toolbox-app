@@ -113,6 +113,16 @@ export function setWordsPerWordlistWG(payload: types.Fifty_OneThousand) {
 export function setCustomInfoWG(payload: string[]) {
 	return {type: consts.SET_CUSTOM_INFO_WG, payload};
 }
+// Presets
+export function loadPresetWG(payload: string) {
+	return {type: consts.LOAD_PRESET_WG, payload};
+}
+export function clearEverything() {
+	return {type: consts.CLEAR_EVERYTHING_WG, payload: null};
+}
+export function loadCustomInfoWG(payload: types.WGCustomInfo) {
+	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
+}
 // Modals
 export function openModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
@@ -124,16 +134,7 @@ export function closeModal(payload: keyof types.ModalStateObject) {
 export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
 	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
 }
-// Presets
-export function loadPresetWG(payload: string) {
-	return {type: consts.LOAD_PRESET_WG, payload};
-}
-export function clearEverything() {
-	return {type: consts.CLEAR_EVERYTHING_WG, payload: null};
-}
+// Overwrite State
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload};
-}
-export function loadCustomInfoWG(payload: types.WGCustomInfo) {
-	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
 }

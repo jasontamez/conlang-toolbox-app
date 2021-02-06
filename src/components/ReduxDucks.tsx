@@ -8,8 +8,8 @@ import debounce from './Debounce';
 const reduceAppSettings = (original: types.AppSettings) => {
 	return {...original};
 };
-const reduceCategory = (original: types.WGCategoryStateObject, newMap: types.CategoryMap[] = original.map) => {
-	let map: types.CategoryMap[] = [];
+const reduceCategoryWG = (original: types.WGCategoryStateObject, newMap: types.WGCategoryMap[] = original.map) => {
+	let map: types.WGCategoryMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
 			let o: types.WGCategoryObject = {...item[1]};
@@ -26,19 +26,19 @@ const reduceCategory = (original: types.WGCategoryStateObject, newMap: types.Cat
 		editing: original.editing
 	};
 };
-const reduceSyllables = (original: types.WGSyllableStateObject) => {
+const reduceSyllablesWG = (original: types.WGSyllableStateObject) => {
 	const oo = original.objects;
 	return {
 		toggle: original.toggle,
 		objects: {
-			singleWord: reduceSubSyllables(oo.singleWord),
-			wordInitial: reduceSubSyllables(oo.wordInitial),
-			wordMiddle: reduceSubSyllables(oo.wordMiddle),
-			wordFinal: reduceSubSyllables(oo.wordFinal)
+			singleWord: reduceSubSyllablesWG(oo.singleWord),
+			wordInitial: reduceSubSyllablesWG(oo.wordInitial),
+			wordMiddle: reduceSubSyllablesWG(oo.wordMiddle),
+			wordFinal: reduceSubSyllablesWG(oo.wordFinal)
 		}
 	};
 };
-const reduceSubSyllables = (original: types.WGSyllableObject) => {
+const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
 	let o: types.WGSyllableObject = {
 		components: [...original.components]
 	}
@@ -47,7 +47,7 @@ const reduceSubSyllables = (original: types.WGSyllableObject) => {
 	}
 	return o;
 };
-const reduceRewriteRulesState = (original: types.WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
+const reduceRewriteRulesStateWG = (original: types.WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
 	// mod = 'add' -> add new rule (object)
 	// mod = 'del' -> delete rule (key)
 	// mod = 'edit' -> replace rule (object)
@@ -55,27 +55,27 @@ const reduceRewriteRulesState = (original: types.WGRewriteRuleStateObject, mod: 
 	let list;
 	switch (mod) {
 		case 'add':
-			list = original.list.map(rr => reduceRewriteRules(rr));
+			list = original.list.map(rr => reduceRewriteRulesWG(rr));
 			list.push(rule);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRules(rr));
+			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRulesWG(rr));
 			break;
 		case 'edit':
-			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRules(rr));
+			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRulesWG(rr));
 			break;
 		default:
-			list = original.list.map(rr => reduceRewriteRules(rr));
+			list = original.list.map(rr => reduceRewriteRulesWG(rr));
 	}
 	return {
 		list: list,
 		editing: original.editing
 	};
 };
-const reduceRewriteRules = (original: types.WGRewriteRuleObject) => {
+const reduceRewriteRulesWG = (original: types.WGRewriteRuleObject) => {
 	return {...original};
 };
-const reduceWGSettings = (original: types.WGSettingsObject) => {
+const reduceWGSettingsWG = (original: types.WGSettingsObject) => {
 	return {...original};
 };
 const reduceModalState = (original: types.ModalStateObject) => {
@@ -89,10 +89,10 @@ const reduceViewState = (original: types.ViewStateObject) => {
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["currentVersion", (v: string) => v],
 	["appSettings", reduceAppSettings],
-	["wordgenCategories", reduceCategory],
-	["wordgenSyllables", reduceSyllables],
-	["wordgenRewriteRules", reduceRewriteRules],
-	["wordgenSettings", reduceWGSettings],
+	["wordgenCategories", reduceCategoryWG],
+	["wordgenSyllables", reduceSyllablesWG],
+	["wordgenRewriteRules", reduceRewriteRulesWG],
+	["wordgenSettings", reduceWGSettingsWG],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState]
 ];
@@ -215,7 +215,7 @@ const initialState: types.StateObject = blankAppState;
 export function reducer(state: types.StateObject = initialState, action: any) {
 	const payload = action.payload;
 	let CO: types.WGCategoryStateObject;
-	let Cmap: types.CategoryMap[] = [];
+	let Cmap: types.WGCategoryMap[] = [];
 	let newCategories: types.WGCategoryStateObject;
 	let SO: types.WGSyllableStateObject;
 	let RO: types.WGRewriteRuleStateObject;
@@ -247,11 +247,11 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		// Category
 		case consts.ADD_CATEGORY_WG:
 			CO = state.wordgenCategories;
-			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
 			let label = payload.label;
 			delete payload.label;
 			Cmap.push([label, payload]);
-			newCategories = reduceCategory(CO, Cmap);
+			newCategories = reduceCategoryWG(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
@@ -260,7 +260,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.START_EDIT_CATEGORY_WG:
 			CO = state.wordgenCategories;
-			newCategories = reduceCategory(CO);
+			newCategories = reduceCategoryWG(CO);
 			newCategories.editing = payload;
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
@@ -277,7 +277,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 				return[label, cat];
 			});
-			newCategories = reduceCategory(CO, Cmap);
+			newCategories = reduceCategoryWG(CO, Cmap);
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
 				wordgenCategories: newCategories
@@ -285,7 +285,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.CANCEL_EDIT_CATEGORY_WG:
 			CO = state.wordgenCategories;
-			newCategories = reduceCategory(CO);
+			newCategories = reduceCategoryWG(CO);
 			newCategories.editing = null;
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
@@ -294,9 +294,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.DELETE_CATEGORY_WG:
 			CO = state.wordgenCategories;
-			Cmap = CO.map.map((item: types.CategoryMap) => [item[0], item[1]]);
-			Cmap = CO.map.filter((item: types.CategoryMap) => item[0] !== payload).map((item: types.CategoryMap) => [item[0], item[1]]);
-			newCategories = reduceCategory(CO, Cmap);
+			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WGCategoryMap) => item[0] !== payload).map((item: types.WGCategoryMap) => [item[0], item[1]]);
+			newCategories = reduceCategoryWG(CO, Cmap);
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
 				wordgenCategories: newCategories
@@ -304,7 +304,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		// Syllables
 		case consts.TOGGLE_SYLLABLES:
-			SO = reduceSyllables(state.wordgenSyllables);
+			SO = reduceSyllablesWG(state.wordgenSyllables);
 			SO.toggle = payload;
 			final = {
 				...reduceAllBut(["wordgenSyllables"], state),
@@ -312,7 +312,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.EDIT_SYLLABLES:
-			SO = reduceSyllables(state.wordgenSyllables);
+			SO = reduceSyllablesWG(state.wordgenSyllables);
 			SO.objects[payload.key as keyof types.WGSyllableStateObject["objects"]].components = payload.wordgenSyllables;
 			final = {
 				...reduceAllBut(["wordgenSyllables"], state),
@@ -321,14 +321,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		// Rewrite Rules
 		case consts.ADD_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesState(state.wordgenRewriteRules, 'add', payload);
+			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'add', payload);
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
 				wordgenRewriteRules: RO
 			};
 			break;
 		case consts.START_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesState(state.wordgenRewriteRules);
+			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules);
 			RO.editing = payload;
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
@@ -336,14 +336,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.DO_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesState(state.wordgenRewriteRules, 'edit', payload);
+			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'edit', payload);
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
 				wordgenRewriteRules: RO
 			};
 			break;
 		case consts.CANCEL_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesState(state.wordgenRewriteRules);
+			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules);
 			RO.editing = null;
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
@@ -351,7 +351,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.DELETE_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesState(state.wordgenRewriteRules, 'del', payload);
+			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'del', payload);
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
 				wordgenRewriteRules: RO
@@ -541,22 +541,16 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		// Modals
-		case consts.TOGGLE_MODAL:
-			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
-			newModal[payload.modal as keyof types.ModalStateObject] = payload.flag;
+		case consts.LOAD_CUSTOM_INFO_WG:
 			final = {
-				...reduceAllBut(["modalState"], state),
-				modalState: newModal
-			};
-			break;
-		// Views
-		case consts.CHANGE_VIEW:
-			let newView: types.ViewStateObject = reduceViewState(state.viewState);
-			newView[payload.app as keyof types.ViewStateObject] = payload.page;
-			final = {
-				...reduceAllBut(["viewState"], state),
-				viewState: newView
+				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules", "wordgenSettings"], state),
+				wordgenCategories: payload[0],
+				wordgenSyllables: payload[1],
+				wordgenRewriteRules: payload[2],
+				wordgenSettings: {
+					...state.wordgenSettings,
+					...payload[3]
+				}
 			};
 			break;
 		// Presets
@@ -564,9 +558,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			let newInfo: any = WGPresets.get(payload);
 			final = {
 				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules", "wordgenSettings"], state),
-				wordgenCategories: reduceCategory(newInfo.wordgenCategories),
-				wordgenSyllables: reduceSyllables(newInfo.wordgenSyllables),
-				wordgenRewriteRules: reduceRewriteRulesState(newInfo.wordgenRewriteRules),
+				wordgenCategories: reduceCategoryWG(newInfo.wordgenCategories),
+				wordgenSyllables: reduceSyllablesWG(newInfo.wordgenSyllables),
+				wordgenRewriteRules: reduceRewriteRulesStateWG(newInfo.wordgenRewriteRules),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					...newInfo.wordgenSettings
@@ -599,16 +593,22 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
 			break;
-		case consts.LOAD_CUSTOM_INFO_WG:
+		// Modals
+		case consts.TOGGLE_MODAL:
+			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
+			newModal[payload.modal as keyof types.ModalStateObject] = payload.flag;
 			final = {
-				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules", "wordgenSettings"], state),
-				wordgenCategories: payload[0],
-				wordgenSyllables: payload[1],
-				wordgenRewriteRules: payload[2],
-				wordgenSettings: {
-					...state.wordgenSettings,
-					...payload[3]
-				}
+				...reduceAllBut(["modalState"], state),
+				modalState: newModal
+			};
+			break;
+		// Views
+		case consts.CHANGE_VIEW:
+			let newView: types.ViewStateObject = reduceViewState(state.viewState);
+			newView[payload.app as keyof types.ViewStateObject] = payload.page;
+			final = {
+				...reduceAllBut(["viewState"], state),
+				viewState: newView
 			};
 			break;
 	}
