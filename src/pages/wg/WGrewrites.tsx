@@ -44,7 +44,7 @@ const WGRew = () => {
 		dispatch(changeView('wg', 'rewriterules'));
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
-	const rulesObject = state.rewriteRules;
+	const rulesObject = state.wordgenRewriteRules;
 	const rules = rulesObject.list;
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const editRewriteRule = (label: any) => {

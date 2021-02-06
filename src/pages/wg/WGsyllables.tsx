@@ -25,7 +25,7 @@ const WGSyl = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'syllables'));
 	});
-	const syllableObject = useSelector((state: any) => state.syllables, shallowEqual);
+	const syllableObject = useSelector((state: any) => state.wordgenSyllables, shallowEqual);
 	const toggleableClassName = (base: string = "") => {
 		let extra = " toggleable";
 		if(syllableObject.toggle) {

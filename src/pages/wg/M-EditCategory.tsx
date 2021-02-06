@@ -28,7 +28,7 @@ import { $q, $i } from '../../components/DollarSignExports';
 
 const EditCategoryModal = () => {
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
 	const catMap: Map<string, WGCategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);

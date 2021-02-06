@@ -48,9 +48,9 @@ const ManageCustomInfo = () => {
 			let setts = state.wordgenSettings;
 			delete setts.customInfo;
 			const save: WGCustomInfo = [
-				state.categories,
-				state.syllables,
-				state.rewriteRules,
+				state.wordgenCategories,
+				state.wordgenSyllables,
+				state.wordgenRewriteRules,
 				setts
 			];
 			Storage.set({key: "customInfo", value: JSON.stringify(newInfo)});

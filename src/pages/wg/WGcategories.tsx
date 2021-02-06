@@ -35,7 +35,7 @@ const WGCat = () => {
 		dispatch(changeView('wg', 'categories'));
 	});
 	const state = useSelector((state: any) => state, shallowEqual);
-	const categoryObject = state.categories;
+	const categoryObject = state.wordgenCategories;
 	var categories: WGCategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();

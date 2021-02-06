@@ -36,7 +36,7 @@ const EditRewriteRuleModal = () => {
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	const rewritesObject = useSelector((state: any) => state.rewriteRules, shallowEqual);
+	const rewritesObject = useSelector((state: any) => state.wordgenRewriteRules, shallowEqual);
 	const editing = rewritesObject.editing;
 	let editingRule: WGRewriteRuleObject = {
 		key: "",

@@ -40,7 +40,7 @@ const AddCategoryModal = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.categories, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
 	const catMap = new Map(categoryObject.map);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
