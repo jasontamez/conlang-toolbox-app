@@ -61,7 +61,7 @@ const App = () => {
 					const state = JSON.parse(value);
 					if(state && typeof state === "object") {
 						state.currentVersion = VERSION.current;
-						if (compareVersions.compare(state.currentVersion, VERSION.current, "<=")) {
+						if (compareVersions.compare(state.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring state up to date
 						}
 						if(checkIfState(state)) {
