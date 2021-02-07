@@ -65,10 +65,6 @@ const AddTransformModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		//if(newTransform.replace === "") {
-		//	$q(".replaceLabel").classList.add("invalidValue");
-		//	err.push("No replacement expression present");
-		//}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({
@@ -136,7 +132,7 @@ const AddTransformModal = () => {
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewTransform()}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Transform and Close</IonLabel>
+						<IonLabel>Add and Close</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

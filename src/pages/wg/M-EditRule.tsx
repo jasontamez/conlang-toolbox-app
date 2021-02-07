@@ -75,10 +75,6 @@ const EditRewriteRuleModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(editingRule.replace === "") {
-			$q(".replaceLabel").classList.add("invalidValue");
-			err.push("No replacement expression present");
-		}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({

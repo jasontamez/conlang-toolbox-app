@@ -1,6 +1,6 @@
-import { PresetObject } from './ReduxDucksTypes';
+import { WGPresetObject } from './ReduxDucksTypes';
 
-const WGPresets: PresetObject = new Map([
+export const WGPresets: WGPresetObject = new Map([
 	["Simple", {
 		wordgenCategories: {
 			map: [
@@ -983,5 +983,3 @@ const WGPresets: PresetObject = new Map([
 		}
 	}]
 ]);
-
-export default WGPresets;

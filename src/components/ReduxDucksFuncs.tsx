@@ -127,19 +127,19 @@ export function loadCustomInfoWG(payload: types.WGCustomInfo) {
 // WORDEVOLVE
 //
 // Category
-export function addCategoryWE(payload: types.WGCategoryObject) {
+export function addCategoryWE(payload: types.WECategoryObject) {
 	return {type: consts.ADD_CATEGORY_WE, payload};
 }
-export function startEditCategoryWE(payload: types.WGCategoryObject) {
+export function startEditCategoryWE(payload: types.WECategoryObject) {
 	return {type: consts.START_EDIT_CATEGORY_WE, payload};
 }
-export function cancelEditCategoryWE(payload: types.WGCategoryObject) {
+export function cancelEditCategoryWE(payload: types.WECategoryObject) {
 	return {type: consts.CANCEL_EDIT_CATEGORY_WE, payload};
 }
-export function doEditCategoryWE(payload: types.WGCategoryObject) {
+export function doEditCategoryWE(payload: types.WECategoryObject) {
 	return {type: consts.DO_EDIT_CATEGORY_WE, payload};
 }
-export function deleteCategoryWE(payload: types.WGCategoryObject) {
+export function deleteCategoryWE(payload: types.WECategoryObject) {
 	return {type: consts.DELETE_CATEGORY_WE, payload};
 }
 // Transforms
@@ -160,6 +160,25 @@ export function deleteTransformWE(payload: types.WETransformObject) {
 }
 export function reorderTransformsWE(payload: types.WETransformObject["key"][]) {
 	return {type: consts.REORDER_TRANSFORM_WE, payload};
+}
+// Sound Changes
+export function addSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.ADD_SOUND_CHANGE_WE, payload};
+}
+export function startEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.START_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function cancelEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.CANCEL_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function doEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.DO_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function deleteSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.DELETE_SOUND_CHANGE_WE, payload};
+}
+export function reorderSoundChangesWE(payload: types.WESoundChangeObject["key"][]) {
+	return {type: consts.REORDER_SOUND_CHANGE_WE, payload};
 }
 
 // Modals

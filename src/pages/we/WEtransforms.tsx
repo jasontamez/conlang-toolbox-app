@@ -62,7 +62,7 @@ const WERew = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteTransformWE(trans));
 				fireSwal({
-					title: "Rewrite Rule deleted",
+					title: "Transform deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,

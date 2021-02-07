@@ -61,10 +61,6 @@ const AddRewriteRuleModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		//if(newRule.replace === "") {
-		//	$q(".replaceLabel").classList.add("invalidValue");
-		//	err.push("No replacement expression present");
-		//}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({
@@ -124,7 +120,7 @@ const AddRewriteRuleModal = () => {
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewRule()}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Rule and Close</IonLabel>
+						<IonLabel>Add and Close</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

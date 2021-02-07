@@ -79,10 +79,6 @@ const EditTransformModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(editingTransform.replace === "") {
-			$q(".replaceLabel").classList.add("invalidValue");
-			err.push("No replacement expression present");
-		}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({

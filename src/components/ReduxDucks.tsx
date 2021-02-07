@@ -1,4 +1,4 @@
-import WGPresets from './WGPresets';
+import { WGPresets } from './WGPresets';
 import { Plugins } from '@capacitor/core';
 import maybeUpdateTheme from './MaybeUpdateTheme';
 import * as consts from './ReduxDucksConst';
@@ -59,7 +59,7 @@ const reduceRewriteRulesStateWG = (original: types.WGRewriteRuleStateObject, mod
 			list.push(rule);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceRewriteRulesWG(rr));
+			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceRewriteRulesWG(rr));
 			break;
 		case 'edit':
 			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRulesWG(rr));
@@ -105,7 +105,7 @@ const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: st
 			list.push(rule);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule).map(rr => reduceTransformsWE(rr));
+			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceTransformsWE(rr));
 			break;
 		case 'edit':
 			list = original.list.map(rr => rr.key === rule.key ? rule : reduceTransformsWE(rr));
@@ -121,6 +121,34 @@ const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: st
 const reduceTransformsWE = (original: types.WETransformObject) => {
 	return {...original};
 };
+const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod: string = "", rule: any = null) => {
+	// mod = 'add' -> add new rule (object)
+	// mod = 'del' -> delete rule (key)
+	// mod = 'edit' -> replace rule (object)
+	// mod = '' -> do nothing
+	let list;
+	switch (mod) {
+		case 'add':
+			list = original.list.map(rr => reduceSoundChangesWE(rr));
+			list.push(rule);
+			break;
+		case 'del':
+			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceSoundChangesWE(rr));
+			break;
+		case 'edit':
+			list = original.list.map(rr => rr.key === rule.key ? rule : reduceSoundChangesWE(rr));
+			break;
+		default:
+			list = original.list.map(rr => reduceSoundChangesWE(rr));
+	}
+	return {
+		list: list,
+		editing: original.editing
+	};
+};
+const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
+	return {...original};
+};
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
@@ -134,10 +162,11 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["appSettings", reduceAppSettings],
 	["wordgenCategories", reduceCategoryWG],
 	["wordgenSyllables", reduceSyllablesWG],
-	["wordgenRewriteRules", reduceRewriteRulesWG],
+	["wordgenRewriteRules", reduceRewriteRulesStateWG],
 	["wordgenSettings", reduceWGSettingsWG],
 	["wordevolveCategories", reduceCategoryWE],
-	["wordevolveTransforms", reduceTransformsWE],
+	["wordevolveTransforms", reduceTransformsStateWE],
+	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState]
 ];
@@ -160,7 +189,7 @@ const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObje
 	});
 	return output;
 };
-const simple: types.Preset = WGPresets.get("Simple")!;
+const simple: types.WGPreset = WGPresets.get("Simple")!;
 export const initialAppState: types.StateObject = {
 	currentVersion: "0.1",
 	appSettings: {
@@ -206,7 +235,9 @@ export const initialAppState: types.StateObject = {
 		AddCategoryWE: false,
 		EditCategoryWE: false,
 		AddTransform: false,
-		EditTransform: false
+		EditTransform: false,
+		AddSoundChange: false,
+		EditSoundChange: false
 	},
 	viewState: {
 		wg: 'home',
@@ -273,7 +304,9 @@ export const blankAppState: types.StateObject = {
 		AddCategoryWE: false,
 		EditCategoryWE: false,
 		AddTransform: false,
-		EditTransform: false
+		EditTransform: false,
+		AddSoundChange: false,
+		EditSoundChange: false
 	},
 	viewState: {
 		wg: 'home',
@@ -299,6 +332,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let SO: types.WGSyllableStateObject;
 	let RO: types.WGRewriteRuleStateObject;
 	let final: types.StateObject = state;
+	let label: string;
 	switch(action.type) {
 		// App Settings
 		case consts.CHANGE_THEME:
@@ -327,7 +361,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.ADD_CATEGORY_WG:
 			CO = state.wordgenCategories;
 			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
-			let label = payload.label;
+			label = payload.label;
 			delete payload.label;
 			Cmap.push([label, payload]);
 			newCategories = reduceCategoryWG(CO, Cmap);
@@ -673,6 +707,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		//
 		// Category
 		case consts.ADD_CATEGORY_WE:
+			console.log(payload);
 			CO = state.wordevolveCategories;
 			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
 			label = payload.label;
@@ -770,20 +805,74 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.REORDER_TRANSFORM_WE:
 			let ST = state.wordevolveTransforms;
 			let m = new Map(ST.list.map(rr => [rr.key, rr]));
-			RO = {
+			ST = {
 				list: payload.map((key: string) => m.get(key)),
 				editing: ST.editing
 			};
 			final = {
 				...reduceAllBut(["wordevolveTransforms"], state),
-				wordevolveTransforms: RO
+				wordevolveTransforms: ST
 			};
 			break;
+		// Sound Changes
+		case consts.ADD_SOUND_CHANGE_WE:
+			RO = reduceSoundChangeStateWE(state.wordevolveSoundChanges, 'add', payload);
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: RO
+			};
+			break;
+		case consts.START_EDIT_SOUND_CHANGE_WE:
+			RO = reduceSoundChangeStateWE(state.wordevolveSoundChanges);
+			RO.editing = payload;
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: RO
+			};
+			break;
+		case consts.DO_EDIT_SOUND_CHANGE_WE:
+			RO = reduceSoundChangeStateWE(state.wordevolveSoundChanges, 'edit', payload);
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: RO
+			};
+			break;
+		case consts.CANCEL_EDIT_SOUND_CHANGE_WE:
+			RO = reduceSoundChangeStateWE(state.wordevolveSoundChanges);
+			RO.editing = null;
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: RO
+			};
+			break;
+		case consts.DELETE_SOUND_CHANGE_WE:
+			RO = reduceSoundChangeStateWE(state.wordevolveSoundChanges, 'del', payload);
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: RO
+			};
+			break;
+		case consts.REORDER_SOUND_CHANGE_WE:
+			let SC = state.wordevolveSoundChanges;
+			let scm = new Map(SC.list.map(rr => [rr.key, rr]));
+			SC = {
+				list: payload.map((key: string) => scm.get(key)),
+				editing: SC.editing
+			};
+			final = {
+				...reduceAllBut(["wordevolveSoundChanges"], state),
+				wordevolveSoundChanges: SC
+			};
+			break;
+
+
 		// Overwrite State
 		case consts.OVERWRITE_STATE:
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
 			break;
+
+
 		// Modals
 		case consts.TOGGLE_MODAL:
 			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
@@ -793,6 +882,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				modalState: newModal
 			};
 			break;
+
+
 		// Views
 		case consts.CHANGE_VIEW:
 			let newView: types.ViewStateObject = reduceViewState(state.viewState);

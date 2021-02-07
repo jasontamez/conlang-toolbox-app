@@ -159,7 +159,7 @@ const AddCategoryModal = () => {
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCat()}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Category and Close</IonLabel>
+						<IonLabel>Add and Close</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
