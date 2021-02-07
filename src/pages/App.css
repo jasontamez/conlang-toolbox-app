@@ -112,17 +112,19 @@ ion-list.units {
 	border-top: 0.1em solid var(--ion-background-color);
 }
 
-#outerOutputPane {
+#conlangToolbox .fullScreen {
 	display: flex;
-	flex-flow: column;
+	flex-flow: column nowrap;
 	min-height: 100%;
 }
-.collapse {
+#conlangToolbox .fullScreen .collapse {
 	flex: 0 1 auto;
+}
+#conlangToolbox .fullScreen .largePane {
+	flex: 1 1 auto;
 }
 #outputPane {
 	margin: 1em 2em;
-	flex: 1 1 auto;
 }
 
 #conlangToolbox .presetPopup .action-sheet-group-cancel,
