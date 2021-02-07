@@ -126,10 +126,10 @@ const WERew = () => {
 												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+trans.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+trans.key} onClick={() => moveDown(i)} />)]))}
 								</div>
 								<IonLabel>
-									<div className="transformExpression serifChars">
-										<span className="seek">{trans.seek}</span>
-										<span className="arrow">{makeArrow(trans.direction)}</span>
-										<span className="replace">{trans.replace}</span>
+									<div className="importantElement serifChars">
+										<span className="seek importantUnit">{trans.seek}</span>
+										<span className="arrow unimportantUnit">{makeArrow(trans.direction)}</span>
+										<span className="replace importantUnit">{trans.replace}</span>
 									</div>
 									<div className="description">{trans.description}</div>
 								</IonLabel>

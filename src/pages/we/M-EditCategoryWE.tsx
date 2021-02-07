@@ -164,7 +164,7 @@ const EditCategoryWEModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput value={editingCat.run} className="categoryRun ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
+						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

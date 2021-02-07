@@ -35,20 +35,14 @@
 	letter-spacing: 0.1em;
 	font-family: 'Noto Serif', 'Georgia', serif;
 }
-.categories .categoryRun .label,
-.rewriterules .ruleExpression,
-.transforms .transformExpression {
+#conlangToolbox .importantElement {
 	font-weight: bold;
 }
 .categories .categoryRun .label::after {
 	font-weight: bold;
 	content: "=";
 }
-.rewriterules .ruleExpression .seek,
-.rewriterules .ruleExpression .replace,
-.transforms .transformExpression .seek,
-.transforms .transformExpression .replace,
-#conlangToolbox .boxed {
+#conlangToolbox .importantUnit {
 	display: inline-block;
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-input-border);

@@ -97,7 +97,7 @@ const WECat = () => {
 								<IonItem>
 									<IonLabel>
 										<div className="categoryRun serifChars">
-											<span className="label">{label}</span>
+											<span className="label importantElement">{label}</span>
 											<span className="run">{cat.run}</span>
 										</div>
 										<div className="categoryLongName">{cat.title}</div>

@@ -123,10 +123,10 @@ const WGRew = () => {
 												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} />)]))}
 								</div>
 								<IonLabel>
-									<div className="ruleExpression serifChars">
-										<span className="seek">{rr.seek}</span>
-										<span className="arrow">➜</span>
-										<span className="replace">{rr.replace}</span>
+									<div className="importantElement serifChars">
+										<span className="seek importantUnit">{rr.seek}</span>
+										<span className="arrow unimportantUnit">➜</span>
+										<span className="replace importantUnit">{rr.replace}</span>
 									</div>
 									<div className="description">{rr.description}</div>
 								</IonLabel>

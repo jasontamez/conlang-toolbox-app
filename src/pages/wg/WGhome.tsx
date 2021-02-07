@@ -155,7 +155,7 @@ const WGHome = () => {
 							becoming <em>chu</em>. This will result in a rule that looks like the following:
 						</p>
 						<div className="emphasizedList">
-							<span className="boxed">C</span><span className="separateBoxes">➜</span><span className="boxed">ch</span>
+							<span className="importantUnit">C</span><span className="unimportantUnit">➜</span><span className="importantUnit">ch</span>
 						</div>
 						<p>
 							When you make more than one rule, arrows will appear that will allow you to move
