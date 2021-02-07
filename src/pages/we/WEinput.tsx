@@ -10,14 +10,15 @@ import {
 	useIonViewDidEnter
 } from '@ionic/react';
 /*import {
-	addOutline,
-	chevronUpCircleOutline,
-	chevronDownCircleOutline
+	caretForwardCircleOutline,
+	settingsOutline
 } from 'ionicons/icons';*/
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	changeView
+	changeView,
+	updateInputLexicon
 } from '../../components/ReduxDucksFuncs';
+import { $i } from '../../components/DollarSignExports';
 import '../App.css';
 
 const WERew = () => {
@@ -25,10 +26,13 @@ const WERew = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	if(!state) {
-		console.log(6);
-	}
+	const rawInput = useSelector((state: any) => state.wordevolveInput, shallowEqual);
+	const input = rawInput.join("\n");
+	const updateInput = () => {
+		const value: string = $i("lexiconInput").value;
+		const newInput: string[] = value.split("\n").map(v => v.trim());
+		dispatch(updateInputLexicon(newInput));
+	};
 	return (
 		<IonPage>
 			<IonHeader>
@@ -40,7 +44,9 @@ const WERew = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
-
+				<div className="WEinput">
+					<textarea id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onBlur={ () => updateInput() } />
+				</div>
 			</IonContent>
 		</IonPage>
 	);

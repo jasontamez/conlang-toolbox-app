@@ -122,7 +122,7 @@ export interface WESoundchangeStateObject {
 	editing: null | string
 }
 
-type WEInputObject = string[]
+export type WEInputObject = string[]
 
 
 export interface ModalStateObject {

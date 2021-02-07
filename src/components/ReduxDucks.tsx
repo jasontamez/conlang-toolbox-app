@@ -167,6 +167,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveCategories", reduceCategoryWE],
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
+	["wordevolveInput", (a: string[]) => a.map(a => a)],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState]
 ];
@@ -863,6 +864,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["wordevolveSoundChanges"], state),
 				wordevolveSoundChanges: SC
 			};
+			break;
+		// Input Lexicon
+		case consts.UPDATE_INPUT_LEXICON:
+			final = {
+				...reduceAllBut(["wordevolveInput"], state),
+				wordevolveInput: payload
+			};
+			console.log(payload);
 			break;
 
 

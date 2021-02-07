@@ -180,6 +180,10 @@ export function deleteSoundChangeWE(payload: types.WESoundChangeObject) {
 export function reorderSoundChangesWE(payload: types.WESoundChangeObject["key"][]) {
 	return {type: consts.REORDER_SOUND_CHANGE_WE, payload};
 }
+// Input Lexicon
+export function updateInputLexicon(payload: types.WEInputObject) {
+	return {type: consts.UPDATE_INPUT_LEXICON, payload};
+}
 
 // Modals
 export function openModal(payload: keyof types.ModalStateObject) {
