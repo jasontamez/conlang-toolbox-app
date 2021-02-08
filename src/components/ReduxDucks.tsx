@@ -238,7 +238,8 @@ export const initialAppState: types.StateObject = {
 		AddTransform: false,
 		EditTransform: false,
 		AddSoundChange: false,
-		EditSoundChange: false
+		EditSoundChange: false,
+		LexiconEllipsis: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -307,7 +308,8 @@ export const blankAppState: types.StateObject = {
 		AddTransform: false,
 		EditTransform: false,
 		AddSoundChange: false,
-		EditSoundChange: false
+		EditSoundChange: false,
+		LexiconEllipsis: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -889,6 +891,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["modalState"], state),
 				modalState: newModal
+			};
+			break;
+		case consts.TOGGLE_POPOVER:
+			let newPopover: types.ModalStateObject = reduceModalState(state.modalState);
+			newPopover[payload.modal as keyof types.ModalStateObject] = payload.flag;
+			final = {
+				...reduceAllBut(["modalState"], state),
+				modalState: newPopover
 			};
 			break;
 

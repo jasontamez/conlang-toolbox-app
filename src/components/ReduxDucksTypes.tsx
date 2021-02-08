@@ -140,6 +140,7 @@ export interface ModalStateObject {
 	EditTransform: boolean
 	AddSoundChange: boolean
 	EditSoundChange: boolean
+	LexiconEllipsis: undefined | Event
 }
 
 export interface ViewStateObject {

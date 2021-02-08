@@ -192,6 +192,12 @@ export function openModal(payload: keyof types.ModalStateObject) {
 export function closeModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
 }
+export function openPopover(popover: keyof types.ModalStateObject, event: Event) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: event}};
+}
+export function closePopover(popover: keyof types.ModalStateObject) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: undefined}};
+}
 // Views
 export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
 	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};

@@ -17,7 +17,8 @@ import {
 import {
 	createSharp,
 	shuffleSharp,
-	listSharp
+	listSharp,
+	bookSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
@@ -86,6 +87,16 @@ const Home = () => {
 							<IonItem className="ion-text-center">
 								<IonIcon icon={listSharp} />
 								<IonLabel className="ion-padding-start">LangSketch</IonLabel>
+							</IonItem>
+						</IonCard>
+					</IonCol>
+				</IonRow>
+				<IonRow>
+					<IonCol>
+						<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+							<IonItem className="ion-text-center">
+								<IonIcon icon={bookSharp} />
+								<IonLabel className="ion-padding-start">Lexicon</IonLabel>
 							</IonItem>
 						</IonCard>
 					</IonCol>
