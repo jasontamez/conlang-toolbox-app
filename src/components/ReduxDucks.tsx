@@ -321,7 +321,14 @@ export const blankAppState: types.StateObject = {
 // Storage
 const { Storage } = Plugins;
 const saveCurrentState = (state: types.StateObject) => {
-	let stringified = JSON.stringify(state);
+	// Eliminate not-stringifyable properties
+	const lex = state.modalState.LexiconEllipsis;
+	state.modalState.LexiconEllipsis = undefined;
+	// Stringify
+	const stringified = JSON.stringify(state);
+	// Restore non-stringifyable properties
+	state.modalState.LexiconEllipsis = lex;
+	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});
 };
 const initialState: types.StateObject = blankAppState;
