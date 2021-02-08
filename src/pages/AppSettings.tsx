@@ -48,7 +48,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import '../theme/variables.css';
 
-const WG = () => {
+const AppSettings = () => {
 	const dispatch = useDispatch();
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	return (
@@ -81,4 +81,4 @@ const WG = () => {
 	);
 };
  
-export default WG;
+export default AppSettings;
