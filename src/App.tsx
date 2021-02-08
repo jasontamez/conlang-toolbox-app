@@ -60,7 +60,7 @@ const App = () => {
 				const value = result.value;
 				if(value !== null) {
 					const state = JSON.parse(value);
-					delete state.LexiconEllipsis;
+					delete state.lexicon;
 					if(state && (typeof state) === "object") {
 						if (compareVersions.compare(state.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring state up to date

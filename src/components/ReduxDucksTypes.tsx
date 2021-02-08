@@ -125,6 +125,22 @@ export interface WESoundchangeStateObject {
 export type WEInputObject = string[]
 
 
+export interface Lexicon {
+	key: string
+	columns: string[]
+}
+export interface LexiconObject {
+	title: string
+	description: string
+	columns: number
+	columnOrder: number[]
+	columnTitles: string[]
+	columnSizes: ("s" | "m" | "l")[]
+	sort: [number, number]
+	lexicon: Lexicon[]
+}
+
+
 export interface ModalStateObject {
 	AppTheme: boolean
 	AddCategory: boolean
@@ -166,7 +182,12 @@ export interface StateObject {
 	wordevolveTransforms: WETransformStateObject
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
+	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
 }
+// Be sure to change stateObjectProps in ReducksDucks, too.
+// Be sure to change stateObjectProps in ReducksDucks, too.
+// Be sure to change stateObjectProps in ReducksDucks, too.
+// Be sure to change stateObjectProps in ReducksDucks, too.
 // Be sure to change stateObjectProps in ReducksDucks, too.

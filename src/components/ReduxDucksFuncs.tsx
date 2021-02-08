@@ -185,7 +185,16 @@ export function updateInputLexicon(payload: types.WEInputObject) {
 	return {type: consts.UPDATE_INPUT_LEXICON, payload};
 }
 
-// Modals
+//
+// LEXICON
+//
+export function updateLexicon(payload: types.LexiconObject) {
+	return {type: consts.UPDATE_LEXICON, payload};
+}
+
+//
+// MODALS
+//
 export function openModal(payload: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
 }
@@ -198,10 +207,14 @@ export function openPopover(popover: keyof types.ModalStateObject, event: Event)
 export function closePopover(popover: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: undefined}};
 }
-// Views
+
+//
+// VIEWS
+//
 export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
 	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
 }
+
 // Overwrite State
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload};

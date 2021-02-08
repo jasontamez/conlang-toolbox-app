@@ -149,6 +149,24 @@ const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod:
 const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
 	return {...original};
 };
+const reduceLexiconState = (original: types.LexiconObject) => {
+	return {
+		title: original.title,
+		description: original.description,
+		columns: original.columns,
+		columnOrder: [...original.columnOrder],
+		columnTitles: [...original.columnTitles],
+		columnSizes: [...original.columnSizes],
+		sort: [...original.sort],
+		lexicon: original.lexicon.map(lex => reduceLexicon(lex))
+	};
+};
+const reduceLexicon = (original: types.Lexicon) => {
+	return {
+		key: original.key,
+		columns: [...original.columns]
+	}
+};
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
@@ -168,6 +186,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (a: string[]) => a.map(a => a)],
+	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState]
 ];
@@ -224,7 +243,17 @@ export const initialAppState: types.StateObject = {
 		editing: null
 	},
 	wordevolveInput: [],
-	modalState: {
+	lexicon: {
+		title: "",
+		description: "",
+		columns: 3,
+		columnOrder: [0,1,2],
+		columnTitles: ["Word", "Part of Speech", "Definition"],
+		columnSizes: ["m", "s", "l"],
+		sort: [0, 0],
+		lexicon: []
+	},
+		modalState: {
 		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
@@ -294,6 +323,16 @@ export const blankAppState: types.StateObject = {
 		editing: null
 	},
 	wordevolveInput: [],
+	lexicon: {
+		title: "",
+		description: "",
+		columns: 3,
+		columnOrder: [0,1,2],
+		columnTitles: ["Word", "Part of Speech", "Definition"],
+		columnSizes: ["m", "s", "l"],
+		sort: [0, 0],
+		lexicon: []
+	},
 	modalState: {
 		AppTheme: false,
 		AddCategory: false,
@@ -880,7 +919,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["wordevolveInput"], state),
 				wordevolveInput: payload
 			};
-			console.log(payload);
+			break;
+
+
+		// Lexicon
+		case consts.UPDATE_LEXICON:
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: payload
+			};
 			break;
 
 

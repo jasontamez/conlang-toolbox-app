@@ -170,6 +170,70 @@ i.ipa {
 	resize: none;
 }
 
+#theLexiconHeader {
+	--ion-grid-column-padding: 0;
+	margin: 2em 1em 1em;
+	padding: 0;
+}
+#theLexiconHeader ion-row {
+	margin: 0;
+}
+#theLexicon::part(native) {
+	margin: 0 1em 1em 2em;
+	padding: 0;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	overflow: auto;
+	width: calc(100% - 3em);
+}
+#theLexicon .s {
+	flex: 1 1 5em;
+}
+#theLexicon .m {
+	flex: 3 1 12em;
+}
+#theLexicon .l {
+	flex: 5 1 25em;
+}
+#theLexicon input {
+	outline: none;
+	border: 0;
+}
+.lexRow {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: baseline;
+}
+.lexHeader {
+	font-weight: bold;
+}
+.lexRow > * {
+	margin: 0.25em 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.lexRow > *:first-child {
+	margin: 0 0.35em 0 0;
+}
+.lexRow > *:last-child {
+	margin: 0 0 0 0.35em;
+}
+#lexiconPage #lexiconSort::part(text)::before {
+	content: "Sort: ";
+	margin-right: "0.5em";
+}
+#lexiconPage #lexiconSort::part(text) {
+	min-width: 10em;
+	overflow: visible;
+}
+#lexiconPage h1 {
+	margin: 0;
+}
+
 
 @media screen and (max-width: 450px) {
 	ion-tab-bar ion-label {
