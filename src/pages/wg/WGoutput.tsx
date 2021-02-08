@@ -427,7 +427,7 @@ const WGOut = () => {
 			<IonContent fullscreen>
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse">
-						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("OutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>

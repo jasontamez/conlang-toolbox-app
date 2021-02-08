@@ -45,12 +45,12 @@ const OutputOptionsModal = () => {
 	const modalState = state.modalState;
 	const settingsWG = state.wordgenSettings;
 	return (
-		<IonModal isOpen={modalState.OutputOptions} onDidDismiss={() => dispatch(closeModal('OutputOptions'))}>
+		<IonModal isOpen={modalState.WGOutputOptions} onDidDismiss={() => dispatch(closeModal('WGOutputOptions'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Output Options</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('OutputOptions'))}>
+						<IonButton onClick={() => dispatch(closeModal('WGOutputOptions'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -99,7 +99,7 @@ const OutputOptionsModal = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem button={true} onClick={() => dispatch(closeModal('OutputOptions'))} color="success">
+				<IonItem button={true} onClick={() => dispatch(closeModal('WGOutputOptions'))} color="success">
 					<IonLabel>Done</IonLabel>
 				</IonItem>
 			</IonFooter>

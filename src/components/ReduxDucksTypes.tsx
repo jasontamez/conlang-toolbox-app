@@ -131,7 +131,7 @@ export interface ModalStateObject {
 	EditCategory: boolean
 	AddRewriteRule: boolean
 	EditRewriteRule: boolean
-	OutputOptions: boolean
+	WGOutputOptions: boolean
 	PresetPopup: boolean
 	ManageCustomInfo: boolean
 	AddCategoryWE: boolean
