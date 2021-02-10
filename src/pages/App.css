@@ -1,6 +1,6 @@
 #conlangToolbox p {
-	text-indent: 2em;
-	padding: 1em;
+	text-indent: 2rem;
+	padding: 1rem;
 	margin: 0 auto;
 }
 #conlangToolbox p + p {
@@ -12,7 +12,7 @@
 	transition: max-height 0.1s ease-in;
 }
 #conlangToolbox .clickToExpand.expanded {
-	max-height: 10em;
+	max-height: 10rem;
 	transition: max-height 0.1s ease-out;
 }
 #conlangToolbox ion-button.helpy {
@@ -32,7 +32,7 @@
 	font-style: italic;
 }
 #conlangToolbox .serifChars {
-	letter-spacing: 0.1em;
+	letter-spacing: 0.025rem;
 	font-family: 'Noto Serif', 'Georgia', serif;
 }
 #conlangToolbox .importantElement {
@@ -44,18 +44,18 @@
 }
 #conlangToolbox .importantUnit {
 	display: inline-block;
-	padding: 0.25em 0.5em;
+	padding: 0.25rem 0.5rem;
 	border: 1px solid var(--ion-color-input-border);
 }
 #conlangToolbox .unimportantUnit {
 	display: inline-block;
 	font-weight: bold;
-	padding: 0 0.5em;
+	padding: 0 0.5rem;
 	letter-spacing: 0;
 }
 .rewriterules .upDownButtons,
 .transforms .upDownButtons {
-	width: 4em;
+	width: 4rem;
 	text-align: center;
 }
 .rewriterules .upDownButtons ion-icon,
@@ -72,7 +72,7 @@
 	display: block;
 	font-weight: bold;
 	font-size: larger;
-	margin: 0.5em 1em 1em;
+	margin: 0.5rem 1rem 1rem;
 }
 #conlangToolbox ion-list.syllables .toggleable {
 	overflow: hidden;
@@ -95,7 +95,7 @@
 }
 
 ion-item-option {
-	min-width: 5em;
+	min-width: 5rem;
 }
 ion-list.units {
 	background: transparent;
@@ -104,12 +104,12 @@ ion-list.units {
 .units ion-item,
 .units ion-item-option,
 .units ion-item-option button {
-	border-bottom: 0.1em solid var(--ion-background-color);
+	border-bottom: 0.1rem solid var(--ion-background-color);
 }
 .units ion-item-sliding:first-of-type ion-item,
 .units ion-item-sliding:first-of-type ion-item-option,
 .units ion-item-sliding:first-of-type ion-item-option button {
-	border-top: 0.1em solid var(--ion-background-color);
+	border-top: 0.1rem solid var(--ion-background-color);
 }
 
 #conlangToolbox .fullScreen {
@@ -124,7 +124,7 @@ ion-list.units {
 	flex: 1 1 auto;
 }
 #outputPane {
-	margin: 1em 2em;
+	margin: 1rem 2rem;
 }
 
 #conlangToolbox .presetPopup .action-sheet-group-cancel,
@@ -137,7 +137,7 @@ i.ipa {
 	font-style: normal;
 	color: var(--ion-color-primary-contrast);
 	background-color: var(--ion-color-primary-shade);
-	padding: 0 0.1em;
+	padding: 0 0.1rem;
 }
 
 #conlangToolbox .WEinput {
@@ -146,14 +146,14 @@ i.ipa {
 	padding: 0;
 	margin: 0;
 	display: grid;
-	grid-template-columns: 1em 1fr 1em;
-	grid-template-rows: 1em 1fr 1em;
+	grid-template-columns: 1rem 1fr 1rem;
+	grid-template-rows: 1rem 1fr 1rem;
 	grid-template-areas:
 		". . ."
 		". x ."
 		". . .";
-	/*grid-template-columns: 1em 1fr 1em;
-	grid-template-rows: 1em min-content 1em 1fr 1em;
+	/*grid-template-columns: 1rem 1fr 1rem;
+	grid-template-rows: 1rem min-content 1rem 1fr 1rem;
 	grid-template-areas:
 		". . ."
 		". b ."
@@ -172,62 +172,97 @@ i.ipa {
 
 #theLexiconHeader {
 	--ion-grid-column-padding: 0;
-	margin: 2em 1em 1em;
+	margin: 2rem 2rem 1rem;
 	padding: 0;
 }
 #theLexiconHeader ion-row {
 	margin: 0;
 }
+#theLexicon,
 #theLexicon::part(native) {
-	margin: 0 1em 1em 2em;
+	margin: 0 !important;
 	padding: 0;
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
 	overflow: auto;
-	width: calc(100% - 3em);
+	width: calc(100% - 2rem);
+}
+#theLexicon .lexInput {
+	--highlight-color-focused: transparent;
+}
+#theLexicon ion-button {
+	margin: 0;
+}
+#theLexicon ion-button::part(native) {
+	padding: 0 0.25rem;
+}
+#theLexicon .xs {
+	flex: 0 0 2rem;
+}
+#theLexicon .xs.lexiconDel,
+#theLexicon .xs.lexiconEdit {
+	padding-left: 0.25rem;
+	flex: 0 0 2.25rem;
+}
+#theLexicon .xs.lexiconAdd {
+	margin-right: 0.25rem;
+	flex: 0 0 2.25rem;
 }
 #theLexicon .s {
-	flex: 1 1 5em;
+	flex: 1 1 5rem;
 }
 #theLexicon .m {
-	flex: 3 1 12em;
+	flex: 3 1 12rem;
 }
 #theLexicon .l {
-	flex: 5 1 25em;
+	flex: 5 1 25rem;
 }
 #theLexicon input {
 	outline: none;
+	padding-left: 0;
+	padding-right: 0;
 	border: 0;
 }
-.lexRow {
+.lexRow,
+.lexRow::part(native) {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
-	align-items: baseline;
+	align-items: center;
+	margin: 0 0 0 2rem;
 }
-.lexHeader {
+.lexRow::part(native) {
+	margin: 0;
+	padding: 0;
+}
+.lexHeader,
+.lexHeader::part(native) {
 	font-weight: bold;
+	min-height: 2rem;
 }
 .lexRow > * {
-	margin: 0.25em 0;
+	margin: 0 0.25rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.lexRow > *:first-child {
-	margin: 0 0.35em 0 0;
+.lexRow > .xs {
+	margin: 0;
 }
-.lexRow > *:last-child {
-	margin: 0 0 0 0.35em;
+.lexiconDisplay {
+	border-top: 2px solid var(--ion-background-color);
+}
+.lexiconDisplay:last-child {
+	border-bottom: 2px solid var(--ion-background-color);
 }
 #lexiconPage #lexiconSort::part(text)::before {
 	content: "Sort: ";
-	margin-right: "0.5em";
+	margin-right: 0.5rem;
 }
 #lexiconPage #lexiconSort::part(text) {
-	min-width: 10em;
+	min-width: 10rem;
 	overflow: visible;
 }
 #lexiconPage h1 {
