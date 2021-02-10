@@ -158,7 +158,8 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		columnTitles: [...original.columnTitles],
 		columnSizes: [...original.columnSizes],
 		sort: [...original.sort],
-		lexicon: original.lexicon.map(lex => reduceLexicon(lex))
+		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
+		editing: original.editing
 	};
 };
 const reduceLexicon = (original: types.Lexicon) => {
@@ -251,7 +252,8 @@ export const initialAppState: types.StateObject = {
 		columnTitles: ["Word", "Part of Speech", "Definition"],
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
-		lexicon: []
+		lexicon: [],
+		editing: undefined
 	},
 		modalState: {
 		AppTheme: false,
@@ -268,7 +270,9 @@ export const initialAppState: types.StateObject = {
 		EditTransform: false,
 		AddSoundChange: false,
 		EditSoundChange: false,
-		LexiconEllipsis: undefined
+		LexiconEllipsis: undefined,
+		EditLexiconItem: false,
+		EditLexiconOrder: false
 	},
 	viewState: {
 		wg: 'home',
@@ -331,7 +335,8 @@ export const blankAppState: types.StateObject = {
 		columnTitles: ["Word", "Part of Speech", "Definition"],
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
-		lexicon: []
+		lexicon: [],
+		editing: undefined
 	},
 	modalState: {
 		AppTheme: false,
@@ -348,7 +353,9 @@ export const blankAppState: types.StateObject = {
 		EditTransform: false,
 		AddSoundChange: false,
 		EditSoundChange: false,
-		LexiconEllipsis: undefined
+		LexiconEllipsis: undefined,
+		EditLexiconItem: false,
+		EditLexiconOrder: false
 	},
 	viewState: {
 		wg: 'home',
@@ -382,6 +389,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let RO: types.WGRewriteRuleStateObject;
 	let final: types.StateObject = state;
 	let label: string;
+	let LO: types.LexiconObject;
 	switch(action.type) {
 		// App Settings
 		case consts.CHANGE_THEME:
@@ -927,6 +935,75 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: payload
+			};
+			break;
+		case consts.UPDATE_LEXICON_EDITING:
+			LO = reduceLexiconState(state.lexicon);
+			LO.editing = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.DO_EDIT_LEXICON:
+			LO = reduceLexiconState(state.lexicon);
+			LO.lexicon[LO.editing!] = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.DELETE_LEXICON_ITEM:
+			LO = reduceLexiconState(state.lexicon);
+			LO.lexicon = LO.lexicon.slice(0, payload).concat(LO.lexicon.slice(payload + 1));
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_PROP:
+			let pProp: "title" | "description" = payload.prop;
+			let value: string = payload.value;
+			LO = reduceLexiconState(state.lexicon);
+			LO[pProp] = value;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_COLUMNS:
+			LO = reduceLexiconState(state.lexicon);
+			LO.columns = payload.cols;
+			LO.columnOrder = payload.order;
+			LO.columnTitles = payload.titles;
+			LO.columnSizes = payload.sizes;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.ADD_LEXICON_ITEM:
+			LO = reduceLexiconState(state.lexicon);
+			LO.lexicon.push(payload);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_ORDER:
+			LO = reduceLexiconState(state.lexicon);
+			LO.lexicon = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_SORT:
+			LO = reduceLexiconState(state.lexicon);
+			LO.sort = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
 			};
 			break;
 

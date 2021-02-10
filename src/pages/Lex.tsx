@@ -22,17 +22,31 @@ import {
 	IonCol
 } from '@ionic/react';
 import {
-	ellipsisVertical
+	ellipsisVertical,
+	add,
+	construct,
+	trash,
+	swapHorizontalOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	openPopover,
 	closePopover,
-	updateLexicon
+	openModal,
+	updateLexiconText,
+	startEditLexiconItem,
+	deleteLexiconItem,
+	addLexiconItem,
+	updateLexiconOrder,
+	updateLexiconSort
 } from '../components/ReduxDucksFuncs';
-import { LexiconObject, Lexicon } from '../components/ReduxDucksTypes';
+import { Lexicon } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
-import ChooseThemeModal from './M-Theme';
+import EditLexiconItemModal from './M-EditWord';
+import EditLexiconOrderModal from './M-EditWordOrder';
+import fireSwal from '../components/Swal';
+import { v4 as uuidv4 } from 'uuid';
+import escape from 'escape-html';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -57,32 +71,139 @@ import '../theme/variables.css';
 const Lex = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
+	const settings = state.appSettings;
 	const popstate = state.modalState.LexiconEllipsis;
 	const lexicon = state.lexicon;
-	const setNewInfo = (id: string, prop: keyof LexiconObject, index1: number = 0, index2: number = 0) => {
+	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
-		const value = el.value;
-		if(prop === "lexicon") {
-			lexicon.lexicon[index1][index2] = value;
-		} else if (prop === "sort") {
-			lexicon.sort = [index1, index2];
-		} else {
-			lexicon[prop] = value;
-		}
-		dispatch(updateLexicon(lexicon));
+		const value = el.value.trim();
+		dispatch(updateLexiconText(prop, value));
 	};
 	const theOrder = lexicon.columnOrder;
 	const theTitles = lexicon.columnTitles;
 	const theSizes = lexicon.columnSizes;
+	const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
 	const doSort = () => {
 		const el = $i("lexiconSort");
 		const value = el.value;
-		let [col, dir] = value.split("");
-		console.log([col, dir]);
+		let [col, dir] = value.split("").map((n: string) => parseInt(n));
+		dispatch(updateLexiconSort([col, dir]));
+		let newLex: Lexicon[] = [...lexicon.lexicon];
+		newLex.sort((a, b) => {
+			let x = a.columns[col];
+			let y: string;
+			if(dir) {
+				y = x;
+				x = b.columns[col];
+			} else {
+				y = b.columns[col];
+			}
+			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+		});
+		dispatch(updateLexiconOrder(newLex));
+	};
+	const addToLex = () => {
+		const newInfo: string[] = [];
+		let foundFlag = false;
+		const columns = lexicon.columns;
+		let i: number = 0;
+		while(i < columns) {
+			let el = $i("inputLex" + i.toString());
+			if(el !== null) {
+				let info = el.value.trim();
+				if(info) {
+					foundFlag = true;
+				}
+				newInfo.push(info);
+			}
+			i++;
+		}
+		if(!foundFlag) {
+			fireSwal({
+				title: "Error",
+				icon: "error",
+				text: "You did not type any information into any text field."
+			});
+			return;
+		}
+		i = 0;
+		while(i < columns) {
+			let el = $i("inputLex" + i.toString());
+			if(el !== null) {
+				el.value = "";
+			}
+			i++;
+		}
+		const newWord: Lexicon = {
+			key: uuidv4(),
+			columns: newInfo
+		}
+		dispatch(addLexiconItem(newWord));
+		let newLex: Lexicon[] = [...lexicon.lexicon, newWord];
+		let [col, dir] = lexicon.sort;
+		newLex.sort((a, b) => {
+			let x = a.columns[col];
+			let y: string;
+			if(dir) {
+				y = x;
+				x = b.columns[col];
+			} else {
+				y = b.columns[col];
+			}
+			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+		});
+		dispatch(updateLexiconOrder(newLex));
+	};
+	const delFromLex = (key: string) => {
+		let title: string = "";
+		let index: number = -1;
+		if(lexicon.lexicon.every((lx: Lexicon, i: number) => {
+			if(lx.key === key) {
+				index = i;
+				title = lx.columns.join(" / ");
+				return false;
+			}
+			return true;
+		})) {
+			console.log("Bad key: " + key);
+			return;
+		}
+		const thenFunc = () => dispatch(deleteLexiconItem(index));
+		if(settings.disableConfirms) {
+			thenFunc();
+		} else {
+			fireSwal({
+				html: escape(title) + "<br /><br />Are you sure you want to delete this? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then((result: any) => result.isConfirmed && thenFunc());
+		}
+	};
+	const swapColumns = () => {
+		dispatch(openModal('EditLexiconOrder'));
+	};
+	const editInLex = (key: string) => {
+		//need modal
+		let index: number = -1;
+		if(lexicon.lexicon.every((lx: Lexicon, i: number) => {
+			if(lx.key === key) {
+				index = i;
+				return false;
+			}
+			return true;
+		})) {
+			console.log("Bad key: " + key);
+			return;
+		}
+		dispatch(startEditLexiconItem(index));
+		dispatch(openModal('EditLexiconItem'));
 	};
 	return (
 		<IonPage>
-			<ChooseThemeModal />
+			<EditLexiconItemModal />
+			<EditLexiconOrderModal />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -121,7 +242,7 @@ const Lex = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
-						<IonInput id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonBlur={() => setNewInfo("lexTitle", "lexicon")}></IonInput>
+						<IonInput id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonBlur={() => setNewInfo("lexTitle", "title")}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Description:</IonLabel>
@@ -133,7 +254,7 @@ const Lex = () => {
 								<h1>Words</h1>
 							</IonCol>
 							<IonCol size="auto">
-								<IonSelect id="lexiconSort" interface="popover" value="00" onIonChange={doSort}>
+								<IonSelect id="lexiconSort" interface="popover" value={theSort} onIonChange={() => doSort()}>
 									{theOrder.map((i: number) => {
 										const title = theTitles[i];
 										const which = i.toString();
@@ -142,57 +263,70 @@ const Lex = () => {
 											const arrow = [" 🠗", " 🠕"][s];
 											const dir = s.toString();
 											return (
-												<IonSelectOption value={which + dir}>{title + arrow}</IonSelectOption>
+												<IonSelectOption value={which + dir} key={which + dir}>{title + arrow}</IonSelectOption>
 											);
 										});
 									})}
 								</IonSelect>
 							</IonCol>
+							<IonCol size="auto">
+								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => swapColumns()}>
+									<IonIcon size="small" icon={swapHorizontalOutline} />
+								</IonButton>
+							</IonCol>
 						</IonRow>
 						{
 							/* HOW DO WE MOVE COLUMNS?? */
-							/* HOW DO WE MOVE COLUMNS?? */
+							/* HOW DO WE MOVE COLUMNS?? swapHorizontalOutline */
 							/* HOW DO WE MOVE COLUMNS?? */
 						}
 					</IonGrid>
-					<IonItem id="theLexicon">
-						<div className="lexRow lexHeader" style={ { order: -2 } }>
-							{
-								/* Need padding to match the [ADD] button */
-							}
+					<div id="theLexicon">
+						<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
+							<span className="lexiconAdd xs"></span>
 							{theOrder.map((i: number) => (
-								<span className={theSizes[i]}>{theTitles[i]}</span>
+								<span className={theSizes[i]} key={theTitles[i]}>{theTitles[i]}</span>
 							))}
-							{
-								/* Need padding to match the edit/delete buttons */
-							}
-						</div>
-						<div className="lexRow" style={ { order: -1 } }>
-							{
-								/* Need some sort of [ADD] button here - addCircleSharp? */
-							}
-							{theOrder.map((i: number) => (
-								<input className={theSizes[i]} type="text" />
-							))}
-							{
-								/* Need padding to match the edit/delete buttons */
-							}
-						</div>
+							<span className="lexiconEdit xs"></span>
+							<span className="lexiconDel xs ion-hide-sm-down"></span>
+						</IonItem>
+						<IonItem className="lexRow serifChars" style={ { order: -1 } }>
+							<IonButton className="lexiconAdd xs" color="success" onClick={() => addToLex()}>
+								<IonIcon icon={add} style={ { margin: 0 } } />
+							</IonButton>
+							{theOrder.map((i: number) => {
+								const key = "inputLex" + i.toString();
+								return (
+									<IonInput id={key} key={key} className={theSizes[i]} type="text" />
+								);
+							})}
+							<span className="lexiconEdit xs"></span>
+							<span className="lexiconDel xs ion-hide-sm-down"></span>
+						</IonItem>
 						{lexicon.lexicon.map((lex: Lexicon, ind: number) => {
 							const cols = lex.columns;
-							const key = "LEX" + lex.key;
+							const key = lex.key;
+							const id = "LEX" + key;
 							return (
-								<div className="lexRow" id={key} style={ { order: ind } }>
+								<IonItem key={id} className="lexRow lexiconDisplay serifChars" id={id} style={ { order: ind } }>
+									<span className="lexiconAdd xs"></span>
 									{theOrder.map((i: number) => (
-										<span className={theSizes[i]}>{cols[i]}</span>
+										<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
 									))}
-								</div>
+									<span className="lexiconEdit xs">
+										<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
+											<IonIcon icon={construct} style={ { margin: 0 } } />
+										</IonButton>
+									</span>
+									<span className="lexiconDel xs ion-hide-sm-down">
+										<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
+											<IonIcon icon={trash} style={ { margin: 0 } } />
+										</IonButton>
+									</span>
+								</IonItem>
 							);
 						})}
-						{
-							/* Need edit/delete buttons at end of line */
-						}
-					</IonItem>
+					</div>
 				</IonList>
 			</IonContent>
 		</IonPage>

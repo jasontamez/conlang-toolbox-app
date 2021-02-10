@@ -191,6 +191,33 @@ export function updateInputLexicon(payload: types.WEInputObject) {
 export function updateLexicon(payload: types.LexiconObject) {
 	return {type: consts.UPDATE_LEXICON, payload};
 }
+export function startEditLexiconItem(payload: number) {
+	return {type: consts.UPDATE_LEXICON_EDITING, payload};
+}
+export function cancelEditLexiconItem() {
+	return {type: consts.UPDATE_LEXICON_EDITING, payload: undefined};
+}
+export function doEditLexiconItem(payload: types.Lexicon) {
+	return {type: consts.DO_EDIT_LEXICON, payload};
+}
+export function deleteLexiconItem(payload: number) {
+	return {type: consts.DELETE_LEXICON_ITEM, payload};
+}
+export function addLexiconItem(payload: types.Lexicon) {
+	return {type: consts.ADD_LEXICON_ITEM, payload};
+}
+export function updateLexiconText(prop: "title" | "description", value: string) {
+	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
+}
+export function updateLexiconColumns(cols: number, order: number[], titles: string[], sizes: ("s" | "m" | "l")[]) {
+	return {type: consts.UPDATE_LEXICON_COLUMNS, payload: {cols, order, titles, sizes}};
+}
+export function updateLexiconOrder(payload: types.Lexicon[]) {
+	return {type: consts.UPDATE_LEXICON_ORDER, payload};
+}
+export function updateLexiconSort(payload: number[]) {
+	return {type: consts.UPDATE_LEXICON_SORT, payload};
+}
 
 //
 // MODALS

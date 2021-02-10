@@ -136,8 +136,9 @@ export interface LexiconObject {
 	columnOrder: number[]
 	columnTitles: string[]
 	columnSizes: ("s" | "m" | "l")[]
-	sort: [number, number]
+	sort: number[]
 	lexicon: Lexicon[]
+	editing: number | undefined;
 }
 
 
@@ -157,6 +158,8 @@ export interface ModalStateObject {
 	AddSoundChange: boolean
 	EditSoundChange: boolean
 	LexiconEllipsis: undefined | Event
+	EditLexiconItem: boolean
+	EditLexiconOrder: boolean
 }
 
 export interface ViewStateObject {
