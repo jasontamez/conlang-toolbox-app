@@ -269,6 +269,16 @@ i.ipa {
 	margin: 0;
 }
 
+#editLexiconItemOrder ion-row:nth-child(odd) {
+	margin: 0;
+}
+.dragInactive .showWhileDragging,
+.dragActive .hideWhileDragging,
+.addActive .hideWhileAdding,
+.addInactive .hideUnlessAdding {
+	display: none;
+}
+
 
 @media screen and (max-width: 450px) {
 	ion-tab-bar ion-label {

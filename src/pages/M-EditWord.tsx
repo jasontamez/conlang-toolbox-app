@@ -31,9 +31,11 @@ const EditLexiconItemModal = () => {
 	const settings = state.appSettings;
 	const modalState = state.modalState;
 	const lexicon = state.lexicon;
-	const item: Lexicon = {...lexicon.lexicon[lexicon.editing]};
-	const editing = [...item.columns];
-	item.columns = editing;
+	const thisSingularItem: Lexicon = {...lexicon.lexicon[lexicon.editing]};
+	const editing = thisSingularItem.columns ? [...thisSingularItem.columns] : [];
+	while(editing.length < lexicon.columns) {
+		editing.push("");
+	}
 	const setNewInfo = (info: string, i: number) => {
 		editing[i] = info;
 	};
@@ -44,7 +46,7 @@ const EditLexiconItemModal = () => {
 		dispatch(closeModal('EditLexiconItem'));
 	};
 	const maybeSaveNewInfo = () => {
-		if(!editing.every((item: string) => item)) {
+		if(!editing.every((i: string) => i)) {
 			fireSwal({
 				title: "Error",
 				icon: "error",
@@ -53,8 +55,9 @@ const EditLexiconItemModal = () => {
 			return;
 		}
 		// Everything ok!
+		thisSingularItem.columns = editing;
 		dispatch(closeModal('EditLexiconItem'));
-		dispatch(doEditLexiconItem(item));
+		dispatch(doEditLexiconItem(thisSingularItem));
 		fireSwal({
 			title: "Item updated!",
 			toast: true,
@@ -105,7 +108,7 @@ const EditLexiconItemModal = () => {
 					{theOrder.map((i: number) => {
 						const iStr = i.toString();
 						return (
-							<IonItem key={item.key + iStr}>
+							<IonItem key={thisSingularItem.key + iStr}>
 								<IonLabel position="stacked" style={ {fontSize: "20px"} }>{theTitles[i]}</IonLabel>
 								<IonInput id={"thislex" + iStr} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo(e.detail.value!.trim(), i)}></IonInput>
 							</IonItem>

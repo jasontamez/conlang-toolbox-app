@@ -159,7 +159,8 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		columnSizes: [...original.columnSizes],
 		sort: [...original.sort],
 		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
-		editing: original.editing
+		editing: original.editing,
+		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
 };
 const reduceLexicon = (original: types.Lexicon) => {
@@ -168,6 +169,15 @@ const reduceLexicon = (original: types.Lexicon) => {
 		columns: [...original.columns]
 	}
 };
+const reduceColEdit = (original: types.colEdit) => {
+	return {
+		columns: original.columns,
+		columnOrder: [...original.columnOrder],
+		columnTitles: [...original.columnTitles],
+		columnSizes: [...original.columnSizes],
+		sort: [...original.sort]
+	};
+}
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
@@ -253,7 +263,8 @@ export const initialAppState: types.StateObject = {
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
 		lexicon: [],
-		editing: undefined
+		editing: undefined,
+		colEdit: undefined
 	},
 		modalState: {
 		AppTheme: false,
@@ -336,7 +347,8 @@ export const blankAppState: types.StateObject = {
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
 		lexicon: [],
-		editing: undefined
+		editing: undefined,
+		colEdit: undefined
 	},
 	modalState: {
 		AppTheme: false,
@@ -973,11 +985,20 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_COLUMNS:
-			LO = reduceLexiconState(state.lexicon);
-			LO.columns = payload.cols;
-			LO.columnOrder = payload.order;
-			LO.columnTitles = payload.titles;
-			LO.columnSizes = payload.sizes;
+			if(payload === undefined) {
+				LO = {
+					...reduceLexiconState(state.lexicon),
+					colEdit: payload
+				};
+			} else {
+				let minusReorder = {...payload};
+				delete minusReorder.reordering;
+				LO = {
+					...reduceLexiconState(state.lexicon),
+					...minusReorder,
+					colEdit: payload
+				};
+			}
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

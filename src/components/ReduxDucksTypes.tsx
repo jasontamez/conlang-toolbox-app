@@ -129,6 +129,14 @@ export interface Lexicon {
 	key: string
 	columns: string[]
 }
+export interface colEdit {
+	columns: number
+	columnOrder: number[]
+	columnTitles: string[]
+	columnSizes: ("s" | "m" | "l")[],
+	sort: number[],
+	reordering?: boolean
+}
 export interface LexiconObject {
 	title: string
 	description: string
@@ -139,6 +147,7 @@ export interface LexiconObject {
 	sort: number[]
 	lexicon: Lexicon[]
 	editing: number | undefined;
+	colEdit: colEdit | undefined
 }
 
 

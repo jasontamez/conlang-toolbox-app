@@ -242,11 +242,11 @@ const Lex = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
-						<IonInput id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonBlur={() => setNewInfo("lexTitle", "title")}></IonInput>
+						<IonInput value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonBlur={() => setNewInfo("lexTitle", "title")}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Description:</IonLabel>
-						<IonTextarea id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonBlur={() => setNewInfo("lexDesc", "description")} />
+						<IonTextarea value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonBlur={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
@@ -275,11 +275,6 @@ const Lex = () => {
 								</IonButton>
 							</IonCol>
 						</IonRow>
-						{
-							/* HOW DO WE MOVE COLUMNS?? */
-							/* HOW DO WE MOVE COLUMNS?? swapHorizontalOutline */
-							/* HOW DO WE MOVE COLUMNS?? */
-						}
 					</IonGrid>
 					<div id="theLexicon">
 						<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
