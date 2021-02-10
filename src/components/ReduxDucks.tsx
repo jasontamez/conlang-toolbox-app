@@ -932,6 +932,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 		// Lexicon
 		case consts.UPDATE_LEXICON:
+			// Probably delete this?
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: payload
@@ -945,7 +946,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.DO_EDIT_LEXICON:
+		case consts.DO_EDIT_LEXICON_ITEM:
 			LO = reduceLexiconState(state.lexicon);
 			LO.lexicon[LO.editing!] = payload;
 			final = {
@@ -990,7 +991,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.UPDATE_LEXICON_ORDER:
+		case consts.UPDATE_LEXICON_ITEM_ORDER:
 			LO = reduceLexiconState(state.lexicon);
 			LO.lexicon = payload;
 			final = {

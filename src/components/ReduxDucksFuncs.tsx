@@ -198,7 +198,7 @@ export function cancelEditLexiconItem() {
 	return {type: consts.UPDATE_LEXICON_EDITING, payload: undefined};
 }
 export function doEditLexiconItem(payload: types.Lexicon) {
-	return {type: consts.DO_EDIT_LEXICON, payload};
+	return {type: consts.DO_EDIT_LEXICON_ITEM, payload};
 }
 export function deleteLexiconItem(payload: number) {
 	return {type: consts.DELETE_LEXICON_ITEM, payload};
@@ -209,11 +209,11 @@ export function addLexiconItem(payload: types.Lexicon) {
 export function updateLexiconText(prop: "title" | "description", value: string) {
 	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
 }
-export function updateLexiconColumns(cols: number, order: number[], titles: string[], sizes: ("s" | "m" | "l")[]) {
-	return {type: consts.UPDATE_LEXICON_COLUMNS, payload: {cols, order, titles, sizes}};
+export function updateLexiconColumns(payload: types.colEdit | undefined) {
+	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
 }
 export function updateLexiconOrder(payload: types.Lexicon[]) {
-	return {type: consts.UPDATE_LEXICON_ORDER, payload};
+	return {type: consts.UPDATE_LEXICON_ITEM_ORDER, payload};
 }
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
