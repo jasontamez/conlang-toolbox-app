@@ -35,6 +35,11 @@
 	color: var(--ion-color-danger-contrast);
 	border-color: var(--ion-color-danger-shade);
 }
+.conlangToolboxSwal.swal2-popup.warningConfirm .swal2-confirm {
+	background-color: var(--ion-color-warning);
+	color: var(--ion-color-warning-contrast);
+	border-color: var(--ion-color-warning-shade);
+}
 .conlangToolboxSwal.swal2-popup .swal2-icon.swal2-error,
 .conlangToolboxSwal.swal2-popup .swal2-x-mark-line-left,
 .conlangToolboxSwal.swal2-popup .swal2-x-mark-line-right {
