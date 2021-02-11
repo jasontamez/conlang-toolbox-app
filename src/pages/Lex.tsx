@@ -19,7 +19,8 @@ import {
 	IonSelectOption,
 	IonGrid,
 	IonRow,
-	IonCol
+	IonCol,
+	IonLoading
 } from '@ionic/react';
 import {
 	ellipsisVertical,
@@ -34,17 +35,23 @@ import {
 	closePopover,
 	openModal,
 	updateLexiconText,
+	updateLexiconNumber,
 	startEditLexiconItem,
 	deleteLexiconItem,
 	addLexiconItem,
 	updateLexiconOrder,
-	updateLexiconSort
+	updateLexiconSort,
+	updateLexicon,
+	setLoadingPage,
+	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import { Lexicon } from '../components/ReduxDucksTypes';
+import { Lexicon, LexiconObject } from '../components/ReduxDucksTypes';
+import { Plugins } from '@capacitor/core';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
 import fireSwal from '../components/Swal';
+import LoadLexiconModal from './M-LoadLexicon';
 import { v4 as uuidv4 } from 'uuid';
 import escape from 'escape-html';
 
@@ -72,7 +79,8 @@ const Lex = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settings = state.appSettings;
-	const popstate = state.modalState.LexiconEllipsis;
+	const modalState = state.modalState;
+	const popstate = modalState.LexiconEllipsis;
 	const lexicon = state.lexicon;
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
@@ -200,10 +208,115 @@ const Lex = () => {
 		dispatch(startEditLexiconItem(index));
 		dispatch(openModal('EditLexiconItem'));
 	};
+	const clearLexicon = () => {
+		dispatch(closePopover('LexiconEllipsis'))
+		const thenFunc = () => {
+			const newLex: LexiconObject = {
+				key: "",
+				lastSave: 0,
+				title: "",
+				description: "",
+				columns: 1,
+				columnOrder: [0],
+				columnTitles: ["Word"],
+				columnSizes: ["m"],
+				sort: [0, 0],
+				lexicon: [],
+				editing: undefined,
+				colEdit: undefined
+			};
+			dispatch(updateLexicon(newLex));
+		};
+		if(!settings.disableConfirms && (lexicon.title || lexicon.key || lexicon.description || lexicon.lexicon.length > 0)) {
+			fireSwal({
+				title: "Delete everything?",
+				text: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, erase it."
+			}).then((result: any) => result.isConfirmed && thenFunc());
+		} else {
+			thenFunc();
+		}
+	};
+	const { Storage } = Plugins;
+	const loadLexicon = () => {
+		Storage.get({ key: "savedLexicons" }).then((result) => {
+			const value = result.value;
+			if(value === null) {
+				// No info retrieved.
+			} else {
+				const newData = JSON.parse(value);
+				dispatch(setTemporaryInfo(newData));
+			}
+			dispatch(setLoadingPage(false));
+			dispatch(openModal("LoadLexicon"));
+		});
+		dispatch(closePopover('LexiconEllipsis'));
+		dispatch(setLoadingPage("lookingForLexicons"));
+	};
+	const saveLexicon = (announce = "Lexicon saved.") => {
+		if(!lexicon.title) {
+			dispatch(closePopover('LexiconEllipsis'));
+			return lexiconSaveError();
+		} else if(!lexicon.key) {
+			dispatch(updateLexiconText("key", uuidv4()));
+		}
+		dispatch(updateLexiconNumber("lastSave", Date.now()));
+		dispatch(setLoadingPage("lookingForLexicons"));
+		Storage.get({ key: "savedLexicons" }).then((result) => {
+			const value = result.value;
+			let saved: Map<string, LexiconObject> = new Map();
+			let prepared: any[] = [];
+			if(value === null) {
+				// No info retrieved.
+			} else {
+				saved = new Map(JSON.parse(value));
+			}
+			saved.set(lexicon.key, lexicon);
+			saved.forEach((lex: LexiconObject, key: string) => prepared.push([key, lex]));
+			Storage.set({ key: "savedLexicons", value: JSON.stringify(prepared)}).then(() => {
+				dispatch(setLoadingPage(false));
+				fireSwal({
+					title: announce,
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			});
+		});
+		dispatch(closePopover('LexiconEllipsis'));
+	};
+	const saveLexiconNew = () => {
+		if(!lexicon.title) {
+			dispatch(closePopover('LexiconEllipsis'));
+			return lexiconSaveError();
+		}
+		dispatch(updateLexiconText("key", uuidv4()));
+		saveLexicon("Lexicon saved as new lexicon!");
+	};
+	const lexiconSaveError = () => {
+		fireSwal({
+			title: "Error",
+			text: "You must input a title before saving.",
+			icon: 'warning'
+		});
+	};
 	return (
 		<IonPage>
 			<EditLexiconItemModal />
 			<EditLexiconOrderModal />
+			<LoadLexiconModal />
+			<IonLoading
+	        	cssClass='loadingPage'
+    	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
+    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
+	        	message={'Saving...'}
+				spinner="bubbles"
+				duration={300000}
+			/>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -211,23 +324,25 @@ const Lex = () => {
 					</IonButtons>
 					<IonTitle>Lexicon</IonTitle>
 					<IonPopover
-						cssClass='my-custom-class'
 						event={popstate}
 						isOpen={popstate !== undefined}
 						onDidDismiss={() => dispatch(closePopover('LexiconEllipsis'))}
 					>
 						<IonList>
-							<IonItem>
-								<IonLabel>New Lexicon</IonLabel>
+							<IonItem button={true} onClick={() => clearLexicon()}>
+								<IonLabel>Clear Lexicon</IonLabel>
 							</IonItem>
-							<IonItem>
+							<IonItem button={true} onClick={() => loadLexicon()}>
 								<IonLabel>Load Lexicon</IonLabel>
 							</IonItem>
-							<IonItem>
+							<IonItem button={true} onClick={() => saveLexicon()}>
 								<IonLabel>Save Lexicon</IonLabel>
 							</IonItem>
-							<IonItem>
-								<IonLabel>Save Lexicon As...</IonLabel>
+							<IonItem button={true} onClick={() => saveLexiconNew()}>
+								<IonLabel>Save Lexicon As New</IonLabel>
+							</IonItem>
+							<IonItem button={true} onClick={() => saveLexiconNew()}>
+								<IonLabel>Delete Saved Lexicon</IonLabel>
 							</IonItem>
 						</IonList>
 					</IonPopover>

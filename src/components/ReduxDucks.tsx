@@ -151,6 +151,8 @@ const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
 };
 const reduceLexiconState = (original: types.LexiconObject) => {
 	return {
+		key: original.key,
+		lastSave: original.lastSave,
 		title: original.title,
 		description: original.description,
 		columns: original.columns,
@@ -184,6 +186,33 @@ const reduceModalState = (original: types.ModalStateObject) => {
 const reduceViewState = (original: types.ViewStateObject) => {
 	return {...original};
 }
+const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
+	if(!original) {
+		return original;
+	}
+	return { data: parseUnknownTypes(original.data) };
+}
+const parseUnknownTypes: any = (test: any) => {
+	const theType = (typeof test);
+	switch(theType) {
+		case "object":
+			if(test === null) {
+				return test;
+			} else if(Array.isArray(test)) {
+				return test.map(item => parseUnknownTypes(item));
+			}
+			let x: any = {};
+			Object.getOwnPropertyNames(test).forEach(prop => {
+				x[prop] = parseUnknownTypes(test[prop]);
+			});
+			return x;
+		case "number":
+		case "string":
+		case "undefined":
+			return test;
+	}
+	return undefined;
+};
 
 
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
@@ -199,14 +228,15 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveInput", (a: string[]) => a.map(a => a)],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
-	["viewState", reduceViewState]
+	["viewState", reduceViewState],
+	["temporaryInfo", reduceTempInfo]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
-	if(stateObjectProps.every(pair => check[pair[0]])) {
-		return true;
-	}
-	return false;
+	return stateObjectProps.every(pair => {
+		let prop: keyof types.StateObject = pair[0];
+		return prop === "temporaryInfo" || check[prop];
+	});
 };
 const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObject) => {
 	let check: any = {};
@@ -255,6 +285,8 @@ export const initialAppState: types.StateObject = {
 	},
 	wordevolveInput: [],
 	lexicon: {
+		key: "",
+		lastSave: 0,
 		title: "",
 		description: "",
 		columns: 3,
@@ -266,7 +298,8 @@ export const initialAppState: types.StateObject = {
 		editing: undefined,
 		colEdit: undefined
 	},
-		modalState: {
+	modalState: {
+		loadingPage: false,
 		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
@@ -283,13 +316,16 @@ export const initialAppState: types.StateObject = {
 		EditSoundChange: false,
 		LexiconEllipsis: undefined,
 		EditLexiconItem: false,
-		EditLexiconOrder: false
+		EditLexiconOrder: false,
+		LoadLexicon: false,
+		SaveLexicon: false
 	},
 	viewState: {
 		wg: 'home',
 		we: 'home',
 		ls: 'home'
-	}
+	},
+	temporaryInfo: undefined
 };
 export const blankAppState: types.StateObject = {
 	currentVersion: "0.1",
@@ -339,6 +375,8 @@ export const blankAppState: types.StateObject = {
 	},
 	wordevolveInput: [],
 	lexicon: {
+		key: "",
+		lastSave: 0,
 		title: "",
 		description: "",
 		columns: 3,
@@ -351,6 +389,7 @@ export const blankAppState: types.StateObject = {
 		colEdit: undefined
 	},
 	modalState: {
+		loadingPage: false,
 		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
@@ -367,13 +406,16 @@ export const blankAppState: types.StateObject = {
 		EditSoundChange: false,
 		LexiconEllipsis: undefined,
 		EditLexiconItem: false,
-		EditLexiconOrder: false
+		EditLexiconOrder: false,
+		LoadLexicon: false,
+		SaveLexicon: false
 	},
 	viewState: {
 		wg: 'home',
 		we: 'home',
 		ls: 'home'
-	}
+	},
+	temporaryInfo: undefined
 };
 
 // Storage
@@ -381,11 +423,14 @@ const { Storage } = Plugins;
 const saveCurrentState = (state: types.StateObject) => {
 	// Eliminate not-stringifyable properties
 	const lex = state.modalState.LexiconEllipsis;
+	const temp = state.temporaryInfo;
 	state.modalState.LexiconEllipsis = undefined;
+	state.temporaryInfo = undefined;
 	// Stringify
 	const stringified = JSON.stringify(state);
 	// Restore non-stringifyable properties
 	state.modalState.LexiconEllipsis = lex;
+	state.temporaryInfo = temp;
 	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});
 };
@@ -975,10 +1020,20 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_PROP:
-			let pProp: "title" | "description" = payload.prop;
+			let pProp: "title" | "description" | "key" = payload.prop;
 			let value: string = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[pProp] = value;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_NUM:
+			let nProp: "lastSave" = payload.prop;
+			let val: number = payload.value;
+			LO = reduceLexiconState(state.lexicon);
+			LO[nProp] = val;
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
@@ -1054,7 +1109,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				modalState: newPopover
 			};
 			break;
-
+		case consts.SET_LOADING_PAGE:
+			let newModalLoad: types.ModalStateObject = reduceModalState(state.modalState);
+			newModalLoad.loadingPage = payload;
+			final = {
+				...reduceAllBut(["modalState"], state),
+				modalState: newModalLoad
+			};
+			break;
 
 		// Views
 		case consts.CHANGE_VIEW:
@@ -1063,6 +1125,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["viewState"], state),
 				viewState: newView
+			};
+			break;
+
+
+		// Temp Info
+		case consts.SET_TEMPORARY_INFO:
+			final = {
+				...reduceAllBut(["viewState"], state),
+				temporaryInfo: payload
 			};
 			break;
 	}

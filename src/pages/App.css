@@ -19,6 +19,10 @@
 	opacity: 0.5;
 }
 
+#conlangToolbox .hide {
+	display: none;
+}
+
 .emphasizedList {
 	text-align: center;
 	margin-left: auto;

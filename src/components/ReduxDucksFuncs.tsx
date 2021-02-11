@@ -206,8 +206,11 @@ export function deleteLexiconItem(payload: number) {
 export function addLexiconItem(payload: types.Lexicon) {
 	return {type: consts.ADD_LEXICON_ITEM, payload};
 }
-export function updateLexiconText(prop: "title" | "description", value: string) {
+export function updateLexiconText(prop: "title" | "description" | "key", value: string) {
 	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
+}
+export function updateLexiconNumber(prop: "lastSave", value: number) {
+	return {type: consts.UPDATE_LEXICON_NUM, payload: {prop, value}};
 }
 export function updateLexiconColumns(payload: types.colEdit | undefined) {
 	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
@@ -234,12 +237,22 @@ export function openPopover(popover: keyof types.ModalStateObject, event: Event)
 export function closePopover(popover: keyof types.ModalStateObject) {
 	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: undefined}};
 }
+export function setLoadingPage(payload: boolean | string) {
+	return {type: consts.SET_LOADING_PAGE, payload};
+}
 
 //
 // VIEWS
 //
 export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
 	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
+}
+
+//
+// TEMPORARY INFO
+//
+export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {
+	return {type: consts.SET_TEMPORARY_INFO, payload: (payload === undefined ? payload : { data: payload })};
 }
 
 // Overwrite State

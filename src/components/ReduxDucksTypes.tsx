@@ -138,6 +138,8 @@ export interface colEdit {
 	reordering?: boolean
 }
 export interface LexiconObject {
+	key: string
+	lastSave: number
 	title: string
 	description: string
 	columns: number
@@ -152,6 +154,7 @@ export interface LexiconObject {
 
 
 export interface ModalStateObject {
+	loadingPage: string | boolean
 	AppTheme: boolean
 	AddCategory: boolean
 	EditCategory: boolean
@@ -169,12 +172,19 @@ export interface ModalStateObject {
 	LexiconEllipsis: undefined | Event
 	EditLexiconItem: boolean
 	EditLexiconOrder: boolean
+	LoadLexicon: boolean
+	SaveLexicon: boolean
 }
 
 export interface ViewStateObject {
 	wg: string
 	we: string
 	ls: string
+}
+
+
+export interface TemporaryInfo {
+	data: any
 }
 
 
@@ -197,6 +207,7 @@ export interface StateObject {
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
+	temporaryInfo: TemporaryInfo | undefined
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.
 // Be sure to change stateObjectProps in ReducksDucks, too.
