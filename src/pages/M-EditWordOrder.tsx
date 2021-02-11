@@ -71,7 +71,7 @@ const EditLexiconOrderModal = () => {
 		console.log(i.toString() + " / " + value);
 		dispatch(updateLexiconColumns(editing));
 	};
-	const maybeSaveNewRuleInfo = () => {
+	const maybeSaveNewInfo = () => {
 		let err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingRule
 		if(err.length > 0) {
@@ -87,7 +87,7 @@ const EditLexiconOrderModal = () => {
 		dispatch(closeModal('EditLexiconOrder'));
 		//dispatch(doEditRewriteRuleWG(editingRule));
 		fireSwal({
-			title: "Rewrite Rule saved!",
+			title: "Saved!",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -101,6 +101,8 @@ const EditLexiconOrderModal = () => {
 		eCL = $i("footerElement").classList;
 		eCL.add("addActive");
 		eCL.remove("addInactive");
+		$i("thislexnew").value = "";
+		$i("thissizenew").value = "m";
 	};
 	const cancelAdding = () => {
 		let eCL = $i("editLexiconItemOrder").classList;
@@ -289,7 +291,7 @@ const EditLexiconOrderModal = () => {
 							<span className="showWhileDragging">Done Reordering!</span>
 						</IonLabel>
 					</IonButton>
-					<IonButton className="hideWhileDragging hideWhileAdding" color="tertiary" slot="end" onClick={() => maybeSaveNewRuleInfo()}>
+					<IonButton className="hideWhileDragging hideWhileAdding" color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Done</IonLabel>
 					</IonButton>
