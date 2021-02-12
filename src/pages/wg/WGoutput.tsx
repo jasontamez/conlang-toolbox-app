@@ -11,7 +11,9 @@ import {
 	IonButton,
 	IonItem,
 	IonIcon,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	IonPopover,
+	IonLabel
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -19,10 +21,21 @@ import {
 	WGRewriteRuleObject,
 	WGCategoryObject
 } from '../../components/ReduxDucksTypes';
-import { openModal, changeView } from '../../components/ReduxDucksFuncs';
-import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
+import {
+	openModal,
+	changeView,
+	openPopover,
+	closePopover,
+	closeModal,
+	addLexiconItem,
+	updateLexiconBool
+} from '../../components/ReduxDucksFuncs';
+import { caretForwardCircleOutline, settingsOutline, bookOutline, saveOutline } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import OutputOptionsModal from './M-OutputOptions';
+import debounce from '../../components/Debounce';
+import { v4 as uuidv4 } from 'uuid';
+import { $a } from '../../components/DollarSignExports';
 import '../App.css';
 
 const WGOut = () => {
@@ -33,12 +46,19 @@ const WGOut = () => {
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
-	const $d = (text: string) => {
+	const $d = (text: string = "") => {
 		let div = document.createElement("div");
-		div.textContent = text;
+		text && (div.textContent = text);
 		return div;
 	};
-	
+	const $t = (text: string, tag: string = "span") => {
+		let t =  document.createElement(tag);
+		t.classList.add("word");
+		t.textContent = text;
+		t.addEventListener("click", () => maybeSaveThisWord(t));
+		return t;
+	};
+
 	const stateObject = useSelector((state: any) => state, shallowEqual);
 	const categoriesObject = stateObject.wordgenCategories;
 	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
@@ -47,15 +67,16 @@ const WGOut = () => {
 	const allSyllables = syllablesObject.objects;
 	const rewriteRules = stateObject.wordgenRewriteRules.list;
 	const settingsWG = stateObject.wordgenSettings;
+	const modalState = stateObject.modalState;
 	const regExpMap: Map<string, RegExp> = new Map();
-	
+
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
 	const determineWidth = (input: string) => {
 		return textWidthTester!.measureText(input).width;
 	};
 	const getWidestWord = (words: string[]) => {
-		let max = Math.max(...words.map(w => determineWidth(w))) * 2;
+		let max = Math.max(...words.map(w => determineWidth(w))) * 3;
 		return Math.ceil(max).toString() + "px";
 	};
 
@@ -110,9 +131,9 @@ const WGOut = () => {
 		// Reform info with %% reduced back to % and save as regexp
 		return new RegExp(final.join("%"), "g");
 	};
-	
+
 	const generateOutput = (output: HTMLElement) => {
-		let text: string[] = [];
+		let text: HTMLElement[] = [];
 		let type = settingsWG.output;
 		let endEarly = false;
 		// Clear any previous output.
@@ -160,25 +181,28 @@ const WGOut = () => {
 			output.style.columnWidth = "auto";
 		} else if (type === "syllables") {
 			// all possible syllables
-			text = getEverySyllable(settingsWG.capitalizeWords);
+			let t = getEverySyllable(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
+			t.forEach(bit => text.push($t(bit, "div")));
 		} else {
 			// wordlist
-			text = makeWordlist(settingsWG.capitalizeWords);
+			let t = makeWordlist(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
+			t.forEach(bit => text.push($t(bit, "div")));
 		}
 		// Add to screen.
-		text.forEach(bit => output.append($d(bit)));
+		text.forEach(bit => output.append(bit));
 	};
-	
-	
+
+
 	// // //
 	// Generate a psuedo-text
 	// // //
 	const generatePseudoText = () => {
-		let text = [];
+		let text: (string | HTMLElement)[][] = [];
+		let final: HTMLElement = $d();
 		let numberOfSentences = settingsWG.sentencesPerText;
 		let capitalize = settingsWG.capitalizeSentences;
 		let d1 = settingsWG.declarativeSentencePre;
@@ -187,10 +211,12 @@ const WGOut = () => {
 		let i2 = settingsWG.interrogativeSentencePost;
 		let e1 = settingsWG.exclamatorySentencePre;
 		let e2 = settingsWG.exclamatorySentencePost;
+		const SPACE = String.fromCharCode(160);
 		let sentenceNumber = 0;
 		while(sentenceNumber < numberOfSentences) {
-			let sentence = [];
 			sentenceNumber++;
+			let sentence: (string | HTMLElement)[] = [];
+			let staging: (string | HTMLElement)[] = [];
 			let wordNumber = 0;
 			let maxWords = 3;
 			for(maxWords = 3; true; maxWords = Math.max((maxWords + 1) % 15, 3)) {
@@ -201,25 +227,39 @@ const WGOut = () => {
 			}
 			while(wordNumber < maxWords) {
 				wordNumber++;
-				sentence.push(makeOneWord(wordNumber < 2 && capitalize));
+				sentence.push($t(makeOneWord(wordNumber < 2 && capitalize)));
 			}
-			let full = sentence.join(" ");
+			let full = text.join(" ");
+			staging.push(sentence.shift()!);
+			while (sentence.length > 1) {
+				staging.push(SPACE, sentence.shift()!);
+			}
 			let type = Math.random() * 12;
 			if(type < 9) {
 				// Declarative three-fourths the time
 				full = d1 + full + d2;
+				d1 && staging.unshift(d1);
+				d2 && staging.push(d2);
 			} else if (type < 11) {
 				// Interrogative one-sixth the time
 				full = i1 + full + i2;
+				i1 && staging.unshift(i1);
+				i2 && staging.push(i2);
 			} else {
 				// Exclamatory one-twelfth the time
 				full = e1 + full + e2;
+				e1 && staging.unshift(e1);
+				e2 && staging.push(e2);
 			}
-			text.push(full);
+			text.push(staging);
 		}
-		return [text.join(" ")];
+		final.append(...text.shift()!);
+		while(text.length > 1) {
+			final.append(SPACE, ...text.shift()!)
+		}
+		return [final];
 	};
-	
+
 	// // //
 	// Generate Syllables
 	// // //
@@ -279,7 +319,7 @@ const WGOut = () => {
 		}
 		return output;
 	};
-	
+
 	// // //
 	// Generate One Word
 	// // //
@@ -332,8 +372,8 @@ const WGOut = () => {
 		}
 		return output;
 	};
-	
-	
+
+
 	// // //
 	// Apply Rewrite Rules
 	// // //
@@ -343,7 +383,7 @@ const WGOut = () => {
 		});
 		return word;
 	};
-	
+
 	// // //
 	// Generate Every Possible Syllable
 	// // //
@@ -396,11 +436,11 @@ const WGOut = () => {
 			category.run.split("").forEach((char: string) => allFound.push(previous + char));
 		}
 	};
-	
+
 	// // //
 	// Wordlist
 	// // //
-	
+
 	const makeWordlist = (capitalize: boolean) => {
 		let n = 0;
 		let words = [];
@@ -412,6 +452,48 @@ const WGOut = () => {
 			words.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
 		return words;
+	};
+
+	// // //
+	// Save to Lexicon
+	// // //
+
+	const pickAndSave = () => {
+		dispatch(closePopover("SaveToLexicon"));
+		dispatch(openModal("PickAndSave"));
+	};
+	const donePickingAndSaving = () => {
+		dispatch(closeModal("PickAndSave"));
+	};
+	let wordsToSave: string[] = [];
+	const saveToLex = () => {
+		let cols = stateObject.lexicon.columns;
+		let others: string[] = [];
+		for(let x = 2; x <= cols; x++) {
+			others.push("");
+		}
+		while(wordsToSave.length > 0) {
+			let word: string = wordsToSave.shift()!;
+			dispatch(addLexiconItem({ key: uuidv4(), columns: [word, ...others]}));
+		}
+		dispatch(updateLexiconBool("sorted", false));
+	};
+	const saveEverything = () => {
+		dispatch(closePopover("SaveToLexicon"));
+		$a(".word", outputPane).forEach((word: HTMLElement) => {
+			word.textContent && wordsToSave.push(word.textContent);
+		});
+		saveToLex();
+	};
+	const maybeSaveThisWord = (el: HTMLElement) => {
+		if(outputPane.classList.contains("pickAndSave")) {
+			const CL = el.classList;
+			if(!CL.contains("saved")) {
+				CL.add("saved");
+				el.textContent && wordsToSave.push(el.textContent!);
+				debounce(saveToLex, []);
+			}
+		}
 	};
 	return (
 		<IonPage>
@@ -425,14 +507,35 @@ const WGOut = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
+				<IonPopover
+				        {/*cssClass='my-custom-class'*/ ...""}
+						event={modalState.SaveToLexicon}
+						isOpen={modalState.SaveToLexicon !== undefined}
+						onDidDismiss={() => dispatch(closePopover("SaveToLexicon"))}
+				>
+					<IonList lines="none">
+						<IonItem button={true} onClick={() => saveEverything()}>
+							<IonLabel className="ion-text-wrap">Save everything</IonLabel>
+						</IonItem>
+						<IonItem button={true} onClick={() => pickAndSave()}>
+							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
+						</IonItem>
+					</IonList>
+				</IonPopover>
 				<IonList className="fullScreen" lines="none">
-					<IonItem className="collapse">
+					<IonItem className="collapse ion-text-wrap">
 						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
+						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSave ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
+						</IonButton>
+						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('SaveToLexicon', e)); }}>
+							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
+						</IonButton>
 					</IonItem>
-					<div id="outputPane" className="largePane"></div>
+					<div id="outputPane" className={"largePane" + (modalState.PickAndSave ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

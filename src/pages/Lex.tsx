@@ -43,7 +43,8 @@ import {
 	updateLexiconSort,
 	updateLexicon,
 	setLoadingPage,
-	setTemporaryInfo
+	setTemporaryInfo,
+	updateLexiconBool
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
 import { Plugins } from '@capacitor/core';
@@ -92,11 +93,7 @@ const Lex = () => {
 	const theTitles = lexicon.columnTitles;
 	const theSizes = lexicon.columnSizes;
 	const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
-	const doSort = () => {
-		const el = $i("lexiconSort");
-		const value = el.value;
-		let [col, dir] = value.split("").map((n: string) => parseInt(n));
-		dispatch(updateLexiconSort([col, dir]));
+	const internalSort = (col: number, dir: number) => {
 		let newLex: Lexicon[] = [...lexicon.lexicon];
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
@@ -110,6 +107,21 @@ const Lex = () => {
 			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
 		});
 		dispatch(updateLexiconOrder(newLex));
+		dispatch(updateLexiconBool("sorted", true));
+	};
+	const doSort = () => {
+		const el = $i("lexiconSort");
+		const value = el.value;
+		let [col, dir] = value.split("").map((n: string) => parseInt(n));
+		dispatch(updateLexiconSort([col, dir]));
+		internalSort(col, dir);
+	};
+	const checkIfSorted = () => {
+		if(!lexicon.sorted) {
+			let [col, dir] = lexicon.sort;
+			internalSort(col, dir);
+		}
+		return false;
 	};
 	const addToLex = () => {
 		const newInfo: string[] = [];
@@ -148,20 +160,8 @@ const Lex = () => {
 			columns: newInfo
 		}
 		dispatch(addLexiconItem(newWord));
-		let newLex: Lexicon[] = [...lexicon.lexicon, newWord];
 		let [col, dir] = lexicon.sort;
-		newLex.sort((a, b) => {
-			let x = a.columns[col];
-			let y: string;
-			if(dir) {
-				y = x;
-				x = b.columns[col];
-			} else {
-				y = b.columns[col];
-			}
-			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
-		});
-		dispatch(updateLexiconOrder(newLex));
+		internalSort(col, dir);
 	};
 	const delFromLex = (key: string) => {
 		let title: string = "";
@@ -222,6 +222,7 @@ const Lex = () => {
 				columnTitles: ["Word"],
 				columnSizes: ["m"],
 				sort: [0, 0],
+				sorted: true,
 				lexicon: [],
 				editing: undefined,
 				colEdit: undefined
@@ -296,7 +297,8 @@ const Lex = () => {
 			return lexiconSaveError();
 		}
 		dispatch(updateLexiconText("key", uuidv4()));
-		saveLexicon("Lexicon saved as new lexicon!");
+		// Adding a pause to make sure everything updates.
+		setTimeout(() => saveLexicon("Lexicon saved as new lexicon!"), 0);
 	};
 	const lexiconSaveError = () => {
 		fireSwal({
@@ -315,7 +317,7 @@ const Lex = () => {
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
     		    onDidDismiss={() => dispatch(setLoadingPage(false))}
-	        	message={'Saving...'}
+	        	message={'Please wait...'}
 				spinner="bubbles"
 				duration={300000}
 			/>
@@ -415,7 +417,7 @@ const Lex = () => {
 							<span className="lexiconEdit xs"></span>
 							<span className="lexiconDel xs ion-hide-sm-down"></span>
 						</IonItem>
-						{lexicon.lexicon.map((lex: Lexicon, ind: number) => {
+						{checkIfSorted() || lexicon.lexicon.map((lex: Lexicon, ind: number) => {
 							const cols = lex.columns;
 							const key = lex.key;
 							const id = "LEX" + key;

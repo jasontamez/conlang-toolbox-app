@@ -212,6 +212,9 @@ export function updateLexiconText(prop: "title" | "description" | "key", value: 
 export function updateLexiconNumber(prop: "lastSave", value: number) {
 	return {type: consts.UPDATE_LEXICON_NUM, payload: {prop, value}};
 }
+export function updateLexiconBool(prop: "sorted", value: boolean) {
+	return {type: consts.UPDATE_LEXICON_BOOL, payload: {prop, value}};
+}
 export function updateLexiconColumns(payload: types.colEdit | undefined) {
 	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
 }

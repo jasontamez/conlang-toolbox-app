@@ -160,6 +160,7 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		columnTitles: [...original.columnTitles],
 		columnSizes: [...original.columnSizes],
 		sort: [...original.sort],
+		sorted: original.sorted,
 		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
 		editing: original.editing,
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
@@ -294,6 +295,7 @@ export const initialAppState: types.StateObject = {
 		columnTitles: ["Word", "Part of Speech", "Definition"],
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
+		sorted: true,
 		lexicon: [],
 		editing: undefined,
 		colEdit: undefined
@@ -318,7 +320,9 @@ export const initialAppState: types.StateObject = {
 		EditLexiconItem: false,
 		EditLexiconOrder: false,
 		LoadLexicon: false,
-		DeleteLexicon: false
+		DeleteLexicon: false,
+		SaveToLexicon: undefined,
+		PickAndSave: false
 	},
 	viewState: {
 		wg: 'home',
@@ -384,6 +388,7 @@ export const blankAppState: types.StateObject = {
 		columnTitles: ["Word", "Part of Speech", "Definition"],
 		columnSizes: ["m", "s", "l"],
 		sort: [0, 0],
+		sorted : true,
 		lexicon: [],
 		editing: undefined,
 		colEdit: undefined
@@ -408,7 +413,9 @@ export const blankAppState: types.StateObject = {
 		EditLexiconItem: false,
 		EditLexiconOrder: false,
 		LoadLexicon: false,
-		DeleteLexicon: false
+		DeleteLexicon: false,
+		SaveToLexicon: undefined,
+		PickAndSave: false
 	},
 	viewState: {
 		wg: 'home',
@@ -423,13 +430,16 @@ const { Storage } = Plugins;
 const saveCurrentState = (state: types.StateObject) => {
 	// Eliminate not-stringifyable properties
 	const lex = state.modalState.LexiconEllipsis;
+	const sav = state.modalState.SaveToLexicon;
 	const temp = state.temporaryInfo;
 	state.modalState.LexiconEllipsis = undefined;
+	state.modalState.SaveToLexicon = undefined;
 	state.temporaryInfo = undefined;
 	// Stringify
 	const stringified = JSON.stringify(state);
 	// Restore non-stringifyable properties
 	state.modalState.LexiconEllipsis = lex;
+	state.modalState.SaveToLexicon = sav;
 	state.temporaryInfo = temp;
 	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});
@@ -1039,6 +1049,16 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
+		case consts.UPDATE_LEXICON_BOOL:
+			let bProp: "sorted" = payload.prop;
+			let tf: boolean = payload.value;
+			LO = reduceLexiconState(state.lexicon);
+			LO[bProp] = tf;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
 		case consts.UPDATE_LEXICON_COLUMNS:
 			if(payload === undefined) {
 				LO = {
@@ -1132,7 +1152,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		// Temp Info
 		case consts.SET_TEMPORARY_INFO:
 			final = {
-				...reduceAllBut(["viewState"], state),
+				...reduceAllBut(["temporaryInfo"], state),
 				temporaryInfo: payload
 			};
 			break;
