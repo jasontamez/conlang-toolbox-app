@@ -318,7 +318,7 @@ export const initialAppState: types.StateObject = {
 		EditLexiconItem: false,
 		EditLexiconOrder: false,
 		LoadLexicon: false,
-		SaveLexicon: false
+		DeleteLexicon: false
 	},
 	viewState: {
 		wg: 'home',
@@ -408,7 +408,7 @@ export const blankAppState: types.StateObject = {
 		EditLexiconItem: false,
 		EditLexiconOrder: false,
 		LoadLexicon: false,
-		SaveLexicon: false
+		DeleteLexicon: false
 	},
 	viewState: {
 		wg: 'home',

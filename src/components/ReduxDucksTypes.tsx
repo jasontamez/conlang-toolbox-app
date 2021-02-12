@@ -173,7 +173,7 @@ export interface ModalStateObject {
 	EditLexiconItem: boolean
 	EditLexiconOrder: boolean
 	LoadLexicon: boolean
-	SaveLexicon: boolean
+	DeleteLexicon: boolean
 }
 
 export interface ViewStateObject {

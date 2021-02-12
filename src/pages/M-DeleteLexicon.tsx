@@ -12,7 +12,8 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	IonLoading
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -21,13 +22,14 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import './App.css';
 import {
 	closeModal,
-	updateLexicon,
-	setTemporaryInfo
+	setTemporaryInfo,
+	setLoadingPage
 } from '../components/ReduxDucksFuncs';
 import { LexiconObject } from '../components/ReduxDucksTypes';
+import { Plugins } from '@capacitor/core';
 import fireSwal from '../components/Swal';
 
-const LoadLexiconModal = () => {
+const DeleteLexiconModal = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state: any) => state, shallowEqual);
 	const settings = state.appSettings;
@@ -36,38 +38,56 @@ const LoadLexiconModal = () => {
 	const data = temp ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('LoadLexicon'));
+		dispatch(closeModal('DeleteLexicon'));
 	};
-	const loadThis = (key: string) => {
-		data.every((pair: [string, LexiconObject]) => {
-			if(pair[0] !== key) {
-				// Continue the loop
-				return true;
-			}
-			const thenFunc = () => {
-				dispatch(updateLexicon(pair[1]));
-				dispatch(closeModal('LoadLexicon'));
-			};
-			if(settings.disableConfirms) {
-				thenFunc();
-			} else {
+	const { Storage } = Plugins;
+	const deleteThis = (key: string, title: string) => {
+		const thenFunc = () => {
+			console.log(data);
+			const remaining = data.filter((pair: [string, LexiconObject]) => pair[0] !== key);
+			console.log(JSON.stringify(remaining));
+			Storage.set({ key: "savedLexicons", value: JSON.stringify(remaining) }).then(() => {
+				dispatch(setLoadingPage(false));
+				dispatch(setTemporaryInfo(undefined));
+				dispatch(closeModal('DeleteLexicon'));
 				fireSwal({
-					text: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
-					customClass: {popup: 'warningConfirm'},
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, load it."
-				}).then((result: any) => result.isConfirmed && thenFunc());
-			}
-			// End loop
-			return false;
-		});
+					title: "Lexicon deleted.",
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+				Storage.get({ key: "savedLexicons" }).then((result: any) => {
+					console.log(result.value);
+				});
+			});
+			dispatch(setLoadingPage("deletingLexicon"));
+		};
+		if(settings.disableConfirms) {
+			thenFunc();
+		} else {
+			fireSwal({
+				text: "Are you sure you want to delete \"" + title + "\"? It cannot be reversed.",
+				customClass: {popup: 'dangerConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then((result: any) => result.isConfirmed && thenFunc());
+		}
 	};
 	return (
-		<IonModal isOpen={modalState.LoadLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={modalState.DeleteLexicon} onDidDismiss={() => doClose()}>
+			<IonLoading
+	        	cssClass='loadingPage'
+    	    	isOpen={modalState.loadingPage === "deletingLexicon"}
+    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
+	        	message={'Deleting...'}
+				spinner="bubbles"
+				duration={300000}
+			/>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Load Lexicon</IonTitle>
+					<IonTitle>Delete Lexicon</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -82,7 +102,7 @@ const LoadLexiconModal = () => {
 						const lex = pair[1];
 						const time = new Date(lex.lastSave);
 						return (
-							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
+							<IonItem key={key} button={true} onClick={() => deleteThis(key, lex.title)}>
 								<IonLabel slot="start" className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()} words]</IonLabel>
 								<IonNote slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
@@ -104,4 +124,4 @@ const LoadLexiconModal = () => {
 	);
 };
 
-export default LoadLexiconModal;
+export default DeleteLexiconModal;

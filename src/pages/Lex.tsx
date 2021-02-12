@@ -45,13 +45,14 @@ import {
 	setLoadingPage,
 	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconObject } from '../components/ReduxDucksTypes';
+import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
 import { Plugins } from '@capacitor/core';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
 import fireSwal from '../components/Swal';
 import LoadLexiconModal from './M-LoadLexicon';
+import DeleteLexiconModal from './M-DeleteLexicon';
 import { v4 as uuidv4 } from 'uuid';
 import escape from 'escape-html';
 
@@ -241,7 +242,7 @@ const Lex = () => {
 		}
 	};
 	const { Storage } = Plugins;
-	const loadLexicon = () => {
+	const openLexiconModal = (which: keyof ModalStateObject) => {
 		Storage.get({ key: "savedLexicons" }).then((result) => {
 			const value = result.value;
 			if(value === null) {
@@ -251,7 +252,7 @@ const Lex = () => {
 				dispatch(setTemporaryInfo(newData));
 			}
 			dispatch(setLoadingPage(false));
-			dispatch(openModal("LoadLexicon"));
+			dispatch(openModal(which));
 		});
 		dispatch(closePopover('LexiconEllipsis'));
 		dispatch(setLoadingPage("lookingForLexicons"));
@@ -309,6 +310,7 @@ const Lex = () => {
 			<EditLexiconItemModal />
 			<EditLexiconOrderModal />
 			<LoadLexiconModal />
+			<DeleteLexiconModal />
 			<IonLoading
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
@@ -332,7 +334,7 @@ const Lex = () => {
 							<IonItem button={true} onClick={() => clearLexicon()}>
 								<IonLabel>Clear Lexicon</IonLabel>
 							</IonItem>
-							<IonItem button={true} onClick={() => loadLexicon()}>
+							<IonItem button={true} onClick={() => openLexiconModal("LoadLexicon")}>
 								<IonLabel>Load Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => saveLexicon()}>
@@ -341,7 +343,7 @@ const Lex = () => {
 							<IonItem button={true} onClick={() => saveLexiconNew()}>
 								<IonLabel>Save Lexicon As New</IonLabel>
 							</IonItem>
-							<IonItem button={true} onClick={() => saveLexiconNew()}>
+							<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
 								<IonLabel>Delete Saved Lexicon</IonLabel>
 							</IonItem>
 						</IonList>
