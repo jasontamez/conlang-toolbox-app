@@ -159,17 +159,16 @@ i.ipa {
 }
 
 #conlangToolbox .WEinput {
-	height: 100%;
+	height: calc(100% - 4rem);
 	width: 100%;
 	padding: 0;
 	margin: 0;
 	display: grid;
 	grid-template-columns: 1rem 1fr 1rem;
-	grid-template-rows: 2rem 1fr 2rem;
+	grid-template-rows: 2rem 1fr;
 	grid-template-areas:
 		". . ."
-		". x ."
-		". . .";
+		". x .";
 	/*grid-template-columns: 1rem 1fr 1rem;
 	grid-template-rows: 1rem min-content 1rem 1fr 1rem;
 	grid-template-areas:

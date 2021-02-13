@@ -323,8 +323,7 @@ export const initialAppState: types.StateObject = {
 		LoadLexicon: false,
 		DeleteLexicon: false,
 		SaveToLexicon: undefined,
-		PickAndSave: false,
-		WEInputEllipsis: undefined
+		PickAndSave: false
 	},
 	viewState: {
 		wg: 'home',
@@ -418,8 +417,7 @@ export const blankAppState: types.StateObject = {
 		LoadLexicon: false,
 		DeleteLexicon: false,
 		SaveToLexicon: undefined,
-		PickAndSave: false,
-		WEInputEllipsis: undefined
+		PickAndSave: false
 	},
 	viewState: {
 		wg: 'home',
@@ -436,11 +434,9 @@ const saveCurrentState = (state: types.StateObject) => {
 	const ms = state.modalState;
 	const lex = ms.LexiconEllipsis;
 	const sav = ms.SaveToLexicon;
-	const inp = ms.WEInputEllipsis;
 	const temp = state.temporaryInfo;
 	ms.LexiconEllipsis
 		= ms.SaveToLexicon
-		= ms.WEInputEllipsis
 		= state.temporaryInfo
 		= undefined;
 	// Stringify
@@ -448,7 +444,6 @@ const saveCurrentState = (state: types.StateObject) => {
 	// Restore non-stringifyable properties
 	ms.LexiconEllipsis = lex;
 	ms.SaveToLexicon = sav;
-	ms.WEInputEllipsis = inp;
 	state.temporaryInfo = temp;
 	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});
