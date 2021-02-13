@@ -58,6 +58,8 @@ import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
 import { v4 as uuidv4 } from 'uuid';
 import escape from 'escape-html';
+import VirtualList from 'react-tiny-virtual-list';
+import { useWindowHeight } from '@react-hook/window-size/throttled';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -429,41 +431,52 @@ const Lex = () => {
 							<span className="lexiconDel xs ion-hide-sm-down"></span>
 						</IonItem>
 						<IonItem className="lexRow serifChars" style={ { order: -1 } }>
-							<IonButton className="lexiconAdd xs" color="success" onClick={() => addToLex()}>
-								<IonIcon icon={add} style={ { margin: 0 } } />
-							</IonButton>
 							{theOrder.map((i: number) => {
 								const key = "inputLex" + i.toString();
 								return (
 									<IonInput id={key} key={key} className={theSizes[i]} type="text" />
 								);
 							})}
-							<span className="lexiconEdit xs"></span>
+							<IonButton className="lexiconAdd xs" color="success" onClick={() => addToLex()}>
+								<IonIcon icon={add} style={ { margin: 0 } } />
+							</IonButton>
 							<span className="lexiconDel xs ion-hide-sm-down"></span>
 						</IonItem>
-						{checkIfSorted() || lexicon.lexicon.map((lex: Lexicon, ind: number) => {
-							const cols = lex.columns;
-							const key = lex.key;
-							const id = "LEX" + key;
-							return (
-								<IonItem key={id} className="lexRow lexiconDisplay serifChars" id={id} style={ { order: ind } }>
-									<span className="lexiconAdd xs"></span>
-									{theOrder.map((i: number) => (
-										<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
-									))}
-									<span className="lexiconEdit xs">
-										<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
-											<IonIcon icon={construct} style={ { margin: 0 } } />
-										</IonButton>
-									</span>
-									<span className="lexiconDel xs ion-hide-sm-down">
-										<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
-											<IonIcon icon={trash} style={ { margin: 0 } } />
-										</IonButton>
-									</span>
-								</IonItem>
-							);
-						})}
+						{checkIfSorted() ? "" : ""}
+						<VirtualList
+							className="virtualLex"
+							width="calc(100% - 2.25rem)"
+							height={Math.ceil(useWindowHeight() / 3 * 2)}
+							itemCount={lexicon.lexicon.length}
+							itemSize={50}
+							renderItem={({index, style}) => {
+								const lex: Lexicon = lexicon.lexicon[index];
+								const cols = lex.columns;
+								const key = lex.key;
+								const id = "LEX" + key;
+								let newStyle: { [key: string]: any } = {
+									...style,
+									order: index
+								};
+								return (
+									<IonItem key={id} className={"lexRow lexiconDisplay serifChars" + (index % 2 ? " even" : "")} id={id} style={ newStyle }>
+										{theOrder.map((i: number) => (
+											<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
+										))}
+										<span className="lexiconEdit xs">
+											<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
+												<IonIcon icon={construct} style={ { margin: 0 } } />
+											</IonButton>
+										</span>
+										<span className="lexiconDel xs ion-hide-sm-down">
+											<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
+												<IonIcon icon={trash} style={ { margin: 0 } } />
+											</IonButton>
+										</span>
+									</IonItem>
+								);
+							}}
+  						/>
 					</div>
 				</IonList>
 			</IonContent>

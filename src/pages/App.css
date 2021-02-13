@@ -225,8 +225,8 @@ i.ipa {
 	flex: 0 0 2.25rem;
 }
 #theLexicon .xs.lexiconAdd {
-	margin-right: 0.25rem;
-	flex: 0 0 2.25rem;
+	margin-left: 0.5rem;
+	flex: 0 0 2.5rem;
 }
 #theLexicon .s {
 	flex: 1 1 5rem;
@@ -251,9 +251,16 @@ i.ipa {
 	align-items: center;
 	margin: 0 0 0 2rem;
 }
-.lexRow::part(native) {
+.lexRow::part(native),
+.virtualLex .lexRow {
 	margin: 0;
 	padding: 0;
+}
+.virtualLex .lexRow.even::part(native) {
+	background: var(--ion-color-input-bg);
+}
+.virtualLex {
+	margin: 0 0 0 2.25rem;
 }
 .lexHeader,
 .lexHeader::part(native) {
