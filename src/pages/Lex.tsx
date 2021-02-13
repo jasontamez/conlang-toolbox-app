@@ -240,15 +240,23 @@ const Lex = () => {
 		dispatch(closePopover('LexiconEllipsis'));
 		dispatch(setLoadingPage("lookingForLexicons"));
 	};
-	const saveLexicon = (announce = "Lexicon saved.") => {
+	const saveLexicon: any = (announce: string = "Lexicon saved.", key: string = lexicon.key, overwrite: boolean = true) => {
+		// Save original key
+		const firstKey = lexicon.key;
+		// Save 'now'
+		const now = Date.now();
 		if(!lexicon.title) {
 			dispatch(closePopover('LexiconEllipsis'));
 			return lexiconSaveError();
-		} else if(!lexicon.key) {
-			dispatch(updateLexiconText("key", uuidv4()));
+		} else if(!key) {
+			key = uuidv4();
+			dispatch(updateLexiconText("key", key));
 		}
-		dispatch(updateLexiconNumber("lastSave", Date.now()));
+		// Dispatch to state
+		dispatch(updateLexiconNumber("lastSave", now));
 		dispatch(setLoadingPage("lookingForLexicons"));
+		// These dispatches will NOT be ready by the time Storage loads and saves
+		//  so we will need to do some creative variable work
 		Storage.get({ key: "savedLexicons" }).then((result) => {
 			const value = result.value;
 			let saved: Map<string, LexiconObject> = new Map();
@@ -258,9 +266,33 @@ const Lex = () => {
 			} else {
 				saved = new Map(JSON.parse(value));
 			}
-			saved.set(lexicon.key, lexicon);
-			saved.forEach((lex: LexiconObject, key: string) => prepared.push([key, lex]));
-			Storage.set({ key: "savedLexicons", value: JSON.stringify(prepared)}).then(() => {
+			// Make a shallow copy of the current lexicon
+			let lex: LexiconObject = {...lexicon};
+			// Use possibly-new key
+			lex.key = key;
+			// Use 'now'
+			lex.lastSave = now;
+			// Deep copy lex.lexicon
+			lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
+				let x = {...lx};
+				x.columns = [...lx.columns];
+				return x;
+			});
+			// Deep copy column info
+			lex.columnOrder = [...lex.columnOrder];
+			lex.columnTitles = [...lex.columnTitles];
+			lex.columnSizes = [...lex.columnSizes];
+			lex.sort = [...lex.sort];
+			// If we're overwriting, and it's a new key, delete the old one
+			if(overwrite && key !== firstKey) {
+				saved.delete(firstKey);
+			}
+			// Save lexicon copy
+			saved.set(key, lex);
+			// Convert back to Array
+			saved.forEach((lexx: LexiconObject, keyy: string) => prepared.push([keyy, lexx]));
+			// Save to disk
+			Storage.set({ key: "savedLexicons", value: JSON.stringify(prepared) }).then(() => {
 				dispatch(setLoadingPage(false));
 				fireSwal({
 					title: announce,
@@ -278,9 +310,9 @@ const Lex = () => {
 			dispatch(closePopover('LexiconEllipsis'));
 			return lexiconSaveError();
 		}
-		dispatch(updateLexiconText("key", uuidv4()));
-		// Adding a pause to make sure everything updates.
-		setTimeout(() => saveLexicon("Lexicon saved as new lexicon!"), 0);
+		let key = uuidv4();
+		dispatch(updateLexiconText("key", key));
+		saveLexicon("Lexicon saved as new lexicon!", key, false);
 	};
 	const lexiconSaveError = () => {
 		fireSwal({
