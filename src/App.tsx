@@ -100,7 +100,7 @@ const App = () => {
 				</IonReactRouter>
 			</IonApp>
 		</WebfontLoader>
-	)
+	);
 };
 
 export default App;
