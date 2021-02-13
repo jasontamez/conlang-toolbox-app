@@ -256,7 +256,8 @@ export const initialAppState: types.StateObject = {
 	currentVersion: "0.1",
 	appSettings: {
 		theme: "Default",
-		disableConfirms: false
+		disableConfirms: false,
+		lexiconHorizontalScroll: false
 	},
 	wordgenCategories: simple.wordgenCategories,
 	wordgenSyllables: simple.wordgenSyllables,
@@ -335,7 +336,8 @@ export const blankAppState: types.StateObject = {
 	currentVersion: "0.1",
 	appSettings: {
 		theme: "Default",
-		disableConfirms: false
+		disableConfirms: false,
+		lexiconHorizontalScroll: false
 	},
 	wordgenCategories: {
 		map: [],
@@ -475,6 +477,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				appSettings: {
 					...state.appSettings,
 					disableConfirms: payload
+				}
+			};
+			break;
+		case consts.TOGGLE_LEXICON_HORIZONTAL_SCROLL:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					lexiconHorizontalScroll: !state.appSettings.lexiconHorizontalScroll
 				}
 			};
 			break;

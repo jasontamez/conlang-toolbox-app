@@ -194,6 +194,7 @@ export interface TemporaryInfo {
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
+	lexiconHorizontalScroll: boolean
 }
 
 export interface StateObject {

@@ -6,6 +6,7 @@ export const VERSION = {
 const p = "conlangs-toolbox/reducer/";
 export const CHANGE_THEME = p+"CHANGE_THEME";
 export const TOGGLE_DISABLE_CONFIRM = p+"TOGGLE_DISABLE_CONFIRM";
+export const TOGGLE_LEXICON_HORIZONTAL_SCROLL = p+"TOGGLE_LEXICON_HORIZONTAL_SCROLL";
 
 export const ADD_CATEGORY_WG = p+"ADD_CATEGORY_WG";
 export const START_EDIT_CATEGORY_WG = p+"START_EDIT_CATEGORY_WG";

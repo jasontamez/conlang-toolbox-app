@@ -20,7 +20,8 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonLoading
+	IonLoading,
+	IonItemDivider
 } from '@ionic/react';
 import {
 	ellipsisVertical,
@@ -44,7 +45,8 @@ import {
 	updateLexicon,
 	setLoadingPage,
 	setTemporaryInfo,
-	updateLexiconBool
+	updateLexiconBool,
+	toggleLexiconHorizontalScroll
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
 import { Plugins } from '@capacitor/core';
@@ -287,6 +289,10 @@ const Lex = () => {
 			icon: 'warning'
 		});
 	};
+	const toggleHorizontalScroll = () => {
+		dispatch(closePopover('LexiconEllipsis'));
+		dispatch(toggleLexiconHorizontalScroll());
+	};
 	return (
 		<IonPage>
 			<EditLexiconItemModal />
@@ -328,6 +334,12 @@ const Lex = () => {
 							<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
 								<IonLabel>Delete Saved Lexicon</IonLabel>
 							</IonItem>
+							<IonItemDivider>
+								<IonLabel>Options</IonLabel>
+							</IonItemDivider>
+							<IonItem button={true} onClick={() => toggleHorizontalScroll()}>
+								<IonLabel>{settings.lexiconHorizontalScroll ? "Disable" : "Allow"} Horizontal Scroll</IonLabel>
+							</IonItem>
 						</IonList>
 					</IonPopover>
 					<IonButtons slot="end">
@@ -337,7 +349,7 @@ const Lex = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen className="evenBackground" id="lexiconPage">
+			<IonContent fullscreen className="evenBackground" id="lexiconPage" scrollX={settings.lexiconHorizontalScroll}>
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
