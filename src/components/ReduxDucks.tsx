@@ -323,7 +323,8 @@ export const initialAppState: types.StateObject = {
 		LoadLexicon: false,
 		DeleteLexicon: false,
 		SaveToLexicon: undefined,
-		PickAndSave: false
+		PickAndSave: false,
+		WEInputEllipsis: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -417,7 +418,8 @@ export const blankAppState: types.StateObject = {
 		LoadLexicon: false,
 		DeleteLexicon: false,
 		SaveToLexicon: undefined,
-		PickAndSave: false
+		PickAndSave: false,
+		WEInputEllipsis: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -431,17 +433,22 @@ export const blankAppState: types.StateObject = {
 const { Storage } = Plugins;
 const saveCurrentState = (state: types.StateObject) => {
 	// Eliminate not-stringifyable properties
-	const lex = state.modalState.LexiconEllipsis;
-	const sav = state.modalState.SaveToLexicon;
+	const ms = state.modalState;
+	const lex = ms.LexiconEllipsis;
+	const sav = ms.SaveToLexicon;
+	const inp = ms.WEInputEllipsis;
 	const temp = state.temporaryInfo;
-	state.modalState.LexiconEllipsis = undefined;
-	state.modalState.SaveToLexicon = undefined;
-	state.temporaryInfo = undefined;
+	ms.LexiconEllipsis
+		= ms.SaveToLexicon
+		= ms.WEInputEllipsis
+		= state.temporaryInfo
+		= undefined;
 	// Stringify
 	const stringified = JSON.stringify(state);
 	// Restore non-stringifyable properties
-	state.modalState.LexiconEllipsis = lex;
-	state.modalState.SaveToLexicon = sav;
+	ms.LexiconEllipsis = lex;
+	ms.SaveToLexicon = sav;
+	ms.WEInputEllipsis = inp;
 	state.temporaryInfo = temp;
 	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});

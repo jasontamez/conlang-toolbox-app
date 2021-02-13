@@ -177,6 +177,7 @@ export interface ModalStateObject {
 	DeleteLexicon: boolean
 	SaveToLexicon: undefined | Event
 	PickAndSave: boolean
+	WEInputEllipsis: undefined | Event
 }
 
 export interface ViewStateObject {
