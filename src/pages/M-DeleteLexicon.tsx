@@ -43,9 +43,7 @@ const DeleteLexiconModal = () => {
 	const { Storage } = Plugins;
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
-			console.log(data);
 			const remaining = data.filter((pair: [string, LexiconObject]) => pair[0] !== key);
-			console.log(JSON.stringify(remaining));
 			Storage.set({ key: "savedLexicons", value: JSON.stringify(remaining) }).then(() => {
 				dispatch(setLoadingPage(false));
 				dispatch(setTemporaryInfo(undefined));
@@ -56,9 +54,6 @@ const DeleteLexiconModal = () => {
 					timer: 2500,
 					timerProgressBar: true,
 					showConfirmButton: false
-				});
-				Storage.get({ key: "savedLexicons" }).then((result: any) => {
-					console.log(result.value);
 				});
 			});
 			dispatch(setLoadingPage("deletingLexicon"));
