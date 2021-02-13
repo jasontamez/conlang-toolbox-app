@@ -29,7 +29,7 @@ import './App.css';
 
 
 const WE = () => {
-	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual);
+	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual) || "home";
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
