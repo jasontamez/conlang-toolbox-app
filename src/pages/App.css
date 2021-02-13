@@ -258,6 +258,9 @@ i.ipa {
 .virtualLex .lexRow.even::part(native) {
 	background: var(--ion-color-input-bg);
 }
+.virtualLex .lexRow.odd::part(native) {
+	background: #0002;
+}
 .virtualLex {
 	margin: 0 0 0 2.25rem;
 }

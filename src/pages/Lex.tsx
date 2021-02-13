@@ -458,7 +458,7 @@ const Lex = () => {
 									order: index
 								};
 								return (
-									<IonItem key={id} className={"lexRow lexiconDisplay serifChars" + (index % 2 ? " even" : "")} id={id} style={ newStyle }>
+									<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
 										{theOrder.map((i: number) => (
 											<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
 										))}
