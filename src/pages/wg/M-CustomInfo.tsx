@@ -1,5 +1,4 @@
 import React from 'react';
-import escape from 'escape-html';
 import {
 	IonItem,
 	IonIcon,
@@ -26,6 +25,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../App.css';
 import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
 import { WGCustomInfo } from '../../components/ReduxDucksTypes';
+import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { Plugins } from '@capacitor/core';
 import fireSwal from '../../components/Swal';

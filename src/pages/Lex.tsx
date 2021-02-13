@@ -57,7 +57,7 @@ import fireSwal from '../components/Swal';
 import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
 import { v4 as uuidv4 } from 'uuid';
-import escape from 'escape-html';
+import escape from '../components/EscapeForHTML';
 import VirtualList from 'react-tiny-virtual-list';
 import { useWindowHeight } from '@react-hook/window-size/throttled';
 
@@ -423,7 +423,6 @@ const Lex = () => {
 					</IonGrid>
 					<div id="theLexicon">
 						<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
-							<span className="lexiconAdd xs"></span>
 							{theOrder.map((i: number) => (
 								<span className={theSizes[i]} key={theTitles[i]}>{theTitles[i]}</span>
 							))}

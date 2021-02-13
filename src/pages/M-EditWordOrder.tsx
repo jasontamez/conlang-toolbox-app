@@ -35,6 +35,7 @@ import './App.css';
 import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
 import { closeModal, updateLexiconColumns, updateLexiconOrder } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
+import escape from '../components/EscapeForHTML';
 import { $i } from '../components/DollarSignExports';
 
 const EditLexiconOrderModal = () => {
