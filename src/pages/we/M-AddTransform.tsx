@@ -25,7 +25,7 @@ import '../App.css';
 import { closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
 import { WETransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
-import { $q } from '../../components/DollarSignExports';
+import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddTransformModal = () => {
@@ -44,6 +44,8 @@ const AddTransformModal = () => {
 			direction: "both",
 			description: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		$q("ion-select").value = "both";
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
