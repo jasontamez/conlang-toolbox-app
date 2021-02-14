@@ -30,7 +30,12 @@ import {
 	addLexiconItem,
 	updateLexiconBool
 } from '../../components/ReduxDucksFuncs';
-import { caretForwardCircleOutline, settingsOutline, bookOutline, saveOutline } from 'ionicons/icons';
+import {
+	caretForwardCircleOutline,
+	settingsOutline,
+	bookOutline,
+	saveOutline
+} from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import OutputOptionsModal from './M-OutputOptions';
 import debounce from '../../components/Debounce';
