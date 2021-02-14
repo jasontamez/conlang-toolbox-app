@@ -1,7 +1,8 @@
-const repairRegexErrors = (s: string) => {
+const repairRegexErrors = (s: string, soundChangeContext = false) => {
 	var backslash = false,
 		curly = false,
 		square = false,
+		paren = 0,
 		output: string[] = [];
 	s.split("").forEach(function(q) {
 		// If we previously had a backslash, add it to this element.
@@ -12,6 +13,9 @@ const repairRegexErrors = (s: string) => {
 		} else if (q === "\\") {
 			backslash = true;
 			return;
+		// If a boundary (#) is encountered, replace with the word-boundary regex.
+		} else if(soundChangeContext && q === "#") {
+			output.push("\\b");
 		// If we previously had a square brace, keep looking for its matching end.
 		} else if (square) {
 			if (q === "]") {
@@ -34,9 +38,17 @@ const repairRegexErrors = (s: string) => {
 		} else if (q === "{") {
 			curly = true;
 			output.push(q);
-		// If a boundary (#) is encountered, replace with the word-boundary regex.
-		} else if(q === "#") {
-			output.push("\\b");
+		// If we previously had an open parenthesis, keep looking for its matching end.
+		} else if (paren > 0) {
+			if (q === ")") {
+				// Found it.
+				paren--;
+			}
+			output.push(q);
+		// If we discover an open parenthesis, pause lookups until we find its end.
+		} else if (q === "(") {
+			paren++;
+			output.push(q);
 		// Otherwise, treat as plain text (and possibly regex).
 		} else {
 			output.push(q);
@@ -48,6 +60,10 @@ const repairRegexErrors = (s: string) => {
 	}
 	if (curly) {
 		output.push("}");
+	}
+	while (paren > 0) {
+		output.push(")");
+		paren--;
 	}
 	if(output.length > 0) {
 		if(!square && !curly) {

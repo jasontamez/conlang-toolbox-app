@@ -84,9 +84,9 @@ const AddSoundChangeModal = () => {
 		newSoundChange.key = uuidv4();
 		// Fix any possible regex problems
 		newSoundChange.seek = repairRegexErrors(newSoundChange.seek);
-		newSoundChange.context = repairRegexErrors(newSoundChange.context);
+		newSoundChange.context = repairRegexErrors(newSoundChange.context, true);
 		newSoundChange.replace = repairRegexErrors(newSoundChange.replace);
-		newSoundChange.anticontext = repairRegexErrors(newSoundChange.anticontext);
+		newSoundChange.anticontext = repairRegexErrors(newSoundChange.anticontext, true);
 		close && dispatch(closeModal('AddSoundChange'));
 		dispatch(addSoundChangeWE(newSoundChange));
 		hardReset();
