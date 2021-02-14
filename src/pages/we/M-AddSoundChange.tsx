@@ -23,7 +23,8 @@ import '../App.css';
 import { closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
-import { $q } from '../../components/DollarSignExports';
+import { $q, $a } from '../../components/DollarSignExports';
+import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddSoundChangeModal = () => {
@@ -44,6 +45,7 @@ const AddSoundChangeModal = () => {
 			anticontext: "",
 			description: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
@@ -80,6 +82,11 @@ const AddSoundChangeModal = () => {
 		// Everything ok!
 		// Create unique ID for this sound change
 		newSoundChange.key = uuidv4();
+		// Fix any possible regex problems
+		newSoundChange.seek = repairRegexErrors(newSoundChange.seek);
+		newSoundChange.context = repairRegexErrors(newSoundChange.context);
+		newSoundChange.replace = repairRegexErrors(newSoundChange.replace);
+		newSoundChange.anticontext = repairRegexErrors(newSoundChange.anticontext);
 		close && dispatch(closeModal('AddSoundChange'));
 		dispatch(addSoundChangeWE(newSoundChange));
 		hardReset();

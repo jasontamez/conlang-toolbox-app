@@ -23,6 +23,7 @@ import '../App.css';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import { closeModal, doEditRewriteRuleWG, cancelEditRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
+import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 
 const EditRewriteRuleModal = () => {
@@ -85,6 +86,8 @@ const EditRewriteRuleModal = () => {
 			return;
 		}
 		// Everything ok!
+		editingRule.seek = repairRegexErrors(editingRule.seek);
+		editingRule.replace = repairRegexErrors(editingRule.replace);
 		dispatch(closeModal('EditRewriteRule'));
 		dispatch(doEditRewriteRuleWG(editingRule));
 		hardReset();

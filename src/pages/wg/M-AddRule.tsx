@@ -23,7 +23,8 @@ import '../App.css';
 import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
-import { $q } from '../../components/DollarSignExports';
+import { $q, $a } from '../../components/DollarSignExports';
+import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddRewriteRuleModal = () => {
@@ -40,6 +41,7 @@ const AddRewriteRuleModal = () => {
 			replace: "",
 			description: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
@@ -73,6 +75,8 @@ const AddRewriteRuleModal = () => {
 		// Everything ok!
 		// Create unique ID for this rule
 		newRule.key = uuidv4();
+		newRule.seek = repairRegexErrors(newRule.seek);
+		newRule.replace = repairRegexErrors(newRule.replace);
 		close && dispatch(closeModal('AddRewriteRule'));
 		dispatch(addRewriteRuleWG(newRule));
 		hardReset();

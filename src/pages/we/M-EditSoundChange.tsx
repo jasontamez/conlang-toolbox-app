@@ -23,6 +23,7 @@ import '../App.css';
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import { closeModal, doEditSoundChangeWE, cancelEditSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
+import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 
 const EditSoundChangeModal = () => {
@@ -91,6 +92,11 @@ const EditSoundChangeModal = () => {
 		if(editingSoundChange.context === "") {
 			editingSoundChange.context = "_";
 		}
+		// Fix any possible regex problems
+		editingSoundChange.seek = repairRegexErrors(editingSoundChange.seek);
+		editingSoundChange.context = repairRegexErrors(editingSoundChange.context);
+		editingSoundChange.replace = repairRegexErrors(editingSoundChange.replace);
+		editingSoundChange.anticontext = repairRegexErrors(editingSoundChange.anticontext);
 		// Everything ok!
 		dispatch(closeModal('EditSoundChange'));
 		dispatch(doEditSoundChangeWE(editingSoundChange));
