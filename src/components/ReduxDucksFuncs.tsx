@@ -188,6 +188,17 @@ export function reorderSoundChangesWE(payload: types.WESoundChangeObject["key"][
 export function updateInputLexicon(payload: types.WEInputObject) {
 	return {type: consts.UPDATE_INPUT_LEXICON, payload};
 }
+// Output
+export function setOutputTypeWE(payload: types.WEOutputTypes) {
+	return {type: consts.SET_OUTPUT_WE, payload};
+}
+export function toggleShowChangesWE(payload: boolean) {
+	return {type: consts.TOGGLE_SHOW_CHANGES_WE, payload};
+}
+export function toggleShowRulesWE(payload: boolean) {
+	return {type: consts.TOGGLE_SHOW_RULES_WE, payload};
+}
+
 
 //
 // LEXICON

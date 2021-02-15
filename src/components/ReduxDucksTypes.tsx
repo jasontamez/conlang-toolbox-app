@@ -8,6 +8,7 @@ export type WGOutputTypes = "text" | "wordlist" | "syllables";
 export type WGPresetObject = Map<string, WGPreset>;
 export type WGCategoryMap = [string, WGCategoryObject];
 export type WECategoryMap = [string, WECategoryObject];
+export type WEOutputTypes = "single" | "multi" | "inputFirst" | "outputFirst";
 
 export type WGPreset = {
 	wordgenCategories: WGCategoryStateObject
@@ -124,6 +125,12 @@ export interface WESoundchangeStateObject {
 
 export type WEInputObject = string[]
 
+export interface WESettingsObject {
+	output: WEOutputTypes
+	showChanges: false,
+	showRules: false
+}
+
 
 export interface Lexicon {
 	key: string
@@ -177,6 +184,9 @@ export interface ModalStateObject {
 	DeleteLexicon: boolean
 	WGSaveToLexicon: undefined | Event
 	PickAndSaveWG: boolean
+	WEOutputOptions: boolean
+	WESaveToLexicon: undefined | Event
+	PickAndSaveWE: boolean
 }
 
 export interface ViewStateObject {
@@ -208,6 +218,7 @@ export interface StateObject {
 	wordevolveTransforms: WETransformStateObject
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
+	wordevolveSettings: WESettingsObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject

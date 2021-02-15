@@ -149,6 +149,9 @@ const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod:
 const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
 	return {...original};
 };
+const reduceSettingsWE = (original: types.WESettingsObject) => {
+	return {...original};
+};
 const reduceLexiconState = (original: types.LexiconObject) => {
 	return {
 		key: original.key,
@@ -227,6 +230,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (a: string[]) => a.map(a => a)],
+	["wordevolveSettings", reduceSettingsWE],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
@@ -286,6 +290,11 @@ export const initialAppState: types.StateObject = {
 		editing: null
 	},
 	wordevolveInput: [],
+	wordevolveSettings: {
+		output: "multi",
+		showChanges: false,
+		showRules: false
+	},
 	lexicon: {
 		key: "",
 		lastSave: 0,
@@ -324,6 +333,9 @@ export const initialAppState: types.StateObject = {
 		DeleteLexicon: false,
 		WGSaveToLexicon: undefined,
 		PickAndSaveWG: false,
+		WEOutputOptions: false,
+		PickAndSaveWE: false,
+		WESaveToLexicon: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -380,6 +392,11 @@ export const blankAppState: types.StateObject = {
 		editing: null
 	},
 	wordevolveInput: [],
+		wordevolveSettings: {
+			output: "multi",
+			showChanges: false,
+			showRules: false
+		},
 	lexicon: {
 		key: "",
 		lastSave: 0,
@@ -418,6 +435,9 @@ export const blankAppState: types.StateObject = {
 		DeleteLexicon: false,
 		WGSaveToLexicon: undefined,
 		PickAndSaveWG: false,
+		WEOutputOptions: false,
+		PickAndSaveWE: false,
+		WESaveToLexicon: undefined
 	},
 	viewState: {
 		wg: 'home',
@@ -1009,6 +1029,34 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["wordevolveInput"], state),
 				wordevolveInput: payload
+			};
+			break;
+		// Output
+		case consts.SET_OUTPUT_WE:
+			final = {
+				...reduceAllBut(["wordevolveSettings"], state),
+				wordevolveSettings: {
+					...state.wordevolveSettings,
+					output: payload
+				}
+			};
+			break;
+		case consts.TOGGLE_SHOW_CHANGES_WE:
+			final = {
+				...reduceAllBut(["wordevolveSettings"], state),
+				wordevolveSettings: {
+					...state.wordevolveSettings,
+					showChanges: payload
+				}
+			};
+			break;
+		case consts.TOGGLE_SHOW_RULES_WE:
+			final = {
+				...reduceAllBut(["wordevolveSettings"], state),
+				wordevolveSettings: {
+					...state.wordevolveSettings,
+					showRules: payload
+				}
 			};
 			break;
 
