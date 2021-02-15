@@ -36,7 +36,7 @@ const WERew = () => {
 	const settings = state.appSettings;
 	const updateInput = () => {
 		const value: string = $i("lexiconInput").value;
-		const newInput: string[] = value.split("\n").map(v => v.trim());
+		const newInput: string[] = value.split("\n").map(v => v.trim()).filter(v => v);
 		dispatch(updateInputLexicon(newInput));
 	};
 	const clearInput = () => {
