@@ -1,4 +1,4 @@
-const repairRegexErrors = (s: string, soundChangeContext = false) => {
+const repairRegexErrors = (s: string) => {
 	var backslash = false,
 		curly = false,
 		square = false,
@@ -13,9 +13,6 @@ const repairRegexErrors = (s: string, soundChangeContext = false) => {
 		} else if (q === "\\") {
 			backslash = true;
 			return;
-		// If a boundary (#) is encountered, replace with the word-boundary regex.
-		} else if(soundChangeContext && q === "#") {
-			output.push("\\b");
 		// If we previously had a square brace, keep looking for its matching end.
 		} else if (square) {
 			if (q === "]") {
@@ -64,17 +61,6 @@ const repairRegexErrors = (s: string, soundChangeContext = false) => {
 	while (paren > 0) {
 		output.push(")");
 		paren--;
-	}
-	if(output.length > 0) {
-		if(!square && !curly) {
-			// Test for word-boundary at end.
-			let end = output.pop()!;
-			output.push((end === "\\b") ? "$" : end);
-		}
-		// Test for word-boundary at start.
-		if(output[0] === "\\b") {
-			output[0] = "^";
-		}
 	}
 	return output.join("");
 }

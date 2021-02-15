@@ -94,9 +94,9 @@ const EditSoundChangeModal = () => {
 		}
 		// Fix any possible regex problems
 		editingSoundChange.seek = repairRegexErrors(editingSoundChange.seek);
-		editingSoundChange.context = repairRegexErrors(editingSoundChange.context, true);
+		editingSoundChange.context = repairRegexErrors(editingSoundChange.context);
 		editingSoundChange.replace = repairRegexErrors(editingSoundChange.replace);
-		editingSoundChange.anticontext = repairRegexErrors(editingSoundChange.anticontext, true);
+		editingSoundChange.anticontext = repairRegexErrors(editingSoundChange.anticontext);
 		// Everything ok!
 		dispatch(closeModal('EditSoundChange'));
 		dispatch(doEditSoundChangeWE(editingSoundChange));
