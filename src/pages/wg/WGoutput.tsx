@@ -70,9 +70,9 @@ const WGOut = () => {
 	const syllablesObject = stateObject.wordgenSyllables;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
-	const rewriteRules = stateObject.wordgenRewriteRules.list;
 	const settingsWG = stateObject.wordgenSettings;
 	const modalState = stateObject.modalState;
+	const rewriteRules = stateObject.wordgenRewriteRules.list;
 	const regExpMap: Map<string, RegExp> = new Map();
 
 	let textWidthTester = document.createElement("canvas").getContext("2d");
@@ -412,11 +412,11 @@ const WGOut = () => {
 	// // //
 
 	const pickAndSave = () => {
-		dispatch(closePopover("SaveToLexicon"));
-		dispatch(openModal("PickAndSave"));
+		dispatch(closePopover("WGSaveToLexicon"));
+		dispatch(openModal("PickAndSaveWG"));
 	};
 	const donePickingAndSaving = () => {
-		dispatch(closeModal("PickAndSave"));
+		dispatch(closeModal("PickAndSaveWG"));
 	};
 	let wordsToSave: string[] = [];
 	const saveToLex = () => {
@@ -432,7 +432,7 @@ const WGOut = () => {
 		dispatch(updateLexiconBool("sorted", false));
 	};
 	const saveEverything = () => {
-		dispatch(closePopover("SaveToLexicon"));
+		dispatch(closePopover("WGSaveToLexicon"));
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
 		});
@@ -464,7 +464,7 @@ const WGOut = () => {
 				        {/*cssClass='my-custom-class'*/ ...""}
 						event={modalState.SaveToLexicon}
 						isOpen={modalState.SaveToLexicon !== undefined}
-						onDidDismiss={() => dispatch(closePopover("SaveToLexicon"))}
+						onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>
@@ -481,14 +481,14 @@ const WGOut = () => {
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
-						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSave ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
+						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSaveWG ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
-						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('SaveToLexicon', e)); }}>
+						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}>
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPane" className={"largePane" + (modalState.PickAndSave ? " pickAndSave" : "")}></div>
+					<div id="outputPane" className={"largePane" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

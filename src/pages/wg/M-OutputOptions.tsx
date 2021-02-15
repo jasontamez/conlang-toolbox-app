@@ -20,7 +20,7 @@ import {
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	OutputTypes,
+	WGOutputTypes,
 	Fifty_OneThousand,
 	Five_OneHundred,
 } from '../../components/ReduxDucksTypes';
@@ -59,7 +59,7 @@ const OutputOptionsModal = () => {
 			<IonContent>
 				<IonList>
 					<IonItemDivider>What to Generate:</IonItemDivider>
-					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value! as OutputTypes))}>
+					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value! as WGOutputTypes))}>
 						<IonSelectOption value="text">Pseudo-text</IonSelectOption>
 						<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
 						<IonSelectOption value="syllables">All possible syllables</IonSelectOption>

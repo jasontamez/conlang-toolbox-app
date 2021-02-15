@@ -72,7 +72,7 @@ export function setCategoryDropoffWG(payload: types.Zero_Fifty) {
 export function setSyllableDropoffWG(payload: types.Zero_Fifty) {
 	return {type: consts.SET_SYLLABLE_DROPOFF_WG, payload};
 }
-export function setOutputTypeWG(payload: types.OutputTypes) {
+export function setOutputTypeWG(payload: types.WGOutputTypes) {
 	return {type: consts.SET_OUTPUT_WG, payload};
 }
 export function setSyllableBreaksWG(payload: boolean) {

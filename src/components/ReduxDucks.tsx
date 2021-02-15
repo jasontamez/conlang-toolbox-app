@@ -75,7 +75,7 @@ const reduceRewriteRulesStateWG = (original: types.WGRewriteRuleStateObject, mod
 const reduceRewriteRulesWG = (original: types.WGRewriteRuleObject) => {
 	return {...original};
 };
-const reduceWGSettingsWG = (original: types.WGSettingsObject) => {
+const reduceSettingsWG = (original: types.WGSettingsObject) => {
 	return {...original};
 };
 const reduceCategoryWE = (original: types.WECategoryStateObject, newMap: types.WECategoryMap[] = original.map) => {
@@ -222,7 +222,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordgenCategories", reduceCategoryWG],
 	["wordgenSyllables", reduceSyllablesWG],
 	["wordgenRewriteRules", reduceRewriteRulesStateWG],
-	["wordgenSettings", reduceWGSettingsWG],
+	["wordgenSettings", reduceSettingsWG],
 	["wordevolveCategories", reduceCategoryWE],
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
@@ -322,8 +322,8 @@ export const initialAppState: types.StateObject = {
 		EditLexiconOrder: false,
 		LoadLexicon: false,
 		DeleteLexicon: false,
-		SaveToLexicon: undefined,
-		PickAndSave: false
+		WGSaveToLexicon: undefined,
+		PickAndSaveWG: false,
 	},
 	viewState: {
 		wg: 'home',
@@ -416,8 +416,8 @@ export const blankAppState: types.StateObject = {
 		EditLexiconOrder: false,
 		LoadLexicon: false,
 		DeleteLexicon: false,
-		SaveToLexicon: undefined,
-		PickAndSave: false
+		WGSaveToLexicon: undefined,
+		PickAndSaveWG: false,
 	},
 	viewState: {
 		wg: 'home',
@@ -433,17 +433,20 @@ const saveCurrentState = (state: types.StateObject) => {
 	// Eliminate not-stringifyable properties
 	const ms = state.modalState;
 	const lex = ms.LexiconEllipsis;
-	const sav = ms.SaveToLexicon;
+	const sav = ms.WGSaveToLexicon;
+	const sav2 = ms.WESaveToLexicon;
 	const temp = state.temporaryInfo;
 	ms.LexiconEllipsis
-		= ms.SaveToLexicon
+		= ms.WGSaveToLexicon
+		= ms.WESaveToLexicon
 		= state.temporaryInfo
 		= undefined;
 	// Stringify
 	const stringified = JSON.stringify(state);
 	// Restore non-stringifyable properties
 	ms.LexiconEllipsis = lex;
-	ms.SaveToLexicon = sav;
+	ms.WGSaveToLexicon = sav;
+	ms.WESaveToLexicon = sav2;
 	state.temporaryInfo = temp;
 	// Save stringified state
 	Storage.set({key: "currentState", value: stringified});
