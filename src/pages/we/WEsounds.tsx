@@ -71,9 +71,9 @@ const WERew = () => {
 		if(settings.disableConfirms) {
 			thenFunc({isConfirmed: true});
 		} else {
-			let rule = "/" + change.seek + "/" + change.replace + "/" + change.context + "/";
+			let rule = change.seek + "➜" + change.replace + "/" + change.context;
 			if(change.anticontext) {
-				rule += change.anticontext + "/";
+				rule +=  "/" + change.anticontext;
 			}
 			fireSwal({
 				title: "Delete " + rule + "?",
@@ -128,17 +128,15 @@ const WERew = () => {
 								</div>
 								<IonLabel>
 									<div className="importantElement serifChars">
-										<span className="unimportantUnit">/</span>
 										<span className="seek importantUnit">{change.seek}</span>
-										<span className="unimportantUnit">/</span>
+										<span className="unimportantUnit">➜</span>
 										<span className="replace importantUnit">{change.replace}</span>
 										<span className="unimportantUnit">/</span>
 										<span className="replace importantUnit">{change.context}</span>
-										<span className="unimportantUnit">/</span>
 										{change.anticontext ? (
 											<span>
-												<span className="replace importantUnit">{change.anticontext}</span>
 												<span className="unimportantUnit">/</span>
+												<span className="replace importantUnit">{change.anticontext}</span>
 											</span>
 										) : ""}
 									</div>
