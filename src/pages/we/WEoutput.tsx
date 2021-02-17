@@ -63,7 +63,6 @@ const WEOut = () => {
 	const state = useSelector((state: any) => state, shallowEqual);
 // eslint-disable-next-line
 	const rawInput = state.wordevolveInput;
-// eslint-disable-next-line
 	const settings = state.appSettings;
 	const settingsWE = state.wordevolveSettings;
 	const modalState = state.modalState;
@@ -351,8 +350,8 @@ const WEOut = () => {
 							seekText2 += ss;
 							seekRule.push(ss);
 						} else {
-							seekText1 += "([" + ss.join("") + "])";
-							seekText2 += "[" + ss.join("") + "]";
+							seekText1 += "[" + ss.join("") + "]";
+							seekText2 += "([" + ss.join("") + "])";
 							seekCats.push(ss as string[]);
 						}
 					});
@@ -360,11 +359,11 @@ const WEOut = () => {
 					// seekCats is an array of category runs
 					// seekRule is an array of the original rule
 					let s1 = new RegExp(seekText1);
-					let lastIndex1 = s1.lastIndex = 0;
+					let lastIndex = s1.lastIndex = 0;
 					let m1 = s1.exec(word);
 					let s2 = new RegExp(seekText2);
 					let m2 = s2.exec(word);
-					let repl = replace.rules.filter(r => typeof r !== "string");
+					let repl = replace.rules;
 					while(m1 !== null && m2 !== null) {
 						let okToReplace = true;
 						// Hold on to the pre-match length of word.
@@ -383,8 +382,8 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, lastIndex1);
-						let post = word.slice(lastIndex1 + m1[0].length);
+						let pre = word.slice(0, lastIndex);
+						let post = word.slice(lastIndex + m1[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -415,16 +414,28 @@ const WEOut = () => {
 								if(m1[c1] !== m2[c2]) {
 									// Category match
 									let cat1 = seekCats.pop();
+									// Look for a category in the replacement array
 									let rep1 = repCopy.pop();
+									while(typeof rep1 === "string") {
+										replText = rep1 + replText;
+										rep1 = repCopy.pop();
+									}
+									// replace the nth member of category1 with the nth member of category 2
 									let pos = cat1!.indexOf(m1[c1]);
 									replText = rep1![pos % rep1!.length] + replText;
-									c1--;
+									// Only need to decrement the replacement
 									c2--;
 								} else {
-									replText = repCopy.pop() + replText;
+									// Parenthetical match: decrement both
+									c1--;
 									c2--;
 								}
 							}
+							// Finish assembling the replacement text
+							while(repCopy.length > 0) {
+								replText = repCopy.pop() + replText;
+							}
+							// Look for parenthetical matches and apply them
 							if(m1.length > 1) {
 								let c = m1.length;
 								while(c >= 1) {
@@ -432,17 +443,18 @@ const WEOut = () => {
 									c--;
 								}
 							}
+							// Replace found text with replacement text
 							word = pre + replText + post;
 							s1.lastIndex = s2.lastIndex = (pre.length + replText.length);
 						}
-						if (m1[0] === "" && (lastIndex1 === 0 || lastIndex1 === prevLength)) {
+						if (m1[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
 							m1 = null;
 						} else {
 							// Otherwise, check for more matches!
 							m1 = s1.exec(word);
-							lastIndex1 = s1.lastIndex;
+							lastIndex = s1.lastIndex;
 							m2 = s2.exec(word);
 						}
 					}
@@ -496,6 +508,7 @@ const WEOut = () => {
 						if(okToReplace) {
 							// We can replace
 							if(m.length > 1) {
+								// Handle parenthetical matches
 								let rep = replace;
 								let c = m.length;
 								while(c >= 1) {
