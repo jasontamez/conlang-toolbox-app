@@ -317,18 +317,12 @@ const WEOut = () => {
 	//  then return an object where obj.words is an array of strings, and obj.info is an array
 	//  of HTML elements containing information about the process.
 // eslint-disable-next-line
-	const changeTheWords: any = (input: string[], printrules: boolean) => {
-		let changes: string[][] = input.map(i => []);
-		let counter = 0;
+	const changeTheWords: any = (input: string[], previousInput: string[] = []) => {
+		let rulesThatApplied: string[][] = [];
 		let output: string[] = [];
-		let div,
-// eslint-disable-next-line
-			span;
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
-// eslint-disable-next-line
-			let changedWeMade: string[] = [];
 			// Loop over the rewrite rules.
 			transforms.forEach((tr: WETransformObject) => {
 				// Check to see if we apply this rule.
@@ -336,56 +330,50 @@ const WEOut = () => {
 					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
 				}
 			});
-//export interface WESoundChangeObject {
-//	key: string
-//	seek: string
-//	replace: string
-//	context: string
-//	anticontext: string
-//	description: string
-//}
 			// Loop over every sound change in order.
 			soundChanges.forEach((change: WESoundChangeObject) => {
 				const modified = soundChangeMap.get(change.key)!;
-// eslint-disable-next-line
-				const replacing = modified.replace;
 				const contx = modified.context;
 				const antix = modified.anticontext;
-// eslint-disable-next-line
-				const rule = change.seek + "/" + change.replace + "/" + change.context + "/" + change.anticontext;
-// eslint-disable-next-line
-				let original = changes[counter];
-				// Store what we started with here.
-// eslint-disable-next-line
+				const rule = change.seek + "➜" + change.replace + "/" + change.context + (change.anticontext ? "/" + change.anticontext : "");
 				let previous = word;
-// eslint-disable-next-line
-				let prevLength = word.length;
 				if(modified.flagged) {
 					// We have category matches to deal with.
-					// We have category matches to deal with.
-					// We have category matches to deal with.
-					// We have category matches to deal with.
-					// We have category matches to deal with.
-					// We have category matches to deal with.
-					// We have category matches to deal with.
-				} else {
-					// No special category match handling
-					let seeking = modified.seek as RegExp;
-// eslint-disable-next-line
-					let replace = modified.replace as string;
-					// Reset lastIndex to prevent certain errors.
-					seeking.lastIndex = 0;
-					let li = seeking.lastIndex;
-					let m = seeking.exec(word);
-					while(m !== null) {
+					let seeking = modified.seek as fromOrTo;
+					let replace = modified.replace as fromOrTo;
+					let seekText1 = "";
+					let seekText2 = "";
+					let seekCats: string[][] = [];
+					let seekRule: string[] = [];
+					seeking.rules.forEach(ss => {
+						if(typeof ss === "string") {
+							seekText1 += ss;
+							seekText2 += ss;
+							seekRule.push(ss);
+						} else {
+							seekText1 += "([" + ss.join("") + "])";
+							seekText2 += "[" + ss.join("") + "]";
+							seekCats.push(ss as string[]);
+						}
+					});
+					// seekText1/2 are the bases of RegExps
+					// seekCats is an array of category runs
+					// seekRule is an array of the original rule
+					let s1 = new RegExp(seekText1);
+					let lastIndex1 = s1.lastIndex = 0;
+					let m1 = s1.exec(word);
+					let s2 = new RegExp(seekText2);
+					let m2 = s2.exec(word);
+					let repl = replace.rules.filter(r => typeof r !== "string");
+					while(m1 !== null && m2 !== null) {
 						let okToReplace = true;
 						// Hold on to the pre-match length of word.
-						prevLength = word.length;
+						let prevLength = word.length;
 						// m is an array: [full match, ...other matches]
 						// seeking.lastIndex is the point right after the match
 						// Therefore: word.slice(0, seeking.lastIndex) will be everything up to and including the match
 						// Make sure our match doesn't match the anticontext
-						// PLI = previous value of 'li' (or 0)
+						// PLI = previous value of 'lastIndex' (or 0)
 						// (a) = pre match
 						// (b) = post match
 						// m = entire match (a)x(b)
@@ -395,8 +383,8 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, li - m[0].length);
-						let post = word.slice(li);
+						let pre = word.slice(0, lastIndex1);
+						let post = word.slice(lastIndex1 + m1[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -413,89 +401,126 @@ const WEOut = () => {
 								!(contx[0] && pre.match(contx[0]))
 								&& !(contx[1] && post.match(contx[1]))
 							) {
-								// We did not the context, so forget about this.
+								// We did not match the context, so forget about this.
 								okToReplace = false;
 							}
 						}
 						if(okToReplace) {
 							// We can replace
-							//
-							//
-							//
-							//
+							let c1 = m1.length - 1;
+							let c2 = m2.length - 1;
+							let repCopy = [...repl];
+							let replText = "";
+							while(c1 > 0) {
+								if(m1[c1] !== m2[c2]) {
+									// Category match
+									let cat1 = seekCats.pop();
+									let rep1 = repCopy.pop();
+									let pos = cat1!.indexOf(m1[c1]);
+									replText = rep1![pos % rep1!.length] + replText;
+									c1--;
+									c2--;
+								} else {
+									replText = repCopy.pop() + replText;
+									c2--;
+								}
+							}
+							if(m1.length > 1) {
+								let c = m1.length;
+								while(c >= 1) {
+									replText = replText.replace("$" + c.toString(), m1[c]);
+									c--;
+								}
+							}
+							word = pre + replText + post;
+							s1.lastIndex = s2.lastIndex = (pre.length + replText.length);
 						}
-						if (m[0] === "" && (li === 0 || li === prevLength)) {
+						if (m1[0] === "" && (lastIndex1 === 0 || lastIndex1 === prevLength)) {
+							// If the match didn't actually match anything, and it's at a position where it's likely
+							//   to match the same nothing next time, just up and end the loop.
+							m1 = null;
+						} else {
+							// Otherwise, check for more matches!
+							m1 = s1.exec(word);
+							lastIndex1 = s1.lastIndex;
+							m2 = s2.exec(word);
+						}
+					}
+				} else {
+					// No special category match handling
+					let seeking = modified.seek as RegExp;
+					let replace = modified.replace as string;
+					// Reset lastIndex to prevent certain errors.
+					let lastIndex = seeking.lastIndex = 0;
+					let m = seeking.exec(word);
+					while(m !== null) {
+						let okToReplace = true;
+						// Hold on to the pre-match length of word.
+						let prevLength = word.length;
+						// m is an array: [full match, ...other matches]
+						// seeking.lastIndex is the point right after the match
+						// Therefore: word.slice(0, seeking.lastIndex) will be everything up to and including the match
+						// Make sure our match doesn't match the anticontext
+						// PLI = previous value of 'lastIndex' (or 0)
+						// (a) = pre match
+						// (b) = post match
+						// m = entire match (a)x(b)
+						// LI = current value of rule.lastIndex
+						// . = other character(s) that may or may not exist
+						// String is this: ...PLI...(a)x(b)LI...
+						// temp needs to be matched with everything up to x.
+						// temp itself needs to have x appended to it.
+						// Make 'pre' into the matchable string: 0 to LI - (b).
+						let pre = word.slice(0, lastIndex);
+						let post = word.slice(lastIndex + m[0].length);
+						// We do NOT want to match the anticontext
+						if(!antix.every(a => !a)) {
+							if(
+								(antix[0] && pre.match(antix[0]))
+								|| (antix[1] && post.match(antix[1]))
+							) {
+								// We matched the anticontext, so forget about this.
+								okToReplace = false;
+							}
+						}
+						// We DO want to match the context
+						if(okToReplace && !contx.every(c => !c)) {
+							if(
+								!(contx[0] && pre.match(contx[0]))
+								&& !(contx[1] && post.match(contx[1]))
+							) {
+								// We did not match the context, so forget about this.
+								okToReplace = false;
+							}
+						}
+						if(okToReplace) {
+							// We can replace
+							if(m.length > 1) {
+								let rep = replace;
+								let c = m.length;
+								while(c >= 1) {
+									rep = rep.replace("$" + c.toString(), m[c]);
+									c--;
+								}
+								word = pre + rep + post;
+								seeking.lastIndex = pre.length + rep.length;
+							} else {
+								word = pre + replace + post;
+								seeking.lastIndex = pre.length + replace.length;
+							}
+						}
+						if (m[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
 							m = null;
 						} else {
 							// Otherwise, check for more matches!
 							m = seeking.exec(word);
-							li = seeking.lastIndex;
+							lastIndex = seeking.lastIndex;
 						}
 					}
 				}
-				/*
-				// Attempt to apply the rules.
-				change["from" + counterString].forEach(function(rule) {
-					var m, li, rep, allPrevious, allAfter, prevLength, etc;
-					// Reset lastIndex to prevent certain errors.
-					rule.lastIndex = 0;
-					// Get the matches, the new lastIndex, and the replacement expression(s).
-					m = rule.exec(w);
-					li = rule.lastIndex;
-					rep = replacements.shift();
-					// Look for matches. There may be multiple in a string.
-					while (m !== null) {
-						//////
-						// Did we have parentheticals in the inputted change?
-						if (m.length > 3) {
-							// Yup. Have to handle them.
-							// Save the exterior of the match.
-							allPrevious = w.slice(0, li - m.shift().length) + m.shift();
-							allAfter = m.pop() + w.slice(li);
-							// Replace the matched interior with the correct replacement.
-							w =
-								allPrevious +
-								w.slice(allPrevious.length - 1, li - 0).replace("", rep) +
-								allAfter;
-							// Change the replacement using the asked-for $replacements.
-							// We count downwards so we don't accidentally replace $10 with $1's match.
-							etc = m.length;
-							while (etc > 0) {
-								// Replace $x with the xth element of the matches.
-								rep = rep.replace(RegExp("\\$" + etc.toString(), "g"), m.pop());
-								// Increment counter.
-								etc--;
-							}
-						} else {
-							// No extra parentheticals.
-							// Save the exterior of the match.
-							allPrevious = w.slice(0, li - m[0].length) + m[1];
-							allAfter = m[2] + w.slice(li);
-						}
-						// Replace the matched interior with the correct replacement.
-						w = allPrevious + rep + allAfter;
-						//////
-					}
-				});
-				// Did we change anything? Do we need to report it?
-				if (printrules && previous !== w) {
-					// Create message reporting the change.
-					// [rule] [arrow] [original word] [arrow] [changed to]
-					output.info.push($e("span", change["rule" + counterString]));
-					span = $e("span", String.fromCharCode(0x21d2));
-					span.classList.add("arrow");
-					output.info.push(span, $e("span", previous));
-					span = $e("span", String.fromCharCode(0x2192));
-					span.classList.add("arrow");
-					output.info.push(span);
-					span = $e("span", w);
-					span.appendChild($e("br"));
-					output.info.push(span);
-				}
-				// Increment counter.
-				counter++;*/
+				settings.showRules && rulesThatApplied.push([previous, rule, word]);
 			});
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
@@ -505,17 +530,8 @@ const WEOut = () => {
 				}
 			});
 			// Add the mangled word to the output list.
-			//output.words.push(word);
-			counter++;
+			output.push(word);
 		});
-		// If we have saved the effects of rules, they need to be wrapped in a block.
-		if (printrules) {
-			div = $e("div");
-			div.classList.add("soundChangeEffects");
-			//div.append(...output.info);
-			//output.info = [div];
-		}
-
 		// Return the output.
 		return output;
 }
