@@ -21,7 +21,8 @@ import {
 	IonRow,
 	IonCol,
 	IonLoading,
-	IonItemDivider
+	IonItemDivider,
+	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	ellipsisVertical,
@@ -46,7 +47,8 @@ import {
 	setLoadingPage,
 	setTemporaryInfo,
 	updateLexiconBool,
-	toggleLexiconHorizontalScroll
+	toggleLexiconHorizontalScroll,
+	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
 import { Plugins } from '@capacitor/core';
@@ -68,6 +70,15 @@ const Lex = () => {
 	const modalState = state.modalState;
 	const popstate = modalState.LexiconEllipsis;
 	const lexicon = state.lexicon;
+	useIonViewDidEnter(() => {
+		console.log(lexicon.waitingToAdd);
+		console.log(lexicon.sorted);
+		if(!lexicon.sorted) {
+			let [col, dir] = lexicon.sort;
+			internalSort(col, dir, [...lexicon.lexicon, ...lexicon.waitingToAdd]);
+			dispatch(clearDeferredLexiconItems());
+		}
+	});
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
@@ -77,8 +88,8 @@ const Lex = () => {
 	const theTitles = lexicon.columnTitles;
 	const theSizes = lexicon.columnSizes;
 	const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
-	const internalSort = (col: number, dir: number) => {
-		let newLex: Lexicon[] = [...lexicon.lexicon];
+	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon.lexicon]) => {
+		dispatch(updateLexiconBool("sorted", true));
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
 			let y: string;
@@ -91,7 +102,6 @@ const Lex = () => {
 			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
 		});
 		dispatch(updateLexiconOrder(newLex));
-		dispatch(updateLexiconBool("sorted", true));
 	};
 	const doSort = () => {
 		const el = $i("lexiconSort");
@@ -99,13 +109,6 @@ const Lex = () => {
 		let [col, dir] = value.split("").map((n: string) => parseInt(n));
 		dispatch(updateLexiconSort([col, dir]));
 		internalSort(col, dir);
-	};
-	const checkIfSorted = () => {
-		if(!lexicon.sorted) {
-			let [col, dir] = lexicon.sort;
-			internalSort(col, dir);
-		}
-		return false;
 	};
 	const addToLex = () => {
 		const newInfo: string[] = [];
@@ -208,6 +211,7 @@ const Lex = () => {
 				sort: [0, 0],
 				sorted: true,
 				lexicon: [],
+				waitingToAdd: [],
 				editing: undefined,
 				colEdit: undefined
 			};
@@ -441,7 +445,6 @@ const Lex = () => {
 							</IonButton>
 							<span className="lexiconDel xs ion-hide-sm-down"></span>
 						</IonItem>
-						{checkIfSorted() ? "" : ""}
 						<VirtualList
 							className="virtualLex"
 							width="calc(100% - 2.25rem)"

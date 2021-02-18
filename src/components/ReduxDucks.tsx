@@ -165,6 +165,7 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		sort: [...original.sort],
 		sorted: original.sorted,
 		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
+		waitingToAdd: original.waitingToAdd.map(lex => reduceLexicon(lex)),
 		editing: original.editing,
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
@@ -307,6 +308,7 @@ export const initialAppState: types.StateObject = {
 		sort: [0, 0],
 		sorted: true,
 		lexicon: [],
+		waitingToAdd: [],
 		editing: undefined,
 		colEdit: undefined
 	},
@@ -410,6 +412,7 @@ export const blankAppState: types.StateObject = {
 		sort: [0, 0],
 		sorted : true,
 		lexicon: [],
+		waitingToAdd: [],
 		editing: undefined,
 		colEdit: undefined
 	},
@@ -486,6 +489,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let final: types.StateObject = state;
 	let label: string;
 	let LO: types.LexiconObject;
+	console.log(action.type);
+	console.log(payload);
 	switch(action.type) {
 		// App Settings
 		case consts.CHANGE_THEME:
@@ -828,6 +833,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
+		case consts.SET_LEXICON_COLUMN_WG:
+			final = {
+				...reduceAllBut(["wordgenSettings"], state),
+				wordgenSettings: {
+					...state.wordgenSettings,
+					saveToLexiconColumn: payload
+				}
+			};
+			break;
 		// Presets
 		case consts.LOAD_PRESET_WG:
 			let newInfo: any = WGPresets.get(payload);
@@ -1153,6 +1167,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
+		case consts.ADD_DEFERRED_LEXICON_ITEM:
+			LO = reduceLexiconState(state.lexicon);
+			LO.waitingToAdd.push(payload);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
 		case consts.UPDATE_LEXICON_ITEM_ORDER:
 			LO = reduceLexiconState(state.lexicon);
 			LO.lexicon = payload;
@@ -1164,6 +1186,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.UPDATE_LEXICON_SORT:
 			LO = reduceLexiconState(state.lexicon);
 			LO.sort = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.CLEAR_DEFERRED_LEXICON_ITEMS:
+			LO = reduceLexiconState(state.lexicon);
+			LO.waitingToAdd = [];
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

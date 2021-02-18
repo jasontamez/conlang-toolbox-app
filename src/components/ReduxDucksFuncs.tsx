@@ -117,6 +117,9 @@ export function setWordsPerWordlistWG(payload: types.Fifty_OneThousand) {
 export function setCustomInfoWG(payload: string[]) {
 	return {type: consts.SET_CUSTOM_INFO_WG, payload};
 }
+export function setLexiconColumn(payload: number) {
+	return {type: consts.SET_LEXICON_COLUMN_WG, payload};
+}
 // Presets
 export function loadPresetWG(payload: string) {
 	return {type: consts.LOAD_PRESET_WG, payload};
@@ -221,6 +224,9 @@ export function deleteLexiconItem(payload: number) {
 export function addLexiconItem(payload: types.Lexicon) {
 	return {type: consts.ADD_LEXICON_ITEM, payload};
 }
+export function addDeferredLexiconItem(payload: types.Lexicon) {
+	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
+}
 export function updateLexiconText(prop: "title" | "description" | "key", value: string) {
 	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
 }
@@ -238,6 +244,9 @@ export function updateLexiconOrder(payload: types.Lexicon[]) {
 }
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
+}
+export function clearDeferredLexiconItems() {
+	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
 }
 
 //

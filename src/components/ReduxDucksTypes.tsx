@@ -78,6 +78,7 @@ export interface WGSettingsObject {
 	wordlistMultiColumn?: boolean
 	wordsPerWordlist?: Fifty_OneThousand
 	customInfo?: string[]
+	saveToLexiconColumn?: number
 }
 
 export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
@@ -156,7 +157,8 @@ export interface LexiconObject {
 	sort: number[]
 	sorted: boolean
 	lexicon: Lexicon[]
-	editing: number | undefined;
+	waitingToAdd: Lexicon[]
+	editing: number | undefined
 	colEdit: colEdit | undefined
 }
 

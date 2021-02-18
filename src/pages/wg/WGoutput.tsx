@@ -27,8 +27,9 @@ import {
 	openPopover,
 	closePopover,
 	closeModal,
-	addLexiconItem,
-	updateLexiconBool
+	setLexiconColumn,
+	updateLexiconBool,
+	addDeferredLexiconItem
 } from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
@@ -44,6 +45,7 @@ import ModalWrap from "../../components/ModalWrap";
 import { v4 as uuidv4 } from 'uuid';
 import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
+import fireSwal from '../../components/Swal';
 import '../App.css';
 
 const WGOut = () => {
@@ -417,25 +419,33 @@ const WGOut = () => {
 	const pickAndSave = () => {
 		dispatch(closePopover("WGSaveToLexicon"));
 		dispatch(openModal("PickAndSaveWG"));
+		saveWhereInLexicon();
 	};
 	const donePickingAndSaving = () => {
 		dispatch(closeModal("PickAndSaveWG"));
 	};
 	let wordsToSave: string[] = [];
+	let saveColumn = settingsWG.saveToLexiconColumn || 0;
 	const saveToLex = () => {
 		let cols = stateObject.lexicon.columns;
-		let others: string[] = [];
-		for(let x = 2; x <= cols; x++) {
-			others.push("");
+		let pre: string[] = [];
+		let post: string[] = [];
+		for(let x = 0; x < saveColumn; x++) {
+			pre.push("");
+		}
+		for(let x = pre.length; x < cols; x++) {
+			post.push("");
 		}
 		while(wordsToSave.length > 0) {
 			let word: string = wordsToSave.shift()!;
-			dispatch(addLexiconItem({ key: uuidv4(), columns: [word, ...others]}));
+			let unit = { key: uuidv4(), columns: [...pre, word, ...post]};
+			dispatch(addDeferredLexiconItem(unit));
 		}
 		dispatch(updateLexiconBool("sorted", false));
 	};
-	const saveEverything = () => {
+	const saveEverything = async () => {
 		dispatch(closePopover("WGSaveToLexicon"));
+		await saveWhereInLexicon();
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
 		});
@@ -449,6 +459,33 @@ const WGOut = () => {
 				el.textContent && wordsToSave.push(el.textContent!);
 				debounce(saveToLex, []);
 			}
+		}
+	};
+	const saveWhereInLexicon = async () => {
+		const lexicon = stateObject.lexicon;
+		let cols: number = lexicon.columns;
+		let options: any = {};
+		for(let x = 0; x < cols; x++) {
+			options[x.toString()] = lexicon.columnTitles[x];
+		}
+		const thenFunc = (col: number) => {
+			saveColumn = col;
+			dispatch(setLexiconColumn(col));
+		};
+		if(cols === 1) {
+			return thenFunc(0);
+		} else {
+			return fireSwal({
+				title: 'Import Lexicon',
+				input: 'select',
+				inputOptions: options,
+				inputPlaceholder: 'Which column do you want to save to?',
+				showCancelButton: true
+			}).then((result: any) => {
+				if(result.isConfirmed && result.value) {
+					thenFunc(parseInt(result.value));
+				}
+			});
 		}
 	};
 	return (
@@ -471,8 +508,8 @@ const WGOut = () => {
 			<IonContent fullscreen>
 				<IonPopover
 				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.SaveToLexicon}
-						isOpen={modalState.SaveToLexicon !== undefined}
+						event={modalState.WGSaveToLexicon}
+						isOpen={modalState.WGSaveToLexicon !== undefined}
 						onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
 				>
 					<IonList lines="none">
