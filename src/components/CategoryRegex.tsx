@@ -24,11 +24,11 @@ const calculateCategoryReferenceRegex = (rule: string, catMap: Map<string, WGCat
 			// Does it exist?
 			if(category !== undefined) {
 				// Category found. Replace with [^a-z] construct, where a-z is the category contents.
-				reformed += "[^" + escapeRegexp(category.run) + "]";
+				reformed += "[^" + escapeRegexp(category.run) + "]" + bit!.slice(1);
+			} else {
 				// If category is not found, it gets ignored.
+				reformed = "!%" + bit;				
 			}
-			// Remove category identifier, save to reformed
-			reformed += bit!.slice(1);
 		}
 		// Now check for categories
 		// Separate along % instances
@@ -43,11 +43,11 @@ const calculateCategoryReferenceRegex = (rule: string, catMap: Map<string, WGCat
 			// Does it exist?
 			if(category !== undefined) {
 				// Category found. Replace with [a-z] construct, where a-z is the category contents.
-				reformed += "[" + escapeRegexp(category.run) + "]";
+				reformed += "[" + escapeRegexp(category.run) + "]" + bit!.slice(1);
+			} else {
 				// If category is not found, it gets ignored.
+				reformed = "%" + bit;				
 			}
-			// Remove category identifier, save to reformed
-			reformed += bit!.slice(1);
 		}
 		// Save reformed for later!
 		final.push(reformed);
