@@ -44,10 +44,11 @@ import OutputOptionsModal from './M-OutputOptions';
 import '../App.css';
 
 const WEOut = () => {
-	interface fromOrTo {
-		rules: (string | string[])[]
-		cats: string[]
-	}
+	//interface fromOrTo {
+	//	rules: (string | string[])[]
+	//	cats: string[]
+	//}
+	type fromOrTo = (string | string[])[];
 	interface soundChangeModified {
 		seek: fromOrTo | RegExp
 		replace: string | fromOrTo
@@ -83,11 +84,11 @@ const WEOut = () => {
 	}
 	// Go through a from/to string and check for categories and other regex stuff. Returns an object.
 	const interpretFromAndTo = (str: string) => {
-		var backslash = false,
+		var rules: (string | string[])[] = [],
+			//cats: string[] = [],
+			backslash = false,
 			curly = false,
-			square = false,
-			rules: (string | string[])[] = [],
-			cats: string[] = [];
+			square = false;
 		str.split("").forEach(function(q) {
 			// If we previously had a backslash, add it to this element.
 			if (backslash) {
@@ -122,7 +123,7 @@ const WEOut = () => {
 			// See if we've discovered a category.
 			} else if (catMap.has(q)) {
 				rules.push(catMap.get(q)!.run.split(""));
-				cats.push(q);
+			//	cats.push(q);
 			// Otherwise, treat as plain text (and possibly regex).
 			} else {
 				rules.push(q);
@@ -137,10 +138,11 @@ const WEOut = () => {
 		}
 		// rules => array of elements
 		// x.cat  => array of indices of category elements
-		return {
-			rules: rules,
-			cats: cats
-		};
+		//return {
+		//	rules: rules,
+		//	cats: cats
+		//};
+		return rules;
 	};
 // eslint-disable-next-line
 	const reverse = (text: string) => {
@@ -186,6 +188,7 @@ const WEOut = () => {
 		}
 		return output;
 	};
+// eslint-disable-next-line
 	const generateOutput = (output: HTMLElement) => {
 // eslint-disable-next-line
 		let text: HTMLElement[] = [];
@@ -228,7 +231,7 @@ const WEOut = () => {
 			if(categoryFlag) {
 				seek = interpretFromAndTo(temp);
 			} else {
-				seek = calculateCategoryReferenceRegex(temp, catMap);
+				seek = calculateCategoryReferenceRegex(temp, catMap) as RegExp;
 			}
 			// REPLACE
 			temp = change.replace;
@@ -241,42 +244,54 @@ const WEOut = () => {
 			temp = change.context.split("_");
 			if(temp.length !== 2) {
 				// Error. Treat as "_"
-				temp = ["", ""];
-			}
-			if(temp[0] && temp[0][0] === "#") {
-				temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1) + "$", catMap);
-			} else if (temp[0]) {
-				temp[0] = calculateCategoryReferenceRegex(temp[0] + "$", catMap);
+				temp = [null, null];
 			} else {
-				temp[0] = null;
-			}
-			if(temp[1] && temp[1].slice(-1) === "#") {
-				temp[1] = calculateCategoryReferenceRegex("^" + temp[1].slice(0, -1) + "$", catMap);
-			} else if (temp[0]) {
-				temp[1] = calculateCategoryReferenceRegex("^" + temp[1], catMap);
-			} else {
-				temp[1] = null;
+				if(temp[0]) {
+					if(temp[0][0] === "#") {
+						temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1) + "$", catMap);
+					} else {
+						temp[0] = calculateCategoryReferenceRegex(temp[0] + "$", catMap);
+					}
+				} else {
+					temp[0] = null;
+				}
+				if(temp[1]) {
+					let t = "^" + temp[1];
+					if(t[t.length - 1] === "#") {
+						temp[1] = calculateCategoryReferenceRegex(t.slice(0, -1) + "$", catMap);
+					} else {
+						temp[1] = calculateCategoryReferenceRegex(t, catMap);
+					}
+				} else {
+					temp[1] = null;
+				}
 			}
 			context = temp;
 			// ANTICONTEXT
 			temp = change.anticontext.split("_");
 			if(temp.length !== 2) {
 				// Error. Treat as "_"
-				temp = ["", ""];
-			}
-			if(temp[0] && temp[0][0] === "#") {
-				temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1), catMap);
-			} else if (temp[0]) {
-				temp[0] = calculateCategoryReferenceRegex(temp[0], catMap);
+				temp = [null, null];
 			} else {
-				temp[0] = null;
-			}
-			if(temp[1] && temp[1].slice(-1) === "#") {
-				temp[1] = calculateCategoryReferenceRegex(temp[1].slice(0, -1) + "$", catMap);
-			} else if (temp[0]) {
-				temp[1] = calculateCategoryReferenceRegex(temp[1], catMap);
-			} else {
-				temp[1] = null;
+				if(temp[0]) {
+					if(temp[0][0] === "#") {
+						temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1) + "$", catMap);
+					} else {
+						temp[0] = calculateCategoryReferenceRegex(temp[0] + "$", catMap);
+					}
+				} else {
+					temp[0] = null;
+				}
+				if(temp[1]) {
+					let t = "^" + temp[1];
+					if(t[t.length - 1] === "#") {
+						temp[1] = calculateCategoryReferenceRegex(t.slice(0, -1) + "$", catMap);
+					} else {
+						temp[1] = calculateCategoryReferenceRegex(t, catMap);
+					}
+				} else {
+					temp[1] = null;
+				}
 			}
 			anticontext = temp;
 			// SAVE
@@ -288,35 +303,16 @@ const WEOut = () => {
 				flagged: categoryFlag
 			});
 		});
-		// Determine what we're making.
-		/*
-		if(type === "text") {
-			// pseudotext
-			text = generatePseudoText();
-			output.style.columnWidth = "auto";
-		} else if (type === "syllables") {
-			// all possible syllables
-			let t = getEverySyllable(settingsWE.capitalizeWords);
-			// reset columns if needed
-			output.style.columnWidth = settingsWE.wordlistMultiColumn ? getWidestWord(t) : "auto";
-			t.forEach(bit => text.push($t(bit, "div")));
-		} else {
-			// wordlist
-			let t = makeWordlist(settingsWE.capitalizeWords);
-			// reset columns if needed
-			output.style.columnWidth = settingsWE.wordlistMultiColumn ? getWidestWord(t) : "auto";
-			t.forEach(bit => text.push($t(bit, "div")));
-		}
+		let modifiedWords = changeTheWords();
 		// Add to screen.
-		text.forEach(bit => output.append(bit));
-		*/
+		modifiedWords.forEach(bit => output.append($e("div", bit)));
 	};
 
 	// Take an array of strings and apply each sound change rule to each string one at a time,
 	//  then return an object where obj.words is an array of strings, and obj.info is an array
 	//  of HTML elements containing information about the process.
 // eslint-disable-next-line
-	const changeTheWords: any = (input: string[], previousInput: string[] = []) => {
+	const changeTheWords = (input: string[] = state.wordevolveInput) => {
 		let rulesThatApplied: string[][] = [];
 		let output: string[] = [];
 		// Loop over every inputted word in order.
@@ -344,7 +340,8 @@ const WEOut = () => {
 					let seekText2 = "";
 					let seekCats: string[][] = [];
 					let seekRule: string[] = [];
-					seeking.rules.forEach(ss => {
+					//seeking.rules.forEach(ss => {
+					seeking.forEach(ss => {
 						if(typeof ss === "string") {
 							seekText1 += ss;
 							seekText2 += ss;
@@ -359,13 +356,13 @@ const WEOut = () => {
 					// seekCats is an array of category runs
 					// seekRule is an array of the original rule
 					let s1 = new RegExp(seekText1);
-					let lastIndex = s1.lastIndex = 0;
+					s1.lastIndex = 0;
 					let m1 = s1.exec(word);
 					let s2 = new RegExp(seekText2);
 					let m2 = s2.exec(word);
-					let repl = replace.rules;
+					let lastIndex = s1.lastIndex;
 					while(m1 !== null && m2 !== null) {
-						let okToReplace = true;
+						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
 						// m is an array: [full match, ...other matches]
@@ -382,33 +379,36 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, lastIndex);
-						let post = word.slice(lastIndex + m1[0].length);
+						let pre = word.slice(0, lastIndex - 1);
+						let post = word.slice(lastIndex - 1 + m1[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
-								(antix[0] && pre.match(antix[0]))
-								|| (antix[1] && post.match(antix[1]))
+								(antix[0] ? pre.match(antix[0]) : true)
+								&& (antix[1] ? post.match(antix[1]) : true)
 							) {
 								// We matched the anticontext, so forget about this.
-								okToReplace = false;
+								okToReplace = null;
 							}
 						}
 						// We DO want to match the context
 						if(okToReplace && !contx.every(c => !c)) {
 							if(
-								!(contx[0] && pre.match(contx[0]))
-								&& !(contx[1] && post.match(contx[1]))
+								!(!contx[0] || pre.match(contx[0]))
+								|| !(!contx[1] || post.match(contx[1]))
 							) {
 								// We did not match the context, so forget about this.
 								okToReplace = false;
 							}
 						}
+//						outputPane.append($e("div", pre + " / " + post + " = " + String(okToReplace)));
+						output.push(word + " [" + pre + "] / [" + post + "] = " + String(okToReplace));
 						if(okToReplace) {
 							// We can replace
 							let c1 = m1.length - 1;
 							let c2 = m2.length - 1;
-							let repCopy = [...repl];
+							//let repCopy = replace.rules.map(r => (typeof r === "string") ? r : [...r]);
+							let repCopy = replace.map(r => (typeof r === "string") ? r : [...r]);
 							let replText = "";
 							while(c1 > 0) {
 								if(m1[c1] !== m2[c2]) {
@@ -463,10 +463,11 @@ const WEOut = () => {
 					let seeking = modified.seek as RegExp;
 					let replace = modified.replace as string;
 					// Reset lastIndex to prevent certain errors.
-					let lastIndex = seeking.lastIndex = 0;
+					seeking.lastIndex = 0;
 					let m = seeking.exec(word);
-					while(m !== null) {
-						let okToReplace = true;
+					let lastIndex = seeking.lastIndex;
+						while(m !== null) {
+						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
 						// m is an array: [full match, ...other matches]
@@ -483,28 +484,29 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, lastIndex);
-						let post = word.slice(lastIndex + m[0].length);
+						let pre = word.slice(0, lastIndex - 1);
+						let post = word.slice(lastIndex - 1 + m[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
-								(antix[0] && pre.match(antix[0]))
-								|| (antix[1] && post.match(antix[1]))
+								(antix[0] ? pre.match(antix[0]) : true)
+								&& (antix[1] ? post.match(antix[1]) : true)
 							) {
 								// We matched the anticontext, so forget about this.
-								okToReplace = false;
+								okToReplace = null;
 							}
 						}
 						// We DO want to match the context
 						if(okToReplace && !contx.every(c => !c)) {
 							if(
-								!(contx[0] && pre.match(contx[0]))
-								&& !(contx[1] && post.match(contx[1]))
+								!(!contx[0] || pre.match(contx[0]))
+								|| !(!contx[1] || post.match(contx[1]))
 							) {
 								// We did not match the context, so forget about this.
 								okToReplace = false;
 							}
 						}
+//						outputPane.append($e("div", pre + " / " + post + " = " + String(okToReplace)));
 						if(okToReplace) {
 							// We can replace
 							if(m.length > 1) {
