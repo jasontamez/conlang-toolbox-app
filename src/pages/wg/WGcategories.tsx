@@ -13,13 +13,15 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
+	IonButton,
 	IonTitle,
 	IonFab,
 	IonFabButton,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
-	addOutline
+	addOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
@@ -28,6 +30,8 @@ import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
+import { CatCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 
 const WGCat = () => {
 	const dispatch = useDispatch();
@@ -75,12 +79,18 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
+			<ModalWrap content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Categories</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

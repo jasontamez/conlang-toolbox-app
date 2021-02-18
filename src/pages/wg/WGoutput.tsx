@@ -34,10 +34,13 @@ import {
 	caretForwardCircleOutline,
 	settingsOutline,
 	bookOutline,
-	saveOutline
+	saveOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import OutputOptionsModal from './M-OutputOptions';
 import debounce from '../../components/Debounce';
+import { OutCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 import { v4 as uuidv4 } from 'uuid';
 import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
@@ -451,12 +454,18 @@ const WGOut = () => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
+			<ModalWrap content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

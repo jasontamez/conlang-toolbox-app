@@ -8,6 +8,7 @@ import {
 	IonButtons,
 	IonFab,
 	IonFabButton,
+	IonButton,
 	IonTitle,
 	IonIcon,
 	IonList,
@@ -21,7 +22,8 @@ import {
 import {
 	addOutline,
 	chevronUpCircleOutline,
-	chevronDownCircleOutline
+	chevronDownCircleOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
@@ -34,6 +36,8 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
+import { RewCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import '../App.css';
@@ -99,12 +103,18 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
+			<ModalWrap content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Rewrite Rules</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

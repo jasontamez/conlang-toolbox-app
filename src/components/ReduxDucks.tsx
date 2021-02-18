@@ -335,7 +335,8 @@ export const initialAppState: types.StateObject = {
 		PickAndSaveWG: false,
 		WEOutputOptions: false,
 		PickAndSaveWE: false,
-		WESaveToLexicon: undefined
+		WESaveToLexicon: undefined,
+		InfoModal: false
 	},
 	viewState: {
 		wg: 'home',
@@ -437,7 +438,8 @@ export const blankAppState: types.StateObject = {
 		PickAndSaveWG: false,
 		WEOutputOptions: false,
 		PickAndSaveWE: false,
-		WESaveToLexicon: undefined
+		WESaveToLexicon: undefined,
+		InfoModal: false
 	},
 	viewState: {
 		wg: 'home',

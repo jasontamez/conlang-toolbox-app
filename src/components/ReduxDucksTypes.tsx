@@ -187,6 +187,7 @@ export interface ModalStateObject {
 	WEOutputOptions: boolean
 	WESaveToLexicon: undefined | Event
 	PickAndSaveWE: boolean
+	InfoModal: boolean
 }
 
 export interface ViewStateObject {

@@ -6,6 +6,8 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
+	IonButton,
+	IonIcon,
 	IonTitle,
 	IonList,
 	IonItem,
@@ -15,10 +17,15 @@ import {
 	useIonViewDidEnter
 } from '@ionic/react';
 import '../App.css';
+import {
+	helpCircleOutline
+} from 'ionicons/icons';
 import { $i } from '../../components/DollarSignExports';
-import { toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
+import { openModal, toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { SylCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
@@ -44,12 +51,18 @@ const WGSyl = () => {
 	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
 	return (
 		<IonPage>
+			<ModalWrap content={SylCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Syllables</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
