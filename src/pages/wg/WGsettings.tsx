@@ -40,10 +40,15 @@ import {
 	Two_Fifteen,
 	Zero_Fifty,
 } from '../../components/ReduxDucksTypes';
+import {
+	helpCircleOutline
+} from 'ionicons/icons';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
+import { OptCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 import '../App.css';
 
 const WGSet = () => {
@@ -84,12 +89,18 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
+			<ModalWrap content={OptCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Settings</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
