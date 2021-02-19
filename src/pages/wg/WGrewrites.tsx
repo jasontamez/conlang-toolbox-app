@@ -47,8 +47,7 @@ const WGRew = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'rewriterules'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const rulesObject = state.wordgenRewriteRules;
+	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const editRewriteRule = (label: any) => {
@@ -56,7 +55,6 @@ const WGRew = () => {
 		dispatch(startEditRewriteRuleWG(label));
 		dispatch(openModal('EditRewriteRule'));
 	};
-	const settings = state.appSettings;
 	const maybeDeleteRewriteRule = (rule: WGRewriteRuleObject) => {
 		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {

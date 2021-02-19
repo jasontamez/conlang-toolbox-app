@@ -29,10 +29,7 @@ import fireSwal from '../components/Swal';
 
 const LoadLexiconModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const settings = state.appSettings;
-	const modalState = state.modalState;
-	const temp = state.temporaryInfo;
+	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
 	const data = temp ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));

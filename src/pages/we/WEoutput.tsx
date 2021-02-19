@@ -61,19 +61,31 @@ const WEOut = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
 // eslint-disable-next-line
-	const rawInput = state.wordevolveInput;
-	const settings = state.appSettings;
-	const settingsWE = state.wordevolveSettings;
-	const modalState = state.modalState;
-	const transformObject = state.wordevolveTransforms;
+	const [
+		rawInput,
+		settings,
+		settingsWE,
+		modalState,
+		transformObject,
+		soundChangesObject,
+		categoriesWE,
+		lexicon
+	] = useSelector((state: any) => [
+		state.wordevolveInput,
+		state.appSettings,
+		state.wordevolveSettings,
+		state.modalState,
+		state.wordevolveTransforms,
+		state.wordevolveSoundChanges,
+		state.wordevolveCategories,
+		state.lexicon
+	], shallowEqual);
 	const transforms: WETransformObject[] = transformObject.list;
 	const transformsMap: Map<string, RegExp[]> = new Map();
-	const soundChangesObject = state.wordevolveSoundChanges;
 	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
 	const soundChangeMap: Map<string, soundChangeModified> = new Map();
-	const catMap: Map<string, WECategoryObject> = new Map(state.wordevolveCategories.map);
+	const catMap: Map<string, WECategoryObject> = new Map(categoriesWE);
 
 	const $e = (tag: string, text: string | false = false) => {
 		let e: HTMLElement = document.createElement(tag);
@@ -312,7 +324,7 @@ const WEOut = () => {
 	//  then return an object where obj.words is an array of strings, and obj.info is an array
 	//  of HTML elements containing information about the process.
 // eslint-disable-next-line
-	const changeTheWords = (input: string[] = state.wordevolveInput) => {
+	const changeTheWords = (input: string[] = rawInput) => {
 		let rulesThatApplied: string[][] = [];
 		let output: string[] = [];
 		// Loop over every inputted word in order.
@@ -569,7 +581,7 @@ const WEOut = () => {
 	let wordsToSave: string[] = [];
 // eslint-disable-next-line
 	const saveToLex = () => {
-		let cols = state.lexicon.columns;
+		let cols = lexicon.columns;
 		let others: string[] = [];
 		for(let x = 2; x <= cols; x++) {
 			others.push("");

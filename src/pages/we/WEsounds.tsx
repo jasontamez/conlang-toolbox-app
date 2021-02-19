@@ -43,8 +43,7 @@ const WERew = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'soundchanges'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const soundChangeObject = state.wordevolveSoundChanges;
+	const [soundChangeObject, settings] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings], shallowEqual);
 	const soundChange = soundChangeObject.list;
 	const keys = soundChange.map((r: WESoundChangeObject) => r.key);
 	const editSoundChange = (label: any) => {
@@ -52,7 +51,6 @@ const WERew = () => {
 		dispatch(startEditSoundChangeWE(label));
 		dispatch(openModal('EditSoundChange'));
 	};
-	const settings = state.appSettings;
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		const thenFunc = (result: any) => {

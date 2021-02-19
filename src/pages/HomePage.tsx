@@ -24,8 +24,8 @@ import { shallowEqual, useSelector } from "react-redux";
 
 
 const Home = () => {
-	const state = useSelector((state: any) => state, shallowEqual);
-	const theme = state.appSettings.theme.replace(/ /g, "") + "Theme";
+	const originalTheme = useSelector((state: any) => state.appSettings.theme, shallowEqual);
+	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
 		<IonPage className={theme}>

@@ -32,10 +32,22 @@ import fireSwal from '../../components/Swal';
 
 const ManageCustomInfo = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
-	const settings = state.appSettings;
-	let customInfo: string[] = state.wordgenSettings.customInfo || [];
+	const [
+		modalState,
+		settings,
+		settingsWG,
+		categories,
+		syllables,
+		rules
+	] = useSelector((state: any) => [
+		state.modalState,
+		state.appSettings,
+		state.wordgenSettings,
+		state.wordgenCategories,
+		state.wordgenSyllables,
+		state.wordgenRewriteRules
+	], shallowEqual);
+	let customInfo: string[] = settingsWG.customInfo || [];
 	const { Storage } = Plugins;
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
@@ -45,12 +57,12 @@ const ManageCustomInfo = () => {
 			return;
 		}
 		const doSave = (newInfo: string[], title: string, msg: string = "saved") => {
-			let setts = state.wordgenSettings;
+			let setts = {...settingsWG};
 			delete setts.customInfo;
 			const save: WGCustomInfo = [
-				state.wordgenCategories,
-				state.wordgenSyllables,
-				state.wordgenRewriteRules,
+				categories,
+				syllables,
+				rules,
 				setts
 			];
 			Storage.set({key: "customInfo", value: JSON.stringify(newInfo)});

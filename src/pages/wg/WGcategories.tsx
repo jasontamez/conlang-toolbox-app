@@ -38,15 +38,13 @@ const WGCat = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'categories'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const categoryObject = state.wordgenCategories;
+	const [categoryObject, settings] = useSelector((state: any) => [state.wordgenCategories, state.appSettings], shallowEqual);
 	var categories: WGCategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWG(label));
 		dispatch(openModal('EditCategory'));
 	};
-	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {

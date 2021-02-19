@@ -30,10 +30,8 @@ const WERew = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const rawInput = state.wordevolveInput;
+	const [rawInput, settings, lexicon] = useSelector((state: any) => [state.wordevolveInput, state.appSettings, state.lexicon], shallowEqual);
 	const input = rawInput.join("\n");
-	const settings = state.appSettings;
 	const updateInput = () => {
 		const value: string = $i("lexiconInput").value;
 		const newInput: string[] = value.split("\n").map(v => v.trim()).filter(v => v);
@@ -58,7 +56,6 @@ const WERew = () => {
 		}
 	};
 	const importLexicon = () => {
-		const lexicon = state.lexicon;
 		let cols: number = lexicon.columns;
 		let options: any = {};
 		for(let x = 0; x < cols; x++) {

@@ -27,10 +27,7 @@ import fireSwal from '../components/Swal';
 
 const EditLexiconItemModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const settings = state.appSettings;
-	const modalState = state.modalState;
-	const lexicon = state.lexicon;
+	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
 	const thisSingularItem: Lexicon = {...lexicon.lexicon[lexicon.editing]};
 	const editing = thisSingularItem.columns ? [...thisSingularItem.columns] : [];
 	while(editing.length < lexicon.columns) {

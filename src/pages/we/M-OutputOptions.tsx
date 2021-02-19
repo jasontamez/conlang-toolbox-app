@@ -31,9 +31,7 @@ import '../App.css';
 
 const OutputOptionsModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
-	const settingsWE = state.wordevolveSettings;
+	const [modalState, settingsWE] = useSelector((state: any) => [state.modalState, state.wordevolveSettings], shallowEqual);
 	return (
 		<IonModal isOpen={modalState.WEOutputOptions} onDidDismiss={() => dispatch(closeModal('WEOutputOptions'))}>
 			<IonHeader>

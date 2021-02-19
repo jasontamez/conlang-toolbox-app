@@ -23,12 +23,10 @@ import { closeModal, changeTheme } from '../components/ReduxDucksFuncs';
 
 const MaybeLoadPresetModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
+	const [modalState, settings] = useSelector((state: any) => [state.modalState, state.appSettings], shallowEqual);
 	const cancel = () => {
 		dispatch(closeModal('AppTheme'));
 	};
-	const settings = state.appSettings;
 	const appTheme = settings.theme || "Default";
 	const changeAppTheme = (theme: string) => {
 		dispatch(changeTheme(theme));

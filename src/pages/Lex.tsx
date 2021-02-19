@@ -65,18 +65,18 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 
 const Lex = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const settings = state.appSettings;
-	const modalState = state.modalState;
+	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
 	const popstate = modalState.LexiconEllipsis;
-	const lexicon = state.lexicon;
+	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	useIonViewDidEnter(() => {
 		console.log(lexicon.waitingToAdd);
 		console.log(lexicon.sorted);
 		if(!lexicon.sorted) {
 			let [col, dir] = lexicon.sort;
-			internalSort(col, dir, [...lexicon.lexicon, ...lexicon.waitingToAdd]);
+			let everythingToSort = [...lexicon.lexicon, ...lexicon.waitingToAdd];
+			console.log(everythingToSort);
 			dispatch(clearDeferredLexiconItems());
+			internalSort(col, dir, everythingToSort);
 		}
 	});
 	const setNewInfo = (id: string, prop: "description" | "title") => {
@@ -89,7 +89,6 @@ const Lex = () => {
 	const theSizes = lexicon.columnSizes;
 	const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
 	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon.lexicon]) => {
-		dispatch(updateLexiconBool("sorted", true));
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
 			let y: string;
@@ -102,6 +101,7 @@ const Lex = () => {
 			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
 		});
 		dispatch(updateLexiconOrder(newLex));
+		dispatch(updateLexiconBool("sorted", true));
 	};
 	const doSort = () => {
 		const el = $i("lexiconSort");
@@ -448,7 +448,7 @@ const Lex = () => {
 						<VirtualList
 							className="virtualLex"
 							width="calc(100% - 2.25rem)"
-							height={Math.ceil(useWindowHeight() / 3 * 2)}
+							height={twoThirds}
 							itemCount={lexicon.lexicon.length}
 							itemSize={50}
 							renderItem={({index, style}) => {

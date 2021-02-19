@@ -35,15 +35,13 @@ const WECat = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'categories'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const categoryObject = state.wordevolveCategories;
+	const [categoryObject, settings] = useSelector((state: any) => [state.wordevolveCategories, state.appSettings], shallowEqual);
 	var categories: WECategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWE(label));
 		dispatch(openModal('EditCategoryWE'));
 	};
-	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {

@@ -40,10 +40,7 @@ import { $i } from '../components/DollarSignExports';
 
 const EditLexiconOrderModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
-	const settings = state.appSettings;
-	const lexicon = state.lexicon;
+	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
 	let editing: colEdit = lexicon.colEdit;
 	if(!editing) {
 		editing = {

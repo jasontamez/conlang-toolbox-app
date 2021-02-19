@@ -43,8 +43,7 @@ const WERew = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'transformations'));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const transformObject = state.wordevolveTransforms;
+	const [transformObject, settings] = useSelector((state: any) => [state.wordevolveTransforms, state.appSettings], shallowEqual);
 	const transform = transformObject.list;
 	const keys = transform.map((r: WETransformObject) => r.key);
 	const editTransform = (label: any) => {
@@ -52,7 +51,6 @@ const WERew = () => {
 		dispatch(startEditTransformWE(label));
 		dispatch(openModal('EditTransform'));
 	};
-	const settings = state.appSettings;
 	const makeArrow = (dir: string) => {
 		return dir === "in" ? "⟶" : (dir === "out" ? "⟵" : "⟷");
 	};

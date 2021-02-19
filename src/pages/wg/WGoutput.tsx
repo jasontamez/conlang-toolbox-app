@@ -69,15 +69,24 @@ const WGOut = () => {
 		return t;
 	};
 
-	const stateObject = useSelector((state: any) => state, shallowEqual);
-	const categoriesObject = stateObject.wordgenCategories;
+	const [
+		categoriesObject,
+		syllablesObject,
+		settingsWG,
+		modalState,
+		rewriteRules,
+		lexicon
+	] = useSelector((state: any) => [
+		state.wordgenCategories,
+		state.wordgenSyllables,
+		state.wordgenSettings,
+		state.modalState,
+		state.wordgenRewriteRules.list,
+		state.lexicon
+	], shallowEqual);
 	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
-	const syllablesObject = stateObject.wordgenSyllables;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
-	const settingsWG = stateObject.wordgenSettings;
-	const modalState = stateObject.modalState;
-	const rewriteRules = stateObject.wordgenRewriteRules.list;
 	const regExpMap: Map<string, RegExp> = new Map();
 
 	let textWidthTester = document.createElement("canvas").getContext("2d");
@@ -427,7 +436,7 @@ const WGOut = () => {
 	let wordsToSave: string[] = [];
 	let saveColumn = settingsWG.saveToLexiconColumn || 0;
 	const saveToLex = () => {
-		let cols = stateObject.lexicon.columns;
+		let cols = lexicon.columns;
 		let pre: string[] = [];
 		let post: string[] = [];
 		for(let x = 0; x < saveColumn; x++) {
@@ -462,7 +471,6 @@ const WGOut = () => {
 		}
 	};
 	const saveWhereInLexicon = async () => {
-		const lexicon = stateObject.lexicon;
 		let cols: number = lexicon.columns;
 		let options: any = {};
 		for(let x = 0; x < cols; x++) {
