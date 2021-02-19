@@ -200,7 +200,8 @@ export const OutCard = () => {
 					presented with two options. <em>Save everything</em> will save every single generated word
 					to the Lexicon. <em>Choose what to save</em> will highlight every word, and you can tap on
 					a word to save it; when you're done choosing, hit the <strong>Done Saving</strong> button
-					that appears.
+					that appears. You will need to go to the <strong>Lexicon</strong> to add these saved words
+					to your lexicon.
 				</p>
 			</IonCardContent>
 		</IonCard>
