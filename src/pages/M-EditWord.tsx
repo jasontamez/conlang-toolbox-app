@@ -43,7 +43,7 @@ const EditLexiconItemModal = () => {
 		dispatch(closeModal('EditLexiconItem'));
 	};
 	const maybeSaveNewInfo = () => {
-		if(!editing.every((i: string) => i)) {
+		if(editing.every((i: string) => !i)) {
 			fireSwal({
 				title: "Error",
 				icon: "error",
