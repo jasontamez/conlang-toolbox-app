@@ -165,7 +165,7 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		sort: [...original.sort],
 		sorted: original.sorted,
 		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
-		waitingToAdd: original.waitingToAdd.map(lex => reduceLexicon(lex)),
+		waitingToAdd: [...original.waitingToAdd],
 		editing: original.editing,
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
@@ -833,15 +833,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_LEXICON_COLUMN_WG:
-			final = {
-				...reduceAllBut(["wordgenSettings"], state),
-				wordgenSettings: {
-					...state.wordgenSettings,
-					saveToLexiconColumn: payload
-				}
-			};
-			break;
 		// Presets
 		case consts.LOAD_PRESET_WG:
 			let newInfo: any = WGPresets.get(payload);
@@ -1169,7 +1160,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.ADD_DEFERRED_LEXICON_ITEM:
 			LO = reduceLexiconState(state.lexicon);
-			LO.waitingToAdd.push(payload);
+			LO.waitingToAdd = [...LO.waitingToAdd, ...payload];
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

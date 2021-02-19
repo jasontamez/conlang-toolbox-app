@@ -78,7 +78,6 @@ export interface WGSettingsObject {
 	wordlistMultiColumn?: boolean
 	wordsPerWordlist?: Fifty_OneThousand
 	customInfo?: string[]
-	saveToLexiconColumn?: number
 }
 
 export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];

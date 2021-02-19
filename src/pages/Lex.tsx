@@ -21,17 +21,18 @@ import {
 	IonRow,
 	IonCol,
 	IonLoading,
-	IonItemDivider,
-	useIonViewDidEnter
+	IonItemDivider
 } from '@ionic/react';
 import {
 	ellipsisVertical,
 	add,
 	construct,
 	trash,
-	swapHorizontalOutline
+	trashOutline,
+	swapHorizontalOutline,
+	saveOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	openPopover,
 	closePopover,
@@ -65,20 +66,74 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 
 const Lex = () => {
 	const dispatch = useDispatch();
-	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
+	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
 	const popstate = modalState.LexiconEllipsis;
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
-	useIonViewDidEnter(() => {
-		console.log(lexicon.waitingToAdd);
-		console.log(lexicon.sorted);
-		if(!lexicon.sorted) {
-			let [col, dir] = lexicon.sort;
-			let everythingToSort = [...lexicon.lexicon, ...lexicon.waitingToAdd];
-			console.log(everythingToSort);
+	const clearSavedWords = () => {
+		const thenFunc = () => {
 			dispatch(clearDeferredLexiconItems());
-			internalSort(col, dir, everythingToSort);
+			fireSwal({
+				title: "Words deleted.",
+				toast: true,
+				timer: 2500,
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+	};
+		if(settings.disableConfirms) {
+			thenFunc();
+		} else {
+			fireSwal({
+				text: "Are you sure you want to delete the saved words? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete them."
+			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
-	});
+	};
+	const loadSavedWords = () => {
+		let cols: number = lexicon.columns;
+		let options: any = {};
+		for(let x = 0; x < cols; x++) {
+			options[x.toString()] = lexicon.columnTitles[x];
+		}
+		const thenFunc = (value: number) => {
+			dispatch(setLoadingPage("lookingForLexicons"));
+			let [col, dir] = lexicon.sort;
+			const toAdd = [...lexicon.waitingToAdd];
+			let everythingToSort = [...lexicon.lexicon];
+			let pre: string[] = [];
+			let post: string[] = [];
+			for(let c = 0; c < value; c++) {
+				pre.push("");
+			}
+			for(let c = value + 1; c < cols; c++) {
+				post.push("");
+			}
+			toAdd.forEach(w => {
+				everythingToSort.push({key: uuidv4(), columns: [...pre, w, ...post]});
+			});
+			internalSort(col, dir, everythingToSort);
+			dispatch(clearDeferredLexiconItems());
+			dispatch(setLoadingPage(false));
+		};
+		if(cols === 1) {
+			return thenFunc(0);
+		} else {
+			return fireSwal({
+				title: 'Import Lexicon',
+				input: 'select',
+				inputOptions: options,
+				inputPlaceholder: 'Which column do you want to save to?',
+				showCancelButton: true
+			}).then((result: any) => {
+				if(result.isConfirmed && result.value) {
+					thenFunc(parseInt(result.value));
+				}
+			});
+		}
+	};
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
@@ -400,7 +455,17 @@ const Lex = () => {
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
 							<IonCol>
-								<h1>Words</h1>
+								<h1>{lexicon.lexicon.length === 1 ? "1 Word" : lexicon.lexicon.length.toString() + " Words"}</h1>
+							</IonCol>
+							<IonCol className={lexicon.waitingToAdd.length > 0 ? "" : "hide"} size="auto">
+								<IonButton color="warning" strong={true} onClick={() => loadSavedWords()} style={ { padding: "0.25em" } }>
+									<IonIcon size="small" icon={saveOutline} style={ { margin: "0 0.25em 0 0" } } /> Add Saved
+								</IonButton>
+							</IonCol>
+							<IonCol className={lexicon.waitingToAdd.length > 0 ? "" : "hide"} size="auto">
+								<IonButton color="danger" strong={true} onClick={() => clearSavedWords()} style={ { padding: "0.25em 0" } }>
+									<IonIcon size="small" icon={trashOutline} />
+								</IonButton>
 							</IonCol>
 							<IonCol size="auto">
 								<IonSelect id="lexiconSort" interface="popover" value={theSort} onIonChange={() => doSort()}>
