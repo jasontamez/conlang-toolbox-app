@@ -489,8 +489,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let final: types.StateObject = state;
 	let label: string;
 	let LO: types.LexiconObject;
-	console.log(action.type);
-	console.log(payload);
 	switch(action.type) {
 		// App Settings
 		case consts.CHANGE_THEME:
@@ -874,7 +872,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		//
 		// Category
 		case consts.ADD_CATEGORY_WE:
-			console.log(payload);
 			CO = state.wordevolveCategories;
 			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
 			label = payload.label;

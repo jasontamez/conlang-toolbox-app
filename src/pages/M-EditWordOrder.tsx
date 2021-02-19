@@ -58,7 +58,6 @@ const EditLexiconOrderModal = () => {
 	const setNewInfo = (i: number, id: string) => {
 		const value = $i(id).value.trim();
 		editing.columnTitles[i] = value;
-		console.log(id + " / " + value);
 		dispatch(updateLexiconColumns(editing));
 	};
 	let cancelEditing = () => {
@@ -66,7 +65,6 @@ const EditLexiconOrderModal = () => {
 	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		editing.columnSizes[i] = value;
-		console.log(i.toString() + " / " + value);
 		dispatch(updateLexiconColumns(editing));
 	};
 	const maybeSaveNewInfo = () => {
