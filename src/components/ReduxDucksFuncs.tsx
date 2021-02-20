@@ -192,11 +192,8 @@ export function updateInputLexicon(payload: types.WEInputObject) {
 export function setOutputTypeWE(payload: types.WEOutputTypes) {
 	return {type: consts.SET_OUTPUT_WE, payload};
 }
-export function toggleShowChangesWE(payload: boolean) {
-	return {type: consts.TOGGLE_SHOW_CHANGES_WE, payload};
-}
-export function toggleShowRulesWE(payload: boolean) {
-	return {type: consts.TOGGLE_SHOW_RULES_WE, payload};
+export function setArrowWE(payload: types.WEArrowTypes) {
+	return {type: consts.SET_ARROW_WE, payload};
 }
 
 

@@ -56,7 +56,7 @@ const WEOut = () => {
 		anticontext: (RegExp | null)[]
 		flagged: boolean
 	}
-	const outputPane = $i("outputPane");
+	const outputPane = $i("outputPaneWE");
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
@@ -85,12 +85,15 @@ const WEOut = () => {
 	const transformsMap: Map<string, RegExp[]> = new Map();
 	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
 	const soundChangeMap: Map<string, soundChangeModified> = new Map();
-	const catMap: Map<string, WECategoryObject> = new Map(categoriesWE);
+	const catMap: Map<string, WECategoryObject> = new Map(categoriesWE.map);
 
-	const $e = (tag: string, text: string | false = false) => {
+	const $e = (tag: string, text: string | false = false, classy: string[] | false = false) => {
 		let e: HTMLElement = document.createElement(tag);
 		if (text !== false) {
 			e.textContent = text;
+		}
+		if(classy !== false) {
+			e.classList.add(...classy);
 		}
 		return e;
 	}
@@ -315,18 +318,54 @@ const WEOut = () => {
 				flagged: categoryFlag
 			});
 		});
-		let modifiedWords = changeTheWords();
+		let modifiedWords = changeTheWords(rawInput);
 		// Add to screen.
-		modifiedWords.forEach(bit => output.append($e("div", bit)));
+		let arrow: string = getArrow(output, settingsWE.arrow, settingsWE.output === "outputFirst");
+		let arrowDiv: HTMLElement = $e("div", "");
+		if(arrow) {
+			arrowDiv = $e("div", arrow, ["arrow"])!;
+		}
+		let style = output.style;
+		style.gridTemplateColumns = "1fr";
+		switch(settingsWE.output) {
+			case "outputOnly":
+				// [word...]
+				modifiedWords.forEach(w => output.append($e("div", w)));
+				break;
+			case "inputFirst":
+				// [[original, word]...]
+			case "outputFirst":
+				// [[word, original]...]
+				style.gridTemplateColumns = (arrow ? "1fr 2em 1fr" : "1fr 1fr");
+				let c = 1;
+				modifiedWords.forEach(bit => {
+					const [from, to] = bit;
+					output.append($e("div", from, ["leadingWord"]));
+					arrow && output.append(arrowDiv.cloneNode(true));
+					output.append($e("div", to));
+				});
+				break;
+			case "rulesApplied":
+				// [original, word, [[rule, new word]...]]  	grid-template-columns: 1fr 2em 1fr;
+				modifiedWords.forEach(unit => {
+					output.append($e("div", unit.shift() + " " + arrow + " " + unit.shift()));
+					let arrowMinor = arrow || getArrow(output, "double", settingsWE.out === "outputFirst");
+					unit.shift()!.forEach((bit: string[]) => {
+						const [rule, to] = bit;
+						output.append($e("div", rule + " " + arrowMinor + " " + to, ["ruleExplanation"]));
+					});
+				});
+				break;
+			default:
+				output.append("Unknown error occurred.");
+		}
 	};
-
 	// Take an array of strings and apply each sound change rule to each string one at a time,
-	//  then return an object where obj.words is an array of strings, and obj.info is an array
-	//  of HTML elements containing information about the process.
+	//  then return an array according to the style requested
 // eslint-disable-next-line
-	const changeTheWords = (input: string[] = rawInput) => {
+	const changeTheWords = (input: string[]) => {
 		let rulesThatApplied: string[][] = [];
-		let output: string[] = [];
+		let output: any[] = [];
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
@@ -547,7 +586,7 @@ const WEOut = () => {
 						}
 					}
 				}
-				settings.showRules && rulesThatApplied.push([previous, rule, word]);
+				previous !== word && settingsWE.output === "rulesApplied" && rulesThatApplied.push([rule, word]);
 			});
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
@@ -557,11 +596,57 @@ const WEOut = () => {
 				}
 			});
 			// Add the mangled word to the output list.
-			output.push(word);
+			let goingOut: any;
+			switch(settingsWE.output) {
+				case "outputOnly":
+					goingOut = word;
+					break;
+				case "rulesApplied":
+					goingOut = [original, word, rulesThatApplied];
+					rulesThatApplied = [];
+					break;
+				case "inputFirst":
+					goingOut = [original, word];
+					break;
+				case "outputFirst":
+					goingOut = [word, original];
+					break;
+			}
+			output.push(goingOut);
 		});
 		// Return the output.
 		return output;
-}
+	}
+	const getArrow = (element: HTMLElement, arrow: string, reverse = false) => {
+		const style = window.getComputedStyle(element);
+		const direction = style.direction === "ltr" ? reverse : !reverse;
+		const which = direction ? 1 : 0;
+		switch(arrow) {
+			case "simple":
+				return["→","←"][which];
+			case "tailed":
+				return["↣","↢"][which];
+			case "stroked":
+				return["⇸","⇷"][which];
+			case "doubleStroke":
+				return["⇻","⇺"][which];
+			case "paired":
+				return["⇉","⇇"][which];
+			case "triplet":
+				return["⇶","⬱"][which];
+			case "double":
+				return["⇒","⇐"][which];
+			case "triple":
+				return["⇛","⇚"][which];
+			case "dashed":
+				return["⇢","⇠"][which];
+			case "open":
+				return["⇾","⇽"][which];
+			case "thick":
+				return["⇨","⇦"][which];
+		}
+		return "";
+	};
 
 
 
@@ -651,7 +736,7 @@ const WEOut = () => {
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPane" className={"largePane" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
+					<div id="outputPaneWE" className={"largePane" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

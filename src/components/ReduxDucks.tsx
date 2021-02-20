@@ -292,9 +292,8 @@ export const initialAppState: types.StateObject = {
 	},
 	wordevolveInput: [],
 	wordevolveSettings: {
-		output: "multi",
-		showChanges: false,
-		showRules: false
+		output: "outputOnly",
+		arrow: "simple"
 	},
 	lexicon: {
 		key: "",
@@ -396,9 +395,8 @@ export const blankAppState: types.StateObject = {
 	},
 	wordevolveInput: [],
 		wordevolveSettings: {
-			output: "multi",
-			showChanges: false,
-			showRules: false
+			output: "outputOnly",
+			arrow: "simple"
 		},
 	lexicon: {
 		key: "",
@@ -1045,21 +1043,12 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.TOGGLE_SHOW_CHANGES_WE:
+		case consts.SET_ARROW_WE:
 			final = {
 				...reduceAllBut(["wordevolveSettings"], state),
 				wordevolveSettings: {
 					...state.wordevolveSettings,
-					showChanges: payload
-				}
-			};
-			break;
-		case consts.TOGGLE_SHOW_RULES_WE:
-			final = {
-				...reduceAllBut(["wordevolveSettings"], state),
-				wordevolveSettings: {
-					...state.wordevolveSettings,
-					showRules: payload
+					arrow: payload
 				}
 			};
 			break;

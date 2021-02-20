@@ -8,7 +8,6 @@ export type WGOutputTypes = "text" | "wordlist" | "syllables";
 export type WGPresetObject = Map<string, WGPreset>;
 export type WGCategoryMap = [string, WGCategoryObject];
 export type WECategoryMap = [string, WECategoryObject];
-export type WEOutputTypes = "single" | "multi" | "inputFirst" | "outputFirst";
 
 export type WGPreset = {
 	wordgenCategories: WGCategoryStateObject
@@ -125,10 +124,12 @@ export interface WESoundchangeStateObject {
 
 export type WEInputObject = string[]
 
+export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
+export type WEArrowTypes = "none" | "simple" | "tailed" | "stroked" | "doubleStroked" | "paired" | "triplet" | "double" | "triple" | "dashed" | "open" | "thick";
+
 export interface WESettingsObject {
 	output: WEOutputTypes
-	showChanges: false,
-	showRules: false
+	arrow: WEArrowTypes
 }
 
 

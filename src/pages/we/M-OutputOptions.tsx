@@ -9,7 +9,6 @@ import {
 	IonButton,
 	IonItem,
 	IonLabel,
-	IonToggle,
 	IonSelect,
 	IonSelectOption,
 	IonModal,
@@ -17,11 +16,10 @@ import {
 	IonFooter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WEOutputTypes } from '../../components/ReduxDucksTypes';
+import { WEOutputTypes, WEArrowTypes } from '../../components/ReduxDucksTypes';
 import {
 	setOutputTypeWE,
-	toggleShowChangesWE,
-	toggleShowRulesWE
+	setArrowWE
 } from '../../components/ReduxDucksFuncs';
 import {
 	closeCircleOutline
@@ -46,19 +44,31 @@ const OutputOptionsModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList>
-					<IonSelect className="ion-text-wrap" interface="popover" value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value! as WEOutputTypes))}>
-						<IonSelectOption className="ion-text-wrap" value="single">Output, single-column</IonSelectOption>
-						<IonSelectOption className="ion-text-wrap" value="multi">Output, multi-column</IonSelectOption>
-						<IonSelectOption className="ion-text-wrap" value="inputFirst">Input, Output</IonSelectOption>
-						<IonSelectOption className="ion-text-wrap" value="outputFirst">Output, Input</IonSelectOption>
-					</IonSelect>
-					<IonItem>
-						<IonLabel className="ion-text-wrap">Show differences from last run</IonLabel>
-						<IonToggle checked={settingsWE.showChanges} onIonChange={e => dispatch(toggleShowChangesWE(e.detail.checked))} />
+					<IonItem className="ion-text-wrap">
+						<IonLabel position="stacked">What to Display:</IonLabel>
+						<IonSelect className="ion-text-wrap" interface="popover" value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value! as WEOutputTypes))}>
+							<IonSelectOption className="ion-text-wrap" value="outputOnly">Output only</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="rulesApplied">Output and Sound-Change Rules</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="inputFirst">Input, then Output</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="outputFirst">Output, then Input</IonSelectOption>
+						</IonSelect>
 					</IonItem>
-					<IonItem>
-						<IonLabel className="ion-text-wrap">Report which sound-change rules applied</IonLabel>
-						<IonToggle checked={settingsWE.showRules} onIonChange={e => dispatch(toggleShowRulesWE(e.detail.checked))} />
+					<IonItem className="ion-text-wrap">
+						<IonLabel position="stacked">Output arrow style</IonLabel>
+						<IonSelect className="ion-text-wrap" interface="popover" value={settingsWE.arrow} onIonChange={e => dispatch(setArrowWE(e.detail.value! as WEArrowTypes))}>
+							<IonSelectOption className="ion-text-wrap" value="none">No Arrow</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="simple">→</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="tailed">↣</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="stroked">⇸</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="doubleStroke">⇻</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="paired">⇉</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="triplet">⇶</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="double">⇒</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="triple">⇛</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="dashed">⇢</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="open">⇾</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap" value="thick">⇨</IonSelectOption>
+						</IonSelect>
 					</IonItem>
 				</IonList>
 			</IonContent>

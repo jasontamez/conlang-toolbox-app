@@ -127,22 +127,44 @@ ion-list.units {
 #conlangToolbox .fullScreen .largePane {
 	flex: 1 1 auto;
 }
-#outputPane {
+#outputPane,
+#outputPaneWE {
 	margin: 1rem 2rem;
 }
-#outputPane.pickAndSave .word {
+#outputPane.pickAndSave .word,
+#outputPaneWE.pickAndSave .word {
 	background: var(--ion-color-primary);
 	color: var(--ion-color-primary-contrast);
 	cursor: copy;
 }
-#outputPane.pickAndSave div.word {
+#outputPane.pickAndSave div.word,
+#outputPaneWE.pickAndSave div.word {
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-primary-shade);
 }
-#outputPane.pickAndSave .word.saved {
+#outputPane.pickAndSave .word.saved,
+#outputPaneWE.pickAndSave .word.saved {
 	background: var(--ion-color-success);
 	color: var(--ion-color-success-contrast);
 	border-color: var(--ion-color-success-shade);
+}
+#outputPaneWE {
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: 1fr 2em 1fr;
+	grid-template-rows: auto;
+	grid-auto-rows: auto;
+	place-items: start start;
+	place-content: start start;
+}
+#outputPaneWE .arrow {
+	justify-self: center;
+}
+#outputPaneWE .leadingWord {
+	justify-self: end;
+}
+#outputPaneWE .ruleExplanation {
+	padding-left: 10vw;
 }
 
 #conlangToolbox .presetPopup .action-sheet-group-cancel,
