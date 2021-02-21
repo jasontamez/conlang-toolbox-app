@@ -34,12 +34,9 @@ import {
 // eslint-disable-next-line
 import { $i, $q, $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
-// eslint-disable-next-line
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
-// eslint-disable-next-line
-import debounce from '../../components/Debounce';
 import OutputOptionsModal from './M-OutputOptions';
 import '../App.css';
 
@@ -61,10 +58,9 @@ const WEOut = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
 	});
-// eslint-disable-next-line
 	const [
 		rawInput,
-		settings,
+		//settings,
 		settingsWE,
 		modalState,
 		transformObject,
@@ -73,7 +69,7 @@ const WEOut = () => {
 		lexicon
 	] = useSelector((state: any) => [
 		state.wordevolveInput,
-		state.appSettings,
+		//state.appSettings,
 		state.wordevolveSettings,
 		state.modalState,
 		state.wordevolveTransforms,
@@ -98,17 +94,19 @@ const WEOut = () => {
 		return e;
 	}
 	// Go through a from/to string and check for categories and other regex stuff. Returns an object.
-	const interpretFromAndTo = (str: string) => {
+	const interpretFromAndTo = (input: string) => {
 		var rules: (string | string[])[] = [],
+			assembly: (string | string[])[] = [],
+			fromTo = "",
 			//cats: string[] = [],
 			backslash = false,
 			curly = false,
 			square = false;
-		str.split("").forEach(function(q) {
+		input.split("").forEach(function(q) {
 			// If we previously had a backslash, add it to this element.
 			if (backslash) {
 				backslash = false;
-				rules.push("\\" + q);
+				fromTo += "\\" + q;
 			// If we discover a backslash, set up for the next loop.
 			} else if (q === "\\") {
 				backslash = true;
@@ -119,29 +117,29 @@ const WEOut = () => {
 					// Found it.
 					square = false;
 				}
-				rules.push(q);
+				fromTo += q;
 			// If we discover a square brace, pause lookups until we find its end.
 			} else if (q === "[") {
 				square = true;
-				rules.push(q);
+				fromTo += q;
 			// If we previously had a curly brace, keep looking for its matching end.
 			} else if (curly) {
 				if (q === "}") {
 					// Found it.
 					curly = false;
 				}
-				rules.push(q);
+				fromTo += q;
 			// If we discover a curly brace, pause lookups until we find its end.
 			} else if (q === "{") {
 				curly = true;
-				rules.push(q);
-			// See if we've discovered a category.
-			} else if (catMap.has(q)) {
-				rules.push(catMap.get(q)!.run.split(""));
-			//	cats.push(q);
-			// Otherwise, treat as plain text (and possibly regex).
+				fromTo += q;
+			//// See if we've discovered a category.
+			//} else if (catMap.has(q)) {
+			//	fromTo += catMap.get(q!.run.split(""));
+			////	cats.push(q);
+			// Otherwise, treat as plain text (and possibly category or regex).
 			} else {
-				rules.push(q);
+				fromTo += q;
 			}
 		});
 		// Check for and insert missing end braces.
@@ -151,6 +149,55 @@ const WEOut = () => {
 		if (curly) {
 			rules.push("}");
 		}
+		// Now look for categories
+		let double = uuidv4().replace(/%/g,"!");
+		let negate = uuidv4().replace(/%/g,"!");
+		// Hide %%
+		fromTo.replace(/%%/g, double);
+		// Category negations
+		assembly = fromTo.split("!%");
+		fromTo = assembly.shift() as string;
+		assembly.forEach(unit => {
+			let q = unit[0];
+			let cat = catMap.get(q);
+			if(cat !== undefined) {
+				// Category found - negation, so do not make into Array
+				fromTo += "[^" + cat.run + "]" + unit.slice(1);
+			} else {
+				// Hide !%
+				fromTo += negate + unit;
+			}
+		});
+		// Categories
+		assembly = fromTo.split("%");
+		rules.push(assembly.shift()!);
+		assembly.forEach(unit => {
+			let q = unit[0];
+			let cat = catMap.get(q);
+			if(cat !== undefined) {
+				// Category found
+				rules.push(cat.run.split(""), unit.slice(1));
+			} else {
+				rules.push("%" + unit);
+			}
+		});
+		// Split strings, leave Arrays
+		assembly = rules;
+		rules = [];
+		assembly.forEach(unit => {
+			if(!unit) {
+				// Skip!
+			} else if(typeof unit === "string") {
+				// Restore any hidden %% or !% strings
+				// Add as individual characters
+				let d = new RegExp(escapeRegexp(double), "g");
+				let n = new RegExp(escapeRegexp(negate), "g");
+				rules.push(...(unit.replace(d, "%%").replace(n, "!%")).split(""));
+			} else {
+				// Add as Array
+				rules.push(unit);
+			}
+		});
 		// rules => array of elements
 		// x.cat  => array of indices of category elements
 		//return {
@@ -203,12 +250,10 @@ const WEOut = () => {
 		}
 		return output;
 	};
-// eslint-disable-next-line
 	const generateOutput = (output: HTMLElement) => {
 // eslint-disable-next-line
 		let text: HTMLElement[] = [];
-// eslint-disable-next-line
-		let type = settingsWE.output;
+		let outputType = settingsWE.output;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
 			output.removeChild(output.firstChild);
@@ -245,6 +290,11 @@ const WEOut = () => {
 			let temp: any = change.seek;
 			if(categoryFlag) {
 				seek = interpretFromAndTo(temp);
+				if(seek.every(unit => typeof unit === "string")) {
+					// No Arrays? No need for flag
+					categoryFlag = false;
+					seek = new RegExp(seek.join(""), "g");
+				}
 			} else {
 				seek = calculateCategoryReferenceRegex(temp, catMap) as RegExp;
 			}
@@ -252,6 +302,14 @@ const WEOut = () => {
 			temp = change.replace;
 			if(categoryFlag) {
 				replace = interpretFromAndTo(temp);
+				if(replace.every(unit => typeof unit === "string")) {
+					// No Arrays? No need for flag
+					categoryFlag = false;
+					replace = replace.join("");
+					// Need to run through seek to get a single RegExp
+					let temp = (seek as (string | string[])[]).map(unit => typeof unit === "string" ? unit : "[" + unit.join("") + "]");
+					seek = new RegExp(temp.join(""), "g");
+				}
 			} else {
 				replace = temp;
 			}
@@ -320,24 +378,23 @@ const WEOut = () => {
 		});
 		let modifiedWords = changeTheWords(rawInput);
 		// Add to screen.
-		let arrow: string = getArrow(output, settingsWE.arrow, settingsWE.output === "outputFirst");
+		let arrow: string = getArrow(output, settingsWE.arrow, outputType === "outputFirst");
 		let arrowDiv: HTMLElement = $e("div", "");
 		if(arrow) {
 			arrowDiv = $e("div", arrow, ["arrow"])!;
 		}
 		let style = output.style;
 		style.gridTemplateColumns = "1fr";
-		switch(settingsWE.output) {
+		switch(outputType) {
 			case "outputOnly":
 				// [word...]
 				modifiedWords.forEach(w => output.append($e("div", w)));
 				break;
 			case "inputFirst":
-				// [[original, word]...]
 			case "outputFirst":
+				// [[original, word]...]
 				// [[word, original]...]
 				style.gridTemplateColumns = (arrow ? "1fr 2em 1fr" : "1fr 1fr");
-				let c = 1;
 				modifiedWords.forEach(bit => {
 					const [from, to] = bit;
 					output.append($e("div", from, ["leadingWord"]));
@@ -362,7 +419,6 @@ const WEOut = () => {
 	};
 	// Take an array of strings and apply each sound change rule to each string one at a time,
 	//  then return an array according to the style requested
-// eslint-disable-next-line
 	const changeTheWords = (input: string[]) => {
 		let rulesThatApplied: string[][] = [];
 		let output: any[] = [];
@@ -406,10 +462,10 @@ const WEOut = () => {
 					// seekText1/2 are the bases of RegExps
 					// seekCats is an array of category runs
 					// seekRule is an array of the original rule
-					let s1 = new RegExp(seekText1);
+					let s1 = new RegExp(seekText1, "g");
 					s1.lastIndex = 0;
 					let m1 = s1.exec(word);
-					let s2 = new RegExp(seekText2);
+					let s2 = new RegExp(seekText2, "g");
 					let m2 = s2.exec(word);
 					let lastIndex = s1.lastIndex;
 					while(m1 !== null && m2 !== null) {
@@ -430,7 +486,7 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, lastIndex - 1);
+						let pre = lastIndex > 1 ? word.slice(0, lastIndex - 1) : "";
 						let post = word.slice(lastIndex - 1 + m1[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
@@ -453,34 +509,23 @@ const WEOut = () => {
 							}
 						}
 //						outputPane.append($e("div", pre + " / " + post + " = " + String(okToReplace)));
-						output.push(word + " [" + pre + "] / [" + post + "] = " + String(okToReplace));
 						if(okToReplace) {
 							// We can replace
-							let c1 = m1.length - 1;
-							let c2 = m2.length - 1;
+							let c = m1.length - 1;
 							//let repCopy = replace.rules.map(r => (typeof r === "string") ? r : [...r]);
 							let repCopy = replace.map(r => (typeof r === "string") ? r : [...r]);
+							let seekCopy = seekCats.map(r => (typeof r === "string") ? r : [...r]);
 							let replText = "";
-							while(c1 > 0) {
-								if(m1[c1] !== m2[c2]) {
-									// Category match
-									let cat1 = seekCats.pop();
-									// Look for a category in the replacement array
-									let rep1 = repCopy.pop();
-									while(typeof rep1 === "string") {
-										replText = rep1 + replText;
-										rep1 = repCopy.pop();
-									}
-									// replace the nth member of category1 with the nth member of category 2
-									let pos = cat1!.indexOf(m1[c1]);
-									replText = rep1![pos % rep1!.length] + replText;
-									// Only need to decrement the replacement
-									c2--;
-								} else {
-									// Parenthetical match: decrement both
-									c1--;
-									c2--;
+							while(seekCopy.length > 0) {
+								let cat1 = seekCopy.pop();
+								let rep1 = repCopy.pop();
+								while(typeof rep1 === "string") {
+									replText = rep1 + replText;
+									rep1 = repCopy.pop();
 								}
+								// replace the nth member of category1 with the nth member of category2
+								let pos = cat1!.indexOf(m1[c]);
+								replText = rep1![pos % rep1!.length] + replText;
 							}
 							// Finish assembling the replacement text
 							while(repCopy.length > 0) {
@@ -489,8 +534,8 @@ const WEOut = () => {
 							// Look for parenthetical matches and apply them
 							if(m1.length > 1) {
 								let c = m1.length;
-								while(c >= 1) {
-									replText = replText.replace("$" + c.toString(), m1[c]);
+								while(c > 0) {
+									replText = replText.replace("$" + String(c), m1[c]);
 									c--;
 								}
 							}
@@ -498,10 +543,10 @@ const WEOut = () => {
 							word = pre + replText + post;
 							s1.lastIndex = s2.lastIndex = (pre.length + replText.length);
 						}
-						if (m1[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
+						if(m1[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
-							m1 = null;
+							m1 = m2 = null;
 						} else {
 							// Otherwise, check for more matches!
 							m1 = s1.exec(word);
@@ -517,7 +562,7 @@ const WEOut = () => {
 					seeking.lastIndex = 0;
 					let m = seeking.exec(word);
 					let lastIndex = seeking.lastIndex;
-						while(m !== null) {
+					while(m !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
@@ -535,7 +580,7 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, lastIndex - 1);
+						let pre = lastIndex > 1 ? word.slice(0, lastIndex - 1) : "";
 						let post = word.slice(lastIndex - 1 + m[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
@@ -575,7 +620,7 @@ const WEOut = () => {
 								seeking.lastIndex = pre.length + replace.length;
 							}
 						}
-						if (m[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
+						if(m[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
 							m = null;
