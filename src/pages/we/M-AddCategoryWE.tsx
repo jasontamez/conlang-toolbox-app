@@ -24,7 +24,7 @@ import '../App.css';
 import { WECategoryObject } from '../../components/ReduxDucksTypes';
 import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
-import { $q, $i } from '../../components/DollarSignExports';
+import { $q, $a, $i } from '../../components/DollarSignExports';
 
 const AddCategoryWEModal = () => {
 	let newCat: WECategoryObject = {
@@ -38,6 +38,7 @@ const AddCategoryWEModal = () => {
 			label: "",
 			run: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
