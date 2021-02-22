@@ -12,8 +12,8 @@ import {
 	libraryOutline,
 	syncOutline,
 	informationCircleOutline,
-	chevronDownCircleOutline,
-	chevronUpCircleOutline,
+	enterOutline,
+	exitOutline,
 	megaphoneOutline
 } from 'ionicons/icons';
 import WECategories from "./we/WEcategories";
@@ -50,7 +50,7 @@ const WE = () => {
 					<IonLabel>Info</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="input" href="/we/input">
-					<IonIcon icon={chevronDownCircleOutline} />
+					<IonIcon icon={enterOutline} />
 					<IonLabel>Input</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="categories" href="/we/categories">
@@ -66,7 +66,7 @@ const WE = () => {
 					<IonLabel>Sound Changes</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="output" href="/we/output">
-					<IonIcon icon={chevronUpCircleOutline} />
+					<IonIcon icon={exitOutline} />
 					<IonLabel>Output</IonLabel>
 				</IonTabButton>
 			</IonTabBar>

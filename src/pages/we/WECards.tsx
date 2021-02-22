@@ -7,11 +7,11 @@ import {
 	IonLabel
 } from '@ionic/react';
 import {
-	gridOutline,
-	optionsOutline,
-	swapHorizontalOutline,
-	documentTextOutline,
-	fileTrayStackedOutline,
+	syncOutline,
+	enterOutline,
+	megaphoneOutline,
+	exitOutline,
+	libraryOutline,
 	bookOutline,
 	chevronDownCircleOutline,
 	chevronUpCircleOutline,
@@ -23,7 +23,7 @@ export const InpCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={optionsOutline} slot="start" color="primary" />
+				<IonIcon icon={enterOutline} slot="start" color="primary" />
 				<IonLabel>Input Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -44,7 +44,7 @@ export const CatCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={fileTrayStackedOutline} slot="start" color="primary" />
+				<IonIcon icon={libraryOutline} slot="start" color="primary" />
 				<IonLabel>Categories Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -69,7 +69,7 @@ export const TraCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={gridOutline} slot="start" color="primary" />
+				<IonIcon icon={syncOutline} slot="start" color="primary" />
 				<IonLabel>Transforms Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -131,7 +131,7 @@ export const SChCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={swapHorizontalOutline} slot="start" color="primary" />
+				<IonIcon icon={megaphoneOutline} slot="start" color="primary" />
 				<IonLabel>Sound Changes Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -207,7 +207,7 @@ export const OutCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={documentTextOutline} slot="start" color="primary" />
+				<IonIcon icon={exitOutline} slot="start" color="primary" />
 				<IonLabel>Output Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
