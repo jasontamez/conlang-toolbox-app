@@ -381,7 +381,9 @@ const WEOut = () => {
 			// Loop over the rewrite rules.
 			transforms.forEach((tr: WETransformObject) => {
 				// Check to see if we apply this rule.
-				if (tr.direction === "both" || tr.direction === "in") {
+				if (tr.direction === "both") {
+					word = word.replace(tr.seek, tr.replace);
+				} else if (tr.direction === "in") {
 					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
 				}
 			});
@@ -587,7 +589,9 @@ const WEOut = () => {
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
 				// Check to see if we apply this rule.
-				if (tr.direction === "both" || tr.direction === "out") {
+				if (tr.direction === "both") {
+					word = word.replace(tr.replace, tr.seek);
+				} else if (tr.direction === "out") {
 					word = word.replace(transformsMap.get(tr.key)![1], tr.seek);
 				}
 			});
