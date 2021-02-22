@@ -196,6 +196,7 @@ export interface ViewStateObject {
 	wg: string
 	we: string
 	ls: string
+	lastSection: "wg" | "we" | "ls" | ""
 }
 
 

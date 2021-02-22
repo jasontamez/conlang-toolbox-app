@@ -342,7 +342,8 @@ export const initialAppState: types.StateObject = {
 	viewState: {
 		wg: 'home',
 		we: 'home',
-		ls: 'home'
+		ls: 'home',
+		lastSection: ''
 	},
 	temporaryInfo: undefined
 };
@@ -445,7 +446,8 @@ export const blankAppState: types.StateObject = {
 	viewState: {
 		wg: 'home',
 		we: 'home',
-		ls: 'home'
+		ls: 'home',
+		lastSection: ''
 	},
 	temporaryInfo: undefined
 };
@@ -1215,6 +1217,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.CHANGE_VIEW:
 			let newView: types.ViewStateObject = reduceViewState(state.viewState);
 			newView[payload.app as keyof types.ViewStateObject] = payload.page;
+			newView.lastSection = payload.app;
 			final = {
 				...reduceAllBut(["viewState"], state),
 				viewState: newView

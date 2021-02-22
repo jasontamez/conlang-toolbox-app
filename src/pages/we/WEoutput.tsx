@@ -25,6 +25,7 @@ import {
 	addDeferredLexiconItems
 } from '../../components/ReduxDucksFuncs';
 import {
+	helpCircleOutline,
 	caretForwardCircleOutline,
 	settingsOutline,
 	bookOutline,
@@ -35,6 +36,8 @@ import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import { OutCard } from "./WECards";
+import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
 import '../App.css';
 
@@ -53,6 +56,7 @@ const WEOut = () => {
 	}
 	const outputPane = $i("outputPaneWE");
 	const dispatch = useDispatch();
+	const viewInfo = ['we', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'output'));
 	});
@@ -681,12 +685,18 @@ const WEOut = () => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
+			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

@@ -105,11 +105,11 @@ const AddTransformModal = () => {
 			<IonContent>
 				<IonList lines="none">
 					<IonItem>
-						<IonLabel className="seekLabel" position="stacked" style={ {fontSize: "20px"} }>Beginning Expression:</IonLabel>
+						<IonLabel className="seekLabel" position="stacked" style={ {fontSize: "20px"} }>Input Expression:</IonLabel>
 						<IonInput id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Transforms</IonLabel>
+						<IonLabel position="stacked">Transform Direction:</IonLabel>
 						<IonSelect interface="popover" value="both" onIonChange={e => setNewInfo("direction", e.detail.value!)}>
 							<IonSelectOption value="both">⟷ Both Ways</IonSelectOption>
 							<IonSelectOption value="in">⟶ At Input Only</IonSelectOption>
@@ -117,7 +117,7 @@ const AddTransformModal = () => {
 						</IonSelect>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Ending Expression:</IonLabel>
+						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Output Expression:</IonLabel>
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 					<IonItem>

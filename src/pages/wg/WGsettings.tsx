@@ -53,6 +53,7 @@ import '../App.css';
 
 const WGSet = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'settings'));
 	});
@@ -89,7 +90,7 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
-			<ModalWrap content={OptCard} />
+			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

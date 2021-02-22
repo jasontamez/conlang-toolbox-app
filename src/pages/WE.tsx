@@ -10,7 +10,6 @@ import {
 } from '@ionic/react';
 import {
 	libraryOutline,
-	optionsOutline,
 	syncOutline,
 	informationCircleOutline,
 	chevronDownCircleOutline,
@@ -22,7 +21,6 @@ import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
-import WESettings from "./we/WEsettings";
 import WEHome from "./we/WEhome";
 import { shallowEqual, useSelector } from "react-redux";
 import './App.css';
@@ -39,18 +37,21 @@ const WE = () => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
+				<Route path="/we/input" render={() => <WEInput />} exact={true} />
 				<Route path="/we/categories" render={() => <WECategories />} exact={true} />
 				<Route path="/we/transformations" render={() => <WETransforms />} exact={true} />
 				<Route path="/we/soundchanges" render={() => <WESounds />} exact={true} />
-				<Route path="/we/input" render={() => <WEInput />} exact={true} />
 				<Route path="/we/output" render={() => <WEOutput />} exact={true} />
-				<Route path="/we/settings" render={() => <WESettings />} exact={true} />
 				<Route path="/we/home" render={() => <WEHome />} exact={true}  />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="home" href="/we/home">
 					<IonIcon icon={informationCircleOutline} />
 					<IonLabel>Info</IonLabel>
+				</IonTabButton>
+				<IonTabButton tab="input" href="/we/input">
+					<IonIcon icon={chevronDownCircleOutline} />
+					<IonLabel>Input</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="categories" href="/we/categories">
 					<IonIcon icon={libraryOutline} />
@@ -64,17 +65,9 @@ const WE = () => {
 					<IonIcon icon={megaphoneOutline} />
 					<IonLabel>Sound Changes</IonLabel>
 				</IonTabButton>
-				<IonTabButton tab="input" href="/we/input">
-					<IonIcon icon={chevronDownCircleOutline} />
-					<IonLabel>Input</IonLabel>
-				</IonTabButton>
 				<IonTabButton tab="output" href="/we/output">
 					<IonIcon icon={chevronUpCircleOutline} />
 					<IonLabel>Output</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="settings" href="/we/settings">
-					<IonIcon icon={optionsOutline} />
-					<IonLabel>Settings</IonLabel>
 				</IonTabButton>
 			</IonTabBar>
 		</IonTabs>

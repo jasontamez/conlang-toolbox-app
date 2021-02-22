@@ -16,10 +16,12 @@ import {
 	IonItemOption,
 	IonItem,
 	IonLabel,
+	IonButton,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline,
+	helpCircleOutline,
 	chevronUpCircleOutline,
 	chevronDownCircleOutline
 } from 'ionicons/icons';
@@ -34,12 +36,15 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import AddTransformModal from './M-AddTransform';
 import EditTransformModal from './M-EditTransform';
+import { TraCard } from "./WECards";
+import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import '../App.css';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'transformations'));
 	});
@@ -100,12 +105,18 @@ const WERew = () => {
 		<IonPage>
 			<AddTransformModal />
 			<EditTransformModal />
+			<ModalWrap pageInfo={viewInfo} content={TraCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Transforms</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

@@ -16,13 +16,17 @@ import {
 	IonFab,
 	IonFabButton,
 	IonIcon,
+	IonButton,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
+	helpCircleOutline,
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWE, deleteCategoryWE, changeView } from '../../components/ReduxDucksFuncs';
+import { CatCard } from "./WECards";
+import ModalWrap from "../../components/ModalWrap";
 import { WECategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryWEModal from './M-AddCategoryWE';
 import EditCategoryWEModal from './M-EditCategoryWE';
@@ -32,6 +36,7 @@ import '../App.css';
 
 const WECat = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['we', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'categories'));
 	});
@@ -74,12 +79,18 @@ const WECat = () => {
 		<IonPage>
 			<AddCategoryWEModal />
 			<EditCategoryWEModal />
+			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Categories</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

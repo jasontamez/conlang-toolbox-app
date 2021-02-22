@@ -44,6 +44,7 @@ import '../App.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'rewriterules'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'rewriterules'));
 	});
@@ -101,7 +102,7 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
-			<ModalWrap content={RewCard} />
+			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

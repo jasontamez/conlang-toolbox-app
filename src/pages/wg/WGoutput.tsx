@@ -45,6 +45,7 @@ import '../App.css';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'output'));
 	});
@@ -442,7 +443,7 @@ const WGOut = () => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
-			<ModalWrap content={OutCard} />
+			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

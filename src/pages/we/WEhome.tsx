@@ -6,12 +6,25 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
-	IonTitle
+	IonTitle,
+	useIonViewDidEnter
 } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
+import { useDispatch } from "react-redux";
+import { changeView } from '../../components/ReduxDucksFuncs';
+import {
+	CatCard,
+	TraCard,
+	SChCard,
+	InpCard,
+	OutCard
+} from './WECards';
 import '../App.css';
 
 const WEHome = () => {
+	const dispatch = useDispatch();
+	useIonViewDidEnter(() => {
+		dispatch(changeView('we', 'home'));
+	});	
 	return (
 		<IonPage>
 			<IonHeader>
@@ -23,7 +36,11 @@ const WEHome = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<ExploreContainer name="Home page" />
+				<InpCard />
+				<CatCard />
+				<TraCard />
+				<SChCard />
+				<OutCard />
 			</IonContent>
 		</IonPage>
 	);

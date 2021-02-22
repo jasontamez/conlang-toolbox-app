@@ -15,10 +15,14 @@ import { closeModal } from './ReduxDucksFuncs';
 
 const ModalWrap = (props: any) => {
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
+	const [modalState, viewState] = useSelector((state: any) => [state.modalState, state.viewState], shallowEqual);
 	const InnerContent = props.content;
+	const [sub, page] = props.pageInfo;
 	return (
-		<IonModal isOpen={modalState.InfoModal} onDidDismiss={() => dispatch(closeModal('InfoModal'))}>
+		<IonModal
+			isOpen={modalState.InfoModal && viewState.lastSection === sub && viewState[sub] === page}
+			onDidDismiss={() => dispatch(closeModal('InfoModal'))}
+		>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Info</IonTitle>

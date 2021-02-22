@@ -16,10 +16,12 @@ import {
 	IonItemOption,
 	IonItem,
 	IonLabel,
+	IonButton,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline,
+	helpCircleOutline,
 	chevronUpCircleOutline,
 	chevronDownCircleOutline
 } from 'ionicons/icons';
@@ -34,12 +36,15 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import AddSoundChangeModal from './M-AddSoundChange';
 import EditSoundChangeModal from './M-EditSoundChange';
+import { SChCard } from "./WECards";
+import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import '../App.css';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'soundchanges'));
 	});
@@ -104,12 +109,18 @@ const WERew = () => {
 		<IonPage>
 			<AddSoundChangeModal />
 			<EditSoundChangeModal />
+			<ModalWrap pageInfo={viewInfo} content={SChCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Sound Changes</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

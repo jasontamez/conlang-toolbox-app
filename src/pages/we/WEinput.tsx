@@ -12,14 +12,18 @@ import {
 	IonIcon
 } from '@ionic/react';
 import {
+	helpCircleOutline,
 	enterOutline,
 	trashBinOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
-	updateInputLexicon
+	updateInputLexicon,
+	openModal
 } from '../../components/ReduxDucksFuncs';
+import { InpCard } from "./WECards";
+import ModalWrap from "../../components/ModalWrap";
 import { Lexicon } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
@@ -27,6 +31,7 @@ import '../App.css';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['we', 'input'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('we', 'input'));
 	});
@@ -92,12 +97,18 @@ const WERew = () => {
 	};
 	return (
 		<IonPage>
+			<ModalWrap pageInfo={viewInfo} content={InpCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Input Lexicon</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">

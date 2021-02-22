@@ -29,6 +29,7 @@ import ModalWrap from "../../components/ModalWrap";
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'syllables'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'syllables'));
 	});
@@ -51,7 +52,7 @@ const WGSyl = () => {
 	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
 	return (
 		<IonPage>
-			<ModalWrap content={SylCard} />
+			<ModalWrap pageInfo={viewInfo} content={SylCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

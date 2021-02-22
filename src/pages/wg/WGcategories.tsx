@@ -35,6 +35,7 @@ import ModalWrap from "../../components/ModalWrap";
 
 const WGCat = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView('wg', 'categories'));
 	});
@@ -77,7 +78,7 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
-			<ModalWrap content={CatCard} />
+			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
