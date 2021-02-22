@@ -17,6 +17,7 @@ import {
 	chevronUpCircleOutline,
 	settingsOutline
 } from 'ionicons/icons';
+import { $q } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
 
 export const CatCard = () => {
@@ -57,8 +58,8 @@ export const CatCard = () => {
 					tend to use certain sounds more than others. You can adjust this <em>dropoff rate</em>, or
 					eliminate it entirely, on the <strong>Settings</strong> tab.
 				</p><p>
-					<strong>Swipe left</strong> on a category to find the options
-					to <em>Edit</em> or <em>Delete</em> that category.
+					Click the (+) button to add a new category. <strong>Swipe left</strong> on a category
+					to find the options to <em>Edit</em> or <em>Delete</em> that category.
 				</p>
 			</IonCardContent>
 		</IonCard>
@@ -112,6 +113,9 @@ export const SylCard = () => {
 	);
 }
 export const RewCard = () => {
+	const style = window.getComputedStyle($q("body"));
+	const ltr = style.direction === "ltr";
+	const arrow = (ltr ? "⟶" : "⟵");
 	return (
 		<IonCard>
 			<IonItem>
@@ -139,10 +143,11 @@ export const RewCard = () => {
 					becoming <em>chu</em>. This will result in a rule that looks like the following:
 				</p>
 				<div className="emphasizedList">
-					<span className="importantUnit">C</span><span className="unimportantUnit">➜</span><span className="importantUnit">ch</span>
+					<span className="importantUnit">C</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ch</span>
 				</div>
 				<p>
-					When you make more than one rule, arrows will appear that will allow you to move
+					Click the (+) button to add a new rewrite rule. When you make more than one rule,
+					arrows will appear that will allow you to move your
 					rules <IonIcon icon={chevronUpCircleOutline} size="small" /> up
 					or <IonIcon icon={chevronDownCircleOutline} size="small" /> down. The first rule in
 					the list will be run first, the second rule second, and so on down the list. This
