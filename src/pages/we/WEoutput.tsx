@@ -30,8 +30,7 @@ import {
 	bookOutline,
 	saveOutline
 } from 'ionicons/icons';
-// eslint-disable-next-line
-import { $i, $q, $a } from '../../components/DollarSignExports';
+import { $i, $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
@@ -202,50 +201,6 @@ const WEOut = () => {
 			}
 		});
 		return rules;
-	};
-// eslint-disable-next-line
-	const reverse = (text: string) => {
-		const isCombiningDiacritic = (code: number) => {
-			// Make function on the prototype, available to all Strings.
-			return (
-				(0x0300 <= code && code <= 0x036f) || // Comb. Diacritical Marks
-				(0x1ab0 <= code && code <= 0x1aff) || // Comb. Diacritical Marks Extended
-				(0x1dc0 <= code && code <= 0x1dff) || // Comb. Diacritical Marks Supplement
-				(0x20d0 <= code && code <= 0x20ff) || // Comb. Diacritical Marks for Symbols
-				(0xfe20 <= code && code <= 0xfe2f)    // Comb. Half Marks
-			);	
-		};
-		let output = "";
-		// Loop through string from back to front.
-		for (let i = text.length - 1; i >= 0; --i) {
-			let width = 1,
-				modI = i,
-				thisI,
-				thisIMinusOne;
-			// If character is a combiner, move pointer (modI) one space to the left and increase the width.
-			while (modI > 0 && isCombiningDiacritic(text.charCodeAt(modI))) {
-				--modI;
-				width++;
-			}
-			// Save current base character.
-			thisI = text[modI];
-			// Save possible emoji character.
-			thisIMinusOne = text[modI - 1];
-			// Check to see if we're a two-char emoji, and modify pointer and width if so.
-			if (
-				modI > 0 &&
-				"\uDC00" <= thisI &&
-				thisI <= "\uDFFF" &&
-				"\uD800" <= thisIMinusOne &&
-				thisIMinusOne <= "\uDBFF"
-			) {
-				--modI;
-				width++;
-			}
-			// Add the character at the pointer, plus any additional characters we picked up.
-			output += text.substr(modI, width);
-		}
-		return output;
 	};
 	const generateOutput = (output: HTMLElement) => {
 		let outputType = settingsWE.output;
@@ -695,17 +650,14 @@ const WEOut = () => {
 	// Save to Lexicon
 	// // //
 
-// eslint-disable-next-line
 	const pickAndSave = () => {
 		dispatch(closePopover("WESaveToLexicon"));
 		dispatch(openModal("PickAndSaveWE"));
 	};
-// eslint-disable-next-line
 	const donePickingAndSaving = () => {
 		dispatch(closeModal("PickAndSaveWE"));
 	};
 	let wordsToSave: string[] = [];
-// eslint-disable-next-line
 	const saveEverything = () => {
 		dispatch(closePopover("WESaveToLexicon"));
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
@@ -713,7 +665,6 @@ const WEOut = () => {
 		});
 		dispatch(addDeferredLexiconItems(wordsToSave));
 	};
-// eslint-disable-next-line
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
 			const CL = el.classList;
