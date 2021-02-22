@@ -46,7 +46,7 @@ const WERew = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'soundchanges'));
+		dispatch(changeView(viewInfo));
 	});
 	const [soundChangeObject, settings] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings], shallowEqual);
 	const soundChange = soundChangeObject.list;

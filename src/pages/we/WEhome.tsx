@@ -23,7 +23,7 @@ import '../App.css';
 const WEHome = () => {
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'home'));
+		dispatch(changeView(['we', 'home']));
 	});	
 	return (
 		<IonPage>

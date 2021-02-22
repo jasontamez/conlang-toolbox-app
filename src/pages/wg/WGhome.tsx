@@ -23,7 +23,7 @@ import '../App.css';
 const WGHome = () => {
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'home'));
+		dispatch(changeView(['wg', 'home']));
 	});	
 	return (
 		<IonPage>

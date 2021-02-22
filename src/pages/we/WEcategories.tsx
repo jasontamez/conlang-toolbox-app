@@ -38,7 +38,7 @@ const WECat = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'categories'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'categories'));
+		dispatch(changeView(viewInfo));
 	});
 	const [categoryObject, settings] = useSelector((state: any) => [state.wordevolveCategories, state.appSettings], shallowEqual);
 	var categories: WECategoryMap[] = categoryObject.map;

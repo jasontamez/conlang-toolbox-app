@@ -55,7 +55,7 @@ const WGSet = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'settings'));
+		dispatch(changeView(viewInfo));
 	});
 	const [settingsWG, settings] = useSelector((state: any) => [state.wordgenSettings, state.appSettings], shallowEqual);
 	const doOnBlur = (func: Function, value: any) => {

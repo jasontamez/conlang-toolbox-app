@@ -46,7 +46,7 @@ const WERew = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'transformations'));
+		dispatch(changeView(viewInfo));
 	});
 	const [transformObject, settings] = useSelector((state: any) => [state.wordevolveTransforms, state.appSettings], shallowEqual);
 	const transform = transformObject.list;

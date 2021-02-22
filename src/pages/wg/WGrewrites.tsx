@@ -46,7 +46,7 @@ const WGRew = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'rewriterules'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'rewriterules'));
+		dispatch(changeView(viewInfo));
 	});
 	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;

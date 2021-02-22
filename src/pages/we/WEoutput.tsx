@@ -58,7 +58,7 @@ const WEOut = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'output'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'output'));
+		dispatch(changeView(viewInfo));
 	});
 	const [
 		rawInput,

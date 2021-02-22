@@ -31,7 +31,7 @@ const WGSyl = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'syllables'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'syllables'));
+		dispatch(changeView(viewInfo));
 	});
 	const syllableObject = useSelector((state: any) => state.wordgenSyllables, shallowEqual);
 	const toggleableClassName = (base: string = "") => {

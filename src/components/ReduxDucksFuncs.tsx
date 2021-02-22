@@ -265,8 +265,8 @@ export function setLoadingPage(payload: boolean | string) {
 //
 // VIEWS
 //
-export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
-	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
+export function changeView(payload: string[]) {
+	return {type: consts.CHANGE_VIEW, payload: { app: payload[0] as keyof types.ViewStateObject, page: payload[1] }};
 }
 
 //

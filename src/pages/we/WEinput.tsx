@@ -33,7 +33,7 @@ const WERew = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'input'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'input'));
+		dispatch(changeView(viewInfo));
 	});
 	const [rawInput, settings, lexicon] = useSelector((state: any) => [state.wordevolveInput, state.appSettings, state.lexicon], shallowEqual);
 	const input = rawInput.join("\n");

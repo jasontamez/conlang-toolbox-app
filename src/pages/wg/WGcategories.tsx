@@ -37,7 +37,7 @@ const WGCat = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'categories'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'categories'));
+		dispatch(changeView(viewInfo));
 	});
 	const [categoryObject, settings] = useSelector((state: any) => [state.wordgenCategories, state.appSettings], shallowEqual);
 	var categories: WGCategoryMap[] = categoryObject.map;
