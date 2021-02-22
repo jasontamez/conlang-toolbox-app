@@ -22,8 +22,7 @@ import {
 	closePopover,
 	openModal,
 	closeModal,
-	addLexiconItem,
-	updateLexiconBool
+	addDeferredLexiconItems
 } from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
@@ -56,7 +55,7 @@ const WEOut = () => {
 	const outputPane = $i("outputPaneWE");
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(changeView('we', 'input'));
+		dispatch(changeView('we', 'output'));
 	});
 	const [
 		rawInput,
@@ -66,7 +65,7 @@ const WEOut = () => {
 		transformObject,
 		soundChangesObject,
 		categoriesWE,
-		lexicon
+		//lexicon
 	] = useSelector((state: any) => [
 		state.wordevolveInput,
 		//state.appSettings,
@@ -75,7 +74,7 @@ const WEOut = () => {
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges,
 		state.wordevolveCategories,
-		state.lexicon
+		//state.lexicon
 	], shallowEqual);
 	const transforms: WETransformObject[] = transformObject.list;
 	const transformsMap: Map<string, RegExp[]> = new Map();
@@ -93,6 +92,14 @@ const WEOut = () => {
 		}
 		return e;
 	}
+	const $t = (text: string, tag: string = "div", classy: string[] = []) => {
+		let t =  document.createElement(tag);
+		t.classList.add("word", ...classy);
+		t.textContent = text;
+		t.addEventListener("click", () => maybeSaveThisWord(t));
+		return t;
+	};
+
 	// Go through a from/to string and check for categories and other regex stuff. Returns an object.
 	const interpretFromAndTo = (input: string) => {
 		var rules: (string | string[])[] = [],
@@ -133,10 +140,6 @@ const WEOut = () => {
 			} else if (q === "{") {
 				curly = true;
 				fromTo += q;
-			//// See if we've discovered a category.
-			//} else if (catMap.has(q)) {
-			//	fromTo += catMap.get(q!.run.split(""));
-			////	cats.push(q);
 			// Otherwise, treat as plain text (and possibly category or regex).
 			} else {
 				fromTo += q;
@@ -198,12 +201,6 @@ const WEOut = () => {
 				rules.push(unit);
 			}
 		});
-		// rules => array of elements
-		// x.cat  => array of indices of category elements
-		//return {
-		//	rules: rules,
-		//	cats: cats
-		//};
 		return rules;
 	};
 // eslint-disable-next-line
@@ -251,8 +248,6 @@ const WEOut = () => {
 		return output;
 	};
 	const generateOutput = (output: HTMLElement) => {
-// eslint-disable-next-line
-		let text: HTMLElement[] = [];
 		let outputType = settingsWE.output;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
@@ -388,24 +383,27 @@ const WEOut = () => {
 		switch(outputType) {
 			case "outputOnly":
 				// [word...]
-				modifiedWords.forEach(w => output.append($e("div", w)));
+				modifiedWords.forEach(w => output.append($t(w)));
 				break;
 			case "inputFirst":
 			case "outputFirst":
-				// [[original, word]...]
 				// [[word, original]...]
+				// [[original, word]...]
 				style.gridTemplateColumns = (arrow ? "1fr 2em 1fr" : "1fr 1fr");
 				modifiedWords.forEach(bit => {
-					const [from, to] = bit;
-					output.append($e("div", from, ["leadingWord"]));
+					const [one, two] = bit;
+					output.append(outputType ==="inputFirst" ? $e("div", one, ["leadingWord"]) : $t(one, "div", ["leadingWord"]));
 					arrow && output.append(arrowDiv.cloneNode(true));
-					output.append($e("div", to));
+					output.append(outputType ==="inputFirst" ? $t(two) : $e("div", two));
 				});
 				break;
 			case "rulesApplied":
 				// [original, word, [[rule, new word]...]]  	grid-template-columns: 1fr 2em 1fr;
+				const SPACE = String.fromCharCode(160);
 				modifiedWords.forEach(unit => {
-					output.append($e("div", unit.shift() + " " + arrow + " " + unit.shift()));
+					let div = $e("div", unit.shift() + SPACE + arrow + SPACE);
+					div.append($t(unit.shift(), "span"));
+					output.append(div);
 					let arrowMinor = arrow || getArrow(output, "double", settingsWE.out === "outputFirst");
 					unit.shift()!.forEach((bit: string[]) => {
 						const [rule, to] = bit;
@@ -508,7 +506,6 @@ const WEOut = () => {
 								okToReplace = false;
 							}
 						}
-//						outputPane.append($e("div", pre + " / " + post + " = " + String(okToReplace)));
 						if(okToReplace) {
 							// We can replace
 							let c = m1.length - 1;
@@ -602,7 +599,6 @@ const WEOut = () => {
 								okToReplace = false;
 							}
 						}
-//						outputPane.append($e("div", pre + " / " + post + " = " + String(okToReplace)));
 						if(okToReplace) {
 							// We can replace
 							if(m.length > 1) {
@@ -701,7 +697,7 @@ const WEOut = () => {
 
 // eslint-disable-next-line
 	const pickAndSave = () => {
-		dispatch(closePopover("WGSaveToLexicon"));
+		dispatch(closePopover("WESaveToLexicon"));
 		dispatch(openModal("PickAndSaveWE"));
 	};
 // eslint-disable-next-line
@@ -710,36 +706,22 @@ const WEOut = () => {
 	};
 	let wordsToSave: string[] = [];
 // eslint-disable-next-line
-	const saveToLex = () => {
-		let cols = lexicon.columns;
-		let others: string[] = [];
-		for(let x = 2; x <= cols; x++) {
-			others.push("");
-		}
-		while(wordsToSave.length > 0) {
-			let word: string = wordsToSave.shift()!;
-			dispatch(addLexiconItem({ key: uuidv4(), columns: [word, ...others]}));
-		}
-		dispatch(updateLexiconBool("sorted", false));
-	};
-// eslint-disable-next-line
 	const saveEverything = () => {
-		dispatch(closePopover("WGSaveToLexicon"));
-		$a(".word", /*outputPane*/).forEach((word: HTMLElement) => {
+		dispatch(closePopover("WESaveToLexicon"));
+		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
 		});
-		saveToLex();
+		dispatch(addDeferredLexiconItems(wordsToSave));
 	};
 // eslint-disable-next-line
-	const maybeSaveThisWord = (el: HTMLElement) => { /*
+	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
 			const CL = el.classList;
 			if(!CL.contains("saved")) {
 				CL.add("saved");
-				el.textContent && wordsToSave.push(el.textContent!);
-				debounce(saveToLex, []);
+				el.textContent && dispatch(addDeferredLexiconItems([el.textContent!]));
 			}
-		}*/
+		}
 	};
 	return (
 		<IonPage>
@@ -755,9 +737,9 @@ const WEOut = () => {
 			<IonContent fullscreen>
 				<IonPopover
 				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.SaveToLexicon}
-						isOpen={modalState.SaveToLexicon !== undefined}
-						onDidDismiss={() => dispatch(closePopover("WEOutputOptions"))}
+						event={modalState.WESaveToLexicon}
+						isOpen={modalState.WESaveToLexicon !== undefined}
+						onDidDismiss={() => dispatch(closePopover("WESaveToLexicon"))}
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>
@@ -774,10 +756,10 @@ const WEOut = () => {
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
-						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSaveWE ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => {}}>
+						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSaveWE ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
-						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WEOutputOptions', e)); }}>
+						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}>
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
