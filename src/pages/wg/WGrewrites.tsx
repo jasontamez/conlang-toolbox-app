@@ -51,6 +51,9 @@ const WGRew = () => {
 	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
+	const style = window.getComputedStyle($q("body"));
+	const ltr = style.direction === "ltr";
+	const arrow = (ltr ? "⟶" : "⟵");
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
 		dispatch(startEditRewriteRuleWG(label));
@@ -75,7 +78,7 @@ const WGRew = () => {
 			thenFunc({isConfirmed: true});
 		} else {
 			fireSwal({
-				title: "Delete " + rule.seek + "➜" + rule.replace + "?",
+				title: "Delete " + rule.seek + arrow + rule.replace + "?",
 				text: "Are you sure? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
@@ -134,7 +137,7 @@ const WGRew = () => {
 								<IonLabel>
 									<div className="importantElement serifChars">
 										<span className="seek importantUnit">{rr.seek}</span>
-										<span className="arrow unimportantUnit">➜</span>
+										<span className="arrow unimportantUnit">{arrow}</span>
 										<span className="replace importantUnit">{rr.replace}</span>
 									</div>
 									<div className="description">{rr.description}</div>
