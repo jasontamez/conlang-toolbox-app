@@ -1,6 +1,8 @@
+import packageJson from '../../package.json';
+
 // constants (actions)
-export const VERSION = {
-	current: "1.0"
+export let VERSION = {
+	current: packageJson.version
 };
 
 const p = "conlangs-toolbox/reducer/";

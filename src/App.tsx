@@ -59,14 +59,15 @@ const App = () => {
 			return Storage.get({ key: "currentState" }).then((result) => {
 				const value = result.value;
 				if(value !== null) {
-					const state = JSON.parse(value);
-					if(state && (typeof state) === "object") {
-						if (compareVersions.compare(state.currentVersion, VERSION.current, "<")) {
-							// Do stuff to possibly bring state up to date
+					const storedState = JSON.parse(value);
+					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
+							// Do stuff to possibly bring storedState up to date
+							storedState.currentVersion = VERSION.current;
 						}
-						if(checkIfState(state)) {
+						if(checkIfState(storedState)) {
 							console.log("State found");
-							return dispatch(overwriteState(state));
+							return dispatch(overwriteState(storedState));
 						}
 					}
 				}

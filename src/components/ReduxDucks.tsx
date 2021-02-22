@@ -258,7 +258,7 @@ const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObje
 };
 const simple: types.WGPreset = WGPresets.get("Simple")!;
 export const initialAppState: types.StateObject = {
-	currentVersion: "0.1",
+	currentVersion: consts.VERSION.current,
 	appSettings: {
 		theme: "Default",
 		disableConfirms: false,
@@ -348,7 +348,7 @@ export const initialAppState: types.StateObject = {
 	temporaryInfo: undefined
 };
 export const blankAppState: types.StateObject = {
-	currentVersion: "0.1",
+	currentVersion: consts.VERSION.current,
 	appSettings: {
 		theme: "Default",
 		disableConfirms: false,
