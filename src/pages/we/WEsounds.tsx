@@ -51,6 +51,9 @@ const WERew = () => {
 		dispatch(startEditSoundChangeWE(label));
 		dispatch(openModal('EditSoundChange'));
 	};
+	const style = window.getComputedStyle($q("body"));
+	const ltr = style.direction === "ltr";
+	const arrow = (ltr ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		const thenFunc = (result: any) => {
@@ -69,7 +72,7 @@ const WERew = () => {
 		if(settings.disableConfirms) {
 			thenFunc({isConfirmed: true});
 		} else {
-			let rule = change.seek + "➜" + change.replace + "/" + change.context;
+			let rule = change.seek + arrow + change.replace + "/" + change.context;
 			if(change.anticontext) {
 				rule +=  "/" + change.anticontext;
 			}
@@ -127,7 +130,7 @@ const WERew = () => {
 								<IonLabel>
 									<div className="importantElement serifChars">
 										<span className="seek importantUnit">{change.seek}</span>
-										<span className="unimportantUnit">➜</span>
+										<span className="unimportantUnit">{arrow}</span>
 										<span className="replace importantUnit">{change.replace}</span>
 										<span className="unimportantUnit">/</span>
 										<span className="replace importantUnit">{change.context}</span>
