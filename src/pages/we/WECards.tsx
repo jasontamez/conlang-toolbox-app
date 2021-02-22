@@ -140,7 +140,7 @@ export const SChCard = () => {
 					phonological rules for describing sound changes:
 				</p>
 				<div className="emphasizedList">
-					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">d_</span><span className="unimportantUnit">/</span><span className="importantUnit">_h</span>
+					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">d_</span><span className="unimportantUnit">!</span><span className="importantUnit">_h</span>
 				</div>
 				<p>
 					The above means that "s" changes to "z" after a "d", but not when it's before an "h".
