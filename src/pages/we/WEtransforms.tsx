@@ -51,9 +51,9 @@ const WERew = () => {
 		dispatch(startEditTransformWE(label));
 		dispatch(openModal('EditTransform'));
 	};
-	const makeArrow = (dir: string) => {
-		return dir === "in" ? "⟶" : (dir === "out" ? "⟵" : "⟷");
-	};
+	const style = window.getComputedStyle($q("body"));
+	const ltr = style.direction === "ltr";
+	const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
 	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
