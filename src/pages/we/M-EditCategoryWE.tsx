@@ -21,19 +21,19 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../App.css';
-import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditCategoryWG, cancelEditCategoryWG } from '../../components/ReduxDucksFuncs';
+import { WECategoryObject } from '../../components/ReduxDucksTypes';
+import { closeModal, doEditCategoryWE, cancelEditCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
-const EditCategoryModal = () => {
+const EditCategoryWEModal = () => {
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
-	const catMap: Map<string, WGCategoryObject> = new Map(categoryObject.map);
+	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
+	const catMap: Map<string, WECategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	let editingCat: WGCategoryObject = {...catMap.get(editing)!};
+	let editingCat: WECategoryObject = {...catMap.get(editing)!};
 	editingCat.label = editing;
 	const hardReset = () => {
 		editingCat = {
@@ -48,7 +48,7 @@ const EditCategoryModal = () => {
 		}
 		return "";
 	};
-	function setNewInfo (prop: keyof WGCategoryObject, value: any) {
+	function setNewInfo (prop: keyof WECategoryObject, value: any) {
 		// Set the property
 		let madeString = makeString(value).trim();
 		switch(prop) {
@@ -95,8 +95,8 @@ const EditCategoryModal = () => {
 		}
 	};
 	const cancelEditing = () => {
-		dispatch(cancelEditCategoryWG(editing));
-		dispatch(closeModal('EditCategory'));
+		dispatch(cancelEditCategoryWE(editing));
+		dispatch(closeModal('EditCategoryWE'));
 	};
 	const maybeSaveNewInfo = () => {
 		let err: string[] = [];
@@ -126,8 +126,8 @@ const EditCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('EditCategory'));
-		dispatch(doEditCategoryWG(editingCat));
+		dispatch(closeModal('EditCategoryWE'));
+		dispatch(doEditCategoryWE(editingCat));
 		hardReset();
 		fireSwal({
 			title: "Category saved!",
@@ -138,7 +138,7 @@ const EditCategoryModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.EditCategory} onDidDismiss={() => cancelEditing()}>
+		<IonModal isOpen={modalState.EditCategoryWE} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Category</IonTitle>
@@ -180,4 +180,4 @@ const EditCategoryModal = () => {
 	);
 };
 
-export default EditCategoryModal;
+export default EditCategoryWEModal;

@@ -8,6 +8,7 @@ import {
 	IonButtons,
 	IonFab,
 	IonFabButton,
+	IonButton,
 	IonTitle,
 	IonIcon,
 	IonList,
@@ -21,7 +22,8 @@ import {
 import {
 	addOutline,
 	chevronUpCircleOutline,
-	chevronDownCircleOutline
+	chevronDownCircleOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
@@ -34,30 +36,34 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import AddRewriteRuleModal from './M-AddRule';
 import EditRewriteRuleModal from './M-EditRule';
+import { RewCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../WordGen.css';
+import '../App.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'rewriterules'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'rewriterules'));
+		dispatch(changeView(viewInfo));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const rulesObject = state.rewriteRules;
+	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;
 	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
+	const style = window.getComputedStyle($q("body"));
+	const ltr = style.direction === "ltr";
+	const arrow = (ltr ? "⟶" : "⟵");
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
 		dispatch(startEditRewriteRuleWG(label));
 		dispatch(openModal('EditRewriteRule'));
 	};
-	const settings = state.appSettings;
-	const maybeDeleteRewriteRule = (label: any, seek: any, replace: any) => {
+	const maybeDeleteRewriteRule = (rule: WGRewriteRuleObject) => {
 		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteRewriteRuleWG(label));
+				dispatch(deleteRewriteRuleWG(rule));
 				fireSwal({
 					title: "Rewrite Rule deleted",
 					customClass: {popup: 'dangerToast'},
@@ -72,7 +78,7 @@ const WGRew = () => {
 			thenFunc({isConfirmed: true});
 		} else {
 			fireSwal({
-				title: "Delete " + seek + "➜" + replace + "?",
+				title: "Delete " + rule.seek + arrow + rule.replace + "?",
 				text: "Are you sure? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
@@ -99,12 +105,18 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
+			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Rewrite Rules</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
@@ -113,7 +125,7 @@ const WGRew = () => {
 						<IonItemSliding key={rr.key}>
 							<IonItemOptions side="end">
 								<IonItemOption color="tertiary" onClick={() => editRewriteRule(rr.key)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteRewriteRule(rr.key, rr.seek, rr.replace)}>Delete</IonItemOption>
+								<IonItemOption color="danger" onClick={() => maybeDeleteRewriteRule(rr)}>Delete</IonItemOption>
 							</IonItemOptions>
 							<IonItem>
 								<div className="upDownButtons ion-margin-end">
@@ -123,10 +135,10 @@ const WGRew = () => {
 												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} />)]))}
 								</div>
 								<IonLabel>
-									<div className="ruleExpression serifChars">
-										<span className="seek">{rr.seek}</span>
-										<span className="arrow">➜</span>
-										<span className="replace">{rr.replace}</span>
+									<div className="importantElement serifChars">
+										<span className="seek importantUnit">{rr.seek}</span>
+										<span className="arrow unimportantUnit">{arrow}</span>
+										<span className="replace importantUnit">{rr.replace}</span>
 									</div>
 									<div className="description">{rr.description}</div>
 								</IonLabel>

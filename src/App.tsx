@@ -11,6 +11,7 @@ import Menu from './components/Menu';
 import HomePage from "./pages/HomePage";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
+import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 
 /* Core CSS required for Ionic components to work properly */
@@ -58,15 +59,15 @@ const App = () => {
 			return Storage.get({ key: "currentState" }).then((result) => {
 				const value = result.value;
 				if(value !== null) {
-					const state = JSON.parse(value);
-					if(state && typeof state === "object") {
-						state.currentVersion = VERSION.current;
-						if (compareVersions.compare(state.currentVersion, VERSION.current, "<")) {
-							// Do stuff to possibly bring state up to date
+					const storedState = JSON.parse(value);
+					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
+							// Do stuff to possibly bring storedState up to date
+							storedState.currentVersion = VERSION.current;
 						}
-						if(checkIfState(state)) {
+						if(checkIfState(storedState)) {
 							console.log("State found");
-							return dispatch(overwriteState(state));
+							return dispatch(overwriteState(storedState));
 						}
 					}
 				}
@@ -82,10 +83,16 @@ const App = () => {
 				<IonReactRouter>
 					<IonSplitPane contentId="main" when="xl">
 						<Menu />
+						{/*
+							Using the render method prop cuts down the number of renders your components
+							will have due to route changes. Use the component prop when your component
+							depends on the RouterComponentProps passed in automatically.
+						*/}
 						<IonRouterOutlet id="main">
 							<Route path="/wg" render={() => <WG />} />
 							<Route path="/we"  render={() => <WE />} />
 							<Route path="/ls" component={WG} />
+							<Route path="/lex" render={() => <Lexicon />} />
 							<Route path="/settings" render={() => <Settings />} />
 							<Route path="/about" component={WG} />
 							<Route path="/" component={HomePage} exact={true} />
@@ -94,7 +101,7 @@ const App = () => {
 				</IonReactRouter>
 			</IonApp>
 		</WebfontLoader>
-	)
+	);
 };
 
 export default App;

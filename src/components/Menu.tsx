@@ -16,6 +16,7 @@ import {
 	createSharp,
 	shuffleSharp,
 	listSharp,
+	bookSharp,
 	settingsSharp,
 	chatboxEllipsesSharp
 } from 'ionicons/icons';
@@ -56,6 +57,12 @@ const appMenuPages: MenuSection[] = [
 				url: '/ls',
 				icon: listSharp,
 				id: 'menuitemLS'
+			},
+			{
+				title: 'Lexicon',
+				url: '/lex',
+				icon: bookSharp,
+				id: 'menuitemLX'
 			}
 		],
 		id: 'menuMain'

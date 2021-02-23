@@ -10,6 +10,10 @@ export function changeTheme(payload: string) {
 export function toggleDisableConfirm(payload: boolean) {
 	return {type: consts.TOGGLE_DISABLE_CONFIRM, payload};
 }
+export function toggleLexiconHorizontalScroll() {
+	return {type: consts.TOGGLE_LEXICON_HORIZONTAL_SCROLL};
+}
+
 //
 // WORDGEN
 //
@@ -68,7 +72,7 @@ export function setCategoryDropoffWG(payload: types.Zero_Fifty) {
 export function setSyllableDropoffWG(payload: types.Zero_Fifty) {
 	return {type: consts.SET_SYLLABLE_DROPOFF_WG, payload};
 }
-export function setOutputTypeWG(payload: types.OutputTypes) {
+export function setOutputTypeWG(payload: types.WGOutputTypes) {
 	return {type: consts.SET_OUTPUT_WG, payload};
 }
 export function setSyllableBreaksWG(payload: boolean) {
@@ -113,17 +117,6 @@ export function setWordsPerWordlistWG(payload: types.Fifty_OneThousand) {
 export function setCustomInfoWG(payload: string[]) {
 	return {type: consts.SET_CUSTOM_INFO_WG, payload};
 }
-// Modals
-export function openModal(payload: keyof types.ModalStateObject) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
-}
-export function closeModal(payload: keyof types.ModalStateObject) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
-}
-// Views
-export function changeView(payload1: keyof types.ViewStateObject, payload2: string) {
-	return {type: consts.CHANGE_VIEW, payload: { app: payload1, page: payload2 }};
-}
 // Presets
 export function loadPresetWG(payload: string) {
 	return {type: consts.LOAD_PRESET_WG, payload};
@@ -131,9 +124,159 @@ export function loadPresetWG(payload: string) {
 export function clearEverything() {
 	return {type: consts.CLEAR_EVERYTHING_WG, payload: null};
 }
+export function loadCustomInfoWG(payload: types.WGCustomInfo) {
+	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
+}
+//
+// WORDEVOLVE
+//
+// Category
+export function addCategoryWE(payload: types.WECategoryObject) {
+	return {type: consts.ADD_CATEGORY_WE, payload};
+}
+export function startEditCategoryWE(payload: types.WECategoryObject) {
+	return {type: consts.START_EDIT_CATEGORY_WE, payload};
+}
+export function cancelEditCategoryWE(payload: types.WECategoryObject) {
+	return {type: consts.CANCEL_EDIT_CATEGORY_WE, payload};
+}
+export function doEditCategoryWE(payload: types.WECategoryObject) {
+	return {type: consts.DO_EDIT_CATEGORY_WE, payload};
+}
+export function deleteCategoryWE(payload: types.WECategoryObject) {
+	return {type: consts.DELETE_CATEGORY_WE, payload};
+}
+// Transforms
+export function addTransformWE(payload: types.WETransformObject) {
+	return {type: consts.ADD_TRANSFORM_WE, payload};
+}
+export function startEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.START_EDIT_TRANSFORM_WE, payload};
+}
+export function cancelEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.CANCEL_EDIT_TRANSFORM_WE, payload};
+}
+export function doEditTransformWE(payload: types.WETransformObject) {
+	return {type: consts.DO_EDIT_TRANSFORM_WE, payload};
+}
+export function deleteTransformWE(payload: types.WETransformObject) {
+	return {type: consts.DELETE_TRANSFORM_WE, payload};
+}
+export function reorderTransformsWE(payload: types.WETransformObject["key"][]) {
+	return {type: consts.REORDER_TRANSFORM_WE, payload};
+}
+// Sound Changes
+export function addSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.ADD_SOUND_CHANGE_WE, payload};
+}
+export function startEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.START_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function cancelEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.CANCEL_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function doEditSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.DO_EDIT_SOUND_CHANGE_WE, payload};
+}
+export function deleteSoundChangeWE(payload: types.WESoundChangeObject) {
+	return {type: consts.DELETE_SOUND_CHANGE_WE, payload};
+}
+export function reorderSoundChangesWE(payload: types.WESoundChangeObject["key"][]) {
+	return {type: consts.REORDER_SOUND_CHANGE_WE, payload};
+}
+// Input Lexicon
+export function updateInputLexicon(payload: types.WEInputObject) {
+	return {type: consts.UPDATE_INPUT_LEXICON, payload};
+}
+// Output
+export function setOutputTypeWE(payload: types.WEOutputTypes) {
+	return {type: consts.SET_OUTPUT_WE, payload};
+}
+export function setArrowWE(payload: types.WEArrowTypes) {
+	return {type: consts.SET_ARROW_WE, payload};
+}
+
+
+//
+// LEXICON
+//
+export function updateLexicon(payload: types.LexiconObject) {
+	return {type: consts.UPDATE_LEXICON, payload};
+}
+export function startEditLexiconItem(payload: number) {
+	return {type: consts.UPDATE_LEXICON_EDITING, payload};
+}
+export function cancelEditLexiconItem() {
+	return {type: consts.UPDATE_LEXICON_EDITING, payload: undefined};
+}
+export function doEditLexiconItem(payload: types.Lexicon) {
+	return {type: consts.DO_EDIT_LEXICON_ITEM, payload};
+}
+export function deleteLexiconItem(payload: number) {
+	return {type: consts.DELETE_LEXICON_ITEM, payload};
+}
+export function addLexiconItem(payload: types.Lexicon) {
+	return {type: consts.ADD_LEXICON_ITEM, payload};
+}
+export function addDeferredLexiconItems(payload: string[]) {
+	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
+}
+export function updateLexiconText(prop: "title" | "description" | "key", value: string) {
+	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
+}
+export function updateLexiconNumber(prop: "lastSave", value: number) {
+	return {type: consts.UPDATE_LEXICON_NUM, payload: {prop, value}};
+}
+export function updateLexiconBool(prop: "sorted", value: boolean) {
+	return {type: consts.UPDATE_LEXICON_BOOL, payload: {prop, value}};
+}
+export function updateLexiconColumns(payload: types.colEdit | undefined) {
+	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
+}
+export function updateLexiconOrder(payload: types.Lexicon[]) {
+	return {type: consts.UPDATE_LEXICON_ITEM_ORDER, payload};
+}
+export function updateLexiconSort(payload: number[]) {
+	return {type: consts.UPDATE_LEXICON_SORT, payload};
+}
+export function clearDeferredLexiconItems() {
+	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
+}
+
+//
+// MODALS
+//
+export function openModal(payload: keyof types.ModalStateObject) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
+}
+export function closeModal(payload: keyof types.ModalStateObject) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
+}
+export function openPopover(popover: keyof types.ModalStateObject, event: Event) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: event}};
+}
+export function closePopover(popover: keyof types.ModalStateObject) {
+	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: undefined}};
+}
+export function setLoadingPage(payload: boolean | string) {
+	return {type: consts.SET_LOADING_PAGE, payload};
+}
+
+//
+// VIEWS
+//
+export function changeView(payload: string[]) {
+	return {type: consts.CHANGE_VIEW, payload: { app: payload[0] as keyof types.ViewStateObject, page: payload[1] }};
+}
+
+//
+// TEMPORARY INFO
+//
+export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {
+	return {type: consts.SET_TEMPORARY_INFO, payload: (payload === undefined ? payload : { data: payload })};
+}
+
+// Overwrite State
 export function overwriteState(payload: types.StateObject) {
 	return {type: consts.OVERWRITE_STATE, payload};
-}
-export function loadCustomInfoWG(payload: types.CustomInfo) {
-	return {type: consts.LOAD_CUSTOM_INFO_WG, payload};
 }

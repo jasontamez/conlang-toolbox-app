@@ -1,8 +1,8 @@
-import { PresetObject } from './ReduxDucksTypes';
+import { WGPresetObject } from './ReduxDucksTypes';
 
-const WGPresets: PresetObject = new Map([
+export const WGPresets: WGPresetObject = new Map([
 	["Simple", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -19,7 +19,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: false,
 			objects: {
 				singleWord: { components: ["CV","V","CLV"] },
@@ -28,7 +28,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -61,7 +61,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Medium", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -78,7 +78,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: false,
 			objects: {
 				singleWord: { components: ["CV","V","CVN"] },
@@ -87,7 +87,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -149,7 +149,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Pseudo-Latin", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -178,7 +178,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: false,
 			objects: {
 				singleWord: { components: ["CV","CUF","V","UF","PLV","PLUF"] },
@@ -187,7 +187,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -231,7 +231,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Pseudo-Chinese", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -256,7 +256,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: false,
 			objects: {
 				singleWord: { components: ["CV","AʰV","CVD","CVF","VF","V","AʰVF"] },
@@ -265,7 +265,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -315,7 +315,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Large Inventory", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -332,7 +332,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: false,
 			objects: {
 				singleWord: { components: ["CV","V","CVC","CLV"] },
@@ -341,7 +341,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -373,7 +373,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Pseudo-English", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -402,7 +402,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: true,
 			objects: {
 				singleWord: { components: ["CV","CVC","VC","V","PLVC"] },
@@ -411,7 +411,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: ["CV","VC","CVC","V","VLF","VNF","CVgh","Vgh"] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -629,7 +629,7 @@ const WGPresets: PresetObject = new Map([
 		}
 	}],
 	["Complex", {
-		categories: {
+		wordgenCategories: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -654,7 +654,7 @@ const WGPresets: PresetObject = new Map([
 			],
 			editing: null
 		},
-		syllables: {
+		wordgenSyllables: {
 			toggle: true,
 			objects: {
 				singleWord: { components: ["SV","SVE","SV","SV"] },
@@ -663,7 +663,7 @@ const WGPresets: PresetObject = new Map([
 				wordFinal: { components: ["I","VE","V","VE","SVE","V","CV","VE","CVE"] }
 			}
 		},
-		rewriteRules: {
+		wordgenRewriteRules: {
 			list: [
 				{
 					key: "0",
@@ -983,5 +983,3 @@ const WGPresets: PresetObject = new Map([
 		}
 	}]
 ]);
-
-export default WGPresets;

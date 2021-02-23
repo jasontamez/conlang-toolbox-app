@@ -1,5 +1,4 @@
 import React from 'react';
-import escape from 'escape-html';
 import {
 	IonItem,
 	IonIcon,
@@ -23,19 +22,32 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
+import '../App.css';
 import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
-import { CustomInfo } from '../../components/ReduxDucksTypes';
+import { WGCustomInfo } from '../../components/ReduxDucksTypes';
+import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { Plugins } from '@capacitor/core';
 import fireSwal from '../../components/Swal';
 
 const ManageCustomInfo = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
-	const settings = state.appSettings;
-	let customInfo: string[] = state.wordgenSettings.customInfo || [];
+	const [
+		modalState,
+		settings,
+		settingsWG,
+		categories,
+		syllables,
+		rules
+	] = useSelector((state: any) => [
+		state.modalState,
+		state.appSettings,
+		state.wordgenSettings,
+		state.wordgenCategories,
+		state.wordgenSyllables,
+		state.wordgenRewriteRules
+	], shallowEqual);
+	let customInfo: string[] = settingsWG.customInfo || [];
 	const { Storage } = Plugins;
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
@@ -45,12 +57,12 @@ const ManageCustomInfo = () => {
 			return;
 		}
 		const doSave = (newInfo: string[], title: string, msg: string = "saved") => {
-			let setts = state.wordgenSettings;
+			let setts = {...settingsWG};
 			delete setts.customInfo;
-			const save: CustomInfo = [
-				state.categories,
-				state.syllables,
-				state.rewriteRules,
+			const save: WGCustomInfo = [
+				categories,
+				syllables,
+				rules,
 				setts
 			];
 			Storage.set({key: "customInfo", value: JSON.stringify(newInfo)});

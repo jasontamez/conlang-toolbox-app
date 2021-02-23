@@ -11,7 +11,9 @@ import {
 	IonButton,
 	IonItem,
 	IonIcon,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	IonPopover,
+	IonLabel
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -19,100 +21,79 @@ import {
 	WGRewriteRuleObject,
 	WGCategoryObject
 } from '../../components/ReduxDucksTypes';
-import { openModal, changeView } from '../../components/ReduxDucksFuncs';
-import { caretForwardCircleOutline, settingsOutline } from 'ionicons/icons';
-import escapeRegexp from 'escape-string-regexp';
+import {
+	openModal,
+	changeView,
+	openPopover,
+	closePopover,
+	closeModal,
+	addDeferredLexiconItems
+} from '../../components/ReduxDucksFuncs';
+import {
+	caretForwardCircleOutline,
+	settingsOutline,
+	bookOutline,
+	saveOutline,
+	helpCircleOutline
+} from 'ionicons/icons';
 import OutputOptionsModal from './M-OutputOptions';
-import '../WordGen.css';
+import { OutCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
+import { $a } from '../../components/DollarSignExports';
+import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
+import '../App.css';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'output'));
+		dispatch(changeView(viewInfo));
 	});
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
-	const $d = (text: string) => {
+	const $d = (text: string = "") => {
 		let div = document.createElement("div");
-		div.textContent = text;
+		text && (div.textContent = text);
 		return div;
 	};
-	
-	const stateObject = useSelector((state: any) => state, shallowEqual);
-	const categoriesObject = stateObject.categories;
+	const $t = (text: string, tag: string = "span") => {
+		let t =  document.createElement(tag);
+		t.classList.add("word");
+		t.textContent = text;
+		t.addEventListener("click", () => maybeSaveThisWord(t));
+		return t;
+	};
+	const [
+		categoriesObject,
+		syllablesObject,
+		settingsWG,
+		modalState,
+		rewriteRules
+	] = useSelector((state: any) => [
+		state.wordgenCategories,
+		state.wordgenSyllables,
+		state.wordgenSettings,
+		state.modalState,
+		state.wordgenRewriteRules.list
+	], shallowEqual);
 	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
-	const syllablesObject = stateObject.syllables;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
-	const rewriteRules = stateObject.rewriteRules.list;
-	const settingsWG = stateObject.wordgenSettings;
 	const regExpMap: Map<string, RegExp> = new Map();
-	
+
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
 	const determineWidth = (input: string) => {
 		return textWidthTester!.measureText(input).width;
 	};
 	const getWidestWord = (words: string[]) => {
-		let max = Math.max(...words.map(w => determineWidth(w))) * 2;
+		let max = Math.max(...words.map(w => determineWidth(w))) * 3;
 		return Math.ceil(max).toString() + "px";
 	};
 
-	const calculateCategoryReferenceRegex = (rule: WGRewriteRuleObject) => {
-		// Check rewrite rules for %Category references
-		// %% condenses to %, so split on those to begin with.
-		let broken = rule.seek.split("%%");
-		// Create a variable to hold the pieces as they are handled
-		let final = [];
-		while(broken.length > 0) {
-			// First, check for category negation
-			// Separate along !% instances
-			let testing = broken.shift()!.split("!%");
-			// Save first bit, before any !%
-			let reformed = testing.shift();
-			// Handle each instance
-			while(testing.length > 0) {
-				let bit = testing.shift();
-				// What's the category being negated?
-				let category = catMap.get(bit!.charAt(0));
-				// Does it exist?
-				if(category !== undefined) {
-					// Category found. Replace with [^a-z] construct, where a-z is the category contents.
-					reformed += "[^" + escapeRegexp(category.run) + "]";
-					// If category is not found, it gets ignored.
-				}
-				// Remove category identifier, save to reformed
-				reformed += bit!.slice(1);
-			}
-			// Now check for categories
-			// Separate along % instances
-			testing = reformed!.split("%");
-			// Save the first bit, before any %
-			reformed = testing.shift();
-			// Handle each instance
-			while(testing.length > 0) {
-				let bit = testing.shift();
-				// What's the category?
-				let category = catMap.get(bit!.charAt(0));
-				// Does it exist?
-				if(category !== undefined) {
-					// Category found. Replace with [a-z] construct, where a-z is the category contents.
-					reformed += "[" + escapeRegexp(category.run) + "]";
-					// If category is not found, it gets ignored.
-				}
-				// Remove category identifier, save to reformed
-				reformed += bit!.slice(1);
-			}
-			// Save reformed for later!
-			final.push(reformed);
-		}
-		// Reform info with %% reduced back to % and save as regexp
-		return new RegExp(final.join("%"), "g");
-	};
-	
 	const generateOutput = (output: HTMLElement) => {
-		let text: string[] = [];
+		let text: HTMLElement[] = [];
 		let type = settingsWG.output;
 		let endEarly = false;
 		// Clear any previous output.
@@ -147,7 +128,7 @@ const WGOut = () => {
 			let regex: RegExp;
 			if(rule.seek.indexOf("%") !== -1) {
 				// Found a possibility.
-				regex = calculateCategoryReferenceRegex(rule);
+				regex = calculateCategoryReferenceRegex(rule.seek, catMap) as RegExp;
 			} else {
 				regex = new RegExp(rule.seek, "g");
 			}
@@ -160,25 +141,28 @@ const WGOut = () => {
 			output.style.columnWidth = "auto";
 		} else if (type === "syllables") {
 			// all possible syllables
-			text = getEverySyllable(settingsWG.capitalizeWords);
+			let t = getEverySyllable(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
+			t.forEach(bit => text.push($t(bit, "div")));
 		} else {
 			// wordlist
-			text = makeWordlist(settingsWG.capitalizeWords);
+			let t = makeWordlist(settingsWG.capitalizeWords);
 			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(text) : "auto";
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
+			t.forEach(bit => text.push($t(bit, "div")));
 		}
 		// Add to screen.
-		text.forEach(bit => output.append($d(bit)));
+		text.forEach(bit => output.append(bit));
 	};
-	
-	
+
+
 	// // //
 	// Generate a psuedo-text
 	// // //
 	const generatePseudoText = () => {
-		let text = [];
+		let text: (string | HTMLElement)[][] = [];
+		let final: HTMLElement = $d();
 		let numberOfSentences = settingsWG.sentencesPerText;
 		let capitalize = settingsWG.capitalizeSentences;
 		let d1 = settingsWG.declarativeSentencePre;
@@ -187,10 +171,12 @@ const WGOut = () => {
 		let i2 = settingsWG.interrogativeSentencePost;
 		let e1 = settingsWG.exclamatorySentencePre;
 		let e2 = settingsWG.exclamatorySentencePost;
+		const SPACE = String.fromCharCode(160);
 		let sentenceNumber = 0;
 		while(sentenceNumber < numberOfSentences) {
-			let sentence = [];
 			sentenceNumber++;
+			let sentence: (string | HTMLElement)[] = [];
+			let staging: (string | HTMLElement)[] = [];
 			let wordNumber = 0;
 			let maxWords = 3;
 			for(maxWords = 3; true; maxWords = Math.max((maxWords + 1) % 15, 3)) {
@@ -201,25 +187,39 @@ const WGOut = () => {
 			}
 			while(wordNumber < maxWords) {
 				wordNumber++;
-				sentence.push(makeOneWord(wordNumber < 2 && capitalize));
+				sentence.push($t(makeOneWord(wordNumber < 2 && capitalize)));
 			}
-			let full = sentence.join(" ");
+			let full = text.join(" ");
+			staging.push(sentence.shift()!);
+			while (sentence.length > 1) {
+				staging.push(SPACE, sentence.shift()!);
+			}
 			let type = Math.random() * 12;
 			if(type < 9) {
 				// Declarative three-fourths the time
 				full = d1 + full + d2;
+				d1 && staging.unshift(d1);
+				d2 && staging.push(d2);
 			} else if (type < 11) {
 				// Interrogative one-sixth the time
 				full = i1 + full + i2;
+				i1 && staging.unshift(i1);
+				i2 && staging.push(i2);
 			} else {
 				// Exclamatory one-twelfth the time
 				full = e1 + full + e2;
+				e1 && staging.unshift(e1);
+				e2 && staging.push(e2);
 			}
-			text.push(full);
+			text.push(staging);
 		}
-		return [text.join(" ")];
+		final.append(...text.shift()!);
+		while(text.length > 1) {
+			final.append(SPACE, ...text.shift()!)
+		}
+		return [final];
 	};
-	
+
 	// // //
 	// Generate Syllables
 	// // //
@@ -279,7 +279,7 @@ const WGOut = () => {
 		}
 		return output;
 	};
-	
+
 	// // //
 	// Generate One Word
 	// // //
@@ -332,8 +332,8 @@ const WGOut = () => {
 		}
 		return output;
 	};
-	
-	
+
+
 	// // //
 	// Apply Rewrite Rules
 	// // //
@@ -343,7 +343,7 @@ const WGOut = () => {
 		});
 		return word;
 	};
-	
+
 	// // //
 	// Generate Every Possible Syllable
 	// // //
@@ -396,11 +396,10 @@ const WGOut = () => {
 			category.run.split("").forEach((char: string) => allFound.push(previous + char));
 		}
 	};
-	
+
 	// // //
 	// Wordlist
 	// // //
-	
 	const makeWordlist = (capitalize: boolean) => {
 		let n = 0;
 		let words = [];
@@ -413,26 +412,81 @@ const WGOut = () => {
 		}
 		return words;
 	};
+
+	// // //
+	// Save to Lexicon
+	// // //
+	const pickAndSave = () => {
+		dispatch(closePopover("WGSaveToLexicon"));
+		dispatch(openModal("PickAndSaveWG"));
+	};
+	const donePickingAndSaving = () => {
+		dispatch(closeModal("PickAndSaveWG"));
+	};
+	const saveEverything = () => {
+		let wordsToSave: string[] = [];
+		dispatch(closePopover("WGSaveToLexicon"));
+		$a(".word", outputPane).forEach((word: HTMLElement) => {
+			word.textContent && wordsToSave.push(word.textContent);
+		});
+		dispatch(addDeferredLexiconItems(wordsToSave));
+	};
+	const maybeSaveThisWord = (el: HTMLElement) => {
+		if(outputPane.classList.contains("pickAndSave")) {
+			const CL = el.classList;
+			if(!CL.contains("saved")) {
+				CL.add("saved");
+				el.textContent && dispatch(addDeferredLexiconItems([el.textContent!]));
+			}
+		}
+	};
 	return (
 		<IonPage>
 			<OutputOptionsModal />
+			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList id="outerOutputPane" lines="none">
-					<IonItem className="collapse">
-						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("OutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+				<IonPopover
+				        {/*cssClass='my-custom-class'*/ ...""}
+						event={modalState.WGSaveToLexicon}
+						isOpen={modalState.WGSaveToLexicon !== undefined}
+						onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
+				>
+					<IonList lines="none">
+						<IonItem button={true} onClick={() => saveEverything()}>
+							<IonLabel className="ion-text-wrap">Save everything</IonLabel>
+						</IonItem>
+						<IonItem button={true} onClick={() => pickAndSave()}>
+							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
+						</IonItem>
+					</IonList>
+				</IonPopover>
+				<IonList className="fullScreen" lines="none">
+					<IonItem className="collapse ion-text-wrap">
+						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton style={ { fontSize: "larger" } } expand="block" strong={true} color="primary" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
+						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSaveWG ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
+						</IonButton>
+						<IonButton slot="end" style={ { fontSize: "larger" } } expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}>
+							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
+						</IonButton>
 					</IonItem>
-					<div id="outputPane"></div>
+					<div id="outputPane" className={"largePane" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

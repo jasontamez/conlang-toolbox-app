@@ -17,34 +17,15 @@ import {
 import {
 	createSharp,
 	shuffleSharp,
-	listSharp
+	listSharp,
+	bookSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import '../theme/variables.css';
-import './HomePage.css';
-
 
 const Home = () => {
-	const state = useSelector((state: any) => state, shallowEqual);
-	const theme = state.appSettings.theme.replace(/ /g, "") + "Theme";
+	const originalTheme = useSelector((state: any) => state.appSettings.theme, shallowEqual);
+	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
 		<IonPage className={theme}>
@@ -86,6 +67,16 @@ const Home = () => {
 							<IonItem className="ion-text-center">
 								<IonIcon icon={listSharp} />
 								<IonLabel className="ion-padding-start">LangSketch</IonLabel>
+							</IonItem>
+						</IonCard>
+					</IonCol>
+				</IonRow>
+				<IonRow>
+					<IonCol>
+						<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+							<IonItem className="ion-text-center">
+								<IonIcon icon={bookSharp} />
+								<IonLabel className="ion-padding-start">Lexicon</IonLabel>
 							</IonItem>
 						</IonCard>
 					</IonCol>

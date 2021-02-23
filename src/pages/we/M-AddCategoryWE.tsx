@@ -21,13 +21,13 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import '../App.css';
-import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
+import { WECategoryObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
-import { $q, $i } from '../../components/DollarSignExports';
+import { $q, $a, $i } from '../../components/DollarSignExports';
 
-const AddCategoryModal = () => {
-	let newCat: WGCategoryObject = {
+const AddCategoryWEModal = () => {
+	let newCat: WECategoryObject = {
 		title: "",
 		label: "",
 		run: ""
@@ -38,14 +38,15 @@ const AddCategoryModal = () => {
 			label: "",
 			run: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
+	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
 	const catMap = new Map(categoryObject.map);
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
-		KEY extends keyof WGCategoryObject,
-		VAL extends WGCategoryObject[KEY]
+		KEY extends keyof WECategoryObject,
+		VAL extends WECategoryObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
 		newCat[prop] = value;
@@ -109,8 +110,8 @@ const AddCategoryModal = () => {
 			return;
 		}
 		// Everything ok!
-		close && dispatch(closeModal('AddCategory'));
-		dispatch(addCategoryWG(newCat));
+		close && dispatch(closeModal('AddCategoryWE'));
+		dispatch(addCategoryWE(newCat));
 		hardReset();
 		fireSwal({
 			title: "Category added!",
@@ -121,12 +122,12 @@ const AddCategoryModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddCategory} onDidDismiss={() => dispatch(closeModal('AddCategory'))}>
+		<IonModal isOpen={modalState.AddCategoryWE} onDidDismiss={() => dispatch(closeModal('AddCategoryWE'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Category</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('AddCategory'))}>
+						<IonButton onClick={() => dispatch(closeModal('AddCategoryWE'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -147,7 +148,7 @@ const AddCategoryModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput className="ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
+						<IonInput className="importantElement ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -167,4 +168,4 @@ const AddCategoryModal = () => {
 	);
 };
 
-export default AddCategoryModal;
+export default AddCategoryWEModal;

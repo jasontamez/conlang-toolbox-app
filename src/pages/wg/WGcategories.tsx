@@ -13,36 +13,39 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
+	IonButton,
 	IonTitle,
 	IonFab,
 	IonFabButton,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
-	addOutline
+	addOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
-import { CategoryMap } from '../../components/ReduxDucksTypes';
+import { WGCategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
+import { CatCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 
 const WGCat = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'categories'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'categories'));
+		dispatch(changeView(viewInfo));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const categoryObject = state.categories;
-	var categories: CategoryMap[] = categoryObject.map;
+	const [categoryObject, settings] = useSelector((state: any) => [state.wordgenCategories, state.appSettings], shallowEqual);
+	var categories: WGCategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWG(label));
 		dispatch(openModal('EditCategory'));
 	};
-	const settings = state.appSettings;
 	const maybeDeleteCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {
@@ -75,17 +78,23 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
+			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Categories</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="categories units" lines="none">
-					{categories.map((item: CategoryMap) => {
+					{categories.map((item: WGCategoryMap) => {
 						let [label, cat] = item;
 						return (
 							<IonItemSliding key={label}>
@@ -96,7 +105,7 @@ const WGCat = () => {
 								<IonItem>
 									<IonLabel>
 										<div className="categoryRun serifChars">
-											<span className="label">{label}</span>
+											<span className="label importantElement">{label}</span>
 											<span className="run">{cat.run}</span>
 										</div>
 										<div className="categoryLongName">{cat.title}</div>

@@ -1,0 +1,336 @@
+#conlangToolbox p {
+	text-indent: 2rem;
+	padding: 1rem;
+	margin: 0 auto;
+}
+#conlangToolbox p + p {
+	padding-top: 0;
+}
+#conlangToolbox .clickToExpand {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.1s ease-in;
+}
+#conlangToolbox .clickToExpand.expanded {
+	max-height: 10rem;
+	transition: max-height 0.1s ease-out;
+}
+#conlangToolbox ion-button.helpy {
+	opacity: 0.5;
+}
+
+#conlangToolbox .hide {
+	display: none;
+}
+
+.emphasizedList {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.categories .categoryLongName,
+.rewriterules .description,
+.transforms .description {
+	font-size: smaller;
+	font-style: italic;
+}
+#conlangToolbox .serifChars {
+	letter-spacing: 0.025rem;
+	font-family: 'Noto Serif', 'Georgia', serif;
+}
+#conlangToolbox .importantElement {
+	font-weight: bold;
+}
+.categories .categoryRun .label::after {
+	font-weight: bold;
+	content: "=";
+}
+#conlangToolbox .importantUnit {
+	display: inline-block;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid var(--ion-color-input-border);
+}
+#conlangToolbox .unimportantUnit {
+	display: inline-block;
+	font-weight: bold;
+	padding: 0 0.5rem;
+	letter-spacing: 0;
+}
+.rewriterules .upDownButtons,
+.transforms .upDownButtons {
+	width: 4rem;
+	text-align: center;
+}
+.rewriterules .upDownButtons ion-icon,
+.transforms .upDownButtons ion-icon {
+	font-size: 32px;
+	color: var(--ion-color-tertiary-shade);
+}
+.soundChanges .upDownButtons ion-icon {
+	font-size: 32px;
+	color: var(--ion-color-secondary-shade);
+}
+
+#conlangToolbox ion-list.syllables div.header {
+	display: block;
+	font-weight: bold;
+	font-size: larger;
+	margin: 0.5rem 1rem 1rem;
+}
+#conlangToolbox ion-list.syllables .toggleable {
+	overflow: hidden;
+	display: none;
+}
+#conlangToolbox ion-list.syllables .toggleable.toggled,
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle {
+	display: block;
+}
+#conlangToolbox ion-list.syllables .toggleable.reverseToggle.toggled {
+	display: none;
+}
+#conlangToolbox ion-list.syllables div.header.toggleable,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle.toggled {
+	display: none;
+}
+#conlangToolbox ion-list.syllables div.header.toggleable.toggled,
+#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle {
+	display: block;
+}
+
+ion-item-option {
+	min-width: 5rem;
+}
+ion-list.units {
+	background: transparent;
+	padding: 0;
+}
+.units ion-item,
+.units ion-item-option,
+.units ion-item-option button {
+	border-bottom: 0.1rem solid var(--ion-background-color);
+}
+.units ion-item-sliding:first-of-type ion-item,
+.units ion-item-sliding:first-of-type ion-item-option,
+.units ion-item-sliding:first-of-type ion-item-option button {
+	border-top: 0.1rem solid var(--ion-background-color);
+}
+
+#conlangToolbox .fullScreen {
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 100%;
+}
+#conlangToolbox .fullScreen .collapse {
+	flex: 0 1 auto;
+}
+#conlangToolbox .fullScreen .largePane {
+	flex: 1 1 auto;
+}
+#outputPane,
+#outputPaneWE {
+	margin: 1rem 2rem;
+}
+#outputPane.pickAndSave .word,
+#outputPaneWE.pickAndSave .word {
+	background: var(--ion-color-primary);
+	color: var(--ion-color-primary-contrast);
+	cursor: copy;
+}
+#outputPane.pickAndSave div.word,
+#outputPaneWE.pickAndSave div.word {
+	padding: 0.25em 0.5em;
+	border: 1px solid var(--ion-color-primary-shade);
+}
+#outputPane.pickAndSave .word.saved,
+#outputPaneWE.pickAndSave .word.saved {
+	background: var(--ion-color-success);
+	color: var(--ion-color-success-contrast);
+	border-color: var(--ion-color-success-shade);
+}
+#outputPaneWE {
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: 1fr 2em 1fr;
+	grid-template-rows: auto;
+	grid-auto-rows: auto;
+	place-items: start start;
+	place-content: start start;
+}
+#outputPaneWE .arrow {
+	justify-self: center;
+}
+#outputPaneWE .leadingWord {
+	justify-self: end;
+}
+#outputPaneWE .ruleExplanation {
+	padding-left: 10vw;
+}
+
+#conlangToolbox .presetPopup .action-sheet-group-cancel,
+#conlangToolbox .presetPopup .action-sheet-cancel {
+	background: var(--ion-color-danger-shade);
+	color: var(--ion-color-danger-contrast);
+}
+
+i.ipa {
+	font-style: normal;
+	color: var(--ion-color-primary-contrast);
+	background-color: var(--ion-color-primary-shade);
+	padding: 0 0.1rem;
+}
+
+#conlangToolbox .WEinput {
+	height: calc(100% - 4rem);
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	grid-template-columns: 1rem 1fr 1rem;
+	grid-template-rows: 2rem 1fr;
+	grid-template-areas:
+		". . ."
+		". x .";
+	/*grid-template-columns: 1rem 1fr 1rem;
+	grid-template-rows: 1rem min-content 1rem 1fr 1rem;
+	grid-template-areas:
+		". . ."
+		". b ."
+		". . ."
+		". x ."
+		". . .";*/
+	}
+#lexiconInput {
+	grid-area: x;
+	height: 100%;
+	width: 100%;
+	border: 0;
+	outline: none;
+	resize: none;
+}
+
+#theLexiconHeader {
+	--ion-grid-column-padding: 0;
+	margin: 2rem 2rem 1rem;
+	padding: 0;
+}
+#theLexiconHeader ion-row {
+	margin: 0;
+}
+#theLexicon,
+#theLexicon::part(native) {
+	margin: 0 !important;
+	padding: 0;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	overflow: auto;
+	width: calc(100% - 2rem);
+}
+#theLexicon .lexInput {
+	--highlight-color-focused: transparent;
+}
+#theLexicon ion-button {
+	margin: 0;
+}
+#theLexicon ion-button::part(native) {
+	padding: 0 0.25rem;
+}
+#theLexicon .xs {
+	flex: 0 0 2rem;
+}
+#theLexicon .xs.lexiconDel,
+#theLexicon .xs.lexiconEdit {
+	padding-left: 0.25rem;
+	flex: 0 0 2.25rem;
+}
+#theLexicon .xs.lexiconAdd {
+	margin-left: 0.5rem;
+	flex: 0 0 2.5rem;
+}
+#theLexicon .s {
+	flex: 1 1 5rem;
+}
+#theLexicon .m {
+	flex: 3 1 12rem;
+}
+#theLexicon .l {
+	flex: 5 1 25rem;
+}
+#theLexicon input {
+	outline: none;
+	padding-left: 0;
+	padding-right: 0;
+	border: 0;
+}
+.lexRow,
+.lexRow::part(native) {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0 0 0 2rem;
+}
+.lexRow::part(native),
+.virtualLex .lexRow {
+	margin: 0;
+	padding: 0;
+}
+.virtualLex .lexRow.even::part(native) {
+	background: var(--ion-color-input-bg);
+}
+.virtualLex .lexRow.odd::part(native) {
+	background: #0002;
+}
+.virtualLex {
+	margin: 0 0 0 2.25rem;
+}
+.lexHeader,
+.lexHeader::part(native) {
+	font-weight: bold;
+	min-height: 2rem;
+}
+.lexRow > * {
+	margin: 0 0.25rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.lexRow > .xs {
+	margin: 0;
+}
+.lexiconDisplay {
+	border-top: 2px solid var(--ion-background-color);
+}
+.lexiconDisplay:last-child {
+	border-bottom: 2px solid var(--ion-background-color);
+}
+#lexiconPage #lexiconSort::part(text)::before {
+	content: "Sort: ";
+	margin-right: 0.5rem;
+}
+#lexiconPage #lexiconSort::part(text) {
+	min-width: 10rem;
+	overflow: visible;
+}
+#lexiconPage h1 {
+	margin: 0;
+}
+
+#editLexiconItemOrder ion-row:nth-child(odd) {
+	margin: 0;
+}
+.dragInactive .showWhileDragging,
+.dragActive .hideWhileDragging,
+.addActive .hideWhileAdding,
+.addInactive .hideUnlessAdding {
+	display: none;
+}
+
+
+@media screen and (max-width: 450px) {
+	ion-tab-bar ion-label {
+		display: none;
+	}
+}

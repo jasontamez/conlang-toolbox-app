@@ -18,15 +18,13 @@ import {
 	closeCircleSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
+import '../App.css';
 import { closeModal, loadPresetWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 
 const MaybeLoadPresetModal = () => {
 	const dispatch = useDispatch();
-	const state = useSelector((state: any) => state, shallowEqual);
-	const modalState = state.modalState;
-	const settings = state.appSettings;
+	const [modalState, settings] = useSelector((state: any) => [state.modalState, state.appSettings], shallowEqual);
 	const maybeLoadPreset = (preset: string) => {
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {

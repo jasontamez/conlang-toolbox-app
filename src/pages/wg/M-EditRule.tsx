@@ -19,10 +19,11 @@ import {
 	saveOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../WordGen.css';
+import '../App.css';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import { closeModal, doEditRewriteRuleWG, cancelEditRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
+import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 
 const EditRewriteRuleModal = () => {
@@ -36,7 +37,7 @@ const EditRewriteRuleModal = () => {
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	const rewritesObject = useSelector((state: any) => state.rewriteRules, shallowEqual);
+	const rewritesObject = useSelector((state: any) => state.wordgenRewriteRules, shallowEqual);
 	const editing = rewritesObject.editing;
 	let editingRule: WGRewriteRuleObject = {
 		key: "",
@@ -75,10 +76,6 @@ const EditRewriteRuleModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(editingRule.replace === "") {
-			$q(".replaceLabel").classList.add("invalidValue");
-			err.push("No replacement expression present");
-		}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({
@@ -89,6 +86,8 @@ const EditRewriteRuleModal = () => {
 			return;
 		}
 		// Everything ok!
+		editingRule.seek = repairRegexErrors(editingRule.seek);
+		editingRule.replace = repairRegexErrors(editingRule.replace);
 		dispatch(closeModal('EditRewriteRule'));
 		dispatch(doEditRewriteRuleWG(editingRule));
 		hardReset();

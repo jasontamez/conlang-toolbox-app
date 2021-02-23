@@ -40,20 +40,24 @@ import {
 	Two_Fifteen,
 	Zero_Fifty,
 } from '../../components/ReduxDucksTypes';
+import {
+	helpCircleOutline
+} from 'ionicons/icons';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
-import '../WordGen.css';
+import { OptCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
+import '../App.css';
 
 const WGSet = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'settings'));
+		dispatch(changeView(viewInfo));
 	});
-	const state = useSelector((state: any) => state, shallowEqual);
-	const settingsWG = state.wordgenSettings;
-	const settings = state.appSettings;
+	const [settingsWG, settings] = useSelector((state: any) => [state.wordgenSettings, state.appSettings], shallowEqual);
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
@@ -86,12 +90,18 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
+			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
 					<IonTitle>Settings</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

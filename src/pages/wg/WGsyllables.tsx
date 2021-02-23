@@ -6,6 +6,8 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
+	IonButton,
+	IonIcon,
 	IonTitle,
 	IonList,
 	IonItem,
@@ -14,18 +16,24 @@ import {
 	IonToggle,
 	useIonViewDidEnter
 } from '@ionic/react';
-import '../WordGen.css';
+import '../App.css';
+import {
+	helpCircleOutline
+} from 'ionicons/icons';
 import { $i } from '../../components/DollarSignExports';
-import { toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
+import { openModal, toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { SylCard } from "./WGCards";
+import ModalWrap from "../../components/ModalWrap";
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
+	const viewInfo = ['wg', 'syllables'];
 	useIonViewDidEnter(() => {
-		dispatch(changeView('wg', 'syllables'));
+		dispatch(changeView(viewInfo));
 	});
-	const syllableObject = useSelector((state: any) => state.syllables, shallowEqual);
+	const syllableObject = useSelector((state: any) => state.wordgenSyllables, shallowEqual);
 	const toggleableClassName = (base: string = "") => {
 		let extra = " toggleable";
 		if(syllableObject.toggle) {
@@ -44,12 +52,18 @@ const WGSyl = () => {
 	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
 	return (
 		<IonPage>
+			<ModalWrap pageInfo={viewInfo} content={SylCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Syllables</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
