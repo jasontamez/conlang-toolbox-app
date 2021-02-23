@@ -48,7 +48,10 @@ import { Plugins } from '@capacitor/core';
 /* WebfontLoader config */
 const WFLconfig = {
 	google: {
-		families: ['Noto Sans:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext', 'sans-serif'],
+		families: [
+			'Noto Sans:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
+			'Noto Serif:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext'
+		],
 	}
 };
 
