@@ -15,7 +15,6 @@ import { useLocation } from 'react-router-dom';
 import {
 	createSharp,
 	shuffleSharp,
-	listSharp,
 	bookSharp,
 	settingsSharp,
 	chatboxEllipsesSharp
@@ -51,12 +50,6 @@ const appMenuPages: MenuSection[] = [
 				url: '/we',
 				icon: shuffleSharp,
 				id: 'menuitemWE'
-			},
-			{
-				title: 'LangSketch',
-				url: '/ls',
-				icon: listSharp,
-				id: 'menuitemLS'
 			},
 			{
 				title: 'Lexicon',
