@@ -16,7 +16,6 @@ import {
 	IonToggle,
 	useIonViewDidEnter
 } from '@ionic/react';
-import '../App.css';
 import {
 	helpCircleOutline
 } from 'ionicons/icons';

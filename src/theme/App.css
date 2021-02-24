@@ -18,9 +18,20 @@
 #conlangToolbox ion-button.helpy {
 	opacity: 0.5;
 }
-
+#conlangToolbox .possiblyLargeLabel p,
+#conlangToolbox .possiblyLargeLabel h2 {
+	padding: 0;
+	text-indent: 0;
+	white-space: normal;
+}
+#conlangToolbox .important {
+	color: var(--ion-text-color);
+}
 #conlangToolbox .hide {
 	display: none;
+}
+ion-row:nth-child(odd) {
+	margin: 16px 0;
 }
 
 .emphasizedList {

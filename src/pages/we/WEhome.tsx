@@ -18,7 +18,6 @@ import {
 	InpCard,
 	OutCard
 } from './WECards';
-import '../App.css';
 
 const WEHome = () => {
 	const dispatch = useDispatch();

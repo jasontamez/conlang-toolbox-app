@@ -18,7 +18,6 @@ import {
 	closeCircleSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../App.css';
 import { closeModal, loadPresetWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 

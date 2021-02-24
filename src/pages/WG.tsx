@@ -23,7 +23,6 @@ import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
 import WGHome from "./wg/WGhome";
-import './App.css';
 
 
 const WG = () => {

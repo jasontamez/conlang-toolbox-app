@@ -36,6 +36,8 @@ import WebfontLoader from '@dr-kobros/react-webfont-loader';
 
 /* Theme variables */
 import './theme/variables.css';
+/* My theming */
+import './theme/App.css';
 
 import { checkIfState, initialAppState } from './components/ReduxDucks';
 import { overwriteState } from './components/ReduxDucksFuncs';

@@ -20,7 +20,6 @@ import {
 	chevronBackOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../App.css';
 import { WECategoryObject } from '../../components/ReduxDucksTypes';
 import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';

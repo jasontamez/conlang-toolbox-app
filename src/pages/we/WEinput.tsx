@@ -27,7 +27,6 @@ import ModalWrap from "../../components/ModalWrap";
 import { Lexicon } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../App.css';
 
 const WERew = () => {
 	const dispatch = useDispatch();

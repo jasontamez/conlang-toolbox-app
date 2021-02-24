@@ -19,7 +19,6 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../App.css';
 import { closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';

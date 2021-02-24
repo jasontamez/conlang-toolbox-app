@@ -19,7 +19,6 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../App.css';
 import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';

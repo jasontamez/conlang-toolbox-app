@@ -39,7 +39,6 @@ import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
-import '../App.css';
 
 const WEOut = () => {
 	//interface fromOrTo {

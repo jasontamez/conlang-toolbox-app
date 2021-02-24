@@ -18,7 +18,6 @@ import {
 	OutCard,
 	OptCard
 } from './WGCards';
-import '../App.css';
 
 const WGHome = () => {
 	const dispatch = useDispatch();

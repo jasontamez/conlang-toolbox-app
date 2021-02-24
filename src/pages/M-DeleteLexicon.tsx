@@ -19,7 +19,6 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import './App.css';
 import {
 	closeModal,
 	setTemporaryInfo,

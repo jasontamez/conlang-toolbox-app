@@ -40,7 +40,6 @@ import { RewCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../App.css';
 
 const WGRew = () => {
 	const dispatch = useDispatch();

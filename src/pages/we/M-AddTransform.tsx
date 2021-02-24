@@ -21,7 +21,6 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import '../App.css';
 import { closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
 import { WETransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';

@@ -31,7 +31,6 @@ import {
 	addCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import './App.css';
 import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
 import { closeModal, updateLexiconColumns, updateLexiconOrder } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';

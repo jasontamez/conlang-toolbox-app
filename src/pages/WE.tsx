@@ -23,7 +23,6 @@ import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
 import WEHome from "./we/WEhome";
 import { shallowEqual, useSelector } from "react-redux";
-import './App.css';
 
 
 const WE = () => {

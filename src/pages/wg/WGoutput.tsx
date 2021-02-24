@@ -41,7 +41,6 @@ import { OutCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
-import '../App.css';
 
 const WGOut = () => {
 	const dispatch = useDispatch();

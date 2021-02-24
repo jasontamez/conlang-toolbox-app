@@ -32,7 +32,6 @@ import AddCategoryWEModal from './M-AddCategoryWE';
 import EditCategoryWEModal from './M-EditCategoryWE';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
-import '../App.css';
 
 const WECat = () => {
 	const dispatch = useDispatch();

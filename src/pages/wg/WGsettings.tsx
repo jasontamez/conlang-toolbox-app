@@ -49,7 +49,6 @@ import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
 import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
-import '../App.css';
 
 const WGSet = () => {
 	const dispatch = useDispatch();

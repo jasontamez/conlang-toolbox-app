@@ -20,7 +20,6 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import './App.css';
 import { Lexicon } from '../components/ReduxDucksTypes';
 import { closeModal, doEditLexiconItem, cancelEditLexiconItem, deleteLexiconItem } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
