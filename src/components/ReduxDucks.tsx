@@ -1154,6 +1154,22 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
+		case consts.REMOVE_DEFERRED_LEXICON_ITEM:
+			LO = reduceLexiconState(state.lexicon);
+			LO.waitingToAdd = LO.waitingToAdd.filter(word => word !== payload);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.CLEAR_DEFERRED_LEXICON_ITEMS:
+			LO = reduceLexiconState(state.lexicon);
+			LO.waitingToAdd = [];
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
 		case consts.UPDATE_LEXICON_ITEM_ORDER:
 			LO = reduceLexiconState(state.lexicon);
 			LO.lexicon = payload;
@@ -1165,14 +1181,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.UPDATE_LEXICON_SORT:
 			LO = reduceLexiconState(state.lexicon);
 			LO.sort = payload;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		case consts.CLEAR_DEFERRED_LEXICON_ITEMS:
-			LO = reduceLexiconState(state.lexicon);
-			LO.waitingToAdd = [];
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

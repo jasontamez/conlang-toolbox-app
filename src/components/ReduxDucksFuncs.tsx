@@ -221,6 +221,12 @@ export function addLexiconItem(payload: types.Lexicon) {
 export function addDeferredLexiconItems(payload: string[]) {
 	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
 }
+export function removeDeferredLexiconItem(payload: string) {
+	return {type:consts.REMOVE_DEFERRED_LEXICON_ITEM, payload}
+}
+export function clearDeferredLexiconItems() {
+	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
+}
 export function updateLexiconText(prop: "title" | "description" | "key", value: string) {
 	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
 }
@@ -238,9 +244,6 @@ export function updateLexiconOrder(payload: types.Lexicon[]) {
 }
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
-}
-export function clearDeferredLexiconItems() {
-	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
 }
 
 //

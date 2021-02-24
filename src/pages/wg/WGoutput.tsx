@@ -27,7 +27,8 @@ import {
 	openPopover,
 	closePopover,
 	closeModal,
-	addDeferredLexiconItems
+	addDeferredLexiconItems,
+	removeDeferredLexiconItem
 } from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
@@ -432,10 +433,16 @@ const WGOut = () => {
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
-			const CL = el.classList;
-			if(!CL.contains("saved")) {
-				CL.add("saved");
-				el.textContent && dispatch(addDeferredLexiconItems([el.textContent!]));
+			let text = el.textContent;
+			if(text) {
+				let CL = el.classList;
+				if(CL.contains("saved")) {
+					CL.remove("saved");
+					dispatch(removeDeferredLexiconItem(text))
+				} else {
+					CL.add("saved");
+					dispatch(addDeferredLexiconItems([text]));
+				}
 			}
 		}
 	};
