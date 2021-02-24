@@ -8,7 +8,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import Menu from './components/Menu';
 
-import HomePage from "./pages/HomePage";
+import About from "./pages/About";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
 import Lexicon from "./pages/Lex";
@@ -71,12 +71,10 @@ const App = () => {
 							storedState.currentVersion = VERSION.current;
 						}
 						if(checkIfState(storedState)) {
-							console.log("State found");
 							return dispatch(overwriteState(storedState));
 						}
 					}
 				}
-				console.log("No state found");
 				return dispatch(overwriteState(initialAppState));
 			});
 		}
@@ -96,11 +94,10 @@ const App = () => {
 						<IonRouterOutlet id="main">
 							<Route path="/wg" render={() => <WG />} />
 							<Route path="/we"  render={() => <WE />} />
-							<Route path="/ls" component={WG} />
 							<Route path="/lex" render={() => <Lexicon />} />
 							<Route path="/settings" render={() => <Settings />} />
-							<Route path="/about" component={WG} />
-							<Route path="/" component={HomePage} exact={true} />
+							<Route path="/about" render={() => <About />} />
+							<Route path="/" render={() => <About />} exact={true} />
 						</IonRouterOutlet>
 					</IonSplitPane>
 				</IonReactRouter>
