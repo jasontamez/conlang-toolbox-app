@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import {
 	IonApp,
 	IonRouterOutlet,
@@ -96,8 +96,8 @@ const App = () => {
 							<Route path="/we"  render={() => <WE />} />
 							<Route path="/lex" render={() => <Lexicon />} />
 							<Route path="/settings" render={() => <Settings />} />
-							<Route path="/about" render={() => <About />} />
-							<Route path="/" render={() => <About />} exact={true} />
+							<Route path="/about" render={() => <About />} exact={true} />
+							<Redirect exact={true} from="/" to="/about" />
 						</IonRouterOutlet>
 					</IonSplitPane>
 				</IonReactRouter>
