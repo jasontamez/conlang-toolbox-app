@@ -90,8 +90,8 @@ const Menu = () => {
 						return (
 							<IonMenuToggle key={appPage.id} autoHide={false}>
 								<IonItem className={location.pathname.startsWith(appPage.url) ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-								<IonIcon slot="start" icon={appPage.icon} />
-								<IonLabel>{appPage.title}</IonLabel>
+									<IonIcon slot="start" icon={appPage.icon} />
+									<IonLabel>{appPage.title}</IonLabel>
 								</IonItem>
 							</IonMenuToggle>
 						);
