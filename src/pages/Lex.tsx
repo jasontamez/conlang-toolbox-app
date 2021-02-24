@@ -474,7 +474,7 @@ const Lex = () => {
 										const which = i.toString();
 										const ascdec = [0, 1];
 										return ascdec.map((s: number) => {
-											const arrow = [" 🠗", " 🠕"][s];
+											const arrow = [" ↓", " ↑"][s];
 											const dir = s.toString();
 											return (
 												<IonSelectOption value={which + dir} key={which + dir}>{title + arrow}</IonSelectOption>
