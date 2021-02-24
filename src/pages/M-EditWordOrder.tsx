@@ -50,6 +50,14 @@ const EditLexiconOrderModal = () => {
 			columnSizes: [...lexicon.columnSizes],
 			sort: [...lexicon.sort]
 		};
+	} else {
+		editing = {
+			...editing,
+			columnOrder: [...editing.columnOrder],
+			columnTitles: [...editing.columnTitles],
+			columnSizes: [...editing.columnSizes],
+			sort: [...editing.sort]
+		};
 	}
 	let reordering = editing.reordering;
 //	let cols = editing.columns;
