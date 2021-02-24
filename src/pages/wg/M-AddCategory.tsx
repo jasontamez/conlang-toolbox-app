@@ -23,7 +23,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
 import { closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
-import { $q, $i } from '../../components/DollarSignExports';
+import { $q, $i, $a } from '../../components/DollarSignExports';
 
 const AddCategoryModal = () => {
 	let newCat: WGCategoryObject = {
@@ -37,6 +37,7 @@ const AddCategoryModal = () => {
 			label: "",
 			run: ""
 		};
+		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
