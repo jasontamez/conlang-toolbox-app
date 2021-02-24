@@ -477,12 +477,12 @@ const WGOut = () => {
 						<IonButton expand="block" strong={true} color="success" onClick={() => generateOutput(outputPane)}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
-						<IonButton expand="block" strong={false} className="ion-margin-start ion-padding-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
-						<IonButton className={"ion-margin-end ion-padding-horizontal" + (modalState.PickAndSaveWG ? "" : " hide")} id="doneSavingButton" slot="end" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
-							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
-						</IonButton>
-						<IonButton slot="end" expand="block" strong={true} className="ion-margin-end ion-padding-horizontal" color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}>
+						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton expand="block" strong={true} className={modalState.PickAndSaveWG ? "hide" : ""} color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}>
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
+						</IonButton>
+						<IonButton className={modalState.PickAndSaveWG ? "" : "hide"} id="doneSavingButton" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
 					</IonItem>
 					<div id="outputPane" className={"largePane" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
