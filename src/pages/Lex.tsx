@@ -147,13 +147,20 @@ const Lex = () => {
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
 			let y: string;
+			let comp: number;
 			if(dir) {
 				y = x;
 				x = b.columns[col];
 			} else {
 				y = b.columns[col];
 			}
-			return x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+			try {
+				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+			} catch(error) {
+				comp = 0;
+				console.log(error);
+			}
+			return comp;
 		});
 		dispatch(updateLexiconOrder(newLex));
 		dispatch(updateLexiconBool("sorted", true));
