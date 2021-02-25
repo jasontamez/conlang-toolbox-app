@@ -636,11 +636,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.REORDER_REWRITE_RULE_WG:
-			let SRR = state.wordgenRewriteRules;
-			let map = new Map(SRR.list.map(rr => [rr.key, rr]));
 			RO = {
-				list: payload.map((key: string) => map.get(key)),
-				editing: SRR.editing
+				list: payload.map((rr: types.WGRewriteRuleObject) => reduceRewriteRulesWG(rr)),
+				editing: state.wordgenRewriteRules.editing
 			};
 			final = {
 				...reduceAllBut(["wordgenRewriteRules"], state),
@@ -967,11 +965,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.REORDER_TRANSFORM_WE:
-			let ST = state.wordevolveTransforms;
-			let m = new Map(ST.list.map(rr => [rr.key, rr]));
-			ST = {
-				list: payload.map((key: string) => m.get(key)),
-				editing: ST.editing
+			let ST = {
+				list: payload.map((tr: types.WETransformObject) => reduceTransformsWE(tr)),
+				editing: state.wordevolveTransforms.editing
 			};
 			final = {
 				...reduceAllBut(["wordevolveTransforms"], state),
@@ -1017,11 +1013,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.REORDER_SOUND_CHANGE_WE:
-			let SC = state.wordevolveSoundChanges;
-			let scm = new Map(SC.list.map(rr => [rr.key, rr]));
-			SC = {
-				list: payload.map((key: string) => scm.get(key)),
-				editing: SC.editing
+			let SC = {
+				list: payload.map((sc: types.WESoundChangeObject) => reduceSoundChangesWE(sc)),
+				editing: state.wordevolveSoundChanges.editing
 			};
 			final = {
 				...reduceAllBut(["wordevolveSoundChanges"], state),

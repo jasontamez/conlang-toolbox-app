@@ -68,19 +68,16 @@ ion-row:nth-child(odd) {
 	padding: 0 0.5rem;
 	letter-spacing: 0;
 }
-.rewriterules .upDownButtons,
-.transforms .upDownButtons {
-	width: 4rem;
+.rewriterules .dragHandle,
+.transforms .dragHandle {
+	width: 2rem;
 	text-align: center;
 }
-.rewriterules .upDownButtons ion-icon,
-.transforms .upDownButtons ion-icon {
+.rewriterules .dragHandle ion-icon,
+.transforms .dragHandle ion-icon,
+.soundChanges .dragHandle ion-icon {
 	font-size: 32px;
 	color: var(--ion-color-tertiary-shade);
-}
-.soundChanges .upDownButtons ion-icon {
-	font-size: 32px;
-	color: var(--ion-color-secondary-shade);
 }
 
 #conlangToolbox ion-list.syllables div.header {

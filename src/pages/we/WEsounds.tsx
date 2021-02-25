@@ -11,19 +11,19 @@ import {
 	IonTitle,
 	IonIcon,
 	IonList,
-	IonItemSliding,
-	IonItemOptions,
-	IonItemOption,
 	IonItem,
 	IonLabel,
 	IonButton,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	IonReorderGroup,
+	IonReorder
 } from '@ionic/react';
 import {
 	addOutline,
 	helpCircleOutline,
-	chevronUpCircleOutline,
-	chevronDownCircleOutline
+	reorderTwo,
+	construct,
+	trash
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
@@ -49,7 +49,6 @@ const WERew = () => {
 	});
 	const [soundChangeObject, settings] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings], shallowEqual);
 	const soundChange = soundChangeObject.list;
-	const keys = soundChange.map((r: WESoundChangeObject) => r.key);
 	const editSoundChange = (label: any) => {
 		$q(".soundChanges").closeSlidingItems();
 		dispatch(startEditSoundChangeWE(label));
@@ -90,19 +89,16 @@ const WERew = () => {
 			}).then(thenFunc);
 		}
 	};
-	const moveUp = (i: number) => {
-		let begin = keys.slice(0, i);
-		let moved = begin.pop();
-		let moving = keys[i];
-		let end = keys.slice(i + 1);
-		dispatch(reorderSoundChangesWE(begin.concat(moving, moved, end)));
-	};
-	const moveDown = (i: number) => {
-		let begin = keys.slice(0, i);
-		let end = keys.slice(i + 1);
-		let moved = end.shift();
-		let moving = keys[i];
-		dispatch(reorderSoundChangesWE(begin.concat(moved, moving, end)));
+	const doReorder = (event: CustomEvent) => {
+		const reorganize = (what: any[], from: number, to: number) => {
+			let moved = what[from];
+			let remains = what.slice(0, from).concat(what.slice(from + 1));
+			return remains.slice(0, to).concat(moved, remains.slice(to));
+		};
+		const ed = event.detail;
+		const reorganized = reorganize(soundChange, ed.from, ed.to);
+		dispatch(reorderSoundChangesWE(reorganized));
+		ed.complete();
 	};
 	return (
 		<IonPage>
@@ -124,38 +120,37 @@ const WERew = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="soundChanges units" lines="none">
-					{soundChange.map((change: WESoundChangeObject, i: number) => (
-						<IonItemSliding key={change.key}>
-							<IonItemOptions side="end">
-								<IonItemOption color="primary" onClick={() => editSoundChange(change.key)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteSoundChange(change)}>Delete</IonItemOption>
-							</IonItemOptions>
-							<IonItem>
-								<div className="upDownButtons ion-margin-end">
-									{(soundChange.length === 1) ? ""
-										: ((i === 0) ? (<IonIcon icon={chevronDownCircleOutline} key={"d_"+change.key} onClick={() => moveDown(i)} style={ { marginLeft: "32px" } } />)
-											: ((i + 1 === soundChange.length) ? (<IonIcon icon={chevronUpCircleOutline} key={"u_"+change.key} onClick={() => moveUp(i)} style={ { marginRight: "32px" } } />)
-												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+change.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+change.key} onClick={() => moveDown(i)} />)]))}
-								</div>
-								<IonLabel>
-									<div className="importantElement serifChars">
-										<span className="seek importantUnit">{change.seek}</span>
-										<span className="unimportantUnit">{arrow}</span>
-										<span className="replace importantUnit">{change.replace}</span>
-										<span className="unimportantUnit">/</span>
-										<span className="replace importantUnit">{change.context}</span>
-										{change.anticontext ? (
-											<span>
-												<span className="unimportantUnit">!</span>
-												<span className="replace importantUnit">{change.anticontext}</span>
-											</span>
-										) : ""}
-									</div>
-									<div className="description">{change.description}</div>
-								</IonLabel>
-							</IonItem>
-						</IonItemSliding>
-					))}
+					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+						{soundChange.map((change: WESoundChangeObject) => {
+							return (
+								<IonItem key={change.key}>
+									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+									<IonLabel>
+										<div className="importantElement serifChars">
+											<span className="seek importantUnit">{change.seek}</span>
+											<span className="arrow unimportantUnit">{arrow}</span>
+											<span className="replace importantUnit">{change.replace}</span>
+											<span className="unimportantUnit">/</span>
+											<span className="replace importantUnit">{change.context}</span>
+											{change.anticontext ? (
+												<span>
+													<span className="unimportantUnit">!</span>
+													<span className="replace importantUnit">{change.anticontext}</span>
+												</span>
+											) : ""}
+										</div>
+										<div className="description">{change.description}</div>
+									</IonLabel>
+									<IonButton className="ion-margin-end" color="warning" onClick={() => editSoundChange(change.key)}>
+										<IonIcon icon={construct} style={ { margin: 0 } } />
+									</IonButton>
+									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteSoundChange(change)}>
+										<IonIcon icon={trash} style={ { margin: 0 } } />
+									</IonButton>
+								</IonItem>
+							);
+						})}
+					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton color="secondary" title="Add new sound change" onClick={() => dispatch(openModal('AddSoundChange'))}>

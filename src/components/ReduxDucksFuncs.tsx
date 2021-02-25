@@ -56,7 +56,7 @@ export function doEditRewriteRuleWG(payload: types.WGRewriteRuleObject) {
 export function deleteRewriteRuleWG(payload: types.WGRewriteRuleObject) {
 	return {type: consts.DELETE_REWRITE_RULE_WG, payload};
 }
-export function reorderRewriteRulesWG(payload: types.WGRewriteRuleObject["key"][]) {
+export function reorderRewriteRulesWG(payload: types.WGRewriteRuleObject[]) {
 	return {type: consts.REORDER_REWRITE_RULE_WG, payload};
 }
 // Wordgen Settings
@@ -162,7 +162,7 @@ export function doEditTransformWE(payload: types.WETransformObject) {
 export function deleteTransformWE(payload: types.WETransformObject) {
 	return {type: consts.DELETE_TRANSFORM_WE, payload};
 }
-export function reorderTransformsWE(payload: types.WETransformObject["key"][]) {
+export function reorderTransformsWE(payload: types.WETransformObject[]) {
 	return {type: consts.REORDER_TRANSFORM_WE, payload};
 }
 // Sound Changes
@@ -181,7 +181,7 @@ export function doEditSoundChangeWE(payload: types.WESoundChangeObject) {
 export function deleteSoundChangeWE(payload: types.WESoundChangeObject) {
 	return {type: consts.DELETE_SOUND_CHANGE_WE, payload};
 }
-export function reorderSoundChangesWE(payload: types.WESoundChangeObject["key"][]) {
+export function reorderSoundChangesWE(payload: types.WESoundChangeObject[]) {
 	return {type: consts.REORDER_SOUND_CHANGE_WE, payload};
 }
 // Input Lexicon

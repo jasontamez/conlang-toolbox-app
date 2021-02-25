@@ -12,18 +12,18 @@ import {
 	IonTitle,
 	IonIcon,
 	IonList,
-	IonItemSliding,
-	IonItemOptions,
-	IonItemOption,
 	IonItem,
 	IonLabel,
+	IonReorder,
+	IonReorderGroup,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline,
-	chevronUpCircleOutline,
-	chevronDownCircleOutline,
-	helpCircleOutline
+	helpCircleOutline,
+	reorderTwo,
+	construct,
+	trash
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
@@ -49,7 +49,6 @@ const WGRew = () => {
 	});
 	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;
-	const keys = rules.map((r: WGRewriteRuleObject) => r.key);
 	const style = window.getComputedStyle($q("body"));
 	const ltr = style.direction === "ltr";
 	const arrow = (ltr ? "⟶" : "⟵");
@@ -86,19 +85,16 @@ const WGRew = () => {
 			}).then(thenFunc);
 		}
 	};
-	const moveUp = (i: number) => {
-		let begin = keys.slice(0, i);
-		let moved = begin.pop();
-		let moving = keys[i];
-		let end = keys.slice(i + 1);
-		dispatch(reorderRewriteRulesWG(begin.concat(moving, moved, end)));
-	};
-	const moveDown = (i: number) => {
-		let begin = keys.slice(0, i);
-		let end = keys.slice(i + 1);
-		let moved = end.shift();
-		let moving = keys[i];
-		dispatch(reorderRewriteRulesWG(begin.concat(moved, moving, end)));
+	const doReorder = (event: CustomEvent) => {
+		const reorganize = (what: any[], from: number, to: number) => {
+			let moved = what[from];
+			let remains = what.slice(0, from).concat(what.slice(from + 1));
+			return remains.slice(0, to).concat(moved, remains.slice(to));
+		};
+		const ed = event.detail;
+		const reorganized = reorganize(rules, ed.from, ed.to);
+		dispatch(reorderRewriteRulesWG(reorganized));
+		ed.complete();
 	};
 	return (
 		<IonPage>
@@ -120,36 +116,36 @@ const WGRew = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="rewriterules units" lines="none">
-					{rules.map((rr: WGRewriteRuleObject, i: number) => (
-						<IonItemSliding key={rr.key}>
-							<IonItemOptions side="end">
-								<IonItemOption color="tertiary" onClick={() => editRewriteRule(rr.key)}>Edit</IonItemOption>
-								<IonItemOption color="danger" onClick={() => maybeDeleteRewriteRule(rr)}>Delete</IonItemOption>
-							</IonItemOptions>
-							<IonItem>
-								<div className="upDownButtons ion-margin-end">
-									{(rules.length === 1) ? ""
-										: ((i === 0) ? (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} style={ { marginLeft: "32px" } } />)
-											: ((i + 1 === rules.length) ? (<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} style={ { marginRight: "32px" } } />)
-												: [(<IonIcon icon={chevronUpCircleOutline} key={"u_"+rr.key} onClick={() => moveUp(i)} />), (<IonIcon icon={chevronDownCircleOutline} key={"d_"+rr.key} onClick={() => moveDown(i)} />)]))}
-								</div>
-								<IonLabel>
-									<div className="importantElement serifChars">
-										<span className="seek importantUnit">{rr.seek}</span>
-										<span className="arrow unimportantUnit">{arrow}</span>
-										<span className="replace importantUnit">{rr.replace}</span>
-									</div>
-									<div className="description">{rr.description}</div>
-								</IonLabel>
-							</IonItem>
-						</IonItemSliding>
-					))}
+					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+						{rules.map((rr: WGRewriteRuleObject) => {
+							return (
+								<IonItem key={rr.key}>
+									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+									<IonLabel>
+										<div className="importantElement serifChars">
+											<span className="seek importantUnit">{rr.seek}</span>
+											<span className="arrow unimportantUnit">{arrow}</span>
+											<span className="replace importantUnit">{rr.replace}</span>
+										</div>
+										<div className="description">{rr.description}</div>
+									</IonLabel>
+									<IonButton className="ion-margin-end" color="warning" onClick={() => editRewriteRule(rr.key)}>
+										<IonIcon icon={construct} style={ { margin: 0 } } />
+									</IonButton>
+									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteRewriteRule(rr)}>
+										<IonIcon icon={trash} style={ { margin: 0 } } />
+									</IonButton>
+								</IonItem>
+							);
+						})}
+					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton color="tertiary" title="Add new rewrite rule" onClick={() => dispatch(openModal('AddRewriteRule'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>
+				<div style={ { display: "none" } } id="superHidden"></div>
 			</IonContent>
 		</IonPage>
 	);
