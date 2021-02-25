@@ -25,7 +25,6 @@ import {
 import {
 	closeCircleOutline,
 	saveOutline,
-	swapHorizontalOutline,
 	reorderTwo,
 	trashOutline,
 	addCircleOutline
@@ -59,7 +58,6 @@ const EditLexiconOrderModal = () => {
 			sort: [...editing.sort]
 		};
 	}
-	let reordering = editing.reordering;
 //	let cols = editing.columns;
 //	let sort = editing.sort;
 	const setNewInfo = (i: number, id: string) => {
@@ -175,10 +173,6 @@ const EditLexiconOrderModal = () => {
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
 	};
-	const beginReorder = () => {
-		editing.reordering = true;
-		dispatch(updateLexiconColumns(editing));
-	};
 	const doReorder = (event: CustomEvent) => {
 		const reorganize = (what: any[], from: number, to: number) => {
 			let moved = what[from];
@@ -187,11 +181,8 @@ const EditLexiconOrderModal = () => {
 		};
 		const ed = event.detail;
 		editing.columnOrder = reorganize(editing.columnOrder, ed.from, ed.to);
-		ed.complete();
-	};
-	const endReorder = () => {
-		editing.reordering = false;
 		dispatch(updateLexiconColumns(editing));
+		ed.complete();
 	};
 	return (
 		<IonModal isOpen={modalState.EditLexiconOrder} onDidDismiss={() => dispatch(closeModal('EditLexiconOrder'))}>
@@ -231,55 +222,46 @@ const EditLexiconOrderModal = () => {
 							</IonRow>
 						</IonGrid>
 					</IonItem>
-					<IonReorderGroup disabled={!reordering} className={"hideWhileAdding " + (reordering ? "dragActive" : "dragInactive")} onIonItemReorder={doReorder}>
+					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{editing.columnOrder.map((i: number) => {
 							const iStr = i.toString();
 							const sizes = editing.columnSizes;
 							return (
-								<IonReorder key={iStr}>
-									<IonItem>
-										<IonIcon icon={reorderTwo} slot="start" className="showWhileDragging" />
-										<IonLabel className="showWhileDragging">{editing.columnTitles[i]}</IonLabel>
-										<IonGrid className="hideWhileDragging">
-											<IonRow className="ion-align-items-center">
-												<IonCol size="auto">
-													<IonLabel>Field Name: </IonLabel>
-												</IonCol>
-												<IonCol>
-													<IonInput id={"thislex" + iStr} value={editing.columnTitles[i]} onIonBlur={() => setNewInfo(i, "thislex" + iStr)} />
-												</IonCol>
-												<IonCol size="auto">
-													<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>
-												</IonCol>
-											</IonRow>
-											<IonRow className="ion-align-items-center">
-												<IonCol>
-													<IonLabel>Field Size: </IonLabel>
-												</IonCol>
-												<IonCol>
-													<IonCheckbox checked={sizes[i] === "s"} onClick={() => handleCheckboxes(i, "s")} />
-													<IonLabel>Small</IonLabel>
-												</IonCol>
-												<IonCol>
-													<IonCheckbox checked={sizes[i] === "m"} onClick={() => handleCheckboxes(i, "m")} />
-													<IonLabel>Med</IonLabel>
-												</IonCol>
-												<IonCol>
-													<IonCheckbox checked={sizes[i] === "l"} onClick={() => handleCheckboxes(i, "l")} />
-													<IonLabel>Large</IonLabel>
-												</IonCol>
-											</IonRow>
-										</IonGrid>
-									</IonItem>
-								</IonReorder>
+								<IonItem key={iStr}>
+									<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
+									<IonGrid>
+										<IonRow className="ion-align-items-center">
+											<IonCol>
+												<IonInput placeholder="Field Name" id={"thislex" + iStr} value={editing.columnTitles[i]} onIonBlur={() => setNewInfo(i, "thislex" + iStr)} />
+											</IonCol>
+											<IonCol size="auto">
+												<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>
+											</IonCol>
+										</IonRow>
+										<IonRow className="ion-align-items-center">
+											<IonCol>
+												<IonCheckbox checked={sizes[i] === "s"} onClick={() => handleCheckboxes(i, "s")} />
+												<IonLabel>Small</IonLabel>
+											</IonCol>
+											<IonCol>
+												<IonCheckbox checked={sizes[i] === "m"} onClick={() => handleCheckboxes(i, "m")} />
+												<IonLabel>Med</IonLabel>
+											</IonCol>
+											<IonCol>
+												<IonCheckbox checked={sizes[i] === "l"} onClick={() => handleCheckboxes(i, "l")} />
+												<IonLabel>Large</IonLabel>
+											</IonCol>
+										</IonRow>
+									</IonGrid>
+								</IonItem>
 							);
 						})}
 					</IonReorderGroup>
 				</IonList>
 			</IonContent>
-			<IonFooter id="footerElement" className={"addInactive " + (reordering ? "dragActive" : "dragInactive")}>
+			<IonFooter id="footerElement" className="addInactive">
 				<IonToolbar>
-					<IonButton className="hideWhileDragging hideWhileAdding " color="success" slot="start" onClick={() => beginAdding()}>
+					<IonButton className="hideWhileAdding " color="success" slot="start" onClick={() => beginAdding()}>
 						<IonIcon icon={addCircleOutline} slot="start" />
 						<IonLabel>Add</IonLabel>
 					</IonButton>
@@ -287,14 +269,7 @@ const EditLexiconOrderModal = () => {
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>
-					<IonButton className="hideWhileAdding" color={reordering ? "success" : "secondary"} slot="start" onClick={() => { reordering ? endReorder() : beginReorder(); }}>
-						<IonIcon icon={swapHorizontalOutline} slot="start" />
-						<IonLabel>
-							<span className="hideWhileDragging">Reorder </span>
-							<span className="showWhileDragging">Done Reordering!</span>
-						</IonLabel>
-					</IonButton>
-					<IonButton className="hideWhileDragging hideWhileAdding" color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton className="hideWhileAdding" color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Done</IonLabel>
 					</IonButton>
