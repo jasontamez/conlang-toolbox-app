@@ -13,9 +13,8 @@ import {
 	exitOutline,
 	libraryOutline,
 	bookOutline,
-	chevronDownCircleOutline,
-	chevronUpCircleOutline,
-	settingsOutline
+	settingsOutline,
+	reorderTwo
 } from 'ionicons/icons';
 import { $q } from '../../components/DollarSignExports';
 
@@ -109,13 +108,10 @@ export const TraCard = () => {
 					</li>
 				</ul>
 				<p>
-					Click the (+) button to add a new transform. When you make more than one, arrows
-					will appear that will allow you to move
-					transforms <IonIcon icon={chevronUpCircleOutline} size="small" /> up
-					or <IonIcon icon={chevronDownCircleOutline} size="small" /> down. The first
-					transform in the list will be run first, the second transform second, and so on
-					down the list. This may cause unintended effects, so the arrows are provided so
-					you can reorganize your transforms to avoid any such effects.
+					Click the (+) button to add a new transform. The first transform in the list will
+					be run first, the second transform second, and so on down the list. This may cause
+					unintended effects, so you can reorganize your transforms by using
+					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
 				</p><p>
 					<strong>Swipe left</strong> on a transform to find the options
 					to <em>Edit</em> or <em>Delete</em> that transform.
@@ -187,13 +183,11 @@ export const SChCard = () => {
 					If you have no special rules for where in a word a replacement can happen,
 					just make a <em>context expression</em> that's only a single underscore.
 				</p><p>
-					Click the (+) button to add a new sound-change. When you make more than one, arrows
-					will appear that will allow you to move these
-					changes <IonIcon icon={chevronUpCircleOutline} size="small" /> up
-					or <IonIcon icon={chevronDownCircleOutline} size="small" /> down. The first
-					sound-change in the list will be run first, the second sound-change second, and so
-					on down the list. This may cause unintended effects, so the arrows are provided
-					so you can reorganize your sound-changes to avoid any such effects.
+					Click the (+) button to add a new sound-change. The first sound-change in
+					the list will be run first, the second sound-change second, and so on down
+					the list. This may cause unintended effects, so you can reorganize your
+					sound-changes to avoid any such effects by using
+					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
 				</p><p>
 					<strong>Swipe left</strong> on a sound-change to find the options
 					to <em>Edit</em> or <em>Delete</em> it.

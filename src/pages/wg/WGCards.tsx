@@ -13,9 +13,8 @@ import {
 	documentTextOutline,
 	fileTrayStackedOutline,
 	bookOutline,
-	chevronDownCircleOutline,
-	chevronUpCircleOutline,
-	settingsOutline
+	settingsOutline,
+	reorderTwo
 } from 'ionicons/icons';
 import { $q } from '../../components/DollarSignExports';
 import I from '../../components/IPA';
@@ -146,13 +145,10 @@ export const RewCard = () => {
 					<span className="importantUnit">C</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ch</span>
 				</div>
 				<p>
-					Click the (+) button to add a new rewrite rule. When you make more than one rule,
-					arrows will appear that will allow you to move your
-					rules <IonIcon icon={chevronUpCircleOutline} size="small" /> up
-					or <IonIcon icon={chevronDownCircleOutline} size="small" /> down. The first rule in
-					the list will be run first, the second rule second, and so on down the list. This
-					may cause unintended effects, so the arrows are provided so you can reorganize your
-					rules to avoid any such effects.
+					Click the (+) button to add a new rewrite rule. The first rule in the list will be
+					run first, the second rule second, and so on down the list. This may cause
+					unintended effects, so you can reorganize your rules to avoid any such effects by
+					using the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
 				</p><p>
 					<strong>Swipe left</strong> on a rewrite tule to find the options
 					to <em>Edit</em> or <em>Delete</em> that rule.
