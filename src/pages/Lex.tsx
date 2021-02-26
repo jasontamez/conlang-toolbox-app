@@ -208,9 +208,8 @@ const Lex = () => {
 			key: uuidv4(),
 			columns: newInfo
 		}
-		dispatch(addLexiconItem(newWord));
 		let [col, dir] = lexicon.sort;
-		internalSort(col, dir);
+		internalSort(col, dir, [...lexicon.lexicon, newWord]);
 	};
 	const delFromLex = (key: string) => {
 		let title: string = "";
