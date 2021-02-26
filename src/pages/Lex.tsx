@@ -41,7 +41,6 @@ import {
 	updateLexiconNumber,
 	startEditLexiconItem,
 	deleteLexiconItem,
-	addLexiconItem,
 	updateLexiconOrder,
 	updateLexiconSort,
 	updateLexicon,
@@ -496,7 +495,7 @@ const Lex = () => {
 							</IonCol>
 						</IonRow>
 					</IonGrid>
-					<IonGrid>
+					<IonGrid id="theLexiconHolder">
 						<IonRow>
 							<IonCol id="theLexicon">
 								<IonItem className="lexRow lexHeader" style={ { order: -2 } }>

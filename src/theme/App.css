@@ -219,11 +219,15 @@ i.ipa {
 
 #theLexiconHeader {
 	--ion-grid-column-padding: 0;
+	--ion-grid-columns: 5;
 	margin: 2rem 1rem 1rem;
 	padding: 0;
 }
 #theLexiconHeader ion-row {
 	margin: 0;
+}
+#theLexiconHolder {
+	--ion-grid-columns: 1;
 }
 #theLexicon,
 #theLexicon::part(native) {
@@ -266,6 +270,7 @@ i.ipa {
 }
 .lexRow,
 .lexRow::part(native) {
+	--inner-padding-end: 0;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
