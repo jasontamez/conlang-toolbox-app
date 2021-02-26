@@ -496,61 +496,67 @@ const Lex = () => {
 							</IonCol>
 						</IonRow>
 					</IonGrid>
-					<div id="theLexicon">
-						<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
-							{theOrder.map((i: number) => (
-								<span className={theSizes[i]} key={theTitles[i]}>{theTitles[i]}</span>
-							))}
-							<span className="lexiconEdit xs"></span>
-							<span className="lexiconDel xs ion-hide-sm-down"></span>
-						</IonItem>
-						<IonItem className="lexRow serifChars" style={ { order: -1 } }>
-							{theOrder.map((i: number) => {
-								const key = "inputLex" + i.toString();
-								return (
-									<IonInput id={key} key={key} className={theSizes[i]} type="text" />
-								);
-							})}
-							<IonButton className="lexiconAdd xs" color="success" onClick={() => addToLex()}>
-								<IonIcon icon={add} style={ { margin: 0 } } />
-							</IonButton>
-							<span className="lexiconDel xs ion-hide-sm-down"></span>
-						</IonItem>
-						<VirtualList
-							className="virtualLex"
-							width="calc(100% - 2.25rem)"
-							height={twoThirds}
-							itemCount={lexicon.lexicon.length}
-							itemSize={50}
-							renderItem={({index, style}) => {
-								const lex: Lexicon = lexicon.lexicon[index];
-								const cols = lex.columns;
-								const key = lex.key;
-								const id = "LEX" + key;
-								let newStyle: { [key: string]: any } = {
-									...style,
-									order: index
-								};
-								return (
-									<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
-										{theOrder.map((i: number) => (
-											<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
-										))}
-										<span className="lexiconEdit xs">
-											<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
-												<IonIcon icon={construct} style={ { margin: 0 } } />
-											</IonButton>
-										</span>
-										<span className="lexiconDel xs ion-hide-sm-down">
-											<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
-												<IonIcon icon={trash} style={ { margin: 0 } } />
-											</IonButton>
-										</span>
-									</IonItem>
-								);
-							}}
-  						/>
-					</div>
+					<IonGrid>
+						<IonRow>
+							<IonCol id="theLexicon">
+								<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
+									{theOrder.map((i: number) => (
+										<span className={theSizes[i]} key={theTitles[i]}>{theTitles[i]}</span>
+									))}
+									<span className="xs"></span>
+									<span className="xs ion-hide-sm-down"></span>
+								</IonItem>
+								<IonItem className="lexRow serifChars" style={ { order: -1 } }>
+									{theOrder.map((i: number) => {
+										const key = "inputLex" + i.toString();
+										return (
+											<IonInput id={key} key={key} className={theSizes[i]} type="text" />
+										);
+									})}
+									<span className="xs">
+										<IonButton color="success" onClick={() => addToLex()}>
+											<IonIcon icon={add} style={ { margin: 0 } } />
+										</IonButton>
+									</span>
+									<span className="xs ion-hide-sm-down"></span>
+								</IonItem>
+								<VirtualList
+									className="virtualLex"
+									width="100%"
+									height={twoThirds}
+									itemCount={lexicon.lexicon.length}
+									itemSize={50}
+									renderItem={({index, style}) => {
+										const lex: Lexicon = lexicon.lexicon[index];
+										const cols = lex.columns;
+										const key = lex.key;
+										const id = "LEX" + key;
+										let newStyle: { [key: string]: any } = {
+											...style,
+											order: index
+										};
+										return (
+											<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
+												{theOrder.map((i: number) => (
+													<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
+												))}
+												<span className="xs">
+													<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
+														<IonIcon icon={construct} style={ { margin: 0 } } />
+													</IonButton>
+												</span>
+												<span className="xs ion-hide-sm-down">
+													<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
+														<IonIcon icon={trash} style={ { margin: 0 } } />
+													</IonButton>
+												</span>
+											</IonItem>
+										);
+									}}
+		  						/>
+							</IonCol>
+						</IonRow>
+					</IonGrid>
 				</IonList>
 			</IonContent>
 		</IonPage>

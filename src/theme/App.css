@@ -219,7 +219,7 @@ i.ipa {
 
 #theLexiconHeader {
 	--ion-grid-column-padding: 0;
-	margin: 2rem 2rem 1rem;
+	margin: 2rem 1rem 1rem;
 	padding: 0;
 }
 #theLexiconHeader ion-row {
@@ -234,7 +234,7 @@ i.ipa {
 	justify-content: flex-start;
 	align-items: stretch;
 	overflow: auto;
-	width: calc(100% - 2rem);
+	width: calc(100% - 1.5rem);
 }
 #theLexicon .lexInput {
 	--highlight-color-focused: transparent;
@@ -246,16 +246,8 @@ i.ipa {
 	padding: 0 0.25rem;
 }
 #theLexicon .xs {
-	flex: 0 0 2rem;
-}
-#theLexicon .xs.lexiconDel,
-#theLexicon .xs.lexiconEdit {
 	padding-left: 0.25rem;
 	flex: 0 0 2.25rem;
-}
-#theLexicon .xs.lexiconAdd {
-	margin-left: 0.5rem;
-	flex: 0 0 2.5rem;
 }
 #theLexicon .s {
 	flex: 1 1 5rem;
@@ -278,7 +270,7 @@ i.ipa {
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: center;
-	margin: 0 0 0 2rem;
+	margin: 0;
 }
 .lexRow::part(native),
 .virtualLex .lexRow {
@@ -292,7 +284,7 @@ i.ipa {
 	background: #0002;
 }
 .virtualLex {
-	margin: 0 0 0 2.25rem;
+	margin: 0;
 }
 .lexHeader,
 .lexHeader::part(native) {
