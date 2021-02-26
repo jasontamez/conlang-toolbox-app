@@ -206,7 +206,7 @@ const WEOut = () => {
 		});
 		return rules;
 	};
-	const generateOutput = (output: HTMLElement) => {
+	const evolveOutput = (output: HTMLElement) => {
 		let outputType = settingsWE.output;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
@@ -358,10 +358,9 @@ const WEOut = () => {
 				break;
 			case "rulesApplied":
 				// [original, word, [[rule, new word]...]]  	grid-template-columns: 1fr 2em 1fr;
-				const SPACE = String.fromCharCode(160);
 				modifiedWords.forEach(unit => {
-					let div = $e("div", unit.shift() + SPACE + arrow + SPACE);
-					div.append($t(unit.shift(), "span"));
+					let div = $e("div", unit.shift() + " " + arrow);
+					div.append(" ", $t(unit.shift(), "span"));
 					output.append(div);
 					let arrowMinor = arrow || getArrow(output, "double", settingsWE.out === "outputFirst");
 					unit.shift()!.forEach((bit: string[]) => {
@@ -723,8 +722,8 @@ const WEOut = () => {
 				</IonPopover>
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
-						<IonButton expand="block" strong={true} color="success" onClick={() => generateOutput(outputPane)}>
-							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
+						<IonButton expand="block" strong={true} color="success" onClick={() => evolveOutput(outputPane)}>
+							Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WEOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton className={modalState.PickAndSaveWE ? "" : "hide"} id="doneSavingButton" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>

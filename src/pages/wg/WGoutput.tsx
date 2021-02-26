@@ -171,7 +171,6 @@ const WGOut = () => {
 		let i2 = settingsWG.interrogativeSentencePost;
 		let e1 = settingsWG.exclamatorySentencePre;
 		let e2 = settingsWG.exclamatorySentencePost;
-		const SPACE = String.fromCharCode(160);
 		let sentenceNumber = 0;
 		while(sentenceNumber < numberOfSentences) {
 			sentenceNumber++;
@@ -192,7 +191,7 @@ const WGOut = () => {
 			let full = text.join(" ");
 			staging.push(sentence.shift()!);
 			while (sentence.length > 1) {
-				staging.push(SPACE, sentence.shift()!);
+				staging.push(" ", sentence.shift()!);
 			}
 			let type = Math.random() * 12;
 			if(type < 9) {
@@ -215,7 +214,7 @@ const WGOut = () => {
 		}
 		final.append(...text.shift()!);
 		while(text.length > 1) {
-			final.append(SPACE, ...text.shift()!)
+			final.append(" ", ...text.shift()!)
 		}
 		return [final];
 	};
