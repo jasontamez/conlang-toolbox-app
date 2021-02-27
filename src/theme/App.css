@@ -322,6 +322,20 @@ i.ipa {
 #lexiconPage h1 {
 	margin: 0;
 }
+#lexiconPage #revealFullElement {
+	border: 1px solid var(--ion-color-input-fg) !important;
+	background: var(--ion-color-input-bg) !important;
+	letter-spacing: 0.025rem !important;
+	font-size: 0.95rem !important;
+	font-family: 'Noto Serif', 'Georgia', serif !important;
+	text-align: center !important;
+	text-transform: none;
+	margin: 0 !important;
+	padding: 0 8px !important;
+	box-sizing: border-box !important;
+	z-index: 10000 !important;
+	position: fixed !important;
+}
 
 #editLexiconItemOrder ion-row:nth-child(odd) {
 	margin: 0;

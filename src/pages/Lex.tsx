@@ -62,6 +62,7 @@ import { v4 as uuidv4 } from 'uuid';
 import escape from '../components/EscapeForHTML';
 import VirtualList from 'react-tiny-virtual-list';
 import { useWindowHeight } from '@react-hook/window-size/throttled';
+import ltr from '../components/LTR';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -391,6 +392,71 @@ const Lex = () => {
 		dispatch(closePopover('LexiconEllipsis'));
 		dispatch(toggleLexiconHorizontalScroll());
 	};
+	const copyText = () => {
+		const info = $i("revealFullElement");
+		navigator.clipboard.writeText(info.textContent);
+		info.textContent = "Copied to clipboard";
+		clearTimeout(Number(info.dataset.timer));
+		info.dataset.timer = String(setTimeout(() => info.classList.add("hide"), 1000));
+	};
+	const maybeExpand = (e: any) => {
+		const span = e.target;
+		if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
+			let info = $i("revealFullElement") as HTMLInputElement;
+			if(info.dataset.timer) {
+				clearTimeout(Number(info.dataset.timer));
+			}
+			info.textContent = span.textContent;
+			const body = $i("lexiconPage");
+			const win = body.getBoundingClientRect();
+			const maxend = win.right;
+			const maxdown = win.bottom;
+			const rect = span.getBoundingClientRect();
+			const width = span.scrollWidth + 16;
+			const height = span.scrollHeight;
+			let style: [string, any][] = [
+				["width", String(width) + "px"],
+			];
+			// Determine the location of the span's four corners.
+			// Prefer to expand to the end and down, then end and up,
+			//   then start and down, and finally start and up
+			// Set horizontal position
+			if(ltr(span)) {
+				// LTR
+				let amount = String(Math.floor(rect.left - win.left)) + "px";
+				if(rect.left + width > maxend) {
+					style.push(["right", amount]);
+					console.log("too wide");
+				} else {
+					style.push(["left", amount]);
+					console.log("wide enough");
+				}
+			} else {
+				// RTL
+				let amount = String(Math.floor(rect.right - win.right)) + "px";
+				if(rect.right + width > maxend) {
+					style.push(["left", amount]);
+				} else {
+					style.push(["right", amount]);
+				}
+			}
+			// Set vertical position
+			if(rect.top + height > maxdown) {
+				style.push(["bottom", String(Math.floor(rect.bottom)) + "px"]);
+			} else {
+				style.push(["top", String(Math.floor(rect.top)) + "px"]);
+			}
+			// Set style
+			info.setAttribute("style", style.map((pair: [string, any]) => {
+				let [prop, value] = pair;
+				return prop + ": " + String(value);
+			}).join("; "));
+			// Add to page
+			info.classList.remove("hide");
+			// Disappear after 6 seconds
+			info.dataset.timer = String(setTimeout(() => info.classList.add("hide"), 6000));
+		}
+	};
 	return (
 		<IonPage>
 			<EditLexiconItemModal />
@@ -448,6 +514,7 @@ const Lex = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground" id="lexiconPage" scrollX={settings.lexiconHorizontalScroll}>
+				<IonButton id="revealFullElement" fill="clear" size="small" className="hide" onClick={() => copyText()} />
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
@@ -537,7 +604,7 @@ const Lex = () => {
 										return (
 											<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
 												{theOrder.map((i: number) => (
-													<span key={key + i.toString()} className={theSizes[i]}>{cols[i]}</span>
+													<span onClick={maybeExpand} key={key + i.toString()} className={"lexItem " + theSizes[i]}>{cols[i]}</span>
 												))}
 												<span className="xs">
 													<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
