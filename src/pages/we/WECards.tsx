@@ -16,7 +16,7 @@ import {
 	settingsOutline,
 	reorderTwo
 } from 'ionicons/icons';
-import { $q } from '../../components/DollarSignExports';
+import ltr from '../../components/LTR';
 
 export const InpCard = () => {
 	return (
@@ -121,9 +121,7 @@ export const TraCard = () => {
 	);
 };
 export const SChCard = () => {
-	const style = window.getComputedStyle($q("body"));
-	const ltr = style.direction === "ltr";
-	const arrow = (ltr ? "⟶" : "⟵");
+	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
 			<IonItem>

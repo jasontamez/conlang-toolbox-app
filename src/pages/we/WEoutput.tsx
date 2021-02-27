@@ -40,6 +40,8 @@ import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
+import ltr from '../../components/LTR';
+
 
 const WEOut = () => {
 	//interface fromOrTo {
@@ -621,8 +623,7 @@ const WEOut = () => {
 		return output;
 	}
 	const getArrow = (element: HTMLElement, arrow: string, reverse = false) => {
-		const style = window.getComputedStyle(element);
-		const direction = style.direction === "ltr" ? reverse : !reverse;
+		const direction = ltr(element) ? reverse : !reverse;
 		const which = direction ? 1 : 0;
 		switch(arrow) {
 			case "simple":

@@ -40,6 +40,7 @@ import { TraCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
+import ltr from '../../components/LTR';
 
 const WERew = () => {
 	const dispatch = useDispatch();
@@ -54,9 +55,7 @@ const WERew = () => {
 		dispatch(startEditTransformWE(label));
 		dispatch(openModal('EditTransform'));
 	};
-	const style = window.getComputedStyle($q("body"));
-	const ltr = style.direction === "ltr";
-	const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
+	const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
 	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {

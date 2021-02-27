@@ -40,6 +40,7 @@ import { SChCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
+import ltr from '../../components/LTR';
 
 const WERew = () => {
 	const dispatch = useDispatch();
@@ -54,9 +55,7 @@ const WERew = () => {
 		dispatch(startEditSoundChangeWE(label));
 		dispatch(openModal('EditSoundChange'));
 	};
-	const style = window.getComputedStyle($q("body"));
-	const ltr = style.direction === "ltr";
-	const arrow = (ltr ? "⟶" : "⟵");
+	const arrow = (ltr() ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		const thenFunc = (result: any) => {

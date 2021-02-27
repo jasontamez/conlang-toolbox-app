@@ -40,6 +40,7 @@ import { RewCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
+import ltr from '../../components/LTR';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
@@ -49,9 +50,7 @@ const WGRew = () => {
 	});
 	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
 	const rules = rulesObject.list;
-	const style = window.getComputedStyle($q("body"));
-	const ltr = style.direction === "ltr";
-	const arrow = (ltr ? "⟶" : "⟵");
+	const arrow = (ltr() ? "⟶" : "⟵");
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
 		dispatch(startEditRewriteRuleWG(label));
