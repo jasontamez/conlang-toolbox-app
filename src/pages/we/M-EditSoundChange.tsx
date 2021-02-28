@@ -16,14 +16,21 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	saveOutline
+	saveOutline,
+	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditSoundChangeWE, cancelEditSoundChangeWE } from '../../components/ReduxDucksFuncs';
+import {
+	closeModal,
+	doEditSoundChangeWE,
+	cancelEditSoundChangeWE,
+	deleteSoundChangeWE
+} from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
+import ltr from '../../components/LTR';
 
 const EditSoundChangeModal = () => {
 	const hardReset = () => {
@@ -37,9 +44,16 @@ const EditSoundChangeModal = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	const rewritesObject = useSelector((state: any) => state.wordevolveSoundChanges, shallowEqual);
-	const editing = rewritesObject.editing;
+	const [
+		modalState,
+		soundChangesObject,
+		settings
+	] = useSelector((state: any) => [
+		state.modalState,
+		state.wordevolveSoundChanges,
+		state.appSettings
+	], shallowEqual);
+	const editing = soundChangesObject.editing;
 	let editingSoundChange: WESoundChangeObject = {
 		key: "",
 		seek: "",
@@ -48,11 +62,13 @@ const EditSoundChangeModal = () => {
 		anticontext: "",
 		description: ""
 	};
-	rewritesObject.list.every((trans: WESoundChangeObject) => {
-		if(trans.key === editing) {
+	let currentSoundChange: WESoundChangeObject;
+	soundChangesObject.list.every((change: WESoundChangeObject) => {
+		if(change.key === editing) {
 			editingSoundChange = {
-				...trans
+				...change
 			};
+			currentSoundChange = change;
 			return false;
 		}
 		return true;
@@ -108,6 +124,43 @@ const EditSoundChangeModal = () => {
 			showConfirmButton: false
 		});
 	};
+	const maybeDeleteSoundChange = () => {
+		$q(".soundChanges").closeSlidingItems();
+		const thenFunc = (result: any) => {
+			if(result.isConfirmed) {
+				dispatch(deleteSoundChangeWE(currentSoundChange));
+				fireSwal({
+					title: "Rewrite Rule deleted",
+					customClass: {popup: 'dangerToast'},
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			let soundChange =
+				currentSoundChange.seek
+				+ (ltr() ? "⟶" : "⟵")
+				+ currentSoundChange.replace
+				+ "/"
+				+ currentSoundChange.context;
+			if(currentSoundChange.anticontext) {
+				soundChange +=  "/" + currentSoundChange.anticontext;
+			}
+			fireSwal({
+				title: "Delete " + soundChange + "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
+	};
 	return (
 		<IonModal isOpen={modalState.EditSoundChange} onDidDismiss={() => dispatch(closeModal('EditSoundChange'))}>
 			<IonHeader>
@@ -149,6 +202,10 @@ const EditSoundChangeModal = () => {
 					<IonButton color="primary" slot="end" onClick={() => maybeSaveNewSoundChangeInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Sound Change</IonLabel>
+					</IonButton>
+					<IonButton color="danger" slot="start" onClick={() => maybeDeleteSoundChange()}>
+						<IonIcon icon={trashOutline} slot="start" />
+						<IonLabel>Delete Item</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

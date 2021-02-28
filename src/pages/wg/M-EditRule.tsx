@@ -16,14 +16,21 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	saveOutline
+	saveOutline,
+	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditRewriteRuleWG, cancelEditRewriteRuleWG } from '../../components/ReduxDucksFuncs';
+import {
+	closeModal,
+	doEditRewriteRuleWG,
+	cancelEditRewriteRuleWG,
+	deleteRewriteRuleWG
+} from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
+import ltr from '../../components/LTR';
 
 const EditRewriteRuleModal = () => {
 	const hardReset = () => {
@@ -35,8 +42,15 @@ const EditRewriteRuleModal = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	const rewritesObject = useSelector((state: any) => state.wordgenRewriteRules, shallowEqual);
+	const [
+		settings,
+		modalState,
+		rewritesObject
+	] = useSelector((state: any) => [
+		state.appSettings,
+		state.modalState,
+		state.wordgenRewriteRules
+	], shallowEqual)
 	const editing = rewritesObject.editing;
 	let editingRule: WGRewriteRuleObject = {
 		key: "",
@@ -44,11 +58,13 @@ const EditRewriteRuleModal = () => {
 		replace: "",
 		description: ""
 	};
+	let currentRule: WGRewriteRuleObject;
 	rewritesObject.list.every((rr: WGRewriteRuleObject) => {
 		if(rr.key === editing) {
 			editingRule = {
 				...rr
 			};
+			currentRule = rr;
 			return false;
 		}
 		return true;
@@ -98,6 +114,34 @@ const EditRewriteRuleModal = () => {
 			showConfirmButton: false
 		});
 	};
+	const maybeDeleteRewriteRule = () => {
+		$q(".rewriterules").closeSlidingItems();
+		const thenFunc = (result: any) => {
+			if(result.isConfirmed) {
+				dispatch(deleteRewriteRuleWG(currentRule));
+				fireSwal({
+					title: "Rewrite Rule deleted",
+					customClass: {popup: 'dangerToast'},
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Delete " + currentRule.seek + (ltr() ? "⟶" : "⟵") + currentRule.replace + "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
+	};
 	return (
 		<IonModal isOpen={modalState.EditRewriteRule} onDidDismiss={() => dispatch(closeModal('EditRewriteRule'))}>
 			<IonHeader>
@@ -131,6 +175,10 @@ const EditRewriteRuleModal = () => {
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRuleInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Rule</IonLabel>
+					</IonButton>
+					<IonButton color="danger" slot="start" onClick={() => maybeDeleteRewriteRule()}>
+						<IonIcon icon={trashOutline} slot="start" />
+						<IonLabel>Delete Item</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

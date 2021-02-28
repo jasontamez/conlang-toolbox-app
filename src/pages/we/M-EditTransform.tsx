@@ -18,13 +18,20 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	saveOutline
+	saveOutline,
+	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WETransformObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditTransformWE, cancelEditTransformWE } from '../../components/ReduxDucksFuncs';
+import {
+	closeModal,
+	doEditTransformWE,
+	cancelEditTransformWE,
+	deleteTransformWE
+} from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
+import ltr from '../../components/LTR';
 
 const EditTransformModal = () => {
 	const hardReset = () => {
@@ -37,8 +44,15 @@ const EditTransformModal = () => {
 		};
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
-	const rewritesObject = useSelector((state: any) => state.wordevolveTransforms, shallowEqual);
+	const [
+		modalState,
+		rewritesObject,
+		settings
+	] = useSelector((state: any) => [
+		state.modalState,
+		state.wordevolveTransforms,
+		state.appSettings
+	], shallowEqual);
 	const editing = rewritesObject.editing;
 	let editingTransform: WETransformObject = {
 		key: "",
@@ -47,11 +61,13 @@ const EditTransformModal = () => {
 		direction: "both",
 		description: ""
 	};
+	let currentTransform: WETransformObject;
 	rewritesObject.list.every((trans: WETransformObject) => {
 		if(trans.key === editing) {
 			editingTransform = {
 				...trans
 			};
+			currentTransform = trans;
 			return false;
 		}
 		return true;
@@ -99,6 +115,42 @@ const EditTransformModal = () => {
 			showConfirmButton: false
 		});
 	};
+	const maybeDeleteTransform = () => {
+		const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
+		$q(".transforms").closeSlidingItems();
+		const thenFunc = (result: any) => {
+			if(result.isConfirmed) {
+				dispatch(deleteTransformWE(currentTransform));
+				fireSwal({
+					title: "Transform deleted",
+					customClass: {popup: 'dangerToast'},
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title:
+					"Delete "
+					+ currentTransform.seek
+					+ " "
+					+ makeArrow(currentTransform.direction)
+					+ " "
+					+ currentTransform.replace
+					+ "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
+	};
 	return (
 		<IonModal isOpen={modalState.EditTransform} onDidDismiss={() => dispatch(closeModal('EditTransform'))}>
 			<IonHeader>
@@ -140,6 +192,10 @@ const EditTransformModal = () => {
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransformInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Transform</IonLabel>
+					</IonButton>
+					<IonButton color="danger" slot="start" onClick={() => maybeDeleteTransform()}>
+						<IonIcon icon={trashOutline} slot="start" />
+						<IonLabel>Delete Item</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
