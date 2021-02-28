@@ -491,7 +491,7 @@ const WGOut = () => {
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
 					</IonItem>
-					<div id="outputPane" className={"largePane" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
+					<div id="outputPane" className={"largePane selectable" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

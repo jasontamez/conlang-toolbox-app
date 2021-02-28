@@ -734,7 +734,7 @@ const WEOut = () => {
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPaneWE" className={"largePane" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
+					<div id="outputPaneWE" className={"largePane selectable" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
 				</IonList>
 			</IonContent>
 		</IonPage>

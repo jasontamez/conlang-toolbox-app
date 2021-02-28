@@ -584,7 +584,7 @@ const Lex = () => {
 										return (
 											<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
 												{theOrder.map((i: number) => (
-													<span onClick={maybeExpand} key={key + i.toString()} className={"lexItem " + theSizes[i]}>{cols[i]}</span>
+													<span onClick={maybeExpand} key={key + i.toString()} className={"lexItem selectable " + theSizes[i]}>{cols[i]}</span>
 												))}
 												<span className="xs">
 													<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
