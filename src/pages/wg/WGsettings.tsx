@@ -16,6 +16,7 @@ import {
 	IonToggle,
 	IonInput,
 	IonButton,
+	IonLoading,
 	useIonViewDidEnter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -31,6 +32,8 @@ import {
 	setInterrogativePostWG,
 	setExclamatoryPreWG,
 	setExclamatoryPostWG,
+	setLoadingPage,
+	setTemporaryInfo,
 	openModal,
 	clearEverything,
 	changeView
@@ -47,6 +50,7 @@ import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import ManageCustomInfo from './M-CustomInfo';
 import fireSwal from '../../components/Swal';
+import { CustomStorageWG } from '../../components/PersistentInfo';
 import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 
@@ -56,7 +60,15 @@ const WGSet = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [settingsWG, settings] = useSelector((state: any) => [state.wordgenSettings, state.appSettings], shallowEqual);
+	const [
+		settingsWG,
+		settings,
+		modalState
+	] = useSelector((state: any) => [
+		state.wordgenSettings,
+		state.appSettings,
+		state.modalState
+	], shallowEqual);
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
@@ -85,11 +97,33 @@ const WGSet = () => {
 			}).then(thenFunc);
 		}
 	};
+	const openCustomInfoModal = () => {
+		let titles: string[] = [];
+		CustomStorageWG.iterate((value, title) => {
+			titles.push(title);
+			return; // Blank return keeps the loop going
+		}).then(() => {
+			dispatch(setTemporaryInfo({ data: titles }));
+			dispatch(setLoadingPage(false));
+			dispatch(openModal("ManageCustomInfo"));
+		}).catch((err) => {
+			console.log(err);
+		});
+		dispatch(setLoadingPage("loadingCustomInfo"));
+	};
 	return (
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
 			<ModalWrap pageInfo={viewInfo} content={OptCard} />
+			<IonLoading
+	        	cssClass='loadingPage'
+    	    	isOpen={modalState.loadingPage === "loadingCustomInfo"}
+    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
+	        	message={'Please wait...'}
+				spinner="bubbles"
+				duration={300000}
+			/>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -110,7 +144,7 @@ const WGSet = () => {
 						<div style={ { display: "flex", justifyContent: "center", alignContent: "flex-start", alignItems: "center", flexFlow: "row wrap" } }>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load Preset</IonButton>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Clear All Fields</IonButton>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => dispatch(openModal("ManageCustomInfo"))} strong={true} color="primary" shape="round">Save/Load Custom Info</IonButton>
+							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => openCustomInfoModal()} strong={true} color="primary" shape="round">Save/Load Custom Info</IonButton>
 						</div>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>

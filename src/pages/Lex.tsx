@@ -51,7 +51,7 @@ import {
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
-import { Plugins } from '@capacitor/core';
+import { LexiconStorage } from '../components/PersistentInfo';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
@@ -291,16 +291,13 @@ const Lex = () => {
 			thenFunc();
 		}
 	};
-	const { Storage } = Plugins;
 	const openLexiconModal = (which: keyof ModalStateObject) => {
-		Storage.get({ key: "savedLexicons" }).then((result) => {
-			const value = result.value;
-			if(value === null) {
-				// No info retrieved.
-			} else {
-				const newData = JSON.parse(value);
-				dispatch(setTemporaryInfo(newData));
-			}
+		let keys: string[] = [];
+		LexiconStorage.iterate((value, key) => {
+			keys.push(key);
+			return; // Blank return keeps the loop going
+		}).then(() => {
+			keys.length > 0 && dispatch(setTemporaryInfo({ data: keys }));
 			dispatch(setLoadingPage(false));
 			dispatch(openModal(which));
 		});
@@ -324,42 +321,28 @@ const Lex = () => {
 		dispatch(setLoadingPage("lookingForLexicons"));
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		Storage.get({ key: "savedLexicons" }).then((result) => {
-			const value = result.value;
-			let saved: Map<string, LexiconObject> = new Map();
-			let prepared: any[] = [];
-			if(value === null) {
-				// No info retrieved.
-			} else {
-				saved = new Map(JSON.parse(value));
-			}
-			// Make a shallow copy of the current lexicon
-			let lex: LexiconObject = {...lexicon};
-			// Use possibly-new key
-			lex.key = key;
-			// Use 'now'
-			lex.lastSave = now;
-			// Deep copy lex.lexicon
-			lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
-				let x = {...lx};
-				x.columns = [...lx.columns];
-				return x;
-			});
-			// Deep copy column info
-			lex.columnOrder = [...lex.columnOrder];
-			lex.columnTitles = [...lex.columnTitles];
-			lex.columnSizes = [...lex.columnSizes];
-			lex.sort = [...lex.sort];
-			// If we're overwriting, and it's a new key, delete the old one
-			if(overwrite && key !== firstKey) {
-				saved.delete(firstKey);
-			}
-			// Save lexicon copy
-			saved.set(key, lex);
-			// Convert back to Array
-			saved.forEach((lexx: LexiconObject, keyy: string) => prepared.push([keyy, lexx]));
-			// Save to disk
-			Storage.set({ key: "savedLexicons", value: JSON.stringify(prepared) }).then(() => {
+		let lex: LexiconObject = {...lexicon};
+		// Use possibly-new key
+		lex.key = key;
+		// Use 'now'
+		lex.lastSave = now;
+		// Deep copy lex.lexicon
+		lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
+			let x = {...lx};
+			x.columns = [...lx.columns];
+			return x;
+		});
+		// Deep copy column info
+		lex.columnOrder = [...lex.columnOrder];
+		lex.columnTitles = [...lex.columnTitles];
+		lex.columnSizes = [...lex.columnSizes];
+		lex.sort = [...lex.sort];
+		LexiconStorage.setItem(key, lex)
+			.then(() => {
+				// If we're overwriting, and it's a new key, delete the old one
+				if(overwrite && key !== firstKey) {
+					LexiconStorage.removeItem(firstKey);
+				}
 				dispatch(setLoadingPage(false));
 				fireSwal({
 					title: announce,
@@ -369,7 +352,6 @@ const Lex = () => {
 					showConfirmButton: false
 				});
 			});
-		});
 		dispatch(closePopover('LexiconEllipsis'));
 	};
 	const saveLexiconNew = () => {
@@ -426,10 +408,8 @@ const Lex = () => {
 				let amount = String(Math.floor(rect.left - win.left)) + "px";
 				if(rect.left + width > maxend) {
 					style.push(["right", amount]);
-					console.log("too wide");
 				} else {
 					style.push(["left", amount]);
-					console.log("wide enough");
 				}
 			} else {
 				// RTL

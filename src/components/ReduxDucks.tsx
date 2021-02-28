@@ -1,5 +1,5 @@
 import { WGPresets } from './WGPresets';
-import { Plugins } from '@capacitor/core';
+import { StateStorage } from './PersistentInfo';
 import maybeUpdateTheme from './MaybeUpdateTheme';
 import * as consts from './ReduxDucksConst';
 import * as types from './ReduxDucksTypes';
@@ -230,7 +230,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveCategories", reduceCategoryWE],
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
-	["wordevolveInput", (a: string[]) => a.map(a => a)],
+	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
@@ -275,8 +275,7 @@ export const initialAppState: types.StateObject = {
 		capitalizeWords: false,
 		sortWordlist: true,
 		wordlistMultiColumn: true,
-		wordsPerWordlist: 250,
-		customInfo: []
+		wordsPerWordlist: 250
 	},
 	wordevolveCategories: {
 		map: [],
@@ -379,8 +378,7 @@ export const blankAppState: types.StateObject = {
 		capitalizeWords: false,
 		sortWordlist: true,
 		wordlistMultiColumn: true,
-		wordsPerWordlist: 250,
-		customInfo: []
+		wordsPerWordlist: 250
 	},
 	wordevolveCategories: {
 		map: [],
@@ -453,30 +451,19 @@ export const blankAppState: types.StateObject = {
 };
 
 // Storage
-const { Storage } = Plugins;
 const saveCurrentState = (state: types.StateObject) => {
+	let newState = reduceAllBut([], state);
 	// Eliminate not-stringifyable properties
-	const ms = state.modalState;
-	const lex = ms.LexiconEllipsis;
-	const sav = ms.WGSaveToLexicon;
-	const sav2 = ms.WESaveToLexicon;
-	const temp = state.temporaryInfo;
+	const ms = newState.modalState;
 	ms.LexiconEllipsis
 		= ms.WGSaveToLexicon
 		= ms.WESaveToLexicon
-		= state.temporaryInfo
+		= newState.temporaryInfo
 		= undefined;
-	// Stringify
-	const stringified = JSON.stringify(state);
-	// Restore non-stringifyable properties
-	ms.LexiconEllipsis = lex;
-	ms.WGSaveToLexicon = sav;
-	ms.WESaveToLexicon = sav2;
-	state.temporaryInfo = temp;
-	// Save stringified state
-	Storage.set({key: "currentState", value: stringified});
+	// Save
+	StateStorage.setItem("lastState", newState);
 };
-const initialState: types.StateObject = blankAppState;
+const initialState: types.StateObject = reduceAllBut([], blankAppState);
 
 // reducer
 export function reducer(state: types.StateObject = initialState, action: any) {
@@ -805,15 +792,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				wordgenSettings: {
 					...state.wordgenSettings,
 					wordsPerWordlist: payload
-				}
-			};
-			break;
-		case consts.SET_CUSTOM_INFO_WG:
-			final = {
-				...reduceAllBut(["wordgenSettings"], state),
-				wordgenSettings: {
-					...state.wordgenSettings,
-					customInfo: payload
 				}
 			};
 			break;

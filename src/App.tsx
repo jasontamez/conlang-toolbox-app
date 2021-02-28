@@ -31,7 +31,6 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Google webfontloader */
-//import { render } from 'react-dom';
 import WebfontLoader from '@dr-kobros/react-webfont-loader';
 
 /* Theme variables */
@@ -44,7 +43,7 @@ import { overwriteState } from './components/ReduxDucksFuncs';
 import { VERSION } from './components/ReduxDucksConst';
 import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
-import { Plugins } from '@capacitor/core';
+import { StateStorage } from './components/PersistentInfo';
 
 
 /* WebfontLoader config */
@@ -58,13 +57,10 @@ const WFLconfig = {
 };
 
 const App = () => {
-	const { Storage } = Plugins;
 	const maybeSetState = () => {
 		return (dispatch: any) => {
-			return Storage.get({ key: "currentState" }).then((result) => {
-				const value = result.value;
-				if(value !== null) {
-					const storedState = JSON.parse(value);
+			return StateStorage.getItem("lastState").then((storedState: any) => {
+				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date

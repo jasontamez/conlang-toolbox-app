@@ -25,7 +25,7 @@ import {
 	setLoadingPage
 } from '../components/ReduxDucksFuncs';
 import { LexiconObject } from '../components/ReduxDucksTypes';
-import { Plugins } from '@capacitor/core';
+import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
 
 const DeleteLexiconModal = () => {
@@ -36,11 +36,9 @@ const DeleteLexiconModal = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('DeleteLexicon'));
 	};
-	const { Storage } = Plugins;
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
-			const remaining = data.filter((pair: [string, LexiconObject]) => pair[0] !== key);
-			Storage.set({ key: "savedLexicons", value: JSON.stringify(remaining) }).then(() => {
+			LexiconStorage.removeItem(key).then(() => {
 				dispatch(setLoadingPage(false));
 				dispatch(setTemporaryInfo(undefined));
 				dispatch(closeModal('DeleteLexicon'));

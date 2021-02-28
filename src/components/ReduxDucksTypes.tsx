@@ -76,7 +76,6 @@ export interface WGSettingsObject {
 	sortWordlist?: boolean
 	wordlistMultiColumn?: boolean
 	wordsPerWordlist?: Fifty_OneThousand
-	customInfo?: string[]
 }
 
 export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];

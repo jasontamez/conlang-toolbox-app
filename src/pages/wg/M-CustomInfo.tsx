@@ -22,11 +22,11 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, loadCustomInfoWG, setCustomInfoWG } from '../../components/ReduxDucksFuncs';
+import { closeModal, loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
 import { WGCustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
-import { Plugins } from '@capacitor/core';
+import { CustomStorageWG } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 
 const ManageCustomInfo = () => {
@@ -37,55 +37,51 @@ const ManageCustomInfo = () => {
 		settingsWG,
 		categories,
 		syllables,
-		rules
+		rules,
+		temporaryInfo
 	] = useSelector((state: any) => [
 		state.modalState,
 		state.appSettings,
 		state.wordgenSettings,
 		state.wordgenCategories,
 		state.wordgenSyllables,
-		state.wordgenRewriteRules
+		state.wordgenRewriteRules,
+		state.temporaryInfo
 	], shallowEqual);
-	let customInfo: string[] = settingsWG.customInfo || [];
-	const { Storage } = Plugins;
+	let customInfo: string[] = (temporaryInfo && Array.isArray(temporaryInfo.data)) ? temporaryInfo.data : [];
+	const doCleanClose = () => {
+		dispatch(setTemporaryInfo(undefined));
+		dispatch(closeModal('ManageCustomInfo'));
+	};
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
-		let newInfo: string[] = [];
 		if(title === "") {
 			// Do nothing
 			return;
 		}
-		const doSave = (newInfo: string[], title: string, msg: string = "saved") => {
-			let setts = {...settingsWG};
-			delete setts.customInfo;
+		const doSave = (title: string, msg: string = "saved") => {
 			const save: WGCustomInfo = [
 				categories,
 				syllables,
 				rules,
-				setts
+				{...settingsWG}
 			];
-			Storage.set({key: "customInfo", value: JSON.stringify(newInfo)});
-			Storage.set({key: "customInfo"+title, value: JSON.stringify(save)});
-			dispatch(setCustomInfoWG(newInfo));
-			fireSwal({
-				title: "\"" + title + "\" " + msg,
-				toast: true,
-				timer: 2500,
-				timerProgressBar: true,
-				showConfirmButton: false
-			});
-			dispatch(closeModal('ManageCustomInfo'));
+			CustomStorageWG.setItem(title, save).then(() => {
+				fireSwal({
+					title: "\"" + title + "\" " + msg,
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}).finally(() => doCleanClose());
 		};
-		let isNew = true;
-		newInfo = customInfo.map(ci => {
-			if(ci === title) {
-				isNew = false;
-			}
-			return ci;
-		});
-		if(!isNew) {
-			if(settings.disableConfirms) {
-				doSave(newInfo, title, "overwritten");
+		// Check if overwriting
+		CustomStorageWG.getItem(title).then((value) => {
+			if(!value) {
+				doSave(title);
+			} else if (settings.disableConfirms) {
+				doSave(title, "overwritten");
 			} else {
 				fireSwal({
 					title: "\"" + title + "\" already exists",
@@ -95,22 +91,17 @@ const ManageCustomInfo = () => {
 					confirmButtonText: "Yes, overwrite it."
 				}).then((result: any) => {
 					if(result.isConfirmed) {
-						doSave(newInfo, title, "overwritten");
+						doSave(title, "overwritten");
 					}
 				});
 			}
-		} else {
-			newInfo.push(title);
-			doSave(newInfo, title);
-		}
+		});
 	};
 	const maybeLoadInfo = (title: string) => {
 		const thenFunc = () => {
-			Storage.get({key: "customInfo"+title}).then((result) => {
-				let value = result.value;
+			CustomStorageWG.getItem(title).then((value) => {
 				if(value) {
-					let info = JSON.parse(value);
-					dispatch(loadCustomInfoWG(info));
+					dispatch(loadCustomInfoWG(value as WGCustomInfo));
 					fireSwal({
 						title: "Preset \"" + title + "\" loaded",
 						toast: true,
@@ -118,7 +109,7 @@ const ManageCustomInfo = () => {
 						timerProgressBar: true,
 						showConfirmButton: false
 					});
-					dispatch(closeModal('ManageCustomInfo'));
+					doCleanClose()
 				} else {
 					fireSwal({
 						title: "Unknown Error",
@@ -142,9 +133,7 @@ const ManageCustomInfo = () => {
 	};
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
-			let newCI: string[] = customInfo.filter(item => item !== title);
-			dispatch(setCustomInfoWG(newCI));
-			Storage.remove({key: "customInfo"+title}).then(() => {
+			CustomStorageWG.removeItem(title).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",
 					toast: true,
@@ -168,12 +157,12 @@ const ManageCustomInfo = () => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.ManageCustomInfo} onDidDismiss={() => dispatch(closeModal('ManageCustomInfo'))}>
+		<IonModal isOpen={modalState.ManageCustomInfo} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Manage Custom Info</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('ManageCustomInfo'))}>
+						<IonButton onClick={() => doCleanClose()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -210,7 +199,7 @@ const ManageCustomInfo = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem color="danger" button={true} onClick={() => dispatch(closeModal('ManageCustomInfo'))}>
+				<IonItem color="danger" button={true} onClick={() => doCleanClose()}>
 					<IonIcon icon={closeCircleSharp} slot="start" />
 					<IonLabel>Cancel</IonLabel>
 				</IonItem>

@@ -114,9 +114,6 @@ export function setWordlistMulticolumnWG(payload: boolean) {
 export function setWordsPerWordlistWG(payload: types.Fifty_OneThousand) {
 	return {type: consts.SET_WORDS_PER_WORDLIST_WG, payload};
 }
-export function setCustomInfoWG(payload: string[]) {
-	return {type: consts.SET_CUSTOM_INFO_WG, payload};
-}
 // Presets
 export function loadPresetWG(payload: string) {
 	return {type: consts.LOAD_PRESET_WG, payload};
@@ -276,7 +273,7 @@ export function changeView(payload: string[]) {
 // TEMPORARY INFO
 //
 export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {
-	return {type: consts.SET_TEMPORARY_INFO, payload: (payload === undefined ? payload : { data: payload })};
+	return {type: consts.SET_TEMPORARY_INFO, payload};
 }
 
 // Overwrite State
