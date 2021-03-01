@@ -257,95 +257,6 @@ const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObje
 	return output;
 };
 const simple: types.WGPreset = WGPresets.get("Simple")!;
-export const initialAppState: types.StateObject = {
-	currentVersion: consts.VERSION.current,
-	appSettings: {
-		theme: "Default",
-		disableConfirms: false,
-		lexiconHorizontalScroll: false
-	},
-	wordgenCategories: simple.wordgenCategories,
-	wordgenSyllables: simple.wordgenSyllables,
-	wordgenRewriteRules: simple.wordgenRewriteRules,
-	wordgenSettings: {
-		...simple.wordgenSettings,
-		output: "text",
-		showSyllableBreaks: false,
-		sentencesPerText: 30,
-		capitalizeWords: false,
-		sortWordlist: true,
-		wordlistMultiColumn: true,
-		wordsPerWordlist: 250
-	},
-	wordevolveCategories: {
-		map: [],
-		editing: null
-	},
-	wordevolveTransforms: {
-		list: [],
-		editing: null
-	},
-	wordevolveSoundChanges: {
-		list: [],
-		editing: null
-	},
-	wordevolveInput: [],
-	wordevolveSettings: {
-		output: "outputOnly",
-		arrow: "simple"
-	},
-	lexicon: {
-		key: "",
-		lastSave: 0,
-		title: "",
-		description: "",
-		columns: 3,
-		columnOrder: [0,1,2],
-		columnTitles: ["Word", "Part of Speech", "Definition"],
-		columnSizes: ["m", "s", "l"],
-		sort: [0, 0],
-		sorted: true,
-		lexicon: [],
-		waitingToAdd: [],
-		editing: undefined,
-		colEdit: undefined
-	},
-	modalState: {
-		loadingPage: false,
-		AppTheme: false,
-		AddCategory: false,
-		EditCategory: false,
-		AddRewriteRule: false,
-		EditRewriteRule: false,
-		PresetPopup: false,
-		WGOutputOptions: false,
-		ManageCustomInfo: false,
-		AddCategoryWE: false,
-		EditCategoryWE: false,
-		AddTransform: false,
-		EditTransform: false,
-		AddSoundChange: false,
-		EditSoundChange: false,
-		LexiconEllipsis: undefined,
-		EditLexiconItem: false,
-		EditLexiconOrder: false,
-		LoadLexicon: false,
-		DeleteLexicon: false,
-		WGSaveToLexicon: undefined,
-		PickAndSaveWG: false,
-		WEOutputOptions: false,
-		PickAndSaveWE: false,
-		WESaveToLexicon: undefined,
-		InfoModal: false
-	},
-	viewState: {
-		wg: 'home',
-		we: 'home',
-		ls: 'home',
-		lastSection: ''
-	},
-	temporaryInfo: undefined
-};
 export const blankAppState: types.StateObject = {
 	currentVersion: consts.VERSION.current,
 	appSettings: {
@@ -393,10 +304,10 @@ export const blankAppState: types.StateObject = {
 		editing: null
 	},
 	wordevolveInput: [],
-		wordevolveSettings: {
-			output: "outputOnly",
-			arrow: "simple"
-		},
+	wordevolveSettings: {
+		output: "outputOnly",
+		arrow: "simple"
+	},
 	lexicon: {
 		key: "",
 		lastSave: 0,
@@ -448,6 +359,12 @@ export const blankAppState: types.StateObject = {
 		lastSection: ''
 	},
 	temporaryInfo: undefined
+};
+export const initialAppState: types.StateObject = {
+	...blankAppState,
+	wordgenCategories: simple.wordgenCategories,
+	wordgenSyllables: simple.wordgenSyllables,
+	wordgenRewriteRules: simple.wordgenRewriteRules
 };
 
 // Storage
