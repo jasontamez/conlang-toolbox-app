@@ -62,16 +62,25 @@ const AddSoundChangeModal = () => {
 	const maybeSaveNewSoundChange = (close: boolean = true) => {
 		let err: string[] = [];
 		let contextTest = (context: string, what: string = "Context") => {
-			let ind = context.indexOf("");
+			let ind = context.indexOf("_");
 			if(ind === -1) {
 				return what + " must contain one underscore (_)";
-			} else if (context.indexOf("", ind) !== -1) {
+			} else if (context.indexOf("_", ind+1) !== -1) {
 				return what + " can only have one underscore (_)";
+			}
+			let max = context.length - 1;
+			ind = context.indexOf("#");
+			if(ind === 0) {
+				if((ind = context.indexOf("#", 1)) !== -1 && ind !== max) {
+					return what + " can only have word-boundaries (#) at beginning and/or end";
+				}
+			} else if (ind !== max) {
+				return what + " can only have word-boundaries (#) at beginning and/or end";
 			}
 			return false;
 		};
-		let temp: boolean | string;
 		// Test info for validness, then save if needed and reset the newSoundChange
+		let temp: boolean | string;
 		if(newSoundChange.seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
