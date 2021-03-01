@@ -40,7 +40,7 @@ const EditSoundChangeModal = () => {
 			replace: "",
 			context: "",
 			anticontext: "",
-				description: ""
+			description: ""
 		};
 	};
 	const dispatch = useDispatch();
@@ -95,6 +95,30 @@ const EditSoundChangeModal = () => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
+		let contextTest = (context: string, what: string = "Context") => {
+			let ind = context.indexOf("");
+			if(ind === -1) {
+				return what + " must contain one underscore (_)";
+			} else if (context.indexOf("", ind) !== -1) {
+				return what + " can only have one underscore (_)";
+			}
+			return false;
+		};
+		let temp: boolean | string;
+		if(editingSoundChange.seek === "") {
+			$q(".seekLabel").classList.add("invalidValue");
+			err.push("No search expression present");
+		}
+		if(editingSoundChange.context === "") {
+			editingSoundChange.context = "_";
+		} else if((temp = contextTest(editingSoundChange.context))) {
+			err.push(temp);
+			$q(".contextLabel").classList.add("invalidValue");
+		}
+		if(editingSoundChange.anticontext && (temp = contextTest(editingSoundChange.anticontext, "Anticontext"))) {
+			err.push(temp);
+			$q(".anticontextLabel").classList.add("invalidValue");
+		}
 		if(err.length > 0) {
 			// Errors found.
 			fireSwal({
@@ -103,9 +127,6 @@ const EditSoundChangeModal = () => {
 				text: err.join("; ")
 			});
 			return;
-		}
-		if(editingSoundChange.context === "") {
-			editingSoundChange.context = "_";
 		}
 		// Fix any possible regex problems
 		editingSoundChange.seek = repairRegexErrors(editingSoundChange.seek);

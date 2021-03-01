@@ -61,10 +61,28 @@ const AddSoundChangeModal = () => {
 	}
 	const maybeSaveNewSoundChange = (close: boolean = true) => {
 		let err: string[] = [];
+		let contextTest = (context: string, what: string = "Context") => {
+			let ind = context.indexOf("");
+			if(ind === -1) {
+				return what + " must contain one underscore (_)";
+			} else if (context.indexOf("", ind) !== -1) {
+				return what + " can only have one underscore (_)";
+			}
+			return false;
+		};
+		let temp: boolean | string;
 		// Test info for validness, then save if needed and reset the newSoundChange
 		if(newSoundChange.seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
+		}
+		if(newSoundChange.context === "") {
+			newSoundChange.context = "_";
+		} else if((temp = contextTest(newSoundChange.context))) {
+			err.push(temp);
+		}
+		if(newSoundChange.anticontext && (temp = contextTest(newSoundChange.anticontext, "Anticontext"))) {
+			err.push(temp);
 		}
 		if(err.length > 0) {
 			// Errors found.
@@ -74,9 +92,6 @@ const AddSoundChangeModal = () => {
 				text: err.join("; ")
 			});
 			return;
-		}
-		if(newSoundChange.context === "") {
-			newSoundChange.context = "_";
 		}
 		// Everything ok!
 		// Create unique ID for this sound change
