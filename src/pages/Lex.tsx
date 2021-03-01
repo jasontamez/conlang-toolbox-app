@@ -292,12 +292,12 @@ const Lex = () => {
 		}
 	};
 	const openLexiconModal = (which: keyof ModalStateObject) => {
-		let keys: string[] = [];
-		LexiconStorage.iterate((value, key) => {
-			keys.push(key);
+		let info: [string, LexiconObject][] = [];
+		LexiconStorage.iterate((value: LexiconObject, key: string) => {
+			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			keys.length > 0 && dispatch(setTemporaryInfo({ data: keys }));
+			info.length > 0 && dispatch(setTemporaryInfo({ data: info }));
 			dispatch(setLoadingPage(false));
 			dispatch(openModal(which));
 		});
