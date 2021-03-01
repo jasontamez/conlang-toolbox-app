@@ -11,7 +11,6 @@ import {
 import {
 	libraryOutline,
 	syncOutline,
-	informationCircleOutline,
 	enterOutline,
 	exitOutline,
 	megaphoneOutline
@@ -21,7 +20,6 @@ import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
-import WEHome from "./we/WEhome";
 import { shallowEqual, useSelector } from "react-redux";
 
 
@@ -41,13 +39,8 @@ const WE = () => {
 				<Route path="/we/transformations" render={() => <WETransforms />} exact={true} />
 				<Route path="/we/soundchanges" render={() => <WESounds />} exact={true} />
 				<Route path="/we/output" render={() => <WEOutput />} exact={true} />
-				<Route path="/we/home" render={() => <WEHome />} exact={true}  />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="home" href="/we/home">
-					<IonIcon icon={informationCircleOutline} />
-					<IonLabel>Info</IonLabel>
-				</IonTabButton>
 				<IonTabButton tab="input" href="/we/input">
 					<IonIcon icon={enterOutline} />
 					<IonLabel>Input</IonLabel>

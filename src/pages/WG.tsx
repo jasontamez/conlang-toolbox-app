@@ -13,7 +13,6 @@ import {
 	optionsOutline,
 	swapHorizontalOutline,
 	documentTextOutline,
-	informationCircleOutline,
 	fileTrayStackedOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
@@ -22,7 +21,6 @@ import WGRewrites from "./wg/WGrewrites";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
-import WGHome from "./wg/WGhome";
 
 
 const WG = () => {
@@ -36,7 +34,6 @@ const WG = () => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/wg/home" render={() => <WGHome />} exact={true} />
 				<Route path="/wg/categories" render={() => <WGCategories /> } exact={true} />
 				<Route path="/wg/syllables" render={() => <WGSyllables />} exact={true} />
 				<Route path="/wg/rewriterules" render={() => <WGRewrites />} exact={true} />
@@ -44,10 +41,6 @@ const WG = () => {
 				<Route path="/wg/settings" render={() => <WGSettings />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="home" href="/wg/home">
-					<IonIcon icon={informationCircleOutline} />
-					<IonLabel>Info</IonLabel>
-				</IonTabButton>
 				<IonTabButton tab="categories" href="/wg/categories">
 					<IonIcon icon={fileTrayStackedOutline} />
 					<IonLabel>Categories</IonLabel>
