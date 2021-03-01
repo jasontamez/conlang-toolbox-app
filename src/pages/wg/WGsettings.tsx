@@ -122,7 +122,8 @@ const WGSet = () => {
     		    onDidDismiss={() => dispatch(setLoadingPage(false))}
 	        	message={'Please wait...'}
 				spinner="bubbles"
-				duration={300000}
+				/*duration={300000}*/
+				duration={1000}
 			/>
 			<IonHeader>
 				<IonToolbar>

@@ -72,7 +72,8 @@ const DeleteLexiconModal = () => {
     		    onDidDismiss={() => dispatch(setLoadingPage(false))}
 	        	message={'Deleting...'}
 				spinner="bubbles"
-				duration={300000}
+				/*duration={300000}*/
+				duration={1000}
 			/>
 			<IonHeader>
 				<IonToolbar color="primary">
