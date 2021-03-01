@@ -326,6 +326,7 @@ export const blankAppState: types.StateObject = {
 	},
 	modalState: {
 		loadingPage: false,
+		menuToggle: false,
 		AppTheme: false,
 		AddCategory: false,
 		EditCategory: false,
@@ -1107,6 +1108,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["modalState"], state),
 				modalState: newModalLoad
+			};
+			break;
+		case consts.SET_MENU_TOGGLE:
+			let newModalToggle: types.ModalStateObject = reduceModalState(state.modalState);
+			newModalToggle.menuToggle = payload;
+			final = {
+				...reduceAllBut(["modalState"], state),
+				modalState: newModalToggle
 			};
 			break;
 

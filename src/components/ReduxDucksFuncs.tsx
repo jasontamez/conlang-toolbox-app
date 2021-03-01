@@ -261,6 +261,9 @@ export function closePopover(popover: keyof types.ModalStateObject) {
 export function setLoadingPage(payload: boolean | string) {
 	return {type: consts.SET_LOADING_PAGE, payload};
 }
+export function setMenuToggle(payload: boolean | string) {
+	return {type: consts.SET_MENU_TOGGLE, payload};
+}
 
 //
 // VIEWS

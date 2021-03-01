@@ -164,6 +164,7 @@ export interface LexiconObject {
 
 export interface ModalStateObject {
 	loadingPage: string | boolean
+	menuToggle: string | boolean
 	AppTheme: boolean
 	AddCategory: boolean
 	EditCategory: boolean
