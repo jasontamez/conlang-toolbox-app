@@ -86,7 +86,7 @@ const DeleteLexiconModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" className="buttonFilled">
 					{data && data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
 						const key = pair[0];
 						const lex = pair[1];

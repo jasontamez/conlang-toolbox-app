@@ -83,6 +83,8 @@ http://ionicframework.com/docs/theming/ */
 	--ion-background-color: #001414;
 	--ion-background-color-rgb: 0,20,20;
 
+	--ion-background-shader: #0002;
+
 	--ion-text-color: #D6FFFF;
 	--ion-text-color-rgb: 214,255,255;  
 
@@ -183,6 +185,8 @@ body.SolarizedLightTheme {
 	--ion-background-color: #fdf6e3;
 	--ion-background-color-rgb: 253,246,227;
 
+	--ion-background-shader: #0001;
+
 	--ion-text-color: #002b36;
 	--ion-text-color-rgb: 0,43,54;  
 
@@ -271,6 +275,8 @@ body.SolarizedDarkTheme {
 	--ion-background-color: #002b36;
 	--ion-background-color-rgb: 0,43,54;  
 
+	--ion-background-shader: #0002;
+
 	--ion-item-background: var(--ion-color-light-shade);
 
 	--ion-toolbar-background: var(--ion-color-light);
@@ -354,6 +360,8 @@ body.DarkTheme {
 
 	--ion-background-color: #121212;
 	--ion-background-color-rgb: 18,18,18;  
+
+	--ion-background-shader: #0002;
 
 	--ion-item-background: var(--ion-color-dark-shade);
 
@@ -440,6 +448,8 @@ body.LightTheme {
 
 	--ion-item-background: var(--ion-color-light-tint);
 	--ion-item-border-color: var(--ion-color-dark);
+
+	--ion-background-shader: #0002;
 
 	--ion-toolbar-background: #ffffff;
 

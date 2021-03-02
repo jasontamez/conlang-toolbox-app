@@ -63,7 +63,7 @@ const MaybeLoadPresetModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" className="buttonFilled">
 					<IonItem button={true} onClick={() => maybeLoadPreset('Simple')}>
 						<IonLabel>Simple</IonLabel>
 					</IonItem>

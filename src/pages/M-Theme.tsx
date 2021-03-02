@@ -52,7 +52,7 @@ const MaybeLoadPresetModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" className="buttonFilled">
 					{themes.map((theme) => (
 						<IonItem key={theme} button={true} onClick={() => changeAppTheme(theme)}>
 							<IonLabel>{theme}</IonLabel>

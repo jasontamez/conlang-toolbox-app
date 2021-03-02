@@ -181,16 +181,14 @@ const ManageCustomInfo = () => {
 							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
 						</IonItem>
 					</IonItemGroup>
-					<IonItemGroup>
+					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
 							<IonLabel>Load Saved Info</IonLabel>
 						</IonItemDivider>
 						{customInfo.map((title: string) => {
 							return (
 								<IonItem key={title}>
-									<IonLabel className="possiblyLargeLabel">
-										<h2 className="important">{title}</h2>
-									</IonLabel>
+									<IonLabel className="ion-text-wrap">{title}</IonLabel>
 									<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
 									<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
 								</IonItem>
