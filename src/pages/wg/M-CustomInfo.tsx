@@ -133,6 +133,8 @@ const ManageCustomInfo = () => {
 	};
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
+			let newCustom = customInfo.filter(ci => ci !== title);
+			dispatch(setTemporaryInfo({data: newCustom}));
 			CustomStorageWG.removeItem(title).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",
