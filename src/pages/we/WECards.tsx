@@ -112,9 +112,6 @@ export const TraCard = () => {
 					be run first, the second transform second, and so on down the list. This may cause
 					unintended effects, so you can reorganize your transforms by using
 					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
-				</p><p>
-					<strong>Swipe left</strong> on a transform to find the options
-					to <em>Edit</em> or <em>Delete</em> that transform.
 				</p>
 			</IonCardContent>
 		</IonCard>
@@ -186,9 +183,6 @@ export const SChCard = () => {
 					the list. This may cause unintended effects, so you can reorganize your
 					sound-changes to avoid any such effects by using
 					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
-				</p><p>
-					<strong>Swipe left</strong> on a sound-change to find the options
-					to <em>Edit</em> or <em>Delete</em> it.
 				</p>
 
 			</IonCardContent>
