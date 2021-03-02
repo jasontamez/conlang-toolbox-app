@@ -150,7 +150,7 @@ export const RewCard = () => {
 				</p>
 				<hr />
 				<p>
-					Here are some sample rules for some linguistic phenominae:
+					Here are some sample rules for some linguistic phenomina:
 				</p>
 				<ul>
 					<li>Consonant harmony:
