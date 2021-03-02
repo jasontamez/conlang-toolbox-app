@@ -133,7 +133,7 @@ export const SChCard = () => {
 					This is where you determine how your words evolve. The display follows basic standard
 					phonological rules for describing sound changes:
 				</p>
-				<div className="emphasizedList">
+				<div className="emphasizedSection">
 					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">d_</span><span className="unimportantUnit">!</span><span className="importantUnit">_h</span>
 				</div>
 				<p>
@@ -174,7 +174,7 @@ export const SChCard = () => {
 					example: if you want to turn "s" into "z" at the beginning of a word, you
 					could create the following:
 				</p>
-				<div className="emphasizedList">
+				<div className="emphasizedSection">
 					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">#_</span>
 				</div>
 				<p>

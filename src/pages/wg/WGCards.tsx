@@ -41,7 +41,7 @@ export const CatCard = () => {
 					the label will be used to refer to this category in the <strong>Syllables</strong> tab.
 					So you may end up with categories that look like the following:
 				</p>
-				<div className="emphasizedList">
+				<div className="emphasizedSection">
 					<strong>I=pbk</strong>
 					<br />
 					<strong>L=lr</strong>
@@ -77,7 +77,7 @@ export const SylCard = () => {
 					describe the elements that make up a syllable. For example, using the labels above, you
 					could decide to make a list of syllables such as the following:
 				</p>
-				<div className="emphasizedList">
+				<div className="emphasizedSection">
 					<strong>
 						ILV
 						<br />
@@ -139,7 +139,7 @@ export const RewCard = () => {
 					expression <strong>ch</strong>, which will result in <em>Cu</em> above
 					becoming <em>chu</em>. This will result in a rule that looks like the following:
 				</p>
-				<div className="emphasizedList">
+				<div className="emphasizedSection serifChars">
 					<span className="importantUnit">C</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ch</span>
 				</div>
 				<p>
@@ -147,10 +147,37 @@ export const RewCard = () => {
 					run first, the second rule second, and so on down the list. This may cause
 					unintended effects, so you can reorganize your rules to avoid any such effects by
 					using the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
-				</p><p>
-					<strong>Swipe left</strong> on a rewrite tule to find the options
-					to <em>Edit</em> or <em>Delete</em> that rule.
 				</p>
+				<hr />
+				<p>
+					Here are some sample rules for some linguistic phenominae:
+				</p>
+				<ul>
+					<li>Consonant harmony:
+						<div className="emphasizedSection serifChars">
+							RtL: <span className="importantUnit">s(?=.*ʃ)</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ʃ</span>
+							<br />
+							LtR: <span className="importantUnit">(ʃ.+)s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">$1ʃ</span>
+						</div>
+					</li>
+					<li>Liquid dissimilation:
+						<div className="emphasizedSection serifChars">
+							<span className="importantUnit">r(.+)r</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">r$1l</span>
+							<br />
+							<span className="importantUnit">l(.+)l</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">l$1r</span>
+						</div>
+					</li>
+					<li>Synchronic epenthesis:
+						<div className="emphasizedSection serifChars">
+							<span className="importantUnit">r([aeiou]r)$</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">rd$1</span>
+						</div>
+					</li>
+					<li>Anticipatory assimilation:
+						<div className="emphasizedSection serifChars">
+							<span className="importantUnit">[kp]t+</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">tt</span>
+						</div>
+					</li>
+				</ul>
 			</IonCardContent>
 		</IonCard>
 	);
