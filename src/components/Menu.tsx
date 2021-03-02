@@ -183,7 +183,7 @@ const Menu = () => {
 							);
 						} else if(appPage.parent) {
 							return (
-								<IonItem key={appPage.id} className={'subHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hide')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+								<IonItem key={appPage.id} className={'subHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
 									<IonLabel>{appPage.title}</IonLabel>
 									<IonIcon slot="end" size="small" icon={ellipseSharp} />
 								</IonItem>

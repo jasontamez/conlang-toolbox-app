@@ -39,8 +39,12 @@ ion-menu#mainMenu ion-item {
 ion-menu#mainMenu ion-item.mainHeading.selected {
 	--background: rgba(var(--ion-color-primary-rgb), 0.14);
 }
-ion-menu#mainMenu ion-item.mainHeading.toggled ion-icon {
+ion-menu#mainMenu ion-item.mainHeading.toggled ion-icon.caret {
 	transform: rotate(90deg);
+	transition: transform var(--transition-duration) ease-in;
+}
+ion-menu#mainMenu ion-item.mainHeading ion-icon.caret {
+	transition: transform var(--transition-duration) ease-out;
 }
 
 ion-menu#mainMenu ion-item.selected ion-icon {
@@ -58,7 +62,14 @@ ion-menu#mainMenu ion-item ion-label {
 ion-menu#mainMenu ion-item.subHeading {
 	font-size: 0.8em;
 	min-height: 3rem;
+	height: 3rem;
+	transition: all var(--transition-duration) ease-in;
 	--background: var(--ion-background-color, #000);
+}
+ion-menu#mainMenu ion-item.subHeading.hidden {
+	min-height: 0;
+	height: 0;
+	transition: all var(--transition-duration) ease-out;
 }
 ion-menu#mainMenu ion-item.subHeading ion-icon {
 	visibility: hidden;
@@ -85,4 +96,5 @@ ion-item.selected {
 #conlangToolbox ion-menu#mainMenu {
 	--side-min-width: 15.625rem;
 	--side-max-width: 20rem;
+	--transition-duration: 0.2s;
 }
