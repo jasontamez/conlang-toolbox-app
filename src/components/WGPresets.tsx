@@ -451,19 +451,19 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "15",
-					seek: "([^g])\\Bh",
-					replace: "k",
+					seek: "([^g])h",
+					replace: "$1k",
 					description: "change non-initial h to k if not preceeded by a g"
 				},
 				{
 					key: "6",
-					seek: "w*W+w*(%V)",
+					seek: "[wW]+(%V)",
 					replace: "wh$1",
 					description: "W-vowel becomes wh-vowel"
 				},
 				{
 					key: "6.1",
-					seek: "w*W+w*",
+					seek: "[wW]+",
 					replace: "w",
 					description: "remaining Ws become w"
 				},
@@ -541,9 +541,9 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "14.1",
-					seek: "([^aeiou])(ou)\\b",
-					replace: "$1ough",
-					description: "change word-final ou to ough"
+					seek: "([^aeiou])(ou|ei)\\b",
+					replace: "$1$2gh",
+					description: "change word-final ou to ough, ei to eigh"
 				},
 				{
 					key: "16",
@@ -571,14 +571,14 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "18.1",
-					seek: "[aeiou]([aeiou]\\1)",
-					replace: "$1",
+					seek: "[aeiou]([aeiou])\\1",
+					replace: "$1$1",
 					description: "reduce triple vowels, where the last two vowels match, to the final vowels"
 				},
 				{
 					key: "18.2",
-					seek: "([aeiou]\\1)[aeiou]",
-					replace: "$1",
+					seek: "([aeiou])\\1[aeiou]",
+					replace: "$1$1",
 					description: "reduce triple vowels, where the first two vowels match, to the first vowels"
 				},
 				{
