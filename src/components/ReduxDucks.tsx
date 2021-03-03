@@ -154,19 +154,13 @@ const reduceSettingsWE = (original: types.WESettingsObject) => {
 };
 const reduceLexiconState = (original: types.LexiconObject) => {
 	return {
-		key: original.key,
-		lastSave: original.lastSave,
-		title: original.title,
-		description: original.description,
-		columns: original.columns,
+		...original,
 		columnOrder: [...original.columnOrder],
 		columnTitles: [...original.columnTitles],
 		columnSizes: [...original.columnSizes],
 		sort: [...original.sort],
-		sorted: original.sorted,
 		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
 		waitingToAdd: [...original.waitingToAdd],
-		editing: original.editing,
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
 };
@@ -174,7 +168,7 @@ const reduceLexicon = (original: types.Lexicon) => {
 	return {
 		key: original.key,
 		columns: [...original.columns]
-	}
+	};
 };
 const reduceColEdit = (original: types.colEdit) => {
 	return {
@@ -184,19 +178,19 @@ const reduceColEdit = (original: types.colEdit) => {
 		columnSizes: [...original.columnSizes],
 		sort: [...original.sort]
 	};
-}
+};
 const reduceModalState = (original: types.ModalStateObject) => {
 	return {...original};
 };
 const reduceViewState = (original: types.ViewStateObject) => {
 	return {...original};
-}
+};
 const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
 	if(!original) {
 		return original;
 	}
 	return { data: parseUnknownTypes(original.data) };
-}
+};
 const parseUnknownTypes: any = (test: any) => {
 	const theType = (typeof test);
 	switch(theType) {
@@ -261,8 +255,7 @@ export const blankAppState: types.StateObject = {
 	currentVersion: consts.VERSION.current,
 	appSettings: {
 		theme: "Default",
-		disableConfirms: false,
-		lexiconHorizontalScroll: false
+		disableConfirms: false
 	},
 	wordgenCategories: {
 		map: [],
@@ -322,7 +315,8 @@ export const blankAppState: types.StateObject = {
 		lexicon: [],
 		waitingToAdd: [],
 		editing: undefined,
-		colEdit: undefined
+		colEdit: undefined,
+		lexiconWrap: false
 	},
 	modalState: {
 		loadingPage: false,
@@ -412,15 +406,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				appSettings: {
 					...state.appSettings,
 					disableConfirms: payload
-				}
-			};
-			break;
-		case consts.TOGGLE_LEXICON_HORIZONTAL_SCROLL:
-			final = {
-				...reduceAllBut(["appSettings"], state),
-				appSettings: {
-					...state.appSettings,
-					lexiconHorizontalScroll: !state.appSettings.lexiconHorizontalScroll
 				}
 			};
 			break;
@@ -948,10 +933,12 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 		// Lexicon
 		case consts.UPDATE_LEXICON:
-			// Probably delete this?
 			final = {
 				...reduceAllBut(["lexicon"], state),
-				lexicon: payload
+				lexicon: {
+					...payload,
+					lexiconWrap: state.lexicon.lexiconWrap
+				}
 			};
 			break;
 		case consts.UPDATE_LEXICON_EDITING:
@@ -1071,6 +1058,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.UPDATE_LEXICON_SORT:
 			LO = reduceLexiconState(state.lexicon);
 			LO.sort = payload;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.TOGGLE_LEXICON_WRAP:
+			LO = reduceLexiconState(state.lexicon);
+			LO.lexiconWrap = !LO.lexiconWrap;
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

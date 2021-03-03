@@ -299,20 +299,35 @@ i.ipa {
 }
 .virtualLex {
 	margin: 0;
+	overflow-y: scroll;
 }
 .lexHeader,
 .lexHeader::part(native) {
 	font-weight: bold;
 	min-height: 2rem;
+	align-items: flex-end;
 }
 .lexRow > * {
 	margin: 0 0.25rem;
+	padding: 0 0.25rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 .lexRow > .xs {
 	margin: 0;
+}
+.lexInputs::part(native),
+.lexHeader::part(native) {
+	overflow-y: hidden !important;
+}
+.lexItem {
+	display: inline-block;
+	height: 48px;
+	padding: 12px 0;
+}
+.lexItem.ion-text-wrap {
+	overflow: auto;
 }
 .lexiconDisplay {
 	border-top: 2px solid var(--ion-background-color);

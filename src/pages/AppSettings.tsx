@@ -24,8 +24,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	toggleDisableConfirm,
-	openModal,
-	toggleLexiconHorizontalScroll
+	openModal
 } from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
 
@@ -56,13 +55,6 @@ const AppSettings = () => {
 					<IonItem button={true} onClick={() => dispatch(openModal('AppTheme'))}>
 						<IonLabel>Change Theme</IonLabel>
 						<IonNote slot="end" color="primary" style={ { color: "var(--ion-color-primary"} } >{settings.theme || "Default"}</IonNote>
-					</IonItem>
-					<IonItem>
-						<IonLabel className="possiblyLargeLabel">
-							<h2>Enable Horizontal Scroll on Lexicon</h2>
-							<p>Allows the Lexicon page to scroll left and right.</p>
-						</IonLabel>
-						<IonToggle slot="end" checked={settings.lexiconHorizontalScroll} onIonChange={() => dispatch(toggleLexiconHorizontalScroll())} />
 					</IonItem>
 				</IonList>
 			</IonContent>

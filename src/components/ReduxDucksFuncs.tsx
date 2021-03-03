@@ -10,9 +10,6 @@ export function changeTheme(payload: string) {
 export function toggleDisableConfirm(payload: boolean) {
 	return {type: consts.TOGGLE_DISABLE_CONFIRM, payload};
 }
-export function toggleLexiconHorizontalScroll() {
-	return {type: consts.TOGGLE_LEXICON_HORIZONTAL_SCROLL};
-}
 
 //
 // WORDGEN
@@ -241,6 +238,9 @@ export function updateLexiconOrder(payload: types.Lexicon[]) {
 }
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
+}
+export function toggleLexiconWrap() {
+	return {type: consts.TOGGLE_LEXICON_WRAP};
 }
 
 //

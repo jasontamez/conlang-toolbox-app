@@ -47,7 +47,7 @@ import {
 	setLoadingPage,
 	setTemporaryInfo,
 	updateLexiconBool,
-	toggleLexiconHorizontalScroll,
+	toggleLexiconWrap,
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
@@ -274,7 +274,8 @@ const Lex = () => {
 				lexicon: [],
 				waitingToAdd: [],
 				editing: undefined,
-				colEdit: undefined
+				colEdit: undefined,
+				lexiconWrap: lexicon.lexiconWrap
 			};
 			dispatch(updateLexicon(newLex));
 		};
@@ -370,9 +371,9 @@ const Lex = () => {
 			icon: 'warning'
 		});
 	};
-	const toggleHorizontalScroll = () => {
+	const toggleWrap = () => {
 		dispatch(closePopover('LexiconEllipsis'));
-		dispatch(toggleLexiconHorizontalScroll());
+		dispatch(toggleLexiconWrap());
 	};
 	const copyText = () => {
 		const info = $i("revealFullElement");
@@ -383,7 +384,7 @@ const Lex = () => {
 	};
 	const maybeExpand = (e: any) => {
 		const span = e.target;
-		if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
+		if(!lexicon.lexiconWrap && span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
 			let info = $i("revealFullElement") as HTMLInputElement;
 			if(info.dataset.timer) {
 				clearTimeout(Number(info.dataset.timer));
@@ -482,8 +483,8 @@ const Lex = () => {
 							<IonItemDivider>
 								<IonLabel>Options</IonLabel>
 							</IonItemDivider>
-							<IonItem button={true} onClick={() => toggleHorizontalScroll()}>
-								<IonLabel>{settings.lexiconHorizontalScroll ? "Disable" : "Allow"} Horizontal Scroll</IonLabel>
+							<IonItem button={true} onClick={() => toggleWrap()}>
+								<IonLabel>{lexicon.lexiconWrap ? "Disable" : "Allow"} Text Wrapping</IonLabel>
 							</IonItem>
 						</IonList>
 					</IonPopover>
@@ -494,7 +495,7 @@ const Lex = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen className="evenBackground" id="lexiconPage" scrollX={settings.lexiconHorizontalScroll}>
+			<IonContent fullscreen className="evenBackground" id="lexiconPage">
 				<IonButton id="revealFullElement" fill="clear" size="small" className="hide" onClick={() => copyText()} />
 				<IonList lines="none">
 					<IonItem>
@@ -546,33 +547,40 @@ const Lex = () => {
 					<IonGrid id="theLexiconHolder">
 						<IonRow>
 							<IonCol id="theLexicon">
-								<IonItem className="lexRow lexHeader" style={ { order: -2 } }>
+								<IonItem className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
 									{theOrder.map((i: number) => (
-										<span className={theSizes[i]} key={theTitles[i]}>{theTitles[i]}</span>
+										<div
+											className={
+												(lexicon.lexiconWrap ? "ion-text-wrap " : "")
+												+ theSizes[i]
+											}
+											style={ { overflowY: "hidden" }}
+											key={theTitles[i]}
+										>{theTitles[i]}</div>
 									))}
-									<span className="xs"></span>
-									<span className="xs ion-hide-sm-down"></span>
+									<div className="xs" style={ { overflowY: "hidden" }}></div>
+									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
-								<IonItem className="lexRow serifChars" style={ { order: -1 } }>
+								<IonItem className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
 									{theOrder.map((i: number) => {
 										const key = "inputLex" + i.toString();
 										return (
-											<IonInput id={key} key={key} className={theSizes[i]} type="text" />
+											<IonInput id={key} key={key} className={theSizes[i]} type="text" style={ { overflowY: "hidden" }} />
 										);
 									})}
-									<span className="xs">
+									<div className="xs" style={ { overflowY: "hidden" }}>
 										<IonButton color="success" onClick={() => addToLex()}>
 											<IonIcon icon={add} style={ { margin: 0 } } />
 										</IonButton>
-									</span>
-									<span className="xs ion-hide-sm-down"></span>
+									</div>
+									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
 								<VirtualList
 									className="virtualLex"
 									width="100%"
 									height={twoThirds}
 									itemCount={lexicon.lexicon.length}
-									itemSize={50}
+									itemSize={48}
 									renderItem={({index, style}) => {
 										const lex: Lexicon = lexicon.lexicon[index];
 										const cols = lex.columns;
@@ -583,20 +591,36 @@ const Lex = () => {
 											order: index
 										};
 										return (
-											<IonItem key={id} className={"lexRow lexiconDisplay serifChars " + (index % 2 ? "even" : "odd")} id={id} style={ newStyle }>
+											<IonItem
+												key={id}
+												className={
+													"lexRow lexiconDisplay serifChars "
+													+ (index % 2 ? "even" : "odd")
+												}
+												id={id}
+												style={ newStyle }
+											>
 												{theOrder.map((i: number) => (
-													<span onClick={maybeExpand} key={key + i.toString()} className={"lexItem selectable " + theSizes[i]}>{cols[i]}</span>
+													<div
+														onClick={maybeExpand}
+														key={key + i.toString()}
+														className={
+															(lexicon.lexiconWrap ? "ion-text-wrap " : "")
+															+ "lexItem selectable "
+															+ theSizes[i]
+														}
+													>{cols[i]}</div>
 												))}
-												<span className="xs">
+												<div className="xs">
 													<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
 														<IonIcon icon={construct} style={ { margin: 0 } } />
 													</IonButton>
-												</span>
-												<span className="xs ion-hide-sm-down">
+												</div>
+												<div className="xs ion-hide-sm-down">
 													<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
 														<IonIcon icon={trash} style={ { margin: 0 } } />
 													</IonButton>
-												</span>
+												</div>
 											</IonItem>
 										);
 									}}

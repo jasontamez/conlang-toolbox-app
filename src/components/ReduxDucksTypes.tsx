@@ -159,6 +159,7 @@ export interface LexiconObject {
 	waitingToAdd: Lexicon[]
 	editing: number | undefined
 	colEdit: colEdit | undefined
+	lexiconWrap: boolean
 }
 
 
@@ -208,7 +209,6 @@ export interface TemporaryInfo {
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
-	lexiconHorizontalScroll: boolean
 }
 
 export interface StateObject {
