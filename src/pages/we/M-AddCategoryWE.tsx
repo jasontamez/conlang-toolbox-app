@@ -94,6 +94,12 @@ const AddCategoryWEModal = () => {
 		} else if (catMap.has(newCat.label)) {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("There is already a label \"" + newCat.label + "\"");
+		} else {
+			let invalid = "^$\\[]{}.*+()?|";
+			if (invalid.indexOf(newCat.label as string) !== -1) {
+				$q(".labelLabel").classList.add("invalidValue");
+				err.push("You cannot use \"" + newCat.label + "\" as a label.");
+			}
 		}
 		if(newCat.run === "") {
 			$q(".runLabel").classList.add("invalidValue");
@@ -135,7 +141,7 @@ const AddCategoryWEModal = () => {
 			<IonContent>
 				<IonList lines="none">
 					<IonItem>
-						<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
+						<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
 						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={500}></IonInput>
 					</IonItem>
 					<IonItem>

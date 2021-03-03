@@ -4,9 +4,6 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonItemOptions,
-	IonItemOption,
-	IonItemSliding,
 	IonContent,
 	IonPage,
 	IonHeader,
@@ -21,7 +18,9 @@ import {
 } from '@ionic/react';
 import {
 	addOutline,
-	helpCircleOutline
+	helpCircleOutline,
+	construct,
+	trash
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
@@ -97,21 +96,21 @@ const WGCat = () => {
 					{categories.map((item: WGCategoryMap) => {
 						let [label, cat] = item;
 						return (
-							<IonItemSliding key={label}>
-								<IonItemOptions side="end">
-									<IonItemOption color="secondary" onClick={() => editCategory(label)}>Edit</IonItemOption>
-									<IonItemOption color="danger" onClick={() => maybeDeleteCategory(label)}>Delete</IonItemOption>
-								</IonItemOptions>
-								<IonItem>
-									<IonLabel>
-										<div className="categoryRun serifChars">
-											<span className="label importantElement">{label}</span>
-											<span className="run">{cat.run}</span>
-										</div>
-										<div className="categoryLongName">{cat.title}</div>
-									</IonLabel>
-								</IonItem>
-							</IonItemSliding>
+							<IonItem key={label}>
+								<IonLabel>
+									<div className="categoryRun serifChars">
+										<span className="label importantElement">{label}</span>
+										<span className="run">{cat.run}</span>
+									</div>
+									<div className="categoryLongName">{cat.title}</div>
+								</IonLabel>
+								<IonButton className="ion-margin-end" color="warning" onClick={() => editCategory(label)}>
+									<IonIcon icon={construct} style={ { margin: 0 } } />
+								</IonButton>
+								<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteCategory(label)}>
+									<IonIcon icon={trash} style={ { margin: 0 } } />
+								</IonButton>
+							</IonItem>
 						);
 					})}
 				</IonList>

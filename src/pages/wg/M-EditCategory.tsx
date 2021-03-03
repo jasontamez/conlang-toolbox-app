@@ -17,17 +17,18 @@ import {
 import {
 	closeCircleOutline,
 	chevronBackOutline,
-	saveOutline
+	saveOutline,
+	trashOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditCategoryWG, cancelEditCategoryWG } from '../../components/ReduxDucksFuncs';
+import { closeModal, doEditCategoryWG, cancelEditCategoryWG, deleteCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
 const EditCategoryModal = () => {
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
+	const [categoryObject, settings] = useSelector((state: any) => [state.wordgenCategories, state.appSettings], shallowEqual);
 	const catMap: Map<string, WGCategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
@@ -71,9 +72,10 @@ const EditCategoryModal = () => {
 		let length = v.length;
 		let pos = 0;
 		let label = null;
+		let invalid = "^$\\[]{}.*+()?|";
 		while(!label && pos < length) {
 			let test = v.charAt(pos);
-			if(editing === test || !catMap.has(test)) {
+			if(invalid.indexOf(test) !== -1 && (editing === test || !catMap.has(test))) {
 				label = test;
 			}
 			pos++;
@@ -110,6 +112,12 @@ const EditCategoryModal = () => {
 		} else if (editing !== editingCat.label && catMap.has(editingCat.label!)) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("There is already a label \"" + editingCat.label + "\"");
+		} else {
+			let invalid = "^$\\[]{}.*+()?|";
+			if (invalid.indexOf(editingCat.label as string) !== -1) {
+				$q(".labelLabelEdit").classList.add("invalidValue");
+				err.push("You cannot use \"" + editingCat.label + "\" as a label.");
+			}
 		}
 		if(editingCat.run === "") {
 			$q(".runLabelEdit").classList.add("invalidValue");
@@ -135,6 +143,34 @@ const EditCategoryModal = () => {
 			timerProgressBar: true,
 			showConfirmButton: false
 		});
+	};
+	const maybeDeleteCategory = () => {
+		$q(".categories").closeSlidingItems();
+		const thenFunc = (result: any) => {
+			if(result.isConfirmed) {
+				dispatch(deleteCategoryWG(editingCat));
+				fireSwal({
+					title: "Category deleted",
+					customClass: {popup: 'dangerToast'},
+					toast: true,
+					timer: 2500,
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		};
+		if(settings.disableConfirms) {
+			thenFunc({isConfirmed: true});
+		} else {
+			fireSwal({
+				title: "Delete " + editingCat.label + "?",
+				text: "Are you sure? This cannot be undone.",
+				customClass: {popup: 'deleteConfirm'},
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it."
+			}).then(thenFunc);
+		}
 	};
 	return (
 		<IonModal isOpen={modalState.EditCategory} onDidDismiss={() => cancelEditing()}>
@@ -172,6 +208,10 @@ const EditCategoryModal = () => {
 					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Category</IonLabel>
+					</IonButton>
+					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCategory()}>
+						<IonIcon icon={trashOutline} slot="start" />
+						<IonLabel>Delete Category</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -36,10 +36,12 @@ export const CatCard = () => {
 					categories, while also putting <I>pbklr</I> in a third category for general
 					consonants.
 				</p><p>
-					When you make a category, you must give it a <em>description</em> and a
-					one-character <em>label</em>. The description is for your own benefit, while
-					the label will be used to refer to this category in the <strong>Syllables</strong> tab.
-					So you may end up with categories that look like the following:
+					Click the (+) button to add a new category. When you make a category, you must give it
+					a <em>description</em> and a one-character <em>label</em>. The label can be any single
+					character except for these: <strong>^$\\()[]{}.*+?|</strong>. The description is for
+					your own benefit, while the label will be used to refer to this category in
+					the <strong>Syllables</strong> tab. So you may end up with categories that look
+					like the following:
 				</p>
 				<div className="emphasizedSection">
 					<strong>I=pbk</strong>
@@ -56,9 +58,6 @@ export const CatCard = () => {
 					the second more likely than the third, and so on. This mimics natural languages, which
 					tend to use certain sounds more than others. You can adjust this <em>dropoff rate</em>, or
 					eliminate it entirely, on the <strong>Settings</strong> tab.
-				</p><p>
-					Click the (+) button to add a new category. <strong>Swipe left</strong> on a category
-					to find the options to <em>Edit</em> or <em>Delete</em> that category.
 				</p>
 			</IonCardContent>
 		</IonCard>

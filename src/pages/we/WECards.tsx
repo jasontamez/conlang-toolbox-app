@@ -52,13 +52,11 @@ export const CatCard = () => {
 					in <strong>Transformations</strong> and <strong>Sound Changes</strong> to fine-tune
 					the way your language evolves.
 				</p><p>
-					When you make a category, you must give it a <em>description</em> and a
-					one-character <em>label</em>. The description is for your own benefit, while
-					the label will be used to refer to this category in the other tabs.
+					Click the (+) button to add a new category. When you make a category, you must give it
+					a <em>description</em> and a one-character <em>label</em>. The description is for your
+					own benefit, while the label will be used to refer to this category in the other tabs.
+					The label can be any single character except for these: <strong>^$\\()[]{}.*+?|</strong>.
 					The letters/characters in your category are called a <em>run</em>.
-				</p><p>
-					Click the (+) button to add a new category. <strong>Swipe left</strong> on a category
-					to find the options to <em>Edit</em> or <em>Delete</em> that category.
 				</p>
 			</IonCardContent>
 		</IonCard>
