@@ -55,7 +55,7 @@ export const CatCard = () => {
 					Click the (+) button to add a new category. When you make a category, you must give it
 					a <em>description</em> and a one-character <em>label</em>. The description is for your
 					own benefit, while the label will be used to refer to this category in the other tabs.
-					The label can be any single character except for these: <strong>^$\\()[]{}.*+?|</strong>.
+					The label can be any single character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>.
 					The letters/characters in your category are called a <em>run</em>.
 				</p>
 			</IonCardContent>
@@ -101,8 +101,21 @@ export const TraCard = () => {
 						searched, and any instances of the <em>input expression</em> are replaced with
 						the <em>output expression</em>. After all <strong>sound changes</strong> are
 						processed, any instances of the <em>output expression</em> are replaced with
-						the <em>input expression</em>. Regular expressions are not allowed, but
-						%Category references might be (see below).
+						the <em>input expression</em>.
+						<br /><br />
+						Regular expressions are not allowed, but non-negative %Category references are
+						allowed if and only if both input and output have them. In that case, something
+						special happens: when the transformer matches a character in a category, it will
+						note what position that character is in the category's run. It will then look at
+						the other expression's category and pick out the character in the same position.
+						<br /><br />
+						For example: If %S is being replaced with %Z, and those categories have runs "ptk"
+						and "bdg", "p" will be replaced with "b", "t" will be replaced with "d", and "k"
+						will be replaced by "g". If the first category has more letters than the second,
+						the second category's run will be repeated until it's long enough to find a match.
+						<br /><br />
+						NOTE: If you have unequal numbers of %Categories in the beginning and ending
+						expressions, errors may occur.
 					</li>
 				</ul>
 				<p>
@@ -148,7 +161,7 @@ export const SChCard = () => {
 					expression</em> does, too. In that case, something special happens: when the
 					evolver matches a character in a category, it will note what position that
 					character is in the category's run. It will then look at the <em>ending</em> category
-					and picks out the character in the same position. For example: If %S is being
+					and pick out the character in the same position. For example: If %S is being
 					replaced with %Z, and those categories have runs "ptk" and "bdg", "p" will be
 					replaced with "b", "t" will be replaced with "d", and "k" will be replaced by
 					"g". (If the first category has more letters than the second, the second category's

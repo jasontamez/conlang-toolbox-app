@@ -38,8 +38,8 @@ export const CatCard = () => {
 				</p><p>
 					Click the (+) button to add a new category. When you make a category, you must give it
 					a <em>description</em> and a one-character <em>label</em>. The label can be any single
-					character except for these: <strong>^$\\()[]{}.*+?|</strong>. The description is for
-					your own benefit, while the label will be used to refer to this category in
+					character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>. The description is
+					for your own benefit, while the label will be used to refer to this category in
 					the <strong>Syllables</strong> tab. So you may end up with categories that look
 					like the following:
 				</p>
