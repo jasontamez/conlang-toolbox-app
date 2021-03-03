@@ -50,7 +50,7 @@ const Home = () => {
 				</IonRow>
 				<IonRow>
 					<IonCol>
-						<IonCard button={true} routerLink="/wg/home" routerDirection="forward">
+						<IonCard button={true} routerLink="/wg/settings" routerDirection="forward">
 							<IonItem className="ion-text-center">
 								<IonIcon icon={createSharp} />
 								<IonLabel className="ion-padding-start">WordGen</IonLabel>
@@ -60,7 +60,7 @@ const Home = () => {
 				</IonRow>
 				<IonRow>
 					<IonCol>
-						<IonCard button={true} routerLink="/we/" routerDirection="forward">
+						<IonCard button={true} routerLink="/we/input" routerDirection="forward">
 							<IonItem className="ion-text-center">
 								<IonIcon icon={shuffleSharp} />
 								<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
