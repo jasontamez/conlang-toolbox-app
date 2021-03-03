@@ -366,6 +366,9 @@ ion-loading.loadingPage * {
 	background: var(--ion-background-color) !important;
 	color: var(--ion-text-color);
 }
+ion-loading.pageSwitchBackground {
+	--background-opacity: 1.0;
+}
 
 ion-card[router-link] * {
 	--inner-border-width: 0;

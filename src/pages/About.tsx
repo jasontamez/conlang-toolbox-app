@@ -12,7 +12,8 @@ import {
 	IonLabel,
 	IonCard,
 	IonButtons,
-	IonMenuButton
+	IonMenuButton,
+	IonLoading
 } from '@ionic/react';
 import {
 	createSharp,
@@ -23,11 +24,18 @@ import { shallowEqual, useSelector } from "react-redux";
 
 
 const Home = () => {
-	const originalTheme = useSelector((state: any) => state.appSettings.theme, shallowEqual);
+	const [originalTheme, modalState] = useSelector((state: any) => [state.appSettings.theme, state.modalState], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
 		<IonPage className={theme}>
+			<IonLoading
+	        	cssClass='loadingPage pageSwitchBackground'
+    	    	isOpen={modalState.loadingPage === "switchingOut"}
+	        	message={'Loading...'}
+				spinner="bubbles"
+				duration={5000}
+			/>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
