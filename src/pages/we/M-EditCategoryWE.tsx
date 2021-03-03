@@ -75,7 +75,7 @@ const EditCategoryWEModal = () => {
 		let invalid = "^$\\[]{}.*+()?|";
 		while(!label && pos < length) {
 			let test = v.charAt(pos);
-			if(invalid.indexOf(test) !== -1 && (editing === test || !catMap.has(test))) {
+			if(invalid.indexOf(test) === -1 && (editing === test || !catMap.has(test))) {
 				label = test;
 			}
 			pos++;
@@ -187,7 +187,7 @@ const EditCategoryWEModal = () => {
 			<IonContent>
 				<IonList lines="none">
 					<IonItem>
-						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Category Description:</IonLabel>
+						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
 						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={500}></IonInput>
 					</IonItem>
 					<IonItem>
