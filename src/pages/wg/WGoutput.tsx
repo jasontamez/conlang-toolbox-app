@@ -13,7 +13,8 @@ import {
 	IonIcon,
 	useIonViewDidEnter,
 	IonPopover,
-	IonLabel
+	IonLabel,
+	IonLoading
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -28,20 +29,23 @@ import {
 	closePopover,
 	closeModal,
 	addDeferredLexiconItems,
-	removeDeferredLexiconItem
+	removeDeferredLexiconItem,
+	setLoadingPage
 } from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
 	settingsOutline,
 	bookOutline,
 	saveOutline,
-	helpCircleOutline
+	helpCircleOutline,
+	copyOutline
 } from 'ionicons/icons';
 import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
-import { $a } from '../../components/DollarSignExports';
+import { $a, $delay } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
+import fireSwal from '../../components/Swal';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
@@ -82,6 +86,39 @@ const WGOut = () => {
 	const allSyllables = syllablesObject.objects;
 	const regExpMap: Map<string, RegExp> = new Map();
 
+	const copyText = () => {
+		let copyText = "";
+		if(settingsWG.output === "text") {
+			// Pseudo-text is easy to copy
+			copyText = (outputPane.textContent);
+		} else {
+			// Others need to be joined by linebreaks
+			let copied: string[] = [];
+			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
+			copyText = (copied.join("\n"));
+		}
+		if(copyText && !copyText.match(/^You (have no|are missing)/g)) {
+			navigator.clipboard.writeText(copyText);
+			return fireSwal({
+				title: "Copied to clipboard.",
+				toast: true,
+				timer: 1500,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});	
+		}
+		fireSwal({
+			title: "Nothing to copy.",
+			toast: true,
+			customClass: {popup: 'dangerToast'},
+			timer: 1500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});
+};
+
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
 	const determineWidth = (input: string) => {
@@ -92,8 +129,7 @@ const WGOut = () => {
 		return Math.ceil(max).toString() + "px";
 	};
 
-	const generateOutput = (output: HTMLElement) => {
-		let text: HTMLElement[] = [];
+	const generateOutput = async (output: HTMLElement = outputPane) => {
 		let type = settingsWG.output;
 		let endEarly = false;
 		// Clear any previous output.
@@ -137,30 +173,28 @@ const WGOut = () => {
 		// Determine what we're making.
 		if(type === "text") {
 			// pseudotext
-			text = generatePseudoText();
 			output.style.columnWidth = "auto";
-		} else if (type === "syllables") {
-			// all possible syllables
-			let t = getEverySyllable(settingsWG.capitalizeWords);
-			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
-			t.forEach(bit => text.push($t(bit, "div")));
-		} else {
-			// wordlist
-			let t = makeWordlist(settingsWG.capitalizeWords);
-			// reset columns if needed
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(t) : "auto";
-			t.forEach(bit => text.push($t(bit, "div")));
+			return generatePseudoText(output);
 		}
-		// Add to screen.
-		text.forEach(bit => output.append(bit));
+		// Every syllable, or a wordlist
+		const prom = new Promise((resolve) => {
+			const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
+			resolve({strings: resolveFunc(settingsWG.capitalizeWords)});
+		});
+		prom.then(async (result: any) => {
+			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result.strings) : "auto";
+			result.strings.forEach((bit: string) => output.append($t(bit, "div")));
+		});
+		await prom;
+		// columnar stuff takes a bit to process, so delay a bit
+		await $delay(500);
 	};
 
 
 	// // //
 	// Generate a psuedo-text
 	// // //
-	const generatePseudoText = () => {
+	const generatePseudoText = async (where: HTMLElement) => {
 		let text: (string | HTMLElement)[][] = [];
 		let final: HTMLElement = $d();
 		let numberOfSentences = settingsWG.sentencesPerText;
@@ -212,11 +246,11 @@ const WGOut = () => {
 			}
 			text.push(staging);
 		}
-		final.append(...text.shift()!);
-		while(text.length > 1) {
+		text.length > 0 && final.append(...text.shift()!);
+		while(text.length > 0) {
 			final.append(" ", ...text.shift()!)
 		}
-		return [final];
+		where.append(final);
 	};
 
 	// // //
@@ -447,6 +481,13 @@ const WGOut = () => {
 	};
 	return (
 		<IonPage>
+			<IonLoading
+	        	cssClass='loadingPage'
+    	    	isOpen={modalState.loadingPage === "generatingWords"}
+	        	message={'Loading...'}
+				spinner="bubbles"
+				duration={5000}
+			/>
 			<OutputOptionsModal />
 			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
@@ -480,10 +521,25 @@ const WGOut = () => {
 				</IonPopover>
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
-						<IonButton expand="block" strong={true} color="success" onClick={() => generateOutput(outputPane)}>
+						<IonButton expand="block" strong={true} color="success" onClick={() => {
+							let waitForIt = new Promise(async (resolved) => {
+								dispatch(setLoadingPage("generatingWords"));
+								let go = new Promise(async res => {
+									await generateOutput();
+									res(true);
+								});
+								go.then(() => resolved(true));
+							});
+							waitForIt.then(() => {
+								dispatch(setLoadingPage(false));
+							});
+						}}>
 							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="secondary" onClick={() => copyText()}>
+							<IonIcon icon={copyOutline} style={ { marginRight: "0.5em" } } /> Copy All
+						</IonButton>
 						<IonButton expand="block" strong={true} className={modalState.PickAndSaveWG ? "hide" : ""} color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}>
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
