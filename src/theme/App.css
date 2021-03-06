@@ -369,7 +369,8 @@ i.ipa {
 	display: none;
 }
 
-.selectable {
+.selectable,
+.selectable::part(native) {
 	-moz-user-select: text !important;
 	-webkit-user-select: text !important;
 	-ms-user-select: text !important;
