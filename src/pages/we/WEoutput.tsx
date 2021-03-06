@@ -30,7 +30,8 @@ import {
 	caretForwardCircleOutline,
 	settingsOutline,
 	bookOutline,
-	saveOutline
+	saveOutline,
+	copyOutline
 } from 'ionicons/icons';
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
@@ -41,6 +42,7 @@ import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
 import ltr from '../../components/LTR';
+import fireSwal from '../../components/Swal';
 
 
 const WEOut = () => {
@@ -104,6 +106,59 @@ const WEOut = () => {
 		t.addEventListener("click", () => maybeSaveThisWord(t));
 		return t;
 	};
+
+	const copyText = () => {
+		let copied: string[] = [];
+		if(settingsWE.output === "outputOnly") {
+			// Join with linebreaks
+			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
+		} else if (settingsWE.output === "rulesApplied") {
+			// either word arrow word or soundchange arrow word
+			let input = $a("div", outputPane);
+			while(input.length > 0) {
+				let info = input.shift();
+				if(info.classList.contains("ruleExplanation")) {
+					copied.push("\t" + info.textContent);
+				} else {
+					copied.push(info.textContent);
+				}
+			}
+		} else {
+			// word arrow word
+			let pos = 0;
+			let temp: string[] = [];
+			let input = $a("div", outputPane);
+			while(input.length > 0) {
+				pos++;
+				temp.push(input.shift().textContent);
+				if(pos === 3) {
+					pos = 0;
+					copied.push(temp.join(" "));
+					temp = [];
+				}
+			}
+		}
+		if(copied.length > 0 && !copied[0].match(/^You have no/g)) {
+			navigator.clipboard.writeText(copied.join("\n"));
+			return fireSwal({
+				title: "Copied to clipboard.",
+				toast: true,
+				timer: 1500,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});	
+		}
+		fireSwal({
+			title: "Nothing to copy.",
+			toast: true,
+			customClass: {popup: 'dangerToast'},
+			timer: 1500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});
+};
 
 	// Go through a from/to string and check for categories and other regex stuff. Returns an object.
 	const interpretFromAndTo = (input: string) => {
@@ -215,9 +270,14 @@ const WEOut = () => {
 			output.removeChild(output.firstChild);
 		}
 		// Sanity check
+		let err: HTMLElement[] = [];
 		if(soundChanges.length < 1) {
-			output.append($e("div", "You have no sound changes defined."));
-			return;
+			err.push($e("div", "You have no sound changes defined."));
+		} else if (rawInput.length < 1) {
+			err.push($e("div", "You have no input words to evolve."));
+		}
+		if(err.length > 0) {
+			return output.append(...err);
 		}
 		// Check transforms for %Category references and update them if needed
 		transforms.forEach((transformation: WETransformObject) => {
@@ -727,6 +787,9 @@ const WEOut = () => {
 							Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WEOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="secondary" onClick={() => copyText()}>
+							<IonIcon icon={copyOutline} style={ { marginRight: "0.5em" } } /> Copy All
+						</IonButton>
 						<IonButton className={modalState.PickAndSaveWE ? "" : "hide"} id="doneSavingButton" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
