@@ -70,12 +70,11 @@ const AddSoundChangeModal = () => {
 			}
 			let max = context.length - 1;
 			ind = context.indexOf("#");
-			if(ind === 0) {
-				if((ind = context.indexOf("#", 1)) !== -1 && ind !== max) {
+			while(ind !== -1) {
+				if(ind > 0 && ind !== max) {
 					return what + " can only have word-boundaries (#) at beginning and/or end";
 				}
-			} else if (ind !== max) {
-				return what + " can only have word-boundaries (#) at beginning and/or end";
+				ind = context.indexOf("#", (ind + 1));
 			}
 			return false;
 		};
