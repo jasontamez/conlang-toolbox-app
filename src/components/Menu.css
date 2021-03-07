@@ -52,7 +52,7 @@ ion-menu#mainMenu ion-item.selected ion-icon {
 }
 
 ion-menu#mainMenu ion-item ion-icon {
-	color: #616e7e;
+	color: var(--ion-color-step-350);
 }
 
 ion-menu#mainMenu ion-item ion-label {
