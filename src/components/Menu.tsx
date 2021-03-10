@@ -6,6 +6,7 @@ import {
 	IonList,
 	IonListHeader,
 	IonMenu,
+	IonMenuToggle,
 	IonNote,
 } from '@ionic/react';
 import React from 'react';
@@ -183,17 +184,21 @@ const Menu = () => {
 							);
 						} else if(appPage.parent) {
 							return (
-								<IonItem key={appPage.id} className={'subHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
-									<IonLabel>{appPage.title}</IonLabel>
-									<IonIcon slot="end" size="small" icon={ellipseSharp} />
-								</IonItem>
+								<IonMenuToggle key={appPage.id} autoHide={false}>
+									<IonItem className={'subHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+										<IonLabel>{appPage.title}</IonLabel>
+										<IonIcon slot="end" size="small" icon={ellipseSharp} />
+									</IonItem>
+								</IonMenuToggle>
 							);
 						}
 						return (
-							<IonItem key={appPage.id} className={'mainHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
-								<IonIcon slot="start" icon={appPage.icon} />
-								<IonLabel>{appPage.title}</IonLabel>
-							</IonItem>
+							<IonMenuToggle key={appPage.id} autoHide={false}>
+								<IonItem className={'mainHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+									<IonIcon slot="start" icon={appPage.icon} />
+									<IonLabel>{appPage.title}</IonLabel>
+								</IonItem>
+							</IonMenuToggle>
 						);
 				});
 					let head: any = (menuSection.header) ? (<IonListHeader>{menuSection.header}</IonListHeader>) : '',
