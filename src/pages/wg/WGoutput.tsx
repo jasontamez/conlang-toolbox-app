@@ -117,7 +117,7 @@ const WGOut = () => {
 			timerProgressBar: true,
 			showConfirmButton: false
 		});
-};
+	};
 
 	let textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
@@ -380,7 +380,7 @@ const WGOut = () => {
 	// // //
 	// Generate Every Possible Syllable
 	// // //
-	const getEverySyllable = (capitalize: boolean = false) => {
+	const getEverySyllable = async (capitalize: boolean = false) => {
 		let output: string[] = [];
 		let syllables = allSyllables.singleWord.components
 		if(syllToggle) {
@@ -390,9 +390,18 @@ const WGOut = () => {
 				allSyllables.wordFinal.components
 			);
 		}
-		syllables.forEach((syll: string) => recurseSyllables(output, "", syll));
-		// Run through rewrite rules
-		output = output.map(word => doRewrite(word));
+		syllables = syllables.map((syll: string) => ["", syll]);
+		while(syllables.length > 0) {
+			let [current, toGo] = syllables.shift();
+			let res = await recurseSyllables(current, toGo);
+			if(res.next === "") {
+				// This one is done - run through rewrite rules
+				output.push(...res.results.map(word => doRewrite(word)));
+			} else {
+				// Add to syllables
+				syllables.push(...res.results);
+			}
+		}
 		// Capitalize if needed
 		if(capitalize) {
 			output = output.map(word => (word.charAt(0).toUpperCase() + word.slice(1)));
@@ -407,26 +416,20 @@ const WGOut = () => {
 		}
 		return output;
 	};
-	const recurseSyllables = (allFound: string[], previous: string, toGo: string) => {
+	const recurseSyllables = async (previous: string, toGo: string) => {
 		let current = toGo.charAt(0);
 		let next = toGo.slice(1);
 		let category = catMap.get(current);
 		if(category === undefined) {
 			// Category not found - save as written
-			previous += current;
-			if(next === "") {
-				// Continue the recursion
-				recurseSyllables(allFound, previous, next);
-			} else {
-				// This is done. Save.
-				allFound.push(previous);
-			}
-		} else if (next !== "") {
-			// Category exists. More to come.
-			category.run.split("").forEach((char: string) => recurseSyllables(allFound, previous + char, next));
-		} else {
-			// Category exists. Final category.
-			category.run.split("").forEach((char: string) => allFound.push(previous + char));
+			return {
+				results: [previous + current],
+				next: next
+			};
+		}
+		return {
+			results: category.run.split("").map(char => previous + char),
+			next: next
 		}
 	};
 
