@@ -22,6 +22,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
+/* https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project */
 
 const Home = () => {
 	const [originalTheme, modalState] = useSelector((state: any) => [state.appSettings.theme, state.modalState], shallowEqual);
