@@ -13,8 +13,7 @@ import {
 	IonIcon,
 	useIonViewDidEnter,
 	IonPopover,
-	IonLabel,
-	IonLoading
+	IonLabel
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -43,7 +42,7 @@ import {
 import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
-import { $a, $delay } from '../../components/DollarSignExports';
+import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import fireSwal from '../../components/Swal';
 
@@ -177,17 +176,13 @@ const WGOut = () => {
 			return generatePseudoText(output);
 		}
 		// Every syllable, or a wordlist
-		const prom = new Promise((resolve) => {
-			const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
-			resolve({strings: resolveFunc(settingsWG.capitalizeWords)});
-		});
-		prom.then(async (result: any) => {
-			output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result.strings) : "auto";
-			result.strings.forEach((bit: string) => output.append($t(bit, "div")));
-		});
-		await prom;
+		dispatch(setLoadingPage("generatingWords"));
+		const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
+		let result = await resolveFunc(settingsWG.capitalizeWords);
+		output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result) : "auto";
+		result.forEach((bit: string) => output.append($t(bit, "div")));
 		// columnar stuff takes a bit to process, so delay a bit
-		await $delay(500);
+		dispatch(setLoadingPage(false));
 	};
 
 
@@ -393,14 +388,20 @@ const WGOut = () => {
 		syllables = syllables.map((syll: string) => ["", syll]);
 		while(syllables.length > 0) {
 			let [current, toGo] = syllables.shift();
-			let res = await recurseSyllables(current, toGo);
-			if(res.next === "") {
-				// This one is done - run through rewrite rules
-				output.push(...res.results.map(word => doRewrite(word)));
-			} else {
-				// Add to syllables
-				syllables.push(...res.results);
-			}
+			let res = recurseSyllables(current, toGo);
+			let newOutput: string[] = [];
+			res.then((res: any) => {
+				if(res.next === "") {
+					// This one is done - run through rewrite rules
+					newOutput.push(...res.results.map((word: string) => doRewrite(word)));
+				} else {
+					// Add to syllables
+					let next = res.next;
+					syllables.push(...res.results.map((word: string) => [word, next]));
+				}
+			});
+			await res;
+			output.push(...newOutput);
 		}
 		// Capitalize if needed
 		if(capitalize) {
@@ -436,7 +437,7 @@ const WGOut = () => {
 	// // //
 	// Wordlist
 	// // //
-	const makeWordlist = (capitalize: boolean) => {
+	const makeWordlist = async (capitalize: boolean) => {
 		let n = 0;
 		let words = [];
 		for (n = 0;n < settingsWG.wordsPerWordlist; n++) {
@@ -484,13 +485,6 @@ const WGOut = () => {
 	};
 	return (
 		<IonPage>
-			<IonLoading
-	        	cssClass='loadingPage'
-    	    	isOpen={modalState.loadingPage === "generatingWords"}
-	        	message={'Loading...'}
-				spinner="bubbles"
-				duration={5000}
-			/>
 			<OutputOptionsModal />
 			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
@@ -525,19 +519,14 @@ const WGOut = () => {
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
 						<IonButton expand="block" strong={true} color="success" onClick={() => {
-							let waitForIt = new Promise(async (resolved) => {
-								dispatch(setLoadingPage("generatingWords"));
-								let go = new Promise(async res => {
-									await generateOutput();
-									res(true);
-								});
-								go.then(() => resolved(true));
-							});
-							waitForIt.then(() => {
-								dispatch(setLoadingPage(false));
-							});
+							new Promise(() => generateOutput());
 						}}>
-							Generate <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
+							{
+								modalState.loadingPage === "generatingWords" ? (
+									<span style={ {fontStyle: "italic"} }>Loading...</span>
+								) : "Generate"
+							}
+							<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WGOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="secondary" onClick={() => copyText()}>
