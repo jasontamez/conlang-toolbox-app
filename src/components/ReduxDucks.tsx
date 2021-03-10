@@ -374,6 +374,8 @@ const saveCurrentState = (state: types.StateObject) => {
 		= undefined;
 	// Save
 	StateStorage.setItem("lastState", newState);
+	console.log("Save");
+	console.log(newState);
 };
 const initialState: types.StateObject = reduceAllBut([], blankAppState);
 
@@ -385,7 +387,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let newCategories: types.WGCategoryStateObject;
 	let SO: types.WGSyllableStateObject;
 	let RO: types.WGRewriteRuleStateObject;
-	let final: types.StateObject = state;
+	let final: types.StateObject;
 	let label: string;
 	let LO: types.LexiconObject;
 	switch(action.type) {
@@ -1133,9 +1135,13 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				temporaryInfo: payload
 			};
 			break;
+		default:
+			console.log("DEFAULT: " + action.type);
+			return state;
 	}
 	// Some sort of store-state function goes here
 	debounce(saveCurrentState, [final]);
+	console.log(action.type);
+	console.log(final);
 	return final;
 };
-
