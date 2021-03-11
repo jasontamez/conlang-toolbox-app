@@ -21,7 +21,9 @@ import {
 	IonRow,
 	IonCol,
 	IonLoading,
-	IonItemDivider
+	IonItemDivider,
+	useIonViewDidEnter,
+	useIonViewWillLeave
 } from '@ionic/react';
 import {
 	ellipsisVertical,
@@ -67,6 +69,12 @@ import ltr from '../components/LTR';
 const Lex = () => {
 	const dispatch = useDispatch();
 	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
+	useIonViewWillLeave(() => {
+		dispatch(setLoadingPage('switchingOut'));
+	});
+	useIonViewDidEnter(() => {
+		dispatch(setLoadingPage(false));
+	});
 	const popstate = modalState.LexiconEllipsis;
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
