@@ -395,7 +395,7 @@ ion-modal ion-list.buttonFilled ion-item:nth-of-type(even)::part(native) {
 	background: var(--ion-background-shader);
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 350px) {
 	ion-tab-bar ion-label {
 		display: none;
 	}
