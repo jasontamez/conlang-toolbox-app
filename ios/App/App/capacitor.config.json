@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "conlang-toolbox",
+  "appId": "net.jasontank.conlangtoolbox",
+  "appName": "Conlang Toolbox",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
