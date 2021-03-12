@@ -8,12 +8,13 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonItem,
 	IonLabel,
 	IonCard,
+	IonCardHeader,
+	IonCardContent,
 	IonButtons,
 	IonMenuButton,
-	IonLoading
+	IonContent
 } from '@ionic/react';
 import {
 	createSharp,
@@ -22,7 +23,10 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
-/* https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project */
+/*
+https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project
+https://thenounproject.com/term/international-languages/249165/ International Languages by Ed Piel from the Noun Project
+*/
 
 const Home = () => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
@@ -38,41 +42,79 @@ const Home = () => {
 					<IonTitle className="ion-text-center">Conlang Toolbox</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonGrid>
-				<IonRow>
-					<IonCol></IonCol>
-				</IonRow>
-				<IonRow>
-					<IonCol>
-						<IonCard button={true} routerLink="/wg/settings" routerDirection="forward">
-							<IonItem className="ion-text-center">
-								<IonIcon icon={createSharp} />
-								<IonLabel className="ion-padding-start">WordGen</IonLabel>
-							</IonItem>
-						</IonCard>
-					</IonCol>
-				</IonRow>
-				<IonRow>
-					<IonCol>
-						<IonCard button={true} routerLink="/we/input" routerDirection="forward">
-							<IonItem className="ion-text-center">
-								<IonIcon icon={shuffleSharp} />
-								<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
-							</IonItem>
-						</IonCard>
-					</IonCol>
-				</IonRow>
-				<IonRow>
-					<IonCol>
-						<IonCard button={true} routerLink="/lex/" routerDirection="forward">
-							<IonItem className="ion-text-center">
-								<IonIcon icon={bookSharp} />
-								<IonLabel className="ion-padding-start">Lexicon</IonLabel>
-							</IonItem>
-						</IonCard>
-					</IonCol>
-				</IonRow>
-			</IonGrid>
+			<IonContent id="aboutPage">
+				<IonGrid>
+					<IonRow>
+						<IonCol></IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/wg/settings" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={createSharp} />
+									<IonLabel className="ion-padding-start">WordGen</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>This tool is for creating words according to rules you set up.</p>
+									<ul>
+										<li>Organize your language's sounds into categories</li>
+										<li>Construct syllable formations using those categories</li>
+										<li>Tweak the output through rewrite rules</li>
+										<li>Jumpstart your process with built-in presets</li>
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/we/input" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={shuffleSharp} />
+									<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>
+										This tool is for modifying words according to rules you set up,
+										mimicking the progression of natural languages.
+									</p>
+									<ul>
+										<li>Start with words from a language (natural or otherwise)</li>
+										<li>Use standard rules to determine how they transform</li>
+										<li>Tweak the output through rewrite rules</li>
+										{/*<li>Multiple presets to get you going</li>*/}
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={bookSharp} className="ion-align-self-center" />
+									<IonLabel className="ion-padding-start ion-align-self-start">Lexicon</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>A place to store the words of your conlang.</p>
+									<ul>
+										<li>Store bits of information for each word, such as part of speech or definition</li>
+										<li>Sort your words by any criteria</li>
+										<li>Easily add words from WordGen and WordEvolve</li>
+										<li>Store multiple lexicons</li>
+										<li>Export your data to a file</li>
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.png" alt="Buy Me A Coffee" style={ { height: "60px !important", width: "217px !important" } } /></a>
+						</IonCol>
+					</IonRow>
+				</IonGrid>
+			</IonContent>
 		</IonPage>
 	);
 };

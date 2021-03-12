@@ -386,8 +386,30 @@ ion-loading.pageSwitchBackground {
 	--background-opacity: 1.0;
 }
 
-ion-card[router-link] * {
+#aboutPage ion-grid {
+	margin: 0 auto;
+	max-width: 31rem;
+}
+#aboutPage ion-card[router-link] {
+	max-width: 30rem;
+	margin: 0.5rem 0;
+}
+#aboutPage ion-card[router-link] * {
 	--inner-border-width: 0;
+}
+#aboutPage ion-card[router-link] p {
+	text-indent: 0 !important;
+	text-align: center;
+	background: var(--ion-card-highlight)
+}
+#aboutPage ion-card[router-link] ion-card-header {
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: var(--ion-color-primary);
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
 }
 
 ion-modal ion-item-group.buttonFilled ion-item:nth-of-type(even)::part(native),

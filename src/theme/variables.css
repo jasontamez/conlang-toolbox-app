@@ -72,6 +72,7 @@ http://ionicframework.com/docs/theming/ */
 
 	--ion-card-color: var(--ion-color-light-shade);
 	--ion-card-background: var(--ion-color-step-50);
+	--ion-card-highlight: var(--ion-color-step-100);
 
 	--ion-item-background: var(--ion-color-step-50);
 
@@ -198,6 +199,7 @@ body.SolarizedLightTheme {
 
 	--ion-card-color: var(--ion-color-dark-tint);
 	--ion-card-background: var(--ion-color-light-tint);
+	--ion-card-highlight: var(--ion-color-light-shade);
 
 }
 
@@ -285,6 +287,7 @@ body.SolarizedDarkTheme {
 
 	--ion-card-background: var(--ion-color-light-shade);
 	--ion-card-color: var(--ion-color-dark-shade);
+	--ion-card-highlight: var(--ion-color-light-tint);
 
 }
 body.DarkTheme {
@@ -371,6 +374,7 @@ body.DarkTheme {
 
 	--ion-card-background: var(--ion-color-dark-shade);
 	--ion-card-color: var(--ion-color-light-shade);
+	--ion-card-highlight: var(--ion-color-dark-tint);
 }
 body.LightTheme {
 	--ion-color-primary: #1b1bf8;
@@ -457,6 +461,7 @@ body.LightTheme {
 
 	--ion-card-background: #ffffff;
 	--ion-card-color: var(--ion-color-dark-shade);
+	--ion-card-highlight: var(--ion-color-dark-tint);
 }
 body.LightTheme ion-card ion-item {
 	--ion-item-background: var(--ion-card-background);
