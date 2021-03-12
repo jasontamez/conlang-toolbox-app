@@ -299,7 +299,7 @@ i.ipa {
 }
 .virtualLex {
 	margin: 0;
-	overflow-y: scroll;
+	overflow-y: scroll !important;
 }
 .lexHeader,
 .lexHeader::part(native) {
@@ -390,19 +390,19 @@ ion-loading.pageSwitchBackground {
 	margin: 0 auto;
 	max-width: 31rem;
 }
-#aboutPage ion-card[router-link] {
+#aboutPage ion-card {
 	max-width: 30rem;
 	margin: 0.5rem 0;
 }
-#aboutPage ion-card[router-link] * {
+#aboutPage ion-card * {
 	--inner-border-width: 0;
 }
-#aboutPage ion-card[router-link] p {
+#aboutPage ion-card p {
 	text-indent: 0 !important;
 	text-align: center;
 	background: var(--ion-card-highlight)
 }
-#aboutPage ion-card[router-link] ion-card-header {
+#aboutPage ion-card ion-card-header {
 	font-size: 1.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
