@@ -6,9 +6,7 @@ import {
 	IonTabBar,
 	IonTabButton,
 	IonTabs,
-	IonRouterOutlet,
-	useIonViewDidEnter,
-	useIonViewWillLeave
+	IonRouterOutlet
 } from '@ionic/react';
 import {
 	gridOutline,
@@ -17,8 +15,7 @@ import {
 	documentTextOutline,
 	fileTrayStackedOutline
 } from 'ionicons/icons';
-import { setLoadingPage } from '../components/ReduxDucksFuncs';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import WGCategories from "./wg/WGcategories";
 import WGRewrites from "./wg/WGrewrites";
 import WGSyllables from "./wg/WGsyllables";
@@ -28,13 +25,6 @@ import WGSettings from "./wg/WGsettings";
 
 const WG = () => {
 	const WGpage = useSelector((state: any) => state.viewState.wg, shallowEqual);
-	const dispatch = useDispatch();
-	useIonViewWillLeave(() => {
-		dispatch(setLoadingPage('switchingOut'));
-	});
-	useIonViewDidEnter(() => {
-		dispatch(setLoadingPage(false));
-	});
 	return (
 		<IonTabs>
 			<IonRouterOutlet>

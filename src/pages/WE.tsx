@@ -6,9 +6,7 @@ import {
 	IonTabBar,
 	IonTabButton,
 	IonTabs,
-	IonRouterOutlet,
-	useIonViewDidEnter,
-	useIonViewWillLeave
+	IonRouterOutlet
 } from '@ionic/react';
 import {
 	libraryOutline,
@@ -17,24 +15,16 @@ import {
 	exitOutline,
 	megaphoneOutline
 } from 'ionicons/icons';
-import { setLoadingPage } from '../components/ReduxDucksFuncs';
 import WECategories from "./we/WEcategories";
 import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 
 
 const WE = () => {
 	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual) || "home";
-	const dispatch = useDispatch();
-	useIonViewWillLeave(() => {
-		dispatch(setLoadingPage('switchingOut'));
-	});
-	useIonViewDidEnter(() => {
-		dispatch(setLoadingPage(false));
-	});
 	return (
 		<IonTabs>
 			<IonRouterOutlet>

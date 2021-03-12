@@ -13,30 +13,20 @@ import {
 	IonCard,
 	IonButtons,
 	IonMenuButton,
-	IonLoading,
-	useIonViewDidEnter,
-	useIonViewWillLeave
+	IonLoading
 } from '@ionic/react';
 import {
 	createSharp,
 	shuffleSharp,
 	bookSharp
 } from 'ionicons/icons';
-import { setLoadingPage } from '../components/ReduxDucksFuncs';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 
 /* https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project */
 
 const Home = () => {
-	const dispatch = useDispatch();
 	const [originalTheme, modalState] = useSelector((state: any) => [state.appSettings.theme, state.modalState], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
-	useIonViewWillLeave(() => {
-		dispatch(setLoadingPage('switchingOut'));
-	});
-	useIonViewDidEnter(() => {
-		dispatch(setLoadingPage(false));
-	});
 
 	return (
 		<IonPage className={theme}>
