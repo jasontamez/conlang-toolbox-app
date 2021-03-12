@@ -192,6 +192,7 @@ export interface ModalStateObject {
 	PickAndSaveWE: boolean
 	InfoModal: boolean
 	ExtraCharacters: boolean
+	ExportLexicon: boolean
 }
 
 export interface ViewStateObject {

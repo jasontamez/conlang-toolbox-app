@@ -63,6 +63,7 @@ import escape from '../components/EscapeForHTML';
 import VirtualList from 'react-tiny-virtual-list';
 import { useWindowHeight } from '@react-hook/window-size/throttled';
 import ltr from '../components/LTR';
+import ExportLexiconModal from './M-ExportLexicon';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -443,6 +444,7 @@ const Lex = () => {
 			<EditLexiconItemModal />
 			<EditLexiconOrderModal />
 			<LoadLexiconModal />
+			<ExportLexiconModal />
 			<DeleteLexiconModal />
 			<IonLoading
 	        	cssClass='loadingPage'
@@ -476,6 +478,9 @@ const Lex = () => {
 							</IonItem>
 							<IonItem button={true} onClick={() => saveLexiconNew()}>
 								<IonLabel>Save Lexicon As New</IonLabel>
+							</IonItem>
+							<IonItem button={true} onClick={() => saveLexiconNew()}>
+								<IonLabel>Export Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
 								<IonLabel>Delete Saved Lexicon</IonLabel>

@@ -354,7 +354,8 @@ export const blankAppState: types.StateObject = {
 		PickAndSaveWE: false,
 		WESaveToLexicon: undefined,
 		InfoModal: false,
-		ExtraCharacters: false
+		ExtraCharacters: false,
+		ExportLexicon: false
 	},
 	viewState: {
 		wg: 'home',
