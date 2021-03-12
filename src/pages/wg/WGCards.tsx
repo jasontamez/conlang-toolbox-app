@@ -243,18 +243,26 @@ export const OptCard = () => {
 				<p>
 					This final pane fine-tunes the output. These can make a huge difference in
 					how your conlang appears.
-				</p><p>
-					The <strong>Load Presets</strong> button brings up a menu where you can choose from
-					several pre-loaded options. The initial settings when you open the app are
+				</p>
+				<h2>The Buttons</h2>
+				<p>
+					<strong>Load Presets</strong> brings up a menu where you can choose from several
+					pre-loaded options. The initial settings when you first start the app are
 					the <em>Simple</em> preset. The others are offered to give you ideas of what's
 					possible with the app. They will load <em>categories</em>, <em>syllables</em>, <em>rewrite
 					rules</em> and possibly change the remaining settings on this page, too.
 				</p><p>
-					The <strong>Clear All Fields</strong> button clears
+					<strong>Clear All Fields</strong> clears
 					all <em>categories</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
 					affect any other settings.
 				</p><p>
-					The <strong>Rate of monosyllable words</strong> determines how often a one-syllable
+					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your own
+					<em>categories</em>, <em>syllables</em>, <em>rewrite rules</em> and the settings on this
+					page. This allows you to switch between your own personal language settings.
+				</p>
+				<h2>The Settings</h2>
+				<p>
+					<strong>Rate of monosyllable words</strong> determines how often a one-syllable
 					word is created. It's a percentage from 0 (never) to 100 (always).
 				</p><p>
 					<strong>Maximum number of syllables per word</strong> sets an upper limit on how long
@@ -262,19 +270,24 @@ export const OptCard = () => {
 				</p><p>
 					<strong>Category run dropoff</strong> and <strong>syllable run dropoff</strong> run
 					from 0 to 50. At zero (flat), category and syllable choices are all equiprobable.
-					Otherwise, the number becomes a percentage. A random number is generated, and if it's
-					lower than the percentage, the first choice is picked. If not, a new number is
-					generated for the second choice, and so on down the line until a choice is made. (If
-					all choices are exhausted without one being chosen, the cycle begins from the first
-					choice again.)
+					Otherwise, the number becomes a percentage. The higher the number, the more likely it
+					is that the first syllables or category characters are used. (This mimics natural
+					languages, which tend to prefer certain sounds and patterns.) This is how it works:
+				</p><ol>
+					<li>A random number is generated from 1 to 100.</li>
+					<li>If the number is lower than the dropoff percentage, the first choice is picked.</li>
+					<li>If not, the generator moves the first choice to the end of the line, then returns
+						to step 1, generating a new number.</li>
+					<li>This cycle continues until a number is generated that is equal to or greater
+						than the dropoff percentage.</li>
+				</ol><p>
+					The remaining options only apply to <em>pseudo-texts</em>.
 				</p><p>
-					The remaining options only apply to <em>pseudo-texts</em>. The first
-					option, <strong>capitalize sentences</strong>, determines if each sentence starts
-					with a capital letter. The remaining options determine what your sentences
-					look like. By default, three-fourths of all sentences will
-					be <em>declarative</em>, one-sixth will be <em>interrogative</em> (questions),
-					and one-twelfth will be <em>exclamatory</em>. You can put special punctuation
-					before and after these sentences if you wish.
+					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
+					letter. The remaining options determine what your sentences look like. By default,
+					three-fourths of all sentences will be <em>declarative</em>, one-sixth will
+					be <em>interrogative</em> (questions), and one-twelfth will be <em>exclamatory</em>. You
+					can put special punctuation before and after these sentences if you wish.
 				</p>
 			</IonCardContent>
 		</IonCard>
