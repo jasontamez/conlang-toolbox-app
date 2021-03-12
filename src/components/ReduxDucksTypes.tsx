@@ -191,6 +191,7 @@ export interface ModalStateObject {
 	WESaveToLexicon: undefined | Event
 	PickAndSaveWE: boolean
 	InfoModal: boolean
+	ExtraCharacters: boolean
 }
 
 export interface ViewStateObject {
@@ -198,6 +199,29 @@ export interface ViewStateObject {
 	we: string
 	ls: string
 	lastSection: "wg" | "we" | "ls" | ""
+}
+
+export interface ExtraCharacters {
+	title: string
+	content: ([string, string])[]
+}
+export interface ExtraCharactersData {
+	latin: ExtraCharacters,
+	ipa: ExtraCharacters,
+	greek: ExtraCharacters,
+	coptic: ExtraCharacters,
+	cyrillic: ExtraCharacters,
+	armenian: ExtraCharacters
+}
+
+export interface ExtraCharactersState {
+	display: (keyof ExtraCharactersData)[]
+	saved: string[]
+	copyImmediately: boolean
+	copyLater: string[]
+	adding: boolean
+	deleting: boolean
+	showNames: boolean
 }
 
 
@@ -226,6 +250,7 @@ export interface StateObject {
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
+	extraCharactersState: ExtraCharactersState
 	temporaryInfo: TemporaryInfo | undefined
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.

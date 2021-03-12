@@ -185,6 +185,13 @@ const reduceModalState = (original: types.ModalStateObject) => {
 const reduceViewState = (original: types.ViewStateObject) => {
 	return {...original};
 };
+const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
+	return {
+		...original,
+		display: [...original.display],
+		saved: [...original.saved]
+	};
+}
 const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
 	if(!original) {
 		return original;
@@ -229,6 +236,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
+	["extraCharactersState", reduceExtraCharactersState],
 	["temporaryInfo", reduceTempInfo]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
@@ -345,13 +353,23 @@ export const blankAppState: types.StateObject = {
 		WEOutputOptions: false,
 		PickAndSaveWE: false,
 		WESaveToLexicon: undefined,
-		InfoModal: false
+		InfoModal: false,
+		ExtraCharacters: false
 	},
 	viewState: {
 		wg: 'home',
 		we: 'home',
 		ls: 'home',
 		lastSection: ''
+	},
+	extraCharactersState: {
+		display: [],
+		saved: [],
+		copyImmediately: false,
+		copyLater: [],
+		adding: false,
+		deleting: false,
+		showNames: false	
 	},
 	temporaryInfo: undefined
 };
@@ -1115,6 +1133,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				modalState: newModalToggle
 			};
 			break;
+
 
 		// Views
 		case consts.CHANGE_VIEW:
