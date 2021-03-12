@@ -63,6 +63,7 @@ import escape from '../components/EscapeForHTML';
 import VirtualList from 'react-tiny-virtual-list';
 import { useWindowHeight } from '@react-hook/window-size/throttled';
 import ltr from '../components/LTR';
+import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 
 const Lex = () => {
@@ -446,6 +447,7 @@ const Lex = () => {
 			<LoadLexiconModal />
 			<ExportLexiconModal />
 			<DeleteLexiconModal />
+			<ExtraCharactersModal />
 			<IonLoading
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
@@ -494,6 +496,9 @@ const Lex = () => {
 						</IonList>
 					</IonPopover>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={(e: any) => { e.persist(); dispatch(openPopover('LexiconEllipsis', e)); }}>
 							<IonIcon icon={ellipsisVertical} />
 						</IonButton>

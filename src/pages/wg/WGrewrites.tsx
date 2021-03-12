@@ -41,6 +41,7 @@ import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
+import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGRew = () => {
 	const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
+			<ExtraCharactersModal />
 			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -107,6 +109,9 @@ const WGRew = () => {
 					</IonButtons>
 					<IonTitle>Rewrite Rules</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

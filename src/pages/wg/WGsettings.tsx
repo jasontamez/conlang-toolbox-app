@@ -53,6 +53,7 @@ import fireSwal from '../../components/Swal';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
+import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGSet = () => {
 	const dispatch = useDispatch();
@@ -115,6 +116,7 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
+			<ExtraCharactersModal />
 			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonLoading
 	        	cssClass='loadingPage'
@@ -132,6 +134,9 @@ const WGSet = () => {
 					 </IonButtons>
 					<IonTitle>Settings</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

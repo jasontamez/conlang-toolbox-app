@@ -31,6 +31,7 @@ import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import { CatCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
+import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
@@ -77,6 +78,7 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
+			<ExtraCharactersModal />
 			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -85,6 +87,9 @@ const WGCat = () => {
 					</IonButtons>
 					<IonTitle>Categories</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
