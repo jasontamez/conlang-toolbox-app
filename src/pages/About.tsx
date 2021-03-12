@@ -25,18 +25,11 @@ import { shallowEqual, useSelector } from "react-redux";
 /* https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project */
 
 const Home = () => {
-	const [originalTheme, modalState] = useSelector((state: any) => [state.appSettings.theme, state.modalState], shallowEqual);
+	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
 		<IonPage className={theme}>
-			<IonLoading
-	        	cssClass='loadingPage pageSwitchBackground'
-    	    	isOpen={modalState.loadingPage === "switchingOut"}
-	        	message={'Loading...'}
-				spinner="bubbles"
-				duration={5000}
-			/>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
