@@ -21,11 +21,6 @@ import {
 	closeModal,
 	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import ReactExport from "react-data-export";
-
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 const ExportLexiconModal = () => {
 	const dispatch = useDispatch();
@@ -35,20 +30,12 @@ const ExportLexiconModal = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('ExportLexicon'));
 	};
-	const exportExcel = () => {
-		return (
-			<ExcelFile>
-				<ExcelSheet data = {[]} name={lexicon.title}>
-					<ExcelColumn label="" value="moddedLabel" />
-				</ExcelSheet>
-			</ExcelFile>
-		);
-	};
+
 	return (
 		<IonModal isOpen={modalState.ExportLexicon} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export Lexicon</IonTitle>
+					<IonTitle>Export Lexicon: {lexicon.title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -60,7 +47,7 @@ const ExportLexiconModal = () => {
 				<IonList lines="none" className="buttonFilled">
 					<IonItem button={true} onClick={() => {}}>Plain Text</IonItem>
 					<IonItem button={true} onClick={() => {}}>CSV File</IonItem>
-					<IonItem button={true} onClick={() => exportExcel()}>Excel File</IonItem>
+					<IonItem button={true} onClick={() => {}}>Excel File</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
