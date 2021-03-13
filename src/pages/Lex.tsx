@@ -30,7 +30,10 @@ import {
 	trash,
 	trashOutline,
 	swapHorizontalOutline,
-	saveOutline
+	saveOutline,
+	codeDownloadOutline,
+	removeCircleOutline,
+	addCircleOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -307,6 +310,23 @@ const Lex = () => {
 		dispatch(closePopover('LexiconEllipsis'));
 		dispatch(setLoadingPage("lookingForLexicons"));
 	};
+	const maybeExportLexicon = () => {
+		if(!lexicon.title) {
+			return fireSwal({
+				title: "Error",
+				text: "Please give your lexicon a title before exporting it.",
+				icon: 'warning'
+			});
+		} else if (lexicon.lexicon.length < 1) {
+			return fireSwal({
+				title: "Error",
+				text: "Please add words to your lexicon before exporting it.",
+				icon: 'warning'
+			});
+		}
+		dispatch(openModal("ExportLexicon"));
+		dispatch(closePopover('LexiconEllipsis'));
+	};
 	const saveLexicon: any = (announce: string = "Lexicon saved.", key: string = lexicon.key, overwrite: boolean = true) => {
 		// Save original key
 		const firstKey = lexicon.key;
@@ -470,21 +490,27 @@ const Lex = () => {
 					>
 						<IonList>
 							<IonItem button={true} onClick={() => clearLexicon()}>
+								<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
 								<IonLabel>Clear Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => openLexiconModal("LoadLexicon")}>
+								<IonIcon icon={addCircleOutline} className="ion-padding-end" />
 								<IonLabel>Load Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => saveLexicon()}>
+								<IonIcon icon={saveOutline} className="ion-padding-end" />
 								<IonLabel>Save Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => saveLexiconNew()}>
-								<IonLabel>Save Lexicon As New</IonLabel>
+								<IonIcon icon={saveOutline} className="ion-padding-end" />
+								<IonLabel>Save As New</IonLabel>
 							</IonItem>
-							<IonItem button={true} onClick={() => saveLexiconNew()}>
+							<IonItem button={true} onClick={() => maybeExportLexicon()}>
+								<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
 								<IonLabel>Export Lexicon</IonLabel>
 							</IonItem>
 							<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
+								<IonIcon icon={trashOutline} className="ion-padding-end" />
 								<IonLabel>Delete Saved Lexicon</IonLabel>
 							</IonItem>
 							<IonItemDivider>
