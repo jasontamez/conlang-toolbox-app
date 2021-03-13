@@ -219,7 +219,7 @@ export interface ExtraCharactersState {
 	display: (keyof ExtraCharactersData)[]
 	saved: string[]
 	copyImmediately: boolean
-	copyLater: string[]
+	copyLater: string
 	adding: boolean
 	deleting: boolean
 	showNames: boolean

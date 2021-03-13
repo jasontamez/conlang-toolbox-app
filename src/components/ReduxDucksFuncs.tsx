@@ -273,6 +273,22 @@ export function changeView(payload: string[]) {
 }
 
 //
+// EXTRA CHARACTERS
+//
+export function updateExtraCharsDisplay(payload: (keyof types.ExtraCharactersData)[]) {
+	return {type: consts.UPDATE_EXTRA_CHARS_DISPLAY, payload};
+}
+export function updateExtraCharsFavorites(payload: string[]) {
+	return {type: consts.UPDATE_EXTRA_CHARS_FAVORITE, payload};
+}
+export function toggleExtraCharsBoolean(payload: "adding" | "deleting" | "showNames" | "copyImmediately") {
+	return {type: consts.TOGGLE_EXTRA_CHARS_BOOLEAN, payload};
+}
+export function updateExtraCharsToBeSaved(payload: string) {
+	return {type: consts.UPDATE_EXTRA_CHARS_TO_BE_SAVED, payload};
+}
+
+//
 // TEMPORARY INFO
 //
 export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {

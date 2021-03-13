@@ -367,7 +367,7 @@ export const blankAppState: types.StateObject = {
 		display: [],
 		saved: [],
 		copyImmediately: false,
-		copyLater: [],
+		copyLater: "",
 		adding: false,
 		deleting: false,
 		showNames: false	
@@ -409,6 +409,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 	let final: types.StateObject;
 	let label: string;
 	let LO: types.LexiconObject;
+	let ECO: types.ExtraCharactersState;
 	switch(action.type) {
 		// App Settings
 		case consts.CHANGE_THEME:
@@ -1146,6 +1147,43 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				viewState: newView
 			};
 			break;
+
+
+		// Extra Characters
+		case consts.UPDATE_EXTRA_CHARS_DISPLAY:
+			ECO = reduceExtraCharactersState(state.extraCharactersState);
+			ECO.display = payload;
+			final = {
+				...reduceAllBut(["extraCharactersState"], state),
+				extraCharactersState: ECO
+			};
+			break;
+		case consts.UPDATE_EXTRA_CHARS_FAVORITE:
+			ECO = reduceExtraCharactersState(state.extraCharactersState);
+			ECO.saved = payload;
+			final = {
+				...reduceAllBut(["extraCharactersState"], state),
+				extraCharactersState: ECO
+			};
+			break;
+		case consts.TOGGLE_EXTRA_CHARS_BOOLEAN:
+			let pl = (payload as keyof types.ExtraCharactersState) as "adding" | "deleting" | "showNames" | "copyImmediately";
+			ECO = reduceExtraCharactersState(state.extraCharactersState);
+			ECO[pl] = !state.extraCharactersState[pl];
+			final = {
+				...reduceAllBut(["extraCharactersState"], state),
+				extraCharactersState: ECO
+			};
+			break;
+		case consts.UPDATE_EXTRA_CHARS_TO_BE_SAVED:
+			ECO = reduceExtraCharactersState(state.extraCharactersState);
+			ECO.copyLater = payload;
+			final = {
+				...reduceAllBut(["extraCharactersState"], state),
+				extraCharactersState: ECO
+			};
+			break;
+
 
 
 		// Temp Info

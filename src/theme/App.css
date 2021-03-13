@@ -417,6 +417,70 @@ ion-modal ion-list.buttonFilled ion-item:nth-of-type(even)::part(native) {
 	background: var(--ion-background-shader);
 }
 
+.ion-text-wrap::part(native) {
+	white-space: normal !important;
+}
+
+ion-chip {
+	color: var(--ion-color-step-650);
+	border-color: var(--ion-color-step-350);
+}
+ion-chip.active {
+	color: var(--ion-color-secondary-contrast);
+	background: var(--ion-color-secondary);
+}
+ion-item div.twoColumnsEC div {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	column-gap: 2em;
+	justify-items: end;
+	align-items: center;
+	justify-content: start;
+	align-content: start;
+}
+ion-item div.twoColumnsEC h2,
+ion-item div.multiColumnEC h2 {
+	text-align: center;
+}
+ion-item div.twoColumnsEC div.char {
+	justify-self: start;
+}
+ion-item div.centralized {
+	margin: 0 auto;
+}
+ion-item div.multiColumnEC > div {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
+}
+ion-item div.multiColumnEC div.char {
+	margin: 0.5em;
+	padding: calc(0.5em - 1px);
+	width: 2em;
+	text-align: center;
+	border: 1px solid var(--ion-color-step-700);
+	background: var(--ion-color-step-100);
+}
+#ExtraCharactersModalList ion-item:nth-child(even)::part(native) {
+	background: var(--ion-background-shader);
+}
+#ExtraCharactersModalList ion-item::part(native) {
+	border-bottom: 1px solid var(--ion-border-color);
+}
+#ExtraCharactersModalList {
+	position: relative;
+}
+#FavoritesBar {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+ion-item.blendIn::part(native) {
+	background: transparent;
+}
+
 @media screen and (max-width: 350px) {
 	ion-tab-bar ion-label {
 		display: none;
