@@ -33,6 +33,7 @@ import {
 } from '../components/ReduxDucksFuncs';
 import { $i } from '../components/DollarSignExports';
 import charData from '../components/ExtraCharactersData';
+import fireSwal from '../components/Swal';
 import capitalize from 'capitalize';
 
 const ExtraCharactersModal = () => {
@@ -70,6 +71,15 @@ const ExtraCharactersModal = () => {
 			}
 		} else if (charSettings.copyImmediately) {
 			// Copy now
+			navigator.clipboard.writeText(char);
+			fireSwal({
+				title: "copied " + char + " to clipboard",
+				position: 'top',
+				toast: true,
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
 		} else {
 			// Save to be copied
 			let copiable = charSettings.copyLater + char;
@@ -97,33 +107,23 @@ const ExtraCharactersModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList id="ExtraCharactersModalList" lines="none">
-					<IonItem className={charSettings.copyImmediately ? "hide" : ""}>
-						<IonInput id="toBeCopied" value={charSettings.copyLater} onBlur={() => modifySavedToBeCopied()} placeholder="Touch characters to add them here" />
+					<IonItem className={"sticky" + (charSettings.copyImmediately ? " hide" : "")}>
+						<IonInput id="toBeCopied" value={charSettings.copyLater} onBlur={() => modifySavedToBeCopied()} placeholder="Tap characters to add them here" />
 					</IonItem>
 					<IonItem>
 						<div>
 							<span>Display:</span>
-							<IonChip outline={!currentlySelected.latin} onClick={() => toggleChars("latin")} className={"ion-margin-start" + (currentlySelected.latin ? " active" : "")}>
-								<IonLabel>{charData.latin.title}</IonLabel>
-							</IonChip>
-							<IonChip outline={!currentlySelected.ipa} onClick={() => toggleChars("ipa")} className={currentlySelected.ipa ? "active" : ""}>
-								<IonLabel>{charData.ipa.title}</IonLabel>
-							</IonChip>
-							<IonChip outline={!currentlySelected.greek} onClick={() => toggleChars("greek")} className={currentlySelected.greek ? "active" : ""}>
-								<IonLabel>{charData.greek.title}</IonLabel>
-							</IonChip>
-							<IonChip outline={!currentlySelected.coptic} onClick={() => toggleChars("coptic")} className={currentlySelected.coptic ? "active" : ""}>
-								<IonLabel>{charData.coptic.title}</IonLabel>
-							</IonChip>
-							<IonChip outline={!currentlySelected.cyrillic} onClick={() => toggleChars("cyrillic")} className={currentlySelected.cyrillic ? "active" : ""}>
-								<IonLabel>{charData.cyrillic.title}</IonLabel>
-							</IonChip>
-							<IonChip outline={!currentlySelected.armenian} onClick={() => toggleChars("armenian")} className={currentlySelected.armenian ? "active" : ""}>
-								<IonLabel>{charData.armenian.title}</IonLabel>
-							</IonChip>
+							{Object.getOwnPropertyNames(charData).map((key: string, ind: number) => {
+								const current = currentlySelected[key];
+								return (
+									<IonChip outline={!current} onClick={() => toggleChars(key)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
+										<IonLabel>{charData[key].title}</IonLabel>
+									</IonChip>	
+								);
+							})}
 						</div>
 					</IonItem>
-					<IonItem id="FavoritesBar">
+					<IonItem className={charSettings.adding ? "sticky" : ""}>
 						<div className="multiColumnEC"><div>
 							<div>Favorites:</div>
 							{charSettings.saved.map((char: string) => 
@@ -168,8 +168,8 @@ const ExtraCharactersModal = () => {
 										<h2>{data.title}</h2>
 										{data.content.map((pair: [string, string]) => 
 											<div key={pair[0]}>
-												<div className="label">{capitalize.words(pair[0])}</div>
 												<div className="char" onClick={() => characterClicked(pair[1])}>{pair[1]}</div>
+												<div className="label">{capitalize.words(pair[0])}</div>
 											</div>
 										)}
 									</div>
@@ -193,6 +193,10 @@ const ExtraCharactersModal = () => {
 					<IonItem slot="start" className="blendIn">
 						<IonLabel>Copy Immediately</IonLabel>
 						<IonToggle checked={charSettings.copyImmediately} onIonChange={() => toggleOption("copyImmediately")} />
+					</IonItem>
+					<IonItem slot="end" className="blendIn">
+						<IonLabel>Show Names</IonLabel>
+						<IonToggle checked={charSettings.showNames} onIonChange={() => toggleOption("showNames")} />
 					</IonItem>
 					<IonButtons slot="end">
 						<IonButton onClick={() => cancel()} slot="end" color="success">
