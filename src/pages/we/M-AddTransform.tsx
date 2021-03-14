@@ -21,7 +21,7 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
+import { openModal, closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
 import { WETransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
@@ -95,6 +95,9 @@ const AddTransformModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Transform</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddTransform'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

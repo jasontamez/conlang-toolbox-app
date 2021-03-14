@@ -24,6 +24,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WETransformObject } from '../../components/ReduxDucksTypes';
 import {
+	openModal,
 	closeModal,
 	doEditTransformWE,
 	cancelEditTransformWE,
@@ -157,6 +158,9 @@ const EditTransformModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

@@ -22,6 +22,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import {
+	openModal,
 	closeModal,
 	doEditSoundChangeWE,
 	cancelEditSoundChangeWE,
@@ -192,6 +193,9 @@ const EditSoundChangeModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

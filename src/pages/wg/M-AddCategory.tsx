@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
+import { openModal, closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i, $a } from '../../components/DollarSignExports';
 
@@ -132,6 +132,9 @@ const AddCategoryModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Category</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddCategory'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

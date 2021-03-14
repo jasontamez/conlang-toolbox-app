@@ -31,7 +31,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
-import { closeModal, updateLexiconColumns, updateLexiconOrder } from '../components/ReduxDucksFuncs';
+import { openModal, closeModal, updateLexiconColumns, updateLexiconOrder } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
 import { $i } from '../components/DollarSignExports';
@@ -190,6 +190,9 @@ const EditLexiconOrderModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

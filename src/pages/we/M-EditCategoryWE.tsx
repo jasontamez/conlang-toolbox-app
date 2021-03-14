@@ -22,7 +22,7 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WECategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
+import { openModal, closeModal, doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
@@ -178,6 +178,9 @@ const EditCategoryWEModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Category</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

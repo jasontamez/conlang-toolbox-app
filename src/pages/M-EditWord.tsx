@@ -21,7 +21,13 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { Lexicon } from '../components/ReduxDucksTypes';
-import { closeModal, doEditLexiconItem, cancelEditLexiconItem, deleteLexiconItem } from '../components/ReduxDucksFuncs';
+import {
+	openModal,
+	closeModal,
+	doEditLexiconItem,
+	cancelEditLexiconItem,
+	deleteLexiconItem
+} from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 
 const EditLexiconItemModal = () => {
@@ -93,6 +99,9 @@ const EditLexiconItemModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

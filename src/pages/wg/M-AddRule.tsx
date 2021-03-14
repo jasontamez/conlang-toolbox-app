@@ -19,7 +19,7 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
+import { openModal, closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
@@ -93,6 +93,9 @@ const AddRewriteRuleModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Rewrite Rule</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddRewriteRule'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

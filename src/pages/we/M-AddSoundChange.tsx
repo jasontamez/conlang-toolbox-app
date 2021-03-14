@@ -19,7 +19,7 @@ import {
 	addOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
+import { openModal, closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
@@ -126,6 +126,9 @@ const AddSoundChangeModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Sound Change</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddSoundChange'))}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>

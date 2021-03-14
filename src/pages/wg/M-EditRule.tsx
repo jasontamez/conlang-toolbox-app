@@ -22,6 +22,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import {
+	openModal,
 	closeModal,
 	doEditRewriteRuleWG,
 	cancelEditRewriteRuleWG,
@@ -148,6 +149,9 @@ const EditRewriteRuleModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Rewrite Rule</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
