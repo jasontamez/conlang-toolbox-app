@@ -192,6 +192,7 @@ export interface ModalStateObject {
 	PickAndSaveWE: boolean
 	InfoModal: boolean
 	ExtraCharacters: boolean
+	ExtraCharactersEllipsis: undefined | Event
 	ExportLexicon: boolean
 }
 

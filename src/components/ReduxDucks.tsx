@@ -355,6 +355,7 @@ export const blankAppState: types.StateObject = {
 		WESaveToLexicon: undefined,
 		InfoModal: false,
 		ExtraCharacters: false,
+		ExtraCharactersEllipsis: undefined,
 		ExportLexicon: false
 	},
 	viewState: {
@@ -389,6 +390,7 @@ const saveCurrentState = (state: types.StateObject) => {
 	ms.LexiconEllipsis
 		= ms.WGSaveToLexicon
 		= ms.WESaveToLexicon
+		= ms.ExtraCharactersEllipsis
 		= newState.temporaryInfo
 		= undefined;
 	// Save

@@ -491,9 +491,6 @@ ion-item div.twoColumnsEC div.char {
 	top: 0;
 	z-index: 10;
 }
-ion-item.blendIn::part(native) {
-	background: transparent;
-}
 
 @media screen and (max-width: 350px) {
 	ion-tab-bar ion-label {

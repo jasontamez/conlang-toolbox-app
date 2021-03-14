@@ -14,12 +14,14 @@ import {
 	IonChip,
 	IonFooter,
 	IonToggle,
-	IonInput
+	IonInput,
+	IonPopover
 } from '@ionic/react';
 import {
 	addCircleOutline,
-	closeCircleOutline,
+	checkmarkCircleOutline,
 	closeSharp,
+	ellipsisVerticalOutline,
 	removeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -29,7 +31,9 @@ import {
 	updateExtraCharsDisplay,
 	updateExtraCharsFavorites,
 	toggleExtraCharsBoolean,
-	updateExtraCharsToBeSaved
+	updateExtraCharsToBeSaved,
+	openPopover,
+	closePopover
 } from '../components/ReduxDucksFuncs';
 import { $i } from '../components/DollarSignExports';
 import charData from '../components/ExtraCharactersData';
@@ -42,6 +46,7 @@ const ExtraCharactersModal = () => {
 	}
 	const dispatch = useDispatch();
 	const [modalState, charSettings] = useSelector((state: any) => [state.modalState, state.extraCharactersState], shallowEqual);
+	const popstate = modalState.ExtraCharactersEllipsis;
 	let currentlySelected: ExtraCharDataFlags = {};
 	charSettings.display.forEach((selected: keyof ExtraCharactersData) => currentlySelected[selected] = true);
 	let currentFaves: any = {};
@@ -98,9 +103,25 @@ const ExtraCharactersModal = () => {
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Extra Characters</IonTitle>
+					<IonPopover
+						event={popstate}
+						isOpen={popstate !== undefined}
+						onDidDismiss={() => dispatch(closePopover('ExtraCharactersEllipsis'))}
+					>
+						<IonList>
+							<IonItem>
+								<IonLabel position="stacked">Copy to Clipboard Immediately</IonLabel>
+								<IonToggle checked={charSettings.copyImmediately} onIonChange={() => toggleOption("copyImmediately")} />
+							</IonItem>
+							<IonItem>
+								<IonLabel position="stacked">Show Unicode Names</IonLabel>
+								<IonToggle checked={charSettings.showNames} onIonChange={() => toggleOption("showNames")} />
+							</IonItem>
+						</IonList>
+					</IonPopover>
 					<IonButtons slot="end">
-						<IonButton onClick={() => cancel()}>
-							<IonIcon icon={closeCircleOutline} />
+						<IonButton onClick={(e: any) => { e.persist(); dispatch(openPopover('ExtraCharactersEllipsis', e)); }}>
+							<IonIcon icon={ellipsisVerticalOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
@@ -190,17 +211,9 @@ const ExtraCharactersModal = () => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar className="ion-text-wrap">
-					<IonItem slot="start" className="blendIn">
-						<IonLabel>Copy Immediately</IonLabel>
-						<IonToggle checked={charSettings.copyImmediately} onIonChange={() => toggleOption("copyImmediately")} />
-					</IonItem>
-					<IonItem slot="end" className="blendIn">
-						<IonLabel>Show Names</IonLabel>
-						<IonToggle checked={charSettings.showNames} onIonChange={() => toggleOption("showNames")} />
-					</IonItem>
 					<IonButtons slot="end">
 						<IonButton onClick={() => cancel()} slot="end" color="success">
-							<IonIcon icon={closeCircleOutline} slot="start" />
+							<IonIcon icon={checkmarkCircleOutline} slot="start" />
 							<IonLabel>Done</IonLabel>
 						</IonButton>
 					</IonButtons>
