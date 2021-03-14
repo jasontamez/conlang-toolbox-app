@@ -284,7 +284,9 @@ export const OptCard = () => {
 					The remaining options only apply to <em>pseudo-texts</em>.
 				</p><p>
 					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
-					letter. The remaining options determine what your sentences look like. By default,
+					letter.
+				</p><p>
+					The remaining options determine what your sentences look like. By default,
 					three-fourths of all sentences will be <em>declarative</em>, one-sixth will
 					be <em>interrogative</em> (questions), and one-twelfth will be <em>exclamatory</em>. You
 					can put special punctuation before and after these sentences if you wish.
