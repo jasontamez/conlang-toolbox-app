@@ -207,12 +207,7 @@ export interface ExtraCharacters {
 	content: ([string, string])[]
 }
 export interface ExtraCharactersData {
-	latin: ExtraCharacters,
-	ipa: ExtraCharacters,
-	greek: ExtraCharacters,
-	coptic: ExtraCharacters,
-	cyrillic: ExtraCharacters,
-	armenian: ExtraCharacters
+	[key: string]: ExtraCharacters
 }
 
 export interface ExtraCharactersState {

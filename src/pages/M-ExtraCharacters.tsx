@@ -35,27 +35,9 @@ import { $i } from '../components/DollarSignExports';
 import charData from '../components/ExtraCharactersData';
 import capitalize from 'capitalize';
 
-// chardata is {} with props latin, greek, etc.
-//   each prop is {} with title = "", content: [ ["NAME", character]... ]
-
-// charSettings has
-//   display: (keyof ExtraCharactersData)[] - what is being shown
-//   saved: string[] - characters currently saved to favorites bar
-//   copyImmediately: boolean - true to copy when clicked, false to use the bar below
-//   copyLater: string - characters currently stored to be copied later
-//   adding: boolean - currently clicking
-//   deleting: boolean - currently deleting
-//   showNames: boolean - true to show a list of the name : character, false to have columns of characters
-
-
 const ExtraCharactersModal = () => {
 	interface ExtraCharDataFlags {
-		latin?: boolean,
-		ipa?: boolean,
-		greek?: boolean,
-		coptic?: boolean,
-		cyrillic?: boolean,
-		armenian?: boolean
+		[key: string]: boolean
 	}
 	const dispatch = useDispatch();
 	const [modalState, charSettings] = useSelector((state: any) => [state.modalState, state.extraCharactersState], shallowEqual);
