@@ -13,7 +13,6 @@ import {
 	IonModal,
 	IonChip,
 	IonFooter,
-	IonToggle,
 	IonInput,
 	IonPopover
 } from '@ionic/react';
@@ -109,13 +108,11 @@ const ExtraCharactersModal = () => {
 						onDidDismiss={() => dispatch(closePopover('ExtraCharactersEllipsis'))}
 					>
 						<IonList>
-							<IonItem>
-								<IonLabel position="stacked">Copy to Clipboard Immediately</IonLabel>
-								<IonToggle checked={charSettings.copyImmediately} onIonChange={() => toggleOption("copyImmediately")} />
+							<IonItem button={true} onClick={() => toggleOption("copyImmediately")}>
+								<IonLabel>{charSettings.copyImmediately ? "Tap to Save" : "Tap to Copy"}</IonLabel>
 							</IonItem>
-							<IonItem>
-								<IonLabel position="stacked">Show Unicode Names</IonLabel>
-								<IonToggle checked={charSettings.showNames} onIonChange={() => toggleOption("showNames")} />
+							<IonItem button={true} onClick={() => toggleOption("showNames")}>
+								<IonLabel>{charSettings.showNames ? "Only Show Characters" : "Show Unicode Names"}</IonLabel>
 							</IonItem>
 						</IonList>
 					</IonPopover>
@@ -129,7 +126,7 @@ const ExtraCharactersModal = () => {
 			<IonContent>
 				<IonList id="ExtraCharactersModalList" lines="none">
 					<IonItem className={"sticky" + (charSettings.copyImmediately ? " hide" : "")}>
-						<IonInput id="toBeCopied" value={charSettings.copyLater} onBlur={() => modifySavedToBeCopied()} placeholder="Tap characters to add them here" />
+						<IonInput id="toBeCopied" value={charSettings.copyLater} onIonBlur={() => modifySavedToBeCopied()} placeholder="Tap characters to add them here" />
 					</IonItem>
 					<IonItem>
 						<div>
