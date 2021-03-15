@@ -63,7 +63,7 @@ const WERew = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteSoundChangeWE(change));
 				fireSwal({
-					title: "Rewrite Rule deleted",
+					title: "Sound Change deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,

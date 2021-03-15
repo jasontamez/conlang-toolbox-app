@@ -156,7 +156,7 @@ const EditSoundChangeModal = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteSoundChangeWE(currentSoundChange));
 				fireSwal({
-					title: "Rewrite Rule deleted",
+					title: "Sound Change deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,
