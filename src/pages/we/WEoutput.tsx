@@ -43,7 +43,7 @@ import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
 import ltr from '../../components/LTR';
 import fireSwal from '../../components/Swal';
-
+import { Plugins } from '@capacitor/core';
 
 const WEOut = () => {
 	//interface fromOrTo {
@@ -107,7 +107,7 @@ const WEOut = () => {
 		return t;
 	};
 
-	const copyText = () => {
+	const copyText = async () => {
 		let copied: string[] = [];
 		if(settingsWE.output === "outputOnly") {
 			// Join with linebreaks
@@ -139,7 +139,9 @@ const WEOut = () => {
 			}
 		}
 		if(copied.length > 0 && !copied[0].match(/^You have no/g)) {
-			navigator.clipboard.writeText(copied.join("\n"));
+			const { Clipboard } = Plugins;
+			await Clipboard.write({string: copied.join("\n")});
+			//navigator.clipboard.writeText(copied.join("\n"));
 			return fireSwal({
 				title: "Copied to clipboard.",
 				toast: true,

@@ -38,6 +38,7 @@ import { $i } from '../components/DollarSignExports';
 import charData from '../components/ExtraCharactersData';
 import fireSwal from '../components/Swal';
 import capitalize from 'capitalize';
+import { Plugins } from '@capacitor/core';
 
 const ExtraCharactersModal = () => {
 	interface ExtraCharDataFlags {
@@ -62,7 +63,7 @@ const ExtraCharactersModal = () => {
 		}
 		dispatch(updateExtraCharsDisplay(output));
 	};
-	const characterClicked = (char: string) => {
+	const characterClicked = async (char: string) => {
 		if(charSettings.adding) {
 			// Adding
 			if(!currentFaves[char]) {
@@ -75,7 +76,9 @@ const ExtraCharactersModal = () => {
 			}
 		} else if (charSettings.copyImmediately) {
 			// Copy now
-			navigator.clipboard.writeText(char);
+			const { Clipboard } = Plugins;
+			await Clipboard.write({string: char});
+			//navigator.clipboard.writeText(char);
 			fireSwal({
 				title: "copied " + char + " to clipboard",
 				position: 'top',

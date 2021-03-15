@@ -45,6 +45,7 @@ import ModalWrap from "../../components/ModalWrap";
 import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import fireSwal from '../../components/Swal';
+import { Plugins } from '@capacitor/core';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
@@ -85,7 +86,7 @@ const WGOut = () => {
 	const allSyllables = syllablesObject.objects;
 	const regExpMap: Map<string, RegExp> = new Map();
 
-	const copyText = () => {
+	const copyText = async () => {
 		let copyText = "";
 		if(settingsWG.output === "text") {
 			// Pseudo-text is easy to copy
@@ -97,7 +98,9 @@ const WGOut = () => {
 			copyText = (copied.join("\n"));
 		}
 		if(copyText && !copyText.match(/^You (have no|are missing)/g)) {
-			navigator.clipboard.writeText(copyText);
+			const { Clipboard } = Plugins;
+			await Clipboard.write({string: copyText});
+			//navigator.clipboard.writeText(copyText);
 			return fireSwal({
 				title: "Copied to clipboard.",
 				toast: true,

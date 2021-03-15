@@ -68,6 +68,7 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 import ltr from '../components/LTR';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
+import { Plugins } from '@capacitor/core';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -397,12 +398,21 @@ const Lex = () => {
 		dispatch(closePopover('LexiconEllipsis'));
 		dispatch(toggleLexiconWrap());
 	};
-	const copyText = () => {
+	const copyText = async () => {
 		const info = $i("revealFullElement");
-		navigator.clipboard.writeText(info.textContent);
-		info.textContent = "Copied to clipboard";
+		const { Clipboard } = Plugins;
+		await Clipboard.write({string: info.textContent});
+		//navigator.clipboard.writeText(info.textContent);
+		fireSwal({
+			title: "Copied to clipboard.",
+			toast: true,
+			timer: 1500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
 		clearTimeout(Number(info.dataset.timer));
-		info.dataset.timer = String(setTimeout(() => info.classList.add("hide"), 1000));
+		info.classList.add("hide");
 	};
 	const maybeExpand = (e: any) => {
 		const span = e.target;
