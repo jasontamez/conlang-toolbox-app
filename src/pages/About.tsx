@@ -108,24 +108,6 @@ const Home = () => {
 							</IonCard>
 						</IonCol>
 					</IonRow>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol>
-							<IonCard>
-								<IonCardHeader className="ion-text-center">
-									<IonLabel className="ion-padding-start ion-align-self-start">Credits and Acknowledgements</IonLabel>
-								</IonCardHeader>
-								<IonCardContent>
-									<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "60px", width: "217px" } } /></a></div>
-								</IonCardContent>
-							</IonCard>
-						</IonCol>
-					</IonRow>
 				</IonGrid>
 			</IonContent>
 		</IonPage>

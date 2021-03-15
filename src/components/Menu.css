@@ -83,6 +83,11 @@ ion-menu#mainMenu ion-item.subHeading.selected ion-icon {
 	visibility: visible;
 }
 
+ion-menu#mainMenu #menuCredits {
+	margin-top: 2rem;
+	font-size: 0.75rem;
+}
+
 ion-note {
 	display: inline-block;
 	font-size: 1rem;

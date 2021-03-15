@@ -143,6 +143,17 @@ const appMenuPages: MenuSection[] = [
 			}
 		],
 		id: 'menuOthers'
+	},
+	{
+		pages: [
+			{
+				title: 'Credits',
+				url: '/about',
+				icon: chatboxEllipsesSharp,
+				id: 'menuitemAbout'
+			}
+		],
+		id: 'menuCredits'
 	}
 ];
 
@@ -204,7 +215,7 @@ const Menu = () => {
 					let head: any = (menuSection.header) ? (<IonListHeader>{menuSection.header}</IonListHeader>) : '',
 						note: any = (menuSection.note) ? (<IonNote>{menuSection.note}</IonNote>) : '';
 					return (
-						<IonList key={menuSection.id}>
+						<IonList key={menuSection.id} id={menuSection.id}>
 							{head}{note}
 							{pages}
 						</IonList>
