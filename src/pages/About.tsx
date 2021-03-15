@@ -59,7 +59,7 @@ const Home = () => {
 									<ul>
 										<li>Organize your language's sounds into groups</li>
 										<li>Construct syllable formations using those groups</li>
-										<li>Tweak the output through rewrite rules</li>
+										<li>Tweak the output through transformations</li>
 										<li>Jumpstart your process with built-in presets</li>
 									</ul>
 								</IonCardContent>
@@ -80,8 +80,8 @@ const Home = () => {
 									</p>
 									<ul>
 										<li>Start with words from a language (natural or otherwise)</li>
-										<li>Use standard rules to determine how they transform</li>
-										<li>Tweak the output through rewrite rules</li>
+										<li>Use standard rules to determine how they evolve</li>
+										<li>Tweak the output through transformations</li>
 										{/*<li>Multiple presets to get you going</li>*/}
 									</ul>
 								</IonCardContent>

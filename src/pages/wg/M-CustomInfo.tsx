@@ -124,7 +124,7 @@ const ManageCustomInfo = () => {
 		} else {
 			fireSwal({
 				title: "Load \"" + title + "\"?",
-				text: "This will clear and overwrite all current character groups, syllables, rules and settings.",
+				text: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: "Yes, load it."

@@ -115,40 +115,42 @@ export const RewCard = () => {
 		<IonCard>
 			<IonItem>
 				<IonIcon icon={swapHorizontalOutline} slot="start" color="primary" />
-				<IonLabel>Rewrites Rules Tab</IonLabel>
+				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>
 					There may be cases when you need to fine-tune the words that get generated
 					on the <strong>Output</strong> tab. A common reason would be to turn a
-					specific character into two or three. You may create a group such
+					specific character into two or three letters. You may create a group such
 					as <strong>C=pbkClrS</strong>, using capital letters in place of sounds
 					like <em>"ch"</em> or <em>"sh"</em>. This could generate syllables
 					like <em>Cu</em> or <em>pliS</em>.
 				</p><p>
-					When you make a new <em>rewrite rule</em>, you provide
+					When you make a new <em>transformation</em>, you provide
 					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
-					a <em>rule description</em> for your own benefit. Both expressions can
+					a <em>transformation description</em> for your own benefit. Both expressions can
 					use <strong>regular expressions</strong>, which are beyond the scope of this
 					tutorial. You can also use the special expression %X to indicate any character
 					in group X's run, or !%X to indicate any character <em>not</em> in that run.
 				</p><p>
 					So, you could make a search expression <strong>C</strong> with a replacement
 					expression <strong>ch</strong>, which will result in <em>Cu</em> above
-					becoming <em>chu</em>. This will result in a rule that looks like the following:
+					becoming <em>chu</em>. This will result in a transformation that looks like
+					the following:
 				</p>
 				<div className="emphasizedSection serifChars">
 					<span className="importantUnit">C</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ch</span>
 				</div>
 				<p>
-					Click the (+) button to add a new rewrite rule. The first rule in the list will be
-					run first, the second rule second, and so on down the list. This may cause
-					unintended effects, so you can reorganize your rules to avoid any such effects by
-					using the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
+					Click the (+) button to add a new transformation. The first transformation in the
+					list will be run first, the second trandformation second, and so on down the list.
+					This may cause unintended effects, so you can reorganize your transformations to
+					avoid any such effects by using
+					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
 				</p>
 				<hr />
 				<p>
-					Here are some sample rules for some linguistic phenomina:
+					Here are some sample transformations for some linguistic phenomina:
 				</p>
 				<ul>
 					<li>Consonant harmony:
@@ -210,13 +212,13 @@ export const OutCard = () => {
 					are generated.
 				</p><p>
 					<strong>All possible syllables</strong>, as you might guess, outputs a list of every
-					possible syllable your character groups, syllables and rewrite rules allow.
+					possible syllable your character groups, syllables and transformations allow.
 					The <em>capitalize</em>, <em>sort</em> and <em>multi-column</em> options above will
 					also work on this syllable list.
 				</p><p>
 					At the top of the settings, you can choose to <strong>show syllable breaks</strong>, which
 					will in·sert a dot be·tween eve·ry syl·la·ble in each word. While this option can be useful,
-					please note that it will break any <em>rewrite rules</em> that try to work across syllable
+					please note that it will break any <em>transformations</em> that try to work across syllable
 					boundaries.
 				</p><p>
 					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click
@@ -249,15 +251,15 @@ export const OptCard = () => {
 					pre-loaded options. The initial settings when you first start the app are
 					the <em>Simple</em> preset. The others are offered to give you ideas of what's
 					possible with the app. They will load <em>character
-					groups</em>, <em>syllables</em>, <em>rewrite rules</em> and possibly change the
+					groups</em>, <em>syllables</em>, <em>transformations</em> and possibly change the
 					remaining settings on this page, too.
 				</p><p>
 					<strong>Clear All Fields</strong> clears all <em>character
-					groups</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
+					groups</em>, <em>syllables</em> and <em>transformations</em>, but does not
 					affect any other settings.
 				</p><p>
 					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your own
-					<em>character groups</em>, <em>syllables</em>, <em>rewrite rules</em> and the
+					<em>character groups</em>, <em>syllables</em>, <em>transformations</em> and the
 					settings on this page. This allows you to switch between your own personal
 					language settings.
 				</p>

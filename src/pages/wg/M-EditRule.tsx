@@ -108,7 +108,7 @@ const EditRewriteRuleModal = () => {
 		dispatch(doEditRewriteRuleWG(editingRule));
 		hardReset();
 		fireSwal({
-			title: "Rewrite Rule saved!",
+			title: "Transformation saved!",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -121,7 +121,7 @@ const EditRewriteRuleModal = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteRewriteRuleWG(currentRule));
 				fireSwal({
-					title: "Rewrite Rule deleted",
+					title: "Transformation deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,
@@ -147,7 +147,7 @@ const EditRewriteRuleModal = () => {
 		<IonModal isOpen={modalState.EditRewriteRule} onDidDismiss={() => dispatch(closeModal('EditRewriteRule'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Rewrite Rule</IonTitle>
+					<IonTitle>Edit Transformation</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -169,7 +169,7 @@ const EditRewriteRuleModal = () => {
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingRule!.replace} onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked">Rule Description:</IonLabel>
+						<IonLabel position="stacked">Transformation Description:</IonLabel>
 						<IonInput id="optDesc" className="ion-margin-top" value={editingRule!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
@@ -178,7 +178,7 @@ const EditRewriteRuleModal = () => {
 				<IonToolbar>
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRuleInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Rule</IonLabel>
+						<IonLabel>Save Transformation</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={() => maybeDeleteRewriteRule()}>
 						<IonIcon icon={trashOutline} slot="start" />

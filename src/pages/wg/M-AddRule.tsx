@@ -80,7 +80,7 @@ const AddRewriteRuleModal = () => {
 		dispatch(addRewriteRuleWG(newRule));
 		hardReset();
 		fireSwal({
-			title: "Rewrite Rule added!",
+			title: "Transformation added!",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -91,7 +91,7 @@ const AddRewriteRuleModal = () => {
 		<IonModal isOpen={modalState.AddRewriteRule} onDidDismiss={() => dispatch(closeModal('AddRewriteRule'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Rewrite Rule</IonTitle>
+					<IonTitle>Add Transformation</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -113,7 +113,7 @@ const AddRewriteRuleModal = () => {
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked">Rule Description:</IonLabel>
+						<IonLabel position="stacked">Transformation Description:</IonLabel>
 						<IonInput id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
@@ -122,7 +122,7 @@ const AddRewriteRuleModal = () => {
 				<IonToolbar>
 				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRule(false)}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Rule</IonLabel>
+						<IonLabel>Add Transformation</IonLabel>
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewRule()}>
 						<IonIcon icon={addOutline} slot="start" />

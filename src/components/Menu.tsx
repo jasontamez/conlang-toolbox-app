@@ -64,7 +64,7 @@ const appMenuPages: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'Rewrite Rules',
+				title: 'Transformations',
 				url: '/wg/rewriterules',
 				id: 'menuitemWGrew',
 				parent: 'wg'

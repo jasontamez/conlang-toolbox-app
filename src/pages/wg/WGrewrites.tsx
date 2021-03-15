@@ -63,7 +63,7 @@ const WGRew = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteRewriteRuleWG(rule));
 				fireSwal({
-					title: "Rewrite Rule deleted",
+					title: "Transformation deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,
@@ -107,7 +107,7 @@ const WGRew = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Rewrite Rules</IonTitle>
+					<IonTitle>Transformations</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -145,7 +145,7 @@ const WGRew = () => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new rewrite rule" onClick={() => dispatch(openModal('AddRewriteRule'))}>
+					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => dispatch(openModal('AddRewriteRule'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

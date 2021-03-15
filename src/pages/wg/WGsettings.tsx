@@ -78,7 +78,7 @@ const WGSet = () => {
 			if(result.isConfirmed) {
 				dispatch(clearEverything());
 				fireSwal({
-					title: "Groups, Syllables and Rules deleted.",
+					title: "Groups, Syllables and Transformations deleted.",
 					toast: true,
 					timer: 2500,
 					timerProgressBar: true,
@@ -91,7 +91,7 @@ const WGSet = () => {
 		} else {
 			fireSwal({
 				title: "Clear Everything?",
-				text: "This will delete all current character groups, syllables and rewrite rules.",
+				text: "This will delete all current character groups, syllables and transformations.",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: "Yes, clear everything."

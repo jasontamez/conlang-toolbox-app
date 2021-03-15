@@ -51,7 +51,7 @@ const WG = () => {
 				</IonTabButton>
 				<IonTabButton tab="rewriterules" href="/wg/rewriterules">
 					<IonIcon icon={swapHorizontalOutline} />
-					<IonLabel>Rewrites</IonLabel>
+					<IonLabel>Transforms</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="output" href="/wg/output">
 					<IonIcon icon={documentTextOutline} />
