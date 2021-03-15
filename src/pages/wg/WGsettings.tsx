@@ -78,7 +78,7 @@ const WGSet = () => {
 			if(result.isConfirmed) {
 				dispatch(clearEverything());
 				fireSwal({
-					title: "Categories, Syllables and Rules deleted.",
+					title: "Groups, Syllables and Rules deleted.",
 					toast: true,
 					timer: 2500,
 					timerProgressBar: true,
@@ -91,7 +91,7 @@ const WGSet = () => {
 		} else {
 			fireSwal({
 				title: "Clear Everything?",
-				text: "This will delete all current categories, syllables and rewrite rules.",
+				text: "This will delete all current character groups, syllables and rewrite rules.",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonText: "Yes, clear everything."
@@ -169,7 +169,7 @@ const WGSet = () => {
 						</IonRange>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked" className="ion-padding-bottom">Category run dropoff</IonLabel>
+						<IonLabel position="stacked" className="ion-padding-bottom">Character Group run dropoff</IonLabel>
 						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoffWG, $i("categoryDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />

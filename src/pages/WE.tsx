@@ -47,7 +47,7 @@ const WE = () => {
 				</IonTabButton>
 				<IonTabButton tab="categories" href="/we/categories">
 					<IonIcon icon={libraryOutline} />
-					<IonLabel>Categories</IonLabel>
+					<IonLabel>Character Groups</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="transformations" href="/we/transformations">
 					<IonIcon icon={syncOutline} />

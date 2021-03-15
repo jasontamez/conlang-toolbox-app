@@ -44,19 +44,19 @@ export const CatCard = () => {
 		<IonCard>
 			<IonItem>
 				<IonIcon icon={libraryOutline} slot="start" color="primary" />
-				<IonLabel>Categories Tab</IonLabel>
+				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This is where you define categories of sounds. You can reference these categories
-					in <strong>Transformations</strong> and <strong>Sound Changes</strong> to fine-tune
+					This is where you define groups of characters representing sounds. You can reference these
+					groups in <strong>Transformations</strong> and <strong>Sound Changes</strong> to fine-tune
 					the way your language evolves.
 				</p><p>
-					Click the (+) button to add a new category. When you make a category, you must give it
+					Click the (+) button to add a new group. When you make a group, you must give it
 					a <em>description</em> and a one-character <em>label</em>. The description is for your
-					own benefit, while the label will be used to refer to this category in the other tabs.
+					own benefit, while the label will be used to refer to this group in the other tabs.
 					The label can be any single character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>.
-					The letters/characters in your category are called a <em>run</em>.
+					The letters/characters in your group are called a <em>run</em>.
 				</p>
 			</IonCardContent>
 		</IonCard>
@@ -87,14 +87,14 @@ export const TraCard = () => {
 					<li>
 						<strong>Input only:</strong> Before anything else happens, input words are
 						searched, and any instances of the <em>input expression</em> are replaced with
-						the <em>output expression</em>. Regular expressions and %Category references
-						are allowed in the <em>input expression</em> only. (A category reference is
-						something like %C to indicate any character in category C's run, or !%C to
-						indicate any character <em>not</em> in that run.)
+						the <em>output expression</em>. Regular expressions and %Group references
+						are allowed in the <em>input expression</em> only. (A group reference is
+						something like %G to indicate any character in characyer group C's run, or
+						!%G to indicate any character <em>not</em> in that run.)
 					</li><li>
 						<strong>Output only:</strong> After all <strong>sound changes</strong> are
 						processed, any instances of the <em>output expression</em> are replaced with
-						the <em>input expression</em>. Regular expressions and %Category references
+						the <em>input expression</em>. Regular expressions and %Group references
 						are allowed in the <em>output expression</em> only.
 					</li><li>
 						<strong>Both ways:</strong> Before anything else happens, input words are
@@ -103,18 +103,18 @@ export const TraCard = () => {
 						processed, any instances of the <em>output expression</em> are replaced with
 						the <em>input expression</em>.
 						<br /><br />
-						Regular expressions are not allowed, but non-negative %Category references are
+						Regular expressions are not allowed, but non-negative %Group references are
 						allowed if and only if both input and output have them. In that case, something
-						special happens: when the transformer matches a character in a category, it will
-						note what position that character is in the category's run. It will then look at
-						the other expression's category and pick out the character in the same position.
+						special happens: when the transformer matches a character in a group, it will
+						note what position that character is in the group's run. It will then look at
+						the other expression's group and pick out the character in the same position.
 						<br /><br />
-						For example: If %S is being replaced with %Z, and those categories have runs "ptk"
+						For example: If %S is being replaced with %Z, and those groups have runs "ptk"
 						and "bdg", "p" will be replaced with "b", "t" will be replaced with "d", and "k"
-						will be replaced by "g". If the first category has more letters than the second,
-						the second category's run will be repeated until it's long enough to find a match.
+						will be replaced by "g". If the first group has more letters than the second,
+						the second group's run will be repeated until it's long enough to find a match.
 						<br /><br />
-						NOTE: If you have unequal numbers of %Categories in the beginning and ending
+						NOTE: If you have unequal numbers of %Groups in the beginning and ending
 						expressions, errors may occur.
 					</li>
 				</ul>
@@ -152,21 +152,21 @@ export const SChCard = () => {
 					the <em>anticontext expression</em> (also called an <em>exception</em>).
 				</p><p>
 					The <em>beginning expression</em> can include plain text or regular expressions. It
-					can also contain %Category references. (A category reference is something like %C to
-					indicate any character in category C's run, or !%C to indicate any character that
-					is <em>not</em> in that run.)
+					can also contain %Group references. (A group reference is something like %G to
+					indicate any character in character group C's run, or !%G to indicate any character
+					that is <em>not</em> in that run.)
 				</p><p>
 					The <em>ending expression</em> should be plain text. However, it can include
-					non-negative %Category references <strong>if and only if</strong> the <em>beginning
+					non-negative %Group references <strong>if and only if</strong> the <em>beginning
 					expression</em> does, too. In that case, something special happens: when the
-					evolver matches a character in a category, it will note what position that
-					character is in the category's run. It will then look at the <em>ending</em> category
+					evolver matches a character in a group, it will note what position that
+					character is in the group's run. It will then look at the <em>ending</em> group
 					and pick out the character in the same position. For example: If %S is being
-					replaced with %Z, and those categories have runs "ptk" and "bdg", "p" will be
+					replaced with %Z, and those groups have runs "ptk" and "bdg", "p" will be
 					replaced with "b", "t" will be replaced with "d", and "k" will be replaced by
-					"g". (If the first category has more letters than the second, the second category's
+					"g". (If the first group has more letters than the second, the second group's
 					run will be repeated until it's long enough to find a match.)
-					<strong>NOTE:</strong> If you have unequal numbers of %Categories in
+					<strong>NOTE:</strong> If you have unequal numbers of %Groups in
 					the <em>beginning</em> and <em>ending</em> expressions, errors may occur.
 				</p><p>
 					The <em>context expression</em> describes where in the word the <em>beginning

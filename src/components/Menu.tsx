@@ -52,7 +52,7 @@ const appMenuPages: MenuSection[] = [
 				parentOf: 'wg'
 			},
 			{
-				title: 'Categories',
+				title: 'Character Groups',
 				url: '/wg/categories',
 				id: 'menuitemWGcat',
 				parent: 'wg'
@@ -95,7 +95,7 @@ const appMenuPages: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Categories',
+				title: 'Character Groups',
 				url: '/we/categories',
 				id: 'menuitemWEcat',
 				parent: 'we'

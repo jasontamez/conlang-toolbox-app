@@ -137,7 +137,7 @@ const EditCategoryWEModal = () => {
 		dispatch(doEditCategoryWE(editingCat));
 		hardReset();
 		fireSwal({
-			title: "Category saved!",
+			title: "Character Group saved!",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -150,7 +150,7 @@ const EditCategoryWEModal = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteCategoryWE(editingCat));
 				fireSwal({
-					title: "Category deleted",
+					title: "Character Group deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,
@@ -176,7 +176,7 @@ const EditCategoryWEModal = () => {
 		<IonModal isOpen={modalState.EditCategoryWE} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Category</IonTitle>
+					<IonTitle>Edit Character Group</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -202,7 +202,7 @@ const EditCategoryWEModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
+						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -210,11 +210,11 @@ const EditCategoryWEModal = () => {
 				<IonToolbar>
 					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Category</IonLabel>
+						<IonLabel>Save Group</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCategory()}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Category</IonLabel>
+						<IonLabel>Delete Group</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

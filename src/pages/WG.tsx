@@ -43,7 +43,7 @@ const WG = () => {
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="categories" href="/wg/categories">
 					<IonIcon icon={fileTrayStackedOutline} />
-					<IonLabel>Categories</IonLabel>
+					<IonLabel>Character Groups</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="syllables" href="/wg/syllables">
 					<IonIcon icon={gridOutline} />

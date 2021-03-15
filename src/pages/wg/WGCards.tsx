@@ -24,23 +24,22 @@ export const CatCard = () => {
 		<IonCard>
 			<IonItem>
 				<IonIcon icon={fileTrayStackedOutline} slot="start" color="primary" />
-				<IonLabel>Categories Tab</IonLabel>
+				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This is where you define categories of sounds. The two simplest categories
+					This is where you define groups of sounds. The two simplest groupings
 					are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
-					categories depending on how you want your language's syllables formed. For
+					character groups depending on how you want your language's syllables formed. For
 					example, the consonants <I>pbk</I> in English may be followed by the
 					consonants <I>lr</I> at the beginning of syllables. So you might choose them as
-					categories, while also putting <I>pbklr</I> in a third category for general
-					consonants.
+					groups, while also putting <I>pbklr</I> in a third group for general consonants.
 				</p><p>
-					Click the (+) button to add a new category. When you make a category, you must give it
-					a <em>description</em> and a one-character <em>label</em>. The label can be any single
-					character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>. The description is
-					for your own benefit, while the label will be used to refer to this category in
-					the <strong>Syllables</strong> tab. So you may end up with categories that look
+					Click the (+) button to add a new character group. When you make a group, you must
+					give it a <em>description</em> and a one-character <em>label</em>. The label can be
+					any single character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>. The
+					description is for your own benefit, while the label will be used to refer to this
+					group in the <strong>Syllables</strong> tab. So you may end up with groups that look
 					like the following:
 				</p>
 				<div className="emphasizedSection">
@@ -53,7 +52,7 @@ export const CatCard = () => {
 					<strong>V=eioau</strong>
 				</div>
 				<p>
-					The letters/characters in your category are called a <em>run</em>. The run should be
+					The letters/characters in your group are called a <em>run</em>. The run should be
 					put in a specific order. The first letter is more likely to be used than the second,
 					the second more likely than the third, and so on. This mimics natural languages, which
 					tend to use certain sounds more than others. You can adjust this <em>dropoff rate</em>, or
@@ -88,7 +87,7 @@ export const SylCard = () => {
 				<p>
 					The above can generate syllables such as <em>pla</em>, <em>ku</em>, or <em>brep</em>, which
 					could then be combined into words such as <em>plabrep</em> or <em>kupla</em>. You can
-					also put characters in a syllable that don't correspond to a category: <strong>sILV</strong> could
+					also put characters in a syllable that don't correspond to a group: <strong>sILV</strong> could
 					generate syllables such as <em>sbra</em> or <em>spli</em>.
 				</p><p>
 					If you desire a greater amount of control over your words, you can turn on
@@ -122,7 +121,7 @@ export const RewCard = () => {
 				<p>
 					There may be cases when you need to fine-tune the words that get generated
 					on the <strong>Output</strong> tab. A common reason would be to turn a
-					specific character into two or three. You may create a category such
+					specific character into two or three. You may create a group such
 					as <strong>C=pbkClrS</strong>, using capital letters in place of sounds
 					like <em>"ch"</em> or <em>"sh"</em>. This could generate syllables
 					like <em>Cu</em> or <em>pliS</em>.
@@ -131,8 +130,8 @@ export const RewCard = () => {
 					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
 					a <em>rule description</em> for your own benefit. Both expressions can
 					use <strong>regular expressions</strong>, which are beyond the scope of this
-					tutorial. You can also use the special expression %C to indicate any character
-					in category C's run, or !%C to indicate any character <em>not</em> in that run.
+					tutorial. You can also use the special expression %X to indicate any character
+					in group X's run, or !%X to indicate any character <em>not</em> in that run.
 				</p><p>
 					So, you could make a search expression <strong>C</strong> with a replacement
 					expression <strong>ch</strong>, which will result in <em>Cu</em> above
@@ -211,7 +210,7 @@ export const OutCard = () => {
 					are generated.
 				</p><p>
 					<strong>All possible syllables</strong>, as you might guess, outputs a list of every
-					possible syllable your categories, syllables and rewrite rules allow.
+					possible syllable your character groups, syllables and rewrite rules allow.
 					The <em>capitalize</em>, <em>sort</em> and <em>multi-column</em> options above will
 					also work on this syllable list.
 				</p><p>
@@ -249,16 +248,18 @@ export const OptCard = () => {
 					<strong>Load Presets</strong> brings up a menu where you can choose from several
 					pre-loaded options. The initial settings when you first start the app are
 					the <em>Simple</em> preset. The others are offered to give you ideas of what's
-					possible with the app. They will load <em>categories</em>, <em>syllables</em>, <em>rewrite
-					rules</em> and possibly change the remaining settings on this page, too.
+					possible with the app. They will load <em>character
+					groups</em>, <em>syllables</em>, <em>rewrite rules</em> and possibly change the
+					remaining settings on this page, too.
 				</p><p>
-					<strong>Clear All Fields</strong> clears
-					all <em>categories</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
+					<strong>Clear All Fields</strong> clears all <em>character
+					groups</em>, <em>syllables</em> and <em>rewrite rules</em>, but does not
 					affect any other settings.
 				</p><p>
 					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your own
-					<em>categories</em>, <em>syllables</em>, <em>rewrite rules</em> and the settings on this
-					page. This allows you to switch between your own personal language settings.
+					<em>character groups</em>, <em>syllables</em>, <em>rewrite rules</em> and the
+					settings on this page. This allows you to switch between your own personal
+					language settings.
 				</p>
 				<h2>The Settings</h2>
 				<p>
@@ -268,10 +269,10 @@ export const OptCard = () => {
 					<strong>Maximum number of syllables per word</strong> sets an upper limit on how long
 					your words can grow.
 				</p><p>
-					<strong>Category run dropoff</strong> and <strong>syllable run dropoff</strong> run
-					from 0 to 50. At zero (flat), category and syllable choices are all equiprobable.
+					<strong>Character Group run dropoff</strong> and <strong>syllable run dropoff</strong> run
+					from 0 to 50. At zero (flat), group and syllable choices are all equiprobable.
 					Otherwise, the number becomes a percentage. The higher the number, the more likely it
-					is that the first syllables or category characters are used. (This mimics natural
+					is that the first syllables or group characters are used. (This mimics natural
 					languages, which tend to prefer certain sounds and patterns.) This is how it works:
 				</p><ol>
 					<li>A random number is generated from 1 to 100.</li>

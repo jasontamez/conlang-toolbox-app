@@ -119,7 +119,7 @@ const AddCategoryModal = () => {
 		dispatch(addCategoryWG(newCat));
 		hardReset();
 		fireSwal({
-			title: "Category added!",
+			title: "Character Group added!",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -130,7 +130,7 @@ const AddCategoryModal = () => {
 		<IonModal isOpen={modalState.AddCategory} onDidDismiss={() => dispatch(closeModal('AddCategory'))}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Category</IonTitle>
+					<IonTitle>Add Character Group</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -156,7 +156,7 @@ const AddCategoryModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput className="ion-margin-top serifChars" placeholder="Enter letters/characters in category here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
+						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -164,7 +164,7 @@ const AddCategoryModal = () => {
 				<IonToolbar>
 				<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Category</IonLabel>
+						<IonLabel>Add Character Group</IonLabel>
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCat()}>
 						<IonIcon icon={addOutline} slot="start" />

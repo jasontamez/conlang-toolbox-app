@@ -81,7 +81,7 @@ const WGSyl = () => {
 					<IonItem>
 						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
 						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
-						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord')} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use category labels to construct syllables" />
+						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord')} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Initial<br />Syllables</div>

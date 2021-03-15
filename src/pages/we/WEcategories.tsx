@@ -52,7 +52,7 @@ const WECat = () => {
 			if(result.isConfirmed) {
 				dispatch(deleteCategoryWE(label));
 				fireSwal({
-					title: "Category deleted",
+					title: "Character Group deleted",
 					customClass: {popup: 'dangerToast'},
 					toast: true,
 					timer: 2500,
@@ -85,7 +85,7 @@ const WECat = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Categories</IonTitle>
+					<IonTitle>Character Groups</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
@@ -120,7 +120,7 @@ const WECat = () => {
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new category" onClick={() => dispatch(openModal('AddCategoryWE'))}>
+					<IonFabButton color="secondary" title="Add new group" onClick={() => dispatch(openModal('AddCategoryWE'))}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

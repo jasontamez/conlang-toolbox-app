@@ -57,8 +57,8 @@ const Home = () => {
 								<IonCardContent>
 									<p>This tool is for creating words according to rules you set up.</p>
 									<ul>
-										<li>Organize your language's sounds into categories</li>
-										<li>Construct syllable formations using those categories</li>
+										<li>Organize your language's sounds into groups</li>
+										<li>Construct syllable formations using those groups</li>
 										<li>Tweak the output through rewrite rules</li>
 										<li>Jumpstart your process with built-in presets</li>
 									</ul>
