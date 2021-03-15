@@ -1,4 +1,18 @@
-import { WGPresetObject } from './ReduxDucksTypes';
+import { WGPresetObject, WGSettingsObject } from './ReduxDucksTypes';
+
+const basicSettings: WGSettingsObject = {
+	monosyllablesRate: 20,
+	maxSyllablesPerWord: 6,
+	categoryRunDropoff: 30,
+	syllableBoxDropoff: 25,
+	capitalizeSentences: true,
+	declarativeSentencePre: "",
+	declarativeSentencePost: ".",
+	interrogativeSentencePre: "",
+	interrogativeSentencePost: "?",
+	exclamatorySentencePre: "",
+	exclamatorySentencePost: "!"
+};
 
 export const WGPresets: WGPresetObject = new Map([
 	["Simple", {
@@ -46,19 +60,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Medium", {
 		wordgenCategories: {
@@ -134,19 +136,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-Latin", {
 		wordgenCategories: {
@@ -216,19 +206,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-Chinese", {
 		wordgenCategories: {
@@ -300,19 +278,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Large Inventory", {
 		wordgenCategories: {
@@ -358,19 +324,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-English", {
 		wordgenCategories: {
@@ -615,17 +569,8 @@ export const WGPresets: WGPresetObject = new Map([
 			editing: null
 		},
 		wordgenSettings: {
-			monosyllablesRate: 20,
-			maxSyllablesPerWord: 6,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 20,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "",
-			exclamatorySentencePost: "!"
+			...basicSettings,
+			syllableBoxDropoff: 20
 		}
 	}],
 	["Complex", {
@@ -944,42 +889,39 @@ export const WGPresets: WGPresetObject = new Map([
 				{
 					key: "46",
 					seek: "T",
-					replace: "t́",
-					description: "mark retroflex t with accent"
+					replace: "ʈ",
+					description: "mark retroflex t"
 				},
 				{
 					key: "47",
 					seek: "L",
-					replace: "ĺ",
-					description: "mark retroflex l with accent"
+					replace: "ɭ",
+					description: "mark retroflex l"
 				},
 				{
 					key: "48",
 					seek: "S",
-					replace: "ś",
-					description: "mark retroflex s with accent"
+					replace: "ʂ",
+					description: "mark retroflex s"
 				},
 				{
 					key: "49",
 					seek: "N",
-					replace: "ń",
-					description: "mark retroflex n with accent"
+					replace: "ɳ",
+					description: "mark retroflex n"
 				}
 			],
 			editing: null
 		},
 		wordgenSettings: {
+			...basicSettings,
 			monosyllablesRate: 12,
 			maxSyllablesPerWord: 8,
-			categoryRunDropoff: 30,
-			syllableBoxDropoff: 25,
-			capitalizeSentences: true,
-			declarativeSentencePre: "",
-			declarativeSentencePost: ".",
-			interrogativeSentencePre: "¿",
-			interrogativeSentencePost: "?",
-			exclamatorySentencePre: "¡",
-			exclamatorySentencePost: "!"
+			declarativeSentencePre: ".",
+			interrogativeSentencePre: "^^",
+			interrogativeSentencePost: "^^",
+			exclamatorySentencePre: "[",
+			exclamatorySentencePost: "]"
 		}
 	}]
 ]);
