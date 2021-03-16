@@ -22,11 +22,7 @@ import {
 	bookSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
-
-/*
-https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project
-https://thenounproject.com/term/international-languages/249165/ International Languages by Ed Piel from the Noun Project
-*/
+import { VERSION } from '../components/ReduxDucksConst';
 
 const Home = () => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
@@ -104,6 +100,24 @@ const Home = () => {
 										<li>Store multiple lexicons</li>
 										<li>Export your data</li>
 									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol></IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol></IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonLabel className="ion-align-self-start">App Info</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<div className="ion-text-center">v.{VERSION.current}</div>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
