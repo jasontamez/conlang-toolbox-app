@@ -107,7 +107,7 @@ const WERew = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Transforms</IonTitle>
+					<IonTitle>Transformations</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />

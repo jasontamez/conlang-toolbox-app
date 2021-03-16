@@ -13,8 +13,9 @@ import {
 	IonModal,
 	IonInput,
 	IonFooter,
-	IonSelect,
-	IonSelectOption
+	IonRadioGroup,
+	IonRadio,
+	IonItemDivider
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -174,14 +175,6 @@ const EditTransformModal = () => {
 						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingTransform!.seek} onIonChange={e => setNewInfo("seek", e.detail.value!.trim())}></IonInput>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked">Transform Direction:</IonLabel>
-						<IonSelect interface="popover" value={editingTransform!.direction} onIonChange={e => setNewInfo("direction", e.detail.value!)}>
-							<IonSelectOption value="both">⟷ Both Ways</IonSelectOption>
-							<IonSelectOption value="in">⟶ At Input Only</IonSelectOption>
-							<IonSelectOption value="out">⟵ At Output Only</IonSelectOption>
-						</IonSelect>
-					</IonItem>
-					<IonItem>
 						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Output Expression:</IonLabel>
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingTransform!.replace} onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
 					</IonItem>
@@ -189,6 +182,27 @@ const EditTransformModal = () => {
 						<IonLabel position="stacked">Transform Description:</IonLabel>
 						<IonInput id="optDesc" className="ion-margin-top" value={editingTransform!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", e.detail.value!.trim())}></IonInput>
 					</IonItem>
+					<IonItemDivider>
+						<IonLabel position="stacked">Transform Direction:</IonLabel>
+					</IonItemDivider>
+					<IonRadioGroup value={editingTransform!.direction} onIonChange={e => setNewInfo("direction", e.detail.value!)}>
+						<IonItem>
+							<IonLabel>At Input, Then Undo At Output</IonLabel>
+							<IonRadio slot="start" value="both" />
+						</IonItem>
+						<IonItem>
+							<IonLabel>At Input and At Output</IonLabel>
+							<IonRadio slot="start" value="double" />
+						</IonItem>
+						<IonItem>
+							<IonLabel>At Input Only</IonLabel>
+							<IonRadio slot="start" value="in" />
+						</IonItem>
+						<IonItem>
+							<IonLabel>At Output Only</IonLabel>
+							<IonRadio slot="start" value="out" />
+						</IonItem>
+					</IonRadioGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter>

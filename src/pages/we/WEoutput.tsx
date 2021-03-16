@@ -396,11 +396,11 @@ const WEOut = () => {
 		});
 		let modifiedWords = changeTheWords(rawInput);
 		// Add to screen.
-		let arrow: string = getArrow(output, settingsWE.arrow, outputType === "outputFirst");
-		let arrowDiv: HTMLElement = $e("div", "");
-		if(arrow) {
-			arrowDiv = $e("div", arrow, ["arrow"])!;
-		}
+		const arrowLR = "⟶";
+		const arrowRL = "⟵";
+		const reverse = (outputType === "outputFirst");
+		const arrow = (ltr(output) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
+		let arrowDiv: HTMLElement = $e("div", arrow, ["arrow"])!;
 		let style = output.style;
 		style.gridTemplateColumns = "1fr";
 		switch(outputType) {
@@ -426,10 +426,9 @@ const WEOut = () => {
 					let div = $e("div", unit.shift() + " " + arrow);
 					div.append(" ", $t(unit.shift(), "span"));
 					output.append(div);
-					let arrowMinor = arrow || getArrow(output, "double", settingsWE.out === "outputFirst");
 					unit.shift()!.forEach((bit: string[]) => {
 						const [rule, to] = bit;
-						output.append($e("div", rule + " " + arrowMinor + " " + to, ["ruleExplanation"]));
+						output.append($e("div", rule + " " + arrow + " " + to, ["ruleExplanation"]));
 					});
 				});
 				break;
@@ -448,10 +447,10 @@ const WEOut = () => {
 			// Loop over the rewrite rules.
 			transforms.forEach((tr: WETransformObject) => {
 				// Check to see if we apply this rule.
-				if (tr.direction === "both") {
-					word = word.replace(tr.seek, tr.replace);
-				} else if (tr.direction === "in") {
+				if (tr.direction === "in") {
 					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
+				} else if (tr.direction === "both" || tr.direction === "double") {
+					word = word.replace(tr.seek, tr.replace);
 				}
 			});
 			// Loop over every sound change in order.
@@ -658,6 +657,8 @@ const WEOut = () => {
 				// Check to see if we apply this rule.
 				if (tr.direction === "both") {
 					word = word.replace(tr.replace, tr.seek);
+				} else if (tr.direction === "double") {
+					word = word.replace(tr.seek, tr.replace);
 				} else if (tr.direction === "out") {
 					word = word.replace(transformsMap.get(tr.key)![1], tr.seek);
 				}
@@ -684,36 +685,6 @@ const WEOut = () => {
 		// Return the output.
 		return output;
 	}
-	const getArrow = (element: HTMLElement, arrow: string, reverse = false) => {
-		const direction = ltr(element) ? reverse : !reverse;
-		const which = direction ? 1 : 0;
-		switch(arrow) {
-			case "simple":
-				return["→","←"][which];
-			case "tailed":
-				return["↣","↢"][which];
-			case "stroked":
-				return["⇸","⇷"][which];
-			case "doubleStroke":
-				return["⇻","⇺"][which];
-			case "paired":
-				return["⇉","⇇"][which];
-			case "triplet":
-				return["⇶","⬱"][which];
-			case "double":
-				return["⇒","⇐"][which];
-			case "triple":
-				return["⇛","⇚"][which];
-			case "dashed":
-				return["⇢","⇠"][which];
-			case "open":
-				return["⇾","⇽"][which];
-			case "thick":
-				return["⇨","⇦"][which];
-		}
-		return "";
-	};
-
 
 
 	// // //
