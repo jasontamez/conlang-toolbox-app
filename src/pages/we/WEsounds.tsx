@@ -134,7 +134,7 @@ const WERew = () => {
 											<span className="seek importantUnit">{change.seek}</span>
 											<span className="arrow unimportantUnit">{arrow}</span>
 											<span className="replace importantUnit">{change.replace}</span>
-											<span className="unimportantUnit">/</span>
+											<span className="arrow unimportantUnit">/</span>
 											<span className="replace importantUnit">{change.context}</span>
 											{change.anticontext ? (
 												<span>

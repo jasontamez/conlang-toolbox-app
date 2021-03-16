@@ -660,7 +660,7 @@ const WEOut = () => {
 				} else if (tr.direction === "double") {
 					word = word.replace(tr.seek, tr.replace);
 				} else if (tr.direction === "out") {
-					word = word.replace(transformsMap.get(tr.key)![1], tr.seek);
+					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
 				}
 			});
 			// Add the mangled word to the output list.

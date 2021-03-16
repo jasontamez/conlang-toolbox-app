@@ -45,7 +45,7 @@ const AddTransformModal = () => {
 			description: ""
 		};
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-		$q("ion-select").value = "both";
+		$q("ion-radio-group").value = "both";
 	};
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
