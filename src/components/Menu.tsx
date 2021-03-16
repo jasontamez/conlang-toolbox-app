@@ -148,8 +148,8 @@ const appMenuPages: MenuSection[] = [
 		pages: [
 			{
 				title: 'Credits',
-				url: '/about',
-				icon: chatboxEllipsesSharp,
+				url: '/credits',
+				icon: '',
 				id: 'menuitemAbout'
 			}
 		],
@@ -206,7 +206,7 @@ const Menu = () => {
 						return (
 							<IonMenuToggle key={appPage.id} autoHide={false}>
 								<IonItem className={'mainHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
-									<IonIcon slot="start" icon={appPage.icon} />
+									{appPage.icon ? (<IonIcon slot="start" icon={appPage.icon} />) : ""}
 									<IonLabel>{appPage.title}</IonLabel>
 								</IonItem>
 							</IonMenuToggle>
