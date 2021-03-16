@@ -56,7 +56,27 @@ const WERew = () => {
 		dispatch(startEditTransformWE(label));
 		dispatch(openModal('EditTransform'));
 	};
-	const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
+	const makeArrow = (dir: string) => {
+		if(dir === "double") {
+			return ltr() ? "⟹" : "⟸";
+		} else if (ltr()) {
+			return "⟶";
+		}
+		return "⟵";		 
+	};
+	const makeDeclaration = (dir: string) => {
+		switch(dir) {
+			case "both":
+				return "at input, then undo at output";
+			case "double":
+				return "at input and output";
+			case "in":
+				return "at input";
+			case "out":
+				return "at output";
+		}
+		return "Error";
+	}
 	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
@@ -126,10 +146,11 @@ const WERew = () => {
 								<IonItem key={trans.key}>
 									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
 									<IonLabel>
-										<div className="importantElement serifChars">
+										<div className="serifChars">
 											<span className="seek importantUnit">{trans.seek}</span>
 											<span className="arrow unimportantUnit">{makeArrow(trans.direction)}</span>
 											<span className="replace importantUnit">{trans.replace}</span>
+											<span className="unimportantUnit">{makeDeclaration(trans.direction)}</span>
 										</div>
 										<div className="description">{trans.description}</div>
 									</IonLabel>
