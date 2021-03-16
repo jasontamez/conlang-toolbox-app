@@ -76,7 +76,7 @@ const Home = () => {
 								<IonCardContent>
 									<p>
 										This tool is for modifying words according to rules you set up,
-										mimicking the progression of natural languages.
+										mimicking the evolution of natural languages.
 									</p>
 									<ul>
 										<li>Start with words from a language (natural or otherwise)</li>
@@ -96,13 +96,13 @@ const Home = () => {
 									<IonLabel className="ion-padding-start ion-align-self-start">Lexicon</IonLabel>
 								</IonCardHeader>
 								<IonCardContent>
-									<p>A place to store the words of your conlang.</p>
+									<p>A place to store your conlangs.</p>
 									<ul>
 										<li>Store bits of information for each word, such as part of speech or definition</li>
 										<li>Sort your words by any criteria</li>
 										<li>Easily add words from WordGen and WordEvolve</li>
 										<li>Store multiple lexicons</li>
-										<li>Export your data to a file</li>
+										<li>Export your data</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>
