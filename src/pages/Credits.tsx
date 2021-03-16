@@ -14,17 +14,14 @@ import {
 	IonCardContent,
 	IonButtons,
 	IonMenuButton,
-	IonContent
+	IonContent,
+	IonList,
+	IonItem
 } from '@ionic/react';
 //import {
 //	createSharp,
 //} from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
-
-/*
-https://thenounproject.com/term/toolbox/2586725/ Toolbox by Maxicons from the Noun Project
-https://thenounproject.com/term/international-languages/249165/ International Languages by Ed Piel from the Noun Project
-*/
 
 const Home = () => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
@@ -52,9 +49,24 @@ const Home = () => {
 									<IonLabel className="ion-padding-start ion-align-self-start">Credits and Acknowledgements</IonLabel>
 								</IonCardHeader>
 								<IonCardContent>
-									<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "60px", width: "217px" } } /></a></div>
+									<IonList className="ion-text-center">
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
+										</IonItem>
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">Globe-in-a-speech-bubble icon is based on <a href="https://thenounproject.com/term/international-languages/249165/">International Languages by Ed Piel</a> from the Noun Project</IonLabel>
+										</IonItem>
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
+										</IonItem>
+									</IonList>
 								</IonCardContent>
 							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "60px", width: "217px" } } /></a></div>
 						</IonCol>
 					</IonRow>
 				</IonGrid>
