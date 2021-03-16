@@ -51,7 +51,8 @@ const WFLconfig = {
 	google: {
 		families: [
 			'Noto Sans:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
-			'Noto Serif:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext'
+			'Noto Serif:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
+			'DM Mono:400,500'
 		],
 	}
 };
@@ -62,10 +63,6 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.1.1", "<")) {
-							// Eliminate arrow property
-							storedState.wordevolveSettings = { output: storedState.wordevolveSettings.output };
-						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;
@@ -96,7 +93,8 @@ const App = () => {
 							<Route path="/we"  render={() => <WE />} />
 							<Route path="/lex" render={() => <Lexicon />} />
 							<Route path="/settings" render={() => <Settings />} />
-							<Route path="/about" render={() => <About />} exact={true} />
+							<Route path="/about" render={() => <About />} />
+							<Route path="/credits" render={() => <Credits />} />
 							<Redirect exact={true} from="/" to="/about" />
 						</IonRouterOutlet>
 					</IonSplitPane>
