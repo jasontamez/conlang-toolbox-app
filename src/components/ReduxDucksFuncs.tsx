@@ -186,9 +186,6 @@ export function updateInputLexicon(payload: types.WEInputObject) {
 export function setOutputTypeWE(payload: types.WEOutputTypes) {
 	return {type: consts.SET_OUTPUT_WE, payload};
 }
-export function setArrowWE(payload: types.WEArrowTypes) {
-	return {type: consts.SET_ARROW_WE, payload};
-}
 
 
 //

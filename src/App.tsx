@@ -62,6 +62,10 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, "0.1.1", "<")) {
+							// Eliminate arrow property
+							storedState.wordevolveSettings = { output: storedState.wordevolveSettings.output };
+						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;

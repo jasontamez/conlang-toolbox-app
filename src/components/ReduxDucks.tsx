@@ -306,8 +306,7 @@ export const blankAppState: types.StateObject = {
 	},
 	wordevolveInput: [],
 	wordevolveSettings: {
-		output: "outputOnly",
-		arrow: "simple"
+		output: "outputOnly"
 	},
 	lexicon: {
 		key: "",
@@ -941,15 +940,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				wordevolveSettings: {
 					...state.wordevolveSettings,
 					output: payload
-				}
-			};
-			break;
-		case consts.SET_ARROW_WE:
-			final = {
-				...reduceAllBut(["wordevolveSettings"], state),
-				wordevolveSettings: {
-					...state.wordevolveSettings,
-					arrow: payload
 				}
 			};
 			break;

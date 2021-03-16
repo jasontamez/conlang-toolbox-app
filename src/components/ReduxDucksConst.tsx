@@ -73,7 +73,6 @@ export const REORDER_SOUND_CHANGE_WE = p+"REORDER_SOUND_CHANGE_WE";
 export const UPDATE_INPUT_LEXICON = p+"UPDATE_INPUT_LEXICON";
 
 export const SET_OUTPUT_WE = p+"SET_OUTPUT_WE";
-export const SET_ARROW_WE = p+"SET_ARROW_WE";
 
 
 export const UPDATE_LEXICON = p+"UPDATE_LEXICON";

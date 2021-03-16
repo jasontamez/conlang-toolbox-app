@@ -98,7 +98,7 @@ export interface WETransformObject {
 	key: string
 	seek: string
 	replace: string
-	direction: "both" | "in" | "out"
+	direction: "both" | "in" | "out" | "double"
 	description: string
 }
 
@@ -124,11 +124,9 @@ export interface WESoundchangeStateObject {
 export type WEInputObject = string[]
 
 export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
-export type WEArrowTypes = "none" | "simple" | "tailed" | "stroked" | "doubleStroked" | "paired" | "triplet" | "double" | "triple" | "dashed" | "open" | "thick";
 
 export interface WESettingsObject {
 	output: WEOutputTypes
-	arrow: WEArrowTypes
 }
 
 
