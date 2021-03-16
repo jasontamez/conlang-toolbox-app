@@ -67,7 +67,7 @@ export const TraCard = () => {
 		<IonCard>
 			<IonItem>
 				<IonIcon icon={syncOutline} slot="start" color="primary" />
-				<IonLabel>Transforms Tab</IonLabel>
+				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -80,8 +80,9 @@ export const TraCard = () => {
 					a <em>transform direction</em>, an <em>output expression</em>, and, optionally,
 					a <em>transform description</em> for your own benefit.
 				</p><p>
-					The <em>transform direction</em> is either "both ways", "at input only", or "at
-					output only", and they determine how the two expressions are used.
+					The <em>transform direction</em> is either "at input, then undo at output", "at
+					input and at output", "at input only", or "at output only", and they determine how
+					the two expressions are used.
 				</p>
 				<ul>
 					<li>
@@ -93,15 +94,15 @@ export const TraCard = () => {
 						!%G to indicate any character <em>not</em> in that run.)
 					</li><li>
 						<strong>Output only:</strong> After all <strong>sound changes</strong> are
-						processed, any instances of the <em>output expression</em> are replaced with
-						the <em>input expression</em>. Regular expressions and %Group references
-						are allowed in the <em>output expression</em> only.
+						processed, any instances of the <em>input expression</em> are replaced with
+						the <em>output expression</em>. Regular expressions and %Group references
+						are allowed in the <em>input expression</em> only.
 					</li><li>
-						<strong>Both ways:</strong> Before anything else happens, input words are
-						searched, and any instances of the <em>input expression</em> are replaced with
-						the <em>output expression</em>. After all <strong>sound changes</strong> are
-						processed, any instances of the <em>output expression</em> are replaced with
-						the <em>input expression</em>.
+						<strong>At input, then undo at output:</strong> Before anything else happens,
+						input words are searched, and any instances of the <em>input
+						expression</em> are replaced with the <em>output expression</em>. After
+						all <strong>sound changes</strong> are processed, any instances of
+						the <em>output expression</em> are replaced with the <em>input expression</em>.
 						<br /><br />
 						Regular expressions are not allowed, but non-negative %Group references are
 						allowed if and only if both input and output have them. In that case, something
@@ -116,6 +117,10 @@ export const TraCard = () => {
 						<br /><br />
 						NOTE: If you have unequal numbers of %Groups in the beginning and ending
 						expressions, errors may occur.
+					</li><li>
+						<strong>At input and at output:</strong> As <em>at input, then undo at
+						output</em>, but the <em>input expression</em> is replaced with the <em>output
+						expression</em> before AND after the <strong>sound changes</strong> are processed.
 					</li>
 				</ul>
 				<p>
