@@ -210,7 +210,7 @@ export interface ExtraCharactersData {
 }
 
 export interface ExtraCharactersState {
-	display: (keyof ExtraCharactersData)[]
+	display: (keyof ExtraCharactersData) | null
 	saved: string[]
 	copyImmediately: boolean
 	copyLater: string

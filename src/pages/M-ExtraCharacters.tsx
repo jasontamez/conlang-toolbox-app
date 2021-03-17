@@ -143,7 +143,7 @@ const ExtraCharactersModal = () => {
 							{Object.getOwnPropertyNames(charData).map((key: string, ind: number) => {
 								const current = charSettings.display === key;
 								return (
-									<IonChip outline={!current} onClick={() => toggleChars(key)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
+									<IonChip key={key} outline={!current} onClick={() => toggleChars(key)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
 										<IonLabel>{charData[key].title}</IonLabel>
 									</IonChip>	
 								);
@@ -186,33 +186,30 @@ const ExtraCharactersModal = () => {
 							}
 						</div></div>
 					</IonItem>
-					{charSettings.display.map((prop: keyof ExtraCharactersData) => {
-						const data: ExtraCharacters = charData[prop];
-						return (
-							<IonItem key={data.title}>
-								{charSettings.showNames ? (
-									<div className="twoColumnsEC centralized">
-										<h2>{data.title}</h2>
+					{data ? (
+						<IonItem key={data.title}>
+							{charSettings.showNames ? (
+								<div className="twoColumnsEC centralized">
+									<h2>{data.title}</h2>
+									{data.content.map((pair: [string, string]) => 
+										<div key={"m" + data.title + pair[0]}>
+											<div className="char" onClick={() => characterClicked(pair[1])}>{pair[1]}</div>
+											<div className="label">{capitalize.words(pair[0])}</div>
+										</div>
+									)}
+								</div>
+							) : (
+								<div className="multiColumnEC centralized">
+									<h2>{data.title}</h2>
+									<div>
 										{data.content.map((pair: [string, string]) => 
-											<div key={pair[0]}>
-												<div className="char" onClick={() => characterClicked(pair[1])}>{pair[1]}</div>
-												<div className="label">{capitalize.words(pair[0])}</div>
-											</div>
+											<div key={"m" + data.title + pair[0]} className="char" onClick={() => characterClicked(pair[1])}>{pair[1]}</div>
 										)}
 									</div>
-								) : (
-									<div className="multiColumnEC centralized">
-										<h2>{data.title}</h2>
-										<div>
-											{data.content.map((pair: [string, string]) => 
-												<div key={pair[0]} className="char" onClick={() => characterClicked(pair[1])}>{pair[1]}</div>
-											)}
-										</div>
-									</div>
-								)}
-							</IonItem>
-						);
-					})}
+								</div>
+							)}
+						</IonItem>
+					) : ""}
 				</IonList>
 			</IonContent>
 			<IonFooter>

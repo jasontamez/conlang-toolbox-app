@@ -188,7 +188,6 @@ const reduceViewState = (original: types.ViewStateObject) => {
 const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
 	return {
 		...original,
-		display: [...original.display],
 		saved: [...original.saved]
 	};
 }
@@ -364,7 +363,7 @@ export const blankAppState: types.StateObject = {
 		lastSection: ''
 	},
 	extraCharactersState: {
-		display: [],
+		display: null,
 		saved: [],
 		copyImmediately: false,
 		copyLater: "",

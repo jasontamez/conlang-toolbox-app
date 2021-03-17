@@ -272,7 +272,7 @@ export function changeView(payload: string[]) {
 //
 // EXTRA CHARACTERS
 //
-export function updateExtraCharsDisplay(payload: (keyof types.ExtraCharactersData)[]) {
+export function updateExtraCharsDisplay(payload: (keyof types.ExtraCharactersData) | null) {
 	return {type: consts.UPDATE_EXTRA_CHARS_DISPLAY, payload};
 }
 export function updateExtraCharsFavorites(payload: string[]) {
