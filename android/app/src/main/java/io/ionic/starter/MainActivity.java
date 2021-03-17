@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package net.jasontank.conlangtoolbox;
 
 import android.os.Bundle;
 
