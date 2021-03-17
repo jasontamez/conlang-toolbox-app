@@ -68,6 +68,7 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 import ltr from '../components/LTR';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
+import debounce from '../components/Debounce';
 import { Plugins } from '@capacitor/core';
 
 const Lex = () => {
@@ -143,7 +144,7 @@ const Lex = () => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		dispatch(updateLexiconText(prop, value));
+		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000));
 	};
 	const theOrder = lexicon.columnOrder;
 	const theTitles = lexicon.columnTitles;
@@ -546,11 +547,11 @@ const Lex = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
-						<IonInput value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonBlur={() => setNewInfo("lexTitle", "title")}></IonInput>
+						<IonInput value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Description:</IonLabel>
-						<IonTextarea value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonBlur={() => setNewInfo("lexDesc", "description")} />
+						<IonTextarea value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
