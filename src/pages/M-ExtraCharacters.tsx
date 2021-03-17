@@ -14,7 +14,8 @@ import {
 	IonChip,
 	IonFooter,
 	IonInput,
-	IonPopover
+	IonPopover,
+	IonText
 } from '@ionic/react';
 import {
 	addCircleOutline,
@@ -37,6 +38,7 @@ import {
 import { $i } from '../components/DollarSignExports';
 import charData from '../components/ExtraCharactersData';
 import fireSwal from '../components/Swal';
+import debounce from '../components/Debounce';
 import capitalize from 'capitalize';
 import { Plugins } from '@capacitor/core';
 
@@ -47,21 +49,17 @@ const ExtraCharactersModal = () => {
 	const dispatch = useDispatch();
 	const [modalState, charSettings] = useSelector((state: any) => [state.modalState, state.extraCharactersState], shallowEqual);
 	const popstate = modalState.ExtraCharactersEllipsis;
-	let currentlySelected: ExtraCharDataFlags = {};
-	charSettings.display.forEach((selected: keyof ExtraCharactersData) => currentlySelected[selected] = true);
+	const data: ExtraCharacters | null = charSettings.display && charData[charSettings.display];
 	let currentFaves: any = {};
 	charSettings.saved.forEach((selected: string) => currentFaves[selected] = true);
 	const cancel = () => {
 		dispatch(closeModal('ExtraCharacters'));
 	};
 	const toggleChars = (what: keyof ExtraCharactersData) => {
-		let output: (keyof ExtraCharactersData)[] = [];
-		if(currentlySelected[what]) {
-			output = charSettings.display.filter((key: keyof ExtraCharactersData) => key !== what);
-		} else {
-			output = [what, ...charSettings.display];
+		if(charSettings.display === what) {
+			return dispatch(updateExtraCharsDisplay(null));
 		}
-		dispatch(updateExtraCharsDisplay(output));
+		dispatch(updateExtraCharsDisplay(what));
 	};
 	const characterClicked = async (char: string) => {
 		if(charSettings.adding) {
@@ -98,7 +96,7 @@ const ExtraCharactersModal = () => {
 	};
 	const modifySavedToBeCopied = () => {
 		const input = $i("toBeCopied");
-		dispatch(updateExtraCharsToBeSaved(input.value));
+		debounce(dispatch, [updateExtraCharsToBeSaved(input.value)]);
 	};
 	return (
 		<IonModal isOpen={modalState.ExtraCharacters} onDidDismiss={() => dispatch(closeModal('ExtraCharacters'))}>
@@ -111,11 +109,19 @@ const ExtraCharactersModal = () => {
 						onDidDismiss={() => dispatch(closePopover('ExtraCharactersEllipsis'))}
 					>
 						<IonList>
-							<IonItem button={true} onClick={() => toggleOption("copyImmediately")}>
-								<IonLabel>{charSettings.copyImmediately ? "Tap to Save" : "Tap to Copy"}</IonLabel>
+							<IonItem button={true} onClick={() => {toggleOption("copyImmediately"); dispatch(closePopover('ExtraCharactersEllipsis'))}}>
+								{charSettings.copyImmediately ? (
+									<IonLabel className="ion-text-wrap"><IonText color="success" style={ { width: "1.5rem", display: "inline-block", textAlign: "center" } }>⦿</IonText> Tap: Copy to Clipboard</IonLabel>
+								) : (
+									<IonLabel className="ion-text-wrap"><IonText color="danger" style={ { width: "1.5rem", display: "inline-block", textAlign: "center" } }>○</IonText> Tap: Copy to Clipboard</IonLabel>
+								)}
 							</IonItem>
-							<IonItem button={true} onClick={() => toggleOption("showNames")}>
-								<IonLabel>{charSettings.showNames ? "Only Show Characters" : "Show Unicode Names"}</IonLabel>
+							<IonItem button={true} onClick={() => {toggleOption("showNames"); dispatch(closePopover('ExtraCharactersEllipsis'))}}>
+								{charSettings.showNames ? (
+									<IonLabel className="ion-text-wrap"><IonText color="success" style={ { width: "1.5rem", display: "inline-block", textAlign: "center" } }>⦿</IonText> Show Unicode Names</IonLabel>
+								) : (
+									<IonLabel className="ion-text-wrap"><IonText color="danger" style={ { width: "1.5rem", display: "inline-block", textAlign: "center" } }>○</IonText> Show Unicode Names</IonLabel>
+								)}
 							</IonItem>
 						</IonList>
 					</IonPopover>
@@ -129,13 +135,13 @@ const ExtraCharactersModal = () => {
 			<IonContent>
 				<IonList id="ExtraCharactersModalList" lines="none">
 					<IonItem className={"sticky" + (charSettings.copyImmediately ? " hide" : "")}>
-						<IonInput id="toBeCopied" value={charSettings.copyLater} onIonBlur={() => modifySavedToBeCopied()} placeholder="Tap characters to add them here" />
+						<IonInput id="toBeCopied" value={charSettings.copyLater} onIonChange={() => modifySavedToBeCopied()} placeholder="Tap characters to add them here" />
 					</IonItem>
 					<IonItem>
 						<div>
 							<span>Display:</span>
 							{Object.getOwnPropertyNames(charData).map((key: string, ind: number) => {
-								const current = currentlySelected[key];
+								const current = charSettings.display === key;
 								return (
 									<IonChip outline={!current} onClick={() => toggleChars(key)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
 										<IonLabel>{charData[key].title}</IonLabel>
