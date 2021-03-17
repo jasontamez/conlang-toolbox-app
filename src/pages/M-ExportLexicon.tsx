@@ -21,8 +21,9 @@ import {
 	closeModal,
 	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
+import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { Lexicon } from '../components/ReduxDucksTypes';
-import { $q, $delay } from '../components/DollarSignExports';
+//import { $q, $delay } from '../components/DollarSignExports';
 
 const ExportLexiconModal = () => {
 	const dispatch = useDispatch();
@@ -117,19 +118,51 @@ const ExportLexiconModal = () => {
 		let output = XML + "\t</Content>\n</Lexicon>";
 		doDownload(e, output, "xml");
 	};
-	const doDownload = (e: Event, output: string, extension: string) => {
+	const doDownload = async (e: Event, output: string, extension: string) => {
 		e.preventDefault();
-		const blob = new Blob([output]);
-		const blobby = URL.createObjectURL(blob);
-		const filename = lexicon.title + " - " + (new Date()).toDateString();
-		const link = $q("a.downloader");
-		link.download = filename.replace(/[^ a-zA-Z0-9-_]+/g, "") + "." + extension;
-		link.href = blobby;
-		link.click();
+		const { Filesystem } = Plugins;
+		const filename = lexicon.title + " - " + (new Date()).toDateString() + "." + extension;
+		const Directory = FilesystemDirectory.Documents;
+		try {
+			let ret = await Filesystem.readdir({
+				path: 'ConlangToolbox',
+				directory: Directory
+			});
+			console.log('Read dir', ret);
+		} catch(e) {
+			try {
+				let ret = await Filesystem.mkdir({
+					path: 'ConlangToolbox',
+					directory: Directory,
+					recursive: false // like mkdir -p
+				});
+				console.log('Made dir', ret);
+			} catch(e) {
+				console.error('Unable to make directory', e);
+			}
+		} finally {
+			try {
+				const result = await Filesystem.writeFile({
+					path: 'ConlangToolbox/' + filename,
+					data: output,
+					directory: Directory,
+					encoding: FilesystemEncoding.UTF8
+				});
+				console.log('Wrote file', result);
+			} catch(e) {
+				console.error('Unable to write file', e);
+			}
+		}
+		//const blob = new Blob([output]);
+		//const blobby = URL.createObjectURL(blob);
+		//const link = $q("a.downloader");
+		//link.download = filename.replace(/[^ a-zA-Z0-9-_]+/g, "") + "." + extension;
+		//link.href = blobby;
+		//link.click();
+		//$delay(500).then(() => {
+		//	URL.revokeObjectURL(blobby);
+		//});
 		doClose();
-		$delay(500).then(() => {
-			URL.revokeObjectURL(blobby);
-		});
 	};
 	return (
 		<IonModal isOpen={modalState.ExportLexicon} onDidDismiss={() => doClose()}>
