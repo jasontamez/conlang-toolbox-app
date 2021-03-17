@@ -65,28 +65,27 @@ const OutputOptionsModal = () => {
 						<IonLabel>Show syllable breaks</IonLabel>
 						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))} />
 					</IonItem>
-					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
-					<IonItem>
+					<IonItemDivider>{settingsWG.output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
+					<IonItem className={settingsWG.output === "text" ? "" : "hide"}>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
 						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value! as Five_OneHundred))}>
 							<IonLabel slot="start">5</IonLabel>
 							<IonLabel slot="end">100</IonLabel>
 						</IonRange>
 					</IonItem>
-					<IonItemDivider>Wordlist and Syllable-List Controls</IonItemDivider>
-					<IonItem>
+					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
 						<IonLabel>Capitalize words</IonLabel>
 						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWordsWG(e.detail.checked))} />
 					</IonItem>
-					<IonItem>
+					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
 						<IonLabel>Sort output</IonLabel>
 						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))} />
 					</IonItem>
-					<IonItem>
+					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
 						<IonLabel>Multi-Column layout</IonLabel>
 						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumnWG(e.detail.checked))} />
 					</IonItem>
-					<IonItem>
+					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
 						<IonLabel position="stacked">Wordlist size</IonLabel>
 						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value! as Fifty_OneThousand))}>
 							<IonLabel slot="start">50</IonLabel>
