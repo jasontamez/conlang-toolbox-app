@@ -145,7 +145,7 @@ const AddCategoryModal = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
-						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={500}></IonInput>
+						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value!.trim())} autocomplete="on" debounce={250}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabel">Short Label:</IonLabel>
@@ -156,7 +156,7 @@ const AddCategoryModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())}></IonInput>
+						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value!.trim())} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

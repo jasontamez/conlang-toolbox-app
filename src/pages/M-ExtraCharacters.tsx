@@ -96,7 +96,7 @@ const ExtraCharactersModal = () => {
 	};
 	const modifySavedToBeCopied = () => {
 		const input = $i("toBeCopied");
-		debounce(dispatch, [updateExtraCharsToBeSaved(input.value)]);
+		debounce(dispatch, [updateExtraCharsToBeSaved(input.value)], 250);
 	};
 	return (
 		<IonModal isOpen={modalState.ExtraCharacters} onDidDismiss={() => dispatch(closeModal('ExtraCharacters'))}>

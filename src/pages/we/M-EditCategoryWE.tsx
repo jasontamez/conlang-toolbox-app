@@ -191,7 +191,7 @@ const EditCategoryWEModal = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
-						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={500}></IonInput>
+						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
@@ -202,7 +202,7 @@ const EditCategoryWEModal = () => {
 					</IonItem>
 					<IonItem>
 						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)}></IonInput>
+						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
