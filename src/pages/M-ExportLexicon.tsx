@@ -19,7 +19,8 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	closeModal,
-	setTemporaryInfo
+	setTemporaryInfo,
+	setLoadingPage
 } from '../components/ReduxDucksFuncs';
 import { Lexicon } from '../components/ReduxDucksTypes';
 import doExport from '../components/ExportServices';
@@ -32,6 +33,7 @@ const ExportLexiconModal = () => {
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('ExportLexicon'));
+		dispatch(setLoadingPage(false));
 	};
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
@@ -121,6 +123,7 @@ const ExportLexiconModal = () => {
 	const doDownload = async (e: Event, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = lexicon.title + " - " + (new Date()).toDateString() + "." + extension;
+		dispatch(setLoadingPage("deletingLexicon"));
 		doExport(output, filename);
 		doClose();
 	};
