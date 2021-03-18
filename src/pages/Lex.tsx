@@ -276,7 +276,7 @@ const Lex = () => {
 				columnOrder: [...lexicon.columnOrder],
 				columnTitles: [...lexicon.columnTitles],
 				columnSizes: [...lexicon.columnSizes],
-				sort: [...lexicon.columnSort],
+				sort: [...lexicon.sort],
 				sorted: true,
 				lexicon: [],
 				waitingToAdd: [],
