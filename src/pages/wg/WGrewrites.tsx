@@ -119,13 +119,13 @@ const WGRew = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList className="rewriterules units" lines="none">
+				<IonList className="rewriterules units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{rules.map((rr: WGRewriteRuleObject) => {
 							return (
 								<IonItem key={rr.key}>
 									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel>
+									<IonLabel className="wrappableInnards">
 										<div className="importantElement serifChars">
 											<span className="seek importantUnit">{rr.seek}</span>
 											<span className="arrow unimportantUnit">{arrow}</span>
@@ -133,7 +133,7 @@ const WGRew = () => {
 										</div>
 										<div className="description">{rr.description}</div>
 									</IonLabel>
-									<IonButton className="ion-margin-end" color="warning" onClick={() => editRewriteRule(rr.key)}>
+									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editRewriteRule(rr.key)}>
 										<IonIcon icon={construct} style={ { margin: 0 } } />
 									</IonButton>
 									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteRewriteRule(rr)}>
@@ -149,7 +149,6 @@ const WGRew = () => {
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>
-				<div style={ { display: "none" } } id="superHidden"></div>
 			</IonContent>
 		</IonPage>
 	);

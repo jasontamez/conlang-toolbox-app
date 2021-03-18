@@ -139,13 +139,13 @@ const WERew = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList className="transforms units" lines="none">
+				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{transform.map((trans: WETransformObject) => {
 							return (
 								<IonItem key={trans.key}>
 									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel>
+									<IonLabel className="wrappableInnards">
 										<div className="serifChars">
 											<span className="seek importantUnit">{trans.seek}</span>
 											<span className="arrow unimportantUnit">{makeArrow(trans.direction)}</span>
@@ -154,7 +154,7 @@ const WERew = () => {
 										</div>
 										<div className="description">{trans.description}</div>
 									</IonLabel>
-									<IonButton className="ion-margin-end" color="warning" onClick={() => editTransform(trans.key)}>
+									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editTransform(trans.key)}>
 										<IonIcon icon={construct} style={ { margin: 0 } } />
 									</IonButton>
 									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteTransform(trans)}>

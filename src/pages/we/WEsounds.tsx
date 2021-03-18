@@ -123,13 +123,13 @@ const WERew = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList className="soundChanges units" lines="none">
+				<IonList className="soundChanges units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{soundChange.map((change: WESoundChangeObject) => {
 							return (
 								<IonItem key={change.key}>
 									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel>
+									<IonLabel className="wrappableInnards">
 										<div className="importantElement serifChars">
 											<span className="seek importantUnit">{change.seek}</span>
 											<span className="arrow unimportantUnit">{arrow}</span>
@@ -145,7 +145,7 @@ const WERew = () => {
 										</div>
 										<div className="description">{change.description}</div>
 									</IonLabel>
-									<IonButton className="ion-margin-end" color="warning" onClick={() => editSoundChange(change.key)}>
+									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editSoundChange(change.key)}>
 										<IonIcon icon={construct} style={ { margin: 0 } } />
 									</IonButton>
 									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteSoundChange(change)}>

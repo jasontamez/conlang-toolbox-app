@@ -135,6 +135,9 @@ ion-list.units {
 .units ion-item-sliding:first-of-type ion-item-option button {
 	border-top: 0.1rem solid var(--ion-background-color);
 }
+ion-list.dragArea {
+	height: 100%;
+}
 
 #conlangToolbox .fullScreen {
 	display: flex;
@@ -502,6 +505,11 @@ ion-item.extraHelp::part(native) {
 ion-item.extraHelp div {
 	text-indent: 2em;
 	margin: 0.25em 0;
+}
+
+ion-label.wrappableInnards div,
+ion-label.wrappableInnards {
+	white-space: normal;
 }
 
 @media screen and (max-width: 350px) {

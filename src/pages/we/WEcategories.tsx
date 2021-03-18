@@ -102,14 +102,14 @@ const WECat = () => {
 						let [label, cat] = item;
 						return (
 							<IonItem key={label}>
-								<IonLabel>
+								<IonLabel className="wrappableInnards">
 									<div className="categoryRun serifChars">
 										<span className="label importantElement">{label}</span>
 										<span className="run">{cat.run}</span>
 									</div>
 									<div className="categoryLongName">{cat.title}</div>
 								</IonLabel>
-								<IonButton className="ion-margin-end" color="warning" onClick={() => editCategory(label)}>
+								<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editCategory(label)}>
 									<IonIcon icon={construct} style={ { margin: 0 } } />
 								</IonButton>
 								<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteCategory(label)}>
