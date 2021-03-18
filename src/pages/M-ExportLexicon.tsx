@@ -23,6 +23,8 @@ import {
 } from '../components/ReduxDucksFuncs';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { Lexicon } from '../components/ReduxDucksTypes';
+import escape from '../components/EscapeForHTML';
+import fireSwal from '../components/Swal';
 //import { $q, $delay } from '../components/DollarSignExports';
 
 const ExportLexiconModal = () => {
@@ -149,8 +151,18 @@ const ExportLexiconModal = () => {
 					encoding: FilesystemEncoding.UTF8
 				});
 				console.log('Wrote file', result);
+				fireSwal({
+					title: "Success",
+					icon: "success",
+					text: filename + " exported"
+				});
 			} catch(e) {
 				console.error('Unable to write file', e);
+				fireSwal({
+					title: "Unable to export",
+					icon: "error",
+					html: escape(String(e)).replace(/\n/g, "<br />")
+				});
 			}
 		}
 		//const blob = new Blob([output]);
