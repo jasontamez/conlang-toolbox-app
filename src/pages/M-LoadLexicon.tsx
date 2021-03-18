@@ -79,7 +79,7 @@ const LoadLexiconModal = () => {
 						const time = new Date(lex.lastSave);
 						return (
 							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
-								<IonLabel slot="start" className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()} words]</IonLabel>
+								<IonLabel className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()} words]</IonLabel>
 								<IonNote slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
