@@ -34,8 +34,7 @@ import {
 	toggleExtraCharsBoolean,
 	updateExtraCharsToBeSaved,
 	openPopover,
-	closePopover,
-	openModal
+	closePopover
 } from '../components/ReduxDucksFuncs';
 import charData from '../components/ExtraCharactersData';
 import fireSwal from '../components/Swal';
@@ -55,7 +54,7 @@ const ExtraCharactersModal = () => {
 	charSettings.saved.forEach((selected: string) => currentFaves[selected] = true);
 	const cancel = () => {
 		dispatch(closeModal('ExtraCharacters'));
-		dispatch(closeModal('ExtraCharactersHelp'));
+		charSettings.showHelp && dispatch(toggleExtraCharsBoolean("showHelp"));
 	};
 	const toggleChars = (what: keyof ExtraCharactersData) => {
 		if(charSettings.display === what) {
@@ -93,18 +92,14 @@ const ExtraCharactersModal = () => {
 			dispatch(updateExtraCharsToBeSaved(copiable));
 		}
 	};
-	const toggleOption = (what: "adding" | "deleting" | "showNames" | "copyImmediately") => {
+	const toggleOption = (what: "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp") => {
 		dispatch(toggleExtraCharsBoolean(what));
 	};
 	const modifySavedToBeCopied = (toCopy: string) => {
 		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250);
 	};
-	const toggleHelp = () => {
-		const which: Function = (modalState.ExtraCharactersHelp) ? closeModal : openModal;
-		dispatch(which("ExtraCharactersHelp"));
-	};
 	return (
-		<IonModal isOpen={modalState.ExtraCharacters || modalState.ExtraCharactersHelp} onDidDismiss={() => dispatch(closeModal('ExtraCharacters'))}>
+		<IonModal isOpen={modalState.ExtraCharacters} onDidDismiss={() => cancel()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Extra Characters</IonTitle>
@@ -131,7 +126,7 @@ const ExtraCharactersModal = () => {
 						</IonList>
 					</IonPopover>
 					<IonButtons slot="end">
-						<IonButton onClick={() => toggleHelp()} color={modalState.ExtraCharactersHelp ? "secondary" : undefined} fill={modalState.ExtraCharactersHelp ? "solid" : "clear"}>
+						<IonButton onClick={() => toggleOption("showHelp")} color={charSettings.showHelp ? "secondary" : undefined} fill={charSettings.showHelp ? "solid" : "clear"}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 						<IonButton onClick={(e: any) => { e.persist(); dispatch(openPopover('ExtraCharactersEllipsis', e)); }}>
@@ -142,10 +137,10 @@ const ExtraCharactersModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList id="ExtraCharactersModalList" lines="none">
-					<IonItem className={modalState.ExtraCharactersHelp ? "extraHelp" : "hide"}>
+					<IonItem className={charSettings.showHelp ? "extraHelp" : "hide"}>
 						<div>
 							<div>This is a place to find and copy characters that may not be easily accessible to you on your device's keyboard.</div>
-							<div>Click the three dots in the bar above to see some options. <IonText color="success">⦿</IonText> means that option is active and <IonText color="danger">○</IonText> means it's inactive.</div>
+							<div>Click the three dots in the bar above to see some options. <IonText color="success" style={ { background: "var(--ion-background-color)" } }>⦿</IonText> means that option is active and <IonText color="danger" style={ { background: "var(--ion-background-color)" } }>○</IonText> means it's inactive.</div>
 							<div><strong>Tap: Copy to Clipboard</strong>: when active, copies any character you tap. When inactive, copies tapped characters to the copy-bar below, where you can copy them en masse.</div>
 							<div><strong>Show Unicode Names</strong>: when active, shows the standard Unicode name of every character. When inactive, the characters are presented by themselves.</div>
 						</div>
@@ -153,7 +148,7 @@ const ExtraCharactersModal = () => {
 					<IonItem className={(charSettings.copyImmediately ? "" : "sticky")}>
 						<IonInput id="toBeCopied" value={charSettings.copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
 					</IonItem>
-					<IonItem className={modalState.ExtraCharactersHelp ? "extraHelp" : "hide"}>
+					<IonItem className={charSettings.showHelp ? "extraHelp" : "hide"}>
 						<div>Tap a character set below to see the characters in that set.</div>
 					</IonItem>
 					<IonItem>
@@ -169,7 +164,7 @@ const ExtraCharactersModal = () => {
 							})}
 						</div>
 					</IonItem>
-					<IonItem className={modalState.ExtraCharactersHelp ? "extraHelp" : "hide"}>
+					<IonItem className={charSettings.showHelp ? "extraHelp" : "hide"}>
 						<div>Below is a place to save your "favorite" characters, ones that you may be using a lot and don't want to go searching for. Tap the [+] and tap a character to add it to your favorites. Tap the [-] to remove characters from your favorites.</div>
 					</IonItem>
 					<IonItem className={charSettings.adding ? "sticky" : ""}>
@@ -208,7 +203,7 @@ const ExtraCharactersModal = () => {
 							}
 						</div></div>
 					</IonItem>
-					<IonItem className={modalState.ExtraCharactersHelp ? "extraHelp" : "hide"}>
+					<IonItem className={charSettings.showHelp ? "extraHelp" : "hide"}>
 						<div>Characters will display below. Tap them to copy them to the copy-bar above.</div>
 					</IonItem>
 					{data ? (

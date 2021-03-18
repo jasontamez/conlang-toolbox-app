@@ -191,7 +191,6 @@ export interface ModalStateObject {
 	InfoModal: boolean
 	ExtraCharacters: boolean
 	ExtraCharactersEllipsis: undefined | Event
-	ExtraCharactersHelp: boolean
 	ExportLexicon: boolean
 }
 
@@ -218,6 +217,7 @@ export interface ExtraCharactersState {
 	adding: boolean
 	deleting: boolean
 	showNames: boolean
+	showHelp: boolean
 }
 
 

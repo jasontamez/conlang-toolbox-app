@@ -278,7 +278,7 @@ export function updateExtraCharsDisplay(payload: (keyof types.ExtraCharactersDat
 export function updateExtraCharsFavorites(payload: string[]) {
 	return {type: consts.UPDATE_EXTRA_CHARS_FAVORITE, payload};
 }
-export function toggleExtraCharsBoolean(payload: "adding" | "deleting" | "showNames" | "copyImmediately") {
+export function toggleExtraCharsBoolean(payload: "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp") {
 	return {type: consts.TOGGLE_EXTRA_CHARS_BOOLEAN, payload};
 }
 export function updateExtraCharsToBeSaved(payload: string) {

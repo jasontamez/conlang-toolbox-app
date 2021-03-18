@@ -353,7 +353,6 @@ export const blankAppState: types.StateObject = {
 		WESaveToLexicon: undefined,
 		InfoModal: false,
 		ExtraCharacters: false,
-		ExtraCharactersHelp: false,
 		ExtraCharactersEllipsis: undefined,
 		ExportLexicon: false
 	},
@@ -370,7 +369,8 @@ export const blankAppState: types.StateObject = {
 		copyLater: "",
 		adding: false,
 		deleting: false,
-		showNames: false	
+		showNames: false	,
+		showHelp: false
 	},
 	temporaryInfo: undefined
 };
@@ -1159,7 +1159,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.TOGGLE_EXTRA_CHARS_BOOLEAN:
-			let pl = (payload as keyof types.ExtraCharactersState) as "adding" | "deleting" | "showNames" | "copyImmediately";
+			let pl = (payload as keyof types.ExtraCharactersState) as "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp";
 			ECO = reduceExtraCharactersState(state.extraCharactersState);
 			ECO[pl] = !state.extraCharactersState[pl];
 			final = {
