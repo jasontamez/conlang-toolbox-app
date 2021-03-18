@@ -156,28 +156,28 @@ const WGSet = () => {
 					<IonItemDivider>Word Generation Controls</IonItemDivider>
 					<IonItem>
 						<IonLabel position="stacked">Rate of monosyllable words</IonLabel>
-						<IonRange min={0} max={100} value={settingsWG.monosyllablesRate} pin={true} id="monoRate" onIonBlur={() => doOnBlur(setMonoRateWG, $i("monoRate").value as Zero_OneHundred)}>
+						<IonRange debounce={250} min={0} max={100} value={settingsWG.monosyllablesRate} pin={true} id="monoRate" onIonBlur={() => doOnBlur(setMonoRateWG, $i("monoRate").value as Zero_OneHundred)}>
 							<IonLabel slot="start">Never</IonLabel>
 							<IonLabel slot="end">Always</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Maximum number of syllables per word</IonLabel>
-						<IonRange min={2} max={15} value={settingsWG.maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} id="maxSyllables" onIonBlur={() => doOnBlur(setMaxSyllablesWG, $i("maxSyllables").value as Two_Fifteen)}>
+						<IonRange debounce={250} min={2} max={15} value={settingsWG.maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} id="maxSyllables" onIonBlur={() => doOnBlur(setMaxSyllablesWG, $i("maxSyllables").value as Two_Fifteen)}>
 							<IonLabel slot="start">2</IonLabel>
 							<IonLabel slot="end">15</IonLabel>
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Character Group run dropoff</IonLabel>
-						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoffWG, $i("categoryDropoff").value as Zero_Fifty)}>
+						<IonRange debounce={250} min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoffWG, $i("categoryDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked" className="ion-padding-bottom">Syllable box dropoff</IonLabel>
-						<IonRange min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} id="syllableDropoff" onIonBlur={() => doOnBlur(setSyllableDropoffWG, $i("syllableDropoff").value as Zero_Fifty)}>
+						<IonRange debounce={250} min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} id="syllableDropoff" onIonBlur={() => doOnBlur(setSyllableDropoffWG, $i("syllableDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
