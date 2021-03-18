@@ -191,6 +191,7 @@ export interface ModalStateObject {
 	InfoModal: boolean
 	ExtraCharacters: boolean
 	ExtraCharactersEllipsis: undefined | Event
+	ExtraCharactersHelp: boolean
 	ExportLexicon: boolean
 }
 

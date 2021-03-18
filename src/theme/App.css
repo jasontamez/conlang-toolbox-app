@@ -430,8 +430,8 @@ ion-chip {
 	line-height: 1.25;
 }
 ion-chip.active {
-	color: var(--ion-color-secondary-contrast);
-	background: var(--ion-color-secondary);
+	color: var(--ion-color-primary-contrast);
+	background: var(--ion-color-primary);
 }
 ion-item div.twoColumnsEC > div {
 	display: grid;
@@ -493,6 +493,15 @@ ion-item div.twoColumnsEC div.char {
 	position: sticky;
 	top: 0;
 	z-index: 10;
+}
+ion-item.extraHelp,
+ion-item.extraHelp::part(native) {
+	background: var(--ion-color-secondary);
+	color: var(--ion-color-secondary-contrast);
+}
+ion-item.extraHelp div {
+	text-indent: 2em;
+	margin: 0.25em 0;
 }
 
 @media screen and (max-width: 350px) {

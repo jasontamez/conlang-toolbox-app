@@ -353,6 +353,7 @@ export const blankAppState: types.StateObject = {
 		WESaveToLexicon: undefined,
 		InfoModal: false,
 		ExtraCharacters: false,
+		ExtraCharactersHelp: false,
 		ExtraCharactersEllipsis: undefined,
 		ExportLexicon: false
 	},
