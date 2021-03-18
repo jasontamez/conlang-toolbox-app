@@ -13,7 +13,10 @@
 
 //'use strict';
 
-var ESCAPE_LOOKUP: any = {
+interface lookup {
+  [key: string]: string
+}
+var ESCAPE_LOOKUP: lookup = {
   '&': '&amp;',
   '>': '&gt;',
   '<': '&lt;',
