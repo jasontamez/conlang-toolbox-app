@@ -483,7 +483,7 @@ ion-item div.twoColumnsEC div.char {
 	border: 1px solid var(--ion-color-step-700);
 	background: var(--ion-color-step-100);
 }
-#ExtraCharactersModalList ion-item:nth-child(even)::part(native) {
+#ExtraCharactersModalList ion-item:nth-child(odd)::part(native) {
 	background: var(--ion-background-shader);
 }
 #ExtraCharactersModalList ion-item::part(native) {
