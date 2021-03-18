@@ -10,7 +10,8 @@ import {
 	IonButtons,
 	IonButton,
 	IonTitle,
-	IonModal
+	IonModal,
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -59,12 +60,16 @@ const MaybeLoadPresetModal = () => {
 							{appTheme === theme ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
 						</IonItem>
 					))}
-					<IonItem color="danger" button={true} onClick={() => cancel()}>
-						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
-					</IonItem>
 				</IonList>
 			</IonContent>
+			<IonFooter>
+				<IonToolbar>
+					<IonButton color="danger" slot="end" onClick={() => cancel()}>
+						<IonIcon icon={closeCircleSharp} slot="start" />
+						<IonLabel>Cancel</IonLabel>
+					</IonButton>
+				</IonToolbar>
+			</IonFooter>
 		</IonModal>
 	);
 };
