@@ -56,7 +56,7 @@ const OutputOptionsModal = () => {
 			<IonContent>
 				<IonList>
 					<IonItemDivider>What to Generate:</IonItemDivider>
-					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value! as WGOutputTypes))}>
+					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value as WGOutputTypes))}>
 						<IonSelectOption value="text">Pseudo-text</IonSelectOption>
 						<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
 						<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
@@ -68,7 +68,7 @@ const OutputOptionsModal = () => {
 					<IonItemDivider>{settingsWG.output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
 					<IonItem className={settingsWG.output === "text" ? "" : "hide"}>
 						<IonLabel position="stacked">Number of sentences</IonLabel>
-						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value! as Five_OneHundred))}>
+						<IonRange min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred))}>
 							<IonLabel slot="start">5</IonLabel>
 							<IonLabel slot="end">100</IonLabel>
 						</IonRange>
@@ -87,7 +87,7 @@ const OutputOptionsModal = () => {
 					</IonItem>
 					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
 						<IonLabel position="stacked">Wordlist size</IonLabel>
-						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value! as Fifty_OneThousand))}>
+						<IonRange min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand))}>
 							<IonLabel slot="start">50</IonLabel>
 							<IonLabel slot="end">1000</IonLabel>
 						</IonRange>

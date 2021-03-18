@@ -162,15 +162,15 @@ const EditRewriteRuleModal = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel className="seekLabel " position="stacked" style={ {fontSize: "20px"} }>Search Expression:</IonLabel>
-						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingRule!.seek} onIonChange={e => setNewInfo("seek", e.detail.value!.trim())}></IonInput>
+						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingRule!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Replacement Expression:</IonLabel>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingRule!.replace} onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
+						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingRule!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Transformation Description:</IonLabel>
-						<IonInput id="optDesc" className="ion-margin-top" value={editingRule!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", e.detail.value!.trim())}></IonInput>
+						<IonInput id="optDesc" className="ion-margin-top" value={editingRule!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

@@ -172,20 +172,20 @@ const EditTransformModal = () => {
 				<IonList lines="none">
 					<IonItem>
 						<IonLabel className="seekLabel" position="stacked" style={ {fontSize: "20px"} }>Input Expression:</IonLabel>
-						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingTransform!.seek} onIonChange={e => setNewInfo("seek", e.detail.value!.trim())}></IonInput>
+						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingTransform!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Output Expression:</IonLabel>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingTransform!.replace} onIonChange={e => setNewInfo("replace", e.detail.value!.trim())}></IonInput>
+						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingTransform!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem>
 						<IonLabel position="stacked">Transform Description:</IonLabel>
-						<IonInput id="optDesc" className="ion-margin-top" value={editingTransform!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", e.detail.value!.trim())}></IonInput>
+						<IonInput id="optDesc" className="ion-margin-top" value={editingTransform!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItemDivider>
 						<IonLabel position="stacked">Transform Direction:</IonLabel>
 					</IonItemDivider>
-					<IonRadioGroup value={editingTransform!.direction} onIonChange={e => setNewInfo("direction", e.detail.value!)}>
+					<IonRadioGroup value={editingTransform!.direction} onIonChange={e => setNewInfo("direction", e.detail.value as "both" | "in" | "out" | "double")}>
 						<IonItem>
 							<IonLabel>At Input, Then Undo At Output</IonLabel>
 							<IonRadio slot="start" value="both" />

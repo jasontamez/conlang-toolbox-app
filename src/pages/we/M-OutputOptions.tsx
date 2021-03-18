@@ -42,7 +42,7 @@ const OutputOptionsModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList>
-					<IonRadioGroup value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value! as WEOutputTypes))}>
+					<IonRadioGroup value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value as WEOutputTypes))}>
 						<IonItem className="ion-text-wrap">
 							<IonLabel>Output Only</IonLabel>
 							<IonRadio slot="start" value="outputOnly" />

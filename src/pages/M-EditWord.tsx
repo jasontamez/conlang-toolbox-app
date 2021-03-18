@@ -115,7 +115,7 @@ const EditLexiconItemModal = () => {
 						return (
 							<IonItem key={thisSingularItem.key + iStr}>
 								<IonLabel position="stacked" style={ {fontSize: "20px"} }>{theTitles[i]}</IonLabel>
-								<IonInput id={"thislex" + iStr} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo(e.detail.value!.trim(), i)}></IonInput>
+								<IonInput id={"thislex" + iStr} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}></IonInput>
 							</IonItem>
 						);
 					})}
