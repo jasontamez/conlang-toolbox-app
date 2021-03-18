@@ -13,6 +13,7 @@ import WG from "./pages/WG";
 import WE from "./pages/WE";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
+import Credits from './pages/Credits';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
