@@ -369,7 +369,7 @@ export const blankAppState: types.StateObject = {
 		copyLater: "",
 		adding: false,
 		deleting: false,
-		showNames: false	,
+		showNames: false,
 		showHelp: false
 	},
 	temporaryInfo: undefined
