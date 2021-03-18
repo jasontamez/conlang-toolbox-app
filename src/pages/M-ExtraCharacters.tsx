@@ -141,7 +141,7 @@ const ExtraCharactersModal = () => {
 						<div>
 							<div>This is a place to find and copy characters that may not be easily accessible to you on your device's keyboard.</div>
 							<div>Click the three dots in the bar above to see some options. <IonText color="success" style={ { background: "var(--ion-background-color)" } }>⦿</IonText> means that option is active and <IonText color="danger" style={ { background: "var(--ion-background-color)" } }>○</IonText> means it's inactive.</div>
-							<div><strong>Tap: Copy to Clipboard</strong>: when active, copies any character you tap. When inactive, copies tapped characters to the copy-bar below, where you can copy them en masse.</div>
+							<div><strong>Tap: Copy to Clipboard</strong>: when active, copies any character you tap directly to the clipboard. When inactive, copies tapped characters to the copy-bar below, where you can copy them at your leisure.</div>
 							<div><strong>Show Unicode Names</strong>: when active, shows the standard Unicode name of every character. When inactive, the characters are presented by themselves.</div>
 						</div>
 					</IonItem>
@@ -165,7 +165,7 @@ const ExtraCharactersModal = () => {
 						</div>
 					</IonItem>
 					<IonItem className={charSettings.showHelp ? "extraHelp" : "hide"}>
-						<div>Below is a place to save your "favorite" characters, ones that you may be using a lot and don't want to go searching for. Tap the [+] and tap a character to add it to your favorites. Tap the [-] to remove characters from your favorites.</div>
+						<div>Below is a place to save your "favorite" characters, ones that you may be using a lot and don't want to go hunting for all the time. Tap the [+] and tap a character to add it to your favorites. Tap the [-] to remove characters from your favorites.</div>
 					</IonItem>
 					<IonItem className={charSettings.adding ? "sticky" : ""}>
 						<div className="multiColumnEC"><div>
