@@ -33,7 +33,7 @@ const ExportLexiconModal = () => {
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('ExportLexicon'));
-		dispatch(setLoadingPage(false));
+		modalState.loadingPage === "deletingLexicon" && dispatch(setLoadingPage(false));
 	};
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
@@ -120,12 +120,13 @@ const ExportLexiconModal = () => {
 		let output = XML + "\t</Content>\n</Lexicon>";
 		doDownload(e, output, "xml");
 	};
-	const doDownload = async (e: Event, output: string, extension: string) => {
+	const doDownload = (e: Event, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = lexicon.title + " - " + (new Date()).toDateString() + "." + extension;
 		dispatch(setLoadingPage("deletingLexicon"));
-		doExport(output, filename);
-		doClose();
+		doExport(output, filename)
+			.catch((e = "Error?") => console.log(e))
+			.then(() => doClose());
 	};
 	return (
 		<IonModal isOpen={modalState.ExportLexicon} onDidDismiss={() => doClose()}>
