@@ -136,7 +136,7 @@ ion-list.units {
 	border-top: 0.1rem solid var(--ion-background-color);
 }
 ion-list.dragArea {
-	height: 100%;
+	min-height: 100%;
 }
 
 #conlangToolbox .fullScreen {
@@ -483,9 +483,9 @@ ion-item div.twoColumnsEC div.char {
 	border: 1px solid var(--ion-color-step-700);
 	background: var(--ion-color-step-100);
 }
-#ExtraCharactersModalList ion-item:nth-child(odd)::part(native) {
+/*#ExtraCharactersModalList ion-item:nth-child(odd)::part(native) {
 	background: var(--ion-background-shader);
-}
+}*/
 #ExtraCharactersModalList ion-item::part(native) {
 	border-bottom: 1px solid var(--ion-border-color);
 }
