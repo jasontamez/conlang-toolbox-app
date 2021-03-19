@@ -6,7 +6,7 @@ import sanitize from 'sanitize-filename';
 const doExport = async (output: string, fileName: string, notify: boolean = true) => {
 	const { Filesystem } = Plugins;
 	const Directory = FilesystemDirectory.Documents;
-	const filename = sanitize(fileName) || "defaultfilename";
+	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
 		let ret = await Filesystem.readdir({
 			path: 'ConlangToolbox',
