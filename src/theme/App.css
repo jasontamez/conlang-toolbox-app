@@ -474,7 +474,7 @@ ion-item div.multiColumnEC div.char {
 }
 ion-item div.multiColumnEC div.char,
 ion-item div.twoColumnsEC div.char {
-	font-family: 'Noto Serif', Georgia, 'Times New Roman', Times, 'Noto Sans', Verdana, Arial, Helvetica, serif, sans-serif, 'Courier New', 'Courier Prime', Courier, monospace;
+	font-family: 'Noto Serif', Georgia, 'Times New Roman', Times, 'Noto Sans', Tahoma, Verdana, Arial, Helvetica, serif, sans-serif, 'Courier New', 'Courier Prime', Courier, monospace;
 	font-size: 1.1rem;
 	margin: 0.5rem;
 	padding: calc(0.5rem - 2px);
