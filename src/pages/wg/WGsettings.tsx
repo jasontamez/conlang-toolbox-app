@@ -104,7 +104,7 @@ const WGSet = () => {
 			titles.push(title);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			dispatch(setTemporaryInfo({ data: titles }));
+			dispatch(setTemporaryInfo({ type: "custominfo", data: titles }));
 			dispatch(setLoadingPage(false));
 			dispatch(openModal("ManageCustomInfo"));
 		}).catch((err) => {

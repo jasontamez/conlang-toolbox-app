@@ -195,7 +195,10 @@ const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
 	if(!original) {
 		return original;
 	}
-	return { data: parseUnknownTypes(original.data) };
+	return {
+		type: original.type,
+		data: parseUnknownTypes(original.data)
+	};
 };
 const parseUnknownTypes: any = (test: any) => {
 	const theType = (typeof test);

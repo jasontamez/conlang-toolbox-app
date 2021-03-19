@@ -305,7 +305,7 @@ const Lex = () => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			info.length > 0 && dispatch(setTemporaryInfo({ data: info }));
+			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedlexicons", data: info }));
 			dispatch(setLoadingPage(false));
 			dispatch(openModal(which));
 		});

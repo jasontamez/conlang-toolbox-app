@@ -31,7 +31,7 @@ import fireSwal from '../components/Swal';
 const DeleteLexiconModal = () => {
 	const dispatch = useDispatch();
 	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
-	const data = temp ? temp.data : undefined;
+	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('DeleteLexicon'));
@@ -87,7 +87,7 @@ const DeleteLexiconModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data && data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
+					{data ? data.map((pair: [string, LexiconObject]) => {
 						const key = pair[0];
 						const lex = pair[1];
 						const time = new Date(lex.lastSave);

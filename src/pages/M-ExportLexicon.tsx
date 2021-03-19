@@ -19,7 +19,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	closeModal,
-	setTemporaryInfo,
 	setLoadingPage
 } from '../components/ReduxDucksFuncs';
 import { Lexicon } from '../components/ReduxDucksTypes';
@@ -28,10 +27,8 @@ import doExport from '../components/ExportServices';
 
 const ExportLexiconModal = () => {
 	const dispatch = useDispatch();
-	const [modalState, temp, lexicon] = useSelector((state: any) => [state.modalState, state.temporaryInfo, state.lexicon], shallowEqual);
-	const data = temp ? temp.data : undefined;
+	const [modalState, lexicon] = useSelector((state: any) => [state.modalState, state.lexicon], shallowEqual);
 	const doClose = () => {
-		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('ExportLexicon'));
 		modalState.loadingPage === "deletingLexicon" && dispatch(setLoadingPage(false));
 	};
@@ -153,7 +150,7 @@ const ExportLexiconModal = () => {
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>
 			<IonFooter>
-				<IonToolbar className={data ? "" : "hide"}>
+				<IonToolbar>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>

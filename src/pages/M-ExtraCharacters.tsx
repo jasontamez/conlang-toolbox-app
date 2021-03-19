@@ -235,7 +235,7 @@ const ExtraCharactersModal = () => {
 			<IonFooter>
 				<IonToolbar className="ion-text-wrap">
 					<IonButtons slot="end">
-						<IonButton onClick={() => cancel()} slot="end" color="success">
+						<IonButton onClick={() => cancel()} slot="end" fill="solid" color="success">
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
 							<IonLabel>Done</IonLabel>
 						</IonButton>

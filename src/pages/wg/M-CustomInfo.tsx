@@ -49,7 +49,7 @@ const ManageCustomInfo = () => {
 		state.wordgenRewriteRules,
 		state.temporaryInfo
 	], shallowEqual);
-	let customInfo: string[] = (temporaryInfo && Array.isArray(temporaryInfo.data)) ? temporaryInfo.data : [];
+	let customInfo: string[] = (temporaryInfo && temporaryInfo.type === "custominfo") ? temporaryInfo.data : [];
 	const doCleanClose = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('ManageCustomInfo'));
@@ -156,7 +156,7 @@ const ManageCustomInfo = () => {
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
 			let newCustom = customInfo.filter(ci => ci !== title);
-			dispatch(setTemporaryInfo({data: newCustom}));
+			dispatch(setTemporaryInfo({type: "custominfo", data: newCustom}));
 			CustomStorageWG.removeItem(title).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",

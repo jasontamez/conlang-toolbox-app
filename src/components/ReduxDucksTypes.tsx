@@ -222,6 +222,7 @@ export interface ExtraCharactersState {
 
 
 export interface TemporaryInfo {
+	type: string
 	data: any
 }
 
