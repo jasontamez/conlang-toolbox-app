@@ -28,6 +28,7 @@ import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
+import doExport from '../../components/ExportServices';
 
 const ManageCustomInfo = () => {
 	const dispatch = useDispatch();
@@ -56,8 +57,10 @@ const ManageCustomInfo = () => {
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
 		if(title === "") {
-			// Do nothing
-			return;
+			return fireSwal({
+				title: "Please enter a title",
+				icon: "error",
+			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
 			const save: WGCustomInfo = [
@@ -96,6 +99,25 @@ const ManageCustomInfo = () => {
 				});
 			}
 		});
+	};
+	const maybeExportInfo = () => {
+		let title = escape($i("currentInfoExportName").value).trim();
+		if(title === "") {
+			return fireSwal({
+				title: "Please enter a title",
+				icon: "error",
+			});
+		}
+		title = title + ".json";
+		const exporting = {
+			categories,
+			syllables,
+			rules,
+			settingsWG: {...settingsWG}
+		}
+		doExport(JSON.stringify(exporting), title)
+			.catch((e = "Error?") => console.log(e))
+			.then(() => doCleanClose());
 	};
 	const maybeLoadInfo = (title: string) => {
 		const thenFunc = () => {
@@ -175,13 +197,22 @@ const ManageCustomInfo = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
-					<IonItemGroup>
+				<IonItemGroup>
 						<IonItemDivider>
 							<IonLabel>Save Current Info</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
 							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
+						</IonItem>
+					</IonItemGroup>
+					<IonItemGroup>
+						<IonItemDivider>
+							<IonLabel className="ion-text-wrap">Export Current Info to File</IonLabel>
+						</IonItemDivider>
+						<IonItem>
+							<IonInput id="currentInfoExportName" inputmode="text" placeholder="Name your custom info" type="text" />
+							<IonButton slot="end" onClick={() => maybeExportInfo()} strong={true} color="success">Export</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
