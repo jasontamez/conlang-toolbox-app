@@ -2,6 +2,9 @@
 	background: var(--ion-background-color);
 }
 .conlangToolboxSwal.swal2-popup #swal2-title {
+	word-wrap: normal;
+	overflow-wrap: anywhere;
+	white-space: normal;
 	color: var(--ion-text-color);
 }
 .conlangToolboxSwal.swal2-popup.swal2-toast,
@@ -24,6 +27,9 @@
 }
 .conlangToolboxSwal.swal2-popup .swal2-content {
 	color: var(--ion-color-primary-shade);
+	word-wrap: normal;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 .conlangToolboxSwal.swal2-popup .swal2-confirm {
 	background-color: var(--ion-color-success);
