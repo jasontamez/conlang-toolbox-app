@@ -568,10 +568,7 @@ export const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {
-			...basicSettings,
-			syllableBoxDropoff: 20
-		}
+		wordgenSettings: {...basicSettings}
 	}],
 	["Complex", {
 		wordgenCategories: {
