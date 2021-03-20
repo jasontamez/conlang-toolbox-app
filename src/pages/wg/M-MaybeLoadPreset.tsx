@@ -73,11 +73,11 @@ const MaybeLoadPresetModal = () => {
 					<IonItem button={true} onClick={() => maybeLoadPreset('Complex')}>
 						<IonLabel>Complex</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Large Inventory')}>
-						<IonLabel>Large Inventory</IonLabel>
-					</IonItem>
 					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Latin')}>
 						<IonLabel>Pseudo-Latin</IonLabel>
+					</IonItem>
+					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Greek')}>
+						<IonLabel>Pseudo-Greek</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Chinese')}>
 						<IonLabel>Pseudo-Chinese</IonLabel>

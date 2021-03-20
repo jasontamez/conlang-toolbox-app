@@ -280,7 +280,7 @@ export const WGPresets: WGPresetObject = new Map([
 		},
 		wordgenSettings: {...basicSettings}
 	}],
-	["Large Inventory", {
+	["Pseudo-Greek", {
 		wordgenCategories: {
 			map: [
 				["C", {
