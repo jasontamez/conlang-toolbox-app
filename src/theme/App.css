@@ -1,4 +1,8 @@
-#conlangToolbox p {
+#conlangToolbox {
+	word-wrap: normal;
+	overflow-wrap: anywhere;
+}
+;#conlangToolbox p {
 	text-indent: 2rem;
 	padding: 1rem;
 	margin: 0 auto;
@@ -71,11 +75,17 @@ ion-card-content ul li {
 	padding: 0.25rem 0.5rem;
 	font-weight: bold;
 	border: 1px solid var(--ion-color-input-border);
+	white-space: normal;
+	word-wrap: normal;
+	overflow-wrap: anywhere;
 }
 #conlangToolbox .unimportantUnit {
 	display: inline-block;
 	padding: 0 0.5rem;
 	letter-spacing: 0;
+	white-space: normal;
+	word-wrap: normal;
+	overflow-wrap: anywhere;
 }
 #conlangToolbox .arrow {
 	font-weight: bold;
@@ -510,6 +520,13 @@ ion-item.extraHelp div {
 ion-label.wrappableInnards div,
 ion-label.wrappableInnards {
 	white-space: normal;
+	word-wrap: normal;
+	overflow-wrap: anywhere;
+}
+
+.ion-text-wrap {
+	word-wrap: normal;
+	overflow-wrap: anywhere;
 }
 
 @media screen and (max-width: 350px) {
