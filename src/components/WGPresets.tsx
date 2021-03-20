@@ -638,13 +638,13 @@ export const WGPresets: WGPresetObject = new Map([
 					key: "4",
 					seek: "h(?=%V(%E|%C{0,2}%V)\\b)",
 					replace: "H",
-					description: "save h before accented syllable"
+					description: "save h before stressed syllable"
 				},
 				{
 					key: "5",
 					seek: "(%V)h(?=%V\\b)",
 					replace: "$1H",
-					description: "save h before accented syllable"
+					description: "save h before stressed syllable"
 				},
 				{
 					key: "6",
