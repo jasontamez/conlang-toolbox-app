@@ -361,8 +361,8 @@ export const WGPresets: WGPresetObject = new Map([
 			objects: {
 				singleWord: { components: ["CV","CVC","VC","V","PLVC"] },
 				wordInitial: { components: ["CVC","CV","VC","PLV","sPLV","V"] },
-				wordMiddle: { components: ["CV","VC","V"] },
-				wordFinal: { components: ["CV","VC","CVC","V","VLF","VNF","CVgh","Vgh"] }
+				wordMiddle: { components: ["CV","CV","CV","VC","V"] },
+				wordFinal: { components: ["CV","CVC","CVLF","CVNF","CVgh","VC","V","Vgh"] }
 			}
 		},
 		wordgenRewriteRules: {
