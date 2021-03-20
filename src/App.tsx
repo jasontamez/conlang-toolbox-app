@@ -53,7 +53,8 @@ const WFLconfig = {
 		families: [
 			'Noto Sans:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
 			'Noto Serif:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
-			'DM Mono:400,500'
+			'DM Mono:400,500',
+			'Arimo:400,400i,500,500i,700,700i'
 		],
 	}
 };
