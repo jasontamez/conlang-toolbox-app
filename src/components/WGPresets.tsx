@@ -368,6 +368,12 @@ export const WGPresets: WGPresetObject = new Map([
 		wordgenRewriteRules: {
 			list: [
 				{
+					key: "15",
+					seek: "([^g])h",
+					replace: "$1k",
+					description: "change non-initial h to k if not preceeded by a g"
+				},
+				{
 					key: "0",
 					seek: "T+",
 					replace: "th",
@@ -390,12 +396,6 @@ export const WGPresets: WGPresetObject = new Map([
 					seek: "N+",
 					replace: "ng",
 					description: ""
-				},
-				{
-					key: "15",
-					seek: "([^g])h",
-					replace: "$1k",
-					description: "change non-initial h to k if not preceeded by a g"
 				},
 				{
 					key: "6",
