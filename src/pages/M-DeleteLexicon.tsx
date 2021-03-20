@@ -93,8 +93,8 @@ const DeleteLexiconModal = () => {
 						const time = new Date(lex.lastSave);
 						return (
 							<IonItem key={key} button={true} onClick={() => deleteThis(key, lex.title)}>
-								<IonLabel className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()} words]</IonLabel>
-								<IonNote slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
+								<IonLabel className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()}&nbsp;words]</IonLabel>
+								<IonNote className="ion-text-wrap" slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
 					}) : (
