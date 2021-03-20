@@ -148,6 +148,7 @@ const EditCategoryWEModal = () => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
+				dispatch(closeModal('EditCategoryWE'));
 				dispatch(deleteCategoryWE(editingCat));
 				fireSwal({
 					title: "Character Group deleted",

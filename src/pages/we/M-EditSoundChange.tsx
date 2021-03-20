@@ -154,6 +154,7 @@ const EditSoundChangeModal = () => {
 		$q(".soundChanges").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
+				dispatch(closeModal('EditSoundChange'));
 				dispatch(deleteSoundChangeWE(currentSoundChange));
 				fireSwal({
 					title: "Sound Change deleted",

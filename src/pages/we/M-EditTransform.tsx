@@ -122,6 +122,7 @@ const EditTransformModal = () => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
+				dispatch(closeModal('EditTransform'));
 				dispatch(deleteTransformWE(currentTransform));
 				fireSwal({
 					title: "Transform deleted",

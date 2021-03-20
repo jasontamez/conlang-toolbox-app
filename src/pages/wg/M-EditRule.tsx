@@ -119,6 +119,7 @@ const EditRewriteRuleModal = () => {
 		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
+				dispatch(closeModal('EditRewriteRule'));
 				dispatch(deleteRewriteRuleWG(currentRule));
 				fireSwal({
 					title: "Transformation deleted",
