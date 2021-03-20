@@ -23,6 +23,13 @@ const doExport = async (output: string, fileName: string, notify: boolean = true
 			console.log('Made dir', ret);
 		} catch(e) {
 			console.error('Unable to make directory', e);
+			notify && fireSwal({
+				html: "Unable to export:<br />" + escape(String(e)).replace(/\n/g, "<br />"),
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 10000,
+				timerProgressBar: true
+			});
 		}
 	} finally {
 		try {
@@ -34,16 +41,19 @@ const doExport = async (output: string, fileName: string, notify: boolean = true
 			});
 			console.log('Wrote file', result);
 			notify && fireSwal({
-				title: "Success",
-				icon: "success",
-				text: filename + " exported"
-			});
+				title: filename + " exported",
+				toast: true,
+				timer: 5000,
+				timerProgressBar: true
+	});
 		} catch(e) {
 			console.error('Unable to write file', e);
 			notify && fireSwal({
-				title: "Unable to export",
-				icon: "error",
-				html: escape(String(e)).replace(/\n/g, "<br />")
+				html: "Unable to export:<br />" + escape(String(e)).replace(/\n/g, "<br />"),
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 10000,
+				timerProgressBar: true
 			});
 		}
 	}
