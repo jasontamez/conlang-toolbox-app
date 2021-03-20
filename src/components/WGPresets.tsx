@@ -359,7 +359,7 @@ export const WGPresets: WGPresetObject = new Map([
 		wordgenSyllables: {
 			toggle: true,
 			objects: {
-				singleWord: { components: ["CV","CVC","VC","V","PLVC"] },
+				singleWord: { components: ["CV","CVC","VC","V","PLVC","PLV"] },
 				wordInitial: { components: ["CVC","CV","VC","PLV","sPLV","V"] },
 				wordMiddle: { components: ["CV","CV","CV","VC","V"] },
 				wordFinal: { components: ["CV","CVC","CVLF","CVNF","CVgh","VC","V","Vgh"] }
