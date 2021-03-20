@@ -19,7 +19,6 @@ import {
 import {
 	helpCircleOutline
 } from 'ionicons/icons';
-import { $i } from '../../components/DollarSignExports';
 import { openModal, toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -45,8 +44,11 @@ const WGSyl = () => {
 	const wordInitial = syllableObject.objects.wordInitial.components.join("\n");
 	const wordMiddle = syllableObject.objects.wordMiddle.components.join("\n");
 	const wordFinal = syllableObject.objects.wordFinal.components.join("\n");
-	const updateSyllables = (base: keyof WGSyllableStateObject["objects"]) => {
-		let value = $i("Syl-" + base).value.split(/\s*\r?\n\s*/);
+	const updateSyllables = (base: keyof WGSyllableStateObject["objects"], target: EventTarget | null) => {
+		if(target === null) {
+			return;
+		}
+		let value = (target as HTMLTextAreaElement).value.trim().split(/\s*\r?\n\s*/);
 		dispatch(editSyllables(base, value.filter((v: string) => v !== "")));
 	};
 	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
@@ -81,19 +83,19 @@ const WGSyl = () => {
 					<IonItem>
 						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
 						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
-						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord')} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
+						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord', e.target)} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Initial<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordInitial" onIonBlur={e => updateSyllables('wordInitial')} value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
+						<IonTextarea className="serifChars" id="Syl-wordInitial" onIonBlur={e => updateSyllables('wordInitial', e.target)} value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Mid-Word<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordMiddle" onIonBlur={e => updateSyllables('wordMiddle')} value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
+						<IonTextarea className="serifChars" id="Syl-wordMiddle" onIonBlur={e => updateSyllables('wordMiddle', e.target)} value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Final<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordFinal" onIonBlur={e => updateSyllables('wordFinal')} value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
+						<IonTextarea className="serifChars" id="Syl-wordFinal" onIonBlur={e => updateSyllables('wordFinal', e.target)} value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
 					</IonItem>
 				</IonList>
 			</IonContent>

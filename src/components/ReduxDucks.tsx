@@ -507,7 +507,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.EDIT_SYLLABLES:
 			SO = reduceSyllablesWG(state.wordgenSyllables);
-			SO.objects[payload.key as keyof types.WGSyllableStateObject["objects"]].components = payload.wordgenSyllables;
+			SO.objects[payload.key as keyof types.WGSyllableStateObject["objects"]].components = payload.syllables;
 			final = {
 				...reduceAllBut(["wordgenSyllables"], state),
 				wordgenSyllables: SO
