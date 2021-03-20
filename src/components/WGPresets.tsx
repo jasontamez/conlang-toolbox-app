@@ -386,18 +386,6 @@ export const WGPresets: WGPresetObject = new Map([
 					description: ""
 				},
 				{
-					key: "3",
-					seek: "q+",
-					replace: "qu",
-					description: "q is always followed by u"
-				},
-				{
-					key: "4",
-					seek: "qu\\b",
-					replace: "que",
-					description: "qu at word-end becomes que"
-				},
-				{
 					key: "5",
 					seek: "N+",
 					replace: "ng",
@@ -525,15 +513,27 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "18.1",
-					seek: "[aeiou]([aeiou])\\1",
+					seek: "[aeiou]*([aeiou])[aeiou]*\\1[aeiou]*",
 					replace: "$1$1",
-					description: "reduce triple vowels, where the last two vowels match, to the final vowels"
+					description: "reduce multiple vowels in a row, where the any two vowels match, to the matching vowels"
 				},
 				{
-					key: "18.2",
-					seek: "([aeiou])\\1[aeiou]",
-					replace: "$1$1",
-					description: "reduce triple vowels, where the first two vowels match, to the first vowels"
+					key: "3",
+					seek: "q+",
+					replace: "qu",
+					description: "q is always followed by u"
+				},
+				{
+					key: "4",
+					seek: "qu\\b",
+					replace: "que",
+					description: "qu at word-end becomes que"
+				},
+				{
+					key: "4.1",
+					seek: "qu([aeiou])[aeiou]+",
+					replace: "qu$1",
+					description: "eliminate triple+ vowels after q"
 				},
 				{
 					key: "19",
