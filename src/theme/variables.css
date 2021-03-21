@@ -4,161 +4,148 @@ http://ionicframework.com/docs/theming/ */
 /** Font Faces **/
 @font-face {
 	font-family: 'Arimo';
-	src: url('../../public/assets/font/Arimo-Regular.ttf');
+	src: url('./font/Arimo-Regular.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Arimo';
-	src: url('../../public/assets/font/Arimo-Bold.ttf');
+	src: url('./font/Arimo-Bold.ttf');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Arimo';
-	src: url('../../public/assets/font/Arimo-Italic.ttf');
+	src: url('./font/Arimo-Italic.ttf');
 	font-weight: normal;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Arimo';
-	src: url('../../public/assets/font/Arimo-BoldItalic.ttf');
+	src: url('./font/Arimo-BoldItalic.ttf');
 	font-weight: bold;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Noto Sans';
-	src: url('../../public/assets/font/NotoSans-Regular.ttf');
+	src: url('./font/NotoSans-Regular.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Sans';
-	src: url('../../public/assets/font/NotoSans-Bold.ttf');
+	src: url('./font/NotoSans-Bold.ttf');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Sans';
-	src: url('../../public/assets/font/NotoSans-Italic.ttf');
+	src: url('./font/NotoSans-Italic.ttf');
 	font-weight: normal;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Noto Sans';
-	src: url('../../public/assets/font/NotoSans-BoldItalic.ttf');
+	src: url('./font/NotoSans-BoldItalic.ttf');
 	font-weight: bold;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Noto Sans JP';
-	src: url('../../public/assets/font/NotoSansJP-Regular.otf');
+	src: url('./font/NotoSansJP-Regular.otf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Sans JP';
-	src: url('../../public/assets/font/NotoSansJP-Bold.otf');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Sans KR';
-	src: url('../../public/assets/font/NotoSansKR-Regular.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Sans KR';
-	src: url('../../public/assets/font/NotoSansKR-Bold.otf');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Sans TC';
-	src: url('../../public/assets/font/NotoSansTC-Regular.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Sans TC';
-	src: url('../../public/assets/font/NotoSansTC-Bold.otf');
+	src: url('./font/NotoSansJP-Bold.otf');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Serif';
-	src: url('../../public/assets/font/NotoSerif-Regular.ttf');
+	src: url('./font/NotoSerif-Regular.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Serif';
-	src: url('../../public/assets/font/NotoSerif-Bold.ttf');
+	src: url('./font/NotoSerif-Bold.ttf');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Serif';
-	src: url('../../public/assets/font/NotoSerif-Italic.ttf');
+	src: url('./font/NotoSerif-Italic.ttf');
 	font-weight: normal;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Noto Serif';
-	src: url('../../public/assets/font/NotoSerif-BoldItalic.ttf');
+	src: url('./font/NotoSerif-BoldItalic.ttf');
 	font-weight: bold;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Noto Serif JP';
-	src: url('../../public/assets/font/NotoSerifJP-Regular.otf');
+	src: url('./font/NotoSerifJP-Regular.otf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Noto Serif JP';
-	src: url('../../public/assets/font/NotoSerifJP-Bold.otf');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Serif KR';
-	src: url('../../public/assets/font/NotoSerifKR-Regular.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Serif KR';
-	src: url('../../public/assets/font/NotoSerifKR-Bold.otf');
-	font-weight: bold;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Serif TC';
-	src: url('../../public/assets/font/NotoSerifTC-Regular.otf');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'Noto Serif TC';
-	src: url('../../public/assets/font/NotoSerifTC-Bold.otf');
+	src: url('./font/NotoSerifJP-Bold.otf');
 	font-weight: bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'DM Mono';
-	src: url('../../public/assets/font/DMMono-Regular.ttf');
+	src: url('./font/DMMono-Regular.ttf');
 	font-weight: normal;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'DM Mono';
-	src: url('../../public/assets/font/DMMono-Italic.ttf');
+	src: url('./font/DMMono-Italic.ttf');
 	font-weight: normal;
 	font-style: italic;
 }
-
+@font-face {
+	font-family: 'Scheherazade';
+	src: url('./font/Scheherazade-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Scheherazade';
+	src: url('./font/Scheherazade-Bold.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Sriracha';
+	src: url('./font/Sriracha-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Leelawadee';
+	src: url('./font/LeelawUI.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Leelawadee';
+	src: url('./font/LeelaUIb.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'ArTarumianKamar';
+	src: url('./font/ArTarumianKamar-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
 
 /** Ionic CSS Variables **/
 :root {
@@ -709,9 +696,10 @@ body.LightTheme ion-menu ion-content {
 
 
 #conlangToolbox {
-	--font-sans: 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans TC', 'Arimo', 'Tahoma', 'Verdana', 'Helvetica', 'Arial';
-	--font-serif: 'Noto Serif', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif TC', 'Georgia', 'Times New Roman';
-	--ion-font-family: var(--font-sans), sans-serif;
+	--font-sans: 'Noto Sans', 'Noto Sans JP';
+	--font-serif: 'Noto Serif', 'Noto Serif JP';
+	--font-international: 'Arimo', 'ArTarumianKamar', 'Scheherazade', 'Sriracha', 'Leelawadee';
+	--ion-font-family: var(--font-sans), var(--font-international);
 	--ion-default-font: var(--ion-font-family);
 }
 
