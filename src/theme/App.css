@@ -145,7 +145,7 @@ ion-list.units {
 .units ion-item-sliding:first-of-type ion-item-option button {
 	border-top: 0.1rem solid var(--ion-background-color);
 }
-#hasFabButton ion-list.units {
+.hasFabButton ion-list.units {
 	padding-bottom: 5em;
 }
 ion-list.dragArea {
