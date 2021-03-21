@@ -129,7 +129,7 @@ const WGRew = () => {
 										<div className="importantElement serifChars">
 											<span className="seek importantUnit">{rr.seek}</span>
 											<span className="arrow unimportantUnit">{arrow}</span>
-											<span className="replace importantUnit">{rr.replace}</span>
+											<span className="replace importantUnit">{rr.replace || " "}</span>
 										</div>
 										<div className="description">{rr.description}</div>
 									</IonLabel>

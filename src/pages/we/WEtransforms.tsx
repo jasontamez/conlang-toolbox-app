@@ -149,7 +149,7 @@ const WERew = () => {
 										<div className="serifChars">
 											<span className="seek importantUnit">{trans.seek}</span>
 											<span className="arrow unimportantUnit">{makeArrow(trans.direction)}</span>
-											<span className="replace importantUnit">{trans.replace}</span>
+											<span className="replace importantUnit">{trans.replace || " "}</span>
 											<span className="unimportantUnit">{makeDeclaration(trans.direction)}</span>
 										</div>
 										<div className="description">{trans.description}</div>
