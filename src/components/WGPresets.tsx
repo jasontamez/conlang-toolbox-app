@@ -375,13 +375,13 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "0",
-					seek: "T+",
+					seek: "s*T+s*",
 					replace: "th",
 					description: ""
 				},
 				{
 					key: "1",
-					seek: "S+",
+					seek: "s*S+s*",
 					replace: "sh",
 					description: ""
 				},
@@ -393,13 +393,13 @@ export const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "5",
-					seek: "N+",
+					seek: "[nm]*N+[nm]*",
 					replace: "ng",
 					description: ""
 				},
 				{
 					key: "6",
-					seek: "[wW]+(%V)",
+					seek: "w*W+(%V)",
 					replace: "wh$1",
 					description: "W-vowel becomes wh-vowel"
 				},
@@ -515,7 +515,7 @@ export const WGPresets: WGPresetObject = new Map([
 					key: "18.1",
 					seek: "[aeiou]*([aeiou])[aeiou]*\\1[aeiou]*",
 					replace: "$1$1",
-					description: "reduce multiple vowels in a row, where the any two vowels match, to the matching vowels"
+					description: "reduce multiple vowels in a row, where any two vowels match, to the matching vowels"
 				},
 				{
 					key: "3",
