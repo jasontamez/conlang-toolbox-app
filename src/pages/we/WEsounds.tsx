@@ -122,7 +122,7 @@ const WERew = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent fullscreen className="hasFabButton">
 				<IonList className="soundChanges units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{soundChange.map((change: WESoundChangeObject) => {

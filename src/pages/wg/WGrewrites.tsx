@@ -118,7 +118,7 @@ const WGRew = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent fullscreen className="hasFabButton">
 				<IonList className="rewriterules units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{rules.map((rr: WGRewriteRuleObject) => {

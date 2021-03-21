@@ -96,7 +96,7 @@ const WECat = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent fullscreen className="hasFabButton">
 				<IonList className="categories units" lines="none">
 					{categories.map((item: WECategoryMap) => {
 						let [label, cat] = item;

@@ -138,7 +138,7 @@ const WERew = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen>
+			<IonContent fullscreen className="hasFabButton">
 				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{transform.map((trans: WETransformObject) => {
