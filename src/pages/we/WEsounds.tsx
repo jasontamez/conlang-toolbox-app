@@ -133,7 +133,7 @@ const WERew = () => {
 										<div className="importantElement serifChars">
 											<span className="seek importantUnit">{change.seek}</span>
 											<span className="arrow unimportantUnit">{arrow}</span>
-											<span className="replace importantUnit">{change.replace || " "}</span>
+											<span className="replace importantUnit">{change.replace || String.fromCharCode(160)}</span>
 											<span className="arrow unimportantUnit">/</span>
 											<span className="replace importantUnit">{change.context}</span>
 											{change.anticontext ? (
