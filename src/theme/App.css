@@ -61,7 +61,7 @@ ion-card-content ul li {
 }
 #conlangToolbox .serifChars {
 	letter-spacing: 0.025rem;
-	font-family: 'Noto Serif', 'Georgia', serif;
+	font-family: var(--font-serif), serif;
 }
 #conlangToolbox .importantElement {
 	font-weight: bold;
@@ -370,7 +370,7 @@ i.ipa {
 	background: var(--ion-color-input-bg) !important;
 	letter-spacing: 0.025rem !important;
 	font-size: 0.95rem !important;
-	font-family: 'Noto Serif', 'Georgia', serif !important;
+	font-family: var(--font-serif), serif !important;
 	text-align: center !important;
 	text-transform: none;
 	margin: 0 !important;
@@ -487,7 +487,7 @@ ion-item div.multiColumnEC div.char {
 }
 ion-item div.multiColumnEC div.char,
 ion-item div.twoColumnsEC div.char {
-	font-family: 'Noto Serif', Georgia, 'Times New Roman', 'Noto Sans', Tahoma, Verdana, Arial, Helvetica, Arimo, serif, sans-serif;
+	font-family: var(--font-serif), var(--font-sans), serif, sans-serif;
 	font-size: 1.1rem;
 	margin: 0.5rem;
 	padding: calc(0.5rem - 2px);

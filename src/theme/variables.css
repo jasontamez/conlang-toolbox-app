@@ -1,6 +1,165 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
+/** Font Faces **/
+@font-face {
+	font-family: 'Arimo';
+	src: url('../../public/assets/font/Arimo-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Arimo';
+	src: url('../../public/assets/font/Arimo-Bold.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Arimo';
+	src: url('../../public/assets/font/Arimo-Italic.ttf');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Arimo';
+	src: url('../../public/assets/font/Arimo-BoldItalic.ttf');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Noto Sans';
+	src: url('../../public/assets/font/NotoSans-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans';
+	src: url('../../public/assets/font/NotoSans-Bold.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans';
+	src: url('../../public/assets/font/NotoSans-Italic.ttf');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Noto Sans';
+	src: url('../../public/assets/font/NotoSans-BoldItalic.ttf');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('../../public/assets/font/NotoSansJP-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans JP';
+	src: url('../../public/assets/font/NotoSansJP-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans KR';
+	src: url('../../public/assets/font/NotoSansKR-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans KR';
+	src: url('../../public/assets/font/NotoSansKR-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans TC';
+	src: url('../../public/assets/font/NotoSansTC-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Sans TC';
+	src: url('../../public/assets/font/NotoSansTC-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif';
+	src: url('../../public/assets/font/NotoSerif-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif';
+	src: url('../../public/assets/font/NotoSerif-Bold.ttf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif';
+	src: url('../../public/assets/font/NotoSerif-Italic.ttf');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Noto Serif';
+	src: url('../../public/assets/font/NotoSerif-BoldItalic.ttf');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Noto Serif JP';
+	src: url('../../public/assets/font/NotoSerifJP-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif JP';
+	src: url('../../public/assets/font/NotoSerifJP-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif KR';
+	src: url('../../public/assets/font/NotoSerifKR-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif KR';
+	src: url('../../public/assets/font/NotoSerifKR-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif TC';
+	src: url('../../public/assets/font/NotoSerifTC-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Noto Serif TC';
+	src: url('../../public/assets/font/NotoSerifTC-Bold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DM Mono';
+	src: url('../../public/assets/font/DMMono-Regular.ttf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DM Mono';
+	src: url('../../public/assets/font/DMMono-Italic.ttf');
+	font-weight: normal;
+	font-style: italic;
+}
+
+
 /** Ionic CSS Variables **/
 :root {
 	--ion-color-primary: #00B8B8;
@@ -550,7 +709,9 @@ body.LightTheme ion-menu ion-content {
 
 
 #conlangToolbox {
-	--ion-font-family: "Noto Sans", "Helvetica", "Arial", sans-serif;
+	--font-sans: 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans TC', 'Arimo', 'Tahoma', 'Verdana', 'Helvetica', 'Arial';
+	--font-serif: 'Noto Serif', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif TC', 'Georgia', 'Times New Roman';
+	--ion-font-family: var(--font-sans), sans-serif;
 	--ion-default-font: var(--ion-font-family);
 }
 

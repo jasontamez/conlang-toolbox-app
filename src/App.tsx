@@ -31,9 +31,6 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/* Google webfontloader */
-import WebfontLoader from '@dr-kobros/react-webfont-loader';
-
 /* Theme variables */
 import './theme/variables.css';
 /* My theming */
@@ -46,18 +43,6 @@ import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 
-
-/* WebfontLoader config */
-const WFLconfig = {
-	google: {
-		families: [
-			'Noto Sans:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
-			'Noto Serif:400,400i,700,700i:latin,cyrillic,cyrillic-ext,greek,greek-ext,latin-ext',
-			'DM Mono:400,500',
-			'Arimo:400,400i,500,500i,700,700i'
-		],
-	}
-};
 
 const App = () => {
 	const maybeSetState = () => {
@@ -80,29 +65,27 @@ const App = () => {
 	};
 	store.dispatch(maybeSetState());
 	return (
-		<WebfontLoader config={WFLconfig}>
-			<IonApp id="conlangToolbox">
-				<IonReactRouter>
-					<IonSplitPane contentId="main" when="xl">
-						<Menu />
-						{/*
-							Using the render method prop cuts down the number of renders your components
-							will have due to route changes. Use the component prop when your component
-							depends on the RouterComponentProps passed in automatically.
-						*/}
-						<IonRouterOutlet id="main">
-							<Route path="/wg" render={() => <WG />} />
-							<Route path="/we"  render={() => <WE />} />
-							<Route path="/lex" render={() => <Lexicon />} />
-							<Route path="/settings" render={() => <Settings />} />
-							<Route path="/about" render={() => <About />} />
-							<Route path="/credits" render={() => <Credits />} />
-							<Redirect exact={true} from="/" to="/about" />
-						</IonRouterOutlet>
-					</IonSplitPane>
-				</IonReactRouter>
-			</IonApp>
-		</WebfontLoader>
+		<IonApp id="conlangToolbox">
+			<IonReactRouter>
+				<IonSplitPane contentId="main" when="xl">
+					<Menu />
+					{/*
+						Using the render method prop cuts down the number of renders your components
+						will have due to route changes. Use the component prop when your component
+						depends on the RouterComponentProps passed in automatically.
+					*/}
+					<IonRouterOutlet id="main">
+						<Route path="/wg" render={() => <WG />} />
+						<Route path="/we"  render={() => <WE />} />
+						<Route path="/lex" render={() => <Lexicon />} />
+						<Route path="/settings" render={() => <Settings />} />
+						<Route path="/about" render={() => <About />} />
+						<Route path="/credits" render={() => <Credits />} />
+						<Redirect exact={true} from="/" to="/about" />
+					</IonRouterOutlet>
+				</IonSplitPane>
+			</IonReactRouter>
+		</IonApp>
 	);
 };
 
