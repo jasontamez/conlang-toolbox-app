@@ -19,17 +19,22 @@ import {
 import {
 	createSharp,
 	shuffleSharp,
-	bookSharp
+	bookSharp,
+	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
+import { openModal } from '../components/ReduxDucksFuncs';
+import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Home = () => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
+	const dispatch = useDispatch();
 
 	return (
 		<IonPage className={theme}>
+			<ExtraCharactersModal />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -40,9 +45,6 @@ const Home = () => {
 			</IonHeader>
 			<IonContent id="aboutPage">
 				<IonGrid>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
 					<IonRow>
 						<IonCol>
 							<IonCard button={true} routerLink="/wg/settings" routerDirection="forward">
@@ -99,6 +101,25 @@ const Home = () => {
 										<li>Easily add words from WordGen and WordEvolve</li>
 										<li>Store multiple lexicons</li>
 										<li>Export your data</li>
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} onClick={() => dispatch(openModal("ExtraCharacters"))}>
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={globeOutline} className="ion-align-self-center" />
+									<IonLabel className="ion-padding-start ion-align-self-start">Extra Characters</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>On many pages, you'll see the Extra Characters icon at the top of the page.</p>
+									<ul>
+										<li>Contains hundreds of characters that may not appear on your mobile keyboard, organized according to groups such as Latin, Cyrillic, Arabic and Katakana</li>
+										<li>All IPA (International Phonetic Alphabet) characters grouped together</li>
+										<li>Tap characters and add them to the clipboard</li>
+										<li>Save your often-used characters to the Favorites bar</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>
