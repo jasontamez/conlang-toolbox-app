@@ -19,7 +19,8 @@ import {
 import {
 	closeCircleOutline,
 	closeCircleSharp,
-	trashOutline
+	trashOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, closeModal, loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
@@ -187,7 +188,7 @@ const ManageCustomInfo = () => {
 					<IonTitle>Manage Custom Info</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => doCleanClose()}>
 							<IonIcon icon={closeCircleOutline} />

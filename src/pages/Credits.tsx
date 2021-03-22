@@ -54,9 +54,6 @@ const Home = () => {
 											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
 										</IonItem>
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">Globe-in-a-speech-bubble icon is based on <a href="https://thenounproject.com/term/international-languages/249165/">International Languages by Ed Piel</a> from the Noun Project</IonLabel>
-										</IonItem>
-										<IonItem>
 											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
 										</IonItem>
 									</IonList>

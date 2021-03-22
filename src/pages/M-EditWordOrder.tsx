@@ -27,7 +27,8 @@ import {
 	saveOutline,
 	reorderTwo,
 	trashOutline,
-	addCircleOutline
+	addCircleOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
@@ -191,7 +192,7 @@ const EditLexiconOrderModal = () => {
 					<IonTitle>Edit Columns</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />

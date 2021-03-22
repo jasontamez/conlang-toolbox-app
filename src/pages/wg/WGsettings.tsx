@@ -44,7 +44,8 @@ import {
 	Zero_Fifty,
 } from '../../components/ReduxDucksTypes';
 import {
-	helpCircleOutline
+	helpCircleOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { $i } from '../../components/DollarSignExports';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
@@ -135,7 +136,7 @@ const WGSet = () => {
 					<IonTitle>Settings</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />

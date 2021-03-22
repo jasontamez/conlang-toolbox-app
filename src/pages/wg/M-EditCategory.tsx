@@ -18,7 +18,8 @@ import {
 	closeCircleOutline,
 	chevronBackOutline,
 	saveOutline,
-	trashOutline
+	trashOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { WGCategoryObject } from '../../components/ReduxDucksTypes';
@@ -180,7 +181,7 @@ const EditCategoryModal = () => {
 					<IonTitle>Edit Character Group</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>
 							<IonIcon icon={closeCircleOutline} />

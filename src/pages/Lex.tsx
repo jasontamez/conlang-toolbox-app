@@ -33,7 +33,8 @@ import {
 	saveOutline,
 	codeDownloadOutline,
 	removeCircleOutline,
-	addCircleOutline
+	addCircleOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -534,7 +535,7 @@ const Lex = () => {
 					</IonPopover>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={(e: any) => { e.persist(); dispatch(openPopover('LexiconEllipsis', e)); }}>
 							<IonIcon icon={ellipsisVertical} />

@@ -17,7 +17,8 @@ import {
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
-	helpCircleOutline
+	helpCircleOutline,
+	globeOutline
 } from 'ionicons/icons';
 import { openModal, toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
 import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
@@ -64,7 +65,7 @@ const WGSyl = () => {
 					<IonTitle>Syllables</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
-							<IonIcon src="svg/noun_International Languages_249165.svg" size="large" />
+							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
