@@ -18,9 +18,6 @@ import {
 	IonList,
 	IonItem
 } from '@ionic/react';
-//import {
-//	createSharp,
-//} from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
 const Home = () => {
@@ -40,9 +37,6 @@ const Home = () => {
 			<IonContent id="aboutPage">
 				<IonGrid>
 					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
@@ -60,6 +54,12 @@ const Home = () => {
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>&nbsp;</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>&nbsp;</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>

@@ -119,7 +119,7 @@ const Home = () => {
 										<li>Contains hundreds of characters that may not appear on your mobile keyboard, organized according to groups such as Latin, Cyrillic, Arabic and Katakana</li>
 										<li>All IPA (International Phonetic Alphabet) characters grouped together</li>
 										<li>Tap characters and add them to the clipboard</li>
-										<li>Save your often-used characters to the Favorites bar</li>
+										<li>Save your often-used characters to the Favorites bar for easy access</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>
