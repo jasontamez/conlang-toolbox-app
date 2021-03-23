@@ -14,7 +14,7 @@ const basicSettings: WGSettingsObject = {
 	exclamatorySentencePost: "!"
 };
 
-export const WGPresets: WGPresetObject = new Map([
+const WGPresets: WGPresetObject = new Map([
 	["Simple", {
 		wordgenCategories: {
 			map: [
@@ -922,3 +922,5 @@ export const WGPresets: WGPresetObject = new Map([
 		}
 	}]
 ]);
+
+export default WGPresets;

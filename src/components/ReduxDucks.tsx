@@ -1,4 +1,5 @@
-import { WGPresets } from './WGPresets';
+import WGPresets from './WGPresets';
+import WEPresets from './WEPresets';
 import { StateStorage } from './PersistentInfo';
 import maybeUpdateTheme from './MaybeUpdateTheme';
 import * as consts from './ReduxDucksConst';
@@ -351,6 +352,7 @@ export const blankAppState: types.StateObject = {
 		DeleteLexicon: false,
 		WGSaveToLexicon: undefined,
 		PickAndSaveWG: false,
+		WEPresetPopup: false,
 		WEOutputOptions: false,
 		PickAndSaveWE: false,
 		WESaveToLexicon: undefined,
@@ -736,7 +738,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		// Presets
+		// WG Presets
 		case consts.LOAD_PRESET_WG:
 			let newInfo: any = WGPresets.get(payload);
 			final = {
@@ -944,6 +946,20 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 					...state.wordevolveSettings,
 					output: payload
 				}
+			};
+			break;
+		// WEPreset
+		case consts.LOAD_PRESET_WE:
+			let newPreset: types.WEPresetObject = WEPresets.get(payload)!;
+			final = reduceAllBut(["wordevolveCategories", "wordevolveSoundChanges", "wordevolveTransforms"], state);
+			final.wordevolveCategories = reduceCategoryWE(state.wordevolveCategories, newPreset.categories);
+			final.wordevolveSoundChanges = {
+				list: newPreset.soundchanges.map(o => ({...o})),
+				editing: state.wordevolveSoundChanges.editing
+			};
+			final.wordevolveTransforms = {
+				list: newPreset.transforms.map(o => ({...o})),
+				editing: state.wordevolveTransforms.editing
 			};
 			break;
 

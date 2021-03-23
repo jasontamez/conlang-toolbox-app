@@ -129,6 +129,12 @@ export interface WESettingsObject {
 	output: WEOutputTypes
 }
 
+export interface WEPresetObject {
+	categories: WECategoryMap[],
+	soundchanges: WESoundChangeObject[],
+	transforms: WETransformObject[]
+}
+
 
 export interface Lexicon {
 	key: string
@@ -185,6 +191,7 @@ export interface ModalStateObject {
 	DeleteLexicon: boolean
 	WGSaveToLexicon: undefined | Event
 	PickAndSaveWG: boolean
+	WEPresetPopup: boolean
 	WEOutputOptions: boolean
 	WESaveToLexicon: undefined | Event
 	PickAndSaveWE: boolean

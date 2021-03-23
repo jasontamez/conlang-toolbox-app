@@ -31,7 +31,8 @@ import {
 	settingsOutline,
 	bookOutline,
 	saveOutline,
-	copyOutline
+	copyOutline,
+	duplicateOutline
 } from 'ionicons/icons';
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
@@ -41,6 +42,7 @@ import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
+import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
 import ltr from '../../components/LTR';
 import fireSwal from '../../components/Swal';
 import { Plugins } from '@capacitor/core';
@@ -724,6 +726,7 @@ const WEOut = () => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
+			<MaybeLoadPreset />
 			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -756,7 +759,10 @@ const WEOut = () => {
 				</IonPopover>
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
-						<IonButton expand="block" strong={true} color="success" onClick={() => evolveOutput(outputPane)}>
+						<IonButton onClick={() => dispatch(openModal("WEPresetPopup"))} color="primary" strong={true}><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+					</IonItem>
+					<IonItem className="collapse ion-text-wrap">
+						<IonButton expand="block" color="success" onClick={() => evolveOutput(outputPane)}>
 							Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WEOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>

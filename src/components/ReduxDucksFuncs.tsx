@@ -182,6 +182,9 @@ export function reorderSoundChangesWE(payload: types.WESoundChangeObject[]) {
 export function updateInputLexicon(payload: types.WEInputObject) {
 	return {type: consts.UPDATE_INPUT_LEXICON, payload};
 }
+export function loadPresetWE(payload: string) {
+	return {type: consts.LOAD_PRESET_WE, payload};
+}
 // Output
 export function setOutputTypeWE(payload: types.WEOutputTypes) {
 	return {type: consts.SET_OUTPUT_WE, payload};
