@@ -48,14 +48,10 @@ import fireSwal from '../../components/Swal';
 import { Plugins } from '@capacitor/core';
 
 const WEOut = () => {
-	//interface fromOrTo {
-	//	rules: (string | string[])[]
-	//	cats: string[]
-	//}
-	type fromOrTo = (string | string[])[];
+	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
-		seek: fromOrTo | RegExp
-		replace: string | fromOrTo
+		seek: arrayOfStringsAndStringArrays | RegExp
+		replace: string | arrayOfStringsAndStringArrays
 		context: (RegExp | null)[]
 		anticontext: (RegExp | null)[]
 		flagged: boolean
@@ -217,8 +213,8 @@ const WEOut = () => {
 			rules.push("}");
 		}
 		// Now look for categories
-		let double = uuidv4().replace(/%/g,"!");
-		let negate = uuidv4().replace(/%/g,"!");
+		let double = uuidv4().replace(/[%!]/g,"x");
+		let negate = uuidv4().replace(/[%!]/g,"x");
 		// Hide %%
 		fromTo.replace(/%%/g, double);
 		// Category negations
@@ -301,8 +297,8 @@ const WEOut = () => {
 		});
 		// Check sound changes for %Category references and update them if needed
 		soundChanges.forEach((change: WESoundChangeObject) => {
-			let seek: fromOrTo | RegExp;
-			let replace: string | fromOrTo;
+			let seek: arrayOfStringsAndStringArrays | RegExp;
+			let replace: string | arrayOfStringsAndStringArrays;
 			let context: (RegExp | null)[];
 			let anticontext: (RegExp | null)[];
 			let categoryFlag = (change.seek.indexOf("%") !== -1) && (change.replace.indexOf("%") !== -1)
@@ -464,34 +460,48 @@ const WEOut = () => {
 				let previous = word;
 				if(modified.flagged) {
 					// We have category matches to deal with.
-					let seeking = modified.seek as fromOrTo;
-					let replace = modified.replace as fromOrTo;
-					let seekText1 = "";
-					let seekText2 = "";
+					let seeking = modified.seek as arrayOfStringsAndStringArrays;
+					let replace = modified.replace as arrayOfStringsAndStringArrays;
+					let seekTextBasic = "";
+					let seekTextCategory = "";
 					let seekCats: string[][] = [];
-					let seekRule: string[] = [];
-					//seeking.rules.forEach(ss => {
+					let ids: string[] = [];
+//					let parens = /[()]/g;
 					seeking.forEach(ss => {
 						if(typeof ss === "string") {
-							seekText1 += ss;
-							seekText2 += ss;
-							seekRule.push(ss);
+							seekTextBasic = seekTextBasic + ss;
+							seekTextCategory = seekTextCategory + ss;
 						} else {
-							seekText1 += "[" + ss.join("") + "]";
-							seekText2 += "([" + ss.join("") + "])";
+							let id = "N" + uuidv4().replace(/[^a-zA-Z0-9]/g, "");
+							ids.push(id);
+							seekTextBasic = seekTextBasic + "[" + ss.join("") + "]";
+							seekTextCategory = seekTextCategory + "(?<" + id + ">[" + ss.join("") + "])";
 							seekCats.push(ss as string[]);
 						}
 					});
-					// seekText1/2 are the bases of RegExps
+					let firstPass = word.match(seekTextCategory);
+					// Create the replacement text using the correct replacement characters
+					let replaceText = "";
+					replace.forEach(rr => {
+						if(typeof rr === "string") {
+							replaceText = replaceText + rr;
+						} else if(ids.length > 0 && seekCats.length > 0 && firstPass !== null && firstPass.groups !== undefined) {
+							let found = firstPass.groups[ids.shift() as string] || "";
+							let first = seekCats.shift() as string[];
+							let i = first.indexOf(found);
+							if(i < 0) {
+								i = 0;
+							}
+							replaceText = replaceText + rr[i % rr.length];
+						}
+					});
+					// seekTextBasic/Category are the bases of RegExps
 					// seekCats is an array of category runs
-					// seekRule is an array of the original rule
-					let s1 = new RegExp(seekText1, "g");
-					s1.lastIndex = 0;
-					let m1 = s1.exec(word);
-					let s2 = new RegExp(seekText2, "g");
-					let m2 = s2.exec(word);
-					let lastIndex = s1.lastIndex;
-					while(m1 !== null && m2 !== null) {
+					let basicSeek = new RegExp(seekTextBasic, "g");
+					basicSeek.lastIndex = 0;
+					let originalMatch = basicSeek.exec(word);
+					let lastIndex = basicSeek.lastIndex;
+					while(originalMatch !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
@@ -509,8 +519,8 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = lastIndex > 1 ? word.slice(0, lastIndex - 1) : "";
-						let post = word.slice(lastIndex - 1 + m1[0].length);
+						let pre = word.slice(0, originalMatch.index);
+						let post = word.slice(originalMatch.index + originalMatch[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -533,47 +543,19 @@ const WEOut = () => {
 						}
 						if(okToReplace) {
 							// We can replace
-							let c = m1.length - 1;
-							//let repCopy = replace.rules.map(r => (typeof r === "string") ? r : [...r]);
-							let repCopy = replace.map(r => (typeof r === "string") ? r : [...r]);
-							let seekCopy = seekCats.map(r => (typeof r === "string") ? r : [...r]);
-							let replText = "";
-							while(seekCopy.length > 0) {
-								let cat1 = seekCopy.pop();
-								let rep1 = repCopy.pop();
-								while(typeof rep1 === "string") {
-									replText = rep1 + replText;
-									rep1 = repCopy.pop();
-								}
-								// replace the nth member of category1 with the nth member of category2
-								let pos = cat1!.indexOf(m1[c]);
-								replText = rep1![pos % rep1!.length] + replText;
-							}
-							// Finish assembling the replacement text
-							while(repCopy.length > 0) {
-								replText = repCopy.pop() + replText;
-							}
-							// Look for parenthetical matches and apply them
-							if(m1.length > 1) {
-								let c = m1.length;
-								while(c > 0) {
-									replText = replText.replace("$" + String(c), m1[c]);
-									c--;
-								}
-							}
-							// Replace found text with replacement text
-							word = pre + replText + post;
-							s1.lastIndex = s2.lastIndex = (pre.length + replText.length);
+							let newseek = new RegExp(escapeRegexp(pre) + seekTextBasic);
+							let newreplace = pre.replace(/\$/g, "\\$") + replaceText;
+							word = word.replace(newseek, newreplace);
+							basicSeek.lastIndex = word.length - post.length;
 						}
-						if(m1[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
+						if(originalMatch[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
-							m1 = m2 = null;
+							originalMatch = null;
 						} else {
 							// Otherwise, check for more matches!
-							m1 = s1.exec(word);
-							lastIndex = s1.lastIndex;
-							m2 = s2.exec(word);
+							originalMatch = basicSeek.exec(word);
+							lastIndex = basicSeek.lastIndex;
 						}
 					}
 				} else {
