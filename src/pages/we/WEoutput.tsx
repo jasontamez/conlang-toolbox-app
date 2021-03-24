@@ -160,12 +160,11 @@ const WEOut = () => {
 		});
 };
 
-	// Go through a from/to string and check for categories and other regex stuff. Returns an object.
+	// Go through a from/to string and check for categories and other regex stuff. Returns an array.
 	const interpretFromAndTo = (input: string) => {
 		var rules: (string | string[])[] = [],
 			assembly: (string | string[])[] = [],
 			fromTo = "",
-			//cats: string[] = [],
 			backslash = false,
 			curly = false,
 			square = false;
@@ -456,7 +455,7 @@ const WEOut = () => {
 				const modified = soundChangeMap.get(change.key)!;
 				const contx = modified.context;
 				const antix = modified.anticontext;
-				const rule = change.seek + "➜" + change.replace + "/" + change.context + (change.anticontext ? "/" + change.anticontext : "");
+				const rule = change.seek + "➜" + change.replace + " / " + change.context + (change.anticontext ? " ! " + change.anticontext : "");
 				let previous = word;
 				if(modified.flagged) {
 					// We have category matches to deal with.
@@ -465,43 +464,30 @@ const WEOut = () => {
 					let seekTextBasic = "";
 					let seekTextCategory = "";
 					let seekCats: string[][] = [];
-					let ids: string[] = [];
-//					let parens = /[()]/g;
+					let ids: [string, string][] = [];
 					seeking.forEach(ss => {
 						if(typeof ss === "string") {
 							seekTextBasic = seekTextBasic + ss;
 							seekTextCategory = seekTextCategory + ss;
 						} else {
 							let id = "N" + uuidv4().replace(/[^a-zA-Z0-9]/g, "");
-							ids.push(id);
-							seekTextBasic = seekTextBasic + "[" + ss.join("") + "]";
-							seekTextCategory = seekTextCategory + "(?<" + id + ">[" + ss.join("") + "])";
+							let ssj = ss.join("");
+							seekTextBasic = seekTextBasic + "[" + ssj + "]";
+							seekTextCategory = seekTextCategory + "(?<" + id + ">[" + ssj + "])";
 							seekCats.push(ss as string[]);
-						}
-					});
-					let firstPass = word.match(seekTextCategory);
-					// Create the replacement text using the correct replacement characters
-					let replaceText = "";
-					replace.forEach(rr => {
-						if(typeof rr === "string") {
-							replaceText = replaceText + rr;
-						} else if(ids.length > 0 && seekCats.length > 0 && firstPass !== null && firstPass.groups !== undefined) {
-							let found = firstPass.groups[ids.shift() as string] || "";
-							let first = seekCats.shift() as string[];
-							let i = first.indexOf(found);
-							if(i < 0) {
-								i = 0;
-							}
-							replaceText = replaceText + rr[i % rr.length];
+							ids.push([id, ssj]);
 						}
 					});
 					// seekTextBasic/Category are the bases of RegExps
 					// seekCats is an array of category runs
 					let basicSeek = new RegExp(seekTextBasic, "g");
+					let categorySeek = new RegExp(seekTextCategory, "g");
 					basicSeek.lastIndex = 0;
-					let originalMatch = basicSeek.exec(word);
+					categorySeek.lastIndex = 0;
+					let basicMatch = basicSeek.exec(word);
+					let categoryMatch = categorySeek.exec(word);
 					let lastIndex = basicSeek.lastIndex;
-					while(originalMatch !== null) {
+					while(basicMatch !== null && categoryMatch !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
@@ -519,8 +505,8 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, originalMatch.index);
-						let post = word.slice(originalMatch.index + originalMatch[0].length);
+						let pre = word.slice(0, basicMatch.index);
+						let post = word.slice(basicMatch.index + basicMatch[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -543,19 +529,36 @@ const WEOut = () => {
 						}
 						if(okToReplace) {
 							// We can replace
+							let replaceText = "";
+							let i = 0;
+							let g = categoryMatch.groups || {};
+							replace.forEach(rr => {
+								if(typeof rr === "string") {
+									replaceText = replaceText + rr;
+								} else {
+									let [id, run] = ids[i];
+									i++;
+									let ind = run.indexOf(g[id]);
+									if(ind < 0) {
+										ind = 0;
+									}
+									replaceText = replaceText + rr[ind % rr.length];
+								}
+							});
 							let newseek = new RegExp(escapeRegexp(pre) + seekTextBasic);
 							let newreplace = pre.replace(/\$/g, "\\$") + replaceText;
 							word = word.replace(newseek, newreplace);
 							basicSeek.lastIndex = word.length - post.length;
 						}
-						if(originalMatch[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
+						if(basicMatch[0] === "" && (lastIndex === 0 || lastIndex === prevLength)) {
 							// If the match didn't actually match anything, and it's at a position where it's likely
 							//   to match the same nothing next time, just up and end the loop.
-							originalMatch = null;
+							basicMatch = null;
 						} else {
 							// Otherwise, check for more matches!
-							originalMatch = basicSeek.exec(word);
+							basicMatch = basicSeek.exec(word);
 							lastIndex = basicSeek.lastIndex;
+							categoryMatch = categorySeek.exec(word);
 						}
 					}
 				} else {
@@ -584,8 +587,8 @@ const WEOut = () => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = lastIndex > 1 ? word.slice(0, lastIndex - 1) : "";
-						let post = word.slice(lastIndex - 1 + m[0].length);
+						let pre = word.slice(0, m.index);
+						let post = word.slice(m.index + m[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -741,20 +744,20 @@ const WEOut = () => {
 				</IonPopover>
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
-						<IonButton onClick={() => dispatch(openModal("WEPresetPopup"))} color="primary" strong={true}><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+						<IonButton className="ion-padding-horizontal" onClick={() => dispatch(openModal("WEPresetPopup"))} color="primary" strong={true}><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
 					</IonItem>
 					<IonItem className="collapse ion-text-wrap">
-						<IonButton expand="block" color="success" onClick={() => evolveOutput(outputPane)}>
+						<IonButton strong={true} expand="block" color="success" onClick={() => evolveOutput(outputPane)}>
 							Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } />
 						</IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="tertiary" onClick={() => dispatch(openModal("WEOutputOptions"))}><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton expand="block" strong={false} className="ion-margin-horizontal" color="secondary" onClick={() => copyText()}>
 							<IonIcon icon={copyOutline} style={ { marginRight: "0.5em" } } /> Copy All
 						</IonButton>
-						<IonButton className={modalState.PickAndSaveWE ? "" : "hide"} id="doneSavingButton" expand="block" strong={true} color="success" onClick={() => donePickingAndSaving()}>
+						<IonButton className={modalState.PickAndSaveWE ? "" : "hide"} id="doneSavingButton" expand="block" strong={false} color="success" onClick={() => donePickingAndSaving()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
 						</IonButton>
-						<IonButton className={modalState.PickAndSaveWE ? "hide" : ""} expand="block" strong={true} color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}>
+						<IonButton className={modalState.PickAndSaveWE ? "hide" : ""} expand="block" strong={false} color="primary" onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}>
 							<IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
