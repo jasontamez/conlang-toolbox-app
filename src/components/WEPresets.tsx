@@ -38,6 +38,10 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 			["C", {
 				title: "Voiced Consonants",
 				run: "bdg"
+			}],
+			["V", {
+				title: "Vowels",
+				run: "aeiou"
 			}]
 		],
 		soundchanges: [
@@ -45,8 +49,8 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 				key: "1",
 				seek: "%U",
 				replace: "%C",
-				context: "_[aeiou]+%U",
-				anticontext: "",
+				context: "_%V+%U",
+				anticontext: "%C%V+_",
 				description: ""
 			},
 		],
