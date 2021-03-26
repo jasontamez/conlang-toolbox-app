@@ -289,6 +289,13 @@ export function updateExtraCharsToBeSaved(payload: string) {
 }
 
 //
+// WORD LISTS
+//
+export function updateWordListsDisplay(payload: (keyof types.WL)[]) {
+	return {type: consts.UPDATE_WORD_LISTS_DISPLAY, payload};
+}
+
+//
 // TEMPORARY INFO
 //
 export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {

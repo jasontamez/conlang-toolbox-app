@@ -9,6 +9,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Menu from './components/Menu';
 
 import About from "./pages/About";
+import WordLists from "./pages/WordLists";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
 import Lexicon from "./pages/Lex";
@@ -50,8 +51,17 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, "0.2.6", "<")) {
+							// Do stuff to possibly bring storedState up to date
+							delete storedState.viewState.ls
+							storedState.viewState.wl = 'home'
+							storedState.wordListsState = { display: [] };
+							storedState.currentVersion = VERSION.current;
+						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
+							delete storedState.viewState.ls
+							storedState.viewState.wl = 'home'
 							storedState.currentVersion = VERSION.current;
 						}
 						if(checkIfState(storedState)) {
@@ -80,6 +90,7 @@ const App = () => {
 						<Route path="/lex" render={() => <Lexicon />} />
 						<Route path="/settings" render={() => <Settings />} />
 						<Route path="/about" render={() => <About />} />
+						<Route path="/wordlists" render={() => <WordLists />} />
 						<Route path="/credits" render={() => <Credits />} />
 						<Redirect exact={true} from="/" to="/about" />
 					</IonRouterOutlet>

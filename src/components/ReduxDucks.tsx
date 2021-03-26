@@ -192,6 +192,11 @@ const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
 		saved: [...original.saved]
 	};
 }
+const reduceWordListsState = (original: types.WordListsState) => {
+	return {
+		display: [...original.display]
+	};
+}
 const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
 	if(!original) {
 		return original;
@@ -240,6 +245,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
 	["extraCharactersState", reduceExtraCharactersState],
+	["wordListsState", reduceWordListsState],
 	["temporaryInfo", reduceTempInfo]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
@@ -364,7 +370,7 @@ export const blankAppState: types.StateObject = {
 	viewState: {
 		wg: 'home',
 		we: 'home',
-		ls: 'home',
+		wl: 'home',
 		lastSection: ''
 	},
 	extraCharactersState: {
@@ -376,6 +382,9 @@ export const blankAppState: types.StateObject = {
 		deleting: false,
 		showNames: false,
 		showHelp: false
+	},
+	wordListsState: {
+		display: []
 	},
 	temporaryInfo: undefined
 };
@@ -1144,6 +1153,17 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["modalState"], state),
 				modalState: newModalToggle
+			};
+			break;
+
+
+		// Word Lists
+		case consts.UPDATE_WORD_LISTS_DISPLAY:
+			let newWordListsState: types.WordListsState = reduceWordListsState(state.wordListsState);
+			newWordListsState.display = payload;
+			final = {
+				...reduceAllBut(["wordListsState"], state),
+				wordListsState: newWordListsState
 			};
 			break;
 

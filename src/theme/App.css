@@ -527,6 +527,19 @@ ion-label.wrappableInnards {
 	overflow-wrap: anywhere;
 }
 
+.wordList {
+	column-width: 20em;
+	margin: 0.5em 0.25em;
+}
+.wordList div {
+	padding: 0.25em 0.5em;
+	text-align: center
+}
+.wordList div:nth-child(odd) {
+	background: var(--ion-background-shader);
+	background-clip: content-box;
+}
+
 .ion-text-wrap {
 	word-wrap: normal;
 	overflow-wrap: anywhere;

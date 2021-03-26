@@ -19,7 +19,8 @@ import {
 	settingsSharp,
 	chatboxEllipsesSharp,
 	caretForwardSharp,
-	ellipseSharp
+	ellipseSharp,
+	listSharp
 } from 'ionicons/icons';
 import { setMenuToggle } from './ReduxDucksFuncs';
 import './Menu.css';
@@ -123,6 +124,12 @@ const appMenuPages: MenuSection[] = [
 				url: '/lex',
 				icon: bookSharp,
 				id: 'menuitemLX'
+			},
+			{
+				title: 'Word Lists',
+				url: '/wordlists',
+				icon: listSharp,
+				id: 'menuitemWL'
 			}
 		],
 		id: 'menuMain'

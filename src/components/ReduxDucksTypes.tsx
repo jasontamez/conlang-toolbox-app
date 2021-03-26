@@ -204,8 +204,8 @@ export interface ModalStateObject {
 export interface ViewStateObject {
 	wg: string
 	we: string
-	ls: string
-	lastSection: "wg" | "we" | "ls" | ""
+	wl: string
+	lastSection: "wg" | "we" | "wl" | ""
 }
 
 export interface ExtraCharacters {
@@ -225,6 +225,21 @@ export interface ExtraCharactersState {
 	deleting: boolean
 	showNames: boolean
 	showHelp: boolean
+}
+
+
+export interface WL {
+	word: string
+	asjp?: boolean
+	lj?: boolean
+	d?: boolean
+	sy?: boolean
+	s100?: boolean
+	s207?: boolean
+	ssl?: boolean
+}
+export interface WordListsState {
+	display: [(keyof WL)][];
 }
 
 
@@ -255,6 +270,7 @@ export interface StateObject {
 	modalState: ModalStateObject
 	viewState: ViewStateObject
 	extraCharactersState: ExtraCharactersState
+	wordListsState: WordListsState
 	temporaryInfo: TemporaryInfo | undefined
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.
