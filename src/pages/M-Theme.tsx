@@ -20,7 +20,6 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { closeModal, changeTheme } from '../components/ReduxDucksFuncs';
-//import fireSwal from '../components/Swal';
 
 const MaybeLoadPresetModal = () => {
 	const dispatch = useDispatch();

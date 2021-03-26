@@ -12,15 +12,7 @@ import {
 	IonButtons,
 	IonMenuButton,
 	IonNote
-} from '@ionic/react';/*
-import {
-	gridOutline,
-	optionsOutline,
-	swapHorizontalOutline,
-	documentTextOutline,
-	informationCircleOutline,
-	fileTrayStackedOutline
-} from 'ionicons/icons';*/
+} from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	toggleDisableConfirm,
