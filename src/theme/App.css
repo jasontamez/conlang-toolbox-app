@@ -342,8 +342,8 @@ i.ipa {
 }
 .lexItem {
 	display: inline-block;
-	height: 48px;
-	padding: 12px 0;
+	max-height: 48px;
+	padding: 0;
 }
 .lexItem.ion-text-wrap {
 	overflow: auto;
