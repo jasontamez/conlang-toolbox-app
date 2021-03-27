@@ -14,7 +14,8 @@ import {
 	fileTrayStackedOutline,
 	bookOutline,
 	settingsOutline,
-	reorderTwo
+	reorderTwo,
+	listOutline
 } from 'ionicons/icons';
 import ltr from '../../components/LTR';
 import I from '../../components/IPA';
@@ -293,6 +294,56 @@ export const OptCard = () => {
 					three-fourths of all sentences will be <em>declarative</em>, one-sixth will
 					be <em>interrogative</em> (questions), and one-twelfth will be <em>exclamatory</em>. You
 					can put special punctuation before and after these sentences if you wish.
+				</p>
+			</IonCardContent>
+		</IonCard>
+	);
+}
+export const WLCard = () => {
+	return (
+		<IonCard>
+			<IonItem>
+				<IonIcon icon={listOutline} slot="start" color="primary" />
+				<IonLabel>Word Lists</IonLabel>
+			</IonItem>
+			<IonCardContent>
+				<p>
+					Presented here are a number of lists of English words representing basic concepts
+					for the purposes of historical-comparative linguistics. These may serve as a good
+					source of words to start a conlang with.
+				</p>
+				<h2>Swadesh Lists</h2>
+				<p>
+					Originally assembled by Morris Swadesh, chosen for their universal, culturally
+					independent availability in as many languages as possible. However, he relied
+					more on his intuition than on a rigorous set of criteria. <strong>Swadesh
+					100</strong> is his final list from 1971. The <strong>Swadesh 207</strong> is
+					adapted from his original list from 1952. <strong>Swadesh-Yakhontov</strong> is
+					a subset of the 207 assembled by Sergei Yakhontov. And the <strong>Swadesh-Woodward
+					Sign List</strong> was assembled by James Woodward to take into account the ways
+					sign languages use words and concepts.
+				</p>
+				<h2>Dogolposky List</h2>
+				<p>
+					Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are
+					the least likely to be replaced by other words as a language evolves. It was based
+					on a study of 140 languages from across Eurasia.
+				</p>
+				<h2>Leipzig-Jakarta List</h2>
+				<p>
+					Similar to the Dogolposky list, this is a list of words judged to be the most
+					resistant to borrowing. Experts on 41 languages from across the world were given a
+					uniform vocabulary list and asked to provide the words for each item in the language
+					on which they were an expert, as well as information on how strong the evidence that
+					each word was borrowed was. The 100 concepts that were found in most languages and
+					were most resistant to borrowing formed the Leipzig–Jakarta list.
+				</p>
+				<h2>ASJP List</h2>
+				<p>
+					<strong>Automated Similarity Judgment Program</strong> is a collaborative project
+					applying computational approaches to comparative linguistics using a database of word
+					lists. It uses a 40-word list to evaluate the similarity of words with the same
+					meaning from different languages.
 				</p>
 			</IonCardContent>
 		</IonCard>

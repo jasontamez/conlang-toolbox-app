@@ -26,7 +26,7 @@ import { WL } from '../components/ReduxDucksTypes';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
-import { OutCard } from "./wg/WGCards";
+import { WLCard } from "./wg/WGCards";
 
 const Home = () => {
 	const [modalState, wordListsState] = useSelector((state: any) => [state.modalState, state.wordListsState], shallowEqual);
@@ -47,7 +47,7 @@ const Home = () => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal />
-			<ModalWrap pageInfo={viewInfo} content={OutCard} />
+			<ModalWrap pageInfo={viewInfo} content={WLCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
