@@ -55,13 +55,12 @@ const App = () => {
 							// Do stuff to possibly bring storedState up to date
 							delete storedState.viewState.ls
 							storedState.viewState.wl = 'home'
-							storedState.wordListsState = { display: [] };
+							storedState.wordListsState = { display: [], textCenter: true };
+							storedState.wordListsState.textCenter = true
 							storedState.currentVersion = VERSION.current;
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
-							delete storedState.viewState.ls
-							storedState.viewState.wl = 'home'
 							storedState.currentVersion = VERSION.current;
 						}
 						if(checkIfState(storedState)) {

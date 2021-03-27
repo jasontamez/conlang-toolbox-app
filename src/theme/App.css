@@ -168,17 +168,20 @@ ion-list.dragArea {
 	margin: 1rem 2rem;
 }
 #outputPane.pickAndSave .word,
+#outputPaneWL.pickAndSave .word,
 #outputPaneWE.pickAndSave .word {
 	background: var(--ion-color-primary);
 	color: var(--ion-color-primary-contrast);
 	cursor: copy;
 }
 #outputPane.pickAndSave div.word,
+#outputPaneWL.pickAndSave div.word,
 #outputPaneWE.pickAndSave div.word {
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-primary-shade);
 }
 #outputPane.pickAndSave .word.saved,
+#outputPaneWL.pickAndSave .word.saved,
 #outputPaneWE.pickAndSave .word.saved {
 	background: var(--ion-color-success);
 	color: var(--ion-color-success-contrast);

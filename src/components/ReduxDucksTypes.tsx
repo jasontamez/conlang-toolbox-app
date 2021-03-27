@@ -199,6 +199,8 @@ export interface ModalStateObject {
 	ExtraCharacters: boolean
 	ExtraCharactersEllipsis: undefined | Event
 	ExportLexicon: boolean
+	WordListsEllipsis: undefined | Event
+	PickAndSaveWL: boolean
 }
 
 export interface ViewStateObject {
@@ -239,7 +241,8 @@ export interface WL {
 	ssl?: boolean
 }
 export interface WordListsState {
-	display: [(keyof WL)][];
+	display: [(keyof WL)][]
+	textCenter: boolean
 }
 
 

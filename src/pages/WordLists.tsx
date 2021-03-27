@@ -18,18 +18,32 @@ import {
 } from '@ionic/react';
 import {
 	ellipsisVertical,
-	helpCircleOutline
+	helpCircleOutline,
+	saveOutline,
+	textOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { updateWordListsDisplay, openModal, openPopover, closePopover, changeView } from '../components/ReduxDucksFuncs';
+import {
+	updateWordListsDisplay,
+	openModal,
+	closeModal,
+	openPopover,
+	closePopover,
+	changeView,
+	toggleWordListsBoolean,
+	addDeferredLexiconItems,
+	removeDeferredLexiconItem
+} from '../components/ReduxDucksFuncs';
 import { WL } from '../components/ReduxDucksTypes';
 import ExtraCharactersModal from './M-ExtraCharacters';
+import { $a, $i } from '../components/DollarSignExports';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = () => {
-	const [modalState, wordListsState] = useSelector((state: any) => [state.modalState, state.wordListsState], shallowEqual);
+	const [modalState, wordListsState, waitingToAdd] = useSelector((state: any) => [state.modalState, state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
 	const theDisplay = wordListsState.display;
 	const dispatch = useDispatch();
 	const toggleChars = (what: keyof WL) => {
@@ -43,6 +57,38 @@ const Home = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
+	const outputPane = $i("outputPaneWL");
+
+	// // //
+	// Save to Lexicon
+	// // //
+	const pickAndSave = () => {
+		dispatch(closePopover("WordListsEllipsis"));
+		dispatch(openModal("PickAndSaveWG"));
+	};
+	const donePickingAndSaving = () => {
+		dispatch(closeModal("PickAndSaveWG"));
+	};
+	const saveEverything = () => {
+		let wordsToSave: string[] = [];
+		dispatch(closePopover("WordListsEllipsis"));
+		$a(".word", outputPane).forEach((word: HTMLElement) => {
+			word.textContent && wordsToSave.push(word.textContent);
+		});
+		dispatch(addDeferredLexiconItems(wordsToSave));
+	};
+	const maybeSaveThisWord = (text: string, id: string) => {
+		if(outputPane.classList.contains("pickAndSave")) {
+			let CL = ($i(id) as HTMLElement).classList;
+			if(CL.contains("saved")) {
+				CL.remove("saved");
+				dispatch(removeDeferredLexiconItem(text));
+			} else {
+				CL.add("saved");
+				dispatch(addDeferredLexiconItems([text]));
+			}
+		}
+	};
 
 	return (
 		<IonPage>
@@ -53,14 +99,14 @@ const Home = () => {
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
-					<IonTitle className="ion-text-center">Word Lists</IonTitle>
+					<IonTitle>Word Lists</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 						<IonButton onClick={(e: any) => {
 							e.persist();
-							dispatch(openPopover("WESaveToLexicon", e));
+							dispatch(openPopover("WordListsEllipsis", e));
 						}}>
 							<IonIcon icon={ellipsisVertical} />
 						</IonButton>
@@ -70,20 +116,31 @@ const Home = () => {
 			<IonContent>
 				<IonPopover
 				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.WESaveToLexicon}
-						isOpen={modalState.WESaveToLexicon !== undefined}
-						onDidDismiss={() => dispatch(closePopover("WESaveToLexicon"))}
+						event={modalState.WordListsEllipsis}
+						isOpen={modalState.WordListsEllipsis !== undefined}
+						onDidDismiss={() => dispatch(closePopover("WordListsEllipsis"))}
 				>
 					<IonList lines="none">
-						<IonItem button={true} onClick={() => {}}>
-							<IonLabel className="ion-text-wrap">Save everything</IonLabel>
+						<IonItem button={true} onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
+							<IonIcon icon={textOutline} slot="start" />
+							<IonLabel className="ion-text-wrap">{wordListsState.textCenter ? "De-center Text" : "Center Text"}</IonLabel>
 						</IonItem>
-						<IonItem button={true} onClick={() => {}}>
+						<IonItem button={true} onClick={() => saveEverything()}>
+							<IonIcon icon={saveOutline} slot="start" />
+							<IonLabel className="ion-text-wrap">Save All to Lexicon</IonLabel>
+						</IonItem>
+						<IonItem button={true} onClick={() => pickAndSave()}>
+							<IonIcon icon={saveOutline} slot="start" />
 							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
 						</IonItem>
 					</IonList>
 				</IonPopover>
 				<IonList lines="none">
+					<IonItem className={modalState.PickAndSaveWG ? "" : "hide"}>
+						<IonButton expand="block" strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
+						</IonButton>
+					</IonItem>
 					<IonItem>
 						<div>
 							<span>Display:</span>
@@ -98,8 +155,18 @@ const Home = () => {
 							})}
 						</div>
 					</IonItem>
-					<div className="wordList">
-						{shown.map((word: WL) => <div key={word.word}>{word.word}</div> )}
+					<div id="outputPaneWL" className={(modalState.PickAndSaveWG ? "pickAndSave " : "") + "wordList"}>
+						{shown.map((word: WL) => {
+							const ww = word.word;
+							const id = uuidv4();
+							let c = "word ";
+							if(waitingToAdd.some((w: string) => w === ww)) {
+								c = "word saved ";
+							}
+							return (
+								<div onClick={() => maybeSaveThisWord(ww, id)} key={id} id={id} className={c + (wordListsState.textCenter ? "ion-text-center" : "ion-text-start")}>{ww}</div>
+							)
+						})}
 					</div>
 				</IonList>
 			</IonContent>

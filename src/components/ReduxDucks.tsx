@@ -194,6 +194,7 @@ const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
 }
 const reduceWordListsState = (original: types.WordListsState) => {
 	return {
+		...original,
 		display: [...original.display]
 	};
 }
@@ -365,7 +366,9 @@ export const blankAppState: types.StateObject = {
 		InfoModal: false,
 		ExtraCharacters: false,
 		ExtraCharactersEllipsis: undefined,
-		ExportLexicon: false
+		ExportLexicon: false,
+		WordListsEllipsis: undefined,
+		PickAndSaveWL: false
 	},
 	viewState: {
 		wg: 'home',
@@ -384,7 +387,8 @@ export const blankAppState: types.StateObject = {
 		showHelp: false
 	},
 	wordListsState: {
-		display: []
+		display: [],
+		textCenter: true
 	},
 	temporaryInfo: undefined
 };
@@ -404,6 +408,7 @@ const saveCurrentState = (state: types.StateObject) => {
 		= ms.WGSaveToLexicon
 		= ms.WESaveToLexicon
 		= ms.ExtraCharactersEllipsis
+		= ms.WordListsEllipsis
 		= newState.temporaryInfo
 		= undefined;
 	// Save
@@ -1165,6 +1170,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["wordListsState"], state),
 				wordListsState: newWordListsState
 			};
+			break;
+		case consts.TOGGLE_WORD_LISTS_BOOLEAN:
+			final = reduceAllBut([], state);
+			final.wordListsState[(payload as keyof types.WordListsState) as "textCenter"] = !final.wordListsState[payload as keyof types.WordListsState];
 			break;
 
 

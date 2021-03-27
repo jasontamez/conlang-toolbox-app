@@ -294,6 +294,9 @@ export function updateExtraCharsToBeSaved(payload: string) {
 export function updateWordListsDisplay(payload: (keyof types.WL)[]) {
 	return {type: consts.UPDATE_WORD_LISTS_DISPLAY, payload};
 }
+export function toggleWordListsBoolean(payload: "textCenter") {
+	return {type: consts.TOGGLE_WORD_LISTS_BOOLEAN, payload};
+}
 
 //
 // TEMPORARY INFO
