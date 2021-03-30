@@ -20,7 +20,8 @@ import {
 	createSharp,
 	shuffleSharp,
 	bookSharp,
-	globeOutline
+	globeOutline,
+	listOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
@@ -88,7 +89,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+							<IonCard button={true} routerLink="/lex" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={bookSharp} className="ion-align-self-center" />
 									<IonLabel className="ion-padding-start ion-align-self-start">Lexicon</IonLabel>
@@ -101,6 +102,24 @@ const Home = () => {
 										<li>Easily add words from WordGen and WordEvolve</li>
 										<li>Store multiple lexicons</li>
 										<li>Export your data</li>
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={listOutline} className="ion-align-self-center" />
+									<IonLabel className="ion-padding-start ion-align-self-start">Word Lists</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>A small storehouse of basic words, useful for starting a lexicon.</p>
+									<ul>
+										<li>Easily add words to Lexicon</li>
+										<li>Contains the Swadesh-100, -207 and other variants</li>
+										<li>Also contains Dogolposky, Leipzig-Jakarta, and ASJP lists</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>
