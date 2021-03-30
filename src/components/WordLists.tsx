@@ -3,11 +3,11 @@ import { WL } from "./ReduxDucksTypes";
 export const WordListSources: [string, keyof WL][] = [
 	["Swadesh 100", "s100"],
 	["Swadesh 207", "s207"],
-	["Swadesh-Yakhontov List", "sy"],
-	["Swadesh-Woodward Sign List", "ssl"],
-	["Dogolposky List", "d"],
-	["Leipzig-Jakarta List", "lj"],
-	["ASJP List", "asjp"]
+	["Swadesh-Yakhontov", "sy"],
+	["Swadesh-Woodward", "ssl"],
+	["Dogolposky", "d"],
+	["Leipzig-Jakarta", "lj"],
+	["ASJP", "asjp"]
 ];
 
 export const WordList: WL[] = [
