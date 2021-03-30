@@ -29,12 +29,12 @@ import {
 	construct,
 	trash,
 	trashOutline,
-	swapHorizontalOutline,
 	saveOutline,
 	codeDownloadOutline,
 	removeCircleOutline,
 	addCircleOutline,
-	globeOutline
+	globeOutline,
+	settings
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -74,7 +74,7 @@ import { Plugins } from '@capacitor/core';
 
 const Lex = () => {
 	const dispatch = useDispatch();
-	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
+	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
 	const popstate = modalState.LexiconEllipsis;
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
@@ -88,7 +88,7 @@ const Lex = () => {
 				showConfirmButton: false
 			});
 	};
-		if(settings.disableConfirms) {
+		if(appSettings.disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -234,7 +234,7 @@ const Lex = () => {
 			return;
 		}
 		const thenFunc = () => dispatch(deleteLexiconItem(index));
-		if(settings.disableConfirms) {
+		if(appSettings.disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -280,14 +280,14 @@ const Lex = () => {
 				sort: [...lexicon.sort],
 				sorted: true,
 				lexicon: [],
-				waitingToAdd: [],
+				waitingToAdd: [...lexicon.waitingToAdd],
 				editing: undefined,
 				colEdit: undefined,
 				lexiconWrap: lexicon.lexiconWrap
 			};
 			dispatch(updateLexicon(newLex));
 		};
-		if(!settings.disableConfirms && (lexicon.title || lexicon.key || lexicon.description || lexicon.lexicon.length > 0)) {
+		if(!appSettings.disableConfirms && (lexicon.title || lexicon.key || lexicon.description || lexicon.lexicon.length > 0)) {
 			fireSwal({
 				title: "Delete everything?",
 				text: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
@@ -587,7 +587,7 @@ const Lex = () => {
 							</IonCol>
 							<IonCol size="auto">
 								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => swapColumns()}>
-									<IonIcon size="small" icon={swapHorizontalOutline} />
+									<IonIcon size="small" icon={settings} />
 								</IonButton>
 							</IonCol>
 						</IonRow>
