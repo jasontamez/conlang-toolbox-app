@@ -115,10 +115,10 @@ const Home = () => {
 			</IonHeader>
 			<IonContent>
 				<IonPopover
-				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.WordListsEllipsis}
-						isOpen={modalState.WordListsEllipsis !== undefined}
-						onDidDismiss={() => dispatch(closePopover("WordListsEllipsis"))}
+			        {/*cssClass='my-custom-class'*/ ...""}
+					event={modalState.WordListsEllipsis}
+					isOpen={modalState.WordListsEllipsis !== undefined}
+					onDidDismiss={() => dispatch(closePopover("WordListsEllipsis"))}
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>

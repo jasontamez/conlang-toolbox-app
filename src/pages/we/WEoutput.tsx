@@ -753,10 +753,10 @@ const WEOut = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonPopover
-				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.WESaveToLexicon}
-						isOpen={modalState.WESaveToLexicon !== undefined}
-						onDidDismiss={() => dispatch(closePopover("WESaveToLexicon"))}
+			        {/*cssClass='my-custom-class'*/ ...""}
+					event={modalState.WESaveToLexicon}
+					isOpen={modalState.WESaveToLexicon !== undefined}
+					onDidDismiss={() => dispatch(closePopover("WESaveToLexicon"))}
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>

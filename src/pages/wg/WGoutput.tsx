@@ -505,10 +505,10 @@ const WGOut = () => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonPopover
-				        {/*cssClass='my-custom-class'*/ ...""}
-						event={modalState.WGSaveToLexicon}
-						isOpen={modalState.WGSaveToLexicon !== undefined}
-						onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
+			        {/*cssClass='my-custom-class'*/ ...""}
+					event={modalState.WGSaveToLexicon}
+					isOpen={modalState.WGSaveToLexicon !== undefined}
+					onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>
