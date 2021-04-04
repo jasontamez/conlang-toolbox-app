@@ -128,6 +128,8 @@ export type WEInputObject = string[]
 
 export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
 
+export type WECustomInfo = [WECategoryStateObject, WETransformStateObject, WESoundchangeStateObject];
+
 export interface WESettingsObject {
 	output: WEOutputTypes
 }
@@ -198,6 +200,7 @@ export interface ModalStateObject {
 	WEOutputOptions: boolean
 	WESaveToLexicon: undefined | Event
 	PickAndSaveWE: boolean
+	ManageCustomInfoWE: boolean
 	InfoModal: boolean
 	ExtraCharacters: boolean
 	ExtraCharactersEllipsis: undefined | Event

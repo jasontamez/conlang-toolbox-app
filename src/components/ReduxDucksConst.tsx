@@ -75,6 +75,7 @@ export const UPDATE_INPUT_LEXICON = p+"UPDATE_INPUT_LEXICON";
 export const SET_OUTPUT_WE = p+"SET_OUTPUT_WE";
 
 export const LOAD_PRESET_WE = p+"LOAD_PRESET_WE";
+export const LOAD_CUSTOM_INFO_WE = p+"LOAD_CUSTOM_INFO_WE";
 
 
 export const UPDATE_LEXICON = p+"UPDATE_LEXICON";

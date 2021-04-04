@@ -362,6 +362,7 @@ export const blankAppState: types.StateObject = {
 		WEPresetPopup: false,
 		WEOutputOptions: false,
 		PickAndSaveWE: false,
+		ManageCustomInfoWE: false,
 		WESaveToLexicon: undefined,
 		InfoModal: false,
 		ExtraCharacters: false,
@@ -960,6 +961,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 					...state.wordevolveSettings,
 					output: payload
 				}
+			};
+			break;
+		case consts.LOAD_CUSTOM_INFO_WE:
+			final = {
+				...reduceAllBut(["wordevolveCategories", "wordevolveTransforms", "wordevolveSoundChanges"], state),
+				wordevolveCategories: payload[0],
+				wordevolveTransforms: payload[1],
+				wordevolveSoundChanges: payload[2],
 			};
 			break;
 		// WEPreset

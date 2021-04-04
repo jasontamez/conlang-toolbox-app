@@ -18,5 +18,12 @@ export const CustomStorageWG = localForage.createInstance({
 	name: 'Conlang Toolbox',
 	storeName: 'customStorageWG',
 	version: 1,
-	description: 'Stores non-lexicon custom information.'
+	description: 'Stores WordGen custom information.'
+});
+
+export const CustomStorageWE = localForage.createInstance({
+	name: 'Conlang Toolbox',
+	storeName: 'customStorageWE',
+	version: 1,
+	description: 'Stores WordEvolve custom information.'
 });

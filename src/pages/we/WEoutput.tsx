@@ -23,7 +23,9 @@ import {
 	openModal,
 	closeModal,
 	addDeferredLexiconItems,
-	removeDeferredLexiconItem
+	removeDeferredLexiconItem,
+	setLoadingPage,
+	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
 import {
 	helpCircleOutline,
@@ -46,6 +48,8 @@ import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
 import ltr from '../../components/LTR';
 import fireSwal from '../../components/Swal';
 import { Plugins } from '@capacitor/core';
+import { CustomStorageWE } from '../../components/PersistentInfo';
+import ManageCustomInfoWE from './M-CustomInfoWE';
 
 const WEOut = () => {
 	type arrayOfStringsAndStringArrays = (string | string[])[];
@@ -708,10 +712,31 @@ const WEOut = () => {
 			}
 		}
 	};
+
+
+	// // //
+	// Save Custom Info
+	// // //
+
+	const openCustomInfoModal = () => {
+		let titles: string[] = [];
+		CustomStorageWE.iterate((value, title) => {
+			titles.push(title);
+			return; // Blank return keeps the loop going
+		}).then(() => {
+			dispatch(setTemporaryInfo({ type: "custominfoWE", data: titles }));
+			dispatch(setLoadingPage(false));
+			dispatch(openModal("ManageCustomInfoWE"));
+		}).catch((err) => {
+			console.log(err);
+		});
+		dispatch(setLoadingPage("loadingCustomInfo"));
+	};
 	return (
 		<IonPage>
 			<OutputOptionsModal />
 			<MaybeLoadPreset />
+			<ManageCustomInfoWE />
 			<ModalWrap pageInfo={viewInfo} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -745,6 +770,7 @@ const WEOut = () => {
 				<IonList className="fullScreen" lines="none">
 					<IonItem className="collapse ion-text-wrap">
 						<IonButton className="ion-padding-horizontal" onClick={() => dispatch(openModal("WEPresetPopup"))} color="primary" strong={true}><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+						<IonButton className="ion-padding-horizontal" onClick={() => openCustomInfoModal()} color="tertiary" strong={true}>Save/Load Custom Info</IonButton>
 					</IonItem>
 					<IonItem className="collapse ion-text-wrap">
 						<IonButton strong={true} expand="block" color="success" onClick={() => evolveOutput(outputPane)}>

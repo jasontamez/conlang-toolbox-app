@@ -189,6 +189,9 @@ export function loadPresetWE(payload: string) {
 export function setOutputTypeWE(payload: types.WEOutputTypes) {
 	return {type: consts.SET_OUTPUT_WE, payload};
 }
+export function loadCustomInfoWE(payload: types.WECustomInfo) {
+	return {type: consts.LOAD_CUSTOM_INFO_WE, payload};
+}
 
 
 //
