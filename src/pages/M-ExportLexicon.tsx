@@ -41,7 +41,7 @@ const ExportLexiconModal = () => {
 		let output = lexicon.title + "\n" + lexicon.description + "\n\n" + lines.join(unitSplit) + "\n";
 		doDownload(e, output, "txt");
 	};
-	const doCSV = (e: Event) => {
+	const doCSVall = (e: Event) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
 		let lines: string[] = [lexicon.columnTitles.map((title: string) => quotify(title)).join(",")];
 		lexicon.lexicon.forEach(
@@ -61,6 +61,15 @@ const ExportLexiconModal = () => {
 			"\"TITLE\"," + quotify(lexicon.title) + filler
 			+ "\n\"Description\"," + lexicon.description + filler
 			+ "\n" + lines.join(final + "\n") + "\n";
+		doDownload(e, output, "csv");
+	};
+	const doCSV = (e: Event) => {
+		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
+		let lines: string[] = [lexicon.columnTitles.map((title: string) => quotify(title)).join(",")];
+		lexicon.lexicon.forEach(
+			(lex: Lexicon) => lines.push(lex.columns.map((title: string) => quotify(title)).join(","))
+		);
+		let output = lines.join("\n") + "\n";
 		doDownload(e, output, "csv");
 	};
 	const doJSON = (e: Event) => {
@@ -138,12 +147,13 @@ const ExportLexiconModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="buttonFilled">
+				<IonList lines="none" className="buttonFilled multiLinePossible">
 					<IonItem>Choose a format:</IonItem>
 					<IonItem button={true} onClick={(e: any) => doTabbed(e)}>Text, Tabbed</IonItem>
 					<IonItem button={true} onClick={(e: any) => doSemicolons(e)}>Text, Semicolons</IonItem>
 					<IonItem button={true} onClick={(e: any) => doNewlines(e)}>Text, Newlines</IonItem>
-					<IonItem button={true} onClick={(e: any) => doCSV(e)}>CSV File</IonItem>
+					<IonItem button={true} onClick={(e: any) => doCSVall(e)}>CSV File</IonItem>
+					<IonItem button={true} onClick={(e: any) => doCSV(e)}>CSV File, no title/description</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e)}>XML File</IonItem>
 				</IonList>
