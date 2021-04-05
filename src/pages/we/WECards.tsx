@@ -154,7 +154,7 @@ export const SChCard = () => {
 				</p><p>
 					The first box is the <em>beginning expression</em>, the second is the <em>ending
 					expression</em>, the third is the <em>context expression</em>, and the last is
-					the <em>anticontext expression</em> (also called an <em>exception</em>).
+					the <em>exception expression</em>.
 				</p><p>
 					The <em>beginning expression</em> can include plain text or regular expressions. It
 					can also contain %Group references. (A group reference is something like %G to
@@ -170,17 +170,17 @@ export const SChCard = () => {
 					replaced with %Z, and those groups have runs "ptk" and "bdg", "p" will be
 					replaced with "b", "t" will be replaced with "d", and "k" will be replaced by
 					"g". (If the first group has more letters than the second, the second group's
-					run will be repeated until it's long enough to find a match.)
-					<strong>NOTE:</strong> If you have unequal numbers of %Groups in
+					run will be repeated until it's long enough to find a match.) <strong>NOTE:</strong> If
+					you have unequal numbers of %Groups in
 					the <em>beginning</em> and <em>ending</em> expressions, errors may occur.
 				</p><p>
 					The <em>context expression</em> describes where in the word the <em>beginning
 					expression</em> must be before it can be changed into the <em>ending
-					expression</em>. The <em>anticontext expression</em> is similar, but it
+					expression</em>. The <em>exception expression</em> is similar, but it
 					describes where in the world a match <strong>can't</strong> be made.
-					(The <em>anticontext</em> is optional.)
+					(The <em>exception</em> is optional.)
 				</p><p>
-					There are two characters in <em>contexts</em> and <em>anticontexts</em> that
+					There are two characters in <em>contexts</em> and <em>exceptions</em> that
 					have special functions. The underscore _ represents where the <em>ending
 					expression</em> is being matched. You <strong>must</strong> include an
 					underscore. The hash symbol # represents the beginning or end of a word. For

@@ -561,7 +561,7 @@ ion-label.wrappableInnards {
 	overflow-wrap: anywhere;
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 390px) {
 	ion-tab-bar ion-label {
 		display: none;
 	}

@@ -568,7 +568,10 @@ const WGPresets: WGPresetObject = new Map([
 			],
 			editing: null
 		},
-		wordgenSettings: {...basicSettings}
+		wordgenSettings: {
+			...basicSettings,
+			maxSyllablesPerWord: 5
+		}
 	}],
 	["Complex", {
 		wordgenCategories: {
