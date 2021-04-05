@@ -760,76 +760,65 @@ const WEOut = () => {
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>
-							<IonLabel className="ion-text-wrap">Save everything</IonLabel>
+							<IonLabel className="ion-text-wrap">Save everything to Lexicon</IonLabel>
 						</IonItem>
 						<IonItem button={true} onClick={() => pickAndSave()}>
-							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
+							<IonLabel className="ion-text-wrap">Choose what to save to Lexicon</IonLabel>
 						</IonItem>
 					</IonList>
 				</IonPopover>
-				<IonList className="fullScreen" lines="none">
-					<IonItem className="collapse">
-						<div>
-							<IonButton
-								className="ion-margin-horizontal"
-								onClick={() => dispatch(openModal("WEPresetPopup"))}
-								color="primary"
-								strong={true}
-							><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
-							<IonButton
-								onClick={() => openCustomInfoModal()}
-								color="tertiary"
-								strong={true}
-							>Save/Load Custom Info</IonButton>
-						</div>
-					</IonItem>
-					<IonItem className="collapse">
-						<div>
-							<div>
-								<IonButton
-									style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
-									className="ion-margin-horizontal"
-									strong={true}
-									expand="block"
-									color="success"
-									onClick={() => evolveOutput(outputPane)}
-								>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-								<IonButton
-									expand="block"
-									strong={false}
-									className="ion-margin-end"
-									color="tertiary"
-									onClick={() => dispatch(openModal("WEOutputOptions"))}
-								><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
-							</div>
-							<div>
-								<IonButton
-									expand="block"
-									strong={false}
-									className="ion-margin-end"
-									color="secondary"
-									onClick={() => copyText()}
-								><IonIcon icon={copyOutline} style={ { marginRight: "0.5em" } } /> Copy All</IonButton>
-								<IonButton
-									className={modalState.PickAndSaveWE ? "" : "hide"}
-									id="doneSavingButton"
-									expand="block"
-									strong={false}
-									color="success"
-									onClick={() => donePickingAndSaving()}
-								><IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving</IonButton>
-								<IonButton
-									className={modalState.PickAndSaveWE ? "hide" : ""}
-									expand="block"
-									strong={false}
-									color="primary"
-									onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}
-								><IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save</IonButton>
-							</div>
-						</div>
-					</IonItem>
+				<div id="WEoutput">
+					<IonButton
+						className="TL"
+						onClick={() => dispatch(openModal("WEPresetPopup"))}
+						color="tertiary"
+						strong={true}
+					><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+					<IonButton
+						onClick={() => openCustomInfoModal()}
+						className="TR"
+						color="tertiary"
+						strong={true}
+					>Save/Load Custom Info</IonButton>
+					<IonButton
+						style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+						className="EV"
+						strong={true}
+						expand="block"
+						color="success"
+						onClick={() => evolveOutput(outputPane)}
+					>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
+					<div className="BR">
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={() => dispatch(openModal("WEOutputOptions"))}
+						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={() => copyText()}
+						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
+						<IonButton
+							className={modalState.PickAndSaveWE ? "" : "hide"}
+							id="doneSavingButton"
+							expand="block"
+							strong={false}
+							color="success"
+							onClick={() => donePickingAndSaving()}
+						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
+						<IonButton
+							className={modalState.PickAndSaveWE ? "hide" : ""}
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}
+						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
+					</div>
 					<div id="outputPaneWE" className={"largePane selectable" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
-				</IonList>
+				</div>
 			</IonContent>
 		</IonPage>
 	);

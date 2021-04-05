@@ -512,65 +512,57 @@ const WGOut = () => {
 				>
 					<IonList lines="none">
 						<IonItem button={true} onClick={() => saveEverything()}>
-							<IonLabel className="ion-text-wrap">Save everything</IonLabel>
+							<IonLabel className="ion-text-wrap">Save everything to Lexicon</IonLabel>
 						</IonItem>
 						<IonItem button={true} onClick={() => pickAndSave()}>
-							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
+							<IonLabel className="ion-text-wrap">Choose what to save to Lexicon</IonLabel>
 						</IonItem>
 					</IonList>
 				</IonPopover>
-				<IonList className="fullScreen" lines="none">
-					<IonItem className="collapse ion-text-wrap">
-						<div>
-							<div>
-								<IonButton
-									expand="block"
-									strong={true}
-									className="ion-margin-end"
-									color="success"
-									style={ { fontSize: "1.35rem", padding: "0.5rem 0 0.5rem 1rem", minHeight: "3.25rem" } }
-									onClick={() => {new Promise(() => generateOutput())}}
-								>{
-									modalState.loadingPage === "generatingWords" ? (
-										<span style={ {fontStyle: "italic"} }>Loading...</span>
-									) : "Generate"
-								}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-								<IonButton
-									expand="block"
-									strong={false}
-									className="ion-margin-end"
-									color="tertiary"
-									onClick={() => dispatch(openModal("WGOutputOptions"))}
-								><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
-							</div>
-							<div>
-								<IonButton
-									expand="block"
-									strong={false}
-									className="ion-margin-end"
-									color="secondary"
-									onClick={() => copyText()}
-								><IonIcon icon={copyOutline} style={ { marginRight: "0.5em" } } /> Copy All</IonButton>
-								<IonButton
-									expand="block"
-									strong={true}
-									className={modalState.PickAndSaveWG ? "hide" : ""}
-									color="primary"
-									onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}
-								><IonIcon icon={bookOutline} style={ { marginRight: "0.5em" } } /> Save</IonButton>
-								<IonButton
-									className={modalState.PickAndSaveWG ? "" : "hide"}
-									id="doneSavingButton"
-									expand="block"
-									strong={true}
-									color="success"
-									onClick={() => donePickingAndSaving()}
-								><IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving</IonButton>
-							</div>
-						</div>
-					</IonItem>
+				<div id="WGoutput">
+					<IonButton
+						expand="block"
+						strong={true}
+						className="EV"
+						color="success"
+						style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+						onClick={() => {new Promise(() => generateOutput())}}
+					>{
+						modalState.loadingPage === "generatingWords" ? (
+							<span style={ {fontStyle: "italic"} }>Loading...</span>
+						) : "Generate"
+					}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
+					<div className="BR">
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={() => dispatch(openModal("WGOutputOptions"))}
+						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={() => copyText()}
+						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
+						<IonButton
+							expand="block"
+							strong={true}
+							className={modalState.PickAndSaveWG ? "hide" : ""}
+							color="secondary"
+							onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}
+						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
+						<IonButton
+							className={modalState.PickAndSaveWG ? "" : "hide"}
+							id="doneSavingButton"
+							expand="block"
+							strong={true}
+							color="success"
+							onClick={() => donePickingAndSaving()}
+						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
+					</div>
 					<div id="outputPane" className={"largePane selectable" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
-				</IonList>
+				</div>
 			</IonContent>
 		</IonPage>
 	);

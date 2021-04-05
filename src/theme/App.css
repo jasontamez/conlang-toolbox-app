@@ -172,6 +172,62 @@ ion-list.dragArea {
 #conlangToolbox .fullScreen .collapse div ion-button {
 	white-space: normal;
 }
+
+#WGoutput {
+	display: grid;
+	grid-template-columns: max-content 1fr min-content;
+	grid-template-rows: min-content max-content;
+	grid-template-areas:
+		"EV .. BR"
+		"OP OP BR";
+	gap: 0.25rem;
+	justify-items: start;
+	align-items: start;
+	justify-content: stretch;
+	align-content: start;
+	margin: 0.5rem 0.5rem 0;
+}
+#WEoutput {
+	display: grid;
+	grid-template-columns: max-content 1fr min-content;
+	grid-template-rows: min-content min-content max-content;
+	grid-template-areas:
+		"TL TR TR"
+		"EV .. BR"
+		"OP OP BR";
+	gap: 0.25rem;
+	justify-items: start;
+	align-items: start;
+	justify-content: stretch;
+	align-content: start;
+	margin: 0.5rem 0.5rem 0;
+}
+#WEoutput .TL {
+	grid-area: TL;
+}
+#WEoutput .EV,
+#WGoutput .EV {
+	grid-area: EV;
+	display: block;
+}
+#WEoutput .TR {
+	grid-area: TR;
+	justify-self: end;
+}
+#WEoutput .BR,
+#WGoutput .BR {
+	grid-area: BR;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	flex-flow: row wrap;
+	justify-self: end;
+}
+#outputPaneWE,
+#outputPane {
+	grid-area: OP;
+}
+
 #outputPane,
 #outputPaneWE {
 	margin: 1rem 2rem;
