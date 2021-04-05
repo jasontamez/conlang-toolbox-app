@@ -15,7 +15,8 @@ import {
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	listOutline
+	listOutline,
+	saveOutline
 } from 'ionicons/icons';
 import ltr from '../../components/LTR';
 import I from '../../components/IPA';
@@ -222,13 +223,13 @@ export const OutCard = () => {
 					please note that it will break any <em>transformations</em> that try to work across syllable
 					boundaries.
 				</p><p>
-					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click
-					the <IonIcon icon={bookOutline} size="small" /> <strong>Save</strong> button and you're
-					presented with two options. <em>Save everything</em> will save every single generated word
-					to the Lexicon. <em>Choose what to save</em> will highlight every word, and you can tap on
-					a word to save it; when you're done choosing, hit the <strong>Done Saving</strong> button
-					that appears. You will need to go to the <strong>Lexicon</strong> to add these saved words
-					to your lexicon.
+					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click the
+					book <IonIcon icon={bookOutline} size="small" /> button and you're presented with two options. <em>Save
+					everything</em> will store every single generated word for the Lexicon. <em>Choose what to
+					save</em> will highlight every word, and you can tap on a word to store it; when you're done
+					choosing, hit the save <IonIcon icon={saveOutline} size="small" /> button that appears. In
+					either case, you will need to go to the <strong>Lexicon</strong> to add these stored words to
+					your lexicon.
 				</p>
 			</IonCardContent>
 		</IonCard>

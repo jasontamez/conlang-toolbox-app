@@ -14,7 +14,8 @@ import {
 	libraryOutline,
 	bookOutline,
 	settingsOutline,
-	reorderTwo
+	reorderTwo,
+	saveOutline
 } from 'ionicons/icons';
 import ltr from '../../components/LTR';
 
@@ -238,13 +239,14 @@ export const OutCard = () => {
 					The second option under the gear icon determines the style of arrow that is displayed
 					with the output.
 				</p><p>
-					Once you've evolved words, you can save them to the <strong>Lexicon</strong>. Click
-					the <IonIcon icon={bookOutline} size="small" /> <strong>Save</strong> button and
-					you're presented with two options. <em>Save everything</em> will save every single
-					evolved word to the Lexicon. <em>Choose what to save</em> will highlight every evolved
-					word, and you can tap on a word to save it; when you're done choosing, hit
-					the <strong>Done Saving</strong> button that appears. You will need to go to
-					the <strong>Lexicon</strong> to add these saved words to your lexicon.
+					Once you've evolved words, you can save them to the <strong>Lexicon</strong>. Click the
+					book <IonIcon icon={bookOutline} size="small" /> button and you're presented with two
+					options. <em>Save everything</em> will store every single evolved word for the
+					Lexicon. <em>Choose what to save</em> will highlight every evolved word,
+					and you can tap on a word to store it; when you're done choosing, hit
+					the save <IonIcon icon={saveOutline} size="small" /> button that appears. In either
+					case, you will need to go to the <strong>Lexicon</strong> to add these stored words
+					to your lexicon.
 				</p>
 			</IonCardContent>
 		</IonCard>
