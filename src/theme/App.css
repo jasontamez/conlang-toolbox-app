@@ -163,6 +163,15 @@ ion-list.dragArea {
 #conlangToolbox .fullScreen .largePane {
 	flex: 1 1 auto;
 }
+#conlangToolbox .fullScreen .collapse div {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	margin-right: 1rem;
+}
+#conlangToolbox .fullScreen .collapse div ion-button {
+	white-space: normal;
+}
 #outputPane,
 #outputPaneWE {
 	margin: 1rem 2rem;
