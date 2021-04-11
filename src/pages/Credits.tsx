@@ -63,7 +63,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "60px", width: "217px" } } /></a></div>
+							<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "40px", width: "144px" } } /></a></div>
 						</IonCol>
 					</IonRow>
 				</IonGrid>

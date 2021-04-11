@@ -45,7 +45,7 @@ const doExport = async (output: string, fileName: string, notify: boolean = true
 				toast: true,
 				timer: 5000,
 				timerProgressBar: true
-	});
+			});
 		} catch(e) {
 			console.error('Unable to write file', e);
 			notify && fireSwal({

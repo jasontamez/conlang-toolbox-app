@@ -87,7 +87,7 @@ const Lex = () => {
 				timerProgressBar: true,
 				showConfirmButton: false
 			});
-	};
+		};
 		if(appSettings.disableConfirms) {
 			thenFunc();
 		} else {
