@@ -1,6 +1,6 @@
 {
   "short_name": "Conlang Toolbox",
-  "name": "Conlang Toolbox: tools for conlangers",
+  "name": "Conlang Toolbox: tools for language invention",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
@@ -16,6 +16,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#00B8B8",
+  "background_color": "#001414"
 }

@@ -43,7 +43,7 @@ interface MenuSection {
 const appMenuPages: MenuSection[] = [
 	{
 		header: "Conlang Toolbox",
-		note: "tools for conlangers",
+		note: "tools for language invention",
 		pages: [
 			{
 				title: 'WordGen',
