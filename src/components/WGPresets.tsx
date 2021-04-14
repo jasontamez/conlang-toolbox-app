@@ -917,6 +917,7 @@ const WGPresets: WGPresetObject = new Map([
 			...basicSettings,
 			monosyllablesRate: 12,
 			maxSyllablesPerWord: 8,
+			capitalizeSentences: false,
 			declarativeSentencePre: ".",
 			interrogativeSentencePre: "^^",
 			interrogativeSentencePost: "^^",
