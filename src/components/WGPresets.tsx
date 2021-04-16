@@ -1030,9 +1030,9 @@ const WGPresets: WGPresetObject = new Map([
 				},
 				{
 					key: "50.8.4",
-					seek: "([hk])8|([nst])9|([mfp])!",
+					seek: "([hk])8|([nst])9|([mfp])0",
 					replace: "$1$2$3aĭ",
-					description: "conjugation: 1.PAU.IN/1.PAU.EX/1p.EX"
+					description: "conjugation: 1.PAU.IN/1.PAU.EX/1p.IN"
 				},
 				{
 					key: "50.9.1",
