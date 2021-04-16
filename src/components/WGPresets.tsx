@@ -595,6 +595,10 @@ const WGPresets: WGPresetObject = new Map([
 				["E", {
 					title: "Word-ending consonants",
 					run: "sfSnmNktpTh"
+				}],
+				["J", {
+					title: "Word-final conjugation",
+					run: "1234567890!@#-&=_;:~"
 				}]
 			],
 			editing: null
@@ -602,10 +606,10 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSyllables: {
 			toggle: true,
 			objects: {
-				singleWord: { components: ["SV","SVE","SV","SV"] },
+				singleWord: { components: ["SV","SVEJ","SV","SV"] },
 				wordInitial: { components: ["SV","V","SVC"] },
 				wordMiddle: { components: ["SV","I","CV","SVC"] },
-				wordFinal: { components: ["I","VE","V","VE","SVE","V","CV","VE","CVE"] }
+				wordFinal: { components: ["I","VEJ","V","VEJ","SVEJ","V","CV","VEJ","CVEJ"] }
 			}
 		},
 		wordgenRewriteRules: {
@@ -885,6 +889,342 @@ const WGPresets: WGPresetObject = new Map([
 					seek: "TS",
 					replace: "tS",
 					description: "de-retroflex t before retroflex s"
+				},
+				{
+					key: "50.1",
+					seek: "1",
+					replace: "e",
+					description: "conjugation: 1s"
+				},
+				{
+					key: "50.2.1",
+					seek: "([mfpkh])2|([hk])3",
+					replace: "$1$2a",
+					description: "conjugation: 2s/3s.AN"
+				},
+				{
+					key: "50.2.2",
+					seek: "([nts])2|([mfp])3",
+					replace: "$1$2i",
+					description: "conjugation: 2s/3s.AN"
+				},
+				{
+					key: "50.2.3",
+					seek: "([NTS])2",
+					replace: "$1u",
+					description: "conjugation: 2s"
+				},
+				{
+					key: "50.3",
+					seek: "([nstNTS])3",
+					replace: "$1o",
+					description: "conjugation: 3s.AN"
+				},
+				{
+					key: "50.4.1",
+					seek: "([mfp])4",
+					replace: "$1a$1e",
+					description: "conjugation: 2s.FORM"
+				},
+				{
+					key: "50.4.2",
+					seek: "([nst])4",
+					replace: "$1i$1eĭ",
+					description: "conjugation: 2s.FORM"
+				},
+				{
+					key: "50.4.3",
+					seek: "([NTS])4",
+					replace: "$1u$1eĭ",
+					description: "conjugation: 2s.FORM"
+				},
+				{
+					key: "50.4.4",
+					seek: "([hk])4",
+					replace: "$1ate",
+					description: "conjugation: 2s.FORM"
+				},
+				{
+					key: "50.5.1",
+					seek: "([mfp])5",
+					replace: "$1o$1o",
+					description: "conjugation: 3s.INAN"
+				},
+				{
+					key: "50.5.2",
+					seek: "([nstNST])5",
+					replace: "$1aa",
+					description: "conjugation: 3s.INAN"
+				},
+				{
+					key: "50.5.3",
+					seek: "([hk])5",
+					replace: "$1iki",
+					description: "conjugation: 3s.INAN"
+				},
+				{
+					key: "50.6.1",
+					seek: "([mfp])6",
+					replace: "$1eo",
+					description: "conjugation: 1.DU.IN"
+				},
+				{
+					key: "50.6.2",
+					seek: "([nst])6",
+					replace: "$1io",
+					description: "conjugation: 1.DU.IN"
+				},
+				{
+					key: "50.6.3",
+					seek: "([NTS])6",
+					replace: "$1ua",
+					description: "conjugation: 1.DU.IN"
+				},
+				{
+					key: "50.6.4",
+					seek: "([hk])6",
+					replace: "$1ee",
+					description: "conjugation: 1.DU.IN"
+				},
+				{
+					key: "50.7.1",
+					seek: "([mfp])7",
+					replace: "$1uo",
+					description: "conjugation: 1.DU.EX"
+				},
+				{
+					key: "50.7.2",
+					seek: "([nstNST])7",
+					replace: "$1u",
+					description: "conjugation: 1.DU.EX"
+				},
+				{
+					key: "50.7.3",
+					seek: "([kh])7",
+					replace: "$1eo",
+					description: "conjugation: 1.DU.EX"
+				},
+				{
+					key: "50.8.1",
+					seek: "([mfp])8|([NST])0",
+					replace: "$1$2eĭ",
+					description: "conjugation: 1.PAU.IN/1p.IN"
+				},
+				{
+					key: "50.8.2",
+					seek: "([nst])8",
+					replace: "$1u$1u",
+					description: "conjugation: 1.PAU.IN"
+				},
+				{
+					key: "50.8.3",
+					seek: "([NTS])8",
+					replace: "$1a$1a",
+					description: "conjugation: 1.PAU.IN"
+				},
+				{
+					key: "50.8.4",
+					seek: "([hk])8|([nst])9|([mfp])!",
+					replace: "$1$2$3aĭ",
+					description: "conjugation: 1.PAU.IN/1.PAU.EX/1p.EX"
+				},
+				{
+					key: "50.9.1",
+					seek: "([mfp])9",
+					replace: "$1ae",
+					description: "conjugation: 1.PAU.EX"
+				},
+				{
+					key: "50.9.2",
+					seek: "([NTS])9|([nst])0",
+					replace: "$1$2oĭ",
+					description: "conjugation: 1.PAU.EX/1p.IN"
+				},
+				{
+					key: "50.9.3",
+					seek: "([hk])[9!]",
+					replace: "$1oe",
+					description: "conjugation: 1.PAU.EX/1p.EX"
+				},
+				{
+					key: "50.10",
+					seek: "([hk])0",
+					replace: "$1uu",
+					description: "conjugation: 1p.IN"
+				},
+				{
+					key: "50.11.1",
+					seek: "([fmp])!",
+					replace: "$1ou",
+					description: "conjugation: 1p.EX"
+				},
+				{
+					key: "50.11.2",
+					seek: "([nst])!",
+					replace: "$1uaĭ",
+					description: "conjugation: 1p.EX"
+				},
+				{
+					key: "50.11.1",
+					seek: "([NST])!",
+					replace: "$1uoĭ",
+					description: "conjugation: 1p.EX"
+				},
+				{
+					key: "50.12.1",
+					seek: "([fmphk])@",
+					replace: "$1ara",
+					description: "conjugation: 2.PAU"
+				},
+				{
+					key: "50.12.2",
+					seek: "([nst])@",
+					replace: "$1aro",
+					description: "conjugation: 2.PAU"
+				},
+				{
+					key: "50.12.3",
+					seek: "([NST])@",
+					replace: "$1uro",
+					description: "conjugation: 2.PAU"
+				},
+				{
+					key: "50.13.1",
+					seek: "([fmpnsthk])#",
+					replace: "$1areĭ",
+					description: "conjugation: 2.PAU.FORM"
+				},
+				{
+					key: "50.13.2",
+					seek: "([NST])#",
+					replace: "$1ureĭ",
+					description: "conjugation: 2.PAU.FORM"
+				},
+				{
+					key: "50.14.1",
+					seek: "([fmphk])-",
+					replace: "$1ala",
+					description: "conjugation: 2p"
+				},
+				{
+					key: "50.14.2",
+					seek: "([nst])-",
+					replace: "$1alo",
+					description: "conjugation: 2p"
+				},
+				{
+					key: "50.14.3",
+					seek: "([NST])-",
+					replace: "$1uLo",
+					description: "conjugation: 2p"
+				},
+				{
+					key: "50.15.1",
+					seek: "([fmpnsthk])&",
+					replace: "$1aleĭ",
+					description: "conjugation: 2p.FORM"
+				},
+				{
+					key: "50.15.2",
+					seek: "([NST])&",
+					replace: "$1uleĭ",
+					description: "conjugation: 2p.FORM"
+				},
+				{
+					key: "50.16.1",
+					seek: "([fmp])=",
+					replace: "$1iro",
+					description: "conjugation: 3.PAU.AN"
+				},
+				{
+					key: "50.16.2",
+					seek: "([nstNST])=",
+					replace: "$1ore",
+					description: "conjugation: 3.PAU.AN"
+				},
+				{
+					key: "50.16.3",
+					seek: "([hk])=",
+					replace: "$1aro",
+					description: "conjugation: 3.PAU.AN"
+				},
+				{
+					key: "50.17.1",
+					seek: "([mfp])_",
+					replace: "$1ilo",
+					description: "conjugation: 3p.AN"
+				},
+				{
+					key: "50.17.2",
+					seek: "([nst])_",
+					replace: "$1ole",
+					description: "conjugation: 3p.AN"
+				},
+				{
+					key: "50.17.3",
+					seek: "([NTS])_",
+					replace: "$1oLe",
+					description: "conjugation: 3p.AN"
+				},
+				{
+					key: "50.17.4",
+					seek: "([hk])_",
+					replace: "$1alo",
+					description: "conjugation: 3p.AN"
+				},
+				{
+					key: "50.18.1",
+					seek: "([mfp]);",
+					replace: "$1oro",
+					description: "conjugation: 3.PAU.INAN"
+				},
+				{
+					key: "50.18.2",
+					seek: "([nstNST]);",
+					replace: "$1ara",
+					description: "conjugation: 3.PAU.INAN"
+				},
+				{
+					key: "50.18.3",
+					seek: "([kh]);",
+					replace: "$1iri",
+					description: "conjugation: 3.PAU.INAN"
+				},
+				{
+					key: "50.19.1",
+					seek: "([mfp]):",
+					replace: "$1olo",
+					description: "conjugation: 3p.INAN"
+				},
+				{
+					key: "50.19.2",
+					seek: "([nst]):",
+					replace: "$1ala",
+					description: "conjugation: 3p.INAN"
+				},
+				{
+					key: "50.19.3",
+					seek: "([NTS]):",
+					replace: "$1aLa",
+					description: "conjugation: 3p.INAN"
+				},
+				{
+					key: "50.19.4",
+					seek: "([hk]):",
+					replace: "$1ili",
+					description: "conjugation: 3p.INAN"
+				},
+				{
+					key: "50.20.1",
+					seek: "([mfphk])~",
+					replace: "$1aĭa",
+					description: "conjugation: GER"
+				},
+				{
+					key: "50.20.2",
+					seek: "([nstNST])~",
+					replace: "$1oĭa",
+					description: "conjugation: GER"
 				},
 				{
 					key: "46",
