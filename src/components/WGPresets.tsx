@@ -675,6 +675,12 @@ const WGPresets: WGPresetObject = new Map([
 					description: "restore saved h"
 				},
 				{
+					key: "9.1",
+					seek: "kh",
+					replace: "k",
+					description: "reduce kh to k"
+				},
+				{
 					key: "10",
 					seek: "A",
 					replace: "aĭ",
@@ -1259,8 +1265,8 @@ const WGPresets: WGPresetObject = new Map([
 			maxSyllablesPerWord: 8,
 			capitalizeSentences: false,
 			declarativeSentencePre: ".",
-			interrogativeSentencePre: "^^",
-			interrogativeSentencePost: "^^",
+			interrogativeSentencePre: "<",
+			interrogativeSentencePost: ">",
 			exclamatorySentencePre: "[",
 			exclamatorySentencePost: "]"
 		}
