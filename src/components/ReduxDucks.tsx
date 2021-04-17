@@ -506,7 +506,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DELETE_CATEGORY_WG:
 			CO = state.wordgenCategories;
 			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
-			Cmap = CO.map.filter((item: types.WGCategoryMap) => item[0] !== payload).map((item: types.WGCategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WGCategoryMap) => item[0] !== payload.label).map((item: types.WGCategoryMap) => [item[0], item[1]]);
 			newCategories = reduceCategoryWG(CO, Cmap);
 			final = {
 				...reduceAllBut(["wordgenCategories"], state),
@@ -843,7 +843,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DELETE_CATEGORY_WE:
 			CO = state.wordevolveCategories;
 			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
-			Cmap = CO.map.filter((item: types.WECategoryMap) => item[0] !== payload).map((item: types.WECategoryMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WECategoryMap) => item[0] !== payload.label).map((item: types.WECategoryMap) => [item[0], item[1]]);
 			newCategories = reduceCategoryWG(CO, Cmap);
 			final = {
 				...reduceAllBut(["wordevolveCategories"], state),
