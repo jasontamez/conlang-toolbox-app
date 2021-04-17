@@ -1072,7 +1072,7 @@ const WGPresets: WGPresetObject = new Map([
 					description: "conjugation: 1p.EX"
 				},
 				{
-					key: "50.11.1",
+					key: "50.11.3",
 					seek: "([NST])!",
 					replace: "$1uoĭ",
 					description: "conjugation: 1p.EX"
