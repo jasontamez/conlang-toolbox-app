@@ -14,9 +14,6 @@ const reduceCategoryWG = (original: types.WGCategoryStateObject, newMap: types.W
 	if(newMap === original.map) {
 		newMap.forEach(item => {
 			let o: types.WGCategoryObject = {...item[1]};
-			if(o.rateOverride) {
-				o.rateOverride = [...o.rateOverride];
-			}
 			map.push([item[0], o]);
 		});
 	} else {
@@ -42,9 +39,6 @@ const reduceSyllablesWG = (original: types.WGSyllableStateObject) => {
 const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
 	let o: types.WGSyllableObject = {
 		components: [...original.components]
-	}
-	if(original.rateOverride) {
-		o.rateOverride = [...original.rateOverride];
 	}
 	return o;
 };

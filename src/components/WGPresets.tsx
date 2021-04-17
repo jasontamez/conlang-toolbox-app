@@ -598,7 +598,8 @@ const WGPresets: WGPresetObject = new Map([
 				}],
 				["J", {
 					title: "Word-final conjugation",
-					run: "1234567890!@#-&=_;:~"
+					run: "1234567890!@#-&=_;:~",
+					dropoffOverride: 0
 				}]
 			],
 			editing: null

@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	IonToggle,
+	IonRange
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -21,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WGCategoryObject } from '../../components/ReduxDucksTypes';
+import { WGCategoryObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import { openModal, closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i, $a } from '../../components/DollarSignExports';
@@ -41,9 +43,8 @@ const AddCategoryModal = () => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const categoryObject = useSelector((state: any) => state.wordgenCategories, shallowEqual);
+	const [categoryObject, modalState, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.modalState, state.wordgenSettings], shallowEqual);
 	const catMap = new Map(categoryObject.map);
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof WGCategoryObject,
 		VAL extends WGCategoryObject[KEY]
@@ -55,6 +56,16 @@ const AddCategoryModal = () => {
 		let where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
+	const toggleDropoff = () => {
+		let DF = $i("categoryDropoffAddC");
+		if(newCat.dropoffOverride !== undefined) {
+			delete newCat.dropoffOverride;
+			DF.classList.add("hide");
+		} else {
+			DF.classList.remove("hide");
+			$q("ion-range", DF).value = newCat.dropoffOverride = settingsWG.categoryRunDropoff;
+		}
+	};
 	const generateLabel = () => {
 		let v = ($i("newCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
 		let length = v.length;
@@ -145,27 +156,37 @@ const AddCategoryModal = () => {
 			<IonContent>
 				<IonList lines="none">
 					<IonItem>
-						<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
-						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250}></IonInput>
+						<IonLabel className="titleLabel stackedEmph" position="stacked">Title/Description:</IonLabel>
+						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
 					</IonItem>
 					<IonItem>
 						<IonLabel className="ion-margin-end labelLabel">Short Label:</IonLabel>
-						<IonInput id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1}></IonInput>
+						<IonInput id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250}></IonInput>
+						<IonLabel className="runLabel stackedEmph" position="stacked">Letters/Characters:</IonLabel>
+						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
+					</IonItem>
+					<IonItem>
+						<IonLabel className="wrappableInnards"><div>Use separate dropoff rate</div></IonLabel>
+						<IonToggle onIonChange={() => toggleDropoff()} slot="end" checked={newCat.dropoffOverride !== undefined} />
+					</IonItem>
+					<IonItem id="categoryDropoffAddC" className="hide">
+						<IonRange min={0} max={50} pin={true} onIonChange={e => setNewInfo("dropoffOverride", (e.detail.value as Zero_Fifty))} debounce={250}>
+							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
+							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
+						</IonRange>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
+					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Character Group</IonLabel>
+						<IonLabel>Add Group</IonLabel>
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCat()}>
 						<IonIcon icon={addOutline} slot="start" />

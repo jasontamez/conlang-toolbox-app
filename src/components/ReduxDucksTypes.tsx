@@ -18,8 +18,7 @@ export interface WGCategoryObject {
 	title: string
 	label?: string
 	run: string
-	dropoffOverride?: Zero_OneHundred
-	rateOverride?: Zero_OneHundred[]
+	dropoffOverride?: Zero_Fifty
 }
 
 export type WGCategoryMap = [string, WGCategoryObject];
@@ -31,7 +30,7 @@ export interface WGCategoryStateObject {
 
 export interface WGSyllableObject {
 	components: string[]
-	rateOverride?: Zero_OneHundred[]
+	dropoffOverride?: Zero_Fifty
 }
 
 export interface WGSyllableStateObject {
@@ -86,8 +85,6 @@ export interface WECategoryObject {
 	title: string
 	label?: string
 	run: string
-	dropoffOverride?: Zero_OneHundred
-	rateOverride?: Zero_OneHundred[]
 }
 
 export type WECategoryMap = [string, WECategoryObject];

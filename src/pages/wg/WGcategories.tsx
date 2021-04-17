@@ -14,6 +14,7 @@ import {
 	IonTitle,
 	IonFab,
 	IonFabButton,
+	IonRange,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
@@ -24,11 +25,17 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, startEditCategoryWG, deleteCategoryWG, changeView } from '../../components/ReduxDucksFuncs';
-import { WGCategoryMap } from '../../components/ReduxDucksTypes';
+import {
+	openModal,
+	startEditCategoryWG,
+	deleteCategoryWG,
+	changeView,
+	setCategoryDropoffWG
+} from '../../components/ReduxDucksFuncs';
+import { WGCategoryMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
-import { $q } from '../../components/DollarSignExports';
+import { $i, $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import { CatCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
@@ -40,7 +47,7 @@ const WGCat = () => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [categoryObject, settings] = useSelector((state: any) => [state.wordgenCategories, state.appSettings], shallowEqual);
+	const [categoryObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.appSettings, state.wordgenSettings], shallowEqual);
 	var categories: WGCategoryMap[] = categoryObject.map;
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
@@ -99,6 +106,18 @@ const WGCat = () => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="categories units" lines="none">
+					<IonItem className="nonUnit">
+						<IonLabel className="wrappableInnards belongsToBelow">
+							<div><strong>Dropoff Rate</strong></div>
+							<div className="minor">Characters at the beginning of a group tend to be picked more often than characters at the end of the group. A rate of zero is flat, eliminating this tendency.</div>
+						</IonLabel>
+					</IonItem>
+					<IonItem>
+						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoffC" onIonBlur={() => dispatch(setCategoryDropoffWG($i("categoryDropoffC").value as Zero_Fifty))}>
+							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
+							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
+						</IonRange>
+					</IonItem>
 					{categories.map((item: WGCategoryMap) => {
 						let [label, cat] = item;
 						return (

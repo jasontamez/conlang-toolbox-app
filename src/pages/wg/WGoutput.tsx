@@ -292,15 +292,16 @@ const WGOut = () => {
 			if(category === undefined) {
 				output += current;
 			} else {
+				let thisRate = category.dropoffOverride === undefined ? rate : category.dropoffOverride;
 				let choices = category.run;
 				let max = choices.length;
-				if(rate === 0) {
+				if(thisRate === 0) {
 					output += choices[Math.floor(Math.random() * max)];
 				} else {
 					let toPick = 0;
 					for(toPick = 0; true; toPick = (toPick + 1) % max) {
 						// The 'true' in there means this loop never ends on its own.
-						if ((Math.random() * 100) < rate) {
+						if ((Math.random() * 100) < thisRate) {
 							output += choices[toPick];
 							break;
 						}
