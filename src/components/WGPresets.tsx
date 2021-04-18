@@ -3,8 +3,8 @@ import { WGPresetObject, WGSettingsObject } from './ReduxDucksTypes';
 const basicSettings: WGSettingsObject = {
 	monosyllablesRate: 20,
 	maxSyllablesPerWord: 6,
-	categoryRunDropoff: 30,
-	syllableBoxDropoff: 25,
+	categoryRunDropoff: 25,
+	syllableBoxDropoff: 20,
 	capitalizeSentences: true,
 	declarativeSentencePre: "",
 	declarativeSentencePost: ".",
