@@ -33,14 +33,16 @@ export interface WGSyllableObject {
 	dropoffOverride?: Zero_Fifty
 }
 
+export interface AllWGSyllableObjects {
+	singleWord: WGSyllableObject
+	wordInitial: WGSyllableObject
+	wordMiddle: WGSyllableObject
+	wordFinal: WGSyllableObject
+}
+
 export interface WGSyllableStateObject {
 	toggle: boolean
-	objects: {
-		singleWord: WGSyllableObject
-		wordInitial: WGSyllableObject
-		wordMiddle: WGSyllableObject
-		wordFinal: WGSyllableObject
-	}
+	objects: AllWGSyllableObjects
 }
 
 export interface WGRewriteRuleObject {

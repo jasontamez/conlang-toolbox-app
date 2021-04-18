@@ -34,7 +34,7 @@ export function deleteCategoryWG(payload: types.WGCategoryObject) {
 export function toggleSyllables(payload: boolean) {
 	return {type: consts.TOGGLE_SYLLABLES, payload }
 }
-export function editSyllables(payload1: keyof types.WGSyllableStateObject["objects"], payload2: string[]) {
+export function editSyllables(payload1: keyof types.AllWGSyllableObjects, payload2: string[]) {
 	return {type: consts.EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
 }
 // Rewrite Rules

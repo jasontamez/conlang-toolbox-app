@@ -20,8 +20,7 @@ import {
 	helpCircleOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { openModal, toggleSyllables, editSyllables, changeView } from '../../components/ReduxDucksFuncs';
-import { WGSyllableStateObject } from '../../components/ReduxDucksTypes';
+import { AllWGSyllableObjects } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { SylCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
