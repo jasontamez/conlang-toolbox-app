@@ -255,16 +255,19 @@ const WGOut = () => {
 	// Generate Syllables
 	// // //
 	const makeMonosyllable = () => {
-		return makeSyllable(allSyllables.singleWord.components, settingsWG.syllableBoxDropoff);
+		return makeSyllable(allSyllables.singleWord.components, allSyllables.singleWord.dropoffOveride || settingsWG.syllableBoxDropoff);
 	};
 	const makeFirstSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordInitial" : "singleWord"].components, settingsWG.syllableBoxDropoff);
+		const o = allSyllables[syllToggle ? "wordInitial" : "singleWord"];
+		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
 	};
 	const makeMidSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordMiddle" : "singleWord"].components, settingsWG.syllableBoxDropoff);
+		const o = allSyllables[syllToggle ? "wordMiddle" : "singleWord"];
+		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
 	};
 	const makeLastSyllable = () => {
-		return makeSyllable(allSyllables[syllToggle ? "wordFinal" : "singleWord"].components, settingsWG.syllableBoxDropoff);
+		const o = allSyllables[syllToggle ? "wordFinal" : "singleWord"];
+		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
 		let chosen;
