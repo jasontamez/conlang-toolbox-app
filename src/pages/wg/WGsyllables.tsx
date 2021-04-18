@@ -18,13 +18,17 @@ import {
 } from '@ionic/react';
 import {
 	helpCircleOutline,
-	globeOutline
+	globeOutline,
+	constructSharp,
+	checkmarkDoneSharp
 } from 'ionicons/icons';
+import { openModal, toggleSyllables, editSyllables, changeView, setEditableSyllables } from '../../components/ReduxDucksFuncs';
 import { AllWGSyllableObjects } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { SylCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import { $i } from '../../components/DollarSignExports';
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
@@ -44,12 +48,20 @@ const WGSyl = () => {
 	const wordInitial = syllableObject.objects.wordInitial.components.join("\n");
 	const wordMiddle = syllableObject.objects.wordMiddle.components.join("\n");
 	const wordFinal = syllableObject.objects.wordFinal.components.join("\n");
-	const updateSyllables = (base: keyof WGSyllableStateObject["objects"], target: EventTarget | null) => {
-		if(target === null) {
-			return;
+	const doIfEditing = (prop: keyof AllWGSyllableObjects, succ: any, fail: any) => {
+		return syllableObject.editing === prop ? succ : fail;
+	};
+	const doAction = (prop: keyof AllWGSyllableObjects) => {
+		if(syllableObject.editing === prop) {
+			// Action is to save and remove editing
+			let info: HTMLTextAreaElement = $i("Syl-" + prop);
+			let value = info.value.trim().split(/\s*\r?\n\s*/);
+			dispatch(editSyllables(prop, value.filter((v: string) => v !== "")));
+			dispatch(setEditableSyllables(undefined));
+		} else {
+			// Action is to set editing
+			dispatch(setEditableSyllables(prop));
 		}
-		let value = (target as HTMLTextAreaElement).value.trim().split(/\s*\r?\n\s*/);
-		dispatch(editSyllables(base, value.filter((v: string) => v !== "")));
 	};
 	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
 	return (
@@ -76,26 +88,46 @@ const WGSyl = () => {
 				<IonList lines="none">
 					<IonItem class="ion-text-end">
 						<IonLabel>Use multiple syllable types</IonLabel>
-						<IonToggle checked={syllableObject.toggle} onIonChange={e => dispatch(toggleSyllables(e.detail.checked))} />
+						<IonToggle checked={syllableObject.toggle} onClick={() => dispatch(toggleSyllables(!syllableObject.toggle))} />
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
 					<IonItem>
 						<div className={toggleableClassName("header reverseToggle")}>Syllables</div>
 						<div className={toggleableClassName("header")}>Single-Syllable<br />Words</div>
-						<IonTextarea className="serifChars" id="Syl-singleWord" onIonBlur={e => updateSyllables('singleWord', e.target)} value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
+						<IonTextarea disabled={doIfEditing("singleWord", false, true)} className="serifChars" id="Syl-singleWord" value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
+						<div style={ { alignSelf: "center" } }>
+							<IonButton color={doIfEditing("singleWord", "success", "warning")} disabled={syllableObject.editing && syllableObject.editing !== "singleWord"} onClick={e => doAction("singleWord")}>
+								<IonIcon icon={doIfEditing("singleWord", checkmarkDoneSharp, constructSharp)} />
+							</IonButton>
+						</div>
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Initial<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordInitial" onIonBlur={e => updateSyllables('wordInitial', e.target)} value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
+						<IonTextarea disabled={doIfEditing("wordInitial", false, true)} className="serifChars" id="Syl-wordInitial" value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
+						<div style={ { alignSelf: "center" } }>
+							<IonButton color={doIfEditing("wordInitial", "success", "warning")} disabled={syllableObject.editing && syllableObject.editing !== "wordInitial"} onClick={e => doAction("wordInitial")}>
+								<IonIcon icon={doIfEditing("wordInitial", checkmarkDoneSharp, constructSharp)} />
+							</IonButton>
+						</div>
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Mid-Word<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordMiddle" onIonBlur={e => updateSyllables('wordMiddle', e.target)} value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
+						<IonTextarea disabled={doIfEditing("wordMiddle", false, true)} className="serifChars" id="Syl-wordMiddle" value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
+						<div style={ { alignSelf: "center" } }>
+							<IonButton color={doIfEditing("wordMiddle", "success", "warning")} disabled={syllableObject.editing && syllableObject.editing !== "wordMiddle"} onClick={e => doAction("wordMiddle")}>
+								<IonIcon icon={doIfEditing("wordMiddle", checkmarkDoneSharp, constructSharp)} />
+							</IonButton>
+						</div>
 					</IonItem>
 					<IonItem className={toggleableClassName()}>
 						<div className="header">Word-Final<br />Syllables</div>
-						<IonTextarea className="serifChars" id="Syl-wordFinal" onIonBlur={e => updateSyllables('wordFinal', e.target)} value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
+						<IonTextarea disabled={doIfEditing("wordFinal", false, true)} className="serifChars" id="Syl-wordFinal" value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
+						<div style={ { alignSelf: "center" } }>
+							<IonButton color={doIfEditing("wordFinal", "success", "warning")} disabled={syllableObject.editing && syllableObject.editing !== "wordFinal"} onClick={e => doAction("wordFinal")}>
+								<IonIcon icon={doIfEditing("wordFinal", checkmarkDoneSharp, constructSharp)} />
+							</IonButton>
+						</div>
 					</IonItem>
 				</IonList>
 			</IonContent>

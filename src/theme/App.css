@@ -102,7 +102,12 @@ ion-card-content ul li {
 	color: var(--ion-color-tertiary-shade);
 }
 
-#conlangToolbox ion-list.syllables div.header {
+#conlangToolbox ion-list.syllables ion-item ion-textarea {
+	padding: 0.625rem 1rem 0.625rem 0;
+	margin: 0;
+	flex-grow: 5;
+}
+#conlangToolbox ion-list.syllables .header {
 	display: block;
 	font-weight: bold;
 	font-size: larger;
@@ -119,12 +124,12 @@ ion-card-content ul li {
 #conlangToolbox ion-list.syllables .toggleable.reverseToggle.toggled {
 	display: none;
 }
-#conlangToolbox ion-list.syllables div.header.toggleable,
-#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle.toggled {
+#conlangToolbox ion-list.syllables .header.toggleable,
+#conlangToolbox ion-list.syllables .header.toggleable.reverseToggle.toggled {
 	display: none;
 }
-#conlangToolbox ion-list.syllables div.header.toggleable.toggled,
-#conlangToolbox ion-list.syllables div.header.toggleable.reverseToggle {
+#conlangToolbox ion-list.syllables .header.toggleable.toggled,
+#conlangToolbox ion-list.syllables .header.toggleable.reverseToggle {
 	display: block;
 }
 

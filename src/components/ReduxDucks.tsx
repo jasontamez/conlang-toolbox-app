@@ -27,7 +27,7 @@ const reduceCategoryWG = (original: types.WGCategoryStateObject, newMap: types.W
 const reduceSyllablesWG = (original: types.WGSyllableStateObject) => {
 	const oo = original.objects;
 	return {
-		toggle: original.toggle,
+		...original,
 		objects: {
 			singleWord: reduceSubSyllablesWG(oo.singleWord),
 			wordInitial: reduceSubSyllablesWG(oo.wordInitial),
@@ -523,6 +523,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["wordgenSyllables"], state),
 				wordgenSyllables: SO
 			};
+			break;
+		case consts.SET_EDIT_SYLLABLES:
+			final = reduceAllBut([], state);
+			if(payload === undefined) {
+				delete final.wordgenSyllables.editing;
+			} else {
+				final.wordgenSyllables.editing = payload;
+			}
 			break;
 		// Rewrite Rules
 		case consts.ADD_REWRITE_RULE_WG:

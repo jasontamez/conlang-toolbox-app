@@ -37,6 +37,9 @@ export function toggleSyllables(payload: boolean) {
 export function editSyllables(payload1: keyof types.AllWGSyllableObjects, payload2: string[]) {
 	return {type: consts.EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
 }
+export function setEditableSyllables(payload: keyof types.AllWGSyllableObjects | undefined = undefined) {
+	return {type: consts.SET_EDIT_SYLLABLES, payload}
+}
 // Rewrite Rules
 export function addRewriteRuleWG(payload: types.WGRewriteRuleObject) {
 	return {type: consts.ADD_REWRITE_RULE_WG, payload};

@@ -43,6 +43,7 @@ export interface AllWGSyllableObjects {
 export interface WGSyllableStateObject {
 	toggle: boolean
 	objects: AllWGSyllableObjects
+	editing?: keyof AllWGSyllableObjects
 }
 
 export interface WGRewriteRuleObject {
