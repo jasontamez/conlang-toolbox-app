@@ -40,6 +40,9 @@ const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
 	let o: types.WGSyllableObject = {
 		components: [...original.components]
 	}
+	if (original.dropoffOverride) {
+		o.dropoffOverride = original.dropoffOverride;
+	}
 	return o;
 };
 const reduceRewriteRulesStateWG = (original: types.WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
@@ -530,6 +533,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				delete final.wordgenSyllables.editing;
 			} else {
 				final.wordgenSyllables.editing = payload;
+			}
+			break;
+		case consts.MOD_SYLLABLE_DROPOFF:
+			final = reduceAllBut([], state);
+			if(payload.value === undefined) {
+				delete final.wordgenSyllables.objects[payload.key as keyof types.AllWGSyllableObjects].dropoffOverride;
+			} else {
+				final.wordgenSyllables.objects[payload.key as keyof types.AllWGSyllableObjects].dropoffOverride = payload.value;
 			}
 			break;
 		// Rewrite Rules

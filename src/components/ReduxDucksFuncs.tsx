@@ -32,13 +32,16 @@ export function deleteCategoryWG(payload: types.WGCategoryObject) {
 }
 // Syllables
 export function toggleSyllables(payload: boolean) {
-	return {type: consts.TOGGLE_SYLLABLES, payload }
+	return {type: consts.TOGGLE_SYLLABLES, payload};
 }
 export function editSyllables(payload1: keyof types.AllWGSyllableObjects, payload2: string[]) {
 	return {type: consts.EDIT_SYLLABLES, payload: {key: payload1, syllables: payload2}};
 }
 export function setEditableSyllables(payload: keyof types.AllWGSyllableObjects | undefined = undefined) {
-	return {type: consts.SET_EDIT_SYLLABLES, payload}
+	return {type: consts.SET_EDIT_SYLLABLES, payload};
+}
+export function modSyllableDropoff(payload1: keyof types.AllWGSyllableObjects, payload2: types.Zero_Fifty | undefined) {
+	return {type: consts.MOD_SYLLABLE_DROPOFF, payload: {key: payload1, value: payload2}};
 }
 // Rewrite Rules
 export function addRewriteRuleWG(payload: types.WGRewriteRuleObject) {
