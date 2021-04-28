@@ -133,6 +133,10 @@ ion-card-content ul li {
 	display: block;
 }
 
+#conlangToolbox ion-content.disappearingHeaderKludgeFix > :last-child {
+	margin-bottom: 50vh;
+}
+
 ion-item-option {
 	min-width: 5rem;
 }

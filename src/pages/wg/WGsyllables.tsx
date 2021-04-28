@@ -93,7 +93,7 @@ const WGSyl = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen className="evenBackground">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix">
 				<IonList lines="none">
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
