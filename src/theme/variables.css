@@ -696,8 +696,8 @@ body.LightTheme ion-menu ion-content {
 
 
 #conlangToolbox {
-	--font-sans: 'Noto Sans', 'Noto Sans JP';
-	--font-serif: 'Noto Serif', 'Noto Serif JP';
+	--font-sans: 'Noto Sans', 'Noto Sans JP', sans-serif;
+	--font-serif: 'Noto Serif', 'Noto Serif JP', serif;
 	--font-international: 'Arimo', 'ArTarumianKamar', 'Scheherazade', 'Sriracha', 'Leelawadee';
 	--ion-font-family: var(--font-sans), var(--font-international);
 	--ion-default-font: var(--ion-font-family);

@@ -86,7 +86,7 @@ ion-menu#mainMenu ion-item.subHeading.selected ion-icon {
 ion-menu#mainMenu #menuCredits ion-item::part(native) {
 	font-size: 0.8rem;
 	text-align: end;
-	font-family: 'DM Mono','Courier New',monospace;
+	font-family: var(--font-mono);
 	letter-spacing: 0.1rem;
 }
 
