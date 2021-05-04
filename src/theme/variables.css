@@ -701,6 +701,7 @@ body.LightTheme ion-menu ion-content {
 	--font-international: 'Arimo', 'ArTarumianKamar', 'Scheherazade', 'Sriracha', 'Leelawadee';
 	--ion-font-family: var(--font-sans), var(--font-international);
 	--ion-default-font: var(--ion-font-family);
+	--font-mono: 'DM Mono', 'Consolas', 'Courier New', 'Courier', monospace;
 }
 
 #conlangToolbox .evenBackground {

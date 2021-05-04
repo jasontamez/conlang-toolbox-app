@@ -13,6 +13,7 @@ import WordLists from "./pages/WordLists";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
 import Lexicon from "./pages/Lex";
+import LS from "./pages/LS";
 import Settings from "./pages/AppSettings";
 import Credits from './pages/Credits';
 
@@ -87,6 +88,8 @@ const App = () => {
 						<Route path="/wg" render={() => <WG />} />
 						<Route path="/we"  render={() => <WE />} />
 						<Route path="/lex" render={() => <Lexicon />} />
+						<Route path="/ls" render={() => <LS />} />
+						<Route path="/ph" render={() => <Lexicon />} />
 						<Route path="/settings" render={() => <Settings />} />
 						<Route path="/about" render={() => <About />} />
 						<Route path="/wordlists" render={() => <WordLists />} />

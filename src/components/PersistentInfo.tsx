@@ -27,3 +27,10 @@ export const CustomStorageWE = localForage.createInstance({
 	version: 1,
 	description: 'Stores WordEvolve custom information.'
 });
+
+export const CustomStorageLS = localForage.createInstance({
+	name: 'Conlang Toolbox',
+	storeName: 'langSketchStorage',
+	version: 1,
+	description: 'Stores LangSketch custom information.'
+});

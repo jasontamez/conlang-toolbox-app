@@ -372,6 +372,8 @@ export const blankAppState: types.StateObject = {
 		wg: 'home',
 		we: 'home',
 		wl: 'home',
+		ls: 'home',
+		ph: 'home',
 		lastSection: ''
 	},
 	extraCharactersState: {

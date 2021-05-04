@@ -646,6 +646,39 @@ ion-label.wrappableInnards {
 	}
 }
 
+#langSketchPage ion-list ion-item ol {
+	list-style-type: none;
+	padding-inline-start: 1.5rem;
+	overflow-wrap: anywhere;
+	overflow: visible;
+}
+#langSketchPage ion-list ion-item > ol:first-of-type {
+	padding-inline-start: 0;
+}
+#langSketchPage .h1 {
+	font-size: 1.25rem;
+}
+#langSketchPage .h2 {
+	font-size: 1.1rem;
+}
+#langSketchPage .h {
+	font-weight: bold;
+	color: var(--ion-color-primary);
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: baseline;
+}
+#langSketchPage ion-list ion-item ol .h strong {
+	font-family: var(--font-mono);
+	padding-right: 0.25rem;
+	color: var(--ion-color-primary);
+	white-space: nowrap;
+}
+#langSketchPage ion-list ion-item ol .h em {
+	text-decoration: underline;
+	font-style: normal;
+}
+
 
 /* Known bug where the keyboard will push the header off the screen */
 

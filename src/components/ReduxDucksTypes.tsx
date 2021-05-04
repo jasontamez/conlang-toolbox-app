@@ -140,6 +140,10 @@ export interface WEPresetObject {
 	transforms: WETransformObject[]
 }
 
+export interface LangSketchObject {}
+
+export interface PhonoGraphObject {}
+
 
 export interface Lexicon {
 	key: string
@@ -213,7 +217,9 @@ export interface ViewStateObject {
 	wg: string
 	we: string
 	wl: string
-	lastSection: "wg" | "we" | "wl" | ""
+	ls: string
+	ph: string
+	lastSection: "wg" | "we" | "wl" | "ls" | "ph" | ""
 }
 
 export interface ExtraCharacters {
