@@ -650,28 +650,36 @@ ion-label.wrappableInnards {
 #langSketchPage ion-list ion-item > ol:first-of-type {
 	padding-inline-start: 0;
 }
-#langSketchPage .h1 {
-	font-size: 1.25rem;
-}
-#langSketchPage .h2 {
-	font-size: 1.1rem;
-}
 #langSketchPage .h {
+	padding-top: 0.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: row wrap;
 	align-items: baseline;
+}
+#langSketchPage .h1 {
+	padding-top: 1rem;
+	font-size: 1.4rem;
+}
+#langSketchPage .h2 {
+	padding-top: 0.75rem;
+	font-size: 1.25rem;
+}
+#langSketchPage .h3 {
+	padding-top: 0.5rem;
+	font-size: 1.1rem;
 }
 #langSketchPage ion-list ion-item ol .h strong {
 	font-family: var(--font-mono);
-	padding-right: 0.25rem;
 	color: var(--ion-color-primary);
 	white-space: nowrap;
+	font-size: 0.95em;
 }
 #langSketchPage ion-list ion-item ol .h em {
 	text-decoration: underline;
 	font-style: normal;
+	padding-left: 0.25em;
 }
 
 
