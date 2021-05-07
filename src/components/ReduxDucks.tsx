@@ -162,6 +162,9 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
 };
+const reduceLangSketchState = (original: types.LangSketchStateObject) => {
+	return {...original};
+};
 const reduceLexicon = (original: types.Lexicon) => {
 	return {
 		key: original.key,
@@ -239,6 +242,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
+	["langSketchState", reduceLangSketchState],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
@@ -315,6 +319,7 @@ export const blankAppState: types.StateObject = {
 	wordevolveSettings: {
 		output: "outputOnly"
 	},
+	langSketchState: {},
 	lexicon: {
 		key: "",
 		lastSave: 0,
@@ -999,6 +1004,18 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				list: newPreset.transforms.map(o => ({...o})),
 				editing: state.wordevolveTransforms.editing
 			};
+			break;
+
+
+		// LangSketch
+		case consts.TOGGLE_LANGSKETCH_STATE:
+			final = reduceAllBut([], state);
+			let bool = final.langSketchState[payload];
+			if(bool) {
+				delete final.langSketchState[payload];
+			} else {
+				final.langSketchState[payload] = true;
+			}
 			break;
 
 

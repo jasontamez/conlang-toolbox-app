@@ -140,7 +140,13 @@ export interface WEPresetObject {
 	transforms: WETransformObject[]
 }
 
-export interface LangSketchObject {}
+export interface LangSketchStateObject {
+	[key: string]: boolean
+}
+
+export interface LangSketchObject {
+	state: LangSketchStateObject
+}
 
 export interface PhonoGraphObject {}
 
@@ -281,6 +287,7 @@ export interface StateObject {
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
+	langSketchState: LangSketchStateObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject

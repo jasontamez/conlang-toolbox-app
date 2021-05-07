@@ -650,7 +650,7 @@ ion-label.wrappableInnards {
 #langSketchPage ion-list ion-item > ol:first-of-type {
 	padding-inline-start: 0;
 }
-#langSketchPage .h {
+#langSketchPage .x {
 	padding-top: 0.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
@@ -658,28 +658,87 @@ ion-label.wrappableInnards {
 	flex-flow: row wrap;
 	align-items: baseline;
 }
-#langSketchPage .h1 {
+#langSketchPage .x1 {
 	padding-top: 1rem;
 	font-size: 1.4rem;
 }
-#langSketchPage .h2 {
+#langSketchPage .x2 {
 	padding-top: 0.75rem;
 	font-size: 1.25rem;
 }
-#langSketchPage .h3 {
+#langSketchPage .x3 {
 	padding-top: 0.5rem;
 	font-size: 1.1rem;
 }
-#langSketchPage ion-list ion-item ol .h strong {
+#langSketchPage ion-list ion-item ol .x strong {
 	font-family: var(--font-mono);
 	color: var(--ion-color-primary);
 	white-space: nowrap;
 	font-size: 0.95em;
 }
-#langSketchPage ion-list ion-item ol .h em {
+#langSketchPage ion-list ion-item ol .x em {
 	text-decoration: underline;
 	font-style: normal;
 	padding-left: 0.25em;
+}
+
+#langSketchPage ion-list ion-item.toggled {
+	display: none;
+}
+#langSketchPage ion-range.spectrum::part(bar-active),
+#langSketchPage ion-range.spectrum::part(bar) {
+	background: var(--ion-color-dark-tint);
+}
+#langSketchPage ion-list ion-grid {
+	--ion-grid-columns: 3;
+	--ion-grid-padding: 0;
+	max-width: 40rem;
+	margin: 0;
+	background: var(--ion-background-shader);
+}
+#langSketchPage ion-list ion-grid ion-row {
+	margin: 0.25rem 0;
+}
+#langSketchPage ion-list ion-item.h,
+#langSketchPage ion-list ion-item ion-grid ion-row:first-child {
+	font-weight: bold;
+}
+#langSketchPage ion-list ion-item ion-grid ion-row ion-col:nth-child(-n+2) {
+	max-width: 8rem;
+	text-align: center;
+}
+#langSketchPage ion-list ion-item ion-grid ion-row ion-col ion-checkbox {
+	margin: 0 auto;
+}
+#langSketchPage ion-list ion-item.h ion-button {
+	margin: 0.25rem 0.5rem 0.25rem 0;
+}
+#langSketchPage ion-list ion-item.h ion-button::part(native) {
+	padding: 0.5em 0.2em;
+}
+#langSketchPage ion-list ion-item.h1 {
+	font-size: 1.4rem;
+}
+#langSketchPage ion-list ion-item.h2 {
+	font-size: 1.25rem;
+}
+#langSketchPage ion-list ion-item.h3 {
+	font-size: 1.1rem;
+}
+#langSketchPage ion-list ion-item.l2 {
+	margin-left: 1rem;
+}
+#langSketchPage ion-list ion-item.l3 {
+	margin-left: 2rem;
+}
+#langSketchPage ion-list ion-item.l4 {
+	margin-left: 3rem;
+}
+#langSketchPage ion-list ion-item.l5 {
+	margin-left: 4rem;
+}
+#langSketchPage ion-list ion-item ion-label {
+	white-space: normal;
 }
 
 

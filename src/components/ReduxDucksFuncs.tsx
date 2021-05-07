@@ -201,6 +201,14 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 
 
 //
+// LANGSKETCH
+//
+export function toggleLSState(payload: string) {
+	return {type: consts.TOGGLE_LANGSKETCH_STATE, payload};
+}
+
+
+//
 // LEXICON
 //
 export function updateLexicon(payload: types.LexiconObject) {
