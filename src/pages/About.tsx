@@ -158,6 +158,7 @@ const Home = () => {
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{VERSION.current}</div>
+									<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
