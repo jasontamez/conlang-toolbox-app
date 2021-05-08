@@ -60,6 +60,10 @@ const App = () => {
 							storedState.wordListsState.textCenter = true
 							storedState.currentVersion = VERSION.current;
 						}
+//						if (compareVersions.compare(storedState.currentVersion, "0.2.7", "<")) {
+//							// Do stuff to possibly bring storedState up to date
+//							storedState.langSketchState = {};
+//						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;

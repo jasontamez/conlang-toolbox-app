@@ -737,10 +737,51 @@ ion-label.wrappableInnards {
 #langSketchPage ion-list ion-item.l5 {
 	margin-left: 4rem;
 }
+#langSketchPage ion-list ion-item.l6 {
+	margin-left: 5rem;
+}
+#langSketchPage ion-list ion-item.l7 {
+	margin-left: 6rem;
+}
+#langSketchPage ion-list ion-item.l8 {
+	margin-left: 7rem;
+}
+#langSketchPage ion-list ion-item.leading::part(native),
+#langSketchPage ion-list ion-item.following::part(native) {
+	min-height: 0;
+}
+#langSketchPage ion-list ion-item.leading ion-label {
+	margin-bottom: 0;
+}
+#langSketchPage ion-list ion-item.following ul {
+	margin-top: 0;
+}
 #langSketchPage ion-list ion-item ion-label {
 	white-space: normal;
 }
-
+#langSketchPage ion-list ion-item ul {
+	padding-left: 0;
+	list-style-type: none;
+	list-style-position: inside;
+}
+#langSketchPage ion-list ion-item ul li {
+	text-indent: -1rem;
+	padding-left: 1rem;
+	position: relative;
+}
+#langSketchPage ion-list ion-item ul li::marker {
+	color: var(--ion-color-primary);
+}
+#langSketchPage ion-list ion-item ul li::before {
+	content: "\25cf";
+	color: var(--ion-color-primary);
+	display: inline-block;
+	white-space: nowrap;
+	padding: 0 0 0 0.5rem;
+	width: 0.5rem;
+	position: relative;
+	left: 0.5rem;
+}
 
 /* Known bug where the keyboard will push the header off the screen */
 

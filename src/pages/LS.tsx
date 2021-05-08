@@ -64,276 +64,482 @@ const Lex = () => {
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="langSketchPage">
 				<IonList lines="none">
+
 					<IonItem className="h h1">
 						{makeButton("morphTypo")}
 						<IonLabel>Morphological Typology</IonLabel>
 					</IonItem>
-					<IonItem className={classy("h h2 l2", "morphTypo")}>
-						{makeButton("tradTypo")}
-						<IonLabel>Traditional Typology</IonLabel>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
-						{makeButton("synth")}
-						<IonLabel>Synthesis</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-						<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
-							<IonLabel slot="start">Isolating</IonLabel>
-							<IonLabel slot="end">Polysynthetic</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-						<ul>
-							<li>How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?</li>
-							<li>Chinese is very <em>isolating</em>, tending towards one morpheme per word.</li>
-							<li>Inuit and Quechua are very <em>polysynthetic</em>, with many morphemes per word.</li>
-						</ul>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
-						{makeButton("fusion")}
-						<IonLabel>Fusion</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-						<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
-							<IonLabel slot="start">Fusional</IonLabel>
-							<IonLabel slot="end">Agglutinative</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-						<ul>
-							<li>How many meanings does a morpheme encode?</li>
-							<li>Spanish can be very <em>fusional</em>, with a single suffix capable of encoding tense, aspect, mood and number.</li>
-							<li>English can be very <em>agglutinative</em>, with one meaning per morpheme (e.g. anti-dis-establish-ment-ari-an-ism), though fusional forms are possible (e.g. swam, was).</li>
-						</ul>
-					</IonItem>
-					<IonItem className={classy("h h2 l2", "morphTypo")}>
-						{makeButton("morphProc")}
-						<IonLabel>Morphological Processes</IonLabel>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
-						{makeButton("affixes")}
-						<IonLabel>Affixes</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "affixes")}>
-						<IonGrid>
-							<IonRow>
-								<IonCol>Used Most</IonCol>
-								<IonCol>Used Less</IonCol>
-								<IonCol>Affix</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol>Prefix</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol>Suffix</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol>Circumfix</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol><IonCheckbox /></IonCol>
-								<IonCol>Infix</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "affixes")}>
-						<ul><li>Which form predominates?</li></ul>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
-						{makeButton("stemMod")}
-						<IonLabel>Stem Modification</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
-						<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-							<IonLabel slot="start">Not Used</IonLabel>
-							<IonLabel slot="end">Used Often</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
-						<ul><li>e.g. swim/swam/swum.</li></ul>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
-						{makeButton("redup")}
-						<IonLabel>Reduplication</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
-						<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-							<IonLabel slot="start">Not Used</IonLabel>
-							<IonLabel slot="end">Used Often</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
-						<ul><li>Often used for plurality.</li></ul>
-					</IonItem>
-					<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
-						{makeButton("supsegMod")}
-						<IonLabel>Suprasegmental Modification</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
-						<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-							<IonLabel slot="start">Not Used</IonLabel>
-							<IonLabel slot="end">Used Often</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
-						<ul>
-							<li>e.g. "permit" has different stress when a noun and a verb.</li>
-							<li>Tone changes also fall under this category.</li>
-						</ul>
-					</IonItem>
-					<IonItem className={classy("h h2 l2", "morphTypo")}>
-						{makeButton("headDepMark")}
-						<IonLabel>Head/Dependant Marking</IonLabel>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "headDepMark")}>
-						<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-							<IonLabel slot="start">Head Marked</IonLabel>
-							<IonLabel slot="end">Dependant Marked</IonLabel>
-						</IonRange>
-					</IonItem>
-					<IonItem className={classy("l4", "morphTypo", "headDepMark")}>
-						<ul>
-							<li>English is predominantly dependant-marked ("the queen's crown")</li>
-							<li>Most languages are head-marked (*"the queen crown's")</li>
-							<li>Some are mixed, but stay in one pattern for a certain class of phrases (noun, verb, adposition)</li>
-						</ul>
-					</IonItem>
+
+						<IonItem className={classy("h h2 l2", "morphTypo")}>
+							{makeButton("tradTypo")}
+							<IonLabel>Traditional Typology</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
+								{makeButton("synth")}
+								<IonLabel>Synthesis</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
+									<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
+										<IonLabel slot="start">Isolating</IonLabel>
+										<IonLabel slot="end">Polysynthetic</IonLabel>
+									</IonRange>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
+									<ul>
+										<li>How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?</li>
+										<li>Chinese is very <em>isolating</em>, tending towards one morpheme per word.</li>
+										<li>Inuit and Quechua are very <em>polysynthetic</em>, with many morphemes per word.</li>
+									</ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
+								{makeButton("fusion")}
+								<IonLabel>Fusion</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
+									<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
+										<IonLabel slot="start">Fusional</IonLabel>
+										<IonLabel slot="end">Agglutinative</IonLabel>
+									</IonRange>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
+									<ul>
+										<li>How many meanings does a morpheme encode?</li>
+										<li>Spanish can be very <em>fusional</em>, with a single suffix capable of encoding tense, aspect, mood and number.</li>
+										<li>English can be very <em>agglutinative</em>, with one meaning per morpheme (e.g. anti-dis-establish-ment-ari-an-ism), though fusional forms are possible (e.g. swam, was).</li>
+									</ul>
+								</IonItem>
+
+						<IonItem className={classy("h h2 l2", "morphTypo")}>
+							{makeButton("morphProc")}
+							<IonLabel>Morphological Processes</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
+								{makeButton("affixes")}
+								<IonLabel>Affixes</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "affixes")}>
+									<IonGrid>
+										<IonRow>
+											<IonCol>Used Most</IonCol>
+											<IonCol>Used Less</IonCol>
+											<IonCol>Affix</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol>Prefix</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol>Suffix</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol>Circumfix</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol><IonCheckbox /></IonCol>
+											<IonCol>Infix</IonCol>
+										</IonRow>
+									</IonGrid>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "affixes")}>
+									<ul><li>Which form predominates?</li></ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
+								{makeButton("stemMod")}
+								<IonLabel>Stem Modification</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
+									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
+										<IonLabel slot="start">Not Used</IonLabel>
+										<IonLabel slot="end">Used Often</IonLabel>
+									</IonRange>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
+									<ul><li>e.g. swim/swam/swum.</li></ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
+								{makeButton("redup")}
+								<IonLabel>Reduplication</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
+									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
+											<IonLabel slot="start">Not Used</IonLabel>
+										<IonLabel slot="end">Used Often</IonLabel>
+									</IonRange>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
+									<ul><li>Often used for plurality.</li></ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
+								{makeButton("supsegMod")}
+								<IonLabel>Suprasegmental Modification</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
+									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
+										<IonLabel slot="start">Not Used</IonLabel>
+										<IonLabel slot="end">Used Often</IonLabel>
+									</IonRange>
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
+									<ul>
+										<li>e.g. "permit" has different stress when a noun and a verb.</li>
+										<li>Tone changes also fall under this category.</li>
+									</ul>
+								</IonItem>
+
+						<IonItem className={classy("h h2 l2", "morphTypo")}>
+							{makeButton("headDepMark")}
+							<IonLabel>Head/Dependant Marking</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
+								<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
+									<IonLabel slot="start">Head Marked</IonLabel>
+									<IonLabel slot="end">Dependant Marked</IonLabel>
+								</IonRange>
+							</IonItem>
+							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
+								<ul>
+									<li>English is predominantly dependant-marked ("the queen's crown").</li>
+									<li>Most languages are head-marked (*"the queen crown's").</li>
+									<li>Some are mixed, but stay in one pattern for a certain class of phrases (noun, verb, adposition).</li>
+								</ul>
+							</IonItem>
+
 					<IonItem className="h h1">
 						{makeButton("grammCateg")}
 						<IonLabel>Grammatical Categories</IonLabel>
 					</IonItem>
-					<IonItem className={classy("h h2 l2", "grammCateg")}>
-						{makeButton("nouns")}
-						<IonLabel>Nouns (the most time-stable concepts)</IonLabel>
-					</IonItem>
-					<IonItem>
-						<ol>
-							<li className="x x1"><strong>[2]</strong> <em>Grammatical Categories</em></li>
-							<li><ol>
-								<li className="x x2"><strong>[2.1]</strong> <em>Nouns (the most time-stable concepts)</em></li>
-								<li><ol>
-									<li className="x x3"><strong>[2.1.1]</strong> <em>Types of Nouns</em></li>
-										<li><ol>
-											<li className="x"><strong>[2.1.1.1]</strong> <em>Proper Names</em></li>
-											<li><ul>
-												<li>In English, they do not easily take articles, quantifiers and other modifiers</li>
-												<li>Other languages may have special case markers for them</li>
-											</ul></li>
-											<li className="x"><strong>[2.1.1.2]</strong> <em>Possessability</em></li>
-											<li><ul>
-												<li>Languages may have one of the following systems to differentiate nouns</li>
-											</ul></li>
-											<li><ol>
-												<li className="x"><strong>[2.1.1.2.1]</strong> <em>Possessable vs unpossessable</em></li>
-												<li><ul>
-													<li>Some nouns cannot be possessed (land, stars, etc)</li>
-												</ul></li>
-												<li className="x"><strong>[2.1.1.2.2]</strong> <em>Inherently vs optionally possessed</em></li>
-												<li><ul>
-													<li>Some nouns <em>must</em> be possessed (body parts, kinship terms, etc)</li>
-												</ul></li>
-												<li className="x"><strong>[2.1.1.2.3]</strong> <em>Alienably vs inalienbly possessed</em></li>
-												<li><ul>
-													<li><em>Alienable</em>: possession can be ended (my car becomes your car)</li>
-													<li><em>Inalienable</em>: possession cannot be ended (my brother is always my brother)</li>
-												</ul></li>
-											</ol></li>
-											<li className="x"><strong>[2.1.1.3]</strong> <em>Count noun vs mass noun</em></li>
-											<li><ul>
-												<li>Typically, most nouns are countable, while fewer are considered as a mass</li>
-												<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti"</li>
-											</ul></li>
-										</ol></li>
-									<li className="x x3"><strong>[2.1.2]</strong> <em>Pronouns and/or anaphoric clitics</em></li>
-									<li><ol>
-										<li className="x"><strong>[2.1.2.1]</strong> <em>Pronouns</em></li>
-										<li><ul>
-											<li>Free forms that function as nouns</li>
-										</ul></li>
-										<li className="x"><strong>[2.1.2.2]</strong> <em>Anaphoric clitics</em></li>
-										<li><ul>
-											<li>Must attach to another word, but function as a full noun phrase</li>
-										</ul></li>
-									</ol></li>
-									<li><ul>
-										<li>Both types often differ according to person (3rs/2nd/1st including inclusive/exclusive), number (singular/plural), noun class (gender), grammatical role (subject/object/ergative/etc), semantic role (agent/patient), definiteness and/or specificness (a/the), and honorifics</li>
-										<li>English has frequent pronouns that agree with the verb, and may be stressed for emphasis or contrast: "<strong>He</strong> died" (not her, as expected)</li>
-										<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast</li>
-									</ul></li>
-								</ol></li>
-								<li className="x x2"><strong>[2.2]</strong> <em>Verbs (the least time-stable concepts)</em></li>
-								<li><ol>
-									<li className="x x3"><strong>[2.2.1]</strong> <em>Semantic roles</em></li>
-									<li><ol>
-										<li className="x"><strong>[2.2.1.1]</strong> <em>Agent</em></li>
-										<li><ul><li>active, physical, has volition</li></ul></li>
-										<li className="x"><strong>[2.2.1.2]</strong> <em>Force</em></li>
-										<li><ul><li>directly instigates, not necessarily conscious or voluntary</li></ul></li>
-										<li className="x"><strong>[2.2.1.3]</strong> <em>Instrument</em></li>
-										<li><ul><li>indirectly instigates (usually by an agent)</li></ul></li>
-										<li className="x"><strong>[2.2.1.4]</strong> <em>Experiencer</em></li>
-										<li><ul><li>does not participate, merely observes</li></ul></li>
-										<li className="x"><strong>[2.2.1.5]</strong> <em>Recipient</em></li>
-										<li><ul><li>moving object, or often a destination</li></ul></li>
-										<li className="x"><strong>[2.2.1.6]</strong> <em>Patient</em></li>
-										<li><ul><li>undergoes a change, no volition</li></ul></li>
-									</ol></li>
-									<li><ul>
-										<li>Often required by the language</li>
-										<li>Roles can change according to the perspective of the speaker
+
+						<IonItem className={classy("h h2 l2", "grammCateg")}>
+							{makeButton("nouns")}
+							<IonLabel>Nouns (the most time-stable concepts)</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
+								{makeButton("nounTypes")}
+								<IonLabel>Types of Nouns</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
+									{makeButton("properNames")}
+									<IonLabel>Proper Names</IonLabel>
+								</IonItem>
+									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "properNames")}>
+										<ul>
+											<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
+											<li>Other languages may have special case markers for them.</li>
+										</ul>
+									</IonItem>
+								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
+									{makeButton("possess")}
+									<IonLabel>Possessability</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "possess")}>
+										<ul>
+											<li>Languages may have one of the following systems to differentiate nouns.</li>
+										</ul>
+									</IonItem>
+									<IonItem className={classy("h l5 leading", "grammCateg", "nouns", "nounTypes", "possess")}>
+										<IonLabel>Possessable vs Unpossessable</IonLabel>
+									</IonItem>
+
+										<IonItem className={classy("l6 following", "grammCateg", "nouns", "nounTypes", "possess")}>
 											<ul>
-												<li>I hit Bob with the hammer</li>
-												<li>The hammer hit Bob</li>
-												<li>Bob was hit</li>
+												<li>Some nouns cannot be possessed (land, stars, etc).</li>
+											</ul>
+										</IonItem>
+
+									<IonItem className={classy("h l5 leading", "grammCateg", "nouns", "nounTypes", "possess")}>
+										<IonLabel>Inherent vs Optional</IonLabel>
+									</IonItem>
+
+										<IonItem className={classy("l6 following", "grammCateg", "nouns", "nounTypes", "possess")}>
+											<ul>
+												<li>Some nouns <em>must</em> be possessed (body parts, kinship terms, etc).</li>
+											</ul>
+										</IonItem>
+									<IonItem className={classy("h l5 leading", "grammCateg", "nouns", "nounTypes", "possess")}>
+										<IonLabel>Alienable vs Inalienable</IonLabel>
+									</IonItem>
+
+										<IonItem className={classy("l6 following", "grammCateg", "nouns", "nounTypes", "possess")}>
+											<ul>
+												<li><em>Alienable</em>: possession can be ended (my car becomes your car).</li>
+												<li><em>Inalienable</em>: possession cannot be ended (my brother is always my brother).</li>
+											</ul>
+										</IonItem>
+
+								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
+									{makeButton("countMass")}
+									<IonLabel>Count vs Mass</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "countMass")}>
+										<ul>
+											<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
+											<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
+										</ul>
+									</IonItem>
+
+							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
+								{makeButton("pronounAnaph")}
+								<IonLabel>Pronouns and Anaphoric Clitics</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "nouns", "pronounAnaph")}>
+									<IonLabel>Pronouns</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following leading", "grammCateg", "nouns", "pronounAnaph")}>
+										<ul>
+											<li>Free forms that are used to refer to or replace a word used earlier in a sentence, to avoid repetition.</li>
+											<li>Also known as <em>anaphoric references</em>.</li>
+										</ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading following", "grammCateg", "nouns", "pronounAnaph")}>
+									<IonLabel>Anaphoric Clitics</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "nouns", "pronounAnaph")}>
+										<ul>
+											<li>Must attach to another word, but functions as a full noun phrase.</li>
+										</ul>
+									</IonItem>
+
+								<IonItem className={classy("l4 following", "grammCateg", "nouns", "pronounAnaph")}>
+									<ul>
+										<li>Both types often differ according to person (3rd/2nd/1st including inclusive/exclusive), number (singular/plural), noun class (gender/animacy), grammatical role (subject/object/ergative/etc), semantic role (agent/patient), definiteness and/or specificness (a/the), and honorifics.</li>
+										<li>English has frequent pronouns that agree with the verb, and may be stressed for emphasis or contrast: "<strong>He</strong> died" (not her, as expected).</li>
+										<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
+									</ul>
+								</IonItem>
+
+						<IonItem className={classy("h h2 l2", "grammCateg")}>
+							{makeButton("verbs")}
+							<IonLabel>Verbs (the least time-stable concepts)</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
+								{makeButton("semanRole")}
+								<IonLabel>Semantic Roles</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Agent</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>active, physical, has volition</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Force</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>directly instigates, not necessarily conscious or voluntary</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Instrument</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>indirectly instigates (usually by an agent)</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Experiencer</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>does not participate, merely observes</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Recipient</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>moving object, or often a destination</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
+									<IonLabel>Patient</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "semanRole")}>
+										<ul><li>undergoes a change, no volition</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("l4", "grammCateg", "verbs", "semanRole")}>
+									<ul>
+										<li>Verbs can be divided into groups depending on which roles they require.</li>
+										<li>In English, all verbs require an Agent, and many also require a Patient, but no other roles are encoded into the verb.</li>
+										<li>Roles can change according to the perspective of the speaker:
+											<ul>
+												<li>I hit Bob with the hammer.</li>
+												<li>The hammer hit Bob.</li>
+												<li>Bob was hit.</li>
 											</ul>
 										</li>
-									</ul></li>
-									<li className="x x3"><strong>[2.2.2]</strong> <em>Verb classes</em></li>
-									<li><ol>
-										<li className="x"><strong>[2.2.2.1]</strong> <em>Weather verbs</em></li>
-										<li className="x"><strong>[2.2.2.2]</strong> <em>States</em></li>
-										<li><ul>
+									</ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
+								{makeButton("classes")}
+								<IonLabel>Verb Classes</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Weather Verbs</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>In English, these require a dummy Agent ("<em>It</em> is raining"); this is not the case in many other languages!</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>States</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul>
 											<li>be hot, be broken, be frozen, etc</li>
 											<li>may be predicate-bound</li>
-										</ul></li>
-										<li className="x"><strong>[2.2.2.3]</strong> <em>Involuntary Processes</em></li>
-										<li><ul><li>He grew; It broke; They died; etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.4]</strong> <em>Bodily Functions</em></li>
-										<li><ul><li>cough, sweat, bleed, cry, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.5]</strong> <em>Motion</em></li>
-										<li className="x"><strong>[2.2.2.6]</strong> <em>Position</em></li>
-										<li><ul><li>stand, sit, hang, etc.</li></ul></li>
-										<li className="x"><strong>[2.2.2.7]</strong> <em>Actions</em></li>
-										<li><ul><li>Agent only</li></ul></li>
-										<li className="x"><strong>[2.2.2.8]</strong> <em>Action-Processes</em></li>
-										<li><ul><li>Agent affects Patient</li></ul></li>
-										<li className="x"><strong>[2.2.2.9]</strong> <em>Factive</em></li>
-										<li><ul><li>3.2.1.9 -  something comes into being; build, form, ignite, create, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.10]</strong> <em>Cognition</em></li>
-										<li><ul><li>know, suspect, forget, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.11]</strong> <em>Sensation</em></li>
-										<li><ul><li>hear, see, taste, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.12]</strong> <em>Emotion</em></li>
-										<li><ul><li>be happy, be afraid, be mellow, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.13]</strong> <em>Utterance</em></li>
-										<li><ul><li>say, yell, murmur, declare, chat, etc</li></ul></li>
-										<li className="x"><strong>[2.2.2.14]</strong> <em>Manipulation</em></li>
-										<li><ul><li>force, urge, cause, let, permit, allow, compel, etc</li></ul></li>
-									</ol></li>
-									<li><ul>
+										</ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Involuntary Processes</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>He grew; It broke; They died; etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Bodily Functions</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>cough, sweat, bleed, cry, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Motion</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>go, float, proceed, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Position</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>sit, stand, hang, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Actions</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>Agent only.</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Action-Processes</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>Agent affects Patient.</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Factive</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>Something comes into being: build, form, ignite, create, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Cognition</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>know, suspect, forget etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Sensation</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>hear, see, taste, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Emotion</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>be happy, be afraid, be mellow, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Utterance</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>say, yell, murmur, declare, chat, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "classes")}>
+									<IonLabel>Manipulation</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5 following", "grammCateg", "verbs", "classes")}>
+										<ul><li>force, urge, cause, let, permit, allow, compel, etc</li></ul>
+									</IonItem>
+
+								<IonItem className={classy("l4", "grammCateg", "verbs", "classes")}>
+									<ul>
 										<li>Which classes exist as distinct categories in the language?</li>
 										<li>How are they realized?</li>
-									</ul></li>
-									<li className="x x3"><strong>[2.2.3]</strong> <em>Verb structure</em></li>
-									<li><ul>
-										<li>This is more necessary in polysynthetic languages</li>
+									</ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
+								{makeButton("verStruc")}
+								<IonLabel>Verb Structure</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "grammCateg", "verbs", "verStruc")}>
+									<ul>
 										<li>Describe the structure of the verb phrase.
 											<ul>
 												<li>Where does the stem lie in relation to any affixes/particles/etc?</li>
@@ -344,12 +550,22 @@ const Lex = () => {
 											<ul>
 												<li>Is this operation obligatory?</li>
 												<li>Is it productive (for all/most stems)?</li>
-												<li>Is this coded morphologically/analytically/lexically? Any exceptions?</li>
+												<li>Is this coded morphologically (modifying the verb), analytically (particles and word order), lexically (using other verbs)? Any exceptions?</li>
 												<li>Where in the word/phrase is the operation likely to appear? Can it appear in more than one place?</li>
 											</ul>
 										</li>
-									</ul></li>
-								</ol></li>
+									</ul>
+								</IonItem>
+
+						<IonItem className={classy("h h2 l2", "grammCateg")}>
+							{makeButton("modif")}
+							<IonLabel>Modifiers</IonLabel>
+						</IonItem>
+					<IonItem>
+						<ol>
+							<li className="x x1"><strong>[2]</strong> <em>Grammatical Categories</em></li>
+							<li><ol>
+								<li className="x x2"><strong>[2.2]</strong> <em>Verbs (the least time-stable concepts)</em></li>
 								<li className="x x2"><strong>[2.3]</strong> <em>Modifiers</em></li>
 								<li><ol>
 									<li className="x x3"><strong>[2.3.1]</strong> <em>Property Concepts (Descriptive Adjectives)</em></li>
