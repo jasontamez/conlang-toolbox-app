@@ -690,22 +690,34 @@ ion-label.wrappableInnards {
 	background: var(--ion-color-dark-tint);
 }
 #langSketchPage ion-list ion-grid {
-	--ion-grid-columns: 3;
 	--ion-grid-padding: 0;
-	max-width: 40rem;
 	margin: 0;
 	background: var(--ion-background-shader);
+}
+#langSketchPage ion-list ion-grid.cols3 {
+	--ion-grid-columns: 3;
+	max-width: 40rem;
+}
+#langSketchPage ion-list ion-grid.cols2 {
+	--ion-grid-columns: 2;
+	max-width: 50rem;
 }
 #langSketchPage ion-list ion-grid ion-row {
 	margin: 0.25rem 0;
 }
+#langSketchPage ion-list ion-grid.striped ion-row:nth-child(even) {
+	background: var(--ion-background-shader)
+}
 #langSketchPage ion-list ion-item.h,
-#langSketchPage ion-list ion-item ion-grid ion-row:first-child {
+#langSketchPage ion-list ion-item ion-grid ion-row.header {
 	font-weight: bold;
 }
-#langSketchPage ion-list ion-item ion-grid ion-row ion-col:nth-child(-n+2) {
-	max-width: 8rem;
+#langSketchPage ion-list ion-item ion-grid ion-row ion-col.cbox {
+	max-width: 6rem;
 	text-align: center;
+}
+#langSketchPage ion-list ion-item ion-grid ion-row ion-col.label {
+	max-width: 10rem;
 }
 #langSketchPage ion-list ion-item ion-grid ion-row ion-col ion-checkbox {
 	margin: 0 auto;
