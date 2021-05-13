@@ -206,6 +206,15 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 export function toggleLSState(payload: string) {
 	return {type: consts.TOGGLE_LANGSKETCH_STATE, payload};
 }
+export function setLSBool(payload1: keyof types.LangSketchBoolObject, payload2: boolean) {
+	return {type: consts.SET_LANGSKETCH_BOOL, payload: [payload1, payload2]};
+}
+export function setLSNum(payload1: keyof types.LangSketchNumberObject, payload2: number) {
+	return {type: consts.SET_LANGSKETCH_NUM, payload: [payload1, payload2]};
+}
+export function setLSText(payload1: keyof types.LangSketchTextObject, payload2: string) {
+	return {type: consts.SET_LANGSKETCH_TEXT, payload: [payload1, payload2]};
+}
 
 
 //

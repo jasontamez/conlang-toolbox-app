@@ -165,6 +165,13 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 const reduceLangSketchState = (original: types.LangSketchStateObject) => {
 	return {...original};
 };
+const reduceLangSketchInfo = (original: types.LangSketchObject) => {
+	return {
+		bool: {...original.bool},
+		num: {...original.num},
+		text: {...original.text}
+	};
+};
 const reduceLexicon = (original: types.Lexicon) => {
 	return {
 		key: original.key,
@@ -243,6 +250,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
 	["langSketchState", reduceLangSketchState],
+	["langSketchInfo", reduceLangSketchInfo],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
@@ -320,6 +328,11 @@ export const blankAppState: types.StateObject = {
 		output: "outputOnly"
 	},
 	langSketchState: {},
+	langSketchInfo: {
+		bool: {},
+		num: {},
+		text: {}
+	},
 	lexicon: {
 		key: "",
 		lastSave: 0,
@@ -1016,6 +1029,21 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			} else {
 				final.langSketchState[payload] = true;
 			}
+			break;
+		case consts.SET_LANGSKETCH_BOOL:
+			final = reduceAllBut([], state);
+			let boo = payload[0] as keyof types.LangSketchBoolObject;
+			final.langSketchInfo.bool[boo] = payload[1];
+			break;
+		case consts.SET_LANGSKETCH_NUM:
+			final = reduceAllBut([], state);
+			let numm = payload[0] as keyof types.LangSketchNumberObject;
+			final.langSketchInfo.num[numm] = payload[1];
+			break;
+		case consts.SET_LANGSKETCH_TEXT:
+			final = reduceAllBut([], state);
+			let txt = payload[0] as keyof types.LangSketchTextObject;
+			final.langSketchInfo.text[txt] = payload[1];
 			break;
 
 

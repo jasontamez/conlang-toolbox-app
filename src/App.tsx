@@ -52,18 +52,14 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.2.6", "<")) {
+						if (compareVersions.compare(storedState.currentVersion, "0.5.1", "<")) {
 							// Do stuff to possibly bring storedState up to date
-							delete storedState.viewState.ls
-							storedState.viewState.wl = 'home'
-							storedState.wordListsState = { display: [], textCenter: true };
-							storedState.wordListsState.textCenter = true
-							storedState.currentVersion = VERSION.current;
+							storedState.langSketchState = {};
 						}
-//						if (compareVersions.compare(storedState.currentVersion, "0.2.7", "<")) {
-//							// Do stuff to possibly bring storedState up to date
-//							storedState.langSketchState = {};
-//						}
+						if (compareVersions.compare(storedState.currentVersion, "0.5.2", "<")) {
+							// Do stuff to possibly bring storedState up to date
+							storedState.langSketchInfo = initialAppState.langSketchInfo;
+						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;

@@ -716,6 +716,9 @@ ion-label.wrappableInnards {
 	max-width: 6rem;
 	text-align: center;
 }
+#langSketchPage ion-list ion-item ion-grid ion-row ion-col.leftA {
+	text-align: start;
+}
 #langSketchPage ion-list ion-item ion-grid ion-row ion-col.label {
 	max-width: 10rem;
 }

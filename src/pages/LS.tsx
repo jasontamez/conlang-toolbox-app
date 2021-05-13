@@ -23,15 +23,19 @@ import { addCircleSharp, globeOutline, removeCircleSharp } from 'ionicons/icons'
 import { useSelector, useDispatch } from "react-redux";
 import {
 	openModal,
+	setLSBool,
+	setLSNum,
+	setLSText,
 	toggleLSState
 } from '../components/ReduxDucksFuncs';
-//import { Lexicon } from '../components/ReduxDucksTypes';
+import { LangSketchBoolObject, LangSketchNumberObject, LangSketchTextObject } from '../components/ReduxDucksTypes';
 //import { CustomStorageLS } from '../components/PersistentInfo';
 import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Lex = () => {
 	const dispatch = useDispatch();
-	const [lsState] = useSelector((state: any) => [state.langSketchState]);
+	const [lsState, lsInfo] = useSelector((state: any) => [state.langSketchState, state.langSketchInfo]);
+	const [lsBool, lsNum, lsText] = [lsInfo.bool, lsInfo.num, lsInfo.text];
 	const toggle = (what: string) => {
 		dispatch(toggleLSState(what));
 	};
@@ -39,6 +43,15 @@ const Lex = () => {
 		let primary = folders.shift();
 		//return primary;
 		return folders.every((prop: string) => lsState[prop]) ? primary : "toggled";
+	};
+	const setBool = (what: keyof LangSketchBoolObject, value: boolean) => {
+		dispatch(setLSBool(what, value));
+	};
+	const setNum = (what: keyof LangSketchNumberObject, value: number) => {
+		dispatch(setLSNum(what, value));
+	};
+	const setText = (what: keyof LangSketchTextObject, value: string) => {
+		dispatch(setLSText(what, value));
 	};
 	const makeButton = (what: string) => {
 		return (
@@ -82,7 +95,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
+									<IonRange onBlur={(e) => setNum("synthesis", e.target.value as number)} value={lsNum.synthesis || 0} className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
 										<IonLabel slot="start">Isolating</IonLabel>
 										<IonLabel slot="end">Polysynthetic</IonLabel>
 									</IonRange>
@@ -95,7 +108,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									<IonTextarea onBlur={(e) => setText("synthesis", e.target.value || "")} value={lsText.synthesis || ""} rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
@@ -138,23 +151,23 @@ const Lex = () => {
 											<IonCol>Affix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("prefixMost", e.detail.checked)} value={lsBool.prefixMost || false} /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("prefixLess", e.detail.checked)} value={lsBool.prefixLess || false} /></IonCol>
 											<IonCol>Prefix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("suffixMost", e.detail.checked)} value={lsBool.suffixMost || false} /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("suffixLess", e.detail.checked)} value={lsBool.suffixLess || false} /></IonCol>
 											<IonCol>Suffix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("circumfixMost", e.detail.checked)} value={lsBool.circumfixMost || false} /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("circumfixLess", e.detail.checked)} value={lsBool.circumfixLess || false} /></IonCol>
 											<IonCol>Circumfix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("infixMost", e.detail.checked)} value={lsBool.infixMost || false} /></IonCol>
+											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("infixLess", e.detail.checked)} value={lsBool.infixLess || false} /></IonCol>
 											<IonCol>Infix</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -729,37 +742,37 @@ const Lex = () => {
 								<IonGrid className="cols3">
 									<IonRow className="header">
 										<IonCol className="cbox">Primary?</IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }>Order</IonCol>
+										<IonCol className="cbox leftA">Order</IonCol>
 										<IonCol>Example</IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>APV/SV</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>APV/SV</strong></IonCol>
 										<IonCol><em>Bob softballs pitches; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>AVP/SV</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>AVP/SV</strong></IonCol>
 										<IonCol><em>Bob pitches softballs; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>PAV/SV</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
 										<IonCol><em>Softballs Bob pitches; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>PVA/VS</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
 										<IonCol><em>Softballs pitches Bob; Pitches Bob.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>VAP/VS</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>VAP/VS</strong></IonCol>
 										<IonCol><em>Pitches Bob softballs; Pitches Bob.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox"><IonCheckbox /></IonCol>
-										<IonCol className="cbox" style={ { textAlign: "left" } }><strong>VPA/VS</strong></IonCol>
+										<IonCol className="cbox leftA"><strong>VPA/VS</strong></IonCol>
 										<IonCol><em>Pitches softballs Bob; Pitches Bob.</em></IonCol>
 									</IonRow>
 								</IonGrid>

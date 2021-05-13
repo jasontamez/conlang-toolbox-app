@@ -140,13 +140,32 @@ export interface WEPresetObject {
 	transforms: WETransformObject[]
 }
 
+
 export interface LangSketchStateObject {
 	[key: string]: boolean
 }
 
-export interface LangSketchObject {
-	state: LangSketchStateObject
+type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess" | "infixMost" | "infixLess";
+export type LangSketchBoolObject = {
+	[key in LSBool]?: boolean
 }
+
+type LSNum = "synthesis" | "fusion" | "stemMod" | "redupe" | "supraMod" | "headDepMarked";
+export type LangSketchNumberObject = {
+	[key in LSNum]?: number
+}
+
+type LSText = "synthesis" | "fusion";
+export type LangSketchTextObject = {
+	[key in LSText]?: string
+}
+
+export interface LangSketchObject {
+	bool: LangSketchBoolObject
+	num: LangSketchNumberObject
+	text: LangSketchTextObject
+}
+
 
 export interface PhonoGraphObject {}
 
@@ -288,6 +307,7 @@ export interface StateObject {
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
 	langSketchState: LangSketchStateObject
+	langSketchInfo: LangSketchObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject
