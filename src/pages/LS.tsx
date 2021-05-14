@@ -47,11 +47,29 @@ const Lex = () => {
 	const setBool = (what: keyof LangSketchBoolObject, value: boolean) => {
 		dispatch(setLSBool(what, value));
 	};
+	const makeBox = (what: keyof LangSketchBoolObject) => {
+		return (
+			<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} value={lsBool[what] || false} />
+		);
+	};
 	const setNum = (what: keyof LangSketchNumberObject, value: number) => {
 		dispatch(setLSNum(what, value));
 	};
+	const makeRange = (what: keyof LangSketchNumberObject, start: string, end: string, cls: string = "", max: number = 4) => {
+		return (
+			<IonRange onBlur={(e) => setNum(what, e.target.value as number)} value={lsNum[what] || 0} className={cls} color="secondary" snaps={true} step={1} ticks={true} min={0} max={max}>
+				<IonLabel slot="start">{start}</IonLabel>
+				<IonLabel slot="end">{end}</IonLabel>
+			</IonRange>
+		);
+	};
 	const setText = (what: keyof LangSketchTextObject, value: string) => {
 		dispatch(setLSText(what, value));
+	};
+	const makeText = (what: keyof LangSketchTextObject, rows: number = 3) => {
+		return (
+			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={lsText[what] || ""} rows={rows} placeholder="" enterkeyhint="done" inputmode="text" />
+		);
 	};
 	const makeButton = (what: string) => {
 		return (
@@ -95,10 +113,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									<IonRange onBlur={(e) => setNum("synthesis", e.target.value as number)} value={lsNum.synthesis || 0} className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
-										<IonLabel slot="start">Isolating</IonLabel>
-										<IonLabel slot="end">Polysynthetic</IonLabel>
-									</IonRange>
+									{makeRange("synthesis", "Isolating", "Polysynthetic", "spectrum", 10)}
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
 									<ul>
@@ -108,7 +123,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									<IonTextarea onBlur={(e) => setText("synthesis", e.target.value || "")} value={lsText.synthesis || ""} rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("synthesis")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
@@ -117,10 +132,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-									<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={10}>
-										<IonLabel slot="start">Fusional</IonLabel>
-										<IonLabel slot="end">Agglutinative</IonLabel>
-									</IonRange>
+									{makeRange("fusion", "Fusional", "Agglutinative", "spectrum", 10)}
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
 									<ul>
@@ -130,7 +142,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("fusion")}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
@@ -151,23 +163,23 @@ const Lex = () => {
 											<IonCol>Affix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("prefixMost", e.detail.checked)} value={lsBool.prefixMost || false} /></IonCol>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("prefixLess", e.detail.checked)} value={lsBool.prefixLess || false} /></IonCol>
+											<IonCol className="cbox">{makeBox("prefixMost")}</IonCol>
+											<IonCol className="cbox">{makeBox("prefixLess")}</IonCol>
 											<IonCol>Prefix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("suffixMost", e.detail.checked)} value={lsBool.suffixMost || false} /></IonCol>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("suffixLess", e.detail.checked)} value={lsBool.suffixLess || false} /></IonCol>
+											<IonCol className="cbox">{makeBox("suffixMost")}</IonCol>
+											<IonCol className="cbox">{makeBox("suffixLess")}</IonCol>
 											<IonCol>Suffix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("circumfixMost", e.detail.checked)} value={lsBool.circumfixMost || false} /></IonCol>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("circumfixLess", e.detail.checked)} value={lsBool.circumfixLess || false} /></IonCol>
+											<IonCol className="cbox">{makeBox("circumfixMost")}</IonCol>
+											<IonCol className="cbox">{makeBox("circumfixLess")}</IonCol>
 											<IonCol>Circumfix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("infixMost", e.detail.checked)} value={lsBool.infixMost || false} /></IonCol>
-											<IonCol className="cbox"><IonCheckbox onIonChange={(e) => setBool("infixLess", e.detail.checked)} value={lsBool.infixLess || false} /></IonCol>
+											<IonCol className="cbox">{makeBox("infixMost")}</IonCol>
+											<IonCol className="cbox">{makeBox("infixLess")}</IonCol>
 											<IonCol>Infix</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -182,10 +194,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
-									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-										<IonLabel slot="start">Not Used</IonLabel>
-										<IonLabel slot="end">Used Often</IonLabel>
-									</IonRange>
+									{makeRange("stemMod", "Not Used", "Used Often")}
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
 									<ul><li>e.g. swim/swam/swum.</li></ul>
@@ -197,10 +206,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
-									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-											<IonLabel slot="start">Not Used</IonLabel>
-										<IonLabel slot="end">Used Often</IonLabel>
-									</IonRange>
+									{makeRange("redupe", "Not Used", "Used Often")}
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "redup")}>
 									<ul><li>Often used for plurality.</li></ul>
@@ -212,10 +218,7 @@ const Lex = () => {
 							</IonItem>
 
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
-									<IonRange color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
-										<IonLabel slot="start">Not Used</IonLabel>
-										<IonLabel slot="end">Used Often</IonLabel>
-									</IonRange>
+									{makeRange("supraMod", "Not Used", "Used Often")}
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "supsegMod")}>
 									<ul>
@@ -225,7 +228,7 @@ const Lex = () => {
 								</IonItem>
 
 							<IonItem className={classy("l4", "morphTypo", "morphProc")}>
-								<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+								{makeText("morphProcess")}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
@@ -234,7 +237,7 @@ const Lex = () => {
 						</IonItem>
 
 							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
-								<IonRange className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
+								<IonRange onBlur={(e) => setNum("headDepMarked", e.target.value as number)} value={lsNum.headDepMarked || 0} className="spectrum" color="secondary" snaps={true} step={1} ticks={true} min={0} max={4}>
 									<IonLabel slot="start">Head Marked</IonLabel>
 									<IonLabel slot="end">Dependant Marked</IonLabel>
 								</IonRange>
@@ -247,7 +250,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
-								<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+								{makeText("headDepMark")}
 							</IonItem>
 
 					<IonItem className="h h1">
@@ -277,7 +280,7 @@ const Lex = () => {
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "properNames")}>
-										<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+										{makeText("propNames")}
 									</IonItem>
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
@@ -321,7 +324,7 @@ const Lex = () => {
 										</IonItem>
 
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "possess")}>
-										<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+										{makeText("possessable")}
 									</IonItem>
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
@@ -336,7 +339,7 @@ const Lex = () => {
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "countMass")}>
-										<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+										{makeText("countMass")}
 									</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
@@ -373,7 +376,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4 following", "grammCateg", "nouns", "pronounAnaph")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("pronounAnaphClitic")}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -448,7 +451,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "verbs", "semanRole")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("semanticRole")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
@@ -464,72 +467,72 @@ const Lex = () => {
 											<IonCol>Description</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("actions")}</IonCol>
 											<IonCol className="label">Actions</IonCol>
 											<IonCol>Agent affects Patient.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("actionProcesses")}</IonCol>
 											<IonCol className="label">Action-Processes</IonCol>
 											<IonCol>Agent only.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("weather")}</IonCol>
 											<IonCol className="label">Weather Verbs</IonCol>
 											<IonCol>In English, these require a dummy Agent ("<em>It</em> is raining"); this is not the case in many other languages!</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("states")}</IonCol>
 											<IonCol className="label">States</IonCol>
 											<IonCol>be hot, be broken, be frozen, etc; may be predicate-bound.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("involuntaryProcesses")}</IonCol>
 											<IonCol className="label">Involuntary Processes</IonCol>
 											<IonCol>He grew; It broke; They died; etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("bodyFunctions")}</IonCol>
 											<IonCol className="label">Bodily Functions</IonCol>
 											<IonCol>cough, sweat, bleed, cry, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("motion")}</IonCol>
 											<IonCol className="label">Motion</IonCol>
 											<IonCol>go, float, proceed, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("position")}</IonCol>
 											<IonCol className="label">Position</IonCol>
 											<IonCol>sit, stand, hang, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("factive")}</IonCol>
 											<IonCol className="label">Factive</IonCol>
 											<IonCol>Something comes into being: e.g. build, form, ignite, create</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("cognition")}</IonCol>
 											<IonCol className="label">Cognition</IonCol>
 											<IonCol>know, suspect, forget etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("sensation")}</IonCol>
 											<IonCol className="label">Sensation</IonCol>
 											<IonCol>hear, see, taste, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("emotion")}</IonCol>
 											<IonCol className="label">Emotion</IonCol>
 											<IonCol>be happy, be afraid, be mellow, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("utterance")}</IonCol>
 											<IonCol className="label">Utterance</IonCol>
 											<IonCol>say, yell, murmur, declare, chat, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("manipulation")}</IonCol>
 											<IonCol className="label">Manipulation</IonCol>
 											<IonCol>force, urge, cause, let, permit, allow, compel, etc</IonCol>
 										</IonRow>
@@ -543,7 +546,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "verbs", "classes")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("verbClass")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
@@ -570,7 +573,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "verbs", "verStruc")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("verbStructure")}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -593,23 +596,23 @@ const Lex = () => {
 								<IonItem className={classy("l4", "grammCateg", "modif", "pcda")}>
 									<IonGrid className="cols2">
 											<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("lexVerb")}</IonCol>
 											<IonCol>Lexicalized as verbs (austronesian languages)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("lexNoun")}</IonCol>
 											<IonCol>Lexicalized as nouns (Finnish)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("lexVN")}</IonCol>
 											<IonCol>Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("lexVorN")}</IonCol>
 											<IonCol>Some are lexicalized as nouns, others are lexicalized as verbs (Yoruba)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox"><IonCheckbox /></IonCol>
+											<IonCol className="cbox">{makeBox("adjectives")}</IonCol>
 											<IonCol>Distinct class of "adjectives" (English)</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -621,7 +624,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "modif", "pcda")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("propClass")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
@@ -636,7 +639,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "modif", "nonNumQ")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("quantifier")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
@@ -682,7 +685,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "modif", "numer")}>
-									<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+									{makeText("numeral")}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -705,7 +708,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "grammCateg", "adv")}>
-								<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+								{makeText("adverb")}
 							</IonItem>
 
 					<IonItem className="h h1">
@@ -746,32 +749,32 @@ const Lex = () => {
 										<IonCol>Example</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("APV")}</IonCol>
 										<IonCol className="cbox leftA"><strong>APV/SV</strong></IonCol>
 										<IonCol><em>Bob softballs pitches; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("AVP")}</IonCol>
 										<IonCol className="cbox leftA"><strong>AVP/SV</strong></IonCol>
 										<IonCol><em>Bob pitches softballs; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("PAV")}</IonCol>
 										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
 										<IonCol><em>Softballs Bob pitches; Bob pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("PVA")}</IonCol>
 										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
 										<IonCol><em>Softballs pitches Bob; Pitches Bob.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("VAP")}</IonCol>
 										<IonCol className="cbox leftA"><strong>VAP/VS</strong></IonCol>
 										<IonCol><em>Pitches Bob softballs; Pitches Bob.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox"><IonCheckbox /></IonCol>
+										<IonCol className="cbox">{makeBox("VPA")}</IonCol>
 										<IonCol className="cbox leftA"><strong>VPA/VS</strong></IonCol>
 										<IonCol><em>Pitches softballs Bob; Pitches Bob.</em></IonCol>
 									</IonRow>
@@ -792,7 +795,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "mainClause")}>
-								<IonTextarea rows={3} placeholder="" enterkeyhint="done" inputmode="text" />
+								{makeText("mainClause")}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>

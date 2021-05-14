@@ -52,12 +52,9 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.5.1", "<")) {
-							// Do stuff to possibly bring storedState up to date
-							storedState.langSketchState = {};
-						}
 						if (compareVersions.compare(storedState.currentVersion, "0.5.2", "<")) {
 							// Do stuff to possibly bring storedState up to date
+							storedState.langSketchState = (storedState.langSketchState || {});
 							storedState.langSketchInfo = initialAppState.langSketchInfo;
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {

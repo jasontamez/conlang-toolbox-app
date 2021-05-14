@@ -145,7 +145,11 @@ export interface LangSketchStateObject {
 	[key: string]: boolean
 }
 
-type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess" | "infixMost" | "infixLess";
+type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess"
+				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
+				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
+				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
+				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA";
 export type LangSketchBoolObject = {
 	[key in LSBool]?: boolean
 }
@@ -155,7 +159,9 @@ export type LangSketchNumberObject = {
 	[key in LSNum]?: number
 }
 
-type LSText = "synthesis" | "fusion";
+type LSText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
+				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
+				| "numeral" | "adverb" | "mainClause";
 export type LangSketchTextObject = {
 	[key in LSText]?: string
 }
