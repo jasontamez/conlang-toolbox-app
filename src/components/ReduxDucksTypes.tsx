@@ -149,7 +149,8 @@ type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circu
 				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
-				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA";
+				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
+				| "circumP";
 export type LangSketchBoolObject = {
 	[key in LSBool]?: boolean
 }
@@ -161,7 +162,9 @@ export type LangSketchNumberObject = {
 
 type LSText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
 				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
-				| "numeral" | "adverb" | "mainClause";
+				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
+				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "case" | "articlesEtc"
+				| "possessors" | "classGender" | "dimAug";
 export type LangSketchTextObject = {
 	[key in LSText]?: string
 }

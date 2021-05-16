@@ -66,9 +66,9 @@ const Lex = () => {
 	const setText = (what: keyof LangSketchTextObject, value: string) => {
 		dispatch(setLSText(what, value));
 	};
-	const makeText = (what: keyof LangSketchTextObject, rows: number = 3) => {
+	const makeText = (what: keyof LangSketchTextObject, ph: string, rows: number = 3) => {
 		return (
-			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={lsText[what] || ""} rows={rows} placeholder="" enterkeyhint="done" inputmode="text" />
+			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={lsText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
 		);
 	};
 	const makeButton = (what: string) => {
@@ -123,7 +123,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									{makeText("synthesis")}
+									{makeText("synthesis", "Write any more specific notes here.")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
@@ -142,7 +142,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-									{makeText("fusion")}
+									{makeText("fusion", "Write any more specific notes here.")}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
@@ -228,7 +228,7 @@ const Lex = () => {
 								</IonItem>
 
 							<IonItem className={classy("l4", "morphTypo", "morphProc")}>
-								{makeText("morphProcess")}
+								{makeText("morphProcess", "What sort of morphological processes are used?", 6)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
@@ -250,7 +250,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
-								{makeText("headDepMark")}
+								{makeText("headDepMark", "Write any more specific notes here.")}
 							</IonItem>
 
 					<IonItem className="h h1">
@@ -280,7 +280,7 @@ const Lex = () => {
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "properNames")}>
-										{makeText("propNames")}
+										{makeText("propNames", "Write any more specific notes here.")}
 									</IonItem>
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
@@ -324,7 +324,7 @@ const Lex = () => {
 										</IonItem>
 
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "possess")}>
-										{makeText("possessable")}
+										{makeText("possessable", "Describe how the language handles possession.", 4)}
 									</IonItem>
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
@@ -339,7 +339,7 @@ const Lex = () => {
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "countMass")}>
-										{makeText("countMass")}
+										{makeText("countMass", "Write any more specific notes here.")}
 									</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
@@ -376,7 +376,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4 following", "grammCateg", "nouns", "pronounAnaph")}>
-									{makeText("pronounAnaphClitic")}
+									{makeText("pronounAnaphClitic", "Which system(s) are used by the language?", 4)}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -451,7 +451,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "verbs", "semanRole")}>
-									{makeText("semanticRole")}
+									{makeText("semanticRole", "Describe which semantic roles are important.", 6)}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
@@ -540,13 +540,7 @@ const Lex = () => {
 								</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "verbs", "classes")}>
-									<ul>
-										<li>Which classes exist as distinct categories in the language?</li>
-										<li>How are they realized?</li>
-									</ul>
-								</IonItem>
-								<IonItem className={classy("l4", "grammCateg", "verbs", "classes")}>
-									{makeText("verbClass")}
+									{makeText("verbClass", "Describe which verb classes exist as distinct categories in the language and how they are realized.", 8)}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
@@ -573,7 +567,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "verbs", "verStruc")}>
-									{makeText("verbStructure")}
+									{makeText("verbStructure", "Describe the verb structure here.", 8)}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -624,7 +618,7 @@ const Lex = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "modif", "pcda")}>
-									{makeText("propClass")}
+									{makeText("propClass", "Write any more specific notes here.")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
@@ -635,11 +629,10 @@ const Lex = () => {
 								<IonItem className={classy("l4", "grammCateg", "modif", "nonNumQ")}>
 									<ul>
 										<li>e.g. few, many, some</li>
-										<li>Which quantifiers exist?</li>
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "grammCateg", "modif", "nonNumQ")}>
-									{makeText("quantifier")}
+									{makeText("quantifier", "Which quantifiers exist?")}
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
@@ -680,12 +673,7 @@ const Lex = () => {
 									</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "modif", "numer")}>
-									<ul>
-										<li>Describe the language's numeral system.</li>
-									</ul>
-								</IonItem>
-								<IonItem className={classy("l4", "grammCateg", "modif", "numer")}>
-									{makeText("numeral")}
+									{makeText("numeral", "Describe the language's numeral system.", 6)}
 								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
@@ -708,7 +696,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "grammCateg", "adv")}>
-								{makeText("adverb")}
+								{makeText("adverb", "How are adverbs (or adverb-like phrases) handled?", 4)}
 							</IonItem>
 
 					<IonItem className="h h1">
@@ -795,7 +783,7 @@ const Lex = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "mainClause")}>
-								{makeText("mainClause")}
+								{makeText("mainClause", "Write any more specific notes here.")}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
@@ -803,35 +791,264 @@ const Lex = () => {
 							<IonLabel>Verb Phrases</IonLabel>
 						</IonItem>
 
+							<IonItem className={classy("l3", "constOrd", "vPhr")}>
+								<ul>
+									<li>Where do <em>auxilliary verbs</em> (semantically empty, e.g. to be/to have) appear in relation to the main verb?</li>
+									<li>Where do adverbs fit in relation to the verb and auxilliaries?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "vPhr")}>
+								{makeText("verbPhrase", "Answer those questions here.", 4)}
+							</IonItem>
+
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("nPhr")}
 							<IonLabel>Noun Phrases</IonLabel>
 						</IonItem>
+
+							<IonItem className={classy("l3", "constOrd", "nPhr")}>
+								<ul>
+									<li>What is the order of the determiners***, numerals***, genitives***, modifiers***, relative clauses***, classifiers***, and the head noun?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "nPhr")}>
+								{makeText("nounPhrase", "Answer here.", 4)}
+							</IonItem>
+
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("adpPhr")}
 							<IonLabel>Adpositional Phrases</IonLabel>
 						</IonItem>
 
+							<IonItem className={classy("l3", "constOrd", "adPhr")}>
+								<IonGrid className="cols2">
+									<IonRow>
+										<IonCol className="cbox">{makeBox("preP")}</IonCol>
+										<IonCol>Preposition (<em>with</em> an apple)</IonCol>
+									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("postP")}</IonCol>
+										<IonCol>Postpostition (an apple <em>with</em>)</IonCol>
+									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("circumP")}</IonCol>
+										<IonCol>Circumposition (rare; <em>with</em> an apple <em>with</em>)</IonCol>
+									</IonRow>
+								</IonGrid>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "adpPhr")}>
+								<ul>
+									<li>Many derive from verbs, especially serial verbs***.</li>
+									<li>Others derive from nouns, especially body parts (top, back, face, head, etc).</li>
+									<li>Adpositional phrases may appear the same as possessed noun phrases (in front of vs. on his face) or regular nouns (top vs. on top of).</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "adpPhr")}>
+								{makeText("adPhrase", "Describe adpositions in the language.", 4)}
+							</IonItem>
+
+
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("comPhr")}
 							<IonLabel>Comparatives</IonLabel>
 						</IonItem>
+
+							<IonItem className={classy("l3", "constOrd", "comPhr")}>
+								<ul>
+									<li>Does the language even have a form? (e.g. X is big. Y is very big.)</li>
+									<li>A comparison phrase requires a known standard, a marker that signals this is a comparison, and the quality of comparison.
+										<ul>
+											<li>For example, in <em>"X is bigger than Y"</em>, (<em>Y</em>) is the known standard, (<em>is __er than</em>) is a comparison marker, and (<em>big</em>) is the quality.</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "comPhr")}>
+								{makeText("compare", "Describe comparisons in the language.")}
+							</IonItem>
+
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("quPhr")}
 							<IonLabel>Question Particles and Words</IonLabel>
 						</IonItem>
 
+							<IonItem className={classy("l3", "constOrd", "quPhr")}>
+								<ul>
+									<li>In many languages, yes/no questions are indicated by a change in intonation. In others, a question particle is used; e.g. <em>do</em> you understand?</li>
+									<li>Informal questions may require a specific question word.</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "quPhr")}>
+								{makeText("questions", "How are questions handled in the language?")}
+							</IonItem>
+
+
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("summary")}
 							<IonLabel>Summary</IonLabel>
 						</IonItem>
 
+							<IonItem className={classy("l3", "constOrd", "summary")}>
+								<ul>
+									<li>When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "constOrd", "summary")}>
+								{makeText("COType", "Note consistency and any deviations not already covered.")}
+							</IonItem>
+
+
 					<IonItem className="h h1">
-						{makeButton("nounPhOp")}
+						{makeButton("NPO")}
 						<IonLabel>Noun and Noun Phrase Operations</IonLabel>
 					</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("compounding")}
+							<IonLabel>Compounding</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "compounding")}>
+								<ul>
+									<li>When two nouns are combined into one, several changes may occur.
+										<ul>
+											<li>Stress pattern change, e.g. "<em>black</em>bird" vs "black <em>bird</em>".</li>
+											<li>Unusual word order, e.g. "housekeeper" vs "keeper of the house".</li>
+											<li>Morphology specific to compounds, e.g. "can-opener" does not imply the existence of a verb "to can-open".</li>
+											<li>A resulting meaning that is either more specific than its components (e.g. "windshield" vs. "wind" or "shield") or altogether different (e.g. "heaven-breath" means "weather" in Mandarin).</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "compounding")}>
+								{makeText("compounding", "Describe the sorts of compounding that happen in the language.", 4)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("denom")}
+							<IonLabel>Denominalization</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "denom")}>
+								<ul>
+									<li>Some languages have many ways of changing a noun into a non-noun.
+										<ul>
+											<li>English can append <em>-like</em> to make an adjective.</li>
+											<li>Eskimo has many verbalizing forms, e.g. to be X, to go towards X, to play with X, to hunt X.</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "denom")}>
+								{makeText("denoms", "Describe the language's denominalization strategies.", 4)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("nNumber")}
+							<IonLabel>Number</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "nNumber")}>
+								<ul>
+									<li>Some languages only mark number occassionally or optionally depending on the type of noun.</li>
+									<li>Often intertwined with other markers, such as case marking in Romance languages.</li>
+									<li>Most languages leave the singular unmarked, but not all!</li>
+									<li>Number marking may be as simple as singular/plural (more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts).</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "nNumber")}>
+								{makeText("nNumber", "Describe how nouns interact with number.", 4)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("nCase")}
+							<IonLabel>Case</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "nCase")}>
+								<ul>
+									<li>Case markings can describe the role a noun plays in a sentence.</li>
+									<li>In English, most case markings only survive in the pronouns, with word order doing the job for regular nouns. The major exception is the genitive case (possessive), which is marked with <em>'s</em>.</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "nCase")}>
+								{makeText("case", "Describe how nouns interact with case.", 4)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("articlesDD")}
+							<IonLabel>Articles, Determiners, Demonstratives</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "articlesDD")}>
+								<ul>
+									<li>Do articles exist? Are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</li>
+									<li>Is there a class of demonstratives distinct from articles?
+										<ul>
+											<li>How many degrees of distance are represented? English has two: this/that. Spanish has three.</li>
+											<li>Are there other distinctions besides distance?</li>
+										</ul>
+									</li>
+									<li>Do other determiners exist? These words distinguish or identify a noun without modifying it.</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "articlesDD")}>
+								{makeText("articlesEtc", "Describe how articles, determiners, and demonstratives work.", 6)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("posss")}
+							<IonLabel>Possessors</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "posss")}>
+								<ul>
+									<li>This does <strong>not</strong> refer to possessive clauses!</li>
+									<li>How are possessors expressed in the noun phrase?</li>
+									<li>Do nouns agree with their possessors? Vice versa?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "posss")}>
+								{makeText("possessors", "Describe how possession works in a noun phrase.", 3)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("classGen")}
+							<IonLabel>Class (Gender)</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "classGen")}>
+								<ul>
+									<li>Class system often require classifiers (special operators) to declare class.</li>
+									<li>Gender systems use "agreement". At the very least, they will agree in number.</li>
+									<li>What classes/genders exist and how do they manifest?</li>
+									<li>What dimension of reality is most central to the class system? (animacy? shape? function?) What other dimensions are relevant?</li>
+									<li>Do the classifiers occur with numerals? Adjectives? Verbs? What is their function in these contexts?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "classGen")}>
+								{makeText("classGender", "Describe the language's class/gender system.", 8)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "NPO")}>
+							{makeButton("dimAug")}
+							<IonLabel>Diminution/Augmentation</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "NPO", "dimAug")}>
+								<ul>
+									<li>Is diminution (making smaller) and/or augmentation (making bigger) used in the language?</li>
+									<li>Is it obligatory? Does one member have to occur in every full noun phrase?</li>
+									<li>Is it productive? Does it work with all full noun phrases and does it have the same meaning for each?</li>
+									<li>Expressed lexically. morphologically, or analytically?</li>
+									<li>Where in the NP is this operation likely to be located? Can it occur in more than one place?</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "dimAug")}>
+								{makeText("dimAug", "Describe the language's relation to diminution and augmentation.", 8)}
+							</IonItem>
 
 					<IonItem className="h h1">
 						{makeButton("predNom")}
