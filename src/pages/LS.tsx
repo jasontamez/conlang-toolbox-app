@@ -443,9 +443,9 @@ const Lex = () => {
 										<li>In English, all verbs require an Agent, and many also require a Patient, but no other roles are encoded into the verb.</li>
 										<li>Roles can change according to the perspective of the speaker:
 											<ul>
-												<li>I hit Bob with the hammer.</li>
-												<li>The hammer hit Bob.</li>
-												<li>Bob was hit.</li>
+												<li>I hit Steve with the hammer.</li>
+												<li>The hammer hit Steve.</li>
+												<li>Steve was hit.</li>
 											</ul>
 										</li>
 									</ul>
@@ -714,16 +714,16 @@ const Lex = () => {
 									<li>Human languages tend towards one of six different basic forms.
 										<ul>
 											<li><strong>S</strong> is the Subject of an intransitive clause.
-												<ul><li><em>Bob</em> pitches.</li></ul>
+												<ul><li><em>Steve</em> pitches.</li></ul>
 											</li>
 											<li><strong>V</strong> is the verb in a clause.
-												<ul><li>Bob <em>pitches</em>.</li></ul>
+												<ul><li>Steve <em>pitches</em>.</li></ul>
 											</li>
 											<li><strong>A</strong> is the Agent of a transitive clause.
-												<ul><li><em>Bob</em> pitches softballs.</li></ul>
+												<ul><li><em>Steve</em> pitches softballs.</li></ul>
 											</li>
 											<li><strong>P</strong> is the Patient of a transitive clause.
-												<ul><li>Bob pitches <em>softballs</em>.</li></ul>
+												<ul><li>Steve pitches <em>softballs</em>.</li></ul>
 											</li>
 										</ul>
 									</li>
@@ -739,32 +739,32 @@ const Lex = () => {
 									<IonRow>
 										<IonCol className="cbox">{makeBox("APV")}</IonCol>
 										<IonCol className="cbox leftA"><strong>APV/SV</strong></IonCol>
-										<IonCol><em>Bob softballs pitches; Bob pitches.</em></IonCol>
+										<IonCol><em>Steve softballs pitches; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox">{makeBox("AVP")}</IonCol>
 										<IonCol className="cbox leftA"><strong>AVP/SV</strong></IonCol>
-										<IonCol><em>Bob pitches softballs; Bob pitches.</em></IonCol>
+										<IonCol><em>Steve pitches softballs; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox">{makeBox("PAV")}</IonCol>
 										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
-										<IonCol><em>Softballs Bob pitches; Bob pitches.</em></IonCol>
+										<IonCol><em>Softballs Steve pitches; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox">{makeBox("PVA")}</IonCol>
 										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
-										<IonCol><em>Softballs pitches Bob; Pitches Bob.</em></IonCol>
+										<IonCol><em>Softballs pitches Steve; Pitches Steve.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox">{makeBox("VAP")}</IonCol>
 										<IonCol className="cbox leftA"><strong>VAP/VS</strong></IonCol>
-										<IonCol><em>Pitches Bob softballs; Pitches Bob.</em></IonCol>
+										<IonCol><em>Pitches Steve softballs; Pitches Steve.</em></IonCol>
 									</IonRow>
 									<IonRow>
 										<IonCol className="cbox">{makeBox("VPA")}</IonCol>
 										<IonCol className="cbox leftA"><strong>VPA/VS</strong></IonCol>
-										<IonCol><em>Pitches softballs Bob; Pitches Bob.</em></IonCol>
+										<IonCol><em>Pitches softballs Steve; Pitches Steve.</em></IonCol>
 									</IonRow>
 								</IonGrid>
 							</IonItem>
@@ -1055,15 +1055,336 @@ const Lex = () => {
 						<IonLabel>Predicate Nominals and Related Constructions</IonLabel>
 					</IonItem>
 
+						<IonItem className={classy("l2", "predNom")}>
+							<ul>
+								<li>These forms generally encode the following information:
+									<ul>
+										<li>Proper inclusion (X is a Y)</li>
+										<li>Equation (X is Y)</li>
+										<li>Attribution (X is made Y)</li>
+										<li>Location (X is located Y)</li>
+										<li>Existence (X exists in Y)</li>
+										<li>Possession (X has Y)</li>
+									</ul>
+								</li>
+							</ul>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "predNom")}>
+							{makeButton("pNom")}
+							<IonLabel>Predicate Nominals and Adjecives</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "predNom", "pNom")}>
+								<ul>
+									<li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li>
+									<li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li>
+									<li>If they use a verb, it will not be a very <em>semantically rich</em> verb (e.g. to be, to do)</li>
+									<li>Will generally use one of the following strategies:
+										<ul>
+											<li><em>Juxtaposition</em>
+												<ul>
+													<li>Two nouns (or a noun and adjective) are placed next to each other.</li>
+													<li>Ex: Steve doctor. Mouse small. (Steve is a doctor. A mouse is small.)</li>
+												</ul>
+											</li>
+											<li><em>Joined by copula</em>
+												<ul>
+													<li>A copula is a morpheme that "couples" two elements. Often encodes tense/aspect.</li>
+													<li>The copula can take different forms:
+														<ul>
+															<li><em>Verb</em>
+																<ul>
+																	<li>These tend to be very irregular verbs.</li>
+																	<li>They tend to belong to the same verb class as stative verbs.</li>
+																	<li>They tend to function as auxilliaries in other constructions.</li>
+																	<li>Ex: Steve is a doctor.</li>
+																</ul>
+															</li>
+															<li><em>Pronoun</em>
+																<ul>
+																	<li>The pronoun corresponds to the subject.</li>
+																	<li>Ex: Steve, he a doctor.</li>
+																</ul>
+															</li>
+															<li><em>Invariant particle</em>
+																<ul>
+																	<li>This particle may derive from a verb or pronoun.</li>
+																	<li>The particle will not encode tense/aspect/gender/anything.</li>
+																	<li>Ex: Steve blorp doctor.</li>
+																</ul>
+															</li>
+															<li><em>Derivational operation</em>
+																<ul>
+																	<li>Predicate noun becomes a verb.</li>
+																	<li>Ex: Steve doctor-being.</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "predNom", "pNom")}>
+								{makeText("predNom", "Describe the language's strategy for predicate nominals and adjectives.", 6)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "predNom")}>
+							{makeButton("pLoc")}
+							<IonLabel>Predicate Locatives</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "predNom", "pLoc")}>
+								<ul>
+									<li>Many languages use a word that gets translated as "be at".</li>
+									<li>Locative word is often the same as a locative adposition.</li>
+									<li>Word order usually distinguishes possessive clauses from locational clauses.
+										<ul>
+											<li>Ex: Steve has a cat; the cat is behind Steve.</li>
+										</ul>
+									</li>
+									<li>English bases locatives on possessive clauses, but with an inanimate possessor.</li>
+									<li>Russian bases possessive clauses on locatives, but with an animate possessor.</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "predNom", "pLoc")}>
+								{makeText("predLoc", "How does the language handle predicate locatives?", 6)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "predNom")}>
+							{makeButton("pEx")}
+							<IonLabel>Existentials</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "predNom", "pEx")}>
+								<ul>
+									<li>These constructions usually serve a presentative function, introducing new participants.</li>
+									<li>Usually, the nominal is indefinite: "There are lions in Africa" vs. "There are the lions in Africa".</li>
+									<li>Usually little to no case marking, verb agreement, etc.</li>
+									<li>Often share features of predicate nominals (copula), but some languages prohibit such forms.</li>
+									<li>Often has special negation stategies (e.g. a verb meaning 'to lack': "Under the bed lacks a cat").</li>
+									<li>Often play a role in "impersonal" or "circumstantial" constructions ("There will be dancing in the streets!"), for situations that lack the need for any specific actor ("Someone is crying"), or to downplay the significance of an actor ("Mistakes have been made").</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "predNom", "pEx")}>
+								{makeText("predEx", "How does the language handle existentials?", 6)}
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "predNom")}>
+							{makeButton("pPoss")}
+							<IonLabel>Possessive Clauses</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "predNom", "pPoss")}>
+								<ul>
+									<li>Verb strategy: "I have a book."</li>
+									<li>Copula strategy: "The book is at me."</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "predNom", "pPoss")}>
+								{makeText("predEx", "Which format does the language use?", 3)}
+							</IonItem>
+
 					<IonItem className="h h1">
 						{makeButton("grammRel")}
 						<IonLabel>Grammatical Relations</IonLabel>
 					</IonItem>
 
+						<IonItem className={classy("h h2 l2", "grammRel")}>
+							<IonLabel>Nominative/Accusative Alignment</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "grammRel")}>
+								<ul>
+									<li>(S)ubjects and (A)gents are treated the same, in the nominative case.
+										<ul>
+											<li><em>I</em> fell.</li>
+											<li><em>I</em> pushed him.</li>
+										</ul>
+									</li>
+									<li>(P)atients are given the accusative case.
+										<ul>
+											<li>I pushed <em>him</em>.</li>
+										</ul>
+									</li>
+									<li>S and A are both viewed as agents, having volition</li>
+									<li>A tends to stick with the (V)erb, leaving the P floating:
+										<ul>
+											<li>AVP; PAV; VAP; PVA</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+
+						<IonItem className={classy("h h2 l2", "grammRel")}>
+							<IonLabel>Ergative/Absolutive Alignment</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "grammRel")}>
+								<ul>
+									<li>(S)ubjects and (P)atients are treated the same, in the ergative case.
+										<ul>
+											<li><em>I</em> fell.</li>
+											<li>Me pushed <em>he</em>.</li>
+										</ul>
+									</li>
+									<li>(A)gents are given the absolutive case.
+										<ul>
+											<li><em>Me</em> pushed he.</li>
+										</ul>
+									</li>
+									<li>S and P are both viewed as typically being new information.</li>
+									<li>P tends to stick with the (V)erb, leaving the A floating:
+										<ul>
+											<li>AVP; VPA; APV; PVA</li>
+										</ul>
+									</li>
+									<li>In natural languages, this tends to coexist in a hierarchy with the nominative/accusative system. 
+										<ul>
+											<li>1st person &gt; 2nd person &gt; 3rd person &gt; proper names &gt; humans &gt; animates &gt; inanimates</li>
+											<li>agreement &gt; pronouns</li>
+											<li>definite &gt; indefinite</li>
+											<li>non-past tense &gt; past tense</li>
+											<li>imperfect aspect &gt; perfect aspect</li>
+										</ul>
+									</li>
+									<li>The split in the hierarchy can happen at any point. e.g.
+										<ul>
+											<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
+											<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else</li>
+											<li>Cashinawa uses n/a for 1/2, separate marking for A and P in 3rd person, and e/a for everything else</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+
+						<IonItem className={classy("l2", "grammRel")}>
+							{makeText("ergative", "Does the language use a nominative/accusative alignment, or an ergative/absolutive alignment? Are there any exceptions?", 8)}
+						</IonItem>
+
 					<IonItem className="h h1">
 						{makeButton("voiceVal")}
 						<IonLabel>Voice and Valence Adjusting Operations</IonLabel>
 					</IonItem>
+
+						<IonItem className={classy("h h2 l2", "voiceVal")}>
+							{makeButton("valence")}
+							<IonLabel>Valence Adjustment</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "voiceVal", "valence")}>
+								<ul>
+									<li><strong>Valence</strong> refers to the amount of arguments in a clause.
+										<ul>
+											<li>"I fell" has a valence of 1.</li>
+											<li>"I pushed Steve" has a valence of 2.</li>
+											<li>"I gave Steve a coconut" has a valence of 3.</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("h h3 l3", "voiceVal", "valence")}>
+								{makeButton("valAdd")}
+								<IonLabel>Valence-Increasing Operations</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
+									{makeButton("causatives")}
+									<IonLabel>Causatives</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "causatives")}>
+										<ul>
+											<li><strong>Lexical</strong>
+												<ul>
+													<li>Most languages have at least some form of this. There are three major methods employed:
+														<ul>
+															<li>No change in the verb:
+																<ul>
+																	<li>"The vase broke" becomes "Steve broke the vase".</li>
+																</ul>
+															</li>
+															<li>Some idiosyncratic change the verb:
+																<ul>
+																	<li>"The tree fell" becomes "Steve felled the tree".</li>
+																</ul>
+															</li>
+															<li>Different verb:
+																<ul>
+																	<li>"The tree died" becomes "Steve killed the tree".</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+											<li><strong>Morphological</strong>
+												<ul>
+													<li>The verb change applies to all verbs (not just one, like <em>fell</em> vs <em>felled</em>).</li>
+													<li>Often expresses causation and permission.</li>
+													<li>May be restricted to only intransitive verbs.</li>
+													<li>In transitive verbs, the causee often goes into a different case.</li>
+												</ul>
+											</li>
+{/*}
+Commenting this out because it's not
+	instructive, more like instructions
+	on how to put causatives to work.
+											<li><strong>Coding Principles</strong>
+												<ul>
+													<li><strong>Structural Distance</strong>
+														<ul>
+															<li>If the language has more than one formal type of causative, the "smaller" one will be used for more direct causation, while the "larger" one will be used for less direct causation. Longer linguistic distance correlates to greater conceptual distance.
+																<ul>
+																	<li>"George killed Joe" is more direct than "George caused Joe to die".</li>
+																	<li>Amharic has an <em>a-</em> prefix for direct causation, <em>as-</em> for indirect.</li>
+																</ul>
+															</li>
+															<li>Analytic causatives often "require" an animate causee.
+																<ul>
+																	<li>Japanese has a morphological causative when the causee has some control over the event, but requires a lexical causative for inanimate causees.
+																		<ul>
+																			<li>Consider "Joe made George come down" vs "Joe brought the golf clubs down".</li>
+																		</ul>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+													<li><strong>Finite vs. Non-Finite Verbs</strong>
+														<ul>
+															<li>The more distant the cause from the effect in space or time, the more finite the verb will be.
+																<ul>
+																	<li>Ex: <em>"Jorge <strong>hizo comer</strong> pan a Josef"</em> indicates Jorge forced Josef to eat bread directly, while <em>"Jorge <strong>hizo</strong> que Josef <strong>comiera</strong> pan"</em> indicates he forced Josef indirectly, maybe by removing all other food.</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+													<li><strong>Case</strong>
+														<ul>
+															<li>If the causee retains a high degree of control, it will appear in a case associated with agents, but with little control, will appear in a patient case.
+																<ul>
+																	<li>Ex: "Steve asked that <em>he</em> leave" gives Steve more control than "Steve asked <em>him</em> to leave".</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+*/}
+										</ul>
+									</IonItem>
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "causatives")}>
+										{makeText("causation", "Describe which method(s) the language uses to create causatives.", 4)}
+									</IonItem>
+
+{/*
+
+
+*/}
 
 					<IonItem className="h h1">
 						{makeButton("otherVerb")}
