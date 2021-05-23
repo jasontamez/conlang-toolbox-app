@@ -165,7 +165,7 @@ type LSText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNam
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
 				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "case" | "articlesEtc"
 				| "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc" | "predEx" | "predPoss"
-				| "ergative" | "causation";
+				| "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt" | "possessRaising";
 export type LangSketchTextObject = {
 	[key in LSText]?: string
 }

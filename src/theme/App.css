@@ -797,6 +797,46 @@ ion-label.wrappableInnards {
 	position: relative;
 	left: 0.5rem;
 }
+#langSketchPage table {
+	background: var(--ion-background-shader);
+	border: solid 0.25rem var(--ion-color-dark-tint);
+	margin: 0.5rem 1rem;
+}
+#langSketchPage table td,
+#langSketchPage table th {
+	padding: 0.5rem 1rem;
+	vertical-align: top;
+	text-align: start;
+	border: 0;
+}
+#langSketchPage table td + td {
+	padding-left: 0;
+}
+#langSketchPage table tr:nth-child(even) {
+	background: var(--ion-background-shader);
+}
+#langSketchPage table ul {
+	margin: 0;
+}
+#langSketchPage .toggleButton {
+	cursor: pointer;
+	font-style: italic;
+}
+#langSketchPage .toggleButton::before {
+	content: "\25ba";  /* right arrow */
+	color: var(--ion-color-success);
+	width: 0.5rem;
+	left: 0.3rem;
+}
+#langSketchPage .toggleButton.toggled::before {
+	content: "\25bc"; /* down arrow */
+	color: var(--ion-color-danger);
+}
+#langSketchPage li.tip::before,
+#langSketchPage li.tip li::before {
+	content: "\25a0"; /* square */
+	color: var(--ion-color-success);
+}
 
 /* Known bug where the keyboard will push the header off the screen */
 

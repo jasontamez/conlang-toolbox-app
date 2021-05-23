@@ -31,6 +31,7 @@ import {
 import { LangSketchBoolObject, LangSketchNumberObject, LangSketchTextObject } from '../components/ReduxDucksTypes';
 //import { CustomStorageLS } from '../components/PersistentInfo';
 import ExtraCharactersModal from './M-ExtraCharacters';
+import { $i, $a } from '../components/DollarSignExports';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -70,6 +71,34 @@ const Lex = () => {
 		return (
 			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={lsText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
 		);
+	};
+	const toggleButton = (tag: string, cName: string, otherProps: object = {}, tip: string = "Show tips and ideas.", hide: string = "Hide tips and ideas.") => {
+		return React.createElement(
+			tag,
+			{
+				id: cName + "Toggle",
+				className: "toggleButton",
+				"data-other": hide,
+				onClick: () => toggleTip(cName),
+				...otherProps
+			},
+			tip
+		);
+	};
+	const toggleTip = (cName: string) => {
+		const toggle = $i(cName + "Toggle");
+		if(toggle === null) {
+			console.log("Bad ID/ClassName: " + cName);
+			return;
+		}
+		const current = toggle.textContent;
+		const swap = toggle.dataset.other;
+		toggle.textContent = swap;
+		toggle.dataset.other = current;
+		toggle.classList.toggle("toggled");
+		$a("." + cName).forEach((tag: HTMLElement) => {
+			tag.classList.toggle("hide");
+		});
 	};
 	const makeButton = (what: string) => {
 		return (
@@ -1236,26 +1265,27 @@ const Lex = () => {
 											<li><em>Me</em> pushed he.</li>
 										</ul>
 									</li>
-									<li>S and P are both viewed as typically being new information.</li>
+									<li>S and P are both viewed as typically being new information, or undergoing change.</li>
 									<li>P tends to stick with the (V)erb, leaving the A floating:
 										<ul>
 											<li>AVP; VPA; APV; PVA</li>
 										</ul>
 									</li>
-									<li>In natural languages, this tends to coexist in a hierarchy with the nominative/accusative system. 
+									{toggleButton("li", "splitErgativity")}
+									<li className="splitErgativity hide">In natural languages, this tends to coexist in a hierarchy with the nominative/accusative system. 
 										<ul>
-											<li>1st person &gt; 2nd person &gt; 3rd person &gt; proper names &gt; humans &gt; animates &gt; inanimates</li>
-											<li>agreement &gt; pronouns</li>
+											<li>1st person &gt; 2nd person &gt; 3rd person &gt; humans &gt; animates &gt; inanimates</li>
+											<li>agreement &gt; pronouns/case marking</li>
 											<li>definite &gt; indefinite</li>
 											<li>non-past tense &gt; past tense</li>
 											<li>imperfect aspect &gt; perfect aspect</li>
 										</ul>
 									</li>
-									<li>The split in the hierarchy can happen at any point. e.g.
+									<li className="splitErgativity hide">The split in the hierarchy can happen at any point. e.g.
 										<ul>
-											<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
-											<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else</li>
+											<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else (this is a very common split point)</li>
 											<li>Cashinawa uses n/a for 1/2, separate marking for A and P in 3rd person, and e/a for everything else</li>
+											<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
 										</ul>
 									</li>
 								</ul>
@@ -1329,11 +1359,8 @@ const Lex = () => {
 													<li>In transitive verbs, the causee often goes into a different case.</li>
 												</ul>
 											</li>
-{/*}
-Commenting this out because it's not
-	instructive, more like instructions
-	on how to put causatives to work.
-											<li><strong>Coding Principles</strong>
+											{toggleButton("li", "causativeCoding")}
+											<li className="causativeCoding hide tip"><strong>Coding Principles</strong>
 												<ul>
 													<li><strong>Structural Distance</strong>
 														<ul>
@@ -1374,15 +1401,308 @@ Commenting this out because it's not
 													</li>
 												</ul>
 											</li>
-*/}
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "causatives")}>
 										{makeText("causation", "Describe which method(s) the language uses to create causatives.", 4)}
 									</IonItem>
 
+								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
+									{makeButton("applic")}
+									<IonLabel>Applicatives</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "applic")}>
+										<ul>
+											<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
+												<ul>
+													<li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br />
+														{toggleButton("span", "applicEx", {}, "Show example.", "Hide example.")}
+														<span className="applicEx hide"><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
+														<table className="applicEx hide">
+															<tr>
+																<td>n-areeka</td>
+																<td>Sionti-ke</td>
+															</tr>
+															<tr>
+																<td>I-arrive</td>
+																<td>Shionti-LOC (valence: 1)</td>
+															</tr>
+															<tr>
+																<td>n-areeka-ri</td>
+																<td>Sionti</td>
+															</tr>
+															<tr>
+																<td>I-arrive-him</td>
+																<td>Shionti (valence: 2)</td>
+															</tr>
+														</table>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</IonItem>
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "applic")}>
+										{makeText("applicatives", "Describe which method(s) the language uses for applicatives, if any.", 4)}
+									</IonItem>
+
+								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
+									{makeButton("datShift")}
+									<IonLabel>Dative Shift</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datShift")}>
+										<ul>
+											<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
+											<li>Applicatives mark the verb, while a Dative Shift does not.</li>
+											<li>Applicatives usually promote Instrumentals, while Dative Shifts usually promote Recipients and Benefactives.</li>
+											<li>Example:
+												<ul>
+													<li>"Steve gave the ball to Linda." Valence: 2</li>
+													<li>"Steve gave Linda the ball." Valence: 3, recipient promoted.</li>
+												</ul>
+											</li>
+										</ul>
+									</IonItem>
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datShift")}>
+										{makeText("dativeShifts", "Do dative shifts happen in the language? How?", 4)}
+									</IonItem>
+
+								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
+									{makeButton("datOI")}
+									<IonLabel>Dative of Interest</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datOI")}>
+										<ul>
+											<li>This is adding a participant that is associated in some way.<br />
+												{toggleButton("span", "datOfI", {}, "Show examples.", "Hide examples.")}
+												<span className="datOfI hide"><br />"Dinner is burned [for me]" in Spanish.</span>
+												<table className="datOfI hide">
+													<tr>
+														<td>Se</td>
+														<td>me</td>
+														<td>quemó</td>
+														<td>la</td>
+														<td>cena.</td>
+													</tr>
+													<tr>
+														<td>REFL</td>
+														<td>1s</td>
+														<td>burn.3s.PST</td>
+														<td>DEF.F.s</td>
+														<td>dinner</td>
+													</tr>
+												</table>
+												<span className="datOfI hide"><br />"She cut the hair [on him]" in Spanish.</span>
+												<table className="datOfI hide">
+													<tr>
+														<td>Le</td>
+														<td>cortó</td>
+														<td>el</td>
+														<td>pelo</td>
+													</tr>
+													<tr>
+														<td>3DAT</td>
+														<td>cut.3s.PST</td>
+														<td>DEF.M.s</td>
+														<td>hair</td>
+													</tr>
+												</table>
+											</li>
+										</ul>
+									</IonItem>
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datOI")}>
+										{makeText("datOfInt", "Is there a dative-of-interest operation?", 4)}
+									</IonItem>
+
+								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
+									{makeButton("possRaise")}
+									<IonLabel>Possessor Raising (a.k.a. External Possession)</IonLabel>
+								</IonItem>
+
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "possRaise")}>
+										<ul>
+											<li>In many languages, this is treated the same as a dative of interest.<br />
+												{toggleButton("span", "posR", {}, "Show examples.", "Hide examples.")}
+												<span className="posR hide"><br />"I fixed the railroad track" in Choctaw.</span>
+												<table className="posR hide">
+													<tr>
+														<td>Tali</td>
+														<td>i-hina-ya</td>
+														<td>ayska-li-tok</td>
+													</tr>
+													<tr>
+														<td>rock</td>
+														<td>AGR(III)-road-NS</td>
+														<td>fix-1s-PST (normal construction)</td>
+													</tr>
+													<tr>
+														<td>Tali-ya</td>
+														<td>hina</td>
+														<td>im-ayska-li-tok</td>
+													</tr>
+													<tr>
+														<td>rock-NS</td>
+														<td>road</td>
+														<td>AGR(III)-fix-1s-PST (possessor raised)</td>
+													</tr>
+												</table>
+											</li>
+										</ul>
+									</IonItem>
+									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "possRaise")}>
+										{makeText("possessRaising", "Does possessor raising occur?", 4)}
+									</IonItem>
+
 {/*
 
+8.2 -  Valence-decreasing operations
+8.2.1 -  Reflexives and reciprocals: how are they expressed?
+8.2.1.1 -  lexical reflexive: the verb implies agent and patient are the same
+- Joe washed, shaved, and got dressed.
+8.2.1.2 -  morphological reflexive: a word (or words) is morphed to indicate the reflexive
+- Jorge se lavo. (George washed himself. Se is a bound clitic.)
+8.2.1.3 -  analytic reflexive: lexical word distinct from the verb, making a semantic valence-lowering,
+	if not a lexical one
+- George washed himself.
+- These are often based on body parts. (Another face in the crowd, Move your butt!, etc)
+8.2.1.4 -  reciprocals are often expressed the same as reflexives!
+8.2.1.5 -  lexical reciprocal: the verb implies reciprocity
+- George and Joe shook hands [with each other].
+8.2.1.6 -  morphological reflexive, analytic: see above for explanations
+8.2.2 -  Passives
+- A semantically transitive with omitted agent, patient treated as subject, and the verb behaves as if it is
+	intransitive. (Agent is less topical than the patient.)
+8.2.2.1 -  Kinds of passive
+8.2.2.1.1 -  personal passive: agent is implied, or expressed obliquely
+8.2.2.1.1.1 -  lexical passive: the verb is inherently passive (rare!)
+8.2.2.1.1.2 -  morphological passive (common!)
+- often the same morphology as perfect aspect
+- sometimes derived from copulas or nominalizing affixes/particles
+8.2.2.1.1.3 -  analytic passive
+- English uses a copula + the "past participle" (patient nomzn.)
+8.2.2.1.2 -  impersonal passive: no agent directly indicated; can be used for intransitive verbs as well
+	as transitive
+- no known languages use specific morphology for this
+- (very few have specifics for personal passives, either)
+8.2.2.1.3 -  other kinds of passives
+- English: "was eaten by a bear" vs "got eaten by a bear"
+- Yup'ik: adversative (to the detriment of the subject), abilitative (X can be Y [by Z]), negative
+	abilitiative (X cannot be Y [by Z])
+8.2.2.1.4 -  Is a passive construction obligatory in any particular environment (P outranking A, perhaps)?
+8.2.3 -  Inverses
+- Valence "rearranging" devices
+- "Joe taught him" vs "Him, Joe did teach" (instead of "He, Joe did teach")
+8.2.3.1 -  Both direct and inverse explicitly marked
+- often follows a hierarchy where a "higher" agent requires direct and a "lower" agent requires the inverse
+8.2.3.2 -  Marked inverse
+8.2.3.3 -  Special verb agreement markers for inverse
+- again, follows a hierarchy where the verb agrees with the "higher" of the agent and patient
+8.2.3.4 -  Functional inverse: word order
+- swapping VAP for VPA (or vice-versa)
+8.2.4 -  Middle constructions
+- Uses detransitivation; a semantically transitive situation expressed as a process undergone by a patient
+	(rather than carried out by an agent)
+- English's 'break': "Joe broke the car" vs "The car broke"
+- Many languages express this the same way as they express passives
+- Often express the notion that the subject is both controller and affected
+- Sometimes called anticausatives
+8.2.5 -  Antipassives
+- Downplays a patient instead of an agent
+- P is omitted or oblique
+- verb or phrase is marked intransitive
+- A is in absolutive case
+8.2.6 -  Object demotion and omission
+- Joe shot George (normal)
+- Joe shot at George (object demotion)
+- Joe shot (object omission)
+8.2.7 -  Object incorporation
+- A noun becomes attached to or incorporated into the verb
+- Often the object rather than the subject (baby-sitting, car-washing)
+- May serve a function
+- In Panare, incorporating a body part noun into a cutting verb means the part was cut completely off,
+	whereas leaving it unincorporated means it was merely injured (Darth Vader hand-cut vs Darth Vader cut hand)
+9 -  Other verb and verb-phrase operations
+9.1 -  Nominalization
+9.1.1 -  Action nominalization
+walk → a walk, walking
+employ → employment
+grow → growth
+9.1.2 -  Participant nominalizations
+9.1.2.1 -  Agent nominalizations
+employ → employer
+hunt → hunter
+in some languages, this would be one who is currently hunting!
+9.1.2.2 -  Patient nominalizations
+buy → a [good|bad] buy
+employ → employee (came from French past participle!)
+9.1.2.3 -  Instrument nominalizations
+grind → grinder
+point → pointer
+9.1.2.4 -  Location nominalizations
+workshop, fireplace, bedroom
+9.1.2.5 -  Product nominalizations
+scratch → a scratch
+permit; reject; convert → permit; reject; convert (stress change only!)
+9.1.2.6 -  Manner nominalizations
+curve → that pitcher's curve (when he throws a curveball)
+rare in languages
+9.2 -  Compounding (including incorporation)
+Noun incorporation: noun becomes attached to verb (see 8.2.7)
+most common: object incorporation
+sell pigs → pig-sell
+Verb-verb incorporation
+often, verbs of motion enter into these compounds
+shout-rise → he shouts rising
+Verbs that freely compound like this typically lose their verbal character and become derivational affixes.
+9.3 -  Tense/Aspect/Mode
+- TAM are sometimes hard to tease apart, and may only be considered separate because of how they are in western languages
+- Some languages pay more attention to tense (English), aspect (Austronesian languages), or mode (Eskimo)
+- Furthermore, some verb stems may not allow certain operations while favoring others
+- Certain TAM morphemes may cluster together with greater-than-chance frequency, forming hypermorphemes
+- Often interacts with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number)
+9.3.1 -  Tense
+- Action in reference to "now"
+* past/present/future
+* past/nonpast, nonfuture/future
+* not-now/now/not-now
+* distant past/a year ago/a month ago/a week ago/today or yesterday/now/soon/future
+- Future tense markers often derive from free verbs meaning come, go, or want
+9.3.2 -  Aspect
+[ inception
+< unbounded >
+| temporal boundary
+] completion
+x a punctual event (has no internal temporal structure)
+- Case markers/articles can be mistaken for TAM markers because they often affect the aspect: I did
+	things (habitual) vs I did a thing (perfective)
+9.3.2.1 -  Perfective [–]
+He wrote a letter. (Eng: may be habitual, iterative, etc)
+9.3.2.2 -  Imperfective <----->
+He writes letters.
+9.3.2.3 -  Perfect --|x
+He has come from there.
+9.3.2.4 -  Pluperfect ----| (focus) ---- (now)
+I had entered the palace.
+9.3.2.5 -  Completive >----]
+She finished the job.
+9.3.2.6 -  Inceptive [----->
+She started the job.
+9.3.2.7 -  Continuing/progressive >----->
+He is writing letters. (specific event, ongoing process rather than stative)
+9.3.2.8 -  Punctual x
+He sneezed.
+9.3.2.9 -  Iterative >-x-x-x-x-x-x-x-x->
+She is coughing.
+9.3.2.10 -  Habitual <------>
+He often writes.
+– There is often a historical connection between aspect marking and locational/directional markings
+I came to see you [inceptive]
+He cut away at the turkey [imperfective]
+Tom wolfed it down [perfective]
+I drink your milkshake up [perfective]
+He is a-walking (at walking) [progressive]
 
 */}
 
