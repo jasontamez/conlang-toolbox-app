@@ -150,7 +150,7 @@ type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circu
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
-				| "circumP";
+				| "circumP" | "markInv" | "markDirInv" | "verbAgreeInv";
 export type LangSketchBoolObject = {
 	[key in LSBool]?: boolean
 }
@@ -165,7 +165,8 @@ type LSText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNam
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
 				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "case" | "articlesEtc"
 				| "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc" | "predEx" | "predPoss"
-				| "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt" | "possessRaising";
+				| "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt" | "possessRaising"
+				| "refls" | "recips" | "passives" | "inverses" | "middleCon" | "antiP" | "objDemOmInc";
 export type LangSketchTextObject = {
 	[key in LSText]?: string
 }

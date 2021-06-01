@@ -1300,329 +1300,467 @@ const Lex = () => {
 						<IonLabel>Voice and Valence Adjusting Operations</IonLabel>
 					</IonItem>
 
+						<IonItem className={classy("l2", "voiceVal")}>
+							<ul>
+								<li><strong>Valence</strong> refers to the amount of arguments in a clause.
+									<ul>
+										<li>"I fell" has a valence of 1.</li>
+										<li>"I pushed Steve" has a valence of 2.</li>
+										<li>"I gave Steve a coconut" has a valence of 3.</li>
+										<li>"I gave a coconut to Steve" has a valence of 2.
+											<ul>
+												<li>"To Steve" is in an oblique case, forming a verb modifier instead of being an argument of the verb.</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</IonItem>
 						<IonItem className={classy("h h2 l2", "voiceVal")}>
-							{makeButton("valence")}
-							<IonLabel>Valence Adjustment</IonLabel>
+							{makeButton("valAdd")}
+							<IonLabel>Valence-Increasing Operations</IonLabel>
 						</IonItem>
 
-							<IonItem className={classy("l3", "voiceVal", "valence")}>
-								<ul>
-									<li><strong>Valence</strong> refers to the amount of arguments in a clause.
-										<ul>
-											<li>"I fell" has a valence of 1.</li>
-											<li>"I pushed Steve" has a valence of 2.</li>
-											<li>"I gave Steve a coconut" has a valence of 3.</li>
-										</ul>
-									</li>
-								</ul>
-							</IonItem>
-							<IonItem className={classy("h h3 l3", "voiceVal", "valence")}>
-								{makeButton("valAdd")}
-								<IonLabel>Valence-Increasing Operations</IonLabel>
+							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
+								{makeButton("causatives")}
+								<IonLabel>Causatives</IonLabel>
 							</IonItem>
 
-								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
-									{makeButton("causatives")}
-									<IonLabel>Causatives</IonLabel>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "causatives")}>
+									<ul>
+										<li><strong>Lexical</strong>
+											<ul>
+												<li>Most languages have at least some form of this. There are three major methods employed:
+													<ul>
+														<li>No change in the verb:
+															<ul>
+																<li>"The vase broke" becomes "Steve broke the vase".</li>
+															</ul>
+														</li>
+														<li>Some idiosyncratic change the verb:
+															<ul>
+																<li>"The tree fell" becomes "Steve felled the tree".</li>
+															</ul>
+														</li>
+														<li>Different verb:
+															<ul>
+																<li>"The tree died" becomes "Steve killed the tree".</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li><strong>Morphological</strong>
+											<ul>
+												<li>The verb change applies to all verbs (not just one, like <em>fell</em> vs <em>felled</em>).</li>
+												<li>Often expresses causation and permission.</li>
+												<li>May be restricted to only intransitive verbs.</li>
+												<li>In transitive verbs, the causee often goes into a different case.</li>
+											</ul>
+										</li>
+										{toggleButton("li", "causativeCoding")}
+										<li className="causativeCoding hide tip"><strong>Coding Principles</strong>
+											<ul>
+												<li><strong>Structural Distance</strong>
+													<ul>
+														<li>If the language has more than one formal type of causative, the "smaller" one will be used for more direct causation, while the "larger" one will be used for less direct causation. Longer linguistic distance correlates to greater conceptual distance.
+															<ul>
+																<li>"George killed Joe" is more direct than "George caused Joe to die".</li>
+																<li>Amharic has an <em>a-</em> prefix for direct causation, <em>as-</em> for indirect.</li>
+															</ul>
+														</li>
+														<li>Analytic causatives often "require" an animate causee.
+															<ul>
+																<li>Japanese has a morphological causative when the causee has some control over the event, but requires a lexical causative for inanimate causees.
+																	<ul>
+																		<li>Consider "Joe made George come down" vs "Joe brought the golf clubs down".</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+												<li><strong>Finite vs. Non-Finite Verbs</strong>
+													<ul>
+														<li>The more distant the cause from the effect in space or time, the more finite the verb will be.
+															<ul>
+																<li>Ex: <em>"Jorge <strong>hizo comer</strong> pan a Josef"</em> indicates Jorge forced Josef to eat bread directly, while <em>"Jorge <strong>hizo</strong> que Josef <strong>comiera</strong> pan"</em> indicates he forced Josef indirectly, maybe by removing all other food.</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+												<li><strong>Case</strong>
+													<ul>
+														<li>If the causee retains a high degree of control, it will appear in a case associated with agents, but with little control, will appear in a patient case.
+															<ul>
+																<li>Ex: "Steve asked that <em>he</em> leave" gives Steve more control than "Steve asked <em>him</em> to leave".</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "causatives")}>
+									{makeText("causation", "Describe which method(s) the language uses to create causatives.", 4)}
 								</IonItem>
 
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "causatives")}>
-										<ul>
-											<li><strong>Lexical</strong>
-												<ul>
-													<li>Most languages have at least some form of this. There are three major methods employed:
-														<ul>
-															<li>No change in the verb:
-																<ul>
-																	<li>"The vase broke" becomes "Steve broke the vase".</li>
-																</ul>
-															</li>
-															<li>Some idiosyncratic change the verb:
-																<ul>
-																	<li>"The tree fell" becomes "Steve felled the tree".</li>
-																</ul>
-															</li>
-															<li>Different verb:
-																<ul>
-																	<li>"The tree died" becomes "Steve killed the tree".</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-											<li><strong>Morphological</strong>
-												<ul>
-													<li>The verb change applies to all verbs (not just one, like <em>fell</em> vs <em>felled</em>).</li>
-													<li>Often expresses causation and permission.</li>
-													<li>May be restricted to only intransitive verbs.</li>
-													<li>In transitive verbs, the causee often goes into a different case.</li>
-												</ul>
-											</li>
-											{toggleButton("li", "causativeCoding")}
-											<li className="causativeCoding hide tip"><strong>Coding Principles</strong>
-												<ul>
-													<li><strong>Structural Distance</strong>
-														<ul>
-															<li>If the language has more than one formal type of causative, the "smaller" one will be used for more direct causation, while the "larger" one will be used for less direct causation. Longer linguistic distance correlates to greater conceptual distance.
-																<ul>
-																	<li>"George killed Joe" is more direct than "George caused Joe to die".</li>
-																	<li>Amharic has an <em>a-</em> prefix for direct causation, <em>as-</em> for indirect.</li>
-																</ul>
-															</li>
-															<li>Analytic causatives often "require" an animate causee.
-																<ul>
-																	<li>Japanese has a morphological causative when the causee has some control over the event, but requires a lexical causative for inanimate causees.
-																		<ul>
-																			<li>Consider "Joe made George come down" vs "Joe brought the golf clubs down".</li>
-																		</ul>
-																	</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-													<li><strong>Finite vs. Non-Finite Verbs</strong>
-														<ul>
-															<li>The more distant the cause from the effect in space or time, the more finite the verb will be.
-																<ul>
-																	<li>Ex: <em>"Jorge <strong>hizo comer</strong> pan a Josef"</em> indicates Jorge forced Josef to eat bread directly, while <em>"Jorge <strong>hizo</strong> que Josef <strong>comiera</strong> pan"</em> indicates he forced Josef indirectly, maybe by removing all other food.</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-													<li><strong>Case</strong>
-														<ul>
-															<li>If the causee retains a high degree of control, it will appear in a case associated with agents, but with little control, will appear in a patient case.
-																<ul>
-																	<li>Ex: "Steve asked that <em>he</em> leave" gives Steve more control than "Steve asked <em>him</em> to leave".</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</IonItem>
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "causatives")}>
-										{makeText("causation", "Describe which method(s) the language uses to create causatives.", 4)}
-									</IonItem>
+							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
+								{makeButton("applic")}
+								<IonLabel>Applicatives</IonLabel>
+							</IonItem>
 
-								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
-									{makeButton("applic")}
-									<IonLabel>Applicatives</IonLabel>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "applic")}>
+									<ul>
+										<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
+											<ul>
+												<li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br />
+													{toggleButton("span", "applicEx", {}, "Show example.", "Hide example.")}
+													<span className="applicEx hide"><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
+													<table className="applicEx hide">
+														<tr>
+															<td>n-areeka</td>
+															<td>Sionti-ke</td>
+														</tr>
+														<tr>
+															<td>I-arrive</td>
+															<td>Shionti-LOC (valence: 1)</td>
+														</tr>
+														<tr>
+															<td>n-areeka-ri</td>
+															<td>Sionti</td>
+														</tr>
+														<tr>
+															<td>I-arrive-him</td>
+															<td>Shionti (valence: 2)</td>
+														</tr>
+													</table>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "applic")}>
+									{makeText("applicatives", "Describe which method(s) the language uses for applicatives, if any.", 4)}
 								</IonItem>
 
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "applic")}>
-										<ul>
-											<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
-												<ul>
-													<li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br />
-														{toggleButton("span", "applicEx", {}, "Show example.", "Hide example.")}
-														<span className="applicEx hide"><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
-														<table className="applicEx hide">
-															<tr>
-																<td>n-areeka</td>
-																<td>Sionti-ke</td>
-															</tr>
-															<tr>
-																<td>I-arrive</td>
-																<td>Shionti-LOC (valence: 1)</td>
-															</tr>
-															<tr>
-																<td>n-areeka-ri</td>
-																<td>Sionti</td>
-															</tr>
-															<tr>
-																<td>I-arrive-him</td>
-																<td>Shionti (valence: 2)</td>
-															</tr>
-														</table>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</IonItem>
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "applic")}>
-										{makeText("applicatives", "Describe which method(s) the language uses for applicatives, if any.", 4)}
-									</IonItem>
+							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
+								{makeButton("datShift")}
+								<IonLabel>Dative Shift</IonLabel>
+							</IonItem>
 
-								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
-									{makeButton("datShift")}
-									<IonLabel>Dative Shift</IonLabel>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "datShift")}>
+									<ul>
+										<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
+										<li>Applicatives mark the verb, while a Dative Shift does not.</li>
+										<li>Applicatives usually promote Instrumentals, while Dative Shifts usually promote Recipients and Benefactives.</li>
+										<li>Example:
+											<ul>
+												<li>"Steve gave the ball to Linda." Valence: 2</li>
+												<li>"Steve gave Linda the ball." Valence: 3, recipient promoted.</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "datShift")}>
+									{makeText("dativeShifts", "Do dative shifts happen in the language? How?", 4)}
 								</IonItem>
 
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datShift")}>
-										<ul>
-											<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
-											<li>Applicatives mark the verb, while a Dative Shift does not.</li>
-											<li>Applicatives usually promote Instrumentals, while Dative Shifts usually promote Recipients and Benefactives.</li>
-											<li>Example:
-												<ul>
-													<li>"Steve gave the ball to Linda." Valence: 2</li>
-													<li>"Steve gave Linda the ball." Valence: 3, recipient promoted.</li>
-												</ul>
-											</li>
-										</ul>
-									</IonItem>
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datShift")}>
-										{makeText("dativeShifts", "Do dative shifts happen in the language? How?", 4)}
-									</IonItem>
+							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
+								{makeButton("datOI")}
+								<IonLabel>Dative of Interest</IonLabel>
+							</IonItem>
 
-								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
-									{makeButton("datOI")}
-									<IonLabel>Dative of Interest</IonLabel>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "datOI")}>
+									<ul>
+										<li>This is adding a participant that is associated in some way.<br />
+											{toggleButton("span", "datOfI", {}, "Show examples.", "Hide examples.")}
+											<span className="datOfI hide"><br />"Dinner is burned [for me]" in Spanish.</span>
+											<table className="datOfI hide">
+												<tr>
+													<td>Se</td>
+													<td>me</td>
+													<td>quemó</td>
+													<td>la</td>
+													<td>cena.</td>
+												</tr>
+												<tr>
+													<td>REFL</td>
+													<td>1s</td>
+													<td>burn.3s.PST</td>
+													<td>DEF.F.s</td>
+													<td>dinner</td>
+												</tr>
+											</table>
+											<span className="datOfI hide"><br />"She cut the hair [on him]" in Spanish.</span>
+											<table className="datOfI hide">
+												<tr>
+													<td>Le</td>
+													<td>cortó</td>
+													<td>el</td>
+													<td>pelo</td>
+												</tr>
+												<tr>
+													<td>3DAT</td>
+													<td>cut.3s.PST</td>
+													<td>DEF.M.s</td>
+													<td>hair</td>
+												</tr>
+											</table>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "datOI")}>
+									{makeText("datOfInt", "Is there a dative-of-interest operation?", 4)}
 								</IonItem>
 
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datOI")}>
-										<ul>
-											<li>This is adding a participant that is associated in some way.<br />
-												{toggleButton("span", "datOfI", {}, "Show examples.", "Hide examples.")}
-												<span className="datOfI hide"><br />"Dinner is burned [for me]" in Spanish.</span>
-												<table className="datOfI hide">
-													<tr>
-														<td>Se</td>
-														<td>me</td>
-														<td>quemó</td>
-														<td>la</td>
-														<td>cena.</td>
-													</tr>
-													<tr>
-														<td>REFL</td>
-														<td>1s</td>
-														<td>burn.3s.PST</td>
-														<td>DEF.F.s</td>
-														<td>dinner</td>
-													</tr>
-												</table>
-												<span className="datOfI hide"><br />"She cut the hair [on him]" in Spanish.</span>
-												<table className="datOfI hide">
-													<tr>
-														<td>Le</td>
-														<td>cortó</td>
-														<td>el</td>
-														<td>pelo</td>
-													</tr>
-													<tr>
-														<td>3DAT</td>
-														<td>cut.3s.PST</td>
-														<td>DEF.M.s</td>
-														<td>hair</td>
-													</tr>
-												</table>
-											</li>
-										</ul>
-									</IonItem>
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "datOI")}>
-										{makeText("datOfInt", "Is there a dative-of-interest operation?", 4)}
-									</IonItem>
+							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
+								{makeButton("possRaise")}
+								<IonLabel>Possessor Raising (a.k.a. External Possession)</IonLabel>
+							</IonItem>
 
-								<IonItem className={classy("h l4", "voiceVal", "valence", "valAdd")}>
-									{makeButton("possRaise")}
-									<IonLabel>Possessor Raising (a.k.a. External Possession)</IonLabel>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "possRaise")}>
+									<ul>
+										<li>In many languages, this is treated the same as a dative of interest.<br />
+											{toggleButton("span", "posR", {}, "Show examples.", "Hide examples.")}
+											<span className="posR hide"><br />"I fixed the railroad track" in Choctaw.</span>
+											<table className="posR hide">
+												<tr>
+													<td>Tali</td>
+													<td>i-hina-ya</td>
+													<td>ayska-li-tok</td>
+												</tr>
+												<tr>
+													<td>rock</td>
+													<td>AGR(III)-road-NS</td>
+													<td>fix-1s-PST (normal construction)</td>
+												</tr>
+												<tr>
+													<td>Tali-ya</td>
+													<td>hina</td>
+													<td>im-ayska-li-tok</td>
+												</tr>
+												<tr>
+													<td>rock-NS</td>
+													<td>road</td>
+													<td>AGR(III)-fix-1s-PST (possessor raised)</td>
+												</tr>
+											</table>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valAdd", "possRaise")}>
+									{makeText("possessRaising", "Does possessor raising occur?", 4)}
 								</IonItem>
 
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "possRaise")}>
-										<ul>
-											<li>In many languages, this is treated the same as a dative of interest.<br />
-												{toggleButton("span", "posR", {}, "Show examples.", "Hide examples.")}
-												<span className="posR hide"><br />"I fixed the railroad track" in Choctaw.</span>
-												<table className="posR hide">
-													<tr>
-														<td>Tali</td>
-														<td>i-hina-ya</td>
-														<td>ayska-li-tok</td>
-													</tr>
-													<tr>
-														<td>rock</td>
-														<td>AGR(III)-road-NS</td>
-														<td>fix-1s-PST (normal construction)</td>
-													</tr>
-													<tr>
-														<td>Tali-ya</td>
-														<td>hina</td>
-														<td>im-ayska-li-tok</td>
-													</tr>
-													<tr>
-														<td>rock-NS</td>
-														<td>road</td>
-														<td>AGR(III)-fix-1s-PST (possessor raised)</td>
-													</tr>
-												</table>
-											</li>
-										</ul>
-									</IonItem>
-									<IonItem className={classy("l5", "voiceVal", "valence", "valAdd", "possRaise")}>
-										{makeText("possessRaising", "Does possessor raising occur?", 4)}
-									</IonItem>
+						<IonItem className={classy("h h2 l2", "voiceVal")}>
+							{makeButton("valRem")}
+							<IonLabel>Valence-Decreasing Operations</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("refls")}
+								<IonLabel>Reflexives</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "refls")}>
+									<ul>
+										<li>Lexical reflexives:
+											<ul>
+												<li>The verb itself that the Agent and Patient are the same.
+													<ul>
+														<li>e.g.: Steve washed, shaved, and got dressed.</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li>Morpholigical reflexives:
+											<ul>
+												<li>A word (or words) is modified to indicate the reflexive.
+													<ul>
+														<li>e.g.: Spanish: Jorge se lavo. (George washed himself, "se lavo" being a morphing of the root verb "lavarse".)</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li>Analytic reflexives:
+											<ul>
+												<li>Inserting a lexical word, making a semantic valence-lowering (but not a lexical one).
+													<ul>
+														<li>e.g.: Steve washed himself.</li>
+													</ul>
+												</li>
+												<li>These are often based on body parts.
+													<ul>
+														<li>e.g.: Another face in the crowd; Move your butt!</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "refls")}>
+									{makeText("refls", "How are reflexives handled?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("recips")}
+								<IonLabel>Reciprocals</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "recips")}>
+									<ul>
+										<li>These are often expressed the same way as reflexives.</li>
+										<li>Lexical reciprocals:
+											<ul>
+												<li>The verb itself implies reciprocity.
+													<ul>
+														<li>e.g.: Steve and Jane shook hands [with each other].</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li>Morpholigical and lexical reciprocals follow the same patterns as those for reflexives.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "recips")}>
+									{makeText("recips", "How are reciprocals handled?", 3)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("passives")}
+								<IonLabel>Passives</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "passives")}>
+									<ul>
+										<li>A semantically transitive verb with omitted agent, patient treated as subject, and the verb behaves as if it is intransitive. (Agent is less topical than the patient.)</li>
+										<li>Personal passive: agent is implied, or expressed obliquely.
+											<ul>
+												<li>Lexical passives are rare.</li>
+												<li>Morphological passives are more common, often the same morphology as perfect aspect. May be derived from copulas or nominalizations.</li>
+												<li>English has analytic passives, with a copula and a "past participle" (patient nominalization).</li>
+											</ul>
+										</li>
+										<li>Impersonal passive: no agent directly indicated; can be used for intransitive verbs as well as transitive.
+											<ul>
+												<li>No known languages uses a specific morphology for this!</li>
+											</ul>
+										</li>
+										<li>Other kinds of passives may exist.
+											<ul>
+												<li>English has the basic "Steve was eaten by a bear" but can also express it with other verbs, as in "Steve got eaten by a bear."</li>
+												<li>Yup'ik has an adversative passive (to the detriment of the subject), abilitative passive (X can be Y [by Z]), and a negative abilitiative (X cannot be Y [by Z]).</li>
+											</ul>
+										</li>
+										<li>Passives construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "passives")}>
+									{makeText("passives", "How are passives handled?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("inverses")}
+								<IonLabel>Inverses</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "inverses")}>
+									<ul>
+										<li>A valence "rearranging" device, e.g. "Steve taught him" becomes "Him, Steve taught."</li>
+										<li>Often follows a hierarchy where a "higher" agent requires direct and a "lower" agent requires the inverse.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "inverses")}>
+									<IonGrid className="cols2">
+										<IonRow>
+											<IonCol className="cbox">{makeBox("markInv")}</IonCol>
+											<IonCol>Marked inverse only.</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol className="cbox">{makeBox("markDirInv")}</IonCol>
+											<IonCol>Both direct and inverse explicitly marked.</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol className="cbox">{makeBox("verbAgreeInv")}</IonCol>
+											<IonCol>Special verb agreement markers for inverse.</IonCol>
+										</IonRow>
+										<IonRow>
+											<IonCol className="cbox">{makeBox("verbAgreeInv")}</IonCol>
+											<IonCol>Functional inverse: word order changes, e.g. VAP becomes VPA.</IonCol>
+										</IonRow>
+									</IonGrid>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "inverses")}>
+									{makeText("inverses", "Describe any pecularities of inverse constructions.", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("middleCon")}
+								<IonLabel>Middle Constructions</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "middleCon")}>
+									<ul>
+										<li>Also known as anticausatives or detransitivation: a semantically transitive situation expressed as a process undergone by a Patient (rather than carried out by an Agent).</li>
+										<li>Many languages express this the same way as they express passives.</li>
+										<li>Often express the notion that the subject is both controller and affected.</li>
+										<li>e.g. "Steve broke the car" becomes "The car broke."</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "middleCon")}>
+									{makeText("middleCon", "How are middle constructions handled?", 3)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("antiP")}
+								<IonLabel>Antipassives</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "antiP")}>
+									<ul>
+										<li>Similar to passives, but the Patient is downgraded instead of the Agent.</li>
+										<li>Generally, this only happens in ergative languages or in languages without verbal agreement, but many exceptions exist.</li>
+										<li>Often, the Patient is omitted or oblique, the verb is marked intrasitive, and the Agent is placed in absolutive case.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "antiP")}>
+									{makeText("antiP", "Describe antipassive strategies in the language, if they exist.", 3)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
+								{makeButton("objDemOmInc")}
+								<IonLabel>Object Demotion/Omission/Incorporation</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "voiceVal", "valRem", "objDemOmInc")}>
+									<ul>
+										<li>Demotion: "Steve shot Bob" becomes "Steve shot at Bob".</li>
+										<li>Omission: "Steve shot Bob" becomes "Steve shot".</li>
+										<li>Incorporation: "Steve shot Bob" becomes "Steve Bob-shot".
+											<ul>
+												<li>The incorporated object is usually the Patient, rarely the Agent.</li>
+												<li>May have other semantic functions.
+													<ul>
+														<li>In Panare, incorporating a body part noun into a cutting verb means the part was cut completely off, whereas leaving it unincorporated means it was merely injured ("Darth Vader hand-cut" vs "Darth Vader cut hand").</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "voiceVal", "valRem", "objDemOmInc")}>
+									{makeText("objDemOmInc", "Is object demotion/omission allowed? How about incorporation?", 5)}
+								</IonItem>
+
+					<IonItem className="h h1">
+						{makeButton("otherVerb")}
+						<IonLabel>Other Verb and Verb Phrase Operations</IonLabel>
+					</IonItem>
 
 {/*
-
-8.2 -  Valence-decreasing operations
-8.2.1 -  Reflexives and reciprocals: how are they expressed?
-8.2.1.1 -  lexical reflexive: the verb implies agent and patient are the same
-- Joe washed, shaved, and got dressed.
-8.2.1.2 -  morphological reflexive: a word (or words) is morphed to indicate the reflexive
-- Jorge se lavo. (George washed himself. Se is a bound clitic.)
-8.2.1.3 -  analytic reflexive: lexical word distinct from the verb, making a semantic valence-lowering,
-	if not a lexical one
-- George washed himself.
-- These are often based on body parts. (Another face in the crowd, Move your butt!, etc)
-8.2.1.4 -  reciprocals are often expressed the same as reflexives!
-8.2.1.5 -  lexical reciprocal: the verb implies reciprocity
-- George and Joe shook hands [with each other].
-8.2.1.6 -  morphological reflexive, analytic: see above for explanations
-8.2.2 -  Passives
-- A semantically transitive with omitted agent, patient treated as subject, and the verb behaves as if it is
-	intransitive. (Agent is less topical than the patient.)
-8.2.2.1 -  Kinds of passive
-8.2.2.1.1 -  personal passive: agent is implied, or expressed obliquely
-8.2.2.1.1.1 -  lexical passive: the verb is inherently passive (rare!)
-8.2.2.1.1.2 -  morphological passive (common!)
-- often the same morphology as perfect aspect
-- sometimes derived from copulas or nominalizing affixes/particles
-8.2.2.1.1.3 -  analytic passive
-- English uses a copula + the "past participle" (patient nomzn.)
-8.2.2.1.2 -  impersonal passive: no agent directly indicated; can be used for intransitive verbs as well
-	as transitive
-- no known languages use specific morphology for this
-- (very few have specifics for personal passives, either)
-8.2.2.1.3 -  other kinds of passives
-- English: "was eaten by a bear" vs "got eaten by a bear"
-- Yup'ik: adversative (to the detriment of the subject), abilitative (X can be Y [by Z]), negative
-	abilitiative (X cannot be Y [by Z])
-8.2.2.1.4 -  Is a passive construction obligatory in any particular environment (P outranking A, perhaps)?
-8.2.3 -  Inverses
-- Valence "rearranging" devices
-- "Joe taught him" vs "Him, Joe did teach" (instead of "He, Joe did teach")
-8.2.3.1 -  Both direct and inverse explicitly marked
-- often follows a hierarchy where a "higher" agent requires direct and a "lower" agent requires the inverse
-8.2.3.2 -  Marked inverse
-8.2.3.3 -  Special verb agreement markers for inverse
-- again, follows a hierarchy where the verb agrees with the "higher" of the agent and patient
-8.2.3.4 -  Functional inverse: word order
-- swapping VAP for VPA (or vice-versa)
-8.2.4 -  Middle constructions
-- Uses detransitivation; a semantically transitive situation expressed as a process undergone by a patient
-	(rather than carried out by an agent)
-- English's 'break': "Joe broke the car" vs "The car broke"
-- Many languages express this the same way as they express passives
-- Often express the notion that the subject is both controller and affected
-- Sometimes called anticausatives
-8.2.5 -  Antipassives
-- Downplays a patient instead of an agent
-- P is omitted or oblique
-- verb or phrase is marked intransitive
-- A is in absolutive case
-8.2.6 -  Object demotion and omission
-- Joe shot George (normal)
-- Joe shot at George (object demotion)
-- Joe shot (object omission)
-8.2.7 -  Object incorporation
-- A noun becomes attached to or incorporated into the verb
-- Often the object rather than the subject (baby-sitting, car-washing)
-- May serve a function
-- In Panare, incorporating a body part noun into a cutting verb means the part was cut completely off,
-	whereas leaving it unincorporated means it was merely injured (Darth Vader hand-cut vs Darth Vader cut hand)
 9 -  Other verb and verb-phrase operations
 9.1 -  Nominalization
 9.1.1 -  Action nominalization
@@ -1706,10 +1844,6 @@ He is a-walking (at walking) [progressive]
 
 */}
 
-					<IonItem className="h h1">
-						{makeButton("otherVerb")}
-						<IonLabel>Other Verb and Verb Phrase Operations</IonLabel>
-					</IonItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
