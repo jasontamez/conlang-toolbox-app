@@ -133,10 +133,10 @@ const appMenuPages: MenuSection[] = [
 				id: 'menuitemWL'
 			},
 			{
-				title: 'LangSketch',
-				url: '/ls',
+				title: 'SyntaxSketch',
+				url: '/syn',
 				icon: documentTextSharp,
-				id: 'menuitemLS'
+				id: 'menuitemSyntax'
 			}
 		],
 		id: 'menuMain'

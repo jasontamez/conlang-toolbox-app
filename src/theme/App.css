@@ -641,16 +641,16 @@ ion-label.wrappableInnards {
 	}
 }
 
-#langSketchPage ion-list ion-item ol {
+#syntaxSketchPage ion-list ion-item ol {
 	list-style-type: none;
 	padding-inline-start: 1.5rem;
 	overflow-wrap: anywhere;
 	overflow: visible;
 }
-#langSketchPage ion-list ion-item > ol:first-of-type {
+#syntaxSketchPage ion-list ion-item > ol:first-of-type {
 	padding-inline-start: 0;
 }
-#langSketchPage .x {
+#syntaxSketchPage .x {
 	padding-top: 0.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
@@ -658,136 +658,136 @@ ion-label.wrappableInnards {
 	flex-flow: row wrap;
 	align-items: baseline;
 }
-#langSketchPage .x1 {
+#syntaxSketchPage .x1 {
 	padding-top: 1rem;
 	font-size: 1.4rem;
 }
-#langSketchPage .x2 {
+#syntaxSketchPage .x2 {
 	padding-top: 0.75rem;
 	font-size: 1.25rem;
 }
-#langSketchPage .x3 {
+#syntaxSketchPage .x3 {
 	padding-top: 0.5rem;
 	font-size: 1.1rem;
 }
-#langSketchPage ion-list ion-item ol .x strong {
+#syntaxSketchPage ion-list ion-item ol .x strong {
 	font-family: var(--font-mono);
 	color: var(--ion-color-primary);
 	white-space: nowrap;
 	font-size: 0.95em;
 }
-#langSketchPage ion-list ion-item ol .x em {
+#syntaxSketchPage ion-list ion-item ol .x em {
 	text-decoration: underline;
 	font-style: normal;
 	padding-left: 0.25em;
 }
 
-#langSketchPage ion-list ion-item.toggled {
+#syntaxSketchPage ion-list ion-item.toggled {
 	display: none;
 }
-#langSketchPage ion-range.spectrum::part(bar-active),
-#langSketchPage ion-range.spectrum::part(bar) {
+#syntaxSketchPage ion-range.spectrum::part(bar-active),
+#syntaxSketchPage ion-range.spectrum::part(bar) {
 	background: var(--ion-color-dark-tint);
 }
-#langSketchPage ion-list ion-grid {
+#syntaxSketchPage ion-list ion-grid {
 	--ion-grid-padding: 0;
 	margin: 0;
 	background: var(--ion-background-shader);
 }
-#langSketchPage ion-list ion-grid.cols3 {
+#syntaxSketchPage ion-list ion-grid.cols3 {
 	--ion-grid-columns: 3;
 	max-width: 40rem;
 }
-#langSketchPage ion-list ion-grid.cols2 {
+#syntaxSketchPage ion-list ion-grid.cols2 {
 	--ion-grid-columns: 2;
 	max-width: 50rem;
 }
-#langSketchPage ion-list ion-grid ion-row {
+#syntaxSketchPage ion-list ion-grid ion-row {
 	margin: 0.25rem 0;
 }
-#langSketchPage ion-list ion-grid.striped ion-row:nth-child(even) {
+#syntaxSketchPage ion-list ion-grid.striped ion-row:nth-child(even) {
 	background: var(--ion-background-shader)
 }
-#langSketchPage ion-list ion-item.h,
-#langSketchPage ion-list ion-item ion-grid ion-row.header {
+#syntaxSketchPage ion-list ion-item.h,
+#syntaxSketchPage ion-list ion-item ion-grid ion-row.header {
 	font-weight: bold;
 }
-#langSketchPage ion-list ion-item ion-grid ion-row ion-col.cbox {
+#syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col.cbox {
 	max-width: 6rem;
 	text-align: center;
 }
-#langSketchPage ion-list ion-item ion-grid ion-row ion-col.leftA {
+#syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col.leftA {
 	text-align: start;
 }
-#langSketchPage ion-list ion-item ion-grid ion-row ion-col.label {
+#syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col.label {
 	max-width: 10rem;
 }
-#langSketchPage ion-list ion-item ion-grid ion-row ion-col ion-checkbox {
+#syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col ion-checkbox {
 	margin: 0 auto;
 }
-#langSketchPage ion-list ion-item.h ion-button {
+#syntaxSketchPage ion-list ion-item.h ion-button {
 	margin: 0.25rem 0.5rem 0.25rem 0;
 }
-#langSketchPage ion-list ion-item.h ion-button::part(native) {
+#syntaxSketchPage ion-list ion-item.h ion-button::part(native) {
 	padding: 0.5em 0.2em;
 }
-#langSketchPage ion-list ion-item.h1 {
+#syntaxSketchPage ion-list ion-item.h1 {
 	font-size: 1.4rem;
 }
-#langSketchPage ion-list ion-item.h2 {
+#syntaxSketchPage ion-list ion-item.h2 {
 	font-size: 1.25rem;
 }
-#langSketchPage ion-list ion-item.h3 {
+#syntaxSketchPage ion-list ion-item.h3 {
 	font-size: 1.1rem;
 }
-#langSketchPage ion-list ion-item.l2 {
+#syntaxSketchPage ion-list ion-item.l2 {
 	margin-left: 1rem;
 }
-#langSketchPage ion-list ion-item.l3 {
+#syntaxSketchPage ion-list ion-item.l3 {
 	margin-left: 2rem;
 }
-#langSketchPage ion-list ion-item.l4 {
+#syntaxSketchPage ion-list ion-item.l4 {
 	margin-left: 3rem;
 }
-#langSketchPage ion-list ion-item.l5 {
+#syntaxSketchPage ion-list ion-item.l5 {
 	margin-left: 4rem;
 }
-#langSketchPage ion-list ion-item.l6 {
+#syntaxSketchPage ion-list ion-item.l6 {
 	margin-left: 5rem;
 }
-#langSketchPage ion-list ion-item.l7 {
+#syntaxSketchPage ion-list ion-item.l7 {
 	margin-left: 6rem;
 }
-#langSketchPage ion-list ion-item.l8 {
+#syntaxSketchPage ion-list ion-item.l8 {
 	margin-left: 7rem;
 }
-#langSketchPage ion-list ion-item.leading::part(native),
-#langSketchPage ion-list ion-item.following::part(native) {
+#syntaxSketchPage ion-list ion-item.leading::part(native),
+#syntaxSketchPage ion-list ion-item.following::part(native) {
 	min-height: 0;
 }
-#langSketchPage ion-list ion-item.leading ion-label {
+#syntaxSketchPage ion-list ion-item.leading ion-label {
 	margin-bottom: 0;
 }
-#langSketchPage ion-list ion-item.following ul {
+#syntaxSketchPage ion-list ion-item.following ul {
 	margin-top: 0;
 }
-#langSketchPage ion-list ion-item ion-label {
+#syntaxSketchPage ion-list ion-item ion-label {
 	white-space: normal;
 }
-#langSketchPage ion-list ion-item ul {
+#syntaxSketchPage ion-list ion-item ul {
 	padding-left: 0;
 	list-style-type: none;
 	list-style-position: inside;
 }
-#langSketchPage ion-list ion-item ul li {
+#syntaxSketchPage ion-list ion-item ul li {
 	text-indent: -1rem;
 	padding-left: 1rem;
 	position: relative;
 }
-#langSketchPage ion-list ion-item ul li::marker {
+#syntaxSketchPage ion-list ion-item ul li::marker {
 	color: var(--ion-color-primary);
 }
-#langSketchPage ion-list ion-item ul li::before {
+#syntaxSketchPage ion-list ion-item ul li::before {
 	content: "\25cf";
 	color: var(--ion-color-primary);
 	display: inline-block;
@@ -797,43 +797,43 @@ ion-label.wrappableInnards {
 	position: relative;
 	left: 0.5rem;
 }
-#langSketchPage table {
+#syntaxSketchPage table {
 	background: var(--ion-background-shader);
 	border: solid 0.25rem var(--ion-color-dark-tint);
 	margin: 0.5rem 1rem;
 }
-#langSketchPage table td,
-#langSketchPage table th {
+#syntaxSketchPage table td,
+#syntaxSketchPage table th {
 	padding: 0.5rem 1rem;
 	vertical-align: top;
 	text-align: start;
 	border: 0;
 }
-#langSketchPage table td + td {
+#syntaxSketchPage table td + td {
 	padding-left: 0;
 }
-#langSketchPage table tr:nth-child(even) {
+#syntaxSketchPage table tr:nth-child(even) {
 	background: var(--ion-background-shader);
 }
-#langSketchPage table ul {
+#syntaxSketchPage table ul {
 	margin: 0;
 }
-#langSketchPage .toggleButton {
+#syntaxSketchPage .toggleButton {
 	cursor: pointer;
 	font-style: italic;
 }
-#langSketchPage .toggleButton::before {
+#syntaxSketchPage .toggleButton::before {
 	content: "\25ba";  /* right arrow */
 	color: var(--ion-color-success);
 	width: 0.5rem;
 	left: 0.3rem;
 }
-#langSketchPage .toggleButton.toggled::before {
+#syntaxSketchPage .toggleButton.toggled::before {
 	content: "\25bc"; /* down arrow */
 	color: var(--ion-color-danger);
 }
-#langSketchPage li.tip::before,
-#langSketchPage li.tip li::before {
+#syntaxSketchPage li.tip::before,
+#syntaxSketchPage li.tip li::before {
 	content: "\25a0"; /* square */
 	color: var(--ion-color-success);
 }

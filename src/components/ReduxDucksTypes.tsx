@@ -141,40 +141,40 @@ export interface WEPresetObject {
 }
 
 
-export interface LangSketchStateObject {
+export interface SyntaxSketchStateObject {
 	[key: string]: boolean
 }
 
-type LSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess"
+type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess"
 				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
 				| "circumP" | "markInv" | "markDirInv" | "verbAgreeInv";
-export type LangSketchBoolObject = {
-	[key in LSBool]?: boolean
+export type SyntaxSketchBoolObject = {
+	[key in SyntaxBool]?: boolean
 }
 
-type LSNum = "synthesis" | "fusion" | "stemMod" | "redupe" | "supraMod" | "headDepMarked";
-export type LangSketchNumberObject = {
-	[key in LSNum]?: number
+type SyntaxNum = "synthesis" | "fusion" | "stemMod" | "redupe" | "supraMod" | "headDepMarked";
+export type SyntaxSketchNumberObject = {
+	[key in SyntaxNum]?: number
 }
 
-type LSText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
+type SyntaxText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
 				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
 				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "case" | "articlesEtc"
 				| "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc" | "predEx" | "predPoss"
 				| "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt" | "possessRaising"
 				| "refls" | "recips" | "passives" | "inverses" | "middleCon" | "antiP" | "objDemOmInc";
-export type LangSketchTextObject = {
-	[key in LSText]?: string
+export type SyntaxSketchTextObject = {
+	[key in SyntaxText]?: string
 }
 
-export interface LangSketchObject {
-	bool: LangSketchBoolObject
-	num: LangSketchNumberObject
-	text: LangSketchTextObject
+export interface SyntaxSketchObject {
+	bool: SyntaxSketchBoolObject
+	num: SyntaxSketchNumberObject
+	text: SyntaxSketchTextObject
 }
 
 
@@ -317,8 +317,8 @@ export interface StateObject {
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
-	langSketchState: LangSketchStateObject
-	langSketchInfo: LangSketchObject
+	syntaxSketchState: SyntaxSketchStateObject
+	syntaxSketchInfo: SyntaxSketchObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject

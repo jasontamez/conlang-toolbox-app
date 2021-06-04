@@ -28,9 +28,9 @@ export const CustomStorageWE = localForage.createInstance({
 	description: 'Stores WordEvolve custom information.'
 });
 
-export const CustomStorageLS = localForage.createInstance({
+export const CustomStorageSyntax = localForage.createInstance({
 	name: 'Conlang Toolbox',
-	storeName: 'langSketchStorage',
+	storeName: 'syntaxSketchStorage',
 	version: 1,
-	description: 'Stores LangSketch custom information.'
+	description: 'Stores SyntaxSketch custom information.'
 });

@@ -23,40 +23,40 @@ import { addCircleSharp, globeOutline, removeCircleSharp } from 'ionicons/icons'
 import { useSelector, useDispatch } from "react-redux";
 import {
 	openModal,
-	setLSBool,
-	setLSNum,
-	setLSText,
-	toggleLSState
+	setSyntaxBool,
+	setSyntaxNum,
+	setSyntaxText,
+	toggleSyntaxState
 } from '../components/ReduxDucksFuncs';
-import { LangSketchBoolObject, LangSketchNumberObject, LangSketchTextObject } from '../components/ReduxDucksTypes';
-//import { CustomStorageLS } from '../components/PersistentInfo';
+import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObject } from '../components/ReduxDucksTypes';
+//import { CustomStorageSyntax } from '../components/PersistentInfo';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import { $i, $a } from '../components/DollarSignExports';
 
 const Lex = () => {
 	const dispatch = useDispatch();
-	const [lsState, lsInfo] = useSelector((state: any) => [state.langSketchState, state.langSketchInfo]);
+	const [lsState, lsInfo] = useSelector((state: any) => [state.syntaxSketchState, state.syntaxSketchInfo]);
 	const [lsBool, lsNum, lsText] = [lsInfo.bool, lsInfo.num, lsInfo.text];
 	const toggle = (what: string) => {
-		dispatch(toggleLSState(what));
+		dispatch(toggleSyntaxState(what));
 	};
 	const classy = (...folders: string[]) => {
 		let primary = folders.shift();
 		//return primary;
 		return folders.every((prop: string) => lsState[prop]) ? primary : "toggled";
 	};
-	const setBool = (what: keyof LangSketchBoolObject, value: boolean) => {
-		dispatch(setLSBool(what, value));
+	const setBool = (what: keyof SyntaxSketchBoolObject, value: boolean) => {
+		dispatch(setSyntaxBool(what, value));
 	};
-	const makeBox = (what: keyof LangSketchBoolObject) => {
+	const makeBox = (what: keyof SyntaxSketchBoolObject) => {
 		return (
 			<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} value={lsBool[what] || false} />
 		);
 	};
-	const setNum = (what: keyof LangSketchNumberObject, value: number) => {
-		dispatch(setLSNum(what, value));
+	const setNum = (what: keyof SyntaxSketchNumberObject, value: number) => {
+		dispatch(setSyntaxNum(what, value));
 	};
-	const makeRange = (what: keyof LangSketchNumberObject, start: string, end: string, cls: string = "", max: number = 4) => {
+	const makeRange = (what: keyof SyntaxSketchNumberObject, start: string, end: string, cls: string = "", max: number = 4) => {
 		return (
 			<IonRange onBlur={(e) => setNum(what, e.target.value as number)} value={lsNum[what] || 0} className={cls} color="secondary" snaps={true} step={1} ticks={true} min={0} max={max}>
 				<IonLabel slot="start">{start}</IonLabel>
@@ -64,10 +64,10 @@ const Lex = () => {
 			</IonRange>
 		);
 	};
-	const setText = (what: keyof LangSketchTextObject, value: string) => {
-		dispatch(setLSText(what, value));
+	const setText = (what: keyof SyntaxSketchTextObject, value: string) => {
+		dispatch(setSyntaxText(what, value));
 	};
-	const makeText = (what: keyof LangSketchTextObject, ph: string, rows: number = 3) => {
+	const makeText = (what: keyof SyntaxSketchTextObject, ph: string, rows: number = 3) => {
 		return (
 			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={lsText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
 		);
@@ -115,7 +115,7 @@ const Lex = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>LangSketch</IonTitle>
+					<IonTitle>SyntaxSketch</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon icon={globeOutline} />
@@ -123,7 +123,7 @@ const Lex = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="langSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
 				<IonList lines="none">
 
 					<IonItem className="h h1">
@@ -675,7 +675,7 @@ const Lex = () => {
 
 									<IonItem className={classy("l5 following", "grammCateg", "modif", "numer")}>
 										<ul>
-											<li>Some languages have very limited numerals: e.g. 1, 2, 3, many.</li>
+											<li>Some languages have restricted numerals: e.g. 1, 2, 3, many.</li>
 											<li>Only very advanced societies will have a need for numbers beyond a thousand.</li>
 										</ul>
 									</IonItem>
@@ -687,6 +687,7 @@ const Lex = () => {
 									<IonItem className={classy("l5 following", "grammCateg", "modif", "numer")}>
 										<ul>
 											<li>Usually base 5 or 10. Sometimes 20.</li>
+											<li>Numerals can be described from greatest to least ("twenty-two"), from least to greatest ("two-twenty"), or not give base multiples a special name ("two-two").</li>
 										</ul>
 									</IonItem>
 
@@ -1841,6 +1842,29 @@ He cut away at the turkey [imperfective]
 Tom wolfed it down [perfective]
 I drink your milkshake up [perfective]
 He is a-walking (at walking) [progressive]
+
+perfective vs imperfective
+perfective vs habitual / continuous
+perfective vs habitual / non-progressive / progressive
+[perfect]
+past tense tend to have more aspects
+combine tense and aspect
+: imperfecto = past + habitual + progressive
+
+PUNCTUAL or DURATIVE
+Telic / Atelic +  Dynamic
+Static (durative only)
+
+Durative = lasting in time
+Dynamic = ongoing process requiring continual input
+Atelic = no clear end point
+Telic = clearly defined end point
+Punctual = instantaneous event
+Static = changeless state
+
+restricted systems - 1,2,3,4,5,[...10,]many
+tens-units vs units-tens - twenty-one vs one-twenty
+
 
 */}
 
