@@ -11,16 +11,16 @@ ion-menu#mainMenu ion-list {
 }
 
 ion-menu#mainMenu ion-note {
-	margin-bottom: 1.875rem;
+	margin-block-end: 1.875rem;
 }
 
 ion-menu#mainMenu ion-list-header,
 ion-menu#mainMenu ion-note {
-	padding-left: 0.625rem;
+	padding-inline-start: 0.625rem;
 }
 
 ion-menu#mainMenu ion-list:first-child {
-	border-bottom: 0.0625rem solid var(--ion-color-step-150, #d7d8da);
+	border-block-end: 0.0625rem solid var(--ion-color-step-150, #d7d8da);
 }
 
 ion-menu#mainMenu ion-list:first-child ion-list-header {

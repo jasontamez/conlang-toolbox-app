@@ -718,7 +718,7 @@ body.LightTheme ion-menu ion-content {
 	border-color: transparent;
 }
 #conlangToolbox ion-label[position="stacked"] {
-	padding-bottom: 0.3em;
+	padding-block-end: 0.3em;
 }
 
 #conlangToolbox input[type=text],
