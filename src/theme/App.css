@@ -7,7 +7,7 @@
 	margin: 0 auto;
 }
 #conlangToolbox p + p {
-	padding-top: 0;
+	padding-block-start: 0;
 }
 #conlangToolbox .clickToExpand {
 	overflow: hidden;
@@ -39,8 +39,8 @@ ion-row:nth-child(odd) {
 
 .emphasizedSection {
 	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
+	margin-inline-start: auto;
+	margin-inline-end: auto;
 }
 .emphasizedSection br {
 	display: block;
@@ -131,7 +131,7 @@ ion-card-content ul li {
 }
 
 #conlangToolbox ion-content.disappearingHeaderKludgeFix > :last-child {
-	margin-bottom: 50vh;
+	margin-block-end: 50vh;
 }
 
 ion-item-option {
@@ -144,26 +144,26 @@ ion-list.units {
 .units ion-item,
 .units ion-item-option,
 .units ion-item-option button {
-	border-bottom: 0.1rem solid var(--ion-background-color);
+	border-block-end: 0.1rem solid var(--ion-background-color);
 }
 .units ion-item-sliding:first-of-type ion-item,
 .units ion-item-sliding:first-of-type ion-item-option,
 .units ion-item-sliding:first-of-type ion-item-option button {
-	border-top: 0.1rem solid var(--ion-background-color);
+	border-block-start: 0.1rem solid var(--ion-background-color);
 }
 .units ion-item.nonUnit {
-	border-bottom: 0;
-	border-top: 0;
+	border-block-end: 0;
+	border-block-start: 0;
 }
 .hasFabButton ion-list.units {
-	padding-bottom: 5em;
+	padding-block-end: 5em;
 }
 ion-list.dragArea {
 	min-height: 100%;
 }
 .belongsToBelow {
-	margin-bottom: 0;
-	padding-bottom: 0;
+	margin-block-end: 0;
+	padding-block-end: 0;
 }
 .minor {
 	font-size: 0.8em;
@@ -187,7 +187,7 @@ ion-label.stackedEmph {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: center;
-	margin-right: 1rem;
+	margin-inline-end: 1rem;
 }
 #conlangToolbox .fullScreen .collapse div ion-button {
 	white-space: normal;
@@ -288,7 +288,7 @@ ion-label.stackedEmph {
 	justify-self: end;
 }
 #outputPaneWE .ruleExplanation {
-	padding-left: 10vw;
+	padding-inline-start: 10vw;
 }
 
 #conlangToolbox .presetPopup .action-sheet-group-cancel,
@@ -366,7 +366,7 @@ i.ipa {
 	padding: 0 0.25rem;
 }
 #theLexicon .xs {
-	padding-left: 0.25rem;
+	padding-inline-start: 0.25rem;
 	flex: 0 0 2.25rem;
 }
 #theLexicon .s {
@@ -380,8 +380,8 @@ i.ipa {
 }
 #theLexicon input {
 	outline: none;
-	padding-left: 0;
-	padding-right: 0;
+	padding-inline-start: 0;
+	padding-inline-end: 0;
 	border: 0;
 }
 .lexRow,
@@ -437,18 +437,22 @@ i.ipa {
 	overflow: auto;
 }
 .lexiconDisplay {
-	border-top: 2px solid var(--ion-background-color);
+	border-block-start: 2px solid var(--ion-background-color);
 }
 .lexiconDisplay:last-child {
-	border-bottom: 2px solid var(--ion-background-color);
+	border-block-end: 2px solid var(--ion-background-color);
 }
 #lexiconPage #lexiconSort::part(text)::before {
 	content: "Sort: ";
-	margin-right: 0.5rem;
+	margin-inline-end: 0.5rem;
 }
 #lexiconPage #lexiconSort::part(text) {
 	min-width: 10rem;
 	overflow: visible;
+}
+#lexiconPage #lexiconSort {
+	background: var(--ion-background-tinter);
+	margin-inline-end: 0.5rem;
 }
 #lexiconPage h1 {
 	margin: 0;
@@ -592,7 +596,7 @@ ion-item div.twoColumnsEC div.char {
 	background: var(--ion-background-shader);
 }*/
 #ExtraCharactersModalList ion-item::part(native) {
-	border-bottom: 1px solid var(--ion-border-color);
+	border-block-end: 1px solid var(--ion-border-color);
 }
 #ExtraCharactersModalList {
 	position: relative;
@@ -651,7 +655,7 @@ ion-label.wrappableInnards {
 	padding-inline-start: 0;
 }
 #syntaxSketchPage .x {
-	padding-top: 0.25rem;
+	padding-block-start: 0.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
 	display: flex;
@@ -659,15 +663,15 @@ ion-label.wrappableInnards {
 	align-items: baseline;
 }
 #syntaxSketchPage .x1 {
-	padding-top: 1rem;
+	padding-block-start: 1rem;
 	font-size: 1.4rem;
 }
 #syntaxSketchPage .x2 {
-	padding-top: 0.75rem;
+	padding-block-start: 0.75rem;
 	font-size: 1.25rem;
 }
 #syntaxSketchPage .x3 {
-	padding-top: 0.5rem;
+	padding-block-start: 0.5rem;
 	font-size: 1.1rem;
 }
 #syntaxSketchPage ion-list ion-item ol .x strong {
@@ -679,7 +683,7 @@ ion-label.wrappableInnards {
 #syntaxSketchPage ion-list ion-item ol .x em {
 	text-decoration: underline;
 	font-style: normal;
-	padding-left: 0.25em;
+	padding-inline-start: 0.25em;
 }
 
 #syntaxSketchPage ion-list ion-item.toggled {
@@ -741,47 +745,47 @@ ion-label.wrappableInnards {
 	font-size: 1.1rem;
 }
 #syntaxSketchPage ion-list ion-item.l2 {
-	margin-left: 1rem;
+	margin-inline-start: 1rem;
 }
 #syntaxSketchPage ion-list ion-item.l3 {
-	margin-left: 2rem;
+	margin-inline-start: 2rem;
 }
 #syntaxSketchPage ion-list ion-item.l4 {
-	margin-left: 3rem;
+	margin-inline-start: 3rem;
 }
 #syntaxSketchPage ion-list ion-item.l5 {
-	margin-left: 4rem;
+	margin-inline-start: 4rem;
 }
 #syntaxSketchPage ion-list ion-item.l6 {
-	margin-left: 5rem;
+	margin-inline-start: 5rem;
 }
 #syntaxSketchPage ion-list ion-item.l7 {
-	margin-left: 6rem;
+	margin-inline-start: 6rem;
 }
 #syntaxSketchPage ion-list ion-item.l8 {
-	margin-left: 7rem;
+	margin-inline-start: 7rem;
 }
 #syntaxSketchPage ion-list ion-item.leading::part(native),
 #syntaxSketchPage ion-list ion-item.following::part(native) {
 	min-height: 0;
 }
 #syntaxSketchPage ion-list ion-item.leading ion-label {
-	margin-bottom: 0;
+	margin-block-end: 0;
 }
 #syntaxSketchPage ion-list ion-item.following ul {
-	margin-top: 0;
+	margin-block-start: 0;
 }
 #syntaxSketchPage ion-list ion-item ion-label {
 	white-space: normal;
 }
 #syntaxSketchPage ion-list ion-item ul {
-	padding-left: 0;
+	padding-inline-start: 0;
 	list-style-type: none;
 	list-style-position: inside;
 }
 #syntaxSketchPage ion-list ion-item ul li {
 	text-indent: -1rem;
-	padding-left: 1rem;
+	padding-inline-start: 1rem;
 	position: relative;
 }
 #syntaxSketchPage ion-list ion-item ul li::marker {
@@ -810,7 +814,7 @@ ion-label.wrappableInnards {
 	border: 0;
 }
 #syntaxSketchPage table td + td {
-	padding-left: 0;
+	padding-inline-start: 0;
 }
 #syntaxSketchPage table tr:nth-child(even) {
 	background: var(--ion-background-shader);
@@ -841,5 +845,5 @@ ion-label.wrappableInnards {
 /* Known bug where the keyboard will push the header off the screen */
 
 .scroll-content {
-    padding-bottom: 0 !important;
+    padding-block-end: 0 !important;
  }
