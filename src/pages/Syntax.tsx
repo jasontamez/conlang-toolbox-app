@@ -33,7 +33,7 @@ import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObjec
 import ExtraCharactersModal from './M-ExtraCharacters';
 import { $i, $a } from '../components/DollarSignExports';
 
-const Lex = () => {
+const Syntax = () => {
 	const dispatch = useDispatch();
 	const [lsState, lsInfo] = useSelector((state: any) => [state.syntaxSketchState, state.syntaxSketchInfo]);
 	const [lsBool, lsNum, lsText] = [lsInfo.bool, lsInfo.num, lsInfo.text];
@@ -1874,4 +1874,4 @@ tens-units vs units-tens - twenty-one vs one-twenty
 	);
 };
  
-export default Lex;
+export default Syntax;
