@@ -1,13 +1,13 @@
 {
-  "appId": "net.jasontank.conlangtoolbox",
-  "appName": "Conlang Toolbox",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
+	"appId": "net.jasontank.conlangtoolbox",
+	"appName": "Conlang Toolbox",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "build",
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false
+		}
+	},
+	"cordova": {}
 }
