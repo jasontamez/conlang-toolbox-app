@@ -128,12 +128,12 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("morphTypo")}
-						<IonLabel>Morphological Typology</IonLabel>
+						<IonLabel>1. Morphological Typology</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
 							{makeButton("tradTypo")}
-							<IonLabel>Traditional Typology</IonLabel>
+							<IonLabel>1.1. Traditional Typology</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
@@ -151,9 +151,6 @@ const Syntax = () => {
 										<li>Inuit and Quechua are very <em>polysynthetic</em>, with many morphemes per word.</li>
 									</ul>
 								</IonItem>
-								<IonItem className={classy("l4", "morphTypo", "tradTypo", "synth")}>
-									{makeText("synthesis", "Write any more specific notes here.")}
-								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "tradTypo")}>
 								{makeButton("fusion")}
@@ -168,15 +165,17 @@ const Syntax = () => {
 										<li>How many meanings does a morpheme encode?</li>
 										<li>Spanish can be very <em>fusional</em>, with a single suffix capable of encoding tense, aspect, mood and number.</li>
 										<li>English can be very <em>agglutinative</em>, with one meaning per morpheme (e.g. anti-dis-establish-ment-ari-an-ism), though fusional forms are possible (e.g. swam, was).</li>
+										<li>NOTE: This section is not needed if the language is completely isolating.</li>
 									</ul>
 								</IonItem>
-								<IonItem className={classy("l4", "morphTypo", "tradTypo", "fusion")}>
-									{makeText("fusion", "Write any more specific notes here.")}
-								</IonItem>
+
+							<IonItem className={classy("l3", "morphTypo", "tradTypo")}>
+								{makeText("tradTypol", "Give examples of the dominant pattern and any secondary patterns.")}
+							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
 							{makeButton("morphProc")}
-							<IonLabel>Morphological Processes</IonLabel>
+							<IonLabel>1.2. Morphological Processes</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
@@ -214,7 +213,10 @@ const Syntax = () => {
 									</IonGrid>
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "affixes")}>
-									<ul><li>Which form predominates?</li></ul>
+									<ul>
+										<li>If the language is at all agglutinative, which form predominates?</li>
+										<li>Most natural languages use suffixes. Some also have prefixes and/or infixes or circumfixes. Few only have prefixes, and none have only infixes or circumfixes.</li>
+									</ul>
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
@@ -227,6 +229,18 @@ const Syntax = () => {
 								</IonItem>
 								<IonItem className={classy("l4", "morphTypo", "morphProc", "stemMod")}>
 									<ul><li>e.g. swim/swam/swum.</li></ul>
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
+								{makeButton("suppletion")}
+								<IonLabel>Suppletion</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "suppletion")}>
+									{makeRange("suppletion", "Not Used", "Used Often")}
+								</IonItem>
+								<IonItem className={classy("l4", "morphTypo", "morphProc", "suppletion")}>
+									<ul><li>An entirely new stem is substituted for the root, e.g. "be" being replaced by is/am/are/was/were.</li></ul>
 								</IonItem>
 
 							<IonItem className={classy("h h3 l3", "morphTypo", "morphProc")}>
@@ -257,12 +271,12 @@ const Syntax = () => {
 								</IonItem>
 
 							<IonItem className={classy("l4", "morphTypo", "morphProc")}>
-								{makeText("morphProcess", "What sort of morphological processes are used?", 6)}
+								{makeText("morphProcess", "What sort of morphological processes are used? Illustrate the major and secondary pratterns.", 6)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "morphTypo")}>
 							{makeButton("headDepMark")}
-							<IonLabel>Head/Dependant Marking</IonLabel>
+							<IonLabel>1.3. Head/Dependant Marking</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "morphTypo", "headDepMark")}>
@@ -284,28 +298,28 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("grammCateg")}
-						<IonLabel>Grammatical Categories</IonLabel>
+						<IonLabel>2. Grammatical Categories</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
 							{makeButton("nouns")}
-							<IonLabel>Nouns (the most time-stable concepts)</IonLabel>
+							<IonLabel>2.1. Nouns (the most time-stable concepts)</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
 								{makeButton("nounTypes")}
-								<IonLabel>Types of Nouns</IonLabel>
+								<IonLabel>2.1.1. Types of Nouns</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
 									{makeButton("properNames")}
-									<IonLabel>Proper Names</IonLabel>
+									<IonLabel>2.1.1.1. Proper Names</IonLabel>
 								</IonItem>
 
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "properNames")}>
 										<ul>
 											<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
-											<li>Other languages may have special case markers for them.</li>
+											<li>Other languages may have special case markers (4.4) for them.</li>
 										</ul>
 									</IonItem>
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "properNames")}>
@@ -314,7 +328,7 @@ const Syntax = () => {
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
 									{makeButton("possess")}
-									<IonLabel>Possessability</IonLabel>
+									<IonLabel>2.1.1.2. Possessability</IonLabel>
 								</IonItem>
 
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "possess")}>
@@ -358,7 +372,7 @@ const Syntax = () => {
 
 								<IonItem className={classy("h l4", "grammCateg", "nouns", "nounTypes")}>
 									{makeButton("countMass")}
-									<IonLabel>Count vs Mass</IonLabel>
+									<IonLabel>2.1.1.3. Count vs Mass</IonLabel>
 								</IonItem>
 
 									<IonItem className={classy("l5", "grammCateg", "nouns", "nounTypes", "countMass")}>
@@ -373,7 +387,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "nouns")}>
 								{makeButton("pronounAnaph")}
-								<IonLabel>Pronouns and Anaphoric Clitics</IonLabel>
+								<IonLabel>2.1.2. Pronouns and Anaphoric Clitics</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("h l4 leading", "grammCateg", "nouns", "pronounAnaph")}>
@@ -410,12 +424,12 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
 							{makeButton("verbs")}
-							<IonLabel>Verbs (the least time-stable concepts)</IonLabel>
+							<IonLabel>2.2. Verbs (the least time-stable concepts)</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
 								{makeButton("semanRole")}
-								<IonLabel>Semantic Roles</IonLabel>
+								<IonLabel>2.2.1. Semantic Roles</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("h l4 leading", "grammCateg", "verbs", "semanRole")}>
@@ -485,7 +499,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
 								{makeButton("classes")}
-								<IonLabel>Verb Classes</IonLabel>
+								<IonLabel>2.2.2. Verb Classes</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "verbs", "classes")}>
@@ -538,7 +552,7 @@ const Syntax = () => {
 										<IonRow>
 											<IonCol className="cbox">{makeBox("factive")}</IonCol>
 											<IonCol className="label">Factive</IonCol>
-											<IonCol>Something comes into being: e.g. build, form, ignite, create</IonCol>
+											<IonCol>Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions</IonCol>
 										</IonRow>
 										<IonRow>
 											<IonCol className="cbox">{makeBox("cognition")}</IonCol>
@@ -574,7 +588,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "verbs")}>
 								{makeButton("verStruc")}
-								<IonLabel>Verb Structure</IonLabel>
+								<IonLabel>2.2.3. Verb Structure</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "verbs", "verStruc")}>
@@ -601,12 +615,12 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
 							{makeButton("modif")}
-							<IonLabel>Modifiers</IonLabel>
+							<IonLabel>2.3. Modifiers</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
 								{makeButton("pcda")}
-								<IonLabel>Property Concepts (Descriptive Adjectives)</IonLabel>
+								<IonLabel>2.3.1. Property Concepts (Descriptive Adjectives)</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "modif", "pcda")}>
@@ -652,7 +666,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
 								{makeButton("nonNumQ")}
-								<IonLabel>Non-Numeral Quantifiers</IonLabel>
+								<IonLabel>2.3.2. Non-Numeral Quantifiers</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "grammCateg", "modif", "nonNumQ")}>
@@ -666,7 +680,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "grammCateg", "modif")}>
 								{makeButton("numer")}
-								<IonLabel>Numerals</IonLabel>
+								<IonLabel>2.3.3. Numerals</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("h l4 leading", "grammCateg", "modif", "numer")}>
@@ -708,7 +722,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "grammCateg")}>
 							{makeButton("adv")}
-							<IonLabel>Adverbs (a "catch-all" category)</IonLabel>
+							<IonLabel>2.4. Adverbs (a "catch-all" category)</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "grammCateg", "adv")}>
@@ -731,12 +745,12 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("constOrd")}
-						<IonLabel>Constituent Order Typology</IonLabel>
+						<IonLabel>3. Constituent Order Typology</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("mainClause")}
-							<IonLabel>In Main Clauses</IonLabel>
+							<IonLabel>3.1. In Main Clauses</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "mainClause")}>
@@ -777,16 +791,6 @@ const Syntax = () => {
 										<IonCol><em>Steve pitches softballs; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("PAV")}</IonCol>
-										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
-										<IonCol><em>Softballs Steve pitches; Steve pitches.</em></IonCol>
-									</IonRow>
-									<IonRow>
-										<IonCol className="cbox">{makeBox("PVA")}</IonCol>
-										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
-										<IonCol><em>Softballs pitches Steve; Pitches Steve.</em></IonCol>
-									</IonRow>
-									<IonRow>
 										<IonCol className="cbox">{makeBox("VAP")}</IonCol>
 										<IonCol className="cbox leftA"><strong>VAP/VS</strong></IonCol>
 										<IonCol><em>Pitches Steve softballs; Pitches Steve.</em></IonCol>
@@ -796,15 +800,31 @@ const Syntax = () => {
 										<IonCol className="cbox leftA"><strong>VPA/VS</strong></IonCol>
 										<IonCol><em>Pitches softballs Steve; Pitches Steve.</em></IonCol>
 									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("PAV")}</IonCol>
+										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
+										<IonCol><em>Softballs Steve pitches; Steve pitches.</em></IonCol>
+									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("PVA")}</IonCol>
+										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
+										<IonCol><em>Softballs pitches Steve; Pitches Steve.</em></IonCol>
+									</IonRow>
 								</IonGrid>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "mainClause")}>
 								<ul>
 									<li>Dependant clauses, paragraph-initial clauses, clauses that introduce participants, questions, negative clauses, and clearly contrastive clauses may use different formats.</li>
-									<li>"Rigid" systems may put other constituents into the <strong>P</strong> slot on a regular basis.</li>
+									<li>"Rigid" systems may put other constituents into the <strong>P</strong> slot on a regular basis.
+										<ul>
+											<li>The softball was <em>filthy</em>: predicate adjective.</li>
+											<li>Steve was <em>an awful pitcher</em>: predicate nominative.</li>
+											<li>Steve went <em>to the dugouts</em>: oblique.</li>
+										</ul>
+									</li>
 									<li>"Flexible" or "free" systems use something other than grammatical relations to determine order:
 										<ul>
-											<li>Hebrew puts new, indefinite info pre-verb, definite info post-verb.</li>
+											<li>Biblical Hebrew puts new, indefinite info pre-verb, definite info post-verb.</li>
 											<li>Some will fix PV or AV relations in almost all cases, leaving the other "free".
 												<ul><li>i.e. A fixed PV may allow APV and PVA, and a fixed AV may allow PAV and AVP.</li></ul>
 											</li>
@@ -818,7 +838,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("vPhr")}
-							<IonLabel>Verb Phrases</IonLabel>
+							<IonLabel>3.2. Verb Phrases</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "vPhr")}>
@@ -833,12 +853,12 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("nPhr")}
-							<IonLabel>Noun Phrases</IonLabel>
+							<IonLabel>3.3. Noun Phrases</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "nPhr")}>
 								<ul>
-									<li>What is the order of the determiners***, numerals***, genitives***, modifiers***, relative clauses***, classifiers***, and the head noun?</li>
+									<li>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses***, classifiers***, and the head noun?</li>
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "nPhr")}>
@@ -848,7 +868,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("adpPhr")}
-							<IonLabel>Adpositional Phrases</IonLabel>
+							<IonLabel>3.4. Adpositional Phrases</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "adPhr")}>
@@ -875,13 +895,13 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "adpPhr")}>
-								{makeText("adPhrase", "Describe adpositions in the language.", 4)}
+								{makeText("adPhrase", "Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?", 4)}
 							</IonItem>
 
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("comPhr")}
-							<IonLabel>Comparatives</IonLabel>
+							<IonLabel>3.5 Comparatives</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "comPhr")}>
@@ -892,16 +912,18 @@ const Syntax = () => {
 											<li>For example, in <em>"X is bigger than Y"</em>, (<em>Y</em>) is the known standard, (<em>is __er than</em>) is a comparison marker, and (<em>big</em>) is the quality.</li>
 										</ul>
 									</li>
+									<li>PV languages generally use a Standard-Quality-Marker order.</li>
+									<li>VP languages tend towards Quality-Marker-Standard.</li>
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "comPhr")}>
-								{makeText("compare", "Describe comparisons in the language.")}
+								{makeText("compare", "Does the language have one or more comparitive constructions? What is the order of the standard, the marker, and the quality being compared?")}
 							</IonItem>
 
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("quPhr")}
-							<IonLabel>Question Particles and Words</IonLabel>
+							<IonLabel>3.6 Question Particles and Words</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "quPhr")}>
@@ -911,13 +933,13 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "constOrd", "quPhr")}>
-								{makeText("questions", "How are questions handled in the language?")}
+								{makeText("questions", "How are questions handled in the language? In informational questions, where does the question word occur?")}
 							</IonItem>
 
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
 							{makeButton("summary")}
-							<IonLabel>Summary</IonLabel>
+							<IonLabel>3.7 Summary</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "constOrd", "summary")}>
@@ -932,12 +954,12 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("NPO")}
-						<IonLabel>Noun and Noun Phrase Operations</IonLabel>
+						<IonLabel>4. Noun and Noun Phrase Operations</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("compounding")}
-							<IonLabel>Compounding</IonLabel>
+							<IonLabel>4.1. Compounding</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "compounding")}>
@@ -958,7 +980,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("denom")}
-							<IonLabel>Denominalization</IonLabel>
+							<IonLabel>4.2. Denominalization</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "denom")}>
@@ -972,12 +994,12 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "NPO", "denom")}>
-								{makeText("denoms", "Describe the language's denominalization strategies.", 4)}
+								{makeText("denoms", "Are there any processes to make a verb from a noun? An adjecive? An adverb?", 4)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("nNumber")}
-							<IonLabel>Number</IonLabel>
+							<IonLabel>4.3. Number</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "nNumber")}>
@@ -989,53 +1011,70 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "NPO", "nNumber")}>
-								{makeText("nNumber", "Describe how nouns interact with number.", 4)}
+								{makeText("nNumber", "Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?", 3)}
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "nNumber")}>
+								{makeText("nNumberOpt", "If number-marking is optional, when does it tend to occur? When does it not tend to occur?", 4)}
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "nNumber")}>
+								{makeText("nNumberObl", "If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?", 4)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("nCase")}
-							<IonLabel>Case</IonLabel>
+							<IonLabel>4.4. Case</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "nCase")}>
 								<ul>
 									<li>Case markings can describe the role a noun plays in a sentence.</li>
 									<li>In English, most case markings only survive in the pronouns, with word order doing the job for regular nouns. The major exception is the genitive case (possessive), which is marked with <em>'s</em>.</li>
+									<li>Some cases, and the semantic role (2.2.1) they usually indicate, include:
+										<ul>
+											<li>nominative/ergative (Agent, see section 6)</li>
+											<li>accusative/absolutive (Patient, see section 6)</li>
+											<li>dative (Recipient)</li>
+											<li>genitive (Possessor)</li>
+										</ul>
+									</li>
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "NPO", "nCase")}>
-								{makeText("case", "Describe how nouns interact with case.", 4)}
+								{makeText("case", "Do nouns exhibit morphological case? If so, what cases exist?", 4)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("articlesDD")}
-							<IonLabel>Articles, Determiners, Demonstratives</IonLabel>
+							<IonLabel>4.5. Articles and Demonstratives</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "articlesDD")}>
 								<ul>
-									<li>Do articles exist? Are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</li>
-									<li>Is there a class of demonstratives distinct from articles?
-										<ul>
-											<li>How many degrees of distance are represented? English has two: this/that. Spanish has three.</li>
-											<li>Are there other distinctions besides distance?</li>
-										</ul>
-									</li>
-									<li>Do other determiners exist? These words distinguish or identify a noun without modifying it.</li>
+									<li>English is relatively rare in having articles: a, an, the. More often, languages have a broader class of demonstratives.</li>
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "NPO", "articlesDD")}>
-								{makeText("articlesEtc", "Describe how articles, determiners, and demonstratives work.", 6)}
+								{makeText("articles", "If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?", 6)}
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "articlesDD")}>
+								<ul>
+									<li>Demonstratives are words that distinguish or identify a noun without modifying it, such as this, that, these and those.</li>
+									<li>They tend to encode distance ("this" is closer to you than "that"; Spanish has a third level of distance, too).</li>
+								</ul>
+							</IonItem>
+							<IonItem className={classy("l3", "NPO", "articlesDD")}>
+								{makeText("demonstratives", "How many levels of distance do determiners encode? Are there other distinctions besides distance?", 6)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("posss")}
-							<IonLabel>Possessors</IonLabel>
+							<IonLabel>4.6. Possessors</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "posss")}>
 								<ul>
-									<li>This does <strong>not</strong> refer to possessive clauses!</li>
+									<li>Refer back to 2.1.1.2 to note your system of possession.</li>
+									<li>This does <strong>not</strong> refer to possessive clauses! (5.4)</li>
 									<li>How are possessors expressed in the noun phrase?</li>
 									<li>Do nouns agree with their possessors? Vice versa?</li>
 								</ul>
@@ -1046,7 +1085,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("classGen")}
-							<IonLabel>Class (Gender)</IonLabel>
+							<IonLabel>4.7. Class (Gender)</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "classGen")}>
@@ -1059,12 +1098,12 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "NPO", "classGen")}>
-								{makeText("classGender", "Describe the language's class/gender system.", 8)}
+								{makeText("classGender", "Describe the language's class/gender system, if it has one.", 8)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("dimAug")}
-							<IonLabel>Diminution/Augmentation</IonLabel>
+							<IonLabel>4.8. Diminution/Augmentation</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "NPO", "dimAug")}>
@@ -1072,7 +1111,7 @@ const Syntax = () => {
 									<li>Is diminution (making smaller) and/or augmentation (making bigger) used in the language?</li>
 									<li>Is it obligatory? Does one member have to occur in every full noun phrase?</li>
 									<li>Is it productive? Does it work with all full noun phrases and does it have the same meaning for each?</li>
-									<li>Expressed lexically. morphologically, or analytically?</li>
+									<li>Expressed lexically, morphologically, or analytically?</li>
 									<li>Where in the NP is this operation likely to be located? Can it occur in more than one place?</li>
 								</ul>
 							</IonItem>
@@ -1082,27 +1121,28 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("predNom")}
-						<IonLabel>Predicate Nominals and Related Constructions</IonLabel>
+						<IonLabel>5. Predicate Nominals and Related Constructions</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("l2", "predNom")}>
 							<ul>
 								<li>These forms generally encode the following information:
 									<ul>
-										<li>Proper inclusion (X is a Y)</li>
 										<li>Equation (X is Y)</li>
-										<li>Attribution (X is made Y)</li>
+										<li>Proper inclusion (X is a Y)</li>
 										<li>Location (X is located Y)</li>
+										<li>Attribution (X is made Y)</li>
 										<li>Existence (X exists in Y)</li>
 										<li>Possession (X has Y)</li>
 									</ul>
 								</li>
+								<li>The forms at the top of the list are much more likely to lack a semantically rich verb, while those at the bottom are less likely to.</li>
 							</ul>
 						</IonItem>
 
 						<IonItem className={classy("h h2 l2", "predNom")}>
 							{makeButton("pNom")}
-							<IonLabel>Predicate Nominals and Adjecives</IonLabel>
+							<IonLabel>5.1. Predicate Nominals and Adjecives</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "predNom", "pNom")}>
@@ -1120,7 +1160,7 @@ const Syntax = () => {
 											</li>
 											<li><em>Joined by copula</em>
 												<ul>
-													<li>A copula is a morpheme that "couples" two elements. Often encodes tense/aspect.</li>
+													<li>A copula is a morpheme that "couples" two elements. Often encodes tense/aspect, and can be restricted to certain situations (e.g. only in non-present tenses).</li>
 													<li>The copula can take different forms:
 														<ul>
 															<li><em>Verb</em>
@@ -1164,7 +1204,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "predNom")}>
 							{makeButton("pLoc")}
-							<IonLabel>Predicate Locatives</IonLabel>
+							<IonLabel>5.2. Predicate Locatives</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "predNom", "pLoc")}>
@@ -1186,7 +1226,7 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "predNom")}>
 							{makeButton("pEx")}
-							<IonLabel>Existentials</IonLabel>
+							<IonLabel>5.3. Existentials</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "predNom", "pEx")}>
@@ -1200,12 +1240,12 @@ const Syntax = () => {
 								</ul>
 							</IonItem>
 							<IonItem className={classy("l3", "predNom", "pEx")}>
-								{makeText("predEx", "How does the language handle existentials?", 6)}
+								{makeText("predEx", "How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?", 6)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "predNom")}>
 							{makeButton("pPoss")}
-							<IonLabel>Possessive Clauses</IonLabel>
+							<IonLabel>5.4. Possessive Clauses</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("l3", "predNom", "pPoss")}>
@@ -1220,7 +1260,7 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("grammRel")}
-						<IonLabel>Grammatical Relations</IonLabel>
+						<IonLabel>6. Grammatical Relations</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("h h2 l2", "grammRel")}>
@@ -1298,7 +1338,7 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("voiceVal")}
-						<IonLabel>Voice and Valence Adjusting Operations</IonLabel>
+						<IonLabel>7. Voice and Valence Adjusting Operations</IonLabel>
 					</IonItem>
 
 						<IonItem className={classy("l2", "voiceVal")}>
@@ -1319,12 +1359,12 @@ const Syntax = () => {
 						</IonItem>
 						<IonItem className={classy("h h2 l2", "voiceVal")}>
 							{makeButton("valAdd")}
-							<IonLabel>Valence-Increasing Operations</IonLabel>
+							<IonLabel>7.1. Valence-Increasing Operations</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
 								{makeButton("causatives")}
-								<IonLabel>Causatives</IonLabel>
+								<IonLabel>7.1.1. Causatives</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "causatives")}>
@@ -1358,6 +1398,16 @@ const Syntax = () => {
 												<li>Often expresses causation and permission.</li>
 												<li>May be restricted to only intransitive verbs.</li>
 												<li>In transitive verbs, the causee often goes into a different case.</li>
+											</ul>
+										</li>
+										<li><strong>Analytical</strong>
+											<ul>
+												<li>A separate causative verb is used. This usually isn't valence-increasing!
+													<ul>
+														<li>"Steve caused the tree to die".</li>
+														<li>"Steve forced the stick into the ground."</li>
+													</ul>
+												</li>
 											</ul>
 										</li>
 										{toggleButton("li", "causativeCoding")}
@@ -1410,7 +1460,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
 								{makeButton("applic")}
-								<IonLabel>Applicatives</IonLabel>
+								<IonLabel>7.1.2. Applicatives</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "applic")}>
@@ -1449,7 +1499,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
 								{makeButton("datShift")}
-								<IonLabel>Dative Shift</IonLabel>
+								<IonLabel>7.1.3. Dative Shift</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "datShift")}>
@@ -1466,12 +1516,12 @@ const Syntax = () => {
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "datShift")}>
-									{makeText("dativeShifts", "Do dative shifts happen in the language? How?", 4)}
+									{makeText("dativeShifts", "Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?", 4)}
 								</IonItem>
 
 							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
 								{makeButton("datOI")}
-								<IonLabel>Dative of Interest</IonLabel>
+								<IonLabel>7.1.4. Dative of Interest</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "datOI")}>
@@ -1519,7 +1569,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h l3", "voiceVal", "valAdd")}>
 								{makeButton("possRaise")}
-								<IonLabel>Possessor Raising (a.k.a. External Possession)</IonLabel>
+								<IonLabel>7.1.5. Possessor Raising (a.k.a. External Possession)</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valAdd", "possRaise")}>
@@ -1558,19 +1608,20 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "voiceVal")}>
 							{makeButton("valRem")}
-							<IonLabel>Valence-Decreasing Operations</IonLabel>
+							<IonLabel>7.2. Valence-Decreasing Operations</IonLabel>
 						</IonItem>
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("refls")}
-								<IonLabel>Reflexives</IonLabel>
+								<IonLabel>7.2.1. Reflexives</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "refls")}>
 									<ul>
+										<li>The Agent and Patient are the same.</li>
 										<li>Lexical reflexives:
 											<ul>
-												<li>The verb itself that the Agent and Patient are the same.
+												<li>The verb itself implies reflexivity.
 													<ul>
 														<li>e.g.: Steve washed, shaved, and got dressed.</li>
 													</ul>
@@ -1608,7 +1659,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("recips")}
-								<IonLabel>Reciprocals</IonLabel>
+								<IonLabel>7.2.2. Reciprocals</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "recips")}>
@@ -1632,7 +1683,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("passives")}
-								<IonLabel>Passives</IonLabel>
+								<IonLabel>7.2.3. Passives</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "passives")}>
@@ -1642,7 +1693,11 @@ const Syntax = () => {
 											<ul>
 												<li>Lexical passives are rare.</li>
 												<li>Morphological passives are more common, often the same morphology as perfect aspect. May be derived from copulas or nominalizations.</li>
-												<li>English has analytic passives, with a copula and a "past participle" (patient nominalization).</li>
+												<li>English has analytic passives, with a copula and a "past participle" (patient nominalization).
+													<ul>
+														<li>e.g.: The tree has been killed.</li>
+													</ul>
+												</li>
 											</ul>
 										</li>
 										<li>Impersonal passive: no agent directly indicated; can be used for intransitive verbs as well as transitive.
@@ -1665,7 +1720,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("inverses")}
-								<IonLabel>Inverses</IonLabel>
+								<IonLabel>7.2.4. Inverses</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "inverses")}>
@@ -1700,7 +1755,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("middleCon")}
-								<IonLabel>Middle Constructions</IonLabel>
+								<IonLabel>7.2.5. Middle Constructions</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "middleCon")}>
@@ -1708,7 +1763,7 @@ const Syntax = () => {
 										<li>Also known as anticausatives or detransitivation: a semantically transitive situation expressed as a process undergone by a Patient (rather than carried out by an Agent).</li>
 										<li>Many languages express this the same way as they express passives.</li>
 										<li>Often express the notion that the subject is both controller and affected.</li>
-										<li>e.g. "Steve broke the car" becomes "The car broke."</li>
+										<li>e.g. "Steve broke the car" becomes "The car broke" (and it was no fault of Steve's).</li>
 									</ul>
 								</IonItem>
 								<IonItem className={classy("l4", "voiceVal", "valRem", "middleCon")}>
@@ -1717,7 +1772,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("antiP")}
-								<IonLabel>Antipassives</IonLabel>
+								<IonLabel>7.2.6. Antipassives</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "antiP")}>
@@ -1733,7 +1788,7 @@ const Syntax = () => {
 
 							<IonItem className={classy("h h3 l3", "voiceVal", "valRem")}>
 								{makeButton("objDemOmInc")}
-								<IonLabel>Object Demotion/Omission/Incorporation</IonLabel>
+								<IonLabel>7.2.7. Object Demotion/Omission/Incorporation</IonLabel>
 							</IonItem>
 
 								<IonItem className={classy("l4", "voiceVal", "valRem", "objDemOmInc")}>
@@ -1801,6 +1856,7 @@ Verbs that freely compound like this typically lose their verbal character and b
 - Furthermore, some verb stems may not allow certain operations while favoring others
 - Certain TAM morphemes may cluster together with greater-than-chance frequency, forming hypermorphemes
 - Often interacts with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number)
+- Is there a tense system? How does it operate? Future/non-future? Past/non-past? Past/present/future? Other?
 9.3.1 -  Tense
 - Action in reference to "now"
 * past/present/future
@@ -1861,9 +1917,6 @@ Atelic = no clear end point
 Telic = clearly defined end point
 Punctual = instantaneous event
 Static = changeless state
-
-restricted systems - 1,2,3,4,5,[...10,]many
-tens-units vs units-tens - twenty-one vs one-twenty
 
 
 */}

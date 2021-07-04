@@ -155,18 +155,19 @@ export type SyntaxSketchBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
 
-type SyntaxNum = "synthesis" | "fusion" | "stemMod" | "redupe" | "supraMod" | "headDepMarked";
+type SyntaxNum = "synthesis" | "fusion" | "stemMod" | "suppletion" | "redupe" | "supraMod" | "headDepMarked";
 export type SyntaxSketchNumberObject = {
 	[key in SyntaxNum]?: number
 }
 
-type SyntaxText = "synthesis" | "fusion" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
+type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
 				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
-				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "case" | "articlesEtc"
-				| "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc" | "predEx" | "predPoss"
-				| "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt" | "possessRaising"
-				| "refls" | "recips" | "passives" | "inverses" | "middleCon" | "antiP" | "objDemOmInc";
+				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "nNumberOpt" | "nNumberObl"
+				| "case" | "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom"
+				| "predLoc" | "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts"
+				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
+				| "antiP" | "objDemOmInc";
 export type SyntaxSketchTextObject = {
 	[key in SyntaxText]?: string
 }
