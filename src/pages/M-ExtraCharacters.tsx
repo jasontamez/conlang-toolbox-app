@@ -43,9 +43,9 @@ import capitalize from 'capitalize';
 import { Clipboard } from '@capacitor/clipboard';
 
 const ExtraCharactersModal = () => {
-	interface ExtraCharDataFlags {
-		[key: string]: boolean
-	}
+	//interface ExtraCharDataFlags {
+	//	[key: string]: boolean
+	//}
 	const dispatch = useDispatch();
 	const [modalState, charSettings] = useSelector((state: any) => [state.modalState, state.extraCharactersState], shallowEqual);
 	const popstate = modalState.ExtraCharactersEllipsis;
