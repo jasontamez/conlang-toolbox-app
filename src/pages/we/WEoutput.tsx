@@ -47,7 +47,7 @@ import OutputOptionsModal from './M-OutputOptions';
 import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
 import ltr from '../../components/LTR';
 import fireSwal from '../../components/Swal';
-import { Plugins } from '@capacitor/core';
+import { Clipboard } from '@capacitor/clipboard';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 
@@ -141,7 +141,6 @@ const WEOut = () => {
 			}
 		}
 		if(copied.length > 0 && !copied[0].match(/^You have no/g)) {
-			const { Clipboard } = Plugins;
 			await Clipboard.write({string: copied.join("\n")});
 			//navigator.clipboard.writeText(copied.join("\n"));
 			return fireSwal({

@@ -70,7 +70,7 @@ import ltr from '../components/LTR';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 import debounce from '../components/Debounce';
-import { Plugins } from '@capacitor/core';
+import { Clipboard } from '@capacitor/clipboard';
 
 const Lex = () => {
 	const dispatch = useDispatch();
@@ -402,7 +402,6 @@ const Lex = () => {
 	};
 	const copyText = async () => {
 		const info = $i("revealFullElement");
-		const { Clipboard } = Plugins;
 		await Clipboard.write({string: info.textContent});
 		//navigator.clipboard.writeText(info.textContent);
 		fireSwal({

@@ -40,7 +40,7 @@ import charData from '../components/ExtraCharactersData';
 import fireSwal from '../components/Swal';
 import debounce from '../components/Debounce';
 import capitalize from 'capitalize';
-import { Plugins } from '@capacitor/core';
+import { Clipboard } from '@capacitor/clipboard';
 
 const ExtraCharactersModal = () => {
 	interface ExtraCharDataFlags {
@@ -75,7 +75,6 @@ const ExtraCharactersModal = () => {
 			}
 		} else if (charSettings.copyImmediately) {
 			// Copy now
-			const { Clipboard } = Plugins;
 			await Clipboard.write({string: char});
 			//navigator.clipboard.writeText(char);
 			fireSwal({

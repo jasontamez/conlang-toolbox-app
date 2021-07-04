@@ -45,7 +45,7 @@ import ModalWrap from "../../components/ModalWrap";
 import { $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import fireSwal from '../../components/Swal';
-import { Plugins } from '@capacitor/core';
+import { Clipboard } from '@capacitor/clipboard';
 
 const WGOut = () => {
 	const dispatch = useDispatch();
@@ -98,7 +98,6 @@ const WGOut = () => {
 			copyText = (copied.join("\n"));
 		}
 		if(copyText && !copyText.match(/^You (have no|are missing)/g)) {
-			const { Clipboard } = Plugins;
 			await Clipboard.write({string: copyText});
 			//navigator.clipboard.writeText(copyText);
 			return fireSwal({

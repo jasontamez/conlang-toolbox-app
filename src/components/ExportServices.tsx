@@ -1,23 +1,22 @@
 import escape from '../components/EscapeForHTML';
 import fireSwal from '../components/Swal';
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
 
 const doExport = async (output: string, fileName: string, notify: boolean = true) => {
-	const { Filesystem } = Plugins;
-	const Directory = FilesystemDirectory.Documents;
+	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
 		let ret = await Filesystem.readdir({
 			path: 'ConlangToolbox',
-			directory: Directory
+			directory: Docs
 		});
 		console.log('Read dir', ret);
 	} catch(e) {
 		try {
 			let ret = await Filesystem.mkdir({
 				path: 'ConlangToolbox',
-				directory: Directory,
+				directory: Docs,
 				recursive: false // like mkdir -p
 			});
 			console.log('Made dir', ret);
@@ -36,8 +35,8 @@ const doExport = async (output: string, fileName: string, notify: boolean = true
 			const result = await Filesystem.writeFile({
 				path: 'ConlangToolbox/' + filename,
 				data: output,
-				directory: Directory,
-				encoding: FilesystemEncoding.UTF8
+				directory: Docs,
+				encoding: Encoding.UTF8
 			});
 			console.log('Wrote file', result);
 			notify && fireSwal({
