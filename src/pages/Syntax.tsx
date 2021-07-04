@@ -1813,8 +1813,183 @@ const Syntax = () => {
 
 					<IonItem className="h h1">
 						{makeButton("otherVerb")}
-						<IonLabel>Other Verb and Verb Phrase Operations</IonLabel>
+						<IonLabel>8. Other Verb and Verb Phrase Operations</IonLabel>
 					</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("nominal")}
+							<IonLabel>8.1. Nominalization</IonLabel>
+						</IonItem>
+
+							<IonItem className={classy("l3", "otherVerb", "nominal")}>
+								<ul>
+									<li>Every language has strategies of adjusting the grammatical category of a root. Turning a verb into a noun is <em>nominalization</em>.</li>
+									<li>English has multiple methods, with differing levels of productivity.</li>
+									<li>Typically, a language will use differing methods to create nominalizations according to the result.</li>
+									<li>Some methods:
+										<ul>
+											<li>Zero Operator: walk → a walk, look → a look</li>
+											<li>Affix: walk → walking, employ → employment, grow → growth, construct → construction</li>
+											<li>Merge with Adposition: hang + up → hangup, make + over → makeover, talk + to → talking to</li>
+											<li>Analytical: Mandarin uses a particle <em>de</em> to indicate some nominalizations
+												<ul>
+													<li><em>hézuò</em> (cooperate) + <em>de</em> → cooperation</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomAction")}
+								<IonLabel>8.1.1. Action Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomAction")}>
+									<ul>
+										<li>Usually refers to the action in the abstract.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomAction")}>
+									{makeText("nomAct", "What process(es) turn a verb into an action noun?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomAgent")}
+								<IonLabel>8.1.2. Agent Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomAgent")}>
+									<ul>
+										<li>Typically refers to an agent who is characteristic of the root verb (teach → a teacher), but some languages instead refer to someone engaged in the activity at the moment (teach → one who is currently teaching).</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomAgent")}>
+									{makeText("nomAgent", "What process(es) turn a verb into an agent?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomPatient")}
+								<IonLabel>8.1.3. Patient Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomPatient")}>
+									<ul>
+										<li>In English, this mostly happens with the modifiers "good" and "bad".
+											<ul>
+												<li>buy → a good buy</li>
+												<li>time → a bad time</li>
+											</ul>
+										</li>
+										<li>This can also form the "past participle" in a language.
+											<ul>
+												<li>employ → employee : this form comes from the French past participle!</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomPatient")}>
+									{makeText("nomPat", "What process(es) turn a verb into a patient?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomInstrument")}
+								<IonLabel>8.1.4. Instrument Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomInstrument")}>
+									<ul>
+										<li>Refers to the object used in the action.</li>
+										<li>In English, this usually follows the same format as an agent nominalization.</li>
+										<li>In Spanish, compounding a verb with a plural object makes an instrument.
+											<ul>
+												<li>e.g. <em>abre</em> (open) + <em>latas</em> (cans) → <em>el abrelatas</em> (can-opener)</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomInstrument")}>
+									{makeText("nomIns", "What process(es) turn a verb into an instrument noun?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomLocation")}
+								<IonLabel>8.1.5. Location Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomLocation")}>
+									<ul>
+										<li>Many languages use this to refer generally to a place where the action tends to occur, e.g. work → workshop, burn → fireplace.</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomLocation")}>
+									{makeText("nomLoc", "What process(es) turn a verb into a location noun?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomProduct")}
+								<IonLabel>8.1.6. Product Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomProduct")}>
+									<ul>
+										<li>This refers to something that exists because of an action.</li>
+										<li>English tends to do this with zero operators (scratch → a scratch) or by changing the stress pattern (permit → a permit, reject → a reject, convert → a convert).</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomProduct")}>
+									{makeText("nomProd", "What process(es) turn a verb into a product noun?", 4)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "nominal")}>
+								{makeButton("nomManner")}
+								<IonLabel>8.1.7. Manner Nominalization</IonLabel>
+							</IonItem>
+
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomManner")}>
+									<ul>
+										<li>This is uncommon among languages, but English has a couple, generally confined to sports terminology.
+											<ul>
+												<li>curve → a curve (That pitcher's curve is unhittable.)</li>
+												<li>serve → a serve (Serena's serve is imposing.)</li>
+											</ul>
+										</li>
+									</ul>
+								</IonItem>
+								<IonItem className={classy("l4", "otherVerb", "nominal", "nomManner")}>
+									{makeText("nomManner", "What process(es) turn a verb into a manner noun, if any?", 4)}
+								</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("compounding")}
+							<IonLabel>8.2. Compounding</IonLabel>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("TAM")}
+							<IonLabel>8.3. Tense/Aspect/Mood</IonLabel>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("locDirec")}
+							<IonLabel>8.4. Location/Direction</IonLabel>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("partRef")}
+							<IonLabel>8.5. Participant Reference</IonLabel>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("eviValiMira")}
+							<IonLabel>8.6. Evidentiality, Validationality and Mirativity</IonLabel>
+						</IonItem>
+
+						<IonItem className={classy("h h2 l2", "otherVerb")}>
+							{makeButton("otherVMisc")}
+							<IonLabel>8.7. Miscellaneous</IonLabel>
+						</IonItem>
 
 {/*
 9 -  Other verb and verb-phrase operations
