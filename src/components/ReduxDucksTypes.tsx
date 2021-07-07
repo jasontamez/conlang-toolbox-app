@@ -167,8 +167,7 @@ type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "
 				| "case" | "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom"
 				| "predLoc" | "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts"
 				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
-				| "antiP" | "objDemOmInc" | "nomAct" | "nomAgent" | "nomPat" | "nomIns" | "nomLoc" | "nomProd"
-				| "nomManner";
+				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp";
 export type SyntaxSketchTextObject = {
 	[key in SyntaxText]?: string
 }
