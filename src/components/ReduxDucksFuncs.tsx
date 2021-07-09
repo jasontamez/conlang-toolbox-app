@@ -206,6 +206,9 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 export function toggleSyntaxState(payload: string) {
 	return {type: consts.TOGGLE_LANGSKETCH_STATE, payload};
 }
+export function setSyntaxState(prop: string, toggle: boolean) {
+	return {type: consts.SET_LANGSKETCH_STATE, payload: [prop, toggle]};
+}
 export function setSyntaxBool(payload1: keyof types.SyntaxSketchBoolObject, payload2: boolean) {
 	return {type: consts.SET_LANGSKETCH_BOOL, payload: [payload1, payload2]};
 }

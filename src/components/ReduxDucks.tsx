@@ -1030,6 +1030,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				final.syntaxSketchState[payload] = true;
 			}
 			break;
+		case consts.SET_LANGSKETCH_STATE:
+			final = reduceAllBut([], state);
+			let [pp, bb] = payload;
+			if(bb) {
+				final.syntaxSketchState[pp] = true;
+			} else {
+				delete final.syntaxSketchState[pp];
+			}
+			break;
 		case consts.SET_LANGSKETCH_BOOL:
 			final = reduceAllBut([], state);
 			let boo = payload[0] as keyof types.SyntaxSketchBoolObject;
