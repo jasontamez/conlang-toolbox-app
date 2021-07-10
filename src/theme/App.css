@@ -720,6 +720,11 @@ ion-label.wrappableInnards {
 	max-width: 6rem;
 	text-align: center;
 }
+#syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col.header {
+	text-align: center;
+	font-weight: bold;
+	margin-block: 0.25rem;
+}
 #syntaxSketchPage ion-list ion-item ion-grid ion-row ion-col.leftA {
 	text-align: start;
 }
@@ -791,7 +796,12 @@ ion-label.wrappableInnards {
 .sketchModal ul li {
 	text-indent: -1rem;
 	padding-inline-start: 1rem;
+	margin-block: 0.25rem;
 	position: relative;
+}
+#syntaxSketchPage ion-list ion-item ul li.newSection,
+.sketchModal ul li.newSection {
+	margin-block-start: 1rem;
 }
 #syntaxSketchPage ion-list ion-item ul li::marker,
 .sketchModal ul li::marker {
