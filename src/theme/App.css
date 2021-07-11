@@ -818,25 +818,31 @@ ion-label.wrappableInnards {
 	position: relative;
 	left: 0.5rem;
 }
-#syntaxSketchPage table {
+#syntaxSketchPage table,
+.sketchModal table {
 	background: var(--ion-background-shader);
 	border: solid 0.25rem var(--ion-color-dark-tint);
 	margin: 0.5rem 1rem;
 }
 #syntaxSketchPage table td,
-#syntaxSketchPage table th {
+.sketchModal table td,
+#syntaxSketchPage table th,
+.sketchModal table th {
 	padding: 0.5rem 1rem;
 	vertical-align: top;
 	text-align: start;
 	border: 0;
 }
-#syntaxSketchPage table td + td {
+#syntaxSketchPage table td + td,
+.sketchModal table td + td {
 	padding-inline-start: 0;
 }
-#syntaxSketchPage table tr:nth-child(even) {
+#syntaxSketchPage table tr:nth-child(even),
+.sketchModal table tr:nth-child(even) {
 	background: var(--ion-background-shader);
 }
-#syntaxSketchPage table ul {
+#syntaxSketchPage table ul,
+.sketchModal table ul {
 	margin: 0;
 }
 #syntaxSketchPage .toggleButton {

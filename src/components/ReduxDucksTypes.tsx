@@ -150,7 +150,8 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
-				| "circumP" | "markInv" | "markDirInv" | "verbAgreeInv";
+				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "markInv" | "markDirInv"
+				| "verbAgreeInv";
 export type SyntaxSketchBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
@@ -167,7 +168,7 @@ type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "
 				| "case" | "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom"
 				| "predLoc" | "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts"
 				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
-				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp";
+				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp" | "tense" | "aspect" | "mode" | "locDirect";
 export type SyntaxSketchTextObject = {
 	[key in SyntaxText]?: string
 }

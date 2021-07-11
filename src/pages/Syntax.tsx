@@ -34,7 +34,6 @@ import {
 import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObject } from '../components/ReduxDucksTypes';
 //import { CustomStorageSyntax } from '../components/PersistentInfo';
 import ExtraCharactersModal from './M-ExtraCharacters';
-import { $i, $a } from '../components/DollarSignExports';
 
 const Syntax = () => {
 	const dispatch = useDispatch();
@@ -74,34 +73,6 @@ const Syntax = () => {
 		return (
 			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={synText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
 		);
-	};
-	const toggleButton = (tag: string, cName: string, otherProps: object = {}, tip: string = "Show tips and ideas.", hide: string = "Hide tips and ideas.") => {
-		return React.createElement(
-			tag,
-			{
-				id: cName + "Toggle",
-				className: "toggleButton",
-				"data-other": hide,
-				onClick: () => toggleTip(cName),
-				...otherProps
-			},
-			tip
-		);
-	};
-	const toggleTip = (cName: string) => {
-		const toggle = $i(cName + "Toggle");
-		if(toggle === null) {
-			console.log("Bad ID/ClassName: " + cName);
-			return;
-		}
-		const current = toggle.textContent;
-		const swap = toggle.dataset.other;
-		toggle.textContent = swap;
-		toggle.dataset.other = current;
-		toggle.classList.toggle("toggled");
-		$a("." + cName).forEach((tag: HTMLElement) => {
-			tag.classList.toggle("hide");
-		});
 	};
 	const makeButton = (what: string) => {
 		return (
@@ -426,7 +397,7 @@ const Syntax = () => {
 												<li>Must attach to another word, but function as a full noun phrase.</li>
 											</ul>
 										</li>
-										<li className="newSection">Both types often differ according to person (3rd/2nd/1st including inclusive/exclusive), number (singular/plural), noun class (gender/animacy), grammatical role (subject/object/ergative/etc), semantic role (agent/patient), definiteness and/or specificness (a/the), and honorifics.</li>
+										<li className="newSection">Both types often differ according to person (3rd/2nd/1st including inclusive/exclusive), number (singular/plural), noun class (gender/animacy), grammatical role (subject/object/ergative/etc), semantic role (Agent/Patient), definiteness and/or specificness (a/the), and honorifics.</li>
 										<li>English has frequent pronouns that agree with the verb, and may be stressed for emphasis or contrast: "<strong>He</strong> died" (not her, as expected).</li>
 										<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
 									</ul>
@@ -453,7 +424,7 @@ const Syntax = () => {
 												<li><strong>Patient</strong>: undergoes a change, no volition (direct object in English)</li>
 												<li><strong>Recipient</strong>: moving object (indirect object in English), or often a destination</li>
 												<li><strong>Force</strong>: directly instigates, not necessarily conscious or voluntary</li>
-												<li><strong>Instrument</strong>: indirectly instigates (usually by an agent)</li>
+												<li><strong>Instrument</strong>: indirectly instigates (usually by an Agent)</li>
 												<li><strong>Experiencer</strong>: does not participate, merely observes</li>
 											</ul>
 										</li>
@@ -870,9 +841,9 @@ const Syntax = () => {
 							<IonLabel>3.5 Comparatives</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "constOrd", "comPhr"]} title="xxxxx">
+							<InfoModal classy={["l3", "constOrd", "comPhr"]} title="Comparatives" label="How do they work?">
 								<ul>
-									<li>Does the language even have a form? (e.g. X is big. Y is very big.)</li>
+									<li>Does the language even have a form? Some languages get by with strategies like "X is big, Y is very big."</li>
 									<li>A comparison phrase requires a known standard, a marker that signals this is a comparison, and the quality of comparison.
 										<ul>
 											<li>For example, in <em>"X is bigger than Y"</em>, (<em>Y</em>) is the known standard, (<em>is __er than</em>) is a comparison marker, and (<em>big</em>) is the quality.</li>
@@ -883,7 +854,7 @@ const Syntax = () => {
 								</ul>
 							</InfoModal>
 							<IonItem className={classy("l3", "constOrd", "comPhr")}>
-								{makeText("compare", "Does the language have one or more comparitive constructions? What is the order of the standard, the marker, and the quality being compared?")}
+								{makeText("compare", "Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?")}
 							</IonItem>
 
 
@@ -892,7 +863,7 @@ const Syntax = () => {
 							<IonLabel>3.6 Question Particles and Words</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "constOrd", "quPhr"]} title="xxxxx">
+							<InfoModal classy={["l3", "constOrd", "quPhr"]} title="Questions">
 								<ul>
 									<li>In many languages, yes/no questions are indicated by a change in intonation. In others, a question particle is used; e.g. <em>do</em> you understand?</li>
 									<li>Informal questions may require a specific question word.</li>
@@ -904,17 +875,11 @@ const Syntax = () => {
 
 
 						<IonItem className={classy("h h2 l2", "constOrd")}>
-							{makeButton("summary")}
 							<IonLabel>3.7 Summary</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "constOrd", "summary"]} title="xxxxx">
-								<ul>
-									<li>When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent?</li>
-								</ul>
-							</InfoModal>
-							<IonItem className={classy("l3", "constOrd", "summary")}>
-								{makeText("COType", "Note consistency and any deviations not already covered.")}
+							<IonItem className={classy("l3", "constOrd")}>
+								{makeText("COType", "When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.")}
 							</IonItem>
 
 
@@ -928,7 +893,7 @@ const Syntax = () => {
 							<IonLabel>4.1. Compounding</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "compounding"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "compounding"]} title="Compounding">
 								<ul>
 									<li>When two nouns are combined into one, several changes may occur.
 										<ul>
@@ -941,7 +906,7 @@ const Syntax = () => {
 								</ul>
 							</InfoModal>
 							<IonItem className={classy("l3", "NPO", "compounding")}>
-								{makeText("compounding", "Describe the sorts of compounding that happen in the language.", 4)}
+								{makeText("compounding", "Describe the sorts of compounding that happen in the language (if any).", 4)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
@@ -949,7 +914,7 @@ const Syntax = () => {
 							<IonLabel>4.2. Denominalization</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "denom"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "denom"]} title="Denominalization">
 								<ul>
 									<li>Some languages have many ways of changing a noun into a non-noun.
 										<ul>
@@ -965,13 +930,13 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("nNumber")}
-							<IonLabel>4.3. Number</IonLabel>
+							<IonLabel>4.3. Number Marking</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "nNumber"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "nNumber"]} title="Number Marking">
 								<ul>
 									<li>Some languages only mark number occassionally or optionally depending on the type of noun.</li>
-									<li>Often intertwined with other markers, such as case marking in Romance languages.</li>
+									<li>This is often intertwined with other markers, such as case marking in Romance languages.</li>
 									<li>Most languages leave the singular unmarked, but not all!</li>
 									<li>Number marking may be as simple as singular/plural (more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts).</li>
 								</ul>
@@ -988,10 +953,10 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
 							{makeButton("nCase")}
-							<IonLabel>4.4. Case</IonLabel>
+							<IonLabel>4.4. Case Marking</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "nCase"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "nCase"]} title="Case Marking" label="How it works">
 								<ul>
 									<li>Case markings can describe the role a noun plays in a sentence.</li>
 									<li>In English, most case markings only survive in the pronouns, with word order doing the job for regular nouns. The major exception is the genitive case (possessive), which is marked with <em>'s</em>.</li>
@@ -1001,6 +966,13 @@ const Syntax = () => {
 											<li>accusative/absolutive (Patient, see section 6)</li>
 											<li>dative (Recipient)</li>
 											<li>genitive (Possessor)</li>
+										</ul>
+									</li>
+									<li>In Latin, if a Patient occurs in some other case, either the sentence is ungrammatical or another sense of the verb results.</li>
+									<li>In some languages, verbs and/or adpositions <em>govern</em> their arguments, requiring a specific case marker on their nouns. This allows similar-sounding verbs to be discerned by these case markers. For example, in Yagua:
+										<ul>
+											<li>sa-dííy nurutú-0 (he-kill alligator-ACCUSATIVE)</li>
+											<li>sa-dííy nurutí-íva (he-see alligator-DATIVE)</li>
 										</ul>
 									</li>
 								</ul>
@@ -1014,7 +986,7 @@ const Syntax = () => {
 							<IonLabel>4.5. Articles and Demonstratives</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "articlesDD"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "articlesDD"]} title="Articles" label="Articles Info">
 								<ul>
 									<li>English is relatively rare in having articles: a, an, the. More often, languages have a broader class of demonstratives.</li>
 								</ul>
@@ -1022,7 +994,7 @@ const Syntax = () => {
 							<IonItem className={classy("l3", "NPO", "articlesDD")}>
 								{makeText("articles", "If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?", 6)}
 							</IonItem>
-							<InfoModal classy={["l3", "NPO", "articlesDD"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "articlesDD"]} title="Determiners" label="Determiners Info">
 								<ul>
 									<li>Demonstratives are words that distinguish or identify a noun without modifying it, such as this, that, these and those.</li>
 									<li>They tend to encode distance ("this" is closer to you than "that"; Spanish has a third level of distance, too).</li>
@@ -1037,11 +1009,10 @@ const Syntax = () => {
 							<IonLabel>4.6. Possessors</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "posss"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "posss"]} title="Possessors" label="Possessor Info">
 								<ul>
-									<li>Refer back to 2.1.1.2 to note your system of possession.</li>
-									<li>This does <strong>not</strong> refer to possessive clauses! (5.4)</li>
-									<li>How are possessors expressed in the noun phrase?</li>
+									<li>Refer back to 2.1.1.2 to note your system of possession. This does <strong>not</strong> refer to possessive clauses! (5.4)</li>
+									<li className="newSection">How are possessors expressed in the noun phrase?</li>
 									<li>Do nouns agree with their possessors? Vice versa?</li>
 								</ul>
 							</InfoModal>
@@ -1054,17 +1025,16 @@ const Syntax = () => {
 							<IonLabel>4.7. Class (Gender)</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "classGen"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "classGen"]} title="Class and Gender" label="Class and Gender Info">
 								<ul>
 									<li>Class system often require classifiers (special operators) to declare class.</li>
-									<li>Gender systems use "agreement". At the very least, they will agree in number.</li>
-									<li>What classes/genders exist and how do they manifest?</li>
-									<li>What dimension of reality is most central to the class system? (animacy? shape? function?) What other dimensions are relevant?</li>
-									<li>Do the classifiers occur with numerals? Adjectives? Verbs? What is their function in these contexts?</li>
+									<li>Pure gender systems use "agreement" instead of classifiers. At the very least, numerical expressions will "agree" with their head noun.</li>
+									<li>Classes generally care about one dimension of reality, such as biological gender, animacy, shape, or function. (Other dimensions may be relevant, too.) There are almost always exceptions to the rule, however (e.g. Yagua treats rocks and pineapples as animates).</li>
+									<li>Classifiers may occur with verbs, numerals and adjectives, though they may serve a different function in those cases.</li>
 								</ul>
 							</InfoModal>
 							<IonItem className={classy("l3", "NPO", "classGen")}>
-								{makeText("classGender", "Describe the language's class/gender system, if it has one.", 8)}
+								{makeText("classGender", "Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?", 8)}
 							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "NPO")}>
@@ -1072,15 +1042,34 @@ const Syntax = () => {
 							<IonLabel>4.8. Diminution/Augmentation</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "NPO", "dimAug"]} title="xxxxx">
+							<InfoModal classy={["l3", "NPO", "dimAug"]} title="Diminution and Augmentation">
 								<ul>
-									<li>Is diminution (making smaller) and/or augmentation (making bigger) used in the language?</li>
-									<li>Is it obligatory? Does one member have to occur in every full noun phrase?</li>
-									<li>Is it productive? Does it work with all full noun phrases and does it have the same meaning for each?</li>
-									<li>Expressed lexically, morphologically, or analytically?</li>
-									<li>Where in the NP is this operation likely to be located? Can it occur in more than one place?</li>
+									<li>If diminution (making smaller) and/or augmentation (making bigger) is used in the language, answer the following questions:
+										<ul>
+											<li>Is it obligatory? Does one member have to occur in every full noun phrase?</li>
+											<li>Is it productive? Does it work with all full noun phrases and does it have the same meaning for each?</li>
+											<li>Is it expressed lexically, morphologically, or analytically?</li>
+											<li>Where in the NP is this operation likely to be located? Can it occur in more than one place?</li>
+										</ul>
+									</li>
 								</ul>
 							</InfoModal>
+							<IonItem className={classy("l3", "NPO", "dimAug")}>
+								<IonGrid>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("dimAugYes")}</IonCol>
+										<IonCol>Dim/Aug System Exists</IonCol>
+									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("dimAugObligatory")}</IonCol>
+										<IonCol>...and is Obligatory</IonCol>
+									</IonRow>
+									<IonRow>
+										<IonCol className="cbox">{makeBox("dimAugProductive")}</IonCol>
+										<IonCol>...and is Productive</IonCol>
+									</IonRow>
+								</IonGrid>
+							</IonItem>
 							<IonItem className={classy("l3", "NPO", "dimAug")}>
 								{makeText("dimAug", "Describe the language's relation to diminution and augmentation.", 8)}
 							</IonItem>
@@ -1090,16 +1079,16 @@ const Syntax = () => {
 						<IonLabel>5. Predicate Nominals and Related Constructions</IonLabel>
 					</IonItem>
 
-						<InfoModal classy={["l2", "predNom"]} title="xxxxx">
+						<InfoModal classy={["l2", "predNom"]} title="Predicate Nominals" label="General Information to Consider">
 							<ul>
 								<li>These forms generally encode the following information:
 									<ul>
-										<li>Equation (X is Y)</li>
-										<li>Proper inclusion (X is a Y)</li>
-										<li>Location (X is located Y)</li>
-										<li>Attribution (X is made Y)</li>
-										<li>Existence (X exists in Y)</li>
-										<li>Possession (X has Y)</li>
+										<li><strong>Equation</strong>: X is Y</li>
+										<li><strong>Proper Inclusion</strong>: X is a Y</li>
+										<li><strong>Location</strong>: X is located Y</li>
+										<li><strong>Attribution</strong>: X is made Y</li>
+										<li><strong>Existence</strong>: X exists in Y</li>
+										<li><strong>Possession</strong>: X has Y</li>
 									</ul>
 								</li>
 								<li>The forms at the top of the list are much more likely to lack a semantically rich verb, while those at the bottom are less likely to.</li>
@@ -1111,7 +1100,7 @@ const Syntax = () => {
 							<IonLabel>5.1. Predicate Nominals and Adjecives</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "predNom", "pNom"]} title="xxxxx">
+							<InfoModal classy={["l3", "predNom", "pNom"]} title="Predicate Nominals and Adjecives">
 								<ul>
 									<li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li>
 									<li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li>
@@ -1126,7 +1115,7 @@ const Syntax = () => {
 											</li>
 											<li><em>Joined by copula</em>
 												<ul>
-													<li>A copula is a morpheme that "couples" two elements. Often encodes tense/aspect, and can be restricted to certain situations (e.g. only in non-present tenses).</li>
+													<li>A <em>copula</em> is a morpheme that "couples" two elements. Often encodes tense/aspect, and can be restricted to certain situations (e.g. only in non-present tenses).</li>
 													<li>The copula can take different forms:
 														<ul>
 															<li><em>Verb</em>
@@ -1173,16 +1162,16 @@ const Syntax = () => {
 							<IonLabel>5.2. Predicate Locatives</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "predNom", "pLoc"]} title="xxxxx">
+							<InfoModal classy={["l3", "predNom", "pLoc"]} title="Predicate Locatives">
 								<ul>
 									<li>Many languages use a word that gets translated as "be at".</li>
-									<li>Locative word is often the same as a locative adposition.</li>
+									<li>The locative word is often the same as a locative adposition.</li>
 									<li>Word order usually distinguishes possessive clauses from locational clauses.
 										<ul>
 											<li>Ex: Steve has a cat; the cat is behind Steve.</li>
 										</ul>
 									</li>
-									<li>English bases locatives on possessive clauses, but with an inanimate possessor.</li>
+									<li className="newSection">English bases locatives on possessive clauses, but with an inanimate possessor.</li>
 									<li>Russian bases possessive clauses on locatives, but with an animate possessor.</li>
 								</ul>
 							</InfoModal>
@@ -1195,14 +1184,23 @@ const Syntax = () => {
 							<IonLabel>5.3. Existentials</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "predNom", "pEx"]} title="xxxxx">
+							<InfoModal classy={["l3", "predNom", "pEx"]} title="Existentials">
 								<ul>
 									<li>These constructions usually serve a presentative function, introducing new participants.</li>
 									<li>Usually, the nominal is indefinite: "There are lions in Africa" vs. "There are the lions in Africa".</li>
-									<li>Usually little to no case marking, verb agreement, etc.</li>
-									<li>Often share features of predicate nominals (copula), but some languages prohibit such forms.</li>
-									<li>Often has special negation stategies (e.g. a verb meaning 'to lack': "Under the bed lacks a cat").</li>
-									<li>Often play a role in "impersonal" or "circumstantial" constructions ("There will be dancing in the streets!"), for situations that lack the need for any specific actor ("Someone is crying"), or to downplay the significance of an actor ("Mistakes have been made").</li>
+									<li>There is usually little to no case marking, verb agreement, etc.</li>
+									<li>They often share features of predicate nominals (copula), but some languages prohibit such forms.</li>
+									<li>They often have special negation stategies (e.g. a verb meaning 'to lack': "Under the bed lacks a cat").</li>
+									<li>They often play a role in:
+										<ul>
+											<li>"Impersonal" or "circumstantial" constructions.
+												<ul><li>e.g. There will be dancing in the streets!</li></ul>
+											</li>
+											<li>Situations that lack the need for any specific actor, or to downplay the significance of an actor.
+												<ul><li>e.g. Someone is crying.</li></ul>
+											</li>
+										</ul>
+									</li>
 								</ul>
 							</InfoModal>
 							<IonItem className={classy("l3", "predNom", "pEx")}>
@@ -1214,14 +1212,14 @@ const Syntax = () => {
 							<IonLabel>5.4. Possessive Clauses</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "predNom", "pPoss"]} title="xxxxx">
+							<InfoModal classy={["l3", "predNom", "pPoss"]} title="Possessive Clauses">
 								<ul>
 									<li>Verb strategy: "I have a book."</li>
 									<li>Copula strategy: "The book is at me."</li>
 								</ul>
 							</InfoModal>
 							<IonItem className={classy("l3", "predNom", "pPoss")}>
-								{makeText("predEx", "Which format does the language use?", 3)}
+								{makeText("predEx", "Does the language use a verb or copula strategy?", 3)}
 							</IonItem>
 
 					<IonItem className="h h1">
@@ -1229,74 +1227,72 @@ const Syntax = () => {
 						<IonLabel>6. Grammatical Relations</IonLabel>
 					</IonItem>
 
-						<IonItem className={classy("h h2 l2", "grammRel")}>
-							<IonLabel>Nominative/Accusative Alignment</IonLabel>
-						</IonItem>
-
-							<InfoModal classy={["l3", "grammRel"]} title="xxxxx">
-								<ul>
-									<li>(S)ubjects and (A)gents are treated the same, in the nominative case.
-										<ul>
-											<li><em>I</em> fell.</li>
-											<li><em>I</em> pushed him.</li>
-										</ul>
-									</li>
-									<li>(P)atients are given the accusative case.
-										<ul>
-											<li>I pushed <em>him</em>.</li>
-										</ul>
-									</li>
-									<li>S and A are both viewed as agents, having volition</li>
-									<li>A tends to stick with the (V)erb, leaving the P floating:
-										<ul>
-											<li>AVP; PAV; VAP; PVA</li>
-										</ul>
-									</li>
-								</ul>
-							</InfoModal>
-
-						<IonItem className={classy("h h2 l2", "grammRel")}>
-							<IonLabel>Ergative/Absolutive Alignment</IonLabel>
-						</IonItem>
-
-							<InfoModal classy={["l3", "grammRel"]} title="xxxxx">
-								<ul>
-									<li>(S)ubjects and (P)atients are treated the same, in the ergative case.
-										<ul>
-											<li><em>I</em> fell.</li>
-											<li>Me pushed <em>he</em>.</li>
-										</ul>
-									</li>
-									<li>(A)gents are given the absolutive case.
-										<ul>
-											<li><em>Me</em> pushed he.</li>
-										</ul>
-									</li>
-									<li>S and P are both viewed as typically being new information, or undergoing change.</li>
-									<li>P tends to stick with the (V)erb, leaving the A floating:
-										<ul>
-											<li>AVP; VPA; APV; PVA</li>
-										</ul>
-									</li>
-									{toggleButton("li", "splitErgativity")}
-									<li className="splitErgativity hide">In natural languages, this tends to coexist in a hierarchy with the nominative/accusative system. 
-										<ul>
-											<li>1st person &gt; 2nd person &gt; 3rd person &gt; humans &gt; animates &gt; inanimates</li>
-											<li>agreement &gt; pronouns/case marking</li>
-											<li>definite &gt; indefinite</li>
-											<li>non-past tense &gt; past tense</li>
-											<li>imperfect aspect &gt; perfect aspect</li>
-										</ul>
-									</li>
-									<li className="splitErgativity hide">The split in the hierarchy can happen at any point. e.g.
-										<ul>
-											<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else (this is a very common split point)</li>
-											<li>Cashinawa uses n/a for 1/2, separate marking for A and P in 3rd person, and e/a for everything else</li>
-											<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
-										</ul>
-									</li>
-								</ul>
-							</InfoModal>
+						<InfoModal classy={["l2", "grammRel"]} title="Alignments" label="Show the Alignments">
+							<ul>
+								<li><strong>Nominative/Accusative Alignment</strong>:
+									<ul>
+										<li>(S)ubjects and (A)gents are treated the same, in the nominative case.
+											<ul>
+												<li><em>I</em> fell.</li>
+												<li><em>I</em> pushed him.</li>
+											</ul>
+										</li>
+										<li>(P)atients are given the accusative case.
+											<ul>
+												<li>I pushed <em>him</em>.</li>
+											</ul>
+										</li>
+										<li>S and A are both viewed as agents, having volition</li>
+										<li>A tends to stick with the (V)erb, leaving the P floating:
+											<ul>
+												<li>AVP; PAV; VAP; PVA</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li className="newSection"><strong>Ergative/Absolutive Alignment</strong>:
+									<ul>
+										<li>(S)ubjects and (P)atients are treated the same, in the ergative case.
+											<ul>
+												<li><em>I</em> fell.</li>
+												<li>Me pushed <em>he</em>.</li>
+											</ul>
+										</li>
+										<li>(A)gents are given the absolutive case.
+											<ul>
+												<li><em>Me</em> pushed he.</li>
+											</ul>
+										</li>
+										<li>S and P are both viewed as typically being new information, or undergoing change.</li>
+										<li>P tends to stick with the (V)erb, leaving the A floating:
+											<ul>
+												<li>AVP; VPA; APV; PVA</li>
+											</ul>
+										</li>
+										<li className="newSection"><strong>Split Ergativity</strong>:
+											<ul>
+												<li>In natural languages, ergativity tends to coexist in a hierarchy, with the nominative/accusative system used for the higher level. Typical hierarchies:
+													<ul>
+														<li>1st person &gt; 2nd person &gt; 3rd person &gt; humans &gt; animates &gt; inanimates</li>
+														<li>agreement &gt; pronouns/case marking</li>
+														<li>definite &gt; indefinite</li>
+														<li>non-past tense &gt; past tense</li>
+														<li>imperfect aspect &gt; perfect aspect</li>
+													</ul>
+												</li>
+												<li className="splitErgativity hide">The split in the hierarchy can happen at any point. e.g.
+													<ul>
+														<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else (this is a very common split point)</li>
+														<li>Cashinawa uses n/a for 1/2, separate marking for A and P in 3rd person, and e/a for everything else</li>
+														<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</InfoModal>
 
 						<IonItem className={classy("l2", "grammRel")}>
 							{makeText("ergative", "Does the language use a nominative/accusative alignment, or an ergative/absolutive alignment? Are there any exceptions?", 8)}
@@ -1307,7 +1303,7 @@ const Syntax = () => {
 						<IonLabel>7. Voice and Valence Adjusting Operations</IonLabel>
 					</IonItem>
 
-						<InfoModal classy={["l2", "voiceVal"]} title="xxxxx">
+						<InfoModal classy={["l2", "voiceVal"]} title="Valence" label="What is Valence?">
 							<ul>
 								<li><strong>Valence</strong> refers to the amount of arguments in a clause.
 									<ul>
@@ -1333,9 +1329,9 @@ const Syntax = () => {
 								<IonLabel>7.1.1. Causatives</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valAdd", "causatives"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valAdd", "causatives"]} title="Causatives">
 									<ul>
-										<li><strong>Lexical</strong>
+										<li><strong>Lexical</strong>:
 											<ul>
 												<li>Most languages have at least some form of this. There are three major methods employed:
 													<ul>
@@ -1358,7 +1354,7 @@ const Syntax = () => {
 												</li>
 											</ul>
 										</li>
-										<li><strong>Morphological</strong>
+										<li><strong>Morphological</strong>:
 											<ul>
 												<li>The verb change applies to all verbs (not just one, like <em>fell</em> vs <em>felled</em>).</li>
 												<li>Often expresses causation and permission.</li>
@@ -1366,7 +1362,7 @@ const Syntax = () => {
 												<li>In transitive verbs, the causee often goes into a different case.</li>
 											</ul>
 										</li>
-										<li><strong>Analytical</strong>
+										<li><strong>Analytical</strong>:
 											<ul>
 												<li>A separate causative verb is used. This usually isn't valence-increasing!
 													<ul>
@@ -1376,8 +1372,7 @@ const Syntax = () => {
 												</li>
 											</ul>
 										</li>
-										{toggleButton("li", "causativeCoding")}
-										<li className="causativeCoding hide tip"><strong>Coding Principles</strong>
+										<li className="newSection"><strong>Coding Principles</strong>:
 											<ul>
 												<li><strong>Structural Distance</strong>
 													<ul>
@@ -1409,7 +1404,7 @@ const Syntax = () => {
 												</li>
 												<li><strong>Case</strong>
 													<ul>
-														<li>If the causee retains a high degree of control, it will appear in a case associated with agents, but with little control, will appear in a patient case.
+														<li>If the causee retains a high degree of control, it will appear in a case associated with Agents, but with little control, will appear in a Patient case.
 															<ul>
 																<li>Ex: "Steve asked that <em>he</em> leave" gives Steve more control than "Steve asked <em>him</em> to leave".</li>
 															</ul>
@@ -1429,14 +1424,13 @@ const Syntax = () => {
 								<IonLabel>7.1.2. Applicatives</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valAdd", "applic"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valAdd", "applic"]} title="Applicatives">
 									<ul>
 										<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
 											<ul>
 												<li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br />
-													{toggleButton("span", "applicEx", {}, "Show example.", "Hide example.")}
-													<span className="applicEx hide"><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
-													<table className="applicEx hide">
+													<span><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
+													<table>
 														<tr>
 															<td>n-areeka</td>
 															<td>Sionti-ke</td>
@@ -1468,7 +1462,7 @@ const Syntax = () => {
 								<IonLabel>7.1.3. Dative Shift</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valAdd", "datShift"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valAdd", "datShift"]} title="Dative Shift">
 									<ul>
 										<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
 										<li>Applicatives mark the verb, while a Dative Shift does not.</li>
@@ -1490,42 +1484,45 @@ const Syntax = () => {
 								<IonLabel>7.1.4. Dative of Interest</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valAdd", "datOI"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valAdd", "datOI"]} title="Dative of Interest">
 									<ul>
-										<li>This is adding a participant that is associated in some way.<br />
-											{toggleButton("span", "datOfI", {}, "Show examples.", "Hide examples.")}
-											<span className="datOfI hide"><br />"Dinner is burned [for me]" in Spanish.</span>
-											<table className="datOfI hide">
-												<tr>
-													<td>Se</td>
-													<td>me</td>
-													<td>quemó</td>
-													<td>la</td>
-													<td>cena.</td>
-												</tr>
-												<tr>
-													<td>REFL</td>
-													<td>1s</td>
-													<td>burn.3s.PST</td>
-													<td>DEF.F.s</td>
-													<td>dinner</td>
-												</tr>
-											</table>
-											<span className="datOfI hide"><br />"She cut the hair [on him]" in Spanish.</span>
-											<table className="datOfI hide">
-												<tr>
-													<td>Le</td>
-													<td>cortó</td>
-													<td>el</td>
-													<td>pelo</td>
-												</tr>
-												<tr>
-													<td>3DAT</td>
-													<td>cut.3s.PST</td>
-													<td>DEF.M.s</td>
-													<td>hair</td>
-												</tr>
-											</table>
+										<li>This is adding a participant that is associated in some way.
+											<ul>
+												<li>"Dinner is burned [for me]" in Spanish<br />
+													<table>
+														<tr>
+															<td>Se</td>
+															<td>me</td>
+															<td>quemó</td>
+															<td>la</td>
+															<td>cena.</td>
+														</tr>
+														<tr>
+															<td>REFL</td>
+															<td>1s</td>
+															<td>burn.3s.PST</td>
+															<td>DEF.F.s</td>
+															<td>dinner</td>
+														</tr>
+													</table>
+												</li>
+												<li>"She cut the hair [on him]" in Spanish.<br />
+													<table>
+														<tr>
+															<td>Le</td>
+															<td>cortó</td>
+															<td>el</td>
+															<td>pelo</td>
+														</tr>
+														<tr>
+															<td>3DAT</td>
+															<td>cut.3s.PST</td>
+															<td>DEF.M.s</td>
+															<td>hair</td>
+														</tr>
+													</table>
+												</li>
+											</ul>
 										</li>
 									</ul>
 								</InfoModal>
@@ -1538,33 +1535,35 @@ const Syntax = () => {
 								<IonLabel>7.1.5. Possessor Raising (a.k.a. External Possession)</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valAdd", "possRaise"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valAdd", "possRaise"]} title="Possessor Raising" label="What is This?">
 									<ul>
-										<li>In many languages, this is treated the same as a dative of interest.<br />
-											{toggleButton("span", "posR", {}, "Show examples.", "Hide examples.")}
-											<span className="posR hide"><br />"I fixed the railroad track" in Choctaw.</span>
-											<table className="posR hide">
-												<tr>
-													<td>Tali</td>
-													<td>i-hina-ya</td>
-													<td>ayska-li-tok</td>
-												</tr>
-												<tr>
-													<td>rock</td>
-													<td>AGR(III)-road-NS</td>
-													<td>fix-1s-PST (normal construction)</td>
-												</tr>
-												<tr>
-													<td>Tali-ya</td>
-													<td>hina</td>
-													<td>im-ayska-li-tok</td>
-												</tr>
-												<tr>
-													<td>rock-NS</td>
-													<td>road</td>
-													<td>AGR(III)-fix-1s-PST (possessor raised)</td>
-												</tr>
-											</table>
+										<li>In many languages, this exists separate from a dative of interest.
+											<ul>
+												<li>"I fixed the railroad track" in Choctaw.<br />
+													<table>
+														<tr>
+															<td>Tali</td>
+															<td>i-hina-ya</td>
+															<td>ayska-li-tok</td>
+														</tr>
+														<tr>
+															<td>rock</td>
+															<td>AGR(III)-road-NS</td>
+															<td>fix-1s-PST (normal construction)</td>
+														</tr>
+														<tr>
+															<td>Tali-ya</td>
+															<td>hina</td>
+															<td>im-ayska-li-tok</td>
+														</tr>
+														<tr>
+															<td>rock-NS</td>
+															<td>road</td>
+															<td>AGR(III)-fix-1s-PST (possessor raised)</td>
+														</tr>
+													</table>
+												</li>
+											</ul>
 										</li>
 									</ul>
 								</InfoModal>
@@ -1582,10 +1581,10 @@ const Syntax = () => {
 								<IonLabel>7.2.1. Reflexives</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "refls"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "refls"]} title="Reflexives">
 									<ul>
-										<li>The Agent and Patient are the same.</li>
-										<li>Lexical reflexives:
+										<li>The Agent and Patient are the same, so one is omitted.</li>
+										<li className="newSection">Lexical reflexives:
 											<ul>
 												<li>The verb itself implies reflexivity.
 													<ul>
@@ -1628,10 +1627,10 @@ const Syntax = () => {
 								<IonLabel>7.2.2. Reciprocals</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "recips"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "recips"]} title="Reciprocals">
 									<ul>
-										<li>These are often expressed the same way as reflexives.</li>
-										<li>Lexical reciprocals:
+										<li>The Agent and Patient are performing the same action, or performing an action together. These are often expressed the same way as reflexives.</li>
+										<li className="newSection">Lexical reciprocals:
 											<ul>
 												<li>The verb itself implies reciprocity.
 													<ul>
@@ -1652,32 +1651,32 @@ const Syntax = () => {
 								<IonLabel>7.2.3. Passives</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "passives"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "passives"]} title="Passives">
 									<ul>
-										<li>A semantically transitive verb with omitted agent, patient treated as subject, and the verb behaves as if it is intransitive. (Agent is less topical than the patient.)</li>
-										<li>Personal passive: agent is implied, or expressed obliquely.
+										<li>A semantically transitive verb with omitted Agent, the Patient treated as Subject, and the verb behaves as if it is intransitive. (The Agent is made less topical than the Patient.)</li>
+										<li className="newSection">Personal passive: Agent is implied, or expressed obliquely.
 											<ul>
 												<li>Lexical passives are rare.</li>
 												<li>Morphological passives are more common, often the same morphology as perfect aspect. May be derived from copulas or nominalizations.</li>
-												<li>English has analytic passives, with a copula and a "past participle" (patient nominalization).
+												<li>English has analytic passives, with a copula and a "past participle" (Patient nominalization).
 													<ul>
 														<li>e.g.: The tree has been killed.</li>
 													</ul>
 												</li>
 											</ul>
 										</li>
-										<li>Impersonal passive: no agent directly indicated; can be used for intransitive verbs as well as transitive.
+										<li className="newSection">Impersonal passive: no Agent directly indicated; can be used for intransitive verbs as well as transitive.
 											<ul>
 												<li>No known languages uses a specific morphology for this!</li>
 											</ul>
 										</li>
-										<li>Other kinds of passives may exist.
+										<li className="newSection">Other kinds of passives may exist.
 											<ul>
 												<li>English has the basic "Steve was eaten by a bear" but can also express it with other verbs, as in "Steve got eaten by a bear."</li>
 												<li>Yup'ik has an adversative passive (to the detriment of the subject), abilitative passive (X can be Y [by Z]), and a negative abilitiative (X cannot be Y [by Z]).</li>
 											</ul>
 										</li>
-										<li>Passives construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
+										<li className="newSection">Passives construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
 									</ul>
 								</InfoModal>
 								<IonItem className={classy("l4", "voiceVal", "valRem", "passives")}>
@@ -1689,10 +1688,10 @@ const Syntax = () => {
 								<IonLabel>7.2.4. Inverses</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "inverses"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "inverses"]} title="Inverses">
 									<ul>
-										<li>A valence "rearranging" device, e.g. "Steve taught him" becomes "Him, Steve taught."</li>
-										<li>Often follows a hierarchy where a "higher" agent requires direct and a "lower" agent requires the inverse.</li>
+										<li>This is a valence "rearranging" device, e.g. "Steve taught him" becomes "Him, Steve taught."</li>
+										<li>Often follows a hierarchy where a "higher" Agent requires direct and a "lower" Agent requires the inverse.</li>
 									</ul>
 								</InfoModal>
 								<IonItem className={classy("l4", "voiceVal", "valRem", "inverses")}>
@@ -1724,12 +1723,13 @@ const Syntax = () => {
 								<IonLabel>7.2.5. Middle Constructions</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "middleCon"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "middleCon"]} title="Middle Constructions" label="What Are These?">
 									<ul>
 										<li>Also known as anticausatives or detransitivation: a semantically transitive situation expressed as a process undergone by a Patient (rather than carried out by an Agent).</li>
 										<li>Many languages express this the same way as they express passives.</li>
-										<li>Often express the notion that the subject is both controller and affected.</li>
-										<li>e.g. "Steve broke the car" becomes "The car broke" (and it was no fault of Steve's).</li>
+										<li>This often express the notion that the subject is both controller and affected.
+											<ul><li>e.g. "Steve broke the car" becomes "The car broke" (and it was no fault of Steve's).</li></ul>
+										</li>
 									</ul>
 								</InfoModal>
 								<IonItem className={classy("l4", "voiceVal", "valRem", "middleCon")}>
@@ -1741,7 +1741,7 @@ const Syntax = () => {
 								<IonLabel>7.2.6. Antipassives</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "antiP"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "antiP"]} title="Antipassives" label="What Are These?">
 									<ul>
 										<li>Similar to passives, but the Patient is downgraded instead of the Agent.</li>
 										<li>Generally, this only happens in ergative languages or in languages without verbal agreement, but many exceptions exist.</li>
@@ -1757,16 +1757,16 @@ const Syntax = () => {
 								<IonLabel>7.2.7. Object Demotion/Omission/Incorporation</IonLabel>
 							</IonItem>
 
-								<InfoModal classy={["l4", "voiceVal", "valRem", "objDemOmInc"]} title="xxxxx">
+								<InfoModal classy={["l4", "voiceVal", "valRem", "objDemOmInc"]} title="Object Demotion and Related Functions" label="What Are These?">
 									<ul>
-										<li>Demotion: "Steve shot Bob" becomes "Steve shot at Bob".</li>
-										<li>Omission: "Steve shot Bob" becomes "Steve shot".</li>
-										<li>Incorporation: "Steve shot Bob" becomes "Steve Bob-shot".
+										<li><strong>Demotion</strong>: "Steve shot Bob" becomes "Steve shot at Bob".</li>
+										<li className="newSection"><strong>Omission</strong>: "Steve shot Bob" becomes "Steve shot".</li>
+										<li className="newSection"><strong>Incorporation</strong>: "Steve shot Bob" becomes "Steve Bob-shot".
 											<ul>
 												<li>The incorporated object is usually the Patient, rarely the Agent.</li>
 												<li>May have other semantic functions.
 													<ul>
-														<li>In Panare, incorporating a body part noun into a cutting verb means the part was cut completely off, whereas leaving it unincorporated means it was merely injured ("Darth Vader hand-cut" vs "Darth Vader cut hand").</li>
+														<li>In Panare, incorporating a body part noun into a cutting verb means the part was cut completely off ("Darth Vader hand-cut"), whereas leaving it unincorporated means it was merely injured ("Darth Vader cut hand").</li>
 													</ul>
 												</li>
 											</ul>
@@ -1787,27 +1787,25 @@ const Syntax = () => {
 							<IonLabel>8.1. Nominalization</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "otherVerb", "nominal"]} title="xxxxx">
+							<InfoModal classy={["l3", "otherVerb", "nominal"]} title="Nominalization">
 								<ul>
 									<li>Every language has strategies of adjusting the grammatical category of a root. Turning a word into a noun is <em>nominalization</em>.</li>
-									<li>English has multiple methods, with differing levels of productivity.</li>
+									<li className="newSection">English has multiple methods, with differing levels of productivity.</li>
 									<li>Typically, a language will use differing methods to create nominalizations according to the result.</li>
-									{toggleButton("li", "nomMethods", {}, "Show methods of nominalization.", "Hide methods.")}
-									<li className="nomMethods hide">Some methods:
+									<li className="newSection">Some methods:
 										<ul>
-											<li>Zero Operator: walk → a walk, look → a look</li>
-											<li>Affix: walk → walking, employ → employment, grow → growth, construct → construction</li>
-											<li>Merge with Adposition: hang + up → hangup, make + over → makeover, talk + to → talking to</li>
-											<li>Analytical: Mandarin uses a particle <em>de</em> to indicate some nominalizations
+											<li><strong>Zero Operator</strong>: walk → a walk, look → a look</li>
+											<li><strong>Affix</strong>: walk → walking, employ → employment, grow → growth, construct → construction</li>
+											<li><strong>Merge with Adposition</strong>: hang + up → hangup, make + over → makeover, talk + to → talking to</li>
+											<li><strong>Analytical</strong>: Mandarin uses a particle <em>de</em> to indicate some nominalizations
 												<ul>
 													<li><em>hézuò</em> (cooperate) + <em>de</em> → cooperation</li>
 												</ul>
 											</li>
 										</ul>
 									</li>
-									{toggleButton("li", "nomTypes", {}, "Show types of nominalization.", "Hide nominalization types.")}
-									<li className="nomTypes hide">Types of nominalization:
-										<li>Action
+									<li className="newSection">Types of nominalization:
+										<li><strong>Action</strong>:
 											<ul>
 												<li>Usually refers to the action in the abstract.
 													<ul>
@@ -1817,12 +1815,12 @@ const Syntax = () => {
 												</li>
 											</ul>
 										</li>
-										<li>Agent
+										<li><strong>Agent</strong>:
 											<ul>
-												<li>Typically refers to an agent who is characteristic of the root verb (teach → a teacher), but some languages instead refer to someone engaged in the activity at the moment (teach → one who is currently teaching).</li>
+												<li>Typically refers to an Agent who is characteristic of the root verb (teach → a teacher), but some languages instead refer to someone engaged in the activity at the moment (teach → one who is presently teaching).</li>
 											</ul>
 										</li>
-										<li>Patient
+										<li><strong>Patient</strong>:
 											<ul>
 												<li>In English, this mostly happens with the modifiers "good" and "bad".
 													<ul>
@@ -1837,10 +1835,10 @@ const Syntax = () => {
 												</li>
 											</ul>
 										</li>
-										<li>Instrument
+										<li><strong>Instrument</strong>:
 											<ul>
 												<li>Refers to the object used in the action.</li>
-												<li>In English, this usually follows the same format as an agent nominalization.</li>
+												<li>In English, this usually follows the same format as an Agent nominalization.</li>
 												<li>In Spanish, compounding a verb with a plural object makes an instrument.
 													<ul>
 														<li>e.g. <em>abre</em> (open) + <em>latas</em> (cans) → <em>el abrelatas</em> (can-opener)</li>
@@ -1848,18 +1846,18 @@ const Syntax = () => {
 												</li>
 											</ul>
 										</li>
-										<li>Location
+										<li><strong>Location</strong>:
 											<ul>
 												<li>Many languages use this to refer generally to a place where the action tends to occur, e.g. work → workshop, burn → fireplace.</li>
 											</ul>
 										</li>
-										<li>Product
+										<li><strong>Product</strong>:
 											<ul>
 												<li>This refers to something that exists because of an action.</li>
 												<li>English tends to do this with zero operators (scratch → a scratch) or by changing the stress pattern (permit → a permit, reject → a reject, convert → a convert).</li>
 											</ul>
 										</li>
-										<li>Manner
+										<li><strong>Manner</strong>:
 											<ul>
 												<li>This is uncommon among languages, but English has a couple, generally confined to sports terminology.
 													<ul>
@@ -1882,14 +1880,14 @@ const Syntax = () => {
 							<IonLabel>8.2. Compounding</IonLabel>
 						</IonItem>
 
-							<InfoModal classy={["l3", "otherVerb", "compounding"]} title="xxxxx">
+							<InfoModal classy={["l3", "otherVerb", "compounding"]} title="Compounding">
 								<ul>
-									<li>Noun incorporation: noun becomes attached to a verb (see 7.2.7).
+									<li><strong>Noun Incorporation</strong>: noun becomes attached to a verb (see 7.2.7).
 										<ul>
 											<li>The most common form is Patient incorporation (sell pigs → to pig-sell).</li>
 										</ul>
 									</li>
-									<li>Verb incorporation: two verbs merge, one modifying the other.
+									<li className="newSection"><strong>Verb Incorporation</strong>: two verbs merge, one modifying the other.
 										<ul>
 											<li>Often, verbs of motion enter into these pairings (shout-rise → he shouts rising).</li>
 											<li>Verbs that freely compound like this typically lose their verbal character and become derivational affixes.</li>
@@ -1904,13 +1902,232 @@ const Syntax = () => {
 
 						<IonItem className={classy("h h2 l2", "otherVerb")}>
 							{makeButton("TAM")}
-							<IonLabel>8.3. Tense/Aspect/Mood</IonLabel>
+							<IonLabel>8.3. Tense/Aspect/Mode</IonLabel>
 						</IonItem>
+
+							<InfoModal classy={["l3", "otherVerb", "TAM"]} title="Tense, Aspect and Mode" label="General Info">
+								<ul>
+									<li><strong>TAM</strong> (Tense, Aspect, Mode) are sometimes hard to tease apart, and may only be considered separate because of how they are in western language.</li>
+									<li>Some languages pay more attention to tense (English), aspect (Austronesian languages), or mode (Eskimo).
+										<ul><li>Furthermore, some verb stems may not allow certain operations while favoring others.</li></ul>
+									</li>
+									<li>Many languages don't morphologically indicate one or more of these divisions. (When not indicated morphologically, the language will use lexical or analytical methods.)
+										<ul>
+											<li>Aspect: only 74% of languages use morphology</li>
+											<li>Mode: only 68% of languages do</li>
+											<li>Tense: barely 50% of languages do!</li>
+										</ul>
+									</li>
+									<li className="newSection">Certain TAM morphemes may cluster together with greater-than-chance frequency, forming hypermorphemes.</li>
+									<li className="newSection">TAM morphemes often interact significantly with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number).</li>
+								</ul>
+							</InfoModal>
+							<IonItem className={classy("h h3 l3", "otherVerb", "TAM")}>
+								<IonLabel>8.3.1 Tense</IonLabel>
+							</IonItem>
+
+								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Tense" label="Info on Tense">
+									<ul>
+										<li><strong>Tense</strong> sets an action in time in relation to "now".</li>
+										<li>Languages can divide time up into different sets of tenses:
+											<ul>
+												<li>Past/Present/Future</li>
+												<li>Past/Nonpast</li>
+												<li>Nonfuture/Future</li>
+												<li>Not-Now/Now/Not-Now (two tenses!)</li>
+												<li>Distant Past/A Year Ago/A Month Ago/A Week Ago/Today or Yesterday/Now/Soon/Future
+													<ul><li>When human languages have divided past or future into multiple segments, there are never more future segments than past segments!</li></ul>
+												</li>
+											</ul>
+										</li>
+										<li className="newSection">Future tense markers often derive from "want", "come", or "go".
+											<ul><li>These verbs may still function separately!
+												<ul>
+													<li>He come (present)</li>
+													<li>He come go (will go)</li>
+													<li>He come come (will come)</li>
+												</ul>
+											</li></ul>
+										</li>
+									</ul>
+								</InfoModal>
+								<IonItem className={classy("l4", "otherVerb", "TAM")}>
+									{makeText("tense", "Is there a Tense system? How does it operate? How does it divide time?", 6)}
+								</IonItem>
+
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "TAM")}>
+								<IonLabel>8.3.2 Aspect</IonLabel>
+							</IonItem>
+
+								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Aspect" label="Info on Aspect">
+									<ul>
+										<li><strong>Aspect</strong> describes the internal structure of an event or state. Here are some typical aspects:
+											<ul>
+												<li><strong>Perfective</strong>: The situation is viewed as a single event.
+													<ul>
+														<li>"She wrote a letter."</li>
+														<li>"He walked around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Imperfective</strong>: The situation is viewed from "inside" as an ongoing process.
+													<ul>
+														<li>"She writes a letter."</li>
+														<li>"He walks around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Perfect</strong>: A currently relevant state brought about by the verb.
+													<ul>
+														<li>"She has written a letter."</li>
+														<li>"He has walked around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Pluperfect</strong>: A combination of Perfect aspect and Past tense; the currently relevant state was brought about in the past.
+													<ul>
+														<li>"She had written a letter."</li>
+														<li>"He had walked around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Completive</strong>: Refers to the end of a situation.
+													<ul>
+														<li>"She finished writing a letter."</li>
+														<li>"He finished walking around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Inceptive</strong>: Refers to the beginning of a situation.
+													<ul>
+														<li>"She started writing a letter."</li>
+														<li>"He began walking around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Continuative/Progressive</strong>: This implies an ongoing, dynamic situation.
+													<ul>
+														<li>"She is writing a letter."</li>
+														<li>"He is walking around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Habitual</strong>: This implies an event or state happens regularly.
+													<ul>
+														<li>"She often writes a letter."</li>
+														<li>"He usually walks around the block."</li>
+													</ul>
+												</li>
+												<li><strong>Punctual</strong>: The state or event is too short to have an internal structure.
+													<ul>
+														<li>"She coughed."</li>
+													</ul>
+												</li>
+												<li><strong>Iterative</strong>: A Punctual state or event takes place several times in succession.
+													<ul>
+														<li>"He is coughing."</li>
+													</ul>
+												</li>
+												<li><strong>Atelic</strong>: An event that has no clearly defined end-point.
+													<ul>
+														<li>"He is coughing and coughing and coughing."</li>
+													</ul>
+												</li>
+												<li><strong>Telic</strong>: Has a clearly defined end-point.
+													<ul>
+														<li>"She is near the end of her walk."</li>
+													</ul>
+												</li>
+												<li><strong>Static</strong>: A changeless state.
+													<ul>
+														<li>"He is just plain boring."</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li className="newSection">Languages may handle certain aspects in different ways.
+											<ul>
+												<li>English uses context for most aspects.</li>
+												<li>Spanish uses morphology for Perfective and Imperfective aspects, and uses a morphological/analytical combination for Perfect.</li>
+												<li>Mandarin has a Perfective particle.</li>
+												<li>Finnish uses an accusative case for Perfective and a "partitive" case for Progressive.
+													<ul><li>In human languages, case markers like this can be mistaken for TAM markers!</li></ul>
+												</li>
+											</ul>
+										</li>
+										<li className="newSection">Progressive aspect constructions often derive from locational structures.
+											<ul><li>English has gone from "He is at walking" to "He is a-walking" (still used in some places) to "He is walking".</li></ul>
+										</li>
+										<li className="newSection">There is often a link between aspect marking and location/direction marking. English has some examples:
+											<ul>
+												<li>I <em>came</em> to see it as an abberation (inceptive)</li>
+												<li>I cut <em>away</em> at the handcuffs (imperfective)</li>
+												<li>I drank your milkshake <em>up</em> (perfective)</li>
+											</ul>
+										</li>
+									</ul>
+								</InfoModal>
+								<IonItem className={classy("l4", "otherVerb", "TAM")}>
+									{makeText("aspect", "Describe the way the language handles Aspect.", 8)}
+								</IonItem>
+
+							<IonItem className={classy("h h3 l3", "otherVerb", "TAM")}>
+								<IonLabel>8.3.3 Mode</IonLabel>
+							</IonItem>
+
+								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Mode" label="Info on Mode">
+									<ul>
+										<li><strong>Mode</strong> describes a speaker's attitude toward a situation, including how likely or truthful it is, or how relevant the situation is to them.</li>
+										<li>Mode, Mood and Modality are often used interchangeably, though some linguists make distinctions between them.</li>
+										<li className="newSection">The highest-level Mode distinction is the Realis-Irrealis Continuum.
+											<ul>
+												<li><strong>Realis</strong>: the speaker insists the situation is real, or holds true.
+												</li>
+												<li><strong>Irrealis</strong>: the speaker makes no claim as to the situation's reality or truthfulness.
+													<ul>
+														<li>Conditional statements (if X...) are inherently Irrealis.</li>
+														<li>Interrogative statements (questions) and imperative statements (commands) tend to be treated as Irrealis.</li>
+														<li>Other statements that tend to be treated as Irrealis:
+															<ul>
+																<li>Subjunctive (possibility, what if)</li>
+																<li>Optative (wishes)</li>
+																<li>Hypothetical/Imaginary</li>
+																<li>Probability</li>
+																<li>Deontic (obligations: should, must, have to)</li>
+																<li>Potential (might, ability to; sometimes considered very weak Deontic)</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+												<li className="newSection">Evidentiality and Validationality are sometimes part of the Mode system. They can also stand alone (8.6).</li>
+											</ul>
+										</li>
+										<li className="newSection">Negative assertions (see 9.2) can be Realis or Irrealis depending on how strongly the assertion is, but some languages still treat all negative statements as Irrealis.</li>
+										<li className="newSection">Mode interacts strongly with Tense and Aspect.
+											<ul>
+												<li>Habitual aspect is inherently less Realis than Perfective aspect.</li>
+												<li>Statements that are more Realis are more likely to be definite and referential.
+													<ul>
+														<li>Steve ate the candy. (Perfective)</li>
+														<li>Steve always eats candy. (Habitual)</li>
+														<li>Steve always eats the candy. (Technically grammatical, but sounds "wrong")</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</InfoModal>
+								<IonItem className={classy("l4", "otherVerb", "TAM")}>
+									{makeText("mode", "Describe how the language deals with Mode.", 6)}
+								</IonItem>
 
 						<IonItem className={classy("h h2 l2", "otherVerb")}>
 							{makeButton("locDirec")}
 							<IonLabel>8.4. Location/Direction</IonLabel>
 						</IonItem>
+
+							<InfoModal classy={["l3", "otherVerb", "locDirec"]} title="Location and Direction">
+								<ul>
+									<li></li>
+								</ul>
+							</InfoModal>
+							<IonItem className={classy("l4", "otherVerb", "locDirec")}>
+								{makeText("locDirect", "Describe the way the language handles Aspect.", 8)}
+							</IonItem>
 
 						<IonItem className={classy("h h2 l2", "otherVerb")}>
 							{makeButton("partRef")}
@@ -1926,78 +2143,6 @@ const Syntax = () => {
 							{makeButton("otherVMisc")}
 							<IonLabel>8.7. Miscellaneous</IonLabel>
 						</IonItem>
-
-{/*
-9.3 -  Tense/Aspect/Mode
-- TAM are sometimes hard to tease apart, and may only be considered separate because of how they are in western languages
-- Some languages pay more attention to tense (English), aspect (Austronesian languages), or mode (Eskimo)
-- Furthermore, some verb stems may not allow certain operations while favoring others
-- Certain TAM morphemes may cluster together with greater-than-chance frequency, forming hypermorphemes
-- Often interacts with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number)
-- Is there a tense system? How does it operate? Future/non-future? Past/non-past? Past/present/future? Other?
-9.3.1 -  Tense
-- Action in reference to "now"
-* past/present/future
-* past/nonpast, nonfuture/future
-* not-now/now/not-now
-* distant past/a year ago/a month ago/a week ago/today or yesterday/now/soon/future
-- Future tense markers often derive from free verbs meaning come, go, or want
-9.3.2 -  Aspect
-[ inception
-< unbounded >
-| temporal boundary
-] completion
-x a punctual event (has no internal temporal structure)
-- Case markers/articles can be mistaken for TAM markers because they often affect the aspect: I did
-	things (habitual) vs I did a thing (perfective)
-9.3.2.1 -  Perfective [–]
-He wrote a letter. (Eng: may be habitual, iterative, etc)
-9.3.2.2 -  Imperfective <----->
-He writes letters.
-9.3.2.3 -  Perfect --|x
-He has come from there.
-9.3.2.4 -  Pluperfect ----| (focus) ---- (now)
-I had entered the palace.
-9.3.2.5 -  Completive >----]
-She finished the job.
-9.3.2.6 -  Inceptive [----->
-She started the job.
-9.3.2.7 -  Continuing/progressive >----->
-He is writing letters. (specific event, ongoing process rather than stative)
-9.3.2.8 -  Punctual x
-He sneezed.
-9.3.2.9 -  Iterative >-x-x-x-x-x-x-x-x->
-She is coughing.
-9.3.2.10 -  Habitual <------>
-He often writes.
-– There is often a historical connection between aspect marking and locational/directional markings
-I came to see you [inceptive]
-He cut away at the turkey [imperfective]
-Tom wolfed it down [perfective]
-I drink your milkshake up [perfective]
-He is a-walking (at walking) [progressive]
-
-perfective vs imperfective
-perfective vs habitual / continuous
-perfective vs habitual / non-progressive / progressive
-[perfect]
-past tense tend to have more aspects
-combine tense and aspect
-: imperfecto = past + habitual + progressive
-
-PUNCTUAL or DURATIVE
-Telic / Atelic +  Dynamic
-Static (durative only)
-
-Durative = lasting in time
-Dynamic = ongoing process requiring continual input
-Atelic = no clear end point
-Telic = clearly defined end point
-Punctual = instantaneous event
-Static = changeless state
-
-
-*/}
 
 				</IonList>
 			</IonContent>
