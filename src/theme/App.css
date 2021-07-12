@@ -645,6 +645,7 @@ ion-label.wrappableInnards {
 	}
 }
 
+/*
 #syntaxSketchPage ion-list ion-item ol {
 	list-style-type: none;
 	padding-inline-start: 1.5rem;
@@ -685,6 +686,7 @@ ion-label.wrappableInnards {
 	font-style: normal;
 	padding-inline-start: 0.25em;
 }
+*/
 
 #syntaxSketchPage ion-list ion-item.toggled {
 	display: none;
@@ -770,6 +772,9 @@ ion-label.wrappableInnards {
 #syntaxSketchPage ion-list ion-item.l8 {
 	margin-inline-start: 7rem;
 }
+#syntaxSketchPage ion-list ion-item.content::part(native) {
+	margin-inline: 1rem;
+}
 #syntaxSketchPage ion-list ion-item.leading::part(native),
 #syntaxSketchPage ion-list ion-item.following::part(native) {
 	min-height: 0;
@@ -844,6 +849,16 @@ ion-label.wrappableInnards {
 #syntaxSketchPage table ul,
 .sketchModal table ul {
 	margin: 0;
+}
+#syntaxSketchPage .sketchTextItem ion-label[position="stacked"] {
+	transform: none;
+	padding-block: 0.5em 0;
+}
+#syntaxSketchPage .sketchTextItem::part(native) {
+	background: var(--ion-background-tinter);
+	border: 1px solid var(--ion-background-tinter);
+	padding-block-end: 0.75em;
+	padding-inline-start: 0.75em;
 }
 #syntaxSketchPage .toggleButton {
 	cursor: pointer;
