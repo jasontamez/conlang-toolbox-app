@@ -103,6 +103,14 @@ const Syntax = () => {
 			</IonItem>
 		);
 	};
+	const HeaderItem = (props: any) => {
+		const classFunc = props.className === undefined ? classy(...props.classy) : props.className;
+		return (
+			<IonItem className={classFunc}>
+				<IonLabel>{props.children}</IonLabel>
+			</IonItem>
+		);
+	};
 	const InfoModal = (props: any) => {
 		// <InfoModal classy=["strings"] title="string" id="string"> modal content </InfoModal>
 		const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
@@ -163,7 +171,6 @@ const Syntax = () => {
 
 						<ButtonItem classy={["h h2 l2", "morphTypo"]} button="tradTypo">1.1. Traditional Typology</ButtonItem>
 
-
 							<InfoModal classy={["l3", "morphTypo", "tradTypo"]} title="Synthesis and Fusion" label="Synthesis and Fusion">
 								<ul>
 									<li><strong>Synthesis</strong>: How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?
@@ -181,15 +188,11 @@ const Syntax = () => {
 									</li>
 								</ul>
 							</InfoModal>
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "tradTypo")}>
-								<IonLabel>Synthesis</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "tradTypo"]}>Synthesis</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "tradTypo"]} text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "tradTypo")}>
-								<IonLabel>Fusion</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "tradTypo"]}>Fusion</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "tradTypo"]} text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
 
@@ -226,9 +229,7 @@ const Syntax = () => {
 								</ul>
 							</InfoModal>
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "morphProc")}>
-								<IonLabel>Affixes</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "morphProc"]}>Affixes</HeaderItem>
 
 								<IonItem className={classy("l4 content", "morphTypo", "morphProc")}>
 									<IonGrid className="cols3">
@@ -260,27 +261,19 @@ const Syntax = () => {
 									</IonGrid>
 								</IonItem>
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "morphProc")}>
-								<IonLabel>Stem Modification</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "morphProc"]}>Stem Modification</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "morphProc"]} text="stemMod" start="Not Used" end="Used Often" />
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "morphProc")}>
-								<IonLabel>Suppletion</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "morphProc"]}>Suppletion</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "morphProc"]} text="suppletion" start="Not Used" end="Used Often" />
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "morphProc")}>
-								<IonLabel>Reduplication</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "morphProc"]}>Reduplication</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "morphProc"]} text="redupe" start="Not Used" end="Used Often" />
 
-							<IonItem className={classy("h h3 l3 content", "morphTypo", "morphProc")}>
-								<IonLabel>Suprasegmental Modification</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "morphTypo", "morphProc"]}>Suprasegmental Modification</HeaderItem>
 
 								<RangeItem classy={["l4", "morphTypo", "morphProc"]} text="supraMod" start="Not Used" end="Used Often" />
 
@@ -304,9 +297,7 @@ const Syntax = () => {
 
 							<ButtonItem classy={["h h3 l3", "grammCateg", "nouns"]} button="nounTypes">2.1.1. Types of Nouns</ButtonItem>
 
-								<IonItem className={classy("h l4 content", "grammCateg", "nouns", "nounTypes")}>
-									<IonLabel>2.1.1.1. Proper Names</IonLabel>
-								</IonItem>
+								<HeaderItem classy={["h l4 content", "grammCateg", "nouns", "nounTypes"]}>2.1.1.1. Proper Names</HeaderItem>
 
 									<InfoModal classy={["l5", "grammCateg", "nouns", "nounTypes"]} title="Proper Names">
 										<ul>
@@ -316,9 +307,7 @@ const Syntax = () => {
 									</InfoModal>
 									<TextItem classy={["l5", "grammCateg", "nouns", "nounTypes"]} text="propNames">Are there any special rules involving proper names?</TextItem>
 
-								<IonItem className={classy("h l4 content", "grammCateg", "nouns", "nounTypes")}>
-									<IonLabel>2.1.1.2. Possessability</IonLabel>
-								</IonItem>
+								<HeaderItem classy={["h l4 content", "grammCateg", "nouns", "nounTypes"]}>2.1.1.2. Possessability</HeaderItem>
 
 									<InfoModal classy={["l5", "grammCateg", "nouns", "nounTypes"]} title="Possessability" label="Systems of Possession">
 										<ul>
@@ -342,9 +331,7 @@ const Syntax = () => {
 									</InfoModal>
 									<TextItem classy={["l5", "grammCateg", "nouns", "nounTypes"]} text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
 
-								<IonItem className={classy("h l4 content", "grammCateg", "nouns", "nounTypes")}>
-									<IonLabel>2.1.1.3. Count vs Mass</IonLabel>
-								</IonItem>
+								<HeaderItem classy={["h l4 content", "grammCateg", "nouns", "nounTypes"]}>2.1.1.3. Count vs Mass</HeaderItem>
 
 									<InfoModal classy={["l5", "grammCateg", "nouns", "nounTypes"]} title="Count Nouns and Mass Nouns">
 										<ul>
@@ -512,9 +499,7 @@ const Syntax = () => {
 
 						<ButtonItem classy={["h h2 l2", "grammCateg"]} button="modif">2.3. Modifiers</ButtonItem>
 
-							<IonItem className={classy("h h3 l3 content", "grammCateg", "modif")}>
-								<IonLabel>2.3.1. Property Concepts (Descriptive Adjectives)</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "grammCateg", "modif"]}>2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
 
 								<IonItem className={classy("l4 content", "grammCateg", "modif")}>
 									<IonGrid className="cols2">
@@ -565,15 +550,11 @@ const Syntax = () => {
 								</InfoModal>
 								<TextItem classy={["l4", "grammCateg", "modif"]} text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
 
-							<IonItem className={classy("h h3 l3 content", "grammCateg", "modif")}>
-								<IonLabel>2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "grammCateg", "modif"]}>2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 
 								<TextItem classy={["l4", "grammCateg", "modif"]} text="quantifier">Which quantifiers exist?</TextItem>
 
-							<IonItem className={classy("h h3 l3 content", "grammCateg", "modif")}>
-								<IonLabel>2.3.3. Numerals</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "grammCateg", "modif"]}>2.3.3. Numerals</HeaderItem>
 
 								<InfoModal classy={["l4", "grammCateg", "modif"]} title="Numerals" label="Things to Consider">
 									<ul>
@@ -779,9 +760,7 @@ const Syntax = () => {
 							<TextItem classy={["l3", "constOrd", "quPhr"]} text="questions">How are questions handled in the language? In informational questions, where does the question word occur?</TextItem>
 
 
-						<IonItem className={classy("h h2 l2 content", "constOrd")}>
-							<IonLabel>3.7 Summary</IonLabel>
-						</IonItem>
+						<HeaderItem classy={["h h2 l2 content", "constOrd"]}>3.7 Summary</HeaderItem>
 
 							<TextItem classy={["l3", "constOrd"]} text="COType">When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.</TextItem>
 
@@ -1663,9 +1642,7 @@ const Syntax = () => {
 									<li className="newSection">TAM morphemes often interact significantly with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number).</li>
 								</ul>
 							</InfoModal>
-							<IonItem className={classy("h h3 l3 content", "otherVerb", "TAM")}>
-								<IonLabel>8.3.1 Tense</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "otherVerb", "TAM"]}>8.3.1 Tense</HeaderItem>
 
 								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Tense" label="Info on Tense">
 									<ul>
@@ -1695,9 +1672,7 @@ const Syntax = () => {
 								<TextItem classy={["l4", "otherVerb", "TAM"]} text="tense" rows={6}>Is there a Tense system? How does it operate? How does it divide time?</TextItem>
 
 
-							<IonItem className={classy("h h3 l3 content", "otherVerb", "TAM")}>
-								<IonLabel>8.3.2 Aspect</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "otherVerb", "TAM"]}>8.3.2 Aspect</HeaderItem>
 
 								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Aspect" label="Info on Aspect">
 									<ul>
@@ -1802,9 +1777,7 @@ const Syntax = () => {
 								</InfoModal>
 								<TextItem classy={["l4", "otherVerb", "TAM"]} text="aspect" rows={8}>Describe the way the language handles Aspect.</TextItem>
 
-							<IonItem className={classy("h h3 l3 content", "otherVerb", "TAM")}>
-								<IonLabel>8.3.3 Mode</IonLabel>
-							</IonItem>
+							<HeaderItem classy={["h h3 l3 content", "otherVerb", "TAM"]}>8.3.3 Mode</HeaderItem>
 
 								<InfoModal classy={["l4", "otherVerb", "TAM"]} title="Mode" label="Info on Mode">
 									<ul>
@@ -1929,6 +1902,92 @@ const Syntax = () => {
 							<TextItem classy={["l3", "otherVerb", "otherVMisc"]} text="miscVerbFunc" rows={4}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
 
 					<ButtonItem className="h h1" button="pragMark">9. Pragmatically Marked Structures</ButtonItem>
+					
+						<InfoModal classy={["l3", "pragMark"]} title="Pragmatics" label="What are Pragmatics?">
+							<ul>
+								<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:
+									<ul>
+										<li><strong>Identifiability</strong>: can an argument be identified by the listener?
+											<ul>
+												<li>English uses proper names and "the" to indicate identifiability.</li>
+											</ul>
+										</li>
+										<li><strong>Objective Referentiality</strong>: is an argument a bounded, individual entity?
+											<ul>
+												<li>English can be ambiguous: Does "I'm looking for a housekeeper" mean anyone who is housekeeper, or a specific housekeeper the speaker is not naming?</li>
+												<li>Spanish has a particle <em>a</em> for human arguments that indicates a specific individual is being talked about.
+													<ul>
+														<li>"Buscando una empleada" - I'm looking for a (any) housekeeper</li>
+														<li>"Buscando a una empleada" - I'm looking for a (specific) housekeeper</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li><strong>Discourse Referentiality</strong>: is an argument relevant to the discourse or just adjacent?
+											<ul>
+												<li>Panago: putting a new argument before a verb "foreshadows" that the argument will be important later. Putting it after the verb means it's just transitory.</li>
+												<li>English often uses <em>this</em> to indicate importance. If you hear someone say, "Take a look at <em>this</em> guy," you can be sure they're going to continue talking about the guy!</li>
+											</ul>
+										</li>
+										<li><strong>Focus</strong> covers multiple concepts:
+											<ul>
+												<li><strong>Marked Focus</strong>:
+													<ul><li>"Mom <em>did</em> give me permission!" - English uses "do" to focus on the truth of a statement, often in opposition to the listener's beliefs.</li></ul>
+												</li>
+												<li><strong>Assertive Focus</strong>:
+													<ul><li>"Mary was wearing <em>this hideous bridesmaid's dress</em>." - the speaker believes the listener has no knowledge of the information.</li></ul>
+												</li>
+												<li><strong>Counter-Presuppositional Focus</strong>:
+													<ul><li>"The nerd and the cheerleader came to the party, but <em>the nerd</em> won everyone's hearts." - the speaker believes the listener believes the opposite.</li></ul>
+												</li>
+												<li><strong>Exhaustive Focus</strong>:
+													<ul><li>"I <em>only</em> spoke to Ned." - the speaker excludes all other possible options.</li></ul>
+												</li>
+												<li><strong>Contrastive Focus</strong>:
+													<ul><li>"<em>Mary</em> chose the dresses." - the listener may believe one participant had a specific role, but the speaker is saying someone else held that role.</li></ul>
+												</li>
+											</ul>
+										</li>
+										<li><strong>Topic</strong>:
+											<ul><li>"<em>Beans</em>, how I hate them." - a new argument is declared as a topic of further discourse.</li></ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</InfoModal>
+						<ButtonItem classy={["h h2 l2", "pragMark"]} button="topicalz">9.1 Focus, Contrast and Topicalization</ButtonItem>
+
+							<InfoModal classy={["l3", "pragMark", "topicalz"]} title="Focus, Contrast, etc.">
+								<ul>
+									<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
+									<li className="newSection"><strong>Constituent Order</strong>:
+										<ul>
+											<li className="newSection">Practically all language use <strong>Preposing</strong>, moving an argument by itself to a position before a clause that it's relative to. The opposite is <strong>Postposing</strong>.
+												<ul><li>"<em>Potatoes</em>, I like them."</li></ul>
+											</li>
+											<li><strong>Fronting</strong> is similar, but rearranges arguments so that Pragmatic Status is given to the moved argument.
+												<ul><li>"<em>Potatoes</em> I like."</li></ul>
+											</li>
+											<li><strong>Apposition</strong> is adding a free noun phrase to a clause.
+												<ul><li>"<em>Termites</em>. Why does the universe hate me?"</li></ul>
+											</li>
+										</ul>
+									</li>
+									<li className="newSection"><strong>Formatives</strong> move along a continuum between morphological case markers (4.4) and pragmatic status markers:
+										<ul>
+											<li>The continuum:
+												<ul>
+													<li><strong>Pragmatic Status Markers</strong>: English articles, Aghem focus particles (see below), etc.</li>
+													<li><strong>Overlay systems</strong>: Japanese and Korean "topic marking"</li>
+													<li><strong>Case Markers</strong>: Latin, Eskimo, Russian, Quechua, etc.</li>
+												</ul>
+											</li>
+											<li>Remember that these can partially correlate with grammatical roles: e.g. English <em>subjects</em> are often also <em>identifiable</em>.</li>
+
+										</ul>
+									</li>
+								</ul>
+							</InfoModal>
 
 				</IonList>
 			</IonContent>
