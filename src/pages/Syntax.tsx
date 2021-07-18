@@ -1957,12 +1957,12 @@ const Syntax = () => {
 						</InfoModal>
 						<ButtonItem classy={["h h2 l2", "pragMark"]} button="topicalz">9.1 Focus, Contrast and Topicalization</ButtonItem>
 
-							<InfoModal classy={["l3", "pragMark", "topicalz"]} title="Focus, Contrast, etc.">
+							<InfoModal classy={["l3", "pragMark", "topicalz"]} title="Focus, Contrast, etc." label="This is a long one!">
 								<ul>
 									<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
 									<li className="newSection"><strong>Constituent Order</strong>:
 										<ul>
-											<li className="newSection">Practically all language use <strong>Preposing</strong>, moving an argument by itself to a position before a clause that it's relative to. The opposite is <strong>Postposing</strong>.
+											<li>Practically all language use <strong>Preposing</strong>, moving an argument by itself to a position before a clause that it's relative to. The opposite is <strong>Postposing</strong>.
 												<ul><li>"<em>Potatoes</em>, I like them."</li></ul>
 											</li>
 											<li><strong>Fronting</strong> is similar, but rearranges arguments so that Pragmatic Status is given to the moved argument.
@@ -1970,6 +1970,11 @@ const Syntax = () => {
 											</li>
 											<li><strong>Apposition</strong> is adding a free noun phrase to a clause.
 												<ul><li>"<em>Termites</em>. Why does the universe hate me?"</li></ul>
+											</li>
+											<li><strong>Clefting</strong> is a type of predicate nominal where a noun phrase is joined to a relative clause that references that original noun phrase. (See below.)
+												<ul>
+													<li>"<em>You</em> are <em>the one that I want</em>."</li>
+												</ul>
 											</li>
 										</ul>
 									</li>
@@ -1982,12 +1987,40 @@ const Syntax = () => {
 													<li><strong>Case Markers</strong>: Latin, Eskimo, Russian, Quechua, etc.</li>
 												</ul>
 											</li>
-											<li>Remember that these can partially correlate with grammatical roles: e.g. English <em>subjects</em> are often also <em>identifiable</em>.</li>
-
+											<li>Remember that these can partially correlate with grammatical roles: e.g. English <em>subjects</em> are often also <em>identifiable</em>.
+												<ul>
+													<li className="newSection">Aghem uses verb morphology and focus particles to express various pragmatic nuances.
+														<ul>
+															<li>"énáʔ <em>mɔ̀</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah gave fufu to his friends.</li>
+															<li>"énáʔ <em>má՚á</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah <em>DID</em> give fufu to his friends. (truth focus)</li>
+															<li className="newSection">"fú kí mɔ̀ ñiŋ <em>nò</em> á kí-՚bé" - The rat <em>ran</em> (did not walk, scurry, etc) in the compound.</li>
+															<li>"fú kí mɔ̀ ñiŋ á kí-՚bé <em>nò</em>" - The rat ran in <em>the compound</em> (not in the house, church, etc.).</li>
+														</ul>
+													</li>
+													<li className="newSection">Akam has a focus particle <em>na</em> and a contrastive particle <em>de</em>.
+														<ul>
+															<li>"Kwame <em>na</em> ɔbɛyɛ adwuma no." - It's Kwame (not anyone else) who will do the work.</li>
+															<li>"Kwame <em>de</em> ɔbɛkɔ, na Kofi <em>de</em> ɔbɛtena ha." - Kwame will go, but Kofi will stay here.</li>
+														</ul>
+													</li>
+													<li className="newSection"><strong>Overlay</strong> systems are a combination of case-marking systems and pragmatic status-marking systems: one or more basic case markers are replaced (overlaid) by the status marker when a nominal is singled out for pragmatic treatment.
+														<ul><li>The Japanese topic marker <em>wa</em> can overlay the subject marker <em>ga</em> or the object marker <em>o</em>.
+															<ul>
+																<li>"taroo <em>ga</em> hon <em>o</em> katta." - Taro bought a book.</li>
+																<li>"taroo <em>wa</em> hon o katta." - As for Taro, he bought a book.</li>
+																<li>"hon <em>wa</em> taroo ga katta." - As for the book, Taro bought it.</li>
+															</ul>
+														</li></ul>
+													</li>
+												</ul>
+											</li>
 										</ul>
 									</li>
 								</ul>
 							</InfoModal>
+							<TextItem classy={["l3", "pragMark", "topicalz"]} text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
+
+						<ButtonItem classy={["h h2 l2", "pragMark"]} button="negationz">9.2 Negation</ButtonItem>
 
 				</IonList>
 			</IonContent>
