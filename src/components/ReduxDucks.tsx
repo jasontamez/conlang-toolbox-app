@@ -387,8 +387,8 @@ export const blankAppState: types.StateObject = {
 		PickAndSaveWL: false
 	},
 	viewState: {
-		wg: 'home',
-		we: 'home',
+		wg: 'categories',
+		we: 'categories',
 		wl: 'home',
 		ms: 'syntax',
 		ph: 'home',
