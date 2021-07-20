@@ -2,128 +2,26 @@ import React from 'react';
 import {
 	IonPage,
 	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonTitle,
-	IonButtons,
-	IonButton,
-	IonIcon,
 	IonList,
 	IonItem,
-	IonLabel,
-	IonRange,
 	IonGrid,
 	IonRow,
-	IonCol,
-	IonCheckbox,
-	IonTextarea,
-	IonModal,
-	IonFooter
+	IonCol
 } from '@ionic/react';
-import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
-import { useSelector, useDispatch } from "react-redux";
-import {
-	setSyntaxBool,
-	setSyntaxNum,
-	setSyntaxText,
-	setSyntaxState
-} from '../components/ReduxDucksFuncs';
-import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObject } from '../components/ReduxDucksTypes';
 //import { CustomStorageSyntax } from '../components/PersistentInfo';
-import SyntaxHeader from './ms/Header';
+import {
+	SyntaxHeader,
+	HeaderItem,
+	InfoModal,
+	RadioBox,
+	RangeItem,
+	TextItem
+} from './ms/Header';
 
 const Syntax = (props: any) => {
-	const dispatch = useDispatch();
-	const [synState, synInfo] = useSelector((state: any) => [state.syntaxSketchState, state.syntaxSketchInfo]);
-	const [synBool, synNum, synText] = [synInfo.bool, synInfo.num, synInfo.text];
-	const setBool = (what: keyof SyntaxSketchBoolObject, value: boolean) => {
-		dispatch(setSyntaxBool(what, value));
-	};
-	const makeBox = (what: keyof SyntaxSketchBoolObject) => {
-		return (
-			<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} value={synBool[what] || false} />
-		);
-	};
-	const setNum = (what: keyof SyntaxSketchNumberObject, value: number) => {
-		dispatch(setSyntaxNum(what, value));
-	};
-	const RangeItem = (props: any) => {
-		const what = props.text as keyof SyntaxSketchNumberObject;
-		const start = (props.start || "") as string;
-		const end = (props.end || "") as string;
-		const cls = (props.innerClass || "") as string;
-		const max = props.max === undefined ? 4 : (props.max as number);
-		const classes = props.className ? props.className + " content" : "content";
-		return (
-			<IonItem className={classes}>
-				<IonRange onBlur={(e) => setNum(what, e.target.value as number)} value={synNum[what] || 0} className={cls} color="secondary" snaps={true} step={1} ticks={true} min={0} max={max}>
-					<IonLabel slot="start">{start}</IonLabel>
-					<IonLabel slot="end">{end}</IonLabel>
-				</IonRange>
-			</IonItem>
-		);
-	};
-	const setText = (what: keyof SyntaxSketchTextObject, value: string) => {
-		dispatch(setSyntaxText(what, value));
-	};
-	const TextItem = (props: any) => {
-		const ph = (props.placeholder || "") as string;
-		const what = props.text as keyof SyntaxSketchTextObject;
-		const rows = props.rows === undefined ? 3 : (props.rows as number);
-		const classes = props.className ? props.className + " sketchTextItem content" : "sketchTextItem content";
-		return (
-			<IonItem className={classes}>
-				<IonLabel position="stacked">{props.children}</IonLabel>
-				<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={synText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
-			</IonItem>
-		);
-	};
-	const HeaderItem = (props: any) => {
-		return (
-			<IonItem className={props.className || ""}>
-				<IonLabel>{props.children}</IonLabel>
-			</IonItem>
-		);
-	};
-	const InfoModal = (props: any) => {
-		const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
-		const label = props.label || "Extra Info";
-		return (
-			<IonItem className={props.className || ""}>
-				<IonModal isOpen={synState[id]} onDidDismiss={() => dispatch(setSyntaxState(id, false))}>
-					<IonHeader>
-						<IonToolbar color="primary">
-							<IonTitle>{props.title}</IonTitle>
-						</IonToolbar>
-					</IonHeader>
-					<IonContent className="sketchModal">
-						<IonList lines="none">
-							<IonItem>
-								{props.children}
-							</IonItem>
-						</IonList>
-					</IonContent>
-					<IonFooter>
-						<IonToolbar className="ion-text-wrap">
-							<IonButtons slot="end">
-								<IonButton onClick={() => dispatch(setSyntaxState(id, false))} slot="end" fill="solid" color="success">
-									<IonIcon icon={checkmarkCircleOutline} slot="start" />
-									<IonLabel>Done</IonLabel>
-								</IonButton>
-							</IonButtons>
-						</IonToolbar>
-					</IonFooter>
-				</IonModal>
-				<IonButton color="warning" onClick={() => dispatch(setSyntaxState(id, true))}>
-					<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0.25rem", marginInlineEnd: "0.5rem"}} />
-					<IonLabel>{label}</IonLabel>
-				</IonButton>
-			</IonItem>
-		);
-	};
 	return (
 		<IonPage>
-			<SyntaxHeader />
+			<SyntaxHeader title="01" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
 				<IonList lines="none">
 
@@ -199,23 +97,23 @@ const Syntax = (props: any) => {
 											<IonCol>Affix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("prefixMost")}</IonCol>
-											<IonCol className="cbox">{makeBox("prefixLess")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="prefixMost" /></IonCol>
+											<IonCol className="cbox"><RadioBox prop="prefixLess" /></IonCol>
 											<IonCol>Prefix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("suffixMost")}</IonCol>
-											<IonCol className="cbox">{makeBox("suffixLess")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="suffixMost" /></IonCol>
+											<IonCol className="cbox"><RadioBox prop="suffixLess" /></IonCol>
 											<IonCol>Suffix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("circumfixMost")}</IonCol>
-											<IonCol className="cbox">{makeBox("circumfixLess")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="circumfixMost" /></IonCol>
+											<IonCol className="cbox"><RadioBox prop="circumfixLess" /></IonCol>
 											<IonCol>Circumfix</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("infixMost")}</IonCol>
-											<IonCol className="cbox">{makeBox("infixLess")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="infixMost" /></IonCol>
+											<IonCol className="cbox"><RadioBox prop="infixLess" /></IonCol>
 											<IonCol>Infix</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -361,72 +259,72 @@ const Syntax = (props: any) => {
 											<IonCol>Description</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("actions")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="actions" /></IonCol>
 											<IonCol className="label">Actions</IonCol>
 											<IonCol>Agent affects Patient.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("actionProcesses")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="actionProcesses" /></IonCol>
 											<IonCol className="label">Action-Processes</IonCol>
 											<IonCol>Agent only.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("weather")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="weather" /></IonCol>
 											<IonCol className="label">Weather Verbs</IonCol>
 											<IonCol>In English, these require a dummy Agent ("<em>It</em> is raining"); this is not the case in many other languages!</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("states")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="states" /></IonCol>
 											<IonCol className="label">States</IonCol>
 											<IonCol>be hot, be broken, be frozen, etc; may be predicate-bound.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("involuntaryProcesses")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="involuntaryProcesses" /></IonCol>
 											<IonCol className="label">Involuntary Processes</IonCol>
 											<IonCol>He grew; It broke; They died; etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("bodyFunctions")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="bodyFunctions" /></IonCol>
 											<IonCol className="label">Bodily Functions</IonCol>
 											<IonCol>cough, sweat, bleed, cry, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("motion")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="motion" /></IonCol>
 											<IonCol className="label">Motion</IonCol>
 											<IonCol>go, float, proceed, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("position")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="position" /></IonCol>
 											<IonCol className="label">Position</IonCol>
 											<IonCol>sit, stand, hang, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("factive")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="factive" /></IonCol>
 											<IonCol className="label">Factive</IonCol>
 											<IonCol>Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("cognition")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="cognition" /></IonCol>
 											<IonCol className="label">Cognition</IonCol>
 											<IonCol>know, suspect, forget etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("sensation")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="sensation" /></IonCol>
 											<IonCol className="label">Sensation</IonCol>
 											<IonCol>hear, see, taste, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("emotion")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="emotion" /></IonCol>
 											<IonCol className="label">Emotion</IonCol>
 											<IonCol>be happy, be afraid, be mellow, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("utterance")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="utterance" /></IonCol>
 											<IonCol className="label">Utterance</IonCol>
 											<IonCol>say, yell, murmur, declare, chat, etc</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("manipulation")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="manipulation" /></IonCol>
 											<IonCol className="label">Manipulation</IonCol>
 											<IonCol>force, urge, cause, let, permit, allow, compel, etc</IonCol>
 										</IonRow>
@@ -467,23 +365,23 @@ const Syntax = (props: any) => {
 											<IonCol className="header">Different Ways Property Concepts Are Handled in Human Language</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("lexVerb")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="lexVerb" /></IonCol>
 											<IonCol>Lexicalized as verbs (austronesian languages)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("lexNoun")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="lexNoun" /></IonCol>
 											<IonCol>Lexicalized as nouns (Finnish)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("lexVN")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="lexVN" /></IonCol>
 											<IonCol>Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("lexVorN")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="lexVorN" /></IonCol>
 											<IonCol>Some are lexicalized as nouns, others are lexicalized as verbs (Yoruba)</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("adjectives")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="adjectives" /></IonCol>
 											<IonCol>Distinct class of "adjectives" (English)</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -573,32 +471,32 @@ const Syntax = (props: any) => {
 										<IonCol>Example</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("APV")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="APV" /></IonCol>
 										<IonCol className="cbox leftA"><strong>APV/SV</strong></IonCol>
 										<IonCol><em>Steve softballs pitches; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("AVP")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="AVP" /></IonCol>
 										<IonCol className="cbox leftA"><strong>AVP/SV</strong></IonCol>
 										<IonCol><em>Steve pitches softballs; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("VAP")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="VAP" /></IonCol>
 										<IonCol className="cbox leftA"><strong>VAP/VS</strong></IonCol>
 										<IonCol><em>Pitches Steve softballs; Pitches Steve.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("VPA")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="VPA" /></IonCol>
 										<IonCol className="cbox leftA"><strong>VPA/VS</strong></IonCol>
 										<IonCol><em>Pitches softballs Steve; Pitches Steve.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("PAV")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="PAV" /></IonCol>
 										<IonCol className="cbox leftA"><strong>PAV/SV</strong></IonCol>
 										<IonCol><em>Softballs Steve pitches; Steve pitches.</em></IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("PVA")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="PVA" /></IonCol>
 										<IonCol className="cbox leftA"><strong>PVA/VS</strong></IonCol>
 										<IonCol><em>Softballs pitches Steve; Pitches Steve.</em></IonCol>
 									</IonRow>
@@ -669,15 +567,15 @@ const Syntax = (props: any) => {
 							<IonItem className="l3 content">
 								<IonGrid className="cols2">
 									<IonRow>
-										<IonCol className="cbox">{makeBox("preP")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="preP" /></IonCol>
 										<IonCol>Preposition (<em>with</em> an apple)</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("postP")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="postP" /></IonCol>
 										<IonCol>Postpostition (an apple <em>with</em>)</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("circumP")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="circumP" /></IonCol>
 										<IonCol>Circumposition (rare; <em>with</em> an apple <em>with</em>)</IonCol>
 									</IonRow>
 								</IonGrid>
@@ -852,15 +750,15 @@ const Syntax = (props: any) => {
 							<IonItem className="l3 content">
 								<IonGrid>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("dimAugYes")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="dimAugYes" /></IonCol>
 										<IonCol>Dim/Aug System Exists</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("dimAugObligatory")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="dimAugObligatory" /></IonCol>
 										<IonCol>...and is Obligatory</IonCol>
 									</IonRow>
 									<IonRow>
-										<IonCol className="cbox">{makeBox("dimAugProductive")}</IonCol>
+										<IonCol className="cbox"><RadioBox prop="dimAugProductive" /></IonCol>
 										<IonCol>...and is Productive</IonCol>
 									</IonRow>
 								</IonGrid>
@@ -1410,19 +1308,19 @@ const Syntax = (props: any) => {
 								<IonItem className="l4 content">
 									<IonGrid className="cols2">
 										<IonRow>
-											<IonCol className="cbox">{makeBox("markInv")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="markInv" /></IonCol>
 											<IonCol>Marked inverse only.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("markDirInv")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="markDirInv" /></IonCol>
 											<IonCol>Both direct and inverse explicitly marked.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("verbAgreeInv")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="verbAgreeInv" /></IonCol>
 											<IonCol>Special verb agreement markers for inverse.</IonCol>
 										</IonRow>
 										<IonRow>
-											<IonCol className="cbox">{makeBox("verbAgreeInv")}</IonCol>
+											<IonCol className="cbox"><RadioBox prop="verbAgreeInv" /></IonCol>
 											<IonCol>Functional inverse: word order changes, e.g. VAP becomes VPA.</IonCol>
 										</IonRow>
 									</IonGrid>
