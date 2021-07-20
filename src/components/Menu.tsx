@@ -134,7 +134,7 @@ const appMenuPages: MenuSection[] = [
 			},
 			{
 				title: 'SyntaxSketch',
-				url: '/syn',
+				url: '/ms/syntax',
 				icon: documentTextSharp,
 				id: 'menuitemSyntax'
 			}

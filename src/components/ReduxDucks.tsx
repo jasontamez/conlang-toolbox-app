@@ -390,7 +390,7 @@ export const blankAppState: types.StateObject = {
 		wg: 'home',
 		we: 'home',
 		wl: 'home',
-		ls: 'home',
+		ms: 'syntax',
 		ph: 'home',
 		lastSection: ''
 	},
@@ -1021,15 +1021,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 
 		// SyntaxSketch
-		case consts.TOGGLE_LANGSKETCH_STATE:
-			final = reduceAllBut([], state);
-			let bool = final.syntaxSketchState[payload];
-			if(bool) {
-				delete final.syntaxSketchState[payload];
-			} else {
-				final.syntaxSketchState[payload] = true;
-			}
-			break;
 		case consts.SET_LANGSKETCH_STATE:
 			final = reduceAllBut([], state);
 			let [pp, bb] = payload;

@@ -256,9 +256,9 @@ export interface ViewStateObject {
 	wg: string
 	we: string
 	wl: string
-	ls: string
+	ms: string
 	ph: string
-	lastSection: "wg" | "we" | "wl" | "ls" | "ph" | ""
+	lastSection: "wg" | "we" | "wl" | "ms" | "ph" | ""
 }
 
 export interface ExtraCharacters {

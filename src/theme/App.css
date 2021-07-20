@@ -880,6 +880,41 @@ ion-label.wrappableInnards {
 	color: var(--ion-color-success);
 }
 
+ion-select.syntaxSelect {
+	max-width: min-content;
+	padding-inline: 1rem;
+	padding-block-start: 0.25rem;
+	padding-block-end: 0.5rem;
+	border: 2px solid var(--ion-background-tinter);
+	background: var(--ion-background-tinter);
+}
+ion-select.syntaxSelect::part(text) {
+	max-width: max-content;
+}
+ion-select.syntaxSelect::part(icon) {
+	margin-left: 1rem;
+}
+.alertSelect {
+	--min-height: 90vh;
+	--min-width: 50vw;
+	--max-width: 90vw;
+	--backdrop-opacity: 0.9;
+	--background: var(--ion-color-medium-shade);
+}
+.alertSelect .alert-radio-group {
+	max-height: max-content;
+	max-width: 90vw;
+}
+#conlangToolbox .alertSelect .alert-radio-group button {
+	border-color: var(--ion-background-shader);
+	border-style: solid;
+	border-width: 2px 4px;
+	min-width: max-content;
+}
+.alertSelect .alert-head {
+	background: var(--ion-background-shader);
+}
+
 /* Known bug where the keyboard will push the header off the screen */
 
 .scroll-content {

@@ -203,9 +203,6 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 //
 // LANGSKETCH
 //
-export function toggleSyntaxState(payload: string) {
-	return {type: consts.TOGGLE_LANGSKETCH_STATE, payload};
-}
 export function setSyntaxState(prop: string, toggle: boolean) {
 	return {type: consts.SET_LANGSKETCH_STATE, payload: [prop, toggle]};
 }

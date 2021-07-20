@@ -12,6 +12,7 @@ import About from "./pages/About";
 import WordLists from "./pages/WordLists";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
+import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Syntax from "./pages/Syntax";
 import Settings from "./pages/AppSettings";
@@ -52,6 +53,11 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, "0.5.4", "<")) {
+							// Do stuff to possibly bring storedState up to date
+							storedState.ms = "syntax";
+							delete storedState.ls;
+						}
 						if (compareVersions.compare(storedState.currentVersion, "0.5.2", "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.syntaxSketchState = (storedState.syntaxSketchState || {});
@@ -86,6 +92,7 @@ const App = () => {
 						<Route path="/we"  render={() => <WE />} />
 						<Route path="/lex" render={() => <Lexicon />} />
 						<Route path="/syn" render={() => <Syntax />} />
+						<Route path="/ms" render={() => <MS />} />
 						<Route path="/ph" render={() => <Lexicon />} />
 						<Route path="/settings" render={() => <Settings />} />
 						<Route path="/about" render={() => <About />} />
