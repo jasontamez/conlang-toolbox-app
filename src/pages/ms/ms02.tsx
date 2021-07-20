@@ -6,7 +6,8 @@ import {
 	IonItem,
 	IonGrid,
 	IonRow,
-	IonCol
+	IonCol,
+	useIonViewDidEnter
 } from '@ionic/react';
 //import { CustomStorageSyntax } from '../components/PersistentInfo';
 import {
@@ -16,11 +17,18 @@ import {
 	RadioBox,
 	TextItem
 } from './MorphoSyntaxElements';
+import { changeView } from '../../components/ReduxDucksFuncs';
+import { useDispatch } from "react-redux";
 
 const Syntax = (props: any) => {
+	const dispatch = useDispatch();
+	const viewInfo = ['ms', 'ms02'];
+	useIonViewDidEnter(() => {
+		dispatch(changeView(viewInfo));
+	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="01" />
+			<SyntaxHeader title="02" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
 				<IonList lines="none">
 

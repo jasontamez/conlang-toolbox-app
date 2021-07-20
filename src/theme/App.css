@@ -640,7 +640,7 @@ ion-label.wrappableInnards {
 }
 
 @media screen and (max-width: 390px) {
-	ion-tab-bar ion-label {
+	ion-tab-bar:not(.iconsOnly) ion-label {
 		display: none;
 	}
 }
