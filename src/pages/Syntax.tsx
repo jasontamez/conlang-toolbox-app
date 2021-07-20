@@ -16,7 +16,7 @@ import {
 	RadioBox,
 	RangeItem,
 	TextItem
-} from './ms/Header';
+} from './ms/MorphoSyntaxElements';
 
 const Syntax = (props: any) => {
 	return (
