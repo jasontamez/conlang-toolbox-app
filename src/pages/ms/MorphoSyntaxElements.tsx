@@ -39,7 +39,7 @@ export const SyntaxHeader = (props: any) => {
 	const title = props.title || "01";
 	const changePage = (e: any) => {
 		const where = (e.detail.value || title);
-		where !== title && history.push('/ms/section' + where);
+		where !== title && history.push('/ms/ms' + where);
 	};
 	return (
 		<IonHeader>
