@@ -9,7 +9,6 @@ import {
 	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
-//import { CustomStorageSyntax } from '../components/PersistentInfo';
 import {
 	SyntaxHeader,
 	HeaderItem,
@@ -29,15 +28,15 @@ const Syntax = (props: any) => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="01" />
+			<SyntaxHeader title="1. Morphological Typology" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">1. Morphological Typology</HeaderItem>
 
-						<HeaderItem className="h h2 l2">1.1. Traditional Typology</HeaderItem>
+						<HeaderItem className="h h2">1.1. Traditional Typology</HeaderItem>
 
-							<InfoModal className="l3" title="Synthesis and Fusion" label="Synthesis and Fusion">
+							<InfoModal title="Synthesis and Fusion" label="Synthesis and Fusion">
 								<ul>
 									<li><strong>Synthesis</strong>: How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?
 										<ul>
@@ -54,19 +53,19 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<HeaderItem className="h h3 l3 content">Synthesis</HeaderItem>
+							<HeaderItem className="h h3">Synthesis</HeaderItem>
 
-								<RangeItem className="l4" text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
+								<RangeItem text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
 
-							<HeaderItem className="h h3 l3 content">Fusion</HeaderItem>
+							<HeaderItem className="h h3">Fusion</HeaderItem>
 
-								<RangeItem className="l4" text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
+								<RangeItem text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
 
-							<TextItem className="l3" text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
+							<TextItem text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
 
-						<HeaderItem className="h h2 l2">1.2. Morphological Processes</HeaderItem>
+						<HeaderItem className="h h2">1.2. Morphological Processes</HeaderItem>
 
-							<InfoModal className="l3" title="Affixes and Other Modifications" label="What Are They?">
+							<InfoModal title="Affixes and Other Modifications" label="What Are They?">
 								<ul>
 									<li><strong>Affixes</strong>:
 										<ul>
@@ -95,9 +94,9 @@ const Syntax = (props: any) => {
 								</ul>
 							</InfoModal>
 
-							<HeaderItem className="h h3 l3 content">Affixes</HeaderItem>
+							<HeaderItem className="h h3">Affixes</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="cols3">
 										<IonRow className="header">
 											<IonCol className="cbox">Used Most</IonCol>
@@ -127,35 +126,35 @@ const Syntax = (props: any) => {
 									</IonGrid>
 								</IonItem>
 
-							<HeaderItem className="h h3 l3 content">Stem Modification</HeaderItem>
+							<HeaderItem className="h h3">Stem Modification</HeaderItem>
 
-								<RangeItem className="l4" text="stemMod" start="Not Used" end="Used Often" />
+								<RangeItem text="stemMod" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Suppletion</HeaderItem>
+							<HeaderItem className="h h3">Suppletion</HeaderItem>
 
-								<RangeItem className="l4" text="suppletion" start="Not Used" end="Used Often" />
+								<RangeItem text="suppletion" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Reduplication</HeaderItem>
+							<HeaderItem className="h h3">Reduplication</HeaderItem>
 
-								<RangeItem className="l4" text="redupe" start="Not Used" end="Used Often" />
+								<RangeItem text="redupe" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Suprasegmental Modification</HeaderItem>
+							<HeaderItem className="h h3">Suprasegmental Modification</HeaderItem>
 
-								<RangeItem className="l4" text="supraMod" start="Not Used" end="Used Often" />
+								<RangeItem text="supraMod" start="Not Used" end="Used Often" />
 
-							<TextItem className="l4" text="morphProcess" rows={6}>What sort of morphological processes are used? Illustrate the major and secondary pratterns.</TextItem>
+							<TextItem text="morphProcess" rows={6}>What sort of morphological processes are used? Illustrate the major and secondary pratterns.</TextItem>
 
-						<HeaderItem className="h h2 l2">1.3. Head/Dependant Marking</HeaderItem>
+						<HeaderItem className="h h2">1.3. Head/Dependant Marking</HeaderItem>
 
-							<RangeItem className="l3" text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
-							<InfoModal className="l3" title="Head/Dependant Marking">
+							<RangeItem text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
+							<InfoModal title="Head/Dependant Marking">
 								<ul>
 									<li>English is predominantly dependant-marked ("the queen's crown").</li>
 									<li>Most languages are head-marked (*"the queen crown's").</li>
 									<li>Some are mixed, but stay in one pattern for a certain class of phrases (noun, verb, adposition).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="headDepMark">Write any more specific notes here.</TextItem>
+							<TextItem text="headDepMark">Write any more specific notes here.</TextItem>
 
 				</IonList>
 			</IonContent>

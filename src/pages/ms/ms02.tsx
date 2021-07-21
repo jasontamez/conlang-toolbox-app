@@ -9,7 +9,6 @@ import {
 	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
-//import { CustomStorageSyntax } from '../components/PersistentInfo';
 import {
 	SyntaxHeader,
 	HeaderItem,
@@ -22,35 +21,35 @@ import { useDispatch } from "react-redux";
 
 const Syntax = (props: any) => {
 	const dispatch = useDispatch();
-	const viewInfo = ['ms', 'ms02'];
+	const viewInfo = ['ms', 'ms02']; /// CONSIDER REMOVING INDENTATIONS FROM CSS, AND KILL THE HEADER DROPDOWN
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="02" />
+			<SyntaxHeader title="2. Grammatical Categories"/ >
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">2. Grammatical Categories</HeaderItem>
 
-						<HeaderItem className="h h2 l2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
+						<HeaderItem className="h h2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
 
-							<HeaderItem className="h h3 l3">2.1.1. Types of Nouns</HeaderItem>
+							<HeaderItem className="h h3">2.1.1. Types of Nouns</HeaderItem>
 
-								<HeaderItem className="h l4 content">2.1.1.1. Proper Names</HeaderItem>
+								<HeaderItem className="h">2.1.1.1. Proper Names</HeaderItem>
 
-									<InfoModal className="l5" title="Proper Names">
+									<InfoModal title="Proper Names">
 										<ul>
 											<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
 											<li>Other languages may have special case markers (4.4) for them.</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="propNames">Are there any special rules involving proper names?</TextItem>
+									<TextItem text="propNames">Are there any special rules involving proper names?</TextItem>
 
-								<HeaderItem className="h l4 content">2.1.1.2. Possessability</HeaderItem>
+								<HeaderItem className="h">2.1.1.2. Possessability</HeaderItem>
 
-									<InfoModal className="l5" title="Possessability" label="Systems of Possession">
+									<InfoModal title="Possessability" label="Systems of Possession">
 										<ul>
 											<li>Languages may have one of the following systems to differentiate nouns.
 												<ul>
@@ -70,21 +69,21 @@ const Syntax = (props: any) => {
 											</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
+									<TextItem text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
 
-								<HeaderItem className="h l4 content">2.1.1.3. Count vs Mass</HeaderItem>
+								<HeaderItem className="h">2.1.1.3. Count vs Mass</HeaderItem>
 
-									<InfoModal className="l5" title="Count Nouns and Mass Nouns">
+									<InfoModal title="Count Nouns and Mass Nouns">
 										<ul>
 											<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
 											<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
+									<TextItem text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
+							<HeaderItem className="h h3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
 
-								<InfoModal className="l4 following leading" label="What Are They?" title="Pronouns and Anaphoric Clitics">
+								<InfoModal className="following leading" label="What Are They?" title="Pronouns and Anaphoric Clitics">
 									<ul>
 										<li><strong>Pronouns</strong>:
 											<ul>
@@ -102,13 +101,13 @@ const Syntax = (props: any) => {
 										<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4 following" text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
+								<TextItem className="following" text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
 
-						<HeaderItem className="h h2 l2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
+						<HeaderItem className="h h2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
 
-							<HeaderItem className="h h3 l3">2.2.1. Semantic Roles</HeaderItem>
+							<HeaderItem className="h h3">2.2.1. Semantic Roles</HeaderItem>
 
-								<InfoModal className="l4" title="Semantic Roles" label="What Are They?">
+								<InfoModal title="Semantic Roles" label="What Are They?">
 									<ul>
 										<li>Verbs can be divided into groups depending on which roles they require.
 											<ul>
@@ -130,11 +129,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
+								<TextItem text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.2.2. Verb Classes</HeaderItem>
+							<HeaderItem className="h h3">2.2.2. Verb Classes</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="striped">
 										<IonRow className="header">
 											<IonCol className="cbox">Exists?</IonCol>
@@ -214,11 +213,11 @@ const Syntax = (props: any) => {
 									</IonGrid>
 								</IonItem>
 
-								<TextItem className="l4" text="verbClass" rows={8}>Describe which verb classes exist as distinct categories in the language and how they are realized.</TextItem>
+								<TextItem text="verbClass" rows={8}>Describe which verb classes exist as distinct categories in the language and how they are realized.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.2.3. Verb Structure</HeaderItem>
+							<HeaderItem className="h h3">2.2.3. Verb Structure</HeaderItem>
 
-								<InfoModal className="l4" title="Verb Structure" label="Structure and Operations Info">
+								<InfoModal title="Verb Structure" label="Structure and Operations Info">
 									<ul>
 										<li>Describe the structure of the verb phrase.
 											<ul>
@@ -236,13 +235,13 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="verbStructure" rows={8}>Describe the verb structure here.</TextItem>
+								<TextItem text="verbStructure" rows={8}>Describe the verb structure here.</TextItem>
 
-						<HeaderItem className="h h2 l2">2.3. Modifiers</HeaderItem>
+						<HeaderItem className="h h2">2.3. Modifiers</HeaderItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
+							<HeaderItem className="h h3">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="cols2">
 										<IonRow>
 											<IonCol className="header">Different Ways Property Concepts Are Handled in Human Language</IonCol>
@@ -269,7 +268,7 @@ const Syntax = (props: any) => {
 										</IonRow>
 									</IonGrid>
 								</IonItem>
-								<InfoModal className="l4" title="Property Concepts">
+								<InfoModal title="Property Concepts">
 									<ul>
 										<li>If these exist as a separate category, they will express:
 											<ul>
@@ -289,15 +288,15 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
+								<TextItem text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
+							<HeaderItem className="h h3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 
-								<TextItem className="l4" text="quantifier">Which quantifiers exist?</TextItem>
+								<TextItem text="quantifier">Which quantifiers exist?</TextItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.3. Numerals</HeaderItem>
+							<HeaderItem className="h h3">2.3.3. Numerals</HeaderItem>
 
-								<InfoModal className="l4" title="Numerals" label="Things to Consider">
+								<InfoModal title="Numerals" label="Things to Consider">
 									<ul>
 										<li><strong>Extent</strong>:
 											<ul>
@@ -319,11 +318,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
+								<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
 
-						<HeaderItem className="h h2 l2">2.4. Adverbs (a "catch-all" category)</HeaderItem>
+						<HeaderItem className="h h2">2.4. Adverbs (a "catch-all" category)</HeaderItem>
 
-							<InfoModal className="l3" title="Adverbs">
+							<InfoModal title="Adverbs">
 								<ul>
 									<li>These may or may not exist as a separate category of words.</li>
 									<li>Languages may use adjectives in special phrases to fulfill this role.</li>
@@ -337,7 +336,7 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="adverb" rows={4}>How are adverbs (or adverb-like phrases) handled?</TextItem>
+							<TextItem text="adverb" rows={4}>How are adverbs (or adverb-like phrases) handled?</TextItem>
 
 				</IonList>
 			</IonContent>

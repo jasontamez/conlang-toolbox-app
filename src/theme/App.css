@@ -644,7 +644,20 @@ ion-label.wrappableInnards {
 		display: none;
 	}
 }
-
+ion-tab-bar.iconsOnly ion-tab-button.moreIndicators {
+	display: none;
+}
+@media screen and (max-width: 500px) {
+	ion-tab-bar.iconsOnly ion-tab-button.possiblyTooFar {
+		display: none;
+	}
+	ion-tab-bar.iconsOnly ion-tab-button.moreIndicators {
+		display: flex;
+	}
+}
+ion-tab-bar.iconsOnly ion-tab-button:not(.moreIndicators) ion-label {
+	white-space: nowrap;
+}
 /*
 #syntaxSketchPage ion-list ion-item ol {
 	list-style-type: none;
@@ -750,7 +763,7 @@ ion-label.wrappableInnards {
 }
 #syntaxSketchPage ion-list ion-item.h3 {
 	font-size: 1.1rem;
-}
+}/*
 #syntaxSketchPage ion-list ion-item.l2 {
 	margin-inline-start: 1rem;
 }
@@ -771,8 +784,11 @@ ion-label.wrappableInnards {
 }
 #syntaxSketchPage ion-list ion-item.l8 {
 	margin-inline-start: 7rem;
-}
+}*/
 #syntaxSketchPage ion-list ion-item.content::part(native) {
+	margin: 1rem;
+}
+#syntaxSketchPage ion-list ion-item.infoModal::part(native) {
 	margin-inline: 1rem;
 }
 #syntaxSketchPage ion-list ion-item.leading::part(native),

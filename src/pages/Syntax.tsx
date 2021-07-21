@@ -27,9 +27,9 @@ const Syntax = (props: any) => {
 
 					<HeaderItem className="h h1">1. Morphological Typology</HeaderItem>
 
-						<HeaderItem className="h h2 l2">1.1. Traditional Typology</HeaderItem>
+						<HeaderItem className="h h2">1.1. Traditional Typology</HeaderItem>
 
-							<InfoModal className="l3" title="Synthesis and Fusion" label="Synthesis and Fusion">
+							<InfoModal title="Synthesis and Fusion" label="Synthesis and Fusion">
 								<ul>
 									<li><strong>Synthesis</strong>: How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?
 										<ul>
@@ -46,19 +46,19 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<HeaderItem className="h h3 l3 content">Synthesis</HeaderItem>
+							<HeaderItem className="h h3">Synthesis</HeaderItem>
 
-								<RangeItem className="l4" text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
+								<RangeItem text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
 
-							<HeaderItem className="h h3 l3 content">Fusion</HeaderItem>
+							<HeaderItem className="h h3">Fusion</HeaderItem>
 
-								<RangeItem className="l4" text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
+								<RangeItem text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
 
-							<TextItem className="l3" text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
+							<TextItem text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
 
-						<HeaderItem className="h h2 l2">1.2. Morphological Processes</HeaderItem>
+						<HeaderItem className="h h2">1.2. Morphological Processes</HeaderItem>
 
-							<InfoModal className="l3" title="Affixes and Other Modifications" label="What Are They?">
+							<InfoModal title="Affixes and Other Modifications" label="What Are They?">
 								<ul>
 									<li><strong>Affixes</strong>:
 										<ul>
@@ -87,9 +87,9 @@ const Syntax = (props: any) => {
 								</ul>
 							</InfoModal>
 
-							<HeaderItem className="h h3 l3 content">Affixes</HeaderItem>
+							<HeaderItem className="h h3">Affixes</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="cols3">
 										<IonRow className="header">
 											<IonCol className="cbox">Used Most</IonCol>
@@ -119,55 +119,55 @@ const Syntax = (props: any) => {
 									</IonGrid>
 								</IonItem>
 
-							<HeaderItem className="h h3 l3 content">Stem Modification</HeaderItem>
+							<HeaderItem className="h h3">Stem Modification</HeaderItem>
 
-								<RangeItem className="l4" text="stemMod" start="Not Used" end="Used Often" />
+								<RangeItem text="stemMod" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Suppletion</HeaderItem>
+							<HeaderItem className="h h3">Suppletion</HeaderItem>
 
-								<RangeItem className="l4" text="suppletion" start="Not Used" end="Used Often" />
+								<RangeItem text="suppletion" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Reduplication</HeaderItem>
+							<HeaderItem className="h h3">Reduplication</HeaderItem>
 
-								<RangeItem className="l4" text="redupe" start="Not Used" end="Used Often" />
+								<RangeItem text="redupe" start="Not Used" end="Used Often" />
 
-							<HeaderItem className="h h3 l3 content">Suprasegmental Modification</HeaderItem>
+							<HeaderItem className="h h3">Suprasegmental Modification</HeaderItem>
 
-								<RangeItem className="l4" text="supraMod" start="Not Used" end="Used Often" />
+								<RangeItem text="supraMod" start="Not Used" end="Used Often" />
 
-							<TextItem className="l4" text="morphProcess" rows={6}>What sort of morphological processes are used? Illustrate the major and secondary pratterns.</TextItem>
+							<TextItem text="morphProcess" rows={6}>What sort of morphological processes are used? Illustrate the major and secondary pratterns.</TextItem>
 
-						<HeaderItem className="h h2 l2">1.3. Head/Dependant Marking</HeaderItem>
+						<HeaderItem className="h h2">1.3. Head/Dependant Marking</HeaderItem>
 
-							<RangeItem className="l3" text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
-							<InfoModal className="l3" title="Head/Dependant Marking">
+							<RangeItem text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
+							<InfoModal title="Head/Dependant Marking">
 								<ul>
 									<li>English is predominantly dependant-marked ("the queen's crown").</li>
 									<li>Most languages are head-marked (*"the queen crown's").</li>
 									<li>Some are mixed, but stay in one pattern for a certain class of phrases (noun, verb, adposition).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="headDepMark">Write any more specific notes here.</TextItem>
+							<TextItem text="headDepMark">Write any more specific notes here.</TextItem>
 
 					<HeaderItem className="h h1">2. Grammatical Categories</HeaderItem>
 
-						<HeaderItem className="h h2 l2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
+						<HeaderItem className="h h2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
 
-							<HeaderItem className="h h3 l3">2.1.1. Types of Nouns</HeaderItem>
+							<HeaderItem className="h h3">2.1.1. Types of Nouns</HeaderItem>
 
-								<HeaderItem className="h l4 content">2.1.1.1. Proper Names</HeaderItem>
+								<HeaderItem className="h">2.1.1.1. Proper Names</HeaderItem>
 
-									<InfoModal className="l5" title="Proper Names">
+									<InfoModal title="Proper Names">
 										<ul>
 											<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
 											<li>Other languages may have special case markers (4.4) for them.</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="propNames">Are there any special rules involving proper names?</TextItem>
+									<TextItem text="propNames">Are there any special rules involving proper names?</TextItem>
 
-								<HeaderItem className="h l4 content">2.1.1.2. Possessability</HeaderItem>
+								<HeaderItem className="h">2.1.1.2. Possessability</HeaderItem>
 
-									<InfoModal className="l5" title="Possessability" label="Systems of Possession">
+									<InfoModal title="Possessability" label="Systems of Possession">
 										<ul>
 											<li>Languages may have one of the following systems to differentiate nouns.
 												<ul>
@@ -187,21 +187,21 @@ const Syntax = (props: any) => {
 											</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
+									<TextItem text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
 
-								<HeaderItem className="h l4 content">2.1.1.3. Count vs Mass</HeaderItem>
+								<HeaderItem className="h">2.1.1.3. Count vs Mass</HeaderItem>
 
-									<InfoModal className="l5" title="Count Nouns and Mass Nouns">
+									<InfoModal title="Count Nouns and Mass Nouns">
 										<ul>
 											<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
 											<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
 										</ul>
 									</InfoModal>
-									<TextItem className="l5" text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
+									<TextItem text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
+							<HeaderItem className="h h3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
 
-								<InfoModal className="l4 following leading" label="What Are They?" title="Pronouns and Anaphoric Clitics">
+								<InfoModal className="following leading" label="What Are They?" title="Pronouns and Anaphoric Clitics">
 									<ul>
 										<li><strong>Pronouns</strong>:
 											<ul>
@@ -219,13 +219,13 @@ const Syntax = (props: any) => {
 										<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4 following" text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
+								<TextItem className="following" text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
 
-						<HeaderItem className="h h2 l2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
+						<HeaderItem className="h h2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
 
-							<HeaderItem className="h h3 l3">2.2.1. Semantic Roles</HeaderItem>
+							<HeaderItem className="h h3">2.2.1. Semantic Roles</HeaderItem>
 
-								<InfoModal className="l4" title="Semantic Roles" label="What Are They?">
+								<InfoModal title="Semantic Roles" label="What Are They?">
 									<ul>
 										<li>Verbs can be divided into groups depending on which roles they require.
 											<ul>
@@ -247,11 +247,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
+								<TextItem text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.2.2. Verb Classes</HeaderItem>
+							<HeaderItem className="h h3">2.2.2. Verb Classes</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="striped">
 										<IonRow className="header">
 											<IonCol className="cbox">Exists?</IonCol>
@@ -331,11 +331,11 @@ const Syntax = (props: any) => {
 									</IonGrid>
 								</IonItem>
 
-								<TextItem className="l4" text="verbClass" rows={8}>Describe which verb classes exist as distinct categories in the language and how they are realized.</TextItem>
+								<TextItem text="verbClass" rows={8}>Describe which verb classes exist as distinct categories in the language and how they are realized.</TextItem>
 
-							<HeaderItem className="h h3 l3">2.2.3. Verb Structure</HeaderItem>
+							<HeaderItem className="h h3">2.2.3. Verb Structure</HeaderItem>
 
-								<InfoModal className="l4" title="Verb Structure" label="Structure and Operations Info">
+								<InfoModal title="Verb Structure" label="Structure and Operations Info">
 									<ul>
 										<li>Describe the structure of the verb phrase.
 											<ul>
@@ -353,13 +353,13 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="verbStructure" rows={8}>Describe the verb structure here.</TextItem>
+								<TextItem text="verbStructure" rows={8}>Describe the verb structure here.</TextItem>
 
-						<HeaderItem className="h h2 l2">2.3. Modifiers</HeaderItem>
+						<HeaderItem className="h h2">2.3. Modifiers</HeaderItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
+							<HeaderItem className="h h3">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
 
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="cols2">
 										<IonRow>
 											<IonCol className="header">Different Ways Property Concepts Are Handled in Human Language</IonCol>
@@ -386,7 +386,7 @@ const Syntax = (props: any) => {
 										</IonRow>
 									</IonGrid>
 								</IonItem>
-								<InfoModal className="l4" title="Property Concepts">
+								<InfoModal title="Property Concepts">
 									<ul>
 										<li>If these exist as a separate category, they will express:
 											<ul>
@@ -406,15 +406,15 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
+								<TextItem text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
+							<HeaderItem className="h h3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 
-								<TextItem className="l4" text="quantifier">Which quantifiers exist?</TextItem>
+								<TextItem text="quantifier">Which quantifiers exist?</TextItem>
 
-							<HeaderItem className="h h3 l3 content">2.3.3. Numerals</HeaderItem>
+							<HeaderItem className="h h3">2.3.3. Numerals</HeaderItem>
 
-								<InfoModal className="l4" title="Numerals" label="Things to Consider">
+								<InfoModal title="Numerals" label="Things to Consider">
 									<ul>
 										<li><strong>Extent</strong>:
 											<ul>
@@ -436,11 +436,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
+								<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
 
-						<HeaderItem className="h h2 l2">2.4. Adverbs (a "catch-all" category)</HeaderItem>
+						<HeaderItem className="h h2">2.4. Adverbs (a "catch-all" category)</HeaderItem>
 
-							<InfoModal className="l3" title="Adverbs">
+							<InfoModal title="Adverbs">
 								<ul>
 									<li>These may or may not exist as a separate category of words.</li>
 									<li>Languages may use adjectives in special phrases to fulfill this role.</li>
@@ -454,13 +454,13 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="adverb" rows={4}>How are adverbs (or adverb-like phrases) handled?</TextItem>
+							<TextItem text="adverb" rows={4}>How are adverbs (or adverb-like phrases) handled?</TextItem>
 
 					<HeaderItem className="h h1">3. Constituent Order Typology</HeaderItem>
 
-						<HeaderItem className="h h2 l2">3.1. In Main Clauses</HeaderItem>
+						<HeaderItem className="h h2">3.1. In Main Clauses</HeaderItem>
 
-							<IonItem className="l3 content">
+							<IonItem className="content">
 								<IonGrid className="cols3">
 									<IonRow className="header">
 										<IonCol className="header">The Six Basic Forms of Human Language</IonCol>
@@ -502,7 +502,7 @@ const Syntax = (props: any) => {
 									</IonRow>
 								</IonGrid>
 							</IonItem>
-							<InfoModal className="l3" title="Basic Typology" label="What is this?">
+							<InfoModal title="Basic Typology" label="What is this?">
 								<ul>
 									<li>Human languages tend towards one of six different basic forms.
 										<ul>
@@ -552,19 +552,19 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="mainClause">Write any more specific notes here.</TextItem>
+							<TextItem text="mainClause">Write any more specific notes here.</TextItem>
 
-						<HeaderItem className="h h2 l2">3.2. Verb Phrases</HeaderItem>
+						<HeaderItem className="h h2">3.2. Verb Phrases</HeaderItem>
 
-							<TextItem className="l3" text="verbPhrase" rows={4}>Where do auxilliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxilliaries?</TextItem>
+							<TextItem text="verbPhrase" rows={4}>Where do auxilliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxilliaries?</TextItem>
 
-						<HeaderItem className="h h2 l2">3.3. Noun Phrases</HeaderItem>
+						<HeaderItem className="h h2">3.3. Noun Phrases</HeaderItem>
 
-							<TextItem className="l3" text="nounPhrase" rows={4}>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses***, classifiers***, and the head noun?</TextItem>
+							<TextItem text="nounPhrase" rows={4}>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses***, classifiers***, and the head noun?</TextItem>
 
-						<HeaderItem className="h h2 l2">3.4. Adpositional Phrases</HeaderItem>
+						<HeaderItem className="h h2">3.4. Adpositional Phrases</HeaderItem>
 
-							<IonItem className="l3 content">
+							<IonItem className="content">
 								<IonGrid className="cols2">
 									<IonRow>
 										<IonCol className="cbox"><RadioBox prop="preP" /></IonCol>
@@ -580,19 +580,18 @@ const Syntax = (props: any) => {
 									</IonRow>
 								</IonGrid>
 							</IonItem>
-							<InfoModal className="l3" title="Adpositions">
+							<InfoModal title="Adpositions">
 								<ul>
 									<li>Many derive from verbs, especially serial verbs***.</li>
 									<li>Others derive from nouns, especially body parts (top, back, face, head, etc).</li>
 									<li>Adpositional phrases may appear the same as possessed noun phrases (in front of vs. on his face) or regular nouns (top vs. on top of).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="adPhrase" rows={4}>Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?</TextItem>
+							<TextItem text="adPhrase" rows={4}>Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?</TextItem>
 
+						<HeaderItem className="h h2">3.5 Comparatives</HeaderItem>
 
-						<HeaderItem className="h h2 l2">3.5 Comparatives</HeaderItem>
-
-							<InfoModal className="l3" title="Comparatives" label="How do they work?">
+							<InfoModal title="Comparatives" label="How do they work?">
 								<ul>
 									<li>Does the language even have a form? Some languages get by with strategies like "X is big, Y is very big."</li>
 									<li>A comparison phrase requires a known standard, a marker that signals this is a comparison, and the quality of comparison.
@@ -604,30 +603,28 @@ const Syntax = (props: any) => {
 									<li>VP languages tend towards Quality-Marker-Standard.</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="compare">Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?</TextItem>
+							<TextItem text="compare">Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?</TextItem>
 
+						<HeaderItem className="h h2">3.6 Question Particles and Words</HeaderItem>
 
-						<HeaderItem className="h h2 l2">3.6 Question Particles and Words</HeaderItem>
-
-							<InfoModal className="l3" title="Questions">
+							<InfoModal title="Questions">
 								<ul>
 									<li>In many languages, yes/no questions are indicated by a change in intonation. In others, a question particle is used; e.g. <em>do</em> you understand?</li>
 									<li>Informal questions may require a specific question word.</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="questions">How are questions handled in the language? In informational questions, where does the question word occur?</TextItem>
+							<TextItem text="questions">How are questions handled in the language? In informational questions, where does the question word occur?</TextItem>
 
+						<HeaderItem className="h h2">3.7 Summary</HeaderItem>
 
-						<HeaderItem className="h h2 l2 content">3.7 Summary</HeaderItem>
-
-							<TextItem className="l3" text="COType">When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.</TextItem>
+							<TextItem text="COType">When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.</TextItem>
 
 
 					<HeaderItem className="h h1">4. Noun and Noun Phrase Operations</HeaderItem>
 
-						<HeaderItem className="h h2 l2">4.1. Compounding</HeaderItem>
+						<HeaderItem className="h h2">4.1. Compounding</HeaderItem>
 
-							<InfoModal className="l3" title="Compounding">
+							<InfoModal title="Compounding">
 								<ul>
 									<li>When two nouns are combined into one, several changes may occur.
 										<ul>
@@ -639,11 +636,11 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="compounding" rows={4}>Describe the sorts of compounding that happen in the language (if any).</TextItem>
+							<TextItem text="compounding" rows={4}>Describe the sorts of compounding that happen in the language (if any).</TextItem>
 
-						<HeaderItem className="h h2 l2">4.2. Denominalization</HeaderItem>
+						<HeaderItem className="h h2">4.2. Denominalization</HeaderItem>
 
-							<InfoModal className="l3" title="Denominalization">
+							<InfoModal title="Denominalization">
 								<ul>
 									<li>Some languages have many ways of changing a noun into a non-noun.
 										<ul>
@@ -653,11 +650,11 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="denoms" rows={4}>Are there any processes to make a verb from a noun? An adjecive? An adverb?</TextItem>
+							<TextItem text="denoms" rows={4}>Are there any processes to make a verb from a noun? An adjecive? An adverb?</TextItem>
 
-						<HeaderItem className="h h2 l2">4.3. Number Marking</HeaderItem>
+						<HeaderItem className="h h2">4.3. Number Marking</HeaderItem>
 
-							<InfoModal className="l3" title="Number Marking">
+							<InfoModal title="Number Marking">
 								<ul>
 									<li>Some languages only mark number occassionally or optionally depending on the type of noun.</li>
 									<li>This is often intertwined with other markers, such as case marking in Romance languages.</li>
@@ -665,13 +662,13 @@ const Syntax = (props: any) => {
 									<li>Number marking may be as simple as singular/plural (more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="nNumber" rows={3}>Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?</TextItem>
-							<TextItem className="l3" text="nNumberOpt" rows={4}>If number-marking is optional, when does it tend to occur? When does it not tend to occur?</TextItem>
-							<TextItem className="l3" text="nNumberObl" rows={4}>If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
+							<TextItem text="nNumber" rows={3}>Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?</TextItem>
+							<TextItem text="nNumberOpt" rows={4}>If number-marking is optional, when does it tend to occur? When does it not tend to occur?</TextItem>
+							<TextItem text="nNumberObl" rows={4}>If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
 
-						<HeaderItem className="h h2 l2">4.4. Case Marking</HeaderItem>
+						<HeaderItem className="h h2">4.4. Case Marking</HeaderItem>
 
-							<InfoModal className="l3" title="Case Marking" label="How it works">
+							<InfoModal title="Case Marking" label="How it works">
 								<ul>
 									<li>Case markings can describe the role a noun plays in a sentence.</li>
 									<li>In English, most case markings only survive in the pronouns, with word order doing the job for regular nouns. The major exception is the genitive case (possessive), which is marked with <em>'s</em>.</li>
@@ -692,38 +689,38 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="case" rows={4}>Do nouns exhibit morphological case? If so, what cases exist?</TextItem>
+							<TextItem text="case" rows={4}>Do nouns exhibit morphological case? If so, what cases exist?</TextItem>
 
-						<HeaderItem className="h h2 l2">4.5. Articles and Demonstratives</HeaderItem>
+						<HeaderItem className="h h2">4.5. Articles and Demonstratives</HeaderItem>
 
-							<InfoModal className="l3" title="Articles" label="Articles Info">
+							<InfoModal title="Articles" label="Articles Info">
 								<ul>
 									<li>English is relatively rare in having articles: a, an, the. More often, languages have a broader class of demonstratives.</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="articles" rows={6}>If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</TextItem>
-							<InfoModal className="l3" title="Determiners" label="Determiners Info">
+							<TextItem text="articles" rows={6}>If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</TextItem>
+							<InfoModal title="Determiners" label="Determiners Info">
 								<ul>
 									<li>Demonstratives are words that distinguish or identify a noun without modifying it, such as this, that, these and those.</li>
 									<li>They tend to encode distance ("this" is closer to you than "that"; Spanish has a third level of distance, too).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="demonstratives" rows={6}>How many levels of distance do determiners encode? Are there other distinctions besides distance?</TextItem>
+							<TextItem text="demonstratives" rows={6}>How many levels of distance do determiners encode? Are there other distinctions besides distance?</TextItem>
 
-						<HeaderItem className="h h2 l2">4.6. Possessors</HeaderItem>
+						<HeaderItem className="h h2">4.6. Possessors</HeaderItem>
 
-							<InfoModal className="l3" title="Possessors" label="Possessor Info">
+							<InfoModal title="Possessors" label="Possessor Info">
 								<ul>
 									<li>Refer back to 2.1.1.2 to note your system of possession. This does <strong>not</strong> refer to possessive clauses! (5.4)</li>
 									<li className="newSection">How are possessors expressed in the noun phrase?</li>
 									<li>Do nouns agree with their possessors? Vice versa?</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="possessors" rows={3}>Describe how possession works in a noun phrase.</TextItem>
+							<TextItem text="possessors" rows={3}>Describe how possession works in a noun phrase.</TextItem>
 
-						<HeaderItem className="h h2 l2">4.7. Class (Gender)</HeaderItem>
+						<HeaderItem className="h h2">4.7. Class (Gender)</HeaderItem>
 
-							<InfoModal className="l3" title="Class and Gender" label="Class and Gender Info">
+							<InfoModal title="Class and Gender" label="Class and Gender Info">
 								<ul>
 									<li>Class system often require classifiers (special operators) to declare class.</li>
 									<li>Pure gender systems use "agreement" instead of classifiers. At the very least, numerical expressions will "agree" with their head noun.</li>
@@ -731,11 +728,11 @@ const Syntax = (props: any) => {
 									<li>Classifiers may occur with verbs, numerals and adjectives, though they may serve a different function in those cases.</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="classGender" rows={8}>Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?</TextItem>
+							<TextItem text="classGender" rows={8}>Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?</TextItem>
 
-						<HeaderItem className="h h2 l2">4.8. Diminution/Augmentation</HeaderItem>
+						<HeaderItem className="h h2">4.8. Diminution/Augmentation</HeaderItem>
 
-							<InfoModal className="l3" title="Diminution and Augmentation">
+							<InfoModal title="Diminution and Augmentation">
 								<ul>
 									<li>If diminution (making smaller) and/or augmentation (making bigger) is used in the language, answer the following questions:
 										<ul>
@@ -747,7 +744,7 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<IonItem className="l3 content">
+							<IonItem className="content">
 								<IonGrid>
 									<IonRow>
 										<IonCol className="cbox"><RadioBox prop="dimAugYes" /></IonCol>
@@ -763,11 +760,12 @@ const Syntax = (props: any) => {
 									</IonRow>
 								</IonGrid>
 							</IonItem>
-							<TextItem className="l3" text="dimAug" rows={8}>Describe the language's relation to diminution and augmentation.</TextItem>
+							<TextItem text="dimAug" rows={8}>Describe the language's relation to diminution and augmentation.</TextItem>
+
 
 					<HeaderItem className="h h1">5. Predicate Nominals and Related Constructions</HeaderItem>
 
-						<InfoModal className="l2" title="Predicate Nominals" label="General Information to Consider">
+						<InfoModal title="Predicate Nominals" label="General Information to Consider">
 							<ul>
 								<li>These forms generally encode the following information:
 									<ul>
@@ -783,9 +781,9 @@ const Syntax = (props: any) => {
 							</ul>
 						</InfoModal>
 
-						<HeaderItem className="h h2 l2">5.1. Predicate Nominals and Adjecives</HeaderItem>
+						<HeaderItem className="h h2">5.1. Predicate Nominals and Adjecives</HeaderItem>
 
-							<InfoModal className="l3" title="Predicate Nominals and Adjecives">
+							<InfoModal title="Predicate Nominals and Adjecives">
 								<ul>
 									<li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li>
 									<li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li>
@@ -838,11 +836,11 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="predNom" rows={6}>Describe the language's strategy for predicate nominals and adjectives.</TextItem>
+							<TextItem text="predNom" rows={6}>Describe the language's strategy for predicate nominals and adjectives.</TextItem>
 
-						<HeaderItem className="h h2 l2">5.2. Predicate Locatives</HeaderItem>
+						<HeaderItem className="h h2">5.2. Predicate Locatives</HeaderItem>
 
-							<InfoModal className="l3" title="Predicate Locatives">
+							<InfoModal title="Predicate Locatives">
 								<ul>
 									<li>Many languages use a word that gets translated as "be at".</li>
 									<li>The locative word is often the same as a locative adposition.</li>
@@ -855,11 +853,11 @@ const Syntax = (props: any) => {
 									<li>Russian bases possessive clauses on locatives, but with an animate possessor.</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="predLoc" rows={6}>How does the language handle predicate locatives?</TextItem>
+							<TextItem text="predLoc" rows={6}>How does the language handle predicate locatives?</TextItem>
 
-						<HeaderItem className="h h2 l2">5.3. Existentials</HeaderItem>
+						<HeaderItem className="h h2">5.3. Existentials</HeaderItem>
 
-							<InfoModal className="l3" title="Existentials">
+							<InfoModal title="Existentials">
 								<ul>
 									<li>These constructions usually serve a presentative function, introducing new participants.</li>
 									<li>Usually, the nominal is indefinite: "There are lions in Africa" vs. "There are the lions in Africa".</li>
@@ -878,21 +876,22 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="predEx" rows={6}>How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?</TextItem>
+							<TextItem text="predEx" rows={6}>How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?</TextItem>
 
-						<HeaderItem className="h h2 l2">5.4. Possessive Clauses</HeaderItem>
+						<HeaderItem className="h h2">5.4. Possessive Clauses</HeaderItem>
 
-							<InfoModal className="l3" title="Possessive Clauses">
+							<InfoModal title="Possessive Clauses">
 								<ul>
 									<li>Verb strategy: "I have a book."</li>
 									<li>Copula strategy: "The book is at me."</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="predEx" rows={3}>Does the language use a verb or copula strategy?</TextItem>
+							<TextItem text="predEx" rows={3}>Does the language use a verb or copula strategy?</TextItem>
+
 
 					<HeaderItem className="h h1">6. Grammatical Relations</HeaderItem>
 
-						<InfoModal className="l2" title="Alignments" label="Show the Alignments">
+						<InfoModal title="Alignments" label="Show the Alignments">
 							<ul>
 								<li><strong>Nominative/Accusative Alignment</strong>:
 									<ul>
@@ -959,11 +958,12 @@ const Syntax = (props: any) => {
 							</ul>
 						</InfoModal>
 
-						<TextItem className="l2" text="ergative" rows={8}>Does the language use a nominative/accusative alignment, or an ergative/absolutive alignment? Are there any exceptions?</TextItem>
+						<TextItem text="ergative" rows={8}>Does the language use a nominative/accusative alignment, or an ergative/absolutive alignment? Are there any exceptions?</TextItem>
+
 
 					<HeaderItem className="h h1">7. Voice and Valence Adjusting Operations</HeaderItem>
 
-						<InfoModal className="l2" title="Valence" label="What is Valence?">
+						<InfoModal title="Valence" label="What is Valence?">
 							<ul>
 								<li><strong>Valence</strong> refers to the amount of arguments in a clause.
 									<ul>
@@ -979,11 +979,11 @@ const Syntax = (props: any) => {
 								</li>
 							</ul>
 						</InfoModal>
-						<HeaderItem className="h h2 l2">7.1. Valence-Increasing Operations</HeaderItem>
+						<HeaderItem className="h h2">7.1. Valence-Increasing Operations</HeaderItem>
 
-							<HeaderItem className="h l3">7.1.1. Causatives</HeaderItem>
+							<HeaderItem className="h">7.1.1. Causatives</HeaderItem>
 
-								<InfoModal className="l4" title="Causatives">
+								<InfoModal title="Causatives">
 									<ul>
 										<li><strong>Lexical</strong>:
 											<ul>
@@ -1069,11 +1069,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="causation" rows={4}>Describe which method(s) the language uses to create causatives.</TextItem>
+								<TextItem text="causation" rows={4}>Describe which method(s) the language uses to create causatives.</TextItem>
 
-							<HeaderItem className="h l3">7.1.2. Applicatives</HeaderItem>
+							<HeaderItem className="h">7.1.2. Applicatives</HeaderItem>
 
-								<InfoModal className="l4" title="Applicatives">
+								<InfoModal title="Applicatives">
 									<ul>
 										<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
 											<ul>
@@ -1102,11 +1102,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="applicatives" rows={4}>Describe which method(s) the language uses for applicatives, if any.</TextItem>
+								<TextItem text="applicatives" rows={4}>Describe which method(s) the language uses for applicatives, if any.</TextItem>
 
-							<HeaderItem className="h l3">7.1.3. Dative Shift</HeaderItem>
+							<HeaderItem className="h">7.1.3. Dative Shift</HeaderItem>
 
-								<InfoModal className="l4" title="Dative Shift">
+								<InfoModal title="Dative Shift">
 									<ul>
 										<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
 										<li>Applicatives mark the verb, while a Dative Shift does not.</li>
@@ -1119,11 +1119,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="dativeShifts" rows={4}>Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?</TextItem>
+								<TextItem text="dativeShifts" rows={4}>Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?</TextItem>
 
-							<HeaderItem className="h l3">7.1.4. Dative of Interest</HeaderItem>
+							<HeaderItem className="h">7.1.4. Dative of Interest</HeaderItem>
 
-								<InfoModal className="l4" title="Dative of Interest">
+								<InfoModal title="Dative of Interest">
 									<ul>
 										<li>This is adding a participant that is associated in some way.
 											<ul>
@@ -1165,11 +1165,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="datOfInt" rows={4}>Is there a dative-of-interest operation?</TextItem>
+								<TextItem text="datOfInt" rows={4}>Is there a dative-of-interest operation?</TextItem>
 
-							<HeaderItem className="h l3">7.1.5. Possessor Raising (a.k.a. External Possession)</HeaderItem>
+							<HeaderItem className="h">7.1.5. Possessor Raising (a.k.a. External Possession)</HeaderItem>
 
-								<InfoModal className="l4" title="Possessor Raising" label="What is This?">
+								<InfoModal title="Possessor Raising" label="What is This?">
 									<ul>
 										<li>In many languages, this exists separate from a dative of interest.
 											<ul>
@@ -1201,13 +1201,13 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="possessRaising" rows={4}>Does possessor raising occur?</TextItem>
+								<TextItem text="possessRaising" rows={4}>Does possessor raising occur?</TextItem>
 
-						<HeaderItem className="h h2 l2">7.2. Valence-Decreasing Operations</HeaderItem>
+						<HeaderItem className="h h2">7.2. Valence-Decreasing Operations</HeaderItem>
 
-							<HeaderItem className="h h3 l3">7.2.1. Reflexives</HeaderItem>
+							<HeaderItem className="h h3">7.2.1. Reflexives</HeaderItem>
 
-								<InfoModal className="l4" title="Reflexives">
+								<InfoModal title="Reflexives">
 									<ul>
 										<li>The Agent and Patient are the same, so one is omitted.</li>
 										<li className="newSection">Lexical reflexives:
@@ -1244,11 +1244,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="refls" rows={4}>How are reflexives handled?</TextItem>
+								<TextItem text="refls" rows={4}>How are reflexives handled?</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.2. Reciprocals</HeaderItem>
+							<HeaderItem className="h h3">7.2.2. Reciprocals</HeaderItem>
 
-								<InfoModal className="l4" title="Reciprocals">
+								<InfoModal title="Reciprocals">
 									<ul>
 										<li>The Agent and Patient are performing the same action, or performing an action together. These are often expressed the same way as reflexives.</li>
 										<li className="newSection">Lexical reciprocals:
@@ -1263,11 +1263,11 @@ const Syntax = (props: any) => {
 										<li>Morpholigical and lexical reciprocals follow the same patterns as those for reflexives.</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="recips" rows={3}>How are reciprocals handled?</TextItem>
+								<TextItem text="recips" rows={3}>How are reciprocals handled?</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.3. Passives</HeaderItem>
+							<HeaderItem className="h h3">7.2.3. Passives</HeaderItem>
 
-								<InfoModal className="l4" title="Passives">
+								<InfoModal title="Passives">
 									<ul>
 										<li>A semantically transitive verb with omitted Agent, the Patient treated as Subject, and the verb behaves as if it is intransitive. (The Agent is made less topical than the Patient.)</li>
 										<li className="newSection">Personal passive: Agent is implied, or expressed obliquely.
@@ -1295,17 +1295,17 @@ const Syntax = (props: any) => {
 										<li className="newSection">Passives construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="passives" rows={4}>How are passives handled?</TextItem>
+								<TextItem text="passives" rows={4}>How are passives handled?</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.4. Inverses</HeaderItem>
+							<HeaderItem className="h h3">7.2.4. Inverses</HeaderItem>
 
-								<InfoModal className="l4" title="Inverses">
+								<InfoModal title="Inverses">
 									<ul>
 										<li>This is a valence "rearranging" device, e.g. "Steve taught him" becomes "Him, Steve taught."</li>
 										<li>Often follows a hierarchy where a "higher" Agent requires direct and a "lower" Agent requires the inverse.</li>
 									</ul>
 								</InfoModal>
-								<IonItem className="l4 content">
+								<IonItem className="content">
 									<IonGrid className="cols2">
 										<IonRow>
 											<IonCol className="cbox"><RadioBox prop="markInv" /></IonCol>
@@ -1325,11 +1325,11 @@ const Syntax = (props: any) => {
 										</IonRow>
 									</IonGrid>
 								</IonItem>
-								<TextItem className="l4" text="inverses" rows={4}>Describe any pecularities of inverse constructions.</TextItem>
+								<TextItem text="inverses" rows={4}>Describe any pecularities of inverse constructions.</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.5. Middle Constructions</HeaderItem>
+							<HeaderItem className="h h3">7.2.5. Middle Constructions</HeaderItem>
 
-								<InfoModal className="l4" title="Middle Constructions" label="What Are These?">
+								<InfoModal title="Middle Constructions" label="What Are These?">
 									<ul>
 										<li>Also known as anticausatives or detransitivation: a semantically transitive situation expressed as a process undergone by a Patient (rather than carried out by an Agent).</li>
 										<li>Many languages express this the same way as they express passives.</li>
@@ -1338,22 +1338,22 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="middleCon" rows={3}>How are middle constructions handled?</TextItem>
+								<TextItem text="middleCon" rows={3}>How are middle constructions handled?</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.6. Antipassives</HeaderItem>
+							<HeaderItem className="h h3">7.2.6. Antipassives</HeaderItem>
 
-								<InfoModal className="l4" title="Antipassives" label="What Are These?">
+								<InfoModal title="Antipassives" label="What Are These?">
 									<ul>
 										<li>Similar to passives, but the Patient is downgraded instead of the Agent.</li>
 										<li>Generally, this only happens in ergative languages or in languages without verbal agreement, but many exceptions exist.</li>
 										<li>Often, the Patient is omitted or oblique, the verb is marked intrasitive, and the Agent is placed in absolutive case.</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="antiP" rows={3}>Describe antipassive strategies in the language, if they exist.</TextItem>
+								<TextItem text="antiP" rows={3}>Describe antipassive strategies in the language, if they exist.</TextItem>
 
-							<HeaderItem className="h h3 l3">7.2.7. Object Demotion/Omission/Incorporation</HeaderItem>
+							<HeaderItem className="h h3">7.2.7. Object Demotion/Omission/Incorporation</HeaderItem>
 
-								<InfoModal className="l4" title="Object Demotion and Related Functions" label="What Are These?">
+								<InfoModal title="Object Demotion and Related Functions" label="What Are These?">
 									<ul>
 										<li><strong>Demotion</strong>: "Steve shot Bob" becomes "Steve shot at Bob".</li>
 										<li className="newSection"><strong>Omission</strong>: "Steve shot Bob" becomes "Steve shot".</li>
@@ -1369,13 +1369,14 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="objDemOmInc" rows={5}>Is object demotion/omission allowed? How about incorporation?</TextItem>
+								<TextItem text="objDemOmInc" rows={5}>Is object demotion/omission allowed? How about incorporation?</TextItem>
+
 
 					<HeaderItem className="h h1">8. Other Verb and Verb Phrase Operations</HeaderItem>
 
-						<HeaderItem className="h h2 l2">8.1. Nominalization</HeaderItem>
+						<HeaderItem className="h h2">8.1. Nominalization</HeaderItem>
 
-							<InfoModal className="l3" title="Nominalization">
+							<InfoModal title="Nominalization">
 								<ul>
 									<li>Every language has strategies of adjusting the grammatical category of a root. Turning a word into a noun is <em>nominalization</em>.</li>
 									<li className="newSection">English has multiple methods, with differing levels of productivity.</li>
@@ -1459,11 +1460,11 @@ const Syntax = (props: any) => {
 								</ul>
 							</InfoModal>
 
-							<TextItem className="l3" text="verbNoms" rows={8}>Describe the nominalizations that exist in the language, and explain how productive they are.</TextItem>
+							<TextItem text="verbNoms" rows={8}>Describe the nominalizations that exist in the language, and explain how productive they are.</TextItem>
 
-						<HeaderItem className="h h2 l2">8.2. Compounding</HeaderItem>
+						<HeaderItem className="h h2">8.2. Compounding</HeaderItem>
 
-							<InfoModal className="l3" title="Compounding">
+							<InfoModal title="Compounding">
 								<ul>
 									<li><strong>Noun Incorporation</strong>: noun becomes attached to a verb (see 7.2.7).
 										<ul>
@@ -1479,11 +1480,11 @@ const Syntax = (props: any) => {
 								</ul>
 							</InfoModal>
 
-							<TextItem className="l3" text="verbComp" rows={6}>Describe any compounding strategies that exist in the language.</TextItem>
+							<TextItem text="verbComp" rows={6}>Describe any compounding strategies that exist in the language.</TextItem>
 
-						<HeaderItem className="h h2 l2">8.3. Tense/Aspect/Mode</HeaderItem>
+						<HeaderItem className="h h2">8.3. Tense/Aspect/Mode</HeaderItem>
 
-							<InfoModal className="l3" title="Tense, Aspect and Mode" label="General Info">
+							<InfoModal title="Tense, Aspect and Mode" label="General Info">
 								<ul>
 									<li><strong>TAM</strong> (Tense, Aspect, Mode) are sometimes hard to tease apart, and may only be considered separate because of how they are in western language.</li>
 									<li>Some languages pay more attention to tense (English), aspect (Austronesian languages), or mode (Eskimo).
@@ -1500,9 +1501,9 @@ const Syntax = (props: any) => {
 									<li className="newSection">TAM morphemes often interact significantly with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number).</li>
 								</ul>
 							</InfoModal>
-							<HeaderItem className="h h3 l3 content">8.3.1 Tense</HeaderItem>
+							<HeaderItem className="h h3">8.3.1 Tense</HeaderItem>
 
-								<InfoModal className="l4" title="Tense" label="Info on Tense">
+								<InfoModal title="Tense" label="Info on Tense">
 									<ul>
 										<li><strong>Tense</strong> sets an action in time in relation to "now".</li>
 										<li>Languages can divide time up into different sets of tenses:
@@ -1527,12 +1528,12 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="tense" rows={6}>Is there a Tense system? How does it operate? How does it divide time?</TextItem>
+								<TextItem text="tense" rows={6}>Is there a Tense system? How does it operate? How does it divide time?</TextItem>
 
 
-							<HeaderItem className="h h3 l3 content">8.3.2 Aspect</HeaderItem>
+							<HeaderItem className="h h3">8.3.2 Aspect</HeaderItem>
 
-								<InfoModal className="l4" title="Aspect" label="Info on Aspect">
+								<InfoModal title="Aspect" label="Info on Aspect">
 									<ul>
 										<li><strong>Aspect</strong> describes the internal structure of an event or state. Here are some typical aspects:
 											<ul>
@@ -1633,11 +1634,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="aspect" rows={8}>Describe the way the language handles Aspect.</TextItem>
+								<TextItem text="aspect" rows={8}>Describe the way the language handles Aspect.</TextItem>
 
-							<HeaderItem className="h h3 l3 content">8.3.3 Mode</HeaderItem>
+							<HeaderItem className="h h3">8.3.3 Mode</HeaderItem>
 
-								<InfoModal className="l4" title="Mode" label="Info on Mode">
+								<InfoModal title="Mode" label="Info on Mode">
 									<ul>
 										<li><strong>Mode</strong> describes a speaker's attitude toward a situation, including how likely or truthful it is, or how relevant the situation is to them.</li>
 										<li>Mode, Mood and Modality are often used interchangeably, though some linguists make distinctions between them.</li>
@@ -1679,11 +1680,11 @@ const Syntax = (props: any) => {
 										</li>
 									</ul>
 								</InfoModal>
-								<TextItem className="l4" text="mode" rows={6}>Describe how the language deals with Mode.</TextItem>
+								<TextItem text="mode" rows={6}>Describe how the language deals with Mode.</TextItem>
 
-						<HeaderItem className="h h2 l2">8.4. Location/Direction</HeaderItem>
+						<HeaderItem className="h h2">8.4. Location/Direction</HeaderItem>
 
-							<InfoModal className="l3" title="Location and Direction">
+							<InfoModal title="Location and Direction">
 								<ul>
 									<li>While Tense grounds statements in time, some languages grammaticize location and/or direction markers to ground statements in space. It may be even more central to discourse than tense in some languages.</li>
 									<li className="newSection">Directional formatives are often related to basic verbs of motion (go, come, arrive, depart, return, go up, go down).</li>
@@ -1702,11 +1703,11 @@ const Syntax = (props: any) => {
 									<li>Otomí has auxilliaries than indicate an action is towards (centric) or away from (exocentric) a designated center (usually where the speaker is).</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="locDirect" rows={8}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
+							<TextItem text="locDirect" rows={8}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
 
-						<HeaderItem className="h h2 l2">8.5. Evidentiality, Validationality and Mirativity</HeaderItem>
+						<HeaderItem className="h h2">8.5. Evidentiality, Validationality and Mirativity</HeaderItem>
 
-							<InfoModal className="l3" title="Evidentiality">
+							<InfoModal title="Evidentiality">
 								<ul>
 									<li><strong>Evidentiality</strong> expresses how much evidence the speaker has to make this assertion. For instance, first-hand knowledge is more evidential than third-hand suspect information.</li>
 									<li><strong>Validationality</strong> is sometimes separate from Evidentiality. It is how languages express relative certainty of truth. We are more likely to be certain of:
@@ -1735,11 +1736,11 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="evidence" rows={6}>Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?</TextItem>
+							<TextItem text="evidence" rows={6}>Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?</TextItem>
 
-						<HeaderItem className="h h2 l2">8.6. Miscellaneous</HeaderItem>
+						<HeaderItem className="h h2">8.6. Miscellaneous</HeaderItem>
 
-							<InfoModal className="l3" title="Miscelaneous">
+							<InfoModal title="Miscelaneous">
 								<ul>
 									<li>There are miscellaneous verb-phrase operations that might or might not exist.
 										<ul>
@@ -1757,11 +1758,12 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="miscVerbFunc" rows={4}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
+							<TextItem text="miscVerbFunc" rows={4}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
+
 
 					<HeaderItem className="h h1">9. Pragmatically Marked Structures</HeaderItem>
 					
-						<InfoModal className="l3" title="Pragmatics" label="What are Pragmatics?">
+						<InfoModal title="Pragmatics" label="What are Pragmatics?">
 							<ul>
 								<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:
 									<ul>
@@ -1813,9 +1815,9 @@ const Syntax = (props: any) => {
 								</li>
 							</ul>
 						</InfoModal>
-						<HeaderItem className="h h2 l2">9.1 Focus, Contrast and Topicalization</HeaderItem>
+						<HeaderItem className="h h2">9.1 Focus, Contrast and Topicalization</HeaderItem>
 
-							<InfoModal className="l3" title="Focus, Contrast, etc." label="This is a long one!">
+							<InfoModal title="Focus, Contrast, etc." label="This is a long one!">
 								<ul>
 									<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
 									<li className="newSection"><strong>Constituent Order</strong>:
@@ -1876,11 +1878,11 @@ const Syntax = (props: any) => {
 									</li>
 								</ul>
 							</InfoModal>
-							<TextItem className="l3" text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
+							<TextItem text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
 
-						<HeaderItem className="h h2 l2">9.2 Negation</HeaderItem>
+						<HeaderItem className="h h2">9.2 Negation</HeaderItem>
 
-							<InfoModal className="l3" title="Negation">
+							<InfoModal title="Negation">
 								<ul>
 									<li>Common negation strategies:
 										<ul>

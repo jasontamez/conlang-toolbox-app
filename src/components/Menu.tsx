@@ -21,7 +21,7 @@ import {
 	caretForwardSharp,
 	ellipseSharp,
 	listSharp,
-	documentTextSharp
+	buildSharp
 } from 'ionicons/icons';
 import { setMenuToggle } from './ReduxDucksFuncs';
 import './Menu.css';
@@ -133,10 +133,71 @@ const appMenuPages: MenuSection[] = [
 				id: 'menuitemWL'
 			},
 			{
-				title: 'SyntaxSketch',
-				url: '/ms/syntax',
-				icon: documentTextSharp,
-				id: 'menuitemSyntax'
+				title: 'MorphoSyntax',
+				url: '/ms',
+				icon: buildSharp,
+				id: 'menuitemSyntax',
+				parentOf: 'ms'
+			},
+			{
+				title: '1. Morphological Typology',
+				url: '/ms/ms01',
+				id: 'menuitemMS1',
+				parent: 'ms'
+			},
+			{
+				title: '2. Grammatical Categories',
+				url: '/ms/ms02',
+				id: 'menuitemMS2',
+				parent: 'ms'
+			},
+			{
+				title: '3. Constituent Order Typology',
+				url: '/ms/ms03',
+				id: 'menuitemMS3',
+				parent: 'ms'
+			},
+			{
+				title: '4. Noun and Noun Phrase Operations',
+				url: '/ms/ms04',
+				id: 'menuitemMS4',
+				parent: 'ms'
+			},
+			{
+				title: '5. Predicate Nominals and Related Constructions',
+				url: '/ms/ms05',
+				id: 'menuitemMS5',
+				parent: 'ms'
+			},
+			{
+				title: '6. Grammatical Relations',
+				url: '/ms/ms06',
+				id: 'menuitemMS6',
+				parent: 'ms'
+			},
+			{
+				title: '7. Voice and Valence Adjusting Operations',
+				url: '/ms/ms07',
+				id: 'menuitemMS7',
+				parent: 'ms'
+			},
+			{
+				title: '8. Other Verb and Verb Phrase Operations',
+				url: '/ms/ms08',
+				id: 'menuitemMS8',
+				parent: 'ms'
+			},
+			{
+				title: '9. Pragmatically Marked Structures',
+				url: '/ms/ms09',
+				id: 'menuitemMS9',
+				parent: 'ms'
+			},
+			{
+				title: '10.',
+				url: '/ms/ms10',
+				id: 'menuitemMS10',
+				parent: 'ms'
 			}
 		],
 		id: 'menuMain'

@@ -12,14 +12,11 @@ import {
 	IonLabel,
 	IonRange,
 	IonContent,
-	IonSelect,
-	IonSelectOption,
 	IonCheckbox,
 	IonTextarea,
 	IonModal,
 	IonFooter
 } from '@ionic/react';
-import { useHistory } from "react-router-dom";
 import { globeOutline } from 'ionicons/icons';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
@@ -35,12 +32,7 @@ import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObjec
 
 export const SyntaxHeader = (props: any) => {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const title = props.title || "01";
-	const changePage = (e: any) => {
-		const where = (e.detail.value || title);
-		where !== title && history.push('/ms/ms' + where);
-	};
 	return (
 		<IonHeader>
 			<ExtraCharactersModal />
@@ -48,32 +40,7 @@ export const SyntaxHeader = (props: any) => {
 				<IonButtons slot="start">
 					<IonMenuButton />
 				</IonButtons>
-				<IonTitle>
-					<IonSelect
-						className="syntaxSelect"
-						interfaceOptions={{
-							header: 'Choose a Heading',
-							translucent: false,
-							cssClass: 'alertSelect'
-						}}
-						interface="alert"
-						multiple={false}
-						placeholder="Select One"
-						onIonChange={e => changePage(e)}
-						value={title}
-	        		>
-						<IonSelectOption value="01">1. Morphological Typology</IonSelectOption>
-						<IonSelectOption value="02">2. Grammatical Categories</IonSelectOption>
-						<IonSelectOption value="03">3. Constituent Order Typology</IonSelectOption>
-						<IonSelectOption value="04">4. Noun and Noun Phrase Operations</IonSelectOption>
-						<IonSelectOption value="05">5. Predicate Nominals and Related Constructions</IonSelectOption>
-						<IonSelectOption value="06">6. Grammatical Relations</IonSelectOption>
-						<IonSelectOption value="07">7. Voice and Valence Adjusting Operations</IonSelectOption>
-						<IonSelectOption value="08">8. Other Verb and Verb Phrase Operations</IonSelectOption>
-						<IonSelectOption value="09">9. Pragmatically Marked Structures</IonSelectOption>
-						<IonSelectOption value="10">10. xxxxx</IonSelectOption>
-					</IonSelect>
-				</IonTitle>
+				<IonTitle>{title}</IonTitle>
 				<IonButtons slot="end">
 					<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 						<IonIcon icon={globeOutline} />
@@ -145,8 +112,8 @@ export const InfoModal = (props: any) => {
 	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
 	const label = props.label || "Extra Info";
 	return (
-		<IonItem className={props.className || ""}>
-			<IonModal isOpen={synState[id]} onDidDismiss={() => dispatch(setSyntaxState(id, false))}>
+		<IonItem className={props.className ? props.className + " infoModal" : "infoModal"}>
+			<IonModal isOpen={synState[id] !== undefined} onDidDismiss={() => dispatch(setSyntaxState(id, false))}>
 				<IonHeader>
 					<IonToolbar color="primary">
 						<IonTitle>{props.title}</IonTitle>
@@ -170,7 +137,7 @@ export const InfoModal = (props: any) => {
 					</IonToolbar>
 				</IonFooter>
 			</IonModal>
-			<IonButton color="warning" onClick={() => dispatch(setSyntaxState(id, true))}>
+			<IonButton color="primary" onClick={() => dispatch(setSyntaxState(id, true))}>
 				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0.25rem", marginInlineEnd: "0.5rem"}} />
 				<IonLabel>{label}</IonLabel>
 			</IonButton>
