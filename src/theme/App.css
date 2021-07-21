@@ -657,6 +657,7 @@ ion-tab-bar.iconsOnly ion-tab-button.moreIndicators {
 }
 ion-tab-bar.iconsOnly ion-tab-button:not(.moreIndicators) ion-label {
 	white-space: nowrap;
+	font-size: 1.4em;
 }
 /*
 #syntaxSketchPage ion-list ion-item ol {

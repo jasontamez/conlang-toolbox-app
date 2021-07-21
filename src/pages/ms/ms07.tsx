@@ -130,7 +130,7 @@ const Syntax = (props: any) => {
 													<ul>
 														<li>If the causee retains a high degree of control, it will appear in a case associated with Agents, but with little control, will appear in a Patient case.
 															<ul>
-																<li>Ex: "Steve asked that <em>he</em> leave" gives Steve more control than "Steve asked <em>him</em> to leave".</li>
+																<li>Ex: "Steve asked that <em>he</em> leave" gives Steve less control over the situation than "Steve asked <em>him</em> to leave".</li>
 															</ul>
 														</li>
 													</ul>
