@@ -28,7 +28,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="3. Constituent Order Typology" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">3. Constituent Order Typology</HeaderItem>

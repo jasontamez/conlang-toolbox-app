@@ -14,7 +14,6 @@ import WG from "./pages/WG";
 import WE from "./pages/WE";
 import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
-import Syntax from "./pages/Syntax";
 import Settings from "./pages/AppSettings";
 import Credits from './pages/Credits';
 
@@ -53,15 +52,12 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.5.4", "<")) {
+						if (compareVersions.compare(storedState.currentVersion, "0.5.5", "<")) {
 							// Do stuff to possibly bring storedState up to date
-							storedState.ms = "syntax";
-							delete storedState.ls;
-						}
-						if (compareVersions.compare(storedState.currentVersion, "0.5.2", "<")) {
-							// Do stuff to possibly bring storedState up to date
-							storedState.syntaxSketchState = (storedState.syntaxSketchState || {});
-							storedState.syntaxSketchInfo = initialAppState.syntaxSketchInfo;
+							delete storedState.syntaxSketchState;
+							delete storedState.syntaxSketchInfo;
+							storedState.morphoSyntaxState = {};
+							storedState.morphoSyntaxInfo = initialAppState.morphoSyntaxInfo;
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
@@ -91,7 +87,6 @@ const App = () => {
 						<Route path="/wg" render={() => <WG />} />
 						<Route path="/we"  render={() => <WE />} />
 						<Route path="/lex" render={() => <Lexicon />} />
-						<Route path="/syn" render={() => <Syntax />} />
 						<Route path="/ms" render={() => <MS />} />
 						<Route path="/ph" render={() => <Lexicon />} />
 						<Route path="/settings" render={() => <Settings />} />

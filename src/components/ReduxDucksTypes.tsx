@@ -141,7 +141,7 @@ export interface WEPresetObject {
 }
 
 
-export interface SyntaxSketchStateObject {
+export interface MorphoSyntaxStateObject {
 	[key: string]: boolean
 }
 
@@ -152,12 +152,12 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
 				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "markInv" | "markDirInv"
 				| "verbAgreeInv";
-export type SyntaxSketchBoolObject = {
+export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
 
 type SyntaxNum = "synthesis" | "fusion" | "stemMod" | "suppletion" | "redupe" | "supraMod" | "headDepMarked";
-export type SyntaxSketchNumberObject = {
+export type MorphoSyntaxNumberObject = {
 	[key in SyntaxNum]?: number
 }
 
@@ -170,14 +170,14 @@ type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "
 				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
 				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp" | "tense" | "aspect" | "mode" | "locDirect"
 				| "evidence" | "miscVerbFunc" | "pragFocusEtc";
-export type SyntaxSketchTextObject = {
+export type MorphoSyntaxTextObject = {
 	[key in SyntaxText]?: string
 }
 
-export interface SyntaxSketchObject {
-	bool: SyntaxSketchBoolObject
-	num: SyntaxSketchNumberObject
-	text: SyntaxSketchTextObject
+export interface MorphoSyntaxObject {
+	bool: MorphoSyntaxBoolObject
+	num: MorphoSyntaxNumberObject
+	text: MorphoSyntaxTextObject
 }
 
 
@@ -320,8 +320,8 @@ export interface StateObject {
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
-	syntaxSketchState: SyntaxSketchStateObject
-	syntaxSketchInfo: SyntaxSketchObject
+	morphoSyntaxState: MorphoSyntaxStateObject
+	morphoSyntaxInfo: MorphoSyntaxObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject
 	viewState: ViewStateObject

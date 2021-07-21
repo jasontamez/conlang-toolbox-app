@@ -206,13 +206,13 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 export function setSyntaxState(prop: string, toggle: boolean) {
 	return {type: consts.SET_LANGSKETCH_STATE, payload: [prop, toggle]};
 }
-export function setSyntaxBool(payload1: keyof types.SyntaxSketchBoolObject, payload2: boolean) {
+export function setSyntaxBool(payload1: keyof types.MorphoSyntaxBoolObject, payload2: boolean) {
 	return {type: consts.SET_LANGSKETCH_BOOL, payload: [payload1, payload2]};
 }
-export function setSyntaxNum(payload1: keyof types.SyntaxSketchNumberObject, payload2: number) {
+export function setSyntaxNum(payload1: keyof types.MorphoSyntaxNumberObject, payload2: number) {
 	return {type: consts.SET_LANGSKETCH_NUM, payload: [payload1, payload2]};
 }
-export function setSyntaxText(payload1: keyof types.SyntaxSketchTextObject, payload2: string) {
+export function setSyntaxText(payload1: keyof types.MorphoSyntaxTextObject, payload2: string) {
 	return {type: consts.SET_LANGSKETCH_TEXT, payload: [payload1, payload2]};
 }
 

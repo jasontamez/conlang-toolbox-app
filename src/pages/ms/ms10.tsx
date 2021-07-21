@@ -29,7 +29,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="01" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 

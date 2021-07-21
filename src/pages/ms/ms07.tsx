@@ -28,7 +28,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="7. Voice and Valence Adjusting Operations" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">7. Voice and Valence Adjusting Operations</HeaderItem>

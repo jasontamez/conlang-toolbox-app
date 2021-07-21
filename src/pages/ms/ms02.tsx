@@ -28,7 +28,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="2. Grammatical Categories"/ >
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">2. Grammatical Categories</HeaderItem>

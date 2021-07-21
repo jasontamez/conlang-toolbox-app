@@ -162,10 +162,10 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
 };
-const reduceSyntaxSketchState = (original: types.SyntaxSketchStateObject) => {
+const reduceMorphoSyntaxState = (original: types.MorphoSyntaxStateObject) => {
 	return {...original};
 };
-const reduceSyntaxSketchInfo = (original: types.SyntaxSketchObject) => {
+const reduceMorphoSyntaxInfo = (original: types.MorphoSyntaxObject) => {
 	return {
 		bool: {...original.bool},
 		num: {...original.num},
@@ -249,8 +249,8 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
-	["syntaxSketchState", reduceSyntaxSketchState],
-	["syntaxSketchInfo", reduceSyntaxSketchInfo],
+	["morphoSyntaxState", reduceMorphoSyntaxState],
+	["morphoSyntaxInfo", reduceMorphoSyntaxInfo],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
 	["viewState", reduceViewState],
@@ -327,8 +327,8 @@ export const blankAppState: types.StateObject = {
 	wordevolveSettings: {
 		output: "outputOnly"
 	},
-	syntaxSketchState: {},
-	syntaxSketchInfo: {
+	morphoSyntaxState: {},
+	morphoSyntaxInfo: {
 		bool: {},
 		num: {},
 		text: {}
@@ -1020,30 +1020,30 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 
 
-		// SyntaxSketch
+		// MorphoSyntax
 		case consts.SET_LANGSKETCH_STATE:
 			final = reduceAllBut([], state);
 			let [pp, bb] = payload;
 			if(bb) {
-				final.syntaxSketchState[pp] = true;
+				final.morphoSyntaxState[pp] = true;
 			} else {
-				delete final.syntaxSketchState[pp];
+				delete final.morphoSyntaxState[pp];
 			}
 			break;
 		case consts.SET_LANGSKETCH_BOOL:
 			final = reduceAllBut([], state);
-			let boo = payload[0] as keyof types.SyntaxSketchBoolObject;
-			final.syntaxSketchInfo.bool[boo] = payload[1];
+			let boo = payload[0] as keyof types.MorphoSyntaxBoolObject;
+			final.morphoSyntaxInfo.bool[boo] = payload[1];
 			break;
 		case consts.SET_LANGSKETCH_NUM:
 			final = reduceAllBut([], state);
-			let numm = payload[0] as keyof types.SyntaxSketchNumberObject;
-			final.syntaxSketchInfo.num[numm] = payload[1];
+			let numm = payload[0] as keyof types.MorphoSyntaxNumberObject;
+			final.morphoSyntaxInfo.num[numm] = payload[1];
 			break;
 		case consts.SET_LANGSKETCH_TEXT:
 			final = reduceAllBut([], state);
-			let txt = payload[0] as keyof types.SyntaxSketchTextObject;
-			final.syntaxSketchInfo.text[txt] = payload[1];
+			let txt = payload[0] as keyof types.MorphoSyntaxTextObject;
+			final.morphoSyntaxInfo.text[txt] = payload[1];
 			break;
 
 

@@ -23,7 +23,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="9. Pragmatically Marked Structures" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">9. Pragmatically Marked Structures</HeaderItem>

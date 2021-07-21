@@ -23,7 +23,7 @@ const Syntax = (props: any) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="8. Other Verb and Verb Phrase Operations" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="syntaxSketchPage">
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
 					<HeaderItem className="h h1">8. Other Verb and Verb Phrase Operations</HeaderItem>

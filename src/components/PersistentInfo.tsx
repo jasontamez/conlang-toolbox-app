@@ -30,7 +30,7 @@ export const CustomStorageWE = localForage.createInstance({
 
 export const CustomStorageSyntax = localForage.createInstance({
 	name: 'Conlang Toolbox',
-	storeName: 'syntaxSketchStorage',
+	storeName: 'morphoSyntaxStorage',
 	version: 1,
-	description: 'Stores SyntaxSketch custom information.'
+	description: 'Stores MorphoSyntax custom information.'
 });

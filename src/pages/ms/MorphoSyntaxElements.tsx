@@ -28,7 +28,7 @@ import {
 	setSyntaxText,
 	setSyntaxState
 } from '../../components/ReduxDucksFuncs';
-import { SyntaxSketchBoolObject, SyntaxSketchNumberObject, SyntaxSketchTextObject } from '../../components/ReduxDucksTypes';
+import { MorphoSyntaxBoolObject, MorphoSyntaxNumberObject, MorphoSyntaxTextObject } from '../../components/ReduxDucksTypes';
 
 export const SyntaxHeader = (props: any) => {
 	const dispatch = useDispatch();
@@ -52,9 +52,9 @@ export const SyntaxHeader = (props: any) => {
 };
 export const RadioBox = (props: any) => {
 	const dispatch = useDispatch();
-	const synBool = useSelector((state: any) => state.syntaxSketchInfo.bool)
-	const what = props.prop as keyof SyntaxSketchBoolObject
-	const setBool = (what: keyof SyntaxSketchBoolObject, value: boolean) => {
+	const synBool = useSelector((state: any) => state.morphoSyntaxInfo.bool)
+	const what = props.prop as keyof MorphoSyntaxBoolObject
+	const setBool = (what: keyof MorphoSyntaxBoolObject, value: boolean) => {
 		dispatch(setSyntaxBool(what, value));
 	};
 	return (
@@ -63,14 +63,14 @@ export const RadioBox = (props: any) => {
 };
 export const RangeItem = (props: any) => {
 	const dispatch = useDispatch();
-	const synNum = useSelector((state: any) => state.syntaxSketchInfo.num)
-	const what = props.text as keyof SyntaxSketchNumberObject;
+	const synNum = useSelector((state: any) => state.morphoSyntaxInfo.num)
+	const what = props.text as keyof MorphoSyntaxNumberObject;
 	const start = (props.start || "") as string;
 	const end = (props.end || "") as string;
 	const cls = (props.innerClass || "") as string;
 	const max = props.max === undefined ? 4 : (props.max as number);
 	const classes = props.className ? props.className + " content" : "content";
-	const setNum = (what: keyof SyntaxSketchNumberObject, value: number) => {
+	const setNum = (what: keyof MorphoSyntaxNumberObject, value: number) => {
 		dispatch(setSyntaxNum(what, value));
 	};
 	return (
@@ -84,12 +84,12 @@ export const RangeItem = (props: any) => {
 };
 export const TextItem = (props: any) => {
 	const dispatch = useDispatch();
-	const synText = useSelector((state: any) => state.syntaxSketchInfo.text)
+	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text)
 	const ph = (props.placeholder || "") as string;
-	const what = props.text as keyof SyntaxSketchTextObject;
+	const what = props.text as keyof MorphoSyntaxTextObject;
 	const rows = props.rows === undefined ? 3 : (props.rows as number);
-	const classes = props.className ? props.className + " sketchTextItem content" : "sketchTextItem content";
-	const setText = (what: keyof SyntaxSketchTextObject, value: string) => {
+	const classes = props.className ? props.className + " morphoSyntaxTextItem content" : "morphoSyntaxTextItem content";
+	const setText = (what: keyof MorphoSyntaxTextObject, value: string) => {
 		dispatch(setSyntaxText(what, value));
 	};
 	return (
@@ -108,7 +108,7 @@ export const HeaderItem = (props: any) => {
 };
 export const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
-	const synState = useSelector((state: any) => state.syntaxSketchState);
+	const synState = useSelector((state: any) => state.morphoSyntaxState);
 	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
 	const label = props.label || "Extra Info";
 	return (
@@ -119,7 +119,7 @@ export const InfoModal = (props: any) => {
 						<IonTitle>{props.title}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
-				<IonContent className="sketchModal">
+				<IonContent className="morphoSyntaxModal">
 					<IonList lines="none">
 						<IonItem>
 							{props.children}
