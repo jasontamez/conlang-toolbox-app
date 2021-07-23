@@ -14,7 +14,7 @@ import {
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
 
-const Syntax = (props: any) => {
+const Syntax = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms09'];
 	useIonViewDidEnter(() => {
@@ -28,137 +28,139 @@ const Syntax = (props: any) => {
 
 					<HeaderItem className="h h1">9. Pragmatically Marked Structures</HeaderItem>
 					
-						<InfoModal title="Pragmatics" label="What are Pragmatics?">
-							<ul>
-								<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:
-									<ul>
-										<li><strong>Identifiability</strong>: can an argument be identified by the listener?
-											<ul>
-												<li>English uses proper names and "the" to indicate identifiability.</li>
-											</ul>
-										</li>
-										<li><strong>Objective Referentiality</strong>: is an argument a bounded, individual entity?
-											<ul>
-												<li>English can be ambiguous: Does "I'm looking for a housekeeper" mean anyone who is housekeeper, or a specific housekeeper the speaker is not naming?</li>
-												<li>Spanish has a particle <em>a</em> for human arguments that indicates a specific individual is being talked about.
-													<ul>
-														<li>"Buscando una empleada" - I'm looking for a (any) housekeeper</li>
-														<li>"Buscando a una empleada" - I'm looking for a (specific) housekeeper</li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-										<li><strong>Discourse Referentiality</strong>: is an argument relevant to the discourse or just adjacent?
-											<ul>
-												<li>Panago: putting a new argument before a verb "foreshadows" that the argument will be important later. Putting it after the verb means it's just transitory.</li>
-												<li>English often uses <em>this</em> to indicate importance. If you hear someone say, "Take a look at <em>this</em> guy," you can be sure they're going to continue talking about the guy!</li>
-											</ul>
-										</li>
-										<li><strong>Focus</strong> covers multiple concepts:
-											<ul>
-												<li><strong>Marked Focus</strong>:
-													<ul><li>"Mom <em>did</em> give me permission!" - English uses "do" to focus on the truth of a statement, often in opposition to the listener's beliefs.</li></ul>
-												</li>
-												<li><strong>Assertive Focus</strong>:
-													<ul><li>"Mary was wearing <em>this hideous bridesmaid's dress</em>." - the speaker believes the listener has no knowledge of the information.</li></ul>
-												</li>
-												<li><strong>Counter-Presuppositional Focus</strong>:
-													<ul><li>"The nerd and the cheerleader came to the party, but <em>the nerd</em> won everyone's hearts." - the speaker believes the listener believes the opposite.</li></ul>
-												</li>
-												<li><strong>Exhaustive Focus</strong>:
-													<ul><li>"I <em>only</em> spoke to Ned." - the speaker excludes all other possible options.</li></ul>
-												</li>
-												<li><strong>Contrastive Focus</strong>:
-													<ul><li>"<em>Mary</em> chose the dresses." - the listener may believe one participant had a specific role, but the speaker is saying someone else held that role.</li></ul>
-												</li>
-											</ul>
-										</li>
-										<li><strong>Topic</strong>:
-											<ul><li>"<em>Beans</em>, how I hate them." - a new argument is declared as a topic of further discourse.</li></ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</InfoModal>
-						<HeaderItem className="h h2">9.1 Focus, Contrast and Topicalization</HeaderItem>
-
-							<InfoModal title="Focus, Contrast, etc." label="This is a long one!">
+					<InfoModal title="Pragmatics" label="What are Pragmatics?">
+						<ul>
+							<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:
 								<ul>
-									<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
-									<li className="newSection"><strong>Constituent Order</strong>:
+									<li><strong>Identifiability</strong>: can an argument be identified by the listener?
 										<ul>
-											<li>Practically all language use <strong>Preposing</strong>, moving an argument by itself to a position before a clause that it's relative to. The opposite is <strong>Postposing</strong>.
-												<ul><li>"<em>Potatoes</em>, I like them."</li></ul>
-											</li>
-											<li><strong>Fronting</strong> is similar, but rearranges arguments so that Pragmatic Status is given to the moved argument.
-												<ul><li>"<em>Potatoes</em> I like."</li></ul>
-											</li>
-											<li><strong>Apposition</strong> is adding a free noun phrase to a clause.
-												<ul><li>"<em>Termites</em>. Why does the universe hate me?"</li></ul>
-											</li>
-											<li><strong>Clefting</strong> is a type of predicate nominal where a noun phrase is joined to a relative clause that references that original noun phrase. (See below.)
+											<li>English uses proper names and "the" to indicate identifiability.</li>
+										</ul>
+									</li>
+									<li><strong>Objective Referentiality</strong>: is an argument a bounded, individual entity?
+										<ul>
+											<li>English can be ambiguous: Does "I'm looking for a housekeeper" mean anyone who is housekeeper, or a specific housekeeper the speaker is not naming?</li>
+											<li>Spanish has a particle <em>a</em> for human arguments that indicates a specific individual is being talked about.
 												<ul>
-													<li>"<em>You</em> are <em>the one that I want</em>."</li>
+													<li>"Buscando una empleada" - I'm looking for a (any) housekeeper</li>
+													<li>"Buscando a una empleada" - I'm looking for a (specific) housekeeper</li>
 												</ul>
 											</li>
 										</ul>
 									</li>
-									<li className="newSection"><strong>Formatives</strong> move along a continuum between morphological case markers (4.4) and pragmatic status markers:
+									<li><strong>Discourse Referentiality</strong>: is an argument relevant to the discourse or just adjacent?
 										<ul>
-											<li>The continuum:
+											<li>Panago: putting a new argument before a verb "foreshadows" that the argument will be important later. Putting it after the verb means it's just transitory.</li>
+											<li>English often uses <em>this</em> to indicate importance. If you hear someone say, "Take a look at <em>this</em> guy," you can be sure they're going to continue talking about the guy!</li>
+										</ul>
+									</li>
+									<li><strong>Focus</strong> covers multiple concepts:
+										<ul>
+											<li><strong>Marked Focus</strong>:
+												<ul><li>"Mom <em>did</em> give me permission!" - English uses "do" to focus on the truth of a statement, often in opposition to the listener's beliefs.</li></ul>
+											</li>
+											<li><strong>Assertive Focus</strong>:
+												<ul><li>"Mary was wearing <em>this hideous bridesmaid's dress</em>." - the speaker believes the listener has no knowledge of the information.</li></ul>
+											</li>
+											<li><strong>Counter-Presuppositional Focus</strong>:
+												<ul><li>"The nerd and the cheerleader came to the party, but <em>the nerd</em> won everyone's hearts." - the speaker believes the listener believes the opposite.</li></ul>
+											</li>
+											<li><strong>Exhaustive Focus</strong>:
+												<ul><li>"I <em>only</em> spoke to Ned." - the speaker excludes all other possible options.</li></ul>
+											</li>
+											<li><strong>Contrastive Focus</strong>:
+												<ul><li>"<em>Mary</em> chose the dresses." - the listener may believe one participant had a specific role, but the speaker is saying someone else held that role.</li></ul>
+											</li>
+										</ul>
+									</li>
+									<li><strong>Topic</strong>:
+										<ul><li>"<em>Beans</em>, how I hate them." - a new argument is declared as a topic of further discourse.</li></ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</InfoModal>
+					<HeaderItem className="h h2">9.1 Focus, Contrast and Topicalization</HeaderItem>
+
+					<InfoModal title="Focus, Contrast, etc." label="This is a long one!">
+						<ul>
+							<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
+							<li className="newSection"><strong>Constituent Order</strong>:
+								<ul>
+									<li>Practically all language use <strong>Preposing</strong>, moving an argument by itself to a position before a clause that it's relative to. The opposite is <strong>Postposing</strong>.
+										<ul><li>"<em>Potatoes</em>, I like them."</li></ul>
+									</li>
+									<li><strong>Fronting</strong> is similar, but rearranges arguments so that Pragmatic Status is given to the moved argument.
+										<ul><li>"<em>Potatoes</em> I like."</li></ul>
+									</li>
+									<li><strong>Apposition</strong> is adding a free noun phrase to a clause.
+										<ul><li>"<em>Termites</em>. Why does the universe hate me?"</li></ul>
+									</li>
+									<li><strong>Clefting</strong> is a type of predicate nominal where a noun phrase is joined to a relative clause that references that original noun phrase. (See below.)
+										<ul>
+											<li>"<em>You</em> are <em>the one that I want</em>."</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Formatives</strong> move along a continuum between morphological case markers (4.4) and pragmatic status markers:
+								<ul>
+									<li>The continuum:
+										<ul>
+											<li><strong>Pragmatic Status Markers</strong>: English articles, Aghem focus particles (see below), etc.</li>
+											<li><strong>Overlay systems</strong>: Japanese and Korean "topic marking"</li>
+											<li><strong>Case Markers</strong>: Latin, Eskimo, Russian, Quechua, etc.</li>
+										</ul>
+									</li>
+									<li>Remember that these can partially correlate with grammatical roles: e.g. English <em>subjects</em> are often also <em>identifiable</em>.
+										<ul>
+											<li className="newSection">Aghem uses verb morphology and focus particles to express various pragmatic nuances.
 												<ul>
-													<li><strong>Pragmatic Status Markers</strong>: English articles, Aghem focus particles (see below), etc.</li>
-													<li><strong>Overlay systems</strong>: Japanese and Korean "topic marking"</li>
-													<li><strong>Case Markers</strong>: Latin, Eskimo, Russian, Quechua, etc.</li>
+													<li>"énáʔ <em>mɔ̀</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah gave fufu to his friends.</li>
+													<li>"énáʔ <em>má՚á</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah <em>DID</em> give fufu to his friends. (truth focus)</li>
+													<li className="newSection">"fú kí mɔ̀ ñiŋ <em>nò</em> á kí-՚bé" - The rat <em>ran</em> (did not walk, scurry, etc) in the compound.</li>
+													<li>"fú kí mɔ̀ ñiŋ á kí-՚bé <em>nò</em>" - The rat ran in <em>the compound</em> (not in the house, church, etc.).</li>
 												</ul>
 											</li>
-											<li>Remember that these can partially correlate with grammatical roles: e.g. English <em>subjects</em> are often also <em>identifiable</em>.
+											<li className="newSection">Akam has a focus particle <em>na</em> and a contrastive particle <em>de</em>.
 												<ul>
-													<li className="newSection">Aghem uses verb morphology and focus particles to express various pragmatic nuances.
-														<ul>
-															<li>"énáʔ <em>mɔ̀</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah gave fufu to his friends.</li>
-															<li>"énáʔ <em>má՚á</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah <em>DID</em> give fufu to his friends. (truth focus)</li>
-															<li className="newSection">"fú kí mɔ̀ ñiŋ <em>nò</em> á kí-՚bé" - The rat <em>ran</em> (did not walk, scurry, etc) in the compound.</li>
-															<li>"fú kí mɔ̀ ñiŋ á kí-՚bé <em>nò</em>" - The rat ran in <em>the compound</em> (not in the house, church, etc.).</li>
-														</ul>
-													</li>
-													<li className="newSection">Akam has a focus particle <em>na</em> and a contrastive particle <em>de</em>.
-														<ul>
-															<li>"Kwame <em>na</em> ɔbɛyɛ adwuma no." - It's Kwame (not anyone else) who will do the work.</li>
-															<li>"Kwame <em>de</em> ɔbɛkɔ, na Kofi <em>de</em> ɔbɛtena ha." - Kwame will go, but Kofi will stay here.</li>
-														</ul>
-													</li>
-													<li className="newSection"><strong>Overlay</strong> systems are a combination of case-marking systems and pragmatic status-marking systems: one or more basic case markers are replaced (overlaid) by the status marker when a nominal is singled out for pragmatic treatment.
-														<ul><li>The Japanese topic marker <em>wa</em> can overlay the subject marker <em>ga</em> or the object marker <em>o</em>.
-															<ul>
-																<li>"taroo <em>ga</em> hon <em>o</em> katta." - Taro bought a book.</li>
-																<li>"taroo <em>wa</em> hon o katta." - As for Taro, he bought a book.</li>
-																<li>"hon <em>wa</em> taroo ga katta." - As for the book, Taro bought it.</li>
-															</ul>
-														</li></ul>
-													</li>
+													<li>"Kwame <em>na</em> ɔbɛyɛ adwuma no." - It's Kwame (not anyone else) who will do the work.</li>
+													<li>"Kwame <em>de</em> ɔbɛkɔ, na Kofi <em>de</em> ɔbɛtena ha." - Kwame will go, but Kofi will stay here.</li>
 												</ul>
+											</li>
+											<li className="newSection"><strong>Overlay</strong> systems are a combination of case-marking systems and pragmatic status-marking systems: one or more basic case markers are replaced (overlaid) by the status marker when a nominal is singled out for pragmatic treatment.
+												<ul><li>The Japanese topic marker <em>wa</em> can overlay the subject marker <em>ga</em> or the object marker <em>o</em>.
+													<ul>
+														<li>"taroo <em>ga</em> hon <em>o</em> katta." - Taro bought a book.</li>
+														<li>"taroo <em>wa</em> hon o katta." - As for Taro, he bought a book.</li>
+														<li>"hon <em>wa</em> taroo ga katta." - As for the book, Taro bought it.</li>
+													</ul>
+												</li></ul>
 											</li>
 										</ul>
 									</li>
 								</ul>
-							</InfoModal>
-							<TextItem text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
 
-						<HeaderItem className="h h2">9.2 Negation</HeaderItem>
+					<HeaderItem className="h h2">9.2 Negation</HeaderItem>
 
-							<InfoModal title="Negation">
+					<InfoModal title="Negation" label="Don't not read this.">
+						<ul>
+							<li>Common negation strategies:
 								<ul>
-									<li>Common negation strategies:
-										<ul>
-											<li><strong>Clausal negation</strong> - negates an entire proposition
-												<ul><li>"I didn't do it."</li></ul>
-											</li>
-											<li><strong>Constituent negation</strong> - negates a particular constituent of a proposition
-												<ul><li>"I have no motive."</li></ul>
-											</li>
-										</ul>
+									<li><strong>Clausal negation</strong> - negates an entire proposition
+										<ul><li>"I didn't do it."</li></ul>
 									</li>
+									<li><strong>Constituent negation</strong> - negates a particular constituent of a proposition
+										<ul><li>"I have no motive."</li></ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Clausal Negation</strong>
+								<ul>
 									<li className="newSection"><strong>Lexical Negation</strong>
 										<ul><li>Some verbs just function as the opposite of other verbs, such as "have" vs "lack".</li></ul>
 									</li>
@@ -197,17 +199,115 @@ const Syntax = (props: any) => {
 															<li>Iraqi Arabic has one particle (mɑː) for verbal predicates and another (muː) for verbless predicates (predicate nominals, locationals, existentials, etc.).</li>
 														</ul>
 													</li>
+													<li className="newSection">Another method is a finite negative verb and a complement clause (10, 10.2)
+														<ul>
+															<li>The negative verb will take finite inflectional morphology and occur in the normal position for a verb. The affirmative verb will be treated like a complement verb.</li>
+															<li>This occurs primarily in verb-initial and verb-final languages.
+																<ul>
+																	<li>Tungan, a verb-initial language:
+																		<ul>
+																			<li>"Na'e-<em>alu</em> 'a Siale" - Charlie went.</li>
+																			<li>"Na'e-<em>'ikai</em> ke <em>'alu</em> 'a Siele" - Charlie didn't go.</li>
+																		</ul>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
 												</ul>
 											</li>
 										</ul>
 									</li>
-									<li className="newSection"><strong>Analytical Negation</strong>
+									<li className="newSection"><strong>Secondary Methods of Negation</strong>
 										<ul>
-											<li>This includes negative particles and negative finite verbs.</li>
+											<li>Alternate word order:
+												<ul><li>Many VP languages change their order for negative clauses. For example, Kru uses AVP for affirmative clauses and APV in negative clauses.</li></ul>
+											</li>
+											<li>Change in tone:
+												<ul><li>Igbo carries a low tone in affirmative clauses and a high tone in negative clauses.</li></ul>
+											</li>
+											<li>Neutralization of tense-aspect distinctions:
+												<ul>
+													<li>Komi has a present-future distinction in affirmative, but no such distinction in the negative.</li>
+													<li>Bembe allows two future tense markers in affirmative, but only one of them in the negative.</li>
+												</ul>
+											</li>
+											<li>Special inflections:
+												<ul><li>A few languages have special person/number ot TAM markers on verbs in negative clauses. (Negative verbs tend to hold onto older patterns that have been lost in affirmative clauses!)</li></ul>
+											</li>
+											<li>Alternative case-marking patterns:
+												<ul>
+													<li>Special case-marking patterns may occur in negative clauses. For example, with certain Russian verbs, the object will be in accusative for affirmative clauses and in genitive case in negative clauses.</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li className="newSection"><strong>Constituent Negation</strong>
+										<ul>
+											<li className="newSection"><strong>Derivational Negation</strong>:
+												<ul>
+													<li>Some languages allow a derivation of a stem to transform it into its opposite.</li>
+													<li>English has the not-fully-productive <em>non-</em> and <em>un-</em> prefixes that only work on adjectives and nominals.</li>
+													<li>Panare has a verbal suffix <em>-(i)ka</em> that forms something akin to the opposite of the root verb.</li>
+												</ul>
+											</li>
+											<li className="newSection"><strong>Negative Quantifiers</strong>:
+												<ul>
+													<li>Many languages have inherently negative quantifiers ("none", "nothing") or can be negated independent of clause ("not many").</li>
+													<li>Most languages allow or require such quantifiers to be accompanied by clausal negation.
+														<ul><li>Standard English is rare in disallowing such use of "double negatives".</li></ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li className="newSection"><strong>Negative Scope</strong>:
+										<ul>
+											<li>Sometimes the two types of negation interact to cause variations in the scope of what can be negated.
+												<table className="informational">
+													<tr>
+														<th>Statement</th>
+														<th>Scope</th>
+													</tr>
+													<tr>
+														<td>"Not many rats survive to adulthood."</td>
+														<td>Quantifier only</td>
+													</tr>
+													<tr>
+														<td>"Many rats do not survive to adulthood."</td>
+														<td>Entire clause</td>
+													</tr>
+													<tr>
+														<td>"I deliberately didn't eat the cheese."</td>
+														<td>Entire clause</td>
+													</tr>
+													<tr>
+														<td>"I didn't deliberately eat the cheese."</td>
+														<td>Adverb only</td>
+													</tr>
+													<tr>
+														<td>"He won't force you to volunteer."</td>
+														<td>Entire clause</td>
+													</tr>
+													<tr>
+														<td>"He will force you not to volunteer."</td>
+														<td>Complement clause</td>
+													</tr>
+												</table>
+											</li>
 										</ul>
 									</li>
 								</ul>
-							</InfoModal>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="negation" rows={8}>Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?</TextItem>
+
+					<HeaderItem className="h h2">9.3 Non-Declarative Speech</HeaderItem>
+
+					<HeaderItem className="h h3">9.3.1 Interrogatives</HeaderItem>
+
+					<HeaderItem className="h h4">9.3.1.1. Yes/No Questions</HeaderItem>
 
 				</IonList>
 			</IonContent>

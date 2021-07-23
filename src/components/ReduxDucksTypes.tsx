@@ -169,7 +169,7 @@ type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "
 				| "predLoc" | "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts"
 				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
 				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp" | "tense" | "aspect" | "mode" | "locDirect"
-				| "evidence" | "miscVerbFunc" | "pragFocusEtc";
+				| "evidence" | "miscVerbFunc" | "pragFocusEtc" | "negation";
 export type MorphoSyntaxTextObject = {
 	[key in SyntaxText]?: string
 }
