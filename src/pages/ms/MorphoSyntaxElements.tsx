@@ -138,7 +138,7 @@ export const InfoModal = (props: any) => {
 				</IonFooter>
 			</IonModal>
 			<IonButton color="primary" onClick={() => dispatch(setSyntaxState(id, true))}>
-				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0.25rem", marginInlineEnd: "0.5rem"}} />
+				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0", marginInlineEnd: "0.5rem"}} />
 				<IonLabel>{label}</IonLabel>
 			</IonButton>
 		</IonItem>
