@@ -305,9 +305,149 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">9.3 Non-Declarative Speech</HeaderItem>
 
+					<InfoModal title="Declarative Statements" label="Minor Note on Declaratives">
+						<ul>
+							<li>A declarative statement is an assertion. Most speech is declarative.</li>
+							<li>Other types of statements are usually handled as "modes" in a language, such as interrogative (questions) and imperatives (commands).</li>
+							<li className="newSection">Most often, a language will leave declarative statements unmarked and only mark the others. But some (e.g. Tibetan) will mark declaratives, too.</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="declaratives" rows={3}>If declaratives are marked, describe how.</TextItem>
+
 					<HeaderItem className="h h3">9.3.1 Interrogatives</HeaderItem>
 
 					<HeaderItem className="h h4">9.3.1.1. Yes/No Questions</HeaderItem>
+
+					<InfoModal title="Yes/NoQuestions" label="Yes? No?">
+						<ul>
+							<li><strong>Yes/No Questions</strong>, hereafter referred to as <em>YNQs</em>, are interrogative clauses where the expected answer is either "yes" or "no". They can employ any or all of the strategies below.</li>
+							<li className="newSection"><em>Intonation</em>:
+								<ul>
+									<li>There tends to be distinct intonation patterns in YNQs.</li>
+									<li>The pattern is usually rising, as in English, but can be falling, as in Russian.</li>
+									<li className="newSection">Some languages <em>only</em> employ intonation!</li>
+								</ul>
+							</li>
+							<li className="newSection"><em>Word Order</em>:
+								<ul>
+									<li>Many languages, especially VP languages, use distinctive constituent orders for YNQs.</li>
+									<li>Usually, this is an inversion of the Agent and Verb, as in many European and Austronesian languages.
+										<ul>
+											<li>"bapak datangkah nanti" - Father will come later (Malay)</li>
+											<li>"datangkah bapak nanti" - Will father come later?</li>
+										</ul>
+									</li>
+									<li>English has a strange system where it reverses the Agent and the auxilliary verb. If no auxilliary is present, the verb "do" is inserted.
+										<ul>
+											<li>"He will arrive on time" → "Will he arrive on time?"</li>
+											<li>"They can eat cake" → "Can they eat cake?"</li>
+											<li>"You want to join me" (no auxilliary) → "Do you want to join me?"</li>
+										</ul>
+									</li>
+									<li>American English uses simple Agent/Verb inversion in predicate nominals, existential and locational clauses. British English extends this to possessive constructions.
+										<ul>
+											<li>"He is a cat" → "Is he a cat?"</li>
+											<li>"Cats are there, under the bed" → "Are there cats under the bed?"</li>
+											<li>"You were in the garden" → "Were you in the garden?"</li>
+											<li>"You have a match" → "Have you a match?" (British)</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><em>Interrogative Particle</em>:
+								<ul>
+									<li>Question Particles (QPs) are very common, especially among PV languages, but does appear in VP languages, too.</li>
+									<li>The QP can be cliticized to the first constituent in the clause, either before or after it.</li>
+									<li>Often, the QP can be omitted, letting context and intonation do the job instead.
+										<ul>
+											<li>Latin: "erat<em>ne</em> tecum" / he:was-QP you-with → Was he with you?</li>
+											<li>Mandarin: "tā xihuan chī pǐngguǒ <em>ma</em>" / she like eat apple QP → Does she like to eat apples?</li>
+											<li>Tagalog: "mabait <em>ba</em> si Pilar?" / kind QP is Pilar → Is Pilar kind?</li>
+										</ul>
+									</li>
+									<li className="newSection">Some varieties of English has developed a QP as an alternative to word order inversion
+										<ul>
+											<li>"You want to go for a ride, <em>eh</em>?"</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><em>Tag Question</em>:
+								<ul>
+									<li>This involves a simple declarative statement, followed by a Tag that requests confirmation or disconfirmation of the statement.</li>
+									<li>These are universally a secondary way of forming YNQs, though they are often the historical source of the currently-used QPs.</li>
+									<li className="newSection">English has Tags for certain times the speaker is assuming they'll get a Yes response:
+										<ul>
+											<li>"Nice day, <em>isn't it</em>?"</li>
+											<li>"You're going to the club with us tonight, <em>right</em>?"</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Functions</strong>:
+								<ul>
+									<li>YNQs are used for additional purposes other than simply asking questions in most languages.</li>
+									<li className="newSection"><em>To request action</em>: "Could you close the door?"</li>
+									<li><em>Rhetorical effect</em>: "Are you always so messy?"</li>
+									<li><em>Confirmation</em>: "Aren't you going?"</li>
+									<li><em>Intensification</em>: "Did he ever yell!"</li>
+								</ul>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="YNQs" rows={4}>How are yes/no questions formed?</TextItem>
+
+					<HeaderItem className="h h4">9.3.1.2. Questions-Word Questions</HeaderItem>
+
+					<InfoModal title="Question-Word Questions" label="Who? What? Why?">
+						<ul>
+							<li>Also known as <strong>Content Questions</strong> or <strong>Information Questions</strong>, Question-Word Questions (QWs) are best exemplified by the English words who, whom, what, where, when, why, which, and how.</li>
+							<li>All languages have a set of special QWQs. Often, they're similar or identical to a set of pronouns used elsewhere in the language. (e.g. English's who, where, when.)</li>
+							<li>QWs accomplish two things:
+								<ol>
+									<li>Mark the clause as a question.</li>
+									<li>Indicate what information is being requested.</li>
+								</ol>
+							</li>
+							<li className="newSection">In VP languages (like English) it is typical for the QW to appear at the start of the clause, possibly leaving a gap in the normal position.
+								<ul>
+									<li>"Mark gave the cakes to Jimmy." → "Who gave the cakes to Jimmy?" → "Who did Mark give the cakes to?"</li>
+								</ul>
+							</li>
+							<li>Many PV languages leave the QW in the "normal" position, such as Japanese and Tibetan.</li>
+							<li>Most PV languages can either leave the QW in position, or it can move to the front.</li>
+							<li>Some VP languages allow or require leaving the QW in position, such as Mandarin, and many eastern African languages.</li>
+							<li className="newSection">QWs can usually take case markers and/or adpositions.</li>
+							<li>When the QW from an oblique clause is fronted, the adposition may or may not come with it.
+								<ul>
+									<li><em>What</em> did you travel <em>with</em>?</li>
+									<li><em>With what</em> did you travel?</li>
+								</ul>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="QWQs" rows={4}>How are information questions formed?</TextItem>
+
+					<HeaderItem className="h h4">9.3.2. Imperatives</HeaderItem>
+
+					<InfoModal title="Imperatives" label="Command Sentences">
+						<ul>
+							<li>Imperatives are direct commands to an addressee.</li>
+							<li>It is often not necessary to indicate the Agent (addressee), since the actor is obvious.</li>
+							<li>Fewer TAM constructs are typically allowed, since it is pragmatically impossible to perform certain actions (past tense, present progressive, etc).</li>
+							<li>Sometimes imperatives take special verb forms or affixes, as in Greenlandic Iñupiat, and/or special negation strategies.</li>
+							<li className="newSection">Imperatives are often associated with Irrealis modes (8.3.3)</li>
+							<li>In Yagua, imperatives and future tense are exactly the same.</li>
+							<li className="newSection">Sometimes imperatives affect case marking.
+								<ul><li>Finnish puts Patients in imperatives in nominative case instead of accusative case.</li></ul>
+							</li>
+							<li className="newSection">Different types of imperatives may exist.
+								<ul><li>In Panare, the suffix <em>-kë</em> is for plain imperatives, while <em>-ta'</em> is used for imperatives involving motion.</li></ul>
+							</li>
+							<li className="newSection">First-person imperatives are rare. (e.g. "Let's eat.")</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="imperatives" rows={4}>How are imperatives formed? Are there "polite" imperatives that contrast with more direct imperatives?</TextItem>
 
 				</IonList>
 			</IonContent>
