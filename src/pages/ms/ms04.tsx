@@ -35,7 +35,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.1. Compounding</HeaderItem>
 
-					<InfoModal title="Compounding">
+					<InfoModal title="Compounding" label="Noun-Piles">
 						<ul>
 							<li>When two nouns are combined into one, several changes may occur.
 								<ul>
@@ -51,7 +51,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.2. Denominalization</HeaderItem>
 
-					<InfoModal title="Denominalization">
+					<InfoModal title="Denominalization" label="Verbing a Noun">
 						<ul>
 							<li>Some languages have many ways of changing a noun into a non-noun.
 								<ul>
@@ -65,12 +65,12 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.3. Number Marking</HeaderItem>
 
-					<InfoModal title="Number Marking">
+					<InfoModal title="Number Marking" label="Plurality, etc.">
 						<ul>
 							<li>Some languages only mark number occassionally or optionally depending on the type of noun.</li>
 							<li>This is often intertwined with other markers, such as case marking in Romance languages.</li>
 							<li>Most languages leave the singular unmarked, but not all!</li>
-							<li>Number marking may be as simple as singular/plural (more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts).</li>
+							<li>Number marking may be as simple as a singular/plural distinction (one vs more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts) distinctions.</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="nNumber" rows={3}>Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?</TextItem>
@@ -104,23 +104,19 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.5. Articles and Demonstratives</HeaderItem>
 
-					<InfoModal title="Articles" label="Articles Info">
+					<InfoModal title="Articles" label="What Are They?">
 						<ul>
-							<li>English is relatively rare in having articles: a, an, the. More often, languages have a broader class of demonstratives.</li>
-						</ul>
-					</InfoModal>
-					<TextItem text="articles" rows={6}>If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</TextItem>
-					<InfoModal title="Determiners" label="Determiners Info">
-						<ul>
-							<li>Demonstratives are words that distinguish or identify a noun without modifying it, such as this, that, these and those.</li>
+							<li>English is relatively rare in having <strong>Articles</strong>: a, an, the. More often, languages have a broader class of demonstratives.</li>
+							<li className="newSection"><strong>Demonstratives</strong> are words that distinguish or identify a noun without modifying it, such as this, that, these and those.</li>
 							<li>They tend to encode distance ("this" is closer to you than "that"; Spanish has a third level of distance, too).</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="demonstratives" rows={6}>How many levels of distance do determiners encode? Are there other distinctions besides distance?</TextItem>
+					<TextItem text="articles" rows={6}>If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</TextItem>
+					<TextItem text="demonstratives" rows={6}>How many levels of distance do demonstratives encode? Are there other distinctions besides distance?</TextItem>
 
 					<HeaderItem className="h h2">4.6. Possessors</HeaderItem>
 
-					<InfoModal title="Possessors" label="Possessor Info">
+					<InfoModal title="Possessors" label="Possessor Expressions">
 						<ul>
 							<li>Refer back to 2.1.1.2 to note your system of possession. This does <strong>not</strong> refer to possessive clauses! (5.4)</li>
 							<li className="newSection">How are possessors expressed in the noun phrase?</li>
@@ -131,7 +127,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.7. Class (Gender)</HeaderItem>
 
-					<InfoModal title="Class and Gender" label="Class and Gender Info">
+					<InfoModal title="Class and Gender" label="What They Are">
 						<ul>
 							<li>Class system often require classifiers (special operators) to declare class.</li>
 							<li>Pure gender systems use "agreement" instead of classifiers. At the very least, numerical expressions will "agree" with their head noun.</li>
@@ -143,7 +139,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">4.8. Diminution/Augmentation</HeaderItem>
 
-					<InfoModal title="Diminution and Augmentation">
+					<InfoModal title="Diminution and Augmentation" label="Bigger and Smaller">
 						<ul>
 							<li>If diminution (making smaller) and/or augmentation (making bigger) is used in the language, answer the following questions:
 								<ul>

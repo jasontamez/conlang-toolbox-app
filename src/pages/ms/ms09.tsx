@@ -82,7 +82,7 @@ const Syntax = () => {
 					</InfoModal>
 					<HeaderItem className="h h2">9.1 Focus, Contrast and Topicalization</HeaderItem>
 
-					<InfoModal title="Focus, Contrast, etc." label="This is a long one!">
+					<InfoModal title="Focus, Contrast, etc." label="Focus is What This is About">
 						<ul>
 							<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
 							<li className="newSection"><strong>Constituent Order</strong>:
@@ -347,7 +347,7 @@ const Syntax = () => {
 									<li>American English uses simple Agent/Verb inversion in predicate nominals, existential and locational clauses. British English extends this to possessive constructions.
 										<ul>
 											<li>"He is a cat" → "Is he a cat?"</li>
-											<li>"Cats are there, under the bed" → "Are there cats under the bed?"</li>
+											<li>"Cats are under the bed" → "Are cats under the bed?"</li>
 											<li>"You were in the garden" → "Were you in the garden?"</li>
 											<li>"You have a match" → "Have you a match?" (British)</li>
 										</ul>
@@ -437,14 +437,13 @@ const Syntax = () => {
 							<li>Fewer TAM constructs are typically allowed, since it is pragmatically impossible to perform certain actions (past tense, present progressive, etc).</li>
 							<li>Sometimes imperatives take special verb forms or affixes, as in Greenlandic Iñupiat, and/or special negation strategies.</li>
 							<li className="newSection">Imperatives are often associated with Irrealis modes (8.3.3)</li>
-							<li>In Yagua, imperatives and future tense are exactly the same.</li>
 							<li className="newSection">Sometimes imperatives affect case marking.
 								<ul><li>Finnish puts Patients in imperatives in nominative case instead of accusative case.</li></ul>
 							</li>
 							<li className="newSection">Different types of imperatives may exist.
 								<ul><li>In Panare, the suffix <em>-kë</em> is for plain imperatives, while <em>-ta'</em> is used for imperatives involving motion.</li></ul>
 							</li>
-							<li className="newSection">First-person imperatives are rare. (e.g. "Let's eat.")</li>
+							<li className="newSection">First-person imperatives are rare. (e.g. "Let's eat." vs "Come eat with me.")</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="imperatives" rows={4}>How are imperatives formed? Are there "polite" imperatives that contrast with more direct imperatives?</TextItem>

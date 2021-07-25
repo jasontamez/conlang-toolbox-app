@@ -39,7 +39,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">2.1.1.1. Proper Names</HeaderItem>
 
-					<InfoModal title="Proper Names">
+					<InfoModal title="Proper Names" label="Read About Them">
 						<ul>
 							<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
 							<li>Other languages may have special case markers (4.4) for them.</li>
@@ -73,7 +73,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">2.1.1.3. Count vs Mass</HeaderItem>
 
-					<InfoModal title="Count Nouns and Mass Nouns">
+					<InfoModal title="Count Nouns and Mass Nouns" label="Read About Them">
 						<ul>
 							<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
 							<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
@@ -83,7 +83,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
 
-					<InfoModal className="following leading" label="What Are They?" title="Pronouns and Anaphoric Clitics">
+					<InfoModal label="What Are They?" title="Pronouns and Anaphoric Clitics">
 						<ul>
 							<li><strong>Pronouns</strong>:
 								<ul>
@@ -101,13 +101,13 @@ const Syntax = () => {
 							<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
 						</ul>
 					</InfoModal>
-					<TextItem className="following" text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
+					<TextItem text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
 
 					<HeaderItem className="h h2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
 
 					<HeaderItem className="h h3">2.2.1. Semantic Roles</HeaderItem>
 
-					<InfoModal title="Semantic Roles" label="What Are They?">
+					<InfoModal title="Semantic Roles" label="A Quick Primer">
 						<ul>
 							<li>Verbs can be divided into groups depending on which roles they require.
 								<ul>
@@ -219,23 +219,50 @@ const Syntax = () => {
 
 					<InfoModal title="Verb Structure" label="Structure and Operations Info">
 						<ul>
-							<li>Describe the structure of the verb phrase.
+							<li>In polysynthetic languages, verbs tend to be the most complex.
+								<ul>
+									<li>English is very simple:
+										<ul><li>root verb
+											<br />+ (optional tense marker OR agreement marker)</li></ul>
+									</li>
+									<li>Panare is much more complex:
+										<ul>
+											<li>person/neutral marker
+												<br />+ (optional valence marker)
+												<br />+ (optional detransification marker)
+												<br />+ (optional incorporation marker)
+												<br />+ root verb
+												<br />+ (optional derivation marker)
+												<br />+ tense/aspect/mode marker</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection">Polysynthetic languages may have any/all of these operations
+								<ul>
+									<li>Verb agreement (6)</li>
+									<li>Semantic role markers (applicatives) (7.1.2)</li>
+									<li>Valence increasing/decreasing (7.1, 7.2)</li>
+									<li>Tense/Apect/Mode (8.3)</li>
+									<li>Evidentials (8.5)</li>
+									<li>Location and direction (8.4)</li>
+									<li>Speech act markers (9.3)</li>
+									<li>Verb and verb-phrase negation (9.2)</li>
+									<li>Subordination/Nominalization (8.1, 10)</li>
+									<li>Switch-Reference (10.4)</li>
+								</ul>
+							</li>
+							<li>In more isolating languages, those operations are more likely to be expressed through particles or adverbs.</li>
+							<li className="newSection">Things to consider:
 								<ul>
 									<li>Where does the stem lie in relation to any affixes/particles/etc?</li>
 									<li>Are directional and/or locational notions expressed in the verb/phrase at all?</li>
-								</ul>
-							</li>
-							<li className="newSection">Describe any verbal operations.
-								<ul>
-									<li>Is this operation obligatory?</li>
-									<li>Is it productive (for all/most stems)?</li>
-									<li>Is this coded morphologically (modifying the verb), analytically (particles and word order), lexically (using other verbs)? Any exceptions?</li>
-									<li>Where in the word/phrase is the operation likely to appear? Can it appear in more than one place?</li>
+									<li>Are particular operations obligatory? Productive (for all/most roots)?</li>
 								</ul>
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="verbStructure" rows={8}>Describe the verb structure here.</TextItem>
+					<TextItem text="verbStructure" rows={6}>Describe the verb structure here.</TextItem>
 
 					<HeaderItem className="h h2">2.3. Modifiers</HeaderItem>
 
@@ -268,7 +295,7 @@ const Syntax = () => {
 							</IonRow>
 						</IonGrid>
 					</IonItem>
-					<InfoModal title="Property Concepts">
+					<InfoModal title="Property Concepts" label="More Info">
 						<ul>
 							<li>If these exist as a separate category, they will express:
 								<ul>
@@ -306,7 +333,8 @@ const Syntax = () => {
 							</li>
 							<li className="newSection"><strong>Base</strong>:
 								<ul>
-									<li>Usually base 5 or 10. Sometimes 20.</li>
+									<li>Usually base 5 or 10. Sometimes 20. (English is base 10.)</li>
+									<li>More advanced cultures with merchants or bureaucracies tend to create systems based around 12 as well, due to its greater number of factors, but it almost never replaces the original base system.</li>
 									<li>Numerals can be described from greatest to least ("twenty-two"), from least to greatest ("two-twenty"), or not give base multiples a special name ("two-two").</li>
 								</ul>
 							</li>
@@ -320,9 +348,9 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
 
-					<HeaderItem className="h h2">2.4. Adverbs (a "catch-all" category)</HeaderItem>
+					<HeaderItem className="h h2">2.4. Adverbs</HeaderItem>
 
-					<InfoModal title="Adverbs">
+					<InfoModal title="Adverbs" label='A "Catch-All" Category'>
 						<ul>
 							<li>These may or may not exist as a separate category of words.</li>
 							<li>Languages may use adjectives in special phrases to fulfill this role.</li>

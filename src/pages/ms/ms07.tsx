@@ -53,7 +53,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">7.1.1. Causatives</HeaderItem>
 
-					<InfoModal title="Causatives">
+					<InfoModal title="Causatives" label="Forcing You to Read This">
 						<ul>
 							<li><strong>Lexical</strong>:
 								<ul>
@@ -143,7 +143,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">7.1.2. Applicatives</HeaderItem>
 
-					<InfoModal title="Applicatives">
+					<InfoModal title="Applicatives" label="Adding a Third Participant">
 						<ul>
 							<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
 								<ul>
@@ -277,7 +277,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h3">7.2.1. Reflexives</HeaderItem>
 
-					<InfoModal title="Reflexives">
+					<InfoModal title="Reflexives" label="You Are Me?">
 						<ul>
 							<li>The Agent and Patient are the same, so one is omitted.</li>
 							<li className="newSection">Lexical reflexives:
@@ -318,7 +318,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h3">7.2.2. Reciprocals</HeaderItem>
 
-					<InfoModal title="Reciprocals">
+					<InfoModal title="Reciprocals" label="Working Together">
 						<ul>
 							<li>The Agent and Patient are performing the same action, or performing an action together. These are often expressed the same way as reflexives.</li>
 							<li className="newSection">Lexical reciprocals:
@@ -337,7 +337,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h3">7.2.3. Passives</HeaderItem>
 
-					<InfoModal title="Passives">
+					<InfoModal title="Passives" label="Moving Focus From the Agent">
 						<ul>
 							<li>A semantically transitive verb with omitted Agent, the Patient treated as Subject, and the verb behaves as if it is intransitive. (The Agent is made less topical than the Patient.)</li>
 							<li className="newSection">Personal passive: Agent is implied, or expressed obliquely.

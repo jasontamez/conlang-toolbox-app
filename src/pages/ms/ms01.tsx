@@ -36,7 +36,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">1.1. Traditional Typology</HeaderItem>
 
-					<InfoModal title="Synthesis and Fusion" label="Synthesis and Fusion">
+					<InfoModal title="Synthesis and Fusion" label="The Basic Building Blocks of Words">
 						<ul>
 							<li><strong>Synthesis</strong>: How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?
 								<ul>
@@ -65,7 +65,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">1.2. Morphological Processes</HeaderItem>
 
-					<InfoModal title="Affixes and Other Modifications" label="What Are They?">
+					<InfoModal title="Affixes and Other Modifications" label="Read About Them">
 						<ul>
 							<li><strong>Affixes</strong>:
 								<ul>
@@ -87,7 +87,9 @@ const Syntax = () => {
 							</li>
 							<li className="newSection"><strong>Suprasegmental Modification</strong>:
 								<ul>
-									<li>e.g. "permit" has different stress when a noun and a verb.</li>
+									<li>Words can change stress when in different roles.
+										<ul><li>e.g. "permit" has different stress when used as a noun or as a verb.</li></ul>
+									</li>
 									<li>Tone changes also fall under this category.</li>
 								</ul>
 							</li>
@@ -147,11 +149,23 @@ const Syntax = () => {
 					<HeaderItem className="h h2">1.3. Head/Dependant Marking</HeaderItem>
 
 					<RangeItem text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
+
 					<InfoModal title="Head/Dependant Marking">
 						<ul>
+							<li>The <strong>Head</strong> of a phrase is the element that determines the syntactic function of the whole phrase.
+								<ul>
+									<li>Example sentence: <em>"The smallest dog ate a porkchop with a squirrel."</em>
+										<ul>
+											<li>"dog" is Head of "the smallest dog"</li>
+											<li>"with" is Head of "with a squirrel"</li>
+											<li>"porkchop" is Head of "a porkchop" and "a porkchop with a squirrel"</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
 							<li>English is predominantly dependant-marked ("the queen's crown").</li>
-							<li>Most languages are head-marked (*"the queen crown's").</li>
-							<li>Some are mixed, but stay in one pattern for a certain class of phrases (noun, verb, adposition).</li>
+							<li>Most languages are head-marked ("the queen crown's").</li>
+							<li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependant-marked for verb and adpositional phrases).</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="headDepMark">Write any more specific notes here.</TextItem>

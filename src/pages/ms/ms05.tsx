@@ -46,7 +46,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">5.1. Predicate Nominals and Adjecives</HeaderItem>
 
-					<InfoModal title="Predicate Nominals and Adjecives">
+					<InfoModal title="Predicate Nominals and Adjecives" label="What It Is and What It Seems Like">
 						<ul>
 							<li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li>
 							<li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li>
@@ -103,7 +103,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">5.2. Predicate Locatives</HeaderItem>
 
-					<InfoModal title="Predicate Locatives">
+					<InfoModal title="Predicate Locatives" label="Where It Is">
 						<ul>
 							<li>Many languages use a word that gets translated as "be at".</li>
 							<li>The locative word is often the same as a locative adposition.</li>
@@ -120,7 +120,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">5.3. Existentials</HeaderItem>
 
-					<InfoModal title="Existentials">
+					<InfoModal title="Existentials" label="These Exist">
 						<ul>
 							<li>These constructions usually serve a presentative function, introducing new participants.</li>
 							<li>Usually, the nominal is indefinite: "There are lions in Africa" vs. "There are the lions in Africa".</li>

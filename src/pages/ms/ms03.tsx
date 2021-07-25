@@ -77,7 +77,7 @@ const Syntax = () => {
 							</IonRow>
 						</IonGrid>
 					</IonItem>
-					<InfoModal title="Basic Typology" label="What is this?">
+					<InfoModal title="Basic Typology" label="What is This?">
 						<ul>
 							<li>Human languages tend towards one of six different basic forms.
 								<ul>
@@ -155,9 +155,9 @@ const Syntax = () => {
 							</IonRow>
 						</IonGrid>
 					</IonItem>
-					<InfoModal title="Adpositions">
+					<InfoModal title="Adpositions" label="More Info">
 						<ul>
-							<li>Many derive from verbs, especially serial verbs***.</li>
+							<li>Many derive from verbs, especially serial verbs (see 10.1).</li>
 							<li>Others derive from nouns, especially body parts (top, back, face, head, etc).</li>
 							<li>Adpositional phrases may appear the same as possessed noun phrases (in front of vs. on his face) or regular nouns (top vs. on top of).</li>
 						</ul>
@@ -167,7 +167,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">3.5 Comparatives</HeaderItem>
 
-					<InfoModal title="Comparatives" label="How do they work?">
+					<InfoModal title="Comparatives" label="Comparing Things">
 						<ul>
 							<li>Does the language even have a form? Some languages get by with strategies like "X is big, Y is very big."</li>
 							<li>A comparison phrase requires a known standard, a marker that signals this is a comparison, and the quality of comparison.
@@ -188,6 +188,7 @@ const Syntax = () => {
 						<ul>
 							<li>In many languages, yes/no questions are indicated by a change in intonation. In others, a question particle is used; e.g. <em>do</em> you understand?</li>
 							<li>Informal questions may require a specific question word.</li>
+							<li className="newSection">This subject is handled in depth in 9.3.1.</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="questions">How are questions handled in the language? In informational questions, where does the question word occur?</TextItem>

@@ -110,7 +110,7 @@ export const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
 	const synState = useSelector((state: any) => state.morphoSyntaxState);
 	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
-	const label = props.label || "Extra Info";
+	const label = props.label || "Read About It";
 	return (
 		<IonItem className={props.className ? props.className + " infoModal" : "infoModal"}>
 			<IonModal isOpen={synState[id] !== undefined} onDidDismiss={() => dispatch(setSyntaxState(id, false))}>

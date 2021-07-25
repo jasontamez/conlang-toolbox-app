@@ -30,7 +30,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.1. Nominalization</HeaderItem>
 
-					<InfoModal title="Nominalization">
+					<InfoModal title="Nominalization" label="Making Nouns">
 						<ul>
 							<li>Every language has strategies of adjusting the grammatical category of a root. Turning a word into a noun is <em>nominalization</em>.</li>
 							<li className="newSection">English has multiple methods, with differing levels of productivity.</li>
@@ -118,7 +118,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.2. Compounding</HeaderItem>
 
-					<InfoModal title="Compounding">
+					<InfoModal title="Compounding" label="Word-Making">
 						<ul>
 							<li><strong>Noun Incorporation</strong>: noun becomes attached to a verb (see 7.2.7).
 								<ul>
@@ -138,7 +138,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.3. Tense/Aspect/Mode</HeaderItem>
 
-					<InfoModal title="Tense, Aspect and Mode" label="General Info">
+					<InfoModal title="Tense, Aspect and Mode" label="What Are They?">
 						<ul>
 							<li><strong>TAM</strong> (Tense, Aspect, Mode) are sometimes hard to tease apart, and may only be considered separate because of how they are in western language.</li>
 							<li>Some languages pay more attention to tense (English), aspect (Austronesian languages), or mode (Eskimo).
@@ -338,7 +338,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.4. Location/Direction</HeaderItem>
 
-					<InfoModal title="Location and Direction">
+					<InfoModal title="Location and Direction" label="Where?">
 						<ul>
 							<li>While Tense grounds statements in time, some languages grammaticize location and/or direction markers to ground statements in space. It may be even more central to discourse than tense in some languages.</li>
 							<li className="newSection">Directional formatives are often related to basic verbs of motion (go, come, arrive, depart, return, go up, go down).</li>
@@ -361,7 +361,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.5. Evidentiality, Validationality and Mirativity</HeaderItem>
 
-					<InfoModal title="Evidentiality">
+					<InfoModal title="Evidentiality" label="Truth and Certainty">
 						<ul>
 							<li><strong>Evidentiality</strong> expresses how much evidence the speaker has to make this assertion. For instance, first-hand knowledge is more evidential than third-hand suspect information.</li>
 							<li><strong>Validationality</strong> is sometimes separate from Evidentiality. It is how languages express relative certainty of truth. We are more likely to be certain of:
@@ -394,7 +394,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">8.6. Miscellaneous</HeaderItem>
 
-					<InfoModal title="Miscelaneous">
+					<InfoModal title="Miscelaneous" label="Leftovers">
 						<ul>
 							<li>There are miscellaneous verb-phrase operations that might or might not exist.
 								<ul>

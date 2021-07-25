@@ -18,6 +18,7 @@ import MS08 from "./ms/ms08";
 import MS09 from "./ms/ms09";
 //import MS10 from "./ms/ms10";
 import { shallowEqual, useSelector } from "react-redux";
+import './ms/MS.css';
 
 
 const MS = () => {
