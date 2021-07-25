@@ -74,8 +74,7 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 					<TextItem text="nNumber" rows={3}>Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?</TextItem>
-					<TextItem text="nNumberOpt" rows={4}>If number-marking is optional, when does it tend to occur? When does it not tend to occur?</TextItem>
-					<TextItem text="nNumberObl" rows={4}>If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
+					<TextItem text="nNumberOptObl" rows={6}>If number-marking is optional, when does it tend to occur? When does it not tend to occur?<br /><br />If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
 
 					<HeaderItem className="h h2">4.4. Case Marking</HeaderItem>
 

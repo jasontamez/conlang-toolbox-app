@@ -16,7 +16,7 @@ import MS06 from "./ms/ms06";
 import MS07 from "./ms/ms07";
 import MS08 from "./ms/ms08";
 import MS09 from "./ms/ms09";
-//import MS10 from "./ms/ms10";
+import MS10 from "./ms/ms10";
 import { shallowEqual, useSelector } from "react-redux";
 import './ms/MS.css';
 
@@ -77,9 +77,7 @@ const MS = () => {
 				<Route path="/ms/ms07" render={() => <MS07 />} exact={true} />
 				<Route path="/ms/ms08" render={() => <MS08 />} exact={true} />
 				<Route path="/ms/ms09" render={() => <MS09 />} exact={true} />
-				{/*
 				<Route path="/ms/ms10" render={() => <MS10 />} exact={true} />
-				*/}
 			</IonRouterOutlet>
 			{makeTabs(page)}
 		</IonTabs>

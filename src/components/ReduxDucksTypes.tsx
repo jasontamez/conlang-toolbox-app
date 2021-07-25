@@ -164,13 +164,13 @@ export type MorphoSyntaxNumberObject = {
 type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
 				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
-				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "nNumberOpt" | "nNumberObl"
-				| "case" | "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom"
-				| "predLoc" | "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts"
-				| "datOfInt" | "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon"
-				| "antiP" | "objDemOmInc" | "verbNoms" | "verbComp" | "tense" | "aspect" | "mode" | "locDirect"
-				| "evidence" | "miscVerbFunc" | "pragFocusEtc" | "negation" | "declaratives" | "YNQs" | "QWQs"
-				| "imperatives";
+				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "nNumberOptObl" | "case"
+				| "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc"
+				| "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt"
+				| "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon" | "antiP"
+				| "objDemOmInc" | "verbNoms" | "verbComp" | "tense" | "aspect" | "mode" | "locDirect" | "evidence"
+				| "miscVerbFunc" | "pragFocusEtc" | "negation" | "declaratives" | "YNQs" | "QWQs" | "imperatives"
+				| "serialVerbs" | "complClauses" | "advClauses" | "clauseChainEtc" | "relClauses" | "coords";
 export type MorphoSyntaxTextObject = {
 	[key in SyntaxText]?: string
 }
