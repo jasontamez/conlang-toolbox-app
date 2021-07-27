@@ -52,13 +52,6 @@ const App = () => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.5.5", "<")) {
-							// Do stuff to possibly bring storedState up to date
-							delete storedState.syntaxSketchState;
-							delete storedState.syntaxSketchInfo;
-							storedState.morphoSyntaxState = {};
-							storedState.morphoSyntaxInfo = initialAppState.morphoSyntaxInfo;
-						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;
