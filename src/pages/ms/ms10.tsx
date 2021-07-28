@@ -95,11 +95,57 @@ const Syntax = () => {
 
 					<HeaderItem className="h h1">10.2. Complement Clauses</HeaderItem>
 
-					<InfoModal title="Complement Clauses" label="You Complete Me??????">
+					<InfoModal title="Complement Clauses" label="Enter The Matrix">
+						<ul>
+							<li>A <strong>Complement Clause</strong> (or Embedded Clause) functions as an argument to another clause.</li>
+							<li>A <strong>Matrix Clause</strong> (or Main Clause) has a Complement Clause as an argument.</li>
+							<li className="newSection">Complements can be in the Agent or Patient role. They are marked with [brackets] below:
+								<ul>
+									<li><em>Agent</em>: [That he survived] was unexpected.
+										<ul><li>English typically postposes an Agent Complement Clause and uses a dummy "It": <em>[It] was unexpected [that he survived].</em></li></ul>
+									</li>
+									<li><em>Patient</em>: He wants [to have a drink].</li>
+								</ul>
+							</li>
+							<li>A Matrix Clause can be a Complement Clause to another Matrix Clause:
+								<ul><li>Mulder wants [to believe [that aliens are real]].</li></ul>
+							</li>
+							<li className="newSection">Complement Clauses run in a continuum from <strong>finite clauses</strong> to <strong>non-finite clauses</strong>.
+								<ul>
+									<li><em>Finite</em>: [That he would be handsome] could not have been anticipated.
+										<ul>
+											<li>The complement can stand alone as a complete sentence (minus the marker "That").</li>
+											<li>It can have completely different TAM markers than the maxtrix clause.</li>
+											<li>The matrix verb will likely be an utterance verb or a verb of cognition.</li>
+										</ul>
+									</li>
+									<li><em>Non-finite</em>: It's very easy [to make a sandwich].
+										<ul>
+											<li>The subject of the clause will almost always be the subject of the matrix clause.</li>
+											<li>TAM markers are absent or highly constrained.</li>
+											<li>The verb in the clause will likely be non-finite.</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Indirect Questions</strong> are a subset of Complement Clauses.
+								<ul>
+									<li>Example: [Whether or not aliens exist] is not relavant here.</li>
+									<li>They may share formal properties with interrogative clauses and relative clauses.</li>
+								</ul>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="complClauses" rows={6}>What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?</TextItem>
+
+					<HeaderItem className="h h1">10.3. Adverbial Clauses</HeaderItem>
+
+					<InfoModal title="Adverbial Clauses" label="Tap This When You're Ready">
 						<ul>
 							<li></li>
 						</ul>
 					</InfoModal>
+					<TextItem text="advClauses" rows={6}>xxxxxxxxxx</TextItem>
 
 				</IonList>
 			</IonContent>
