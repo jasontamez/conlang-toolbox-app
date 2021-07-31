@@ -142,10 +142,108 @@ const Syntax = () => {
 
 					<InfoModal title="Adverbial Clauses" label="Tap This When You're Ready">
 						<ul>
+							<li>Also called <em>Adjuncts</em>, <strong>Adverbial Clauses</strong> behave as adverbs.</li>
+							<li>They can convey certain kinds of information:
+								<ul>
+									<li><em>Time</em>:
+										<ul>
+											<li>"We will go [when he gets here]."</li>
+										</ul>
+									</li>
+									<li><em>Location</em>:
+										<ul>
+											<li>"I will meet you [where the old oak tree used to stand]."</li>
+										</ul>
+									</li>
+									<li><em>Manner</em>:
+										<ul>
+											<li>"He talks [like a 3-year-old]."</li>
+											<li>"He walks [as a mummy would shamble]."</li>
+										</ul>
+									</li>
+									<li><em>Purpose</em>:
+										<ul>
+											<li>"He stands on tiptoes [in order to see better]."</li>
+										</ul>
+									</li>
+									<li><em>Reason</em>:
+										<ul>
+											<li>"He arrived early [because he wanted a good seat]."</li>
+										</ul>
+									</li>
+									<li><em>Circumstantial</em> adverbial clauses are rare:
+										<ul>
+											<li>"He got into the army [by lying about his age]."</li>
+										</ul>
+									</li>
+									<li><em>Simultaneous</em>:
+										<ul>
+											<li>"He woke up [crying]."</li>
+											<li>"She woke up [in a cold sweat]".</li>
+										</ul>
+									</li>
+									<li><em>Conditional</em>:
+										<ul>
+											<li>"[If it's raining outside], then my car is getting wet."</li>
+										</ul>
+									</li>
+									<li><em>Negative Conditional</em>:
+										<ul>
+											<li>"[Unless it rains], we will be having a picnic."</li>
+										</ul>
+									</li>
+									<li><em>Concessive Clause</em>:
+										<ul>
+											<li>"[Even though the band sucks], she agreed to go to the concert."</li>
+										</ul>
+									</li>
+									<li><em>Substitutive</em>:
+										<ul>
+											<li>"[Instead of barbecuing chicken], we went out to eat."</li>
+										</ul>
+									</li>
+									<li><em>Additive</em>:
+										<ul>
+											<li>"You must have your hand stamped [in addition to having your ticket]."</li>
+										</ul>
+									</li>
+									<li><em>Absolutive</em>:
+										<ul>
+											<li>"[Seeing a bully], Billy hid behind a curtain."</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</InfoModal>
+					<TextItem text="advClauses" rows={6}>How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?</TextItem>
+
+					<HeaderItem className="h h1">10.4. Clause Chaining, Medial Clauses, and Clause Chaining</HeaderItem>
+
+					<InfoModal title="Clause Chaining, Medial Clauses, and Clause Chaining" label="Chain Chain Chain...">
+						<ul>
 							<li></li>
 						</ul>
 					</InfoModal>
-					<TextItem text="advClauses" rows={6}>xxxxxxxxxx</TextItem>
+					<TextItem text="clauseChainEtc" rows={6}>xxxxxxxxxx</TextItem>
+
+					<HeaderItem className="h h1">10.5. Relative Relativizing Clauses</HeaderItem>
+
+					<InfoModal title="XXXXXXX" label="XXXXXXXXX">
+						<ul>
+							<li></li>
+						</ul>
+					</InfoModal>
+					<TextItem text="relClauses" rows={6}>xxxxxxxxxx</TextItem>
+
+					<HeaderItem className="h h1">10.6. Coordinating Clauses</HeaderItem>
+
+					<InfoModal title="Coordinating Clauses" label="XXXXXXXX">
+						<ul>
+							<li></li>
+						</ul>
+					</InfoModal>
+					<TextItem text="coords" rows={6}>xxxxxxxxxx</TextItem>
 
 				</IonList>
 			</IonContent>
