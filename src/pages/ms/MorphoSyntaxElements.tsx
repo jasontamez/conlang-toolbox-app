@@ -106,6 +106,24 @@ export const HeaderItem = (props: any) => {
 		</IonItem>
 	);
 };
+export const TransTable = (props: any) => {
+	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
+	let length = 0;
+	return (
+		<table>
+			{rows.map((row: string) => {
+				const tds = row.split(/\s+/);
+				length = Math.max(length, tds.length);
+				return row ? (
+					<tr>{tds.map((el: string) => el ? (
+						<td>{el.replace(/__/g, " ")}</td>
+					) : "")}</tr>
+				) : "";
+			})}
+			{(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""}
+		</table>
+	);
+};
 export const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
 	const synState = useSelector((state: any) => state.morphoSyntaxState);

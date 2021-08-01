@@ -14,7 +14,8 @@ import {
 	HeaderItem,
 	InfoModal,
 	RadioBox,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -149,24 +150,12 @@ const Syntax = () => {
 								<ul>
 									<li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br />
 										<span><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
-										<table>
-											<tr>
-												<td>n-areeka</td>
-												<td>Sionti-ke</td>
-											</tr>
-											<tr>
-												<td>I-arrive</td>
-												<td>Shionti-LOC (valence: 1)</td>
-											</tr>
-											<tr>
-												<td>n-areeka-ri</td>
-												<td>Sionti</td>
-											</tr>
-											<tr>
-												<td>I-arrive-him</td>
-												<td>Shionti (valence: 2)</td>
-											</tr>
-										</table>
+										<TransTable rows="
+											n-areeka Sionti-ke
+											/ I-arrive Shionti-LOC__(valence:__1)
+											/ n-areeka-re Sionti
+											/ I-arrive-him Shionti__(valence:__2)
+										" />
 									</li>
 								</ul>
 							</li>
@@ -198,38 +187,10 @@ const Syntax = () => {
 							<li>This is adding a participant that is associated in some way.
 								<ul>
 									<li>"Dinner is burned [for me]" in Spanish<br />
-										<table>
-											<tr>
-												<td>Se</td>
-												<td>me</td>
-												<td>quemó</td>
-												<td>la</td>
-												<td>cena.</td>
-											</tr>
-											<tr>
-												<td>REFL</td>
-												<td>1s</td>
-												<td>burn.3s.PST</td>
-												<td>DEF.F.s</td>
-												<td>dinner</td>
-											</tr>
-										</table>
+										<TransTable rows="Se me quemó la cena. / REFL 1s burn.3s.PST DEF.f.s dinner" />
 									</li>
 									<li>"She cut the hair [on him]" in Spanish.<br />
-										<table>
-											<tr>
-												<td>Le</td>
-												<td>cortó</td>
-												<td>el</td>
-												<td>pelo</td>
-											</tr>
-											<tr>
-												<td>3DAT</td>
-												<td>cut.3s.PST</td>
-												<td>DEF.M.s</td>
-												<td>hair</td>
-											</tr>
-										</table>
+										<TransTable rows="Se me quemó la cena. / REFL 1s burn.3s.PST DEF.f.s dinner" />
 									</li>
 								</ul>
 							</li>
@@ -244,28 +205,12 @@ const Syntax = () => {
 							<li>In many languages, this exists separate from a dative of interest.
 								<ul>
 									<li>"I fixed the railroad track" in Choctaw.<br />
-										<table>
-											<tr>
-												<td>Tali</td>
-												<td>i-hina-ya</td>
-												<td>ayska-li-tok</td>
-											</tr>
-											<tr>
-												<td>rock</td>
-												<td>AGR(III)-road-NS</td>
-												<td>fix-1s-PST (normal construction)</td>
-											</tr>
-											<tr>
-												<td>Tali-ya</td>
-												<td>hina</td>
-												<td>im-ayska-li-tok</td>
-											</tr>
-											<tr>
-												<td>rock-NS</td>
-												<td>road</td>
-												<td>AGR(III)-fix-1s-PST (possessor raised)</td>
-											</tr>
-										</table>
+										<TransTable rows="
+											Tali i-hina-ya ayska-li-tok
+											/ rock AGR(III)-road-NS fix-1s-PST__(normal__construction)
+											/ Tali-ya hina im-ayska-li-tok
+											/ rock-NS road AGR(III)-fix-1s-PST__(possessor__raised)
+										" />
 									</li>
 								</ul>
 							</li>

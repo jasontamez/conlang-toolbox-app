@@ -9,7 +9,8 @@ import {
 	SyntaxHeader,
 	HeaderItem,
 	InfoModal,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -130,7 +131,7 @@ const Syntax = () => {
 							</li>
 							<li className="newSection"><strong>Indirect Questions</strong> are a subset of Complement Clauses.
 								<ul>
-									<li>Example: [Whether or not aliens exist] is not relavant here.</li>
+									<li>Example: [Whether Mr. Wayne lied] is not relavant here.</li>
 									<li>They may share formal properties with interrogative clauses and relative clauses.</li>
 								</ul>
 							</li>
@@ -218,18 +219,58 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="advClauses" rows={6}>How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?</TextItem>
 
-					<HeaderItem className="h h1">10.4. Clause Chaining, Medial Clauses, and Clause Chaining</HeaderItem>
+					<HeaderItem className="h h1">10.4. Clause Chaining, Medial Clauses, and Switch References</HeaderItem>
 
-					<InfoModal title="Clause Chaining, Medial Clauses, and Clause Chaining" label="Chain Chain Chain...">
+					<InfoModal title="Clause Chaining, Medial Clauses, and Switch References" label="Chain Chain Chain...">
 						<ul>
-							<li></li>
+							<li><strong>Clause Chains</strong> are clauses presented in series. They can form a large part of discourse in many languages, such as the ones of New Guinea, Australia, and the Americas.
+								<ul>
+									<li>Typially, the last clause in the chain will have inflections for Tense and Aspect.</li>
+									<li>Panare and a minority of languages switch this up, giving the inflections to the first clause.</li>
+									<li><strong>Medial clauses</strong> occur before the <strong>Final clause</strong>.
+										<ul>
+											<li>They tend to have a reduce range of Tense/Aspect possibilities.</li>
+											<li>Their subject is referenced in terms of subject of the final clause.</li>
+											<li>Their placement represents temporal relations such as overlapping or in succession.</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Switch References</strong> are verbal inflections that indicate the subject of a verb is the same as the subject of another verb.
+								<ul>
+									<li>Yuman uses <em>-k</em> to indicate the next verb uses the same subject (SS) as this one, and <em>-m</em> to indicate the next verb will have a different subject (DS).
+										<ul>
+											<li>"I sang and danced"<br />
+												<TransTable rows="Nyaa '-ashvar-k '-iima-k / I 1-sing-SS 1-dance-ASPECT" />
+											</li>
+											<li>"Bonnie sang and I danced"<br />
+												<TransTable rows="Bonnie-sh 0-ashvar-m '-iima-k / Bonnie-SUBJ 3-sing-DS 1-dance-ASPECT" />
+											</li>
+										</ul>
+									</li>
+									<li className="newSection">Ergative languages often have complex Switch Reference systems that indicate the temporal relations of the clauses, whether or not the verbs' subjects agree, and strongly indicate a reason why the clauses are linked.
+										<ul>
+											<li>Panare: Suffix / Temporal / Agreement / Linkage<br />
+												<ul>
+													<li>-séjpe / succession / Actor = Actor / purpose</li>
+													<li>-séñape / succession / Absolutive = Patient / result</li>
+													<li>-ñére / succession / Actors are different / movement or purpose</li>
+													<li>-npan / overlap / Actor = Actor / none</li>
+													<li>-tááñe / overlap / Actor = Actor / none</li>
+													<li>-jpómën / anteriority / Actor = Actor / reason</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="clauseChainEtc" rows={6}>xxxxxxxxxx</TextItem>
+					<TextItem text="clauseChainEtc" rows={6}>Is the first or final clause inflected? Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Are the markers placed on the noun, verb, or conjunction? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
 
-					<HeaderItem className="h h1">10.5. Relative Relativizing Clauses</HeaderItem>
+					<HeaderItem className="h h1">10.5. Relative Clauses</HeaderItem>
 
-					<InfoModal title="XXXXXXX" label="XXXXXXXXX">
+					<InfoModal title="Relative Clauses" label="XXXXXXXXX">
 						<ul>
 							<li></li>
 						</ul>
