@@ -72,13 +72,13 @@ const appMenuPages: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '4. Noun and Noun Phrase Operations',
+				title: '4. Noun Operations',
 				url: '/ms/ms04',
 				id: 'menuitemMS4',
 				parent: 'ms'
 			},
 			{
-				title: '5. Predicate Nominals and Related Constructions',
+				title: '5. Predicate Nominals etc.',
 				url: '/ms/ms05',
 				id: 'menuitemMS5',
 				parent: 'ms'
@@ -90,19 +90,19 @@ const appMenuPages: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '7. Voice and Valence Adjusting Operations',
+				title: '7. Voice/Valence Operations',
 				url: '/ms/ms07',
 				id: 'menuitemMS7',
 				parent: 'ms'
 			},
 			{
-				title: '8. Other Verb and Verb Phrase Operations',
+				title: '8. Other Verb Operations',
 				url: '/ms/ms08',
 				id: 'menuitemMS8',
 				parent: 'ms'
 			},
 			{
-				title: '9. Pragmatically Marked Structures',
+				title: '9. Pragmatic Marking',
 				url: '/ms/ms09',
 				id: 'menuitemMS9',
 				parent: 'ms'

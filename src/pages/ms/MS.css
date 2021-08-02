@@ -138,13 +138,17 @@
 	text-align: start;
 	border: 0;
 }
-.morphoSyntaxModal table.informational th {
-	text-align: center;
-	padding-inline: 0;
-}
+.morphoSyntaxModal table.informational th,
 .morphoSyntaxModal table.informational td + td {
 	text-align: center;
 	padding-inline: 0;
+}
+.morphoSyntaxModal table.translation {
+	border-width: 0.1rem;
+}
+.morphoSyntaxModal table.translation td,
+.morphoSyntaxModal table.translation td + td {
+	padding-inline: 0.25rem;
 }
 #morphoSyntaxPage table td + td,
 .morphoSyntaxModal table td + td {

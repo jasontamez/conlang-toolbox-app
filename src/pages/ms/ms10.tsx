@@ -3,6 +3,10 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
+	IonItem,
+	IonGrid,
+	IonRow,
+	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
@@ -10,7 +14,8 @@ import {
 	HeaderItem,
 	InfoModal,
 	TextItem,
-	TransTable
+	TransTable,
+	RadioBox
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -270,12 +275,155 @@ const Syntax = () => {
 
 					<HeaderItem className="h h1">10.5. Relative Clauses</HeaderItem>
 
-					<InfoModal title="Relative Clauses" label="XXXXXXXXX">
+					<InfoModal title="Relative Clauses" label="Clauses as Adjectives">
 						<ul>
-							<li></li>
+							<li>A <strong>Relative Clause</strong> is a clause that functions as a nominal modifier. They can be identified by four points.
+								<ul>
+									<li>Example: "The fumes that made Chris faint."
+										<ol>
+											<li><em>Head</em>: The noun phrase modified by the clause (fumes)</li>
+											<li><em>Restricting Clause</em>: The relative clause itself (made Chris faint)</li>
+											<li><em>Relativized Noun Phrase</em>: The part of the Restricting Clause that refers to the Head (English uses a Gap Strategy, explained below)</li>
+											<li><em>Relativizer</em>: Morpheme or particle that sets off the relative clause (that)</li>
+										</ol>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection">Relative Clauses (RCs) are usually positioned in the same place as other nominal modifiers, but there is a strong tendency towards placing them postnomial, even if other modifiers fall before the noun phrase.
+								<ul>
+									<li><em>Prenomial</em>: before the Head</li>
+									<li><em>Postnomial</em>: after the Head (most common, especially in VP languages)</li>
+									<li><em>Internally headed</em>: the Head is placed within the relative clause
+										<ul>
+											<li>This is common in PV languages, such as Bambara:<br />
+												<TransTable rows="ne ye so ye / 1s PST horse see">"I saw a horse"</TransTable>
+												<TransTable rows="ce ye [ne ye so min ye] san / man PST 1s PST horse REL see buy">"The man bought the horse that I saw"</TransTable>
+											</li>
+										</ul>
+									</li>
+									<li><em>Headless</em>: the clause itself refers to the Head
+										<ul>
+											<li>This is common in languages that use nouns to modify other nouns, such as Ndjuká:
+												<ul>
+													<li>Non-specific subject:<br />
+														<TransTable rows="[Di o doo fosi] o wini / REL FUT arrive first FUT win">"Whoever arrives first will win"</TransTable>
+													</li>
+													<li>Specific subject:<br />
+														<TransTable rows="A mainsí ya a [di e tan a ini se] / the eel here COP REL CONT stay LOC inside sea">"The eel is what (the one that) lives in the sea"</TransTable>
+													</li>
+												</ul>
+											</li>
+											<li>But it can happen in other languages, such as English:
+												<ul>
+													<li>Headless RC: [That which John said] annoyed her. (Something specific he said annoyed her)</li>
+													<li>Complementary Clause: [That John said anything] annoyed her. (The action itself annoyed her)</li>
+												</ul>
+											</li>
+											<li>In many languages, headless construction is allowed when the head noun is nonspecific.
+												<ul><li>[Whenever I'm afraid] I call her. (Refers to a time that is not specified otherwise)</li></ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection">The Relativized Noun Phrase (RNP) can be expressed in different ways.
+								<ul>
+									<li><strong>Gap Strategy</strong>: the RNP is represented by a "gap" in the phrase, a missing space (0) where logically some argument would normally go.
+										<ul>
+											<li>English uses this:
+												<ul>
+													<li>Example: The man [that I loved 0] died.</li>
+													<li>Full noun phrase: [I loved the man]</li>
+												</ul>
+											</li>
+											<li>This is a useful strategy when the semantic role of the Head is different in the RC:
+												<ul>
+													<li>The alligator [that 0 saw me] ate Alice.</li>
+													<li>The alligator [that I saw 0] ate Alice.</li>
+												</ul>
+											</li>
+											<li>However, this can become ambiguous if the constituent order changes often, or when the A and P are next to each other in normal discourse:
+												<ul>
+													<li>Ithsmus Zapotee is a VAP language.<br />
+														<TransTable rows="junaa ni [najii 0__Juan] / junaa ni [najii Juan__0] / woman REL loves John">This could be either "A woman that loves John" (top) or "A woman that Jon loves".</TransTable>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li><strong>Pronoun Retention</strong>: a pronoun is retained to indicate grammatical role.
+										<ul>
+											<li>Typically, the pronoun is similar to other pronouns, either question words or pronouns used for non-specific, indefinite things.
+												<ul><li>Example: That's the guy who [I can never remember <em>his</em> name]</li></ul>
+											</li>
+										</ul>
+									</li>
+									<li className="newSection">The Relativizer may be marked to show the NPR's role.
+										<ul>
+											<li>Chickasaw:<br />
+												<TransTable rows="
+													ihoo yamma-ay ofi' pĩs-tokat illi-tok
+													/ woman that-SUB dog see-PST:DEP:SS die-PST
+												">"The woman that saw the dog died"</TransTable>
+												<br />
+												<TransTable rows="
+													ihoo-at ofi' yamma pĩs-tokã illi-tok
+													/ woman-SUB dog that see-PST:DEP:DS die-PST
+												">"The woman that the dog saw died"</TransTable>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection">Relativization Hierarchy:
+								<ul>
+									<li>Subject</li>
+									<li>Direct Object</li>
+									<li>Indirect Object</li>
+									<li>Oblique</li>
+									<li>Possessor</li>
+								</ul>
+							</li>
+							<li>No language (that uses the above grammatical roles) allows relativization of an element, using a single strategy, without also allowing relativizing of the elements above it in the hierarchy. Other elements may have other relativization strategies. For example, English uses the Gap Strategy down through the Obliques, but it doesn't apply to the Possessors:
+								<ul>
+									<li><em>Subject</em>: I hate the guy that [0 dumped her].</li>
+									<li><em>Direct Object</em>: I hate the guy that [she dated 0].</li>
+									<li><em>Indirect Object</em>: I hate the guy that [she gave her heart to 0].</li>
+									<li><em>Oblique</em>: I hate the guy that [she lived with 0].</li>
+									<li><em>Oblique</em>: I hate the guy that [she is older than 0].</li>
+									<li><em>Possessor</em>: I hate the guy that [0 head is bald].
+										<ul>
+											<li>This is not valid English. Another strategy has to be used: "I hate the guy [whose head is bald]."</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="relClauses" rows={6}>xxxxxxxxxx</TextItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Types of Relative Clauses</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="relPre" /></IonCol>
+								<IonCol>Prenomial</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="relPost" /></IonCol>
+								<IonCol>Postnomial</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="relInternal" /></IonCol>
+								<IonCol>Internally Headed</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="relHeadless" /></IonCol>
+								<IonCol>Headless</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<TextItem text="relClauses" rows={6}>Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).</TextItem>
 
 					<HeaderItem className="h h1">10.6. Coordinating Clauses</HeaderItem>
 

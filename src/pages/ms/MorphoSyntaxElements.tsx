@@ -110,7 +110,7 @@ export const TransTable = (props: any) => {
 	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
 	let length = 0;
 	return (
-		<table>
+		<table className="translation">
 			{rows.map((row: string) => {
 				const tds = row.split(/\s+/);
 				length = Math.max(length, tds.length);

@@ -151,7 +151,7 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
 				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "markInv" | "markDirInv"
-				| "verbAgreeInv";
+				| "verbAgreeInv" | "relPre" | "relPost" | "relInternal" | "relHeadless";
 export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
