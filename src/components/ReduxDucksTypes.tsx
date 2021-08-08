@@ -150,8 +150,11 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
 				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
-				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "markInv" | "markDirInv"
-				| "verbAgreeInv" | "relPre" | "relPost" | "relInternal" | "relHeadless";
+				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "nomAcc" | "ergAcc"
+				| "markInv" | "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph" | "modeMorph"
+				| "otherMorph" | "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj" | "chainT"
+				| "chainA" | "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost" | "relInternal"
+				| "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
 export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }

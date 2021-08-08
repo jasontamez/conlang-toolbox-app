@@ -3,13 +3,18 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
+	IonItem,
+	IonGrid,
+	IonRow,
+	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	SyntaxHeader,
 	HeaderItem,
 	InfoModal,
-	TextItem
+	TextItem,
+	RadioBox
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -95,7 +100,23 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 
-					<TextItem text="ergative" rows={8}>Does the language use a nominative/accusative alignment, or an ergative/absolutive alignment? Are there any exceptions?</TextItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Primary Alignment System</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="nomAcc" /></IonCol>
+								<IonCol>Nominative / Accusative</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="ergAbs" /></IonCol>
+								<IonCol>Ergative / Absolutive</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+
+					<TextItem text="ergative" rows={8}>Are there any exceptions to the primary alignment? Do they exist in a hierarchy?</TextItem>
 
 				</IonList>
 			</IonContent>

@@ -3,13 +3,18 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	IonItem,
+	IonGrid,
+	IonRow,
+	IonCol
 } from '@ionic/react';
 import {
 	SyntaxHeader,
 	HeaderItem,
 	InfoModal,
-	TextItem
+	TextItem,
+	RadioBox
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -151,10 +156,32 @@ const Syntax = () => {
 									<li>Tense: barely 50% of languages do!</li>
 								</ul>
 							</li>
-							<li className="newSection">Certain TAM morphemes may cluster together with greater-than-chance frequency, forming hypermorphemes.</li>
 							<li className="newSection">TAM morphemes often interact significantly with case or number marking (nom/acc in one aspect, erg/abs in another; merging aspect with number).</li>
 						</ul>
 					</InfoModal>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Morphology Exists For:</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="tenseMorph" /></IonCol>
+								<IonCol>Tense</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="aspectMorph" /></IonCol>
+								<IonCol>Aspect</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="modeMorph" /></IonCol>
+								<IonCol>Mode</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="otherMorph" /></IonCol>
+								<IonCol>Other (see below)</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
 					<HeaderItem className="h h3">8.3.1 Tense</HeaderItem>
 
 					<InfoModal title="Tense" label="Info on Tense">
@@ -412,7 +439,7 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="miscVerbFunc" rows={4}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
+					<TextItem text="miscVerbFunc" rows={4}>Does the language have any other notable verb phrase operations?</TextItem>
 
 				</IonList>
 			</IonContent>

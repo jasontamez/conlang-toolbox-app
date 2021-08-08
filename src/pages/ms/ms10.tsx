@@ -249,7 +249,7 @@ const Syntax = () => {
 												<TransTable rows="Nyaa '-ashvar-k '-iima-k / I 1-sing-SS 1-dance-ASPECT" />
 											</li>
 											<li>"Bonnie sang and I danced"<br />
-												<TransTable rows="Bonnie-sh 0-ashvar-m '-iima-k / Bonnie-SUBJ 3-sing-DS 1-dance-ASPECT" />
+												<TransTable rows="Bonnie-sh 0-ashvar-m '-iima-k / Bon&shy;nie-SUBJ 3-sing-DS 1-dance-ASPECT" />
 											</li>
 										</ul>
 									</li>
@@ -271,7 +271,68 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="clauseChainEtc" rows={6}>Is the first or final clause inflected? Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Are the markers placed on the noun, verb, or conjunction? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Which Clause is Inflected?</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainFirst" /></IonCol>
+								<IonCol>First</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainLast" /></IonCol>
+								<IonCol>Last</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Which Element is Marked?</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainN" /></IonCol>
+								<IonCol>Noun</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainV" /></IonCol>
+								<IonCol>Verb</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainCj" /></IonCol>
+								<IonCol>Conjunction</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>What Other Information Does the Marker Encode?</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainT" /></IonCol>
+								<IonCol>Tense</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainA" /></IonCol>
+								<IonCol>Aspect</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainPer" /></IonCol>
+								<IonCol>Person</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainNum" /></IonCol>
+								<IonCol>Number</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="chainOther" /></IonCol>
+								<IonCol>Other</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<TextItem text="clauseChainEtc" rows={6}>Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
 
 					<HeaderItem className="h h1">10.5. Relative Clauses</HeaderItem>
 
@@ -309,7 +370,7 @@ const Syntax = () => {
 														<TransTable rows="[Di o doo fosi] o wini / REL FUT arrive first FUT win">"Whoever arrives first will win"</TransTable>
 													</li>
 													<li>Specific subject:<br />
-														<TransTable rows="A mainsí ya a [di e tan a ini se] / the eel here COP REL CONT stay LOC inside sea">"The eel is what (the one that) lives in the sea"</TransTable>
+														<TransTable rows="A mainsí ya a [di e tan a ini se] / the eel here COP REL CONT stay LOC in&shy;side sea">"The eel is what (the one that) lives in the sea"</TransTable>
 													</li>
 												</ul>
 											</li>
@@ -391,7 +452,7 @@ const Syntax = () => {
 									<li><em>Indirect Object</em>: I hate the guy that [she gave her heart to 0].</li>
 									<li><em>Oblique</em>: I hate the guy that [she lived with 0].</li>
 									<li><em>Oblique</em>: I hate the guy that [she is older than 0].</li>
-									<li><em>Possessor</em>: I hate the guy that [0 head is bald].
+									<li><em>Possessor</em>: <del>I hate the guy that [0 head is bald].</del>
 										<ul>
 											<li>This is not valid English. Another strategy has to be used: "I hate the guy [whose head is bald]."</li>
 										</ul>
@@ -427,12 +488,74 @@ const Syntax = () => {
 
 					<HeaderItem className="h h1">10.6. Coordinating Clauses</HeaderItem>
 
-					<InfoModal title="Coordinating Clauses" label="XXXXXXXX">
+					<InfoModal title="Coordinating Clauses" label="This And That">
 						<ul>
-							<li></li>
+							<li><strong>Coordinating Clauses</strong> are linked together, equal in grammatical status. They may be difficult to distinguish from juxtaposition.</li>
+							<li>They often use methods identical to those used to join noun phrases:
+								<ul>
+									<li>John <em>and</em> Mary</li>
+									<li>John cried <em>and</em> Mary laughed.</li>
+								</ul>
+							</li>
+							<li>It's also common for special strategies to exist that do not work for noun phrases:
+								<ul>
+									<li>John cried <em>but</em> Mary laughed.</li>
+								</ul>
+							</li>
+							<li className="newSection">CCs often express <strong>Coordination</strong> (x and y, neither x nor y), <strong>Disjunction</strong> (either x or y), and <strong>Exclusion</strong> (x and not y).</li>
+							<li className="newSection">The <strong>Zero Strategy</strong> looks just like juxtaposition. Vietnamese:
+								<ul>
+									<li><em>Noun Phrases</em>:<br />
+										<TransTable rows="Nháng tiráp [tilêt, callóh, acóq] / we pre&shy;pare bas&shy;ket spear knife">We prepared the basket, the spear and the knife.</TransTable>
+									</li>
+									<li><em>Prepositional Phrases</em>:<br />
+										<TransTable rows="Do chô [tôq cyâq, tôq apây] / she re&shy;turn to hus&shy;band to grand&shy;moth&shy;er">She returned to her husband and to her grandmother.</TransTable>
+									</li>
+									<li><em>Verb Phrases</em>:<br />
+										<TransTable rows="Do [chô tôq cayâq, chô tôq apây] / she re&shy;turn to hus&shy;band re&shy;turn to grand&shy;moth&shy;er">She returned to her husband and returned to her grandmother.</TransTable>
+									</li>
+								</ul>
+							</li>
+							<li className="newSection"><strong>Coordinating Conjunctions</strong> (CCs) are a common strategy.
+								<li>The conjunction is often the same as "with". English uses "and" and "but", among others.</li>
+								<li>In VP languages:
+									<ul>
+										<li>The CC is usually between the two clauses:
+											<ul><li>The dog growled <em>and</em> the cat hissed.</li></ul>
+										</li>
+										<li>But sometimes, the CC comes after the first element of the second clause.
+											<ul>
+												<li>Yoruba:<br />
+													<TransTable rows="mo mú ìwé; mo sì w's ilé / I take book I and come house">I took a book and I came home.</TransTable>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>In PV languages, the CC either comes between the two clauses (Farsi) or after the last element (Walapai).</li>
+							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="coords" rows={6}>xxxxxxxxxx</TextItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Coordinating Conjunction Positions</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="coordMid" /></IonCol>
+								<IonCol>Between the clauses</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="coordTwo" /></IonCol>
+								<IonCol>After the first element of the second clause</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="coordLast" /></IonCol>
+								<IonCol>After the last element</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<TextItem text="coords" rows={6}>Describe how Conjunction, Disjunction and Exclusion are expressed in the language.</TextItem>
 
 				</IonList>
 			</IonContent>

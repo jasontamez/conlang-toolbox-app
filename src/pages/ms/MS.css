@@ -149,6 +149,8 @@
 .morphoSyntaxModal table.translation td,
 .morphoSyntaxModal table.translation td + td {
 	padding-inline: 0.25rem;
+	hyphens: manual;
+	overflow-wrap: break-word;
 }
 #morphoSyntaxPage table td + td,
 .morphoSyntaxModal table td + td {

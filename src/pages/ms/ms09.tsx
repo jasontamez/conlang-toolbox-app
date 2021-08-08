@@ -9,7 +9,8 @@ import {
 	SyntaxHeader,
 	HeaderItem,
 	InfoModal,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -356,15 +357,21 @@ const Syntax = () => {
 							</li>
 							<li className="newSection"><em>Interrogative Particle</em>:
 								<ul>
-									<li>Question Particles (QPs) are very common, especially among PV languages, but does appear in VP languages, too.</li>
-									<li>The QP can be cliticized to the first constituent in the clause, either before or after it.</li>
-									<li>Often, the QP can be omitted, letting context and intonation do the job instead.
+									<li>Question Particles (QPs) are very common, especially among PV languages, but they do appear in VP languages, too.</li>
+									<li>The QP can be cliticized to the first constituent in the clause, either before or after it.
 										<ul>
-											<li>Latin: "erat<em>ne</em> tecum" / he:was-QP you-with → Was he with you?</li>
-											<li>Mandarin: "tā xihuan chī pǐngguǒ <em>ma</em>" / she like eat apple QP → Does she like to eat apples?</li>
-											<li>Tagalog: "mabait <em>ba</em> si Pilar?" / kind QP is Pilar → Is Pilar kind?</li>
+											<li>Latin:<br />
+												<TransTable rows="erat-ne te-cum / he:was-QP you-with">Was he with you?</TransTable>
+											</li>
+											<li>Mandarin:<br />
+												<TransTable rows="tā xihuan chī pǐngguǒ ma / she like eat apple QP">Does she like to eat apples?</TransTable>
+											</li>
+											<li>Tagalog:<br />
+												<TransTable rows="mabait ba si Pilar? / kind QP is Pilar">Is Pilar kind?</TransTable>
+											</li>
 										</ul>
 									</li>
+									<li>Often, the QP can be omitted, letting context and intonation do the job instead.</li>
 									<li className="newSection">Some varieties of English has developed a QP as an alternative to word order inversion
 										<ul>
 											<li>"You want to go for a ride, <em>eh</em>?"</li>
@@ -395,7 +402,7 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="YNQs" rows={4}>How are yes/no questions formed?</TextItem>
+					<TextItem text="YNQs" rows={4}>How are yes/no questions formed? Do they serve other discourse functions other than the obvious?</TextItem>
 
 					<HeaderItem className="h h4">9.3.1.2. Questions-Word Questions</HeaderItem>
 
@@ -416,7 +423,7 @@ const Syntax = () => {
 							</li>
 							<li>Many PV languages leave the QW in the "normal" position, such as Japanese and Tibetan.</li>
 							<li>Most PV languages can either leave the QW in position, or it can move to the front.</li>
-							<li>Some VP languages allow or require leaving the QW in position, such as Mandarin, and many eastern African languages.</li>
+							<li>Some VP languages allow or require leaving the QW in position, such as Mandarin and many eastern African languages.</li>
 							<li className="newSection">QWs can usually take case markers and/or adpositions.</li>
 							<li>When the QW from an oblique clause is fronted, the adposition may or may not come with it.
 								<ul>
@@ -438,7 +445,7 @@ const Syntax = () => {
 							<li>Sometimes imperatives take special verb forms or affixes, as in Greenlandic Iñupiat, and/or special negation strategies.</li>
 							<li className="newSection">Imperatives are often associated with Irrealis modes (8.3.3)</li>
 							<li className="newSection">Sometimes imperatives affect case marking.
-								<ul><li>Finnish puts Patients in imperatives in nominative case instead of accusative case.</li></ul>
+								<ul><li>Finnish puts the Patients of imperatives in nominative case instead of accusative case.</li></ul>
 							</li>
 							<li className="newSection">Different types of imperatives may exist.
 								<ul><li>In Panare, the suffix <em>-kë</em> is for plain imperatives, while <em>-ta'</em> is used for imperatives involving motion.</li></ul>

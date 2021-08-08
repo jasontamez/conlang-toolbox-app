@@ -165,7 +165,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">7.1.3. Dative Shift</HeaderItem>
 
-					<InfoModal title="Dative Shift">
+					<InfoModal title="Dative Shift" label="Looking Shifty">
 						<ul>
 							<li>This only applies to verbs that take an Agent, a Patient and a Recipient or Experiencer. This latter argument is usually put in the <em>dative</em> case.</li>
 							<li>Applicatives mark the verb, while a Dative Shift does not.</li>
@@ -182,15 +182,15 @@ const Syntax = () => {
 
 					<HeaderItem className="h">7.1.4. Dative of Interest</HeaderItem>
 
-					<InfoModal title="Dative of Interest">
+					<InfoModal title="Dative of Interest" label="Pique Your Interest">
 						<ul>
 							<li>This is adding a participant that is associated in some way.
 								<ul>
 									<li>"Dinner is burned [for me]" in Spanish<br />
-										<TransTable rows="Se me quemó la cena. / REFL 1s burn.3s.PST DEF.f.s dinner" />
+										<TransTable rows="Se me quemó la cena. / REFL 1s burn.3s.PST DEF.f.s din&shy;ner" />
 									</li>
 									<li>"She cut the hair [on him]" in Spanish.<br />
-										<TransTable rows="Se me quemó la cena. / REFL 1s burn.3s.PST DEF.f.s dinner" />
+										<TransTable rows="Le cortó el pelo. / 3.DAT cut.3s.PST DEF.M.s hair" />
 									</li>
 								</ul>
 							</li>
@@ -207,9 +207,9 @@ const Syntax = () => {
 									<li>"I fixed the railroad track" in Choctaw.<br />
 										<TransTable rows="
 											Tali i-hina-ya ayska-li-tok
-											/ rock AGR(III)-road-NS fix-1s-PST__(normal__construction)
+											/ rock AGR(III)-road-NS fix-1s-PST__(nor&shy;mal__con&shy;struc&shy;tion)
 											/ Tali-ya hina im-ayska-li-tok
-											/ rock-NS road AGR(III)-fix-1s-PST__(possessor__raised)
+											/ rock-NS road AGR(III)-fix-1s-PST__(pos&shy;ses&shy;sor__raised)
 										" />
 									</li>
 								</ul>
@@ -229,7 +229,7 @@ const Syntax = () => {
 								<ul>
 									<li>The verb itself implies reflexivity.
 										<ul>
-											<li>e.g.: Steve washed, shaved, and got dressed.</li>
+											<li>e.g.: Steve washed and shaved every morning.</li>
 										</ul>
 									</li>
 								</ul>
@@ -307,14 +307,14 @@ const Syntax = () => {
 									<li>Yup'ik has an adversative passive (to the detriment of the subject), abilitative passive (X can be Y [by Z]), and a negative abilitiative (X cannot be Y [by Z]).</li>
 								</ul>
 							</li>
-							<li className="newSection">Passives construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
+							<li className="newSection">Passive construction may be obligatory in a particular environment, e.g. when the Patient outranks the Agent.</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="passives" rows={4}>How are passives handled?</TextItem>
 
 					<HeaderItem className="h h3">7.2.4. Inverses</HeaderItem>
 
-					<InfoModal title="Inverses">
+					<InfoModal title="Inverses" label="Playing The Reverse Card">
 						<ul>
 							<li>This is a valence "rearranging" device, e.g. "Steve taught him" becomes "Him, Steve taught."</li>
 							<li>Often follows a hierarchy where a "higher" Agent requires direct and a "lower" Agent requires the inverse.</li>
