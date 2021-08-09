@@ -135,7 +135,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h2">3.3. Noun Phrases</HeaderItem>
 
-					<TextItem text="nounPhrase" rows={4}>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses***, classifiers***, and the head noun?</TextItem>
+					<TextItem text="nounPhrase" rows={4}>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?</TextItem>
 
 					<HeaderItem className="h h2">3.4. Adpositional Phrases</HeaderItem>
 
@@ -157,7 +157,7 @@ const Syntax = () => {
 					</IonItem>
 					<InfoModal title="Adpositions" label="More Info">
 						<ul>
-							<li>Many derive from verbs, especially serial verbs (see 10.1).</li>
+							<li>Many <strong>Adpositions</strong> derive from verbs, especially serial verbs (see 10.1).</li>
 							<li>Others derive from nouns, especially body parts (top, back, face, head, etc).</li>
 							<li>Adpositional phrases may appear the same as possessed noun phrases (in front of vs. on his face) or regular nouns (top vs. on top of).</li>
 						</ul>

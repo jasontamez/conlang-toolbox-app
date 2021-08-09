@@ -14,7 +14,8 @@ import {
 	HeaderItem,
 	InfoModal,
 	RadioBox,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -70,11 +71,46 @@ const Syntax = () => {
 							<li>Some languages only mark number occassionally or optionally depending on the type of noun.</li>
 							<li>This is often intertwined with other markers, such as case marking in Romance languages.</li>
 							<li>Most languages leave the singular unmarked, but not all!</li>
-							<li>Number marking may be as simple as a singular/plural distinction (one vs more than one), or incorporate dual (two), trial (three), paucal (small amount), and/or plural (larger amounts) distinctions.</li>
+							<li>Number marking may have many distinctions:
+								<ul>
+									<li>singular (one)</li>
+									<li>dual (two)</li>
+									<li>trial (three)</li>
+									<li>paucal (small amount)</li>
+									<li>plural (any amount larger than the others used)</li>
+								</ul>
+							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="nNumber" rows={3}>Is number expressed in the noun phrase? Is the distinction between singular and non-singular obligatory, optional or absent? What non-singular distinctions are there?</TextItem>
-					<TextItem text="nNumberOptObl" rows={6}>If number-marking is optional, when does it tend to occur? When does it not tend to occur?<br /><br />If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Which Distinctions Are Marked in the Noun Phrase?</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numSing" /></IonCol>
+								<IonCol>Singular</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numDual" /></IonCol>
+								<IonCol>Dual</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numTrial" /></IonCol>
+								<IonCol>Trial</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numPaucal" /></IonCol>
+								<IonCol>Paucal</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numPlural" /></IonCol>
+								<IonCol>Plural</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
+					<TextItem text="nNumberOpt" rows={3}>Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?</TextItem>
+					<TextItem text="nNumberObl" rows={6}>If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
 
 					<HeaderItem className="h h2">4.4. Case Marking</HeaderItem>
 
@@ -91,10 +127,14 @@ const Syntax = () => {
 								</ul>
 							</li>
 							<li>In Latin, if a Patient occurs in some other case, either the sentence is ungrammatical or another sense of the verb results.</li>
-							<li>In some languages, verbs and/or adpositions <em>govern</em> their arguments, requiring a specific case marker on their nouns. This allows similar-sounding verbs to be discerned by these case markers. For example, in Yagua:
+							<li>In some languages, verbs and/or adpositions <em>govern</em> their arguments, requiring a specific case marker on their nouns. This allows similar-sounding verbs to be discerned by these case markers. For example, in Yagua, the verb <em>dííy</em> can mean either "kill" or "see" depending on which case the Patient is in:
 								<ul>
-									<li>sa-dííy nurutú-0 (he-kill alligator-ACCUSATIVE)</li>
-									<li>sa-dííy nurutí-íva (he-see alligator-DATIVE)</li>
+									<li>He killed the alligator:<br />
+										<TransTable rows="sa-dííy nurutú-0 / he-kill alligator-ACC" />
+									</li>
+									<li>He saw the alligator:
+										<TransTable rows="sa-dííy nurutí-íva / he-see alligator-DAT" />
+									</li>
 								</ul>
 							</li>
 						</ul>
@@ -134,6 +174,33 @@ const Syntax = () => {
 							<li>Classifiers may occur with verbs, numerals and adjectives, though they may serve a different function in those cases.</li>
 						</ul>
 					</InfoModal>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Which Class Distinctions Exist?</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="classGen" /></IonCol>
+								<IonCol>Gender</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="classAnim" /></IonCol>
+								<IonCol>Animacy</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="classShape" /></IonCol>
+								<IonCol>Shape</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="classFunction" /></IonCol>
+								<IonCol>Function</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="classOther" /></IonCol>
+								<IonCol>Other</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
 					<TextItem text="classGender" rows={8}>Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?</TextItem>
 
 					<HeaderItem className="h h2">4.8. Diminution/Augmentation</HeaderItem>
@@ -151,7 +218,7 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 					<IonItem className="content">
-						<IonGrid>
+						<IonGrid className="cols2">
 							<IonRow>
 								<IonCol className="cbox"><RadioBox prop="dimAugYes" /></IonCol>
 								<IonCol>Dim/Aug System Exists</IonCol>

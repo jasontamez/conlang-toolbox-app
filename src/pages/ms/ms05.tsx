@@ -61,7 +61,7 @@ const Syntax = () => {
 									</li>
 									<li><em>Joined by copula</em>
 										<ul>
-											<li>A <em>copula</em> is a morpheme that "couples" two elements. Often encodes tense/aspect, and can be restricted to certain situations (e.g. only in non-present tenses).</li>
+											<li>A <em>copula</em> is a morpheme that "couples" two elements. Often encodes Tense/Aspect (8.3), and can be restricted to certain situations (e.g. only in non-present tenses).</li>
 											<li>The copula can take different forms:
 												<ul>
 													<li><em>Verb</em>
@@ -109,7 +109,7 @@ const Syntax = () => {
 							<li>The locative word is often the same as a locative adposition.</li>
 							<li>Word order usually distinguishes possessive clauses from locational clauses.
 								<ul>
-									<li>Ex: Steve has a cat; the cat is behind Steve.</li>
+									<li>Ex: Steve has a cat (possessive); the cat is behind Steve (locational).</li>
 								</ul>
 							</li>
 							<li className="newSection">English bases locatives on possessive clauses, but with an inanimate possessor.</li>
@@ -123,7 +123,7 @@ const Syntax = () => {
 					<InfoModal title="Existentials" label="These Exist">
 						<ul>
 							<li>These constructions usually serve a presentative function, introducing new participants.</li>
-							<li>Usually, the nominal is indefinite: "There are lions in Africa" vs. "There are the lions in Africa".</li>
+							<li>Usually, the nominal is indefinite: Consider "There are lions in Africa" (valid) vs. "There are the lions in Africa" (invalid).</li>
 							<li>There is usually little to no case marking, verb agreement, etc.</li>
 							<li>They often share features of predicate nominals (copula), but some languages prohibit such forms.</li>
 							<li>They often have special negation stategies (e.g. a verb meaning 'to lack': "Under the bed lacks a cat").</li>
@@ -145,8 +145,12 @@ const Syntax = () => {
 
 					<InfoModal title="Possessive Clauses">
 						<ul>
-							<li>Verb strategy: "I have a book."</li>
-							<li>Copula strategy: "The book is at me."</li>
+							<li>These follow two main strategies:
+								<ul>
+									<li>Verb strategy: "I have a book."</li>
+									<li>Copula strategy: "The book is at me."</li>
+								</ul>
+							</li>
 						</ul>
 					</InfoModal>
 					<TextItem text="predEx" rows={3}>Does the language use a verb or copula strategy?</TextItem>

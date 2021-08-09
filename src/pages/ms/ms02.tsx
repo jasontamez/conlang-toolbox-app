@@ -73,7 +73,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h">2.1.1.3. Count vs Mass</HeaderItem>
 
-					<InfoModal title="Count Nouns and Mass Nouns" label="Read About Them">
+					<InfoModal title="Count Nouns and Mass Nouns" label="A Piece of Information">
 						<ul>
 							<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
 							<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
@@ -346,6 +346,55 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
+					<IonItem className="content">
+						<IonGrid className="cols2">
+							<IonRow className="header">
+								<IonCol>Number Base</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="baseFive" /></IonCol>
+								<IonCol>Base Five</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="baseTen" /></IonCol>
+								<IonCol>Base Ten</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="baseTwenty" /></IonCol>
+								<IonCol>Base Twenty</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="baseOther" /></IonCol>
+								<IonCol>Other</IonCol>
+							</IonRow>
+							<IonRow className="header">
+								<IonCol>Number Format</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numGL" /></IonCol>
+								<IonCol>Greatest-to-Least (twenty-two)</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numLG" /></IonCol>
+								<IonCol>Least-to-Greatest (two-twenty)</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="numNone" /></IonCol>
+								<IonCol>Single Digits Only (two-two)</IonCol>
+							</IonRow>
+							<IonRow className="header">
+								<IonCol>Other Properties</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="multiNumSets" /></IonCol>
+								<IonCol>Multiple Sets of Numerals</IonCol>
+							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="inflectNum" /></IonCol>
+								<IonCol>Numerals Agree With Head</IonCol>
+							</IonRow>
+						</IonGrid>
+					</IonItem>
 					<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
 
 					<HeaderItem className="h h2">2.4. Adverbs</HeaderItem>

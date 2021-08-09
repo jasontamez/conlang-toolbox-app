@@ -149,12 +149,15 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
 				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
-				| "lexVorN" | "adjectives" | "APV" | "AVP" | "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
-				| "circumP" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "nomAcc" | "ergAcc"
-				| "markInv" | "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph" | "modeMorph"
-				| "otherMorph" | "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj" | "chainT"
-				| "chainA" | "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost" | "relInternal"
-				| "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
+				| "lexVorN" | "adjectives" | "baseFive" | "baseTen" | "baseTwenty" | "baseOther" | "numGL"
+				| "numLG" | "numNone" | "multiNumSets" | "inflectNum" | "APV" | "AVP" | "PAV" | "PVA" | "VAP"
+				| "VPA" | "preP" | "postP" | "circumP" | "numSing" | "numDual" | "numTrial" | "numPaucal"
+				| "numPlural" | "classGen" | "classAnim" | "classShape" | "classFunction" | "classOther"
+				| "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "nomAcc" | "ergAcc" | "markInv"
+				| "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph" | "modeMorph" | "otherMorph"
+				| "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj" | "chainT" | "chainA"
+				| "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost" | "relInternal" | "relHeadless"
+				| "coordMid" | "coordTwo" | "coordLast";
 export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
@@ -167,7 +170,7 @@ export type MorphoSyntaxNumberObject = {
 type SyntaxText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames" | "possessable" | "countMass"
 				| "pronounAnaphClitic" | "semanticRole" | "verbClass" | "verbStructure" | "propClass" | "quantifier"
 				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase" | "adPhrase" | "compare"
-				| "questions" | "COType" | "compounding" | "denoms" | "nNumber" | "nNumberOptObl" | "case"
+				| "questions" | "COType" | "compounding" | "denoms" | "nNumberOpt" | "nNumberObl" | "case"
 				| "articles" | "demonstratives" | "possessors" | "classGender" | "dimAug" | "predNom" | "predLoc"
 				| "predEx" | "predPoss" | "ergative" | "causation" | "applicatives" | "dativeShifts" | "datOfInt"
 				| "possessRaising" | "refls" | "recips" | "passives" | "inverses" | "middleCon" | "antiP"
