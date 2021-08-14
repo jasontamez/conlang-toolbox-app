@@ -32,7 +32,7 @@ import { MorphoSyntaxBoolObject, MorphoSyntaxNumberObject, MorphoSyntaxTextObjec
 
 export const SyntaxHeader = (props: any) => {
 	const dispatch = useDispatch();
-	const title = props.title || "01";
+	const title = props.title || "MorphoSyntax";
 	return (
 		<IonHeader>
 			<ExtraCharactersModal />
@@ -109,8 +109,12 @@ export const HeaderItem = (props: any) => {
 export const TransTable = (props: any) => {
 	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
 	let length = 0;
+	let cName = "translation";
+	if(props.className) {
+		cName += " " + props.className;
+	}
 	return (
-		<table className="translation">
+		<table className={cName}>
 			{rows.map((row: string) => {
 				const tds = row.split(/\s+/);
 				length = Math.max(length, tds.length);
@@ -126,7 +130,7 @@ export const TransTable = (props: any) => {
 };
 export const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
-	const synState = useSelector((state: any) => state.morphoSyntaxState);
+	const synState = useSelector((state: any) => state.morphoSyntaxModalState);
 	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
 	const label = props.label || "Read About It";
 	return (

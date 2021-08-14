@@ -63,6 +63,7 @@
 }
 #morphoSyntaxPage ion-list ion-item.content::part(native) {
 	margin: 1rem;
+	width: auto;
 }
 #morphoSyntaxPage ion-list ion-item.infoModal::part(native) {
 	margin-inline: 1rem;

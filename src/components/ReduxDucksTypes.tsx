@@ -141,7 +141,7 @@ export interface WEPresetObject {
 }
 
 
-export interface MorphoSyntaxStateObject {
+export interface MorphoSyntaxModalStateObject {
 	[key: string]: boolean
 }
 
@@ -182,6 +182,10 @@ export type MorphoSyntaxTextObject = {
 }
 
 export interface MorphoSyntaxObject {
+	key: string
+	lastSave: number
+	title: string
+	description: string
 	bool: MorphoSyntaxBoolObject
 	num: MorphoSyntaxNumberObject
 	text: MorphoSyntaxTextObject
@@ -257,6 +261,9 @@ export interface ModalStateObject {
 	ExportLexicon: boolean
 	WordListsEllipsis: undefined | Event
 	PickAndSaveWL: boolean
+	LoadMS: boolean
+	DeleteMS: boolean,
+	ExportMS: boolean
 }
 
 export interface ViewStateObject {
@@ -327,7 +334,7 @@ export interface StateObject {
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
-	morphoSyntaxState: MorphoSyntaxStateObject
+	morphoSyntaxModalState: MorphoSyntaxModalStateObject
 	morphoSyntaxInfo: MorphoSyntaxObject
 	lexicon: LexiconObject
 	modalState: ModalStateObject

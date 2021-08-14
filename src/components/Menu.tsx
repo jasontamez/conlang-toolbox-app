@@ -54,6 +54,12 @@ const appMenuPages: MenuSection[] = [
 				parentOf: 'ms'
 			},
 			{
+				title: 'Settings',
+				url: '/ms/msSettings',
+				id: 'menuitemMSSettings',
+				parent: 'ms'
+			},
+			{
 				title: '1. Morphological Typology',
 				url: '/ms/ms01',
 				id: 'menuitemMS1',

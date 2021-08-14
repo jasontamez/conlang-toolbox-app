@@ -201,19 +201,29 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 
 
 //
-// LANGSKETCH
+// MORPHOSYNTAX
 //
 export function setSyntaxState(prop: string, toggle: boolean) {
-	return {type: consts.SET_LANGSKETCH_STATE, payload: [prop, toggle]};
+	return {type: consts.SET_MORPHOSYNTAX_STATE, payload: [prop, toggle]};
 }
+export function setMorphoSyntax(payload: types.MorphoSyntaxObject) {
+	return {type: consts.SET_MORPHOSYNTAX, payload};
+}
+export function setMorphoSyntaxText(payload1: "key" | "description" | "title", payload2: string) {
+	return {type: consts.SET_MORPHOSYNTAX_INFO_TEXT, payload: [payload1, payload2]};
+}
+export function setMorphoSyntaxNum(payload1: "lastSave", payload2: number) {
+	return {type: consts.SET_MORPHOSYNTAX_INFO_NUM, payload: [payload1, payload2]};
+}
+//SET_MORPHOSYNTAX_INFO_TEXT
 export function setSyntaxBool(payload1: keyof types.MorphoSyntaxBoolObject, payload2: boolean) {
-	return {type: consts.SET_LANGSKETCH_BOOL, payload: [payload1, payload2]};
+	return {type: consts.SET_MORPHOSYNTAX_BOOL, payload: [payload1, payload2]};
 }
 export function setSyntaxNum(payload1: keyof types.MorphoSyntaxNumberObject, payload2: number) {
-	return {type: consts.SET_LANGSKETCH_NUM, payload: [payload1, payload2]};
+	return {type: consts.SET_MORPHOSYNTAX_NUM, payload: [payload1, payload2]};
 }
 export function setSyntaxText(payload1: keyof types.MorphoSyntaxTextObject, payload2: string) {
-	return {type: consts.SET_LANGSKETCH_TEXT, payload: [payload1, payload2]};
+	return {type: consts.SET_MORPHOSYNTAX_TEXT, payload: [payload1, payload2]};
 }
 
 

@@ -162,11 +162,12 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
 	};
 };
-const reduceMorphoSyntaxState = (original: types.MorphoSyntaxStateObject) => {
+const reduceMorphoSyntaxModalState = (original: types.MorphoSyntaxModalStateObject) => {
 	return {...original};
 };
 const reduceMorphoSyntaxInfo = (original: types.MorphoSyntaxObject) => {
 	return {
+		...original,
 		bool: {...original.bool},
 		num: {...original.num},
 		text: {...original.text}
@@ -249,7 +250,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
-	["morphoSyntaxState", reduceMorphoSyntaxState],
+	["morphoSyntaxModalState", reduceMorphoSyntaxModalState],
 	["morphoSyntaxInfo", reduceMorphoSyntaxInfo],
 	["lexicon", reduceLexiconState],
 	["modalState", reduceModalState],
@@ -327,8 +328,12 @@ export const blankAppState: types.StateObject = {
 	wordevolveSettings: {
 		output: "outputOnly"
 	},
-	morphoSyntaxState: {},
+	morphoSyntaxModalState: {},
 	morphoSyntaxInfo: {
+		key: "",
+		lastSave: 0,
+		title: "",
+		description: "",
 		bool: {},
 		num: {},
 		text: {}
@@ -384,7 +389,10 @@ export const blankAppState: types.StateObject = {
 		ExtraCharactersEllipsis: undefined,
 		ExportLexicon: false,
 		WordListsEllipsis: undefined,
-		PickAndSaveWL: false
+		PickAndSaveWL: false,
+		LoadMS: false,
+		DeleteMS: false,
+		ExportMS: false
 	},
 	viewState: {
 		wg: 'categories',
@@ -1021,26 +1029,38 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 
 		// MorphoSyntax
-		case consts.SET_LANGSKETCH_STATE:
+		case consts.SET_MORPHOSYNTAX_STATE:
 			final = reduceAllBut([], state);
 			let [pp, bb] = payload;
 			if(bb) {
-				final.morphoSyntaxState[pp] = true;
+				final.morphoSyntaxModalState[pp] = true;
 			} else {
-				delete final.morphoSyntaxState[pp];
+				delete final.morphoSyntaxModalState[pp];
 			}
 			break;
-		case consts.SET_LANGSKETCH_BOOL:
+		case consts.SET_MORPHOSYNTAX:
+			final = reduceAllBut(["morphoSyntaxInfo"], state);
+			final.morphoSyntaxInfo = reduceMorphoSyntaxInfo(payload as types.MorphoSyntaxObject);
+			break;
+		case consts.SET_MORPHOSYNTAX_INFO_TEXT:
+			final = reduceAllBut([], state);
+			final.morphoSyntaxInfo[payload[0] as "key" | "title" | "description"] = payload[1];
+			break;
+		case consts.SET_MORPHOSYNTAX_INFO_NUM:
+			final = reduceAllBut([], state);
+			final.morphoSyntaxInfo[payload[0] as "lastSave"] = payload[1];
+			break;
+		case consts.SET_MORPHOSYNTAX_BOOL:
 			final = reduceAllBut([], state);
 			let boo = payload[0] as keyof types.MorphoSyntaxBoolObject;
 			final.morphoSyntaxInfo.bool[boo] = payload[1];
 			break;
-		case consts.SET_LANGSKETCH_NUM:
+		case consts.SET_MORPHOSYNTAX_NUM:
 			final = reduceAllBut([], state);
 			let numm = payload[0] as keyof types.MorphoSyntaxNumberObject;
 			final.morphoSyntaxInfo.num[numm] = payload[1];
 			break;
-		case consts.SET_LANGSKETCH_TEXT:
+		case consts.SET_MORPHOSYNTAX_TEXT:
 			final = reduceAllBut([], state);
 			let txt = payload[0] as keyof types.MorphoSyntaxTextObject;
 			final.morphoSyntaxInfo.text[txt] = payload[1];
