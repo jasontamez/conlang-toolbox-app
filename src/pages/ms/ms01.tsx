@@ -166,11 +166,12 @@ const Syntax = () => {
 						<ul>
 							<li>The <strong>Head</strong> of a phrase is the element that determines the syntactic function of the whole phrase.
 								<ul>
-									<li>Example sentence: <em>"The smallest dog ate a porkchop with a squirrel."</em>
+									<li>Example sentence: <em>"The smallest dog ate a porkchop with Mark's approval."</em>
 										<ul>
-											<li>"dog" is Head of "the smallest dog"</li>
-											<li>"with" is Head of "with a squirrel"</li>
-											<li>"porkchop" is Head of "a porkchop" and "a porkchop with a squirrel"</li>
+											<li>"dog" is Head of "the smallest dog" (noun phrase)</li>
+											<li>"porkchop" is Head of "a porkchop" (noun phrase)</li>
+											<li>"with" is Head of "with Mark's approval" (prepositional phrase)</li>
+											<li>"approval" is Head of "Mark's approval" (noun phrase)</li>
 										</ul>
 									</li>
 								</ul>
@@ -180,7 +181,7 @@ const Syntax = () => {
 							<li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependant-marked for verb and adpositional phrases).</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="headDepMark">Write any more specific notes here.</TextItem>
+					<TextItem text="headDepMark">Describe when the head/dependant marking system changes, if needed.</TextItem>
 
 				</IonList>
 			</IonContent>
