@@ -34,14 +34,14 @@ const DeleteLexiconModal = () => {
 	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('DeleteLexicon'));
+		dispatch(closeModal('DeleteMS'));
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
 			LexiconStorage.removeItem(key).then(() => {
 				dispatch(setLoadingPage(false));
 				dispatch(setTemporaryInfo(undefined));
-				dispatch(closeModal('DeleteLexicon'));
+				dispatch(closeModal('DeleteMS'));
 				fireSwal({
 					title: "Lexicon deleted.",
 					toast: true,
@@ -50,7 +50,7 @@ const DeleteLexiconModal = () => {
 					showConfirmButton: false
 				});
 			});
-			dispatch(setLoadingPage("deletingLexicon"));
+			dispatch(setLoadingPage("deletingSyntaxDoc"));
 		};
 		if(settings.disableConfirms) {
 			thenFunc();
@@ -65,10 +65,10 @@ const DeleteLexiconModal = () => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.DeleteLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={modalState.DeleteMS} onDidDismiss={() => doClose()}>
 			<IonLoading
 	        	cssClass='loadingPage'
-    	    	isOpen={modalState.loadingPage === "deletingLexicon"}
+    	    	isOpen={modalState.loadingPage === "deletingSyntaxDoc"}
     		    onDidDismiss={() => dispatch(setLoadingPage(false))}
 	        	message={'Deleting...'}
 				spinner="bubbles"
@@ -98,7 +98,7 @@ const DeleteLexiconModal = () => {
 							</IonItem>
 						);
 					}) : (
-						<h1 style={ { margin: "2rem auto", textAlign: "center" } }>No Saved Lexicons</h1>
+						<h1 style={ { margin: "2rem auto", textAlign: "center" } }>No Saved MorphoSyntax Documents</h1>
 					)}
 				</IonList>
 			</IonContent>

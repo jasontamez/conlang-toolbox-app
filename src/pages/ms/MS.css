@@ -175,3 +175,14 @@
 	padding-block-end: 0.75em;
 	padding-inline-start: 0.75em;
 }
+
+#morphoSyntaxPage ion-list.aside {
+	margin: 0.5rem 2rem;
+	background: transparent;
+}
+#morphoSyntaxPage ion-list.aside ion-item::part(native) {
+	background: var(--ion-background-tinter);
+}
+#morphoSyntaxPage ion-list.aside ion-item:nth-child(even)::part(native) {
+	background: var(--ion-background-shader);
+}

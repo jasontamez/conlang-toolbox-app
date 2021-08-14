@@ -20,35 +20,35 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	closeModal,
-	updateLexicon,
+	setMorphoSyntax,
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
-import { LexiconObject } from '../../components/ReduxDucksTypes';
+import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 
-const LoadLexiconModal = () => {
+const LoadMSModal = () => {
 	const dispatch = useDispatch();
 	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
-	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
+	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('LoadLexicon'));
+		dispatch(closeModal('LoadMS'));
 	};
 	const loadThis = (key: string) => {
-		data.every((pair: [string, LexiconObject]) => {
+		data.every((pair: [string, MorphoSyntaxObject]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
 				return true;
 			}
 			const thenFunc = () => {
-				dispatch(updateLexicon(pair[1]));
-				dispatch(closeModal('LoadLexicon'));
+				dispatch(setMorphoSyntax(pair[1]));
+				dispatch(closeModal('LoadMS'));
 			};
 			if(settings.disableConfirms) {
 				thenFunc();
 			} else {
 				fireSwal({
-					text: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
+					text: "Are you sure you want to load this? It will overwrite your current MorphoSyntax information and cannot be reversed.",
 					customClass: {popup: 'warningConfirm'},
 					icon: 'warning',
 					showCancelButton: true,
@@ -60,10 +60,10 @@ const LoadLexiconModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.LoadLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={modalState.LoadMS} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Load Lexicon</IonTitle>
+					<IonTitle>Load MorphoSyntax Document</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -73,18 +73,18 @@ const LoadLexiconModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data && data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
+					{data && data.length > 0 ? data.map((pair: [string, MorphoSyntaxObject]) => {
 						const key = pair[0];
-						const lex = pair[1];
-						const time = new Date(lex.lastSave);
+						const ms = pair[1];
+						const time = new Date(ms.lastSave);
 						return (
 							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
-								<IonLabel className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()}&nbsp;words]</IonLabel>
+								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
 								<IonNote className="ion-text-wrap" slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1 style={ { margin: "2rem auto", textAlign: "center" } }>No Saved Lexicons</h1>
+						<h1 style={ { margin: "2rem auto", textAlign: "center" } }>No Saved MorphoSyntax Documents</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -100,4 +100,4 @@ const LoadLexiconModal = () => {
 	);
 };
 
-export default LoadLexiconModal;
+export default LoadMSModal;

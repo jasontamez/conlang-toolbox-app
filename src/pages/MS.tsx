@@ -26,7 +26,7 @@ import { settingsSharp } from 'ionicons/icons';
 
 const MS = () => {
 	const msPage: string = useSelector((state: any) => state.viewState.ms, shallowEqual) || "msSettings";
-	const page = Number(msPage.slice(-2));
+	const page = Number(msPage.slice(-2)) || 0;
 	const makeTab = (n: number, min: number, max: number) => {
 		let goto: string = "Settings";
 		if(n > 0) {
@@ -36,7 +36,7 @@ const MS = () => {
 			}
 		}
 		return (
-			<IonTabButton className={n < min || n > max ? "possiblyTooFar" : ""} key={n} tab={"Section " + goto} layout="icon-hide" href={"/ms/ms" + goto}>
+			<IonTabButton className={n < min || n > max ? "possiblyTooFar" : ""} key={n} tab={"Section-" + goto} layout="icon-hide" href={"/ms/ms" + goto}>
 				<IonLabel>{n > 0 ? (<strong>{n}</strong>) : (<IonIcon style={ {verticalAlign: "middle"} } icon={settingsSharp} />)}</IonLabel>
 			</IonTabButton>
 		);
