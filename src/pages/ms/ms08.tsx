@@ -31,9 +31,9 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">8. Other Verb and Verb Phrase Operations</HeaderItem>
+					<HeaderItem level="1">8. Other Verb and Verb Phrase Operations</HeaderItem>
 
-					<HeaderItem className="h h2">8.1. Nominalization</HeaderItem>
+					<HeaderItem level="2">8.1. Nominalization</HeaderItem>
 
 					<InfoModal title="Nominalization" label="Making Nouns">
 						<ul>
@@ -121,7 +121,7 @@ const Syntax = () => {
 
 					<TextItem text="verbNoms" rows={8}>Describe the nominalizations that exist in the language, and explain how productive they are.</TextItem>
 
-					<HeaderItem className="h h2">8.2. Compounding</HeaderItem>
+					<HeaderItem level="2">8.2. Compounding</HeaderItem>
 
 					<InfoModal title="Compounding" label="Word-Making">
 						<ul>
@@ -141,7 +141,7 @@ const Syntax = () => {
 
 					<TextItem text="verbComp" rows={6}>Describe any compounding strategies that exist in the language.</TextItem>
 
-					<HeaderItem className="h h2">8.3. Tense/Aspect/Mode</HeaderItem>
+					<HeaderItem level="2">8.3. Tense/Aspect/Mode</HeaderItem>
 
 					<InfoModal title="Tense, Aspect and Mode" label="What Are They?">
 						<ul>
@@ -182,7 +182,7 @@ const Syntax = () => {
 							</IonRow>
 						</IonGrid>
 					</IonItem>
-					<HeaderItem className="h h3">8.3.1 Tense</HeaderItem>
+					<HeaderItem level="3">8.3.1 Tense</HeaderItem>
 
 					<InfoModal title="Tense" label="Info on Tense">
 						<ul>
@@ -212,7 +212,7 @@ const Syntax = () => {
 					<TextItem text="tense" rows={6}>Is there a Tense system? How does it operate? How does it divide time?</TextItem>
 
 
-					<HeaderItem className="h h3">8.3.2 Aspect</HeaderItem>
+					<HeaderItem level="3">8.3.2 Aspect</HeaderItem>
 
 					<InfoModal title="Aspect" label="Info on Aspect">
 						<ul>
@@ -317,7 +317,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="aspect" rows={8}>Describe the way the language handles Aspect.</TextItem>
 
-					<HeaderItem className="h h3">8.3.3 Mode</HeaderItem>
+					<HeaderItem level="3">8.3.3 Mode</HeaderItem>
 
 					<InfoModal title="Mode" label="Info on Mode">
 						<ul>
@@ -363,7 +363,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="mode" rows={6}>Describe how the language deals with Mode.</TextItem>
 
-					<HeaderItem className="h h2">8.4. Location/Direction</HeaderItem>
+					<HeaderItem level="2">8.4. Location/Direction</HeaderItem>
 
 					<InfoModal title="Location and Direction" label="Where?">
 						<ul>
@@ -386,7 +386,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="locDirect" rows={8}>Does the language have affixes or other functions that represent spatial grounding?</TextItem>
 
-					<HeaderItem className="h h2">8.5. Evidentiality, Validationality and Mirativity</HeaderItem>
+					<HeaderItem level="2">8.5. Evidentiality, Validationality and Mirativity</HeaderItem>
 
 					<InfoModal title="Evidentiality" label="Truth and Certainty">
 						<ul>
@@ -419,7 +419,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="evidence" rows={6}>Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?</TextItem>
 
-					<HeaderItem className="h h2">8.6. Miscellaneous</HeaderItem>
+					<HeaderItem level="2">8.6. Miscellaneous</HeaderItem>
 
 					<InfoModal title="Miscelaneous" label="Leftovers">
 						<ul>

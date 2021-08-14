@@ -33,9 +33,9 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">1. Morphological Typology</HeaderItem>
+					<HeaderItem level="1">1. Morphological Typology</HeaderItem>
 
-					<HeaderItem className="h h2">1.1. Traditional Typology</HeaderItem>
+					<HeaderItem level="2">1.1. Traditional Typology</HeaderItem>
 
 					<InfoModal title="Synthesis and Fusion" label="The Basic Building Blocks of Words">
 						<ul>
@@ -64,17 +64,17 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<HeaderItem className="h h3">Synthesis</HeaderItem>
+					<HeaderItem level="3">Synthesis</HeaderItem>
 
 					<RangeItem text="synthesis" start="Isolating" end="Polysynthetic" innerClass="spectrum" max={10} />
 
-					<HeaderItem className="h h3">Fusion</HeaderItem>
+					<HeaderItem level="3">Fusion</HeaderItem>
 
 					<RangeItem text="fusion" start="Agglutinative" end="Fusional" innerClass="spectrum" max={10} />
 
 					<TextItem text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
 
-					<HeaderItem className="h h2">1.2. Morphological Processes</HeaderItem>
+					<HeaderItem level="2">1.2. Morphological Processes</HeaderItem>
 
 					<InfoModal title="Affixes and Other Modifications" label="Read About Them">
 						<ul>
@@ -108,7 +108,7 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 
-					<HeaderItem className="h h3">Affixes</HeaderItem>
+					<HeaderItem level="3">Affixes</HeaderItem>
 
 					<IonItem className="content">
 						<IonGrid className="cols3">
@@ -140,25 +140,25 @@ const Syntax = () => {
 						</IonGrid>
 					</IonItem>
 
-					<HeaderItem className="h h3">Stem Modification</HeaderItem>
+					<HeaderItem level="3">Stem Modification</HeaderItem>
 
 					<RangeItem text="stemMod" start="Not Used" end="Used Often" />
 
-					<HeaderItem className="h h3">Suppletion</HeaderItem>
+					<HeaderItem level="3">Suppletion</HeaderItem>
 
 					<RangeItem text="suppletion" start="Not Used" end="Used Often" />
 
-					<HeaderItem className="h h3">Reduplication</HeaderItem>
+					<HeaderItem level="3">Reduplication</HeaderItem>
 
 					<RangeItem text="redupe" start="Not Used" end="Used Often" />
 
-					<HeaderItem className="h h3">Suprasegmental Modification</HeaderItem>
+					<HeaderItem level="3">Suprasegmental Modification</HeaderItem>
 
 					<RangeItem text="supraMod" start="Not Used" end="Used Often" />
 
 					<TextItem text="morphProcess" rows={6}>What sort of morphological processes are used? Which are primary and which are used less?</TextItem>
 
-					<HeaderItem className="h h2">1.3. Head/Dependant Marking</HeaderItem>
+					<HeaderItem level="2">1.3. Head/Dependant Marking</HeaderItem>
 
 					<RangeItem text="headDepMarked" start="Head Marked" end="Dependant Marked" innerClass="spectrum" max={4} />
 

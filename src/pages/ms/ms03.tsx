@@ -31,9 +31,9 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">3. Constituent Order Typology</HeaderItem>
+					<HeaderItem level="1">3. Constituent Order Typology</HeaderItem>
 
-					<HeaderItem className="h h2">3.1. In Main Clauses</HeaderItem>
+					<HeaderItem level="2">3.1. In Main Clauses</HeaderItem>
 
 					<IonItem className="content">
 						<IonGrid className="cols3">
@@ -129,15 +129,15 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="mainClause">Write any more specific notes here.</TextItem>
 
-					<HeaderItem className="h h2">3.2. Verb Phrases</HeaderItem>
+					<HeaderItem level="2">3.2. Verb Phrases</HeaderItem>
 
 					<TextItem text="verbPhrase" rows={4}>Where do auxilliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxilliaries?</TextItem>
 
-					<HeaderItem className="h h2">3.3. Noun Phrases</HeaderItem>
+					<HeaderItem level="2">3.3. Noun Phrases</HeaderItem>
 
 					<TextItem text="nounPhrase" rows={4}>What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?</TextItem>
 
-					<HeaderItem className="h h2">3.4. Adpositional Phrases</HeaderItem>
+					<HeaderItem level="2">3.4. Adpositional Phrases</HeaderItem>
 
 					<IonItem className="content">
 						<IonGrid className="cols2">
@@ -165,7 +165,7 @@ const Syntax = () => {
 					<TextItem text="adPhrase" rows={4}>Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?</TextItem>
 
 
-					<HeaderItem className="h h2">3.5 Comparatives</HeaderItem>
+					<HeaderItem level="2">3.5 Comparatives</HeaderItem>
 
 					<InfoModal title="Comparatives" label="Comparing Things">
 						<ul>
@@ -182,7 +182,7 @@ const Syntax = () => {
 					<TextItem text="compare">Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?</TextItem>
 
 
-					<HeaderItem className="h h2">3.6 Question Particles and Words</HeaderItem>
+					<HeaderItem level="2">3.6 Question Particles and Words</HeaderItem>
 
 					<InfoModal title="Questions">
 						<ul>
@@ -193,7 +193,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="questions">How are questions handled in the language? In informational questions, where does the question word occur?</TextItem>
 
-					<HeaderItem className="h h2">3.7 Summary</HeaderItem>
+					<HeaderItem level="2">3.7 Summary</HeaderItem>
 
 					<TextItem text="COType">When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.</TextItem>
 

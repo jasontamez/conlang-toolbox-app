@@ -99,13 +99,11 @@ export const TextItem = (props: any) => {
 		</IonItem>
 	);
 };
-export const HeaderItem = (props: any) => {
-	return (
-		<IonItem className={props.className || ""}>
-			<IonLabel>{props.children}</IonLabel>
-		</IonItem>
-	);
-};
+export const HeaderItem = (props: any) => (
+	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
+		<IonLabel>{props.children}</IonLabel>
+	</IonItem>
+);
 export const TransTable = (props: any) => {
 	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
 	let length = 0;

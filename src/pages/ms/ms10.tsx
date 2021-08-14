@@ -32,7 +32,7 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">10. Clause Combinations</HeaderItem>
+					<HeaderItem level="1">10. Clause Combinations</HeaderItem>
 
 					<InfoModal title="Terms" label="Quick Primer on Clauses">
 						<ul>
@@ -53,7 +53,7 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 
-					<HeaderItem className="h h1">10.1. Serial Verbs</HeaderItem>
+					<HeaderItem level="1">10.1. Serial Verbs</HeaderItem>
 
 					<InfoModal title="Serial Verbs" label="Go Tap on This">
 						<ul>
@@ -99,7 +99,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="serialVerbs" rows={4}>Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxilliaries or adpositions?</TextItem>
 
-					<HeaderItem className="h h1">10.2. Complement Clauses</HeaderItem>
+					<HeaderItem level="1">10.2. Complement Clauses</HeaderItem>
 
 					<InfoModal title="Complement Clauses" label="Enter The Matrix">
 						<ul>
@@ -144,7 +144,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="complClauses" rows={6}>What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?</TextItem>
 
-					<HeaderItem className="h h1">10.3. Adverbial Clauses</HeaderItem>
+					<HeaderItem level="1">10.3. Adverbial Clauses</HeaderItem>
 
 					<InfoModal title="Adverbial Clauses" label="Tap This When You're Ready">
 						<ul>
@@ -224,7 +224,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="advClauses" rows={6}>How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?</TextItem>
 
-					<HeaderItem className="h h1">10.4. Clause Chaining, Medial Clauses, and Switch References</HeaderItem>
+					<HeaderItem level="1">10.4. Clause Chaining, Medial Clauses, and Switch References</HeaderItem>
 
 					<InfoModal title="Clause Chaining, Medial Clauses, and Switch References" label="Chain Chain Chain...">
 						<ul>
@@ -334,7 +334,7 @@ const Syntax = () => {
 					</IonItem>
 					<TextItem text="clauseChainEtc" rows={6}>Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
 
-					<HeaderItem className="h h1">10.5. Relative Clauses</HeaderItem>
+					<HeaderItem level="1">10.5. Relative Clauses</HeaderItem>
 
 					<InfoModal title="Relative Clauses" label="Clauses as Adjectives">
 						<ul>
@@ -486,7 +486,7 @@ const Syntax = () => {
 					</IonItem>
 					<TextItem text="relClauses" rows={6}>Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).</TextItem>
 
-					<HeaderItem className="h h1">10.6. Coordinating Clauses</HeaderItem>
+					<HeaderItem level="1">10.6. Coordinating Clauses</HeaderItem>
 
 					<InfoModal title="Coordinating Clauses" label="This And That">
 						<ul>

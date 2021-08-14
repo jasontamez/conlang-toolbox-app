@@ -31,7 +31,7 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">6. Grammatical Relations</HeaderItem>
+					<HeaderItem level="1">6. Grammatical Relations</HeaderItem>
 
 					<InfoModal title="Alignments" label="Show the Alignments">
 						<ul>

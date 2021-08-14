@@ -32,7 +32,7 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">7. Voice and Valence Adjusting Operations</HeaderItem>
+					<HeaderItem level="1">7. Voice and Valence Adjusting Operations</HeaderItem>
 
 					<InfoModal title="Valence" label="What is Valence?">
 						<ul>
@@ -50,9 +50,9 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<HeaderItem className="h h2">7.1. Valence-Increasing Operations</HeaderItem>
+					<HeaderItem level="2">7.1. Valence-Increasing Operations</HeaderItem>
 
-					<HeaderItem className="h">7.1.1. Causatives</HeaderItem>
+					<HeaderItem>7.1.1. Causatives</HeaderItem>
 
 					<InfoModal title="Causatives" label="Forcing You to Read This">
 						<ul>
@@ -142,7 +142,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="causation" rows={4}>Describe which method(s) the language uses to create causatives.</TextItem>
 
-					<HeaderItem className="h">7.1.2. Applicatives</HeaderItem>
+					<HeaderItem>7.1.2. Applicatives</HeaderItem>
 
 					<InfoModal title="Applicatives" label="Adding a Third Participant">
 						<ul>
@@ -163,7 +163,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="applicatives" rows={4}>Describe which method(s) the language uses for applicatives, if any.</TextItem>
 
-					<HeaderItem className="h">7.1.3. Dative Shift</HeaderItem>
+					<HeaderItem>7.1.3. Dative Shift</HeaderItem>
 
 					<InfoModal title="Dative Shift" label="Looking Shifty">
 						<ul>
@@ -180,7 +180,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="dativeShifts" rows={4}>Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?</TextItem>
 
-					<HeaderItem className="h">7.1.4. Dative of Interest</HeaderItem>
+					<HeaderItem>7.1.4. Dative of Interest</HeaderItem>
 
 					<InfoModal title="Dative of Interest" label="Pique Your Interest">
 						<ul>
@@ -198,7 +198,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="datOfInt" rows={4}>Is there a dative-of-interest operation?</TextItem>
 
-					<HeaderItem className="h">7.1.5. Possessor Raising (a.k.a. External Possession)</HeaderItem>
+					<HeaderItem>7.1.5. Possessor Raising (a.k.a. External Possession)</HeaderItem>
 
 					<InfoModal title="Possessor Raising" label="What is This?">
 						<ul>
@@ -218,9 +218,9 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="possessRaising" rows={4}>Does possessor raising occur?</TextItem>
 
-					<HeaderItem className="h h2">7.2. Valence-Decreasing Operations</HeaderItem>
+					<HeaderItem level="2">7.2. Valence-Decreasing Operations</HeaderItem>
 
-					<HeaderItem className="h h3">7.2.1. Reflexives</HeaderItem>
+					<HeaderItem level="3">7.2.1. Reflexives</HeaderItem>
 
 					<InfoModal title="Reflexives" label="You Are Me?">
 						<ul>
@@ -261,7 +261,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="refls" rows={4}>How are reflexives handled?</TextItem>
 
-					<HeaderItem className="h h3">7.2.2. Reciprocals</HeaderItem>
+					<HeaderItem level="3">7.2.2. Reciprocals</HeaderItem>
 
 					<InfoModal title="Reciprocals" label="Working Together">
 						<ul>
@@ -280,7 +280,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="recips" rows={3}>How are reciprocals handled?</TextItem>
 
-					<HeaderItem className="h h3">7.2.3. Passives</HeaderItem>
+					<HeaderItem level="3">7.2.3. Passives</HeaderItem>
 
 					<InfoModal title="Passives" label="Moving Focus From the Agent">
 						<ul>
@@ -312,7 +312,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="passives" rows={4}>How are passives handled?</TextItem>
 
-					<HeaderItem className="h h3">7.2.4. Inverses</HeaderItem>
+					<HeaderItem level="3">7.2.4. Inverses</HeaderItem>
 
 					<InfoModal title="Inverses" label="Playing The Reverse Card">
 						<ul>
@@ -342,7 +342,7 @@ const Syntax = () => {
 					</IonItem>
 					<TextItem text="inverses" rows={4}>Describe any pecularities of inverse constructions.</TextItem>
 
-					<HeaderItem className="h h3">7.2.5. Middle Constructions</HeaderItem>
+					<HeaderItem level="3">7.2.5. Middle Constructions</HeaderItem>
 
 					<InfoModal title="Middle Constructions" label="What Are These?">
 						<ul>
@@ -355,7 +355,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="middleCon" rows={3}>How are middle constructions handled?</TextItem>
 
-					<HeaderItem className="h h3">7.2.6. Antipassives</HeaderItem>
+					<HeaderItem level="3">7.2.6. Antipassives</HeaderItem>
 
 					<InfoModal title="Antipassives" label="What Are These?">
 						<ul>
@@ -366,7 +366,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="antiP" rows={3}>Describe antipassive strategies in the language, if they exist.</TextItem>
 
-					<HeaderItem className="h h3">7.2.7. Object Demotion/Omission/Incorporation</HeaderItem>
+					<HeaderItem level="3">7.2.7. Object Demotion/Omission/Incorporation</HeaderItem>
 
 					<InfoModal title="Object Demotion and Related Functions" label="What Are These?">
 						<ul>

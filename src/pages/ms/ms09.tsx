@@ -27,7 +27,7 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">9. Pragmatically Marked Structures</HeaderItem>
+					<HeaderItem level="1">9. Pragmatically Marked Structures</HeaderItem>
 					
 					<InfoModal title="Pragmatics" label="What are Pragmatics?">
 						<ul>
@@ -81,7 +81,7 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<HeaderItem className="h h2">9.1 Focus, Contrast and Topicalization</HeaderItem>
+					<HeaderItem level="2">9.1 Focus, Contrast and Topicalization</HeaderItem>
 
 					<InfoModal title="Focus, Contrast, etc." label="Focus is What This is About">
 						<ul>
@@ -146,7 +146,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
 
-					<HeaderItem className="h h2">9.2 Negation</HeaderItem>
+					<HeaderItem level="2">9.2 Negation</HeaderItem>
 
 					<InfoModal title="Negation" label="Don't not read this.">
 						<ul>
@@ -304,7 +304,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="negation" rows={8}>Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?</TextItem>
 
-					<HeaderItem className="h h2">9.3 Non-Declarative Speech</HeaderItem>
+					<HeaderItem level="2">9.3 Non-Declarative Speech</HeaderItem>
 
 					<InfoModal title="Declarative Statements" label="Minor Note on Declaratives">
 						<ul>
@@ -315,9 +315,9 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="declaratives" rows={3}>If declaratives are marked, describe how.</TextItem>
 
-					<HeaderItem className="h h3">9.3.1 Interrogatives</HeaderItem>
+					<HeaderItem level="3">9.3.1 Interrogatives</HeaderItem>
 
-					<HeaderItem className="h h4">9.3.1.1. Yes/No Questions</HeaderItem>
+					<HeaderItem level="4">9.3.1.1. Yes/No Questions</HeaderItem>
 
 					<InfoModal title="Yes/NoQuestions" label="Yes? No?">
 						<ul>
@@ -404,7 +404,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="YNQs" rows={4}>How are yes/no questions formed? Do they serve other discourse functions other than the obvious?</TextItem>
 
-					<HeaderItem className="h h4">9.3.1.2. Questions-Word Questions</HeaderItem>
+					<HeaderItem level="4">9.3.1.2. Questions-Word Questions</HeaderItem>
 
 					<InfoModal title="Question-Word Questions" label="Who? What? Why?">
 						<ul>
@@ -435,7 +435,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="QWQs" rows={4}>How are information questions formed?</TextItem>
 
-					<HeaderItem className="h h4">9.3.2. Imperatives</HeaderItem>
+					<HeaderItem level="4">9.3.2. Imperatives</HeaderItem>
 
 					<InfoModal title="Imperatives" label="Command Sentences">
 						<ul>

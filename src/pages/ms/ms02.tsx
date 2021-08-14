@@ -32,13 +32,13 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">2. Grammatical Categories</HeaderItem>
+					<HeaderItem level="1">2. Grammatical Categories</HeaderItem>
 
-					<HeaderItem className="h h2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
+					<HeaderItem level="2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
 
-					<HeaderItem className="h h3">2.1.1. Types of Nouns</HeaderItem>
+					<HeaderItem level="3">2.1.1. Types of Nouns</HeaderItem>
 
-					<HeaderItem className="h">2.1.1.1. Proper Names</HeaderItem>
+					<HeaderItem>2.1.1.1. Proper Names</HeaderItem>
 
 					<InfoModal title="Proper Names" label="Read About Them">
 						<ul>
@@ -48,7 +48,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="propNames">Are there any special rules involving proper names?</TextItem>
 
-					<HeaderItem className="h">2.1.1.2. Possessability</HeaderItem>
+					<HeaderItem>2.1.1.2. Possessability</HeaderItem>
 
 					<InfoModal title="Possessability" label="Systems of Possession">
 						<ul>
@@ -72,7 +72,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
 
-					<HeaderItem className="h">2.1.1.3. Count vs Mass</HeaderItem>
+					<HeaderItem>2.1.1.3. Count vs Mass</HeaderItem>
 
 					<InfoModal title="Count Nouns and Mass Nouns" label="A Piece of Information">
 						<ul>
@@ -82,7 +82,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
 
-					<HeaderItem className="h h3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
+					<HeaderItem level="3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
 
 					<InfoModal label="What Are They?" title="Pronouns and Anaphoric Clitics">
 						<ul>
@@ -111,9 +111,9 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
 
-					<HeaderItem className="h h2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
+					<HeaderItem level="2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
 
-					<HeaderItem className="h h3">2.2.1. Semantic Roles</HeaderItem>
+					<HeaderItem level="3">2.2.1. Semantic Roles</HeaderItem>
 
 					<InfoModal title="Semantic Roles" label="A Quick Primer">
 						<ul>
@@ -139,7 +139,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
 
-					<HeaderItem className="h h3">2.2.2. Verb Classes</HeaderItem>
+					<HeaderItem level="3">2.2.2. Verb Classes</HeaderItem>
 
 					<IonItem className="content">
 						<IonGrid className="striped">
@@ -228,7 +228,7 @@ const Syntax = () => {
 
 					<TextItem text="verbClass" rows={8}>If you've marked a verb class as "Special", describe how the language treats it differently than the "regular" verbs.</TextItem>
 
-					<HeaderItem className="h h3">2.2.3. Verb Structure</HeaderItem>
+					<HeaderItem level="3">2.2.3. Verb Structure</HeaderItem>
 
 					<InfoModal title="Verb Structure" label="Structure and Operations Info">
 						<ul>
@@ -277,9 +277,9 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="verbStructure" rows={6}>Describe the verb structure here.</TextItem>
 
-					<HeaderItem className="h h2">2.3. Modifiers</HeaderItem>
+					<HeaderItem level="2">2.3. Modifiers</HeaderItem>
 
-					<HeaderItem className="h h3">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
+					<HeaderItem level="3">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
 
 					<IonItem className="content">
 						<IonGrid className="cols2">
@@ -344,11 +344,11 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="propClass">How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
 
-					<HeaderItem className="h h3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
+					<HeaderItem level="3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 
 					<TextItem text="quantifier">Which quantifiers exist?</TextItem>
 
-					<HeaderItem className="h h3">2.3.3. Numerals</HeaderItem>
+					<HeaderItem level="3">2.3.3. Numerals</HeaderItem>
 
 					<InfoModal title="Numerals" label="Things to Consider">
 						<ul>
@@ -431,7 +431,7 @@ const Syntax = () => {
 					</IonItem>
 					<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
 
-					<HeaderItem className="h h2">2.4. Adverbs</HeaderItem>
+					<HeaderItem level="2">2.4. Adverbs</HeaderItem>
 
 					<InfoModal title="Adverbs" label='A "Catch-All" Category'>
 						<ul>

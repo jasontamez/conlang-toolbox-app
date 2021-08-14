@@ -26,7 +26,7 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">5. Predicate Nominals and Related Constructions</HeaderItem>
+					<HeaderItem level="1">5. Predicate Nominals and Related Constructions</HeaderItem>
 
 					<InfoModal title="Predicate Nominals" label="General Information to Consider">
 						<ul>
@@ -44,7 +44,7 @@ const Syntax = () => {
 						</ul>
 					</InfoModal>
 
-					<HeaderItem className="h h2">5.1. Predicate Nominals and Adjecives</HeaderItem>
+					<HeaderItem level="2">5.1. Predicate Nominals and Adjecives</HeaderItem>
 
 					<InfoModal title="Predicate Nominals and Adjecives" label="What It Is and What It Seems Like">
 						<ul>
@@ -101,7 +101,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="predNom" rows={6}>Describe the language's strategy for predicate nominals and adjectives.</TextItem>
 
-					<HeaderItem className="h h2">5.2. Predicate Locatives</HeaderItem>
+					<HeaderItem level="2">5.2. Predicate Locatives</HeaderItem>
 
 					<InfoModal title="Predicate Locatives" label="Where It Is">
 						<ul>
@@ -118,7 +118,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="predLoc" rows={6}>How does the language handle predicate locatives?</TextItem>
 
-					<HeaderItem className="h h2">5.3. Existentials</HeaderItem>
+					<HeaderItem level="2">5.3. Existentials</HeaderItem>
 
 					<InfoModal title="Existentials" label="These Exist">
 						<ul>
@@ -141,7 +141,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="predEx" rows={6}>How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?</TextItem>
 
-					<HeaderItem className="h h2">5.4. Possessive Clauses</HeaderItem>
+					<HeaderItem level="2">5.4. Possessive Clauses</HeaderItem>
 
 					<InfoModal title="Possessive Clauses">
 						<ul>

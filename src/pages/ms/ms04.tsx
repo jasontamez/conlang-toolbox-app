@@ -32,9 +32,9 @@ const Syntax = () => {
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
-					<HeaderItem className="h h1">4. Noun and Noun Phrase Operations</HeaderItem>
+					<HeaderItem level="1">4. Noun and Noun Phrase Operations</HeaderItem>
 
-					<HeaderItem className="h h2">4.1. Compounding</HeaderItem>
+					<HeaderItem level="2">4.1. Compounding</HeaderItem>
 
 					<InfoModal title="Compounding" label="Noun-Piles">
 						<ul>
@@ -50,7 +50,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="compounding" rows={4}>Describe the sorts of compounding that happen in the language (if any).</TextItem>
 
-					<HeaderItem className="h h2">4.2. Denominalization</HeaderItem>
+					<HeaderItem level="2">4.2. Denominalization</HeaderItem>
 
 					<InfoModal title="Denominalization" label="Verbing a Noun">
 						<ul>
@@ -64,7 +64,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="denoms" rows={4}>Are there any processes to make a verb from a noun? An adjecive? An adverb?</TextItem>
 
-					<HeaderItem className="h h2">4.3. Number Marking</HeaderItem>
+					<HeaderItem level="2">4.3. Number Marking</HeaderItem>
 
 					<InfoModal title="Number Marking" label="Plurality, etc.">
 						<ul>
@@ -112,7 +112,7 @@ const Syntax = () => {
 					<TextItem text="nNumberOpt" rows={3}>Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?</TextItem>
 					<TextItem text="nNumberObl" rows={6}>If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?</TextItem>
 
-					<HeaderItem className="h h2">4.4. Case Marking</HeaderItem>
+					<HeaderItem level="2">4.4. Case Marking</HeaderItem>
 
 					<InfoModal title="Case Marking" label="How it works">
 						<ul>
@@ -141,7 +141,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="case" rows={4}>Do nouns exhibit morphological case? If so, what cases exist?</TextItem>
 
-					<HeaderItem className="h h2">4.5. Articles and Demonstratives</HeaderItem>
+					<HeaderItem level="2">4.5. Articles and Demonstratives</HeaderItem>
 
 					<InfoModal title="Articles" label="What Are They?">
 						<ul>
@@ -153,7 +153,7 @@ const Syntax = () => {
 					<TextItem text="articles" rows={6}>If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?</TextItem>
 					<TextItem text="demonstratives" rows={6}>How many levels of distance do demonstratives encode? Are there other distinctions besides distance?</TextItem>
 
-					<HeaderItem className="h h2">4.6. Possessors</HeaderItem>
+					<HeaderItem level="2">4.6. Possessors</HeaderItem>
 
 					<InfoModal title="Possessors" label="Possessor Expressions">
 						<ul>
@@ -164,7 +164,7 @@ const Syntax = () => {
 					</InfoModal>
 					<TextItem text="possessors" rows={3}>Describe how possession works in a noun phrase.</TextItem>
 
-					<HeaderItem className="h h2">4.7. Class (Gender)</HeaderItem>
+					<HeaderItem level="2">4.7. Class (Gender)</HeaderItem>
 
 					<InfoModal title="Class and Gender" label="What They Are">
 						<ul>
@@ -203,7 +203,7 @@ const Syntax = () => {
 					</IonItem>
 					<TextItem text="classGender" rows={8}>Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?</TextItem>
 
-					<HeaderItem className="h h2">4.8. Diminution/Augmentation</HeaderItem>
+					<HeaderItem level="2">4.8. Diminution/Augmentation</HeaderItem>
 
 					<InfoModal title="Diminution and Augmentation" label="Bigger and Smaller">
 						<ul>
