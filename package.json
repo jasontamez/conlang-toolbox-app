@@ -1,6 +1,6 @@
 {
   "name": "conlang-toolbox",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^3.0.0",
