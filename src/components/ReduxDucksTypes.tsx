@@ -148,16 +148,16 @@ export interface MorphoSyntaxStateObject {
 type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess"
 				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
-				| "sensation" | "emotion" | "utterance" | "manipulation" | "lexVerb" | "lexNoun" | "lexVN"
-				| "lexVorN" | "adjectives" | "baseFive" | "baseTen" | "baseTwenty" | "baseOther" | "numGL"
-				| "numLG" | "numNone" | "multiNumSets" | "inflectNum" | "APV" | "AVP" | "PAV" | "PVA" | "VAP"
-				| "VPA" | "preP" | "postP" | "circumP" | "numSing" | "numDual" | "numTrial" | "numPaucal"
-				| "numPlural" | "classGen" | "classAnim" | "classShape" | "classFunction" | "classOther"
-				| "dimAugYes" | "dimAugObligatory" | "dimAugProductive" | "nomAcc" | "ergAcc" | "markInv"
-				| "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph" | "modeMorph" | "otherMorph"
-				| "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj" | "chainT" | "chainA"
-				| "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost" | "relInternal" | "relHeadless"
-				| "coordMid" | "coordTwo" | "coordLast";
+				| "sensation" | "emotion" | "utterance" | "manipulation" | "otherVerbClass" | "lexVerb"
+				| "lexNoun" | "lexVN" | "lexVorN" | "adjectives" | "baseFive" | "baseTen" | "baseTwenty"
+				| "baseOther" | "numGL" | "numLG" | "numNone" | "multiNumSets" | "inflectNum" | "APV" | "AVP"
+				| "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP" | "circumP" | "numSing" | "numDual"
+				| "numTrial" | "numPaucal" | "numPlural" | "classGen" | "classAnim" | "classShape"
+				| "classFunction" | "classOther" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive"
+				| "nomAcc" | "ergAcc" | "markInv" | "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph"
+				| "modeMorph" | "otherMorph" | "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj"
+				| "chainT" | "chainA" | "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost"
+				| "relInternal" | "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
 export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }

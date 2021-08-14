@@ -15,7 +15,8 @@ import {
 	InfoModal,
 	RadioBox,
 	RangeItem,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -38,17 +39,27 @@ const Syntax = () => {
 
 					<InfoModal title="Synthesis and Fusion" label="The Basic Building Blocks of Words">
 						<ul>
-							<li><strong>Synthesis</strong>: How many <em>morphemes</em> (the most basic unit of meaning) appear in a word?
+							<li>Languages can be broadly classified on two continuums based on their <strong>morphemes</strong>.
+								<ul><li>A morpheme is the most basic unit of meaning in a language. For example, the word "cats" has two morphemes: "cat" (a feline animal) and "s" (more than one of them are being talked about).</li></ul>
+							</li>
+							<li className="newSection"><strong>Synthesis</strong> is a measure of how many morphemes appear in a word.
 								<ul>
 									<li>Chinese is very <em>isolating</em>, tending towards one morpheme per word.</li>
 									<li>Inuit and Quechua are very <em>polysynthetic</em>, with many morphemes per word.</li>
 								</ul>
 							</li>
-							<li className="newSection"><strong>Fusion</strong>: How many meanings does a morpheme encode?
+							<li className="newSection"><strong>Fusion</strong> is a measure of how many meanings a single morpheme can encode.
 								<ul>
-									<li>Spanish can be very <em>fusional</em>, with a single suffix capable of encoding tense, aspect, mood and number.</li>
-									<li>English can be very <em>agglutinative</em>, with one meaning per morpheme (e.g. anti-dis-establish-ment-ari-an-ism), though fusional forms are possible (e.g. swam, was).</li>
-									<li>NOTE: This section is not needed if the language is completely isolating.</li>
+									<li>Completely isolating languages, be definiton, always lack fusion.</li>
+									<li>Spanish can be very <em>fusional</em>, with a single suffix capable of encoding tense (8.3.1), aspect (8.3.2), mood (8.3.3) and number (4.3).</li>
+									<li>Though fusional forms are possible (e.g. swam, was), English is mostly <em>agglutinative</em>, with one meaning per morpheme.
+										<ul>
+											<li>e.g. "antidisestablishmentarianism"<br />
+												<TransTable rows="anti dis es&shy;tab&shy;lish ment ary an ism / against undo es&shy;tab&shy;lish in&shy;stance__of__verb of__or__like__the__noun per&shy;son be&shy;lief__sys&shy;tem" />
+												(The "establishment" in question is actually contextually fusional, as it refers to the Church of England receiving government patronage, so the full meaning of the word is "the belief system of opposing the people who want to remove the government patronage of the Church of England.")
+											</li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 						</ul>
@@ -59,7 +70,7 @@ const Syntax = () => {
 
 					<HeaderItem className="h h3">Fusion</HeaderItem>
 
-					<RangeItem text="fusion" start="Fusional" end="Agglutinative" innerClass="spectrum" max={10} />
+					<RangeItem text="fusion" start="Agglutinative" end="Fusional" innerClass="spectrum" max={10} />
 
 					<TextItem text="tradTypol">Give examples of the dominant pattern and any secondary patterns.</TextItem>
 
@@ -69,7 +80,8 @@ const Syntax = () => {
 						<ul>
 							<li><strong>Affixes</strong>:
 								<ul>
-									<li>Most natural languages use suffixes. Some also have prefixes and/or infixes or circumfixes. Few only have prefixes, and none have only infixes or circumfixes.</li>
+									<li>Completely fusional languages will usually lack affixes.</li>
+									<li>Most natural languages use suffixes. Some also have prefixes and/or infixes or circumfixes. Few only use prefixes, and none have only infixes or circumfixes.</li>
 									<li>NOTE: this section is not needed if the language is not agglutinative at all.</li>
 								</ul>
 							</li>
@@ -144,7 +156,7 @@ const Syntax = () => {
 
 					<RangeItem text="supraMod" start="Not Used" end="Used Often" />
 
-					<TextItem text="morphProcess" rows={6}>What sort of morphological processes are used? Illustrate the major and secondary pratterns.</TextItem>
+					<TextItem text="morphProcess" rows={6}>What sort of morphological processes are used? Which are primary and which are used less?</TextItem>
 
 					<HeaderItem className="h h2">1.3. Head/Dependant Marking</HeaderItem>
 

@@ -24,7 +24,7 @@ import WGSettings from "./wg/WGsettings";
 
 
 const WG = () => {
-	const WGpage = useSelector((state: any) => state.viewState.wg, shallowEqual) || "categories";
+	const WGpage = useSelector((state: any) => state.viewState.wg, shallowEqual) || "settings";
 	return (
 		<IonTabs>
 			<IonRouterOutlet>

@@ -65,7 +65,7 @@ const Syntax = () => {
 													<li>"The vase broke" becomes "Steve broke the vase".</li>
 												</ul>
 											</li>
-											<li>Some idiosyncratic change the verb:
+											<li>Some idiosyncratic change in the verb:
 												<ul>
 													<li>"The tree fell" becomes "Steve felled the tree".</li>
 												</ul>

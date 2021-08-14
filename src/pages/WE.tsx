@@ -24,7 +24,7 @@ import { shallowEqual, useSelector } from "react-redux";
 
 
 const WE = () => {
-	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual) || "categories";
+	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual) || "input";
 	return (
 		<IonTabs>
 			<IonRouterOutlet>

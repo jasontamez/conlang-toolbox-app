@@ -14,7 +14,8 @@ import {
 	HeaderItem,
 	InfoModal,
 	RadioBox,
-	TextItem
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
@@ -93,7 +94,14 @@ const Syntax = () => {
 							</li>
 							<li className="newSection"><strong>Anaphoric Clitics</strong>:
 								<ul>
-									<li>Must attach to another word, but function as a full noun phrase.</li>
+									<li>A <em>clitic</em> is a bound morpheme that functions on the phrase or clause level, but is bound phonologically to another word.</li>
+									<li>An Anaphoric Clitic functions as a full noun phrase.
+										<ul>
+											<li>Spanish:<br />
+												<TransTable rows="lav-o el auto / wash-1s the car">"I wash the car" :: <strong>-o</strong> functions as the noun phrase "I"</TransTable>
+											</li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 							<li className="newSection">Both types often differ according to person (3rd/2nd/1st including inclusive/exclusive), number (singular/plural), noun class (gender/animacy), grammatical role (subject/object/ergative/etc), semantic role (Agent/Patient), definiteness and/or specificness (a/the), and honorifics.</li>
@@ -136,7 +144,7 @@ const Syntax = () => {
 					<IonItem className="content">
 						<IonGrid className="striped">
 							<IonRow className="header">
-								<IonCol className="cbox">Exists?</IonCol>
+								<IonCol className="cbox">Special?</IonCol>
 								<IonCol className="label">Type</IonCol>
 								<IonCol>Description</IonCol>
 							</IonRow>
@@ -210,10 +218,15 @@ const Syntax = () => {
 								<IonCol className="label">Manipulation</IonCol>
 								<IonCol>force, urge, cause, let, permit, allow, compel, etc</IonCol>
 							</IonRow>
+							<IonRow>
+								<IonCol className="cbox"><RadioBox prop="otherVerbClass" /></IonCol>
+								<IonCol className="label">Other Verb Class(es)</IonCol>
+								<IonCol>(you might have a distinction different from those already listed)</IonCol>
+							</IonRow>
 						</IonGrid>
 					</IonItem>
 
-					<TextItem text="verbClass" rows={8}>Describe which verb classes exist as distinct categories in the language and how they are realized.</TextItem>
+					<TextItem text="verbClass" rows={8}>If you've marked a verb class as "Special", describe how the language treats it differently than the "regular" verbs.</TextItem>
 
 					<HeaderItem className="h h3">2.2.3. Verb Structure</HeaderItem>
 
@@ -275,7 +288,7 @@ const Syntax = () => {
 							</IonRow>
 							<IonRow>
 								<IonCol className="cbox"><RadioBox prop="lexVerb" /></IonCol>
-								<IonCol>Lexicalized as verbs (austronesian languages)</IonCol>
+								<IonCol>Lexicalized as verbs (Acehnese)</IonCol>
 							</IonRow>
 							<IonRow>
 								<IonCol className="cbox"><RadioBox prop="lexNoun" /></IonCol>
@@ -297,7 +310,7 @@ const Syntax = () => {
 					</IonItem>
 					<InfoModal title="Property Concepts" label="More Info">
 						<ul>
-							<li>If these exist as a separate category, they will express:
+							<li>If Property Concepts (adjectives) exist as a separate category, they will express:
 								<ul>
 									<li>age</li>
 									<li>dimension (big, short, long, tall, wide)</li>
@@ -305,7 +318,7 @@ const Syntax = () => {
 									<li>color</li>
 								</ul>
 							</li>
-							<li className="newSection">Other properties may be expressed:
+							<li>Other properties may be expressed:
 								<ul>
 									<li>physical properties (hard, smooth, heavy)</li>
 									<li>shape</li>
@@ -313,9 +326,23 @@ const Syntax = () => {
 									<li>human propensity (happy, jealous, smart, wary)</li>
 								</ul>
 							</li>
+							<li className="newSection">In Acehnese, property concepts can take the same sort of morphology as verbs, thus they are lexicalized as verbs.</li>
+							<li className="newSection">In Finnish, property concepts are required to take the same sort of morphology as the noun they modify, thus they are lexicalized as nouns.</li>
+							<li className="newSection">In Dutch, property concepts are treated as verbs when used as a predicator ("That car is <em>pink</em>!") and as nouns when used as a modifier ("I love <em>pink</em> cars!").</li>
+							<li className="newSection">In Yoruba, some property concepts are always treated as nouns, while others are always treated as verbs.</li>
+							<li className="newSection">In English, they are labeled as a separate class because they don't follow the same patterns as nouns or verbs:
+								<ol>
+									<li>They cannot take past tense like a verb, nor do they "agree" with their head noun in the same way.</li>
+									<li>They do not take plural markers like a noun, nor can they take articles, modifiers or quantifiers.
+										<ul>
+											<li>Rarely, an adjective can be treated as a noun (e.g. "<em>The wealthy</em> are obnoxious", "Which car do you prefer, <em>the gray</em> or <em>the red</em>?"), but these are actually <em>zero derivations</em> (8.1).</li>
+										</ul>
+									</li>
+								</ol>
+							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="propClass">Which way does the language handle PCs? Do they agree with their head?</TextItem>
+					<TextItem text="propClass">How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
 
 					<HeaderItem className="h h3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 
@@ -329,19 +356,26 @@ const Syntax = () => {
 								<ul>
 									<li>Some languages have restricted numerals: e.g. 1, 2, 3, many.</li>
 									<li>Only very advanced societies will have a need for numbers beyond a thousand.</li>
+									<li>Many societies will end up borrowing larger number words from nearby languages that invent them first.</li>
 								</ul>
 							</li>
 							<li className="newSection"><strong>Base</strong>:
 								<ul>
 									<li>Usually base 5 or 10. Sometimes 20. (English is base 10.)</li>
-									<li>More advanced cultures with merchants or bureaucracies tend to create systems based around 12 as well, due to its greater number of factors, but it almost never replaces the original base system.</li>
+									<li>Words for "five" usually come from the word for "hand". Words for "twenty" can come from the word for an entire human being.</li>
+									<li>More advanced cultures with merchants or bureaucracies tend to create systems based around 12 as well, due to its greater number of factors, but this system almost never replaces the original base system.</li>
 									<li>Numerals can be described from greatest to least ("twenty-two"), from least to greatest ("two-twenty"), or not give base multiples a special name ("two-two").</li>
 								</ul>
 							</li>
 							<li className="newSection"><strong>Agreement</strong>:
 								<ul>
-									<li>Some languages use different sets of numerals for different classes of nouns.</li>
-									<li>Other languages inflect their numerals to agree with their head.</li>
+									<li>Languages may inflect their numerals to agree with their head.</li>
+									<li>Some languages use entirely different sets of numerals for different situations.
+										<ul>
+											<li>English has separate numerals for counting (one, two, three, etc.) and ordering things (first, second, third, etc.)</li>
+											<li>Irish has a set of numbers that represent the numbers themselves, a second set for counting or ordering things (one goat, two goats, three goats, etc.), and third set of numerals used only for counting people.</li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 						</ul>

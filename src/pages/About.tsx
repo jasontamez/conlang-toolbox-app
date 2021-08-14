@@ -21,7 +21,8 @@ import {
 	shuffleSharp,
 	bookSharp,
 	globeOutline,
-	listOutline
+	listOutline,
+	buildSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
@@ -48,7 +49,26 @@ const Home = () => {
 				<IonGrid>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/wg/settings" routerDirection="forward">
+							<IonCard button={true} routerLink="/ms/" routerDirection="forward">
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={buildSharp} />
+									<IonLabel className="ion-padding-start">MorphoSyntax</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>This tool is for designing the basic structure of your language.</p>
+									<ul>
+										<li>Covers large-scale structures and small</li>
+										<li>Grouped into ten sections</li>
+										<li>Use as many or as little of the prompts as you like</li>
+										<li>...?</li>
+									</ul>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={true} routerLink="/wg/" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={createSharp} />
 									<IonLabel className="ion-padding-start">WordGen</IonLabel>
@@ -67,7 +87,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/we/input" routerDirection="forward">
+							<IonCard button={true} routerLink="/we/" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={shuffleSharp} />
 									<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
