@@ -3,23 +3,35 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
-	IonItem,
-	IonGrid,
-	IonRow,
-	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	SyntaxHeader,
-	HeaderItem,
-	InfoModal,
-	RadioBox,
-	TextItem
+	parseMSJSON
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
 
 const Syntax = () => {
+	const dispatch = useDispatch();
+	const viewInfo = ['ms', 'ms03'];
+	useIonViewDidEnter(() => {
+		dispatch(changeView(viewInfo));
+	});
+	return (
+		<IonPage>
+			<SyntaxHeader title="3. Constituent Order Typology" />
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+				<IonList lines="none">
+					{parseMSJSON("s3")}
+				</IonList>
+			</IonContent>
+		</IonPage>
+	);
+};
+
+/*
+const OldSyntax = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms03'];
 	useIonViewDidEnter(() => {
@@ -202,5 +214,6 @@ const Syntax = () => {
 		</IonPage>
 	);
 };
- 
+*/
+
 export default Syntax;

@@ -15,7 +15,10 @@ import {
 	IonCheckbox,
 	IonTextarea,
 	IonModal,
-	IonFooter
+	IonFooter,
+	IonGrid,
+	IonRow,
+	IonCol
 } from '@ionic/react';
 import { globeOutline } from 'ionicons/icons';
 import ExtraCharactersModal from '../M-ExtraCharacters';
@@ -29,6 +32,9 @@ import {
 	setSyntaxState
 } from '../../components/ReduxDucksFuncs';
 import { MorphoSyntaxBoolObject, MorphoSyntaxNumberObject, MorphoSyntaxTextObject } from '../../components/ReduxDucksTypes';
+import doParse from 'html-react-parser';
+import ms from './ms.json';
+import { Element, Text } from 'domhandler/lib/node';
 
 export const SyntaxHeader = (props: any) => {
 	const dispatch = useDispatch();
@@ -112,7 +118,7 @@ export const TransTable = (props: any) => {
 		cName += " " + props.className;
 	}
 	return (
-		<table className={cName}>
+		<table className={cName}><tbody>
 			{rows.map((row: string) => {
 				const tds = row.split(/\s+/);
 				length = Math.max(length, tds.length);
@@ -123,7 +129,7 @@ export const TransTable = (props: any) => {
 				) : "";
 			})}
 			{(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""}
-		</table>
+		</tbody></table>
 	);
 };
 export const InfoModal = (props: any) => {
@@ -163,6 +169,119 @@ export const InfoModal = (props: any) => {
 			</IonButton>
 		</IonItem>
 	);
+};
+export const parseMSJSON = (page: keyof (typeof ms)) => {
+	interface rows {
+		header?: boolean
+		cols: (string | string[])[]
+	}
+	interface display {
+		class?: string
+		labels?: string[]
+		labelClass?: string
+		boxesPerRow: number
+		header?: string
+		inlineHeaders?: string[]
+		singleHeader?: string
+		rowLabels: string[]
+	}
+	interface anything {
+		tag: string
+		level?: number
+		content?: string
+		title?: string
+		label?: string
+		text?: string
+		rows?: number
+		start?: string
+		end?: string
+		spectrum?: boolean
+		max?: number
+		gridrows?: rows[]
+		boxes?: string[]
+		display?: display
+	}
+	const doc = ms[page] as anything[];
+	const key = page + "-";
+	let counter = 0;
+	return doc.map((bit) => {
+		counter++;
+		const tag = (bit.tag || "");
+		switch(tag) {
+			case "Header":
+				return <HeaderItem key={key + String(counter)} level={bit.level}>{bit.content}</HeaderItem>;
+			case "Range":
+				return <RangeItem key={key + String(counter)} text={bit.text} start={bit.start} end={bit.end} innerClass={bit.spectrum ? "spectrum" : undefined} max={bit.max || undefined} />;
+			case "Text":
+				return <TextItem key={key + String(counter)} text={bit.text} rows={bit.rows || undefined}>{bit.content || ""}</TextItem>
+			case "Modal":
+				return <InfoModal key={key + String(counter)} title={bit.title} label={bit.label || undefined}>{
+					doParse(bit.content || "", {
+						replace: node => {
+							if(node instanceof Element && node.attribs && node.name === "transtable") {
+								return <TransTable rows={node.attribs.rows} className={node.attribs.className || ""}>{node.children.length ? (node.children[0] as Text).data : ""}</TransTable>;
+							}
+							return node;
+						}
+					})
+				}</InfoModal>;
+			case "Checkboxes":
+				const disp = bit.display;
+				if(!disp) {
+					return "<div>DISPLAY ERROR</div>";
+				}
+				const boxes = (bit.boxes || []);
+				const rowLabels = (disp.rowLabels || []).slice();
+				const perRow = disp.boxesPerRow;
+				const labels = (disp.labels || []).slice();
+				const header = disp.header;
+				let count = 0;
+				let rows: string[][] = [];
+				let temp: string[] = [];
+				boxes.forEach((box) => {
+					count++;
+					temp.push(box || "Error");
+					if(count >= perRow) {
+						temp.push(rowLabels.shift() || "Error");
+						count = 0;
+						rows.push(temp);
+						temp = [];
+					}
+				});
+				const printRow = (rows: string[], cn = "") => {
+					const label = rows.pop();
+					return (
+						<IonRow className={cn || undefined}>
+							{rows.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol>{label}</IonCol>
+						</IonRow>
+					);
+				};
+				const printRowWithLabel = (rows: string[], cn = "", labelOverride = false) => {
+					const final = rows.pop();
+					const label = labelOverride ? rows.pop() : labels.shift();
+					const labelClass = disp.labelClass || "label"
+					return (
+						<IonRow className={cn || undefined}>
+							{rows.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol className={labelClass}>{label}</IonCol>
+							<IonCol>{final}</IonCol>
+						</IonRow>
+					);
+				};
+				const inlineHeaders = disp.inlineHeaders;
+				return (
+					<IonItem className="content">
+						<IonGrid className={disp.class || undefined}>
+							{header ? <IonRow><IonCol className="header">{header}</IonCol></IonRow> : ""}
+							{inlineHeaders ? <IonRow className="header">{disp.labels ? printRowWithLabel(inlineHeaders, "headers", true) : printRow(inlineHeaders, "headers")}</IonRow> : ""}
+							{rows.map((r) => disp.labels ? printRowWithLabel(r) : printRow(r))}
+						</IonGrid>
+					</IonItem>
+				);
+		}
+		return "";
+	});
 };
 
 export default SyntaxHeader;

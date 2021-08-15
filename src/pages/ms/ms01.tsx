@@ -3,25 +3,35 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
-	IonItem,
-	IonGrid,
-	IonRow,
-	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	SyntaxHeader,
-	HeaderItem,
-	InfoModal,
-	RadioBox,
-	RangeItem,
-	TextItem,
-	TransTable
+	parseMSJSON
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
 
 const Syntax = () => {
+	const dispatch = useDispatch();
+	const viewInfo = ['ms', 'ms01'];
+	useIonViewDidEnter(() => {
+		dispatch(changeView(viewInfo));
+	});
+	return (
+		<IonPage>
+			<SyntaxHeader title="1. Morphological Typology" />
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+				<IonList lines="none">
+					{parseMSJSON("s1")}
+				</IonList>
+			</IonContent>
+		</IonPage>
+	);
+};
+
+/*
+export const OldSyntax = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms01'];
 	useIonViewDidEnter(() => {
@@ -188,5 +198,6 @@ const Syntax = () => {
 		</IonPage>
 	);
 };
- 
+*/
+
 export default Syntax;

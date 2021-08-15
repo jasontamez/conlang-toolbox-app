@@ -3,32 +3,43 @@ import {
 	IonPage,
 	IonContent,
 	IonList,
-	IonItem,
-	IonGrid,
-	IonRow,
-	IonCol,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	SyntaxHeader,
-	HeaderItem,
-	InfoModal,
-	RadioBox,
-	TextItem,
-	TransTable
+	parseMSJSON
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
 
 const Syntax = () => {
 	const dispatch = useDispatch();
-	const viewInfo = ['ms', 'ms02']; /// CONSIDER REMOVING INDENTATIONS FROM CSS, AND KILL THE HEADER DROPDOWN
+	const viewInfo = ['ms', 'ms02'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="2. Grammatical Categories"/ >
+			<SyntaxHeader title="2. Grammatical Categories" />
+			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+				<IonList lines="none">
+					{parseMSJSON("s2")}
+				</IonList>
+			</IonContent>
+		</IonPage>
+	);
+};
+
+/*
+const OldSyntax = () => {
+	const dispatch = useDispatch();
+	const viewInfo = ['ms', 'ms02'];
+	useIonViewDidEnter(() => {
+		dispatch(changeView(viewInfo));
+	});
+	return (
+		<IonPage>
+			<SyntaxHeader title="2. Grammatical Categories" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none">
 
@@ -454,5 +465,6 @@ const Syntax = () => {
 		</IonPage>
 	);
 };
- 
+*/
+
 export default Syntax;
