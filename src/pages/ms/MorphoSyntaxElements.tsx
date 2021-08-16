@@ -170,38 +170,38 @@ export const InfoModal = (props: any) => {
 		</IonItem>
 	);
 };
+export interface exporter {
+	title: string
+	output?: ( (string | [string, string])[] )[]
+	labels?: string[]
+}
+export interface display {
+	boxesPerRow: number
+	rowLabels: string[]
+	class?: string
+	labels?: string[]
+	labelClass?: string
+	header?: string
+	inlineHeaders?: string[]
+	singleHeader?: string
+	export?: exporter
+}
+export interface anything {
+	tag: string
+	level?: number
+	content?: string
+	title?: string
+	label?: string
+	prop?: string
+	rows?: number
+	start?: string
+	end?: string
+	spectrum?: boolean
+	max?: number
+	boxes?: string[]
+	display?: display
+}
 export const parseMSJSON = (page: keyof (typeof ms)) => {
-	interface exporter {
-		title: string
-		output?: ( (string | [string, string][])[] )[]
-		labels?: string[]
-	}
-	interface display {
-		boxesPerRow: number
-		rowLabels: string[]
-		class?: string
-		labels?: string[]
-		labelClass?: string
-		header?: string
-		inlineHeaders?: string[]
-		singleHeader?: string
-		export?: exporter
-	}
-	interface anything {
-		tag: string
-		level?: number
-		content?: string
-		title?: string
-		label?: string
-		prop?: string
-		rows?: number
-		start?: string
-		end?: string
-		spectrum?: boolean
-		max?: number
-		boxes?: string[]
-		display?: display
-	}
 	const doc = ms[page] as anything[];
 	const key = page + "-";
 	let counter = 0;
