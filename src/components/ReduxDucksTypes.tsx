@@ -154,10 +154,10 @@ type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "c
 				| "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP" | "circumP" | "numSing" | "numDual"
 				| "numTrial" | "numPaucal" | "numPlural" | "classGen" | "classAnim" | "classShape"
 				| "classFunction" | "classOther" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive"
-				| "nomAcc" | "ergAcc" | "markInv" | "markDirInv" | "verbAgreeInv" | "tenseMorph" | "aspectMorph"
-				| "modeMorph" | "otherMorph" | "chainFirst" | "chianLast" | "chainN" | "chainV" | "chainCj"
-				| "chainT" | "chainA" | "chainPer" | "chainNum" | "chainOther" |"relPre" | "relPost"
-				| "relInternal" | "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
+				| "nomAcc" | "ergAcc" | "markInv" | "markDirInv" | "verbAgreeInv" | "wordOrderChange"
+				| "tenseMorph" | "aspectMorph" | "modeMorph" | "otherMorph" | "chainFirst" | "chianLast"
+				| "chainN" | "chainV" | "chainCj" | "chainT" | "chainA" | "chainPer" | "chainNum" | "chainOther"
+				|"relPre" | "relPost" | "relInternal" | "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
 export type MorphoSyntaxBoolObject = {
 	[key in SyntaxBool]?: boolean
 }
