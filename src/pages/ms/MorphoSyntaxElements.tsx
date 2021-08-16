@@ -70,7 +70,7 @@ export const RadioBox = (props: any) => {
 export const RangeItem = (props: any) => {
 	const dispatch = useDispatch();
 	const synNum = useSelector((state: any) => state.morphoSyntaxInfo.num)
-	const what = props.text as keyof MorphoSyntaxNumberObject;
+	const what = props.prop as keyof MorphoSyntaxNumberObject;
 	const start = (props.start || "") as string;
 	const end = (props.end || "") as string;
 	const cls = (props.innerClass || "") as string;
@@ -92,7 +92,7 @@ export const TextItem = (props: any) => {
 	const dispatch = useDispatch();
 	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text)
 	const ph = (props.placeholder || "") as string;
-	const what = props.text as keyof MorphoSyntaxTextObject;
+	const what = props.prop as keyof MorphoSyntaxTextObject;
 	const rows = props.rows === undefined ? 3 : (props.rows as number);
 	const classes = props.className ? props.className + " morphoSyntaxTextItem content" : "morphoSyntaxTextItem content";
 	const setText = (what: keyof MorphoSyntaxTextObject, value: string) => {
@@ -171,19 +171,21 @@ export const InfoModal = (props: any) => {
 	);
 };
 export const parseMSJSON = (page: keyof (typeof ms)) => {
-	interface rows {
-		header?: boolean
-		cols: (string | string[])[]
+	interface exporter {
+		title: string
+		output?: ( (string | [string, string][])[] )[]
+		labels?: string[]
 	}
 	interface display {
+		boxesPerRow: number
+		rowLabels: string[]
 		class?: string
 		labels?: string[]
 		labelClass?: string
-		boxesPerRow: number
 		header?: string
 		inlineHeaders?: string[]
 		singleHeader?: string
-		rowLabels: string[]
+		export?: exporter
 	}
 	interface anything {
 		tag: string
@@ -191,13 +193,12 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 		content?: string
 		title?: string
 		label?: string
-		text?: string
+		prop?: string
 		rows?: number
 		start?: string
 		end?: string
 		spectrum?: boolean
 		max?: number
-		gridrows?: rows[]
 		boxes?: string[]
 		display?: display
 	}
@@ -211,9 +212,9 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 			case "Header":
 				return <HeaderItem key={key + String(counter)} level={bit.level}>{bit.content}</HeaderItem>;
 			case "Range":
-				return <RangeItem key={key + String(counter)} text={bit.text} start={bit.start} end={bit.end} innerClass={bit.spectrum ? "spectrum" : undefined} max={bit.max || undefined} />;
+				return <RangeItem key={key + String(counter)} prop={bit.prop} start={bit.start} end={bit.end} innerClass={bit.spectrum ? "spectrum" : undefined} max={bit.max || undefined} />;
 			case "Text":
-				return <TextItem key={key + String(counter)} text={bit.text} rows={bit.rows || undefined}>{bit.content || ""}</TextItem>
+				return <TextItem key={key + String(counter)} prop={bit.prop} rows={bit.rows || undefined}>{bit.content || ""}</TextItem>
 			case "Modal":
 				return <InfoModal key={key + String(counter)} title={bit.title} label={bit.label || undefined}>{
 					doParse(bit.content || "", {

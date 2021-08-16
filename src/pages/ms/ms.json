@@ -23,7 +23,7 @@
 		},
 		{
 			"tag": "Range",
-			"text": "synthesis",
+			"prop": "synthesis",
 			"start": "Isolating",
 			"end": "Polysynthetic",
 			"spectrum": true,
@@ -36,7 +36,7 @@
 		},
 		{
 			"tag": "Range",
-			"text": "fusion",
+			"prop": "fusion",
 			"start": "Agglutinative",
 			"end": "Fusional",
 			"spectrum": true,
@@ -44,7 +44,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "tradTypol",
+			"prop": "tradTypol",
 			"content": "Give examples of the dominant pattern and any secondary patterns."
 		},
 		{
@@ -88,7 +88,24 @@
 					"Suffix",
 					"Circumfix",
 					"Infix"
-				]
+				],
+				"export": {
+					"title": "Affixes",
+					"output": [
+						["Used Most: ", [
+							["prefixMost", "Prefixes"],
+							["suffixMost", "Suffixes"],
+							["circumfixMost", "Circumfixes"],
+							["infixMost", "Infixes"]
+						], "."],
+						["Used Less: ", [
+							["prefixLess", "Prefixes"],
+							["suffixLess", "Suffixes"],
+							["circumfixLess", "Circumfixes"],
+							["infixLess", "Infixes"]
+						], "."]
+					]
+				}
 			}
 		},
 		{
@@ -98,7 +115,7 @@
 		},
 		{
 			"tag": "Range",
-			"text": "stemMod",
+			"prop": "stemMod",
 			"start": "Not Used",
 			"end": "Used Often"
 		},
@@ -109,7 +126,7 @@
 		},
 		{
 			"tag": "Range",
-			"text": "suppletion",
+			"prop": "suppletion",
 			"start": "Not Used",
 			"end": "Used Often"
 		},
@@ -120,7 +137,7 @@
 		},
 		{
 			"tag": "Range",
-			"text": "redupe",
+			"prop": "redupe",
 			"start": "Not Used",
 			"end": "Used Often"
 		},
@@ -131,13 +148,13 @@
 		},
 		{
 			"tag": "Range",
-			"text": "supraMod",
+			"prop": "supraMod",
 			"start": "Not Used",
 			"end": "Used Often"
 		},
 		{
 			"tag": "Text",
-			"text": "morphProcess",
+			"prop": "morphProcess",
 			"rows": 6,
 			"content": "What sort of morphological processes are used? Which are primary and which are used less?"
 		},
@@ -148,7 +165,7 @@
 		},
 			{
 			"tag": "Range",
-			"text": "headDepMarked",
+			"prop": "headDepMarked",
 			"start": "Head Marked",
 			"end": "Dependant Marked",
 			"spectrum": true,
@@ -161,7 +178,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "headDepMark",
+			"prop": "headDepMark",
 			"content": "Describe when the head/dependant marking system changes, if needed."
 		}
 	],
@@ -193,7 +210,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "propNames",
+			"prop": "propNames",
 			"content": "Are there any special rules involving proper names?"
 		},
 		{
@@ -208,7 +225,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "possessable",
+			"prop": "possessable",
 			"rows": 4,
 			"content": "Describe how the language handles possession."
 		},
@@ -224,7 +241,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "countMass",
+			"prop": "countMass",
 			"content": "Write any specific notes about count/mass noun distinctions here."
 		},
 		{
@@ -240,7 +257,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "pronounAnaphClitic",
+			"prop": "pronounAnaphClitic",
 			"rows": 4,
 			"content": "Which system(s) are used by the language?"
 		},
@@ -262,7 +279,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "semanticRole",
+			"prop": "semanticRole",
 			"rows": 6,
 			"content": "Describe which semantic roles are important."
 		},
@@ -331,12 +348,15 @@
 					"say, yell, murmur, declare, chat, etc.",
 					"force, urge, cause, let, permit, allow, compel, etc.",
 					"(you might have a distinction different from those already listed)"
-				]
+				],
+				"export": {
+					"title": "Verb Types that are handled in a special way:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "verbClass",
+			"prop": "verbClass",
 			"rows": 8,
 			"content": "If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs."
 		},
@@ -353,7 +373,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "verbStructure",
+			"prop": "verbStructure",
 			"rows": 6,
 			"content": "Describe the verb structure here."
 		},
@@ -386,7 +406,17 @@
 					"Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)",
 					"Some are lexicalized as nouns, others are lexicalized as verbs (Yoruba)",
 					"Distinct class of \"adjectives\" (English)"
-				]
+				],
+				"export": {
+					"title": "Property Concepts:",
+					"labels": [
+						"Lexicalized as verbs",
+						"Lexicalized as nouns",
+						"Lexicalized as nouns or verbs depending on the demands of discourse",
+						"Some are lexicalized as nouns, others are lexicalized as verbs",
+						"Distinct class of \"adjectives\""
+					]
+				}
 			}
 		},
 		{
@@ -397,7 +427,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "propClass",
+			"prop": "propClass",
 			"content": "How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences."
 		},
 		{
@@ -407,7 +437,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "quantifier",
+			"prop": "quantifier",
 			"content": "Which quantifiers exist?"
 		},
 		{
@@ -438,7 +468,10 @@
 					"Base Ten",
 					"Base Twenty",
 					"Other"
-				]
+				],
+				"export": {
+					"title": "Number Base:"
+				}
 			}
 		},
 		{
@@ -456,7 +489,15 @@
 					"Greatest-to-Least (twenty-two)",
 					"Least-to-Greatest (two-twenty)",
 					"Single Digits Only (two-two)"
-				]
+				],
+				"export": {
+					"title": "Number Format:",
+					"labels": [
+						"Greatest-to-Least",
+						"Least-to-Greatest",
+						"Single Digits Only"
+					]
+				}
 			}
 		},
 		{
@@ -472,12 +513,15 @@
 				"rowLabels": [
 					"Multiple Sets of Numerals",
 					"Numerals Agree With Head"
-				]
+				],
+				"export": {
+					"title": "Other Number Properties:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "numeral",
+			"prop": "numeral",
 			"rows": 6,
 			"content": "Describe the language's numeral system."
 		},
@@ -494,7 +538,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "adverb",
+			"prop": "adverb",
 			"rows": 4,
 			"content": "How are adverbs (or adverb-like phrases) handled?"
 		}
@@ -544,7 +588,10 @@
 					"\"Pitches softballs Steve; Pitches Steve.\"",
 					"\"Softballs Steve pitches; Steve pitches.\"",
 					"\"Softballs pitches Steve; Pitches Steve.\""
-				]
+				],
+				"export": {
+					"title": "Constituent Order Typology:"
+				}
 			}
 		},
 		{
@@ -555,7 +602,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "mainClause",
+			"prop": "mainClause",
 			"content": "Write any more specific notes here."
 		},
 		{
@@ -565,7 +612,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "verbPhrase",
+			"prop": "verbPhrase",
 			"rows": 4,
 			"content": "Where do auxilliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxilliaries?"
 		},
@@ -576,7 +623,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "nounPhrase",
+			"prop": "nounPhrase",
 			"rows": 4,
 			"content": "What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?"
 		},
@@ -599,7 +646,15 @@
 					"Preposition (<em>with</em> an apple)",
 					"Postpostition (an apple <em>with</em>)",
 					"Circumposition (rare; <em>with</em> an apple <em>with</em>)"
-				]
+				],
+				"export": {
+					"title": "Adpositions Used:",
+					"labels": [
+						"Preposition",
+						"Postposition",
+						"Circumposition"
+					]
+				}
 			}
 		},
 		{
@@ -610,7 +665,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "adPhrase",
+			"prop": "adPhrase",
 			"rows": 4,
 			"content": "Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?"
 		},
@@ -627,7 +682,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "compare",
+			"prop": "compare",
 			"content": "Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?"
 		},
 		{
@@ -642,7 +697,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "questions",
+			"prop": "questions",
 			"content": "How are questions handled in the language? In informational questions, where does the question word occur?"
 		},
 		{
@@ -652,7 +707,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "COType",
+			"prop": "COType",
 			"content": "When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered."
 		}
 	],
@@ -675,7 +730,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "compounding",
+			"prop": "compounding",
 			"rows": 4,
 			"content": "Describe the sorts of compounding that happen in the language (if any)."
 		},
@@ -692,7 +747,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "denoms",
+			"prop": "denoms",
 			"rows": 4,
 			"content": "Are there any processes to make a verb from a noun? An adjecive? An adverb?"
 		},
@@ -726,18 +781,21 @@
 					"Trial",
 					"Paucal",
 					"Plural"
-				]
+				],
+				"export": {
+					"title": "Number Marking:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "nNumberOpt",
+			"prop": "nNumberOpt",
 			"rows": 3,
 			"content": "Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?"
 		},
 		{
 			"tag": "Text",
-			"text": "nNumberObl",
+			"prop": "nNumberObl",
 			"rows": 6,
 			"content": "If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?"
 		},
@@ -754,7 +812,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "case",
+			"prop": "case",
 			"rows": 4,
 			"content": "Do nouns exhibit morphological case? If so, what cases exist?"
 		},
@@ -771,13 +829,13 @@
 		},
 		{
 			"tag": "Text",
-			"text": "articles",
+			"prop": "articles",
 			"rows": 6,
 			"content": "If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?"
 		},
 		{
 			"tag": "Text",
-			"text": "demonstratives",
+			"prop": "demonstratives",
 			"rows": 6,
 			"content": "How many levels of distance do demonstratives encode? Are there other distinctions besides distance?"
 		},
@@ -794,7 +852,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "possessors",
+			"prop": "possessors",
 			"rows": 3,
 			"content": "Describe how possession works in a noun phrase."
 		},
@@ -828,12 +886,15 @@
 					"Shape",
 					"Function",
 					"Other"
-				]
+				],
+				"export": {
+					"title": "Class Distinctions:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "classGender",
+			"prop": "classGender",
 			"rows": 8,
 			"content": "Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?"
 		},
@@ -862,12 +923,20 @@
 					"Dim/Aug System Exists",
 					"...and is Obligatory",
 					"...and is Productive"
-				]
+				],
+				"export": {
+					"title": "Diminution/Augmentation System:",
+					"labels": [
+						"Exists",
+						"Is Obligatory",
+						"Is Productive"
+					]
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "dimAug",
+			"prop": "dimAug",
 			"rows": 8,
 			"content": "Describe the language's relation to diminution and augmentation."
 		}
@@ -897,7 +966,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "predNom",
+			"prop": "predNom",
 			"rows": 6,
 			"content": "Describe the language's strategy for predicate nominals and adjectives."
 		},
@@ -914,7 +983,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "predLoc",
+			"prop": "predLoc",
 			"rows": 6,
 			"content": "How does the language handle predicate locatives?"
 		},
@@ -931,7 +1000,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "predEx",
+			"prop": "predEx",
 			"rows": 6,
 			"content": "How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?"
 		},
@@ -947,7 +1016,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "predEx",
+			"prop": "predEx",
 			"rows": 3,
 			"content": "Does the language use a verb or copula strategy?"
 		}
@@ -977,12 +1046,15 @@
 				"rowLabels": [
 					"Nominative / Accusative",
 					"Ergative / Absolutive"
-				]
+				],
+				"export": {
+					"title": "Primary Alignment System:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "ergative",
+			"prop": "ergative",
 			"rows": 8,
 			"content": "Are there any exceptions to the primary alignment? Do they exist in a hierarchy?"
 		}
@@ -1016,7 +1088,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "causation",
+			"prop": "causation",
 			"rows": 4,
 			"content": "Describe which method(s) the language uses to create causatives."
 		},
@@ -1032,7 +1104,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "applicatives",
+			"prop": "applicatives",
 			"rows": 4,
 			"content": "Describe which method(s) the language uses for applicatives, if any."
 		},
@@ -1048,7 +1120,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "dativeShifts",
+			"prop": "dativeShifts",
 			"rows": 4,
 			"content": "Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?"
 		},
@@ -1064,7 +1136,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "datOfInt",
+			"prop": "datOfInt",
 			"rows": 4,
 			"content": "Is there a dative-of-interest operation?"
 		},
@@ -1080,7 +1152,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "possessRaising",
+			"prop": "possessRaising",
 			"rows": 4,
 			"content": "Does possessor raising occur?"
 		},
@@ -1102,7 +1174,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "refls",
+			"prop": "refls",
 			"rows": 4,
 			"content": "How are reflexives handled?"
 		},
@@ -1119,7 +1191,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "recips",
+			"prop": "recips",
 			"rows": 3,
 			"content": "How are reciprocals handled?"
 		},
@@ -1136,7 +1208,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "passives",
+			"prop": "passives",
 			"rows": 4,
 			"content": "How are passives handled?"
 		},
@@ -1163,16 +1235,19 @@
 				"class": "cols2",
 				"boxesPerRow": 1,
 				"rowLabels": [
-					"Marked inverse only.",
-					"Both direct and inverse explicitly marked.",
-					"Special verb agreement markers for inverse.",
-					"Functional inverse: word order changes, e.g. VAP becomes VPA."
-				]
+					"Marked inverse only",
+					"Both direct and inverse explicitly marked",
+					"Special verb agreement markers for inverse",
+					"Functional inverse: word order changes, e.g. VAP becomes VPA"
+				],
+				"export": {
+					"title": "Inverse Constructions:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "inverses",
+			"prop": "inverses",
 			"rows": 4,
 			"content": "Describe any pecularities of inverse constructions."
 		},
@@ -1189,7 +1264,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "middleCon",
+			"prop": "middleCon",
 			"rows": 3,
 			"content": "How are middle constructions handled?"
 		},
@@ -1206,7 +1281,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "antiP",
+			"prop": "antiP",
 			"rows": 3,
 			"content": "Describe antipassive strategies in the language, if they exist."
 		},
@@ -1223,7 +1298,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "objDemOmInc",
+			"prop": "objDemOmInc",
 			"rows": 5,
 			"content": "Is object demotion/omission allowed? How about incorporation?"
 		}
@@ -1248,7 +1323,7 @@
 
 		{
 			"tag": "Text",
-			"text": "verbNoms",
+			"prop": "verbNoms",
 			"rows": 8,
 			"content": "Describe the nominalizations that exist in the language, and explain how productive they are."
 		},
@@ -1266,7 +1341,7 @@
 
 		{
 			"tag": "Text",
-			"text": "verbComp",
+			"prop": "verbComp",
 			"rows": 6,
 			"content": "Describe any compounding strategies that exist in the language."
 		},
@@ -1298,7 +1373,10 @@
 					"Aspect",
 					"Mode",
 					"Other (see below)"
-				]
+				],
+				"export": {
+					"title": "Morphology Exists For:"
+				}
 			}
 		},
 		{
@@ -1314,7 +1392,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "tense",
+			"prop": "tense",
 			"rows": 6,
 			"content": "Is there a Tense system? How does it operate? How does it divide time?"
 		},
@@ -1331,7 +1409,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "aspect",
+			"prop": "aspect",
 			"rows": 8,
 			"content": "Describe the way the language handles Aspect."
 		},
@@ -1348,7 +1426,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "mode",
+			"prop": "mode",
 			"rows": 6,
 			"content": "Describe how the language deals with Mode."
 		},
@@ -1365,7 +1443,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "locDirect",
+			"prop": "locDirect",
 			"rows": 8,
 			"content": "Does the language have affixes or other functions that represent spatial grounding?"
 		},
@@ -1382,7 +1460,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "evidence",
+			"prop": "evidence",
 			"rows": 6,
 			"content": "Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?"
 		},
@@ -1399,7 +1477,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "miscVerbFunc",
+			"prop": "miscVerbFunc",
 			"rows": 4,
 			"content": "Does the language have any other notable verb phrase operations?"
 		}
@@ -1429,7 +1507,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "pragFocusEtc",
+			"prop": "pragFocusEtc",
 			"rows": 8,
 			"content": "Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any."
 		},
@@ -1446,7 +1524,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "negation",
+			"prop": "negation",
 			"rows": 8,
 			"content": "Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?"
 		},
@@ -1463,7 +1541,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "declaratives",
+			"prop": "declaratives",
 			"rows": 3,
 			"content": "If declaratives are marked, describe how."
 		},
@@ -1485,7 +1563,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "YNQs",
+			"prop": "YNQs",
 			"rows": 4,
 			"content": "How are yes/no questions formed? Do they serve other discourse functions other than the obvious?"
 		},
@@ -1502,7 +1580,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "QWQs",
+			"prop": "QWQs",
 			"rows": 4,
 			"content": "How are information questions formed?"
 		},
@@ -1519,7 +1597,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "imperatives",
+			"prop": "imperatives",
 			"rows": 4,
 			"content": "How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?"
 		}
@@ -1549,7 +1627,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "serialVerbs",
+			"prop": "serialVerbs",
 			"rows": 4,
 			"content": "Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxilliaries or adpositions?"
 		},
@@ -1566,7 +1644,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "complClauses",
+			"prop": "complClauses",
 			"rows": 6,
 			"content": "What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?"
 		},
@@ -1583,7 +1661,7 @@
 		},
 		{
 			"tag": "Text",
-			"text": "advClauses",
+			"prop": "advClauses",
 			"rows": 6,
 			"content": "How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?"
 		},
@@ -1611,7 +1689,10 @@
 				"rowLabels": [
 					"First",
 					"Last"
-				]
+				],
+				"export": {
+					"title": "Inflected Clause:"
+				}
 			}
 		},
 		{
@@ -1629,7 +1710,10 @@
 					"Noun",
 					"Verb",
 					"Conjunction"
-				]
+				],
+				"export": {
+					"title": "Element Marked:"
+				}
 			}
 		},
 		{
@@ -1651,12 +1735,15 @@
 					"Person",
 					"Number",
 					"Other"
-				]
+				],
+				"export": {
+					"title": "Marker Encodes:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "clauseChainEtc",
+			"prop": "clauseChainEtc",
 			"rows": 6,
 			"content": "Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?"
 		},
@@ -1688,12 +1775,15 @@
 					"Postnomial",
 					"Internally Headed",
 					"Headless"
-				]
+				],
+				"export": {
+					"title": "Type of Relative Clauses:"
+				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "relClauses",
+			"prop": "relClauses",
 			"rows": 6,
 			"content": "Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies)."
 		},
@@ -1723,12 +1813,14 @@
 					"Between the clauses",
 					"After the first element of the second clause",
 					"After the last element"
-				]
+				],
+				"export": {
+					"title": "Coordinating Conjunction Positions:"				}
 			}
 		},
 		{
 			"tag": "Text",
-			"text": "coords",
+			"prop": "coords",
 			"rows": 6,
 			"content": "Describe how Conjunction, Disjunction and Exclusion are expressed in the language."
 		}
