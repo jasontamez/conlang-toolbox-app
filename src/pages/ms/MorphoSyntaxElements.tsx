@@ -235,6 +235,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 				const perRow = disp.boxesPerRow;
 				const labels = (disp.labels || []).slice();
 				const header = disp.header;
+				const inlineHeaders = disp.inlineHeaders;
 				let count = 0;
 				let rows: string[][] = [];
 				let temp: string[] = [];
@@ -248,34 +249,47 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 						temp = [];
 					}
 				});
-				const printRow = (rows: string[], cn = "") => {
-					const label = rows.pop();
+				const printRow = (row: string[], cn = "") => {
+					const label = row.pop() || "";
 					return (
 						<IonRow className={cn || undefined}>
-							{rows.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
-							<IonCol>{label}</IonCol>
+							{row.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol>{doParse(label)}</IonCol>
 						</IonRow>
 					);
 				};
-				const printRowWithLabel = (rows: string[], cn = "", labelOverride = false) => {
-					const final = rows.pop();
-					const label = labelOverride ? rows.pop() : labels.shift();
+				const printRowWithLabel = (row: string[], cn = "") => {
+					const final = row.pop() || "";
+					const label = labels.shift() || "";
 					const labelClass = disp.labelClass || "label"
 					return (
 						<IonRow className={cn || undefined}>
-							{rows.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
-							<IonCol className={labelClass}>{label}</IonCol>
-							<IonCol>{final}</IonCol>
+							{row.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol className={labelClass}>{doParse(label)}</IonCol>
+							<IonCol>{doParse(final)}</IonCol>
 						</IonRow>
 					);
 				};
-				const inlineHeaders = disp.inlineHeaders;
+				const printHeaderRow = (row: string[], hasLabel = false) => {
+					const final = row.pop() || "";
+					let label: any = "";
+					if(hasLabel) {
+						label = row.pop();
+					}
+					return (
+						<IonRow className="header">
+							{row.map((c) => <IonCol className="cbox">{c}</IonCol>)}
+							{label ? <IonCol className={disp.labelClass || "label"}>{doParse(label)}</IonCol> : label}
+							<IonCol>{doParse(final)}</IonCol>
+						</IonRow>
+					);
+				};
 				return (
 					<IonItem className="content">
 						<IonGrid className={disp.class || undefined}>
-							{header ? <IonRow><IonCol className="header">{header}</IonCol></IonRow> : ""}
-							{inlineHeaders ? <IonRow className="header">{disp.labels ? printRowWithLabel(inlineHeaders, "headers", true) : printRow(inlineHeaders, "headers")}</IonRow> : ""}
-							{rows.map((r) => disp.labels ? printRowWithLabel(r) : printRow(r))}
+							{header ? <IonRow><IonCol className="header">{doParse(header)}</IonCol></IonRow> : ""}
+							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), !!disp.labels) : ""}
+							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice()) : printRow(r.slice()))}
 						</IonGrid>
 					</IonItem>
 				);
