@@ -23,6 +23,7 @@
     "@types/react-router": "^5.1.14",
     "@types/react-router-dom": "^5.1.7",
     "capitalize": "^2.0.3",
+    "compare-versions": "^3.6.0",
     "escape-string-regexp": "^4.0.0",
     "html-react-parser": "^1.2.8",
     "ionicons": "^5.5.1",
@@ -64,7 +65,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.5",
+    "@capacitor/cli": "^3.0.0",
     "@types/capitalize": "^2.0.0",
     "@types/escape-html": "^1.0.1",
     "@types/escape-string-regexp": "^2.0.1",
