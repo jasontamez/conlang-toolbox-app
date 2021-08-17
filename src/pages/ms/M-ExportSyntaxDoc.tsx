@@ -77,7 +77,7 @@ const ExportSyntaxModal = () => {
 						}
 						break;
 					case "Text":
-						lines.push(item.content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[BLANK]");
+						lines.push(item.content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
 						break;
 					case "Checkboxes":
 						//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
@@ -134,7 +134,7 @@ const ExportSyntaxModal = () => {
 				}
 			});
 		});
-		const output = msInfo.title + "\n\n" + msInfo.description + "\n\n" + lines.join("\n\n") + "\n";
+		const output = msInfo.title + "\n\n" + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + "\n\n" + lines.join("\n\n") + "\n";
 		doDownload(e, output, "txt");
 	};
 	const doJSON = (e: Event) => {
@@ -162,7 +162,7 @@ const ExportSyntaxModal = () => {
 		Object.keys(msb).forEach((prop) => {
 			XML += "\t\t<Item prop=\"" + prop + "\"></Item>\n";
 		});
-		XML += "\t</Prop>\n\t<Num>\n";
+		XML += "\t</Bool>\n\t<Num>\n";
 		Object.keys(msn).forEach((prop) => {
 			XML += "\t\t<Item prop=\"" + prop + "\">" + msn[prop] + "</Item>\n";
 		});
