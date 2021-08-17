@@ -24,8 +24,8 @@ import {
 	setTemporaryInfo,
 	setLoadingPage
 } from '../../components/ReduxDucksFuncs';
-import { LexiconObject } from '../../components/ReduxDucksTypes';
-import { LexiconStorage } from '../../components/PersistentInfo';
+import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 
 const DeleteLexiconModal = () => {
@@ -38,12 +38,12 @@ const DeleteLexiconModal = () => {
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
-			LexiconStorage.removeItem(key).then(() => {
+			MorphoSyntaxStorage.removeItem(key).then(() => {
 				dispatch(setLoadingPage(false));
 				dispatch(setTemporaryInfo(undefined));
 				dispatch(closeModal('DeleteMS'));
 				fireSwal({
-					title: "Lexicon deleted.",
+					title: "MorphoSyntax document deleted.",
 					toast: true,
 					timer: 2500,
 					timerProgressBar: true,
@@ -77,7 +77,7 @@ const DeleteLexiconModal = () => {
 			/>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Delete Lexicon</IonTitle>
+					<IonTitle>Delete MorphoSyntax Document</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -87,13 +87,13 @@ const DeleteLexiconModal = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data ? data.map((pair: [string, LexiconObject]) => {
+					{data ? data.map((pair: [string, MorphoSyntaxObject]) => {
 						const key = pair[0];
-						const lex = pair[1];
-						const time = new Date(lex.lastSave);
+						const ms = pair[1];
+						const time = new Date(ms.lastSave);
 						return (
-							<IonItem key={key} button={true} onClick={() => deleteThis(key, lex.title)}>
-								<IonLabel className="ion-text-wrap">{lex.title} [{lex.lexicon.length.toString()}&nbsp;words]</IonLabel>
+							<IonItem key={key} button={true} onClick={() => deleteThis(key, ms.title)}>
+								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
 								<IonNote className="ion-text-wrap" slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);

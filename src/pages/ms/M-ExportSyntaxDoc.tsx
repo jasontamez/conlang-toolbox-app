@@ -51,9 +51,9 @@ const ExportSyntaxModal = () => {
 						lines.push(item.content || "");
 						break;
 					case "Range":
-						const value = num[item.prop as keyof MorphoSyntaxNumberObject];
 						const min = 0;
 						const max = item.max || 4;
+						const value = num[item.prop as keyof MorphoSyntaxNumberObject] || min;
 						if(item.spectrum) {
 							const div = 100 / (max - min);
 							const lesser = Math.floor(((value - min) * div) + 0.5);
@@ -77,7 +77,7 @@ const ExportSyntaxModal = () => {
 						}
 						break;
 					case "Text":
-						lines.push(item.content || "", text[item.prop as keyof MorphoSyntaxTextObject]);
+						lines.push(item.content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[BLANK]");
 						break;
 					case "Checkboxes":
 						//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
@@ -85,27 +85,27 @@ const ExportSyntaxModal = () => {
 						const expo: exporter = disp.export!;
 						const output = expo.output;
 						if(output) {
-							const map = output.map((bit) => {
-								if(typeof bit === "string") {
-									return bit;
-								}
-								const found: string[] = [];
-								bit.forEach((pair) => {
-									if(bool[pair[0] as keyof MorphoSyntaxBoolObject]) {
-										found.push(pair[1]);
+							const map = output.map((bit) => bit.map((b) => {
+									if(typeof b === "string") {
+										return b;
 									}
-								});
-								if (found.length === 0) {
-									return "NONE SELECTED";
-								} else if (found.length === 1) {
-									return found[0];
-								} else if (found.length === 2) {
-									return found[0] + " and " + found[1];
-								}
-								const final = found.pop();
-								return found.join(", ") + ", and " + final;
-							});
-							lines.push(map.join(" "));
+									const found: string[] = [];
+									b.forEach((pair) => {
+										if(bool[pair[0] as keyof MorphoSyntaxBoolObject]) {
+											found.push(pair[1]);
+										}
+									});
+									if (found.length === 0) {
+										return "[NONE SELECTED]";
+									} else if (found.length === 1) {
+										return found[0];
+									} else if (found.length === 2) {
+										return found[0] + " and " + found[1];
+									}
+									const final = found.pop();
+									return found.join(", ") + ", and " + final;
+								}).join(""));
+							lines.push(map.join("\n"));
 						} else {
 							const title = expo.title || "";
 							const boxes = item.boxes!.slice();
@@ -116,11 +116,11 @@ const ExportSyntaxModal = () => {
 								const box = boxes.shift();
 								const label = labels.shift();
 								if(bool[box as keyof MorphoSyntaxBoolObject]) {
-									found.push(label || "ERROR");
+									found.push(label || "[ERROR]");
 								}
 							}
 							if (found.length === 0) {
-								result = "NONE SELECTED";
+								result = "[NONE SELECTED]";
 							} else if (found.length === 1) {
 								result = found[0];
 							} else if (found.length === 2) {

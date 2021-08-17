@@ -64,7 +64,7 @@ export const RadioBox = (props: any) => {
 		dispatch(setSyntaxBool(what, value));
 	};
 	return (
-		<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} value={synBool[what] || false} />
+		<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} checked={synBool[what] || false} />
 	);
 };
 export const RangeItem = (props: any) => {
@@ -117,20 +117,17 @@ export const TransTable = (props: any) => {
 	if(props.className) {
 		cName += " " + props.className;
 	}
-	return (
-		<table className={cName}><tbody>
-			{rows.map((row: string) => {
+	return <table className={cName}><tbody>{
+			rows.map((row: string, i: number) => {
 				const tds = row.split(/\s+/);
 				length = Math.max(length, tds.length);
-				return row ? (
-					<tr>{tds.map((el: string) => el ? (
-						<td>{el.replace(/__/g, " ")}</td>
-					) : "")}</tr>
-				) : "";
-			})}
-			{(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""}
-		</tbody></table>
-	);
+				return row ? <tr key={"ROW-" + String(i)}>{
+						tds.map((el: string, i: number) => el ? <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td> : "")
+					}</tr> : "";
+			})
+		}{
+			(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""
+		}</tbody></table>;
 };
 export const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
@@ -250,47 +247,51 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 						temp = [];
 					}
 				});
-				const printRow = (row: string[], cn = "") => {
+				const printRow = (row: string[], key: number, cn = "") => {
 					const label = row.pop() || "";
+					let cc = 0;
 					return (
-						<IonRow className={cn || undefined}>
-							{row.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
-							<IonCol>{doParse(label)}</IonCol>
+						<IonRow className={cn || undefined} key={"ROW-" + String(key)}>
+							{row.map((c) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol key={"LX-" + String(cc++)}>{doParse(label)}</IonCol>
 						</IonRow>
 					);
 				};
-				const printRowWithLabel = (row: string[], cn = "") => {
+				const printRowWithLabel = (row: string[], key: number, cn = "") => {
 					const final = row.pop() || "";
 					const label = labels.shift() || "";
 					const labelClass = disp.labelClass || "label"
+					let cc = 0;
 					return (
-						<IonRow className={cn || undefined}>
-							{row.map((c) => <IonCol className="cbox"><RadioBox prop={String(c)} /></IonCol>)}
-							<IonCol className={labelClass}>{doParse(label)}</IonCol>
-							<IonCol>{doParse(final)}</IonCol>
+						<IonRow className={cn || undefined} key={"ROW-" + String(key)}>
+							{row.map((c) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox prop={String(c)} /></IonCol>)}
+							<IonCol className={labelClass} key={"LC-" + String(cc++)}>{doParse(label)}</IonCol>
+							<IonCol key={"FC-" + String(cc++)}>{doParse(final)}</IonCol>
 						</IonRow>
 					);
 				};
-				const printHeaderRow = (row: string[], hasLabel = false) => {
+				const printHeaderRow = (row: string[], key: number, hasLabel = false) => {
 					const final = row.pop() || "";
 					let label: any = "";
 					if(hasLabel) {
 						label = row.pop();
 					}
+					let cc = 0;
 					return (
-						<IonRow className="header">
-							{row.map((c) => <IonCol className="cbox">{c}</IonCol>)}
-							{label ? <IonCol className={disp.labelClass || "label"}>{doParse(label)}</IonCol> : label}
-							<IonCol>{doParse(final)}</IonCol>
+						<IonRow className="header" key={"ROW-" + String(key)}>
+							{row.map((c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>)}
+							{label ? <IonCol className={disp.labelClass || "label"} key={"L-" + String(cc++)}>{doParse(label)}</IonCol> : label}
+							<IonCol key={"F-" + String(cc++)}>{doParse(final)}</IonCol>
 						</IonRow>
 					);
 				};
+				count = 1;
 				return (
-					<IonItem className="content">
+					<IonItem className="content" key={key + String(counter)}>
 						<IonGrid className={disp.class || undefined}>
-							{header ? <IonRow><IonCol className="header">{doParse(header)}</IonCol></IonRow> : ""}
-							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), !!disp.labels) : ""}
-							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice()) : printRow(r.slice()))}
+							{header ? <IonRow key="headerRow-0"><IonCol className="header">{doParse(header)}</IonCol></IonRow> : ""}
+							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!disp.labels) : ""}
+							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice(), count++) : printRow(r.slice(), count++))}
 						</IonGrid>
 					</IonItem>
 				);

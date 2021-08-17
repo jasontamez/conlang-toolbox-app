@@ -1053,17 +1053,32 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.SET_MORPHOSYNTAX_BOOL:
 			final = reduceAllBut([], state);
 			let boo = payload[0] as keyof types.MorphoSyntaxBoolObject;
-			final.morphoSyntaxInfo.bool[boo] = payload[1];
+			let bx = !!payload[1];
+			if(bx) {
+				final.morphoSyntaxInfo.bool[boo] = bx;
+			} else {
+				delete final.morphoSyntaxInfo.bool[boo];
+			}
 			break;
 		case consts.SET_MORPHOSYNTAX_NUM:
 			final = reduceAllBut([], state);
 			let numm = payload[0] as keyof types.MorphoSyntaxNumberObject;
-			final.morphoSyntaxInfo.num[numm] = payload[1];
+			let nx = payload[1];
+			if(nx) {
+				final.morphoSyntaxInfo.num[numm] = nx;
+			} else {
+				delete final.morphoSyntaxInfo.num[numm];
+			}
 			break;
 		case consts.SET_MORPHOSYNTAX_TEXT:
 			final = reduceAllBut([], state);
 			let txt = payload[0] as keyof types.MorphoSyntaxTextObject;
-			final.morphoSyntaxInfo.text[txt] = payload[1];
+			let tx = payload[1];
+			if(tx) {
+				final.morphoSyntaxInfo.text[txt] = tx;
+			} else {
+				delete final.morphoSyntaxInfo.text[txt];
+			}
 			break;
 
 
