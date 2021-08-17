@@ -23,7 +23,7 @@ import {
 	setMorphoSyntax,
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
-import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 
 const LoadMSModal = () => {
@@ -34,14 +34,25 @@ const LoadMSModal = () => {
 		dispatch(setTemporaryInfo(undefined));
 		dispatch(closeModal('LoadMS'));
 	};
+	interface MSOmod extends MorphoSyntaxObject {
+		boolStrings?: string[]
+	}
 	const loadThis = (key: string) => {
-		data.every((pair: [string, MorphoSyntaxObject]) => {
+		data.every((pair: [string, MSOmod]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
 				return true;
 			}
+			let newBool: MorphoSyntaxBoolObject = {};
+			let old = pair[1];
+			(old.boolStrings || []).forEach((s) => (newBool[s as keyof MorphoSyntaxBoolObject] = true));
+			delete old.boolStrings;
+			const newObj: MorphoSyntaxObject = {
+				...old,
+				bool: newBool
+			};
 			const thenFunc = () => {
-				dispatch(setMorphoSyntax(pair[1]));
+				dispatch(setMorphoSyntax(newObj));
 				dispatch(closeModal('LoadMS'));
 			};
 			if(settings.disableConfirms) {

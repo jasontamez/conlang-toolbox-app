@@ -123,13 +123,14 @@ const Syntax = () => {
 		dispatch(setLoadingPage("lookingForSyntaxDocs"));
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		let ms: MorphoSyntaxObject = {
+		let ms: any = {
 			...msInfo,
 			// Use possibly-new key
 			key: key,
 			// Use 'now'
 			lastSave: now,
-			bool: {...bool},
+			bool: {},
+			boolStrings: Object.keys(bool),
 			num: {...num},
 			text: {...text}
 		};
