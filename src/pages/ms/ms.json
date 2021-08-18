@@ -482,7 +482,13 @@
 					"Other"
 				],
 				"export": {
-					"title": "Number Base:"
+					"title": "Number Base:",
+					"labels": [
+						"Base Five",
+						"Base Ten",
+						"Base Twenty",
+						"Not Base Five, Ten or Twenty"
+					]
 				}
 			}
 		},
@@ -1387,7 +1393,13 @@
 					"Other (see below)"
 				],
 				"export": {
-					"title": "Morphology Exists For:"
+					"title": "Morphology Exists For:",
+					"labels": [
+						"Tense",
+						"Aspect",
+						"Mode",
+						"Other"
+					]
 				}
 			}
 		},
