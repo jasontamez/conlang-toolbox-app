@@ -37,7 +37,7 @@ const ExportSyntaxModal = () => {
 		dispatch(closeModal('ExportMS'));
 		modalState.loadingPage === "deletingSyntaxDoc" && dispatch(setLoadingPage(false));
 	};
-	const doText = (e: Event) => {
+	const doText = (e: Event, md = false) => {
 		let lines: string[] = [];
 		const bool = msInfo.bool;
 		const num = msInfo.num;
@@ -46,9 +46,18 @@ const ExportSyntaxModal = () => {
 		sections.forEach((sec: string) => {
 			const section = (ms[sec as keyof typeof ms] as anything[]);
 			section.forEach((item: anything) => {
+				let content = item.content || "";
 				switch(item.tag) {
 					case "Header":
-						lines.push(item.content || "");
+						if(md) {
+							content = " " + content;
+							let c = item.level || 4;
+							while(c > 0) {
+								content = "#" + content;
+								c--;
+							}
+						}
+						lines.push(content);
 						break;
 					case "Range":
 						const min = 0;
@@ -57,27 +66,53 @@ const ExportSyntaxModal = () => {
 						if(item.spectrum) {
 							const div = 100 / (max - min);
 							const lesser = Math.floor(((value - min) * div) + 0.5);
-							lines.push(
-								String(lesser) + "% " + item.start+ "\n"
-								+ String(100 - lesser) + "% " + item.end
-							);
+							if(md) {
+								lines.push(
+									"**" + String(lesser) + "%** "
+									+ (item.start || "[MISSING]") + "  \n"
+									+ "**" + String(100 - lesser) + "%** "
+									+ (item.end || "[MISSING]")
+								);
+								} else {
+								lines.push(
+									String(lesser) + "% " + item.start + "\n"
+									+ String(100 - lesser) + "% " + item.end
+								);	
+							}
 						} else {
 							let counter = min;
-							let range = item.start;
+							let range = "**" + (item.start || "[MISSING]") + "**";
 							while(counter <= max) {
 								let c = String(counter);
 								if(counter === value) {
-									range += " (" + c + ")";
+									range += md ? " **(" + c + ")**" : " (" + c + ")";
 								} else {
 									range += " " + c;
 								}
 								counter++;
 							}
-							lines.push(range + " " + item.end);
+							lines.push(range + " **" + (item.end || "[MISSING]") + "**");
 						}
 						break;
 					case "Text":
-						lines.push(item.content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
+						if(md) {
+							let txt = "";
+							let tArr: string[] = (text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
+							tArr.forEach((t: string, i: number) => {
+								if(i > 0) {
+									txt += "\n\n"; // inserts paragraph break
+								}
+								t.split(/\n/).forEach((x: string, j: number) => {
+									if(j > 0) {
+										txt += "  \n"; // inserts line break
+									}
+									txt += x.trim();
+								});
+							});
+							lines.push(content || "[TEXT PROMPT]", txt);
+						} else {
+							lines.push(content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
+						}
 						break;
 					case "Checkboxes":
 						//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
@@ -96,13 +131,16 @@ const ExportSyntaxModal = () => {
 										}
 									});
 									if (found.length === 0) {
-										return "[NONE SELECTED]";
+										return md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
 									} else if (found.length === 1) {
-										return found[0];
+										return md ? "*" + found[0] + "*" : found[0];
 									} else if (found.length === 2) {
-										return found[0] + " and " + found[1];
+										return md ? "*" + found[0] + "* and *" + found[1] : found[0] + " and " + found[1];
 									}
 									const final = found.pop();
+									if(md) {
+										return "*" + found.join("*, *") + "*, and *" + final + "*";
+									}
 									return found.join(", ") + ", and " + final;
 								}).join(""));
 							lines.push(map.join("\n"));
@@ -120,22 +158,20 @@ const ExportSyntaxModal = () => {
 								}
 							}
 							if (found.length === 0) {
-								result = "[NONE SELECTED]";
+								result = md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
 							} else if (found.length === 1) {
-								result = found[0];
+								result = md ? "*" + found[0] + "*" : found[0];
 							} else if (found.length === 2) {
-								result = found[0] + " and " + found[1];
-							} else {
 								const final = found.pop();
-								result = found.join(", ") + ", and " + final;
+								result = md ? ("*" + found.join("*, *") + "*, and *" + final) : (found.join(", ") + ", and " + final);
 							}
 							lines.push(title + " " + result);
 						}
 				}
 			});
 		});
-		const output = msInfo.title + "\n\n" + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + "\n\n" + lines.join("\n\n") + "\n";
-		doDownload(e, output, "txt");
+		const output = msInfo.title + "\n\n" + (md ? "*" : "") + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + (md ? "*" : "") + "\n\n" + lines.join("\n\n") + "\n";
+		doDownload(e, output, md ? "md" : "txt");
 	};
 	const doJSON = (e: Event) => {
 		const base: any = {
@@ -196,7 +232,8 @@ const ExportSyntaxModal = () => {
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
 					<IonItem>Choose a format:</IonItem>
-					<IonItem button={true} onClick={(e: any) => doText(e)}>Text Outline</IonItem>
+					<IonItem button={true} onClick={(e: any) => doText(e)}>Text Outline (plain)</IonItem>
+					<IonItem button={true} onClick={(e: any) => doText(e, true)}>Text Outline (markdown)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e)}>XML File</IonItem>
 				</IonList>
