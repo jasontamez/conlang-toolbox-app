@@ -56,7 +56,7 @@ export const SyntaxHeader = (props: any) => {
 		</IonHeader>
 	);
 };
-export const RadioBox = (props: any) => {
+const RadioBox = (props: any) => {
 	const dispatch = useDispatch();
 	const synBool = useSelector((state: any) => state.morphoSyntaxInfo.bool)
 	const what = props.prop as keyof MorphoSyntaxBoolObject
@@ -67,7 +67,7 @@ export const RadioBox = (props: any) => {
 		<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} checked={synBool[what] || false} />
 	);
 };
-export const RangeItem = (props: any) => {
+const RangeItem = (props: any) => {
 	const dispatch = useDispatch();
 	const synNum = useSelector((state: any) => state.morphoSyntaxInfo.num)
 	const what = props.prop as keyof MorphoSyntaxNumberObject;
@@ -88,7 +88,7 @@ export const RangeItem = (props: any) => {
 		</IonItem>
 	);
 };
-export const TextItem = (props: any) => {
+const TextItem = (props: any) => {
 	const dispatch = useDispatch();
 	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text)
 	const ph = (props.placeholder || "") as string;
@@ -105,12 +105,12 @@ export const TextItem = (props: any) => {
 		</IonItem>
 	);
 };
-export const HeaderItem = (props: any) => (
+const HeaderItem = (props: any) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>
 );
-export const TransTable = (props: any) => {
+const TransTable = (props: any) => {
 	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
 	let length = 0;
 	let cName = "translation";
@@ -129,7 +129,7 @@ export const TransTable = (props: any) => {
 			(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""
 		}</tbody></table>;
 };
-export const InfoModal = (props: any) => {
+const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
 	const synState = useSelector((state: any) => state.morphoSyntaxModalState);
 	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
