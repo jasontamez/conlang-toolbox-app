@@ -112,22 +112,28 @@ const HeaderItem = (props: any) => (
 );
 const TransTable = (props: any) => {
 	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
-	let length = 0;
+	let length = 1;
 	let cName = "translation";
 	if(props.className) {
 		cName += " " + props.className;
 	}
-	return <table className={cName}><tbody>{
-			rows.map((row: string, i: number) => {
-				const tds = row.split(/\s+/);
-				length = Math.max(length, tds.length);
-				return row ? <tr key={"ROW-" + String(i)}>{
-						tds.map((el: string, i: number) => el ? <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td> : "")
-					}</tr> : "";
-			})
-		}{
-			(props.children) ? (<tr><td colSpan={length}>{props.children}</td></tr>) : ""
-		}</tbody></table>;
+	const final = props.children;
+	let finalRow = -1;
+	if(final) {
+		finalRow = rows.length;
+		rows.push(final);
+	}
+	const mainRows = rows.filter((row: string) => row).map((row: string, i: number) => {
+		if(i === finalRow) {
+			return <tr key={"ROW-" + String(i)}><td colSpan={length}>{row}</td></tr>;
+		}
+		const tds = row.split(/\s+/);
+		length = Math.max(length, tds.length);
+		return <tr key={"ROW-" + String(i)}>{
+				tds.filter((el: string) => el).map((el: string, i: number) => <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td>)
+			}</tr>;
+		});
+	return <table className={cName}><tbody>{mainRows}</tbody></table>;
 };
 const InfoModal = (props: any) => {
 	const dispatch = useDispatch();
