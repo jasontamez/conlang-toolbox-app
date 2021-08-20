@@ -477,7 +477,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Number Base"],
+				"header": "Number Base",
 				"rowLabels": [
 					"Base Five",
 					"Base Ten",
@@ -505,7 +505,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Number Format"],
+				"header": "Number Format",
 				"rowLabels": [
 					"Greatest-to-Least (twenty-two)",
 					"Least-to-Greatest (two-twenty)",
@@ -530,7 +530,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Other Properties"],
+				"header": "Other Properties",
 				"rowLabels": [
 					"Multiple Sets of Numerals",
 					"Numerals Agree With Head"
@@ -795,7 +795,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Which Distinctions Are Marked in the Noun Phrase?"],
+				"header": "Which Distinctions Are Marked in the Noun Phrase?",
 				"rowLabels": [
 					"Singular",
 					"Dual",
@@ -900,7 +900,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Which Class Distinctions Exist?"],
+				"header": "Which Class Distinctions Exist?",
 				"rowLabels": [
 					"Gender",
 					"Animacy",
@@ -1063,7 +1063,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Primary Alignment System"],
+				"header": "Primary Alignment System",
 				"rowLabels": [
 					"Nominative / Accusative",
 					"Ergative / Absolutive"
@@ -1393,7 +1393,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Morphology Exists For:"],
+				"header": "Morphology Exists For:",
 				"rowLabels": [
 					"Tense",
 					"Aspect",
@@ -1717,7 +1717,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Which Clause is Inflected?"],
+				"header": "Which Clause is Inflected?",
 				"rowLabels": [
 					"First",
 					"Last"
@@ -1737,7 +1737,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Which Element is Marked?"],
+				"header": "Which Element is Marked?",
 				"rowLabels": [
 					"Noun",
 					"Verb",
@@ -1760,7 +1760,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["What Other Information Does the Marker Encode?"],
+				"header": "What Other Information Does the Marker Encode?",
 				"rowLabels": [
 					"Tense",
 					"Aspect",
@@ -1801,7 +1801,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Types of Relative Clauses"],
+				"header": "Types of Relative Clauses",
 				"rowLabels": [
 					"Prenomial",
 					"Postnomial",
@@ -1840,7 +1840,7 @@
 			"display": {
 				"class": "cols2",
 				"boxesPerRow": 1,
-				"inlineHeaders": ["Coordinating Conjunction Positions"],
+				"header": "Coordinating Conjunction Positions",
 				"rowLabels": [
 					"Between the clauses",
 					"After the first element of the second clause",

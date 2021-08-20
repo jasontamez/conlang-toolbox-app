@@ -232,7 +232,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 			case "Checkboxes":
 				const disp = bit.display;
 				if(!disp) {
-					return "<div>DISPLAY ERROR</div>";
+					return "<div>CHECKBOX DISPLAY ERROR</div>";
 				}
 				const boxes = (bit.boxes || []);
 				const rowLabels = (disp.rowLabels || []).slice();
@@ -295,7 +295,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 				return (
 					<IonItem className="content" key={key + String(counter)}>
 						<IonGrid className={disp.class || undefined}>
-							{header ? <IonRow key="headerRow-0"><IonCol className="header">{doParse(header)}</IonCol></IonRow> : ""}
+							{header ? <IonRow key="headerRow-0" className="header"><IonCol>{doParse(header)}</IonCol></IonRow> : ""}
 							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!disp.labels) : ""}
 							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice(), count++) : printRow(r.slice(), count++))}
 						</IonGrid>
