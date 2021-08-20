@@ -73,7 +73,7 @@ const ExportSyntaxModal = () => {
 									+ "**" + String(100 - lesser) + "%** "
 									+ (item.end || "[MISSING]")
 								);
-								} else {
+							} else {
 								lines.push(
 									String(lesser) + "% " + item.start + "\n"
 									+ String(100 - lesser) + "% " + item.end
@@ -81,7 +81,7 @@ const ExportSyntaxModal = () => {
 							}
 						} else {
 							let counter = min;
-							let range = "**" + (item.start || "[MISSING]") + "**";
+							let range = (item.start || "[MISSING]");
 							while(counter <= max) {
 								let c = String(counter);
 								if(counter === value) {
@@ -91,7 +91,12 @@ const ExportSyntaxModal = () => {
 								}
 								counter++;
 							}
-							lines.push(range + " **" + (item.end || "[MISSING]") + "**");
+							let end = (item.end || "[MISSING]");
+							if(md) {
+								range = "**" + range + "**";
+								end = "**" + end + "**";
+							}
+							lines.push(range + " " + end);
 						}
 						break;
 					case "Text":
