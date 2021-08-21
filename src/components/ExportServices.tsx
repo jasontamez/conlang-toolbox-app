@@ -3,7 +3,7 @@ import fireSwal from '../components/Swal';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
 
-const doExport = async (output: string, fileName: string, notify: boolean = true) => {
+const doExport = async (output: string, fileName: string, encodeUTF: boolean = true, notify: boolean = true) => {
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
@@ -32,12 +32,15 @@ const doExport = async (output: string, fileName: string, notify: boolean = true
 		}
 	} finally {
 		try {
-			const result = await Filesystem.writeFile({
+			let settings: any = {
 				path: 'ConlangToolbox/' + filename,
 				data: output,
-				directory: Docs,
-				encoding: Encoding.UTF8
-			});
+				directory: Docs
+			};
+			if(encodeUTF) {
+				settings.encoding = Encoding.UTF8;
+			}
+			const result = await Filesystem.writeFile(settings);
 			console.log('Wrote file', result);
 			notify && fireSwal({
 				title: filename + " exported",

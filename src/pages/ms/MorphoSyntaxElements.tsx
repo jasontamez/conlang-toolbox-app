@@ -177,6 +177,7 @@ export interface exporter {
 	title: string
 	output?: ( (string | [string, string])[] )[]
 	labels?: string[]
+	labelOverrideDocx?: boolean
 }
 export interface display {
 	boxesPerRow: number
