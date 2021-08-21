@@ -635,7 +635,7 @@
 			"tag": "Text",
 			"prop": "verbPhrase",
 			"rows": 4,
-			"content": "Where do auxilliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxilliaries?"
+			"content": "Where do auxiliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxiliaries?"
 		},
 		{
 			"tag": "Header",
@@ -688,7 +688,7 @@
 			"tag": "Text",
 			"prop": "adPhrase",
 			"rows": 4,
-			"content": "Is the language dominantly prepositional or postpositional? Do many adpositions come from nouns or verbs?"
+			"content": "Which adposition dominates? Do many adpositions come from nouns or verbs?"
 		},
 		{
 			"tag": "Header",
@@ -704,7 +704,7 @@
 		{
 			"tag": "Text",
 			"prop": "compare",
-			"content": "Does the language have one or more comparitive constructions? If so, what is the order of the standard, the marker, and the quality being compared?"
+			"content": "Does the language have one or more comparative constructions? If so, what is the order of the standard, the marker, and the quality being compared?"
 		},
 		{
 			"tag": "Header",
@@ -770,7 +770,7 @@
 			"tag": "Text",
 			"prop": "denoms",
 			"rows": 4,
-			"content": "Are there any processes to make a verb from a noun? An adjecive? An adverb?"
+			"content": "Are there any processes to make a verb from a noun? An adjective? An adverb?"
 		},
 		{
 			"tag": "Header",
@@ -977,13 +977,13 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "5.1. Predicate Nominals and Adjecives"
+			"content": "5.1. Predicate Nominals and Adjectives"
 		},
 		{
 			"tag": "Modal",
-			"title": "Predicate Nominals and Adjecives",
+			"title": "Predicate Nominals and Adjectives",
 			"label": "What It Is and What It Seems Like",
-			"content": "<ul><li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li><li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li><li>If they use a verb, it will not be a very <em>semantically rich</em> verb (e.g. to be, to do)</li><li>Will generally use one of the following strategies:<ul><li><em>Juxtaposition</em><ul><li>Two nouns (or a noun and adjective) are placed next to each other.</li><li>Ex: Steve doctor. Mouse small. (Steve is a doctor. A mouse is small.)</li></ul></li><li><em>Joined by copula</em><ul><li>A <em>copula</em> is a morpheme that \"couples\" two elements. Often encodes Tense/Aspect (8.3), and can be restricted to certain situations (e.g. only in non-present tenses).</li><li>The copula can take different forms:<ul><li><em>Verb</em><ul><li>These tend to be very irregular verbs.</li><li>They tend to belong to the same verb class as stative verbs.</li><li>They tend to function as auxilliaries in other constructions.</li><li>Ex: Steve is a doctor.</li></ul></li><li><em>Pronoun</em><ul><li>The pronoun corresponds to the subject.</li><li>Ex: Steve, he a doctor.</li></ul></li><li><em>Invariant particle</em><ul><li>This particle may derive from a verb or pronoun.</li><li>The particle will not encode tense/aspect/gender/anything.</li><li>Ex: Steve blorp doctor.</li></ul></li><li><em>Derivational operation</em><ul><li>Predicate noun becomes a verb.</li><li>Ex: Steve doctor-being.</li></ul></li></ul></li></ul></li></ul></li></ul>"
+			"content": "<ul><li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li><li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li><li>If they use a verb, it will not be a very <em>semantically rich</em> verb (e.g. to be, to do)</li><li>Will generally use one of the following strategies:<ul><li><em>Juxtaposition</em><ul><li>Two nouns (or a noun and adjective) are placed next to each other.</li><li>Ex: Steve doctor. Mouse small. (Steve is a doctor. A mouse is small.)</li></ul></li><li><em>Joined by copula</em><ul><li>A <em>copula</em> is a morpheme that \"couples\" two elements. Often encodes Tense/Aspect (8.3), and can be restricted to certain situations (e.g. only in non-present tenses).</li><li>The copula can take different forms:<ul><li><em>Verb</em><ul><li>These tend to be very irregular verbs.</li><li>They tend to belong to the same verb class as stative verbs.</li><li>They tend to function as auxiliaries in other constructions.</li><li>Ex: Steve is a doctor.</li></ul></li><li><em>Pronoun</em><ul><li>The pronoun corresponds to the subject.</li><li>Ex: Steve, he a doctor.</li></ul></li><li><em>Invariant particle</em><ul><li>This particle may derive from a verb or pronoun.</li><li>The particle will not encode tense/aspect/gender/anything.</li><li>Ex: Steve blorp doctor.</li></ul></li><li><em>Derivational operation</em><ul><li>Predicate noun becomes a verb.</li><li>Ex: Steve doctor-being.</li></ul></li></ul></li></ul></li></ul></li></ul>"
 		},
 		{
 			"tag": "Text",
@@ -1116,7 +1116,7 @@
 		},
 		{
 			"tag": "Header",
-			"level": 4,
+			"level": 3,
 			"content": "7.1.2. Applicatives"
 		},
 		{
@@ -1275,7 +1275,7 @@
 			"tag": "Text",
 			"prop": "inverses",
 			"rows": 4,
-			"content": "Describe any pecularities of inverse constructions."
+			"content": "Describe any peculiarities of inverse constructions."
 		},
 		{
 			"tag": "Header",
@@ -1471,7 +1471,7 @@
 			"tag": "Modal",
 			"title": "Location and Direction",
 			"label": "Where?",
-			"content": "<ul><li>While Tense grounds statements in time, some languages grammaticize location and/or direction markers to ground statements in space. It may be even more central to discourse than tense in some languages.</li><li class=\"newSection\">Directional formatives are often related to basic verbs of motion (go, come, arrive, depart, return, go up, go down).</li><li class=\"newSection\">Some languages (Lahu, Tibeto-Burman languages) have one motion verb and use directional formatives to indicate progression towards (hither) or away from (thither) a point of reference.</li><li class=\"newSection\">Locational marking is often culturally or geographically relevant to the culture that speaks it.<ul><li>Quechua, spoken in the Andes mountains, has suffixes that indicate uphill, downhill, and \"at the same altitude\".</li><li>Yagua, spoken in Peruvian lowland rivers, has suffixes that indicate an action was performed upriver, downriver, or moving horizontally across land or water.<ul><li>There are also suffixes that express if an action happened on arrival at a new scene, or on arrival at the current scene.</li></ul></li></ul></li><li class=\"newSection\">Papuan languages have extensive markers that can be used in combination, i.e. \"She moved it down and away from her.\"</li><li>Otomí has auxilliaries than indicate an action is towards (centric) or away from (exocentric) a designated center (usually where the speaker is).</li></ul>"
+			"content": "<ul><li>While Tense grounds statements in time, some languages grammaticize location and/or direction markers to ground statements in space. It may be even more central to discourse than tense in some languages.</li><li class=\"newSection\">Directional formatives are often related to basic verbs of motion (go, come, arrive, depart, return, go up, go down).</li><li class=\"newSection\">Some languages (Lahu, Tibeto-Burman languages) have one motion verb and use directional formatives to indicate progression towards (hither) or away from (thither) a point of reference.</li><li class=\"newSection\">Locational marking is often culturally or geographically relevant to the culture that speaks it.<ul><li>Quechua, spoken in the Andes mountains, has suffixes that indicate uphill, downhill, and \"at the same altitude\".</li><li>Yagua, spoken in Peruvian lowland rivers, has suffixes that indicate an action was performed upriver, downriver, or moving horizontally across land or water.<ul><li>There are also suffixes that express if an action happened on arrival at a new scene, or on arrival at the current scene.</li></ul></li></ul></li><li class=\"newSection\">Papuan languages have extensive markers that can be used in combination, i.e. \"She moved it down and away from her.\"</li><li>Otomí has auxiliaries than indicate an action is towards (centric) or away from (exocentric) a designated center (usually where the speaker is).</li></ul>"
 		},
 		{
 			"tag": "Text",
@@ -1591,7 +1591,7 @@
 			"tag": "Modal",
 			"title": "Yes/NoQuestions",
 			"label": "Yes? No?",
-			"content": "<ul><li><strong>Yes/No Questions</strong>, hereafter referred to as <em>YNQs</em>, are interrogative clauses where the expected answer is either \"yes\" or \"no\". They can employ any or all of the strategies below.</li><li class=\"newSection\"><em>Intonation</em>:<ul><li>There tends to be distinct intonation patterns in YNQs.</li><li>The pattern is usually rising, as in English, but can be falling, as in Russian.</li><li class=\"newSection\">Some languages <em>only</em> employ intonation!</li></ul></li><li class=\"newSection\"><em>Word Order</em>:<ul><li>Many languages, especially VP languages, use distinctive constituent orders for YNQs.</li><li>Usually, this is an inversion of the Agent and Verb, as in many European and Austronesian languages.<ul><li>\"bapak datangkah nanti\" - Father will come later (Malay)</li><li>\"datangkah bapak nanti\" - Will father come later?</li></ul></li><li>English has a strange system where it reverses the Agent and the auxilliary verb. If no auxilliary is present, the verb \"do\" is inserted.<ul><li>\"He will arrive on time\" → \"Will he arrive on time?\"</li><li>\"They can eat cake\" → \"Can they eat cake?\"</li><li>\"You want to join me\" (no auxilliary) → \"Do you want to join me?\"</li></ul></li><li>American English uses simple Agent/Verb inversion in predicate nominals, existential and locational clauses. British English extends this to possessive constructions.<ul><li>\"He is a cat\" → \"Is he a cat?\"</li><li>\"Cats are under the bed\" → \"Are cats under the bed?\"</li><li>\"You were in the garden\" → \"Were you in the garden?\"</li><li>\"You have a match\" → \"Have you a match?\" (British)</li></ul></li></ul></li><li class=\"newSection\"><em>Interrogative Particle</em>:<ul><li>Question Particles (QPs) are very common, especially among PV languages, but they do appear in VP languages, too.</li><li>The QP can be cliticized to the first constituent in the clause, either before or after it.<ul><li>Latin:<br /><TransTable rows=\"erat-ne te-cum / he:was-QP you-with\">Was he with you?</TransTable></li><li>Mandarin:<br /><TransTable rows=\"tā xihuan chī pǐngguǒ ma / she like eat apple QP\">Does she like to eat apples?</TransTable></li><li>Tagalog:<br /><TransTable rows=\"mabait ba si Pilar? / kind QP is Pilar\">Is Pilar kind?</TransTable></li></ul></li><li>Often, the QP can be omitted, letting context and intonation do the job instead.</li><li class=\"newSection\">Some varieties of English has developed a QP as an alternative to word order inversion<ul><li>\"You want to go for a ride, <em>eh</em>?\"</li></ul></li></ul></li><li class=\"newSection\"><em>Tag Question</em>:<ul><li>This involves a simple declarative statement, followed by a Tag that requests confirmation or disconfirmation of the statement.</li><li>These are universally a secondary way of forming YNQs, though they are often the historical source of the currently-used QPs.</li><li class=\"newSection\">English has Tags for certain times the speaker is assuming they'll get a Yes response:<ul><li>\"Nice day, <em>isn't it</em>?\"</li><li>\"You're going to the club with us tonight, <em>right</em>?\"</li></ul></li></ul></li><li class=\"newSection\"><strong>Functions</strong>:<ul><li>YNQs are used for additional purposes other than simply asking questions in most languages.</li><li class=\"newSection\"><em>To request action</em>: \"Could you close the door?\"</li><li><em>Rhetorical effect</em>: \"Are you always so messy?\"</li><li><em>Confirmation</em>: \"Aren't you going?\"</li><li><em>Intensification</em>: \"Did he ever yell!\"</li></ul></li></ul>"
+			"content": "<ul><li><strong>Yes/No Questions</strong>, hereafter referred to as <em>YNQs</em>, are interrogative clauses where the expected answer is either \"yes\" or \"no\". They can employ any or all of the strategies below.</li><li class=\"newSection\"><em>Intonation</em>:<ul><li>There tends to be distinct intonation patterns in YNQs.</li><li>The pattern is usually rising, as in English, but can be falling, as in Russian.</li><li class=\"newSection\">Some languages <em>only</em> employ intonation!</li></ul></li><li class=\"newSection\"><em>Word Order</em>:<ul><li>Many languages, especially VP languages, use distinctive constituent orders for YNQs.</li><li>Usually, this is an inversion of the Agent and Verb, as in many European and Austronesian languages.<ul><li>\"bapak datangkah nanti\" - Father will come later (Malay)</li><li>\"datangkah bapak nanti\" - Will father come later?</li></ul></li><li>English has a strange system where it reverses the Agent and the auxiliary verb. If no auxiliary is present, the verb \"do\" is inserted.<ul><li>\"He will arrive on time\" → \"Will he arrive on time?\"</li><li>\"They can eat cake\" → \"Can they eat cake?\"</li><li>\"You want to join me\" (no auxiliary) → \"Do you want to join me?\"</li></ul></li><li>American English uses simple Agent/Verb inversion in predicate nominals, existential and locational clauses. British English extends this to possessive constructions.<ul><li>\"He is a cat\" → \"Is he a cat?\"</li><li>\"Cats are under the bed\" → \"Are cats under the bed?\"</li><li>\"You were in the garden\" → \"Were you in the garden?\"</li><li>\"You have a match\" → \"Have you a match?\" (British)</li></ul></li></ul></li><li class=\"newSection\"><em>Interrogative Particle</em>:<ul><li>Question Particles (QPs) are very common, especially among PV languages, but they do appear in VP languages, too.</li><li>The QP can be cliticized to the first constituent in the clause, either before or after it.<ul><li>Latin:<br /><TransTable rows=\"erat-ne te-cum / he:was-QP you-with\">Was he with you?</TransTable></li><li>Mandarin:<br /><TransTable rows=\"tā xihuan chī pǐngguǒ ma / she like eat apple QP\">Does she like to eat apples?</TransTable></li><li>Tagalog:<br /><TransTable rows=\"mabait ba si Pilar? / kind QP is Pilar\">Is Pilar kind?</TransTable></li></ul></li><li>Often, the QP can be omitted, letting context and intonation do the job instead.</li><li class=\"newSection\">Some varieties of English has developed a QP as an alternative to word order inversion<ul><li>\"You want to go for a ride, <em>eh</em>?\"</li></ul></li></ul></li><li class=\"newSection\"><em>Tag Question</em>:<ul><li>This involves a simple declarative statement, followed by a Tag that requests confirmation or disconfirmation of the statement.</li><li>These are universally a secondary way of forming YNQs, though they are often the historical source of the currently-used QPs.</li><li class=\"newSection\">English has Tags for certain times the speaker is assuming they'll get a Yes response:<ul><li>\"Nice day, <em>isn't it</em>?\"</li><li>\"You're going to the club with us tonight, <em>right</em>?\"</li></ul></li></ul></li><li class=\"newSection\"><strong>Functions</strong>:<ul><li>YNQs are used for additional purposes other than simply asking questions in most languages.</li><li class=\"newSection\"><em>To request action</em>: \"Could you close the door?\"</li><li><em>Rhetorical effect</em>: \"Are you always so messy?\"</li><li><em>Confirmation</em>: \"Aren't you going?\"</li><li><em>Intensification</em>: \"Did he ever yell!\"</li></ul></li></ul>"
 		},
 		{
 			"tag": "Text",
@@ -1661,7 +1661,7 @@
 			"tag": "Text",
 			"prop": "serialVerbs",
 			"rows": 4,
-			"content": "Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxilliaries or adpositions?"
+			"content": "Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?"
 		},
 		{
 			"tag": "Header",
