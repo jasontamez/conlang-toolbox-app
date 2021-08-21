@@ -70,7 +70,7 @@ const DeleteLexiconModal = () => {
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "deletingSyntaxDoc"}
     		    onDidDismiss={() => dispatch(setLoadingPage(false))}
-	        	message={'Deleting...'}
+	        	message={'Working...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
