@@ -237,18 +237,12 @@ const ExportSyntaxModal = () => {
 							const lesser = Math.floor(((value - min) * div) + 0.5);
 							paragraph.push(
 								new TextRun({
-									text: String(lesser) + "%"
+									text: String(lesser) + "% " + (item.start || "[MISSING]")
 								}),
 								new TextRun({
-									text: " " +item.start
-								}),
-								new TextRun({
-									text: String(100 - lesser) + "%",
+									text: String(100 - lesser) + "% " + (item.end || "[MISSING]"),
 									break: 1
-								}),
-								new TextRun({
-									text: " " + item.end
-								}),
+								})
 							);
 						} else {
 							let counter = min;
@@ -701,7 +695,7 @@ const ExportSyntaxModal = () => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e)}>Text Outline (plain)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, true)}>Text Outline (markdown)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doDocx(e)}>DOCX Document</IonItem>
+					<IonItem button={true} onClick={(e: any) => doDocx(e)}>Word Document (docx)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e)}>XML File</IonItem>
 				</IonList>
