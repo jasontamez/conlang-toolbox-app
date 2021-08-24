@@ -107,6 +107,11 @@ const ExportSyntaxModal = () => {
 						} else {
 							let counter = min;
 							let range = (item.start || "[MISSING]");
+							let end = (item.end || "[MISSING]");
+							if(md) {
+								range = "**" + range + "**";
+								end = "**" + end + "**";
+							}
 							while(counter <= max) {
 								let c = String(counter);
 								if(counter === value) {
@@ -115,11 +120,6 @@ const ExportSyntaxModal = () => {
 									range += " " + c;
 								}
 								counter++;
-							}
-							let end = (item.end || "[MISSING]");
-							if(md) {
-								range = "**" + range + "**";
-								end = "**" + end + "**";
 							}
 							lines.push(range + " " + end);
 						}
@@ -200,7 +200,7 @@ const ExportSyntaxModal = () => {
 				}
 			});
 		});
-		const output = msInfo.title + "\n\n" + (md ? "*" : "") + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + (md ? "*" : "") + "\n\n" + lines.join("\n\n") + "\n";
+		const output = (md ? "# " : "") + msInfo.title + "\n\n" + (md ? "*" : "") + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + (md ? "*" : "") + "\n\n" + lines.join("\n\n") + "\n";
 		doDownload(e, output, md ? "md" : "txt");
 	};
 	const doDocx = (e: Event) => {
