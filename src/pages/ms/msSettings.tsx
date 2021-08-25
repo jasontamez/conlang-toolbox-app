@@ -14,8 +14,22 @@ import {
 import {
 	SyntaxHeader
 } from './MorphoSyntaxElements';
-import { addCircleOutline, codeDownloadOutline, removeCircleOutline, saveOutline, trashOutline } from 'ionicons/icons';
-import { changeView, openModal, setLoadingPage, setMorphoSyntax, setMorphoSyntaxNum, setMorphoSyntaxText, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import {
+	addCircleOutline,
+	codeDownloadOutline,
+	removeCircleOutline,
+	saveOutline,
+	trashOutline
+} from 'ionicons/icons';
+import {
+	changeView,
+	openModal,
+	setLoadingPage,
+	setMorphoSyntax,
+	setMorphoSyntaxNum,
+	setMorphoSyntaxText,
+	setTemporaryInfo
+} from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
 import { ModalStateObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
