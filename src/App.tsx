@@ -82,6 +82,7 @@ const App = () => {
 						<Route path="/lex" render={() => <Lexicon />} />
 						<Route path="/ms" render={() => <MS />} />
 						<Route path="/ph" render={() => <Lexicon />} />
+						<Route path="/dc" render={() => <Lexicon />} />
 						<Route path="/settings" render={() => <Settings />} />
 						<Route path="/about" render={() => <About />} />
 						<Route path="/wordlists" render={() => <WordLists />} />

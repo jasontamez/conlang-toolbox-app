@@ -21,7 +21,9 @@ import {
 	caretForwardSharp,
 	ellipseSharp,
 	listSharp,
-	buildSharp
+	buildSharp,
+	cogSharp,
+	volumeHighSharp
 } from 'ionicons/icons';
 import { setMenuToggle } from './ReduxDucksFuncs';
 import './Menu.css';
@@ -192,6 +194,18 @@ const appMenuPages: MenuSection[] = [
 				url: '/we/output',
 				id: 'menuitemWEout',
 				parent: 'we'
+			},
+			{
+				title: 'Declenjugator',
+				url: '/dc',
+				icon: cogSharp,
+				id: 'menuitemDC'
+			}, // https://github.com/apache/cordova-plugin-media
+			{
+				title: 'PhonoGraph',
+				url: '/ph',
+				icon: volumeHighSharp,
+				id: 'menuitemPG'
 			},
 			{
 				title: 'Lexicon',
