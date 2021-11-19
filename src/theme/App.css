@@ -475,10 +475,6 @@ i.ipa {
 #editLexiconItemOrder ion-row:nth-child(odd) {
 	margin: 0;
 }
-.addActive .hideWhileAdding,
-.addInactive .hideUnlessAdding {
-	display: none;
-}
 
 .selectable,
 .selectable::part(native) {
