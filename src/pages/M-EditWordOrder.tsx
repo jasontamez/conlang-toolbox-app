@@ -18,9 +18,7 @@ import {
 	IonGrid,
 	IonReorderGroup,
 	IonReorder,
-	IonCheckbox,
-	IonSelect,
-	IonSelectOption
+	IonCheckbox
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -96,30 +94,9 @@ const EditLexiconOrderModal = () => {
 			showConfirmButton: false
 		});
 	};
-	const beginAdding = () => {
-		let eCL = $i("editLexiconItemOrder").classList;
-		eCL.add("addActive");
-		eCL.remove("addInactive");
-		eCL = $i("footerElement").classList;
-		eCL.add("addActive");
-		eCL.remove("addInactive");
-		$i("thislexnew").value = "";
-		$i("thissizenew").value = "m";
-	};
-	const cancelAdding = () => {
-		let eCL = $i("editLexiconItemOrder").classList;
-		eCL.remove("addActive");
-		eCL.add("addInactive");
-		eCL = $i("footerElement").classList;
-		eCL.remove("addActive");
-		eCL.add("addInactive");
-	};
-	const finishAdding = () => {
-		cancelAdding();
-		let title = $i("thislexnew").value;
-		let size = $i("thissizenew").value;
-		editing.columnTitles.push(title);
-		editing.columnSizes.push(size);
+	const addNewColumn = () => {
+		editing.columnTitles.push("New");
+		editing.columnSizes.push("m");
 		editing.columnOrder.push(editing.columns++);
 		dispatch(updateLexiconColumns(editing));
 		let newLex: Lexicon[] = [];
@@ -132,7 +109,7 @@ const EditLexiconOrderModal = () => {
 		});
 		dispatch(updateLexiconOrder(newLex));
 		fireSwal({
-			title: "Added!",
+			title: "Added New Column",
 			toast: true,
 			timer: 2500,
 			timerProgressBar: true,
@@ -200,33 +177,9 @@ const EditLexiconOrderModal = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent id="editLexiconItemOrder" className="addInactive">
+			<IonContent id="editLexiconItemOrder">
 				<IonList>
-					<IonItem className="hideUnlessAdding">
-						<IonGrid>
-							<IonRow className="ion-align-items-center">
-								<IonCol size="auto">
-									<IonLabel>Field Name: </IonLabel>
-								</IonCol>
-								<IonCol>
-									<IonInput id="thislexnew" type="text" />
-								</IonCol>
-							</IonRow>
-							<IonRow className="ion-align-items-center">
-								<IonCol>
-									<IonLabel>Field Size: </IonLabel>
-								</IonCol>
-								<IonCol>
-									<IonSelect interface="popover" id="thissizenew" value="m">
-										<IonSelectOption value="s">Small</IonSelectOption>
-										<IonSelectOption value="m">Medium</IonSelectOption>
-										<IonSelectOption value="l">Large</IonSelectOption>
-									</IonSelect>
-								</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{editing.columnOrder.map((i: number) => {
 							const iStr = i.toString();
 							const sizes = editing.columnSizes;
@@ -263,23 +216,15 @@ const EditLexiconOrderModal = () => {
 					</IonReorderGroup>
 				</IonList>
 			</IonContent>
-			<IonFooter id="footerElement" className="addInactive">
+			<IonFooter id="footerElement">
 				<IonToolbar>
-					<IonButton className="hideWhileAdding " color="success" slot="start" onClick={() => beginAdding()}>
+				<IonButton color="success" slot="end" onClick={() => addNewColumn()}>
 						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>Add</IonLabel>
+						<IonLabel>Add Column</IonLabel>
 					</IonButton>
-					<IonButton className="hideUnlessAdding" color="danger" slot="start" onClick={() => cancelAdding()}>
-						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
-					</IonButton>
-					<IonButton className="hideWhileAdding" color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Done</IonLabel>
-					</IonButton>
-					<IonButton className="hideUnlessAdding" color="success" slot="end" onClick={() => finishAdding()}>
-						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>Add</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
