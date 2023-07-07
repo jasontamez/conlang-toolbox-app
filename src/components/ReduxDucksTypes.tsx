@@ -243,7 +243,7 @@ export interface ModalStateObject {
 	EditTransform: boolean
 	AddSoundChange: boolean
 	EditSoundChange: boolean
-	LexiconEllipsis: undefined | Event
+	LexiconStorage: boolean
 	EditLexiconItem: boolean
 	EditLexiconOrder: boolean
 	LoadLexicon: boolean
@@ -257,7 +257,6 @@ export interface ModalStateObject {
 	ManageCustomInfoWE: boolean
 	InfoModal: boolean
 	ExtraCharacters: boolean
-	ExtraCharactersEllipsis: undefined | Event
 	ExportLexicon: boolean
 	WordListsEllipsis: undefined | Event
 	PickAndSaveWL: boolean

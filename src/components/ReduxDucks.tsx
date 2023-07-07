@@ -372,7 +372,7 @@ export const blankAppState: types.StateObject = {
 		EditTransform: false,
 		AddSoundChange: false,
 		EditSoundChange: false,
-		LexiconEllipsis: undefined,
+		LexiconStorage: false,
 		EditLexiconItem: false,
 		EditLexiconOrder: false,
 		LoadLexicon: false,
@@ -386,7 +386,6 @@ export const blankAppState: types.StateObject = {
 		WESaveToLexicon: undefined,
 		InfoModal: false,
 		ExtraCharacters: false,
-		ExtraCharactersEllipsis: undefined,
 		ExportLexicon: false,
 		WordListsEllipsis: undefined,
 		PickAndSaveWL: false,
@@ -433,7 +432,6 @@ const saveCurrentState = (state: types.StateObject) => {
 	ms.LexiconEllipsis
 		= ms.WGSaveToLexicon
 		= ms.WESaveToLexicon
-		= ms.ExtraCharactersEllipsis
 		= ms.WordListsEllipsis
 		= newState.temporaryInfo
 		= undefined;

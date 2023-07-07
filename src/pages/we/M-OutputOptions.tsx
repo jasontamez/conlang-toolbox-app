@@ -41,7 +41,7 @@ const OutputOptionsModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList>
+				<IonList lines="none">
 					<IonRadioGroup value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value as WEOutputTypes))}>
 						<IonItem className="ion-text-wrap">
 							<IonLabel>Output Only</IonLabel>

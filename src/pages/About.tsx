@@ -22,7 +22,8 @@ import {
 	bookSharp,
 	globeOutline,
 	listOutline,
-	buildSharp
+	buildSharp,
+	warningSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
@@ -49,6 +50,21 @@ const Home = () => {
 				<IonGrid>
 					<IonRow>
 						<IonCol>
+							<IonCard button={false}>
+								<IonCardHeader className="ion-text-center">
+									<IonIcon icon={warningSharp} />
+									<IonLabel className="ion-padding-start">Warning</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									<p>This version of the app will be going away soon, replaced with a similar one with the same capacities and tools, but with some major bugs fixed.</p>
+									<p>Information saved in this app <strong>may not survive the update</strong>. I am trying to keep the transition as smooth as possible, but bugs may happen.</p>
+									<p>Estimated date of change: September 2023</p>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
 							<IonCard button={true} routerLink="/ms/" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={buildSharp} />
@@ -60,7 +76,6 @@ const Home = () => {
 										<li>Covers large-scale structures and small</li>
 										<li>Grouped into ten sections</li>
 										<li>Use as many or as little of the prompts as you like</li>
-										<li>...?</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>

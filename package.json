@@ -1,6 +1,6 @@
 {
   "name": "conlang-toolbox",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.13.0",
@@ -24,6 +24,7 @@
     "@types/react-dom": "^16.9.13",
     "@types/react-router": "^5.1.14",
     "@types/react-router-dom": "^5.1.7",
+    "caniuse-lite": "^1.0.30001512",
     "capitalize": "^2.0.3",
     "compare-versions": "^3.6.0",
     "cordova-plugin-filechooser": "^1.2.0",

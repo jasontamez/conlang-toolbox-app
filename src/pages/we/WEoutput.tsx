@@ -8,18 +8,12 @@ import {
 	IonMenuButton,
 	IonButtons,
 	IonTitle,
-	IonList,
 	IonButton,
-	IonIcon,
-	IonItem,
-	IonLabel,
-	IonPopover
+	IonIcon
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
-	openPopover,
-	closePopover,
 	openModal,
 	closeModal,
 	addDeferredLexiconItems,
@@ -682,19 +676,18 @@ const WEOut = () => {
 	// // //
 
 	const pickAndSave = () => {
-		dispatch(closePopover("WESaveToLexicon"));
 		dispatch(openModal("PickAndSaveWE"));
+		return fireSwal({
+			title: "Tap words you want to save to Lexicon",
+			toast: true,
+			timer: 2500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
 	};
 	const donePickingAndSaving = () => {
 		dispatch(closeModal("PickAndSaveWE"));
-	};
-	let wordsToSave: string[] = [];
-	const saveEverything = () => {
-		dispatch(closePopover("WESaveToLexicon"));
-		$a(".word", outputPane).forEach((word: HTMLElement) => {
-			word.textContent && wordsToSave.push(word.textContent);
-		});
-		dispatch(addDeferredLexiconItems(wordsToSave));
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
@@ -751,21 +744,6 @@ const WEOut = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonPopover
-			        {/*cssClass='my-custom-class'*/ ...""}
-					event={modalState.WESaveToLexicon}
-					isOpen={modalState.WESaveToLexicon !== undefined}
-					onDidDismiss={() => dispatch(closePopover("WESaveToLexicon"))}
-				>
-					<IonList lines="none">
-						<IonItem button={true} onClick={() => saveEverything()}>
-							<IonLabel className="ion-text-wrap">Save everything to Lexicon</IonLabel>
-						</IonItem>
-						<IonItem button={true} onClick={() => pickAndSave()}>
-							<IonLabel className="ion-text-wrap">Choose what to save to Lexicon</IonLabel>
-						</IonItem>
-					</IonList>
-				</IonPopover>
 				<div id="WEoutput">
 					<IonButton
 						className="TL"
@@ -813,7 +791,7 @@ const WEOut = () => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={(e: any) => { e.persist(); dispatch(openPopover('WESaveToLexicon', e)); }}
+							onClick={() => pickAndSave()}
 						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
 					</div>
 					<div id="outputPaneWE" className={"largePane selectable" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>

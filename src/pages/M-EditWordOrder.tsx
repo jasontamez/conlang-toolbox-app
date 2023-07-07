@@ -18,7 +18,8 @@ import {
 	IonGrid,
 	IonReorderGroup,
 	IonReorder,
-	IonCheckbox
+	IonCheckbox,
+	IonItemDivider
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -26,11 +27,20 @@ import {
 	reorderTwo,
 	trashOutline,
 	addCircleOutline,
-	globeOutline
+	globeOutline,
+	checkmarkOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
-import { openModal, closeModal, updateLexiconColumns, updateLexiconOrder } from '../components/ReduxDucksFuncs';
+import {
+	openModal,
+	closeModal,
+	updateLexiconColumns,
+	updateLexiconOrder,
+	toggleLexiconWrap,
+	updateLexiconSort,
+	updateLexiconBool
+} from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
 import { $i } from '../components/DollarSignExports';
@@ -38,6 +48,9 @@ import { $i } from '../components/DollarSignExports';
 const EditLexiconOrderModal = () => {
 	const dispatch = useDispatch();
 	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
+	const theOrder = lexicon.columnOrder;
+	const theTitles = lexicon.columnTitles;
+	const [sortedColumn, sortDirection] = lexicon.sort;
 	let editing: colEdit = lexicon.colEdit;
 	if(!editing) {
 		editing = {
@@ -162,6 +175,33 @@ const EditLexiconOrderModal = () => {
 		dispatch(updateLexiconColumns(editing));
 		ed.complete();
 	};
+	const toggleWrap = () => {
+		dispatch(toggleLexiconWrap());
+	};
+	const doSort = (col: number, dir: number) => {
+		const newLex: Lexicon[] = lexicon.lexicon.slice();
+		newLex.sort((a, b) => {
+			let x = a.columns[col];
+			let y: string;
+			let comp: number;
+			if(dir) {
+				y = x;
+				x = b.columns[col];
+			} else {
+				y = b.columns[col];
+			}
+			try {
+				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+			} catch(error) {
+				comp = 0;
+				console.log(error);
+			}
+			return comp;
+		});
+		dispatch(updateLexiconSort([col, dir]));
+		dispatch(updateLexiconOrder(newLex));
+		dispatch(updateLexiconBool("sorted", true));
+	};
 	return (
 		<IonModal isOpen={modalState.EditLexiconOrder} onDidDismiss={() => dispatch(closeModal('EditLexiconOrder'))}>
 			<IonHeader>
@@ -178,13 +218,50 @@ const EditLexiconOrderModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent id="editLexiconItemOrder">
-				<IonList>
+				<IonList lines="full">
+					<IonItemDivider>Lexicon Options</IonItemDivider>
+					<IonItem button={true} onClick={() => toggleWrap()}>
+						<IonLabel>{lexicon.lexiconWrap ? "Disable" : "Turn On"} Text Wrapping</IonLabel>
+					</IonItem>
+					<IonItemDivider>Sort Column</IonItemDivider>
+					{theOrder.map((i: number) => {
+						const title = theTitles[i];
+						const which = i.toString();
+						return (
+							<IonItem button={true} onClick={() => doSort(i, sortDirection)}>
+								<IonLabel key={which} slot="start">{title}</IonLabel>
+								{i === sortedColumn ?
+									<IonIcon slot="end" icon={checkmarkOutline} />
+								:
+									<></>
+								}
+							</IonItem>
+						);
+					})}
+					<IonItemDivider>Sort Direction</IonItemDivider>
+					<IonItem button={true} onClick={() => doSort(sortedColumn, 0)}>
+						<IonLabel slot="start">Descending ↓</IonLabel>
+						{0 === sortedColumn ?
+							<IonIcon slot="end" icon={checkmarkOutline} />
+						:
+							<></>
+						}
+					</IonItem>
+					<IonItem button={true} onClick={() => doSort(sortedColumn, 1)}>
+						<IonLabel slot="start">Ascending ↑</IonLabel>
+						{1 === sortedColumn ?
+							<IonIcon slot="end" icon={checkmarkOutline} />
+						:
+							<></>
+						}
+					</IonItem>
+					<IonItemDivider>Rearrange Lexicon Columns</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{editing.columnOrder.map((i: number) => {
 							const iStr = i.toString();
 							const sizes = editing.columnSizes;
 							return (
-								<IonItem key={iStr}>
+								<IonItem lines="full" key={iStr}>
 									<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
 									<IonGrid>
 										<IonRow className="ion-align-items-center">
@@ -217,8 +294,8 @@ const EditLexiconOrderModal = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter id="footerElement">
-				<IonToolbar>
-				<IonButton color="success" slot="end" onClick={() => addNewColumn()}>
+				<IonToolbar color="darker">
+					<IonButton color="success" slot="end" onClick={() => addNewColumn()}>
 						<IonIcon icon={addCircleOutline} slot="start" />
 						<IonLabel>Add Column</IonLabel>
 					</IonButton>

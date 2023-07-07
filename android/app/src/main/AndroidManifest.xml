@@ -16,6 +16,7 @@
             android:name="net.jasontank.conlangtoolbox.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:exported="false"
             android:launchMode="singleTask">
 
             <intent-filter>

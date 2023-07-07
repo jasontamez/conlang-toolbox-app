@@ -7,13 +7,9 @@ import {
 	IonMenuButton,
 	IonButtons,
 	IonTitle,
-	IonList,
 	IonButton,
-	IonItem,
 	IonIcon,
-	useIonViewDidEnter,
-	IonPopover,
-	IonLabel
+	useIonViewDidEnter
 } from '@ionic/react';
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
@@ -24,8 +20,6 @@ import {
 import {
 	openModal,
 	changeView,
-	openPopover,
-	closePopover,
 	closeModal,
 	addDeferredLexiconItems,
 	removeDeferredLexiconItem,
@@ -461,19 +455,18 @@ const WGOut = () => {
 	// Save to Lexicon
 	// // //
 	const pickAndSave = () => {
-		dispatch(closePopover("WGSaveToLexicon"));
 		dispatch(openModal("PickAndSaveWG"));
+		return fireSwal({
+			title: "Tap words you want to save to Lexicon",
+			toast: true,
+			timer: 2500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
 	};
 	const donePickingAndSaving = () => {
 		dispatch(closeModal("PickAndSaveWG"));
-	};
-	const saveEverything = () => {
-		let wordsToSave: string[] = [];
-		dispatch(closePopover("WGSaveToLexicon"));
-		$a(".word", outputPane).forEach((word: HTMLElement) => {
-			word.textContent && wordsToSave.push(word.textContent);
-		});
-		dispatch(addDeferredLexiconItems(wordsToSave));
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
@@ -508,21 +501,6 @@ const WGOut = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonPopover
-			        {/*cssClass='my-custom-class'*/ ...""}
-					event={modalState.WGSaveToLexicon}
-					isOpen={modalState.WGSaveToLexicon !== undefined}
-					onDidDismiss={() => dispatch(closePopover("WGSaveToLexicon"))}
-				>
-					<IonList lines="none">
-						<IonItem button={true} onClick={() => saveEverything()}>
-							<IonLabel className="ion-text-wrap">Save everything to Lexicon</IonLabel>
-						</IonItem>
-						<IonItem button={true} onClick={() => pickAndSave()}>
-							<IonLabel className="ion-text-wrap">Choose what to save to Lexicon</IonLabel>
-						</IonItem>
-					</IonList>
-				</IonPopover>
 				<div id="WGoutput">
 					<IonButton
 						expand="block"
@@ -554,7 +532,7 @@ const WGOut = () => {
 							strong={true}
 							className={modalState.PickAndSaveWG ? "hide" : ""}
 							color="secondary"
-							onClick={(e: any) => { e.persist(); dispatch(openPopover('WGSaveToLexicon', e)); }}
+							onClick={() => pickAndSave()}
 						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
 						<IonButton
 							className={modalState.PickAndSaveWG ? "" : "hide"}

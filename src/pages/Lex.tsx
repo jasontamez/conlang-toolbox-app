@@ -8,57 +8,42 @@ import {
 	IonButtons,
 	IonButton,
 	IonMenuButton,
-	IonPopover,
 	IonIcon,
 	IonList,
 	IonItem,
 	IonLabel,
 	IonInput,
 	IonTextarea,
-	IonSelect,
-	IonSelectOption,
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonLoading,
-	IonItemDivider
+	IonLoading
 } from '@ionic/react';
 import {
-	ellipsisVertical,
 	add,
 	construct,
 	trash,
 	trashOutline,
 	saveOutline,
-	codeDownloadOutline,
-	removeCircleOutline,
-	addCircleOutline,
 	globeOutline,
 	settings
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
-	openPopover,
-	closePopover,
 	openModal,
 	updateLexiconText,
-	updateLexiconNumber,
 	startEditLexiconItem,
 	deleteLexiconItem,
 	updateLexiconOrder,
-	updateLexiconSort,
-	updateLexicon,
 	setLoadingPage,
-	setTemporaryInfo,
 	updateLexiconBool,
-	toggleLexiconWrap,
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
-import { LexiconStorage } from '../components/PersistentInfo';
+import { Lexicon } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
+import LexiconStorageModal from './M-LexiconStorage';
 import fireSwal from '../components/Swal';
 import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
@@ -75,7 +60,6 @@ import { Clipboard } from '@capacitor/clipboard';
 const Lex = () => {
 	const dispatch = useDispatch();
 	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
-	const popstate = modalState.LexiconEllipsis;
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
 		const thenFunc = () => {
@@ -150,7 +134,8 @@ const Lex = () => {
 	const theOrder = lexicon.columnOrder;
 	const theTitles = lexicon.columnTitles;
 	const theSizes = lexicon.columnSizes;
-	const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
+	//const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
+	const theSort = lexicon.sort;
 	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon.lexicon]) => {
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
@@ -172,13 +157,6 @@ const Lex = () => {
 		});
 		dispatch(updateLexiconOrder(newLex));
 		dispatch(updateLexiconBool("sorted", true));
-	};
-	const doSort = () => {
-		const el = $i("lexiconSort");
-		const value = el.value;
-		let [col, dir] = value.split("").map((n: string) => parseInt(n));
-		dispatch(updateLexiconSort([col, dir]));
-		internalSort(col, dir);
 	};
 	const addToLex = () => {
 		const newInfo: string[] = [];
@@ -265,141 +243,6 @@ const Lex = () => {
 		dispatch(startEditLexiconItem(index));
 		dispatch(openModal('EditLexiconItem'));
 	};
-	const clearLexicon = () => {
-		dispatch(closePopover('LexiconEllipsis'))
-		const thenFunc = () => {
-			const newLex: LexiconObject = {
-				key: "",
-				lastSave: 0,
-				title: "",
-				description: "",
-				columns: lexicon.columns,
-				columnOrder: [...lexicon.columnOrder],
-				columnTitles: [...lexicon.columnTitles],
-				columnSizes: [...lexicon.columnSizes],
-				sort: [...lexicon.sort],
-				sorted: true,
-				lexicon: [],
-				waitingToAdd: [...lexicon.waitingToAdd],
-				editing: undefined,
-				colEdit: undefined,
-				lexiconWrap: lexicon.lexiconWrap
-			};
-			dispatch(updateLexicon(newLex));
-		};
-		if(!appSettings.disableConfirms && (lexicon.title || lexicon.key || lexicon.description || lexicon.lexicon.length > 0)) {
-			fireSwal({
-				title: "Delete everything?",
-				text: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, erase it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
-		} else {
-			thenFunc();
-		}
-	};
-	const openLexiconModal = (which: keyof ModalStateObject) => {
-		let info: [string, LexiconObject][] = [];
-		LexiconStorage.iterate((value: LexiconObject, key: string) => {
-			info.push([key, value]);
-			return; // Blank return keeps the loop going
-		}).then(() => {
-			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedlexicons", data: info }));
-			dispatch(setLoadingPage(false));
-			dispatch(openModal(which));
-		});
-		dispatch(closePopover('LexiconEllipsis'));
-		dispatch(setLoadingPage("lookingForLexicons"));
-	};
-	const maybeExportLexicon = () => {
-		if(!lexicon.title) {
-			return fireSwal({
-				title: "Error",
-				text: "Please give your lexicon a title before exporting it.",
-				icon: 'warning'
-			});
-		} else if (lexicon.lexicon.length < 1) {
-			return fireSwal({
-				title: "Error",
-				text: "Please add words to your lexicon before exporting it.",
-				icon: 'warning'
-			});
-		}
-		dispatch(openModal("ExportLexicon"));
-		dispatch(closePopover('LexiconEllipsis'));
-	};
-	const saveLexicon: any = (announce: string = "Lexicon saved.", key: string = lexicon.key, overwrite: boolean = true) => {
-		// Save original key
-		const firstKey = lexicon.key;
-		// Save 'now'
-		const now = Date.now();
-		if(!lexicon.title) {
-			dispatch(closePopover('LexiconEllipsis'));
-			return lexiconSaveError();
-		} else if(!key) {
-			key = uuidv4();
-			dispatch(updateLexiconText("key", key));
-		}
-		// Dispatch to state
-		dispatch(updateLexiconNumber("lastSave", now));
-		dispatch(setLoadingPage("lookingForLexicons"));
-		// These dispatches will NOT be ready by the time Storage loads and saves
-		//  so we will need to do some creative variable work
-		let lex: LexiconObject = {...lexicon};
-		// Use possibly-new key
-		lex.key = key;
-		// Use 'now'
-		lex.lastSave = now;
-		// Deep copy lex.lexicon
-		lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
-			let x = {...lx};
-			x.columns = [...lx.columns];
-			return x;
-		});
-		// Deep copy column info
-		lex.columnOrder = [...lex.columnOrder];
-		lex.columnTitles = [...lex.columnTitles];
-		lex.columnSizes = [...lex.columnSizes];
-		lex.sort = [...lex.sort];
-		LexiconStorage.setItem(key, lex)
-			.then(() => {
-				// If we're overwriting, and it's a new key, delete the old one
-				if(overwrite && key !== firstKey) {
-					LexiconStorage.removeItem(firstKey);
-				}
-				dispatch(setLoadingPage(false));
-				fireSwal({
-					title: announce,
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			});
-		dispatch(closePopover('LexiconEllipsis'));
-	};
-	const saveLexiconNew = () => {
-		if(!lexicon.title) {
-			dispatch(closePopover('LexiconEllipsis'));
-			return lexiconSaveError();
-		}
-		let key = uuidv4();
-		dispatch(updateLexiconText("key", key));
-		saveLexicon("Lexicon saved as new lexicon!", key, false);
-	};
-	const lexiconSaveError = () => {
-		fireSwal({
-			title: "Error",
-			text: "You must input a title before saving.",
-			icon: 'warning'
-		});
-	};
-	const toggleWrap = () => {
-		dispatch(closePopover('LexiconEllipsis'));
-		dispatch(toggleLexiconWrap());
-	};
 	const copyText = async () => {
 		const info = $i("revealFullElement");
 		await Clipboard.write({string: info.textContent});
@@ -477,6 +320,7 @@ const Lex = () => {
 			<EditLexiconOrderModal />
 			<LoadLexiconModal />
 			<ExportLexiconModal />
+			<LexiconStorageModal />
 			<DeleteLexiconModal />
 			<ExtraCharactersModal />
 			<IonLoading
@@ -494,50 +338,12 @@ const Lex = () => {
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Lexicon</IonTitle>
-					<IonPopover
-						event={popstate}
-						isOpen={popstate !== undefined}
-						onDidDismiss={() => dispatch(closePopover('LexiconEllipsis'))}
-					>
-						<IonList>
-							<IonItem button={true} onClick={() => clearLexicon()}>
-								<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-								<IonLabel>Clear Lexicon</IonLabel>
-							</IonItem>
-							<IonItem button={true} onClick={() => openLexiconModal("LoadLexicon")}>
-								<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-								<IonLabel>Load Lexicon</IonLabel>
-							</IonItem>
-							<IonItem button={true} onClick={() => saveLexicon()}>
-								<IonIcon icon={saveOutline} className="ion-padding-end" />
-								<IonLabel>Save Lexicon</IonLabel>
-							</IonItem>
-							<IonItem button={true} onClick={() => saveLexiconNew()}>
-								<IonIcon icon={saveOutline} className="ion-padding-end" />
-								<IonLabel>Save As New</IonLabel>
-							</IonItem>
-							<IonItem button={true} onClick={() => maybeExportLexicon()}>
-								<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
-								<IonLabel>Export Lexicon</IonLabel>
-							</IonItem>
-							<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
-								<IonIcon icon={trashOutline} className="ion-padding-end" />
-								<IonLabel>Delete Saved Lexicon</IonLabel>
-							</IonItem>
-							<IonItemDivider>
-								<IonLabel>Options</IonLabel>
-							</IonItemDivider>
-							<IonItem button={true} onClick={() => toggleWrap()}>
-								<IonLabel>{lexicon.lexiconWrap ? "Disable" : "Allow"} Text Wrapping</IonLabel>
-							</IonItem>
-						</IonList>
-					</IonPopover>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={(e: any) => { e.persist(); dispatch(openPopover('LexiconEllipsis', e)); }}>
-							<IonIcon icon={ellipsisVertical} />
+						<IonButton onClick={() => dispatch(openModal("LexiconStorage"))}>
+							<IonIcon icon={saveOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
@@ -569,20 +375,7 @@ const Lex = () => {
 								</IonButton>
 							</IonCol>
 							<IonCol size="auto">
-								<IonSelect id="lexiconSort" interface="popover" value={theSort} onIonChange={() => doSort()}>
-									{theOrder.map((i: number) => {
-										const title = theTitles[i];
-										const which = i.toString();
-										const ascdec = [0, 1];
-										return ascdec.map((s: number) => {
-											const arrow = [" ↓", " ↑"][s];
-											const dir = s.toString();
-											return (
-												<IonSelectOption value={which + dir} key={which + dir}>{title + arrow}</IonSelectOption>
-											);
-										});
-									})}
-								</IonSelect>
+								<h2>Sort: {theTitles[theSort[0]] + [" ↓", " ↑"][theSort[1]]}</h2>
 							</IonCol>
 							<IonCol size="auto">
 								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => swapColumns()}>

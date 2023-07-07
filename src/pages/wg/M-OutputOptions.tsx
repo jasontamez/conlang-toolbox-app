@@ -12,15 +12,12 @@ import {
 	IonLabel,
 	IonToggle,
 	IonRange,
-	IonSelect,
-	IonSelectOption,
 	IonModal,
 	IonIcon,
 	IonFooter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	WGOutputTypes,
 	Fifty_OneThousand,
 	Five_OneHundred,
 } from '../../components/ReduxDucksTypes';
@@ -34,7 +31,9 @@ import {
 	setWordsPerWordlistWG
 } from '../../components/ReduxDucksFuncs';
 import {
-	closeCircleOutline
+	checkmarkCircleOutline,
+	closeCircleOutline,
+	ellipseOutline
 } from 'ionicons/icons';
 import { closeModal } from '../../components/ReduxDucksFuncs';
 
@@ -54,16 +53,23 @@ const OutputOptionsModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList>
-					<IonItemDivider>What to Generate:</IonItemDivider>
-					<IonSelect interface="popover" value={settingsWG.output} onIonChange={e => dispatch(setOutputTypeWG(e.detail.value as WGOutputTypes))}>
-						<IonSelectOption value="text">Pseudo-text</IonSelectOption>
-						<IonSelectOption value="wordlist">Wordlist</IonSelectOption>
-						<IonSelectOption value="syllables">All possible syllables</IonSelectOption>
-					</IonSelect>
+				<IonList lines="full">
 					<IonItem>
 						<IonLabel>Show syllable breaks</IonLabel>
 						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))} />
+					</IonItem>
+					<IonItemDivider>What to Generate:</IonItemDivider>
+					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('text'))}>
+						<IonLabel>Pseudo-text</IonLabel>
+						<IonIcon icon={settingsWG.output === "text" ? checkmarkCircleOutline : ellipseOutline}  />
+					</IonItem>
+					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('wordlist'))}>
+						<IonLabel>Wordlist</IonLabel>
+						<IonIcon icon={settingsWG.output === "wordlist" ? checkmarkCircleOutline : ellipseOutline}  />
+					</IonItem>
+					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('syllables'))}>
+						<IonLabel>All possible syllables</IonLabel>
+						<IonIcon icon={settingsWG.output === "syllables" ? checkmarkCircleOutline : ellipseOutline}  />
 					</IonItem>
 					<IonItemDivider>{settingsWG.output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
 					<IonItem className={settingsWG.output === "text" ? "" : "hide"}>

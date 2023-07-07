@@ -342,6 +342,10 @@ i.ipa {
 #theLexiconHeader ion-row {
 	margin: 0;
 }
+#theLexiconHeader ion-row ion-col {
+	display: flex;
+	align-items: center;
+}
 #theLexiconHolder {
 	--ion-grid-columns: 1;
 }
@@ -454,7 +458,8 @@ i.ipa {
 	background: var(--ion-background-tinter);
 	margin-inline-end: 0.5rem;
 }
-#lexiconPage h1 {
+#lexiconPage h1,
+#lexiconPage h2 {
 	margin: 0;
 }
 #lexiconPage #revealFullElement {
@@ -602,12 +607,21 @@ ion-item div.twoColumnsEC div.char {
 	top: 0;
 	z-index: 10;
 }
-ion-item.extraHelp,
-ion-item.extraHelp::part(native) {
+#ExtraCharactersModalList .central {
+	text-align: center;
+	font-size: 2em;
+	text-indent: 0;
+}
+ion-item.extraHelp {
+	display: none;
+}
+ion-list.showingHelp ion-item.extraHelp,
+ion-list.showingHelp ion-item.extraHelp::part(native) {
+	display: block;
 	background: var(--ion-color-secondary);
 	color: var(--ion-color-secondary-contrast);
 }
-ion-item.extraHelp div {
+ion-list.showingHelp ion-item.extraHelp div {
 	text-indent: 2em;
 	margin: 0.25em 0;
 }

@@ -13,22 +13,20 @@ import {
 	IonItem,
 	IonButton,
 	IonIcon,
-	IonPopover,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
-	ellipsisVertical,
+	swapHorizontalOutline,
 	helpCircleOutline,
 	saveOutline,
-	textOutline
+	checkmarkDoneOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 import {
 	updateWordListsDisplay,
 	openModal,
 	closeModal,
-	openPopover,
-	closePopover,
 	changeView,
 	toggleWordListsBoolean,
 	addDeferredLexiconItems,
@@ -40,7 +38,7 @@ import { $a, $i } from '../components/DollarSignExports';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
-import { v4 as uuidv4 } from 'uuid';
+import fireSwal from '../components/Swal';
 
 const Home = () => {
 	const [modalState, wordListsState, waitingToAdd] = useSelector((state: any) => [state.modalState, state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
@@ -63,19 +61,34 @@ const Home = () => {
 	// Save to Lexicon
 	// // //
 	const pickAndSave = () => {
-		dispatch(closePopover("WordListsEllipsis"));
 		dispatch(openModal("PickAndSaveWG"));
+		return fireSwal({
+			title: "Tap words you want to save to Lexicon",
+			toast: true,
+			timer: 2500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
 	};
 	const donePickingAndSaving = () => {
 		dispatch(closeModal("PickAndSaveWG"));
 	};
 	const saveEverything = () => {
 		let wordsToSave: string[] = [];
-		dispatch(closePopover("WordListsEllipsis"));
+		dispatch(closeModal("PickAndSaveWG"));
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
 		});
 		dispatch(addDeferredLexiconItems(wordsToSave));
+		return fireSwal({
+			title: "All words have been sent to Lexicon",
+			toast: true,
+			timer: 2500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
 	};
 	const maybeSaveThisWord = (text: string, id: string) => {
 		if(outputPane.classList.contains("pickAndSave")) {
@@ -101,44 +114,28 @@ const Home = () => {
 					 </IonButtons>
 					<IonTitle>Word Lists</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
+							<IonIcon icon={swapHorizontalOutline} />
+						</IonButton>
+						<IonButton onClick={() => pickAndSave()}>
+							<IonIcon icon={saveOutline} />
+						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
 							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-						<IonButton onClick={(e: any) => {
-							e.persist();
-							dispatch(openPopover("WordListsEllipsis", e));
-						}}>
-							<IonIcon icon={ellipsisVertical} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonPopover
-			        {/*cssClass='my-custom-class'*/ ...""}
-					event={modalState.WordListsEllipsis}
-					isOpen={modalState.WordListsEllipsis !== undefined}
-					onDidDismiss={() => dispatch(closePopover("WordListsEllipsis"))}
-				>
-					<IonList lines="none">
-						<IonItem button={true} onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
-							<IonIcon icon={textOutline} slot="start" />
-							<IonLabel className="ion-text-wrap">{wordListsState.textCenter ? "De-center Text" : "Center Text"}</IonLabel>
-						</IonItem>
-						<IonItem button={true} onClick={() => saveEverything()}>
-							<IonIcon icon={saveOutline} slot="start" />
-							<IonLabel className="ion-text-wrap">Save All to Lexicon</IonLabel>
-						</IonItem>
-						<IonItem button={true} onClick={() => pickAndSave()}>
-							<IonIcon icon={saveOutline} slot="start" />
-							<IonLabel className="ion-text-wrap">Choose what to save</IonLabel>
-						</IonItem>
-					</IonList>
-				</IonPopover>
 				<IonList lines="none">
 					<IonItem className={modalState.PickAndSaveWG ? "" : "hide"}>
-						<IonButton expand="block" strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
-							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Done Saving
+						<IonButton strong={true} color="tertiary" onClick={() => saveEverything()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save All Words
+						</IonButton>
+					</IonItem>
+					<IonItem className={modalState.PickAndSaveWG ? "" : "hide"}>
+						<IonButton strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
+							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
 						</IonButton>
 					</IonItem>
 					<IonItem>
