@@ -22,8 +22,8 @@ import {
 	ellipseSharp,
 	listSharp,
 	buildSharp,
-	cogSharp,
-	volumeHighSharp
+//	cogSharp,
+//	volumeHighSharp
 } from 'ionicons/icons';
 import { setMenuToggle } from './ReduxDucksFuncs';
 import './Menu.css';
@@ -195,7 +195,7 @@ const appMenuPages: MenuSection[] = [
 				id: 'menuitemWEout',
 				parent: 'we'
 			},
-			{
+/*			{
 				title: 'Declenjugator',
 				url: '/dc',
 				icon: cogSharp,
@@ -207,7 +207,7 @@ const appMenuPages: MenuSection[] = [
 				icon: volumeHighSharp,
 				id: 'menuitemPG'
 			},
-			{
+*/			{
 				title: 'Lexicon',
 				url: '/lex',
 				icon: bookSharp,
