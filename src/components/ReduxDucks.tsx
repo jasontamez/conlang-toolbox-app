@@ -391,7 +391,8 @@ export const blankAppState: types.StateObject = {
 		PickAndSaveWL: false,
 		LoadMS: false,
 		DeleteMS: false,
-		ExportMS: false
+		ExportMS: false,
+		ExportAll: false
 	},
 	viewState: {
 		wg: 'categories',

@@ -228,8 +228,8 @@ const EditLexiconOrderModal = () => {
 						const title = theTitles[i];
 						const which = i.toString();
 						return (
-							<IonItem button={true} onClick={() => doSort(i, sortDirection)}>
-								<IonLabel key={which} slot="start">{title}</IonLabel>
+							<IonItem key={which} button={true} onClick={() => doSort(i, sortDirection)}>
+								<IonLabel slot="start">{title}</IonLabel>
 								{i === sortedColumn ?
 									<IonIcon slot="end" icon={checkmarkOutline} />
 								:
@@ -241,7 +241,7 @@ const EditLexiconOrderModal = () => {
 					<IonItemDivider>Sort Direction</IonItemDivider>
 					<IonItem button={true} onClick={() => doSort(sortedColumn, 0)}>
 						<IonLabel slot="start">Descending ↓</IonLabel>
-						{0 === sortedColumn ?
+						{0 === sortDirection ?
 							<IonIcon slot="end" icon={checkmarkOutline} />
 						:
 							<></>
@@ -249,7 +249,7 @@ const EditLexiconOrderModal = () => {
 					</IonItem>
 					<IonItem button={true} onClick={() => doSort(sortedColumn, 1)}>
 						<IonLabel slot="start">Ascending ↑</IonLabel>
-						{1 === sortedColumn ?
+						{1 === sortDirection ?
 							<IonIcon slot="end" icon={checkmarkOutline} />
 						:
 							<></>

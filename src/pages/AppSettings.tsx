@@ -19,14 +19,16 @@ import {
 	openModal
 } from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
+import ExportAllData from './M-ExportAllData';
 
 
 const AppSettings = () => {
 	const dispatch = useDispatch();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const appSettings = useSelector((state: any) => state.appSettings, shallowEqual);
 	return (
 		<IonPage>
 			<ChooseThemeModal />
+			<ExportAllData />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -42,11 +44,16 @@ const AppSettings = () => {
 							<h2>Disable Confirmation Prompts</h2>
 							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>
 						</IonLabel>
-						<IonToggle slot="end" checked={settings.disableConfirms} onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))} />
+						<IonToggle slot="end" checked={appSettings.disableConfirms} onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))} />
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(openModal('AppTheme'))}>
 						<IonLabel>Change Theme</IonLabel>
-						<IonNote slot="end" color="primary" style={ { color: "var(--ion-color-primary"} } >{settings.theme || "Default"}</IonNote>
+						<IonNote slot="end" color="primary" style={ { color: "var(--ion-color-primary"} } >{appSettings.theme || "Default"}</IonNote>
+					</IonItem>
+					<IonItem button={true} onClick={() => dispatch(openModal('ExportAll'))}>
+						<IonLabel className="possiblyLargeLabel">
+							<h2>Export All App Info</h2>
+						</IonLabel>
 					</IonItem>
 				</IonList>
 			</IonContent>

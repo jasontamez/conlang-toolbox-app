@@ -262,7 +262,8 @@ export interface ModalStateObject {
 	PickAndSaveWL: boolean
 	LoadMS: boolean
 	DeleteMS: boolean,
-	ExportMS: boolean
+	ExportMS: boolean,
+	ExportAll: boolean
 }
 
 export interface ViewStateObject {
