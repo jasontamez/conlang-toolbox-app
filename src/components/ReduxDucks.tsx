@@ -40,7 +40,7 @@ const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
 	let o: types.WGSyllableObject = {
 		components: [...original.components]
 	}
-	if (original.dropoffOverride) {
+	if (original.dropoffOverride !== undefined) {
 		o.dropoffOverride = original.dropoffOverride;
 	}
 	return o;
