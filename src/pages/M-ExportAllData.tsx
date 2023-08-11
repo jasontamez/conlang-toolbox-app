@@ -197,7 +197,7 @@ const MExportAllData = () => {
 						};
 					})
 				},
-				wordListsState: {
+				wordLists: {
 					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
 					listsDisplayed: convertedListsDisplayed
 				},

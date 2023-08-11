@@ -219,7 +219,7 @@
 			"tag": "Modal",
 			"title": "Proper Names",
 			"label": "Read About Them",
-			"Content": "<ul><li>In English, they do not easily take articles, quantifiers and other modifiers.</li><li>Other languages may have special case markers (4.4) for them.</li></ul>"
+			"content": "<ul><li>In English, they do not easily take articles, quantifiers and other modifiers.</li><li>Other languages may have special case markers (4.4) for them.</li></ul>"
 		},
 		{
 			"tag": "Text",

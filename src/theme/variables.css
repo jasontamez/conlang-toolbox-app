@@ -670,7 +670,7 @@ body.LightTheme {
 
 	--ion-card-background: #ffffff;
 	--ion-card-color: var(--ion-color-dark-shade);
-	--ion-card-highlight: var(--ion-color-dark-tint);
+	--ion-card-highlight: var(--ion-color-light-shade);
 
 	--ion-color-step-50: #f3f3f3;
 	--ion-color-step-100: #e7e7e7;
