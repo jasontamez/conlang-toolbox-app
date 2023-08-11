@@ -16,6 +16,7 @@ import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Credits from './pages/Credits';
+import Warning from './pages/Warning';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -81,8 +82,7 @@ const App = () => {
 						<Route path="/we"  render={() => <WE />} />
 						<Route path="/lex" render={() => <Lexicon />} />
 						<Route path="/ms" render={() => <MS />} />
-						<Route path="/ph" render={() => <Lexicon />} />
-						<Route path="/dc" render={() => <Lexicon />} />
+						<Route path="/warning" render={() => <Warning />} />
 						<Route path="/settings" render={() => <Settings />} />
 						<Route path="/about" render={() => <About />} />
 						<Route path="/wordlists" render={() => <WordLists />} />

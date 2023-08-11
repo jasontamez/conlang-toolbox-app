@@ -50,15 +50,14 @@ const Home = () => {
 				<IonGrid>
 					<IonRow>
 						<IonCol>
-							<IonCard button={false}>
+							<IonCard button={true} routerLink="/warning" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={warningSharp} />
-									<IonLabel className="ion-padding-start">Warning</IonLabel>
+									<IonLabel className="ion-padding-start">Important Info</IonLabel>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>This version of the app will be going away soon, replaced with a similar one with the same capacities and tools, but with some major bugs fixed.</p>
-									<p>Information saved in this app <strong>may not survive the update</strong>. I am trying to keep the transition as smooth as possible, but bugs may happen.</p>
-									<p>Estimated date of change: September 2023</p>
+									<p>Tap this for important information.</p>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
