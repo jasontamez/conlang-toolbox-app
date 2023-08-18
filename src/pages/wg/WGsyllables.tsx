@@ -107,7 +107,7 @@ const WGSyl = () => {
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					<IonItem class="ion-text-end">
+					<IonItem className="ion-text-end">
 						<IonLabel>Use multiple syllable types</IonLabel>
 						<IonToggle checked={syllableObject.toggle} onClick={() => dispatch(toggleSyllables(!syllableObject.toggle))} />
 					</IonItem>

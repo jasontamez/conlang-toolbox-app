@@ -7,9 +7,7 @@ import { Provider } from "react-redux";
 import { SplashScreen } from '@capacitor/splash-screen';
 import { setupIonicReact } from '@ionic/react'
 
-setupIonicReact({
-	mode: 'md'
-});
+setupIonicReact({});
 
 // Hide the splash (you should do this on app launch)
 SplashScreen.hide();
