@@ -133,7 +133,7 @@ const TransTable = (props: any) => {
 				tds.filter((el: string) => el).map((el: string, i: number) => <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td>)
 			}</tr>;
 		});
-	return <table className={cName}><tbody>{mainRows}</tbody></table>;
+	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
 const InfoModal = (props: any) => {
 	const dispatch = useDispatch();

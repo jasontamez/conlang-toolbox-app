@@ -81,14 +81,21 @@
 #morphoSyntaxPage ion-list ion-item ion-label {
 	white-space: normal;
 }
+.morphoSyntaxModal .scrollable {
+	max-width: 100%;
+	overflow-x: auto;
+	margin: 0.5rem 1rem;
+}
 .morphoSyntaxModal ion-list {
 	min-height: 100%;
+	max-width: 100%;
 }
 #morphoSyntaxPage ion-list ion-item ul,
 .morphoSyntaxModal ul {
 	padding-inline-start: 0;
 	list-style-type: none;
 	list-style-position: inside;
+	width: 100%;
 }
 #morphoSyntaxPage ion-list ion-item ul li,
 .morphoSyntaxModal ul li {
@@ -146,6 +153,7 @@
 }
 .morphoSyntaxModal table.translation {
 	border-width: 0.1rem;
+	margin: 0;
 }
 .morphoSyntaxModal table.translation td,
 .morphoSyntaxModal table.translation td + td {
