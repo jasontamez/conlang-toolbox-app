@@ -12,8 +12,8 @@
     "@capacitor/splash-screen": "^5.0.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/file-chooser": "^5.36.0",
-    "@ionic/react": "^5.6.8",
-    "@ionic/react-router": "^5.6.8",
+    "@ionic/react": "^7.3.0",
+    "@ionic/react-router": "^7.3.0",
     "@react-hook/window-size": "^3.0.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -53,7 +53,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -5,6 +5,11 @@ import * as serviceWorker from './serviceWorker';
 import store from "./components/ReduxStore";
 import { Provider } from "react-redux";
 import { SplashScreen } from '@capacitor/splash-screen';
+import { setupIonicReact } from '@ionic/react'
+
+setupIonicReact({
+	mode: 'md'
+});
 
 // Hide the splash (you should do this on app launch)
 SplashScreen.hide();

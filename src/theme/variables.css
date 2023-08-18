@@ -149,7 +149,7 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
-	--ion-color-primary: #00B8B8;
+	--ion-color-primary: #00b8b8;
 	--ion-color-primary-rgb: 0,184,184;
 	--ion-color-primary-contrast: #000000;
 	--ion-color-primary-contrast-rgb: 0,0,0;
@@ -170,21 +170,21 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-tertiary-shade: #4854e0;
 	--ion-color-tertiary-tint: #6370ff;
 
-	--ion-color-success: #7BC950;
+	--ion-color-success: #7bc950;
 	--ion-color-success-rgb: 123,201,80;
 	--ion-color-success-contrast: #000000;
 	--ion-color-success-contrast-rgb: 0,0,0;
 	--ion-color-success-shade: #6cb146;
 	--ion-color-success-tint: #88ce62;
 
-	--ion-color-warning: #FFBF00;
+	--ion-color-warning: #ffbf00;
 	--ion-color-warning-rgb: 255,191,0;
 	--ion-color-warning-contrast: #000000;
 	--ion-color-warning-contrast-rgb: 0,0,0;
 	--ion-color-warning-shade: #e0a800;
 	--ion-color-warning-tint: #ffc51a;
 
-	--ion-color-danger: #A30000;
+	--ion-color-danger: #a30000;
 	--ion-color-danger-rgb: 163,0,0;
 	--ion-color-danger-contrast: #ffffff;
 	--ion-color-danger-contrast-rgb: 255,255,255;
@@ -198,14 +198,14 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-dark-shade: #001212;
 	--ion-color-dark-tint: #1a2c2c;
 
-	--ion-color-medium: #8E7C93;
+	--ion-color-medium: #8e7c93;
 	--ion-color-medium-rgb: 142,124,147;
 	--ion-color-medium-contrast: #000000;
 	--ion-color-medium-contrast-rgb: 0,0,0;
 	--ion-color-medium-shade: #7d6d81;
 	--ion-color-medium-tint: #99899e;
 
-	--ion-color-light: #D6FFFF;
+	--ion-color-light: #d6ffff;
 	--ion-color-light-rgb: 214,255,255;
 	--ion-color-light-contrast: #000000;
 	--ion-color-light-contrast-rgb: 0,0,0;
@@ -233,7 +233,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-background-shader: #0002;
 	--ion-background-tinter: #ffffff09;
 
-	--ion-text-color: #D6FFFF;
+	--ion-text-color: #d6ffff;
 	--ion-text-color-rgb: 214,255,255;  
 
 	--ion-border-color: var(--ion-color-step-150);
@@ -700,7 +700,7 @@ body.LightTheme ion-menu ion-content {
 }
 
 
-#conlangToolbox {
+ion-app {
 	--font-sans: 'Noto Sans', 'Noto Sans JP', sans-serif;
 	--font-serif: 'Noto Serif', 'Noto Serif JP', serif;
 	--font-international: 'Arimo', 'ArTarumianKamar', 'Scheherazade', 'Sriracha', 'Leelawadee';
@@ -709,54 +709,54 @@ body.LightTheme ion-menu ion-content {
 	--font-mono: 'DM Mono', 'Consolas', 'Courier New', 'Courier', monospace;
 }
 
-#conlangToolbox .evenBackground {
+ion-app .evenBackground {
 	--background: var(--ion-item-background);
 }
 
-#conlangToolbox ion-range {
+ion-app ion-range {
 	background: transparent;
 	border-color: transparent;
 }
-#conlangToolbox ion-label[position="stacked"] {
+ion-app ion-label[position="stacked"] {
 	padding-block-end: 0.3em;
 }
 
-#conlangToolbox input[type=text],
-#conlangToolbox input[type=number],
-#conlangToolbox input[type=tel],
-#conlangToolbox input[type=date],
-#conlangToolbox input[type=time],
-#conlangToolbox input[type=datetime-local],
-#conlangToolbox input[type=url],
-#conlangToolbox input[type=search],
-#conlangToolbox input[type=email],
-#conlangToolbox input[type=month],
-#conlangToolbox textarea {
+ion-app input[type=text],
+ion-app input[type=number],
+ion-app input[type=tel],
+ion-app input[type=date],
+ion-app input[type=time],
+ion-app input[type=datetime-local],
+ion-app input[type=url],
+ion-app input[type=search],
+ion-app input[type=email],
+ion-app input[type=month],
+ion-app textarea {
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border-color: var(--ion-color-input-border);
 	--padding-start: 0.5em;
 	--padding-end: 0.5em;
 }
-#conlangToolbox input[type=submit],
-#conlangToolbox input[type=reset],
-#conlangToolbox input[type=button],
-#conlangToolbox button {
+ion-app input[type=submit],
+ion-app input[type=reset],
+ion-app input[type=button],
+ion-app button {
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border: 2px outset var(--ion-color-input-border);
 	outline: 0;
 }
-#conlangToolbox input[type=submit]:active,
-#conlangToolbox input[type=reset]:active,
-#conlangToolbox input[type=button]:active,
-#conlangToolbox button:active {
+ion-app input[type=submit]:active,
+ion-app input[type=reset]:active,
+ion-app input[type=button]:active,
+ion-app button:active {
 	filter: brightness(75%);
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg);
 	border: 2px inset var(--ion-color-input-border);
 }
 
-#conlangToolbox .invalidValue {
+ion-app .invalidValue {
 	color: var(--ion-color-danger) !important;
 }

@@ -68,7 +68,7 @@ const App = () => {
 	};
 	store.dispatch(maybeSetState());
 	return (
-		<IonApp id="conlangToolbox">
+		<IonApp>
 			<IonReactRouter>
 				<IonSplitPane contentId="main" when="xl">
 					<Menu />
