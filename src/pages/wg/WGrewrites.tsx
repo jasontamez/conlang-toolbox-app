@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -47,6 +47,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 const WGRew = () => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'rewriterules'];
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
@@ -101,7 +102,7 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpen} setIsOpen={setIsOpen} />
 			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -110,7 +111,7 @@ const WGRew = () => {
 					</IonButtons>
 					<IonTitle>Transformations</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpen(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

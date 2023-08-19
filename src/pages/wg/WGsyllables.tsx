@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -33,6 +33,7 @@ import { $i } from '../../components/DollarSignExports';
 
 const WGSyl = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'syllables'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -75,7 +76,7 @@ const WGSyl = () => {
 	};
 	return (
 		<IonPage>
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={SylCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -84,7 +85,7 @@ const WGSyl = () => {
 					</IonButtons>
 					<IonTitle>Syllables</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

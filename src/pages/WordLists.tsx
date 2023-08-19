@@ -33,7 +33,6 @@ import {
 	removeDeferredLexiconItem
 } from '../components/ReduxDucksFuncs';
 import { WL } from '../components/ReduxDucksTypes';
-import ExtraCharactersModal from './M-ExtraCharacters';
 import { $a, $i } from '../components/DollarSignExports';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
@@ -105,7 +104,6 @@ const Home = () => {
 
 	return (
 		<IonPage>
-			<ExtraCharactersModal />
 			<ModalWrap pageInfo={viewInfo} content={WLCard} />
 			<IonHeader>
 				<IonToolbar>

@@ -1,10 +1,15 @@
 ion-app {
 	overflow-wrap: anywhere;
 }
+.ion-flex-row-wrap {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
 ion-app p {
 	text-indent: 2rem;
 	padding: 1rem;
-	margin: 0 auto;
+	margin: 0 auto !important;
 }
 ion-app p + p {
 	padding-block-start: 0;
@@ -596,24 +601,54 @@ ion-item div.twoColumnsEC div.char {
 	border: 1px solid var(--ion-color-step-700);
 	background: var(--ion-color-step-100);
 }
+ion-item div.multiColumnEC div.favorite,
+ion-item div.twoColumnsEC div.favorite {
+	border: 1px solid var(--ion-color-tertiary-contrast);
+	background: var(--ion-color-tertiary-shade);
+	color: var(--ion-color-tertiary-contrast);
+}
 /*#ExtraCharactersModalList ion-item:nth-child(odd)::part(native) {
 	background: var(--ion-background-shader);
 }*/
-#ExtraCharactersModalList ion-item::part(native) {
-	border-block-end: 1px solid var(--ion-border-color);
-}
 #ExtraCharactersModalList {
 	position: relative;
+	min-height: 100%;
 }
 #ExtraCharactersModalList .sticky {
 	position: sticky;
 	top: 0;
 	z-index: 10;
+	border-block-end: 2px solid var(--ion-border-color);
 }
 #ExtraCharactersModalList .central {
 	text-align: center;
 	font-size: 2em;
 	text-indent: 0;
+}
+#ExtraCharactersModalFooter {
+	border-block-start: 2px solid var(--ion-border-color);
+}
+#ExtraCharactersModalList .displayChips {
+	border-radius: 1em;
+	margin: 0.5em;
+	background-color: var(--ion-background-shader);
+	padding-inline: 0.5em;
+	padding-block: 0.25em;
+}
+#ExtraCharactersModalList ion-item.inputItem ion-input {
+	background-color: var(--ion-background-shader);
+	--padding-start: 8px;
+	--padding-end: 8px;
+}
+#ExtraCharactersModalList ion-item.inputItem ion-button {
+	--margin-start: 0;
+	--margin-end: 0;
+}
+#ExtraCharactersModalList ion-item.inputItem ion-button[slot="start"] {
+	margin-inline-end: 8px;
+}
+#ExtraCharactersModalList ion-item.inputItem ion-button[slot="end"] {
+	margin-inline-start: 8px;
 }
 ion-item.extraHelp {
 	display: none;

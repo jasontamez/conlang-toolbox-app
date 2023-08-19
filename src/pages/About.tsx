@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonPage,
 	IonHeader,
@@ -25,19 +25,18 @@ import {
 	buildSharp,
 	warningSharp
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
-import { openModal } from '../components/ReduxDucksFuncs';
 import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Home = () => {
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
-	const dispatch = useDispatch();
 
 	return (
 		<IonPage className={theme}>
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -161,7 +160,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} onClick={() => dispatch(openModal("ExtraCharacters"))}>
+							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={globeOutline} className="ion-align-self-center" />
 									<IonLabel className="ion-padding-start ion-align-self-start">Extra Characters</IonLabel>

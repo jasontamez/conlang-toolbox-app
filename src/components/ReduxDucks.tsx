@@ -403,8 +403,8 @@ export const blankAppState: types.StateObject = {
 		lastSection: ''
 	},
 	extraCharactersState: {
-		display: null,
-		saved: [],
+		display: "Favorites",
+		saved: ["Ĭ","Ị","ꭓ","դ","Ϩ"],
 		copyImmediately: false,
 		copyLater: "",
 		adding: false,

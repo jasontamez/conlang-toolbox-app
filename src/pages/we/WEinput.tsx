@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -32,6 +32,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'input'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -98,7 +99,7 @@ const WERew = () => {
 	};
 	return (
 		<IonPage>
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={InpCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -107,7 +108,7 @@ const WERew = () => {
 					</IonButtons>
 					<IonTitle>Input Lexicon</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

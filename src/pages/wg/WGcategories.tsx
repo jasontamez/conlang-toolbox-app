@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -43,6 +43,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGCat = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -86,7 +87,7 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -95,7 +96,7 @@ const WGCat = () => {
 					</IonButtons>
 					<IonTitle>Character Groups</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

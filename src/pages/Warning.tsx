@@ -22,7 +22,6 @@ import {
 	warningSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
-import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Warning = () => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
@@ -30,7 +29,6 @@ const Warning = () => {
 
 	return (
 		<IonPage className={theme}>
-			<ExtraCharactersModal />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

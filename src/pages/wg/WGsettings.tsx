@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -58,6 +58,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGSet = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -117,7 +118,7 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonLoading
 	        	cssClass='loadingPage'
@@ -135,7 +136,7 @@ const WGSet = () => {
 					 </IonButtons>
 					<IonTitle>Settings</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

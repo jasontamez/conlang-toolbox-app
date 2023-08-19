@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -46,6 +46,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -121,7 +122,7 @@ const WERew = () => {
 		<IonPage>
 			<AddTransformModal />
 			<EditTransformModal />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={TraCard} />
 			<IonHeader>
 				<IonToolbar>

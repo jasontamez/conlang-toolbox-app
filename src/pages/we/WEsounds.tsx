@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -46,6 +46,7 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -105,7 +106,7 @@ const WERew = () => {
 		<IonPage>
 			<AddSoundChangeModal />
 			<EditSoundChangeModal />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<ModalWrap pageInfo={viewInfo} content={SChCard} />
 			<IonHeader>
 				<IonToolbar>
@@ -114,7 +115,7 @@ const WERew = () => {
 					</IonButtons>
 					<IonTitle>Sound Changes</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonHeader,
 	IonToolbar,
@@ -25,7 +25,6 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
-	openModal,
 	setSyntaxBool,
 	setSyntaxNum,
 	setSyntaxText,
@@ -36,19 +35,25 @@ import doParse from 'html-react-parser';
 import ms from './ms.json';
 import { Element, Text } from 'domhandler/lib/node';
 
-export const SyntaxHeader = (props: any) => {
-	const dispatch = useDispatch();
-	const title = props.title || "MorphoSyntax";
+interface ModalProperties {
+	title?: string
+}
+
+export const SyntaxHeader = (props: ModalProperties) => {
+	const {
+		title = "MorphoSyntax"
+	} = props;
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	return (
 		<IonHeader>
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<IonToolbar>
 				<IonButtons slot="start">
 					<IonMenuButton />
 				</IonButtons>
 				<IonTitle>{title}</IonTitle>
 				<IonButtons slot="end">
-					<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+					<IonButton onClick={() => setIsOpenECM(true)}>
 						<IonIcon icon={globeOutline} />
 					</IonButton>
 				</IonButtons>

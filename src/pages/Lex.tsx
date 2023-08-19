@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -59,6 +59,7 @@ import { Clipboard } from '@capacitor/clipboard';
 
 const Lex = () => {
 	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
@@ -322,7 +323,7 @@ const Lex = () => {
 			<ExportLexiconModal />
 			<LexiconStorageModal />
 			<DeleteLexiconModal />
-			<ExtraCharactersModal />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
 			<IonLoading
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
@@ -339,7 +340,7 @@ const Lex = () => {
 					</IonButtons>
 					<IonTitle>Lexicon</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(openModal("LexiconStorage"))}>

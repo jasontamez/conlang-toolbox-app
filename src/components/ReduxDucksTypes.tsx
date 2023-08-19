@@ -275,16 +275,26 @@ export interface ViewStateObject {
 	lastSection: "wg" | "we" | "wl" | "ms" | "ph" | ""
 }
 
-export interface ExtraCharacters {
-	title: string
-	content: ([string, string])[]
+export interface ExtraCharactersInfo {
+	[key: string]: string
 }
-export interface ExtraCharactersData {
-	[key: string]: ExtraCharacters
+
+export type ExtraCharactersList = string[];
+
+export type ExtraCharactersGroup = {
+	[key: string]: ExtraCharactersList
+}
+
+export type ExtraCharactersDisplayName = keyof ExtraCharactersGroup | "Favorites";
+
+export interface ExtraCharactersObject {
+	objects: ExtraCharactersGroup
+	contents: (ExtraCharactersDisplayName)[]
+	charactersInfo: ExtraCharactersInfo
 }
 
 export interface ExtraCharactersState {
-	display: (keyof ExtraCharactersData) | null
+	display: string
 	saved: string[]
 	copyImmediately: boolean
 	copyLater: string
