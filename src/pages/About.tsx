@@ -49,21 +49,7 @@ const Home = () => {
 				<IonGrid>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/warning" routerDirection="forward">
-								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={warningSharp} />
-									<IonLabel className="ion-padding-start">Important Info</IonLabel>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>This version of the app will be going away soon, replaced with a similar one with the same capacities and tools, but with some major bugs fixed.</p>
-									<p>Tap this for important information.</p>
-								</IonCardContent>
-							</IonCard>
-						</IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol>
-							<IonCard button={true} routerLink="/ms/" routerDirection="forward">
+							<IonCard button={true} routerLink={`/ms/${ms || "msSettings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={buildSharp} />
 									<IonLabel className="ion-padding-start">MorphoSyntax</IonLabel>
@@ -184,14 +170,16 @@ const Home = () => {
 						<IonCol></IonCol>
 					</IonRow>
 					<IonRow>
+						<IonCol></IonCol>
+					</IonRow>
+					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/lex/" routerDirection="forward">
+							<IonCard id="appInfo" button={true} routerLink="/appinfo" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonLabel className="ion-align-self-start">App Info</IonLabel>
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{VERSION.current}</div>
-									<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
