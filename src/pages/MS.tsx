@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
 	IonLabel,
 	IonTabBar,
@@ -22,9 +22,10 @@ import MS10 from "./ms/ms10";
 import { shallowEqual, useSelector } from "react-redux";
 import './ms/MS.css';
 import { settingsSharp } from 'ionicons/icons';
+import { PageData } from '../components/ReduxDucksTypes';
 
 
-const MS = () => {
+const MS = (props: PageData) => {
 	const msPage: string = useSelector((state: any) => state.viewState.ms, shallowEqual) || "msSettings";
 	const page = Number(msPage.slice(-2)) || 0;
 	const makeTab = (n: number, min: number, max: number) => {
@@ -68,8 +69,6 @@ const MS = () => {
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
-				<Redirect exact={true} path="/ms" to={"/ms/" + msPage} />
-				<Redirect exact={true} path="/ms/" to={"/ms/" + msPage} />
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.

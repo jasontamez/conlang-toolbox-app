@@ -22,16 +22,18 @@ import {
 	bookSharp,
 	globeOutline,
 	listOutline,
-	buildSharp,
-	warningSharp
+	buildSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 import { VERSION } from '../components/ReduxDucksConst';
 import ExtraCharactersModal from './M-ExtraCharacters';
+import { PageData } from '../components/ReduxDucksTypes';
 
-const Home = () => {
+const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
+	const originalTheme = useSelector((state: any) => state.appSettings.theme, shallowEqual);
+	const views = useSelector((state: any) => state.viewState, shallowEqual);
+	const {ms, we, wg} = views;
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
@@ -67,7 +69,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/wg/" routerDirection="forward">
+							<IonCard button={true} routerLink={`/wg/${wg || "settings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={createSharp} />
 									<IonLabel className="ion-padding-start">WordGen</IonLabel>
@@ -86,7 +88,7 @@ const Home = () => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/we/" routerDirection="forward">
+							<IonCard button={true} routerLink={`/we/${we || "input"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={shuffleSharp} />
 									<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
@@ -156,8 +158,7 @@ const Home = () => {
 									<ul>
 										<li>Contains hundreds of characters that may not appear on your mobile keyboard, organized according to groups such as Latin, Cyrillic, Arabic and Katakana</li>
 										<li>All IPA (International Phonetic Alphabet) characters grouped together</li>
-										<li>Tap characters and add them to the clipboard</li>
-										<li>Save your often-used characters to the Favorites bar for easy access</li>
+										<li>Save your often-used characters to the Favorites section for easy access</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>

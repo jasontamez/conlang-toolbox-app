@@ -19,8 +19,9 @@ import {
 	IonItem
 } from '@ionic/react';
 import { shallowEqual, useSelector } from "react-redux";
+import { PageData } from '../components/ReduxDucksTypes';
 
-const Home = () => {
+const Home = (props: PageData) => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 

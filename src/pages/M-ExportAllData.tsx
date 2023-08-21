@@ -90,12 +90,12 @@ const MExportAllData = () => {
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
-			return CustomStorageWE.iterate((value, title) => {
+			return CustomStorageWE.iterate((value: any, title: string) => {
 				we.push([title, value]);
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
-			return CustomStorageWG.iterate((value, title) => {
+			return CustomStorageWG.iterate((value: any, title: string) => {
 				wg.push([title, value]);
 				return; // Blank return keeps the loop going
 			});

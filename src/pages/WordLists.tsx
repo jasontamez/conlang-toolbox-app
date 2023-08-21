@@ -32,14 +32,14 @@ import {
 	addDeferredLexiconItems,
 	removeDeferredLexiconItem
 } from '../components/ReduxDucksFuncs';
-import { WL } from '../components/ReduxDucksTypes';
+import { PageData, WL } from '../components/ReduxDucksTypes';
 import { $a, $i } from '../components/DollarSignExports';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
 import fireSwal from '../components/Swal';
 
-const Home = () => {
+const Home = (props: PageData) => {
 	const [modalState, wordListsState, waitingToAdd] = useSelector((state: any) => [state.modalState, state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
 	const theDisplay = wordListsState.display;
 	const dispatch = useDispatch();

@@ -9,7 +9,7 @@ import {
 	IonMenuToggle,
 	IonNote,
 } from '@ionic/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -232,7 +232,7 @@ const appMenuPages: MenuSection[] = [
 			},
 			{
 				title: 'About',
-				url: '/about',
+				url: '/',
 				icon: chatboxEllipsesSharp,
 				id: 'menuitemAbout'
 			}
@@ -252,10 +252,18 @@ const appMenuPages: MenuSection[] = [
 	}
 ];
 
+
 const Menu = () => {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const modalState = useSelector((state: any) => state.modalState);
+	const {pathname = "/"} = location;
+	const testPath = useCallback((test: string) => {
+		if(test.endsWith("/")) {
+			return test === pathname;
+		}
+		return pathname.startsWith(test);
+	}, [pathname]);
 
 	return (
 		<IonMenu contentId="main" type="overlay" id="mainMenu">
@@ -268,7 +276,7 @@ const Menu = () => {
 									key={appPage.id}
 									className={
 										'mainHeading'
-										+ (location.pathname.startsWith(appPage.url) ? ' selected' : '')
+										+ (testPath(appPage.url) ? ' selected' : '')
 										+ (modalState.menuToggle === appPage.parentOf ? ' toggled' : '')
 									}
 									lines="none"
@@ -291,7 +299,7 @@ const Menu = () => {
 						} else if(appPage.parent) {
 							return (
 								<IonMenuToggle key={appPage.id} autoHide={false}>
-									<IonItem className={'subHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+									<IonItem className={'subHeading' + (testPath(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
 										<IonLabel>{appPage.title}</IonLabel>
 										<IonIcon slot="end" size="small" icon={ellipseSharp} />
 									</IonItem>
@@ -300,7 +308,7 @@ const Menu = () => {
 						}
 						return (
 							<IonMenuToggle key={appPage.id} autoHide={false}>
-								<IonItem className={'mainHeading' + (location.pathname.startsWith(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+								<IonItem className={'mainHeading' + (testPath(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
 									{appPage.icon ? (<IonIcon slot="start" icon={appPage.icon} />) : ""}
 									<IonLabel>{appPage.title}</IonLabel>
 								</IonItem>

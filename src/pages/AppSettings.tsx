@@ -20,9 +20,10 @@ import {
 } from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
 import ExportAllData from './M-ExportAllData';
+import { PageData } from '../components/ReduxDucksTypes';
 
 
-const AppSettings = () => {
+const AppSettings = (props: PageData) => {
 	const dispatch = useDispatch();
 	const appSettings = useSelector((state: any) => state.appSettings, shallowEqual);
 	return (

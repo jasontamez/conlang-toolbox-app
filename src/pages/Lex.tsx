@@ -39,7 +39,7 @@ import {
 	updateLexiconBool,
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
-import { Lexicon } from '../components/ReduxDucksTypes';
+import { Lexicon, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
@@ -57,7 +57,7 @@ import ExportLexiconModal from './M-ExportLexicon';
 import debounce from '../components/Debounce';
 import { Clipboard } from '@capacitor/clipboard';
 
-const Lex = () => {
+const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);

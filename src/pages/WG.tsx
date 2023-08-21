@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
 	IonIcon,
 	IonLabel,
@@ -15,21 +15,18 @@ import {
 	documentTextOutline,
 	fileTrayStackedOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
 import WGCategories from "./wg/WGcategories";
 import WGRewrites from "./wg/WGrewrites";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
+import { PageData } from '../components/ReduxDucksTypes';
 
 
-const WG = () => {
-	const WGpage = useSelector((state: any) => state.viewState.wg, shallowEqual) || "settings";
+const WG = (props: PageData) => {
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
-				<Redirect exact={true} path="/wg" to={"/wg/" + WGpage} />
-				<Redirect exact={true} path="/wg/" to={"/wg/" + WGpage} />
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.

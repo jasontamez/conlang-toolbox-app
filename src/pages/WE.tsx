@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
 	IonIcon,
 	IonLabel,
@@ -20,16 +20,13 @@ import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
-import { shallowEqual, useSelector } from "react-redux";
+import { PageData } from '../components/ReduxDucksTypes';
 
 
-const WE = () => {
-	const WEpage = useSelector((state: any) => state.viewState.we, shallowEqual) || "input";
+const WE = (props: PageData) => {
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
-				<Redirect exact={true} path="/we" to={"/we/" + WEpage} />
-				<Redirect exact={true} path="/we/" to={"/we/" + WEpage} />
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useEffect, useState, memo } from 'react';
+import { Route, useHistory } from 'react-router-dom';
 import {
 	IonApp,
 	IonRouterOutlet,
@@ -16,7 +16,7 @@ import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Credits from './pages/Credits';
-import Warning from './pages/Warning';
+import Info from './pages/AppInfo';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,8 +46,99 @@ import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 
+function temp (modals: Function[], setModals: Function, pages: string[], setPages: Function, history: any) {
+	if(modals.length) {
+		// Get last modal
+		const [last, ...rest] = modals;
+		// Save remaining modals
+		setModals(rest);
+		// Close last modal
+		last(false);
+		console.log("!closed modal");
+	} else if (pages.length > 0) {
+		// go back
+		history.go(-1);
+		console.log("!back");
+	} else {
+		// exit app?
+		console.log("!!exit");
+	}
+};
 
-const App = () => {
+interface HistoryObject {
+	pathname: string,
+	search: string,
+	hash: string,
+	key?: string
+};
+type Method = "POP" | "PUSH" | "REPLACE";
+
+const MainOutlet = memo(() => {
+	const history = useHistory();
+	const [modals, setModals] = useState<Function[]>([]);
+	const [pages, setPages] = useState<string[]>([]);
+	useEffect(() => {
+		return history.listen((info: HistoryObject, method: Method) => {
+			console.log(`@ ${method} ${JSON.stringify(info)}`);
+			switch (method) {
+				case "POP":
+					// We hit the back button
+					setPages(pages.slice(1));
+					break;
+				case "PUSH":
+					// Navigation
+					const newPages = [info.pathname, ...pages];
+					setPages(newPages.slice(0, 50));
+					break;
+				case "REPLACE":
+					// ignore?
+			}
+		});
+	}, [history, pages]);
+	document.addEventListener('ionBackButton', (ev: any) => {
+		ev.detail.register(10, () => {
+			if(modals.length) {
+				// Get last modal
+				const [last, ...rest] = modals;
+				// Save remaining modals
+				setModals(rest);
+				// Close last modal
+				last(false);
+				console.log("!closed modal");
+			} else if (pages.length > 0) {
+				// go back
+				history.go(-1);
+				console.log("!back");
+			} else {
+				// exit app?
+				console.log("!!exit");
+			}
+		});
+	});
+	const defaultProps = {
+		modals,
+		setModals,
+		pages,
+		setPages,
+		history,
+		temp
+	};
+	return (
+		<IonRouterOutlet>
+			<Route path="/wg" render={() => <WG {...defaultProps} />} />
+			<Route path="/we"  render={() => <WE {...defaultProps} />} />
+			<Route path="/lex" render={() => <Lexicon {...defaultProps} />} />
+			<Route path="/ms" render={() => <MS {...defaultProps} />} />
+			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />
+			<Route path="/settings" render={() => <Settings {...defaultProps} />} />
+			<Route path="/wordlists" render={() => <WordLists {...defaultProps} />} />
+			<Route path="/credits" render={() => <Credits {...defaultProps} />} />
+			<Route exact={true} path="/" render={() => <About {...defaultProps} />} />
+		</IonRouterOutlet>
+	);
+});
+
+const App = memo(() => {
 	const maybeSetState = () => {
 		return (dispatch: any) => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
@@ -78,21 +169,12 @@ const App = () => {
 						depends on the RouterComponentProps passed in automatically.
 					*/}
 					<IonRouterOutlet id="main">
-						<Route path="/wg" render={() => <WG />} />
-						<Route path="/we"  render={() => <WE />} />
-						<Route path="/lex" render={() => <Lexicon />} />
-						<Route path="/ms" render={() => <MS />} />
-						<Route path="/warning" render={() => <Warning />} />
-						<Route path="/settings" render={() => <Settings />} />
-						<Route path="/about" render={() => <About />} />
-						<Route path="/wordlists" render={() => <WordLists />} />
-						<Route path="/credits" render={() => <Credits />} />
-						<Redirect exact={true} from="/" to="/about" />
+						<Route path="/" render={() => <MainOutlet />} />
 					</IonRouterOutlet>
 				</IonSplitPane>
 			</IonReactRouter>
 		</IonApp>
 	);
-};
+});
 
 export default App;
