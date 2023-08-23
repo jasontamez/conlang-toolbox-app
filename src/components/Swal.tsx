@@ -6,6 +6,9 @@ let queue = new Set();
 let toastActive = false;
 
 const fireSwal: any = async (options: any = {}) => {
+	if(!options.heightAuto) {
+		options.heightAuto = false;
+	}
 	if(options.customClass) {
 		if(options.customClass.popup) {
 			options.customClass.popup += ' conlangToolboxSwal';

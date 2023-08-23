@@ -1,5 +1,6 @@
 .conlangToolboxSwal.swal2-popup {
 	background: var(--ion-background-color);
+	border-radius: 2rem;
 }
 .conlangToolboxSwal.swal2-popup #swal2-title {
 	word-wrap: normal;
