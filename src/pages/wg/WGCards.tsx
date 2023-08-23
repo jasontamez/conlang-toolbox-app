@@ -324,7 +324,7 @@ export const WLCard = () => {
 					Sign List</strong> was assembled by James Woodward to take into account the ways
 					sign languages use words and concepts.
 				</p>
-				<h2>Dogolposky List</h2>
+				<h2>Dolgopolsky List</h2>
 				<p>
 					Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are
 					the least likely to be replaced by other words as a language evolves. It was based
@@ -332,12 +332,12 @@ export const WLCard = () => {
 				</p>
 				<h2>Leipzig-Jakarta List</h2>
 				<p>
-					Similar to the Dogolposky list, this is a list of words judged to be the most
+					Similar to the Dolgopolsky list, this is a list of words judged to be the most
 					resistant to borrowing. Experts on 41 languages from across the world were given a
 					uniform vocabulary list and asked to provide the words for each item in the language
 					on which they were an expert, as well as information on how strong the evidence that
 					each word was borrowed was. The 100 concepts that were found in most languages and
-					were most resistant to borrowing formed the Leipzig–Jakarta list.
+					were most resistant to borrowing formed the Leipzig-Jakarta list.
 				</p>
 				<h2>ASJP List</h2>
 				<p>
@@ -345,6 +345,16 @@ export const WLCard = () => {
 					applying computational approaches to comparative linguistics using a database of word
 					lists. It uses a 40-word list to evaluate the similarity of words with the same
 					meaning from different languages.
+				</p>
+				<h2>Landau 200</h2>
+				<p>
+					The <strong>Basic 200 List</strong> is a subset of the <strong>Landau Core Vocabulary
+					(LCV)</strong> developed by James Landau. It is Part I of the entire LCV. This list
+					consists of 200 basic concepts that basically all anthropic cultures will have and
+					have words for. This list makes many semantic distinctions that are not made in
+					English (e.g "leaf (on plant)" vs. "leaf (fallen off)"), and some that are not made
+					in any "Standard Average European" language (e.g. "river (flowing into the sea)" vs.
+					"river (flowing into another river)").
 				</p>
 			</IonCardContent>
 		</IonCard>

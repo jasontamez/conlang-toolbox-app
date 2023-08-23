@@ -16,7 +16,6 @@ import {
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
-	swapHorizontalOutline,
 	helpCircleOutline,
 	saveOutline,
 	checkmarkDoneOutline
@@ -113,7 +112,12 @@ const Home = (props: PageData) => {
 					<IonTitle>Word Lists</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
-							<IonIcon icon={swapHorizontalOutline} />
+							{
+								wordListsState.textCenter ?
+									<IonIcon size="small" slot="end" src="svg/align-left-material.svg" />
+								:
+									<IonIcon size="small" slot="end" src="svg/align-center-material.svg" />
+							}
 						</IonButton>
 						<IonButton onClick={() => pickAndSave()}>
 							<IonIcon icon={saveOutline} />
@@ -136,7 +140,7 @@ const Home = (props: PageData) => {
 							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
 						</IonButton>
 					</IonItem>
-					<IonItem>
+					<IonItem className="wordListChips">
 						<div>
 							<span>Display:</span>
 							{WordListSources.map((pair: [string, keyof WL], ind: number) => {

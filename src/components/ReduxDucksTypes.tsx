@@ -314,6 +314,7 @@ export interface WL {
 	s100?: boolean
 	s207?: boolean
 	ssl?: boolean
+	l200?: boolean
 }
 export interface WordListsState {
 	display: [(keyof WL)][]

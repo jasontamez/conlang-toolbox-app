@@ -5,9 +5,10 @@ export const WordListSources: [string, keyof WL][] = [
 	["Swadesh 207", "s207"],
 	["Swadesh-Yakhontov", "sy"],
 	["Swadesh-Woodward", "ssl"],
-	["Dogolposky", "d"],
+	["Dolgopolsky", "d"],
 	["Leipzig-Jakarta", "lj"],
-	["ASJP", "asjp"]
+	["ASJP", "asjp"],
+	["Landau 200", "l200"]
 ];
 
 export const WordList: WL[] = [
@@ -48,6 +49,14 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
+		word: "afraid",
+		l200: true
+	},
+	{
+		word: "air",
+		l200: true
+	},
+	{
 		word: "all (of a number)",
 		s100: true,
 		s207: true,
@@ -56,6 +65,10 @@ export const WordList: WL[] = [
 	{
 		word: "and",
 		s207: true
+	},
+	{
+		word: "angry",
+		l200: true
 	},
 	{
 		word: "animal",
@@ -68,7 +81,8 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "arm",
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "ash(es)",
@@ -77,18 +91,28 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
+		word: "ask (a question)",
+		l200: true
+	},
+	{
 		word: "at",
 		s207: true
 	},
 	{
-		word: "back",
+		word: "baby",
+		l200: true
+	},
+	{
+		word: "back (of object/building)",
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "bad",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "bark (of a tree)",
@@ -109,7 +133,8 @@ export const WordList: WL[] = [
 		word: "big",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "bird",
@@ -122,7 +147,8 @@ export const WordList: WL[] = [
 		word: "bite (verb)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "bitter",
@@ -133,7 +159,8 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "blood",
@@ -142,12 +169,18 @@ export const WordList: WL[] = [
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "blow (verb)",
+		word: "blow (breathe out)",
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
+	},
+	{
+		word: "body",
+		l200: true
 	},
 	{
 		word: "bone",
@@ -158,6 +191,22 @@ export const WordList: WL[] = [
 		asjp: true
 	},
 	{
+		word: "bottom (of object/mountain)",
+		l200: true
+	},
+	{
+		word: "boy (male child)",
+		l200: true
+	},
+	{
+		word: "boy (young man)",
+		l200: true
+	},
+	{
+		word: "break/shatter (verb)",
+		l200: true
+	},
+	{
 		word: "breast (woman's)",
 		s100: true,
 		s207: true,
@@ -166,17 +215,23 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "breathe (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "brother",
 		ssl: true
 	},
 	{
-		word: "burn (verb)",
+		word: "build (construct)",
+		l200: true
+	},
+	{
+		word: "burn (something)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "carry (verb)",
@@ -187,34 +242,59 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
-		word: "child",
-		s207: true,
-		ssl: true
+		word: "child (reciprocal of parent)",
+		lj: true,
+		l200: true
 	},
 	{
-		word: "child (kin term)",
-		lj: true
+		word: "child (young human)",
+		s207: true,
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "claw",
 		s100: true
 	},
 	{
+		word: "climb (a mountain, hill)",
+		l200: true
+	},
+	{
+		word: "climb (a tree)",
+		l200: true
+	},
+	{
+		word: "close (one's eyes)",
+		l200: true
+	},
+	{
+		word: "clothes",
+		l200: true
+	},
+	{
 		word: "cloud (not fog)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "cold",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "come (verb)",
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
+	},
+	{
+		word: "cook (verb)",
+		l200: true
 	},
 	{
 		word: "correct",
@@ -232,24 +312,40 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "cry/weep (verb)",
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "cut (verb)",
-		s207: true
-	},
-	{
-		word: "dance",
-		ssl: true
-	},
-	{
-		word: "day",
 		s207: true,
-		ssl: true
+		l200: true
+	},
+	{
+		word: "dance (verb)",
+		ssl: true,
+		l200: true
+	},
+	{
+		word: "daughter (of a father)",
+		l200: true
+	},
+	{
+		word: "daughter (of a mother)",
+		l200: true
+	},
+	{
+		word: "day/daytime",
+		s207: true,
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "dead",
 		d: true
+	},
+	{
+		word: "deep (vertically)",
+		l200: true
 	},
 	{
 		word: "die (verb)",
@@ -257,11 +353,13 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "dig (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "dirty",
@@ -286,13 +384,15 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "dry (substance)",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "dull (as a knife)",
@@ -302,7 +402,8 @@ export const WordList: WL[] = [
 	{
 		word: "dust",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "ear",
@@ -310,19 +411,22 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "earth (soil)",
+		word: "earth (ground, dirt)",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "eat (verb)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "egg",
@@ -330,7 +434,12 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
+	},
+	{
+		word: "evening",
+		l200: true
 	},
 	{
 		word: "eye (noun)",
@@ -339,12 +448,18 @@ export const WordList: WL[] = [
 		s207: true,
 		lj: true,
 		d: true,
-		asjp: true
+		asjp: true,
+		l200: true
+	},
+	{
+		word: "face",
+		l200: true
 	},
 	{
 		word: "fall (verb)",
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "far",
@@ -352,9 +467,14 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
+		word: "fast",
+		l200: true
+	},
+	{
 		word: "father",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "fear (verb)",
@@ -367,17 +487,27 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
+		word: "feel (through touch)",
+		l200: true
+	},
+	{
 		word: "few",
 		s207: true
 	},
 	{
 		word: "fight (verb)",
-		s207: true
+		s207: true,
+		l200: true
+	},
+	{
+		word: "finger",
+		l200: true
 	},
 	{
 		word: "fingernail",
 		s207: true,
-		d: true
+		d: true,
+		l200: true
 	},
 	{
 		word: "fire (noun)",
@@ -386,10 +516,11 @@ export const WordList: WL[] = [
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "fish (noun)",
+		word: "fish (animal)",
 		sy: true,
 		s100: true,
 		s207: true,
@@ -414,27 +545,35 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "flow (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "flower",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "fly (verb)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "fog",
 		s207: true
 	},
 	{
-		word: "foot (not leg)",
+		word: "food",
+		l200: true
+	},
+	{
+		word: "foot (part of body; not leg)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "forest",
@@ -445,12 +584,22 @@ export const WordList: WL[] = [
 		s207: true
 	},
 	{
-		word: "freeze (verb)",
-		s207: true
+		word: "freeze (something)",
+		s207: true,
+		l200: true
+	},
+	{
+		word: "friend",
+		l200: true
+	},
+	{
+		word: "front (of object/building)",
+		l200: true
 	},
 	{
 		word: "fruit",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "full",
@@ -461,22 +610,33 @@ export const WordList: WL[] = [
 		asjp: true
 	},
 	{
+		word: "girl (female child)",
+		l200: true
+	},
+	{
+		word: "girl (young woman)",
+		l200: true
+	},
+	{
 		word: "give (verb)",
 		sy: true,
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
-		word: "go (verb)",
-		lj: true
+		word: "go (on foot)",
+		lj: true,
+		l200: true
 	},
 	{
 		word: "good",
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "grass",
@@ -496,49 +656,64 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
+		word: "grow (intransitive verb)",
+		l200: true
+	},
+	{
 		word: "guts",
 		s207: true
 	},
 	{
-		word: "hair (on head of humans)",
+		word: "hair (mass on head of humans)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "hand",
 		sy: true,
 		s100: true,
 		s207: true,
-		asjp: true
+		asjp: true,
+		l200: true
+	},
+	{
+		word: "happy",
+		l200: true
 	},
 	{
 		word: "hard",
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "head (anatomic)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "hear (verb)",
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "heart",
 		s100: true,
 		s207: true,
-		d: true
+		d: true,
+		l200: true
 	},
 	{
 		word: "heavy",
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "here",
@@ -547,6 +722,10 @@ export const WordList: WL[] = [
 	{
 		word: "hide (verb)",
 		lj: true
+	},
+	{
+		word: "high (in altitude)",
+		l200: true
 	},
 	{
 		word: "hit/beat (verb)",
@@ -567,11 +746,13 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "hot",
-		s100: true
+		s100: true,
+		l200: true
 	},
 	{
-		word: "house",
-		lj: true
+		word: "house (noun)",
+		lj: true,
+		l200: true
 	},
 	{
 		word: "how",
@@ -584,6 +765,10 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
+		word: "hurt/injure (verb)",
+		l200: true
+	},
+	{
 		word: "husband",
 		s207: true,
 		ssl: true
@@ -591,7 +776,8 @@ export const WordList: WL[] = [
 	{
 		word: "ice",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "if",
@@ -604,51 +790,77 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
+		word: "kick (verb)",
+		l200: true
+	},
+	{
 		word: "kill (verb)",
 		s100: true,
 		s207: true,
 		ssl: true
 	},
 	{
+		word: "kill/murder",
+		l200: true
+	},
+	{
 		word: "knee",
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "know (verb)",
+		word: "know (a person)",
+		l200: true
+	},
+	{
+		word: "know (information)",
 		sy: true,
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "lake",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "laugh (verb)",
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
-		word: "leaf (botanics)",
+		word: "leaf (fallen off)",
+		l200: true
+	},
+	{
+		word: "leaf (on plant)",
 		s100: true,
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "left (not right)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "leg",
 		s207: true,
 		lj: true
+	},
+	{
+		word: "lie (on back)",
+		l200: true
 	},
 	{
 		word: "lie (on side, recline, as in a bed)",
@@ -657,9 +869,18 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
+		word: "life (experience of living)",
+		l200: true
+	},
+	{
+		word: "light (natural)",
+		l200: true
+	},
+	{
 		word: "live (verb)",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "liver",
@@ -673,7 +894,8 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "louse/nit",
@@ -686,10 +908,23 @@ export const WordList: WL[] = [
 		asjp: true
 	},
 	{
+		word: "love (as a friend)",
+		l200: true
+	},
+	{
+		word: "love (romantically)",
+		l200: true
+	},
+	{
+		word: "low (in altitude)",
+		l200: true
+	},
+	{
 		word: "man (adult male)",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "many",
@@ -697,29 +932,57 @@ export const WordList: WL[] = [
 		s207: true
 	},
 	{
+		word: "meat",
+		l200: true
+	},
+	{
+		word: "meet (for the first time)",
+		l200: true
+	},
+	{
+		word: "mind (center of thoughts and emotions)",
+		l200: true
+	},
+	{
 		word: "moon",
 		sy: true,
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
+	},
+	{
+		word: "morning (early morning)",
+		l200: true
+	},
+	{
+		word: "morning (late morning)",
+		l200: true
 	},
 	{
 		word: "mother",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "mountain (not hill)",
 		s100: true,
 		s207: true,
 		ssl: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "mouth",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
+	},
+	{
+		word: "music",
+		l200: true
 	},
 	{
 		word: "name (noun)",
@@ -748,7 +1011,8 @@ export const WordList: WL[] = [
 		word: "neck (not nape)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "new",
@@ -757,15 +1021,17 @@ export const WordList: WL[] = [
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "night (dark time)",
+		word: "night/nighttime",
 		s100: true,
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "no/not",
@@ -781,13 +1047,31 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "old",
+		word: "old (not new)",
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
+	},
+	{
+		word: "older brother (of a brother)",
+		l200: true
+	},
+	{
+		word: "older brother (of a sister)",
+		l200: true
+	},
+	{
+		word: "older sister (of a brother)",
+		l200: true
+	},
+	{
+		word: "older sister (of a sister)",
+		l200: true
 	},
 	{
 		word: "one",
@@ -796,6 +1080,10 @@ export const WordList: WL[] = [
 		s207: true,
 		lj: true,
 		asjp: true
+	},
+	{
+		word: "open (one's eyes)",
+		l200: true
 	},
 	{
 		word: "other",
@@ -813,31 +1101,40 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "pig",
 		ssl: true
 	},
 	{
-		word: "play (verb)",
+		word: "plant",
+		l200: true
+	},
+	{
+		word: "play (a game)",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "pull (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "push (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "rain (noun)",
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "red (color)",
@@ -848,12 +1145,21 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "right (not left)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "river",
 		s207: true,
 		ssl: true
+	},
+	{
+		word: "river (flowing into another river)",
+		l200: true
+	},
+	{
+		word: "river (flowing into the sea)",
+		l200: true
 	},
 	{
 		word: "root (botanics)",
@@ -872,9 +1178,14 @@ export const WordList: WL[] = [
 		s207: true
 	},
 	{
-		word: "round",
+		word: "rough (of surface)",
+		l200: true
+	},
+	{
+		word: "round (spherical)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "rub (verb)",
@@ -882,7 +1193,12 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "run (verb)",
-		lj: true
+		lj: true,
+		l200: true
+	},
+	{
+		word: "sad",
+		l200: true
 	},
 	{
 		word: "salt",
@@ -892,37 +1208,50 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
+		word: "salt (in sea)",
+		l200: true
+	},
+	{
 		word: "sand",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "say (verb)",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "scratch (verb)",
 		s207: true
 	},
 	{
-		word: "sea",
+		word: "sea/ocean",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "see (verb)",
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "seed (noun)",
+		word: "seed (in fruit)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
+	},
+	{
+		word: "seed (to be planted)",
+		l200: true
 	},
 	{
 		word: "sew (verb)",
@@ -938,14 +1267,19 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
-		word: "short",
+		word: "short (height)",
 		s207: true,
 		ssl: true
 	},
 	{
+		word: "short (length)",
+		l200: true
+	},
+	{
 		word: "sing (verb)",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "sister",
@@ -955,29 +1289,38 @@ export const WordList: WL[] = [
 		word: "sit (verb)",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "skin/hide",
 		s100: true,
 		s207: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "sky",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "sleep (verb)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
+	},
+	{
+		word: "slow",
+		l200: true
 	},
 	{
 		word: "small",
 		s100: true,
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "smell (verb)",
@@ -990,9 +1333,10 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
-		word: "smooth",
+		word: "smooth (adjective)",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "snake",
@@ -1005,12 +1349,29 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
+		word: "soft",
+		l200: true
+	},
+	{
 		word: "soil",
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "some",
 		s207: true
+	},
+	{
+		word: "son (of a father)",
+		l200: true
+	},
+	{
+		word: "son (of a mother)",
+		l200: true
+	},
+	{
+		word: "speak/talk (verb)",
+		l200: true
 	},
 	{
 		word: "spit (verb)",
@@ -1033,7 +1394,8 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "star",
@@ -1041,11 +1403,13 @@ export const WordList: WL[] = [
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "stick",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "stone/rock",
@@ -1054,11 +1418,13 @@ export const WordList: WL[] = [
 		s207: true,
 		ssl: true,
 		lj: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "straight",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "suck (verb)",
@@ -1071,7 +1437,8 @@ export const WordList: WL[] = [
 		s100: true,
 		s207: true,
 		ssl: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "sweet",
@@ -1084,7 +1451,8 @@ export const WordList: WL[] = [
 	{
 		word: "swim (verb)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "tail",
@@ -1095,12 +1463,18 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
-		word: "take (verb)",
-		lj: true
+		word: "take (pick up and carry)",
+		lj: true,
+		l200: true
 	},
 	{
 		word: "tear/teardrop",
-		d: true
+		d: true,
+		l200: true
+	},
+	{
+		word: "thank",
+		l200: true
 	},
 	{
 		word: "that",
@@ -1114,7 +1488,8 @@ export const WordList: WL[] = [
 	{
 		word: "thick",
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "thigh",
@@ -1123,11 +1498,13 @@ export const WordList: WL[] = [
 	{
 		word: "thin",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "think (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "this",
@@ -1142,7 +1519,8 @@ export const WordList: WL[] = [
 	},
 	{
 		word: "throw (verb)",
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "tie (verb)",
@@ -1156,7 +1534,8 @@ export const WordList: WL[] = [
 		s207: true,
 		lj: true,
 		d: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
 		word: "tooth",
@@ -1165,18 +1544,29 @@ export const WordList: WL[] = [
 		s207: true,
 		lj: true,
 		d: true,
-		asjp: true
+		asjp: true,
+		l200: true
+	},
+	{
+		word: "top (of object/mountain)",
+		l200: true
+	},
+	{
+		word: "touch (verb)",
+		l200: true
 	},
 	{
 		word: "tree (not log)",
 		s100: true,
 		s207: true,
 		ssl: true,
-		asjp: true
+		asjp: true,
+		l200: true
 	},
 	{
-		word: "turn (intransitive) (verb)",
-		s207: true
+		word: "turn (intransitive verb)",
+		s207: true,
+		l200: true
 	},
 	{
 		word: "two/pair",
@@ -1194,16 +1584,43 @@ export const WordList: WL[] = [
 	{
 		word: "walk (verb)",
 		s100: true,
-		s207: true
+		s207: true,
+		l200: true
 	},
 	{
 		word: "warm",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
-		word: "wash (verb)",
-		s207: true
+		word: "wash (body parts)",
+		s207: true,
+		l200: true
+	},
+	{
+		word: "water (as drink or for cooking, cold)",
+		l200: true
+	},
+	{
+		word: "water (as drink or for cooking, hot)",
+		l200: true
+	},
+	{
+		word: "water (cold, moving)",
+		l200: true
+	},
+	{
+		word: "water (cold, not moving)",
+		l200: true
+	},
+	{
+		word: "water (hot, moving)",
+		l200: true
+	},
+	{
+		word: "water (hot, not moving)",
+		l200: true
 	},
 	{
 		word: "water (noun)",
@@ -1218,7 +1635,8 @@ export const WordList: WL[] = [
 	{
 		word: "wet",
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "what?",
@@ -1243,7 +1661,8 @@ export const WordList: WL[] = [
 		word: "white (color)",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "who?",
@@ -1258,7 +1677,8 @@ export const WordList: WL[] = [
 		word: "wide",
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "wife",
@@ -1266,16 +1686,18 @@ export const WordList: WL[] = [
 		ssl: true
 	},
 	{
-		word: "wind",
+		word: "wind (noun)",
 		sy: true,
 		s207: true,
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
-		word: "wing",
+		word: "wing (anatomic)",
 		s207: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "wipe (verb)",
@@ -1290,16 +1712,22 @@ export const WordList: WL[] = [
 		word: "woman",
 		s100: true,
 		s207: true,
-		ssl: true
+		ssl: true,
+		l200: true
 	},
 	{
 		word: "wood",
 		ssl: true,
-		lj: true
+		lj: true,
+		l200: true
 	},
 	{
 		word: "work",
 		ssl: true
+	},
+	{
+		word: "world",
+		l200: true
 	},
 	{
 		word: "worm",
@@ -1321,5 +1749,21 @@ export const WordList: WL[] = [
 	{
 		word: "yesterday",
 		lj: true
+	},
+	{
+		word: "younger brother (of a brother)",
+		l200: true
+	},
+	{
+		word: "younger brother (of a sister)",
+		l200: true
+	},
+	{
+		word: "younger sister (of a brother)",
+		l200: true
+	},
+	{
+		word: "younger sister (of a sister)",
+		l200: true
 	}
 ];
