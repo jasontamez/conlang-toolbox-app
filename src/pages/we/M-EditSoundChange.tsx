@@ -205,25 +205,35 @@ const EditSoundChangeModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="seekLabel">Beginning Expression:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="seekLabel" position="stacked" style={ {fontSize: "20px"} }>Beginning Expression:</IonLabel>
 						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingSoundChange!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="replaceLabel">Ending Expression:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Ending Expression:</IonLabel>
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="contextLabel">Context Expression:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="contextLabel" position="stacked" style={ {fontSize: "20px"} }>Context Expression:</IonLabel>
 						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.context} onIonChange={e => setNewInfo("context", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
-					<IonItem>
-						<IonLabel className="anticontextLabel" position="stacked" style={ {fontSize: "20px"} }>Anticontext Expression:</IonLabel>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.anticontext} onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
+					<IonItem className="labelled">
+						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked">Sound Change Description:</IonLabel>
+						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.anticontext} onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
+					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel>Sound Change Description:</IonLabel>
+					</IonItem>
+					<IonItem>
 						<IonInput id="optDesc" className="ion-margin-top" value={editingSoundChange!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 				</IonList>

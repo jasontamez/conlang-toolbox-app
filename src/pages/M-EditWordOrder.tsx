@@ -274,16 +274,13 @@ const EditLexiconOrderModal = () => {
 										</IonRow>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonCheckbox checked={sizes[i] === "s"} onClick={() => handleCheckboxes(i, "s")} />
-												<IonLabel>Small</IonLabel>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Small size" checked={sizes[i] === "s"} onClick={() => handleCheckboxes(i, "s")}>Small</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox checked={sizes[i] === "m"} onClick={() => handleCheckboxes(i, "m")} />
-												<IonLabel>Med</IonLabel>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Medium size" checked={sizes[i] === "m"} onClick={() => handleCheckboxes(i, "m")}>Med</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox checked={sizes[i] === "l"} onClick={() => handleCheckboxes(i, "l")} />
-												<IonLabel>Large</IonLabel>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Large size" checked={sizes[i] === "l"} onClick={() => handleCheckboxes(i, "l")}>Large</IonCheckbox>
 											</IonCol>
 										</IonRow>
 									</IonGrid>

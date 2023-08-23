@@ -349,16 +349,16 @@ const Lex = (props: PageData) => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent fullscreen className="evenBackground" id="lexiconPage">
+			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
 				<IonButton id="revealFullElement" fill="clear" size="small" className="hide" onClick={() => copyText()} />
 				<IonList lines="none">
+					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
 					<IonItem>
-						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Lexicon Title:</IonLabel>
-						<IonInput value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
+						<IonInput aria-label="Lexicon title" value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
 					</IonItem>
+					<IonItem className="labelled"><IonLabel>Description:</IonLabel></IonItem>
 					<IonItem>
-						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Description:</IonLabel>
-						<IonTextarea value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
+						<IonTextarea aria-label="Description" value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
 					<IonGrid id="theLexiconHeader">
 						<IonRow>

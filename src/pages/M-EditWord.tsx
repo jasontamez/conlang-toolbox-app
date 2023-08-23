@@ -109,15 +109,18 @@ const EditLexiconItemModal = () => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent>
+			<IonContent className="hasSpecialLabels">
 				<IonList lines="none">
 					{theOrder.map((i: number) => {
-						const iStr = i.toString();
 						return (
-							<IonItem key={thisSingularItem.key + iStr}>
-								<IonLabel position="stacked" style={ {fontSize: "20px"} }>{theTitles[i]}</IonLabel>
-								<IonInput id={"thislex" + iStr} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}></IonInput>
-							</IonItem>
+							<React.Fragment key={`${thisSingularItem.key}-label-input-${i}`}>
+								<IonItem className="labelled">
+									<IonLabel>{theTitles[i]}</IonLabel>
+								</IonItem>
+								<IonItem>
+									<IonInput aria-label={`${theTitles[i]} input`} id={`thislex${i}`} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}></IonInput>
+								</IonItem>
+							</React.Fragment>
 						);
 					})}
 				</IonList>

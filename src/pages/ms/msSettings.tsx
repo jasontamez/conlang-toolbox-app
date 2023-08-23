@@ -52,7 +52,7 @@ const Syntax = () => {
 		state.morphoSyntaxModalState,
 		state.appSettings
 	]);
-	const [bool, num, text] = [msInfo.bool, msInfo.num, msInfo.text];
+	const {title, description, bool, num, text} = msInfo;
 	const allProps = (Object.keys(bool).length + Object.keys(num).length + Object.keys(text).length);
 	const viewInfo = ['ms', 'msSettings'];
 	useIonViewDidEnter(() => {
@@ -71,7 +71,7 @@ const Syntax = () => {
 			};
 			dispatch(setMorphoSyntax(newMS));
 		};
-		if(!(msInfo.title || msInfo.key || msInfo.description || (allProps > 0))) {
+		if(!(title || msInfo.key || description || (allProps > 0))) {
 			fireSwal({
 				title: "You have no information to clear.",
 				customClass: {popup: 'warnToast'},
@@ -106,7 +106,7 @@ const Syntax = () => {
 		dispatch(setLoadingPage("lookingForSyntaxDocs"));
 	};
 	const maybeExportMS = () => {
-		if(!msInfo.title) {
+		if(!title) {
 			return fireSwal({
 				title: "Error",
 				text: "Please give your MorphoSyntax document a title before exporting it.",
@@ -126,7 +126,7 @@ const Syntax = () => {
 		const firstKey = msInfo.key;
 		// Save 'now'
 		const now = Date.now();
-		if(!msInfo.title) {
+		if(!title) {
 			return MSSaveError();
 		} else if(!key) {
 			key = uuidv4();
@@ -165,7 +165,7 @@ const Syntax = () => {
 			});
 	};
 	const saveMSNew = () => {
-		if(!msInfo.title) {
+		if(!title) {
 			return MSSaveError();
 		}
 		let key = uuidv4();
@@ -200,14 +200,18 @@ const Syntax = () => {
 			<DeleteMS />
 			<SyntaxHeader title="MorphoSyntax Settings" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-					<IonItem>
-						<IonLabel position="stacked" style={ {fontSize: "20px"} }>MorphoSyntax Title:</IonLabel>
-						<IonInput value={msInfo.title} id="msTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("msTitle", "title")}></IonInput>
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel>MorphoSyntax Title:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked" style={ {fontSize: "20px"} }>Description:</IonLabel>
-						<IonTextarea value={msInfo.description} id="msDesc" className="ion-margin-top" placeholder="A short description of this document." rows={3} onIonChange={() => setNewInfo("msDesc", "description")} />
+						<IonInput aria-label="Title" value={title} id="msTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("msTitle", "title")}></IonInput>
+					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel>Description:</IonLabel>
+					</IonItem>
+					<IonItem>
+						<IonTextarea aria-label="Description" value={description} id="msDesc" className="ion-margin-top" placeholder="A short description of this document." rows={3} onIonChange={() => setNewInfo("msDesc", "description")} />
 					</IonItem>
 				</IonList>
 				<IonList lines="none" className="ion-float-end aside">

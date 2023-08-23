@@ -203,9 +203,11 @@ const EditCategoryModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" class="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="titleLabelEdit stackedEmph" position="stacked">Title/Description:</IonLabel>
 						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250} />
 					</IonItem>
 					<IonItem>
@@ -215,8 +217,10 @@ const EditCategoryModal = () => {
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="runLabelEdit stackedEmph" position="stacked">Letters/Characters:</IonLabel>
 						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250} />
 					</IonItem>
 					<IonItem>

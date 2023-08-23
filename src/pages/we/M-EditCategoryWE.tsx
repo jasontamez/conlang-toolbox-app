@@ -190,20 +190,24 @@ const EditCategoryWEModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
-					<IonItem>
-						<IonLabel className="titleLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
-						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
-						<IonInput value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1}></IonInput>
+						<IonInput aria-label="Title/Description" value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
+					</IonItem>
+					<IonItem style={{marginTop: "0.25rem"}}>
+						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<IonInput aria-label="Short Label" value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="runLabelEdit" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
 						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>

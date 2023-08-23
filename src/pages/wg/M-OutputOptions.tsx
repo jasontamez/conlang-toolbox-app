@@ -40,6 +40,15 @@ import { closeModal } from '../../components/ReduxDucksFuncs';
 const OutputOptionsModal = () => {
 	const dispatch = useDispatch();
 	const [modalState, settingsWG] = useSelector((state: any) => [state.modalState, state.wordgenSettings], shallowEqual);
+	const {
+		output,
+		showSyllableBreaks,
+		sentencesPerText,
+		capitalizeWords,
+		sortWordlist,
+		wordlistMultiColumn,
+		wordsPerWordlist
+	} = settingsWG;
 	return (
 		<IonModal isOpen={modalState.WGOutputOptions} onDidDismiss={() => dispatch(closeModal('WGOutputOptions'))}>
 			<IonHeader>
@@ -53,49 +62,49 @@ const OutputOptionsModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full">
+				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
-						<IonLabel>Show syllable breaks</IonLabel>
-						<IonToggle checked={settingsWG.showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))} />
+						<IonToggle enableOnOffLabels labelPlacement="start" checked={showSyllableBreaks} onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))}>Show syllable breaks</IonToggle>
 					</IonItem>
 					<IonItemDivider>What to Generate:</IonItemDivider>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('text'))}>
 						<IonLabel>Pseudo-text</IonLabel>
-						<IonIcon icon={settingsWG.output === "text" ? checkmarkCircleOutline : ellipseOutline}  />
+						<IonIcon icon={output === "text" ? checkmarkCircleOutline : ellipseOutline}  />
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('wordlist'))}>
 						<IonLabel>Wordlist</IonLabel>
-						<IonIcon icon={settingsWG.output === "wordlist" ? checkmarkCircleOutline : ellipseOutline}  />
+						<IonIcon icon={output === "wordlist" ? checkmarkCircleOutline : ellipseOutline}  />
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('syllables'))}>
 						<IonLabel>All possible syllables</IonLabel>
-						<IonIcon icon={settingsWG.output === "syllables" ? checkmarkCircleOutline : ellipseOutline}  />
+						<IonIcon icon={output === "syllables" ? checkmarkCircleOutline : ellipseOutline}  />
 					</IonItem>
-					<IonItemDivider>{settingsWG.output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
-					<IonItem className={settingsWG.output === "text" ? "" : "hide"}>
-						<IonLabel position="stacked">Number of sentences</IonLabel>
-						<IonRange debounce={250} min={5} max={100} value={settingsWG.sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred))}>
-							<IonLabel slot="start">5</IonLabel>
-							<IonLabel slot="end">100</IonLabel>
+					<IonItemDivider>{output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
+					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>
+						<IonLabel>Number of sentences</IonLabel>
+					</IonItem>
+					<IonItem className={output === "text" ? "" : "hide"}>
+						<IonRange debounce={250} min={5} max={100} value={sentencesPerText} pin={true} onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred))}>
+							<div slot="start">5</div>
+							<div slot="end">100</div>
 						</IonRange>
 					</IonItem>
-					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
-						<IonLabel>Capitalize words</IonLabel>
-						<IonToggle checked={settingsWG.capitalizeWords} onIonChange={e => dispatch(setCapitalizeWordsWG(e.detail.checked))} />
+					<IonItem className={output === "text" ? "hide" : ""}>
+						<IonToggle enableOnOffLabels labelPlacement="start" checked={capitalizeWords} onIonChange={e => dispatch(setCapitalizeWordsWG(e.detail.checked))}>Capitalize words</IonToggle>
 					</IonItem>
-					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
-						<IonLabel>Sort output</IonLabel>
-						<IonToggle checked={settingsWG.sortWordlist} onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))} />
+					<IonItem className={output === "text" ? "hide" : ""}>
+						<IonToggle enableOnOffLabels labelPlacement="start" checked={sortWordlist} onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))}>Sort output</IonToggle>
 					</IonItem>
-					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
-						<IonLabel>Multi-Column layout</IonLabel>
-						<IonToggle checked={settingsWG.wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumnWG(e.detail.checked))} />
+					<IonItem className={output === "text" ? "hide" : ""}>
+						<IonToggle enableOnOffLabels labelPlacement="start" checked={wordlistMultiColumn} onIonChange={e => dispatch(setWordlistMulticolumnWG(e.detail.checked))}>Multi-Column layout</IonToggle>
 					</IonItem>
-					<IonItem className={settingsWG.output === "text" ? "hide" : ""}>
-						<IonLabel position="stacked">Wordlist size</IonLabel>
-						<IonRange debounce={250} min={50} max={1000} value={settingsWG.wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand))}>
-							<IonLabel slot="start">50</IonLabel>
-							<IonLabel slot="end">1000</IonLabel>
+					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>
+						<IonLabel>Wordlist size</IonLabel>
+					</IonItem>
+					<IonItem className={output === "text" ? "hide" : ""}>
+						<IonRange debounce={250} min={50} max={1000} value={wordsPerWordlist} pin={true} onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand))}>
+							<div slot="start">50</div>
+							<div slot="end">1000</div>
 						</IonRange>
 					</IonItem>
 				</IonList>

@@ -40,12 +40,16 @@ const AppSettings = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList>
-					<IonItem>
-						<IonLabel className="possiblyLargeLabel">
+					<IonItem className="wrappableInnards">
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={appSettings.disableConfirms}
+							onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))}
+						>
 							<h2>Disable Confirmation Prompts</h2>
 							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>
-						</IonLabel>
-						<IonToggle slot="end" checked={appSettings.disableConfirms} onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))} />
+						</IonToggle>
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(openModal('AppTheme'))}>
 						<IonLabel>Change Theme</IonLabel>

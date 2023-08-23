@@ -22,7 +22,7 @@ const Syntax = () => {
 		<IonPage>
 			<SyntaxHeader title="5. Predicate Nominals and Related Constructions" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
+				<IonList lines="none" className="hasSpecialLabels">
 					{parseMSJSON("s5")}
 				</IonList>
 			</IonContent>

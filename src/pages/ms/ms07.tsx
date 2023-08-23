@@ -22,7 +22,7 @@ const Syntax = () => {
 		<IonPage>
 			<SyntaxHeader title="7. Voice and Valence Adjusting Operations" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
+				<IonList lines="none" className="hasSpecialLabels">
 					{parseMSJSON("s7")}
 				</IonList>
 			</IonContent>

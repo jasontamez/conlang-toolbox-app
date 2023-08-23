@@ -22,7 +22,7 @@ const Syntax = () => {
 		<IonPage>
 			<SyntaxHeader title="10. Clause Combinations" />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
+				<IonList lines="none" className="hasSpecialLabels">
 					{parseMSJSON("s10")}
 				</IonList>
 			</IonContent>

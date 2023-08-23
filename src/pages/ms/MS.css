@@ -1,9 +1,8 @@
 #morphoSyntaxPage ion-list ion-item.toggled {
 	display: none;
 }
-#morphoSyntaxPage ion-range.spectrum::part(bar-active),
-#morphoSyntaxPage ion-range.spectrum::part(bar) {
-	background: var(--ion-color-dark-tint);
+#morphoSyntaxPage ion-range.spectrum::part(bar-active) {
+	background: transparent;
 }
 #morphoSyntaxPage ion-list ion-grid {
 	--ion-grid-padding: 0;
@@ -45,6 +44,7 @@
 }
 #morphoSyntaxPage ion-list ion-item ion-grid ion-row ion-col ion-checkbox {
 	margin: 0 auto;
+	width: var(--size);
 }
 #morphoSyntaxPage ion-list ion-item.h ion-button {
 	margin: 0.25rem 0.5rem 0.25rem 0;
@@ -62,7 +62,7 @@
 	font-size: 1.1rem;
 }
 #morphoSyntaxPage ion-list ion-item.content::part(native) {
-	margin: 1rem;
+	margin: 0 1rem;
 	width: auto;
 }
 #morphoSyntaxPage ion-list ion-item.infoModal::part(native) {
@@ -173,13 +173,9 @@
 .morphoSyntaxModal table ul {
 	margin: 0;
 }
-#morphoSyntaxPage .morphoSyntaxTextItem ion-label[position="stacked"] {
-	transform: none;
-	padding-block: 0.5em 0;
-}
 #morphoSyntaxPage .morphoSyntaxTextItem::part(native) {
 	background: var(--ion-background-tinter);
-	border: 1px solid var(--ion-background-tinter);
+	/*border: 1px solid var(--ion-background-tinter);*/
 	padding-block-end: 0.75em;
 	padding-inline-start: 0.75em;
 }

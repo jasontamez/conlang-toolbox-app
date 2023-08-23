@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	IonHeader,
 	IonToolbar,
@@ -39,6 +39,10 @@ interface ModalProperties {
 	title?: string
 }
 
+function stripHtml (input: string) {
+	return input.replace(/<[^>]*>/g, "");
+};
+
 export const SyntaxHeader = (props: ModalProperties) => {
 	const {
 		title = "MorphoSyntax"
@@ -69,45 +73,69 @@ const RadioBox = (props: any) => {
 		dispatch(setSyntaxBool(what, value));
 	};
 	return (
-		<IonCheckbox onIonChange={(e) => setBool(what, e.detail.checked)} checked={synBool[what] || false} />
+		<IonCheckbox aria-label={props.label} onIonChange={(e) => setBool(what, e.detail.checked)} checked={synBool[what] || false} />
 	);
 };
 const RangeItem = (props: any) => {
 	const dispatch = useDispatch();
 	const synNum = useSelector((state: any) => state.morphoSyntaxInfo.num)
-	const what = props.prop as keyof MorphoSyntaxNumberObject;
-	const start = (props.start || "") as string;
-	const end = (props.end || "") as string;
-	const cls = (props.innerClass || "") as string;
-	const max = props.max === undefined ? 4 : (props.max as number);
-	const classes = props.className ? props.className + " content" : "content";
-	const setNum = (what: keyof MorphoSyntaxNumberObject, value: number) => {
+	const {
+		prop,
+		start = "",
+		end = "",
+		innerClass = "",
+		max = 4,
+		className
+	} = props;
+	const what = prop as keyof MorphoSyntaxNumberObject;
+	const classes = className ? className + " content" : "content";
+	const setNum = useCallback((what: keyof MorphoSyntaxNumberObject, value: number) => {
 		dispatch(setSyntaxNum(what, value));
-	};
+	}, [dispatch]);
 	return (
 		<IonItem className={classes}>
-			<IonRange onBlur={(e) => setNum(what, e.target.value as number)} value={synNum[what] || 0} className={cls} color="secondary" snaps={true} step={1} ticks={true} min={0} max={max}>
-				<IonLabel slot="start">{start}</IonLabel>
-				<IonLabel slot="end">{end}</IonLabel>
+			<IonRange
+				aria-label={`Range from ${start} to ${end}`}
+				onBlur={(e) => setNum(what, e.target.value as number)}
+				value={synNum[what] || 0}
+				className={innerClass}
+				color="secondary"
+				snaps={true}
+				step={1}
+				ticks={true}
+				min={0}
+				max={max}
+			>
+				<div slot="start">{start}</div>
+				<div slot="end">{end}</div>
 			</IonRange>
 		</IonItem>
 	);
 };
 const TextItem = (props: any) => {
+	const {
+		placeholder = "",
+		prop,
+		rows = 3,
+		className,
+		label = "",
+		children
+	} = props;
 	const dispatch = useDispatch();
 	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text)
-	const ph = (props.placeholder || "") as string;
-	const what = props.prop as keyof MorphoSyntaxTextObject;
-	const rows = props.rows === undefined ? 3 : (props.rows as number);
-	const classes = props.className ? props.className + " morphoSyntaxTextItem content" : "morphoSyntaxTextItem content";
+	const classes = className ? className + " " : "";
 	const setText = (what: keyof MorphoSyntaxTextObject, value: string) => {
 		dispatch(setSyntaxText(what, value));
 	};
 	return (
-		<IonItem className={classes}>
-			<IonLabel position="stacked">{props.children}</IonLabel>
-			<IonTextarea onBlur={(e) => setText(what, e.target.value || "")} value={synText[what] || ""} placeholder={ph} rows={rows} enterkeyhint="done" inputmode="text" />
-		</IonItem>
+		<>
+			<IonItem className={`${classes} morphoSyntaxTextItem content labelled`}>
+				<IonLabel>{children}</IonLabel>
+			</IonItem>
+			<IonItem className={`${classes} morphoSyntaxTextItem content`}>
+				<IonTextarea aria-label={label} onBlur={(e) => setText(prop, e.target.value || "")} value={synText[prop] || ""} placeholder={placeholder} rows={rows} enterkeyhint="done" inputmode="text" />
+			</IonItem>
+		</>
 	);
 };
 const HeaderItem = (props: any) => (
@@ -173,7 +201,7 @@ const InfoModal = (props: any) => {
 			</IonModal>
 			<IonButton color="primary" onClick={() => dispatch(setSyntaxState(id, true))}>
 				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0", marginInlineEnd: "0.5rem"}} />
-				<IonLabel>{label}</IonLabel>
+				{label}
 			</IonButton>
 		</IonItem>
 	);
@@ -223,7 +251,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 			case "Range":
 				return <RangeItem key={key + String(counter)} prop={bit.prop} start={bit.start} end={bit.end} innerClass={bit.spectrum ? "spectrum" : undefined} max={bit.max || undefined} />;
 			case "Text":
-				return <TextItem key={key + String(counter)} prop={bit.prop} rows={bit.rows || undefined}>{bit.content || ""}</TextItem>
+				return <TextItem key={key + String(counter)} prop={bit.prop} rows={bit.rows || undefined} label={bit.label || ""}>{bit.content || ""}</TextItem>
 			case "Modal":
 				return <InfoModal key={key + String(counter)} title={bit.title} label={bit.label || undefined}>{
 					doParse(bit.content || "", {
@@ -259,24 +287,26 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 						temp = [];
 					}
 				});
-				const printRow = (row: string[], key: number, cn = "") => {
+				const printRow = (row: string[], key: number, headers: undefined | string[]) => {
 					const label = row.pop() || "";
+					const textLabel = stripHtml(label);
 					let cc = 0;
 					return (
-						<IonRow className={cn || undefined} key={"ROW-" + String(key)}>
-							{row.map((c) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox prop={String(c)} /></IonCol>)}
+						<IonRow key={"ROW-" + String(key)}>
+							{row.map((c, i) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
 							<IonCol key={"LX-" + String(cc++)}>{doParse(label)}</IonCol>
 						</IonRow>
 					);
 				};
-				const printRowWithLabel = (row: string[], key: number, cn = "") => {
+				const printRowWithLabel = (row: string[], key: number, headers: undefined | string[]) => {
 					const final = row.pop() || "";
 					const label = labels.shift() || "";
-					const labelClass = disp.labelClass || "label"
+					const labelClass = disp.labelClass || "label";
+					const textLabel = final ? stripHtml(label) + ", " + stripHtml(final) : stripHtml(label) ;
 					let cc = 0;
 					return (
-						<IonRow className={cn || undefined} key={"ROW-" + String(key)}>
-							{row.map((c) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox prop={String(c)} /></IonCol>)}
+						<IonRow key={"ROW-" + String(key)}>
+							{row.map((c, i) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
 							<IonCol className={labelClass} key={"LC-" + String(cc++)}>{doParse(label)}</IonCol>
 							<IonCol key={"FC-" + String(cc++)}>{doParse(final)}</IonCol>
 						</IonRow>
@@ -284,7 +314,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 				};
 				const printHeaderRow = (row: string[], key: number, hasLabel = false) => {
 					const final = row.pop() || "";
-					let label: any = "";
+					let label: any = undefined;
 					if(hasLabel) {
 						label = row.pop();
 					}
@@ -292,7 +322,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 					return (
 						<IonRow className="header" key={"ROW-" + String(key)}>
 							{row.map((c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>)}
-							{label ? <IonCol className={disp.labelClass || "label"} key={"L-" + String(cc++)}>{doParse(label)}</IonCol> : label}
+							{label && <IonCol className={disp.labelClass || "label"} key={"L-" + String(cc++)}>{doParse(label)}</IonCol>}
 							<IonCol key={"F-" + String(cc++)}>{doParse(final)}</IonCol>
 						</IonRow>
 					);
@@ -303,7 +333,7 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 						<IonGrid className={disp.class || undefined}>
 							{header ? <IonRow key="headerRow-0" className="header"><IonCol>{doParse(header)}</IonCol></IonRow> : ""}
 							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!disp.labels) : ""}
-							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice(), count++) : printRow(r.slice(), count++))}
+							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice(), count++, inlineHeaders && inlineHeaders.slice()) : printRow(r.slice(), count++, inlineHeaders && inlineHeaders.slice()))}
 						</IonGrid>
 					</IonItem>
 				);

@@ -154,25 +154,35 @@ const AddCategoryModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
-					<IonItem>
-						<IonLabel className="titleLabel stackedEmph" position="stacked">Title/Description:</IonLabel>
-						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="ion-margin-end labelLabel">Short Label:</IonLabel>
+						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
+					</IonItem>
+					<IonItem style={{marginTop: "0.25rem"}}>
+						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
 						<IonInput id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="runLabel stackedEmph" position="stacked">Letters/Characters:</IonLabel>
 						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
 					</IonItem>
 					<IonItem>
-						<IonLabel className="wrappableInnards"><div>Use separate dropoff rate</div></IonLabel>
-						<IonToggle onIonChange={() => toggleDropoff()} slot="end" checked={newCat.dropoffOverride !== undefined} />
+						<IonToggle
+							enableOnOffLabels
+							labelPlacement="start"
+							aria-label="Use separate dropoff rate"
+							justify="space-between"
+							onIonChange={() => toggleDropoff()}
+							checked={newCat.dropoffOverride !== undefined}
+						>Use separate dropoff rate</IonToggle>
 					</IonItem>
 					<IonItem id="categoryDropoffAddC" className="hide">
 						<IonRange min={0} max={50} pin={true} onIonChange={e => setNewInfo("dropoffOverride", (e.detail.value as Zero_Fifty))} debounce={250}>

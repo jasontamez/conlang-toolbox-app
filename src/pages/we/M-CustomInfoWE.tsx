@@ -78,7 +78,7 @@ const ManageCustomInfoWE = () => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		CustomStorageWE.getItem(title).then((value) => {
+		CustomStorageWE.getItem(title).then((value: any) => {
 			if(!value) {
 				doSave(title);
 			} else if (settings.disableConfirms) {
@@ -118,7 +118,7 @@ const ManageCustomInfoWE = () => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const thenFunc = () => {
-			CustomStorageWE.getItem(title).then((value) => {
+			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWE(value as WECustomInfo));
 					fireSwal({

@@ -44,20 +44,16 @@ const OutputOptionsModal = () => {
 				<IonList lines="none">
 					<IonRadioGroup value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value as WEOutputTypes))}>
 						<IonItem className="ion-text-wrap">
-							<IonLabel>Output Only</IonLabel>
-							<IonRadio slot="start" value="outputOnly" />
+							<IonRadio value="outputOnly" labelPlacement="end" justify="start">Output Only</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
-							<IonLabel>Output and Sound-Change Rules</IonLabel>
-							<IonRadio slot="start" value="rulesApplied" />
+							<IonRadio value="rulesApplied" labelPlacement="end" justify="start">Output and Sound-Change Rules</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
-							<IonLabel>Input, then Output</IonLabel>
-							<IonRadio slot="start" value="inputFirst" />
+							<IonRadio value="inputFirst" labelPlacement="end" justify="start">Input, then Output</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
-							<IonLabel>Output, then Input</IonLabel>
-							<IonRadio slot="start" value="outputFirst" />
+							<IonRadio value="outputFirst" labelPlacement="end" justify="start">Output, then Input</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>

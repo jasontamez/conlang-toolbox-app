@@ -36,7 +36,7 @@ ion-app .important {
 	color: var(--ion-text-color);
 }
 ion-app .hide {
-	display: none;
+	display: none !important;
 }
 ion-row:nth-child(odd) {
 	margin: 16px 0;
@@ -104,13 +104,46 @@ ion-app .arrow {
 	color: var(--ion-color-tertiary-shade);
 }
 
+
+ion-app ion-list.syllables > ion-item {
+	margin: 0 0 1rem;
+	display: flex;
+	width: 100%;
+	align-items: flex-start;
+	justify-content: stretch;
+}
+ion-app ion-list.syllables > ion-item::part(native) {
+	width: 100%;
+}
 ion-app ion-list.syllables ion-item {
 	pointer-events: auto;
 }
-ion-app ion-list.syllables ion-item ion-textarea {
+ion-app ion-list.syllables > ion-item div {
+	flex: 1;
+	flex-grow: 5;
+	flex-shrink: 1;
+	flex-basis: calc((100% - 2em) * 0.3);
+}
+ion-app ion-list.syllables > ion-item div:last-of-type {
+	flex: 1;
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 2em;
+}
+ion-app ion-list.syllables > ion-item ion-textarea {
 	padding: 0.625rem 1rem 0.625rem 0;
 	margin: 0;
+	flex: 1;
 	flex-grow: 5;
+	flex-shrink: 5;
+	flex-basis: calc((100% - 2em) * 0.6);
+}
+ion-app ion-list.syllables > ion-item ion-textarea textarea.native-textarea {
+	padding-inline-start: 0.25rem !important;
+	padding-inline-end: 0.25rem !important;
+	padding-block: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 }
 ion-app ion-list.syllables .header {
 	display: block;
@@ -124,7 +157,7 @@ ion-app ion-list.syllables .toggleable {
 }
 ion-app ion-list.syllables .toggleable.toggled,
 ion-app ion-list.syllables .toggleable.reverseToggle {
-	display: block;
+	display: flex;
 }
 ion-app ion-list.syllables .toggleable.reverseToggle.toggled {
 	display: none;
@@ -135,7 +168,7 @@ ion-app ion-list.syllables .header.toggleable.reverseToggle.toggled {
 }
 ion-app ion-list.syllables .header.toggleable.toggled,
 ion-app ion-list.syllables .header.toggleable.reverseToggle {
-	display: block;
+	display: flex;
 }
 
 ion-app ion-content.disappearingHeaderKludgeFix > :last-child {
@@ -175,9 +208,6 @@ ion-list.dragArea {
 }
 .minor {
 	font-size: 0.8em;
-}
-ion-label.stackedEmph {
-	font-size: 20px !important;
 }
 
 ion-app .fullScreen {
@@ -390,7 +420,7 @@ ion-app .WEinput {
 #theLexicon .l {
 	flex: 5 1 25rem;
 }
-#theLexicon input {
+#theLexicon ion-input {
 	outline: none;
 	padding-inline-start: 0;
 	padding-inline-end: 0;
@@ -483,6 +513,16 @@ ion-app .WEinput {
 	box-sizing: border-box !important;
 	z-index: 10000 !important;
 	position: fixed !important;
+}
+.hasSpecialLabels ion-label {
+	font-size: 1.25rem;
+	padding: 0;
+	margin: 0;
+	margin-top: 1rem;
+}
+.hasSpecialLabels ion-item.labelled {
+	padding: 0;
+	margin: 0;
 }
 
 #editLexiconItemOrder ion-row:nth-child(odd) {
@@ -694,10 +734,20 @@ ion-list.showingHelp ion-item.extraHelp div {
 	margin: 0.25em 0;
 }
 
-ion-label.wrappableInnards div,
-ion-label.wrappableInnards {
+ion-item.wrappableInnards p,
+ion-item.wrappableInnards h2 {
 	white-space: normal;
 	overflow-wrap: anywhere;
+}
+ion-item.wrappableInnards p {
+	font-size: 0.8rem;
+	padding: 0;
+	text-indent: 0;
+	color: var(--ion-color-step-500);
+}
+ion-item.wrappableInnards h2 {
+	font-size: 1.1rem;
+	margin: 0.25em 0;
 }
 
 .wordList {
@@ -706,11 +756,15 @@ ion-label.wrappableInnards {
 }
 .wordList div {
 	padding: 0.25em 0.5em;
-	text-align: center
+	text-align: center;
 }
 .wordList div:nth-child(odd) {
 	background: var(--ion-background-shader);
 	background-clip: content-box;
+}
+.wordListChips div {
+	text-align: center;
+	margin: 0 auto;
 }
 
 .ion-text-wrap {

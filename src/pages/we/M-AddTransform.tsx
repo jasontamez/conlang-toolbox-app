@@ -107,38 +107,40 @@ const AddTransformModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="seekLabel">Input Expression:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="seekLabel" position="stacked" style={ { fontSize: "20px" } }>Input Expression:</IonLabel>
 						<IonInput id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
-					<IonItem>
-						<IonLabel className="replaceLabel" position="stacked" style={ {fontSize: "20px"} }>Output Expression:</IonLabel>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+					<IonItem className="labelled">
+						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel position="stacked">Transform Description:</IonLabel>
+						<IonInput id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel>Transform Description:</IonLabel>
+					</IonItem>
+					<IonItem>
 						<IonInput id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItemDivider>
-						<IonLabel position="stacked">Transform Direction:</IonLabel>
+						<IonLabel>Transform Direction:</IonLabel>
 					</IonItemDivider>
 					<IonRadioGroup value={newTransform.direction} onIonChange={e => setNewInfo("direction", e.detail.value as "both" | "in" | "out" | "double")}>
 						<IonItem>
-							<IonLabel>At Input, Then Undo At Output</IonLabel>
-							<IonRadio slot="start" value="both" />
+							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonLabel>At Input and At Output</IonLabel>
-							<IonRadio slot="start" value="double" />
+							<IonRadio value="double" labelPlacement="end" justify="start">At Input and At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonLabel>At Input Only</IonLabel>
-							<IonRadio slot="start" value="in" />
+							<IonRadio value="in" labelPlacement="end" justify="start">At Input Only</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonLabel>At Output Only</IonLabel>
-							<IonRadio slot="start" value="out" />
+							<IonRadio value="out" labelPlacement="end" justify="start">At Output Only</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>

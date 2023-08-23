@@ -81,7 +81,7 @@ const ManageCustomInfo = () => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		CustomStorageWG.getItem(title).then((value) => {
+		CustomStorageWG.getItem(title).then((value: any) => {
 			if(!value) {
 				doSave(title);
 			} else if (settings.disableConfirms) {
@@ -122,7 +122,7 @@ const ManageCustomInfo = () => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const thenFunc = () => {
-			CustomStorageWG.getItem(title).then((value) => {
+			CustomStorageWG.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWG(value as WGCustomInfo));
 					fireSwal({
@@ -198,7 +198,7 @@ const ManageCustomInfo = () => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
-				<IonItemGroup>
+					<IonItemGroup>
 						<IonItemDivider>
 							<IonLabel>Save Current Info</IonLabel>
 						</IonItemDivider>

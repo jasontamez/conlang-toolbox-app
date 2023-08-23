@@ -143,27 +143,31 @@ const AddCategoryWEModal = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
-					<IonItem>
-						<IonLabel className="titleLabel" position="stacked" style={ {fontSize: "20px"} }>Title/Description:</IonLabel>
-						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250}></IonInput>
+				<IonList lines="none" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonLabel className="ion-margin-end labelLabel">Short Label:</IonLabel>
-						<IonInput id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1}></IonInput>
+						<IonInput aria-label="Title/Description" id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250}></IonInput>
+					</IonItem>
+					<IonItem style={{marginTop: "0.25rem"}}>
+						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<IonInput id="shortLabel" label="Short Label:" aria-label="Short Label" labelPlacement="start" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonLabel className="runLabel" position="stacked" style={ {fontSize: "20px"} }>Letters/Characters:</IonLabel>
-						<IonInput className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250}></IonInput>
+						<IonInput aria-label="Letters/Characters" className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
+					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Character Group</IonLabel>
 					</IonButton>

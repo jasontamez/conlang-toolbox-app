@@ -49,6 +49,7 @@ const Warning = (props: PageData) => {
 									<div>Changelog</div>
 									<div>Hardware back button should no longer kick you from the app without notice.</div>
 									<div>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</div>
+									<div>Added "Landau 200" to Word Lists.</div>
 									<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>
 									<div>To-do: Change Lexicon and others to use swipeable items for editing, deleting, etc (if possible)</div>
 									<div>To-do: Change MorphoSyntax tab bar to scroll horizontally (if possible)</div>

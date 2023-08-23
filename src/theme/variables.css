@@ -709,6 +709,13 @@ ion-app {
 	--font-mono: 'DM Mono', 'Consolas', 'Courier New', 'Courier', monospace;
 }
 
+ion-app ion-range {
+	--bar-background: var(--ion-background-shader);
+	--bar-background-active: var(--ion-color-secondary);
+	--knob-background: var(--ion-color-secondary);
+	--pin-background: var(--ion-color-secondary-tint);
+}
+
 ion-app .evenBackground {
 	--background: var(--ion-item-background);
 }
@@ -716,9 +723,6 @@ ion-app .evenBackground {
 ion-app ion-range {
 	background: transparent;
 	border-color: transparent;
-}
-ion-app ion-label[position="stacked"] {
-	padding-block-end: 0.3em;
 }
 
 ion-app input[type=text],
@@ -731,12 +735,14 @@ ion-app input[type=url],
 ion-app input[type=search],
 ion-app input[type=email],
 ion-app input[type=month],
-ion-app textarea {
+ion-app textarea,
+ion-app ion-input,
+ion-app ion-textarea {
 	background: var(--ion-color-input-bg);
-	color: var(--ion-color-input-fg);
+	color: var(--ion-color-input-fg) !important;
 	border-color: var(--ion-color-input-border);
-	--padding-start: 0.5em;
-	--padding-end: 0.5em;
+	--padding-start: 0.5em !important;
+	--padding-end: 0.5em !important;
 }
 ion-app input[type=submit],
 ion-app input[type=reset],
