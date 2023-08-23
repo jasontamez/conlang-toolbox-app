@@ -6,6 +6,8 @@ import {
 	IonSplitPane
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
+
 import Menu from './components/Menu';
 
 import About from "./pages/About";
@@ -95,8 +97,8 @@ const MainOutlet = memo(() => {
 			}
 		});
 	}, [history, pages]);
-	document.addEventListener('ionBackButton', (ev: any) => {
-		ev.detail.register(10, () => {
+	useEffect((): (() => void) => {
+		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
 			if(modals.length) {
 				// Get last modal
 				const [last, ...rest] = modals;
@@ -112,9 +114,10 @@ const MainOutlet = memo(() => {
 			} else {
 				// exit app?
 				console.log("!!exit");
+				Capacitor.exitApp();
 			}
-		});
-	});
+		}).remove;
+	}, [history, modals, pages]);
 	const defaultProps = {
 		modals,
 		setModals,
