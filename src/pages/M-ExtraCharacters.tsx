@@ -120,13 +120,39 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			saveToBeCopied(char);
 		}
 	}, [toggleFave, copyImmediately, isFavoriting, copyNow, saveToBeCopied]);
-	const toggleOption = useCallback((what: "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp") => {
+	const toggleOption = useCallback((what: "showNames" | "copyImmediately" | "showHelp") => {
 		dispatch(toggleExtraCharsBoolean(what));
-	}, [dispatch]);
+		if(what === "copyImmediately") {
+			const title = copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.";
+			const customClass = copyImmediately ? {popup: 'dangerToast'} : {};
+			fireSwal({
+				title,
+				toast: true,
+				customClass,
+				timer: 2500,
+				position: "top",
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		}
+	}, [dispatch, copyImmediately]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250);
 	}, [dispatch]);
-	const showingHelp = showHelp ? {className: "showingHelp"} : {};
+	const toggleFavoriting = useCallback((newValue) => {
+		setIsFavoriting(newValue);
+		const title = newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites";
+		const customClass = newValue ? {} : {popup: 'dangerToast'};
+		fireSwal({
+			title,
+			toast: true,
+			customClass,
+			timer: 2500,
+			position: "top",
+			timerProgressBar: true,
+			showConfirmButton: false
+		});
+	}, []);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>
@@ -140,7 +166,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList id="ExtraCharactersModalList" lines="none" {...showingHelp}>
+				<IonList id="ExtraCharactersModalList" lines="none" className={showHelp ? "showingHelp" : undefined}>
 					<IonItem className="extraHelp">
 						<div>
 							<div>This is a place to find and copy characters that may not be easily accessible to you on your device's keyboard. The other buttons can be toggled for additional effects:</div>
@@ -156,7 +182,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						<IonButton size="default" slot="start" disabled={isFavoriting} onClick={() => toggleOption("copyImmediately")} color={copyImmediately ? "secondary" : undefined} fill={copyImmediately ? "solid" : "clear"}>
 							<IonIcon icon={copyOutline} />
 						</IonButton>
-						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => setIsFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
+						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => toggleFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
 							<IonIcon icon={heartOutline} />
 						</IonButton>
 						<IonInput id="toBeCopied" value={copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
