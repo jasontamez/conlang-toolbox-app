@@ -362,9 +362,5 @@ export interface StateObject {
 
 export interface PageData {
 	modals: Function[],
-	setModals: Function,
-	pages: string[],
-	setPages: Function,
-	history: any,
-	temp: Function
+	setModals: Function
 }

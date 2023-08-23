@@ -19,6 +19,7 @@ import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Credits from './pages/Credits';
 import Info from './pages/AppInfo';
+import fireSwal from './components/Swal';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -47,25 +48,6 @@ import { VERSION } from './components/ReduxDucksConst';
 import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
-
-function temp (modals: Function[], setModals: Function, pages: string[], setPages: Function, history: any) {
-	if(modals.length) {
-		// Get last modal
-		const [last, ...rest] = modals;
-		// Save remaining modals
-		setModals(rest);
-		// Close last modal
-		last(false);
-		console.log("!closed modal");
-	} else if (pages.length > 0) {
-		// go back
-		history.go(-1);
-		console.log("!back");
-	} else {
-		// exit app?
-		console.log("!!exit");
-	}
-};
 
 interface HistoryObject {
 	pathname: string,
@@ -114,17 +96,24 @@ const MainOutlet = memo(() => {
 			} else {
 				// exit app?
 				console.log("!!exit");
-				Capacitor.exitApp();
+				fireSwal({
+					title: "Exit App?",
+					text: "Do you want to exit the app?",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: "Yes, exit."
+				}).then((result: any) => {
+					if(result.isConfirmed) {
+						// Exit app!
+						Capacitor.exitApp();
+					}
+				});
 			}
 		}).remove;
 	}, [history, modals, pages]);
 	const defaultProps = {
 		modals,
-		setModals,
-		pages,
-		setPages,
-		history,
-		temp
+		setModals
 	};
 	return (
 		<IonRouterOutlet>

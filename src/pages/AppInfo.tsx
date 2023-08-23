@@ -13,8 +13,7 @@ import {
 	IonCardContent,
 	IonButtons,
 	IonMenuButton,
-	IonContent,
-	IonButton
+	IonContent
 } from '@ionic/react';
 import { shallowEqual, useSelector } from "react-redux";
 import { PageData } from '../components/ReduxDucksTypes';
@@ -22,7 +21,6 @@ import { PageData } from '../components/ReduxDucksTypes';
 const Warning = (props: PageData) => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
-	const {temp, modals, setModals, pages, setPages, history} = props;
 
 	return (
 		<IonPage className={theme}>
@@ -30,7 +28,6 @@ const Warning = (props: PageData) => {
 				<IonToolbar>
 					 <IonButtons slot="start">
 						 <IonMenuButton />
-						 <IonButton onClick={() => temp(modals, setModals, pages, setPages, history)}>??</IonButton>
 					 </IonButtons>
 					<IonTitle className="ion-text-center">App Info</IonTitle>
 				</IonToolbar>
