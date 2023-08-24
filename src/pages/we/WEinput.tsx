@@ -25,12 +25,12 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import { InpCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
-import { Lexicon } from '../../components/ReduxDucksTypes';
+import { Lexicon, PageData } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WERew = () => {
+const WERew = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'input'];
@@ -99,7 +99,7 @@ const WERew = () => {
 	};
 	return (
 		<IonPage>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={InpCard} />
 			<IonHeader>
 				<IonToolbar>

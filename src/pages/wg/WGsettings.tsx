@@ -42,6 +42,7 @@ import {
 	Zero_OneHundred,
 	Two_Fifteen,
 	Zero_Fifty,
+	PageData,
 } from '../../components/ReduxDucksTypes';
 import {
 	helpCircleOutline,
@@ -56,7 +57,7 @@ import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WGSet = () => {
+const WGSet = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'settings'];
@@ -118,7 +119,7 @@ const WGSet = () => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonLoading
 	        	cssClass='loadingPage'

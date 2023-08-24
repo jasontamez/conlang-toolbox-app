@@ -34,7 +34,7 @@ import { $i, $a } from '../../components/DollarSignExports';
 import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
-import { WECategoryObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import { PageData, WECategoryObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
@@ -45,7 +45,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 
-const WEOut = () => {
+const WEOut = (props: PageData) => {
 	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
 		seek: arrayOfStringsAndStringArrays | RegExp

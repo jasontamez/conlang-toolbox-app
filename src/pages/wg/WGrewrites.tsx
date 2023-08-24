@@ -27,7 +27,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
+import { PageData, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import {
 	openModal,
 	startEditRewriteRuleWG,
@@ -44,7 +44,7 @@ import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WGRew = () => {
+const WGRew = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'rewriterules'];
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -102,7 +102,7 @@ const WGRew = () => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
-			<ExtraCharactersModal isOpen={isOpen} setIsOpen={setIsOpen} />
+			<ExtraCharactersModal isOpen={isOpen} setIsOpen={setIsOpen} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>

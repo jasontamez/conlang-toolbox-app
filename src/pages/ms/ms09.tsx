@@ -11,8 +11,9 @@ import {
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
+import { PageData } from '../../components/ReduxDucksTypes';
 
-const Syntax = () => {
+const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms09'];
 	useIonViewDidEnter(() => {
@@ -20,10 +21,10 @@ const Syntax = () => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="9. Pragmatically Marked Structures" />
+			<SyntaxHeader title="9. Pragmatically Marked Structures" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON("s9")}
+					{parseMSJSON({page: "s9", ...props})}
 				</IonList>
 			</IonContent>
 		</IonPage>

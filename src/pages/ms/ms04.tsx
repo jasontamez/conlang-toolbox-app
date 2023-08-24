@@ -11,8 +11,9 @@ import {
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
+import { PageData } from '../../components/ReduxDucksTypes';
 
-const Syntax = () => {
+const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms04'];
 	useIonViewDidEnter(() => {
@@ -20,10 +21,10 @@ const Syntax = () => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="4. Noun and Noun Phrase Operations" />
+			<SyntaxHeader title="4. Noun and Noun Phrase Operations" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON("s4")}
+					{parseMSJSON({page: "s4", ...props})}
 				</IonList>
 			</IonContent>
 		</IonPage>

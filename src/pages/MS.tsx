@@ -73,17 +73,17 @@ const MS = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/ms/msSettings" render={() => <MSSettings />} exact={true} />
-				<Route path="/ms/ms01" render={() => <MS01 />} exact={true} />
-				<Route path="/ms/ms02" render={() => <MS02 />} exact={true} />
-				<Route path="/ms/ms03" render={() => <MS03 />} exact={true} />
-				<Route path="/ms/ms04" render={() => <MS04 />} exact={true} />
-				<Route path="/ms/ms05" render={() => <MS05 />} exact={true} />
-				<Route path="/ms/ms06" render={() => <MS06 />} exact={true} />
-				<Route path="/ms/ms07" render={() => <MS07 />} exact={true} />
-				<Route path="/ms/ms08" render={() => <MS08 />} exact={true} />
-				<Route path="/ms/ms09" render={() => <MS09 />} exact={true} />
-				<Route path="/ms/ms10" render={() => <MS10 />} exact={true} />
+				<Route path="/ms/msSettings" render={() => <MSSettings {...props} />} exact={true} />
+				<Route path="/ms/ms01" render={() => <MS01 {...props} />} exact={true} />
+				<Route path="/ms/ms02" render={() => <MS02 {...props} />} exact={true} />
+				<Route path="/ms/ms03" render={() => <MS03 {...props} />} exact={true} />
+				<Route path="/ms/ms04" render={() => <MS04 {...props} />} exact={true} />
+				<Route path="/ms/ms05" render={() => <MS05 {...props} />} exact={true} />
+				<Route path="/ms/ms06" render={() => <MS06 {...props} />} exact={true} />
+				<Route path="/ms/ms07" render={() => <MS07 {...props} />} exact={true} />
+				<Route path="/ms/ms08" render={() => <MS08 {...props} />} exact={true} />
+				<Route path="/ms/ms09" render={() => <MS09 {...props} />} exact={true} />
+				<Route path="/ms/ms10" render={() => <MS10 {...props} />} exact={true} />
 			</IonRouterOutlet>
 			{makeTabs(page)}
 		</IonTabs>

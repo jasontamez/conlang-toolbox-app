@@ -27,7 +27,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
+import { PageData, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import {
 	openModal,
 	startEditSoundChangeWE,
@@ -44,7 +44,7 @@ import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WERew = () => {
+const WERew = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'soundchanges'];
@@ -106,7 +106,7 @@ const WERew = () => {
 		<IonPage>
 			<AddSoundChangeModal />
 			<EditSoundChangeModal />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={SChCard} />
 			<IonHeader>
 				<IonToolbar>

@@ -353,6 +353,7 @@ export interface StateObject {
 	extraCharactersState: ExtraCharactersState
 	wordListsState: WordListsState
 	temporaryInfo: TemporaryInfo | undefined
+	logs: string[]
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.
 // Be sure to change stateObjectProps in ReducksDucks, too.
@@ -364,3 +365,11 @@ export interface PageData {
 	modals: Function[],
 	setModals: Function
 }
+
+export interface ModalProperties {
+	isOpen: boolean,
+	setIsOpen: Function,
+	modals: Function[],
+	setModals: Function
+}
+

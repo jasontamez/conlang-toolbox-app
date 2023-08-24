@@ -32,7 +32,7 @@ import {
 	changeView,
 	setCategoryDropoffWG
 } from '../../components/ReduxDucksFuncs';
-import { WGCategoryMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
+import { PageData, WGCategoryMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import AddCategoryModal from './M-AddCategory';
 import EditCategoryModal from './M-EditCategory';
 import { $i, $q } from '../../components/DollarSignExports';
@@ -41,7 +41,7 @@ import { CatCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WGCat = () => {
+const WGCat = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'categories'];
@@ -87,7 +87,7 @@ const WGCat = () => {
 		<IonPage>
 			<AddCategoryModal />
 			<EditCategoryModal />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>

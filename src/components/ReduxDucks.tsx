@@ -215,6 +215,9 @@ const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
 		data: parseUnknownTypes(original.data)
 	};
 };
+const reduceLog = (original: string[]) => {
+	return [...original];
+}
 const parseUnknownTypes: any = (test: any) => {
 	const theType = (typeof test);
 	switch(theType) {
@@ -257,7 +260,8 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["viewState", reduceViewState],
 	["extraCharactersState", reduceExtraCharactersState],
 	["wordListsState", reduceWordListsState],
-	["temporaryInfo", reduceTempInfo]
+	["temporaryInfo", reduceTempInfo],
+	["logs", reduceLog]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
@@ -416,7 +420,8 @@ export const blankAppState: types.StateObject = {
 		display: [],
 		textCenter: true
 	},
-	temporaryInfo: undefined
+	temporaryInfo: undefined,
+	logs: []
 };
 export const initialAppState: types.StateObject = {
 	...blankAppState,
@@ -1336,6 +1341,26 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				temporaryInfo: payload
 			};
 			break;
+
+
+
+		// Log
+		case consts.SET_LOG:
+			final = {
+				...reduceAllBut(["logs"], state),
+				logs: payload
+			};
+			break;
+		case consts.ADD_TO_LOG:
+			final = {
+				...reduceAllBut(["logs"], state),
+				logs: [...state.logs, payload]
+			};
+			console.log(`LOG: ${payload}`);
+			break;
+
+
+		// Default
 		default:
 			console.log("DEFAULT: " + action.type);
 			return state;

@@ -15,7 +15,8 @@ import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	WGRewriteRuleObject,
-	WGCategoryObject
+	WGCategoryObject,
+	PageData
 } from '../../components/ReduxDucksTypes';
 import {
 	openModal,
@@ -41,7 +42,7 @@ import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
 import fireSwal from '../../components/Swal';
 import { Clipboard } from '@capacitor/clipboard';
 
-const WGOut = () => {
+const WGOut = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {

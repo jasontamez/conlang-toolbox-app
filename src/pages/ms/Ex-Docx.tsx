@@ -17,7 +17,7 @@ import {
 	MorphoSyntaxBoolObject,
 	MorphoSyntaxObject
 } from '../../components/ReduxDucksTypes';
-import { exporter, display, anything } from './MorphoSyntaxElements';
+import { exportProp, displayProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
 import { setLoadingPage } from '../../components/ReduxDucksFuncs';
 import doExport from '../../components/ExportServices';
@@ -38,9 +38,9 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 		before: 200
 	}
 	msSections.forEach((sec: string) => {
-		const msSection = (ms[sec as keyof typeof ms] as anything[]);
+		const msSection = (ms[sec as keyof typeof ms] as specificPageInfo[]);
 		let children: any[] = [];
-		msSection.forEach((item: anything) => {
+		msSection.forEach((item: specificPageInfo) => {
 			let content = item.content || "";
 			switch(item.tag) {
 				case "Header":
@@ -134,8 +134,8 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 					if(!disp) {
 						children.push(new Paragraph({ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }))
 					} else {
-						const disp: display = item.display!;
-						const expo: exporter = disp.export!;
+						const disp: displayProp = item.display!;
+						const expo: exportProp = disp.export!;
 						const boxes = (item.boxes || []);
 						const perRow = disp.boxesPerRow || 1;
 						const labels = (disp.labels || []).slice();

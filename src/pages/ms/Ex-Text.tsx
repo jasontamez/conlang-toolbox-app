@@ -1,4 +1,4 @@
-import { exporter, display, anything } from './MorphoSyntaxElements';
+import { exportProp, displayProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
 import {
 	MorphoSyntaxTextObject,
@@ -15,8 +15,8 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 	const text = msInfo.text;
 	const sections: string[] = ms.sections;
 	sections.forEach((sec: string) => {
-		const section = (ms[sec as keyof typeof ms] as anything[]);
-		section.forEach((item: anything) => {
+		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
+		section.forEach((item: specificPageInfo) => {
 			let content = item.content || "";
 			switch(item.tag) {
 				case "Header":
@@ -92,8 +92,8 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 					break;
 				case "Checkboxes":
 					//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
-					const disp: display = item.display!;
-					const expo: exporter = disp.export!;
+					const disp: displayProp = item.display!;
+					const expo: exportProp = disp.export!;
 					const output = expo.output;
 					if(output) {
 						const map = output.map((bit) => bit.map((b) => {

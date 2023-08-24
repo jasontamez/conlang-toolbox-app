@@ -43,11 +43,12 @@ import './theme/variables.css';
 import './theme/App.css';
 
 import { checkIfState, initialAppState } from './components/ReduxDucks';
-import { overwriteState } from './components/ReduxDucksFuncs';
+import { addToLog, overwriteState } from './components/ReduxDucksFuncs';
 import { VERSION } from './components/ReduxDucksConst';
 import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
+import { useDispatch } from 'react-redux';
 
 interface HistoryObject {
 	pathname: string,
@@ -61,6 +62,7 @@ const MainOutlet = memo(() => {
 	const history = useHistory();
 	const [modals, setModals] = useState<Function[]>([]);
 	const [pages, setPages] = useState<string[]>([]);
+	const dispatch = useDispatch();
 	useEffect(() => {
 		return history.listen((info: HistoryObject, method: Method) => {
 			console.log(`@ ${method} ${JSON.stringify(info)}`);
@@ -82,6 +84,7 @@ const MainOutlet = memo(() => {
 	useEffect((): (() => void) => {
 		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
 			if(modals.length) {
+				dispatch(addToLog("Attempting to close modal."));
 				// Get last modal
 				const [last, ...rest] = modals;
 				// Save remaining modals
@@ -90,11 +93,13 @@ const MainOutlet = memo(() => {
 				last(false);
 				console.log("!closed modal");
 			} else if (pages.length > 0) {
+				dispatch(addToLog("Navigating backward."));
 				// go back
 				history.go(-1);
 				console.log("!back");
 			} else {
 				// exit app?
+				dispatch(addToLog("Possibly exiting?"));
 				console.log("!!exit");
 				fireSwal({
 					title: "Exit App?",
@@ -106,11 +111,13 @@ const MainOutlet = memo(() => {
 					if(result.isConfirmed) {
 						// Exit app!
 						Capacitor.exitApp();
+					} else {
+						dispatch(addToLog("Did not exit."));
 					}
 				});
 			}
 		}).remove;
-	}, [history, modals, pages]);
+	}, [history, modals, pages.length, dispatch]);
 	const defaultProps = {
 		modals,
 		setModals
@@ -136,6 +143,10 @@ const App = memo(() => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
+						if (compareVersions.compare(storedState.currentVersion, "0.9.4", "<")) {
+							// Do stuff to possibly bring storedState up to date
+							storedState.logs = [];
+						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;

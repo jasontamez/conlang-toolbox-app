@@ -27,14 +27,14 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { openModal, startEditCategoryWE, deleteCategoryWE, changeView } from '../../components/ReduxDucksFuncs';
 import { CatCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
-import { WECategoryMap } from '../../components/ReduxDucksTypes';
+import { PageData, WECategoryMap } from '../../components/ReduxDucksTypes';
 import AddCategoryWEModal from './M-AddCategoryWE';
 import EditCategoryWEModal from './M-EditCategoryWE';
 import { $q } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WECat = () => {
+const WECat = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['we', 'categories'];
@@ -80,7 +80,7 @@ const WECat = () => {
 		<IonPage>
 			<AddCategoryWEModal />
 			<EditCategoryWEModal />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>

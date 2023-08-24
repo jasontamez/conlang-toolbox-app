@@ -11,8 +11,9 @@ import {
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
+import { PageData } from '../../components/ReduxDucksTypes';
 
-const Syntax = () => {
+const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms10'];
 	useIonViewDidEnter(() => {
@@ -20,10 +21,10 @@ const Syntax = () => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="10. Clause Combinations" />
+			<SyntaxHeader title="10. Clause Combinations" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON("s10")}
+					{parseMSJSON({page: "s10", ...props})}
 				</IonList>
 			</IonContent>
 		</IonPage>

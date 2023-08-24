@@ -31,7 +31,7 @@ import {
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
-import { ModalStateObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { ModalStateObject, MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import { v4 as uuidv4 } from 'uuid';
@@ -41,7 +41,7 @@ import ExportMS from './M-ExportSyntaxDoc';
 import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 
-const Syntax = () => {
+const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [
 		msInfo,
@@ -198,7 +198,7 @@ const Syntax = () => {
 			<LoadMS />
 			<ExportMS />
 			<DeleteMS />
-			<SyntaxHeader title="MorphoSyntax Settings" />
+			<SyntaxHeader title="MorphoSyntax Settings" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">

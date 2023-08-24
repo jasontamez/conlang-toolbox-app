@@ -24,14 +24,14 @@ import {
 	checkmarkDoneSharp
 } from 'ionicons/icons';
 import { openModal, toggleSyllables, editSyllables, changeView, setEditableSyllables, setSyllableDropoffWG, modSyllableDropoff } from '../../components/ReduxDucksFuncs';
-import { AllWGSyllableObjects, WGSyllableObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
+import { AllWGSyllableObjects, PageData, WGSyllableObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { SylCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import { $i } from '../../components/DollarSignExports';
 
-const WGSyl = () => {
+const WGSyl = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const viewInfo = ['wg', 'syllables'];
@@ -77,7 +77,7 @@ const WGSyl = () => {
 	const firstBox = syllableObject.toggle ? "Single-Syllable\nWords" : "Syllables";
 	return (
 		<IonPage>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
 			<ModalWrap pageInfo={viewInfo} content={SylCard} />
 			<IonHeader>
 				<IonToolbar>

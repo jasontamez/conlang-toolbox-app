@@ -11,8 +11,9 @@ import {
 } from './MorphoSyntaxElements';
 import { changeView } from '../../components/ReduxDucksFuncs';
 import { useDispatch } from "react-redux";
+import { PageData } from '../../components/ReduxDucksTypes';
 
-const Syntax = () => {
+const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const viewInfo = ['ms', 'ms02'];
 	useIonViewDidEnter(() => {
@@ -20,10 +21,10 @@ const Syntax = () => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="2. Grammatical Categories" />
+			<SyntaxHeader title="2. Grammatical Categories" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON("s2")}
+					{parseMSJSON({page: "s2", ...props})}
 				</IonList>
 			</IonContent>
 		</IonPage>

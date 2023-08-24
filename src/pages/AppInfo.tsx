@@ -13,14 +13,17 @@ import {
 	IonCardContent,
 	IonButtons,
 	IonMenuButton,
-	IonContent
+	IonContent,
+	IonButton
 } from '@ionic/react';
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { PageData } from '../components/ReduxDucksTypes';
+import { setLog } from '../components/ReduxDucksFuncs';
 
-const Warning = (props: PageData) => {
-	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
+const AppInfo = (props: PageData) => {
+	const [originalTheme, logs] = useSelector((state: any) => [state.appSettings.theme, state.logs], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
+	const dispatch = useDispatch();
 
 	return (
 		<IonPage className={theme}>
@@ -41,8 +44,7 @@ const Warning = (props: PageData) => {
 									<IonLabel className="ion-padding-start">Notice</IonLabel>
 								</IonCardHeader>
 								<IonCardContent>
-									<p>The promised "major update" hit some unexpected, major snags and won't be happening.</p>
-									<p>I <strong>WILL</strong> keep incrementally updating this app.</p>
+									<p>The promised "major update" hit some unexpected, major snags and won't be happening.<br /><br />I <strong>WILL</strong> keep incrementally updating this app.</p>
 									<div>Changelog</div>
 									<div>Hardware back button should no longer kick you from the app without notice.</div>
 									<div>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</div>
@@ -55,10 +57,23 @@ const Warning = (props: PageData) => {
 							</IonCard>
 						</IonCol>
 					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard button={false}>
+								<IonCardHeader className="ion-text-center">
+									<IonLabel className="ion-padding-start">Logs</IonLabel>
+								</IonCardHeader>
+								<IonCardContent>
+									{logs.map((log: string, i: number) => <div key={`${i}:${log}`}><strong>{i}:</strong> {log}</div>)}
+									<IonButton onClick={() => dispatch(setLog([]))}>Clear Log</IonButton>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
 				</IonGrid>
 			</IonContent>
 		</IonPage>
 	);
 };
 
-export default Warning;
+export default AppInfo;

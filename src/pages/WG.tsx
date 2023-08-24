@@ -31,11 +31,11 @@ const WG = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/wg/categories" render={() => <WGCategories /> } exact={true} />
-				<Route path="/wg/syllables" render={() => <WGSyllables />} exact={true} />
-				<Route path="/wg/rewriterules" render={() => <WGRewrites />} exact={true} />
-				<Route path="/wg/output" render={() => <WGOutput />} exact={true} />
-				<Route path="/wg/settings" render={() => <WGSettings />} exact={true} />
+				<Route path="/wg/categories" render={() => <WGCategories {...props} /> } exact={true} />
+				<Route path="/wg/syllables" render={() => <WGSyllables {...props} />} exact={true} />
+				<Route path="/wg/rewriterules" render={() => <WGRewrites {...props} />} exact={true} />
+				<Route path="/wg/output" render={() => <WGOutput {...props} />} exact={true} />
+				<Route path="/wg/settings" render={() => <WGSettings {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="categories" href="/wg/categories">
