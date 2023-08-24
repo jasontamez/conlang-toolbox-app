@@ -37,6 +37,8 @@ import { Element, Text } from 'domhandler/lib/node';
 
 interface ModalProperties {
 	title?: string
+	modals: Function[],
+	setModals: Function
 }
 
 function stripHtml (input: string) {
@@ -45,12 +47,14 @@ function stripHtml (input: string) {
 
 export const SyntaxHeader = (props: ModalProperties) => {
 	const {
-		title = "MorphoSyntax"
+		title = "MorphoSyntax",
+		modals,
+		setModals
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	return (
 		<IonHeader>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} />
+			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} modals={modals} setModals={setModals} />
 			<IonToolbar>
 				<IonButtons slot="start">
 					<IonMenuButton />
@@ -206,13 +210,13 @@ const InfoModal = (props: any) => {
 		</IonItem>
 	);
 };
-export interface exporter {
+export interface exportProp {
 	title: string
 	output?: ( (string | [string, string])[] )[]
 	labels?: string[]
 	labelOverrideDocx?: boolean
 }
-export interface display {
+export interface displayProp {
 	boxesPerRow: number
 	rowLabels: string[]
 	class?: string
@@ -221,9 +225,91 @@ export interface display {
 	header?: string
 	inlineHeaders?: string[]
 	singleHeader?: string
-	export?: exporter
+	export?: exportProp
 }
-export interface anything {
+interface checkboxItemProps {
+	boxes: string[],
+	display: displayProp
+}
+const CheckboxItem = (props: checkboxItemProps) => {
+	const {
+		display,
+		boxes = []
+	} = props;
+	const {
+		rowLabels = [],
+		boxesPerRow,
+		labels = [],
+		header,
+		inlineHeaders,
+		labelClass = "label"
+	} = display;
+	const _rowLabels = rowLabels.slice();
+	const _labels = labels.slice();
+	let count = 0;
+	const rows: string[][] = [];
+	let temp: string[] = [];
+	boxes.forEach((box) => {
+		count++;
+		temp.push(box || "Error");
+		if(count >= boxesPerRow) {
+			temp.push(_rowLabels.shift() || "Error");
+			count = 0;
+			rows.push(temp);
+			temp = [];
+		}
+	});
+	const printRow = (row: string[], key: number, headers: undefined | string[]) => {
+		const label = row.pop() || "";
+		const textLabel = stripHtml(label);
+		let cc = 0;
+		return (
+			<IonRow key={"ROW-" + String(key)}>
+				{row.map((c, i) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
+				<IonCol key={"LX-" + String(cc++)}><div>{doParse(label)}</div></IonCol>
+			</IonRow>
+		);
+	};
+	const printRowWithLabel = (row: string[], key: number, headers: undefined | string[]) => {
+		const final = row.pop() || "";
+		const label = _labels.shift() || "";
+		const textLabel = stripHtml(label) + (final ? ", " + stripHtml(final) : "") ;
+		let cc = 0;
+		return (
+			<IonRow key={"ROW-" + String(key)}>
+				{row.map((c, i) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
+				{label && <IonCol className={labelClass} key={"LC-" + String(cc++)}><div>{doParse(label)}</div></IonCol>}
+				<IonCol key={"FC-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
+			</IonRow>
+		);
+	};
+	const printHeaderRow = (row: string[], key: number, hasLabel = false) => {
+		const final = row.pop() || "";
+		let label: any = undefined;
+		if(hasLabel) {
+			label = row.pop();
+		}
+		let cc = 0;
+		return (
+			<IonRow className="header" key={"ROW-" + String(key)}>
+				{row.map((c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>)}
+				{label && <IonCol className={labelClass} key={"L-" + String(cc++)}><div>{doParse(label)}</div></IonCol>}
+				<IonCol key={"F-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
+			</IonRow>
+		);
+	};
+	count = 1;
+	return (
+		<IonItem className="content">
+			<IonGrid className={display.class}>
+				{header ? <IonRow key="headerRow-0" className="header"><IonCol><div>{doParse(header)}</div></IonCol></IonRow> : ""}
+				{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!labels) : ""}
+				{rows.map((r) => labels ? printRowWithLabel(r.slice(), count++, inlineHeaders && inlineHeaders.slice()) : printRow(r.slice(), count++, inlineHeaders && inlineHeaders.slice()))}
+			</IonGrid>
+		</IonItem>
+	);
+};
+export interface specificPageInfo {
 	tag: string
 	level?: number
 	content?: string
@@ -236,25 +322,50 @@ export interface anything {
 	spectrum?: boolean
 	max?: number
 	boxes?: string[]
-	display?: display
+	display?: displayProp
 }
-export const parseMSJSON = (page: keyof (typeof ms)) => {
-	const doc = ms[page] as anything[];
+
+interface parsingProp {
+	page: keyof (typeof ms),
+	modals: Function[],
+	setModals: Function
+}
+export const parseMSJSON = (props: parsingProp) => {
+	const {
+		page,
+		modals,
+		setModals
+	} = props;
+	const doc = ms[page] as specificPageInfo[];
 	const key = page + "-";
 	let counter = 0;
 	return doc.map((bit) => {
 		counter++;
-		const tag = (bit.tag || "");
+		const {
+			tag = "",
+			level,
+			content = "",
+			prop,
+			start,
+			end,
+			spectrum,
+			max,
+			rows,
+			label,
+			title,
+			display,
+			boxes = []
+		} = bit;
 		switch(tag) {
 			case "Header":
-				return <HeaderItem key={key + String(counter)} level={bit.level}>{bit.content}</HeaderItem>;
+				return <HeaderItem key={key + String(counter)} level={level}>{content}</HeaderItem>;
 			case "Range":
-				return <RangeItem key={key + String(counter)} prop={bit.prop} start={bit.start} end={bit.end} innerClass={bit.spectrum ? "spectrum" : undefined} max={bit.max || undefined} />;
+				return <RangeItem key={key + String(counter)} prop={prop} start={start} end={end} innerClass={spectrum ? "spectrum" : undefined} max={max} />;
 			case "Text":
-				return <TextItem key={key + String(counter)} prop={bit.prop} rows={bit.rows || undefined} label={bit.label || ""}>{bit.content || ""}</TextItem>
+				return <TextItem key={key + String(counter)} prop={prop} rows={rows} label={label || ""}>{content}</TextItem>
 			case "Modal":
-				return <InfoModal key={key + String(counter)} title={bit.title} label={bit.label || undefined}>{
-					doParse(bit.content || "", {
+				return <InfoModal key={key + String(counter)} title={title} label={label} modals={modals} setModals={setModals}>{
+					doParse(content, {
 						replace: node => {
 							if(node instanceof Element && node.attribs && node.name === "transtable") {
 								return <TransTable rows={node.attribs.rows} className={node.attribs.className || ""}>{node.children.length ? (node.children[0] as Text).data : ""}</TransTable>;
@@ -264,79 +375,11 @@ export const parseMSJSON = (page: keyof (typeof ms)) => {
 					})
 				}</InfoModal>;
 			case "Checkboxes":
-				const disp = bit.display;
-				if(!disp) {
-					return "<div>CHECKBOX DISPLAY ERROR</div>";
-				}
-				const boxes = (bit.boxes || []);
-				const rowLabels = (disp.rowLabels || []).slice();
-				const perRow = disp.boxesPerRow;
-				const labels = (disp.labels || []).slice();
-				const header = disp.header;
-				const inlineHeaders = disp.inlineHeaders;
-				let count = 0;
-				let rows: string[][] = [];
-				let temp: string[] = [];
-				boxes.forEach((box) => {
-					count++;
-					temp.push(box || "Error");
-					if(count >= perRow) {
-						temp.push(rowLabels.shift() || "Error");
-						count = 0;
-						rows.push(temp);
-						temp = [];
-					}
-				});
-				const printRow = (row: string[], key: number, headers: undefined | string[]) => {
-					const label = row.pop() || "";
-					const textLabel = stripHtml(label);
-					let cc = 0;
-					return (
-						<IonRow key={"ROW-" + String(key)}>
-							{row.map((c, i) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
-							<IonCol key={"LX-" + String(cc++)}>{doParse(label)}</IonCol>
-						</IonRow>
-					);
-				};
-				const printRowWithLabel = (row: string[], key: number, headers: undefined | string[]) => {
-					const final = row.pop() || "";
-					const label = labels.shift() || "";
-					const labelClass = disp.labelClass || "label";
-					const textLabel = final ? stripHtml(label) + ", " + stripHtml(final) : stripHtml(label) ;
-					let cc = 0;
-					return (
-						<IonRow key={"ROW-" + String(key)}>
-							{row.map((c, i) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
-							<IonCol className={labelClass} key={"LC-" + String(cc++)}>{doParse(label)}</IonCol>
-							<IonCol key={"FC-" + String(cc++)}>{doParse(final)}</IonCol>
-						</IonRow>
-					);
-				};
-				const printHeaderRow = (row: string[], key: number, hasLabel = false) => {
-					const final = row.pop() || "";
-					let label: any = undefined;
-					if(hasLabel) {
-						label = row.pop();
-					}
-					let cc = 0;
-					return (
-						<IonRow className="header" key={"ROW-" + String(key)}>
-							{row.map((c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>)}
-							{label && <IonCol className={disp.labelClass || "label"} key={"L-" + String(cc++)}>{doParse(label)}</IonCol>}
-							<IonCol key={"F-" + String(cc++)}>{doParse(final)}</IonCol>
-						</IonRow>
-					);
-				};
-				count = 1;
-				return (
-					<IonItem className="content" key={key + String(counter)}>
-						<IonGrid className={disp.class || undefined}>
-							{header ? <IonRow key="headerRow-0" className="header"><IonCol>{doParse(header)}</IonCol></IonRow> : ""}
-							{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!disp.labels) : ""}
-							{rows.map((r) => disp.labels ? printRowWithLabel(r.slice(), count++, inlineHeaders && inlineHeaders.slice()) : printRow(r.slice(), count++, inlineHeaders && inlineHeaders.slice()))}
-						</IonGrid>
-					</IonItem>
-				);
+				return display ?
+					<CheckboxItem key={key + String(counter)} display={display} boxes={boxes} />
+				:
+					<div>CHECKBOX DISPLAY ERROR</div>
+				;
 		}
 		return "";
 	});

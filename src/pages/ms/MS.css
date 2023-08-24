@@ -6,7 +6,7 @@
 }
 #morphoSyntaxPage ion-list ion-grid {
 	--ion-grid-padding: 0;
-	margin: 0;
+	margin: 0 0 1rem;
 	background: var(--ion-background-shader);
 }
 #morphoSyntaxPage ion-list ion-grid.cols3 {
@@ -18,7 +18,8 @@
 	max-width: 50rem;
 }
 #morphoSyntaxPage ion-list ion-grid ion-row {
-	margin: 0.25rem 0;
+	margin: 0;
+	padding: 0.25rem 0;
 }
 #morphoSyntaxPage ion-list ion-grid.striped ion-row:nth-child(even) {
 	background: var(--ion-background-shader)
@@ -26,6 +27,10 @@
 #morphoSyntaxPage ion-list ion-item.h,
 #morphoSyntaxPage ion-list ion-item ion-grid ion-row.header {
 	font-weight: bold;
+}
+#morphoSyntaxPage ion-list ion-item ion-grid ion-row ion-col {
+	display: flex;
+	align-items: center;
 }
 #morphoSyntaxPage ion-list ion-item ion-grid ion-row ion-col.cbox {
 	max-width: 6rem;
