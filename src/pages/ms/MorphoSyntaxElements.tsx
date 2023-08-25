@@ -27,8 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	setSyntaxBool,
 	setSyntaxNum,
-	setSyntaxText,
-	setSyntaxState
+	setSyntaxText
 } from '../../components/ReduxDucksFuncs';
 import { MorphoSyntaxBoolObject, MorphoSyntaxNumberObject, MorphoSyntaxTextObject } from '../../components/ReduxDucksTypes';
 import doParse from 'html-react-parser';
@@ -171,29 +170,35 @@ const TransTable = (props: any) => {
 	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
 const InfoModal = (props: any) => {
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const dispatch = useDispatch();
-	const synState = useSelector((state: any) => state.morphoSyntaxModalState);
-	const id = "modal" + (props.title as string).replace(/[^a-zA-Z0-9]/g, "");
-	const label = props.label || "Read About It";
+	const {
+		title = "MISSING TITLE",
+		label = "Read About It",
+		className,
+		children,
+		modalPropsMaker
+	} = props;
+	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen, dispatch);
 	return (
-		<IonItem className={props.className ? props.className + " infoModal" : "infoModal"}>
-			<IonModal isOpen={synState[id] !== undefined} onDidDismiss={() => dispatch(setSyntaxState(id, false))}>
+		<IonItem className={className ? className + " infoModal" : "infoModal"}>
+			<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 				<IonHeader>
 					<IonToolbar color="primary">
-						<IonTitle>{props.title}</IonTitle>
+						<IonTitle>{title}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
 				<IonContent className="morphoSyntaxModal">
 					<IonList lines="none">
 						<IonItem>
-							{props.children}
+							{children}
 						</IonItem>
 					</IonList>
 				</IonContent>
 				<IonFooter>
 					<IonToolbar className="ion-text-wrap">
 						<IonButtons slot="end">
-							<IonButton onClick={() => dispatch(setSyntaxState(id, false))} slot="end" fill="solid" color="success">
+							<IonButton onClick={() => setIsOpen(false)} slot="end" fill="solid" color="success">
 								<IonIcon icon={checkmarkCircleOutline} slot="start" />
 								<IonLabel>Done</IonLabel>
 							</IonButton>
@@ -201,7 +206,7 @@ const InfoModal = (props: any) => {
 					</IonToolbar>
 				</IonFooter>
 			</IonModal>
-			<IonButton color="primary" onClick={() => dispatch(setSyntaxState(id, true))}>
+			<IonButton color="primary" onClick={() => setIsOpen(true)}>
 				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0", marginInlineEnd: "0.5rem"}} />
 				{label}
 			</IonButton>
