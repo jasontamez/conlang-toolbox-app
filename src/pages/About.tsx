@@ -8,13 +8,13 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonLabel,
 	IonCard,
 	IonCardHeader,
 	IonCardContent,
 	IonButtons,
 	IonMenuButton,
-	IonContent
+	IonContent,
+	IonCardTitle
 } from '@ionic/react';
 import {
 	createSharp,
@@ -47,14 +47,14 @@ const Home = (props: PageData) => {
 					<IonTitle className="ion-text-center">Conlang Toolbox</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent id="aboutPage">
+			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>
 						<IonCol>
 							<IonCard button={true} routerLink={`/ms/${ms || "msSettings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={buildSharp} />
-									<IonLabel className="ion-padding-start">MorphoSyntax</IonLabel>
+									<IonCardTitle className="ion-padding-start">MorphoSyntax</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>This tool is for designing the basic structure of your language.</p>
@@ -72,7 +72,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink={`/wg/${wg || "settings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={createSharp} />
-									<IonLabel className="ion-padding-start">WordGen</IonLabel>
+									<IonCardTitle className="ion-padding-start">WordGen</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>This tool is for creating words according to rules you set up.</p>
@@ -91,7 +91,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink={`/we/${we || "input"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={shuffleSharp} />
-									<IonLabel className="ion-padding-start">WordEvolve</IonLabel>
+									<IonCardTitle className="ion-padding-start">WordEvolve</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>
@@ -113,7 +113,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink="/lex" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={bookSharp} className="ion-align-self-center" />
-									<IonLabel className="ion-padding-start ion-align-self-start">Lexicon</IonLabel>
+									<IonCardTitle className="ion-padding-start ion-align-self-start">Lexicon</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>A place to store your conlangs.</p>
@@ -133,7 +133,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={listOutline} className="ion-align-self-center" />
-									<IonLabel className="ion-padding-start ion-align-self-start">Word Lists</IonLabel>
+									<IonCardTitle className="ion-padding-start ion-align-self-start">Word Lists</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>A small storehouse of basic words, useful for starting a lexicon.</p>
@@ -151,7 +151,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={globeOutline} className="ion-align-self-center" />
-									<IonLabel className="ion-padding-start ion-align-self-start">Extra Characters</IonLabel>
+									<IonCardTitle className="ion-padding-start ion-align-self-start">Extra Characters</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>On many pages, you'll see the Extra Characters icon at the top of the page.</p>
@@ -177,7 +177,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard id="appInfo" button={true} routerLink="/appinfo" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonLabel className="ion-align-self-start">App Info</IonLabel>
+									<IonCardTitle className="ion-align-self-start">App Info</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{VERSION.current}</div>

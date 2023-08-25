@@ -325,10 +325,10 @@ const Lex = (props: PageData) => {
 			<DeleteLexiconModal />
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonLoading
-	        	cssClass='loadingPage'
-    	    	isOpen={modalState.loadingPage === "lookingForLexicons"}
-    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
-	        	message={'Please wait...'}
+				cssClass='loadingPage'
+				isOpen={modalState.loadingPage === "lookingForLexicons"}
+				onDidDismiss={() => dispatch(setLoadingPage(false))}
+				message={'Please wait...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}

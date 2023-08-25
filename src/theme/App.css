@@ -56,6 +56,9 @@ ion-row:nth-child(odd) {
 ion-card-content ul li {
 	margin: 1rem 0;
 }
+ion-card-content ul.changelog li {
+	margin: 0.25rem 0;
+}
 
 .categories .categoryLongName,
 .rewriterules .description,
@@ -546,60 +549,44 @@ ion-loading.pageSwitchBackground {
 	--background-opacity: 1.0;
 }
 
-#aboutPage ion-grid {
+ion-content.containedCards ion-grid {
 	margin: 0 auto;
 	max-width: 31rem;
 	padding-bottom: 0;
 }
-#aboutPage ion-grid ion-row:last-of-type ion-col {
+ion-content.containedCards ion-grid ion-row:last-of-type ion-col {
 	padding-bottom: 0;
 }
-#aboutPage ion-card {
+ion-content.containedCards ion-card {
 	max-width: 30rem;
 	margin: 0.5rem 2rem;
 	border-radius: 1.5rem;
 }
-#aboutPage ion-card * {
+ion-content.containedCards ion-card * {
 	--inner-border-width: 0;
 }
-#aboutPage ion-card p {
+ion-content.containedCards ion-card p {
 	text-indent: 0 !important;
 	text-align: center;
 	background: var(--ion-card-highlight);
 	border-radius: 2rem;
 }
-#aboutPage ion-card ion-card-header {
-	font-size: 1.25rem;
-	font-weight: bold;
-	color: var(--ion-color-primary);
+ion-content.containedCards ion-card ion-card-header {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
 }
-#aboutPage ion-card#appInfo {
+ion-content.containedCards ion-card ion-card-header * {
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: var(--ion-color-primary);
+	margin-top: 0;
+}
+ion-content.containedCards ion-card#appInfo {
 	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
 	margin-bottom: 0;
 	position: relative;
-}
-#aboutPage ion-card#appInfo::before {
-	content: '';
-	display: block;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
-	box-shadow: 
-		inset rgba(0,0,0,0.2) 0px 4px 1px -2px,
-		inset rgba(0,0,0,0.14) 0px 2px 2px 0px,
-		inset rgba(0,0,0,0.12) 0px 1px 5px 0px,
-		inset rgba(0,0,0,0.14) 3px 0px 1px -2px,
-		inset rgba(0,0,0,0.12) 1px 0px 2px 0px,
-		inset rgba(0,0,0,0.14) -3px 0px 1px -2px,
-		inset rgba(0,0,0,0.12) -1px 0px 2px 0px
-		;
-	top: 0;
-	left: 0;
 }
 
 ion-modal::part(content) ion-item-group.buttonFilled ion-item:nth-of-type(even)::part(native),

@@ -242,8 +242,8 @@ const appMenuPages: MenuSection[] = [
 	{
 		pages: [
 			{
-				title: 'Credits',
-				url: '/credits',
+				title: 'App Info',
+				url: '/appinfo',
 				icon: '',
 				id: 'menuitemAbout'
 			}

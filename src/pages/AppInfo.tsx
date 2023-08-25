@@ -14,7 +14,10 @@ import {
 	IonButtons,
 	IonMenuButton,
 	IonContent,
-	IonButton
+	IonButton,
+	IonList,
+	IonItem,
+	IonCardTitle
 } from '@ionic/react';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { PageData } from '../components/ReduxDucksTypes';
@@ -35,39 +38,86 @@ const AppInfo = (props: PageData) => {
 					<IonTitle className="ion-text-center">App Info</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent id="aboutPage">
+			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>
 						<IonCol>
-							<IonCard button={false}>
+							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonLabel className="ion-padding-start">Notice</IonLabel>
+									<IonCardTitle>Notice</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
-									<p>The promised "major update" hit some unexpected, major snags and won't be happening.<br /><br />I <strong>WILL</strong> keep incrementally updating this app.</p>
-									<div>Changelog</div>
-									<div>Hardware back button should no longer kick you from the app without notice.</div>
-									<div>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</div>
-									<div>Added "Landau 200" to Word Lists.</div>
-									<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>
-									<div>To-do: Change Lexicon and others to use swipeable items for editing, deleting, etc (if possible)</div>
-									<div>To-do: Change MorphoSyntax tab bar to scroll horizontally (if possible)</div>
-									<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>
+									<p>The promised "major update" hit some unexpected, major snags and won't be happening.<br /><br />However, I <strong>WILL</strong> keep incrementally updating this app.</p>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={false}>
+							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonLabel className="ion-padding-start">Logs</IonLabel>
+									<IonCardTitle>Changelog</IonCardTitle>
+								</IonCardHeader>
+								<IonCardContent className="ion-padding-start">
+									<h2><strong>0.9.4</strong></h2>
+									<ul className="changelog">
+										<li>Hardware back button should no longer kick you from the app without notice.</li>
+										<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>
+										<li>Added "Landau 200" to Word Lists.</li>
+									</ul>
+									{/*<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>
+									<div>To-do: Change Lexicon and others to use swipeable items for editing, deleting, etc (if possible)</div>
+									<div>To-do: Change MorphoSyntax tab bar to scroll horizontally (if possible)</div>*/}
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard>
+								<IonCardHeader className="ion-text-center">
+									<IonCardTitle className="ion-align-self-start">Credits and Acknowledgements</IonCardTitle>
+								</IonCardHeader>
+								<IonCardContent>
+									<IonList className="ion-text-center">
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
+										</IonItem>
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
+										</IonItem>
+									</IonList>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard>
+								<IonCardHeader className="ion-text-center">
+									<IonCardTitle>Logs</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									{logs.map((log: string, i: number) => <div key={`${i}:${log}`}><strong>{i}:</strong> {log}</div>)}
 									<IonButton onClick={() => dispatch(setLog([]))}>Clear Log</IonButton>
 								</IonCardContent>
 							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>&nbsp;</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>&nbsp;</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "40px", width: "144px" } } /></a></div>
 						</IonCol>
 					</IonRow>
 				</IonGrid>

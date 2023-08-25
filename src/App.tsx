@@ -18,7 +18,6 @@ import WE from "./pages/WE";
 import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
-import Credits from './pages/Credits';
 import Info from './pages/AppInfo';
 import fireSwal from './components/Swal';
 
@@ -137,7 +136,6 @@ const MainOutlet = memo(() => {
 			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />
 			<Route path="/settings" render={() => <Settings {...defaultProps} />} />
 			<Route path="/wordlists" render={() => <WordLists {...defaultProps} />} />
-			<Route path="/credits" render={() => <Credits {...defaultProps} />} />
 			<Route exact={true} path="/" render={() => <About {...defaultProps} />} />
 		</IonRouterOutlet>
 	);
