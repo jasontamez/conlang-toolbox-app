@@ -119,7 +119,7 @@ const WGSet = (props: PageData) => {
 		<IonPage>
 			<MaybeLoadPreset />
 			<ManageCustomInfo />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap pageInfo={viewInfo} content={OptCard} />
 			<IonLoading
 	        	cssClass='loadingPage'

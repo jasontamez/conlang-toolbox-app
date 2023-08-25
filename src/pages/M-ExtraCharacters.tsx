@@ -31,8 +31,7 @@ import {
 	updateExtraCharsDisplay,
 	updateExtraCharsFavorites,
 	toggleExtraCharsBoolean,
-	updateExtraCharsToBeSaved,
-	addToLog
+	updateExtraCharsToBeSaved
 } from '../components/ReduxDucksFuncs';
 import charData from '../components/ExtraCharactersData';
 import fireSwal from '../components/Swal';
@@ -53,9 +52,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	//}
 	const {
 		isOpen,
-		setIsOpen,
-		modals,
-		setModals
+		setIsOpen
 	} = props;
 	const dispatch = useDispatch();
 	const {
@@ -69,22 +66,6 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const data: string[] = display === "Favorites" ? saved : objects[display] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
-	const [previous, setPrevious] = useState<boolean>(false);
-	useEffect(() => {
-		if(isOpen === previous) {
-			// nada
-		} else {
-			setPrevious(isOpen);
-			if(isOpen) {
-				setModals([setIsOpen, ...modals]);
-				dispatch(addToLog(`Added to modals`));
-			} else {
-				const newModals = modals.filter(m => m !== setIsOpen);
-				setModals(newModals);
-				dispatch(addToLog(`Removed from modals? old: ${modals.length} new: ${newModals.length}`));
-			}
-		}
-	}, [isOpen, modals, setIsOpen, setModals, previous, dispatch]);
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};

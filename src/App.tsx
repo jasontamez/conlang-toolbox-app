@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useMemo } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import {
 	IonApp,
@@ -49,6 +49,7 @@ import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 import { useDispatch } from 'react-redux';
+import modalPropertiesFunc from './components/ModalProperties';
 
 interface HistoryObject {
 	pathname: string,
@@ -63,7 +64,10 @@ const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
 	const [pages, setPages] = useState<string[]>([]);
 	const dispatch = useDispatch();
-	useEffect(() => {
+	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
+	const defaultProps = {
+		modalPropsMaker
+	};
 		return history.listen((info: HistoryObject, method: Method) => {
 			console.log(`@ ${method} ${JSON.stringify(info)}`);
 			switch (method) {

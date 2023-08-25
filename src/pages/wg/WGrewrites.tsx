@@ -102,7 +102,7 @@ const WGRew = (props: PageData) => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
-			<ExtraCharactersModal isOpen={isOpen} setIsOpen={setIsOpen} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap pageInfo={viewInfo} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>

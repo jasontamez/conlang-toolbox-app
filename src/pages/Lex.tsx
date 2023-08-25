@@ -323,7 +323,7 @@ const Lex = (props: PageData) => {
 			<ExportLexiconModal />
 			<LexiconStorageModal />
 			<DeleteLexiconModal />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonLoading
 	        	cssClass='loadingPage'
     	    	isOpen={modalState.loadingPage === "lookingForLexicons"}

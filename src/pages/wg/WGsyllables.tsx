@@ -77,7 +77,7 @@ const WGSyl = (props: PageData) => {
 	const firstBox = syllableObject.toggle ? "Single-Syllable\nWords" : "Syllables";
 	return (
 		<IonPage>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap pageInfo={viewInfo} content={SylCard} />
 			<IonHeader>
 				<IonToolbar>

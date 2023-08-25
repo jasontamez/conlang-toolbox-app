@@ -38,7 +38,7 @@ const Home = (props: PageData) => {
 
 	return (
 		<IonPage className={theme}>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

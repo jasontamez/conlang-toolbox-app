@@ -37,8 +37,7 @@ import { Element, Text } from 'domhandler/lib/node';
 
 interface ModalProperties {
 	title?: string
-	modals: Function[],
-	setModals: Function
+	modalPropsMaker: Function
 }
 
 function stripHtml (input: string) {
@@ -48,13 +47,12 @@ function stripHtml (input: string) {
 export const SyntaxHeader = (props: ModalProperties) => {
 	const {
 		title = "MorphoSyntax",
-		modals,
-		setModals
+		modalPropsMaker
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	return (
 		<IonHeader>
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} modals={modals} setModals={setModals} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonToolbar>
 				<IonButtons slot="start">
 					<IonMenuButton />
@@ -327,14 +325,12 @@ export interface specificPageInfo {
 
 interface parsingProp {
 	page: keyof (typeof ms),
-	modals: Function[],
-	setModals: Function
+	modalPropsMaker: Function
 }
 export const parseMSJSON = (props: parsingProp) => {
 	const {
 		page,
-		modals,
-		setModals
+		modalPropsMaker
 	} = props;
 	const doc = ms[page] as specificPageInfo[];
 	const key = page + "-";
@@ -364,7 +360,7 @@ export const parseMSJSON = (props: parsingProp) => {
 			case "Text":
 				return <TextItem key={key + String(counter)} prop={prop} rows={rows} label={label || ""}>{content}</TextItem>
 			case "Modal":
-				return <InfoModal key={key + String(counter)} title={title} label={label} modals={modals} setModals={setModals}>{
+				return <InfoModal key={key + String(counter)} title={title} label={label} modalPropsMaker={modalPropsMaker}>{
 					doParse(content, {
 						replace: node => {
 							if(node instanceof Element && node.attribs && node.name === "transtable") {

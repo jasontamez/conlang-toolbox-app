@@ -362,8 +362,7 @@ export interface StateObject {
 // Be sure to change stateObjectProps in ReducksDucks, too.
 
 export interface PageData {
-	modals: Function[],
-	setModals: Function
+	modalPropsMaker: Function
 }
 
 export interface ModalProperties {

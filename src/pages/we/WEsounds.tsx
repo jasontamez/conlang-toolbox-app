@@ -106,7 +106,7 @@ const WERew = (props: PageData) => {
 		<IonPage>
 			<AddSoundChangeModal />
 			<EditSoundChangeModal />
-			<ExtraCharactersModal isOpen={isOpenECM} setIsOpen={setIsOpenECM} {...props} />
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap pageInfo={viewInfo} content={SChCard} />
 			<IonHeader>
 				<IonToolbar>
