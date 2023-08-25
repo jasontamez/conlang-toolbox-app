@@ -1,9 +1,10 @@
 import React, { useEffect, useState, memo, useMemo } from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, /*useHistory*/ } from 'react-router-dom';
 import {
 	IonApp,
 	IonRouterOutlet,
-	IonSplitPane
+	IonSplitPane,
+	useIonRouter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
@@ -51,43 +52,49 @@ import { StateStorage } from './components/PersistentInfo';
 import { useDispatch } from 'react-redux';
 import modalPropertiesFunc from './components/ModalProperties';
 
-interface HistoryObject {
+/*interface HistoryObject {
 	pathname: string,
 	search: string,
 	hash: string,
 	key?: string
 };
-type Method = "POP" | "PUSH" | "REPLACE";
+type Method = "POP" | "PUSH" | "REPLACE";*/
 
 const MainOutlet = memo(() => {
-	const history = useHistory();
+	//const history = useHistory();
 	const [modals, setModals] = useState<Function[]>([]);
-	const [pages, setPages] = useState<string[]>([]);
+	//const [pages, setPages] = useState<string[]>([]);
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
 	const defaultProps = {
 		modalPropsMaker
 	};
+	/*useEffect(() => {
 		return history.listen((info: HistoryObject, method: Method) => {
 			console.log(`@ ${method} ${JSON.stringify(info)}`);
 			switch (method) {
 				case "POP":
 					// We hit the back button
 					setPages(pages.slice(1));
+					dispatch(addToLog(`POP: ${pages[0]}`));
 					break;
 				case "PUSH":
 					// Navigation
 					const newPages = [info.pathname, ...pages];
 					setPages(newPages.slice(0, 50));
+					dispatch(addToLog(`PUSH: ${newPages[0]}`));
 					break;
 				case "REPLACE":
 					// ignore?
 			}
 		});
-	}, [history, pages]);
+	}, [history, pages, dispatch]);*/
+	const router = useIonRouter();
 	useEffect((): (() => void) => {
+		// NOTE: Back Button will automatically go back in history for us.
 		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
 			if(modals.length) {
+				// Close an open modal
 				dispatch(addToLog("Attempting to close modal."));
 				// Get last modal
 				const [last, ...rest] = modals;
@@ -95,16 +102,15 @@ const MainOutlet = memo(() => {
 				setModals(rest);
 				// Close last modal
 				last(false);
-				console.log("!closed modal");
-			} else if (pages.length > 0) {
-				dispatch(addToLog("Navigating backward."));
+/*			} else if (pages.length > 0) {
+				dispatch(addToLog("Navigating backward?"));
 				// go back
 				history.go(-1);
 				console.log("!back");
-			} else {
-				// exit app?
+			} else {*/
+			} else if (!router.canGoBack()) {
+				// Are we trying to exit the app?
 				dispatch(addToLog("Possibly exiting?"));
-				console.log("!!exit");
 				fireSwal({
 					title: "Exit App?",
 					text: "Do you want to exit the app?",
@@ -121,11 +127,7 @@ const MainOutlet = memo(() => {
 				});
 			}
 		}).remove;
-	}, [history, modals, pages.length, dispatch]);
-	const defaultProps = {
-		modals,
-		setModals
-	};
+	}, [modals, router, dispatch]);
 	return (
 		<IonRouterOutlet>
 			<Route path="/wg" render={() => <WG {...defaultProps} />} />
