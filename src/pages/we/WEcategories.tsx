@@ -35,8 +35,10 @@ import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WECat = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const viewInfo = ['we', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -80,8 +82,8 @@ const WECat = (props: PageData) => {
 		<IonPage>
 			<AddCategoryWEModal />
 			<EditCategoryWEModal />
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap pageInfo={viewInfo} content={CatCard} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={CatCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -92,7 +94,7 @@ const WECat = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

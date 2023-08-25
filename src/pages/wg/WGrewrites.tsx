@@ -45,9 +45,11 @@ import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WGRew = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const viewInfo = ['wg', 'rewriterules'];
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
@@ -102,8 +104,8 @@ const WGRew = (props: PageData) => {
 		<IonPage>
 			<AddRewriteRuleModal />
 			<EditRewriteRuleModal />
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpen, setIsOpen)} />
-			<ModalWrap pageInfo={viewInfo} content={RewCard} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={RewCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -114,7 +116,7 @@ const WGRew = (props: PageData) => {
 						<IonButton onClick={() => setIsOpen(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

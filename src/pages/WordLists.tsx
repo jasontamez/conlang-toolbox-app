@@ -39,6 +39,8 @@ import { WLCard } from "./wg/WGCards";
 import fireSwal from '../components/Swal';
 
 const Home = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
 	const [modalState, wordListsState, waitingToAdd] = useSelector((state: any) => [state.modalState, state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
 	const theDisplay = wordListsState.display;
 	const dispatch = useDispatch();
@@ -103,7 +105,7 @@ const Home = (props: PageData) => {
 
 	return (
 		<IonPage>
-			<ModalWrap pageInfo={viewInfo} content={WLCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={WLCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -122,7 +124,7 @@ const Home = (props: PageData) => {
 						<IonButton onClick={() => pickAndSave()}>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

@@ -35,7 +35,6 @@ import {
 	startEditLexiconItem,
 	deleteLexiconItem,
 	updateLexiconOrder,
-	setLoadingPage,
 	updateLexiconBool,
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
@@ -60,7 +59,8 @@ import { Clipboard } from '@capacitor/clipboard';
 const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
+	const [isLoading, setIsLoading] =useState<boolean>(false);
+	const [appSettings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
 		const thenFunc = () => {
@@ -92,7 +92,7 @@ const Lex = (props: PageData) => {
 			options[x.toString()] = lexicon.columnTitles[x];
 		}
 		const thenFunc = (value: number) => {
-			dispatch(setLoadingPage("lookingForLexicons"));
+			setIsLoading(true);
 			let [col, dir] = lexicon.sort;
 			const toAdd = [...lexicon.waitingToAdd];
 			let everythingToSort = [...lexicon.lexicon];
@@ -109,7 +109,7 @@ const Lex = (props: PageData) => {
 			});
 			internalSort(col, dir, everythingToSort);
 			dispatch(clearDeferredLexiconItems());
-			dispatch(setLoadingPage(false));
+			setIsLoading(false);
 		};
 		if(cols === 1) {
 			return thenFunc(0);
@@ -326,8 +326,8 @@ const Lex = (props: PageData) => {
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonLoading
 				cssClass='loadingPage'
-				isOpen={modalState.loadingPage === "lookingForLexicons"}
-				onDidDismiss={() => dispatch(setLoadingPage(false))}
+				isOpen={isLoading}
+				onDidDismiss={() => setIsLoading(false)}
 				message={'Please wait...'}
 				spinner="bubbles"
 				/*duration={300000}*/

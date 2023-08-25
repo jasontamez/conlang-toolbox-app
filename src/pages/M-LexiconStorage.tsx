@@ -38,10 +38,23 @@ import fireSwal from '../components/Swal';
 
 const LexiconStorageModal = () => {
 	const dispatch = useDispatch();
-	const [appSettings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
+	const [appSettings, modalState, stateLexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
 	const closeThisModal = () => {
 		dispatch(closeModal("LexiconStorage"));
 	};
+	const {
+		columns,
+		columnOrder,
+		columnTitles,
+		columnSizes,
+		sort,
+		waitingToAdd,
+		lexiconWrap,
+		title,
+		key,
+		description,
+		lexicon
+	} = stateLexicon;
 	const clearLexicon = () => {
 		const thenFunc = () => {
 			const newLex: LexiconObject = {
@@ -49,22 +62,41 @@ const LexiconStorageModal = () => {
 				lastSave: 0,
 				title: "",
 				description: "",
-				columns: lexicon.columns,
-				columnOrder: [...lexicon.columnOrder],
-				columnTitles: [...lexicon.columnTitles],
-				columnSizes: [...lexicon.columnSizes],
-				sort: [...lexicon.sort],
+				columns: columns,
+				columnOrder: [...columnOrder],
+				columnTitles: [...columnTitles],
+				columnSizes: [...columnSizes],
+				sort: [...sort],
 				sorted: true,
 				lexicon: [],
-				waitingToAdd: [...lexicon.waitingToAdd],
+				waitingToAdd: [...waitingToAdd],
 				editing: undefined,
 				colEdit: undefined,
-				lexiconWrap: lexicon.lexiconWrap
+				lexiconWrap: lexiconWrap
 			};
 			dispatch(updateLexicon(newLex));
 			closeThisModal();
+			fireSwal({
+				title: "Lexicon cleared",
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 4000,
+				timerProgressBar: true,
+				position: "top"
+			});
 		};
-		if(!appSettings.disableConfirms && (lexicon.title || lexicon.key || lexicon.description || lexicon.lexicon.length > 0)) {
+		if(!(title || key || description || lexicon.length > 0)) {
+			fireSwal({
+				title: "Nothing to clear",
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 3000,
+				timerProgressBar: true,
+				position: "top"
+			});
+		} else if(appSettings.disableConfirms) {
+			thenFunc();
+		} else {
 			fireSwal({
 				title: "Delete everything?",
 				text: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
@@ -73,8 +105,6 @@ const LexiconStorageModal = () => {
 				showCancelButton: true,
 				confirmButtonText: "Yes, erase it."
 			}).then((result: any) => result.isConfirmed && thenFunc());
-		} else {
-			thenFunc();
 		}
 	};
 	const openLexiconModal = (which: keyof ModalStateObject) => {
@@ -92,27 +122,27 @@ const LexiconStorageModal = () => {
 	};
 	const saveLexicon: any = (
 		announce: string = "Lexicon saved.",
-		key: string = lexicon.key,
+		saveKey: string = key,
 		overwrite: boolean = true
 	) => {
 		// Save original key
-		const firstKey = lexicon.key;
+		const firstKey = saveKey;
 		// Save 'now'
 		const now = Date.now();
-		if(!lexicon.title) {
+		if(!title) {
 			return lexiconSaveError();
-		} else if(!key) {
-			key = uuidv4();
-			dispatch(updateLexiconText("key", key));
+		} else if(!saveKey) {
+			saveKey = uuidv4();
+			dispatch(updateLexiconText("key", saveKey));
 		}
 		// Dispatch to state
 		dispatch(updateLexiconNumber("lastSave", now));
 		dispatch(setLoadingPage("lookingForLexicons"));
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		let lex: LexiconObject = {...lexicon};
+		let lex: LexiconObject = {...stateLexicon};
 		// Use possibly-new key
-		lex.key = key;
+		lex.key = saveKey;
 		// Use 'now'
 		lex.lastSave = now;
 		// Deep copy lex.lexicon
@@ -126,10 +156,10 @@ const LexiconStorageModal = () => {
 		lex.columnTitles = [...lex.columnTitles];
 		lex.columnSizes = [...lex.columnSizes];
 		lex.sort = [...lex.sort];
-		LexiconStorage.setItem(key, lex)
+		LexiconStorage.setItem(saveKey, lex)
 			.then(() => {
 				// If we're overwriting, and it's a new key, delete the old one
-				if(overwrite && key !== firstKey) {
+				if(overwrite && saveKey !== firstKey) {
 					LexiconStorage.removeItem(firstKey);
 				}
 				dispatch(setLoadingPage(false));
@@ -144,12 +174,12 @@ const LexiconStorageModal = () => {
 		dispatch(closeModal("LexiconStorage"));
 	};
 	const saveLexiconNew = () => {
-		if(!lexicon.title) {
+		if(!title) {
 			return lexiconSaveError();
 		}
-		let key = uuidv4();
-		dispatch(updateLexiconText("key", key));
-		saveLexicon("Lexicon saved as new lexicon!", key, false);
+		let newKey = uuidv4();
+		dispatch(updateLexiconText("key", newKey));
+		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
 	};
 	const lexiconSaveError = () => {
 		fireSwal({
@@ -159,13 +189,13 @@ const LexiconStorageModal = () => {
 		});
 	};
 	const maybeExportLexicon = () => {
-		if(!lexicon.title) {
+		if(!title) {
 			return fireSwal({
 				title: "Error",
 				text: "Please give your lexicon a title before exporting it.",
 				icon: 'warning'
 			});
-		} else if (lexicon.lexicon.length < 1) {
+		} else if (lexicon.length < 1) {
 			return fireSwal({
 				title: "Error",
 				text: "Please add words to your lexicon before exporting it.",
@@ -178,7 +208,7 @@ const LexiconStorageModal = () => {
 	// TO-DO: MOVE TEXT WRAP (and sort) TO EDIT LEXICON MODAL
 	/*
 					<IonItem button={true} onClick={() => toggleWrap()}>
-						<IonLabel>{lexicon.lexiconWrap ? "Disable" : "Allow"} Text Wrapping</IonLabel>
+						<IonLabel>{lexiconWrap ? "Disable" : "Allow"} Text Wrapping</IonLabel>
 					</IonItem>
 	*/
 	return (

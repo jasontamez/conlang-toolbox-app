@@ -45,8 +45,10 @@ import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -106,8 +108,8 @@ const WERew = (props: PageData) => {
 		<IonPage>
 			<AddSoundChangeModal />
 			<EditSoundChangeModal />
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap pageInfo={viewInfo} content={SChCard} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={SChCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -118,7 +120,7 @@ const WERew = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

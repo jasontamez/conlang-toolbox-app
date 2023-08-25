@@ -21,14 +21,14 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	closeModal,
-	setTemporaryInfo,
-	setLoadingPage
+	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
 import { LexiconObject } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
 
 const DeleteLexiconModal = () => {
+	const [isLoading, setIsLoading] = React.useState(false);
 	const dispatch = useDispatch();
 	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
 	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
@@ -38,8 +38,9 @@ const DeleteLexiconModal = () => {
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
+			setIsLoading(true);
 			LexiconStorage.removeItem(key).then(() => {
-				dispatch(setLoadingPage(false));
+				setIsLoading(false);
 				dispatch(setTemporaryInfo(undefined));
 				dispatch(closeModal('DeleteLexicon'));
 				fireSwal({
@@ -50,7 +51,6 @@ const DeleteLexiconModal = () => {
 					showConfirmButton: false
 				});
 			});
-			dispatch(setLoadingPage("deletingLexicon"));
 		};
 		if(settings.disableConfirms) {
 			thenFunc();
@@ -68,8 +68,8 @@ const DeleteLexiconModal = () => {
 		<IonModal isOpen={modalState.DeleteLexicon} onDidDismiss={() => doClose()}>
 			<IonLoading
 	        	cssClass='loadingPage'
-    	    	isOpen={modalState.loadingPage === "deletingLexicon"}
-    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
+    	    	isOpen={isLoading}
+    		    onDidDismiss={() => setIsLoading(false)}
 	        	message={'Deleting...'}
 				spinner="bubbles"
 				/*duration={300000}*/

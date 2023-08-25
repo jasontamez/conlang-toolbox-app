@@ -45,8 +45,10 @@ import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -122,8 +124,8 @@ const WERew = (props: PageData) => {
 		<IonPage>
 			<AddTransformModal />
 			<EditTransformModal />
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap pageInfo={viewInfo} content={TraCard} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={TraCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -131,10 +133,10 @@ const WERew = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>Transformations</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

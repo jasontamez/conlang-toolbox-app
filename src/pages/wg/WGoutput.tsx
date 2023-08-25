@@ -43,7 +43,9 @@ import fireSwal from '../../components/Swal';
 import { Clipboard } from '@capacitor/clipboard';
 
 const WGOut = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
 	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -487,7 +489,7 @@ const WGOut = (props: PageData) => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
-			<ModalWrap pageInfo={viewInfo} content={OutCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -495,7 +497,7 @@ const WGOut = (props: PageData) => {
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

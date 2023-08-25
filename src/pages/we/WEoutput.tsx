@@ -46,6 +46,8 @@ import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 
 const WEOut = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
 	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
 		seek: arrayOfStringsAndStringArrays | RegExp
@@ -729,7 +731,7 @@ const WEOut = (props: PageData) => {
 			<OutputOptionsModal />
 			<MaybeLoadPreset />
 			<ManageCustomInfoWE />
-			<ModalWrap pageInfo={viewInfo} content={OutCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -737,7 +739,7 @@ const WEOut = (props: PageData) => {
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

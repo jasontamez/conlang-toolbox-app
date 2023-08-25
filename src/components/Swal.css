@@ -20,11 +20,19 @@
 	color: var(--ion-color-warning-contrast);
 	box-shadow: 0 0 0.625em var(--ion-color-warning-tint);
 }
+.conlangToolboxSwal.swal2-popup.swal2-toast.warnToast .swal2-confirm {
+	background: var(--ion-color-warning-shade);
+	color: var(--ion-color-warning-contrast);
+}
 .conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast,
 .conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast #swal2-title {
 	background: var(--ion-color-danger);
 	color: var(--ion-color-danger-contrast);
 	box-shadow: 0 0 0.625em var(--ion-color-danger-tint);
+}
+.conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast .swal2-confirm {
+	background: var(--ion-color-danger-shade);
+	color: var(--ion-color-danger-contrast);
 }
 .conlangToolboxSwal.swal2-popup .swal2-content {
 	color: var(--ion-color-primary-shade);

@@ -20,8 +20,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
-	updateInputLexicon,
-	openModal
+	updateInputLexicon
 } from '../../components/ReduxDucksFuncs';
 import { InpCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
@@ -31,8 +30,10 @@ import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WERew = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const viewInfo = ['we', 'input'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -99,8 +100,8 @@ const WERew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap pageInfo={viewInfo} content={InpCard} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={InpCard} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -111,7 +112,7 @@ const WERew = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("InfoModal"))}>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -119,14 +120,14 @@ const WERew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
 				<div className="WEinput">
-					<textarea spellCheck={false} id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onBlur={ () => updateInput() } />
+					<textarea spellCheck={false} id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onBlur={updateInput} />
 				</div>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonButton onClick={() => clearInput()} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
+						<IonButton onClick={clearInput} disabled={!rawInput} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
-						<IonButton onClick={() => importLexicon()} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
+						<IonButton onClick={importLexicon} disabled={lexicon.lexicon.length === 0} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

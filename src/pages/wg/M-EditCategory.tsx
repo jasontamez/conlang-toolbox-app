@@ -224,8 +224,7 @@ const EditCategoryModal = () => {
 						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250} />
 					</IonItem>
 					<IonItem>
-						<IonLabel className="wrappableInnards"><div>Use separate dropoff rate</div></IonLabel>
-						<IonToggle onClick={() => toggleDropoff()} slot="end" checked={editingCat.dropoffOverride !== undefined} />
+						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => toggleDropoff()} labelPlacement="start" checked={editingCat.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
 					</IonItem>
 					<IonItem id="categoryDropoffEditC" className={editingCat.dropoffOverride === undefined ? "hide" : ""}>
 						<IonRange min={0} max={50} pin={true} value={(editingCat.dropoffOverride === undefined ? settingsWG.categoryRunDropoff : editingCat.dropoffOverride)} onIonChange={e => {editingCat.dropoffOverride = (e.detail.value as Zero_Fifty)}} debounce={250}>

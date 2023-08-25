@@ -408,7 +408,7 @@ export const blankAppState: types.StateObject = {
 	},
 	extraCharactersState: {
 		display: "Favorites",
-		saved: ["Ĭ","Ị","ꭓ","դ","Ϩ"],
+		saved: [],
 		copyImmediately: false,
 		copyLater: "",
 		adding: false,
