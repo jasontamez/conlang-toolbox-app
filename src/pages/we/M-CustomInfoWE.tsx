@@ -23,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {  closeModal, loadCustomInfoWE, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { closeModal, loadCustomInfoWE, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WECustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';

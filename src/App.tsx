@@ -130,7 +130,7 @@ const MainOutlet = memo(() => {
 	return (
 		<IonRouterOutlet>
 			<Route path="/wg" render={() => <WG {...defaultProps} />} />
-			<Route path="/we"  render={() => <WE {...defaultProps} />} />
+			<Route path="/we" render={() => <WE {...defaultProps} />} />
 			<Route path="/lex" render={() => <Lexicon {...defaultProps} />} />
 			<Route path="/ms" render={() => <MS {...defaultProps} />} />
 			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />

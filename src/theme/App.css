@@ -818,5 +818,5 @@ ion-app .alertSelect .alert-radio-group button {
 /* Known bug where the keyboard will push the header off the screen */
 
 .scroll-content {
-    padding-block-end: 0 !important;
+	padding-block-end: 0 !important;
  }

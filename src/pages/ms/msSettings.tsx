@@ -187,10 +187,10 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<IonLoading
-	        	cssClass='loadingPage'
-    	    	isOpen={modalState.loadingPage === "lookingForSyntaxDocs"}
-    		    onDidDismiss={() => dispatch(setLoadingPage(false))}
-	        	message={'Please wait...'}
+				cssClass='loadingPage'
+				isOpen={modalState.loadingPage === "lookingForSyntaxDocs"}
+				onDidDismiss={() => dispatch(setLoadingPage(false))}
+				message={'Please wait...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}

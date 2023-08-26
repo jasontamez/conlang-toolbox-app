@@ -176,7 +176,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 				+ "/"
 				+ currentSoundChange.context;
 			if(currentSoundChange.anticontext) {
-				soundChange +=  "/" + currentSoundChange.anticontext;
+				soundChange += "/" + currentSoundChange.anticontext;
 			}
 			fireSwal({
 				title: "Delete " + soundChange + "?",

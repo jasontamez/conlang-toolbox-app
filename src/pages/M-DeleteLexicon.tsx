@@ -67,10 +67,10 @@ const DeleteLexiconModal = () => {
 	return (
 		<IonModal isOpen={modalState.DeleteLexicon} onDidDismiss={() => doClose()}>
 			<IonLoading
-	        	cssClass='loadingPage'
-    	    	isOpen={isLoading}
-    		    onDidDismiss={() => setIsLoading(false)}
-	        	message={'Deleting...'}
+				cssClass='loadingPage'
+				isOpen={isLoading}
+				onDidDismiss={() => setIsLoading(false)}
+				message={'Deleting...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}

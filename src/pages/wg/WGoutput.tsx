@@ -59,7 +59,7 @@ const WGOut = (props: PageData) => {
 		return div;
 	};
 	const $t = (text: string, tag: string = "span") => {
-		let t =  document.createElement(tag);
+		let t = document.createElement(tag);
 		t.classList.add("word");
 		t.textContent = text;
 		t.addEventListener("click", () => maybeSaveThisWord(t));

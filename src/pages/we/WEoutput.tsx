@@ -100,7 +100,7 @@ const WEOut = (props: PageData) => {
 		return e;
 	}
 	const $t = (text: string, tag: string = "div", classy: string[] = []) => {
-		let t =  document.createElement(tag);
+		let t = document.createElement(tag);
 		t.classList.add("word", ...classy);
 		t.textContent = text;
 		t.addEventListener("click", () => maybeSaveThisWord(t));
@@ -419,7 +419,7 @@ const WEOut = (props: PageData) => {
 				});
 				break;
 			case "rulesApplied":
-				// [original, word, [[rule, new word]...]]  	grid-template-columns: 1fr 2em 1fr;
+				// [original, word, [[rule, new word]...]]	grid-template-columns: 1fr 2em 1fr;
 				modifiedWords.forEach(unit => {
 					let div = $e("div", unit.shift() + " " + arrow);
 					div.append(" ", $t(unit.shift(), "span"));

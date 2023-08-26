@@ -135,10 +135,10 @@ const WGSet = (props: PageData) => {
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OptCard} />
 			<IonLoading
-	        	cssClass='loadingPage'
-    	    	isOpen={loadingOpen}
-    		    onDidDismiss={() => setLoadingOpen(false)}
-	        	message={'Please wait...'}
+				cssClass='loadingPage'
+				isOpen={loadingOpen}
+				onDidDismiss={() => setLoadingOpen(false)}
+				message={'Please wait...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}

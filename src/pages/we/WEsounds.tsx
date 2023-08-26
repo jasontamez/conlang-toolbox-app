@@ -81,7 +81,7 @@ const WERew = (props: PageData) => {
 		} else {
 			let rule = change.seek + arrow + change.replace + "/" + change.context;
 			if(change.anticontext) {
-				rule +=  "/" + change.anticontext;
+				rule += "/" + change.anticontext;
 			}
 			fireSwal({
 				title: "Delete " + rule + "?",

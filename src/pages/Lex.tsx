@@ -465,7 +465,7 @@ const Lex = (props: PageData) => {
 											</IonItem>
 										);
 									}}
-		  						/>
+								/>
 							</IonCol>
 						</IonRow>
 					</IonGrid>
