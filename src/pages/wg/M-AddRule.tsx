@@ -20,14 +20,14 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
-import { WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddRewriteRuleModal = () => {
+const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 	let newRule: WGRewriteRuleObject = {
 		key: "",
 		seek: "",
@@ -94,7 +94,7 @@ const AddRewriteRuleModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Transformation</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddRewriteRule'))}>

@@ -31,9 +31,8 @@ import {
 	checkmarkOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { colEdit, Lexicon } from '../components/ReduxDucksTypes';
+import { colEdit, ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
 import {
-	openModal,
 	closeModal,
 	updateLexiconColumns,
 	updateLexiconOrder,
@@ -45,7 +44,7 @@ import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
 import { $i } from '../components/DollarSignExports';
 
-const EditLexiconOrderModal = () => {
+const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
 	const theOrder = lexicon.columnOrder;
@@ -208,7 +207,7 @@ const EditLexiconOrderModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

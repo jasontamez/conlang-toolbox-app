@@ -44,10 +44,12 @@ import fireSwal from '../../components/Swal';
 import { Clipboard } from '@capacitor/clipboard';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
+import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WEOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
+	const [isOpenECM, setIsOpenECM] = React.useState<boolean>(false);
 	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
 		seek: arrayOfStringsAndStringArrays | RegExp
@@ -730,7 +732,8 @@ const WEOut = (props: PageData) => {
 		<IonPage>
 			<OutputOptionsModal />
 			<MaybeLoadPreset />
-			<ManageCustomInfoWE />
+			<ManageCustomInfoWE openECM={setIsOpenECM} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OutCard} />
 			<IonHeader>
 				<IonToolbar>

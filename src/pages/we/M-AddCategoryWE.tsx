@@ -21,12 +21,12 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WECategoryObject } from '../../components/ReduxDucksTypes';
-import { openModal, closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WECategoryObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $a, $i } from '../../components/DollarSignExports';
 
-const AddCategoryWEModal = () => {
+const AddCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 	let newCat: WECategoryObject = {
 		title: "",
 		label: "",
@@ -133,7 +133,7 @@ const AddCategoryWEModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Character Group</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddCategoryWE'))}>

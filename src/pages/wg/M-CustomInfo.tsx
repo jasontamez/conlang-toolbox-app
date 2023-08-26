@@ -23,15 +23,15 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, closeModal, loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
-import { WGCustomInfo } from '../../components/ReduxDucksTypes';
+import { closeModal, loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 import doExport from '../../components/ExportServices';
 
-const ManageCustomInfo = () => {
+const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [
 		modalState,
@@ -187,7 +187,7 @@ const ManageCustomInfo = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Manage Custom Info</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => doCleanClose()}>

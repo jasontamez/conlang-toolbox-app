@@ -22,12 +22,12 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WECategoryObject } from '../../components/ReduxDucksTypes';
-import { openModal, closeModal, doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WECategoryObject } from '../../components/ReduxDucksTypes';
+import { closeModal, doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
-const EditCategoryWEModal = () => {
+const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [categoryObject, settings] = useSelector((state: any) => [state.wordevolveCategories, state.appSettings], shallowEqual);
 	const catMap: Map<string, WECategoryObject> = new Map(categoryObject.map);
@@ -180,7 +180,7 @@ const EditCategoryWEModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

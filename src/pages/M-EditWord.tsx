@@ -21,9 +21,8 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { Lexicon } from '../components/ReduxDucksTypes';
+import { ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
 import {
-	openModal,
 	closeModal,
 	doEditLexiconItem,
 	cancelEditLexiconItem,
@@ -31,7 +30,7 @@ import {
 } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 
-const EditLexiconItemModal = () => {
+const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
 	const thisSingularItem: Lexicon = {...lexicon.lexicon[lexicon.editing]};
@@ -100,7 +99,7 @@ const EditLexiconItemModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

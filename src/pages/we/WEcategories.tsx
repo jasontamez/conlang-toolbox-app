@@ -80,8 +80,8 @@ const WECat = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCategoryWEModal />
-			<EditCategoryWEModal />
+			<AddCategoryWEModal openECM={setIsOpenECM} />
+			<EditCategoryWEModal openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={CatCard} />
 			<IonHeader>

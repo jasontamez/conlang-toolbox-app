@@ -21,9 +21,8 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
+import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	closeModal,
 	doEditSoundChangeWE,
 	cancelEditSoundChangeWE,
@@ -34,7 +33,7 @@ import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 
-const EditSoundChangeModal = () => {
+const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const hardReset = () => {
 		editingSoundChange = {
 			key: "",
@@ -195,7 +194,7 @@ const EditSoundChangeModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

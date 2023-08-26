@@ -102,8 +102,8 @@ const WGRew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddRewriteRuleModal />
-			<EditRewriteRuleModal />
+			<AddRewriteRuleModal openECM={setIsOpen} />
+			<EditRewriteRuleModal openECM={setIsOpen} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={RewCard} />
 			<IonHeader>

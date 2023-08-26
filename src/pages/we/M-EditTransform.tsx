@@ -24,9 +24,8 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WETransformObject } from '../../components/ReduxDucksTypes';
+import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	closeModal,
 	doEditTransformWE,
 	cancelEditTransformWE,
@@ -36,7 +35,7 @@ import fireSwal from '../../components/Swal';
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 
-const EditTransformModal = () => {
+const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	const hardReset = () => {
 		editingTransform = {
 			key: "",
@@ -161,7 +160,7 @@ const EditTransformModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

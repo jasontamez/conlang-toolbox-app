@@ -366,9 +366,13 @@ export interface PageData {
 }
 
 export interface ModalProperties {
-	isOpen: boolean,
-	setIsOpen: Function,
-	modals: Function[],
-	setModals: Function
+	isOpen: boolean
+	setIsOpen: Function
+}
+
+export interface ExtraCharactersModalOpener {
+	isOpen?: boolean
+	setIsOpen?: boolean
+	openECM: Function
 }
 

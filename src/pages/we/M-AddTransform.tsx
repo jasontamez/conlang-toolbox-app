@@ -23,13 +23,13 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
-import { WETransformObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddTransformModal = () => {
+const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	let newTransform: WETransformObject = {
 		key: "",
 		seek: "",
@@ -97,7 +97,7 @@ const AddTransformModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Transform</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddTransform'))}>

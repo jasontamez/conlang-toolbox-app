@@ -317,8 +317,8 @@ const Lex = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<EditLexiconItemModal />
-			<EditLexiconOrderModal />
+			<EditLexiconItemModal openECM={setIsOpenECM} />
+			<EditLexiconOrderModal openECM={setIsOpenECM} />
 			<LoadLexiconModal />
 			<ExportLexiconModal />
 			<LexiconStorageModal />

@@ -20,14 +20,14 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
-import { WESoundChangeObject } from '../../components/ReduxDucksTypes';
+import { closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddSoundChangeModal = () => {
+const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	let newSoundChange: WESoundChangeObject = {
 		key: "",
 		seek: "",
@@ -127,7 +127,7 @@ const AddSoundChangeModal = () => {
 				<IonToolbar color="primary">
 					<IonTitle>Add Sound Change</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(openModal("ExtraCharacters"))}>
+						<IonButton onClick={() => props.openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => dispatch(closeModal('AddSoundChange'))}>
