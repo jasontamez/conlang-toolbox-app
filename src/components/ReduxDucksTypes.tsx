@@ -353,7 +353,7 @@ export interface StateObject {
 	extraCharactersState: ExtraCharactersState
 	wordListsState: WordListsState
 	temporaryInfo: TemporaryInfo | undefined
-	logs: string[]
+//	logs: string[]
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.
 // Be sure to change stateObjectProps in ReducksDucks, too.

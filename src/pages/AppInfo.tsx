@@ -14,19 +14,16 @@ import {
 	IonButtons,
 	IonMenuButton,
 	IonContent,
-	IonButton,
 	IonList,
 	IonItem,
 	IonCardTitle
 } from '@ionic/react';
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { PageData } from '../components/ReduxDucksTypes';
-import { setLog } from '../components/ReduxDucksFuncs';
 
 const AppInfo = (props: PageData) => {
-	const [originalTheme, logs] = useSelector((state: any) => [state.appSettings.theme, state.logs], shallowEqual);
+	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
-	const dispatch = useDispatch();
 
 	return (
 		<IonPage className={theme}>
@@ -91,7 +88,7 @@ const AppInfo = (props: PageData) => {
 							</IonCard>
 						</IonCol>
 					</IonRow>
-					<IonRow>
+					{/*<IonRow>
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
@@ -103,7 +100,7 @@ const AppInfo = (props: PageData) => {
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
-					</IonRow>
+					</IonRow>*/}
 					<IonRow>
 						<IonCol>
 							<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>

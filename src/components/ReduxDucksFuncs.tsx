@@ -344,12 +344,12 @@ export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {
 //
 // LOGS
 //
-export function setLog(payload: string[]) {
+/*export function setLog(payload: string[]) {
 	return {type: consts.SET_LOG, payload};
 }
 export function addToLog(payload: string) {
 	return {type: consts.ADD_TO_LOG, payload};
-}
+}*/
 
 // Overwrite State
 export function overwriteState(payload: types.StateObject) {

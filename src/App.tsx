@@ -1,5 +1,7 @@
 import React, { useEffect, useState, memo, useMemo } from 'react';
 import { Route, /*useHistory*/ } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import compareVersions from 'compare-versions';
 import {
 	IonApp,
 	IonRouterOutlet,
@@ -43,12 +45,10 @@ import './theme/variables.css';
 import './theme/App.css';
 
 import { checkIfState, initialAppState } from './components/ReduxDucks';
-import { addToLog, overwriteState } from './components/ReduxDucksFuncs';
+import { overwriteState } from './components/ReduxDucksFuncs';
 import { VERSION } from './components/ReduxDucksConst';
-import compareVersions from 'compare-versions';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
-import { useDispatch } from 'react-redux';
 import modalPropertiesFunc from './components/ModalProperties';
 
 /*interface HistoryObject {
@@ -94,7 +94,7 @@ const MainOutlet = memo(() => {
 		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
 			if(modals.length) {
 				// Close an open modal
-				dispatch(addToLog("Attempting to close modal."));
+//				dispatch(addToLog("Attempting to close modal."));
 				// Get last modal
 				const [last, ...rest] = modals;
 				// Save remaining modals
@@ -109,7 +109,7 @@ const MainOutlet = memo(() => {
 			} else {*/
 			} else if (!router.canGoBack()) {
 				// Are we trying to exit the app?
-				dispatch(addToLog("Possibly exiting?"));
+//				dispatch(addToLog("Possibly exiting?"));
 				fireSwal({
 					title: "Exit App?",
 					text: "Do you want to exit the app?",
@@ -120,8 +120,8 @@ const MainOutlet = memo(() => {
 					if(result.isConfirmed) {
 						// Exit app!
 						Capacitor.exitApp();
-					} else {
-						dispatch(addToLog("Did not exit."));
+//					} else {
+//						dispatch(addToLog("Did not exit."));
 					}
 				});
 			}
@@ -147,10 +147,10 @@ const App = memo(() => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.9.4", "<")) {
-							// Do stuff to possibly bring storedState up to date
-							storedState.logs = [];
-						}
+//						if (compareVersions.compare(storedState.currentVersion, "0.9.4", "<")) {
+//							// Do stuff to possibly bring storedState up to date
+//							storedState.logs = [];
+//						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;
