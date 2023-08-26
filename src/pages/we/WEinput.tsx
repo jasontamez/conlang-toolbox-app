@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -28,6 +28,7 @@ import { Lexicon, PageData } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import debounce from '../../components/Debounce';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -38,19 +39,27 @@ const WERew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [rawInput, settings, lexicon] = useSelector((state: any) => [state.wordevolveInput, state.appSettings, state.lexicon], shallowEqual);
+	const [rawInput, disableConfirms, lexicon] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
 	const input = rawInput.join("\n");
-	const updateInput = () => {
-		const value: string = $i("lexiconInput").value;
+	const updateInput = useCallback((value: string) => {
 		const newInput: string[] = value.split("\n").map(v => v.trim()).filter(v => v);
 		dispatch(updateInputLexicon(newInput));
-	};
+	}, [dispatch]);
+	const inputUpdated = useCallback((e: any) => {
+		let value: string;
+		if(e.target && e.target.value !== undefined) {
+			value = (e.target.value);
+		} else {
+			value = ($i("lexiconInput").value);
+		}
+		debounce(updateInput, [value], 500);
+	}, [updateInput]);
 	const clearInput = () => {
 		const thenFunc = () => {
 			$i("lexiconInput").value = "";
-			updateInput();
+			updateInput("");
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -80,7 +89,7 @@ const WERew = (props: PageData) => {
 				imp && (newInput += imp + "\n");
 			});
 			$i("lexiconInput").value = newInput;
-			updateInput();
+			updateInput(newInput);
 		};
 		if(cols === 1) {
 			thenFunc(0);
@@ -120,11 +129,11 @@ const WERew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
 				<div className="WEinput">
-					<textarea spellCheck={false} id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onBlur={updateInput} />
+					<textarea spellCheck={false} aria-label="Words to Evolve" id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onChange={inputUpdated} />
 				</div>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonButton onClick={clearInput} disabled={!rawInput} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
+						<IonButton onClick={clearInput} disabled={!input} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton onClick={importLexicon} disabled={lexicon.lexicon.length === 0} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>

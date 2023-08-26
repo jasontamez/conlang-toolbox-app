@@ -1,6 +1,6 @@
 let bouncing: any = null;
 
-const debounce = (func: Function, args: any[], amount: number = 1000) => {
+function debounce (func: Function, args: any[], amount: number = 1000) {
 	if(bouncing) {
 		clearTimeout(bouncing);
 	}

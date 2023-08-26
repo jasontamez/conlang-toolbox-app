@@ -245,7 +245,7 @@ const appMenuPages: MenuSection[] = [
 				title: 'App Info',
 				url: '/appinfo',
 				icon: '',
-				id: 'menuitemAbout'
+				id: 'menuitemAppInfo'
 			}
 		],
 		id: 'menuCredits'
