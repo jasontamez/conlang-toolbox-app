@@ -265,7 +265,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 									<IonGrid>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonInput placeholder="Field Name" id={"thislex" + iStr} value={editing.columnTitles[i]} onIonBlur={() => setNewInfo(i, "thislex" + iStr)} />
+												<IonInput aria-label="Field Name" placeholder="Field Name" id={"thislex" + iStr} value={editing.columnTitles[i]} onIonBlur={() => setNewInfo(i, "thislex" + iStr)} />
 											</IonCol>
 											<IonCol size="auto">
 												<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>

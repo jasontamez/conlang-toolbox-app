@@ -396,7 +396,7 @@ const Lex = (props: PageData) => {
 												+ theSizes[i]
 											}
 											style={ { overflowY: "hidden" }}
-											key={theTitles[i]}
+											key={`${i}:${theTitles[i]}`}
 										>{theTitles[i]}</div>
 									))}
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
@@ -404,9 +404,9 @@ const Lex = (props: PageData) => {
 								</IonItem>
 								<IonItem className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
 									{theOrder.map((i: number) => {
-										const key = "inputLex" + i.toString();
+										const key = `inputLex${i}`;
 										return (
-											<IonInput id={key} key={key} className={theSizes[i]} type="text" style={ { overflowY: "hidden" }} />
+											<IonInput id={key} key={key} aria-label={`${theTitles[i]} input`} className={theSizes[i]} type="text" style={ { overflowY: "hidden" }} />
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>

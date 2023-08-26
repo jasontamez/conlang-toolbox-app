@@ -209,31 +209,31 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Beginning Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="searchEx" className="ion-margin-top serifChars" value={editingSoundChange!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Beginning expression" id="searchEx" className="ion-margin-top serifChars" value={editingSoundChange!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Ending Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Ending expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="contextLabel">Context Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.context} onIonChange={e => setNewInfo("context", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Context expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.context} onIonChange={e => setNewInfo("context", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.anticontext} onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Anticontext expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.anticontext} onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Sound Change Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="optDesc" className="ion-margin-top" value={editingSoundChange!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Description of the sound change" id="optDesc" className="ion-margin-top" value={editingSoundChange!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

@@ -181,7 +181,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => toggleFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
 							<IonIcon icon={heartOutline} />
 						</IonButton>
-						<IonInput id="toBeCopied" value={copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
+						<IonInput aria-label="Characters to be copied" id="toBeCopied" value={copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
 						<IonButton size="default" slot="end" onClick={() => toggleOption("showNames")} color={showNames ? "secondary" : undefined} fill={showNames ? "solid" : "clear"}>
 							<IonIcon icon={readerOutline} />
 						</IonButton>

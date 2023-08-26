@@ -159,11 +159,11 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
+						<IonInput aria-label="Title or description" id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
-						<IonInput id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
+						<IonInput aria-label="Short Label" id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -172,7 +172,7 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
+						<IonInput aria-label="Letters, characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
 					</IonItem>
 					<IonItem>
 						<IonToggle

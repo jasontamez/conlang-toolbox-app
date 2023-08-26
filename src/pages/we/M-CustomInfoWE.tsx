@@ -199,7 +199,7 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 							<IonLabel>Save Current Info</IonLabel>
 						</IonItemDivider>
 						<IonItem>
-							<IonInput id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
+							<IonInput aria-label="Custom Info Name" id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
 							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
 						</IonItem>
 					</IonItemGroup>
@@ -208,7 +208,7 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 							<IonLabel className="ion-text-wrap">Export Current Info to File</IonLabel>
 						</IonItemDivider>
 						<IonItem>
-							<IonInput id="currentInfoExportName" inputmode="text" placeholder="Name your custom info" type="text" />
+							<IonInput aria-label="Custom Info Name" id="currentInfoExportName" inputmode="text" placeholder="Name your custom info" type="text" />
 							<IonButton slot="end" onClick={() => maybeExportInfo()} strong={true} color="success">Export</IonButton>
 						</IonItem>
 					</IonItemGroup>

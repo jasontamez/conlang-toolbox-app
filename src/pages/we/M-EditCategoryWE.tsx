@@ -195,7 +195,7 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title/Description" value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
+						<IonInput aria-label="Title or description" value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
@@ -208,7 +208,7 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
+						<IonInput aria-label="Letters, Characters" value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

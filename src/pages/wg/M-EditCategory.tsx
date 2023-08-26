@@ -208,11 +208,11 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250} />
+						<IonInput aria-label="Title or description" value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250} />
 					</IonItem>
-					<IonItem>
-						<IonLabel className="ion-margin-end labelLabelEdit">Short Label:</IonLabel>
-						<IonInput value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1} />
+					<IonItem style={{marginTop: "0.25rem"}}>
+						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
+						<IonInput aria-label="Short label" value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1} />
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -221,7 +221,7 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250} />
+						<IonInput aria-label="Letters, characters" value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250} />
 					</IonItem>
 					<IonItem>
 						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => toggleDropoff()} labelPlacement="start" checked={editingCat.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>

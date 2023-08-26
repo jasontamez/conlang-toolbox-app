@@ -254,7 +254,7 @@ const MExportAllData = () => {
 						</IonLabel>
 					</IonItem>
 					<IonItem lines="none">
-						<IonTextarea wrap="soft" rows={12} value={output}></IonTextarea>
+						<IonTextarea aria-label="Exported Data" wrap="soft" rows={12} value={output}></IonTextarea>
 					</IonItem>
 				</IonList>
 			</IonContent>

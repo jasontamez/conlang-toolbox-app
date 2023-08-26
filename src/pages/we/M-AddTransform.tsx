@@ -112,19 +112,19 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Input Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Input expression" id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Output expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transform Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Description of the transform" id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
 					</IonItem>
 					<IonItemDivider>
 						<IonLabel>Transform Direction:</IonLabel>

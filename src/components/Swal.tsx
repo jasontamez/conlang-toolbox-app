@@ -6,7 +6,7 @@ let queue = new Set();
 let toastActive = false;
 
 const fireSwal: any = async (options: any = {}) => {
-	if(!options.heightAuto) {
+	if(!options.toast && !options.heightAuto) {
 		options.heightAuto = false;
 	}
 	if(options.customClass) {
