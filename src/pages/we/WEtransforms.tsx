@@ -125,7 +125,7 @@ const WERew = (props: PageData) => {
 			<AddTransformModal openECM={setIsOpenECM} />
 			<EditTransformModal openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={TraCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><TraCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

@@ -489,7 +489,7 @@ const WGOut = (props: PageData) => {
 	return (
 		<IonPage>
 			<OutputOptionsModal />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OutCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

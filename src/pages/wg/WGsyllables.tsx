@@ -80,7 +80,7 @@ const WGSyl = (props: PageData) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={SylCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><SylCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

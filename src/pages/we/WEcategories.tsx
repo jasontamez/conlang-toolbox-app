@@ -83,7 +83,7 @@ const WECat = (props: PageData) => {
 			<AddCategoryWEModal openECM={setIsOpenECM} />
 			<EditCategoryWEModal openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={CatCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CatCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

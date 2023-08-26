@@ -110,7 +110,7 @@ const WERew = (props: PageData) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={InpCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><InpCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

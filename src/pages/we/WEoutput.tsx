@@ -734,7 +734,7 @@ const WEOut = (props: PageData) => {
 			<MaybeLoadPreset />
 			<ManageCustomInfoWE openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={OutCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">

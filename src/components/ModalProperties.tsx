@@ -12,11 +12,9 @@ function modalPropertiesFunc (modals: Function[], setModals: Function, dispatch:
 				setPrevious(isOpen);
 				if(isOpen) {
 					setModals([setIsOpen, ...modals]);
-//					dispatch(addToLog(`Added to modals`));
 				} else {
 					const newModals = modals.filter(m => m !== setIsOpen);
 					setModals(newModals);
-//					dispatch(addToLog(`Removed from modals (non-button) old: ${modals.length} new: ${newModals.length}`));
 				}
 			}
 		}, [isOpen, setIsOpen, previous]);

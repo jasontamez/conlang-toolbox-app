@@ -11,11 +11,11 @@ import {
 } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
 
-const ModalWrap = (props: {isOpen: boolean, setIsOpen: Function, content: any}) => {
+const ModalWrap = (props: {isOpen: boolean, setIsOpen: Function, children: React.ReactNode}) => {
 	const {
-		content,
 		isOpen,
-		setIsOpen
+		setIsOpen,
+		children
 	} = props;
 	return (
 		<IonModal
@@ -33,7 +33,7 @@ const ModalWrap = (props: {isOpen: boolean, setIsOpen: Function, content: any}) 
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				{content}
+				{children}
 			</IonContent>
 		</IonModal>
 	);

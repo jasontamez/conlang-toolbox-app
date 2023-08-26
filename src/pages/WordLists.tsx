@@ -105,7 +105,7 @@ const Home = (props: PageData) => {
 
 	return (
 		<IonPage>
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)} content={WLCard} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><WLCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
