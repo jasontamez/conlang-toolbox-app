@@ -52,7 +52,7 @@ const WERew = (props: PageData) => {
 		} else {
 			value = ($i("lexiconInput").value);
 		}
-		debounce(updateInput, [value], 500);
+		debounce(updateInput, [value], 500, "WEinput");
 	}, [updateInput]);
 	const clearInput = () => {
 		const thenFunc = () => {

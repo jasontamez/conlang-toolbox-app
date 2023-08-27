@@ -136,7 +136,7 @@ const Lex = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000));
+		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000), "updateLexText");
 	};
 	const theOrder = lexicon.columnOrder;
 	const theTitles = lexicon.columnTitles;

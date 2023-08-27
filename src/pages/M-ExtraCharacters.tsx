@@ -133,7 +133,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		}
 	}, [dispatch, copyImmediately]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
-		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250);
+		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue) => {
 		setIsFavoriting(newValue);

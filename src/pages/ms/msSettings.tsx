@@ -183,7 +183,7 @@ const Syntax = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		debounce(dispatch, [setMorphoSyntaxText(prop, value)], (prop === "description" ? 2000 : 1000));
+		debounce(dispatch, [setMorphoSyntaxText(prop, value)], (prop === "description" ? 2000 : 1000), "saveMS");
 	};
 	return (
 		<IonPage>

@@ -1282,7 +1282,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			return state;
 	}
 	// Some sort of store-state function goes here
-	debounce(saveCurrentState, [final]);
+	debounce(saveCurrentState, [final], 1000, "stateSave");
 	console.log(action.type);
 	console.log(final);
 	return final;

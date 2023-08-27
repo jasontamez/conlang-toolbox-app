@@ -1,12 +1,12 @@
-let bouncing: any = null;
+const bouncing: { [key: string]: any } = {};
 
-function debounce (func: Function, args: any[], amount: number = 1000) {
-	if(bouncing) {
-		clearTimeout(bouncing);
+function debounce (func: Function, args: any[], amount: number, namespace: string = "default") {
+	if(bouncing[namespace]) {
+		clearTimeout(bouncing[namespace]);
 	}
-	bouncing = setTimeout(
+	bouncing[namespace] = setTimeout(
 		() => {
-			bouncing = null;
+			delete bouncing[namespace];
 			func.call(null, ...args);
 		},
 	amount);
