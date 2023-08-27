@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	useIonViewDidEnter,
 	IonContent,
@@ -9,16 +9,14 @@ import {
 	IonButtons,
 	IonTitle,
 	IonButton,
-	IonIcon
+	IonIcon,
+	IonLoading
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
-	openModal,
-	closeModal,
 	addDeferredLexiconItems,
 	removeDeferredLexiconItem,
-	setLoadingPage,
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
 import {
@@ -48,8 +46,13 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 
 const WEOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
-	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
-	const [isOpenECM, setIsOpenECM] = React.useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);
+	const [isOpenLoadPreset, setIsOpenLoadPreset] = useState<boolean>(false);
+	const [isOpenManageCustomWE, setIsOpenManageCustomWE] = useState<boolean>(false);
+	const [isPickingSaving, setIsPickingSaving] = useState<boolean>(false);
+	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
 	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
 		seek: arrayOfStringsAndStringArrays | RegExp
@@ -66,18 +69,14 @@ const WEOut = (props: PageData) => {
 	});
 	const [
 		rawInput,
-		//settings,
 		settingsWE,
-		modalState,
 		transformObject,
 		soundChangesObject,
 		categoriesWE,
 		//lexicon
 	] = useSelector((state: any) => [
 		state.wordevolveInput,
-		//state.appSettings,
 		state.wordevolveSettings,
-		state.modalState,
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges,
 		state.wordevolveCategories,
@@ -680,7 +679,7 @@ const WEOut = (props: PageData) => {
 	// // //
 
 	const pickAndSave = () => {
-		dispatch(openModal("PickAndSaveWE"));
+		setIsPickingSaving(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
 			toast: true,
@@ -691,7 +690,7 @@ const WEOut = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
-		dispatch(closeModal("PickAndSaveWE"));
+		setIsPickingSaving(false);
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
@@ -715,24 +714,33 @@ const WEOut = (props: PageData) => {
 	// // //
 
 	const openCustomInfoModal = () => {
+		setLoadingOpen(true);
 		let titles: string[] = [];
 		CustomStorageWE.iterate((value, title) => {
 			titles.push(title);
 			return; // Blank return keeps the loop going
 		}).then(() => {
 			dispatch(setTemporaryInfo({ type: "custominfoWE", data: titles }));
-			dispatch(setLoadingPage(false));
-			dispatch(openModal("ManageCustomInfoWE"));
+			setLoadingOpen(false);
+			setIsOpenManageCustomWE(true);
 		}).catch((err) => {
 			console.log(err);
 		});
-		dispatch(setLoadingPage("loadingCustomInfo"));
 	};
 	return (
 		<IonPage>
-			<OutputOptionsModal />
-			<MaybeLoadPreset />
-			<ManageCustomInfoWE openECM={setIsOpenECM} />
+			<IonLoading
+				cssClass='loadingPage'
+				isOpen={loadingOpen}
+				onDidDismiss={() => setLoadingOpen(false)}
+				message={'Please wait...'}
+				spinner="bubbles"
+				/*duration={300000}*/
+				duration={1000}
+			/>
+			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
+			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+			<ManageCustomInfoWE {...props.modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>
@@ -752,7 +760,7 @@ const WEOut = (props: PageData) => {
 				<div id="WEoutput">
 					<IonButton
 						className="TL"
-						onClick={() => dispatch(openModal("WEPresetPopup"))}
+						onClick={() => setIsOpenLoadPreset(true)}
 						color="tertiary"
 						strong={true}
 					><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
@@ -775,7 +783,7 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => dispatch(openModal("WEOutputOptions"))}
+							onClick={() => setIsOpenOptions(true)}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
@@ -784,7 +792,7 @@ const WEOut = (props: PageData) => {
 							onClick={() => copyText()}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
-							className={modalState.PickAndSaveWE ? "" : "hide"}
+							className={isPickingSaving ? "" : "hide"}
 							id="doneSavingButton"
 							expand="block"
 							strong={false}
@@ -792,14 +800,14 @@ const WEOut = (props: PageData) => {
 							onClick={() => donePickingAndSaving()}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 						<IonButton
-							className={modalState.PickAndSaveWE ? "hide" : ""}
+							className={isPickingSaving ? "hide" : ""}
 							expand="block"
 							strong={false}
 							color="secondary"
 							onClick={() => pickAndSave()}
 						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
 					</div>
-					<div id="outputPaneWE" className={"largePane selectable" + (modalState.PickAndSaveWE ? " pickAndSave" : "")}></div>
+					<div id="outputPaneWE" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}></div>
 				</div>
 			</IonContent>
 		</IonPage>

@@ -19,20 +19,20 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	closeModal,
 	updateLexicon,
 	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import { LexiconObject } from '../components/ReduxDucksTypes';
+import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import fireSwal from '../components/Swal';
 
-const LoadLexiconModal = () => {
+const LoadLexiconModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
+	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
 	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('LoadLexicon'));
+		setIsOpen(false);
 	};
 	const loadThis = (key: string) => {
 		data.every((pair: [string, LexiconObject]) => {
@@ -42,7 +42,7 @@ const LoadLexiconModal = () => {
 			}
 			const thenFunc = () => {
 				dispatch(updateLexicon(pair[1]));
-				dispatch(closeModal('LoadLexicon'));
+				setIsOpen(false);
 			};
 			if(settings.disableConfirms) {
 				thenFunc();
@@ -60,7 +60,7 @@ const LoadLexiconModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.LoadLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Load Lexicon</IonTitle>

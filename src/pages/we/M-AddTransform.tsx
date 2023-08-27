@@ -22,14 +22,15 @@ import {
 	addOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addTransformWE } from '../../components/ReduxDucksFuncs';
+import { useDispatch } from "react-redux";
+import { addTransformWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	let newTransform: WETransformObject = {
 		key: "",
 		seek: "",
@@ -49,7 +50,6 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		$q("ion-radio-group").value = "both";
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof WETransformObject,
 		VAL extends WETransformObject[KEY]
@@ -80,7 +80,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		// Everything ok!
 		// Create unique ID for this transform
 		newTransform.key = uuidv4();
-		close && dispatch(closeModal('AddTransform'));
+		close && setIsOpen(false);
 		dispatch(addTransformWE(newTransform));
 		hardReset();
 		fireSwal({
@@ -92,15 +92,15 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddTransform} onDidDismiss={() => dispatch(closeModal('AddTransform'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Transform</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(closeModal('AddTransform'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

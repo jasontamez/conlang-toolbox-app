@@ -16,38 +16,44 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	closeModal,
-	setLoadingPage
-} from '../components/ReduxDucksFuncs';
-import { Lexicon } from '../components/ReduxDucksTypes';
+import { shallowEqual, useSelector } from "react-redux";
+import { Lexicon, ModalProperties } from '../components/ReduxDucksTypes';
 import doExport from '../components/ExportServices';
 //import { $q, $delay } from '../components/DollarSignExports';
 
-const ExportLexiconModal = () => {
-	const dispatch = useDispatch();
-	const [modalState, lexicon] = useSelector((state: any) => [state.modalState, state.lexicon], shallowEqual);
+interface ExportModalProps extends ModalProperties {
+	setLoading: Function
+}
+
+const ExportLexiconModal = (props: ExportModalProps) => {
+	const { isOpen, setIsOpen, setLoading } = props;
+	const {
+		title,
+		description,
+		columnTitles,
+		lexicon,
+		columns
+	} = useSelector((state: any) => state.lexicon, shallowEqual);
 	const doClose = () => {
-		dispatch(closeModal('ExportLexicon'));
-		modalState.loadingPage === "deletingLexicon" && dispatch(setLoadingPage(false));
+		setIsOpen(false);
+		setLoading(false);
 	};
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
 	const doNewlines = (e: Event) => doText(e, "\n", "\n\n");
 	const doText = (e: Event, separator: string, unitSplit: string = "\n") => {
-		let lines: string[] = [lexicon.columnTitles.join(separator)];
-		lexicon.lexicon.forEach((lex: Lexicon) => lines.push(lex.columns.join(separator)));
-		let output = lexicon.title + "\n" + lexicon.description + "\n\n" + lines.join(unitSplit) + "\n";
+		let lines: string[] = [columnTitles.join(separator)];
+		lexicon.forEach((lex: Lexicon) => lines.push(lex.columns.join(separator)));
+		let output = title + "\n" + description + "\n\n" + lines.join(unitSplit) + "\n";
 		doDownload(e, output, "txt");
 	};
 	const doCSVall = (e: Event) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
-		let lines: string[] = [lexicon.columnTitles.map((title: string) => quotify(title)).join(",")];
-		lexicon.lexicon.forEach(
+		let lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
+		lexicon.forEach(
 			(lex: Lexicon) => lines.push(lex.columns.map((title: string) => quotify(title)).join(","))
 		);
-		let cols = lexicon.columns;
+		let cols = columns;
 		let final = cols < 2 ? "," : "";
 		let filler = "";
 		if(cols > 2) {
@@ -57,17 +63,16 @@ const ExportLexiconModal = () => {
 				filler = filler + ",";
 			}
 		}
-		let output =
-			"\"TITLE\"," + quotify(lexicon.title) + filler
-			+ "\n\"Description\"," + lexicon.description + filler
-			+ "\n" + lines.join(final + "\n") + "\n";
+		let output = `"TITLE",${quotify(title)}${filler}\n`
+			+ `"Description",${description}${filler}\n`
+			+ lines.join(final + "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
 	const doCSV = (e: Event) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
-		let lines: string[] = [lexicon.columnTitles.map((title: string) => quotify(title)).join(",")];
-		lexicon.lexicon.forEach(
-			(lex: Lexicon) => lines.push(lex.columns.map((title: string) => quotify(title)).join(","))
+		let lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
+		lexicon.forEach(
+			(lex: Lexicon) => lines.push(lex.columns.map((line: string) => quotify(line)).join(","))
 		);
 		let output = lines.join("\n") + "\n";
 		doDownload(e, output, "csv");
@@ -75,24 +80,25 @@ const ExportLexiconModal = () => {
 	const doJSON = (e: Event) => {
 		let base: any = {};
 		let colTitles: string[] = [];
-		lexicon.columnTitles.forEach((title: string) => {
-			if(base[title] !== undefined) {
+		columnTitles.forEach((columnTitle: string) => {
+			let colTitle = columnTitle;
+			if(base[colTitle] !== undefined) {
 				let c = 0;
-				while(base[title + c.toString()] !== undefined) {
+				while(base[colTitle + c.toString()] !== undefined) {
 					c++;
 				}
-				title = title + c.toString();
+				colTitle = colTitle + c.toString();
 			}
-			base[title] = 1;
-			colTitles.push(title);
+			base[colTitle] = 1;
+			colTitles.push(colTitle);
 		});
-		let colMax = lexicon.columns;
+		let colMax = columns;
 		base = {
-			title: lexicon.title,
-			description: lexicon.description,
+			title,
+			description,
 			content: []
 		};
-		lexicon.lexicon.forEach((lex: Lexicon) => {
+		lexicon.forEach((lex: Lexicon) => {
 			let item: any = {};
 			for(let x = 0; x < colMax; x++) {
 				item[colTitles[x]] = lex.columns[x];
@@ -105,21 +111,17 @@ const ExportLexiconModal = () => {
 	const doXML = (e: Event) => {
 		let XML: string =
 			'<?xml version="1.0" encoding="UTF-8"?>'
-			+ "\n<Lexicon>\n\t<Title>"
-			+ lexicon.title
-			+ "</Title>\n\t<Description>"
-			+ lexicon.description
-			+ "</Description>\n\t<Headers>\n";
-		lexicon.columnTitles.forEach((title: string, ind: number) => {
-			let i = String(ind + 1);
-			XML = XML + "\t\t<Column" + i + ">" + title + "</Column" + i + ">\n";
+			+ `\n<Lexicon>\n\t<Title>${title}</Title>\n\t<Description>${description}</Description>\n\t<Headers>\n`;
+		columnTitles.forEach((colTitle: string, ind: number) => {
+			const i = String(ind + 1);
+			XML = XML + `\t\t<Column${i}>${colTitle}</Column${i}>\n`;
 		});
 		XML = XML + "\t</Headers>\n\t<Content>\n";
-		lexicon.lexicon.forEach((lex: Lexicon) => {
+		lexicon.forEach((lex: Lexicon) => {
 			XML = XML + "\t\t<Item>\n";
 			lex.columns.forEach((value: string, ind: number) => {
-				let i = String(ind + 1);
-				XML = XML + "\t\t\t<Column" + i + ">" + value + "</Column" + i + ">\n";
+				const i = String(ind + 1);
+				XML = XML + `\t\t\t<Column${i}>${value}</Column${i}>\n`;
 			});
 			XML = XML + "\t\t</Item>\n"
 		});
@@ -128,17 +130,17 @@ const ExportLexiconModal = () => {
 	};
 	const doDownload = (e: Event, output: string, extension: string) => {
 		e.preventDefault();
-		const filename = lexicon.title + " - " + (new Date()).toDateString() + "." + extension;
-		dispatch(setLoadingPage("deletingLexicon"));
+		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
+		setLoading(true);
 		doExport(output, filename)
 			.catch((e = "Error?") => console.log(e))
 			.then(() => doClose());
 	};
 	return (
-		<IonModal isOpen={modalState.ExportLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export Lexicon: {lexicon.title}</IonTitle>
+					<IonTitle>Export Lexicon: {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />

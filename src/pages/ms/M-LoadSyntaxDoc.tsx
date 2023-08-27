@@ -19,20 +19,20 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	closeModal,
 	setMorphoSyntax,
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
-import { MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { ModalProperties, MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 
-const LoadMSModal = () => {
+const LoadMSModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
+	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
 	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('LoadMS'));
+		setIsOpen(false);
 	};
 	interface MSOmod extends MorphoSyntaxObject {
 		boolStrings?: string[]
@@ -53,7 +53,7 @@ const LoadMSModal = () => {
 			};
 			const thenFunc = () => {
 				dispatch(setMorphoSyntax(newObj));
-				dispatch(closeModal('LoadMS'));
+				setIsOpen(false);
 			};
 			if(settings.disableConfirms) {
 				thenFunc();
@@ -71,7 +71,7 @@ const LoadMSModal = () => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.LoadMS} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Load MorphoSyntax Document</IonTitle>

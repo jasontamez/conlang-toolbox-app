@@ -23,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, loadCustomInfoWE, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { loadCustomInfoWE, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WECustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
@@ -32,16 +32,15 @@ import fireSwal from '../../components/Swal';
 import doExport from '../../components/ExportServices';
 
 const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [
-		modalState,
 		settings,
 		categories,
 		transforms,
 		soundchanges,
 		temporaryInfo
 	] = useSelector((state: any) => [
-		state.modalState,
 		state.appSettings,
 		state.wordevolveCategories,
 		state.wordevolveTransforms,
@@ -51,7 +50,7 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 	let customInfo: string[] = (temporaryInfo && temporaryInfo.type === "custominfoWE") ? temporaryInfo.data : [];
 	const doCleanClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('ManageCustomInfoWE'));
+		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
@@ -178,12 +177,12 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.ManageCustomInfoWE} onDidDismiss={() => doCleanClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Manage Custom Info</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => doCleanClose()}>

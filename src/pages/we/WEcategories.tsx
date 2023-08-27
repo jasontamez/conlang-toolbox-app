@@ -24,7 +24,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { openModal, startEditCategoryWE, deleteCategoryWE, changeView } from '../../components/ReduxDucksFuncs';
+import { startEditCategoryWE, deleteCategoryWE, changeView } from '../../components/ReduxDucksFuncs';
 import { CatCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { PageData, WECategoryMap } from '../../components/ReduxDucksTypes';
@@ -39,6 +39,8 @@ const WECat = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenAddCatWE, setIsOpenAddCatWE] = useState<boolean>(false);
+	const [isOpenEditCatWE, setIsOpenEditCatWE] = useState<boolean>(false);
 	const viewInfo = ['we', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -48,7 +50,7 @@ const WECat = (props: PageData) => {
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWE(label));
-		dispatch(openModal('EditCategoryWE'));
+		setIsOpenEditCatWE(true);
 	};
 	const maybeDeleteCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
@@ -80,8 +82,8 @@ const WECat = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCategoryWEModal openECM={setIsOpenECM} />
-			<EditCategoryWEModal openECM={setIsOpenECM} />
+			<AddCategoryWEModal {...props.modalPropsMaker(isOpenAddCatWE, setIsOpenAddCatWE)} openECM={setIsOpenECM} />
+			<EditCategoryWEModal {...props.modalPropsMaker(isOpenEditCatWE, setIsOpenEditCatWE)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CatCard /></ModalWrap>
 			<IonHeader>
@@ -124,7 +126,7 @@ const WECat = (props: PageData) => {
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new group" onClick={() => dispatch(openModal('AddCategoryWE'))}>
+					<IonFabButton color="secondary" title="Add new group" onClick={() => setIsOpenAddCatWE(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

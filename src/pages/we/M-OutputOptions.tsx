@@ -23,18 +23,19 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { closeModal } from '../../components/ReduxDucksFuncs';
+import { ModalProperties } from '../../components/ReduxDucksTypes';
 
-const OutputOptionsModal = () => {
+const OutputOptionsModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [modalState, settingsWE] = useSelector((state: any) => [state.modalState, state.wordevolveSettings], shallowEqual);
+	const settingsWE = useSelector((state: any) => state.wordevolveSettings, shallowEqual);
 	return (
-		<IonModal isOpen={modalState.WEOutputOptions} onDidDismiss={() => dispatch(closeModal('WEOutputOptions'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Output Options</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('WEOutputOptions'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -59,7 +60,7 @@ const OutputOptionsModal = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem button={true} onClick={() => dispatch(closeModal('WEOutputOptions'))} color="success">
+				<IonItem button={true} onClick={() => setIsOpen(false)} color="success">
 					<IonLabel>Done</IonLabel>
 				</IonItem>
 			</IonFooter>

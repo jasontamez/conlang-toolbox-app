@@ -22,11 +22,12 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WECategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, addCategoryWE } from '../../components/ReduxDucksFuncs';
+import { addCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $a, $i } from '../../components/DollarSignExports';
 
 const AddCategoryWEModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	let newCat: WECategoryObject = {
 		title: "",
 		label: "",
@@ -43,7 +44,6 @@ const AddCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const categoryObject = useSelector((state: any) => state.wordevolveCategories, shallowEqual);
 	const catMap = new Map(categoryObject.map);
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof WECategoryObject,
 		VAL extends WECategoryObject[KEY]
@@ -116,7 +116,7 @@ const AddCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		close && dispatch(closeModal('AddCategoryWE'));
+		close && setIsOpen(false);
 		dispatch(addCategoryWE(newCat));
 		hardReset();
 		fireSwal({
@@ -128,15 +128,15 @@ const AddCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddCategoryWE} onDidDismiss={() => dispatch(closeModal('AddCategoryWE'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Character Group</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(closeModal('AddCategoryWE'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

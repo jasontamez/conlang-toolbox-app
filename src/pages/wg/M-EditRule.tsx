@@ -23,7 +23,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import {
-	closeModal,
 	doEditRewriteRuleWG,
 	cancelEditRewriteRuleWG,
 	deleteRewriteRuleWG
@@ -34,6 +33,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 
 const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const hardReset = () => {
 		editingRule = {
 			key: "",
@@ -45,11 +45,9 @@ const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [
 		settings,
-		modalState,
 		rewritesObject
 	] = useSelector((state: any) => [
 		state.appSettings,
-		state.modalState,
 		state.wordgenRewriteRules
 	], shallowEqual)
 	const editing = rewritesObject.editing;
@@ -72,7 +70,7 @@ const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 	});
 	const cancelEditing = () => {
 		dispatch(cancelEditRewriteRuleWG(editing));
-		dispatch(closeModal('EditRewriteRule'));
+		setIsOpen(false);
 	};
 	function setNewInfo<
 		KEY extends keyof WGRewriteRuleObject,
@@ -104,7 +102,7 @@ const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		// Everything ok!
 		editingRule.seek = repairRegexErrors(editingRule.seek);
 		editingRule.replace = repairRegexErrors(editingRule.replace);
-		dispatch(closeModal('EditRewriteRule'));
+		setIsOpen(false);
 		dispatch(doEditRewriteRuleWG(editingRule));
 		hardReset();
 		fireSwal({
@@ -119,7 +117,7 @@ const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		$q(".rewriterules").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(closeModal('EditRewriteRule'));
+				setIsOpen(false);
 				dispatch(deleteRewriteRuleWG(currentRule));
 				fireSwal({
 					title: "Transformation deleted",
@@ -145,12 +143,12 @@ const EditRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.EditRewriteRule} onDidDismiss={() => dispatch(closeModal('EditRewriteRule'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transformation</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

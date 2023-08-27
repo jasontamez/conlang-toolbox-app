@@ -20,6 +20,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	Fifty_OneThousand,
 	Five_OneHundred,
+	ModalProperties
 } from '../../components/ReduxDucksTypes';
 import {
 	setOutputTypeWG,
@@ -35,11 +36,11 @@ import {
 	closeCircleOutline,
 	ellipseOutline
 } from 'ionicons/icons';
-import { closeModal } from '../../components/ReduxDucksFuncs';
 
-const OutputOptionsModal = () => {
+const OutputOptionsModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [modalState, settingsWG] = useSelector((state: any) => [state.modalState, state.wordgenSettings], shallowEqual);
+	const settingsWG = useSelector((state: any) => state.wordgenSettings, shallowEqual);
 	const {
 		output,
 		showSyllableBreaks,
@@ -50,12 +51,12 @@ const OutputOptionsModal = () => {
 		wordsPerWordlist
 	} = settingsWG;
 	return (
-		<IonModal isOpen={modalState.WGOutputOptions} onDidDismiss={() => dispatch(closeModal('WGOutputOptions'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Output Options</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('WGOutputOptions'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -110,7 +111,7 @@ const OutputOptionsModal = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem button={true} onClick={() => dispatch(closeModal('WGOutputOptions'))} color="success">
+				<IonItem button={true} onClick={() => setIsOpen(false)} color="success">
 					<IonLabel>Done</IonLabel>
 				</IonItem>
 			</IonFooter>

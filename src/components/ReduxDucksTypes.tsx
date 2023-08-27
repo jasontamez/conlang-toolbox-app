@@ -226,46 +226,6 @@ export interface LexiconObject {
 }
 
 
-export interface ModalStateObject {
-	loadingPage: string | boolean
-	menuToggle: string | boolean
-	AppTheme: boolean
-	AddCategory: boolean
-	EditCategory: boolean
-	AddRewriteRule: boolean
-	EditRewriteRule: boolean
-	WGOutputOptions: boolean
-	PresetPopup: boolean
-	ManageCustomInfo: boolean
-	AddCategoryWE: boolean
-	EditCategoryWE: boolean
-	AddTransform: boolean
-	EditTransform: boolean
-	AddSoundChange: boolean
-	EditSoundChange: boolean
-	LexiconStorage: boolean
-	EditLexiconItem: boolean
-	EditLexiconOrder: boolean
-	LoadLexicon: boolean
-	DeleteLexicon: boolean
-	WGSaveToLexicon: undefined | Event
-	PickAndSaveWG: boolean
-	WEPresetPopup: boolean
-	WEOutputOptions: boolean
-	WESaveToLexicon: undefined | Event
-	PickAndSaveWE: boolean
-	ManageCustomInfoWE: boolean
-	InfoModal: boolean
-	ExtraCharacters: boolean
-	ExportLexicon: boolean
-	WordListsEllipsis: undefined | Event
-	PickAndSaveWL: boolean
-	LoadMS: boolean
-	DeleteMS: boolean,
-	ExportMS: boolean,
-	ExportAll: boolean
-}
-
 export interface ViewStateObject {
 	wg: string
 	we: string
@@ -348,7 +308,6 @@ export interface StateObject {
 	morphoSyntaxModalState: MorphoSyntaxModalStateObject
 	morphoSyntaxInfo: MorphoSyntaxObject
 	lexicon: LexiconObject
-	modalState: ModalStateObject
 	viewState: ViewStateObject
 	extraCharactersState: ExtraCharactersState
 	wordListsState: WordListsState
@@ -371,8 +330,8 @@ export interface ModalProperties {
 }
 
 export interface ExtraCharactersModalOpener {
-	isOpen?: boolean
-	setIsOpen?: boolean
+	isOpen: boolean
+	setIsOpen: Function
 	openECM: Function
 }
 

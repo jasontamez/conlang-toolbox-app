@@ -280,28 +280,6 @@ export function toggleLexiconWrap() {
 }
 
 //
-// MODALS
-//
-export function openModal(payload: keyof types.ModalStateObject) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: true}};
-}
-export function closeModal(payload: keyof types.ModalStateObject) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: payload, flag: false}};
-}
-export function openPopover(popover: keyof types.ModalStateObject, event: Event) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: event}};
-}
-export function closePopover(popover: keyof types.ModalStateObject) {
-	return {type: consts.TOGGLE_MODAL, payload: {modal: popover, flag: undefined}};
-}
-export function setLoadingPage(payload: boolean | string) {
-	return {type: consts.SET_LOADING_PAGE, payload};
-}
-export function setMenuToggle(payload: boolean | string) {
-	return {type: consts.SET_MENU_TOGGLE, payload};
-}
-
-//
 // VIEWS
 //
 export function changeView(payload: string[]) {

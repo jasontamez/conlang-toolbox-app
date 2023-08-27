@@ -19,8 +19,8 @@ import {
 	addOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addSoundChangeWE } from '../../components/ReduxDucksFuncs';
+import { useDispatch } from "react-redux";
+import { addSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
@@ -28,6 +28,7 @@ import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	let newSoundChange: WESoundChangeObject = {
 		key: "",
 		seek: "",
@@ -48,7 +49,6 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof WESoundChangeObject,
 		VAL extends WESoundChangeObject[KEY]
@@ -110,7 +110,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		newSoundChange.context = repairRegexErrors(newSoundChange.context);
 		newSoundChange.replace = repairRegexErrors(newSoundChange.replace);
 		newSoundChange.anticontext = repairRegexErrors(newSoundChange.anticontext);
-		close && dispatch(closeModal('AddSoundChange'));
+		close && setIsOpen(false);
 		dispatch(addSoundChangeWE(newSoundChange));
 		hardReset();
 		fireSwal({
@@ -122,15 +122,15 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddSoundChange} onDidDismiss={() => dispatch(closeModal('AddSoundChange'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Sound Change</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(closeModal('AddSoundChange'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

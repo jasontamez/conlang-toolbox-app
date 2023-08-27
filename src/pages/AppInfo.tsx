@@ -56,7 +56,7 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>
+									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
 									<ul className="changelog">
 										<li>Hardware back button should no longer kick you from the app without notice.</li>
 										<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>

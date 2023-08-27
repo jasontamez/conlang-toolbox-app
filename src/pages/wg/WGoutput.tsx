@@ -19,12 +19,9 @@ import {
 	PageData
 } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	changeView,
-	closeModal,
 	addDeferredLexiconItems,
-	removeDeferredLexiconItem,
-	setLoadingPage
+	removeDeferredLexiconItem
 } from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
@@ -46,6 +43,9 @@ const WGOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
+	const [isOpenOptions, setIsOpenOptions] = React.useState<boolean>(false);
+	const [isPickingSaving, setIsPickingSaving] = React.useState<boolean>(false);
+	const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
 	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -69,13 +69,11 @@ const WGOut = (props: PageData) => {
 		categoriesObject,
 		syllablesObject,
 		settingsWG,
-		modalState,
 		rewriteRules
 	] = useSelector((state: any) => [
 		state.wordgenCategories,
 		state.wordgenSyllables,
 		state.wordgenSettings,
-		state.modalState,
 		state.wordgenRewriteRules.list
 	], shallowEqual);
 	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
@@ -175,13 +173,13 @@ const WGOut = (props: PageData) => {
 			return generatePseudoText(output);
 		}
 		// Every syllable, or a wordlist
-		dispatch(setLoadingPage("generatingWords"));
+		setIsGenerating(true);
 		const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
 		let result = await resolveFunc(settingsWG.capitalizeWords);
 		output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result) : "auto";
 		result.forEach((bit: string) => output.append($t(bit, "div")));
-		// columnar stuff takes a bit to process, so delay a bit
-		dispatch(setLoadingPage(false));
+		// columnar stuff takes a bit to process, so delay a bit?
+		setIsGenerating(false);
 	};
 
 
@@ -458,7 +456,7 @@ const WGOut = (props: PageData) => {
 	// Save to Lexicon
 	// // //
 	const pickAndSave = () => {
-		dispatch(openModal("PickAndSaveWG"));
+		setIsPickingSaving(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
 			toast: true,
@@ -469,7 +467,7 @@ const WGOut = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
-		dispatch(closeModal("PickAndSaveWG"));
+		setIsPickingSaving(false);
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
@@ -488,7 +486,7 @@ const WGOut = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<OutputOptionsModal />
+			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
@@ -513,7 +511,7 @@ const WGOut = (props: PageData) => {
 						style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
 						onClick={() => {new Promise(() => generateOutput())}}
 					>{
-						modalState.loadingPage === "generatingWords" ? (
+						isGenerating ? (
 							<span style={ {fontStyle: "italic"} }>Loading...</span>
 						) : "Generate"
 					}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
@@ -522,7 +520,7 @@ const WGOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => dispatch(openModal("WGOutputOptions"))}
+							onClick={() => setIsOpenOptions(true)}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
@@ -533,12 +531,12 @@ const WGOut = (props: PageData) => {
 						<IonButton
 							expand="block"
 							strong={true}
-							className={modalState.PickAndSaveWG ? "hide" : ""}
+							className={isPickingSaving ? "hide" : ""}
 							color="secondary"
 							onClick={() => pickAndSave()}
 						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
 						<IonButton
-							className={modalState.PickAndSaveWG ? "" : "hide"}
+							className={isPickingSaving ? "" : "hide"}
 							id="doneSavingButton"
 							expand="block"
 							strong={true}
@@ -546,7 +544,7 @@ const WGOut = (props: PageData) => {
 							onClick={() => donePickingAndSaving()}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 					</div>
-					<div id="outputPane" className={"largePane selectable" + (modalState.PickAndSaveWG ? " pickAndSave" : "")}></div>
+					<div id="outputPane" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}></div>
 				</div>
 			</IonContent>
 		</IonPage>

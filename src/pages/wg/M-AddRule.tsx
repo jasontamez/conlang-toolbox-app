@@ -19,8 +19,8 @@ import {
 	addOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
+import { useDispatch } from "react-redux";
+import { addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
@@ -28,6 +28,7 @@ import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
 const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	let newRule: WGRewriteRuleObject = {
 		key: "",
 		seek: "",
@@ -44,7 +45,6 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	function setNewInfo<
 		KEY extends keyof WGRewriteRuleObject,
 		VAL extends WGRewriteRuleObject[KEY]
@@ -77,7 +77,7 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		newRule.key = uuidv4();
 		newRule.seek = repairRegexErrors(newRule.seek);
 		newRule.replace = repairRegexErrors(newRule.replace);
-		close && dispatch(closeModal('AddRewriteRule'));
+		close && setIsOpen(false);
 		dispatch(addRewriteRuleWG(newRule));
 		hardReset();
 		fireSwal({
@@ -89,15 +89,15 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddRewriteRule} onDidDismiss={() => dispatch(closeModal('AddRewriteRule'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Transformation</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(closeModal('AddRewriteRule'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

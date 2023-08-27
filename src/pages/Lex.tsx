@@ -30,7 +30,6 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import {
-	openModal,
 	updateLexiconText,
 	startEditLexiconItem,
 	deleteLexiconItem,
@@ -59,7 +58,14 @@ import { Clipboard } from '@capacitor/clipboard';
 const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [isLoading, setIsLoading] =useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isWorking, setIsWorking] = useState<boolean>(false);
+	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
+	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
+	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
+	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
+	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
+	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [appSettings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
@@ -225,9 +231,6 @@ const Lex = (props: PageData) => {
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
 	};
-	const swapColumns = () => {
-		dispatch(openModal('EditLexiconOrder'));
-	};
 	const editInLex = (key: string) => {
 		//need modal
 		let index: number = -1;
@@ -242,7 +245,7 @@ const Lex = (props: PageData) => {
 			return;
 		}
 		dispatch(startEditLexiconItem(index));
-		dispatch(openModal('EditLexiconItem'));
+		setIsOpenEditLexItem(true);
 	};
 	const copyText = async () => {
 		const info = $i("revealFullElement");
@@ -317,20 +320,33 @@ const Lex = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<EditLexiconItemModal openECM={setIsOpenECM} />
-			<EditLexiconOrderModal openECM={setIsOpenECM} />
-			<LoadLexiconModal />
-			<ExportLexiconModal />
-			<LexiconStorageModal />
-			<DeleteLexiconModal />
+			<EditLexiconItemModal {...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)} openECM={setIsOpenECM} />
+			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
+			<LoadLexiconModal {...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)} />
+			<ExportLexiconModal {...props.modalPropsMaker(isOpenExportLex, setIsOpenExportLex)} setLoading={setIsLoading} />
+			<DeleteLexiconModal {...props.modalPropsMaker(isOpenDelLex, setIsOpenDelLex)} setLoadingScreen={setIsWorking} />
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<LexiconStorageModal
+				{...props.modalPropsMaker(isOpenLexStorage, setIsOpenLexStorage)}
+				openLoad={setIsOpenLoadLex}
+				openDelete={setIsOpenDelLex}
+				openExport={setIsOpenExportLex}
+				setLoading={setIsLoading}
+			/>
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={isLoading}
 				onDidDismiss={() => setIsLoading(false)}
 				message={'Please wait...'}
 				spinner="bubbles"
-				/*duration={300000}*/
+				duration={1000}
+			/>
+			<IonLoading
+				cssClass='loadingPage'
+				isOpen={isWorking}
+				onDidDismiss={() => setIsWorking(false)}
+				message={'Working...'}
+				spinner="bubbles"
 				duration={1000}
 			/>
 			<IonHeader>
@@ -343,7 +359,7 @@ const Lex = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(openModal("LexiconStorage"))}>
+						<IonButton onClick={() => setIsOpenLexStorage(true)}>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 					</IonButtons>
@@ -379,7 +395,7 @@ const Lex = (props: PageData) => {
 								<h2>Sort: {theTitles[theSort[0]] + [" ↓", " ↑"][theSort[1]]}</h2>
 							</IonCol>
 							<IonCol size="auto">
-								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => swapColumns()}>
+								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => setIsOpenLexOrder(true)}>
 									<IonIcon size="small" icon={settings} />
 								</IonButton>
 							</IonCol>

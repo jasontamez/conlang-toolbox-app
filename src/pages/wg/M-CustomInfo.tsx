@@ -23,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
@@ -32,9 +32,9 @@ import fireSwal from '../../components/Swal';
 import doExport from '../../components/ExportServices';
 
 const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [
-		modalState,
 		settings,
 		settingsWG,
 		categories,
@@ -42,7 +42,6 @@ const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
 		rules,
 		temporaryInfo
 	] = useSelector((state: any) => [
-		state.modalState,
 		state.appSettings,
 		state.wordgenSettings,
 		state.wordgenCategories,
@@ -53,7 +52,7 @@ const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
 	let customInfo: string[] = (temporaryInfo && temporaryInfo.type === "custominfo") ? temporaryInfo.data : [];
 	const doCleanClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('ManageCustomInfo'));
+		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
 		let title = escape($i("currentInfoSaveName").value).trim();
@@ -182,12 +181,12 @@ const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.ManageCustomInfo} onDidDismiss={() => doCleanClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Manage Custom Info</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => doCleanClose()}>

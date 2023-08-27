@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonLabel,
 	IonPage,
@@ -15,8 +15,7 @@ import {
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	toggleDisableConfirm,
-	openModal
+	toggleDisableConfirm
 } from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
 import ExportAllData from './M-ExportAllData';
@@ -26,10 +25,12 @@ import { PageData } from '../components/ReduxDucksTypes';
 const AppSettings = (props: PageData) => {
 	const dispatch = useDispatch();
 	const appSettings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
+	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	return (
 		<IonPage>
-			<ChooseThemeModal />
-			<ExportAllData />
+			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
+			<ExportAllData {...props.modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -51,11 +52,11 @@ const AppSettings = (props: PageData) => {
 							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem button={true} onClick={() => dispatch(openModal('AppTheme'))}>
+					<IonItem button={true} onClick={() => setIsOpenTheme(true)}>
 						<IonLabel>Change Theme</IonLabel>
 						<IonNote slot="end" color="primary" style={ { color: "var(--ion-color-primary"} } >{appSettings.theme || "Default"}</IonNote>
 					</IonItem>
-					<IonItem button={true} onClick={() => dispatch(openModal('ExportAll'))}>
+					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">
 							<h2>Export All App Info</h2>
 						</IonLabel>

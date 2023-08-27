@@ -9,9 +9,8 @@ import {
 	IonMenuToggle,
 	IonNote,
 } from '@ionic/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
 import {
 	createSharp,
 	shuffleSharp,
@@ -25,7 +24,6 @@ import {
 //	cogSharp,
 //	volumeHighSharp
 } from 'ionicons/icons';
-import { setMenuToggle } from './ReduxDucksFuncs';
 import './Menu.css';
 
 interface AppPage {
@@ -254,9 +252,8 @@ const appMenuPages: MenuSection[] = [
 
 
 const Menu = () => {
+	const [menuInfo, setMenuInfo] = useState<string | false>(false);
 	const location = useLocation();
-	const dispatch = useDispatch();
-	const modalState = useSelector((state: any) => state.modalState);
 	const {pathname = "/"} = location;
 	const testPath = useCallback((test: string) => {
 		if(test.endsWith("/")) {
@@ -277,17 +274,15 @@ const Menu = () => {
 									className={
 										'mainHeading'
 										+ (testPath(appPage.url) ? ' selected' : '')
-										+ (modalState.menuToggle === appPage.parentOf ? ' toggled' : '')
+										+ (menuInfo === appPage.parentOf ? ' toggled' : '')
 									}
 									lines="none"
 									detail={false}
 									onClick={
-										() => dispatch(
-											setMenuToggle(
-												modalState.menuToggle === appPage.parentOf
-													? false
-													: appPage.parentOf!
-											)
+										() => setMenuInfo(
+											menuInfo === appPage.parentOf
+												? false
+												: appPage.parentOf!
 										)
 									}
 								>
@@ -299,7 +294,7 @@ const Menu = () => {
 						} else if(appPage.parent) {
 							return (
 								<IonMenuToggle key={appPage.id} autoHide={false}>
-									<IonItem className={'subHeading' + (testPath(appPage.url) ? ' selected' : '') + (modalState.menuToggle === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
+									<IonItem className={'subHeading' + (testPath(appPage.url) ? ' selected' : '') + (menuInfo === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
 										<IonLabel>{appPage.title}</IonLabel>
 										<IonIcon slot="end" size="small" icon={ellipseSharp} />
 									</IonItem>

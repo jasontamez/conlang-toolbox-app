@@ -147,10 +147,12 @@ const App = memo(() => {
 			return StateStorage.getItem("lastState").then((storedState: any) => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
-//						if (compareVersions.compare(storedState.currentVersion, "0.9.4", "<")) {
-//							// Do stuff to possibly bring storedState up to date
-//							storedState.logs = [];
-//						}
+						if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
+							// Do stuff to possibly bring storedState up to date
+							if(storedState.modalState) {
+								delete storedState.modalState;
+							}
+						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date
 							storedState.currentVersion = VERSION.current;

@@ -188,9 +188,6 @@ const reduceColEdit = (original: types.colEdit) => {
 		sort: [...original.sort]
 	};
 };
-const reduceModalState = (original: types.ModalStateObject) => {
-	return {...original};
-};
 const reduceViewState = (original: types.ViewStateObject) => {
 	return {...original};
 };
@@ -256,7 +253,6 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["morphoSyntaxModalState", reduceMorphoSyntaxModalState],
 	["morphoSyntaxInfo", reduceMorphoSyntaxInfo],
 	["lexicon", reduceLexiconState],
-	["modalState", reduceModalState],
 	["viewState", reduceViewState],
 	["extraCharactersState", reduceExtraCharactersState],
 	["wordListsState", reduceWordListsState],
@@ -359,45 +355,6 @@ export const blankAppState: types.StateObject = {
 		colEdit: undefined,
 		lexiconWrap: false
 	},
-	modalState: {
-		loadingPage: false,
-		menuToggle: false,
-		AppTheme: false,
-		AddCategory: false,
-		EditCategory: false,
-		AddRewriteRule: false,
-		EditRewriteRule: false,
-		PresetPopup: false,
-		WGOutputOptions: false,
-		ManageCustomInfo: false,
-		AddCategoryWE: false,
-		EditCategoryWE: false,
-		AddTransform: false,
-		EditTransform: false,
-		AddSoundChange: false,
-		EditSoundChange: false,
-		LexiconStorage: false,
-		EditLexiconItem: false,
-		EditLexiconOrder: false,
-		LoadLexicon: false,
-		DeleteLexicon: false,
-		WGSaveToLexicon: undefined,
-		PickAndSaveWG: false,
-		WEPresetPopup: false,
-		WEOutputOptions: false,
-		PickAndSaveWE: false,
-		ManageCustomInfoWE: false,
-		WESaveToLexicon: undefined,
-		InfoModal: false,
-		ExtraCharacters: false,
-		ExportLexicon: false,
-		WordListsEllipsis: undefined,
-		PickAndSaveWL: false,
-		LoadMS: false,
-		DeleteMS: false,
-		ExportMS: false,
-		ExportAll: false
-	},
 	viewState: {
 		wg: 'categories',
 		we: 'categories',
@@ -434,13 +391,7 @@ export const initialAppState: types.StateObject = {
 const saveCurrentState = (state: types.StateObject) => {
 	let newState = reduceAllBut([], state);
 	// Eliminate not-stringifyable properties
-	const ms = newState.modalState;
-	ms.LexiconEllipsis
-		= ms.WGSaveToLexicon
-		= ms.WESaveToLexicon
-		= ms.WordListsEllipsis
-		= newState.temporaryInfo
-		= undefined;
+	newState.temporaryInfo = undefined;
 	// Save
 	StateStorage.setItem("lastState", newState);
 	console.log("Save");
@@ -1232,41 +1183,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.OVERWRITE_STATE:
 			final = { ...payload };
 			maybeUpdateTheme(state.appSettings.theme, final.appSettings.theme);
-			break;
-
-
-		// Modals
-		case consts.TOGGLE_MODAL:
-			let newModal: types.ModalStateObject = reduceModalState(state.modalState);
-			newModal[payload.modal as keyof types.ModalStateObject] = payload.flag;
-			final = {
-				...reduceAllBut(["modalState"], state),
-				modalState: newModal
-			};
-			break;
-		case consts.TOGGLE_POPOVER:
-			let newPopover: types.ModalStateObject = reduceModalState(state.modalState);
-			newPopover[payload.modal as keyof types.ModalStateObject] = payload.flag;
-			final = {
-				...reduceAllBut(["modalState"], state),
-				modalState: newPopover
-			};
-			break;
-		case consts.SET_LOADING_PAGE:
-			let newModalLoad: types.ModalStateObject = reduceModalState(state.modalState);
-			newModalLoad.loadingPage = payload;
-			final = {
-				...reduceAllBut(["modalState"], state),
-				modalState: newModalLoad
-			};
-			break;
-		case consts.SET_MENU_TOGGLE:
-			let newModalToggle: types.ModalStateObject = reduceModalState(state.modalState);
-			newModalToggle.menuToggle = payload;
-			final = {
-				...reduceAllBut(["modalState"], state),
-				modalState: newModalToggle
-			};
 			break;
 
 

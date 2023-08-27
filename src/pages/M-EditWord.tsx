@@ -23,7 +23,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
 import {
-	closeModal,
 	doEditLexiconItem,
 	cancelEditLexiconItem,
 	deleteLexiconItem
@@ -31,8 +30,9 @@ import {
 import fireSwal from '../components/Swal';
 
 const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
-	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
+	const [settings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
 	const thisSingularItem: Lexicon = {...lexicon.lexicon[lexicon.editing]};
 	const editing = thisSingularItem.columns ? [...thisSingularItem.columns] : [];
 	while(editing.length < lexicon.columns) {
@@ -45,7 +45,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 	const theTitles = lexicon.columnTitles;
 	const cancelEditing = () => {
 		dispatch(cancelEditLexiconItem());
-		dispatch(closeModal('EditLexiconItem'));
+		setIsOpen(false);
 	};
 	const maybeSaveNewInfo = () => {
 		if(editing.every((i: string) => !i)) {
@@ -58,7 +58,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		thisSingularItem.columns = editing;
-		dispatch(closeModal('EditLexiconItem'));
+		setIsOpen(false);
 		dispatch(doEditLexiconItem(thisSingularItem));
 		fireSwal({
 			title: "Item updated!",
@@ -70,7 +70,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const delFromLex = () => {
 		const thenFunc = () => {
-			dispatch(closeModal('EditLexiconItem'));
+			setIsOpen(false);
 			dispatch(deleteLexiconItem(lexicon.editing));
 			fireSwal({
 				title: "Item deleted",
@@ -94,12 +94,12 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.EditLexiconItem} onDidDismiss={() => dispatch(closeModal('EditLexiconItem'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

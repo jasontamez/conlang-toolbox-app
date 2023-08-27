@@ -33,7 +33,6 @@ import {
 	setExclamatoryPreWG,
 	setExclamatoryPostWG,
 	setTemporaryInfo,
-	openModal,
 	clearEverything,
 	changeView
 } from '../../components/ReduxDucksFuncs';
@@ -61,6 +60,8 @@ const WGSet = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
+	const [isOpenLoadPreset, setIsOpenLoadPreset] = useState<boolean>(false);
+	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
 	const { modalPropsMaker } = props;
 	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
@@ -121,8 +122,8 @@ const WGSet = (props: PageData) => {
 			return; // Blank return keeps the loop going
 		}).then(() => {
 			dispatch(setTemporaryInfo({ type: "custominfo", data: titles }));
-			dispatch(openModal("ManageCustomInfo"));
 			setLoadingOpen(false);
+			setIsOpenManageCustom(true);
 		}).catch((err: any) => {
 			console.log(err);
 		});
@@ -130,8 +131,8 @@ const WGSet = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<MaybeLoadPreset />
-			<ManageCustomInfo openECM={setIsOpenECM} />
+			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OptCard /></ModalWrap>
 			<IonLoading
@@ -164,7 +165,7 @@ const WGSet = (props: PageData) => {
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
 					<IonItem style={ { padding: "0.5em" } } lines="none">
 						<div style={ { display: "flex", justifyContent: "center", alignContent: "flex-start", alignItems: "center", flexFlow: "row wrap" } }>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => dispatch(openModal("PresetPopup"))} strong={true} color="secondary" shape="round">Load Preset</IonButton>
+							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => setIsOpenLoadPreset(true)} strong={true} color="secondary" shape="round">Load Preset</IonButton>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Clear All Fields</IonButton>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => openCustomInfoModal()} strong={true} color="secondary" shape="round">Save/Load Custom Info</IonButton>
 						</div>

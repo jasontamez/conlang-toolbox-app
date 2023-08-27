@@ -33,7 +33,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { colEdit, ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
 import {
-	closeModal,
 	updateLexiconColumns,
 	updateLexiconOrder,
 	toggleLexiconWrap,
@@ -45,8 +44,9 @@ import escape from '../components/EscapeForHTML';
 import { $i } from '../components/DollarSignExports';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
-	const [settings, modalState, lexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon], shallowEqual);
+	const [settings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
 	const theOrder = lexicon.columnOrder;
 	const theTitles = lexicon.columnTitles;
 	const [sortedColumn, sortDirection] = lexicon.sort;
@@ -77,7 +77,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		dispatch(updateLexiconColumns(editing));
 	};
 	let cancelEditing = () => {
-		dispatch(closeModal('EditLexiconOrder'));
+		setIsOpen(false);
 	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		editing.columnSizes[i] = value;
@@ -96,7 +96,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('EditLexiconOrder'));
+		setIsOpen(false);
 		//dispatch(doEditRewriteRuleWG(editingRule));
 		fireSwal({
 			title: "Saved!",
@@ -202,12 +202,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		dispatch(updateLexiconBool("sorted", true));
 	};
 	return (
-		<IonModal isOpen={modalState.EditLexiconOrder} onDidDismiss={() => dispatch(closeModal('EditLexiconOrder'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

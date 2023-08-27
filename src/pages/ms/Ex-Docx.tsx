@@ -19,7 +19,6 @@ import {
 } from '../../components/ReduxDucksTypes';
 import { exportProp, displayProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
-import { setLoadingPage } from '../../components/ReduxDucksFuncs';
 import doExport from '../../components/ExportServices';
 
 
@@ -27,8 +26,7 @@ import doExport from '../../components/ExportServices';
 import { saveAs } from 'file-saver';
 // FOR BROWSER TESTING ONLY
 
-
-const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClose: Function) => {
+const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClose: Function, setLoading: Function) => {
 	const bool = msInfo.bool;
 	const num = msInfo.num;
 	const text = msInfo.text;
@@ -298,7 +296,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 	});
 	e.preventDefault();
 	const filename = msInfo.title + " - " + (new Date()).toDateString() + ".docx";
-	dispatch(setLoadingPage("deletingSyntaxDoc"));
+	setLoading(true);
 
 
 	// FOR BROWSER TESTING ONLY

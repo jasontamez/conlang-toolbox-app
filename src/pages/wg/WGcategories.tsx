@@ -26,7 +26,6 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	openModal,
 	startEditCategoryWG,
 	deleteCategoryWG,
 	changeView,
@@ -46,6 +45,8 @@ const WGCat = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenAddCat, setIsOpenAddCat] = useState<boolean>(false);
+	const [isOpenEditCat, setIsOpenEditCat] = useState<boolean>(false);
 	const viewInfo = ['wg', 'categories'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -55,7 +56,7 @@ const WGCat = (props: PageData) => {
 	const editCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
 		dispatch(startEditCategoryWG(label));
-		dispatch(openModal('EditCategory'));
+		setIsOpenEditCat(true);
 	};
 	const maybeDeleteCategory = (label: any) => {
 		$q(".categories").closeSlidingItems();
@@ -87,8 +88,8 @@ const WGCat = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCategoryModal openECM={setIsOpenECM} />
-			<EditCategoryModal openECM={setIsOpenECM} />
+			<AddCategoryModal {...props.modalPropsMaker(isOpenAddCat, setIsOpenAddCat)} openECM={setIsOpenECM} />
+			<EditCategoryModal {...props.modalPropsMaker(isOpenEditCat, setIsOpenEditCat)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CatCard /></ModalWrap>
 			<IonHeader>
@@ -143,7 +144,7 @@ const WGCat = (props: PageData) => {
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new character group" onClick={() => dispatch(openModal('AddCategory'))}>
+					<IonFabButton color="secondary" title="Add new character group" onClick={() => setIsOpenAddCat(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

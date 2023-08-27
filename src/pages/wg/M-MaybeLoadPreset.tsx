@@ -18,12 +18,14 @@ import {
 	closeCircleSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, loadPresetWG } from '../../components/ReduxDucksFuncs';
+import { loadPresetWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
+import { ModalProperties } from '../../components/ReduxDucksTypes';
 
-const MaybeLoadPresetModal = () => {
+const MaybeLoadPresetModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [modalState, settings] = useSelector((state: any) => [state.modalState, state.appSettings], shallowEqual);
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const maybeLoadPreset = (preset: string) => {
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
@@ -35,7 +37,7 @@ const MaybeLoadPresetModal = () => {
 					timerProgressBar: true,
 					showConfirmButton: false
 				});
-				dispatch(closeModal('PresetPopup'));
+				setIsOpen(false);
 			}
 		};
 		if(settings.disableConfirms) {
@@ -51,12 +53,12 @@ const MaybeLoadPresetModal = () => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.PresetPopup} onDidDismiss={() => dispatch(closeModal('PresetPopup'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Load Preset</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(closeModal('PresetPopup'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -88,7 +90,7 @@ const MaybeLoadPresetModal = () => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem color="danger" button={true} onClick={() => dispatch(closeModal('PresetPopup'))}>
+				<IonItem color="danger" button={true} onClick={() => setIsOpen(false)}>
 					<IonIcon icon={closeCircleSharp} slot="start" />
 					<IonLabel>Cancel</IonLabel>
 				</IonItem>

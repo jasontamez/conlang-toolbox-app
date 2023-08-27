@@ -17,28 +17,30 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	closeModal,
-	setLoadingPage
-} from '../../components/ReduxDucksFuncs';
 import doExport from '../../components/ExportServices';
 import doText from './Ex-Text';
 import doDocx from './Ex-Docx';
 import doXML from './Ex-XML';
 import doJSON from './Ex-JSON';
+import { ModalProperties } from '../../components/ReduxDucksTypes';
 //import doODT from './Ex-ODT';
 
-const ExportSyntaxModal = () => {
+interface ExportModalProps extends ModalProperties {
+	setLoading: Function
+}
+
+const ExportSyntaxModal = (props: ExportModalProps) => {
+	const { isOpen, setIsOpen, setLoading } = props;
 	const dispatch = useDispatch();
-	const [modalState, msInfo] = useSelector((state: any) => [state.modalState, state.morphoSyntaxInfo], shallowEqual);
+	const msInfo = useSelector((state: any) => state.morphoSyntaxInfo, shallowEqual);
 	const doClose = () => {
-		dispatch(closeModal('ExportMS'));
-		modalState.loadingPage === "deletingSyntaxDoc" && dispatch(setLoadingPage(false));
+		setIsOpen(false);
+		setLoading(false);
 	};
 	const doDownload = (e: Event, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = msInfo.title + " - " + (new Date()).toDateString() + "." + extension;
-		dispatch(setLoadingPage("deletingSyntaxDoc"));
+		setLoading(true);
 		doExport(output, filename)
 			.catch((e = "Error doexport") => {
 				console.log(e);
@@ -47,7 +49,7 @@ const ExportSyntaxModal = () => {
 			.then(() => doClose());
 	};
 	return (
-		<IonModal isOpen={modalState.ExportMS} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Export MorphoSyntax Document: {msInfo.title || "[Untitled]"}</IonTitle>
@@ -63,7 +65,7 @@ const ExportSyntaxModal = () => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload)}>Text Outline (plain)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload, true)}>Text Outline (markdown)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, dispatch, doClose)}>Word Document (docx)</IonItem>
+					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, dispatch, doClose, setLoading)}>Word Document (docx)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e, msInfo, doDownload)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e, msInfo, doDownload)}>XML File</IonItem>
 				</IonList>

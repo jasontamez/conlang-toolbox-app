@@ -24,8 +24,6 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import {
 	updateWordListsDisplay,
-	openModal,
-	closeModal,
 	changeView,
 	toggleWordListsBoolean,
 	addDeferredLexiconItems,
@@ -41,7 +39,8 @@ import fireSwal from '../components/Swal';
 const Home = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
-	const [modalState, wordListsState, waitingToAdd] = useSelector((state: any) => [state.modalState, state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
+	const [pickAndSave, setPickAndSave] = React.useState<boolean>(false);
+	const [wordListsState, waitingToAdd] = useSelector((state: any) => [state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
 	const theDisplay = wordListsState.display;
 	const dispatch = useDispatch();
 	const toggleChars = (what: keyof WL) => {
@@ -60,8 +59,8 @@ const Home = (props: PageData) => {
 	// // //
 	// Save to Lexicon
 	// // //
-	const pickAndSave = () => {
-		dispatch(openModal("PickAndSaveWG"));
+	const doPickAndSave = () => {
+		setPickAndSave(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
 			toast: true,
@@ -72,11 +71,11 @@ const Home = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
-		dispatch(closeModal("PickAndSaveWG"));
+		setPickAndSave(false);
 	};
 	const saveEverything = () => {
 		let wordsToSave: string[] = [];
-		dispatch(closeModal("PickAndSaveWG"));
+		setPickAndSave(false);
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
 		});
@@ -121,7 +120,7 @@ const Home = (props: PageData) => {
 									<IonIcon size="small" slot="end" src="svg/align-center-material.svg" />
 							}
 						</IonButton>
-						<IonButton onClick={() => pickAndSave()}>
+						<IonButton onClick={() => doPickAndSave()}>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
@@ -132,12 +131,12 @@ const Home = (props: PageData) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
-					<IonItem className={modalState.PickAndSaveWG ? "" : "hide"}>
+					<IonItem className={pickAndSave ? "" : "hide"}>
 						<IonButton strong={true} color="tertiary" onClick={() => saveEverything()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save All Words
 						</IonButton>
 					</IonItem>
-					<IonItem className={modalState.PickAndSaveWG ? "" : "hide"}>
+					<IonItem className={pickAndSave ? "" : "hide"}>
 						<IonButton strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
 							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
 						</IonButton>
@@ -156,7 +155,7 @@ const Home = (props: PageData) => {
 							})}
 						</div>
 					</IonItem>
-					<div id="outputPaneWL" className={(modalState.PickAndSaveWG ? "pickAndSave " : "") + "wordList"}>
+					<div id="outputPaneWL" className={(pickAndSave ? "pickAndSave " : "") + "wordList"}>
 						{shown.map((word: WL) => {
 							const ww = word.word;
 							const id = uuidv4();

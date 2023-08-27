@@ -24,24 +24,27 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import {
-	openModal,
 	updateLexiconText,
 	updateLexiconNumber,
 	updateLexicon,
-	setLoadingPage,
-	setTemporaryInfo,
-	closeModal
+	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconObject, ModalStateObject } from '../components/ReduxDucksTypes';
+import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
 
-const LexiconStorageModal = () => {
+// load, delete, export
+interface StorageModalProps extends ModalProperties {
+	openLoad: Function,
+	openDelete: Function,
+	openExport: Function,
+	setLoading: Function
+}
+
+const LexiconStorageModal = (props: StorageModalProps) => {
+	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading } = props;
 	const dispatch = useDispatch();
-	const [appSettings, modalState, stateLexicon] = useSelector((state: any) => [state.appSettings, state.modalState, state.lexicon]);
-	const closeThisModal = () => {
-		dispatch(closeModal("LexiconStorage"));
-	};
+	const [appSettings, stateLexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
 	const {
 		columns,
 		columnOrder,
@@ -75,7 +78,7 @@ const LexiconStorageModal = () => {
 				lexiconWrap: lexiconWrap
 			};
 			dispatch(updateLexicon(newLex));
-			closeThisModal();
+			setIsOpen(false);
 			fireSwal({
 				title: "Lexicon cleared",
 				customClass: {popup: 'dangerToast'},
@@ -107,18 +110,18 @@ const LexiconStorageModal = () => {
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
 	};
-	const openLexiconModal = (which: keyof ModalStateObject) => {
+	const openLexiconModal = (whichToOpen: Function) => {
 		let info: [string, LexiconObject][] = [];
+		setLoading(true);
 		LexiconStorage.iterate((value: LexiconObject, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
 			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedlexicons", data: info }));
-			dispatch(setLoadingPage(false));
-			dispatch(openModal(which));
+			setLoading(false);
+			setIsOpen(false);
+			whichToOpen(true);
 		});
-		closeThisModal();
-		dispatch(setLoadingPage("lookingForLexicons"));
 	};
 	const saveLexicon: any = (
 		announce: string = "Lexicon saved.",
@@ -137,7 +140,7 @@ const LexiconStorageModal = () => {
 		}
 		// Dispatch to state
 		dispatch(updateLexiconNumber("lastSave", now));
-		dispatch(setLoadingPage("lookingForLexicons"));
+		setLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
 		let lex: LexiconObject = {...stateLexicon};
@@ -162,7 +165,8 @@ const LexiconStorageModal = () => {
 				if(overwrite && saveKey !== firstKey) {
 					LexiconStorage.removeItem(firstKey);
 				}
-				dispatch(setLoadingPage(false));
+				setLoading(false);
+				setIsOpen(false);
 				fireSwal({
 					title: announce,
 					toast: true,
@@ -171,7 +175,6 @@ const LexiconStorageModal = () => {
 					showConfirmButton: false
 				});
 			});
-		dispatch(closeModal("LexiconStorage"));
 	};
 	const saveLexiconNew = () => {
 		if(!title) {
@@ -202,8 +205,8 @@ const LexiconStorageModal = () => {
 				icon: 'warning'
 			});
 		}
-		dispatch(openModal("ExportLexicon"));
-		dispatch(closeModal("LexiconStorage"));
+		setIsOpen(false);
+		openExport(true);
 	};
 	// TO-DO: MOVE TEXT WRAP (and sort) TO EDIT LEXICON MODAL
 	/*
@@ -212,7 +215,7 @@ const LexiconStorageModal = () => {
 					</IonItem>
 	*/
 	return (
-		<IonModal isOpen={modalState.LexiconStorage} onDidDismiss={() => closeThisModal()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Lexicon Storage</IonTitle>
@@ -224,7 +227,7 @@ const LexiconStorageModal = () => {
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
 						<IonLabel>Clear Lexicon</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openLexiconModal("LoadLexicon")}>
+					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
 						<IonLabel>Load Lexicon</IonLabel>
 					</IonItem>
@@ -240,7 +243,7 @@ const LexiconStorageModal = () => {
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
 						<IonLabel>Export Lexicon</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openLexiconModal("DeleteLexicon")}>
+					<IonItem button={true} onClick={() => openLexiconModal(openDelete)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
 						<IonLabel>Delete Saved Lexicon</IonLabel>
 					</IonItem>
@@ -249,7 +252,7 @@ const LexiconStorageModal = () => {
 			<IonFooter>
 				<IonToolbar className="ion-text-wrap">
 					<IonButtons slot="end">
-						<IonButton onClick={() => closeThisModal()} slot="end" fill="solid" color="success">
+						<IonButton onClick={() => setIsOpen(false)} slot="end" fill="solid" color="success">
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
 							<IonLabel>Done</IonLabel>
 						</IonButton>

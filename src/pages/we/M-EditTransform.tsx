@@ -26,7 +26,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
 import {
-	closeModal,
 	doEditTransformWE,
 	cancelEditTransformWE,
 	deleteTransformWE
@@ -36,6 +35,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 
 const EditTransformModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const hardReset = () => {
 		editingTransform = {
 			key: "",
@@ -47,11 +47,9 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [
-		modalState,
 		rewritesObject,
 		settings
 	] = useSelector((state: any) => [
-		state.modalState,
 		state.wordevolveTransforms,
 		state.appSettings
 	], shallowEqual);
@@ -76,7 +74,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	});
 	const cancelEditing = () => {
 		dispatch(cancelEditTransformWE(editing));
-		dispatch(closeModal('EditTransform'));
+		setIsOpen(false);
 	};
 	function setNewInfo<
 		KEY extends keyof WETransformObject,
@@ -106,7 +104,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('EditTransform'));
+		setIsOpen(false);
 		dispatch(doEditTransformWE(editingTransform));
 		hardReset();
 		fireSwal({
@@ -122,7 +120,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(closeModal('EditTransform'));
+				setIsOpen(false);
 				dispatch(deleteTransformWE(currentTransform));
 				fireSwal({
 					title: "Transform deleted",
@@ -155,12 +153,12 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.EditTransform} onDidDismiss={() => dispatch(closeModal('EditTransform'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

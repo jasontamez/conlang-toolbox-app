@@ -29,7 +29,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { PageData, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	startEditSoundChangeWE,
 	deleteSoundChangeWE,
 	reorderSoundChangesWE,
@@ -49,6 +48,8 @@ const WERew = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
+	const [isOpenEditSoundChange, setIsOpenEditSoundChange] = useState<boolean>(false);
 	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -58,7 +59,7 @@ const WERew = (props: PageData) => {
 	const editSoundChange = (label: any) => {
 		$q(".soundChanges").closeSlidingItems();
 		dispatch(startEditSoundChangeWE(label));
-		dispatch(openModal('EditSoundChange'));
+		setIsOpenEditSoundChange(true);
 	};
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
@@ -106,8 +107,8 @@ const WERew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddSoundChangeModal openECM={setIsOpenECM} />
-			<EditSoundChangeModal openECM={setIsOpenECM} />
+			<AddSoundChangeModal {...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)} openECM={setIsOpenECM} />
+			<EditSoundChangeModal {...props.modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><SChCard /></ModalWrap>
 			<IonHeader>
@@ -161,7 +162,7 @@ const WERew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new sound change" onClick={() => dispatch(openModal('AddSoundChange'))}>
+					<IonFabButton color="secondary" title="Add new sound change" onClick={() => setIsOpenAddSoundChange(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

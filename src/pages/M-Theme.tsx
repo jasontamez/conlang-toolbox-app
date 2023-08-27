@@ -19,18 +19,20 @@ import {
 	checkmarkCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { closeModal, changeTheme } from '../components/ReduxDucksFuncs';
+import { changeTheme } from '../components/ReduxDucksFuncs';
+import { ModalProperties } from '../components/ReduxDucksTypes';
 
-const MaybeLoadPresetModal = () => {
+const MaybeLoadPresetModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [modalState, settings] = useSelector((state: any) => [state.modalState, state.appSettings], shallowEqual);
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const cancel = () => {
-		dispatch(closeModal('AppTheme'));
+		setIsOpen(false);
 	};
 	const appTheme = settings.theme || "Default";
 	const changeAppTheme = (theme: string) => {
 		dispatch(changeTheme(theme));
-		dispatch(closeModal('AppTheme'));
+		setIsOpen(false);
 	};
 	const themes = [
 		"Default",
@@ -40,7 +42,7 @@ const MaybeLoadPresetModal = () => {
 		"Solarized Dark"
 	];
 	return (
-		<IonModal isOpen={modalState.AppTheme} onDidDismiss={() => dispatch(closeModal('AppTheme'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Choose a Theme</IonTitle>
@@ -63,7 +65,7 @@ const MaybeLoadPresetModal = () => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={() => cancel()}>
+					<IonButton color="danger" slot="end" onClick={() => setIsOpen(false)}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>

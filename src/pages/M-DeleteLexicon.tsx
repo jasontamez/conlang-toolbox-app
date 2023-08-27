@@ -20,21 +20,21 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	closeModal,
 	setTemporaryInfo
 } from '../components/ReduxDucksFuncs';
-import { LexiconObject } from '../components/ReduxDucksTypes';
+import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
 
-const DeleteLexiconModal = () => {
+const DeleteLexiconModal = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const [isLoading, setIsLoading] = React.useState(false);
 	const dispatch = useDispatch();
-	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
+	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
 	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('DeleteLexicon'));
+		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
@@ -42,7 +42,7 @@ const DeleteLexiconModal = () => {
 			LexiconStorage.removeItem(key).then(() => {
 				setIsLoading(false);
 				dispatch(setTemporaryInfo(undefined));
-				dispatch(closeModal('DeleteLexicon'));
+				setIsOpen(false);
 				fireSwal({
 					title: "Lexicon deleted.",
 					toast: true,
@@ -65,7 +65,7 @@ const DeleteLexiconModal = () => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.DeleteLexicon} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={isLoading}

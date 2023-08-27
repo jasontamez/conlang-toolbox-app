@@ -24,11 +24,12 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WGCategoryObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { closeModal, addCategoryWG } from '../../components/ReduxDucksFuncs';
+import { addCategoryWG } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i, $a } from '../../components/DollarSignExports';
 
 const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	let newCat: WGCategoryObject = {
 		title: "",
 		label: "",
@@ -43,7 +44,7 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const [categoryObject, modalState, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.modalState, state.wordgenSettings], shallowEqual);
+	const [categoryObject, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.wordgenSettings], shallowEqual);
 	const catMap = new Map(categoryObject.map);
 	function setNewInfo<
 		KEY extends keyof WGCategoryObject,
@@ -127,7 +128,7 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		close && dispatch(closeModal('AddCategory'));
+		close && setIsOpen(false);
 		dispatch(addCategoryWG(newCat));
 		hardReset();
 		fireSwal({
@@ -139,15 +140,15 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	return (
-		<IonModal isOpen={modalState.AddCategory} onDidDismiss={() => dispatch(closeModal('AddCategory'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Character Group</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => dispatch(closeModal('AddCategory'))}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

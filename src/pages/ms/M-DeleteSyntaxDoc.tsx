@@ -12,36 +12,39 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter,
-	IonLoading
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	closeModal,
-	setTemporaryInfo,
-	setLoadingPage
+	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
-import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { ModalProperties, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 
-const DeleteLexiconModal = () => {
+interface LexModalProps extends ModalProperties {
+	setLoadingScreen: Function
+}
+
+const DeleteLexiconModal = (props: LexModalProps) => {
+	const { isOpen, setIsOpen, setLoadingScreen } = props;
 	const dispatch = useDispatch();
-	const [settings, modalState, temp] = useSelector((state: any) => [state.appSettings, state.modalState, state.temporaryInfo], shallowEqual);
+	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
 	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
 	const doClose = () => {
 		dispatch(setTemporaryInfo(undefined));
-		dispatch(closeModal('DeleteMS'));
+		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
+			setLoadingScreen(true);
 			MorphoSyntaxStorage.removeItem(key).then(() => {
-				dispatch(setLoadingPage(false));
+				setLoadingScreen(false);
 				dispatch(setTemporaryInfo(undefined));
-				dispatch(closeModal('DeleteMS'));
+				setIsOpen(false);
 				fireSwal({
 					title: "MorphoSyntax document deleted.",
 					toast: true,
@@ -50,7 +53,6 @@ const DeleteLexiconModal = () => {
 					showConfirmButton: false
 				});
 			});
-			dispatch(setLoadingPage("deletingSyntaxDoc"));
 		};
 		if(settings.disableConfirms) {
 			thenFunc();
@@ -65,16 +67,7 @@ const DeleteLexiconModal = () => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.DeleteMS} onDidDismiss={() => doClose()}>
-			<IonLoading
-				cssClass='loadingPage'
-				isOpen={modalState.loadingPage === "deletingSyntaxDoc"}
-				onDidDismiss={() => dispatch(setLoadingPage(false))}
-				message={'Working...'}
-				spinner="bubbles"
-				/*duration={300000}*/
-				duration={1000}
-			/>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Delete MorphoSyntax Document</IonTitle>

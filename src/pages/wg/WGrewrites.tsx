@@ -29,7 +29,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { PageData, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	startEditRewriteRuleWG,
 	deleteRewriteRuleWG,
 	reorderRewriteRulesWG,
@@ -50,6 +49,8 @@ const WGRew = (props: PageData) => {
 	const viewInfo = ['wg', 'rewriterules'];
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenAddRule, setIsOpenAddRule] = useState<boolean>(false);
+	const [isOpenEditRule, setIsOpenEditRule] = useState<boolean>(false);
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
@@ -59,7 +60,7 @@ const WGRew = (props: PageData) => {
 	const editRewriteRule = (label: any) => {
 		$q(".rewriterules").closeSlidingItems();
 		dispatch(startEditRewriteRuleWG(label));
-		dispatch(openModal('EditRewriteRule'));
+		setIsOpenEditRule(true);
 	};
 	const maybeDeleteRewriteRule = (rule: WGRewriteRuleObject) => {
 		$q(".rewriterules").closeSlidingItems();
@@ -102,8 +103,8 @@ const WGRew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddRewriteRuleModal openECM={setIsOpen} />
-			<EditRewriteRuleModal openECM={setIsOpen} />
+			<AddRewriteRuleModal {...props.modalPropsMaker(isOpenAddRule, setIsOpenAddRule)} openECM={setIsOpen} />
+			<EditRewriteRuleModal {...props.modalPropsMaker(isOpenEditRule, setIsOpenEditRule)} openECM={setIsOpen} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><RewCard /></ModalWrap>
 			<IonHeader>
@@ -149,7 +150,7 @@ const WGRew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => dispatch(openModal('AddRewriteRule'))}>
+					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => setIsOpenAddRule(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

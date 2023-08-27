@@ -23,17 +23,17 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WECategoryObject } from '../../components/ReduxDucksTypes';
-import { closeModal, doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
+import { doEditCategoryWE, cancelEditCategoryWE, deleteCategoryWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
 const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [categoryObject, settings] = useSelector((state: any) => [state.wordevolveCategories, state.appSettings], shallowEqual);
 	const catMap: Map<string, WECategoryObject> = new Map(categoryObject.map);
 	const editing = categoryObject.editing;
 	//const sourceCat = catMap.get(editing);
-	const modalState = useSelector((state: any) => state.modalState, shallowEqual);
 	let editingCat: WECategoryObject = {...catMap.get(editing)!};
 	editingCat.label = editing;
 	const hardReset = () => {
@@ -98,7 +98,7 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const cancelEditing = () => {
 		dispatch(cancelEditCategoryWE(editing));
-		dispatch(closeModal('EditCategoryWE'));
+		setIsOpen(false);
 	};
 	const maybeSaveNewInfo = () => {
 		let err: string[] = [];
@@ -134,7 +134,7 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		dispatch(closeModal('EditCategoryWE'));
+		setIsOpen(false);
 		dispatch(doEditCategoryWE(editingCat));
 		hardReset();
 		fireSwal({
@@ -149,7 +149,7 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 		$q(".categories").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(closeModal('EditCategoryWE'));
+				setIsOpen(false);
 				dispatch(deleteCategoryWE(editingCat));
 				fireSwal({
 					title: "Character Group deleted",
@@ -175,12 +175,12 @@ const EditCategoryWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.EditCategoryWE} onDidDismiss={() => cancelEditing()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

@@ -29,7 +29,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { PageData, WETransformObject } from '../../components/ReduxDucksTypes';
 import {
-	openModal,
 	startEditTransformWE,
 	deleteTransformWE,
 	reorderTransformsWE,
@@ -49,6 +48,8 @@ const WERew = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
+	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -58,7 +59,7 @@ const WERew = (props: PageData) => {
 	const editTransform = (label: any) => {
 		$q(".transforms").closeSlidingItems();
 		dispatch(startEditTransformWE(label));
-		dispatch(openModal('EditTransform'));
+		setIsOpenEditTransform(true);
 	};
 	const makeArrow = (dir: string) => {
 		if(dir === "double") {
@@ -122,8 +123,8 @@ const WERew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddTransformModal openECM={setIsOpenECM} />
-			<EditTransformModal openECM={setIsOpenECM} />
+			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpenECM} />
+			<EditTransformModal {...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><TraCard /></ModalWrap>
 			<IonHeader>
@@ -170,7 +171,7 @@ const WERew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new transform" onClick={() => dispatch(openModal('AddTransform'))}>
+					<IonFabButton color="tertiary" title="Add new transform" onClick={() => setIsOpenAddTransform(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

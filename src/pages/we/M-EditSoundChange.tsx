@@ -23,7 +23,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
 import {
-	closeModal,
 	doEditSoundChangeWE,
 	cancelEditSoundChangeWE,
 	deleteSoundChangeWE
@@ -34,6 +33,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 
 const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
+	const { isOpen, setIsOpen, openECM } = props;
 	const hardReset = () => {
 		editingSoundChange = {
 			key: "",
@@ -46,11 +46,9 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [
-		modalState,
 		soundChangesObject,
 		settings
 	] = useSelector((state: any) => [
-		state.modalState,
 		state.wordevolveSoundChanges,
 		state.appSettings
 	], shallowEqual);
@@ -76,7 +74,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	});
 	const cancelEditing = () => {
 		dispatch(cancelEditSoundChangeWE(editing));
-		dispatch(closeModal('EditSoundChange'));
+		setIsOpen(false);
 	};
 	function setNewInfo<
 		KEY extends keyof WESoundChangeObject,
@@ -139,7 +137,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		editingSoundChange.replace = repairRegexErrors(editingSoundChange.replace);
 		editingSoundChange.anticontext = repairRegexErrors(editingSoundChange.anticontext);
 		// Everything ok!
-		dispatch(closeModal('EditSoundChange'));
+		setIsOpen(false);
 		dispatch(doEditSoundChangeWE(editingSoundChange));
 		hardReset();
 		fireSwal({
@@ -154,7 +152,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		$q(".soundChanges").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(closeModal('EditSoundChange'));
+				setIsOpen(false);
 				dispatch(deleteSoundChangeWE(currentSoundChange));
 				fireSwal({
 					title: "Sound Change deleted",
@@ -189,12 +187,12 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={modalState.EditSoundChange} onDidDismiss={() => dispatch(closeModal('EditSoundChange'))}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => props.openECM(true)}>
+						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 						<IonButton onClick={() => cancelEditing()}>

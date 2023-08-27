@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -23,15 +23,13 @@ import {
 } from 'ionicons/icons';
 import {
 	changeView,
-	openModal,
-	setLoadingPage,
 	setMorphoSyntax,
 	setMorphoSyntaxNum,
 	setMorphoSyntaxText,
 	setTemporaryInfo
 } from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
-import { ModalStateObject, MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
+import { MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import { v4 as uuidv4 } from 'uuid';
@@ -42,10 +40,13 @@ import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 
 const Syntax = (props: PageData) => {
+	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
+	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
+	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const dispatch = useDispatch();
 	const [
 		msInfo,
-		modalState,
 		appSettings
 	] = useSelector((state: any) => [
 		state.morphoSyntaxInfo,
@@ -93,17 +94,17 @@ const Syntax = (props: PageData) => {
 			thenFunc();
 		}
 	};
-	const openMSModal = (which: keyof ModalStateObject) => {
+	const openMSModal = (modalOpener: Function) => {
 		let info: [string, MorphoSyntaxObject][] = [];
+		setIsLoading(true);
 		MorphoSyntaxStorage.iterate((value: MorphoSyntaxObject, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
 			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedsyntaxes", data: info }));
-			dispatch(setLoadingPage(false));
-			dispatch(openModal(which));
+			setIsLoading(false);
+			modalOpener(true);
 		});
-		dispatch(setLoadingPage("lookingForSyntaxDocs"));
 	};
 	const maybeExportMS = () => {
 		if(!title) {
@@ -119,7 +120,7 @@ const Syntax = (props: PageData) => {
 				icon: 'warning'
 			});
 		}
-		dispatch(openModal("ExportMS"));
+		setIsOpenExportMS(true);
 	};
 	const saveMSDoc: any = (announce: string = "MorphoSyntax document saved.", key: string = msInfo.key, overwrite: boolean = true) => {
 		// Save original key
@@ -134,7 +135,7 @@ const Syntax = (props: PageData) => {
 		}
 		// Dispatch to state
 		dispatch(setMorphoSyntaxNum("lastSave", now));
-		dispatch(setLoadingPage("lookingForSyntaxDocs"));
+		setIsLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
 		let ms: any = {
@@ -154,7 +155,7 @@ const Syntax = (props: PageData) => {
 				if(overwrite && key !== firstKey) {
 					MorphoSyntaxStorage.removeItem(firstKey);
 				}
-				dispatch(setLoadingPage(false));
+				setIsLoading(false);
 				fireSwal({
 					title: announce,
 					toast: true,
@@ -188,16 +189,16 @@ const Syntax = (props: PageData) => {
 		<IonPage>
 			<IonLoading
 				cssClass='loadingPage'
-				isOpen={modalState.loadingPage === "lookingForSyntaxDocs"}
-				onDidDismiss={() => dispatch(setLoadingPage(false))}
+				isOpen={isLoading}
+				onDidDismiss={() => setIsLoading(false)}
 				message={'Please wait...'}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
 			/>
-			<LoadMS />
-			<ExportMS />
-			<DeleteMS />
+			<LoadMS {...props.modalPropsMaker(isOpenLoadMS, setIsOpenLoadMS)} />
+			<ExportMS {...props.modalPropsMaker(isOpenExportMS, setIsOpenExportMS)} />
+			<DeleteMS {...props.modalPropsMaker(isOpenDelMS, setIsOpenDelMS)} />
 			<SyntaxHeader title="MorphoSyntax Settings" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
@@ -219,7 +220,7 @@ const Syntax = (props: PageData) => {
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
 						<IonLabel>Clear MorphoSyntax Info</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openMSModal("LoadMS")}>
+					<IonItem button={true} onClick={() => openMSModal(setIsOpenLoadMS)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
 						<IonLabel>Load MorphoSyntax Info</IonLabel>
 					</IonItem>
@@ -235,7 +236,7 @@ const Syntax = (props: PageData) => {
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
 						<IonLabel>Export MorphoSyntax Info</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openMSModal("DeleteMS")}>
+					<IonItem button={true} onClick={() => openMSModal(setIsOpenDelMS)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
 						<IonLabel>Delete Saved MorphoSyntax Info</IonLabel>
 					</IonItem>

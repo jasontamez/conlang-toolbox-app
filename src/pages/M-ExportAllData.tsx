@@ -15,12 +15,12 @@ import {
 	IonTextarea
 } from '@ionic/react';
 import { closeCircleOutline } from "ionicons/icons";
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../components/ReduxDucksFuncs';
+import { shallowEqual, useSelector } from 'react-redux';
 import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../components/PersistentInfo';
-import { LexiconObject, MorphoSyntaxObject } from '../components/ReduxDucksTypes';
+import { LexiconObject, ModalProperties, MorphoSyntaxObject } from '../components/ReduxDucksTypes';
 
-const MExportAllData = () => {
+const MExportAllData = (props: ModalProperties) => {
+	const { isOpen, setIsOpen } = props;
 	const [output, setOutput] = useState<string>("...loading");
 	const {
 		currentVersion,
@@ -37,12 +37,10 @@ const MExportAllData = () => {
 		morphoSyntaxInfo,
 		lexicon,
 		extraCharactersState,
-		wordListsState,
-		modalState
+		wordListsState
 	} = useSelector((state: any) => state, shallowEqual);
-	const dispatch = useDispatch();
 	const doClose = () => {
-		dispatch(closeModal('ExportAll'));
+		setIsOpen(false);
 	};
 
 	useEffect(() => {
@@ -235,7 +233,7 @@ const MExportAllData = () => {
 	]);
 
 	return (
-		<IonModal isOpen={modalState.ExportAll} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Export Info</IonTitle>
