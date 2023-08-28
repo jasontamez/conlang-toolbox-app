@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -29,6 +29,10 @@ import {
 	settings
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
+import { useWindowHeight } from '@react-hook/window-size/throttled';
+import { v4 as uuidv4 } from 'uuid';
+import VirtualList from 'react-tiny-virtual-list';
+
 import {
 	updateLexiconText,
 	startEditLexiconItem,
@@ -39,19 +43,24 @@ import {
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
+import fireSwal from '../components/Swal';
+import escape from '../components/EscapeForHTML';
+import debounce from '../components/Debounce';
+
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
 import LexiconStorageModal from './M-LexiconStorage';
-import fireSwal from '../components/Swal';
 import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
-import { v4 as uuidv4 } from 'uuid';
-import escape from '../components/EscapeForHTML';
-import VirtualList from 'react-tiny-virtual-list';
-import { useWindowHeight } from '@react-hook/window-size/throttled';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
-import debounce from '../components/Debounce';
+
+interface LexItem {
+	index: number
+	style: {
+		[key: string]: any
+	}
+}
 
 const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
@@ -65,7 +74,19 @@ const Lex = (props: PageData) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
-	const [appSettings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
+	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
+	const {
+		title,
+		description,
+		columns,
+		columnOrder,
+		columnTitles,
+		columnSizes,
+		sort,
+		waitingToAdd,
+		lexiconWrap,
+		lexicon
+	} = lexObject;
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
 		const thenFunc = () => {
@@ -78,7 +99,7 @@ const Lex = (props: PageData) => {
 				showConfirmButton: false
 			});
 		};
-		if(appSettings.disableConfirms) {
+		if(disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -91,22 +112,21 @@ const Lex = (props: PageData) => {
 		}
 	};
 	const loadSavedWords = () => {
-		let cols: number = lexicon.columns;
 		let options: any = {};
-		for(let x = 0; x < cols; x++) {
-			options[x.toString()] = lexicon.columnTitles[x];
+		for(let x = 0; x < columns; x++) {
+			options[x.toString()] = columnTitles[x];
 		}
 		const thenFunc = (value: number) => {
 			setIsLoading(true);
-			let [col, dir] = lexicon.sort;
-			const toAdd = [...lexicon.waitingToAdd];
-			let everythingToSort = [...lexicon.lexicon];
+			let [col, dir] = sort;
+			const toAdd = [...waitingToAdd];
+			let everythingToSort = [...lexicon];
 			let pre: string[] = [];
 			let post: string[] = [];
 			for(let c = 0; c < value; c++) {
 				pre.push("");
 			}
-			for(let c = value + 1; c < cols; c++) {
+			for(let c = value + 1; c < columns; c++) {
 				post.push("");
 			}
 			toAdd.forEach(w => {
@@ -116,7 +136,7 @@ const Lex = (props: PageData) => {
 			dispatch(clearDeferredLexiconItems());
 			setIsLoading(false);
 		};
-		if(cols === 1) {
+		if(columns === 1) {
 			return thenFunc(0);
 		} else {
 			return fireSwal({
@@ -137,12 +157,7 @@ const Lex = (props: PageData) => {
 		const value = el.value.trim();
 		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000), "updateLexText");
 	};
-	const theOrder = lexicon.columnOrder;
-	const theTitles = lexicon.columnTitles;
-	const theSizes = lexicon.columnSizes;
-	//const theSort = lexicon.sort.map((n: number) => n.toString()).join("");
-	const theSort = lexicon.sort;
-	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon.lexicon]) => {
+	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon]) => {
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
 			let y: string;
@@ -167,7 +182,6 @@ const Lex = (props: PageData) => {
 	const addToLex = () => {
 		const newInfo: string[] = [];
 		let foundFlag = false;
-		const columns = lexicon.columns;
 		let i: number = 0;
 		while(i < columns) {
 			let el = $i("inputLex" + i.toString());
@@ -200,13 +214,13 @@ const Lex = (props: PageData) => {
 			key: uuidv4(),
 			columns: newInfo
 		}
-		let [col, dir] = lexicon.sort;
-		internalSort(col, dir, [...lexicon.lexicon, newWord]);
+		let [col, dir] = sort;
+		internalSort(col, dir, [...lexicon, newWord]);
 	};
-	const delFromLex = (key: string) => {
+	const delFromLex = useCallback((key: string) => {
 		let title: string = "";
 		let index: number = -1;
-		if(lexicon.lexicon.every((lx: Lexicon, i: number) => {
+		if(lexicon.every((lx: Lexicon, i: number) => {
 			if(lx.key === key) {
 				index = i;
 				title = lx.columns.join(" / ");
@@ -218,7 +232,7 @@ const Lex = (props: PageData) => {
 			return;
 		}
 		const thenFunc = () => dispatch(deleteLexiconItem(index));
-		if(appSettings.disableConfirms) {
+		if(disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -229,11 +243,11 @@ const Lex = (props: PageData) => {
 				confirmButtonText: "Yes, delete it."
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
-	};
-	const editInLex = (key: string) => {
+	}, [dispatch, lexicon, disableConfirms]);
+	const editInLex = useCallback((key: string) => {
 		//need modal
 		let index: number = -1;
-		if(lexicon.lexicon.every((lx: Lexicon, i: number) => {
+		if(lexicon.every((lx: Lexicon, i: number) => {
 			if(lx.key === key) {
 				index = i;
 				return false;
@@ -245,11 +259,11 @@ const Lex = (props: PageData) => {
 		}
 		dispatch(startEditLexiconItem(index));
 		setIsOpenEditLexItem(true);
-	};
-	const maybeExpand = (e: any) => {
+	}, [dispatch, lexicon]);
+	const maybeExpand = useCallback((e: any) => {
 		// Expand an overflowing field into a toast
 		const span = e.target;
-		if(!lexicon.lexiconWrap && span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
+		if(!lexiconWrap && span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
 			const titleText = (span && (span.textContent as string)) || "<error>";
 			fireSwal({
 				titleText,
@@ -260,7 +274,50 @@ const Lex = (props: PageData) => {
 				timerProgressBar: true,
 			});
 		}
-	};
+	}, [lexiconWrap]);
+	const renderLexiconItem = useCallback(({index, style}: LexItem) => {
+		const lex: Lexicon = lexicon[index];
+		const cols = lex.columns;
+		const key = lex.key;
+		const id = "LEX" + key;
+		let newStyle: { [key: string]: any } = {
+			...style,
+			order: index
+		};
+		return (
+			<IonItem
+				key={id}
+				className={
+					"lexRow lexiconDisplay serifChars "
+					+ (index % 2 ? "even" : "odd")
+				}
+				id={id}
+				style={ newStyle }
+			>
+				{columnOrder.map((i: number) => (
+					<div
+						onClick={maybeExpand}
+						key={key + i.toString()}
+						className={
+							(lexiconWrap ? "ion-text-wrap " : "")
+							+ "lexItem selectable "
+							+ columnSizes[i]
+						}
+					>{cols[i]}</div>
+				))}
+				<div className="xs">
+					<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
+						<IonIcon icon={construct} style={ { margin: 0 } } />
+					</IonButton>
+				</div>
+				<div className="xs ion-hide-sm-down">
+					<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
+						<IonIcon icon={trash} style={ { margin: 0 } } />
+					</IonButton>
+				</div>
+			</IonItem>
+		);
+	}, [delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexiconWrap, lexicon]);
 	return (
 		<IonPage>
 			<EditLexiconItemModal {...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)} openECM={setIsOpenECM} />
@@ -322,29 +379,29 @@ const Lex = (props: PageData) => {
 				<IonList lines="none">
 					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
 					<IonItem>
-						<IonInput aria-label="Lexicon title" value={lexicon.title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
+						<IonInput aria-label="Lexicon title" value={title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled"><IonLabel>Description:</IonLabel></IonItem>
 					<IonItem>
-						<IonTextarea aria-label="Description" value={lexicon.description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
+						<IonTextarea aria-label="Description" value={description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
 							<IonCol>
-								<h1>{lexicon.lexicon.length === 1 ? "1 Word" : lexicon.lexicon.length.toString() + " Words"}</h1>
+								<h1>{lexicon.length === 1 ? "1 Word" : lexicon.length.toString() + " Words"}</h1>
 							</IonCol>
-							<IonCol className={lexicon.waitingToAdd.length > 0 ? "" : "hide"} size="auto">
+							<IonCol className={waitingToAdd.length > 0 ? "" : "hide"} size="auto">
 								<IonButton color="warning" strong={true} onClick={() => loadSavedWords()} style={ { padding: "0.25em" } }>
 									<IonIcon size="small" icon={saveOutline} style={ { margin: "0 0.25em 0 0" } } /> Add Saved
 								</IonButton>
 							</IonCol>
-							<IonCol className={lexicon.waitingToAdd.length > 0 ? "" : "hide"} size="auto">
+							<IonCol className={waitingToAdd.length > 0 ? "" : "hide"} size="auto">
 								<IonButton color="danger" strong={true} onClick={() => clearSavedWords()} style={ { padding: "0.25em 0" } }>
 									<IonIcon size="small" icon={trashOutline} />
 								</IonButton>
 							</IonCol>
 							<IonCol size="auto">
-								<h2>Sort: {theTitles[theSort[0]] + [" ↓", " ↑"][theSort[1]]}</h2>
+								<h2>Sort: {columnTitles[sort[0]] + [" ↓", " ↑"][sort[1]]}</h2>
 							</IonCol>
 							<IonCol size="auto">
 								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => setIsOpenLexOrder(true)}>
@@ -357,24 +414,24 @@ const Lex = (props: PageData) => {
 						<IonRow>
 							<IonCol id="theLexicon">
 								<IonItem className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
-									{theOrder.map((i: number) => (
+									{columnOrder.map((i: number) => (
 										<div
 											className={
-												(lexicon.lexiconWrap ? "ion-text-wrap " : "")
-												+ theSizes[i]
+												(lexiconWrap ? "ion-text-wrap " : "")
+												+ columnSizes[i]
 											}
 											style={ { overflowY: "hidden" }}
-											key={`${i}:${theTitles[i]}`}
-										>{theTitles[i]}</div>
+											key={`${i}:${columnTitles[i]}`}
+										>{columnTitles[i]}</div>
 									))}
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
 									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
 								<IonItem className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
-									{theOrder.map((i: number) => {
+									{columnOrder.map((i: number) => {
 										const key = `inputLex${i}`;
 										return (
-											<IonInput id={key} key={key} aria-label={`${theTitles[i]} input`} className={theSizes[i]} type="text" style={ { overflowY: "hidden" }} />
+											<IonInput id={key} key={key} aria-label={`${columnTitles[i]} input`} className={columnSizes[i]} type="text" style={ { overflowY: "hidden" }} />
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>
@@ -388,51 +445,9 @@ const Lex = (props: PageData) => {
 									className="virtualLex"
 									width="100%"
 									height={twoThirds}
-									itemCount={lexicon.lexicon.length}
+									itemCount={lexicon.length}
 									itemSize={48}
-									renderItem={({index, style}) => {
-										const lex: Lexicon = lexicon.lexicon[index];
-										const cols = lex.columns;
-										const key = lex.key;
-										const id = "LEX" + key;
-										let newStyle: { [key: string]: any } = {
-											...style,
-											order: index
-										};
-										return (
-											<IonItem
-												key={id}
-												className={
-													"lexRow lexiconDisplay serifChars "
-													+ (index % 2 ? "even" : "odd")
-												}
-												id={id}
-												style={ newStyle }
-											>
-												{theOrder.map((i: number) => (
-													<div
-														onClick={maybeExpand}
-														key={key + i.toString()}
-														className={
-															(lexicon.lexiconWrap ? "ion-text-wrap " : "")
-															+ "lexItem selectable "
-															+ theSizes[i]
-														}
-													>{cols[i]}</div>
-												))}
-												<div className="xs">
-													<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
-														<IonIcon icon={construct} style={ { margin: 0 } } />
-													</IonButton>
-												</div>
-												<div className="xs ion-hide-sm-down">
-													<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
-														<IonIcon icon={trash} style={ { margin: 0 } } />
-													</IonButton>
-												</div>
-											</IonItem>
-										);
-									}}
+									renderItem={renderLexiconItem}
 								/>
 							</IonCol>
 						</IonRow>
