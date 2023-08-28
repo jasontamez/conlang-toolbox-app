@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -17,7 +17,9 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonLoading
+	IonLoading,
+	useIonViewDidEnter,
+	useIonViewDidLeave
 } from '@ionic/react';
 import {
 	add,
@@ -26,7 +28,9 @@ import {
 	trashOutline,
 	saveOutline,
 	globeOutline,
-	settings
+	settings,
+	chevronUpCircle,
+	chevronDownCircle
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
@@ -74,6 +78,12 @@ const Lex = (props: PageData) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
+	const height = useWindowHeight();
+	const [lexHeadersHidden, setLexHeadersHidden] = useState<boolean>(false);
+	const [lexiconHeight, setLexiconHeight] = useState<number>(Math.ceil(height / 3 * 2));
+	const [hasLoaded, setHasLoaded] = useState<boolean>(false);
+	useIonViewDidEnter(() => setHasLoaded(true));
+	useIonViewDidLeave(() => setHasLoaded(false));
 	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
 	const {
 		title,
@@ -87,7 +97,22 @@ const Lex = (props: PageData) => {
 		lexiconWrap,
 		lexicon
 	} = lexObject;
-	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
+	const topBar = $i("lexiconTopBar");
+	const lexInfoHeader = $i("lexiconTitleAndDescription");
+	const lexHeader = $i("theLexiconHeader");
+	const lexColumnNames = $i("lexColumnNames");
+	const lexColumnInputs = $i("lexColumnInputs");
+	useEffect(() => {
+		let used = 0;
+		[
+			topBar,
+			lexHeader,
+			lexInfoHeader,
+			lexColumnInputs,
+			lexColumnNames
+		].forEach(input => input && (used += input.offsetHeight));
+		setLexiconHeight(height - used);
+	}, [hasLoaded, height, lexHeadersHidden, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
 	const clearSavedWords = () => {
 		const thenFunc = () => {
 			dispatch(clearDeferredLexiconItems());
@@ -359,24 +384,27 @@ const Lex = (props: PageData) => {
 				spinner="bubbles"
 				duration={1000}
 			/>
-			<IonHeader>
+			<IonHeader id="lexiconTopBar">
 				<IonToolbar>
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>Lexicon</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenECM(true)}>
+						<IonButton color={lexHeadersHidden ? "secondary" : undefined} onClick={() => setLexHeadersHidden(!lexHeadersHidden)}>
+							<IonIcon icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle} slot="icon-only" />
+						</IonButton>
+						<IonButton onClick={() => setIsOpenECM(true)} slot="icon-only">
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenLexStorage(true)}>
+						<IonButton onClick={() => setIsOpenLexStorage(true)} slot="icon-only">
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
-				<IonList lines="none">
+				<IonList lines="none" id="lexiconTitleAndDescription" className={lexHeadersHidden ? "hide" : undefined}>
 					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
 					<IonItem>
 						<IonInput aria-label="Lexicon title" value={title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
@@ -385,6 +413,8 @@ const Lex = (props: PageData) => {
 					<IonItem>
 						<IonTextarea aria-label="Description" value={description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
+				</IonList>
+				<IonList lines="none">
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
 							<IonCol>
@@ -413,7 +443,7 @@ const Lex = (props: PageData) => {
 					<IonGrid id="theLexiconHolder">
 						<IonRow>
 							<IonCol id="theLexicon">
-								<IonItem className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
+								<IonItem id="lexColumnNames" className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
 									{columnOrder.map((i: number) => (
 										<div
 											className={
@@ -427,7 +457,7 @@ const Lex = (props: PageData) => {
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
 									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
-								<IonItem className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
+								<IonItem id="lexColumnInputs" className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
 									{columnOrder.map((i: number) => {
 										const key = `inputLex${i}`;
 										return (
@@ -444,7 +474,7 @@ const Lex = (props: PageData) => {
 								<VirtualList
 									className="virtualLex"
 									width="100%"
-									height={twoThirds}
+									height={lexiconHeight}
 									itemCount={lexicon.length}
 									itemSize={48}
 									renderItem={renderLexiconItem}

@@ -377,7 +377,7 @@ ion-app .WEinput {
 #theLexiconHeader {
 	--ion-grid-column-padding: 0;
 	--ion-grid-columns: 5;
-	margin: 2rem 1rem 1rem;
+	margin: 0 1rem;
 	padding: 0;
 }
 #theLexiconHeader ion-row {
@@ -389,6 +389,10 @@ ion-app .WEinput {
 }
 #theLexiconHolder {
 	--ion-grid-columns: 1;
+	padding: 0;
+}
+#theLexiconHolder ion-row {
+	margin: 0;
 }
 #theLexicon,
 #theLexicon::part(native) {
@@ -517,6 +521,9 @@ ion-app .WEinput {
 	z-index: 10000 !important;
 	position: fixed !important;
 }
+#lexiconPage ion-list {
+	padding: 0;
+}
 .hasSpecialLabels ion-label {
 	font-size: 1.25rem;
 	padding: 0;
@@ -526,6 +533,12 @@ ion-app .WEinput {
 .hasSpecialLabels ion-item.labelled {
 	padding: 0;
 	margin: 0;
+}
+#lexColumnInputs {
+	border-bottom: 2px solid var(--ion-background-shader);
+}
+#lexiconTitleAndDescription {
+	padding: 0.5rem 0 2.5rem;
 }
 
 #editLexiconItemOrder ion-row:nth-child(odd) {
