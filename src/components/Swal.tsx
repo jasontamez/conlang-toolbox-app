@@ -1,14 +1,16 @@
-import Swal from "sweetalert2";
+import Swal, { SweetAlertOptions } from "sweetalert2";
 import './Swal.css';
 import { $delay } from './DollarSignExports';
 
 let queue = new Set();
 let toastActive = false;
 
-const fireSwal: any = async (options: any = {}) => {
+const fireSwal: any = async (options: SweetAlertOptions = {}) => {
+	// heightAuto screws things up, but it doesn't appear on toasts
 	if(!options.toast && !options.heightAuto) {
 		options.heightAuto = false;
 	}
+	// apply custom class
 	if(options.customClass) {
 		if(options.customClass.popup) {
 			options.customClass.popup += ' conlangToolboxSwal';
