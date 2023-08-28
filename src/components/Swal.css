@@ -2,7 +2,8 @@
 	--swal-bg: var(--ion-background-color);
 	--swal-fg: var(--ion-text-color);
 	--swal-shadow: var(--ion-background-shader);
-	--swal-btn-bg: var(--ion-background-tinter);
+	--swal-btn-bg: var(--ion-color-primary);
+	--swal-btn-fg: var(--ion-color-primary-contrast);
 	background: var(--swal-bg);
 	color: var(--swal-fg);
 	border-radius: 2rem;
@@ -20,26 +21,41 @@
 	--swal-fg: var(--ion-color-success-contrast);
 	--swal-shadow: var(--ion-color-succes-tint);
 	--swal-btn-bg: var(--ion-color-success-shade);
+	--swal-btn-fg: var(--ion-color-success-contrast);
 }
 .conlangToolboxSwal.swal2-popup.swal2-toast .swal2-confirm {
 	background: var(--swal-btn-bg);
-	color: var(--swal-fg);
+	color: var(--swal-btn-fg);
 }
-.conlangToolboxSwal.swal2-popup.warningConfirm,
 .conlangToolboxSwal.swal2-popup.swal2-toast.warnToast,
 .conlangToolboxSwal.swal2-popup.swal2-toast.warnToast #swal2-title {
 	--swal-bg: var(--ion-color-warning);
 	--swal-fg: var(--ion-color-warning-contrast);
 	--swal-shadow: var(--ion-color-warning-tint);
 	--swal-btn-bg: var(--ion-color-warning-shade);
+	--swal-btn-fg: var(--ion-color-warning-contrast);
 }
-.conlangToolboxSwal.swal2-popup.deleteConfirm,
+.conlangToolboxSwal.swal2-popup.warningConfirm {
+	--swal-bg: var(--ion-color-warning-contrast);
+	--swal-fg: var(--ion-color-warning);
+	--swal-shadow: var(--ion-color-warning-shade);
+	--swal-btn-bg: var(--ion-color-warning-tint);
+	--swal-btn-fg: var(--ion-color-warning-contrast);
+}
 .conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast,
 .conlangToolboxSwal.swal2-popup.swal2-toast.dangerToast #swal2-title {
 	--swal-bg: var(--ion-color-danger);
 	--swal-fg: var(--ion-color-danger-contrast);
 	--swal-shadow: var(--ion-color-danger-tint);
 	--swal-btn-bg: var(--ion-color-danger-shade);
+	--swal-btn-fg: var(--ion-color-danger-contrast);
+}
+.conlangToolboxSwal.swal2-popup.deleteConfirm {
+	--swal-bg: var(--ion-color-danger-contrast);
+	--swal-fg: var(--ion-color-danger);
+	--swal-shadow: var(--ion-color-danger-shade);
+	--swal-btn-bg: var(--ion-color-danger-tint);
+	--swal-btn-fg: var(--ion-color-danger-contrast);
 }
 .conlangToolboxSwal.swal2-popup.swal2-toast.infoToast,
 .conlangToolboxSwal.swal2-popup.swal2-toast.infoToast #swal2-title {
@@ -47,6 +63,7 @@
 	--swal-fg: var(--ion-color-primary-contrast);
 	--swal-shadow: var(--ion-color-primary-tint);
 	--swal-btn-bg: var(--ion-color-primary-shade);
+	--swal-btn-fg: var(--ion-color-primary-contrast);
 }
 .conlangToolboxSwal.swal2-popup .swal2-content {
 	background: var(--swal-bg);
@@ -57,8 +74,8 @@
 }
 .conlangToolboxSwal.swal2-popup .swal2-confirm {
 	background: var(--swal-btn-bg);
-	color: var(--swal-fg);
-	border-color: var(--swal-btn-bg);
+	color: var(--swal-btn-fg);
+	border-color: var(--swal-shadow);
 }
 .conlangToolboxSwal.swal2-popup .swal2-icon.swal2-error,
 .conlangToolboxSwal.swal2-popup .swal2-x-mark-line-left,
