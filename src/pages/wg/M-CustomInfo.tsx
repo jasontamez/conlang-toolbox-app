@@ -23,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { loadCustomInfoWG, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { loadCustomInfoWG } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
@@ -31,27 +31,30 @@ import { CustomStorageWG } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 import doExport from '../../components/ExportServices';
 
-const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface ExtraInfo extends ExtraCharactersModalOpener {
+	titles: string[] | null
+	setTitles: Function
+}
+
+const ManageCustomInfo = (props: ExtraInfo) => {
+	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [
 		settings,
 		settingsWG,
 		categories,
 		syllables,
-		rules,
-		temporaryInfo
+		rules
 	] = useSelector((state: any) => [
 		state.appSettings,
 		state.wordgenSettings,
 		state.wordgenCategories,
 		state.wordgenSyllables,
-		state.wordgenRewriteRules,
-		state.temporaryInfo
+		state.wordgenRewriteRules
 	], shallowEqual);
-	let customInfo: string[] = (temporaryInfo && temporaryInfo.type === "custominfo") ? temporaryInfo.data : [];
+	let customInfo: string[] = titles || [];
 	const doCleanClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setTitles(null);
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
@@ -156,7 +159,7 @@ const ManageCustomInfo = (props: ExtraCharactersModalOpener) => {
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
 			let newCustom = customInfo.filter(ci => ci !== title);
-			dispatch(setTemporaryInfo({type: "custominfo", data: newCustom}));
+			setTitles(newCustom.length > 0 ? newCustom : null);
 			CustomStorageWG.removeItem(title).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",

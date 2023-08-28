@@ -152,6 +152,9 @@ const App = memo(() => {
 							if(storedState.modalState) {
 								delete storedState.modalState;
 							}
+							if(storedState.temporaryInfo) {
+								delete storedState.temporaryInfo;
+							}
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date

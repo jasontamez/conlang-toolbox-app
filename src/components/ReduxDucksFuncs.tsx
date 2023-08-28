@@ -313,13 +313,6 @@ export function toggleWordListsBoolean(payload: "textCenter") {
 }
 
 //
-// TEMPORARY INFO
-//
-export function setTemporaryInfo(payload: undefined | types.TemporaryInfo) {
-	return {type: consts.SET_TEMPORARY_INFO, payload};
-}
-
-//
 // LOGS
 //
 /*export function setLog(payload: string[]) {

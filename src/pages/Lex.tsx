@@ -37,7 +37,7 @@ import {
 	updateLexiconBool,
 	clearDeferredLexiconItems
 } from '../components/ReduxDucksFuncs';
-import { Lexicon, PageData } from '../components/ReduxDucksTypes';
+import { Lexicon, LexiconObject, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
@@ -66,6 +66,7 @@ const Lex = (props: PageData) => {
 	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
+	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
 	const [appSettings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
 	const twoThirds = Math.ceil(useWindowHeight() / 3 * 2);
 	const clearSavedWords = () => {
@@ -322,9 +323,18 @@ const Lex = (props: PageData) => {
 		<IonPage>
 			<EditLexiconItemModal {...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)} openECM={setIsOpenECM} />
 			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
-			<LoadLexiconModal {...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)} />
+			<LoadLexiconModal
+				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
+				lexInfo={storedLexInfo}
+				setLexInfo={setStoredLexInfo}
+			/>
 			<ExportLexiconModal {...props.modalPropsMaker(isOpenExportLex, setIsOpenExportLex)} setLoading={setIsLoading} />
-			<DeleteLexiconModal {...props.modalPropsMaker(isOpenDelLex, setIsOpenDelLex)} setLoadingScreen={setIsWorking} />
+			<DeleteLexiconModal
+				{...props.modalPropsMaker(isOpenDelLex, setIsOpenDelLex)}
+				setLoadingScreen={setIsWorking}
+				lexInfo={storedLexInfo}
+				setLexInfo={setStoredLexInfo}
+			/>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<LexiconStorageModal
 				{...props.modalPropsMaker(isOpenLexStorage, setIsOpenLexStorage)}
@@ -332,6 +342,7 @@ const Lex = (props: PageData) => {
 				openDelete={setIsOpenDelLex}
 				openExport={setIsOpenExportLex}
 				setLoading={setIsLoading}
+				setLexInfo={setStoredLexInfo}
 			/>
 			<IonLoading
 				cssClass='loadingPage'

@@ -16,8 +16,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
 	addDeferredLexiconItems,
-	removeDeferredLexiconItem,
-	setTemporaryInfo
+	removeDeferredLexiconItem
 } from '../../components/ReduxDucksFuncs';
 import {
 	helpCircleOutline,
@@ -53,6 +52,7 @@ const WEOut = (props: PageData) => {
 	const [isOpenManageCustomWE, setIsOpenManageCustomWE] = useState<boolean>(false);
 	const [isPickingSaving, setIsPickingSaving] = useState<boolean>(false);
 	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
+	const [storedInfo, setStoredInfo] = useState<string[]>([]);
 	type arrayOfStringsAndStringArrays = (string | string[])[];
 	interface soundChangeModified {
 		seek: arrayOfStringsAndStringArrays | RegExp
@@ -720,7 +720,7 @@ const WEOut = (props: PageData) => {
 			titles.push(title);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			dispatch(setTemporaryInfo({ type: "custominfoWE", data: titles }));
+			setStoredInfo(titles);
 			setLoadingOpen(false);
 			setIsOpenManageCustomWE(true);
 		}).catch((err) => {
@@ -740,7 +740,12 @@ const WEOut = (props: PageData) => {
 			/>
 			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
 			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfoWE {...props.modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)} openECM={setIsOpenECM} />
+			<ManageCustomInfoWE
+				{...props.modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)}
+				openECM={setIsOpenECM}
+				titles={storedInfo}
+				setTitles={setStoredInfo}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>

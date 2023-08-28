@@ -17,25 +17,27 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	setTemporaryInfo
-} from '../../components/ReduxDucksFuncs';
+import { shallowEqual, useSelector } from "react-redux";
 import { ModalProperties, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 
-interface LexModalProps extends ModalProperties {
+interface MSOmod extends MorphoSyntaxObject {
+	boolStrings?: string[]
+}
+interface MSmodalProps extends ModalProperties {
 	setLoadingScreen: Function
+	storedInfo: [string, MSOmod][]
+	setStoredInfo: Function
 }
 
-const DeleteLexiconModal = (props: LexModalProps) => {
-	const { isOpen, setIsOpen, setLoadingScreen } = props;
-	const dispatch = useDispatch();
-	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
-	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
+
+const DeleteSyntaxDocModal = (props: MSmodalProps) => {
+	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setStoredInfo([]);
 		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
@@ -43,7 +45,7 @@ const DeleteLexiconModal = (props: LexModalProps) => {
 			setLoadingScreen(true);
 			MorphoSyntaxStorage.removeItem(key).then(() => {
 				setLoadingScreen(false);
-				dispatch(setTemporaryInfo(undefined));
+				setStoredInfo([]);
 				setIsOpen(false);
 				fireSwal({
 					title: "MorphoSyntax document deleted.",
@@ -80,7 +82,7 @@ const DeleteLexiconModal = (props: LexModalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data ? data.map((pair: [string, MorphoSyntaxObject]) => {
+					{data.length > 0 ? data.map((pair: [string, MSOmod]) => {
 						const key = pair[0];
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);
@@ -96,7 +98,7 @@ const DeleteLexiconModal = (props: LexModalProps) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonToolbar className={data ? "" : "hide"}>
+				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>
@@ -107,4 +109,4 @@ const DeleteLexiconModal = (props: LexModalProps) => {
 	);
 };
 
-export default DeleteLexiconModal;
+export default DeleteSyntaxDocModal;

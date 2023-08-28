@@ -19,24 +19,28 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	setMorphoSyntax,
-	setTemporaryInfo
+	setMorphoSyntax
 } from '../../components/ReduxDucksFuncs';
 import { ModalProperties, MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 
-const LoadMSModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
+interface MSOmod extends MorphoSyntaxObject {
+	boolStrings?: string[]
+}
+interface MSmodalProps extends ModalProperties {
+	storedInfo: [string, MSOmod][]
+	setStoredInfo: Function
+}
+
+const LoadMSModal = (props: MSmodalProps) => {
+	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const dispatch = useDispatch();
-	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
-	const data = (temp && temp.type === "storedsyntaxes" && temp.data.length > 0) ? temp.data : undefined;
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setStoredInfo([]);
 		setIsOpen(false);
 	};
-	interface MSOmod extends MorphoSyntaxObject {
-		boolStrings?: string[]
-	}
 	const loadThis = (key: string) => {
 		data.every((pair: [string, MSOmod]) => {
 			if(pair[0] !== key) {
@@ -84,7 +88,7 @@ const LoadMSModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data && data.length > 0 ? data.map((pair: [string, MorphoSyntaxObject]) => {
+					{data.length > 0 ? data.map((pair: [string, MorphoSyntaxObject]) => {
 						const key = pair[0];
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);
@@ -100,7 +104,7 @@ const LoadMSModal = (props: ModalProperties) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonToolbar className={data ? "" : "hide"}>
+				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>

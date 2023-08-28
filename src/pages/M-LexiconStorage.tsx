@@ -26,8 +26,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
 	updateLexiconText,
 	updateLexiconNumber,
-	updateLexicon,
-	setTemporaryInfo
+	updateLexicon
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
@@ -38,11 +37,12 @@ interface StorageModalProps extends ModalProperties {
 	openLoad: Function,
 	openDelete: Function,
 	openExport: Function,
-	setLoading: Function
+	setLoading: Function,
+	setLexInfo: Function
 }
 
 const LexiconStorageModal = (props: StorageModalProps) => {
-	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading } = props;
+	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading, setLexInfo } = props;
 	const dispatch = useDispatch();
 	const [appSettings, stateLexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
 	const {
@@ -117,7 +117,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedlexicons", data: info }));
+			info.length > 0 && setLexInfo(info);
 			setLoading(false);
 			setIsOpen(false);
 			whichToOpen(true);

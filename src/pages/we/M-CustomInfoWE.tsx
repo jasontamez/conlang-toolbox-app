@@ -23,7 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { loadCustomInfoWE, setTemporaryInfo } from '../../components/ReduxDucksFuncs';
+import { loadCustomInfoWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WECustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
@@ -31,25 +31,27 @@ import { CustomStorageWE } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
 import doExport from '../../components/ExportServices';
 
-const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface CustomInfoModalProps extends ExtraCharactersModalOpener {
+	titles: string[]
+	setTitles: Function
+}
+
+const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
+	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [
 		settings,
 		categories,
 		transforms,
-		soundchanges,
-		temporaryInfo
+		soundchanges
 	] = useSelector((state: any) => [
 		state.appSettings,
 		state.wordevolveCategories,
 		state.wordevolveTransforms,
-		state.wordevolveSoundChanges,
-		state.temporaryInfo
+		state.wordevolveSoundChanges
 	], shallowEqual);
-	let customInfo: string[] = (temporaryInfo && temporaryInfo.type === "custominfoWE") ? temporaryInfo.data : [];
 	const doCleanClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setTitles([]);
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
@@ -151,8 +153,7 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 	};
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
-			let newCustom = customInfo.filter(ci => ci !== title);
-			dispatch(setTemporaryInfo({type: "custominfo", data: newCustom}));
+			setTitles(titles.filter(ci => ci !== title));
 			CustomStorageWE.removeItem(title).then(() => {
 				fireSwal({
 					title: "\"" + title + "\" deleted",
@@ -215,16 +216,19 @@ const ManageCustomInfoWE = (props: ExtraCharactersModalOpener) => {
 						<IonItemDivider>
 							<IonLabel>Load Saved Info</IonLabel>
 						</IonItemDivider>
-						{customInfo.map((title: string) => {
-							return (
-								<IonItem key={title}>
-									<IonLabel className="ion-text-wrap">{title}</IonLabel>
-									<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
-									<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
-								</IonItem>
-							);
-						})}
-						{(customInfo.length === 0) ? (<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>) : ""}
+						{(titles.length === 0) ?
+							<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>
+						:
+							titles.map((title: string) => {
+								return (
+									<IonItem key={title}>
+										<IonLabel className="ion-text-wrap">{title}</IonLabel>
+										<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
+										<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
+									</IonItem>
+								);
+							})
+						}
 					</IonItemGroup>
 				</IonList>
 			</IonContent>

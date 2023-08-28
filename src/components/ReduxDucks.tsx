@@ -203,39 +203,9 @@ const reduceWordListsState = (original: types.WordListsState) => {
 		display: [...original.display]
 	};
 }
-const reduceTempInfo = (original: types.TemporaryInfo | undefined) => {
-	if(!original) {
-		return original;
-	}
-	return {
-		type: original.type,
-		data: parseUnknownTypes(original.data)
-	};
-};
 //const reduceLog = (original: string[]) => {
 //	return [...original];
 //}
-const parseUnknownTypes: any = (test: any) => {
-	const theType = (typeof test);
-	switch(theType) {
-		case "object":
-			if(test === null) {
-				return test;
-			} else if(Array.isArray(test)) {
-				return test.map(item => parseUnknownTypes(item));
-			}
-			let x: any = {};
-			Object.getOwnPropertyNames(test).forEach(prop => {
-				x[prop] = parseUnknownTypes(test[prop]);
-			});
-			return x;
-		case "number":
-		case "string":
-		case "undefined":
-			return test;
-	}
-	return undefined;
-};
 
 
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
@@ -256,14 +226,13 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["viewState", reduceViewState],
 	["extraCharactersState", reduceExtraCharactersState],
 	["wordListsState", reduceWordListsState],
-	["temporaryInfo", reduceTempInfo],
 //	["logs", reduceLog]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
 	return stateObjectProps.every(pair => {
 		let prop: keyof types.StateObject = pair[0];
-		return prop === "temporaryInfo" || check[prop];
+		return check[prop];
 	});
 };
 const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObject) => {
@@ -376,8 +345,7 @@ export const blankAppState: types.StateObject = {
 	wordListsState: {
 		display: [],
 		textCenter: true
-	},
-	temporaryInfo: undefined,
+	}
 //	logs: []
 };
 export const initialAppState: types.StateObject = {
@@ -390,8 +358,7 @@ export const initialAppState: types.StateObject = {
 // Storage
 const saveCurrentState = (state: types.StateObject) => {
 	let newState = reduceAllBut([], state);
-	// Eliminate not-stringifyable properties
-	newState.temporaryInfo = undefined;
+	// Eliminate not-stringifyable properties (if any)
 	// Save
 	StateStorage.setItem("lastState", newState);
 	console.log("Save");
@@ -1245,16 +1212,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			final = {
 				...reduceAllBut(["extraCharactersState"], state),
 				extraCharactersState: ECO
-			};
-			break;
-
-
-
-		// Temp Info
-		case consts.SET_TEMPORARY_INFO:
-			final = {
-				...reduceAllBut(["temporaryInfo"], state),
-				temporaryInfo: payload
 			};
 			break;
 

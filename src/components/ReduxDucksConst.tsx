@@ -120,8 +120,5 @@ export const TOGGLE_EXTRA_CHARS_BOOLEAN = p+"TOGGLE_EXTRA_CHARS_BOOLEAN";
 export const UPDATE_EXTRA_CHARS_TO_BE_SAVED = p+"UPDATE_EXTRA_CHARS_TO_BE_SAVED";
 
 
-export const SET_TEMPORARY_INFO = p+"SET_TEMPORARY_INFO";
-
-
 //export const SET_LOG = p+"SET_LOG";
 //export const ADD_TO_LOG = p+"ADD_TO_LOG";

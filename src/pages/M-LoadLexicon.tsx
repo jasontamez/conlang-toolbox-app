@@ -19,19 +19,23 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	updateLexicon,
-	setTemporaryInfo
+	updateLexicon
 } from '../components/ReduxDucksFuncs';
 import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import fireSwal from '../components/Swal';
 
-const LoadLexiconModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
+interface SavedLexProperties extends ModalProperties {
+	lexInfo: [string, LexiconObject][]
+	setLexInfo: Function
+}
+
+const LoadLexiconModal = (props: SavedLexProperties) => {
+	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const dispatch = useDispatch();
-	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
-	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setLexInfo([]);
 		setIsOpen(false);
 	};
 	const loadThis = (key: string) => {

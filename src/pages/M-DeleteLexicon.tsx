@@ -12,36 +12,36 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter,
-	IonLoading
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	setTemporaryInfo
-} from '../components/ReduxDucksFuncs';
+import { shallowEqual, useSelector } from "react-redux";
 import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
 
-const DeleteLexiconModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
-	const [isLoading, setIsLoading] = React.useState(false);
-	const dispatch = useDispatch();
-	const [settings, temp] = useSelector((state: any) => [state.appSettings, state.temporaryInfo], shallowEqual);
-	const data = (temp && temp.type === "storedlexicons" && temp.data.length > 0) ? temp.data : undefined;
+interface SavedLexProperties extends ModalProperties {
+	lexInfo: [string, LexiconObject][]
+	setLexInfo: Function
+	setLoadingScreen: Function
+}
+
+const DeleteLexiconModal = (props: SavedLexProperties) => {
+	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
+	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
-		dispatch(setTemporaryInfo(undefined));
+		setLexInfo([]);
 		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
 		const thenFunc = () => {
-			setIsLoading(true);
+			setLoadingScreen(true);
 			LexiconStorage.removeItem(key).then(() => {
-				setIsLoading(false);
-				dispatch(setTemporaryInfo(undefined));
+				setLoadingScreen(false);
+				setLexInfo([]);
 				setIsOpen(false);
 				fireSwal({
 					title: "Lexicon deleted.",
@@ -66,15 +66,6 @@ const DeleteLexiconModal = (props: ModalProperties) => {
 	};
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
-			<IonLoading
-				cssClass='loadingPage'
-				isOpen={isLoading}
-				onDidDismiss={() => setIsLoading(false)}
-				message={'Deleting...'}
-				spinner="bubbles"
-				/*duration={300000}*/
-				duration={1000}
-			/>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Delete Lexicon</IonTitle>
@@ -87,7 +78,7 @@ const DeleteLexiconModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data ? data.map((pair: [string, LexiconObject]) => {
+					{data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
 						const key = pair[0];
 						const lex = pair[1];
 						const time = new Date(lex.lastSave);
@@ -103,7 +94,7 @@ const DeleteLexiconModal = (props: ModalProperties) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonToolbar className={data ? "" : "hide"}>
+				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>

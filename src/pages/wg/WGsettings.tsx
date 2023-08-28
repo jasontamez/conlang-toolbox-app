@@ -32,7 +32,6 @@ import {
 	setInterrogativePostWG,
 	setExclamatoryPreWG,
 	setExclamatoryPostWG,
-	setTemporaryInfo,
 	clearEverything,
 	changeView
 } from '../../components/ReduxDucksFuncs';
@@ -62,6 +61,7 @@ const WGSet = (props: PageData) => {
 	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
 	const [isOpenLoadPreset, setIsOpenLoadPreset] = useState<boolean>(false);
 	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
+	const [infoModalTitles, setInfoModalTitles] = useState<string[] | null>(null);
 	const { modalPropsMaker } = props;
 	const viewInfo = ['wg', 'settings'];
 	useIonViewDidEnter(() => {
@@ -121,7 +121,7 @@ const WGSet = (props: PageData) => {
 			titles.push(title);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			dispatch(setTemporaryInfo({ type: "custominfo", data: titles }));
+			setInfoModalTitles(titles);
 			setLoadingOpen(false);
 			setIsOpenManageCustom(true);
 		}).catch((err: any) => {
@@ -132,7 +132,7 @@ const WGSet = (props: PageData) => {
 	return (
 		<IonPage>
 			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} />
+			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} titles={infoModalTitles} setTitles={setInfoModalTitles} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OptCard /></ModalWrap>
 			<IonLoading

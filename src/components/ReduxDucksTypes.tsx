@@ -282,12 +282,6 @@ export interface WordListsState {
 }
 
 
-export interface TemporaryInfo {
-	type: string
-	data: any
-}
-
-
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
@@ -311,7 +305,6 @@ export interface StateObject {
 	viewState: ViewStateObject
 	extraCharactersState: ExtraCharactersState
 	wordListsState: WordListsState
-	temporaryInfo: TemporaryInfo | undefined
 //	logs: string[]
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.

@@ -25,8 +25,7 @@ import {
 	changeView,
 	setMorphoSyntax,
 	setMorphoSyntaxNum,
-	setMorphoSyntaxText,
-	setTemporaryInfo
+	setMorphoSyntaxText
 } from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
 import { MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
@@ -39,11 +38,16 @@ import ExportMS from './M-ExportSyntaxDoc';
 import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 
+interface MSOmod extends MorphoSyntaxObject {
+	boolStrings?: string[]
+}
+
 const Syntax = (props: PageData) => {
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
 	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [storedInfo, setStoredInfo] = useState<[string, MSOmod][]>([]);
 	const dispatch = useDispatch();
 	const [
 		msInfo,
@@ -95,13 +99,13 @@ const Syntax = (props: PageData) => {
 		}
 	};
 	const openMSModal = (modalOpener: Function) => {
-		let info: [string, MorphoSyntaxObject][] = [];
+		let info: [string, MSOmod][] = [];
 		setIsLoading(true);
 		MorphoSyntaxStorage.iterate((value: MorphoSyntaxObject, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			info.length > 0 && dispatch(setTemporaryInfo({ type: "storedsyntaxes", data: info }));
+			setStoredInfo(info);
 			setIsLoading(false);
 			modalOpener(true);
 		});
@@ -196,9 +200,18 @@ const Syntax = (props: PageData) => {
 				/*duration={300000}*/
 				duration={1000}
 			/>
-			<LoadMS {...props.modalPropsMaker(isOpenLoadMS, setIsOpenLoadMS)} />
+			<LoadMS
+				{...props.modalPropsMaker(isOpenLoadMS, setIsOpenLoadMS)}
+				storedInfo={storedInfo}
+				setStoredInfo={setStoredInfo}
+			/>
 			<ExportMS {...props.modalPropsMaker(isOpenExportMS, setIsOpenExportMS)} />
-			<DeleteMS {...props.modalPropsMaker(isOpenDelMS, setIsOpenDelMS)} />
+			<DeleteMS
+				{...props.modalPropsMaker(isOpenDelMS, setIsOpenDelMS)}
+				storedInfo={storedInfo}
+				setStoredInfo={setStoredInfo}
+				setLoadingScreen={setIsLoading}
+			/>
 			<SyntaxHeader title="MorphoSyntax Settings" {...props} />
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
 				<IonList lines="none" className="hasSpecialLabels">
