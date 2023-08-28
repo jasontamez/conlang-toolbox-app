@@ -59,6 +59,7 @@ const AppInfo = (props: PageData) => {
 									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
 									<ul className="changelog">
 										<li>On smaller screens, MorphoSyntax will provide left and right scrollers on the tab bar.</li>
+										<li>If you have word-wrap turned off in the Lexicon, you can tap on an overflowing field to see a popup with the full field entry.</li>
 										<li>Under-the-hood changes.</li>
 									</ul>
 									<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>

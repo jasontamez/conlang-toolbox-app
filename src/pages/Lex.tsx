@@ -49,11 +49,9 @@ import { v4 as uuidv4 } from 'uuid';
 import escape from '../components/EscapeForHTML';
 import VirtualList from 'react-tiny-virtual-list';
 import { useWindowHeight } from '@react-hook/window-size/throttled';
-import ltr from '../components/LTR';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 import debounce from '../components/Debounce';
-import { Clipboard } from '@capacitor/clipboard';
 
 const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
@@ -248,75 +246,19 @@ const Lex = (props: PageData) => {
 		dispatch(startEditLexiconItem(index));
 		setIsOpenEditLexItem(true);
 	};
-	const copyText = async () => {
-		const info = $i("revealFullElement");
-		await Clipboard.write({string: info.textContent});
-		//navigator.clipboard.writeText(info.textContent);
-		fireSwal({
-			title: "Copied to clipboard.",
-			toast: true,
-			timer: 1500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});	
-		clearTimeout(Number(info.dataset.timer));
-		info.classList.add("hide");
-	};
 	const maybeExpand = (e: any) => {
+		// Expand an overflowing field into a toast
 		const span = e.target;
 		if(!lexicon.lexiconWrap && span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
-			let info = $i("revealFullElement") as HTMLInputElement;
-			if(info.dataset.timer) {
-				clearTimeout(Number(info.dataset.timer));
-			}
-			info.textContent = span.textContent;
-			const body = $i("lexiconPage");
-			const win = body.getBoundingClientRect();
-			const maxend = win.right;
-			const maxdown = win.bottom;
-			const rect = span.getBoundingClientRect();
-			const width = span.scrollWidth + 16;
-			const height = span.scrollHeight;
-			let style: [string, any][] = [
-				["width", String(width) + "px"],
-			];
-			// Determine the location of the span's four corners.
-			// Prefer to expand to the end and down, then end and up,
-			//   then start and down, and finally start and up
-			// Set horizontal position
-			if(ltr(span)) {
-				// LTR
-				let amount = String(Math.floor(rect.left - win.left)) + "px";
-				if(rect.left + width > maxend) {
-					style.push(["right", amount]);
-				} else {
-					style.push(["left", amount]);
-				}
-			} else {
-				// RTL
-				let amount = String(Math.floor(rect.right - win.right)) + "px";
-				if(rect.right + width > maxend) {
-					style.push(["left", amount]);
-				} else {
-					style.push(["right", amount]);
-				}
-			}
-			// Set vertical position
-			if(rect.top + height > maxdown) {
-				style.push(["bottom", String(Math.floor(rect.bottom)) + "px"]);
-			} else {
-				style.push(["top", String(Math.floor(rect.top)) + "px"]);
-			}
-			// Set style
-			info.setAttribute("style", style.map((pair: [string, any]) => {
-				let [prop, value] = pair;
-				return prop + ": " + String(value);
-			}).join("; "));
-			// Add to page
-			info.classList.remove("hide");
-			// Disappear after 6 seconds
-			info.dataset.timer = String(setTimeout(() => info.classList.add("hide"), 6000));
+			const titleText = (span && (span.textContent as string)) || "<error>";
+			fireSwal({
+				titleText,
+				toast: true,
+				position: "top",
+				customClass: { popup: "infoToast" },
+				timer: 6000,
+				timerProgressBar: true,
+			});
 		}
 	};
 	return (
@@ -377,7 +319,6 @@ const Lex = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
-				<IonButton id="revealFullElement" fill="clear" size="small" className="hide" onClick={() => copyText()} />
 				<IonList lines="none">
 					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
 					<IonItem>
