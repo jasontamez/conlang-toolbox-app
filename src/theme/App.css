@@ -436,22 +436,19 @@ ion-app .WEinput {
 .lexRow,
 .lexRow::part(native) {
 	--inner-padding-end: 0;
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: flex-start;
-	align-items: center;
 	margin: 0;
 }
 .lexRow::part(native),
 .virtualLex .lexRow {
 	margin: 0;
 	padding: 0;
+	width: 100%;
 }
 .virtualLex .lexRow.even::part(native) {
-	background: var(--ion-color-input-bg);
+	background: var(--ion-color-step-100);
 }
 .virtualLex .lexRow.odd::part(native) {
-	background: var(--ion-background-shader);
+	background: var(--ion-color-step-50);
 }
 .virtualLex {
 	margin: 0;

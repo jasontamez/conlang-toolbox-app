@@ -46,19 +46,27 @@ import { $i } from '../components/DollarSignExports';
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
-	const [settings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
-	const theOrder = lexicon.columnOrder;
-	const theTitles = lexicon.columnTitles;
-	const [sortedColumn, sortDirection] = lexicon.sort;
-	let editing: colEdit = lexicon.colEdit;
+	const [settings, lexObject] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
+	const {
+		columnOrder,
+		columnTitles,
+		sort,
+		lexiconWrap,
+		columns,
+		columnSizes,
+		colEdit,
+		lexicon
+	} = lexObject;
+	const [sortedColumn, sortDirection] = sort;
+	let editing: colEdit = colEdit;
 	if(!editing) {
 		editing = {
 			reordering: false,
-			columns: lexicon.columns,
-			columnOrder: [...lexicon.columnOrder],
-			columnTitles: [...lexicon.columnTitles],
-			columnSizes: [...lexicon.columnSizes],
-			sort: [...lexicon.sort]
+			columns: columns,
+			columnOrder: [...columnOrder],
+			columnTitles: [...columnTitles],
+			columnSizes: [...columnSizes],
+			sort: [...sort]
 		};
 	} else {
 		editing = {
@@ -69,8 +77,6 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			sort: [...editing.sort]
 		};
 	}
-//	let cols = editing.columns;
-//	let sort = editing.sort;
 	const setNewInfo = (i: number, id: string) => {
 		const value = $i(id).value.trim();
 		editing.columnTitles[i] = value;
@@ -112,7 +118,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		editing.columnOrder.push(editing.columns++);
 		dispatch(updateLexiconColumns(editing));
 		let newLex: Lexicon[] = [];
-		lexicon.lexicon.forEach((lex: Lexicon) => {
+		lexicon.forEach((lex: Lexicon) => {
 			let lx = {
 				key: lex.key,
 				columns: [...lex.columns, ""]
@@ -142,7 +148,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			}
 			dispatch(updateLexiconColumns(editing));
 			let newLex: Lexicon[] = [];
-			lexicon.lexicon.forEach((lex: Lexicon) => {
+			lexicon.forEach((lex: Lexicon) => {
 				let col = lex.columns.slice(0, i).concat(lex.columns.slice(i + 1));
 				newLex.push({
 					key: lex.key,
@@ -178,7 +184,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		dispatch(toggleLexiconWrap());
 	};
 	const doSort = (col: number, dir: number) => {
-		const newLex: Lexicon[] = lexicon.lexicon.slice();
+		const newLex: Lexicon[] = lexicon.slice();
 		newLex.sort((a, b) => {
 			let x = a.columns[col];
 			let y: string;
@@ -220,11 +226,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 				<IonList lines="full">
 					<IonItemDivider>Lexicon Options</IonItemDivider>
 					<IonItem button={true} onClick={() => toggleWrap()}>
-						<IonLabel>{lexicon.lexiconWrap ? "Disable" : "Turn On"} Text Wrapping</IonLabel>
+						<IonLabel>Show Full Column Titles</IonLabel>
+						{lexiconWrap ? <IonIcon slot="end" icon={checkmarkOutline} /> : <></>}
 					</IonItem>
 					<IonItemDivider>Sort Column</IonItemDivider>
-					{theOrder.map((i: number) => {
-						const title = theTitles[i];
+					{columnOrder.map((i: number) => {
+						const title = columnTitles[i];
 						const which = i.toString();
 						return (
 							<IonItem key={which} button={true} onClick={() => doSort(i, sortDirection)}>

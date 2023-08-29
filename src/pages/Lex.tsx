@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -19,11 +19,14 @@ import {
 	IonCol,
 	IonLoading,
 	useIonViewDidEnter,
-	useIonViewDidLeave
+	useIonViewDidLeave,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption
 } from '@ionic/react';
 import {
 	add,
-	construct,
+//	construct,
 	trash,
 	trashOutline,
 	saveOutline,
@@ -35,7 +38,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
 import { v4 as uuidv4 } from 'uuid';
-import VirtualList from 'react-tiny-virtual-list';
+import { FixedSizeList, areEqual } from 'react-window';
 
 import {
 	updateLexiconText,
@@ -58,13 +61,37 @@ import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
+import memoizeOne from 'memoize-one';
 
 interface LexItem {
 	index: number
 	style: {
 		[key: string]: any
 	}
+	data: {
+		delFromLex: Function
+		editInLex: Function
+		maybeExpand: Function
+		columnOrder: number[]
+		columnSizes: ("s" | "m" | "l")[]
+		lexicon: Lexicon[]
+	}
 }
+
+function maybeExpand (e: any) {
+	// Expand an overflowing field into a toast
+	const span = e.target;
+	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
+		const titleText = (span && (span.textContent as string)) || "<error>";
+		fireSwal({
+			titleText,
+			toast: true,
+			position: "top",
+			timer: 6000,
+			timerProgressBar: true,
+		});
+	}
+};
 
 const Lex = (props: PageData) => {
 	const dispatch = useDispatch();
@@ -112,7 +139,7 @@ const Lex = (props: PageData) => {
 			lexColumnNames
 		].forEach(input => input && (used += input.offsetHeight));
 		setLexiconHeight(height - used);
-	}, [hasLoaded, height, lexHeadersHidden, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
+	}, [hasLoaded, height, lexHeadersHidden, lexiconWrap, columnTitles, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
 	const clearSavedWords = () => {
 		const thenFunc = () => {
 			dispatch(clearDeferredLexiconItems());
@@ -285,22 +312,19 @@ const Lex = (props: PageData) => {
 		dispatch(startEditLexiconItem(index));
 		setIsOpenEditLexItem(true);
 	}, [dispatch, lexicon]);
-	const maybeExpand = useCallback((e: any) => {
-		// Expand an overflowing field into a toast
-		const span = e.target;
-		if(!lexiconWrap && span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
-			const titleText = (span && (span.textContent as string)) || "<error>";
-			fireSwal({
-				titleText,
-				toast: true,
-				position: "top",
-				customClass: { popup: "infoToast" },
-				timer: 6000,
-				timerProgressBar: true,
-			});
-		}
-	}, [lexiconWrap]);
-	const renderLexiconItem = useCallback(({index, style}: LexItem) => {
+	const createItemData = memoizeOne((delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon) => ({
+		delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon
+	}));
+	const fixedSizeListData = createItemData(delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon);
+	const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
+		const {
+			delFromLex,
+			editInLex,
+			maybeExpand,
+			columnOrder,
+			columnSizes,
+			lexicon
+		} = data;
 		const lex: Lexicon = lexicon[index];
 		const cols = lex.columns;
 		const key = lex.key;
@@ -310,39 +334,40 @@ const Lex = (props: PageData) => {
 			order: index
 		};
 		return (
-			<IonItem
+			<IonItemSliding
 				key={id}
-				className={
-					"lexRow lexiconDisplay serifChars "
-					+ (index % 2 ? "even" : "odd")
-				}
 				id={id}
 				style={ newStyle }
 			>
-				{columnOrder.map((i: number) => (
-					<div
-						onClick={maybeExpand}
-						key={key + i.toString()}
-						className={
-							(lexiconWrap ? "ion-text-wrap " : "")
-							+ "lexItem selectable "
-							+ columnSizes[i]
-						}
-					>{cols[i]}</div>
-				))}
-				<div className="xs">
-					<IonButton style={ { margin: 0 } } color="warning" onClick={() => editInLex(key)}>
-						<IonIcon icon={construct} style={ { margin: 0 } } />
-					</IonButton>
-				</div>
-				<div className="xs ion-hide-sm-down">
-					<IonButton style={ { margin: 0 } } color="danger" onClick={() => delFromLex(key)}>
-						<IonIcon icon={trash} style={ { margin: 0 } } />
-					</IonButton>
-				</div>
-			</IonItem>
+				<IonItemOptions side="end" className="lexiconDisplay serifChars">
+					<IonItemOption color="primary" onClick={() => editInLex(key)}>
+						<IonIcon slot="icon-only" src="svg/edit.svg" />
+					</IonItemOption>
+					<IonItemOption color="danger" onClick={() => delFromLex(key)}>
+						<IonIcon slot="icon-only" icon={trash} />
+					</IonItemOption>
+				</IonItemOptions>
+				<IonItem className={
+					"lexRow lexiconDisplay serifChars "
+					+ (index % 2 ? "even" : "odd")
+				}>
+					{columnOrder.map((i: number) => (
+						<div
+							onClick={() => maybeExpand()}
+							key={key + i.toString()}
+							className={
+								"lexItem selectable "
+								+ columnSizes[i]
+							}
+						>{cols[i]}</div>
+					))}
+					<div className="xs">
+						<IonIcon size="small" src="svg/drag-indicator.svg" />
+					</div>
+				</IonItem>
+			</IonItemSliding>
 		);
-	}, [delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexiconWrap, lexicon]);
+	}, areEqual);
 	return (
 		<IonPage>
 			<EditLexiconItemModal {...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)} openECM={setIsOpenECM} />
@@ -455,7 +480,6 @@ const Lex = (props: PageData) => {
 										>{columnTitles[i]}</div>
 									))}
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
-									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
 								<IonItem id="lexColumnInputs" className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
 									{columnOrder.map((i: number) => {
@@ -469,16 +493,15 @@ const Lex = (props: PageData) => {
 											<IonIcon icon={add} style={ { margin: 0 } } />
 										</IonButton>
 									</div>
-									<div className="xs ion-hide-sm-down" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
-								<VirtualList
+								<FixedSizeList
 									className="virtualLex"
-									width="100%"
 									height={lexiconHeight}
 									itemCount={lexicon.length}
+									itemData={fixedSizeListData}
 									itemSize={48}
-									renderItem={renderLexiconItem}
-								/>
+									width="100%"
+								>{RenderLexiconItem}</FixedSizeList>
 							</IonCol>
 						</IonRow>
 					</IonGrid>
