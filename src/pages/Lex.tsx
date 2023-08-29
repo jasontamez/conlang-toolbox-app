@@ -39,6 +39,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
 import { v4 as uuidv4 } from 'uuid';
 import { FixedSizeList, areEqual } from 'react-window';
+import memoizeOne from 'memoize-one';
 
 import {
 	updateLexiconText,
@@ -53,6 +54,7 @@ import { $i } from '../components/DollarSignExports';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
 import debounce from '../components/Debounce';
+import './Lexicon.css';
 
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
@@ -61,7 +63,6 @@ import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
-import memoizeOne from 'memoize-one';
 
 interface LexItem {
 	index: number
