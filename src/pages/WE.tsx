@@ -15,7 +15,7 @@ import {
 	exitOutline,
 	megaphoneOutline
 } from 'ionicons/icons';
-import WECategories from "./we/WEcategories";
+import WECategories from "./we/WEcharactergroups";
 import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";

@@ -15,8 +15,8 @@ import {
 	documentTextOutline,
 	fileTrayStackedOutline
 } from 'ionicons/icons';
-import WGCategories from "./wg/WGcategories";
-import WGRewrites from "./wg/WGrewrites";
+import WGCategories from "./wg/WGcharactergroups";
+import WGRewrites from "./wg/WGtransforms";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
