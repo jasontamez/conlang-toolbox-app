@@ -23,13 +23,13 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
 import { loadCustomInfoWG } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/ReduxDucksTypes';
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import fireSwal from '../../components/Swal';
-import doExport from '../../components/ExportServices';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -102,25 +102,6 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				});
 			}
 		});
-	};
-	const maybeExportInfo = () => {
-		let title = escape($i("currentInfoExportName").value).trim();
-		if(title === "") {
-			return fireSwal({
-				title: "Please enter a title",
-				icon: "error",
-			});
-		}
-		title = title + ".json";
-		const exporting = {
-			charGroups,
-			syllables,
-			transforms,
-			settingsWG: {...settingsWG}
-		}
-		doExport(JSON.stringify(exporting), title)
-			.catch((e = "Error?") => console.log(e))
-			.then(() => doCleanClose());
 	};
 	const maybeLoadInfo = (title: string) => {
 		const thenFunc = () => {
@@ -207,15 +188,6 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						<IonItem>
 							<IonInput aria-label="Name of save" id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
 							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
-						</IonItem>
-					</IonItemGroup>
-					<IonItemGroup>
-						<IonItemDivider>
-							<IonLabel className="ion-text-wrap">Export Current Info to File</IonLabel>
-						</IonItemDivider>
-						<IonItem>
-							<IonInput aria-label="Name of export" id="currentInfoExportName" inputmode="text" placeholder="Name your custom info" type="text" />
-							<IonButton slot="end" onClick={() => maybeExportInfo()} strong={true} color="success">Export</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
