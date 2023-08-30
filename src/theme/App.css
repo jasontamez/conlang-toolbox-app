@@ -60,8 +60,8 @@ ion-card-content ul.changelog li {
 	margin: 0.25rem 0;
 }
 
-.categories .categoryLongName,
-.rewriterules .description,
+.charGroups .charGroupLongName,
+.transforms .description,
 .transforms .description {
 	font-size: smaller;
 	font-style: italic;
@@ -73,7 +73,7 @@ ion-app .serifChars {
 ion-app .importantElement {
 	font-weight: bold;
 }
-.categories .categoryRun .label::after {
+.charGroups .charGroupRun .label::after {
 	font-weight: bold;
 	content: "=";
 }
@@ -95,12 +95,12 @@ ion-app .unimportantUnit {
 ion-app .arrow {
 	font-weight: bold;
 }
-.rewriterules .dragHandle,
+.transforms .dragHandle,
 .transforms .dragHandle {
 	width: 2rem;
 	text-align: center;
 }
-.rewriterules .dragHandle ion-icon,
+.transforms .dragHandle ion-icon,
 .transforms .dragHandle ion-icon,
 .soundChanges .dragHandle ion-icon {
 	font-size: 32px;

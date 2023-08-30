@@ -238,7 +238,7 @@ export const WordList: WL[] = [
 		lj: true
 	},
 	{
-		word: "cat",
+		word: "charGroup",
 		ssl: true
 	},
 	{

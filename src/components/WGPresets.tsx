@@ -3,7 +3,7 @@ import { WGPresetObject, WGSettingsObject } from './ReduxDucksTypes';
 const basicSettings: WGSettingsObject = {
 	monosyllablesRate: 20,
 	maxSyllablesPerWord: 6,
-	categoryRunDropoff: 25,
+	charGroupRunDropoff: 25,
 	syllableBoxDropoff: 20,
 	capitalizeSentences: true,
 	declarativeSentencePre: "",
@@ -16,7 +16,7 @@ const basicSettings: WGSettingsObject = {
 
 const WGPresets: WGPresetObject = new Map([
 	["Simple", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -42,7 +42,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "0",
@@ -63,7 +63,7 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSettings: {...basicSettings}
 	}],
 	["Medium", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -89,7 +89,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "0",
@@ -139,7 +139,7 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-Latin", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -177,7 +177,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "0",
@@ -209,7 +209,7 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-Chinese", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -243,7 +243,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "0",
@@ -281,7 +281,7 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-Greek", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -307,7 +307,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: [] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "0",
@@ -327,7 +327,7 @@ const WGPresets: WGPresetObject = new Map([
 		wordgenSettings: {...basicSettings}
 	}],
 	["Pseudo-English", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -365,7 +365,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: ["CV","CVC","CVLF","CVNF","CVgh","VC","V","Vgh"] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "15",
@@ -574,7 +574,7 @@ const WGPresets: WGPresetObject = new Map([
 		}
 	}],
 	["Complex", {
-		wordgenCategories: {
+		wordgenCharGroups: {
 			map: [
 				["C", {
 					title: "Consonants",
@@ -613,7 +613,7 @@ const WGPresets: WGPresetObject = new Map([
 				wordFinal: { components: ["I","VEJ","V","VEJ","SVEJ","V","CV","VEJ","CVEJ"] }
 			}
 		},
-		wordgenRewriteRules: {
+		wordgenTransforms: {
 			list: [
 				{
 					key: "50.1",

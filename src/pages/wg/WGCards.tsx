@@ -21,7 +21,7 @@ import {
 import ltr from '../../components/LTR';
 import I from '../../components/IPA';
 
-export const CatCard = () => {
+export const CharGroupCard = () => {
 	return (
 		<IonCard>
 			<IonItem>

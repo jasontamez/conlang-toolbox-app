@@ -16,26 +16,28 @@ import {
 	IonLabel,
 	IonReorder,
 	IonReorderGroup,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption
 } from '@ionic/react';
 import {
 	addOutline,
 	helpCircleOutline,
 	reorderTwo,
-	construct,
 	trash,
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { PageData, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
+import { PageData, WGTransformObject } from '../../components/ReduxDucksTypes';
 import {
-	startEditRewriteRuleWG,
-	deleteRewriteRuleWG,
-	reorderRewriteRulesWG,
+	startEditTransformWG,
+	deleteTransformWG,
+	reorderTransformsWG,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-import AddRewriteRuleModal from './M-AddRule';
-import EditRewriteRuleModal from './M-EditRule';
+import AddTransformModal from './M-AddTransform';
+import EditTransformModal from './M-EditTransform';
 import { RewCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -46,27 +48,27 @@ import ExtraCharactersModal from '../M-ExtraCharacters';
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const viewInfo = ['wg', 'rewriterules'];
+	const viewInfo = ['wg', 'transforms'];
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
-	const [isOpenAddRule, setIsOpenAddRule] = useState<boolean>(false);
-	const [isOpenEditRule, setIsOpenEditRule] = useState<boolean>(false);
+	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
+	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [rulesObject, settings] = useSelector((state: any) => [state.wordgenRewriteRules, state.appSettings], shallowEqual);
-	const rules = rulesObject.list;
+	const [transformsObject, settings] = useSelector((state: any) => [state.wordgenTransforms, state.appSettings], shallowEqual);
+	const transforms = transformsObject.list;
 	const arrow = (ltr() ? "⟶" : "⟵");
-	const editRewriteRule = (label: any) => {
-		$q(".rewriterules").closeSlidingItems();
-		dispatch(startEditRewriteRuleWG(label));
-		setIsOpenEditRule(true);
+	const editTransform = (label: any) => {
+		$q(".transforms").closeSlidingItems();
+		dispatch(startEditTransformWG(label));
+		setIsOpenEditTransform(true);
 	};
-	const maybeDeleteRewriteRule = (rule: WGRewriteRuleObject) => {
-		$q(".rewriterules").closeSlidingItems();
+	const maybeDeleteTransform = (transform: WGTransformObject) => {
+		$q(".transforms").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteRewriteRuleWG(rule));
+				dispatch(deleteTransformWG(transform));
 				fireSwal({
 					title: "Transformation deleted",
 					customClass: {popup: 'dangerToast'},
@@ -81,7 +83,7 @@ const WGRew = (props: PageData) => {
 			thenFunc({isConfirmed: true});
 		} else {
 			fireSwal({
-				title: "Delete " + rule.seek + arrow + rule.replace + "?",
+				title: "Delete " + transform.seek + arrow + transform.replace + "?",
 				text: "Are you sure? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
@@ -97,14 +99,14 @@ const WGRew = (props: PageData) => {
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
-		const reorganized = reorganize(rules, ed.from, ed.to);
-		dispatch(reorderRewriteRulesWG(reorganized));
+		const reorganized = reorganize(transforms, ed.from, ed.to);
+		dispatch(reorderTransformsWG(reorganized));
 		ed.complete();
 	};
 	return (
 		<IonPage>
-			<AddRewriteRuleModal {...props.modalPropsMaker(isOpenAddRule, setIsOpenAddRule)} openECM={setIsOpen} />
-			<EditRewriteRuleModal {...props.modalPropsMaker(isOpenEditRule, setIsOpenEditRule)} openECM={setIsOpen} />
+			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpen} />
+			<EditTransformModal {...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)} openECM={setIsOpen} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><RewCard /></ModalWrap>
 			<IonHeader>
@@ -124,33 +126,39 @@ const WGRew = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="rewriterules units dragArea" lines="none">
+				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
-						{rules.map((rr: WGRewriteRuleObject) => {
+						{transforms.map((transform: WGTransformObject) => {
+							const { key, seek, replace, description } = transform;
 							return (
-								<IonItem key={rr.key}>
-									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel className="wrappableInnards">
-										<div className="importantElement serifChars">
-											<span className="seek importantUnit">{rr.seek}</span>
-											<span className="arrow unimportantUnit">{arrow}</span>
-											<span className="replace importantUnit">{rr.replace || String.fromCharCode(160)}</span>
-										</div>
-										<div className="description">{rr.description}</div>
-									</IonLabel>
-									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editRewriteRule(rr.key)}>
-										<IonIcon icon={construct} style={ { margin: 0 } } />
-									</IonButton>
-									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteRewriteRule(rr)}>
-										<IonIcon icon={trash} style={ { margin: 0 } } />
-									</IonButton>
-								</IonItem>
+								<IonItemSliding key={key}>
+									<IonItemOptions>
+										<IonItemOption color="primary" onClick={() => editTransform(key)}>
+											<IonIcon slot="icon-only" src="svg/edit.svg" />
+										</IonItemOption>
+										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(transform)}>
+											<IonIcon slot="icon-only" icon={trash} />
+										</IonItemOption>
+									</IonItemOptions>
+									<IonItem>
+										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonLabel className="wrappableInnards">
+											<div className="importantElement serifChars">
+												<span className="seek importantUnit">{seek}</span>
+												<span className="arrow unimportantUnit">{arrow}</span>
+												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
+											</div>
+											<div className="description">{description}</div>
+										</IonLabel>
+										<IonIcon size="small" slot="end" src="svg/drag-indicator.svg" />
+									</IonItem>
+								</IonItemSliding>
 							);
 						})}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => setIsOpenAddRule(true)}>
+					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => setIsOpenAddTransform(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

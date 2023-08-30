@@ -9,11 +9,11 @@ import debounce from './Debounce';
 const reduceAppSettings = (original: types.AppSettings) => {
 	return {...original};
 };
-const reduceCategoryWG = (original: types.WGCategoryStateObject, newMap: types.WGCategoryMap[] = original.map) => {
-	let map: types.WGCategoryMap[] = [];
+const reduceCharGroupWG = (original: types.WGCharGroupStateObject, newMap: types.WGCharGroupMap[] = original.map) => {
+	let map: types.WGCharGroupMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
-			let o: types.WGCategoryObject = {...item[1]};
+			let o: types.WGCharGroupObject = {...item[1]};
 			map.push([item[0], o]);
 		});
 	} else {
@@ -45,42 +45,42 @@ const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
 	}
 	return o;
 };
-const reduceRewriteRulesStateWG = (original: types.WGRewriteRuleStateObject, mod: string = "", rule: any = null) => {
-	// mod = 'add' -> add new rule (object)
-	// mod = 'del' -> delete rule (key)
-	// mod = 'edit' -> replace rule (object)
+const reduceTransformsStateWG = (original: types.WGTransformStateObject, mod: string = "", transform: any = null) => {
+	// mod = 'add' -> add new transform (object)
+	// mod = 'del' -> delete transform (key)
+	// mod = 'edit' -> replace transform (object)
 	// mod = '' -> do nothing
 	let list;
 	switch (mod) {
 		case 'add':
-			list = original.list.map(rr => reduceRewriteRulesWG(rr));
-			list.push(rule);
+			list = original.list.map(tForm => reduceTransformsWG(tForm));
+			list.push(transform);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceRewriteRulesWG(rr));
+			list = original.list.filter(tForm => tForm.key !== transform.key).map(tForm => reduceTransformsWG(tForm));
 			break;
 		case 'edit':
-			list = original.list.map(rr => rr.key === rule.key ? rule : reduceRewriteRulesWG(rr));
+			list = original.list.map(tForm => tForm.key === transform.key ? transform : reduceTransformsWG(tForm));
 			break;
 		default:
-			list = original.list.map(rr => reduceRewriteRulesWG(rr));
+			list = original.list.map(tForm => reduceTransformsWG(tForm));
 	}
 	return {
 		list: list,
 		editing: original.editing
 	};
 };
-const reduceRewriteRulesWG = (original: types.WGRewriteRuleObject) => {
+const reduceTransformsWG = (original: types.WGTransformObject) => {
 	return {...original};
 };
 const reduceSettingsWG = (original: types.WGSettingsObject) => {
 	return {...original};
 };
-const reduceCategoryWE = (original: types.WECategoryStateObject, newMap: types.WECategoryMap[] = original.map) => {
-	let map: types.WECategoryMap[] = [];
+const reduceCharGroupWE = (original: types.WECharGroupStateObject, newMap: types.WECharGroupMap[] = original.map) => {
+	let map: types.WECharGroupMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
-			let o: types.WECategoryObject = {...item[1]};
+			let o: types.WECharGroupObject = {...item[1]};
 			map.push([item[0], o]);
 		});
 	} else {
@@ -91,25 +91,25 @@ const reduceCategoryWE = (original: types.WECategoryStateObject, newMap: types.W
 		editing: original.editing
 	};
 };
-const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: string = "", rule: any = null) => {
-	// mod = 'add' -> add new rule (object)
-	// mod = 'del' -> delete rule (key)
-	// mod = 'edit' -> replace rule (object)
+const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: string = "", transform: any = null) => {
+	// mod = 'add' -> add new transform (object)
+	// mod = 'del' -> delete transform (key)
+	// mod = 'edit' -> replace transform (object)
 	// mod = '' -> do nothing
 	let list;
 	switch (mod) {
 		case 'add':
-			list = original.list.map(rr => reduceTransformsWE(rr));
-			list.push(rule);
+			list = original.list.map(tForm => reduceTransformsWE(tForm));
+			list.push(transform);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceTransformsWE(rr));
+			list = original.list.filter(tForm => tForm.key !== transform.key).map(tForm => reduceTransformsWE(tForm));
 			break;
 		case 'edit':
-			list = original.list.map(rr => rr.key === rule.key ? rule : reduceTransformsWE(rr));
+			list = original.list.map(tForm => tForm.key === transform.key ? transform : reduceTransformsWE(tForm));
 			break;
 		default:
-			list = original.list.map(rr => reduceTransformsWE(rr));
+			list = original.list.map(tForm => reduceTransformsWE(tForm));
 	}
 	return {
 		list: list,
@@ -119,25 +119,25 @@ const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: st
 const reduceTransformsWE = (original: types.WETransformObject) => {
 	return {...original};
 };
-const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod: string = "", rule: any = null) => {
-	// mod = 'add' -> add new rule (object)
-	// mod = 'del' -> delete rule (key)
-	// mod = 'edit' -> replace rule (object)
+const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod: string = "", transform: any = null) => {
+	// mod = 'add' -> add new transform (object)
+	// mod = 'del' -> delete transform (key)
+	// mod = 'edit' -> replace transform (object)
 	// mod = '' -> do nothing
 	let list;
 	switch (mod) {
 		case 'add':
-			list = original.list.map(rr => reduceSoundChangesWE(rr));
-			list.push(rule);
+			list = original.list.map(tForm => reduceSoundChangesWE(tForm));
+			list.push(transform);
 			break;
 		case 'del':
-			list = original.list.filter(rr => rr.key !== rule.key).map(rr => reduceSoundChangesWE(rr));
+			list = original.list.filter(tForm => tForm.key !== transform.key).map(tForm => reduceSoundChangesWE(tForm));
 			break;
 		case 'edit':
-			list = original.list.map(rr => rr.key === rule.key ? rule : reduceSoundChangesWE(rr));
+			list = original.list.map(tForm => tForm.key === transform.key ? transform : reduceSoundChangesWE(tForm));
 			break;
 		default:
-			list = original.list.map(rr => reduceSoundChangesWE(rr));
+			list = original.list.map(tForm => reduceSoundChangesWE(tForm));
 	}
 	return {
 		list: list,
@@ -211,11 +211,11 @@ const reduceWordListsState = (original: types.WordListsState) => {
 const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["currentVersion", (v: string) => v],
 	["appSettings", reduceAppSettings],
-	["wordgenCategories", reduceCategoryWG],
+	["wordgenCharGroups", reduceCharGroupWG],
 	["wordgenSyllables", reduceSyllablesWG],
-	["wordgenRewriteRules", reduceRewriteRulesStateWG],
+	["wordgenTransforms", reduceTransformsStateWG],
 	["wordgenSettings", reduceSettingsWG],
-	["wordevolveCategories", reduceCategoryWE],
+	["wordevolveCharGroups", reduceCharGroupWE],
 	["wordevolveTransforms", reduceTransformsStateWE],
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (i: string[]) => [...i]],
@@ -254,7 +254,7 @@ export const blankAppState: types.StateObject = {
 		theme: "Default",
 		disableConfirms: false
 	},
-	wordgenCategories: {
+	wordgenCharGroups: {
 		map: [],
 		editing: null
 	},
@@ -267,7 +267,7 @@ export const blankAppState: types.StateObject = {
 			wordFinal: { components: [] }
 		}
 	},
-	wordgenRewriteRules: {
+	wordgenTransforms: {
 		list: [],
 		editing: null
 	},
@@ -281,7 +281,7 @@ export const blankAppState: types.StateObject = {
 		wordlistMultiColumn: true,
 		wordsPerWordlist: 250
 	},
-	wordevolveCategories: {
+	wordevolveCharGroups: {
 		map: [],
 		editing: null
 	},
@@ -325,8 +325,8 @@ export const blankAppState: types.StateObject = {
 		lexiconWrap: false
 	},
 	viewState: {
-		wg: 'categories',
-		we: 'categories',
+		wg: 'charGroups',
+		we: 'charGroups',
 		wl: 'home',
 		ms: 'syntax',
 		ph: 'home',
@@ -350,9 +350,9 @@ export const blankAppState: types.StateObject = {
 };
 export const initialAppState: types.StateObject = {
 	...blankAppState,
-	wordgenCategories: simple.wordgenCategories,
+	wordgenCharGroups: simple.wordgenCharGroups,
 	wordgenSyllables: simple.wordgenSyllables,
-	wordgenRewriteRules: simple.wordgenRewriteRules
+	wordgenTransforms: simple.wordgenTransforms
 };
 
 // Storage
@@ -369,11 +369,11 @@ const initialState: types.StateObject = reduceAllBut([], blankAppState);
 // reducer
 export function reducer(state: types.StateObject = initialState, action: any) {
 	const payload = action.payload;
-	let CO: types.WGCategoryStateObject;
-	let Cmap: types.WGCategoryMap[] = [];
-	let newCategories: types.WGCategoryStateObject;
+	let CO: types.WGCharGroupStateObject;
+	let Cmap: types.WGCharGroupMap[] = [];
+	let newCharGroups: types.WGCharGroupStateObject;
 	let SO: types.WGSyllableStateObject;
-	let RO: types.WGRewriteRuleStateObject;
+	let RO: types.WGTransformStateObject;
 	let final: types.StateObject;
 	let label: string;
 	let LO: types.LexiconObject;
@@ -402,62 +402,62 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		//
 		// WORDGEN
 		//
-		// Category
-		case consts.ADD_CATEGORY_WG:
-			CO = state.wordgenCategories;
-			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
+		// CharGroup
+		case consts.ADD_CHARACTER_GROUP_WG:
+			CO = state.wordgenCharGroups;
+			Cmap = CO.map.map((item: types.WGCharGroupMap) => [item[0], item[1]]);
 			label = payload.label;
 			delete payload.label;
 			Cmap.push([label, payload]);
-			newCategories = reduceCategoryWG(CO, Cmap);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			final = {
-				...reduceAllBut(["wordgenCategories"], state),
-				wordgenCategories: newCategories
+				...reduceAllBut(["wordgenCharGroups"], state),
+				wordgenCharGroups: newCharGroups
 			};
 			break;
-		case consts.START_EDIT_CATEGORY_WG:
-			CO = state.wordgenCategories;
-			newCategories = reduceCategoryWG(CO);
-			newCategories.editing = payload;
+		case consts.START_EDIT_CHARACTER_GROUP_WG:
+			CO = state.wordgenCharGroups;
+			newCharGroups = reduceCharGroupWG(CO);
+			newCharGroups.editing = payload;
 			final = {
-				...reduceAllBut(["wordgenCategories"], state),
-				wordgenCategories: newCategories
+				...reduceAllBut(["wordgenCharGroups"], state),
+				wordgenCharGroups: newCharGroups
 			};
 			break;
-		case consts.DO_EDIT_CATEGORY_WG:
-			CO = state.wordgenCategories;
+		case consts.DO_EDIT_CHARACTER_GROUP_WG:
+			CO = state.wordgenCharGroups;
 			Cmap = CO.map.map(item => {
-				let [label, cat] = item;
+				let [label, charGroup] = item;
 				if(label === CO.editing) {
 					delete payload.label;
 					return [label, payload];
 				}
-				return[label, cat];
+				return[label, charGroup];
 			});
-			newCategories = reduceCategoryWG(CO, Cmap);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			final = {
-				...reduceAllBut(["wordgenCategories"], state),
-				wordgenCategories: newCategories
+				...reduceAllBut(["wordgenCharGroups"], state),
+				wordgenCharGroups: newCharGroups
 			};
 			break;
-		case consts.CANCEL_EDIT_CATEGORY_WG:
-			CO = state.wordgenCategories;
-			newCategories = reduceCategoryWG(CO);
-			newCategories.editing = null;
+		case consts.CANCEL_EDIT_CHARACTER_GROUP_WG:
+			CO = state.wordgenCharGroups;
+			newCharGroups = reduceCharGroupWG(CO);
+			newCharGroups.editing = null;
 			final = {
-				...reduceAllBut(["wordgenCategories"], state),
-				wordgenCategories: newCategories
+				...reduceAllBut(["wordgenCharGroups"], state),
+				wordgenCharGroups: newCharGroups
 			};
 			break;
-		case consts.DELETE_CATEGORY_WG:
-			CO = state.wordgenCategories;
-			Cmap = CO.map.map((item: types.WGCategoryMap) => [item[0], item[1]]);
-			Cmap = CO.map.filter((item: types.WGCategoryMap) => item[0] !== payload.label).map((item: types.WGCategoryMap) => [item[0], item[1]]);
-			newCategories = reduceCategoryWG(CO, Cmap);
+		case consts.DELETE_CHARACTER_GROUP_WG:
+			CO = state.wordgenCharGroups;
+			Cmap = CO.map.map((item: types.WGCharGroupMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WGCharGroupMap) => item[0] !== payload.label).map((item: types.WGCharGroupMap) => [item[0], item[1]]);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			final = {
-				...reduceAllBut(["wordgenCategories"], state),
-				wordgenCategories: newCategories
+				...reduceAllBut(["wordgenCharGroups"], state),
+				wordgenCharGroups: newCharGroups
 			};
 			break;
 		// Syllables
@@ -493,52 +493,52 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				final.wordgenSyllables.objects[payload.key as keyof types.AllWGSyllableObjects].dropoffOverride = payload.value;
 			}
 			break;
-		// Rewrite Rules
+		// Transforms
 		case consts.ADD_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'add', payload);
+			RO = reduceTransformsStateWG(state.wordgenTransforms, 'add', payload);
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		case consts.START_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules);
+			RO = reduceTransformsStateWG(state.wordgenTransforms);
 			RO.editing = payload;
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		case consts.DO_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'edit', payload);
+			RO = reduceTransformsStateWG(state.wordgenTransforms, 'edit', payload);
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		case consts.CANCEL_EDIT_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules);
+			RO = reduceTransformsStateWG(state.wordgenTransforms);
 			RO.editing = null;
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		case consts.DELETE_REWRITE_RULE_WG:
-			RO = reduceRewriteRulesStateWG(state.wordgenRewriteRules, 'del', payload);
+			RO = reduceTransformsStateWG(state.wordgenTransforms, 'del', payload);
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		case consts.REORDER_REWRITE_RULE_WG:
 			RO = {
-				list: payload.map((rr: types.WGRewriteRuleObject) => reduceRewriteRulesWG(rr)),
-				editing: state.wordgenRewriteRules.editing
+				list: payload.map((tForm: types.WGTransformObject) => reduceTransformsWG(tForm)),
+				editing: state.wordgenTransforms.editing
 			};
 			final = {
-				...reduceAllBut(["wordgenRewriteRules"], state),
-				wordgenRewriteRules: RO
+				...reduceAllBut(["wordgenTransforms"], state),
+				wordgenTransforms: RO
 			};
 			break;
 		// Wordgen Settings
@@ -560,12 +560,12 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_CATEGORY_DROPOFF_WG:
+		case consts.SET_CHARACTER_GROUP_DROPOFF_WG:
 			final = {
 				...reduceAllBut(["wordgenSettings"], state),
 				wordgenSettings: {
 					...state.wordgenSettings,
-					categoryRunDropoff: payload
+					charGroupRunDropoff: payload
 				}
 			};
 			break;
@@ -706,10 +706,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.LOAD_CUSTOM_INFO_WG:
 			final = {
-				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules", "wordgenSettings"], state),
-				wordgenCategories: payload[0],
+				...reduceAllBut(["wordgenCharGroups", "wordgenSyllables", "wordgenTransforms", "wordgenSettings"], state),
+				wordgenCharGroups: payload[0],
 				wordgenSyllables: payload[1],
-				wordgenRewriteRules: payload[2],
+				wordgenTransforms: payload[2],
 				wordgenSettings: {
 					...state.wordgenSettings,
 					...payload[3]
@@ -720,10 +720,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.LOAD_PRESET_WG:
 			let newInfo: any = WGPresets.get(payload);
 			final = {
-				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules", "wordgenSettings"], state),
-				wordgenCategories: reduceCategoryWG(newInfo.wordgenCategories),
+				...reduceAllBut(["wordgenCharGroups", "wordgenSyllables", "wordgenTransforms", "wordgenSettings"], state),
+				wordgenCharGroups: reduceCharGroupWG(newInfo.wordgenCharGroups),
 				wordgenSyllables: reduceSyllablesWG(newInfo.wordgenSyllables),
-				wordgenRewriteRules: reduceRewriteRulesStateWG(newInfo.wordgenRewriteRules),
+				wordgenTransforms: reduceTransformsStateWG(newInfo.wordgenTransforms),
 				wordgenSettings: {
 					...state.wordgenSettings,
 					...newInfo.wordgenSettings
@@ -732,8 +732,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.CLEAR_EVERYTHING_WG:
 			final = {
-				...reduceAllBut(["wordgenCategories", "wordgenSyllables", "wordgenRewriteRules"], state),
-				wordgenCategories: {
+				...reduceAllBut(["wordgenCharGroups", "wordgenSyllables", "wordgenTransforms"], state),
+				wordgenCharGroups: {
 					map: [],
 					editing: null
 				},
@@ -746,7 +746,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 						wordFinal: { components: [] }
 					}
 				},
-				wordgenRewriteRules: {
+				wordgenTransforms: {
 					list: [],
 					editing: null
 				}
@@ -755,62 +755,62 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		//
 		// WORDEVOLVE
 		//
-		// Category
-		case consts.ADD_CATEGORY_WE:
-			CO = state.wordevolveCategories;
-			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
+		// CharGroup
+		case consts.ADD_CHARACTER_GROUP_WE:
+			CO = state.wordevolveCharGroups;
+			Cmap = CO.map.map((item: types.WECharGroupMap) => [item[0], item[1]]);
 			label = payload.label;
 			delete payload.label;
 			Cmap.push([label, payload]);
-			newCategories = reduceCategoryWG(CO, Cmap);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			// make new object, copy props from state, overwrite prop(s) with new object with new payload
 			final = {
-				...reduceAllBut(["wordevolveCategories"], state),
-				wordevolveCategories: newCategories
+				...reduceAllBut(["wordevolveCharGroups"], state),
+				wordevolveCharGroups: newCharGroups
 			};
 			break;
-		case consts.START_EDIT_CATEGORY_WE:
-			CO = state.wordevolveCategories;
-			newCategories = reduceCategoryWG(CO);
-			newCategories.editing = payload;
+		case consts.START_EDIT_CHARACTER_GROUP_WE:
+			CO = state.wordevolveCharGroups;
+			newCharGroups = reduceCharGroupWG(CO);
+			newCharGroups.editing = payload;
 			final = {
-				...reduceAllBut(["wordevolveCategories"], state),
-				wordevolveCategories: newCategories
+				...reduceAllBut(["wordevolveCharGroups"], state),
+				wordevolveCharGroups: newCharGroups
 			};
 			break;
-		case consts.DO_EDIT_CATEGORY_WE:
-			CO = state.wordevolveCategories;
+		case consts.DO_EDIT_CHARACTER_GROUP_WE:
+			CO = state.wordevolveCharGroups;
 			Cmap = CO.map.map(item => {
-				let [label, cat] = item;
+				let [label, charGroup] = item;
 				if(label === CO.editing) {
 					delete payload.label;
 					return [label, payload];
 				}
-				return[label, cat];
+				return[label, charGroup];
 			});
-			newCategories = reduceCategoryWG(CO, Cmap);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			final = {
-				...reduceAllBut(["wordevolveCategories"], state),
-				wordevolveCategories: newCategories
+				...reduceAllBut(["wordevolveCharGroups"], state),
+				wordevolveCharGroups: newCharGroups
 			};
 			break;
-		case consts.CANCEL_EDIT_CATEGORY_WE:
-			CO = state.wordevolveCategories;
-			newCategories = reduceCategoryWG(CO);
-			newCategories.editing = null;
+		case consts.CANCEL_EDIT_CHARACTER_GROUP_WE:
+			CO = state.wordevolveCharGroups;
+			newCharGroups = reduceCharGroupWG(CO);
+			newCharGroups.editing = null;
 			final = {
-				...reduceAllBut(["wordevolveCategories"], state),
-				wordevolveCategories: newCategories
+				...reduceAllBut(["wordevolveCharGroups"], state),
+				wordevolveCharGroups: newCharGroups
 			};
 			break;
-		case consts.DELETE_CATEGORY_WE:
-			CO = state.wordevolveCategories;
-			Cmap = CO.map.map((item: types.WECategoryMap) => [item[0], item[1]]);
-			Cmap = CO.map.filter((item: types.WECategoryMap) => item[0] !== payload.label).map((item: types.WECategoryMap) => [item[0], item[1]]);
-			newCategories = reduceCategoryWG(CO, Cmap);
+		case consts.DELETE_CHARACTER_GROUP_WE:
+			CO = state.wordevolveCharGroups;
+			Cmap = CO.map.map((item: types.WECharGroupMap) => [item[0], item[1]]);
+			Cmap = CO.map.filter((item: types.WECharGroupMap) => item[0] !== payload.label).map((item: types.WECharGroupMap) => [item[0], item[1]]);
+			newCharGroups = reduceCharGroupWG(CO, Cmap);
 			final = {
-				...reduceAllBut(["wordevolveCategories"], state),
-				wordevolveCategories: newCategories
+				...reduceAllBut(["wordevolveCharGroups"], state),
+				wordevolveCharGroups: newCharGroups
 			};
 			break;
 		// Transforms
@@ -928,8 +928,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.LOAD_CUSTOM_INFO_WE:
 			final = {
-				...reduceAllBut(["wordevolveCategories", "wordevolveTransforms", "wordevolveSoundChanges"], state),
-				wordevolveCategories: payload[0],
+				...reduceAllBut(["wordevolveCharGroups", "wordevolveTransforms", "wordevolveSoundChanges"], state),
+				wordevolveCharGroups: payload[0],
 				wordevolveTransforms: payload[1],
 				wordevolveSoundChanges: payload[2],
 			};
@@ -937,8 +937,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		// WEPreset
 		case consts.LOAD_PRESET_WE:
 			let newPreset: types.WEPresetObject = WEPresets.get(payload)!;
-			final = reduceAllBut(["wordevolveCategories", "wordevolveSoundChanges", "wordevolveTransforms"], state);
-			final.wordevolveCategories = reduceCategoryWE(state.wordevolveCategories, newPreset.categories);
+			final = reduceAllBut(["wordevolveCharGroups", "wordevolveSoundChanges", "wordevolveTransforms"], state);
+			final.wordevolveCharGroups = reduceCharGroupWE(state.wordevolveCharGroups, newPreset.charGroups);
 			final.wordevolveSoundChanges = {
 				list: newPreset.soundchanges.map(o => ({...o})),
 				editing: state.wordevolveSoundChanges.editing

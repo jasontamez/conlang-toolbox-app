@@ -14,8 +14,8 @@ import {
 import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-	WGRewriteRuleObject,
-	WGCategoryObject,
+	WGTransformObject,
+	WGCharGroupObject,
 	PageData
 } from '../../components/ReduxDucksTypes';
 import {
@@ -35,7 +35,7 @@ import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $a } from '../../components/DollarSignExports';
-import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
+import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import fireSwal from '../../components/Swal';
 import { Clipboard } from '@capacitor/clipboard';
 
@@ -66,17 +66,17 @@ const WGOut = (props: PageData) => {
 		return t;
 	};
 	const [
-		categoriesObject,
+		charGroupsObject,
 		syllablesObject,
 		settingsWG,
-		rewriteRules
+		transforms
 	] = useSelector((state: any) => [
-		state.wordgenCategories,
+		state.wordgenCharGroups,
 		state.wordgenSyllables,
 		state.wordgenSettings,
-		state.wordgenRewriteRules.list
+		state.wordgenTransforms.list
 	], shallowEqual);
-	const catMap: Map<string, WGCategoryObject> = new Map(categoriesObject.map);
+	const charGroupMap: Map<string, WGCharGroupObject> = new Map(charGroupsObject.map);
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
 	const regExpMap: Map<string, RegExp> = new Map();
@@ -133,8 +133,8 @@ const WGOut = (props: PageData) => {
 			output.removeChild(output.firstChild);
 		}
 		// Sanity check
-		if(catMap.size === 0) {
-			output.append($d("You have no categories defined."));
+		if(charGroupMap.size === 0) {
+			output.append($d("You have no character groups defined."));
 			endEarly = true;
 		}
 		if (!syllToggle && allSyllables.singleWord.components.length === 0) {
@@ -155,16 +155,16 @@ const WGOut = (props: PageData) => {
 		if(endEarly) {
 			return;
 		}
-		// Check rewrite rules for %Category references and update them if needed
-		rewriteRules.forEach((rule: WGRewriteRuleObject) => {
+		// Check transforms for %CharGroup references and update them if needed
+		transforms.forEach((transform: WGTransformObject) => {
 			let regex: RegExp;
-			if(rule.seek.indexOf("%") !== -1) {
+			if(transform.seek.indexOf("%") !== -1) {
 				// Found a possibility.
-				regex = calculateCategoryReferenceRegex(rule.seek, catMap) as RegExp;
+				regex = calculateCharGroupReferenceRegex(transform.seek, charGroupMap) as RegExp;
 			} else {
-				regex = new RegExp(rule.seek, "g");
+				regex = new RegExp(transform.seek, "g");
 			}
-			regExpMap.set(rule.key, regex);
+			regExpMap.set(transform.key, regex);
 		});
 		// Determine what we're making.
 		if(type === "text") {
@@ -283,15 +283,15 @@ const WGOut = (props: PageData) => {
 	const translateSyllable = (syll: string) => {
 		let chars: string[] = syll.split("");
 		let output: string = "";
-		let rate = settingsWG.categoryRunDropoff;
+		let rate = settingsWG.charGroupRunDropoff;
 		while(chars.length > 0) {
 			let current = chars.shift();
-			let category = catMap.get(current!);
-			if(category === undefined) {
+			let charGroup = charGroupMap.get(current!);
+			if(charGroup === undefined) {
 				output += current;
 			} else {
-				let thisRate = (category.dropoffOverride === undefined ? rate : category.dropoffOverride) + 5;
-				let choices = category.run;
+				let thisRate = (charGroup.dropoffOverride === undefined ? rate : charGroup.dropoffOverride) + 5;
+				let choices = charGroup.run;
 				let max = choices.length;
 				if(thisRate === 0) {
 					output += choices[Math.floor(Math.random() * max)];
@@ -354,8 +354,8 @@ const WGOut = (props: PageData) => {
 		} else {
 			output = word.join("");
 		}
-		// Apply rewrite rules
-		output = doRewrite(output);
+		// Apply transformss
+		output = doTransform(output);
 		// Capitalize if needed
 		if(capitalize) {
 			output = output.charAt(0).toUpperCase() + output.slice(1);
@@ -365,11 +365,11 @@ const WGOut = (props: PageData) => {
 
 
 	// // //
-	// Apply Rewrite Rules
+	// Apply Transforms
 	// // //
-	const doRewrite = (word: string) => {
-		rewriteRules.forEach((rule: WGRewriteRuleObject) => {
-			word = word.replace(regExpMap.get(rule.key)!, rule.replace);
+	const doTransform = (word: string) => {
+		transforms.forEach((transform: WGTransformObject) => {
+			word = word.replace(regExpMap.get(transform.key)!, transform.replace);
 		});
 		return word;
 	};
@@ -394,8 +394,8 @@ const WGOut = (props: PageData) => {
 			let newOutput: string[] = [];
 			res.then((res: any) => {
 				if(res.next === "") {
-					// This one is done - run through rewrite rules
-					newOutput.push(...res.results.map((word: string) => doRewrite(word)));
+					// This one is done - run through transforms
+					newOutput.push(...res.results.map((word: string) => doTransform(word)));
 				} else {
 					// Add to syllables
 					let next = res.next;
@@ -422,16 +422,16 @@ const WGOut = (props: PageData) => {
 	const recurseSyllables = async (previous: string, toGo: string) => {
 		let current = toGo.charAt(0);
 		let next = toGo.slice(1);
-		let category = catMap.get(current);
-		if(category === undefined) {
-			// Category not found - save as written
+		let charGroup = charGroupMap.get(current);
+		if(charGroup === undefined) {
+			// CharGroup not found - save as written
 			return {
 				results: [previous + current],
 				next: next
 			};
 		}
 		return {
-			results: category.run.split("").map(char => previous + char),
+			results: charGroup.run.split("").map(char => previous + char),
 			next: next
 		}
 	};

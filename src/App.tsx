@@ -155,6 +155,18 @@ const App = memo(() => {
 							if(storedState.temporaryInfo) {
 								delete storedState.temporaryInfo;
 							}
+							if(storedState.wordgenRewriteRules) {
+								storedState.wordgenTransforms = storedState.wordgenRewriteRules;
+								delete storedState.wordgenRewriteRules;
+							}
+							if(storedState.wordgenCategories) {
+								storedState.wordgenCharGroups = storedState.wordgenCategories;
+								delete storedState.wordgenCategories;
+							}
+							if(storedState.wordevolveCategories) {
+								storedState.wordevolveCharGroups = storedState.wordevolveCategories;
+								delete storedState.wordevolveCategories;
+							}
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date

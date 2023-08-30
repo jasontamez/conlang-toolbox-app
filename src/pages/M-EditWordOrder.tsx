@@ -89,21 +89,8 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		editing.columnSizes[i] = value;
 		dispatch(updateLexiconColumns(editing));
 	};
-	const maybeSaveNewInfo = () => {
-		let err: string[] = [];
-		// Test info for validness, then save if needed and reset the editingRule
-		if(err.length > 0) {
-			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
-			});
-			return;
-		}
-		// Everything ok!
+	const doneEditingOrder = () => {
 		setIsOpen(false);
-		//dispatch(doEditRewriteRuleWG(editingRule));
 		fireSwal({
 			title: "Saved!",
 			toast: true,
@@ -302,7 +289,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 						<IonIcon icon={addCircleOutline} slot="start" />
 						<IonLabel>Add Column</IonLabel>
 					</IonButton>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton color="tertiary" slot="end" onClick={() => doneEditingOrder()}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Done</IonLabel>
 					</IonButton>

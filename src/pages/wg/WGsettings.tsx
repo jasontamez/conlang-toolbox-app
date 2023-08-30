@@ -23,7 +23,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	setMonoRateWG,
 	setMaxSyllablesWG,
-	setCategoryDropoffWG,
+	setCharGroupDropoffWG,
 	setSyllableDropoffWG,
 	setCapitalizeSentencesWG,
 	setDeclarativePreWG,
@@ -77,7 +77,7 @@ const WGSet = (props: PageData) => {
 	const {
 		monosyllablesRate,
 		maxSyllablesPerWord,
-		categoryRunDropoff,
+		charGroupRunDropoff,
 		syllableBoxDropoff,
 		capitalizeSentences,
 		declarativeSentencePre,
@@ -193,7 +193,7 @@ const WGSet = (props: PageData) => {
 						<IonLabel className="ion-padding-bottom">Character Group run dropoff</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={categoryRunDropoff} pin={true} id="categoryDropoff" onIonBlur={() => doOnBlur(setCategoryDropoffWG, $i("categoryDropoff").value as Zero_Fifty)}>
+						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={charGroupRunDropoff} pin={true} id="charGroupDropoff" onIonBlur={() => doOnBlur(setCharGroupDropoffWG, $i("charGroupDropoff").value as Zero_Fifty)}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>

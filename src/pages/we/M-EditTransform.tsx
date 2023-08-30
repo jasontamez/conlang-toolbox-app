@@ -47,13 +47,13 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [
-		rewritesObject,
+		transformsObject,
 		settings
 	] = useSelector((state: any) => [
 		state.wordevolveTransforms,
 		state.appSettings
 	], shallowEqual);
-	const editing = rewritesObject.editing;
+	const editing = transformsObject.editing;
 	let editingTransform: WETransformObject = {
 		key: "",
 		seek: "",
@@ -62,7 +62,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		description: ""
 	};
 	let currentTransform: WETransformObject;
-	rewritesObject.list.every((trans: WETransformObject) => {
+	transformsObject.list.every((trans: WETransformObject) => {
 		if(trans.key === editing) {
 			editingTransform = {
 				...trans

@@ -40,7 +40,7 @@ export const InpCard = () => {
 		</IonCard>
 	);
 };
-export const CatCard = () => {
+export const CharGroupCard = () => {
 	return (
 		<IonCard>
 			<IonItem>

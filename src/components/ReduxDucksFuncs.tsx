@@ -14,21 +14,21 @@ export function toggleDisableConfirm(payload: boolean) {
 //
 // WORDGEN
 //
-// Category
-export function addCategoryWG(payload: types.WGCategoryObject) {
-	return {type: consts.ADD_CATEGORY_WG, payload};
+// CharGroup
+export function addCharGroupWG(payload: types.WGCharGroupObject) {
+	return {type: consts.ADD_CHARACTER_GROUP_WG, payload};
 }
-export function startEditCategoryWG(payload: types.WGCategoryObject) {
-	return {type: consts.START_EDIT_CATEGORY_WG, payload};
+export function startEditCharGroupWG(payload: types.WGCharGroupObject) {
+	return {type: consts.START_EDIT_CHARACTER_GROUP_WG, payload};
 }
-export function cancelEditCategoryWG(payload: types.WGCategoryObject) {
-	return {type: consts.CANCEL_EDIT_CATEGORY_WG, payload};
+export function cancelEditCharGroupWG(payload: types.WGCharGroupObject) {
+	return {type: consts.CANCEL_EDIT_CHARACTER_GROUP_WG, payload};
 }
-export function doEditCategoryWG(payload: types.WGCategoryObject) {
-	return {type: consts.DO_EDIT_CATEGORY_WG, payload};
+export function doEditCharGroupWG(payload: types.WGCharGroupObject) {
+	return {type: consts.DO_EDIT_CHARACTER_GROUP_WG, payload};
 }
-export function deleteCategoryWG(payload: types.WGCategoryObject) {
-	return {type: consts.DELETE_CATEGORY_WG, payload};
+export function deleteCharGroupWG(payload: types.WGCharGroupObject) {
+	return {type: consts.DELETE_CHARACTER_GROUP_WG, payload};
 }
 // Syllables
 export function toggleSyllables(payload: boolean) {
@@ -43,23 +43,23 @@ export function setEditableSyllables(payload: keyof types.AllWGSyllableObjects |
 export function modSyllableDropoff(payload1: keyof types.AllWGSyllableObjects, payload2: types.Zero_Fifty | undefined) {
 	return {type: consts.MOD_SYLLABLE_DROPOFF, payload: {key: payload1, value: payload2}};
 }
-// Rewrite Rules
-export function addRewriteRuleWG(payload: types.WGRewriteRuleObject) {
+// Transforms
+export function addTransformWG(payload: types.WGTransformObject) {
 	return {type: consts.ADD_REWRITE_RULE_WG, payload};
 }
-export function startEditRewriteRuleWG(payload: types.WGRewriteRuleObject) {
+export function startEditTransformWG(payload: types.WGTransformObject) {
 	return {type: consts.START_EDIT_REWRITE_RULE_WG, payload};
 }
-export function cancelEditRewriteRuleWG(payload: types.WGRewriteRuleObject) {
+export function cancelEditTransformWG(payload: types.WGTransformObject) {
 	return {type: consts.CANCEL_EDIT_REWRITE_RULE_WG, payload};
 }
-export function doEditRewriteRuleWG(payload: types.WGRewriteRuleObject) {
+export function doEditTransformWG(payload: types.WGTransformObject) {
 	return {type: consts.DO_EDIT_REWRITE_RULE_WG, payload};
 }
-export function deleteRewriteRuleWG(payload: types.WGRewriteRuleObject) {
+export function deleteTransformWG(payload: types.WGTransformObject) {
 	return {type: consts.DELETE_REWRITE_RULE_WG, payload};
 }
-export function reorderRewriteRulesWG(payload: types.WGRewriteRuleObject[]) {
+export function reorderTransformsWG(payload: types.WGTransformObject[]) {
 	return {type: consts.REORDER_REWRITE_RULE_WG, payload};
 }
 // Wordgen Settings
@@ -69,8 +69,8 @@ export function setMonoRateWG(payload: types.Zero_OneHundred) {
 export function setMaxSyllablesWG(payload: types.Two_Fifteen) {
 	return {type: consts.SET_MAX_SYLLABLES_WG, payload};
 }
-export function setCategoryDropoffWG(payload: types.Zero_Fifty) {
-	return {type: consts.SET_CATEGORY_DROPOFF_WG, payload};
+export function setCharGroupDropoffWG(payload: types.Zero_Fifty) {
+	return {type: consts.SET_CHARACTER_GROUP_DROPOFF_WG, payload};
 }
 export function setSyllableDropoffWG(payload: types.Zero_Fifty) {
 	return {type: consts.SET_SYLLABLE_DROPOFF_WG, payload};
@@ -130,21 +130,21 @@ export function loadCustomInfoWG(payload: types.WGCustomInfo) {
 //
 // WORDEVOLVE
 //
-// Category
-export function addCategoryWE(payload: types.WECategoryObject) {
-	return {type: consts.ADD_CATEGORY_WE, payload};
+// CharGroup
+export function addCharGroupWE(payload: types.WECharGroupObject) {
+	return {type: consts.ADD_CHARACTER_GROUP_WE, payload};
 }
-export function startEditCategoryWE(payload: types.WECategoryObject) {
-	return {type: consts.START_EDIT_CATEGORY_WE, payload};
+export function startEditCharGroupWE(payload: types.WECharGroupObject) {
+	return {type: consts.START_EDIT_CHARACTER_GROUP_WE, payload};
 }
-export function cancelEditCategoryWE(payload: types.WECategoryObject) {
-	return {type: consts.CANCEL_EDIT_CATEGORY_WE, payload};
+export function cancelEditCharGroupWE(payload: types.WECharGroupObject) {
+	return {type: consts.CANCEL_EDIT_CHARACTER_GROUP_WE, payload};
 }
-export function doEditCategoryWE(payload: types.WECategoryObject) {
-	return {type: consts.DO_EDIT_CATEGORY_WE, payload};
+export function doEditCharGroupWE(payload: types.WECharGroupObject) {
+	return {type: consts.DO_EDIT_CHARACTER_GROUP_WE, payload};
 }
-export function deleteCategoryWE(payload: types.WECategoryObject) {
-	return {type: consts.DELETE_CATEGORY_WE, payload};
+export function deleteCharGroupWE(payload: types.WECharGroupObject) {
+	return {type: consts.DELETE_CHARACTER_GROUP_WE, payload};
 }
 // Transforms
 export function addTransformWE(payload: types.WETransformObject) {

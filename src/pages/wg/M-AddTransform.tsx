@@ -20,23 +20,23 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
-import { addRewriteRuleWG } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WGRewriteRuleObject } from '../../components/ReduxDucksTypes';
+import { addTransformWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WGTransformObject } from '../../components/ReduxDucksTypes';
 import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 
-const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
+const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newRule: WGRewriteRuleObject = {
+	let newTransform: WGTransformObject = {
 		key: "",
 		seek: "",
 		replace: "",
 		description: ""
 	};
 	const hardReset = () => {
-		newRule = {
+		newTransform = {
 			key: "",
 			seek: "",
 			replace: "",
@@ -46,20 +46,20 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	function setNewInfo<
-		KEY extends keyof WGRewriteRuleObject,
-		VAL extends WGRewriteRuleObject[KEY]
+		KEY extends keyof WGTransformObject,
+		VAL extends WGTransformObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
-		newRule[prop] = value;
+		newTransform[prop] = value;
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		let where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const maybeSaveNewRule = (close: boolean = true) => {
+	const maybeSaveNewTransform = (close: boolean = true) => {
 		let err: string[] = [];
-		// Test info for validness, then save if needed and reset the newRule
-		if(newRule.seek === "") {
+		// Test info for validness, then save if needed and reset the newTransform
+		if(newTransform.seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
@@ -73,12 +73,12 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		// Create unique ID for this rule
-		newRule.key = uuidv4();
-		newRule.seek = repairRegexErrors(newRule.seek);
-		newRule.replace = repairRegexErrors(newRule.replace);
+		// Create unique ID for this transform
+		newTransform.key = uuidv4();
+		newTransform.seek = repairRegexErrors(newTransform.seek);
+		newTransform.replace = repairRegexErrors(newTransform.replace);
 		close && setIsOpen(false);
-		dispatch(addRewriteRuleWG(newRule));
+		dispatch(addTransformWG(newTransform));
 		hardReset();
 		fireSwal({
 			title: "Transformation added!",
@@ -127,11 +127,11 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewRule(false)}>
+				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransform(false)}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Transformation</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewRule()}>
+					<IonButton color="success" slot="end" onClick={() => maybeSaveNewTransform()}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>
@@ -141,4 +141,4 @@ const AddRewriteRuleModal = (props: ExtraCharactersModalOpener) => {
 	);
 };
 
-export default AddRewriteRuleModal;
+export default AddTransformModal;

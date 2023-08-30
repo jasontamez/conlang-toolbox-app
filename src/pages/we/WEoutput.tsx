@@ -28,10 +28,10 @@ import {
 	duplicateOutline
 } from 'ionicons/icons';
 import { $i, $a } from '../../components/DollarSignExports';
-import calculateCategoryReferenceRegex from '../../components/CategoryRegex';
+import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
-import { PageData, WECategoryObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import { PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
@@ -72,21 +72,21 @@ const WEOut = (props: PageData) => {
 		settingsWE,
 		transformObject,
 		soundChangesObject,
-		categoriesWE,
+		charGroupsWE,
 		//lexicon
 	] = useSelector((state: any) => [
 		state.wordevolveInput,
 		state.wordevolveSettings,
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges,
-		state.wordevolveCategories,
+		state.wordevolveCharGroups,
 		//state.lexicon
 	], shallowEqual);
 	const transforms: WETransformObject[] = transformObject.list;
 	const transformsMap: Map<string, RegExp[]> = new Map();
 	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
 	const soundChangeMap: Map<string, soundChangeModified> = new Map();
-	const catMap: Map<string, WECategoryObject> = new Map(categoriesWE.map);
+	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupsWE.map);
 
 	const $e = (tag: string, text: string | false = false, classy: string[] | false = false) => {
 		let e: HTMLElement = document.createElement(tag);
@@ -160,7 +160,7 @@ const WEOut = (props: PageData) => {
 		});
 };
 
-	// Go through a from/to string and check for categories and other regex stuff. Returns an array.
+	// Go through a from/to string and check for character groups and other regex stuff. Returns an array.
 	const interpretFromAndTo = (input: string) => {
 		var rules: (string | string[])[] = [],
 			assembly: (string | string[])[] = [],
@@ -199,7 +199,7 @@ const WEOut = (props: PageData) => {
 			} else if (q === "{") {
 				curly = true;
 				fromTo += q;
-			// Otherwise, treat as plain text (and possibly category or regex).
+			// Otherwise, treat as plain text (and possibly character groups or regex).
 			} else {
 				fromTo += q;
 			}
@@ -211,34 +211,34 @@ const WEOut = (props: PageData) => {
 		if (curly) {
 			rules.push("}");
 		}
-		// Now look for categories
+		// Now look for character groups
 		let double = uuidv4().replace(/[%!]/g,"x");
 		let negate = uuidv4().replace(/[%!]/g,"x");
 		// Hide %%
 		fromTo.replace(/%%/g, double);
-		// Category negations
+		// CharGroup negations
 		assembly = fromTo.split("!%");
 		fromTo = assembly.shift() as string;
 		assembly.forEach(unit => {
 			let q = unit[0];
-			let cat = catMap.get(q);
-			if(cat !== undefined) {
-				// Category found - negation, so do not make into Array
-				fromTo += "[^" + cat.run + "]" + unit.slice(1);
+			let charGroup = charGroupMap.get(q);
+			if(charGroup !== undefined) {
+				// CharGroup found - negation, so do not make into Array
+				fromTo += "[^" + charGroup.run + "]" + unit.slice(1);
 			} else {
 				// Hide !%
 				fromTo += negate + unit;
 			}
 		});
-		// Categories
+		// CharGroups
 		assembly = fromTo.split("%");
 		rules.push(assembly.shift()!);
 		assembly.forEach(unit => {
 			let q = unit[0];
-			let cat = catMap.get(q);
-			if(cat !== undefined) {
-				// Category found
-				rules.push(cat.run.split(""), unit.slice(1));
+			let charGroup = charGroupMap.get(q);
+			if(charGroup !== undefined) {
+				// CharGroup found
+				rules.push(charGroup.run.split(""), unit.slice(1));
 			} else {
 				rules.push("%" + unit);
 			}
@@ -278,7 +278,7 @@ const WEOut = (props: PageData) => {
 		if(err.length > 0) {
 			return output.append(...err);
 		}
-		// Check transforms for %Category references and update them if needed
+		// Check transforms for %CharGroup references and update them if needed
 		transforms.forEach((transformation: WETransformObject) => {
 			let regex: RegExp;
 			let all: RegExp[] = [];
@@ -286,7 +286,7 @@ const WEOut = (props: PageData) => {
 			props.forEach((prop: keyof WETransformObject) => {
 				if(transformation[prop].indexOf("%") !== -1) {
 					// Found a possibility.
-					regex = calculateCategoryReferenceRegex(transformation[prop], catMap) as RegExp;
+					regex = calculateCharGroupReferenceRegex(transformation[prop], charGroupMap) as RegExp;
 				} else {
 					regex = new RegExp(transformation[prop], "g");
 				}
@@ -294,32 +294,32 @@ const WEOut = (props: PageData) => {
 			});
 			transformsMap.set(transformation.key, all);
 		});
-		// Check sound changes for %Category references and update them if needed
+		// Check sound changes for %CharGroup references and update them if needed
 		soundChanges.forEach((change: WESoundChangeObject) => {
 			let seek: arrayOfStringsAndStringArrays | RegExp;
 			let replace: string | arrayOfStringsAndStringArrays;
 			let context: (RegExp | null)[];
 			let anticontext: (RegExp | null)[];
-			let categoryFlag = (change.seek.indexOf("%") !== -1) && (change.replace.indexOf("%") !== -1)
+			let charGroupFlag = (change.seek.indexOf("%") !== -1) && (change.replace.indexOf("%") !== -1)
 			// SEEK
 			let temp: any = change.seek;
-			if(categoryFlag) {
+			if(charGroupFlag) {
 				seek = interpretFromAndTo(temp);
 				if(seek.every(unit => typeof unit === "string")) {
 					// No Arrays? No need for flag
-					categoryFlag = false;
+					charGroupFlag = false;
 					seek = new RegExp(seek.join(""), "g");
 				}
 			} else {
-				seek = calculateCategoryReferenceRegex(temp, catMap) as RegExp;
+				seek = calculateCharGroupReferenceRegex(temp, charGroupMap) as RegExp;
 			}
 			// REPLACE
 			temp = change.replace;
-			if(categoryFlag) {
+			if(charGroupFlag) {
 				replace = interpretFromAndTo(temp);
 				if(replace.every(unit => typeof unit === "string")) {
 					// No Arrays? No need for flag
-					categoryFlag = false;
+					charGroupFlag = false;
 					replace = replace.join("");
 					// Need to run through seek to get a single RegExp
 					let temp = (seek as (string | string[])[]).map(unit => typeof unit === "string" ? unit : "[" + unit.join("") + "]");
@@ -336,9 +336,9 @@ const WEOut = (props: PageData) => {
 			} else {
 				if(temp[0]) {
 					if(temp[0][0] === "#") {
-						temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1) + "$", catMap);
+						temp[0] = calculateCharGroupReferenceRegex("^" + temp[0].slice(1) + "$", charGroupMap);
 					} else {
-						temp[0] = calculateCategoryReferenceRegex(temp[0] + "$", catMap);
+						temp[0] = calculateCharGroupReferenceRegex(temp[0] + "$", charGroupMap);
 					}
 				} else {
 					temp[0] = null;
@@ -346,9 +346,9 @@ const WEOut = (props: PageData) => {
 				if(temp[1]) {
 					let t = "^" + temp[1];
 					if(t[t.length - 1] === "#") {
-						temp[1] = calculateCategoryReferenceRegex(t.slice(0, -1) + "$", catMap);
+						temp[1] = calculateCharGroupReferenceRegex(t.slice(0, -1) + "$", charGroupMap);
 					} else {
-						temp[1] = calculateCategoryReferenceRegex(t, catMap);
+						temp[1] = calculateCharGroupReferenceRegex(t, charGroupMap);
 					}
 				} else {
 					temp[1] = null;
@@ -363,9 +363,9 @@ const WEOut = (props: PageData) => {
 			} else {
 				if(temp[0]) {
 					if(temp[0][0] === "#") {
-						temp[0] = calculateCategoryReferenceRegex("^" + temp[0].slice(1) + "$", catMap);
+						temp[0] = calculateCharGroupReferenceRegex("^" + temp[0].slice(1) + "$", charGroupMap);
 					} else {
-						temp[0] = calculateCategoryReferenceRegex(temp[0] + "$", catMap);
+						temp[0] = calculateCharGroupReferenceRegex(temp[0] + "$", charGroupMap);
 					}
 				} else {
 					temp[0] = null;
@@ -373,9 +373,9 @@ const WEOut = (props: PageData) => {
 				if(temp[1]) {
 					let t = "^" + temp[1];
 					if(t[t.length - 1] === "#") {
-						temp[1] = calculateCategoryReferenceRegex(t.slice(0, -1) + "$", catMap);
+						temp[1] = calculateCharGroupReferenceRegex(t.slice(0, -1) + "$", charGroupMap);
 					} else {
-						temp[1] = calculateCategoryReferenceRegex(t, catMap);
+						temp[1] = calculateCharGroupReferenceRegex(t, charGroupMap);
 					}
 				} else {
 					temp[1] = null;
@@ -388,7 +388,7 @@ const WEOut = (props: PageData) => {
 				replace,
 				context,
 				anticontext,
-				flagged: categoryFlag
+				flagged: charGroupFlag
 			});
 		});
 		let modifiedWords = changeTheWords(rawInput);
@@ -441,7 +441,7 @@ const WEOut = (props: PageData) => {
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
-			// Loop over the rewrite rules.
+			// Loop over the transforms.
 			transforms.forEach((tr: WETransformObject) => {
 				// Check to see if we apply this rule.
 				if (tr.direction === "in") {
@@ -458,36 +458,36 @@ const WEOut = (props: PageData) => {
 				const rule = change.seek + "➜" + change.replace + " / " + change.context + (change.anticontext ? " ! " + change.anticontext : "");
 				let previous = word;
 				if(modified.flagged) {
-					// We have category matches to deal with.
+					// We have character group matches to deal with.
 					let seeking = modified.seek as arrayOfStringsAndStringArrays;
 					let replace = modified.replace as arrayOfStringsAndStringArrays;
 					let seekTextBasic = "";
-					let seekTextCategory = "";
+					let seekTextCharGroup = "";
 					let seekCats: string[][] = [];
 					let ids: [string, string][] = [];
 					seeking.forEach(ss => {
 						if(typeof ss === "string") {
 							seekTextBasic = seekTextBasic + ss;
-							seekTextCategory = seekTextCategory + ss;
+							seekTextCharGroup = seekTextCharGroup + ss;
 						} else {
 							let id = "N" + uuidv4().replace(/[^a-zA-Z0-9]/g, "");
 							let ssj = ss.join("");
 							seekTextBasic = seekTextBasic + "[" + ssj + "]";
-							seekTextCategory = seekTextCategory + "(?<" + id + ">[" + ssj + "])";
+							seekTextCharGroup = seekTextCharGroup + "(?<" + id + ">[" + ssj + "])";
 							seekCats.push(ss as string[]);
 							ids.push([id, ssj]);
 						}
 					});
-					// seekTextBasic/Category are the bases of RegExps
-					// seekCats is an array of category runs
+					// seekTextBasic/CharGroup are the bases of RegExps
+					// seekCats is an array of character group runs
 					let basicSeek = new RegExp(seekTextBasic, "g");
-					let categorySeek = new RegExp(seekTextCategory, "g");
+					let charGroupSeek = new RegExp(seekTextCharGroup, "g");
 					basicSeek.lastIndex = 0;
-					categorySeek.lastIndex = 0;
+					charGroupSeek.lastIndex = 0;
 					let basicMatch = basicSeek.exec(word);
-					let categoryMatch = categorySeek.exec(word);
+					let charGroupMatch = charGroupSeek.exec(word);
 					let lastIndex = basicSeek.lastIndex;
-					while(basicMatch !== null && categoryMatch !== null) {
+					while(basicMatch !== null && charGroupMatch !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
 						let prevLength = word.length;
@@ -531,10 +531,10 @@ const WEOut = (props: PageData) => {
 							// We can replace
 							let replaceText = "";
 							let i = 0;
-							let g = categoryMatch.groups || {};
-							replace.forEach(rr => {
-								if(typeof rr === "string") {
-									replaceText = replaceText + rr;
+							let g = charGroupMatch.groups || {};
+							replace.forEach(transform => {
+								if(typeof transform === "string") {
+									replaceText = replaceText + transform;
 								} else {
 									let [id, run] = ids[i];
 									i++;
@@ -542,7 +542,7 @@ const WEOut = (props: PageData) => {
 									if(ind < 0) {
 										ind = 0;
 									}
-									replaceText = replaceText + rr[ind % rr.length];
+									replaceText = replaceText + transform[ind % transform.length];
 								}
 							});
 							let newseek = new RegExp(escapeRegexp(pre) + seekTextBasic);
@@ -558,11 +558,11 @@ const WEOut = (props: PageData) => {
 							// Otherwise, check for more matches!
 							basicMatch = basicSeek.exec(word);
 							lastIndex = basicSeek.lastIndex;
-							categoryMatch = categorySeek.exec(word);
+							charGroupMatch = charGroupSeek.exec(word);
 						}
 					}
 				} else {
-					// No special category match handling
+					// No special character group match handling
 					let seeking = modified.seek as RegExp;
 					let replace = modified.replace as string;
 					// Reset lastIndex to prevent certain errors.
@@ -641,7 +641,7 @@ const WEOut = (props: PageData) => {
 			});
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
-				// Check to see if we apply this rule.
+				// Check to see if we apply this transform.
 				if (tr.direction === "both") {
 					word = word.replace(tr.replace, tr.seek);
 				} else if (tr.direction === "double") {

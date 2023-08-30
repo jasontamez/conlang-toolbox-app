@@ -41,12 +41,12 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const dispatch = useDispatch();
 	const [
 		settings,
-		categories,
+		charGroups,
 		transforms,
 		soundchanges
 	] = useSelector((state: any) => [
 		state.appSettings,
-		state.wordevolveCategories,
+		state.wordevolveCharGroups,
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges
 	], shallowEqual);
@@ -64,7 +64,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		}
 		const doSave = (title: string, msg: string = "saved") => {
 			const save: WECustomInfo = [
-				categories,
+				charGroups,
 				transforms,
 				soundchanges
 			];
@@ -109,7 +109,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		}
 		title = title + ".json";
 		const exporting = {
-			categories,
+			charGroups,
 			transforms,
 			soundchanges
 		};

@@ -12,9 +12,7 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter,
-	IonToggle,
-	IonRange
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -23,20 +21,20 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, WGCategoryObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { addCategoryWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
+import { addCharGroupWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
-import { $q, $i, $a } from '../../components/DollarSignExports';
+import { $q, $a, $i } from '../../components/DollarSignExports';
 
-const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
+const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newCat: WGCategoryObject = {
+	let newCharGroup: WECharGroupObject = {
 		title: "",
 		label: "",
 		run: ""
 	};
 	const hardReset = () => {
-		newCat = {
+		newCharGroup = {
 			title: "",
 			label: "",
 			run: ""
@@ -44,37 +42,27 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
-	const [categoryObject, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.wordgenSettings], shallowEqual);
-	const catMap = new Map(categoryObject.map);
+	const charGroupObject = useSelector((state: any) => state.wordevolveCharGroups, shallowEqual);
+	const charGroupMap = new Map(charGroupObject.map);
 	function setNewInfo<
-		KEY extends keyof WGCategoryObject,
-		VAL extends WGCategoryObject[KEY]
+		KEY extends keyof WECharGroupObject,
+		VAL extends WECharGroupObject[KEY]
 	>(prop: KEY, value: VAL) {
 		// Set the property
-		newCat[prop] = value;
+		newCharGroup[prop] = value;
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		let where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const toggleDropoff = () => {
-		let DF = $i("categoryDropoffAddC");
-		if(newCat.dropoffOverride !== undefined) {
-			delete newCat.dropoffOverride;
-			DF.classList.add("hide");
-		} else {
-			DF.classList.remove("hide");
-			$q("ion-range", DF).value = newCat.dropoffOverride = settingsWG.categoryRunDropoff;
-		}
-	};
 	const generateLabel = () => {
-		let v = ($i("newCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
+		let v = ($i("newCharGroupTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
 		let length = v.length;
 		let pos = 0;
 		let label = null;
 		while(!label && pos < length) {
 			let test = v.charAt(pos);
-			if(!catMap.has(test)) {
+			if(!charGroupMap.has(test)) {
 				label = test;
 			}
 			pos++;
@@ -94,27 +82,27 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 			$i("shortLabel").value = label;
 		}
 	};
-	const maybeSaveNewCat = (close: boolean = true) => {
+	const maybeSaveNewCharGroup = (close: boolean = true) => {
 		let err: string[] = [];
-		// Test info for validness, then save if needed and reset the newCat
-		if(newCat.title === "") {
+		// Test info for validness, then save if needed and reset the newCharGroup
+		if(newCharGroup.title === "") {
 			$q(".titleLabel").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(newCat.label === "") {
+		if(newCharGroup.label === "") {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (catMap.has(newCat.label)) {
+		} else if (charGroupMap.has(newCharGroup.label)) {
 			$q(".labelLabel").classList.add("invalidValue");
-			err.push("There is already a label \"" + newCat.label + "\"");
+			err.push("There is already a label \"" + newCharGroup.label + "\"");
 		} else {
 			let invalid = "^$\\[]{}.*+()?|";
-			if (invalid.indexOf(newCat.label as string) !== -1) {
+			if (invalid.indexOf(newCharGroup.label as string) !== -1) {
 				$q(".labelLabel").classList.add("invalidValue");
-				err.push("You cannot use \"" + newCat.label + "\" as a label.");
+				err.push("You cannot use \"" + newCharGroup.label + "\" as a label.");
 			}
 		}
-		if(newCat.run === "") {
+		if(newCharGroup.run === "") {
 			$q(".runLabel").classList.add("invalidValue");
 			err.push("No run present");
 		}
@@ -129,7 +117,7 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		close && setIsOpen(false);
-		dispatch(addCategoryWG(newCat));
+		dispatch(addCharGroupWE(newCharGroup));
 		hardReset();
 		fireSwal({
 			title: "Character Group added!",
@@ -160,11 +148,11 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" id="newCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
+						<IonInput aria-label="Title/Description" id="newCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250}></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
-						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
-						<IonInput aria-label="Short Label" id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
+						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<IonInput id="shortLabel" label="Short Label:" aria-label="Short Label" labelPlacement="start" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -173,33 +161,17 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
-					</IonItem>
-					<IonItem>
-						<IonToggle
-							enableOnOffLabels
-							labelPlacement="start"
-							aria-label="Use separate dropoff rate"
-							justify="space-between"
-							onIonChange={() => toggleDropoff()}
-							checked={newCat.dropoffOverride !== undefined}
-						>Use separate dropoff rate</IonToggle>
-					</IonItem>
-					<IonItem id="categoryDropoffAddC" className="hide">
-						<IonRange min={0} max={50} pin={true} onIonChange={e => setNewInfo("dropoffOverride", (e.detail.value as Zero_Fifty))} debounce={250}>
-							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
-							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
-						</IonRange>
+						<IonInput aria-label="Letters/Characters" className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCat(false)}>
+					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCharGroup(false)}>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Group</IonLabel>
+						<IonLabel>Add Character Group</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCat()}>
+					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCharGroup()}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>
@@ -209,4 +181,4 @@ const AddCategoryModal = (props: ExtraCharactersModalOpener) => {
 	);
 };
 
-export default AddCategoryModal;
+export default AddCharGroupWEModal;

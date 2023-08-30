@@ -16,13 +16,15 @@ import {
 	IonButton,
 	useIonViewDidEnter,
 	IonReorderGroup,
-	IonReorder
+	IonReorder,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption
 } from '@ionic/react';
 import {
 	addOutline,
 	helpCircleOutline,
 	reorderTwo,
-	construct,
 	trash,
 	globeOutline
 } from 'ionicons/icons';
@@ -131,32 +133,38 @@ const WERew = (props: PageData) => {
 				<IonList className="soundChanges units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{soundChange.map((change: WESoundChangeObject) => {
+							const { key, seek, replace, context, anticontext, description } = change;
 							return (
-								<IonItem key={change.key}>
-									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel className="wrappableInnards">
-										<div className="importantElement serifChars">
-											<span className="seek importantUnit">{change.seek}</span>
-											<span className="arrow unimportantUnit">{arrow}</span>
-											<span className="replace importantUnit">{change.replace || String.fromCharCode(160)}</span>
-											<span className="arrow unimportantUnit">/</span>
-											<span className="replace importantUnit">{change.context}</span>
-											{change.anticontext ? (
-												<span>
-													<span className="unimportantUnit">!</span>
-													<span className="replace importantUnit">{change.anticontext}</span>
-												</span>
-											) : ""}
-										</div>
-										<div className="description">{change.description}</div>
-									</IonLabel>
-									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editSoundChange(change.key)}>
-										<IonIcon icon={construct} style={ { margin: 0 } } />
-									</IonButton>
-									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteSoundChange(change)}>
-										<IonIcon icon={trash} style={ { margin: 0 } } />
-									</IonButton>
-								</IonItem>
+								<IonItemSliding key={key}>
+									<IonItemOptions>
+										<IonItemOption color="primary" onClick={() => editSoundChange(key)}>
+											<IonIcon slot="icon-only" src="svg/edit.svg" />
+										</IonItemOption>
+										<IonItemOption color="danger" onClick={() => maybeDeleteSoundChange(change)}>
+											<IonIcon slot="icon-only" icon={trash} />
+										</IonItemOption>
+									</IonItemOptions>
+									<IonItem>
+										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonLabel className="wrappableInnards">
+											<div className="importantElement serifChars">
+												<span className="seek importantUnit">{seek}</span>
+												<span className="arrow unimportantUnit">{arrow}</span>
+												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
+												<span className="arrow unimportantUnit">/</span>
+												<span className="replace importantUnit">{context}</span>
+												{anticontext ? (
+													<span>
+														<span className="unimportantUnit">!</span>
+														<span className="replace importantUnit">{anticontext}</span>
+													</span>
+												) : ""}
+											</div>
+											<div className="description">{description}</div>
+										</IonLabel>
+										<IonIcon size="small" slot="end" src="svg/drag-indicator.svg" />
+									</IonItem>
+								</IonItemSliding>
 							);
 						})}
 					</IonReorderGroup>

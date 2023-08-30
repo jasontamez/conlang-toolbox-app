@@ -12,9 +12,7 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter,
-	IonToggle,
-	IonRange
+	IonFooter
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -24,22 +22,22 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, WGCategoryObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { doEditCategoryWG, cancelEditCategoryWG, deleteCategoryWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
+import { doEditCharGroupWE, cancelEditCharGroupWE, deleteCharGroupWE } from '../../components/ReduxDucksFuncs';
 import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
 
-const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
+const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
-	const [categoryObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.appSettings, state.wordgenSettings], shallowEqual);
-	const catMap: Map<string, WGCategoryObject> = new Map(categoryObject.map);
-	const editing = categoryObject.editing;
-	const sourceCat = catMap.get(editing)!;
-	let editingCat: WGCategoryObject = {...sourceCat};
-	editingCat.label = editing;
+	const [charGroupObject, settings] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings], shallowEqual);
+	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupObject.map);
+	const editing = charGroupObject.editing;
+	//const sourceCharGroup = charGroupMap.get(editing);
+	let editingCharGroup: WECharGroupObject = {...charGroupMap.get(editing)!};
+	editingCharGroup.label = editing;
 	const hardReset = () => {
-		editingCat = {
+		editingCharGroup = {
 			title: "",
 			label: "",
 			run: ""
@@ -51,18 +49,18 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 		}
 		return "";
 	};
-	function setNewInfo (prop: keyof WGCategoryObject, value: any) {
+	function setNewInfo (prop: keyof WECharGroupObject, value: any) {
 		// Set the property
 		let madeString = makeString(value).trim();
 		switch(prop) {
 			case "title":
-				editingCat.title = madeString;
+				editingCharGroup.title = madeString;
 				break;
 			case "run":
-				editingCat.run = madeString;
+				editingCharGroup.run = madeString;
 				break;
 			case "label":
-				editingCat.label = madeString;
+				editingCharGroup.label = madeString;
 				break;
 		}
 		// Remove danger color if present
@@ -70,27 +68,15 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 		let where = $q("." + prop + "LabelEdit");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const toggleDropoff = () => {
-		let DF = $i("categoryDropoffEditC");
-		if(!editingCat) {
-			// Skip
-		} else if(editingCat.dropoffOverride !== undefined) {
-			delete editingCat.dropoffOverride;
-			DF.classList.add("hide");
-		} else {
-			DF.classList.remove("hide");
-			$q("ion-range", DF).value = editingCat.dropoffOverride = (!sourceCat || (sourceCat.dropoffOverride === undefined) ? settingsWG.categoryRunDropoff : sourceCat.dropoffOverride);
-		}
-	};
 	const generateLabel = () => {
-		let v = ($i("editingCatTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
+		let v = ($i("editingCharGroupTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
 		let length = v.length;
 		let pos = 0;
 		let label = null;
 		let invalid = "^$\\[]{}.*+()?|";
 		while(!label && pos < length) {
 			let test = v.charAt(pos);
-			if(invalid.indexOf(test) === -1 && (editing === test || !catMap.has(test))) {
+			if(invalid.indexOf(test) === -1 && (editing === test || !charGroupMap.has(test))) {
 				label = test;
 			}
 			pos++;
@@ -111,30 +97,30 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	const cancelEditing = () => {
-		dispatch(cancelEditCategoryWG(editing));
+		dispatch(cancelEditCharGroupWE(editing));
 		setIsOpen(false);
 	};
 	const maybeSaveNewInfo = () => {
 		let err: string[] = [];
-		// Test info for validness, then save if needed and reset the editingCat
-		if(editingCat.title === "") {
+		// Test info for validness, then save if needed and reset the editingCharGroup
+		if(editingCharGroup.title === "") {
 			$q(".titleLabelEdit").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(editingCat.label === "") {
+		if(editingCharGroup.label === "") {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (editing !== editingCat.label && catMap.has(editingCat.label!)) {
+		} else if (editing !== editingCharGroup.label && charGroupMap.has(editingCharGroup.label!)) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
-			err.push("There is already a label \"" + editingCat.label + "\"");
+			err.push("There is already a label \"" + editingCharGroup.label + "\"");
 		} else {
 			let invalid = "^$\\[]{}.*+()?|";
-			if (invalid.indexOf(editingCat.label as string) !== -1) {
+			if (invalid.indexOf(editingCharGroup.label as string) !== -1) {
 				$q(".labelLabelEdit").classList.add("invalidValue");
-				err.push("You cannot use \"" + editingCat.label + "\" as a label.");
+				err.push("You cannot use \"" + editingCharGroup.label + "\" as a label.");
 			}
 		}
-		if(editingCat.run === "") {
+		if(editingCharGroup.run === "") {
 			$q(".runLabelEdit").classList.add("invalidValue");
 			err.push("No run present");
 		}
@@ -149,7 +135,7 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		setIsOpen(false);
-		dispatch(doEditCategoryWG(editingCat));
+		dispatch(doEditCharGroupWE(editingCharGroup));
 		hardReset();
 		fireSwal({
 			title: "Character Group saved!",
@@ -159,12 +145,12 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 			showConfirmButton: false
 		});
 	};
-	const maybeDeleteCategory = () => {
-		$q(".categories").closeSlidingItems();
+	const maybeDeleteCharGroup = () => {
+		$q(".charGroups").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
 				setIsOpen(false);
-				dispatch(deleteCategoryWG(editingCat));
+				dispatch(deleteCharGroupWE(editingCharGroup));
 				fireSwal({
 					title: "Character Group deleted",
 					customClass: {popup: 'dangerToast'},
@@ -179,7 +165,7 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 			thenFunc({isConfirmed: true});
 		} else {
 			fireSwal({
-				title: "Delete " + editingCat.label + "?",
+				title: "Delete " + editingCharGroup.label + "?",
 				text: "Are you sure? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
@@ -204,16 +190,16 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" class="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
 						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" value={editingCat.title} id="editingCatTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250} />
+						<IonInput aria-label="Title or description" value={editingCharGroup.title} id="editingCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
-						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
-						<IonInput aria-label="Short label" value={editingCat.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1} />
+						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<IonInput aria-label="Short Label" value={editingCharGroup.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -222,16 +208,7 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, characters" value={editingCat.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250} />
-					</IonItem>
-					<IonItem>
-						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => toggleDropoff()} labelPlacement="start" checked={editingCat.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
-					</IonItem>
-					<IonItem id="categoryDropoffEditC" className={editingCat.dropoffOverride === undefined ? "hide" : ""}>
-						<IonRange min={0} max={50} pin={true} value={(editingCat.dropoffOverride === undefined ? settingsWG.categoryRunDropoff : editingCat.dropoffOverride)} onIonChange={e => {editingCat.dropoffOverride = (e.detail.value as Zero_Fifty)}} debounce={250}>
-							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
-							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
-						</IonRange>
+						<IonInput aria-label="Letters, Characters" value={editingCharGroup.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -239,9 +216,9 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 				<IonToolbar>
 					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Character Group</IonLabel>
+						<IonLabel>Save Group</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCategory()}>
+					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCharGroup()}>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>Delete Group</IonLabel>
 					</IonButton>
@@ -251,4 +228,4 @@ const EditCategoryModal = (props: ExtraCharactersModalOpener) => {
 	);
 };
 
-export default EditCategoryModal;
+export default EditCharGroupWEModal;

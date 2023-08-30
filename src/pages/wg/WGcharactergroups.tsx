@@ -15,54 +15,57 @@ import {
 	IonFab,
 	IonFabButton,
 	IonRange,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption,
 	useIonViewDidEnter
 } from '@ionic/react';
 import {
 	addOutline,
 	helpCircleOutline,
-	construct,
 	trash,
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	startEditCategoryWG,
-	deleteCategoryWG,
-	changeView,
-	setCategoryDropoffWG
-} from '../../components/ReduxDucksFuncs';
-import { PageData, WGCategoryMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import AddCategoryModal from './M-AddCategory';
-import EditCategoryModal from './M-EditCategory';
-import { $i, $q } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
-import { CatCard } from "./WGCards";
-import ModalWrap from "../../components/ModalWrap";
-import ExtraCharactersModal from '../M-ExtraCharacters';
 
-const WGCat = (props: PageData) => {
+import {
+	startEditCharGroupWG,
+	deleteCharGroupWG,
+	changeView,
+	setCharGroupDropoffWG
+} from '../../components/ReduxDucksFuncs';
+import { PageData, WGCharGroupMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
+import { $i, $q } from '../../components/DollarSignExports';
+import ModalWrap from "../../components/ModalWrap";
+import fireSwal from '../../components/Swal';
+import AddCharGroupModal from './M-AddCharGroup';
+import EditCharGroupModal from './M-EditCharGroup';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import { CharGroupCard } from "./WGCards";
+
+const WGCharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
-	const [isOpenAddCat, setIsOpenAddCat] = useState<boolean>(false);
-	const [isOpenEditCat, setIsOpenEditCat] = useState<boolean>(false);
-	const viewInfo = ['wg', 'categories'];
+	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
+	const [isOpenEditCharGroup, setIsOpenEditCharGroup] = useState<boolean>(false);
+	const viewInfo = ['wg', 'charGroups'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [categoryObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCategories, state.appSettings, state.wordgenSettings], shallowEqual);
-	var categories: WGCategoryMap[] = categoryObject.map;
-	const editCategory = (label: any) => {
-		$q(".categories").closeSlidingItems();
-		dispatch(startEditCategoryWG(label));
-		setIsOpenEditCat(true);
+	const [charGroupObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCharGroups, state.appSettings, state.wordgenSettings], shallowEqual);
+	var charGroups: WGCharGroupMap[] = charGroupObject.map;
+	const editCharGroup = (label: any) => {
+		$q(".charGroups").closeSlidingItems();
+		dispatch(startEditCharGroupWG(label));
+		setIsOpenEditCharGroup(true);
 	};
-	const maybeDeleteCategory = (label: any) => {
-		$q(".categories").closeSlidingItems();
+	const maybeDeleteCharGroup = (label: any) => {
+		$q(".charGroups").closeSlidingItems();
 		const thenFunc = (result: any) => {
 			if(result.isConfirmed) {
-				dispatch(deleteCategoryWG(label));
+				dispatch(deleteCharGroupWG(label));
 				fireSwal({
 					title: "Character Group deleted",
 					customClass: {popup: 'dangerToast'},
@@ -88,10 +91,10 @@ const WGCat = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCategoryModal {...props.modalPropsMaker(isOpenAddCat, setIsOpenAddCat)} openECM={setIsOpenECM} />
-			<EditCategoryModal {...props.modalPropsMaker(isOpenEditCat, setIsOpenEditCat)} openECM={setIsOpenECM} />
+			<AddCharGroupModal {...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)} openECM={setIsOpenECM} />
+			<EditCharGroupModal {...props.modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)} openECM={setIsOpenECM} />
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CatCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CharGroupCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -109,7 +112,7 @@ const WGCat = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="categories units" lines="none">
+				<IonList className="charGroups units" lines="none">
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
 							<div><strong>Dropoff Rate</strong></div>
@@ -117,34 +120,39 @@ const WGCat = (props: PageData) => {
 						</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange min={0} max={50} value={settingsWG.categoryRunDropoff} pin={true} id="categoryDropoffC" onIonBlur={() => dispatch(setCategoryDropoffWG($i("categoryDropoffC").value as Zero_Fifty))}>
+						<IonRange min={0} max={50} value={settingsWG.charGroupRunDropoff} pin={true} id="charGroupDropoffC" onIonBlur={() => dispatch(setCharGroupDropoffWG($i("charGroupDropoffC").value as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					{categories.map((item: WGCategoryMap) => {
-						let [label, cat] = item;
+					{charGroups.map((item: WGCharGroupMap) => {
+						let [label, charGroup] = item;
 						return (
-							<IonItem key={label}>
-								<IonLabel className="wrappableInnards">
-									<div className="categoryRun serifChars">
-										<span className="label importantElement">{label}</span>
-										<span className="run">{cat.run}</span>
-									</div>
-									<div className="categoryLongName">{cat.title}</div>
-								</IonLabel>
-								<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editCategory(label)}>
-									<IonIcon icon={construct} style={ { margin: 0 } } />
-								</IonButton>
-								<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteCategory(label)}>
-									<IonIcon icon={trash} style={ { margin: 0 } } />
-								</IonButton>
-							</IonItem>
+							<IonItemSliding key={label}>
+								<IonItemOptions>
+									<IonItemOption color="primary" onClick={() => editCharGroup(label)}>
+										<IonIcon slot="icon-only" src="svg/edit.svg" />
+									</IonItemOption>
+									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(label)}>
+										<IonIcon slot="icon-only" icon={trash} />
+									</IonItemOption>
+								</IonItemOptions>
+								<IonItem>
+									<IonLabel className="wrappableInnards">
+										<div className="charGroupRun serifChars">
+											<span className="label importantElement">{label}</span>
+											<span className="run">{charGroup.run}</span>
+										</div>
+										<div className="charGroupLongName">{charGroup.title}</div>
+									</IonLabel>
+									<IonIcon size="small" slot="end" src="svg/drag-indicator.svg" />
+								</IonItem>
+							</IonItemSliding>
 						);
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new character group" onClick={() => setIsOpenAddCat(true)}>
+					<IonFabButton color="secondary" title="Add new character group" onClick={() => setIsOpenAddCharGroup(true)}>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>
@@ -153,4 +161,4 @@ const WGCat = (props: PageData) => {
 	);
 };
 
-export default WGCat;
+export default WGCharGroup;

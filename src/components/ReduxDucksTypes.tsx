@@ -7,24 +7,24 @@ export type Fifty_OneThousand = 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 
 export type WGPresetObject = Map<string, WGPreset>;
 
 export type WGPreset = {
-	wordgenCategories: WGCategoryStateObject
+	wordgenCharGroups: WGCharGroupStateObject
 	wordgenSyllables: WGSyllableStateObject
-	wordgenRewriteRules: WGRewriteRuleStateObject
+	wordgenTransforms: WGTransformStateObject
 	wordgenSettings: WGSettingsObject
 };
 
 // WORDGEN
-export interface WGCategoryObject {
+export interface WGCharGroupObject {
 	title: string
 	label?: string
 	run: string
 	dropoffOverride?: Zero_Fifty
 }
 
-export type WGCategoryMap = [string, WGCategoryObject];
+export type WGCharGroupMap = [string, WGCharGroupObject];
 
-export interface WGCategoryStateObject {
-	map: WGCategoryMap[]
+export interface WGCharGroupStateObject {
+	map: WGCharGroupMap[]
 	editing: null | string
 }
 
@@ -46,15 +46,15 @@ export interface WGSyllableStateObject {
 	editing?: keyof AllWGSyllableObjects
 }
 
-export interface WGRewriteRuleObject {
+export interface WGTransformObject {
 	key: string
 	seek: string
 	replace: string
 	description: string
 }
 
-export interface WGRewriteRuleStateObject {
-	list: WGRewriteRuleObject[]
+export interface WGTransformStateObject {
+	list: WGTransformObject[]
 	editing: null | string
 }
 
@@ -63,7 +63,7 @@ export type WGOutputTypes = "text" | "wordlist" | "syllables";
 export interface WGSettingsObject {
 	monosyllablesRate: Zero_OneHundred
 	maxSyllablesPerWord: Two_Fifteen
-	categoryRunDropoff: Zero_Fifty
+	charGroupRunDropoff: Zero_Fifty
 	syllableBoxDropoff: Zero_Fifty
 	output?: WGOutputTypes
 	showSyllableBreaks?: boolean
@@ -81,19 +81,19 @@ export interface WGSettingsObject {
 	wordsPerWordlist?: Fifty_OneThousand
 }
 
-export type WGCustomInfo = [WGCategoryStateObject, WGSyllableStateObject, WGRewriteRuleStateObject, WGSettingsObject];
+export type WGCustomInfo = [WGCharGroupStateObject, WGSyllableStateObject, WGTransformStateObject, WGSettingsObject];
 
 // WORDEVOLVE
-export interface WECategoryObject {
+export interface WECharGroupObject {
 	title: string
 	label?: string
 	run: string
 }
 
-export type WECategoryMap = [string, WECategoryObject];
+export type WECharGroupMap = [string, WECharGroupObject];
 
-export interface WECategoryStateObject {
-	map: WECategoryMap[]
+export interface WECharGroupStateObject {
+	map: WECharGroupMap[]
 	editing: null | string
 }
 
@@ -128,14 +128,14 @@ export type WEInputObject = string[]
 
 export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
 
-export type WECustomInfo = [WECategoryStateObject, WETransformStateObject, WESoundchangeStateObject];
+export type WECustomInfo = [WECharGroupStateObject, WETransformStateObject, WESoundchangeStateObject];
 
 export interface WESettingsObject {
 	output: WEOutputTypes
 }
 
 export interface WEPresetObject {
-	categories: WECategoryMap[],
+	charGroups: WECharGroupMap[],
 	soundchanges: WESoundChangeObject[],
 	transforms: WETransformObject[]
 }
@@ -290,11 +290,11 @@ export interface AppSettings {
 export interface StateObject {
 	currentVersion: string
 	appSettings: AppSettings
-	wordgenCategories: WGCategoryStateObject
+	wordgenCharGroups: WGCharGroupStateObject
 	wordgenSyllables: WGSyllableStateObject
-	wordgenRewriteRules: WGRewriteRuleStateObject
+	wordgenTransforms: WGTransformStateObject
 	wordgenSettings: WGSettingsObject
-	wordevolveCategories: WECategoryStateObject
+	wordevolveCharGroups: WECharGroupStateObject
 	wordevolveTransforms: WETransformStateObject
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject

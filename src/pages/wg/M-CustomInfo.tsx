@@ -42,15 +42,15 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const [
 		settings,
 		settingsWG,
-		categories,
+		charGroups,
 		syllables,
-		rules
+		transforms
 	] = useSelector((state: any) => [
 		state.appSettings,
 		state.wordgenSettings,
-		state.wordgenCategories,
+		state.wordgenCharGroups,
 		state.wordgenSyllables,
-		state.wordgenRewriteRules
+		state.wordgenTransforms
 	], shallowEqual);
 	let customInfo: string[] = titles || [];
 	const doCleanClose = () => {
@@ -67,9 +67,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		}
 		const doSave = (title: string, msg: string = "saved") => {
 			const save: WGCustomInfo = [
-				categories,
+				charGroups,
 				syllables,
-				rules,
+				transforms,
 				{...settingsWG}
 			];
 			CustomStorageWG.setItem(title, save).then(() => {
@@ -113,9 +113,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		}
 		title = title + ".json";
 		const exporting = {
-			categories,
+			charGroups,
 			syllables,
-			rules,
+			transforms,
 			settingsWG: {...settingsWG}
 		}
 		doExport(JSON.stringify(exporting), title)

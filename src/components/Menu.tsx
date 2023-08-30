@@ -128,8 +128,8 @@ const appMenuPages: MenuSection[] = [
 			},
 			{
 				title: 'Character Groups',
-				url: '/wg/categories',
-				id: 'menuitemWGcat',
+				url: '/wg/charGroups',
+				id: 'menuitemWGcharGroup',
 				parent: 'wg'
 			},
 			{
@@ -140,7 +140,7 @@ const appMenuPages: MenuSection[] = [
 			},
 			{
 				title: 'Transformations',
-				url: '/wg/rewriterules',
+				url: '/wg/transforms',
 				id: 'menuitemWGrew',
 				parent: 'wg'
 			},
@@ -171,8 +171,8 @@ const appMenuPages: MenuSection[] = [
 			},
 			{
 				title: 'Character Groups',
-				url: '/we/categories',
-				id: 'menuitemWEcat',
+				url: '/we/charGroups',
+				id: 'menuitemWEcharGroup',
 				parent: 'we'
 			},
 			{

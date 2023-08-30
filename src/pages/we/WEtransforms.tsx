@@ -16,13 +16,15 @@ import {
 	IonButton,
 	useIonViewDidEnter,
 	IonReorderGroup,
-	IonReorder
+	IonReorder,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption
 } from '@ionic/react';
 import {
 	addOutline,
 	helpCircleOutline,
 	reorderTwo,
-	construct,
 	trash,
 	globeOutline
 } from 'ionicons/icons';
@@ -147,25 +149,31 @@ const WERew = (props: PageData) => {
 				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{transform.map((trans: WETransformObject) => {
+							const { key, seek, direction, replace, description } = trans;
 							return (
-								<IonItem key={trans.key}>
-									<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-									<IonLabel className="wrappableInnards">
-										<div className="serifChars">
-											<span className="seek importantUnit">{trans.seek}</span>
-											<span className="arrow unimportantUnit">{makeArrow(trans.direction)}</span>
-											<span className="replace importantUnit">{trans.replace || String.fromCharCode(160)}</span>
-											<span className="unimportantUnit">{makeDeclaration(trans.direction)}</span>
-										</div>
-										<div className="description">{trans.description}</div>
-									</IonLabel>
-									<IonButton className="ion-margin-horizontal" color="warning" onClick={() => editTransform(trans.key)}>
-										<IonIcon icon={construct} style={ { margin: 0 } } />
-									</IonButton>
-									<IonButton className="ion-margin-end ion-hide-sm-down" color="danger" onClick={() => maybeDeleteTransform(trans)}>
-										<IonIcon icon={trash} style={ { margin: 0 } } />
-									</IonButton>
-								</IonItem>
+								<IonItemSliding key={key}>
+									<IonItemOptions>
+										<IonItemOption color="primary" onClick={() => editTransform(key)}>
+											<IonIcon slot="icon-only" src="svg/edit.svg" />
+										</IonItemOption>
+										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(trans)}>
+											<IonIcon slot="icon-only" icon={trash} />
+										</IonItemOption>
+									</IonItemOptions>
+									<IonItem>
+										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonLabel className="wrappableInnards">
+											<div className="importantElement serifChars">
+												<span className="seek importantUnit">{seek}</span>
+												<span className="arrow unimportantUnit">{makeArrow(direction)}</span>
+												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
+												<span className="unimportantUnit">{makeDeclaration(direction)}</span>
+											</div>
+											<div className="description">{description}</div>
+										</IonLabel>
+										<IonIcon size="small" slot="end" src="svg/drag-indicator.svg" />
+									</IonItem>
+								</IonItemSliding>
 							);
 						})}
 					</IonReorderGroup>

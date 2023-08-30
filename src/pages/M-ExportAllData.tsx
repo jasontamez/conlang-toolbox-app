@@ -25,11 +25,11 @@ const MExportAllData = (props: ModalProperties) => {
 	const {
 		currentVersion,
 		appSettings,
-		wordgenCategories,
+		wordgenCharGroups,
 		wordgenSyllables,
-		wordgenRewriteRules,
+		wordgenTransforms,
 		wordgenSettings,
-		wordevolveCategories,
+		wordevolveCharGroups,
 		wordevolveTransforms,
 		wordevolveSoundChanges,
 		wordevolveInput,
@@ -101,7 +101,7 @@ const MExportAllData = (props: ModalProperties) => {
 			setOutput(JSON.stringify({
 				currentVersion,
 				wg: {
-					characterGroups: wordgenCategories.map.map((obj: any) => {
+					characterGroups: wordgenCharGroups.map.map((obj: any) => {
 						const {title, run, dropoffOverride} = obj[1];
 						return {
 							label: obj[0],
@@ -110,7 +110,7 @@ const MExportAllData = (props: ModalProperties) => {
 							dropoffOverride
 						};
 					}),
-					transforms: wordgenRewriteRules.list.map((obj: any) => {
+					transforms: wordgenTransforms.list.map((obj: any) => {
 						const {key, seek, replace, description} = obj;
 						return {
 							id: key,
@@ -133,7 +133,7 @@ const MExportAllData = (props: ModalProperties) => {
 					...wordgenSettings
 				},
 				we: {
-					characterGroups: wordevolveCategories.map.map((obj: any) => {
+					characterGroups: wordevolveCharGroups.map.map((obj: any) => {
 						const {title, run} = obj[1];
 						return {
 							label: obj[0],
@@ -217,11 +217,11 @@ const MExportAllData = (props: ModalProperties) => {
 	}, [
 		currentVersion,
 		appSettings,
-		wordgenCategories,
+		wordgenCharGroups,
 		wordgenSyllables,
-		wordgenRewriteRules,
+		wordgenTransforms,
 		wordgenSettings,
-		wordevolveCategories,
+		wordevolveCharGroups,
 		wordevolveTransforms,
 		wordevolveSoundChanges,
 		wordevolveInput,

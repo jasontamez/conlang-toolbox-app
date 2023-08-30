@@ -15,8 +15,8 @@ import {
 	documentTextOutline,
 	fileTrayStackedOutline
 } from 'ionicons/icons';
-import WGCategories from "./wg/WGcharactergroups";
-import WGRewrites from "./wg/WGtransforms";
+import WGCharGroups from "./wg/WGcharactergroups";
+import WGTransforms from "./wg/WGtransforms";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
@@ -31,14 +31,14 @@ const WG = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/wg/categories" render={() => <WGCategories {...props} /> } exact={true} />
+				<Route path="/wg/charGroups" render={() => <WGCharGroups {...props} /> } exact={true} />
 				<Route path="/wg/syllables" render={() => <WGSyllables {...props} />} exact={true} />
-				<Route path="/wg/rewriterules" render={() => <WGRewrites {...props} />} exact={true} />
+				<Route path="/wg/transforms" render={() => <WGTransforms {...props} />} exact={true} />
 				<Route path="/wg/output" render={() => <WGOutput {...props} />} exact={true} />
 				<Route path="/wg/settings" render={() => <WGSettings {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="categories" href="/wg/categories">
+				<IonTabButton tab="charGroups" href="/wg/charGroups">
 					<IonIcon icon={fileTrayStackedOutline} />
 					<IonLabel>Characters</IonLabel>
 				</IonTabButton>
@@ -46,7 +46,7 @@ const WG = (props: PageData) => {
 					<IonIcon icon={gridOutline} />
 					<IonLabel>Syllables</IonLabel>
 				</IonTabButton>
-				<IonTabButton tab="rewriterules" href="/wg/rewriterules">
+				<IonTabButton tab="transforms" href="/wg/transforms">
 					<IonIcon icon={swapHorizontalOutline} />
 					<IonLabel>Transforms</IonLabel>
 				</IonTabButton>

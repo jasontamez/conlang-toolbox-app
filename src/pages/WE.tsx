@@ -15,7 +15,7 @@ import {
 	exitOutline,
 	megaphoneOutline
 } from 'ionicons/icons';
-import WECategories from "./we/WEcharactergroups";
+import WECharGroups from "./we/WEcharactergroups";
 import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
@@ -32,7 +32,7 @@ const WE = (props: PageData) => {
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
 				<Route path="/we/input" render={() => <WEInput {...props} />} exact={true} />
-				<Route path="/we/categories" render={() => <WECategories {...props} />} exact={true} />
+				<Route path="/we/charGroups" render={() => <WECharGroups {...props} />} exact={true} />
 				<Route path="/we/transformations" render={() => <WETransforms {...props} />} exact={true} />
 				<Route path="/we/soundchanges" render={() => <WESounds {...props} />} exact={true} />
 				<Route path="/we/output" render={() => <WEOutput {...props} />} exact={true} />
@@ -42,7 +42,7 @@ const WE = (props: PageData) => {
 					<IonIcon icon={enterOutline} />
 					<IonLabel>Input</IonLabel>
 				</IonTabButton>
-				<IonTabButton tab="categories" href="/we/categories">
+				<IonTabButton tab="charGroups" href="/we/charGroups">
 					<IonIcon icon={libraryOutline} />
 					<IonLabel>Characters</IonLabel>
 				</IonTabButton>

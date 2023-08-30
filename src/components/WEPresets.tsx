@@ -2,7 +2,7 @@ import { WEPresetObject } from './ReduxDucksTypes';
 
 const WEPresets: Map<string, WEPresetObject> = new Map([
 	["Grassmann's Law", {
-		categories: [],
+		charGroups: [],
 		soundchanges: [
 			{
 				key: "1",
@@ -16,7 +16,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		transforms: []
 	}],
 	["Ruki Rule", {
-		categories: [],
+		charGroups: [],
 		soundchanges: [
 			{
 				key: "1",
@@ -30,7 +30,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		transforms: []
 	}],
 	["Dahl's Law", {
-		categories: [
+		charGroups: [
 			["U", {
 				title: "Unvoiced Consonants",
 				run: "ptk"
@@ -57,7 +57,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		transforms: []
 	}],
 	["Ingvaeonic Nasal Spirant Law", {
-		categories: [
+		charGroups: [
 			["V", {
 				title: "Vowels",
 				run: "aeiou"
@@ -88,7 +88,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		transforms: []
 	}],
 	["Grim's Law", {
-		categories: [],
+		charGroups: [],
 		soundchanges: [
 			{
 				key: "1",
@@ -126,7 +126,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		transforms: []
 	}],
 	["Great English Vowel Shift", {
-		categories: [
+		charGroups: [
 			["V", {
 				title: "Vowels",
 				run: "aeɛiouɔ"
@@ -178,7 +178,7 @@ const WEPresets: Map<string, WEPresetObject> = new Map([
 		]
 	}],
 	["High German Consonant Shift", {
-		categories: [
+		charGroups: [
 			["V", {
 				title: "Vowels",
 				run: "aeiouäöü"

@@ -58,7 +58,8 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent className="ion-padding-start">
 									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
 									<ul className="changelog">
-										<li>On smaller screens, MorphoSyntax will provide left and right scrollers on the tab bar.</li>
+										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
+										<li>In MorphoSyntax, on smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li>
 										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
 										<li>If you have word-wrap turned off in the Lexicon, you can tap on an overflowing field to see a popup with the full field entry.</li>
 										<li>Under-the-hood changes.</li>
@@ -69,9 +70,7 @@ const AppInfo = (props: PageData) => {
 										<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>
 										<li>Added "Landau 200" to Word Lists.</li>
 									</ul>
-									{/*<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>
-									<div>To-do: Change Lexicon and others to use swipeable items for editing, deleting, etc (if possible)</div>
-									<div>To-do: Change MorphoSyntax tab bar to scroll horizontally (if possible)</div>*/}
+									{/*<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>*/}
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
