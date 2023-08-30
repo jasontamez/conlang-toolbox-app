@@ -134,19 +134,11 @@ ion-app ion-list.syllables > ion-item div:last-of-type {
 	flex-basis: 2em;
 }
 ion-app ion-list.syllables > ion-item ion-textarea {
-	padding: 0.625rem 1rem 0.625rem 0;
 	margin: 0;
 	flex: 1;
 	flex-grow: 5;
 	flex-shrink: 5;
 	flex-basis: calc((100% - 2em) * 0.6);
-}
-ion-app ion-list.syllables > ion-item ion-textarea textarea.native-textarea {
-	padding-inline-start: 0.25rem !important;
-	padding-inline-end: 0.25rem !important;
-	padding-block: 0 !important;
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
 }
 ion-app ion-list.syllables .header {
 	display: block;

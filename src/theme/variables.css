@@ -747,8 +747,10 @@ ion-app ion-textarea {
 	background: var(--ion-color-input-bg);
 	color: var(--ion-color-input-fg) !important;
 	border-color: var(--ion-color-input-border);
-	--padding-start: 0.5em !important;
-	--padding-end: 0.5em !important;
+	--padding-start: 0.5rem !important;
+	--padding-end: 0.5rem !important;
+	--padding-top: 0.5rem !important;
+	--padding-bottom: 0.5rem !important;
 }
 ion-app input[type=submit],
 ion-app input[type=reset],

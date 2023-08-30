@@ -123,18 +123,20 @@ const TextItem = (props: any) => {
 		children
 	} = props;
 	const dispatch = useDispatch();
-	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text)
+	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text);
+	const text = synText[prop] || "";
 	const classes = className ? className + " " : "";
 	const setText = (what: keyof MorphoSyntaxTextObject, value: string) => {
 		dispatch(setSyntaxText(what, value));
 	};
+	const expandedRows = Math.min(Math.max(rows, text.split(/\n/).length), 12);
 	return (
 		<>
 			<IonItem className={`${classes} morphoSyntaxTextItem content labelled`}>
 				<IonLabel>{children}</IonLabel>
 			</IonItem>
 			<IonItem className={`${classes} morphoSyntaxTextItem content`}>
-				<IonTextarea aria-label={label} onBlur={(e) => setText(prop, e.target.value || "")} value={synText[prop] || ""} placeholder={placeholder} rows={rows} enterkeyhint="done" inputmode="text" />
+				<IonTextarea aria-label={label} onBlur={(e) => setText(prop, e.target.value || "")} value={text} placeholder={placeholder} rows={expandedRows} enterkeyhint="done" inputmode="text" />
 			</IonItem>
 		</>
 	);
