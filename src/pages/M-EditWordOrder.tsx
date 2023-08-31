@@ -41,7 +41,6 @@ import {
 } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
-import { $i } from '../components/DollarSignExports';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -77,8 +76,8 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			sort: [...editing.sort]
 		};
 	}
-	const setNewInfo = (i: number, id: string) => {
-		const value = $i(id).value.trim();
+	const setNewInfo = (i: number, val: string) => {
+		const value = val.trim();
 		editing.columnTitles[i] = value;
 		dispatch(updateLexiconColumns(editing));
 	};
@@ -259,7 +258,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 									<IonGrid>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonInput aria-label="Field Name" placeholder="Field Name" id={"thislex" + iStr} value={editing.columnTitles[i]} onIonBlur={() => setNewInfo(i, "thislex" + iStr)} />
+												<IonInput aria-label="Field Name" placeholder="Field Name" value={editing.columnTitles[i]} onIonChange={(e) => setNewInfo(i, e.target.value as string)} />
 											</IonCol>
 											<IonCol size="auto">
 												<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>

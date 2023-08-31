@@ -20,7 +20,7 @@ import {
 import {
 	helpCircleOutline,
 	globeOutline,
-	checkmarkDoneSharp
+	saveSharp
 } from 'ionicons/icons';
 import { toggleSyllables, editSyllables, changeView, setEditableSyllables, setSyllableDropoffWG, modSyllableDropoff } from '../../components/ReduxDucksFuncs';
 import { AllWGSyllableObjects, PageData, WGSyllableObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
@@ -59,7 +59,7 @@ const WGSyl = (props: PageData) => {
 	const doIfEditing = (prop: keyof AllWGSyllableObjects, succ: any, fail: any) => {
 		return syllableObject.editing === prop ? succ : fail;
 	};
-	const calculateRows = (input: string) => Math.max(4, input.split(/\n/).length);
+	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
 	const toggleDropoff = (prop: keyof AllWGSyllableObjects, o: WGSyllableObject) => {
 		dispatch(modSyllableDropoff(prop, o.dropoffOverride !== undefined ? undefined : (settingsWG.syllableBoxDropoff as Zero_Fifty)))
 	};
@@ -78,7 +78,7 @@ const WGSyl = (props: PageData) => {
 						dispatch(setEditableSyllables(undefined));			
 					}}
 				>
-					<IonIcon icon={checkmarkDoneSharp} />
+					<IonIcon icon={saveSharp} />
 				</IonButton>
 			);
 		}
@@ -122,7 +122,7 @@ const WGSyl = (props: PageData) => {
 						</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0 to 50" min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} id="syllableBoxDropoffC" onIonBlur={() => dispatch(setSyllableDropoffWG($i("syllableBoxDropoffC").value as Zero_Fifty))}>
+						<IonRange aria-label="From 0 to 50" min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} onIonChange={(e) => dispatch(setSyllableDropoffWG(e.target.value as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -145,7 +145,7 @@ const WGSyl = (props: PageData) => {
 								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("singleWord", swO)} labelPlacement="start" checked={swO.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
 							</IonItem>
 							<IonItem id="singleWordDropoff" className={swO.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swO.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swO.dropoffOverride)} id="singleWordDropoffRate" onIonBlur={() => dispatch(modSyllableDropoff("singleWord", $i("singleWordDropoffRate").value as Zero_Fifty))} debounce={250}>
+								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swO.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swO.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("singleWord", e.target.value as Zero_Fifty))} debounce={250}>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -165,7 +165,7 @@ const WGSyl = (props: PageData) => {
 								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordInitial", swI)} labelPlacement="start" checked={swI.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
 							</IonItem>
 							<IonItem id="wordInitialDropoff" className={swI.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swI.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swI.dropoffOverride)} id="wordInitialDropoffRate" onIonBlur={() => dispatch(modSyllableDropoff("wordInitial", $i("wordInitialDropoffRate").value as Zero_Fifty))} debounce={250}>
+								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swI.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swI.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordInitial", e.target.value as Zero_Fifty))} debounce={250}>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -185,7 +185,7 @@ const WGSyl = (props: PageData) => {
 								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordMiddle", swM)} labelPlacement="start" checked={swM.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
 							</IonItem>
 							<IonItem id="wordMiddleDropoff" className={swM.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swM.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swM.dropoffOverride)} id="wordMiddleDropoffRate" onIonBlur={() => dispatch(modSyllableDropoff("wordMiddle", $i("wordMiddleDropoffRate").value as Zero_Fifty))} debounce={250}>
+								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swM.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swM.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordMiddle", e.target.value as Zero_Fifty))} debounce={250}>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -205,7 +205,7 @@ const WGSyl = (props: PageData) => {
 								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordFinal", swF)} labelPlacement="start" checked={swF.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
 							</IonItem>
 							<IonItem id="wordFinalDropoff" className={swF.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swF.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swF.dropoffOverride)} id="wordFinalDropoffRate" onIonBlur={() => dispatch(modSyllableDropoff("wordFinal", $i("wordFinalDropoffRate").value as Zero_Fifty))} debounce={250}>
+								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swF.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swF.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordFinal", e.target.value as Zero_Fifty))} debounce={250}>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>

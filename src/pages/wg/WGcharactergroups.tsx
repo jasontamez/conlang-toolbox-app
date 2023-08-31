@@ -35,7 +35,7 @@ import {
 	setCharGroupDropoffWG
 } from '../../components/ReduxDucksFuncs';
 import { PageData, WGCharGroupMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { $i, $q } from '../../components/DollarSignExports';
+import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import fireSwal from '../../components/Swal';
 import AddCharGroupModal from './M-AddCharGroup';
@@ -120,7 +120,7 @@ const WGCharGroup = (props: PageData) => {
 						</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange min={0} max={50} value={settingsWG.charGroupRunDropoff} pin={true} id="charGroupDropoffC" onIonBlur={() => dispatch(setCharGroupDropoffWG($i("charGroupDropoffC").value as Zero_Fifty))}>
+						<IonRange min={0} max={50} value={settingsWG.charGroupRunDropoff} pin={true} onIonChange={(e) => dispatch(setCharGroupDropoffWG(e.target.value as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>

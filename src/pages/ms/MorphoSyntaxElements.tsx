@@ -97,7 +97,7 @@ const RangeItem = (props: any) => {
 		<IonItem className={classes}>
 			<IonRange
 				aria-label={`Range from ${start} to ${end}`}
-				onBlur={(e) => setNum(what, e.target.value as number)}
+				onIonChange={(e) => setNum(what, e.target.value as number)}
 				value={synNum[what] || 0}
 				className={innerClass}
 				color="secondary"
@@ -136,7 +136,7 @@ const TextItem = (props: any) => {
 				<IonLabel>{children}</IonLabel>
 			</IonItem>
 			<IonItem className={`${classes} morphoSyntaxTextItem content`}>
-				<IonTextarea aria-label={label} onBlur={(e) => setText(prop, e.target.value || "")} value={text} placeholder={placeholder} rows={expandedRows} enterkeyhint="done" inputmode="text" />
+				<IonTextarea aria-label={label} onIonChange={(e) => setText(prop, e.target.value || "")} value={text} placeholder={placeholder} rows={expandedRows} enterkeyhint="done" inputmode="text" />
 			</IonItem>
 		</>
 	);
