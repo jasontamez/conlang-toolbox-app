@@ -69,18 +69,24 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		let v = ($i("editingCharGroupTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
-		let length = v.length;
-		let pos = 0;
-		let label = null;
-		let invalid = "^$\\[]{}.*+()?|";
-		while(!label && pos < length) {
-			let test = v.charAt(pos);
-			if(invalid.indexOf(test) === -1 && (editing === test || !charGroupMap.has(test))) {
-				label = test;
+		//let invalid = "^$\\[]{}.*+()?|";
+		const words = ($i("editingCharGroupTitle").value as string) // Get the title/description
+			.trim() // trim leading/trailing whitespace
+			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
+			.toUpperCase() // uppercase everything
+			.split(/[-\s_/]+/) // split along word and word-ish boundaries
+		// Create an array of single character strings starting with the first characters
+		//   of every word, followed by the remaining characters of every word
+		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
+		// Now check every character one at a time to see if it's a good candidate
+		let label: string | undefined;
+		potentials.every(char => {
+			if(editing === char || !charGroupMap.has(char)) {
+				label = char;
+				return false;
 			}
-			pos++;
-		}
+			return true;
+		});
 		if(!label) {
 			// No suitable label found
 			fireSwal({
