@@ -52,21 +52,26 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		newCharGroup[prop] = value;
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		let where = $q("." + prop + "Label");
+		const where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		let v = ($i("newCharGroupTitle").value as string).toUpperCase().replace(/[^A-Z0-9]/g, "");
-		let length = v.length;
-		let pos = 0;
-		let label = null;
-		while(!label && pos < length) {
-			let test = v.charAt(pos);
-			if(!charGroupMap.has(test)) {
-				label = test;
+		const words = ($i("newCharGroupTitle").value as string) // Get the title/description
+			.trim() // trim leading/trailing whitespace
+			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
+			.toUpperCase() // uppercase everything
+			.split(/[-\s_/]+/) // split along word and word-ish boundaries
+		// Create an array of single character strings starting with the first characters
+		//   of every word, followed by the remaining characters of every word
+		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
+		let label: string | undefined;
+		potentials.every(char => {
+			if(!charGroupMap.has(char)) {
+				label = char;
+				return false;
 			}
-			pos++;
-		}
+			return true;
+		});
 		if(!label) {
 			// No suitable label found
 			fireSwal({
@@ -83,7 +88,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	const maybeSaveNewCharGroup = (close: boolean = true) => {
-		let err: string[] = [];
+		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCharGroup
 		if(newCharGroup.title === "") {
 			$q(".titleLabel").classList.add("invalidValue");
@@ -96,7 +101,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("There is already a label \"" + newCharGroup.label + "\"");
 		} else {
-			let invalid = "^$\\[]{}.*+()?|";
+			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(newCharGroup.label as string) !== -1) {
 				$q(".labelLabel").classList.add("invalidValue");
 				err.push("You cannot use \"" + newCharGroup.label + "\" as a label.");

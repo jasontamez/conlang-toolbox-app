@@ -73,8 +73,8 @@ const WERew = (props: PageData) => {
 		}
 	};
 	const importLexicon = () => {
-		let cols: number = lexicon.columns;
-		let options: any = {};
+		const cols: number = lexicon.columns;
+		const options: any = {};
 		for(let x = 0; x < cols; x++) {
 			options[x.toString()] = lexicon.columnTitles[x];
 		}

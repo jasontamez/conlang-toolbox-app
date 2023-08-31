@@ -165,17 +165,17 @@ const Lex = (props: PageData) => {
 		}
 	};
 	const loadSavedWords = () => {
-		let options: any = {};
+		const options: any = {};
 		for(let x = 0; x < columns; x++) {
 			options[x.toString()] = columnTitles[x];
 		}
 		const thenFunc = (value: number) => {
 			setIsLoading(true);
-			let [col, dir] = sort;
+			const [col, dir] = sort;
 			const toAdd = [...waitingToAdd];
-			let everythingToSort = [...lexicon];
-			let pre: string[] = [];
-			let post: string[] = [];
+			const everythingToSort = [...lexicon];
+			const pre: string[] = [];
+			const post: string[] = [];
 			for(let c = 0; c < value; c++) {
 				pre.push("");
 			}
@@ -237,7 +237,7 @@ const Lex = (props: PageData) => {
 		let foundFlag = false;
 		let i: number = 0;
 		while(i < columns) {
-			let el = $i("inputLex" + i.toString());
+			const el = $i("inputLex" + i.toString());
 			if(el !== null) {
 				let info = el.value.trim();
 				if(info) {
@@ -257,7 +257,7 @@ const Lex = (props: PageData) => {
 		}
 		i = 0;
 		while(i < columns) {
-			let el = $i("inputLex" + i.toString());
+			const el = $i("inputLex" + i.toString());
 			if(el !== null) {
 				el.value = "";
 			}
@@ -267,7 +267,7 @@ const Lex = (props: PageData) => {
 			key: uuidv4(),
 			columns: newInfo
 		}
-		let [col, dir] = sort;
+		const [col, dir] = sort;
 		internalSort(col, dir, [...lexicon, newWord]);
 	};
 	const delFromLex = useCallback((key: string) => {
@@ -330,7 +330,7 @@ const Lex = (props: PageData) => {
 		const cols = lex.columns;
 		const key = lex.key;
 		const id = "LEX" + key;
-		let newStyle: { [key: string]: any } = {
+		const newStyle: { [key: string]: any } = {
 			...style,
 			order: index
 		};

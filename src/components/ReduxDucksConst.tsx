@@ -1,7 +1,7 @@
 import packageJson from '../../package.json';
 
 // constants (actions)
-export let VERSION = {
+export const VERSION = {
 	current: packageJson.version
 };
 

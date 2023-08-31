@@ -17,7 +17,7 @@ import {
 	MorphoSyntaxBoolObject,
 	MorphoSyntaxObject
 } from '../../components/ReduxDucksTypes';
-import { exportProp, displayProp, specificPageInfo } from './MorphoSyntaxElements';
+import { exportProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
 import doExport from '../../components/ExportServices';
 
@@ -31,19 +31,30 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 	const num = msInfo.num;
 	const text = msInfo.text;
 	const msSections: string[] = ms.sections;
-	let sections: any[] = [];
+	const sections: any[] = [];
 	const spacing = {
 		before: 200
 	}
 	msSections.forEach((sec: string) => {
 		const msSection = (ms[sec as keyof typeof ms] as specificPageInfo[]);
-		let children: any[] = [];
+		const children: any[] = [];
 		msSection.forEach((item: specificPageInfo) => {
-			let content = item.content || "";
-			switch(item.tag) {
+			const {
+				tag,
+				level,
+				max = 4,
+				prop,
+				spectrum,
+				start = "[MISSING]",
+				end = "[MISSING]",
+				display,
+				boxes = [],
+				content = ""
+			} = item;
+			switch(tag) {
 				case "Header":
 					type heads = "HEADING_1" | "HEADING_2" | "HEADING_3" | "HEADING_4" | "HEADING_5" | "HEADING_6"
-					let head = ("HEADING_" + String(item.level)) as heads;
+					const head = ("HEADING_" + String(level)) as heads;
 					children.push(new Paragraph({
 						text: content,
 						heading: HeadingLevel[head],
@@ -52,48 +63,46 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 					break;
 				case "Range":
 					const min = 0;
-					const max = item.max || 4;
-					const value = num[item.prop as keyof MorphoSyntaxNumberObject] || min;
-					let paragraph: any[] = [];
-					if(item.spectrum) {
+					const value = num[prop as keyof MorphoSyntaxNumberObject] || min;
+					const paragraph: any[] = [];
+					if(spectrum) {
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						paragraph.push(
 							new TextRun({
-								text: String(lesser) + "% " + (item.start || "[MISSING]")
+								text: String(lesser) + "% " + start
 							}),
 							new TextRun({
-								text: String(100 - lesser) + "% " + (item.end || "[MISSING]"),
+								text: String(100 - lesser) + "% " + end,
 								break: 1
 							})
 						);
 					} else {
 						let counter = min;
 						paragraph.push(new TextRun({
-							text: (item.start || "[MISSING]"),
+							text: start,
 							bold: true
 						}));
 						while(counter <= max) {
-							let c = String(counter);
 							if(counter === value) {
 								paragraph.push(
 									new TextRun({
 										text: " "
 									}),
 									new TextRun({
-										text: "(" + c + ")",
+										text: `(${counter})`,
 										bold: true
 									})
 								);
 							} else {
 								paragraph.push(new TextRun({
-									text: " " + c
+									text: ` ${counter}`
 								}));
 							}
 							counter++;
 						}
 						paragraph.push(new TextRun({
-							text: " " + (item.end || "[MISSING]"),
+							text: " " + end,
 							bold: true
 						}));
 					}
@@ -107,9 +116,9 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 						text: (content || "[TEXT PROMPT]"),
 						spacing: spacing
 					}))
-					let tArr: string[] = (text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
+					const tArr: string[] = (text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
 					tArr.forEach((t: string, i: number) => {
-						let run: any[] = [];
+						const run: any[] = [];
 						t.split(/\n/).forEach((x: string, j: number) => {
 							run.push(new TextRun(
 								(j > 0) ? {
@@ -127,36 +136,35 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 					});
 					break;
 				case "Checkboxes":
-					//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
-					const disp = item.display;
-					if(!disp) {
+					//const value = bool[prop as keyof MorphoSyntaxBoolObject];
+					if(!display) {
 						children.push(new Paragraph({ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }))
 					} else {
-						const disp: displayProp = item.display!;
-						const expo: exportProp = disp.export!;
-						const boxes = (item.boxes || []);
-						const perRow = disp.boxesPerRow || 1;
-						const labels = (disp.labels || []).slice();
-						const rowLabels = ((expo.labelOverrideDocx ? (expo.labels || labels) : disp.rowLabels) || []).slice();
-						const header = disp.header;
-						const inlineHeaders = disp.inlineHeaders;
-						let cells: any[] = [];
-						let rows: string[][] = [];
+						const expo: exportProp = display.export!;
+						const {
+							header,
+							inlineHeaders,
+							labels,
+							rowLabels
+						} = display;
+						const perRow = display.boxesPerRow || 1;
+						const labelsCopy = labels ? labels.slice() : [];
+						const labelsForTheRow = (expo.labelOverrideDocx ? (expo.labels || labelsCopy).slice() : rowLabels.slice()) || [];
+						const rows: string[][] = [];
 						let colCount = 0;
-						let temp:any[] = [];
+						let temp: any[] = [];
 						let count = 0;
-						let output: any[] = [];
-						let colWidths: number[] = [];
+						const output: any[] = [];
+						const colWidths: number[] = [];
 						let allColumns = 6;
 						for(let x = 0; x < perRow; x++) {
 							colWidths.push(1);
 							allColumns++;
 						}
-						if(labels.length > 0) {
+						if(labelsCopy.length > 0) {
 							colWidths.push(4);
 							allColumns = allColumns + 4;
 						}
-						let leftover = 100;
 						const portion = 100 / allColumns;
 						boxes.forEach((box) => {
 							count++;
@@ -174,8 +182,9 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 						}
 						rows.forEach((row: string[]) => {
 							// cell[s] [label] rowLabel
-							let cols = colWidths.slice();
-							leftover = 100;
+							const cols = colWidths.slice();
+							const cells: any[] = [];
+							let leftover = 100;
 							row.forEach((cell) => {
 								const percent = Math.floor(cols.shift()! * portion);
 								leftover -= percent;
@@ -190,7 +199,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 									})]
 								}));
 							});
-							if(labels.length > 0) {
+							if(labelsCopy.length > 0) {
 								const percent = Math.floor(cols.shift()! * portion);
 								leftover -= percent;
 								cells.push(
@@ -201,7 +210,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 											type: WidthType.PERCENTAGE
 										},
 										children: [new Paragraph({
-											text: labels.shift() || ""
+											text: labelsCopy.shift() || ""
 										})]
 									})
 								);	
@@ -214,7 +223,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 										type: WidthType.PERCENTAGE
 									},
 									children: [new Paragraph({
-										text: rowLabels.shift() || ""
+										text: labelsForTheRow.shift() || ""
 									})]
 								})
 							);
@@ -223,11 +232,11 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 								children: cells,
 								cantSplit: true
 							}));
-							cells = [];
 						});
 						if(inlineHeaders) {
-							leftover = 100;
-							let cols = colWidths.slice();
+							const cells: any[] = [];
+							let leftover = 100;
+							const cols = colWidths.slice();
 							inlineHeaders.forEach((cell: string) => {
 								const percent = cols.length > 0 ? Math.floor(cols.shift()! * portion) : leftover;
 								leftover -= percent;

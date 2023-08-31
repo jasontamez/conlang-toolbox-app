@@ -51,7 +51,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	};
 	function setNewInfo (prop: keyof WECharGroupObject, value: any) {
 		// Set the property
-		let madeString = makeString(value).trim();
+		const madeString = makeString(value).trim();
 		switch(prop) {
 			case "title":
 				editingCharGroup.title = madeString;
@@ -65,7 +65,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		let where = $q("." + prop + "LabelEdit");
+		const where = $q("." + prop + "LabelEdit");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
@@ -107,7 +107,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 	};
 	const maybeSaveNewInfo = () => {
-		let err: string[] = [];
+		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingCharGroup
 		if(editingCharGroup.title === "") {
 			$q(".titleLabelEdit").classList.add("invalidValue");
@@ -120,7 +120,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("There is already a label \"" + editingCharGroup.label + "\"");
 		} else {
-			let invalid = "^$\\[]{}.*+()?|";
+			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(editingCharGroup.label as string) !== -1) {
 				$q(".labelLabelEdit").classList.add("invalidValue");
 				err.push("You cannot use \"" + editingCharGroup.label + "\" as a label.");

@@ -7,9 +7,9 @@ import {
 const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<string, WGCharGroupObject | WECharGroupObject>) => {
 	// Check transforms for %CharGroup references
 	// %% condenses to %, so split on those to begin with.
-	let broken = transform.split("%%");
+	const broken = transform.split("%%");
 	// Create a variable to hold the pieces as they are handled
-	let final = [];
+	const final = [];
 	while(broken.length > 0) {
 		// First, check for character group negation
 		// Separate along !% instances
@@ -18,9 +18,9 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<s
 		let reformed = testing.shift();
 		// Handle each instance
 		while(testing.length > 0) {
-			let bit = testing.shift();
+			const bit = testing.shift();
 			// What's the character group being negated?
-			let charGroup = charGroupMap.get(bit!.charAt(0));
+			const charGroup = charGroupMap.get(bit!.charAt(0));
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [^a-z] construct, where a-z is the character group contents.
@@ -37,9 +37,9 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<s
 		reformed = testing.shift();
 		// Handle each instance
 		while(testing.length > 0) {
-			let bit = testing.shift();
+			const bit = testing.shift();
 			// What's the character group?
-			let charGroup = charGroupMap.get(bit!.charAt(0));
+			const charGroup = charGroupMap.get(bit!.charAt(0));
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [a-z] construct, where a-z is the character group contents.

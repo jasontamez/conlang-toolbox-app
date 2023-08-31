@@ -52,13 +52,13 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		state.wordgenSyllables,
 		state.wordgenTransforms
 	], shallowEqual);
-	let customInfo: string[] = titles || [];
+	const customInfo: string[] = titles || [];
 	const doCleanClose = () => {
 		setTitles(null);
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		let title = escape($i("currentInfoSaveName").value).trim();
+		const title = escape($i("currentInfoSaveName").value).trim();
 		if(title === "") {
 			return fireSwal({
 				title: "Please enter a title",
@@ -139,7 +139,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	};
 	const maybeDeleteInfo = (title: string) => {
 		const thenFunc = () => {
-			let newCustom = customInfo.filter(ci => ci !== title);
+			const newCustom = customInfo.filter(ci => ci !== title);
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			CustomStorageWG.removeItem(title).then(() => {
 				fireSwal({

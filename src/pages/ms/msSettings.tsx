@@ -99,7 +99,7 @@ const Syntax = (props: PageData) => {
 		}
 	};
 	const openMSModal = (modalOpener: Function) => {
-		let info: [string, MSOmod][] = [];
+		const info: [string, MSOmod][] = [];
 		setIsLoading(true);
 		MorphoSyntaxStorage.iterate((value: MorphoSyntaxObject, key: string) => {
 			info.push([key, value]);
@@ -142,7 +142,7 @@ const Syntax = (props: PageData) => {
 		setIsLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		let ms: any = {
+		const ms: any = {
 			...msInfo,
 			// Use possibly-new key
 			key: key,
@@ -173,7 +173,7 @@ const Syntax = (props: PageData) => {
 		if(!title) {
 			return MSSaveError();
 		}
-		let key = uuidv4();
+		const key = uuidv4();
 		dispatch(setMorphoSyntaxText("key", key));
 		saveMSDoc("Information saved as new MorphoSyntax document!", key, false);
 	};

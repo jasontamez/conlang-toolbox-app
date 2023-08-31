@@ -47,8 +47,8 @@ const LoadMSModal = (props: MSmodalProps) => {
 				// Continue the loop
 				return true;
 			}
-			let newBool: MorphoSyntaxBoolObject = {};
-			let old = pair[1];
+			const newBool: MorphoSyntaxBoolObject = {};
+			const old = pair[1];
 			(old.boolStrings || []).forEach((s) => (newBool[s as keyof MorphoSyntaxBoolObject] = true));
 			delete old.boolStrings;
 			const newObj: MorphoSyntaxObject = {

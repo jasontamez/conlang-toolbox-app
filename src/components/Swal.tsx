@@ -2,7 +2,7 @@ import Swal, { SweetAlertOptions } from "sweetalert2";
 import './Swal.css';
 import { $delay } from './DollarSignExports';
 
-let queue = new Set();
+const queue = new Set();
 let toastActive = false;
 
 const fireSwal: any = async (options: SweetAlertOptions = {}) => {

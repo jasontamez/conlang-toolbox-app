@@ -83,13 +83,13 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		}
 	}, [dispatch, display]);
 	const toggleFave = useCallback((char) => {
-		let newValue: string[] = [];
 		if(!currentFaves[char]) {
-			newValue = saved.concat([char]);
-		} else {
-			newValue = saved.filter((fave: string) => fave !== char);
+			// New fave
+			dispatch(updateExtraCharsFavorites([...saved, char]));
+			return;
 		}
-		dispatch(updateExtraCharsFavorites(newValue));
+		// Deleting fave
+		dispatch(updateExtraCharsFavorites(saved.filter((fave: string) => fave !== char)));
 	}, [currentFaves, saved, dispatch]);
 	const copyNow = useCallback((char) => {
 		Clipboard.write({string: char}).then(() => fireSwal({
@@ -102,8 +102,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		}));
 	}, []);
 	const saveToBeCopied = useCallback((char) => {
-		let copiable = copyLater + char;
-		dispatch(updateExtraCharsToBeSaved(copiable));
+		dispatch(updateExtraCharsToBeSaved(copyLater + char));
 	}, [dispatch, copyLater]);
 	const characterClicked = useCallback(async (char: string) => {
 		if(isFavoriting) {

@@ -310,8 +310,8 @@ const Menu = () => {
 							</IonMenuToggle>
 						);
 				});
-					let head: any = (menuSection.header) ? (<IonListHeader>{menuSection.header}</IonListHeader>) : '',
-						note: any = (menuSection.note) ? (<IonNote>{menuSection.note}</IonNote>) : '';
+					const head: any = (menuSection.header) ? (<IonListHeader>{menuSection.header}</IonListHeader>) : '';
+					const note: any = (menuSection.note) ? (<IonNote>{menuSection.note}</IonNote>) : '';
 					return (
 						<IonList key={menuSection.id} id={menuSection.id}>
 							{head}{note}

@@ -107,7 +107,7 @@ const WECharGroup = (props: PageData) => {
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="charGroups units" lines="none">
 					{charGroups.map((item: WECharGroupMap) => {
-						let [label, charGroup] = item;
+						const [label, charGroup] = item;
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>

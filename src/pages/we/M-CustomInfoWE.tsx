@@ -55,7 +55,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		let title = escape($i("currentInfoSaveName").value).trim();
+		const title = escape($i("currentInfoSaveName").value).trim();
 		if(title === "") {
 			return fireSwal({
 				title: "Please enter a title",

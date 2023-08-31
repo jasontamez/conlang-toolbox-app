@@ -111,7 +111,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		}
 	};
 	const openLexiconModal = (whichToOpen: Function) => {
-		let info: [string, LexiconObject][] = [];
+		const info: [string, LexiconObject][] = [];
 		setLoading(true);
 		LexiconStorage.iterate((value: LexiconObject, key: string) => {
 			info.push([key, value]);
@@ -143,16 +143,17 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		setLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		let lex: LexiconObject = {...stateLexicon};
+		const lex: LexiconObject = {...stateLexicon};
 		// Use possibly-new key
 		lex.key = saveKey;
 		// Use 'now'
 		lex.lastSave = now;
 		// Deep copy lex.lexicon
 		lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
-			let x = {...lx};
-			x.columns = [...lx.columns];
-			return x;
+			return {
+				...lx,
+				columns: [...lx.columns]
+			};
 		});
 		// Deep copy column info
 		lex.columnOrder = [...lex.columnOrder];
@@ -180,7 +181,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		if(!title) {
 			return lexiconSaveError();
 		}
-		let newKey = uuidv4();
+		const newKey = uuidv4();
 		dispatch(updateLexiconText("key", newKey));
 		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
 	};

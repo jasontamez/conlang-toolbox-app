@@ -7,14 +7,14 @@ const doExport = async (output: string, fileName: string, encodeUTF: boolean = t
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
-		let ret = await Filesystem.readdir({
+		const ret = await Filesystem.readdir({
 			path: 'ConlangToolbox',
 			directory: Docs
 		});
 		console.log('Read dir', ret);
 	} catch(e) {
 		try {
-			let ret = await Filesystem.mkdir({
+			const ret = await Filesystem.mkdir({
 				path: 'ConlangToolbox',
 				directory: Docs,
 				recursive: false // like mkdir -p
@@ -32,15 +32,12 @@ const doExport = async (output: string, fileName: string, encodeUTF: boolean = t
 		}
 	} finally {
 		try {
-			let settings: any = {
+			const result = await Filesystem.writeFile({
 				path: 'ConlangToolbox/' + filename,
 				data: output,
-				directory: Docs
-			};
-			if(encodeUTF) {
-				settings.encoding = Encoding.UTF8;
-			}
-			const result = await Filesystem.writeFile(settings);
+				directory: Docs,
+				encoding: encodeUTF ? Encoding.UTF8 : undefined
+			});
 			console.log('Wrote file', result);
 			notify && fireSwal({
 				title: filename + " exported",

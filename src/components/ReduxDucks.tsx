@@ -13,14 +13,14 @@ const reduceCharGroupWG = (original: types.WGCharGroupStateObject, newMap: types
 	let map: types.WGCharGroupMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
-			let o: types.WGCharGroupObject = {...item[1]};
+			const o: types.WGCharGroupObject = {...item[1]};
 			map.push([item[0], o]);
 		});
 	} else {
 		map = newMap;
 	}
 	return {
-		map: map,
+		map,
 		editing: original.editing
 	};
 };
@@ -37,7 +37,7 @@ const reduceSyllablesWG = (original: types.WGSyllableStateObject) => {
 	};
 };
 const reduceSubSyllablesWG = (original: types.WGSyllableObject) => {
-	let o: types.WGSyllableObject = {
+	const o: types.WGSyllableObject = {
 		components: [...original.components]
 	}
 	if (original.dropoffOverride !== undefined) {
@@ -66,7 +66,7 @@ const reduceTransformsStateWG = (original: types.WGTransformStateObject, mod: st
 			list = original.list.map(tForm => reduceTransformsWG(tForm));
 	}
 	return {
-		list: list,
+		list,
 		editing: original.editing
 	};
 };
@@ -80,14 +80,14 @@ const reduceCharGroupWE = (original: types.WECharGroupStateObject, newMap: types
 	let map: types.WECharGroupMap[] = [];
 	if(newMap === original.map) {
 		newMap.forEach(item => {
-			let o: types.WECharGroupObject = {...item[1]};
+			const o: types.WECharGroupObject = {...item[1]};
 			map.push([item[0], o]);
 		});
 	} else {
 		map = newMap;
 	}
 	return {
-		map: map,
+		map,
 		editing: original.editing
 	};
 };
@@ -112,7 +112,7 @@ const reduceTransformsStateWE = (original: types.WETransformStateObject, mod: st
 			list = original.list.map(tForm => reduceTransformsWE(tForm));
 	}
 	return {
-		list: list,
+		list,
 		editing: original.editing
 	};
 };
@@ -140,7 +140,7 @@ const reduceSoundChangeStateWE = (original: types.WESoundchangeStateObject, mod:
 			list = original.list.map(tForm => reduceSoundChangesWE(tForm));
 	}
 	return {
-		list: list,
+		list,
 		editing: original.editing
 	};
 };
@@ -231,16 +231,16 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
 	const check = (possibleState as types.StateObject);
 	return stateObjectProps.every(pair => {
-		let prop: keyof types.StateObject = pair[0];
+		const prop: keyof types.StateObject = pair[0];
 		return check[prop];
 	});
 };
 const reduceAllBut = (props: (keyof types.StateObject)[], state: types.StateObject) => {
-	let check: any = {};
-	let output: any = {};
+	const check: any = {};
+	const output: any = {};
 	props.forEach(prop => { check[prop] = true; });
 	stateObjectProps.forEach(pair => {
-		let [prop, func] = pair;
+		const [prop, func] = pair;
 		if(!check[prop]) {
 			output[prop] = func(state[prop]);
 		}
@@ -357,7 +357,7 @@ export const initialAppState: types.StateObject = {
 
 // Storage
 const saveCurrentState = (state: types.StateObject) => {
-	let newState = reduceAllBut([], state);
+	const newState = reduceAllBut([], state);
 	// Eliminate not-stringifyable properties (if any)
 	// Save
 	StateStorage.setItem("lastState", newState);
@@ -428,7 +428,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DO_EDIT_CHARACTER_GROUP_WG:
 			CO = state.wordgenCharGroups;
 			Cmap = CO.map.map(item => {
-				let [label, charGroup] = item;
+				const [label, charGroup] = item;
 				if(label === CO.editing) {
 					delete payload.label;
 					return [label, payload];
@@ -718,7 +718,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		// WG Presets
 		case consts.LOAD_PRESET_WG:
-			let newInfo: any = WGPresets.get(payload);
+			const newInfo: any = WGPresets.get(payload);
 			final = {
 				...reduceAllBut(["wordgenCharGroups", "wordgenSyllables", "wordgenTransforms", "wordgenSettings"], state),
 				wordgenCharGroups: reduceCharGroupWG(newInfo.wordgenCharGroups),
@@ -781,7 +781,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DO_EDIT_CHARACTER_GROUP_WE:
 			CO = state.wordevolveCharGroups;
 			Cmap = CO.map.map(item => {
-				let [label, charGroup] = item;
+				const [label, charGroup] = item;
 				if(label === CO.editing) {
 					delete payload.label;
 					return [label, payload];
@@ -852,7 +852,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.REORDER_TRANSFORM_WE:
-			let ST = {
+			const ST = {
 				list: payload.map((tr: types.WETransformObject) => reduceTransformsWE(tr)),
 				editing: state.wordevolveTransforms.editing
 			};
@@ -900,7 +900,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.REORDER_SOUND_CHANGE_WE:
-			let SC = {
+			const SC = {
 				list: payload.map((sc: types.WESoundChangeObject) => reduceSoundChangesWE(sc)),
 				editing: state.wordevolveSoundChanges.editing
 			};
@@ -936,7 +936,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		// WEPreset
 		case consts.LOAD_PRESET_WE:
-			let newPreset: types.WEPresetObject = WEPresets.get(payload)!;
+			const newPreset: types.WEPresetObject = WEPresets.get(payload)!;
 			final = reduceAllBut(["wordevolveCharGroups", "wordevolveSoundChanges", "wordevolveTransforms"], state);
 			final.wordevolveCharGroups = reduceCharGroupWE(state.wordevolveCharGroups, newPreset.charGroups);
 			final.wordevolveSoundChanges = {
@@ -953,7 +953,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		// MorphoSyntax
 		case consts.SET_MORPHOSYNTAX_STATE:
 			final = reduceAllBut([], state);
-			let [pp, bb] = payload;
+			const [pp, bb] = payload;
 			if(bb) {
 				final.morphoSyntaxModalState[pp] = true;
 			} else {
@@ -974,8 +974,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.SET_MORPHOSYNTAX_BOOL:
 			final = reduceAllBut([], state);
-			let boo = payload[0] as keyof types.MorphoSyntaxBoolObject;
-			let bx = !!payload[1];
+			const boo = payload[0] as keyof types.MorphoSyntaxBoolObject;
+			const bx = !!payload[1];
 			if(bx) {
 				final.morphoSyntaxInfo.bool[boo] = bx;
 			} else {
@@ -984,8 +984,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.SET_MORPHOSYNTAX_NUM:
 			final = reduceAllBut([], state);
-			let numm = payload[0] as keyof types.MorphoSyntaxNumberObject;
-			let nx = payload[1];
+			const numm = payload[0] as keyof types.MorphoSyntaxNumberObject;
+			const nx = payload[1];
 			if(nx) {
 				final.morphoSyntaxInfo.num[numm] = nx;
 			} else {
@@ -994,8 +994,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.SET_MORPHOSYNTAX_TEXT:
 			final = reduceAllBut([], state);
-			let txt = payload[0] as keyof types.MorphoSyntaxTextObject;
-			let tx = payload[1];
+			const txt = payload[0] as keyof types.MorphoSyntaxTextObject;
+			const tx = payload[1];
 			if(tx) {
 				final.morphoSyntaxInfo.text[txt] = tx;
 			} else {
@@ -1039,8 +1039,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_PROP:
-			let pProp: "title" | "description" | "key" = payload.prop;
-			let value: string = payload.value;
+			const pProp: "title" | "description" | "key" = payload.prop;
+			const value: string = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[pProp] = value;
 			final = {
@@ -1049,8 +1049,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_NUM:
-			let nProp: "lastSave" = payload.prop;
-			let val: number = payload.value;
+			const nProp: "lastSave" = payload.prop;
+			const val: number = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[nProp] = val;
 			final = {
@@ -1059,8 +1059,8 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_BOOL:
-			let bProp: "sorted" = payload.prop;
-			let tf: boolean = payload.value;
+			const bProp: "sorted" = payload.prop;
+			const tf: boolean = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[bProp] = tf;
 			final = {
@@ -1075,7 +1075,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 					colEdit: payload
 				};
 			} else {
-				let minusReorder = {...payload};
+				const minusReorder = {...payload};
 				delete minusReorder.reordering;
 				LO = {
 					...reduceLexiconState(state.lexicon),
@@ -1155,7 +1155,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 		// Word Lists
 		case consts.UPDATE_WORD_LISTS_DISPLAY:
-			let newWordListsState: types.WordListsState = reduceWordListsState(state.wordListsState);
+			const newWordListsState: types.WordListsState = reduceWordListsState(state.wordListsState);
 			newWordListsState.display = payload;
 			final = {
 				...reduceAllBut(["wordListsState"], state),
@@ -1170,7 +1170,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 		// Views
 		case consts.CHANGE_VIEW:
-			let newView: types.ViewStateObject = reduceViewState(state.viewState);
+			const newView: types.ViewStateObject = reduceViewState(state.viewState);
 			newView[payload.app as keyof types.ViewStateObject] = payload.page;
 			newView.lastSection = payload.app;
 			final = {
@@ -1198,7 +1198,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.TOGGLE_EXTRA_CHARS_BOOLEAN:
-			let pl = (payload as keyof types.ExtraCharactersState) as "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp";
+			const pl = (payload as keyof types.ExtraCharactersState) as "adding" | "deleting" | "showNames" | "copyImmediately" | "showHelp";
 			ECO = reduceExtraCharactersState(state.extraCharactersState);
 			ECO[pl] = !state.extraCharactersState[pl];
 			final = {

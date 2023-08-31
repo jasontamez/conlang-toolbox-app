@@ -147,19 +147,17 @@ const HeaderItem = (props: any) => (
 	</IonItem>
 );
 const TransTable = (props: any) => {
-	const rows = (props.rows || "").trim().split(/\s+\/\s+/);
+	const {
+		rows,
+		className,
+		children
+	} = props;
+	const tableRows = (rows || "").trim().split(/\s+\/\s+/);
 	let length = 1;
-	let cName = "translation";
-	if(props.className) {
-		cName += " " + props.className;
-	}
-	const final = props.children;
-	let finalRow = -1;
-	if(final) {
-		finalRow = rows.length;
-		rows.push(final);
-	}
-	const mainRows = rows.filter((row: string) => row).map((row: string, i: number) => {
+	const cName = "translation" + (className ? " " + className : "");
+	const finalRow = children ? tableRows.length : -1;
+	children && tableRows.push(children);
+	const mainRows = tableRows.filter((row: string) => row).map((row: string, i: number) => {
 		if(i === finalRow) {
 			return <tr key={"ROW-" + String(i)}><td colSpan={length}>{row}</td></tr>;
 		}
@@ -290,10 +288,7 @@ const CheckboxItem = (props: checkboxItemProps) => {
 	};
 	const printHeaderRow = (row: string[], key: number, hasLabel = false) => {
 		const final = row.pop() || "";
-		let label: any = undefined;
-		if(hasLabel) {
-			label = row.pop();
-		}
+		const label = hasLabel ? row.pop() : undefined;
 		let cc = 0;
 		return (
 			<IonRow className="header" key={"ROW-" + String(key)}>

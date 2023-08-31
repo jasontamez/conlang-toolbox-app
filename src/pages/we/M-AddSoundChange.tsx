@@ -57,19 +57,19 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		newSoundChange[prop] = value;
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		let where = $q("." + prop + "Label");
+		const where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewSoundChange = (close: boolean = true) => {
-		let err: string[] = [];
-		let contextTest = (context: string, what: string = "Context") => {
+		const err: string[] = [];
+		const contextTest = (context: string, what: string = "Context") => {
 			let ind = context.indexOf("_");
 			if(ind === -1) {
 				return what + " must contain one underscore (_)";
 			} else if (context.indexOf("_", ind+1) !== -1) {
 				return what + " can only have one underscore (_)";
 			}
-			let max = context.length - 1;
+			const max = context.length - 1;
 			ind = context.indexOf("#");
 			while(ind !== -1) {
 				if(ind > 0 && ind !== max) {

@@ -1,4 +1,4 @@
-import { exportProp, displayProp, specificPageInfo } from './MorphoSyntaxElements';
+import { exportProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
 import {
 	MorphoSyntaxTextObject,
@@ -9,7 +9,7 @@ import {
 
 
 const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md = false) => {
-	let lines: string[] = [];
+	const lines: string[] = [];
 	const bool = msInfo.bool;
 	const num = msInfo.num;
 	const text = msInfo.text;
@@ -17,63 +17,73 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 	sections.forEach((sec: string) => {
 		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
 		section.forEach((item: specificPageInfo) => {
-			let content = item.content || "";
-			switch(item.tag) {
+			let {
+				content = "",
+				level = 4,
+			} = item;
+			const {
+				tag,
+				max = 4,
+				prop,
+				spectrum,
+				start = "[MISSING]",
+				end = "[MISSING]",
+				display,
+				boxes
+			} = item;
+			switch(tag) {
 				case "Header":
 					if(md) {
 						content = " " + content;
-						let c = item.level || 4;
-						while(c > 0) {
+						while(level > 0) {
 							content = "#" + content;
-							c--;
+							level--;
 						}
 					}
 					lines.push(content);
 					break;
 				case "Range":
 					const min = 0;
-					const max = item.max || 4;
-					const value = num[item.prop as keyof MorphoSyntaxNumberObject] || min;
-					if(item.spectrum) {
+					const value = num[prop as keyof MorphoSyntaxNumberObject] || min;
+					if(spectrum) {
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						if(md) {
 							lines.push(
 								"**" + String(lesser) + "%** "
-								+ (item.start || "[MISSING]") + "  \n"
+								+ start + "  \n"
 								+ "**" + String(100 - lesser) + "%** "
-								+ (item.end || "[MISSING]")
+								+ end
 							);
 						} else {
 							lines.push(
-								String(lesser) + "% " + item.start + "\n"
-								+ String(100 - lesser) + "% " + item.end
+								String(lesser) + "% " + start + "\n"
+								+ String(100 - lesser) + "% " + end
 							);	
 						}
 					} else {
 						let counter = min;
-						let range = (item.start || "[MISSING]");
-						let end = (item.end || "[MISSING]");
+						let range = start;
+						let ender = end;
 						if(md) {
 							range = "**" + range + "**";
-							end = "**" + end + "**";
+							ender = "**" + ender + "**";
 						}
 						while(counter <= max) {
-							let c = String(counter);
 							if(counter === value) {
-								range += md ? " **(" + c + ")**" : " (" + c + ")";
+								range += md ? ` **(${counter})**` : ` (${counter})`;
 							} else {
-								range += " " + c;
+								range += ` ${counter}`;
 							}
 							counter++;
 						}
-						lines.push(range + " " + end);
+						lines.push(range + " " + ender);
 					}
 					break;
 				case "Text":
 					if(md) {
 						let txt = "";
-						let tArr: string[] = (text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
+						const tArr: string[] = (text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
 						tArr.forEach((t: string, i: number) => {
 							if(i > 0) {
 								txt += "\n\n"; // inserts paragraph break
@@ -87,13 +97,12 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 						});
 						lines.push(content || "[TEXT PROMPT]", txt);
 					} else {
-						lines.push(content || "[TEXT PROMPT]", text[item.prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
+						lines.push(content || "[TEXT PROMPT]", text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
 					}
 					break;
 				case "Checkboxes":
-					//const value = bool[item.prop as keyof MorphoSyntaxBoolObject];
-					const disp: displayProp = item.display!;
-					const expo: exportProp = disp.export!;
+					//const value = bool[prop as keyof MorphoSyntaxBoolObject];
+					const expo: exportProp = display!.export!;
 					const output = expo.output;
 					if(output) {
 						const map = output.map((bit) => bit.map((b) => {
@@ -122,12 +131,12 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 						lines.push(map.join("\n"));
 					} else {
 						const title = expo.title || "";
-						const boxes = item.boxes!.slice();
-						const labels = (expo.labels || disp.labels || disp.rowLabels || boxes).slice();
+						const boxesCopy = boxes!.slice();
+						const labels = (expo.labels || display!.labels || display!.rowLabels || boxesCopy).slice();
 						let result = "";
-						let found: string[] = [];
-						while(boxes.length > 0) {
-							const box = boxes.shift();
+						const found: string[] = [];
+						while(boxesCopy.length > 0) {
+							const box = boxesCopy.shift();
 							const label = labels.shift();
 							if(bool[box as keyof MorphoSyntaxBoolObject]) {
 								found.push(label || "[ERROR]");

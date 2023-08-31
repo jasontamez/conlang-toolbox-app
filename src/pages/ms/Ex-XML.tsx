@@ -27,7 +27,7 @@ const doXML = (e: Event, msInfo: MorphoSyntaxObject, doDownload: Function) => {
 	Object.keys(mst).forEach((prop) => {
 		XML += "\t\t<Item prop=\"" + prop + "\">" + mst[prop as keyof MorphoSyntaxTextObject] + "</Item>\n";
 	});
-	let output = XML + "\t</Text>\n</MorphoSyntaxObject>";
+	const output = XML + "\t</Text>\n</MorphoSyntaxObject>";
 	doDownload(e, output, "xml");
 };
 

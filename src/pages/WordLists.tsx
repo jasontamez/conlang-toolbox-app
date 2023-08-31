@@ -74,7 +74,7 @@ const Home = (props: PageData) => {
 		setPickAndSave(false);
 	};
 	const saveEverything = () => {
-		let wordsToSave: string[] = [];
+		const wordsToSave: string[] = [];
 		setPickAndSave(false);
 		$a(".word", outputPane).forEach((word: HTMLElement) => {
 			word.textContent && wordsToSave.push(word.textContent);
@@ -91,7 +91,7 @@ const Home = (props: PageData) => {
 	};
 	const maybeSaveThisWord = (text: string, id: string) => {
 		if(outputPane.classList.contains("pickAndSave")) {
-			let CL = ($i(id) as HTMLElement).classList;
+			const CL = ($i(id) as HTMLElement).classList;
 			if(CL.contains("saved")) {
 				CL.remove("saved");
 				dispatch(removeDeferredLexiconItem(text));
@@ -145,7 +145,7 @@ const Home = (props: PageData) => {
 						<div>
 							<span>Display:</span>
 							{WordListSources.map((pair: [string, keyof WL], ind: number) => {
-								let [list, prop] = pair;
+								const [list, prop] = pair;
 								const current = theDisplay.some((p: keyof WL) => p === prop);
 								return (
 									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
@@ -159,12 +159,9 @@ const Home = (props: PageData) => {
 						{shown.map((word: WL) => {
 							const ww = word.word;
 							const id = uuidv4();
-							let c = "word ";
-							if(waitingToAdd.some((w: string) => w === ww)) {
-								c = "word saved ";
-							}
+							const classes = (waitingToAdd.some((w: string) => w === ww)) ? "word saved " : "word ";
 							return (
-								<div onClick={() => maybeSaveThisWord(ww, id)} key={id} id={id} className={c + (wordListsState.textCenter ? "ion-text-center" : "ion-text-start")}>{ww}</div>
+								<div onClick={() => maybeSaveThisWord(ww, id)} key={id} id={id} className={classes + (wordListsState.textCenter ? "ion-text-center" : "ion-text-start")}>{ww}</div>
 							)
 						})}
 					</div>

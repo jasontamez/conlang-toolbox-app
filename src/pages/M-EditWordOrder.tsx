@@ -81,9 +81,6 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		editing.columnTitles[i] = value;
 		dispatch(updateLexiconColumns(editing));
 	};
-	let cancelEditing = () => {
-		setIsOpen(false);
-	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		editing.columnSizes[i] = value;
 		dispatch(updateLexiconColumns(editing));
@@ -103,13 +100,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		editing.columnSizes.push("m");
 		editing.columnOrder.push(editing.columns++);
 		dispatch(updateLexiconColumns(editing));
-		let newLex: Lexicon[] = [];
+		const newLex: Lexicon[] = [];
 		lexicon.forEach((lex: Lexicon) => {
-			let lx = {
+			newLex.push({
 				key: lex.key,
 				columns: [...lex.columns, ""]
-			};
-			newLex.push(lx);
+			});
 		});
 		dispatch(updateLexiconOrder(newLex));
 		fireSwal({
@@ -126,19 +122,18 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			editing.columnTitles = editing.columnTitles.slice(0, i).concat(editing.columnTitles.slice(i+1));
 			editing.columnSizes = editing.columnSizes.slice(0, i).concat(editing.columnSizes.slice(i+1));
 			editing.columnOrder = editing.columnOrder.filter((o: number) => (o !== i)).map((o: number) => (o > i ? o - 1 : o));
-			let sorty = editing.sort[0];
+			const sorty = editing.sort[0];
 			if(sorty === i) {
 				editing.sort[0] = 0;
 			} else if (sorty > i) {
 				editing.sort[0] = sorty - 1;
 			}
 			dispatch(updateLexiconColumns(editing));
-			let newLex: Lexicon[] = [];
+			const newLex: Lexicon[] = [];
 			lexicon.forEach((lex: Lexicon) => {
-				let col = lex.columns.slice(0, i).concat(lex.columns.slice(i + 1));
 				newLex.push({
 					key: lex.key,
-					columns: col
+					columns: lex.columns.slice(0, i).concat(lex.columns.slice(i + 1))
 				});
 			});
 			dispatch(updateLexiconOrder(newLex));
@@ -157,8 +152,8 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const doReorder = (event: CustomEvent) => {
 		const reorganize = (what: any[], from: number, to: number) => {
-			let moved = what[from];
-			let remains = what.slice(0, from).concat(what.slice(from + 1));
+			const moved = what[from];
+			const remains = what.slice(0, from).concat(what.slice(from + 1));
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
@@ -202,7 +197,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancelEditing()}>
+						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

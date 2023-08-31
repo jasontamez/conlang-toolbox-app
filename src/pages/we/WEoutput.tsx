@@ -89,7 +89,7 @@ const WEOut = (props: PageData) => {
 	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupsWE.map);
 
 	const $e = (tag: string, text: string | false = false, classy: string[] | false = false) => {
-		let e: HTMLElement = document.createElement(tag);
+		const e: HTMLElement = document.createElement(tag);
 		if (text !== false) {
 			e.textContent = text;
 		}
@@ -99,7 +99,7 @@ const WEOut = (props: PageData) => {
 		return e;
 	}
 	const $t = (text: string, tag: string = "div", classy: string[] = []) => {
-		let t = document.createElement(tag);
+		const t = document.createElement(tag);
 		t.classList.add("word", ...classy);
 		t.textContent = text;
 		t.addEventListener("click", () => maybeSaveThisWord(t));
@@ -107,15 +107,15 @@ const WEOut = (props: PageData) => {
 	};
 
 	const copyText = async () => {
-		let copied: string[] = [];
+		const copied: string[] = [];
 		if(settingsWE.output === "outputOnly") {
 			// Join with linebreaks
 			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
 		} else if (settingsWE.output === "rulesApplied") {
 			// either word arrow word or soundchange arrow word
-			let input = $a("div", outputPane);
+			const input = $a("div", outputPane);
 			while(input.length > 0) {
-				let info = input.shift();
+				const info = input.shift();
 				if(info.classList.contains("ruleExplanation")) {
 					copied.push("\t" + info.textContent);
 				} else {
@@ -126,7 +126,7 @@ const WEOut = (props: PageData) => {
 			// word arrow word
 			let pos = 0;
 			let temp: string[] = [];
-			let input = $a("div", outputPane);
+			const input = $a("div", outputPane);
 			while(input.length > 0) {
 				pos++;
 				temp.push(input.shift().textContent);
@@ -212,16 +212,16 @@ const WEOut = (props: PageData) => {
 			rules.push("}");
 		}
 		// Now look for character groups
-		let double = uuidv4().replace(/[%!]/g,"x");
-		let negate = uuidv4().replace(/[%!]/g,"x");
+		const double = uuidv4().replace(/[%!]/g,"x");
+		const negate = uuidv4().replace(/[%!]/g,"x");
 		// Hide %%
 		fromTo.replace(/%%/g, double);
 		// CharGroup negations
 		assembly = fromTo.split("!%");
 		fromTo = assembly.shift() as string;
 		assembly.forEach(unit => {
-			let q = unit[0];
-			let charGroup = charGroupMap.get(q);
+			const q = unit[0];
+			const charGroup = charGroupMap.get(q);
 			if(charGroup !== undefined) {
 				// CharGroup found - negation, so do not make into Array
 				fromTo += "[^" + charGroup.run + "]" + unit.slice(1);
@@ -234,8 +234,8 @@ const WEOut = (props: PageData) => {
 		assembly = fromTo.split("%");
 		rules.push(assembly.shift()!);
 		assembly.forEach(unit => {
-			let q = unit[0];
-			let charGroup = charGroupMap.get(q);
+			const q = unit[0];
+			const charGroup = charGroupMap.get(q);
 			if(charGroup !== undefined) {
 				// CharGroup found
 				rules.push(charGroup.run.split(""), unit.slice(1));
@@ -252,8 +252,8 @@ const WEOut = (props: PageData) => {
 			} else if(typeof unit === "string") {
 				// Restore any hidden %% or !% strings
 				// Add as individual characters
-				let d = new RegExp(escapeRegexp(double), "g");
-				let n = new RegExp(escapeRegexp(negate), "g");
+				const d = new RegExp(escapeRegexp(double), "g");
+				const n = new RegExp(escapeRegexp(negate), "g");
 				rules.push(...(unit.replace(d, "%%").replace(n, "!%")).split(""));
 			} else {
 				// Add as Array
@@ -263,13 +263,13 @@ const WEOut = (props: PageData) => {
 		return rules;
 	};
 	const evolveOutput = (output: HTMLElement) => {
-		let outputType = settingsWE.output;
+		const outputType = settingsWE.output;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
 			output.removeChild(output.firstChild);
 		}
 		// Sanity check
-		let err: HTMLElement[] = [];
+		const err: HTMLElement[] = [];
 		if(soundChanges.length < 1) {
 			err.push($e("div", "You have no sound changes defined."));
 		} else if (rawInput.length < 1) {
@@ -281,7 +281,7 @@ const WEOut = (props: PageData) => {
 		// Check transforms for %CharGroup references and update them if needed
 		transforms.forEach((transformation: WETransformObject) => {
 			let regex: RegExp;
-			let all: RegExp[] = [];
+			const all: RegExp[] = [];
 			const props: (keyof WETransformObject)[] = ["seek", "replace"];
 			props.forEach((prop: keyof WETransformObject) => {
 				if(transformation[prop].indexOf("%") !== -1) {
@@ -391,14 +391,14 @@ const WEOut = (props: PageData) => {
 				flagged: charGroupFlag
 			});
 		});
-		let modifiedWords = changeTheWords(rawInput);
+		const modifiedWords = changeTheWords(rawInput);
 		// Add to screen.
 		const arrowLR = "⟶";
 		const arrowRL = "⟵";
 		const reverse = (outputType === "outputFirst");
 		const arrow = (ltr(output) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
-		let arrowDiv: HTMLElement = $e("div", arrow, ["arrow"])!;
-		let style = output.style;
+		const arrowDiv: HTMLElement = $e("div", arrow, ["arrow"])!;
+		const style = output.style;
 		style.gridTemplateColumns = "1fr";
 		switch(outputType) {
 			case "outputOnly":
@@ -412,9 +412,9 @@ const WEOut = (props: PageData) => {
 				style.gridTemplateColumns = (arrow ? "1fr 2em 1fr" : "1fr 1fr");
 				modifiedWords.forEach(bit => {
 					const [one, two] = bit;
-					output.append(outputType ==="inputFirst" ? $e("div", one, ["leadingWord"]) : $t(one, "div", ["leadingWord"]));
+					output.append(outputType === "inputFirst" ? $e("div", one, ["leadingWord"]) : $t(one, "div", ["leadingWord"]));
 					arrow && output.append(arrowDiv.cloneNode(true));
-					output.append(outputType ==="inputFirst" ? $t(two) : $e("div", two));
+					output.append(outputType === "inputFirst" ? $t(two) : $e("div", two));
 				});
 				break;
 			case "rulesApplied":
@@ -437,7 +437,7 @@ const WEOut = (props: PageData) => {
 	//  then return an array according to the style requested
 	const changeTheWords = (input: string[]) => {
 		let rulesThatApplied: string[][] = [];
-		let output: any[] = [];
+		const output: any[] = [];
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
@@ -459,12 +459,11 @@ const WEOut = (props: PageData) => {
 				let previous = word;
 				if(modified.flagged) {
 					// We have character group matches to deal with.
-					let seeking = modified.seek as arrayOfStringsAndStringArrays;
-					let replace = modified.replace as arrayOfStringsAndStringArrays;
+					const seeking = modified.seek as arrayOfStringsAndStringArrays;
+					const replace = modified.replace as arrayOfStringsAndStringArrays;
 					let seekTextBasic = "";
 					let seekTextCharGroup = "";
-					let seekCats: string[][] = [];
-					let ids: [string, string][] = [];
+					const ids: [string, string][] = [];
 					seeking.forEach(ss => {
 						if(typeof ss === "string") {
 							seekTextBasic = seekTextBasic + ss;
@@ -474,14 +473,12 @@ const WEOut = (props: PageData) => {
 							let ssj = ss.join("");
 							seekTextBasic = seekTextBasic + "[" + ssj + "]";
 							seekTextCharGroup = seekTextCharGroup + "(?<" + id + ">[" + ssj + "])";
-							seekCats.push(ss as string[]);
 							ids.push([id, ssj]);
 						}
 					});
 					// seekTextBasic/CharGroup are the bases of RegExps
-					// seekCats is an array of character group runs
-					let basicSeek = new RegExp(seekTextBasic, "g");
-					let charGroupSeek = new RegExp(seekTextCharGroup, "g");
+					const basicSeek = new RegExp(seekTextBasic, "g");
+					const charGroupSeek = new RegExp(seekTextCharGroup, "g");
 					basicSeek.lastIndex = 0;
 					charGroupSeek.lastIndex = 0;
 					let basicMatch = basicSeek.exec(word);
@@ -490,7 +487,7 @@ const WEOut = (props: PageData) => {
 					while(basicMatch !== null && charGroupMatch !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
-						let prevLength = word.length;
+						const prevLength = word.length;
 						// m is an array: [full match, ...other matches]
 						// seeking.lastIndex is the point right after the match
 						// Therefore: word.slice(0, seeking.lastIndex) will be everything up to and including the match
@@ -505,8 +502,8 @@ const WEOut = (props: PageData) => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, basicMatch.index);
-						let post = word.slice(basicMatch.index + basicMatch[0].length);
+						const pre = word.slice(0, basicMatch.index);
+						const post = word.slice(basicMatch.index + basicMatch[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -531,7 +528,7 @@ const WEOut = (props: PageData) => {
 							// We can replace
 							let replaceText = "";
 							let i = 0;
-							let g = charGroupMatch.groups || {};
+							const g = charGroupMatch.groups || {};
 							replace.forEach(transform => {
 								if(typeof transform === "string") {
 									replaceText = replaceText + transform;
@@ -545,8 +542,8 @@ const WEOut = (props: PageData) => {
 									replaceText = replaceText + transform[ind % transform.length];
 								}
 							});
-							let newseek = new RegExp(escapeRegexp(pre) + seekTextBasic);
-							let newreplace = pre.replace(/\$/g, "\\$") + replaceText;
+							const newseek = new RegExp(escapeRegexp(pre) + seekTextBasic);
+							const newreplace = pre.replace(/\$/g, "\\$") + replaceText;
 							word = word.replace(newseek, newreplace);
 							basicSeek.lastIndex = word.length - post.length;
 						}
@@ -563,8 +560,8 @@ const WEOut = (props: PageData) => {
 					}
 				} else {
 					// No special character group match handling
-					let seeking = modified.seek as RegExp;
-					let replace = modified.replace as string;
+					const seeking = modified.seek as RegExp;
+					const replace = modified.replace as string;
 					// Reset lastIndex to prevent certain errors.
 					seeking.lastIndex = 0;
 					let m = seeking.exec(word);
@@ -572,7 +569,7 @@ const WEOut = (props: PageData) => {
 					while(m !== null) {
 						let okToReplace: boolean | null = true;
 						// Hold on to the pre-match length of word.
-						let prevLength = word.length;
+						const prevLength = word.length;
 						// m is an array: [full match, ...other matches]
 						// seeking.lastIndex is the point right after the match
 						// Therefore: word.slice(0, seeking.lastIndex) will be everything up to and including the match
@@ -587,8 +584,8 @@ const WEOut = (props: PageData) => {
 						// temp needs to be matched with everything up to x.
 						// temp itself needs to have x appended to it.
 						// Make 'pre' into the matchable string: 0 to LI - (b).
-						let pre = word.slice(0, m.index);
-						let post = word.slice(m.index + m[0].length);
+						const pre = word.slice(0, m.index);
+						const post = word.slice(m.index + m[0].length);
 						// We do NOT want to match the anticontext
 						if(!antix.every(a => !a)) {
 							if(
@@ -694,9 +691,9 @@ const WEOut = (props: PageData) => {
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
-			let text = el.textContent;
+			const text = el.textContent;
 			if(text) {
-				let CL = el.classList;
+				const CL = el.classList;
 				if(CL.contains("saved")) {
 					CL.remove("saved");
 					dispatch(removeDeferredLexiconItem(text))
@@ -715,7 +712,7 @@ const WEOut = (props: PageData) => {
 
 	const openCustomInfoModal = () => {
 		setLoadingOpen(true);
-		let titles: string[] = [];
+		const titles: string[] = [];
 		CustomStorageWE.iterate((value, title) => {
 			titles.push(title);
 			return; // Blank return keeps the loop going

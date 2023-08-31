@@ -84,11 +84,11 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		editingTransform[prop] = value;
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		let where = $q("." + prop + "Label");
+		const where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewTransformInfo = () => {
-		let err: string[] = [];
+		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
 		if(editingTransform.seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");

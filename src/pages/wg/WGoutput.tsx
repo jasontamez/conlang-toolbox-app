@@ -54,12 +54,12 @@ const WGOut = (props: PageData) => {
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const outputPane = $i("outputPane");
 	const $d = (text: string = "") => {
-		let div = document.createElement("div");
+		const div = document.createElement("div");
 		text && (div.textContent = text);
 		return div;
 	};
 	const $t = (text: string, tag: string = "span") => {
-		let t = document.createElement(tag);
+		const t = document.createElement(tag);
 		t.classList.add("word");
 		t.textContent = text;
 		t.addEventListener("click", () => maybeSaveThisWord(t));
@@ -88,7 +88,7 @@ const WGOut = (props: PageData) => {
 			copyText = (outputPane.textContent);
 		} else {
 			// Others need to be joined by linebreaks
-			let copied: string[] = [];
+			const copied: string[] = [];
 			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
 			copyText = (copied.join("\n"));
 		}
@@ -115,18 +115,18 @@ const WGOut = (props: PageData) => {
 		});
 	};
 
-	let textWidthTester = document.createElement("canvas").getContext("2d");
+	const textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
 	const determineWidth = (input: string) => {
 		return textWidthTester!.measureText(input).width;
 	};
 	const getWidestWord = (words: string[]) => {
-		let max = Math.max(...words.map(w => determineWidth(w))) * 3;
+		const max = Math.max(...words.map(w => determineWidth(w))) * 3;
 		return Math.ceil(max).toString() + "px";
 	};
 
 	const generateOutput = async (output: HTMLElement = outputPane) => {
-		let type = settingsWG.output;
+		const type = settingsWG.output;
 		let endEarly = false;
 		// Clear any previous output.
 		while(output.firstChild !== null) {
@@ -175,7 +175,7 @@ const WGOut = (props: PageData) => {
 		// Every syllable, or a wordlist
 		setIsGenerating(true);
 		const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
-		let result = await resolveFunc(settingsWG.capitalizeWords);
+		const result = await resolveFunc(settingsWG.capitalizeWords);
 		output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result) : "auto";
 		result.forEach((bit: string) => output.append($t(bit, "div")));
 		// columnar stuff takes a bit to process, so delay a bit?
@@ -187,21 +187,23 @@ const WGOut = (props: PageData) => {
 	// Generate a psuedo-text
 	// // //
 	const generatePseudoText = async (where: HTMLElement) => {
-		let text: (string | HTMLElement)[][] = [];
-		let final: HTMLElement = $d();
-		let numberOfSentences = settingsWG.sentencesPerText;
-		let capitalize = settingsWG.capitalizeSentences;
-		let d1 = settingsWG.declarativeSentencePre;
-		let d2 = settingsWG.declarativeSentencePost;
-		let i1 = settingsWG.interrogativeSentencePre;
-		let i2 = settingsWG.interrogativeSentencePost;
-		let e1 = settingsWG.exclamatorySentencePre;
-		let e2 = settingsWG.exclamatorySentencePost;
+		const text: (string | HTMLElement)[][] = [];
+		const final: HTMLElement = $d();
+		const {
+			sentencesPerText,
+			capitalizeSentences,
+			declarativeSentencePre,
+			declarativeSentencePost,
+			interrogativeSentencePre,
+			interrogativeSentencePost,
+			exclamatorySentencePre,
+			exclamatorySentencePost
+		} = settingsWG;
 		let sentenceNumber = 0;
-		while(sentenceNumber < numberOfSentences) {
+		while(sentenceNumber < sentencesPerText) {
 			sentenceNumber++;
-			let sentence: (string | HTMLElement)[] = [];
-			let staging: (string | HTMLElement)[] = [];
+			const sentence: (string | HTMLElement)[] = [];
+			const staging: (string | HTMLElement)[] = [];
 			let wordNumber = 0;
 			let maxWords = 3;
 			for(maxWords = 3; true; maxWords = Math.max((maxWords + 1) % 15, 3)) {
@@ -212,29 +214,29 @@ const WGOut = (props: PageData) => {
 			}
 			while(wordNumber < maxWords) {
 				wordNumber++;
-				sentence.push($t(makeOneWord(wordNumber < 2 && capitalize)));
+				sentence.push($t(makeOneWord(wordNumber < 2 && capitalizeSentences)));
 			}
 			let full = text.join(" ");
 			staging.push(sentence.shift()!);
 			while (sentence.length > 1) {
 				staging.push(" ", sentence.shift()!);
 			}
-			let type = Math.random() * 12;
+			const type = Math.random() * 12;
 			if(type < 9) {
 				// Declarative three-fourths the time
-				full = d1 + full + d2;
-				d1 && staging.unshift(d1);
-				d2 && staging.push(d2);
+				full = declarativeSentencePre + full + declarativeSentencePost;
+				declarativeSentencePre && staging.unshift(declarativeSentencePre);
+				declarativeSentencePost && staging.push(declarativeSentencePost);
 			} else if (type < 11) {
 				// Interrogative one-sixth the time
-				full = i1 + full + i2;
-				i1 && staging.unshift(i1);
-				i2 && staging.push(i2);
+				full = interrogativeSentencePre + full + interrogativeSentencePost;
+				interrogativeSentencePre && staging.unshift(interrogativeSentencePre);
+				interrogativeSentencePost && staging.push(interrogativeSentencePost);
 			} else {
 				// Exclamatory one-twelfth the time
-				full = e1 + full + e2;
-				e1 && staging.unshift(e1);
-				e2 && staging.push(e2);
+				full = exclamatorySentencePre + full + exclamatorySentencePost;
+				exclamatorySentencePre && staging.unshift(exclamatorySentencePre);
+				exclamatorySentencePost && staging.push(exclamatorySentencePost);
 			}
 			text.push(staging);
 		}
@@ -265,13 +267,12 @@ const WGOut = (props: PageData) => {
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
 		let chosen;
-		let max = syllList.length;
+		const max = syllList.length;
 		if(rate === 0) {
 			return translateSyllable(syllList[Math.floor(Math.random() * max)]);
 		}
 		rate = rate + 5;
-		let toPick = 0;
-		for(toPick = 0; true; toPick = (toPick + 1) % max) {
+		for(let toPick = 0; true; toPick = (toPick + 1) % max) {
 			// The 'true' in there means this loop never ends on its own.
 			if ((Math.random() * 100) < rate) {
 				chosen = syllList[toPick];
@@ -281,18 +282,18 @@ const WGOut = (props: PageData) => {
 		return translateSyllable(chosen);
 	};
 	const translateSyllable = (syll: string) => {
-		let chars: string[] = syll.split("");
+		const chars: string[] = syll.split("");
 		let output: string = "";
-		let rate = settingsWG.charGroupRunDropoff;
+		const rate = settingsWG.charGroupRunDropoff;
 		while(chars.length > 0) {
-			let current = chars.shift();
-			let charGroup = charGroupMap.get(current!);
+			const current = chars.shift();
+			const charGroup = charGroupMap.get(current!);
 			if(charGroup === undefined) {
 				output += current;
 			} else {
-				let thisRate = (charGroup.dropoffOverride === undefined ? rate : charGroup.dropoffOverride) + 5;
-				let choices = charGroup.run;
-				let max = choices.length;
+				const thisRate = (charGroup.dropoffOverride === undefined ? rate : charGroup.dropoffOverride) + 5;
+				const choices = charGroup.run;
+				const max = choices.length;
 				if(thisRate === 0) {
 					output += choices[Math.floor(Math.random() * max)];
 				} else {
@@ -315,15 +316,14 @@ const WGOut = (props: PageData) => {
 	// // //
 	const makeOneWord = (capitalize: boolean) => {
 		let numberOfSyllables = 1;
-		let word: string[] = [];
+		const word: string[] = [];
 		let output: string;
 		// Determine number of syllables
 		if((Math.random() * 100) >= settingsWG.monosyllablesRate) {
 			// More than 1. Add syllables, favoring a lower number of syllables.
-			let max = settingsWG.maxSyllablesPerWord - 2;
-			let toAdd = 0;
+			const max = settingsWG.maxSyllablesPerWord - 2;
 			numberOfSyllables = 2;
-			for(toAdd = 0; true; toAdd = (toAdd + 1) % max) {
+			for(let toAdd = 0; true; toAdd = (toAdd + 1) % max) {
 				// The 'true' in there means this loop never ends on its own.
 				if ((Math.random() * 100) < 50) {
 					numberOfSyllables += toAdd;
@@ -378,7 +378,7 @@ const WGOut = (props: PageData) => {
 	// Generate Every Possible Syllable
 	// // //
 	const getEverySyllable = async (capitalize: boolean = false) => {
-		let output: string[] = [];
+		const output: string[] = [];
 		let syllables = allSyllables.singleWord.components
 		if(syllToggle) {
 			syllables = syllables.concat(
@@ -389,16 +389,16 @@ const WGOut = (props: PageData) => {
 		}
 		syllables = syllables.map((syll: string) => ["", syll]);
 		while(syllables.length > 0) {
-			let [current, toGo] = syllables.shift();
-			let res = recurseSyllables(current, toGo);
-			let newOutput: string[] = [];
+			const [current, toGo] = syllables.shift();
+			const res = recurseSyllables(current, toGo);
+			const newOutput: string[] = [];
 			res.then((res: any) => {
-				if(res.next === "") {
+				const { next } = res;
+				if(next === "") {
 					// This one is done - run through transforms
 					newOutput.push(...res.results.map((word: string) => doTransform(word)));
 				} else {
 					// Add to syllables
-					let next = res.next;
 					syllables.push(...res.results.map((word: string) => [word, next]));
 				}
 			});
@@ -407,32 +407,34 @@ const WGOut = (props: PageData) => {
 		}
 		// Capitalize if needed
 		if(capitalize) {
-			output = output.map(word => (word.charAt(0).toUpperCase() + word.slice(1)));
+			const length = output.length;
+			for(let x = 0; x < length; x++) {
+				const word = output.shift()!;
+				output.push(word.charAt(0).toUpperCase() + word.slice(1));
+			}
 		}
 		// Remove duplicates
-		let noDupes = new Set(output);
-		output = [];
-		noDupes.forEach(t => output.push(t));
+		const final = Array.from(new Set(output));
 		// Sort if needed
 		if(settingsWG.sortWordlist) {
-			output.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
+			final.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
-		return output;
+		return final;
 	};
 	const recurseSyllables = async (previous: string, toGo: string) => {
-		let current = toGo.charAt(0);
-		let next = toGo.slice(1);
-		let charGroup = charGroupMap.get(current);
+		const current = toGo.charAt(0);
+		const next = toGo.slice(1);
+		const charGroup = charGroupMap.get(current);
 		if(charGroup === undefined) {
 			// CharGroup not found - save as written
 			return {
 				results: [previous + current],
-				next: next
+				next
 			};
 		}
 		return {
 			results: charGroup.run.split("").map(char => previous + char),
-			next: next
+			next
 		}
 	};
 
@@ -440,9 +442,8 @@ const WGOut = (props: PageData) => {
 	// Wordlist
 	// // //
 	const makeWordlist = async (capitalize: boolean) => {
-		let n = 0;
-		let words = [];
-		for (n = 0;n < settingsWG.wordsPerWordlist; n++) {
+		const words = [];
+		for (let n = 0; n < settingsWG.wordsPerWordlist; n++) {
 			words.push(makeOneWord(capitalize));
 		}
 		// Sort if needed
@@ -471,9 +472,9 @@ const WGOut = (props: PageData) => {
 	};
 	const maybeSaveThisWord = (el: HTMLElement) => {
 		if(outputPane.classList.contains("pickAndSave")) {
-			let text = el.textContent;
+			const text = el.textContent;
 			if(text) {
-				let CL = el.classList;
+				const CL = el.classList;
 				if(CL.contains("saved")) {
 					CL.remove("saved");
 					dispatch(removeDeferredLexiconItem(text))

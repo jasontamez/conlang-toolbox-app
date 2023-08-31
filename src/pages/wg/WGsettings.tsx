@@ -115,7 +115,7 @@ const WGSet = (props: PageData) => {
 		}
 	};
 	const openCustomInfoModal = () => {
-		let titles: string[] = [];
+		const titles: string[] = [];
 		CustomStorageWG.iterate((value: any, title: string) => {
 			titles.push(title);
 			return; // Blank return keeps the loop going

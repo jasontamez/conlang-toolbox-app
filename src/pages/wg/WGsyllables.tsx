@@ -41,11 +41,7 @@ const WGSyl = (props: PageData) => {
 	});
 	const [syllableObject, settingsWG] = useSelector((state: any) => [state.wordgenSyllables, state.wordgenSettings], shallowEqual);
 	const toggleableClassName = (base: string = "") => {
-		let extra = " toggleable";
-		if(syllableObject.toggle) {
-			extra += " toggled";
-		}
-		return (base + extra).trim();
+		return (`${base} toggleable ${(syllableObject.toggle ? " toggled" : "")}`).trim();
 	};
 	const objects = syllableObject.objects;
 	const swO = objects.singleWord;
@@ -72,8 +68,8 @@ const WGSyl = (props: PageData) => {
 					color="success"
 					fill="solid"
 					onClick={e => {
-						let info: HTMLTextAreaElement = $i("Syl-" + prop);
-						let value = info.value.trim().split(/\s*\r?\n\s*/);
+						const info: HTMLTextAreaElement = $i("Syl-" + prop);
+						const value = info.value.trim().split(/\s*\r?\n\s*/);
 						dispatch(editSyllables(prop, value.filter((v: string) => v !== "")));
 						dispatch(setEditableSyllables(undefined));			
 					}}

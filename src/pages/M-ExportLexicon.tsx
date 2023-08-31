@@ -42,70 +42,67 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	const doSemicolons = (e: Event) => doText(e, "; ");
 	const doNewlines = (e: Event) => doText(e, "\n", "\n\n");
 	const doText = (e: Event, separator: string, unitSplit: string = "\n") => {
-		let lines: string[] = [columnTitles.join(separator)];
+		const lines: string[] = [columnTitles.join(separator)];
 		lexicon.forEach((lex: Lexicon) => lines.push(lex.columns.join(separator)));
-		let output = title + "\n" + description + "\n\n" + lines.join(unitSplit) + "\n";
+		const output = title + "\n" + description + "\n\n" + lines.join(unitSplit) + "\n";
 		doDownload(e, output, "txt");
 	};
 	const doCSVall = (e: Event) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
-		let lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
+		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
 			(lex: Lexicon) => lines.push(lex.columns.map((title: string) => quotify(title)).join(","))
 		);
-		let cols = columns;
-		let final = cols < 2 ? "," : "";
 		let filler = "";
-		if(cols > 2) {
+		if(columns > 2) {
 			let x = 2;
-			while(x < cols) {
+			while(x < columns) {
 				x++;
 				filler = filler + ",";
 			}
 		}
-		let output = `"TITLE",${quotify(title)}${filler}\n`
+		const output = `"TITLE",${quotify(title)}${filler}\n`
 			+ `"Description",${description}${filler}\n`
-			+ lines.join(final + "\n") + "\n";
+			+ lines.join(columns < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
 	const doCSV = (e: Event) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
-		let lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
+		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
 			(lex: Lexicon) => lines.push(lex.columns.map((line: string) => quotify(line)).join(","))
 		);
-		let output = lines.join("\n") + "\n";
+		const output = lines.join("\n") + "\n";
 		doDownload(e, output, "csv");
 	};
 	const doJSON = (e: Event) => {
-		let base: any = {};
-		let colTitles: string[] = [];
+		const counter: any = {};
+		const colTitles: string[] = [];
 		columnTitles.forEach((columnTitle: string) => {
 			let colTitle = columnTitle;
-			if(base[colTitle] !== undefined) {
+			if(counter[colTitle] !== undefined) {
 				let c = 0;
-				while(base[colTitle + c.toString()] !== undefined) {
+				while(counter[colTitle + c.toString()] !== undefined) {
 					c++;
 				}
 				colTitle = colTitle + c.toString();
 			}
-			base[colTitle] = 1;
+			counter[colTitle] = 1;
 			colTitles.push(colTitle);
 		});
-		let colMax = columns;
-		base = {
+		const base: any = {
 			title,
 			description,
 			content: []
 		};
 		lexicon.forEach((lex: Lexicon) => {
-			let item: any = {};
-			for(let x = 0; x < colMax; x++) {
+			const item: any = {};
+			for(let x = 0; x < columns; x++) {
 				item[colTitles[x]] = lex.columns[x];
 			}
 			base.content.push(item);
 		});
-		let output = JSON.stringify(base);
+		const output = JSON.stringify(base);
 		doDownload(e, output, "json");
 	};
 	const doXML = (e: Event) => {
@@ -125,7 +122,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			});
 			XML = XML + "\t\t</Item>\n"
 		});
-		let output = XML + "\t</Content>\n</Lexicon>";
+		const output = XML + "\t</Content>\n</Lexicon>";
 		doDownload(e, output, "xml");
 	};
 	const doDownload = (e: Event, output: string, extension: string) => {

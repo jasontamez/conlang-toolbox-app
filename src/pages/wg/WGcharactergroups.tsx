@@ -126,7 +126,7 @@ const WGCharGroup = (props: PageData) => {
 						</IonRange>
 					</IonItem>
 					{charGroups.map((item: WGCharGroupMap) => {
-						let [label, charGroup] = item;
+						const [label, charGroup] = item;
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>
