@@ -200,7 +200,11 @@ const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
 const reduceWordListsState = (original: types.WordListsState) => {
 	return {
 		...original,
-		display: [...original.display]
+		display: [...original.display],
+		combinations: original.combinations.map((o: types.WLCombo) => {
+			const { id, parts } = o;
+			return { id, parts: parts.map(part => ({...part}))}
+		})
 	};
 }
 //const reduceLog = (original: string[]) => {
@@ -344,7 +348,9 @@ export const blankAppState: types.StateObject = {
 	},
 	wordListsState: {
 		display: [],
-		textCenter: true
+		textCenter: true,
+		showingCombos: false,
+		combinations: []
 	}
 //	logs: []
 };

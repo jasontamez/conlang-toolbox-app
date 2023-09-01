@@ -311,7 +311,17 @@ export const WLCard = () => {
 				<p>
 					Presented here are a number of lists of English words representing basic concepts
 					for the purposes of historical-comparative linguistics. These may serve as a good
-					source of words to start a conlang with.
+					source of meanings to start a conlang with. Remember that a single word can have
+					multiple meanings!
+				</p>
+				<h2>Controls</h2>
+				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/link.svg" /></div>
+				<p>
+					Use the "join" button to create compound meanings.
+				</p>
+				<div className="ion-text-center"><IonIcon color="primary" size="large" icon={saveOutline} /></div>
+				<p>
+					Use the "save" button to quickly save meanings to the Lexicon.
 				</p>
 				<h2>Swadesh Lists</h2>
 				<p>

@@ -136,11 +136,12 @@ const Home = (props: PageData) => {
 									<IonCardTitle className="ion-padding-start ion-align-self-start">Word Lists</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
-									<p>A small storehouse of basic words, useful for starting a lexicon.</p>
+									<p>A small storehouse of basic meanings, useful for starting a lexicon.</p>
 									<ul>
-										<li>Easily add words to Lexicon</li>
+										<li>Easily add meanings to Lexicon</li>
 										<li>Contains the Swadesh-100, -207 and other variants</li>
 										<li>Also contains Dogolposky, Leipzig-Jakarta, and ASJP lists</li>
+										<li>Create hybrid meanings for your own use</li>
 									</ul>
 								</IonCardContent>
 							</IonCard>

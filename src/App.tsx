@@ -167,6 +167,8 @@ const App = memo(() => {
 								storedState.wordevolveCharGroups = storedState.wordevolveCategories;
 								delete storedState.wordevolveCategories;
 							}
+							storedState.wordListsState.combinations = [];
+							storedState.wordListsState.showingCombos = false;
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date

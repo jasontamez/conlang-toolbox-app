@@ -276,9 +276,15 @@ export interface WL {
 	ssl?: boolean
 	l200?: boolean
 }
+export interface WLCombo {
+	id: string
+	parts: WL[]
+}
 export interface WordListsState {
 	display: [(keyof WL)][]
 	textCenter: boolean
+	showingCombos: boolean
+	combinations: WLCombo[]
 }
 
 

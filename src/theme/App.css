@@ -585,9 +585,27 @@ ion-item.wrappableInnards h2 {
 	background: var(--ion-background-shader);
 	background-clip: content-box;
 }
-.wordListChips div {
-	text-align: center;
+.wordListChips::part(native) {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: flex-start;
 	margin: 0 auto;
+}
+.wordListChips .chips {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	margin: 0 auto;
+}
+.wordListChips .controls {
+	display: flex;
+	flex-flow: column nowrap;
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin: 0 auto 0 0.25rem
 }
 
 .ion-text-wrap {

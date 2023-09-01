@@ -21,7 +21,6 @@ import {
 	checkmarkDoneOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { v4 as uuidv4 } from 'uuid';
 import {
 	updateWordListsDisplay,
 	changeView,
@@ -29,7 +28,7 @@ import {
 	addDeferredLexiconItems,
 	removeDeferredLexiconItem
 } from '../components/ReduxDucksFuncs';
-import { PageData, WL } from '../components/ReduxDucksTypes';
+import { PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { $a, $i } from '../components/DollarSignExports';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
@@ -40,16 +39,23 @@ const Home = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
 	const [pickAndSave, setPickAndSave] = React.useState<boolean>(false);
+	const [linking, setLinking] = React.useState<boolean>(false);
+	const [unlinking, setUnlinking] = React.useState<boolean>(false);
 	const [wordListsState, waitingToAdd] = useSelector((state: any) => [state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
-	const theDisplay = wordListsState.display;
+	const {
+		display,
+		showingCombos,
+		combinations,
+		textCenter
+	} = wordListsState;
 	const dispatch = useDispatch();
 	const toggleChars = (what: keyof WL) => {
-		if(theDisplay.some((p: keyof WL) => p === what)) {
-			return dispatch(updateWordListsDisplay(theDisplay.filter((p: keyof WL) => p !== what)));
+		if(display.some((p: keyof WL) => p === what)) {
+			return dispatch(updateWordListsDisplay(display.filter((p: keyof WL) => p !== what)));
 		}
-		dispatch(updateWordListsDisplay([...theDisplay, what]));
+		dispatch(updateWordListsDisplay([...display, what]));
 	};
-	const shown = WordList.filter((word: WL) => theDisplay.some((p: keyof WL) => word[p]));
+	const shown = WordList.filter((word: WL) => display.some((p: keyof WL) => word[p]));
 	const viewInfo = ['wl', 'home'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -89,9 +95,9 @@ const Home = (props: PageData) => {
 			showConfirmButton: false
 		});	
 	};
-	const maybeSaveThisWord = (text: string, id: string) => {
+	const maybeSaveThisWord = (text: string) => {
 		if(outputPane.classList.contains("pickAndSave")) {
-			const CL = ($i(id) as HTMLElement).classList;
+			const CL = ($i(text) as HTMLElement).classList;
 			if(CL.contains("saved")) {
 				CL.remove("saved");
 				dispatch(removeDeferredLexiconItem(text));
@@ -114,14 +120,11 @@ const Home = (props: PageData) => {
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
 							{
-								wordListsState.textCenter ?
+								textCenter ?
 									<IonIcon size="small" slot="end" src="svg/align-left-material.svg" />
 								:
 									<IonIcon size="small" slot="end" src="svg/align-center-material.svg" />
 							}
-						</IonButton>
-						<IonButton onClick={() => doPickAndSave()}>
-							<IonIcon icon={saveOutline} />
 						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
@@ -131,6 +134,36 @@ const Home = (props: PageData) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
+					<IonItem className="wordListChips">
+						<div className="chips">
+							<span>Display:</span>
+							{WordListSources.map((pair: [string, keyof WL], ind: number) => {
+								const [list, prop] = pair;
+								const current = display.some((p: keyof WL) => p === prop);
+								return (
+									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
+										<IonLabel>{list}</IonLabel>
+									</IonChip>	
+								);
+							})}
+							{(
+								<IonChip key="combinations" outline={!showingCombos} onClick={() => dispatch(toggleWordListsBoolean("showingCombos"))} className={showingCombos ? "active" : undefined}>
+									<IonLabel>My Combinations</IonLabel>
+								</IonChip>	
+							)}
+						</div>
+						<div className="controls">
+							<IonButton fill="outline" onClick={() => doPickAndSave()}>
+								<IonIcon slot="icon-only" icon={saveOutline} />
+							</IonButton>
+							<IonButton fill={linking ? "solid" : "outline"} color="secondary" onClick={() => setLinking(!linking)}>
+								<IonIcon slot="icon-only" src="svg/link.svg" />
+							</IonButton>
+							{showingCombos && <IonButton fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => setUnlinking(!unlinking)}>
+								<IonIcon slot="icon-only" src="svg/unlink.svg" />
+							</IonButton>}
+						</div>
+					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
 						<IonButton strong={true} color="tertiary" onClick={() => saveEverything()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save All Words
@@ -141,27 +174,26 @@ const Home = (props: PageData) => {
 							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
 						</IonButton>
 					</IonItem>
-					<IonItem className="wordListChips">
-						<div>
-							<span>Display:</span>
-							{WordListSources.map((pair: [string, keyof WL], ind: number) => {
-								const [list, prop] = pair;
-								const current = theDisplay.some((p: keyof WL) => p === prop);
-								return (
-									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
-										<IonLabel>{list}</IonLabel>
-									</IonChip>	
-								);
-							})}
-						</div>
-					</IonItem>
 					<div id="outputPaneWL" className={(pickAndSave ? "pickAndSave " : "") + "wordList"}>
+						{showingCombos && combinations.map((combo: WLCombo) => {
+							const { id, parts } = combo;
+							const word = parts.map((w: WL) => w.word).join("; ");
+							const classes =
+								((waitingToAdd.some((w: string) => w === word)) ? "saved " : "")
+								+ "word ion-text-"
+								+ (textCenter ? "center" : "start");
+							return (
+								<div onClick={() => maybeSaveThisWord(word)} key={id} id={id} className={classes}>{word}</div>
+							);
+						})}
 						{shown.map((word: WL) => {
 							const ww = word.word;
-							const id = uuidv4();
-							const classes = (waitingToAdd.some((w: string) => w === ww)) ? "word saved " : "word ";
+							const classes =
+								((waitingToAdd.some((w: string) => w === ww)) ? "saved" : "")
+								+ "word ion-text-"
+								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(ww, id)} key={id} id={id} className={classes + (wordListsState.textCenter ? "ion-text-center" : "ion-text-start")}>{ww}</div>
+								<div onClick={() => maybeSaveThisWord(ww)} key={ww} id={ww} className={classes}>{ww}</div>
 							)
 						})}
 					</div>
