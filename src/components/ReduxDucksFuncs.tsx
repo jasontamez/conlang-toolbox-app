@@ -245,6 +245,7 @@ export function doEditLexiconItem(payload: types.Lexicon) {
 export function deleteLexiconItem(payload: number) {
 	return {type: consts.DELETE_LEXICON_ITEM, payload};
 }
+//
 export function addLexiconItem(payload: types.Lexicon) {
 	return {type: consts.ADD_LEXICON_ITEM, payload};
 }
@@ -266,7 +267,8 @@ export function updateLexiconNumber(prop: "lastSave", value: number) {
 export function updateLexiconBool(prop: "sorted", value: boolean) {
 	return {type: consts.UPDATE_LEXICON_BOOL, payload: {prop, value}};
 }
-export function updateLexiconColumns(payload: types.colEdit | undefined) {
+//
+export function updateLexiconColumns(payload: any | undefined) {
 	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
 }
 export function updateLexiconOrder(payload: types.Lexicon[]) {
@@ -277,6 +279,10 @@ export function updateLexiconSort(payload: number[]) {
 }
 export function toggleLexiconWrap() {
 	return {type: consts.TOGGLE_LEXICON_WRAP};
+}
+
+export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], dir: boolean, truncate: boolean) {
+	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, dir, truncate]};
 }
 
 //
@@ -308,7 +314,7 @@ export function updateExtraCharsToBeSaved(payload: string) {
 export function updateWordListsDisplay(payload: (keyof types.WL)[]) {
 	return {type: consts.UPDATE_WORD_LISTS_DISPLAY, payload};
 }
-export function toggleWordListsBoolean(payload: "textCenter") {
+export function toggleWordListsBoolean(payload: "textCenter" | "showingCombos") {
 	return {type: consts.TOGGLE_WORD_LISTS_BOOLEAN, payload};
 }
 

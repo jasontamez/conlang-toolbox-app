@@ -28,7 +28,6 @@ import {
 	add,
 //	construct,
 	trash,
-	trashOutline,
 	saveOutline,
 	globeOutline,
 	settings,
@@ -45,11 +44,9 @@ import {
 	updateLexiconText,
 	startEditLexiconItem,
 	deleteLexiconItem,
-	updateLexiconOrder,
-	updateLexiconBool,
-	clearDeferredLexiconItems
+	addLexiconItem
 } from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconObject, PageData } from '../components/ReduxDucksTypes';
+import { Lexicon, LexiconColumn, LexiconObject, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
@@ -73,8 +70,7 @@ interface LexItem {
 		delFromLex: Function
 		editInLex: Function
 		maybeExpand: Function
-		columnOrder: number[]
-		columnSizes: ("s" | "m" | "l")[]
+		columns: LexiconColumn[]
 		lexicon: Lexicon[]
 	}
 }
@@ -114,6 +110,21 @@ const Lex = (props: PageData) => {
 	useIonViewDidLeave(() => setHasLoaded(false));
 	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
 	const {
+		//id,
+		//lastSave,
+		title,
+		description,
+		lexicon,
+		truncateColumns,
+		columns,
+		sortDir,
+		sortPattern,
+		/*fontType,
+		storedCustomInfo,
+		storedCustomIDs*/
+	} = lexObject;
+	/*
+	const {
 		title,
 		description,
 		columns,
@@ -125,6 +136,7 @@ const Lex = (props: PageData) => {
 		lexiconWrap,
 		lexicon
 	} = lexObject;
+	*/
 	const topBar = $i("lexiconTopBar");
 	const lexInfoHeader = $i("lexiconTitleAndDescription");
 	const lexHeader = $i("theLexiconHeader");
@@ -140,97 +152,11 @@ const Lex = (props: PageData) => {
 			lexColumnNames
 		].forEach(input => input && (used += input.offsetHeight));
 		setLexiconHeight(height - used);
-	}, [hasLoaded, height, lexHeadersHidden, lexiconWrap, columnTitles, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
-	const clearSavedWords = () => {
-		const thenFunc = () => {
-			dispatch(clearDeferredLexiconItems());
-			fireSwal({
-				title: "Words deleted.",
-				toast: true,
-				timer: 2500,
-				timerProgressBar: true,
-				showConfirmButton: false
-			});
-		};
-		if(disableConfirms) {
-			thenFunc();
-		} else {
-			fireSwal({
-				text: "Are you sure you want to delete the saved words? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete them."
-			}).then((result: any) => result.isConfirmed && thenFunc());
-		}
-	};
-	const loadSavedWords = () => {
-		const options: any = {};
-		for(let x = 0; x < columns; x++) {
-			options[x.toString()] = columnTitles[x];
-		}
-		const thenFunc = (value: number) => {
-			setIsLoading(true);
-			const [col, dir] = sort;
-			const toAdd = [...waitingToAdd];
-			const everythingToSort = [...lexicon];
-			const pre: string[] = [];
-			const post: string[] = [];
-			for(let c = 0; c < value; c++) {
-				pre.push("");
-			}
-			for(let c = value + 1; c < columns; c++) {
-				post.push("");
-			}
-			toAdd.forEach(w => {
-				everythingToSort.push({key: uuidv4(), columns: [...pre, w, ...post]});
-			});
-			internalSort(col, dir, everythingToSort);
-			dispatch(clearDeferredLexiconItems());
-			setIsLoading(false);
-		};
-		if(columns === 1) {
-			return thenFunc(0);
-		} else {
-			return fireSwal({
-				title: 'Import Lexicon',
-				input: 'select',
-				inputOptions: options,
-				inputPlaceholder: 'Which column do you want to save to?',
-				showCancelButton: true
-			}).then((result: any) => {
-				if(result.isConfirmed && result.value) {
-					thenFunc(parseInt(result.value));
-				}
-			});
-		}
-	};
+	}, [hasLoaded, height, lexHeadersHidden, truncateColumns, columns, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
 		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000), "updateLexText");
-	};
-	const internalSort = (col: number, dir: number, newLex: Lexicon[] = [...lexicon]) => {
-		newLex.sort((a, b) => {
-			let x = a.columns[col];
-			let y: string;
-			let comp: number;
-			if(dir) {
-				y = x;
-				x = b.columns[col];
-			} else {
-				y = b.columns[col];
-			}
-			try {
-				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
-			} catch(error) {
-				comp = 0;
-				console.log(error);
-			}
-			return comp;
-		});
-		dispatch(updateLexiconOrder(newLex));
-		dispatch(updateLexiconBool("sorted", true));
 	};
 	const addToLex = () => {
 		const newInfo: string[] = [];
@@ -263,18 +189,16 @@ const Lex = (props: PageData) => {
 			}
 			i++;
 		}
-		const newWord: Lexicon = {
-			key: uuidv4(),
+		dispatch(addLexiconItem({
+			id: uuidv4(),
 			columns: newInfo
-		}
-		const [col, dir] = sort;
-		internalSort(col, dir, [...lexicon, newWord]);
+		}));
 	};
 	const delFromLex = useCallback((key: string) => {
 		let title: string = "";
 		let index: number = -1;
 		if(lexicon.every((lx: Lexicon, i: number) => {
-			if(lx.key === key) {
+			if(lx.id === key) {
 				index = i;
 				title = lx.columns.join(" / ");
 				return false;
@@ -301,7 +225,7 @@ const Lex = (props: PageData) => {
 		//need modal
 		let index: number = -1;
 		if(lexicon.every((lx: Lexicon, i: number) => {
-			if(lx.key === key) {
+			if(lx.id === key) {
 				index = i;
 				return false;
 			}
@@ -313,38 +237,32 @@ const Lex = (props: PageData) => {
 		dispatch(startEditLexiconItem(index));
 		setIsOpenEditLexItem(true);
 	}, [dispatch, lexicon]);
-	const createItemData = memoizeOne((delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon) => ({
-		delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon
+	const createItemData = memoizeOne((delFromLex, editInLex, maybeExpand, columns, lexicon) => ({
+		delFromLex, editInLex, maybeExpand, columns, lexicon
 	}));
-	const fixedSizeListData = createItemData(delFromLex, editInLex, maybeExpand, columnOrder, columnSizes, lexicon);
+	const fixedSizeListData = createItemData(delFromLex, editInLex, maybeExpand, columns, lexicon);
 	const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		const {
 			delFromLex,
 			editInLex,
 			maybeExpand,
-			columnOrder,
-			columnSizes,
+			columns,
 			lexicon
 		} = data;
 		const lex: Lexicon = lexicon[index];
 		const cols = lex.columns;
-		const key = lex.key;
-		const id = "LEX" + key;
-		const newStyle: { [key: string]: any } = {
-			...style,
-			order: index
-		};
+		const id = lex.id;
 		return (
 			<IonItemSliding
 				key={id}
 				id={id}
-				style={ newStyle }
+				style={style}
 			>
 				<IonItemOptions side="end" className="lexiconDisplay serifChars">
-					<IonItemOption color="primary" onClick={() => editInLex(key)}>
+					<IonItemOption color="primary" onClick={() => editInLex(id)}>
 						<IonIcon slot="icon-only" src="svg/edit.svg" />
 					</IonItemOption>
-					<IonItemOption color="danger" onClick={() => delFromLex(key)}>
+					<IonItemOption color="danger" onClick={() => delFromLex(id)}>
 						<IonIcon slot="icon-only" icon={trash} />
 					</IonItemOption>
 				</IonItemOptions>
@@ -352,15 +270,15 @@ const Lex = (props: PageData) => {
 					"lexRow lexiconDisplay serifChars "
 					+ (index % 2 ? "even" : "odd")
 				}>
-					{columnOrder.map((i: number) => (
+					{cols.map((item: string, i: number) => (
 						<div
 							onClick={() => maybeExpand()}
-							key={key + i.toString()}
+							key={`${id}:col${i}`}
 							className={
 								"lexItem selectable "
-								+ columnSizes[i]
+								+ columns[i].size
 							}
-						>{cols[i]}</div>
+						>{item}</div>
 					))}
 					<div className="xs">
 						<IonIcon size="small" src="svg/drag-indicator.svg" />
@@ -446,18 +364,8 @@ const Lex = (props: PageData) => {
 							<IonCol>
 								<h1>{lexicon.length === 1 ? "1 Word" : lexicon.length.toString() + " Words"}</h1>
 							</IonCol>
-							<IonCol className={waitingToAdd.length > 0 ? "" : "hide"} size="auto">
-								<IonButton color="warning" strong={true} onClick={() => loadSavedWords()} style={ { padding: "0.25em" } }>
-									<IonIcon size="small" icon={saveOutline} style={ { margin: "0 0.25em 0 0" } } /> Add Saved
-								</IonButton>
-							</IonCol>
-							<IonCol className={waitingToAdd.length > 0 ? "" : "hide"} size="auto">
-								<IonButton color="danger" strong={true} onClick={() => clearSavedWords()} style={ { padding: "0.25em 0" } }>
-									<IonIcon size="small" icon={trashOutline} />
-								</IonButton>
-							</IonCol>
 							<IonCol size="auto">
-								<h2>Sort: {columnTitles[sort[0]] + [" ↓", " ↑"][sort[1]]}</h2>
+								<h2>Sort: {columns[sortPattern[0].label]} {sortDir ? "↑" : "↓"}</h2>
 							</IonCol>
 							<IonCol size="auto">
 								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => setIsOpenLexOrder(true)}>
@@ -470,23 +378,24 @@ const Lex = (props: PageData) => {
 						<IonRow>
 							<IonCol id="theLexicon">
 								<IonItem id="lexColumnNames" className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
-									{columnOrder.map((i: number) => (
+									{columns.map((column: LexiconColumn) => (
 										<div
 											className={
-												(lexiconWrap ? "ion-text-wrap " : "")
-												+ columnSizes[i]
+												(truncateColumns ? "ion-text-wrap " : "")
+												+ column.size
 											}
 											style={ { overflowY: "hidden" }}
-											key={`${i}:${columnTitles[i]}`}
-										>{columnTitles[i]}</div>
+											key={column.id}
+										>{column.label}</div>
 									))}
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
 								<IonItem id="lexColumnInputs" className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
-									{columnOrder.map((i: number) => {
-										const key = `inputLex${i}`;
+									{columns.map((column: LexiconColumn) => {
+										const { id, label, size } = column;
+										const key = `inputLex${id}`;
 										return (
-											<IonInput id={key} key={key} aria-label={`${columnTitles[i]} input`} className={columnSizes[i]} type="text" style={ { overflowY: "hidden" }} />
+											<IonInput id={key} key={key} aria-label={`${label} input`} className={size} type="text" style={ { overflowY: "hidden" }} />
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>

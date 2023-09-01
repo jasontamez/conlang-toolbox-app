@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -31,61 +31,46 @@ import {
 	checkmarkOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { colEdit, ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
+import { v4 as uuidv4 } from 'uuid';
+
+import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../components/ReduxDucksTypes';
 import {
-	updateLexiconColumns,
-	updateLexiconOrder,
-	toggleLexiconWrap,
-	updateLexiconSort,
-	updateLexiconBool
+	updateLexiconColumnarInfo
 } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
-import escape from '../components/EscapeForHTML';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [settings, lexObject] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
 	const {
-		columnOrder,
-		columnTitles,
-		sort,
-		lexiconWrap,
+		lexicon,
 		columns,
-		columnSizes,
-		colEdit,
-		lexicon
+		sortDir,
+		sortPattern,
+		truncateColumns,
+		/*fontType,
+		storedCustomInfo,
+		storedCustomIDs*/
 	} = lexObject;
-	const [sortedColumn, sortDirection] = sort;
-	let editing: colEdit = colEdit;
-	if(!editing) {
-		editing = {
-			reordering: false,
-			columns: columns,
-			columnOrder: [...columnOrder],
-			columnTitles: [...columnTitles],
-			columnSizes: [...columnSizes],
-			sort: [...sort]
-		};
-	} else {
-		editing = {
-			...editing,
-			columnOrder: [...editing.columnOrder],
-			columnTitles: [...editing.columnTitles],
-			columnSizes: [...editing.columnSizes],
-			sort: [...editing.sort]
-		};
-	}
+	const [dir, setDir] = useState<boolean>(sortDir);
+	const [order, setOrder] = useState<number[]>(sortPattern);
+	const [cols, setCols] = useState<LexiconColumn[]>(columns);
+	const [noWrap, setNoWrap] = useState<boolean>(truncateColumns);
+	const [lex, setLex] = useState<Lexicon[]>(lexicon);
+
 	const setNewInfo = (i: number, val: string) => {
-		const value = val.trim();
-		editing.columnTitles[i] = value;
-		dispatch(updateLexiconColumns(editing));
+		const newCols = cols.slice();
+		newCols[i].label = val.trim();
+		setCols(newCols);
 	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
-		editing.columnSizes[i] = value;
-		dispatch(updateLexiconColumns(editing));
+		const newCols = cols.slice();
+		newCols[i].size = value;
+		setCols(newCols);
 	};
 	const doneEditingOrder = () => {
+		dispatch(updateLexiconColumnarInfo(lex, cols, order, dir, noWrap));
 		setIsOpen(false);
 		fireSwal({
 			title: "Saved!",
@@ -96,18 +81,9 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	const addNewColumn = () => {
-		editing.columnTitles.push("New");
-		editing.columnSizes.push("m");
-		editing.columnOrder.push(editing.columns++);
-		dispatch(updateLexiconColumns(editing));
-		const newLex: Lexicon[] = [];
-		lexicon.forEach((lex: Lexicon) => {
-			newLex.push({
-				key: lex.key,
-				columns: [...lex.columns, ""]
-			});
-		});
-		dispatch(updateLexiconOrder(newLex));
+		setOrder([...order, cols.length]);
+		setCols([...cols, { id: uuidv4(), size: "m", label: "New"}]);
+		setLex(lex.map(lx => ({ id: lx.id, columns: [...lx.columns, ""]})));
 		fireSwal({
 			title: "Added New Column",
 			toast: true,
@@ -118,31 +94,19 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const deleteField = (i: number) => {
 		const thenFunc = () => {
-			editing.columns--;
-			editing.columnTitles = editing.columnTitles.slice(0, i).concat(editing.columnTitles.slice(i+1));
-			editing.columnSizes = editing.columnSizes.slice(0, i).concat(editing.columnSizes.slice(i+1));
-			editing.columnOrder = editing.columnOrder.filter((o: number) => (o !== i)).map((o: number) => (o > i ? o - 1 : o));
-			const sorty = editing.sort[0];
-			if(sorty === i) {
-				editing.sort[0] = 0;
-			} else if (sorty > i) {
-				editing.sort[0] = sorty - 1;
-			}
-			dispatch(updateLexiconColumns(editing));
-			const newLex: Lexicon[] = [];
-			lexicon.forEach((lex: Lexicon) => {
-				newLex.push({
-					key: lex.key,
-					columns: lex.columns.slice(0, i).concat(lex.columns.slice(i + 1))
-				});
-			});
-			dispatch(updateLexiconOrder(newLex));
-			};
+			const target = order[i];
+			setOrder(order.slice(0, i).concat(order.slice(i+1)).map((num: number) => (num > target ? (num - 1) : num)));
+			setCols(cols.slice(0, i).concat(cols.slice(i+1)));
+			setLex(lex.map(lx => {
+				const { id, columns } = lx;
+				return { id, columns: columns.slice(0, i).concat(columns.slice(i+1)) };
+			}));
+		};
 		if(settings.disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
-				html: "<h1>" + escape(editing.columnTitles[i]) + "</h1>Are you sure you want to delete this? This cannot be undone.",
+				html: "<h1>" + cols[i].label + "</h1>Are you sure you want to delete this? This cannot be undone.",
 				customClass: {popup: 'deleteConfirm'},
 				icon: 'warning',
 				showCancelButton: true,
@@ -157,39 +121,16 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
-		editing.columnOrder = reorganize(editing.columnOrder, ed.from, ed.to);
-		dispatch(updateLexiconColumns(editing));
+		const columnOrder = reorganize(order, ed.from, ed.to);
+		setOrder(columnOrder);
 		ed.complete();
 	};
-	const toggleWrap = () => {
-		dispatch(toggleLexiconWrap());
-	};
-	const doSort = (col: number, dir: number) => {
-		const newLex: Lexicon[] = lexicon.slice();
-		newLex.sort((a, b) => {
-			let x = a.columns[col];
-			let y: string;
-			let comp: number;
-			if(dir) {
-				y = x;
-				x = b.columns[col];
-			} else {
-				y = b.columns[col];
-			}
-			try {
-				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
-			} catch(error) {
-				comp = 0;
-				console.log(error);
-			}
-			return comp;
-		});
-		dispatch(updateLexiconSort([col, dir]));
-		dispatch(updateLexiconOrder(newLex));
-		dispatch(updateLexiconBool("sorted", true));
+	const doSort = (col: number) => {
+		const newOrder = [col, ...order.filter(o => (o !== col))];
+		setOrder(newOrder);
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
@@ -206,54 +147,40 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
 					<IonItemDivider>Lexicon Options</IonItemDivider>
-					<IonItem button={true} onClick={() => toggleWrap()}>
+					<IonItem button={true} onClick={() => setNoWrap(!noWrap)}>
 						<IonLabel>Show Full Column Titles</IonLabel>
-						{lexiconWrap ? <IonIcon slot="end" icon={checkmarkOutline} /> : <></>}
+						{noWrap ? <></> : <IonIcon slot="end" icon={checkmarkOutline} />}
 					</IonItem>
 					<IonItemDivider>Sort Column</IonItemDivider>
-					{columnOrder.map((i: number) => {
-						const title = columnTitles[i];
-						const which = i.toString();
+					{order.map((placement: number, i: number) => {
+						const { id, label } = columns[i];
 						return (
-							<IonItem key={which} button={true} onClick={() => doSort(i, sortDirection)}>
-								<IonLabel slot="start">{title}</IonLabel>
-								{i === sortedColumn ?
-									<IonIcon slot="end" icon={checkmarkOutline} />
-								:
-									<></>
-								}
+							<IonItem key={`${id}:modal:editOrder`} button={true} onClick={() => doSort(i)}>
+								<IonLabel slot="start">{label}</IonLabel>
+								<IonLabel slot="end">{placement}</IonLabel>
 							</IonItem>
 						);
 					})}
 					<IonItemDivider>Sort Direction</IonItemDivider>
-					<IonItem button={true} onClick={() => doSort(sortedColumn, 0)}>
+					<IonItem button={true} onClick={() => setDir(false)}>
 						<IonLabel slot="start">Descending ↓</IonLabel>
-						{0 === sortDirection ?
-							<IonIcon slot="end" icon={checkmarkOutline} />
-						:
-							<></>
-						}
+						{ dir || <IonIcon slot="end" icon={checkmarkOutline} /> }
 					</IonItem>
-					<IonItem button={true} onClick={() => doSort(sortedColumn, 1)}>
+					<IonItem button={true} onClick={() => setDir(true)}>
 						<IonLabel slot="start">Ascending ↑</IonLabel>
-						{1 === sortDirection ?
-							<IonIcon slot="end" icon={checkmarkOutline} />
-						:
-							<></>
-						}
+						{ dir && <IonIcon slot="end" icon={checkmarkOutline} /> }
 					</IonItem>
 					<IonItemDivider>Rearrange Lexicon Columns</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
-						{editing.columnOrder.map((i: number) => {
-							const iStr = i.toString();
-							const sizes = editing.columnSizes;
+						{cols.map((column: LexiconColumn, i: number) => {
+							const { id, size, label } = column;
 							return (
-								<IonItem lines="full" key={iStr}>
+								<IonItem lines="full" key={`${id}:modal:editing`}>
 									<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
 									<IonGrid>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonInput aria-label="Field Name" placeholder="Field Name" value={editing.columnTitles[i]} onIonChange={(e) => setNewInfo(i, e.target.value as string)} />
+												<IonInput aria-label="Field Name" placeholder="Field Name" value={label} onIonChange={(e) => setNewInfo(i, e.target.value as string)} />
 											</IonCol>
 											<IonCol size="auto">
 												<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>
@@ -261,13 +188,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 										</IonRow>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Small size" checked={sizes[i] === "s"} onClick={() => handleCheckboxes(i, "s")}>Small</IonCheckbox>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Small size" checked={size === "s"} onClick={() => handleCheckboxes(i, "s")}>Small</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Medium size" checked={sizes[i] === "m"} onClick={() => handleCheckboxes(i, "m")}>Med</IonCheckbox>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Medium size" checked={size === "m"} onClick={() => handleCheckboxes(i, "m")}>Med</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Large size" checked={sizes[i] === "l"} onClick={() => handleCheckboxes(i, "l")}>Large</IonCheckbox>
+												<IonCheckbox labelPlacement="start" justify="start" aria-label="Large size" checked={size === "l"} onClick={() => handleCheckboxes(i, "l")}>Large</IonCheckbox>
 											</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -285,7 +212,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 					</IonButton>
 					<IonButton color="tertiary" slot="end" onClick={() => doneEditingOrder()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Done</IonLabel>
+						<IonLabel>Save Changes</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

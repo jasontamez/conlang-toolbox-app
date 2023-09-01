@@ -90,7 +90,7 @@
 .lexHeader,
 .lexHeader::part(native) {
 	font-weight: bold;
-	min-height: 2rem;
+	min-height: 1.5rem;
 	align-items: flex-end;
 }
 .lexRow > * {

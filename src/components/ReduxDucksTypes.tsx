@@ -194,7 +194,7 @@ export interface MorphoSyntaxObject {
 
 export interface PhonoGraphObject {}
 
-
+/*
 export interface Lexicon {
 	key: string
 	columns: string[]
@@ -223,6 +223,28 @@ export interface LexiconObject {
 	editing: number | undefined
 	colEdit: colEdit | undefined
 	lexiconWrap: boolean
+}
+*/
+export interface Lexicon {
+	id: string
+	columns: string[]
+}
+export interface LexiconColumn {
+	id: string
+	size: "s" | "m" | "l"
+	label: string
+}
+export interface LexiconObject {
+	id: string
+	lastSave: number
+	title: string
+	description: string
+	columns: LexiconColumn[]
+	truncateColumns: boolean
+	lexicon: Lexicon[]
+	sortDir: boolean
+	sortPattern: number[]
+	fontType?: string
 }
 
 

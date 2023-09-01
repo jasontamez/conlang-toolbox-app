@@ -150,16 +150,54 @@ const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
 const reduceSettingsWE = (original: types.WESettingsObject) => {
 	return {...original};
 };
+const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean) => {
+	const maxCol = sortPattern.length;
+	let newLexicon = [...lexicon];
+	newLexicon.sort((a, b) => {
+		const columnsA = a.columns;
+		const columnsB = b.columns;
+		let comp = 0;
+		let col = 0;
+		// Check each column until we find a non-equal comparison
+		//   (or we run out of columns)
+		do {
+			const sortingCol = sortPattern[col];
+			const x = columnsA[sortingCol];
+			const y = columnsB[sortingCol];
+			try {
+				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+			} catch(error) {
+				comp = 0;
+				console.log(error);
+			}
+		} while (!comp && ++col < maxCol);
+		if(col === maxCol) {
+			// Completely equal? Sort by IDs to keep things consistent.
+			const x = a.id;
+			const y = b.id;
+			// X SHOULD NEVER EQUAL Y
+			comp = x > y ? 1 : -1;
+		}
+		if(sortDir && comp) {
+			// Reverse order
+			return 0 - comp;
+		}
+		return comp;
+	});
+	return newLexicon;
+};
 const reduceLexiconState = (original: types.LexiconObject) => {
+	const {
+		lexicon,
+		sortPattern,
+		sortDir,
+		columns
+	} = original;
 	return {
 		...original,
-		columnOrder: [...original.columnOrder],
-		columnTitles: [...original.columnTitles],
-		columnSizes: [...original.columnSizes],
-		sort: [...original.sort],
-		lexicon: original.lexicon.map(lex => reduceLexicon(lex)),
-		waitingToAdd: [...original.waitingToAdd],
-		colEdit: original.colEdit ? reduceColEdit(original.colEdit) : undefined
+		columns: [...columns.map(col => ({...col}))],
+		sortPattern: [...sortPattern],
+		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir)
 	};
 };
 const reduceMorphoSyntaxModalState = (original: types.MorphoSyntaxModalStateObject) => {
@@ -175,17 +213,8 @@ const reduceMorphoSyntaxInfo = (original: types.MorphoSyntaxObject) => {
 };
 const reduceLexicon = (original: types.Lexicon) => {
 	return {
-		key: original.key,
+		id: original.id,
 		columns: [...original.columns]
-	};
-};
-const reduceColEdit = (original: types.colEdit) => {
-	return {
-		columns: original.columns,
-		columnOrder: [...original.columnOrder],
-		columnTitles: [...original.columnTitles],
-		columnSizes: [...original.columnSizes],
-		sort: [...original.sort]
 	};
 };
 const reduceViewState = (original: types.ViewStateObject) => {
@@ -312,21 +341,31 @@ export const blankAppState: types.StateObject = {
 		text: {}
 	},
 	lexicon: {
-		key: "",
+		id: "",
 		lastSave: 0,
 		title: "",
 		description: "",
-		columns: 3,
-		columnOrder: [0,1,2],
-		columnTitles: ["Word", "Part of Speech", "Definition"],
-		columnSizes: ["m", "s", "l"],
-		sort: [0, 0],
-		sorted : true,
-		lexicon: [],
-		waitingToAdd: [],
-		editing: undefined,
-		colEdit: undefined,
-		lexiconWrap: false
+		truncateColumns: true,
+		sortDir: false,
+		sortPattern: [0, 1, 2],
+		columns: [
+			{
+				id: "00",
+				label: "Word",
+				size: "m"
+			},
+			{
+				id: "11",
+				label: "Part of Speech",
+				size: "s"
+			},
+			{
+				id: "22",
+				label: "Definition",
+				size: "l"
+			}
+		],
+		lexicon: []
 	},
 	viewState: {
 		wg: 'charGroups',
@@ -1016,11 +1055,64 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: {
 					...payload,
-					lexiconWrap: state.lexicon.lexiconWrap
+					truncateColumns: state.lexicon.truncateColumns
 				}
 			};
 			break;
-		case consts.UPDATE_LEXICON_EDITING:
+		case consts.UPDATE_LEXICON_COLUMNAR_INFO:
+			const [lex, cols, order, dir, truncate] = payload;
+			const lexicon = reduceLexiconState({
+				...state.lexicon,
+				lexicon: lex,
+				columns: cols,
+				sortPattern: order,
+				sortDir: dir,
+				truncateColumns: truncate
+			});
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon
+			};
+			break;
+		case consts.ADD_LEXICON_ITEM:
+			LO = {...state.lexicon};
+			LO.lexicon.push(payload);
+			LO = reduceLexiconState(LO);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.DELETE_LEXICON_ITEM:
+			LO = {...state.lexicon};
+			LO.lexicon = LO.lexicon.slice(0, payload).concat(LO.lexicon.slice(payload + 1));
+			LO = reduceLexiconState(LO);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.TOGGLE_LEXICON_WRAP:
+			LO = reduceLexiconState(state.lexicon);
+			LO.truncateColumns = !LO.truncateColumns;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_BOOL:
+			const bProp: "truncateColumns" | "sortDir" = payload.prop;
+			const tf: boolean = payload.value;
+			LO = reduceLexiconState(state.lexicon);
+			LO[bProp] = tf;
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+
+// functions below need to be doublechecked
+		/*case consts.UPDATE_LEXICON_EDITING:
 			LO = reduceLexiconState(state.lexicon);
 			LO.editing = payload;
 			final = {
@@ -1035,17 +1127,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
 			};
-			break;
-		case consts.DELETE_LEXICON_ITEM:
-			LO = reduceLexiconState(state.lexicon);
-			LO.lexicon = LO.lexicon.slice(0, payload).concat(LO.lexicon.slice(payload + 1));
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
+			break;*/
 		case consts.UPDATE_LEXICON_PROP:
-			const pProp: "title" | "description" | "key" = payload.prop;
+			const pProp: "title" | "description" | "id" = payload.prop;
 			const value: string = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[pProp] = value;
@@ -1064,17 +1148,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.UPDATE_LEXICON_BOOL:
-			const bProp: "sorted" = payload.prop;
-			const tf: boolean = payload.value;
-			LO = reduceLexiconState(state.lexicon);
-			LO[bProp] = tf;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		case consts.UPDATE_LEXICON_COLUMNS:
+		/*case consts.UPDATE_LEXICON_COLUMNS:
 			if(payload === undefined) {
 				LO = {
 					...reduceLexiconState(state.lexicon),
@@ -1093,39 +1167,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
 			};
-			break;
-		case consts.ADD_LEXICON_ITEM:
-			LO = reduceLexiconState(state.lexicon);
-			LO.lexicon.push(payload);
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		case consts.ADD_DEFERRED_LEXICON_ITEM:
-			LO = reduceLexiconState(state.lexicon);
-			LO.waitingToAdd = [...LO.waitingToAdd, ...payload];
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		case consts.REMOVE_DEFERRED_LEXICON_ITEM:
-			LO = reduceLexiconState(state.lexicon);
-			LO.waitingToAdd = LO.waitingToAdd.filter(word => word !== payload);
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		case consts.CLEAR_DEFERRED_LEXICON_ITEMS:
-			LO = reduceLexiconState(state.lexicon);
-			LO.waitingToAdd = [];
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
+			break;*/
 		case consts.UPDATE_LEXICON_ITEM_ORDER:
 			LO = reduceLexiconState(state.lexicon);
 			LO.lexicon = payload;
@@ -1134,22 +1176,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.UPDATE_LEXICON_SORT:
+		/*case consts.UPDATE_LEXICON_SORT:
 			LO = reduceLexiconState(state.lexicon);
 			LO.sort = payload;
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
 			};
-			break;
-		case consts.TOGGLE_LEXICON_WRAP:
-			LO = reduceLexiconState(state.lexicon);
-			LO.lexiconWrap = !LO.lexiconWrap;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
+			break;*/
 
 
 		// Overwrite State
