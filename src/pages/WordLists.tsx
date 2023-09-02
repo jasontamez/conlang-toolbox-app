@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	IonPage,
 	IonHeader,
@@ -21,27 +21,30 @@ import {
 	checkmarkDoneOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
 import {
 	updateWordListsDisplay,
 	changeView,
 	toggleWordListsBoolean,
-	addDeferredLexiconItems,
-	removeDeferredLexiconItem
+	addItemstoLexiconColumn
 } from '../components/ReduxDucksFuncs';
-import { PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
-import { $a, $i } from '../components/DollarSignExports';
+import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
-import { WLCard } from "./wg/WGCards";
 import fireSwal from '../components/Swal';
+import { WLCard } from "./wg/WGCards";
+
+interface SavedWord { id: string, word: string };
 
 const Home = (props: PageData) => {
 	const { modalPropsMaker } = props;
-	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
-	const [pickAndSave, setPickAndSave] = React.useState<boolean>(false);
-	const [linking, setLinking] = React.useState<boolean>(false);
-	const [unlinking, setUnlinking] = React.useState<boolean>(false);
-	const [wordListsState, waitingToAdd] = useSelector((state: any) => [state.wordListsState, state.lexicon.waitingToAdd], shallowEqual);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [pickAndSave, setPickAndSave] = useState<boolean>(false);
+	const [linking, setLinking] = useState<boolean>(false);
+	const [unlinking, setUnlinking] = useState<boolean>(false);
+	const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
+	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
+	const [wordListsState, lexColumns] = useSelector((state: any) => [state.wordListsState, state.lexicon.columns], shallowEqual);
 	const {
 		display,
 		showingCombos,
@@ -60,12 +63,53 @@ const Home = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const outputPane = $i("outputPaneWL");
 
 	// // //
 	// Save to Lexicon
 	// // //
+	const saveToLexicon = (words: SavedWord[]) => {
+		const inputOptions: { [key: string]: number } = {};
+		lexColumns.forEach((col: LexiconColumn, i: number) => {
+			inputOptions[col.label] = i;
+		})
+		fireSwal({
+			title: "Select a Column",
+			text: "Your selected meanings will be added to the Lexicon under that column.",
+			input: "select",
+			inputOptions,
+			showCancelButton: true
+		}).then((result: { value?: number }) => {
+			const value = result.value;
+			if(value !== undefined) {
+				// Send off to the lexicon
+				dispatch(addItemstoLexiconColumn(words.map((obj: SavedWord) => obj.word), value));
+				// Clear info
+				setSavedWords([]);
+				setSavedWordsObject({});
+				setPickAndSave(false);
+				fireSwal({
+					title: `Selected meanings saved to Lexicon under "${lexColumns[value].label}"`,
+					toast: true,
+					timer: 3500,
+					position: 'top',
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		});
+	};
 	const doPickAndSave = () => {
+		if(lexColumns.length === 0) {
+			return fireSwal({
+				title: "You need to add columns to the Lexicon before you can add anything to it.",
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 4000,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		}
 		setPickAndSave(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
@@ -78,35 +122,41 @@ const Home = (props: PageData) => {
 	};
 	const donePickingAndSaving = () => {
 		setPickAndSave(false);
-	};
-	const saveEverything = () => {
-		const wordsToSave: string[] = [];
-		setPickAndSave(false);
-		$a(".word", outputPane).forEach((word: HTMLElement) => {
-			word.textContent && wordsToSave.push(word.textContent);
-		});
-		dispatch(addDeferredLexiconItems(wordsToSave));
-		return fireSwal({
-			title: "All words have been sent to Lexicon",
-			toast: true,
-			timer: 2500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});	
-	};
-	const maybeSaveThisWord = (text: string) => {
-		if(outputPane.classList.contains("pickAndSave")) {
-			const CL = ($i(text) as HTMLElement).classList;
-			if(CL.contains("saved")) {
-				CL.remove("saved");
-				dispatch(removeDeferredLexiconItem(text));
-			} else {
-				CL.add("saved");
-				dispatch(addDeferredLexiconItems([text]));
-			}
+		if(savedWords.length > 0) {
+			saveToLexicon(savedWords);
 		}
 	};
+	const saveEverything = () => {
+		const words = shown.map(word => ({id: word.id, word: word.word}));
+		if(showingCombos) {
+			combinations.forEach((combo: WLCombo) => {
+				const { id, parts } = combo;
+				words.push({
+					id,
+					word: parts.map((w: WL) => w.word).join("; ")
+				})
+			});
+		}
+		setSavedWords(words);
+		saveToLexicon(words);
+	};
+	const maybeSaveThisWord = useCallback((id: string, text: string) => {
+		const newObject = {...savedWordsObject};
+		if(pickAndSave || linking) {
+			if(savedWordsObject[id]) {
+				setSavedWords(savedWords.filter(word => word.id !== id));
+				delete newObject[id];
+			} else {
+				setSavedWords([...savedWords, { id, word: text }]);
+				newObject[id] = true;
+			}
+			setSavedWordsObject(newObject);
+		}
+	}, [savedWords, savedWordsObject, pickAndSave, linking]);
+
+	// // //
+	// Combine Into New Meaning
+	// // //
 
 	return (
 		<IonPage>
@@ -119,12 +169,7 @@ const Home = (props: PageData) => {
 					<IonTitle>Word Lists</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
-							{
-								textCenter ?
-									<IonIcon size="small" slot="end" src="svg/align-left-material.svg" />
-								:
-									<IonIcon size="small" slot="end" src="svg/align-center-material.svg" />
-							}
+							<IonIcon size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
 						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
@@ -179,21 +224,21 @@ const Home = (props: PageData) => {
 							const { id, parts } = combo;
 							const word = parts.map((w: WL) => w.word).join("; ");
 							const classes =
-								((waitingToAdd.some((w: string) => w === word)) ? "saved " : "")
+								(savedWordsObject[id] ? "saved " : "")
 								+ "word ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(word)} key={id} id={id} className={classes}>{word}</div>
+								<div onClick={() => maybeSaveThisWord(id, word)} key={id} id={id} className={classes}>{word}</div>
 							);
 						})}
-						{shown.map((word: WL) => {
-							const ww = word.word;
+						{shown.map((wordObj: WL) => {
+							const { id, word } = wordObj;
 							const classes =
-								((waitingToAdd.some((w: string) => w === ww)) ? "saved" : "")
+								(savedWordsObject[id] ? "saved " : "")
 								+ "word ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(ww)} key={ww} id={ww} className={classes}>{ww}</div>
+								<div onClick={() => maybeSaveThisWord(id, word)} key={id} id={id} className={classes}>{word}</div>
 							)
 						})}
 					</div>

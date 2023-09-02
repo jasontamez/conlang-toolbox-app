@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import WGPresets from './WGPresets';
 import WEPresets from './WEPresets';
 import { StateStorage } from './PersistentInfo';
@@ -232,7 +233,7 @@ const reduceWordListsState = (original: types.WordListsState) => {
 		display: [...original.display],
 		combinations: original.combinations.map((o: types.WLCombo) => {
 			const { id, parts } = o;
-			return { id, parts: parts.map(part => ({...part}))}
+			return { id, parts: parts.map(part => ({...part}))};
 		})
 	};
 }
@@ -1119,9 +1120,32 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.DO_EDIT_LEXICON_ITEM:
+		case consts.ADD_ITEMS_TO_LEXICON_COLUMN:
+			LO = {...state.lexicon};
+			LO.lexicon = LO.lexicon.slice();
+			const colsNum = LO.columns.length;
+			const [items, columnNumber]: [ string[], number ] = payload;
+			items.forEach((item: string) => {
+				const obj: types.Lexicon = {
+					id: uuidv4(),
+					columns: []
+				};
+				for(let x = 0; x < colsNum; x++) {
+					obj.columns.push(x === columnNumber ? item : "");
+				}
+				LO.lexicon.push(obj);
+			});
+			LO = reduceLexiconState(LO);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+
+// functions below need to be doublechecked
+		/*case consts.UPDATE_LEXICON_EDITING:
 			LO = reduceLexiconState(state.lexicon);
-			LO.lexicon[LO.editing!] = payload;
+			LO.editing = payload;
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

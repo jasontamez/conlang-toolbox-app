@@ -288,6 +288,7 @@ export interface ExtraCharactersState {
 
 
 export interface WL {
+	id: string,
 	word: string
 	asjp?: boolean
 	lj?: boolean
