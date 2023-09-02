@@ -284,8 +284,8 @@ export function clearDeferredLexiconItems() {
 export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], dir: boolean, truncate: boolean) {
 	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, dir, truncate]};
 }
-export function addItemstoLexiconColumn(items: string[], column: number) {
-	return {type: consts.ADD_ITEMS_TO_LEXICON_COLUMN, payload: [items, column]};
+export function addItemstoLexiconColumn(items: string[], columnId: string) {
+	return {type: consts.ADD_ITEMS_TO_LEXICON_COLUMN, payload: [items, columnId]};
 };
 
 //

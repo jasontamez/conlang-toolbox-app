@@ -1124,7 +1124,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			LO = {...state.lexicon};
 			LO.lexicon = LO.lexicon.slice();
 			const colsNum = LO.columns.length;
-			const [items, columnNumber]: [ string[], number ] = payload;
+			const [items, columnId]: [ string[], string ] = payload;
+			let columnNumber = 0;
+			LO.columns.every((c, i) => {
+				if(c.id === columnId) {
+					columnNumber = i;
+					return false;
+				}
+				return true;
+			});
 			items.forEach((item: string) => {
 				const obj: types.Lexicon = {
 					id: uuidv4(),

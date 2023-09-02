@@ -75,17 +75,17 @@ const Home = (props: PageData) => {
 	// Save to Lexicon
 	// // //
 	const saveToLexicon = (words: SavedWord[]) => {
-		const inputOptions: { [key: string]: number } = {};
+		const inputOptions: { [key: string]: string } = {};
 		lexColumns.forEach((col: LexiconColumn, i: number) => {
-			inputOptions[col.label] = i;
-		})
+			inputOptions[col.id] = col.label;
+		});
 		fireSwal({
 			title: "Select a Column",
 			text: "Your selected meanings will be added to the Lexicon under that column.",
 			input: "select",
 			inputOptions,
 			showCancelButton: true
-		}).then((result: { value?: number }) => {
+		}).then((result: { value?: string }) => {
 			const value = result.value;
 			if(value !== undefined) {
 				// Send off to the lexicon
@@ -95,7 +95,7 @@ const Home = (props: PageData) => {
 				setSavedWordsObject({});
 				setPickAndSave(false);
 				fireSwal({
-					title: `Selected meanings saved to Lexicon under "${lexColumns[value].label}"`,
+					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
 					toast: true,
 					timer: 3500,
 					position: 'top',
@@ -128,7 +128,6 @@ const Home = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
-		setPickAndSave(false);
 		if(savedWords.length > 0) {
 			saveToLexicon(savedWords);
 		}
@@ -298,7 +297,7 @@ const Home = (props: PageData) => {
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPaneWL" className={"wordlist" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
+					<div id="outputPaneWL" className={"wordList" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
 						{showingCombos && combinations.map((combo: WLCombo) => {
 							const { id, parts } = combo;
 							const word = parts.map((w: WL) => w.word).join("; ");

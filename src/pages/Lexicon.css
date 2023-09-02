@@ -121,6 +121,10 @@
 .lexiconDisplay:last-child {
 	border-block-end: 2px solid var(--ion-background-color);
 }
+.lexiconDisplay ion-item-options {
+	border-block-start: 2px solid var(--ion-background-color);
+	border-block-end: 2px solid var(--ion-background-color);
+}
 #lexiconPage #lexiconSort::part(text)::before {
 	content: "Sort: ";
 	margin-inline-end: 0.5rem;

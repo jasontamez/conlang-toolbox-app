@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -48,25 +48,27 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
 	const { id, columns } = itemToEdit || { id: '', columns: [] };
-	const [ cols, setCols ] = useState<string[]>(columns);
+	const [ cols, setCols ] = useState<string[]>([...columns]);
+	useEffect(() => {
+		if(cols.join(nonsense) !== columns.join(nonsense)) {
+			setCols([...columns]);
+		}
+	}, [cols, columns]);
 	const setNewInfo = (info: string, i: number) => {
 		const newCols = [...cols];
 		newCols[i] = info;
 		setCols(newCols);
 	};
-	const cancelEditing = async () => {
+	const cancelEditing = () => {
 		// If we're "open" and being closed by some other means, check and see if
 		//   1) we have disabled confirms
 		//   2) we haven't changed anything
 		// and exit silently if both are true
-		if(isOpen && (disableConfirms || cols.join(nonsense) === columns.join(nonsense))) {
+		if(disableConfirms || cols.join(nonsense) === columns.join(nonsense)) {
 			setIsOpen(false);
-			return true;
+			return;
 		}
 		// Otherwise, doublecheck
-		const thenFunc = () => {
-			setIsOpen(false);
-		};
 		return fireSwal({
 			text: "You have unsaved changes. Are you sure you want to exit?",
 			customClass: {popup: 'deleteConfirm'},
@@ -75,10 +77,8 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			confirmButtonText: "Yes, exit."
 		}).then((result: any) => {
 			if(result.isConfirmed) {
-				thenFunc();
-				return true;
+				setIsOpen(false);
 			}
-			return false;
 		});
 	};
 	const maybeSaveNewInfo = () => {
@@ -127,7 +127,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} canDismiss={cancelEditing}>
+		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>
@@ -144,7 +144,6 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			<IonContent className="hasSpecialLabels">
 				<IonList lines="none">
 					{columnInfo.map((col: LexiconColumn, i: number) => {
-						const info = cols[i];
 						return (
 							<React.Fragment key={`${id}:fragment:${i}`}>
 								<IonItem className="labelled">
@@ -155,7 +154,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 										aria-label={`${col.label} input`}
 										id={`${id}:input:column${i}`}
 										className="ion-margin-top serifChars"
-										value={info}
+										value={cols[i]}
 										onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}
 									></IonInput>
 								</IonItem>

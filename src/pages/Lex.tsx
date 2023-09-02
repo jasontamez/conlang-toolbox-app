@@ -65,7 +65,7 @@ interface LexItem {
 	}
 	data: {
 		delFromLex: Function
-		setEditingItem: Function
+		beginEdit: Function
 		maybeExpand: Function
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
@@ -90,7 +90,7 @@ function maybeExpand (e: any) {
 const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 	const {
 		delFromLex,
-		setEditingItem,
+		beginEdit,
 		maybeExpand,
 		columns,
 		lexicon
@@ -103,9 +103,10 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 			key={`${id}:slidingItem`}
 			id={id}
 			style={style}
+			className="lexiconDisplay"
 		>
-			<IonItemOptions side="end" className="lexiconDisplay serifChars">
-				<IonItemOption color="primary" onClick={() => setEditingItem(lex)}>
+			<IonItemOptions side="end" className="serifChars">
+				<IonItemOption color="primary" onClick={() => beginEdit(lex)}>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
 				<IonItemOption color="danger" onClick={() => delFromLex(lex)}>
@@ -113,12 +114,12 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				</IonItemOption>
 			</IonItemOptions>
 			<IonItem className={
-				"lexRow lexiconDisplay serifChars "
+				"lexRow serifChars "
 				+ (index % 2 ? "even" : "odd")
 			}>
 				{cols.map((item: string, i: number) => (
 					<div
-						onClick={() => maybeExpand()}
+						onClick={(e) => maybeExpand(e)}
 						key={`${id}:col${i}`}
 						className={
 							"lexItem selectable "
@@ -231,6 +232,7 @@ const Lex = (props: PageData) => {
 	const delFromLex = useCallback((item: Lexicon) => {
 		let title: string = item.columns.join(" / ");
 		const thenFunc = () => dispatch(deleteLexiconItem(item.id));
+		$i("mainLexList").closeSlidingItems();
 		if(disableConfirms) {
 			thenFunc();
 		} else {
@@ -243,10 +245,15 @@ const Lex = (props: PageData) => {
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
 	}, [dispatch, disableConfirms]);
-	const createItemData = memoizeOne((delFromLex, setEditingItem, maybeExpand, columns, lexicon) => ({
-		delFromLex, setEditingItem, maybeExpand, columns, lexicon
+	const beginEdit = useCallback((item: Lexicon, id: string) => {
+		setEditingItem(item);
+		setIsOpenEditLexItem(true);
+		$i("mainLexList").closeSlidingItems();
+	}, []);
+	const createItemData = memoizeOne((delFromLex, beginEdit, maybeExpand, columns, lexicon) => ({
+		delFromLex, beginEdit, maybeExpand, columns, lexicon
 	}));
-	const fixedSizeListData = createItemData(delFromLex, setEditingItem, maybeExpand, columns, lexicon);
+	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeExpand, columns, lexicon);
 	return (
 		<IonPage>
 			<EditLexiconItemModal
@@ -323,7 +330,7 @@ const Lex = (props: PageData) => {
 						<IonTextarea aria-label="Description" value={description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
 					</IonItem>
 				</IonList>
-				<IonList lines="none">
+				<IonList lines="none" id="mainLexList">
 					<IonGrid id="theLexiconHeader">
 						<IonRow>
 							<IonCol>
@@ -346,7 +353,7 @@ const Lex = (props: PageData) => {
 									{columns.map((column: LexiconColumn) => (
 										<div
 											className={
-												(truncateColumns ? "ion-text-wrap " : "")
+												(truncateColumns ? "" : "ion-text-wrap ")
 												+ column.size
 											}
 											style={ { overflowY: "hidden" }}
