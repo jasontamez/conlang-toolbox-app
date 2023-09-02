@@ -320,6 +320,12 @@ export function updateWordListsDisplay(payload: (keyof types.WL)[]) {
 export function toggleWordListsBoolean(payload: "textCenter" | "showingCombos") {
 	return {type: consts.TOGGLE_WORD_LISTS_BOOLEAN, payload};
 }
+export function addCustomHybridMeaning(payload: types.WL[]) {
+	return {type: consts.ADD_CUSTOM_HYBRID_MEANING, payload};
+}
+export function deleteCustomHybridMeaning(payload: string) {
+	return {type: consts.DELETE_CUSTOM_HYBRID_MEANING, payload};
+}
 
 //
 // LOGS

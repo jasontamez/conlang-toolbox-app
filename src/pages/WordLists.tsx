@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
 	IonPage,
 	IonHeader,
@@ -26,7 +26,9 @@ import {
 	updateWordListsDisplay,
 	changeView,
 	toggleWordListsBoolean,
-	addItemstoLexiconColumn
+	addItemstoLexiconColumn,
+	addCustomHybridMeaning,
+	deleteCustomHybridMeaning
 } from '../components/ReduxDucksFuncs';
 import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { WordList, WordListSources } from '../components/WordLists';
@@ -44,7 +46,7 @@ const Home = (props: PageData) => {
 	const [unlinking, setUnlinking] = useState<boolean>(false);
 	const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
-	const [wordListsState, lexColumns] = useSelector((state: any) => [state.wordListsState, state.lexicon.columns], shallowEqual);
+	const [disableConfirms, wordListsState, lexColumns] = useSelector((state: any) => [state.appSettings.disableConfirms, state.wordListsState, state.lexicon.columns], shallowEqual);
 	const {
 		display,
 		showingCombos,
@@ -63,6 +65,11 @@ const Home = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
+	useEffect(() => {
+		if(linking && !showingCombos) {
+			setLinking(false);
+		}
+	}, [showingCombos, linking]);
 
 	// // //
 	// Save to Lexicon
@@ -141,8 +148,8 @@ const Home = (props: PageData) => {
 		saveToLexicon(words);
 	};
 	const maybeSaveThisWord = useCallback((id: string, text: string) => {
-		const newObject = {...savedWordsObject};
 		if(pickAndSave || linking) {
+			const newObject = {...savedWordsObject};
 			if(savedWordsObject[id]) {
 				setSavedWords(savedWords.filter(word => word.id !== id));
 				delete newObject[id];
@@ -151,12 +158,76 @@ const Home = (props: PageData) => {
 				newObject[id] = true;
 			}
 			setSavedWordsObject(newObject);
+		} else if (unlinking && id.length !== 36) {
+			dispatch(deleteCustomHybridMeaning(id));
 		}
-	}, [savedWords, savedWordsObject, pickAndSave, linking]);
+	}, [savedWords, savedWordsObject, pickAndSave, linking, unlinking, dispatch]);
 
 	// // //
 	// Combine Into New Meaning
 	// // //
+
+	const toggleLinking = () => {
+		if(linking) {
+			if(savedWords.length > 1) {
+				// We have information left over. Do we want to keep it?
+				const thenFunc = (result: any) => {
+					if(result.isConfirmed === true) {
+						// SAVE
+						saveNewMeaning();
+					} else if (result.isConfirmed !== false) {
+						// Probably just cancelling the alert some other way?
+						return;
+					}
+					setSavedWords([]);
+					setSavedWordsObject({});
+					setLinking(false);
+				};
+				if(!disableConfirms) {
+					return fireSwal({
+						title: "Stop Linking?",
+						text: "You have selected some meanings. Do you want to save them?",
+						customClass: {popup: 'deleteConfirm'},
+						icon: 'warning',
+						showCancelButton: true,
+						cancelButtonText: "Discard",
+						confirmButtonText: "Save"
+					}).then(thenFunc);
+				}
+				return thenFunc({isConfirmed: false});
+			}
+			// 0-1 meanings selected: just ignore and toggle off
+			setLinking(false);
+			setSavedWords([]);
+			setSavedWordsObject({});
+			return;
+		}
+		setLinking(true);
+		return fireSwal({
+			title: "Tap meanings you want to link, in the order you wish to link them.",
+			toast: true,
+			timer: 5000,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});
+	};
+	const saveNewMeaning = (makeToast: boolean = true) => {
+		dispatch(addCustomHybridMeaning(savedWords));
+		makeToast && fireSwal({
+			title: "Combination saved.",
+			toast: true,
+			timer: 2500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});
+	};
+	const doneLinking = () => {
+		saveNewMeaning();
+		setSavedWords([]);
+		setSavedWordsObject({});
+	};
 
 	return (
 		<IonPage>
@@ -201,12 +272,14 @@ const Home = (props: PageData) => {
 							<IonButton fill="outline" onClick={() => doPickAndSave()}>
 								<IonIcon slot="icon-only" icon={saveOutline} />
 							</IonButton>
-							<IonButton fill={linking ? "solid" : "outline"} color="secondary" onClick={() => setLinking(!linking)}>
+							<IonButton fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>
 								<IonIcon slot="icon-only" src="svg/link.svg" />
 							</IonButton>
-							{showingCombos && <IonButton fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => setUnlinking(!unlinking)}>
-								<IonIcon slot="icon-only" src="svg/unlink.svg" />
-							</IonButton>}
+							{showingCombos &&
+								<IonButton disabled={combinations.length === 0} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => setUnlinking(!unlinking)}>
+									<IonIcon slot="icon-only" src="svg/unlink.svg" />
+								</IonButton>
+							}
 						</div>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
@@ -219,13 +292,19 @@ const Home = (props: PageData) => {
 							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
 						</IonButton>
 					</IonItem>
-					<div id="outputPaneWL" className={(pickAndSave ? "pickAndSave " : "") + "wordList"}>
+					<IonItem className={linking ? "" : "hide"}>
+						<IonLabel>Current Combination: {savedWords.join("; ")}</IonLabel>
+						<IonButton disabled={savedWords.length <= 1} slot="end" strong={true} color="success" onClick={() => doneLinking()}>
+							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save
+						</IonButton>
+					</IonItem>
+					<div id="outputPaneWL" className={"wordlist" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
 						{showingCombos && combinations.map((combo: WLCombo) => {
 							const { id, parts } = combo;
 							const word = parts.map((w: WL) => w.word).join("; ");
 							const classes =
 								(savedWordsObject[id] ? "saved " : "")
-								+ "word ion-text-"
+								+ "word combo ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
 								<div onClick={() => maybeSaveThisWord(id, word)} key={id} id={id} className={classes}>{word}</div>

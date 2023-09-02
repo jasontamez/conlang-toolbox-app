@@ -231,8 +231,8 @@ const reduceWordListsState = (original: types.WordListsState) => {
 	return {
 		...original,
 		display: [...original.display],
-		combinations: original.combinations.map((o: types.WLCombo) => {
-			const { id, parts } = o;
+		combinations: original.combinations.map((obj: types.WLCombo) => {
+			const { id, parts } = obj;
 			return { id, parts: parts.map(part => ({...part}))};
 		})
 	};
@@ -1228,6 +1228,22 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.TOGGLE_WORD_LISTS_BOOLEAN:
 			final = reduceAllBut([], state);
 			final.wordListsState[(payload as keyof types.WordListsState) as "textCenter"] = !final.wordListsState[payload as keyof types.WordListsState];
+			break;
+		case consts.ADD_CUSTOM_HYBRID_MEANING:
+			const newState = reduceWordListsState(state.wordListsState);
+			newState.combinations.push(payload);
+			final = {
+				...reduceAllBut(["wordListsState"], state),
+				wordListsState: newState
+			};
+			break;
+		case consts.DELETE_CUSTOM_HYBRID_MEANING:
+			const newerState = reduceWordListsState(state.wordListsState);
+			newerState.combinations = newerState.combinations.filter(combo => combo.id !== payload);
+			final = {
+				...reduceAllBut(["wordListsState"], state),
+				wordListsState: newerState
+			};
 			break;
 
 
