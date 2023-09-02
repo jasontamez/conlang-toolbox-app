@@ -1085,7 +1085,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.DELETE_LEXICON_ITEM:
 			LO = {...state.lexicon};
-			LO.lexicon = LO.lexicon.slice(0, payload).concat(LO.lexicon.slice(payload + 1));
+			LO.lexicon = LO.lexicon.filter(lex => lex.id !== payload);
 			LO = reduceLexiconState(LO);
 			final = {
 				...reduceAllBut(["lexicon"], state),
@@ -1110,11 +1110,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-
-// functions below need to be doublechecked
-		/*case consts.UPDATE_LEXICON_EDITING:
-			LO = reduceLexiconState(state.lexicon);
-			LO.editing = payload;
+		case consts.DO_EDIT_LEXICON_ITEM:
+			LO = {...state.lexicon};
+			LO.lexicon = LO.lexicon.map(lex => lex.id === payload.id ? payload : lex);
+			LO = reduceLexiconState(LO);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

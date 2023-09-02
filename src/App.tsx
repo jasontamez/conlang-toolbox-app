@@ -23,6 +23,8 @@ import Settings from "./pages/AppSettings";
 import Info from './pages/AppInfo';
 import fireSwal from './components/Swal';
 
+import doUpdate095 from './updaters/UpdateTo095';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -148,88 +150,7 @@ const App = memo(() => {
 				if(storedState !== null) {
 					if(storedState && (typeof storedState) === "object") {
 						if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
-							// DELETE SOME PROPS
-							if(storedState.modalState) {
-								delete storedState.modalState;
-							}
-							if(storedState.temporaryInfo) {
-								delete storedState.temporaryInfo;
-							}
-							// RENAME SOME PROPS
-							if(storedState.wordgenRewriteRules) {
-								storedState.wordgenTransforms = storedState.wordgenRewriteRules;
-								delete storedState.wordgenRewriteRules;
-							}
-							if(storedState.wordgenCategories) {
-								storedState.wordgenCharGroups = storedState.wordgenCategories;
-								delete storedState.wordgenCategories;
-							}
-							if(storedState.wordevolveCategories) {
-								storedState.wordevolveCharGroups = storedState.wordevolveCategories;
-								delete storedState.wordevolveCategories;
-							}
-							// UPDATE WORD LISTS
-							storedState.wordListsState.combinations = [];
-							storedState.wordListsState.showingCombos = false;
-							// UPDATE LEXICON
-							if(storedState.lexicon && storedState.lexicon.key !== undefined) {
-								interface Lexicon094 {
-									key: string
-									lastSave: number
-									title: string
-									description: string
-									columns: number
-									columnOrder: number[]
-									columnTitles: string[]
-									columnSizes: ("s" | "m" | "l")[]
-									sort: number[]
-									sorted: boolean
-									lexicon: {
-										key: string
-										columns: string[]
-									}[]
-									waitingToAdd: any
-									editing: number | undefined
-									colEdit: any
-									lexiconWrap: boolean
-								};
-								const {
-									key,
-									lastSave,
-									title,
-									description,
-									columnOrder,
-									columnTitles,
-									columnSizes,
-									sort,
-									lexicon,
-									lexiconWrap
-								} = storedState.lexicon as Lexicon094;
-								const [col, dir] = sort;
-								storedState.lexicon = {
-									id: key,
-									lastSave,
-									title,
-									description,
-									truncateColumns: !lexiconWrap,
-									columns: columnOrder.map((col: any) => {
-										return {
-											id: "0" + String(col),
-											label: columnTitles[col],
-											size: columnSizes[col]
-										};
-									}),
-									sortDir: !!dir,
-									sortPattern: [col, ...columnSizes.filter((c: any, i: number) => (i !== col))],
-									lexicon: lexicon.map((lex: any) => {
-										const {key, columns} = lex;
-										return {
-											id: key,
-											columns: columnOrder.map((col: number) => columns[col])
-										};
-									})
-								};
-							}
+							storedState = doUpdate095(storedState);
 						}
 						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
 							// Do stuff to possibly bring storedState up to date

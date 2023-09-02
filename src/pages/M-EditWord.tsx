@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -20,35 +20,69 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, Lexicon } from '../components/ReduxDucksTypes';
+import { useSelector, useDispatch } from "react-redux";
+import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../components/ReduxDucksTypes';
 import {
 	doEditLexiconItem,
-	cancelEditLexiconItem,
 	deleteLexiconItem
 } from '../components/ReduxDucksFuncs';
 import fireSwal from '../components/Swal';
 
-const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
-	const dispatch = useDispatch();
-	const [settings, lexicon] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
-	const thisSingularItem: Lexicon = {...lexicon.lexicon[lexicon.editing]};
-	const editing = thisSingularItem.columns ? [...thisSingularItem.columns] : [];
-	while(editing.length < lexicon.columns) {
-		editing.push("");
+interface LexItemProps extends ExtraCharactersModalOpener {
+	itemToEdit: Lexicon | null
+	columnInfo: LexiconColumn[]
+}
+
+function garble () {
+	const e = Math.floor(Math.random() * 10) + 15;
+	let output = "";
+	for (let x = 0; x < e; x++) {
+		output += "qwrtpsdfghjklzxcvbnm!"[Math.floor(Math.random() * 20)];
 	}
+	return output;
+};
+const nonsense = garble();
+
+const EditLexiconItemModal = (props: LexItemProps) => {
+	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo } = props;
+	const dispatch = useDispatch();
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
+	const { id, columns } = itemToEdit || { id: '', columns: [] };
+	const [ cols, setCols ] = useState<string[]>(columns);
 	const setNewInfo = (info: string, i: number) => {
-		editing[i] = info;
+		const newCols = [...cols];
+		newCols[i] = info;
+		setCols(newCols);
 	};
-	const theOrder = lexicon.columnOrder;
-	const theTitles = lexicon.columnTitles;
-	const cancelEditing = () => {
-		dispatch(cancelEditLexiconItem());
-		setIsOpen(false);
+	const cancelEditing = async () => {
+		// If we're "open" and being closed by some other means, check and see if
+		//   1) we have disabled confirms
+		//   2) we haven't changed anything
+		// and exit silently if both are true
+		if(isOpen && (disableConfirms || cols.join(nonsense) === columns.join(nonsense))) {
+			setIsOpen(false);
+			return true;
+		}
+		// Otherwise, doublecheck
+		const thenFunc = () => {
+			setIsOpen(false);
+		};
+		return fireSwal({
+			text: "You have unsaved changes. Are you sure you want to exit?",
+			customClass: {popup: 'deleteConfirm'},
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: "Yes, exit."
+		}).then((result: any) => {
+			if(result.isConfirmed) {
+				thenFunc();
+				return true;
+			}
+			return false;
+		});
 	};
 	const maybeSaveNewInfo = () => {
-		if(editing.every((i: string) => !i)) {
+		if(cols.every((i: string) => !i.trim())) {
 			fireSwal({
 				title: "Error",
 				icon: "error",
@@ -57,9 +91,8 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		thisSingularItem.columns = editing;
 		setIsOpen(false);
-		dispatch(doEditLexiconItem(thisSingularItem));
+		dispatch(doEditLexiconItem({id, columns: cols}));
 		fireSwal({
 			title: "Item updated!",
 			toast: true,
@@ -71,7 +104,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 	const delFromLex = () => {
 		const thenFunc = () => {
 			setIsOpen(false);
-			dispatch(deleteLexiconItem(lexicon.editing));
+			dispatch(deleteLexiconItem(id));
 			fireSwal({
 				title: "Item deleted",
 				customClass: {popup: 'dangerToast'},
@@ -81,7 +114,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 				showConfirmButton: false
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -94,7 +127,7 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} canDismiss={cancelEditing}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>
@@ -110,14 +143,21 @@ const EditLexiconItemModal = (props: ExtraCharactersModalOpener) => {
 			</IonHeader>
 			<IonContent className="hasSpecialLabels">
 				<IonList lines="none">
-					{theOrder.map((i: number) => {
+					{columnInfo.map((col: LexiconColumn, i: number) => {
+						const info = cols[i];
 						return (
-							<React.Fragment key={`${thisSingularItem.key}-label-input-${i}`}>
+							<React.Fragment key={`${id}:fragment:${i}`}>
 								<IonItem className="labelled">
-									<IonLabel>{theTitles[i]}</IonLabel>
+									<IonLabel>{col.label}</IonLabel>
 								</IonItem>
 								<IonItem>
-									<IonInput aria-label={`${theTitles[i]} input`} id={`thislex${i}`} className="ion-margin-top serifChars" value={editing[i]} onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}></IonInput>
+									<IonInput
+										aria-label={`${col.label} input`}
+										id={`${id}:input:column${i}`}
+										className="ion-margin-top serifChars"
+										value={info}
+										onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}
+									></IonInput>
 								</IonItem>
 							</React.Fragment>
 						);

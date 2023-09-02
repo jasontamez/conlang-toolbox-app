@@ -26,7 +26,6 @@ import {
 } from '@ionic/react';
 import {
 	add,
-//	construct,
 	trash,
 	saveOutline,
 	globeOutline,
@@ -42,7 +41,6 @@ import memoizeOne from 'memoize-one';
 
 import {
 	updateLexiconText,
-	startEditLexiconItem,
 	deleteLexiconItem,
 	addLexiconItem
 } from '../components/ReduxDucksFuncs';
@@ -50,7 +48,6 @@ import { Lexicon, LexiconColumn, LexiconObject, PageData } from '../components/R
 import { $i } from '../components/DollarSignExports';
 import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
-import debounce from '../components/Debounce';
 import './Lexicon.css';
 
 import EditLexiconItemModal from './M-EditWord';
@@ -68,7 +65,7 @@ interface LexItem {
 	}
 	data: {
 		delFromLex: Function
-		editInLex: Function
+		setEditingItem: Function
 		maybeExpand: Function
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
@@ -90,24 +87,55 @@ function maybeExpand (e: any) {
 	}
 };
 
+const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
+	const {
+		delFromLex,
+		setEditingItem,
+		maybeExpand,
+		columns,
+		lexicon
+	} = data;
+	const lex: Lexicon = lexicon[index];
+	const cols = lex.columns;
+	const id = lex.id;
+	return (
+		<IonItemSliding
+			key={`${id}:slidingItem`}
+			id={id}
+			style={style}
+		>
+			<IonItemOptions side="end" className="lexiconDisplay serifChars">
+				<IonItemOption color="primary" onClick={() => setEditingItem(lex)}>
+					<IonIcon slot="icon-only" src="svg/edit.svg" />
+				</IonItemOption>
+				<IonItemOption color="danger" onClick={() => delFromLex(lex)}>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem className={
+				"lexRow lexiconDisplay serifChars "
+				+ (index % 2 ? "even" : "odd")
+			}>
+				{cols.map((item: string, i: number) => (
+					<div
+						onClick={() => maybeExpand()}
+						key={`${id}:col${i}`}
+						className={
+							"lexItem selectable "
+							+ columns[i].size
+						}
+					>{item}</div>
+				))}
+				<div className="xs">
+					<IonIcon size="small" src="svg/drag-indicator.svg" />
+				</div>
+			</IonItem>
+		</IonItemSliding>
+	);
+}, areEqual);
+
+
 const Lex = (props: PageData) => {
-	const dispatch = useDispatch();
-	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [isWorking, setIsWorking] = useState<boolean>(false);
-	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
-	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
-	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
-	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
-	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
-	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
-	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
-	const height = useWindowHeight();
-	const [lexHeadersHidden, setLexHeadersHidden] = useState<boolean>(false);
-	const [lexiconHeight, setLexiconHeight] = useState<number>(Math.ceil(height / 3 * 2));
-	const [hasLoaded, setHasLoaded] = useState<boolean>(false);
-	useIonViewDidEnter(() => setHasLoaded(true));
-	useIonViewDidLeave(() => setHasLoaded(false));
 	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
 	const {
 		//id,
@@ -123,20 +151,26 @@ const Lex = (props: PageData) => {
 		storedCustomInfo,
 		storedCustomIDs*/
 	} = lexObject;
-	/*
-	const {
-		title,
-		description,
-		columns,
-		columnOrder,
-		columnTitles,
-		columnSizes,
-		sort,
-		waitingToAdd,
-		lexiconWrap,
-		lexicon
-	} = lexObject;
-	*/
+	const dispatch = useDispatch();
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isWorking, setIsWorking] = useState<boolean>(false);
+	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
+	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
+	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
+	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
+	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
+	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
+	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
+	const [editingItem, setEditingItem] = useState<Lexicon | null>(null);
+
+	// Height variables
+	const height = useWindowHeight();
+	const [lexHeadersHidden, setLexHeadersHidden] = useState<boolean>(false);
+	const [lexiconHeight, setLexiconHeight] = useState<number>(Math.ceil(height / 3 * 2));
+	const [hasLoaded, setHasLoaded] = useState<boolean>(false);
+	useIonViewDidEnter(() => setHasLoaded(true));
+	useIonViewDidLeave(() => setHasLoaded(false));
 	const topBar = $i("lexiconTopBar");
 	const lexInfoHeader = $i("lexiconTitleAndDescription");
 	const lexHeader = $i("theLexiconHeader");
@@ -156,7 +190,7 @@ const Lex = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		debounce(dispatch, [updateLexiconText(prop, value)], (prop === "description" ? 2000 : 1000), "updateLexText");
+		dispatch(updateLexiconText(prop, value));
 	};
 	const addToLex = () => {
 		const newInfo: string[] = [];
@@ -194,21 +228,9 @@ const Lex = (props: PageData) => {
 			columns: newInfo
 		}));
 	};
-	const delFromLex = useCallback((key: string) => {
-		let title: string = "";
-		let index: number = -1;
-		if(lexicon.every((lx: Lexicon, i: number) => {
-			if(lx.id === key) {
-				index = i;
-				title = lx.columns.join(" / ");
-				return false;
-			}
-			return true;
-		})) {
-			console.log("Bad key: " + key);
-			return;
-		}
-		const thenFunc = () => dispatch(deleteLexiconItem(index));
+	const delFromLex = useCallback((item: Lexicon) => {
+		let title: string = item.columns.join(" / ");
+		const thenFunc = () => dispatch(deleteLexiconItem(item.id));
 		if(disableConfirms) {
 			thenFunc();
 		} else {
@@ -220,76 +242,19 @@ const Lex = (props: PageData) => {
 				confirmButtonText: "Yes, delete it."
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
-	}, [dispatch, lexicon, disableConfirms]);
-	const editInLex = useCallback((key: string) => {
-		//need modal
-		let index: number = -1;
-		if(lexicon.every((lx: Lexicon, i: number) => {
-			if(lx.id === key) {
-				index = i;
-				return false;
-			}
-			return true;
-		})) {
-			console.log("Bad key: " + key);
-			return;
-		}
-		dispatch(startEditLexiconItem(index));
-		setIsOpenEditLexItem(true);
-	}, [dispatch, lexicon]);
-	const createItemData = memoizeOne((delFromLex, editInLex, maybeExpand, columns, lexicon) => ({
-		delFromLex, editInLex, maybeExpand, columns, lexicon
+	}, [dispatch, disableConfirms]);
+	const createItemData = memoizeOne((delFromLex, setEditingItem, maybeExpand, columns, lexicon) => ({
+		delFromLex, setEditingItem, maybeExpand, columns, lexicon
 	}));
-	const fixedSizeListData = createItemData(delFromLex, editInLex, maybeExpand, columns, lexicon);
-	const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
-		const {
-			delFromLex,
-			editInLex,
-			maybeExpand,
-			columns,
-			lexicon
-		} = data;
-		const lex: Lexicon = lexicon[index];
-		const cols = lex.columns;
-		const id = lex.id;
-		return (
-			<IonItemSliding
-				key={id}
-				id={id}
-				style={style}
-			>
-				<IonItemOptions side="end" className="lexiconDisplay serifChars">
-					<IonItemOption color="primary" onClick={() => editInLex(id)}>
-						<IonIcon slot="icon-only" src="svg/edit.svg" />
-					</IonItemOption>
-					<IonItemOption color="danger" onClick={() => delFromLex(id)}>
-						<IonIcon slot="icon-only" icon={trash} />
-					</IonItemOption>
-				</IonItemOptions>
-				<IonItem className={
-					"lexRow lexiconDisplay serifChars "
-					+ (index % 2 ? "even" : "odd")
-				}>
-					{cols.map((item: string, i: number) => (
-						<div
-							onClick={() => maybeExpand()}
-							key={`${id}:col${i}`}
-							className={
-								"lexItem selectable "
-								+ columns[i].size
-							}
-						>{item}</div>
-					))}
-					<div className="xs">
-						<IonIcon size="small" src="svg/drag-indicator.svg" />
-					</div>
-				</IonItem>
-			</IonItemSliding>
-		);
-	}, areEqual);
+	const fixedSizeListData = createItemData(delFromLex, setEditingItem, maybeExpand, columns, lexicon);
 	return (
 		<IonPage>
-			<EditLexiconItemModal {...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)} openECM={setIsOpenECM} />
+			<EditLexiconItemModal
+				{...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
+				openECM={setIsOpenECM}
+				itemToEdit={editingItem}
+				columnInfo={columns}
+			/>
 			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
 			<LoadLexiconModal
 				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
@@ -303,7 +268,6 @@ const Lex = (props: PageData) => {
 				lexInfo={storedLexInfo}
 				setLexInfo={setStoredLexInfo}
 			/>
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<LexiconStorageModal
 				{...props.modalPropsMaker(isOpenLexStorage, setIsOpenLexStorage)}
 				openLoad={setIsOpenLoadLex}
@@ -328,6 +292,7 @@ const Lex = (props: PageData) => {
 				spinner="bubbles"
 				duration={1000}
 			/>
+			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader id="lexiconTopBar">
 				<IonToolbar>
 					<IonButtons slot="start">

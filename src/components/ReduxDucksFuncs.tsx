@@ -242,23 +242,17 @@ export function cancelEditLexiconItem() {
 export function doEditLexiconItem(payload: types.Lexicon) {
 	return {type: consts.DO_EDIT_LEXICON_ITEM, payload};
 }
-export function deleteLexiconItem(payload: number) {
+export function deleteLexiconItem(payload: string) {
 	return {type: consts.DELETE_LEXICON_ITEM, payload};
+}
+export function toggleLexiconWrap() {
+	return {type: consts.TOGGLE_LEXICON_WRAP};
 }
 //
 export function addLexiconItem(payload: types.Lexicon) {
 	return {type: consts.ADD_LEXICON_ITEM, payload};
 }
-export function addDeferredLexiconItems(payload: string[]) {
-	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
-}
-export function removeDeferredLexiconItem(payload: string) {
-	return {type:consts.REMOVE_DEFERRED_LEXICON_ITEM, payload}
-}
-export function clearDeferredLexiconItems() {
-	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
-}
-export function updateLexiconText(prop: "title" | "description" | "key", value: string) {
+export function updateLexiconText(prop: "title" | "description" | "id", value: string) {
 	return {type: consts.UPDATE_LEXICON_PROP, payload: {prop, value}};
 }
 export function updateLexiconNumber(prop: "lastSave", value: number) {
@@ -277,8 +271,14 @@ export function updateLexiconOrder(payload: types.Lexicon[]) {
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
 }
-export function toggleLexiconWrap() {
-	return {type: consts.TOGGLE_LEXICON_WRAP};
+export function addDeferredLexiconItems(payload: string[]) {
+	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
+}
+export function removeDeferredLexiconItem(payload: string) {
+	return {type:consts.REMOVE_DEFERRED_LEXICON_ITEM, payload}
+}
+export function clearDeferredLexiconItems() {
+	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
 }
 
 export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], dir: boolean, truncate: boolean) {

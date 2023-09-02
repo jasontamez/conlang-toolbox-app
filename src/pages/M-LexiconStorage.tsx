@@ -23,6 +23,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
+
 import {
 	updateLexiconText,
 	updateLexiconNumber,
@@ -31,6 +32,7 @@ import {
 import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import fireSwal from '../components/Swal';
+import { blankAppState } from '../components/ReduxDucks';
 
 // load, delete, export
 interface StorageModalProps extends ModalProperties {
@@ -44,23 +46,19 @@ interface StorageModalProps extends ModalProperties {
 const LexiconStorageModal = (props: StorageModalProps) => {
 	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading, setLexInfo } = props;
 	const dispatch = useDispatch();
-	const [appSettings, stateLexicon] = useSelector((state: any) => [state.appSettings, state.lexicon]);
+	const [disableConfirms, stateLexicon] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
 	const {
-		columns,
-		columnOrder,
-		columnTitles,
-		columnSizes,
-		sort,
-		waitingToAdd,
-		lexiconWrap,
+		id,
 		title,
-		key,
 		description,
 		lexicon
 	} = stateLexicon;
 	const clearLexicon = () => {
 		const thenFunc = () => {
 			const newLex: LexiconObject = {
+				...blankAppState.lexicon
+			};
+			/*const newLex: LexiconObject = {
 				key: "",
 				lastSave: 0,
 				title: "",
@@ -76,7 +74,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				editing: undefined,
 				colEdit: undefined,
 				lexiconWrap: lexiconWrap
-			};
+			};*/
 			dispatch(updateLexicon(newLex));
 			setIsOpen(false);
 			fireSwal({
@@ -88,7 +86,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				position: "top"
 			});
 		};
-		if(!(title || key || description || lexicon.length > 0)) {
+		if(!(title || id || description || lexicon.length > 0)) {
 			fireSwal({
 				title: "Nothing to clear",
 				customClass: {popup: 'dangerToast'},
@@ -97,7 +95,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				timerProgressBar: true,
 				position: "top"
 			});
-		} else if(appSettings.disableConfirms) {
+		} else if(disableConfirms) {
 			thenFunc();
 		} else {
 			fireSwal({
@@ -125,7 +123,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 	};
 	const saveLexicon: any = (
 		announce: string = "Lexicon saved.",
-		saveKey: string = key,
+		saveKey: string = id,
 		overwrite: boolean = true
 	) => {
 		// Save original key
@@ -136,7 +134,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			return lexiconSaveError();
 		} else if(!saveKey) {
 			saveKey = uuidv4();
-			dispatch(updateLexiconText("key", saveKey));
+			dispatch(updateLexiconText("id", saveKey));
 		}
 		// Dispatch to state
 		dispatch(updateLexiconNumber("lastSave", now));
@@ -145,21 +143,20 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		//  so we will need to do some creative variable work
 		const lex: LexiconObject = {...stateLexicon};
 		// Use possibly-new key
-		lex.key = saveKey;
+		lex.id = saveKey;
 		// Use 'now'
 		lex.lastSave = now;
 		// Deep copy lex.lexicon
-		lex.lexicon = lex.lexicon.map((lx: Lexicon) => {
+		lex.lexicon = lexicon.map((lx: Lexicon) => {
+			const { id, columns } = lx;
 			return {
-				...lx,
-				columns: [...lx.columns]
+				id,
+				columns: [...columns]
 			};
 		});
 		// Deep copy column info
-		lex.columnOrder = [...lex.columnOrder];
-		lex.columnTitles = [...lex.columnTitles];
-		lex.columnSizes = [...lex.columnSizes];
-		lex.sort = [...lex.sort];
+		lex.sortPattern = [...lex.sortPattern];
+		lex.columns = lex.columns.map(lx => ({...lx}));
 		LexiconStorage.setItem(saveKey, lex)
 			.then(() => {
 				// If we're overwriting, and it's a new key, delete the old one
@@ -182,7 +179,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			return lexiconSaveError();
 		}
 		const newKey = uuidv4();
-		dispatch(updateLexiconText("key", newKey));
+		dispatch(updateLexiconText("id", newKey));
 		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
 	};
 	const lexiconSaveError = () => {
@@ -209,12 +206,6 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		setIsOpen(false);
 		openExport(true);
 	};
-	// TO-DO: MOVE TEXT WRAP (and sort) TO EDIT LEXICON MODAL
-	/*
-					<IonItem button={true} onClick={() => toggleWrap()}>
-						<IonLabel>{lexiconWrap ? "Disable" : "Allow"} Text Wrapping</IonLabel>
-					</IonItem>
-	*/
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
