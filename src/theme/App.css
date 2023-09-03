@@ -227,17 +227,9 @@ ion-app .fullScreen .collapse div ion-button {
 }
 
 #WGoutput {
-	display: grid;
-	grid-template-columns: max-content 1fr min-content;
-	grid-template-rows: min-content max-content;
-	grid-template-areas:
-		"EV .. BR"
-		"OP OP BR";
-	gap: 0.25rem;
-	justify-items: start;
-	align-items: start;
+	display: flex;
+	align-items: flex-start;
 	justify-content: stretch;
-	align-content: start;
 	margin: 0.5rem 0.5rem 0;
 }
 #WEoutput {
@@ -276,6 +268,16 @@ ion-app .fullScreen .collapse div ion-button {
 	flex-flow: row wrap;
 	justify-self: end;
 }
+#WGoutput .leftHandSide {
+	flex: 1;
+}
+#WGoutput .rightHandSide {
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
 #outputPaneWE,
 #outputPane {
 	grid-area: OP;
@@ -283,7 +285,7 @@ ion-app .fullScreen .collapse div ion-button {
 
 #outputPane,
 #outputPaneWE {
-	margin: 1rem 2rem;
+	margin: 1rem 0.5rem;
 }
 #outputPane.pickAndSave .word,
 #outputPaneWL.pickAndSave .word,

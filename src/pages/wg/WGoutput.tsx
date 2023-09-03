@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -11,18 +11,7 @@ import {
 	IonIcon,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { $i } from '../../components/DollarSignExports';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	WGTransformObject,
-	WGCharGroupObject,
-	PageData
-} from '../../components/ReduxDucksTypes';
-import {
-	changeView,
-	addDeferredLexiconItems,
-	removeDeferredLexiconItem
-} from '../../components/ReduxDucksFuncs';
 import {
 	caretForwardCircleOutline,
 	settingsOutline,
@@ -31,40 +20,71 @@ import {
 	helpCircleOutline,
 	copyOutline
 } from 'ionicons/icons';
-import OutputOptionsModal from './M-OutputOptions';
-import { OutCard } from "./WGCards";
+import { Clipboard } from '@capacitor/clipboard';
+
+import {
+	WGTransformObject,
+	WGCharGroupObject,
+	PageData
+} from '../../components/ReduxDucksTypes';
+import {
+	changeView
+} from '../../components/ReduxDucksFuncs';
+import { $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
-import { $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import fireSwal from '../../components/Swal';
-import { Clipboard } from '@capacitor/clipboard';
+import OutputOptionsModal from './M-OutputOptions';
+import { OutCard } from "./WGCards";
+
+async function copyText (copyString: string) {
+	if(copyString) {
+		await Clipboard.write({string: copyString});
+		//navigator.clipboard.writeText(copyText);
+		return fireSwal({
+			title: "Copied to clipboard.",
+			toast: true,
+			timer: 1500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
+	}
+	fireSwal({
+		title: "Nothing to copy.",
+		toast: true,
+		customClass: {popup: 'dangerToast'},
+		timer: 1500,
+		position: 'top',
+		timerProgressBar: true,
+		showConfirmButton: false
+	});
+};
+
 
 const WGOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const [isOpenInfo, setIsOpenInfo] = React.useState<boolean>(false);
-	const [isOpenOptions, setIsOpenOptions] = React.useState<boolean>(false);
-	const [isPickingSaving, setIsPickingSaving] = React.useState<boolean>(false);
-	const [isGenerating, setIsGenerating] = React.useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);
+	const [isPickingSaving, setIsPickingSaving] = useState<boolean>(false);
+	const [isGenerating, setIsGenerating] = useState<boolean>(false);
+
+	const [copyString, setCopyString] = useState<string>("");
+	const [errorString, setErrorString] = useState<string>("");
+	const [displayString, setDisplayString] = useState<string>("");
+	const [displayHTML, setDisplayHTML] = useState<string[][]>([]);
+	const [displayList, setDisplayList] = useState<string[]>([]);
+	const [colsNum, setColsNum] = useState<string>("auto");
+
+	const [savedWords, setSavedWords] = useState<string[]>([]);
+	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const viewInfo = ['wg', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
-	const outputPane = $i("outputPane");
-	const $d = (text: string = "") => {
-		const div = document.createElement("div");
-		text && (div.textContent = text);
-		return div;
-	};
-	const $t = (text: string, tag: string = "span") => {
-		const t = document.createElement(tag);
-		t.classList.add("word");
-		t.textContent = text;
-		t.addEventListener("click", () => maybeSaveThisWord(t));
-		return t;
-	};
 	const [
 		charGroupsObject,
 		syllablesObject,
@@ -76,44 +96,74 @@ const WGOut = (props: PageData) => {
 		state.wordgenSettings,
 		state.wordgenTransforms.list
 	], shallowEqual);
-	const charGroupMap: Map<string, WGCharGroupObject> = new Map(charGroupsObject.map);
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
-	const regExpMap: Map<string, RegExp> = new Map();
+	const {
+		monosyllablesRate,
+		maxSyllablesPerWord,
+		charGroupRunDropoff,
+		syllableBoxDropoff,
+		output,
+		showSyllableBreaks,
+		sentencesPerText,
+		capitalizeSentences,
+		declarativeSentencePre,
+		declarativeSentencePost,
+		interrogativeSentencePre,
+		interrogativeSentencePost,
+		exclamatorySentencePre,
+		exclamatorySentencePost,
+		capitalizeWords,
+		sortWordlist,
+		wordlistMultiColumn,
+		wordsPerWordlist
+	} = settingsWG;
 
-	const copyText = async () => {
-		let copyText = "";
-		if(settingsWG.output === "text") {
-			// Pseudo-text is easy to copy
-			copyText = (outputPane.textContent);
-		} else {
-			// Others need to be joined by linebreaks
-			const copied: string[] = [];
-			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
-			copyText = (copied.join("\n"));
+	// // //
+	// Memoized stuff
+	// // //
+
+	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
+		if(isPickingSaving) {
+			if(text) {
+				const newObj = {...savedWordsObject};
+				if(savedWordsObject[text]) {
+					setSavedWords(savedWords.filter(word => word !== text));
+					delete newObj[text];
+					id && $i(id).classList.remove("saved");
+				} else {
+					setSavedWords([...savedWords, text]);
+					newObj[text] = true;
+					id && $i(id).classList.add("saved");
+				}
+				setSavedWordsObject(newObj);
+			}
 		}
-		if(copyText && !copyText.match(/^You (have no|are missing)/g)) {
-			await Clipboard.write({string: copyText});
-			//navigator.clipboard.writeText(copyText);
-			return fireSwal({
-				title: "Copied to clipboard.",
-				toast: true,
-				timer: 1500,
-				position: 'top',
-				timerProgressBar: true,
-				showConfirmButton: false
-			});	
-		}
-		fireSwal({
-			title: "Nothing to copy.",
-			toast: true,
-			customClass: {popup: 'dangerToast'},
-			timer: 1500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
+	}, [savedWords, savedWordsObject, isPickingSaving]);
+	const charGroupMap = useMemo(() => {
+		const obj: {[key: string]: WGCharGroupObject} = {};
+		charGroupsObject.map.forEach((o: [string, WGCharGroupObject]) => {
+			obj[o[0]] = o[1];
 		});
-	};
+		return obj;
+	}, [charGroupsObject.map]);
+	const regExpMap = useMemo(() => {
+		// Check transforms for %CharGroup references and update them if needed
+		const newObj: { [key:string]: RegExp } = {};
+		transforms.forEach((transform: WGTransformObject) => {
+			const { seek, key } = transform;
+			let regex: RegExp;
+			if(transform.seek.indexOf("%") !== -1) {
+				// Found a possibility.
+				regex = calculateCharGroupReferenceRegex(seek, charGroupMap) as RegExp;
+			} else {
+				regex = new RegExp(seek, "g");
+			}
+			newObj[key] = regex;
+		});
+		return newObj;
+	}, [transforms, charGroupMap]);
+
 
 	const textWidthTester = document.createElement("canvas").getContext("2d");
 	textWidthTester!.font = "var(--ion-default-font)";
@@ -121,63 +171,50 @@ const WGOut = (props: PageData) => {
 		return textWidthTester!.measureText(input).width;
 	};
 	const getWidestWord = (words: string[]) => {
-		const max = Math.max(...words.map(w => determineWidth(w))) * 3;
+		const max = Math.max(...words.map(w => determineWidth(w))) * 2;
 		return Math.ceil(max).toString() + "px";
 	};
 
-	const generateOutput = async (output: HTMLElement = outputPane) => {
-		const type = settingsWG.output;
-		let endEarly = false;
+	const generateOutput = async () => {
+		const errors: string[] = [];
 		// Clear any previous output.
-		while(output.firstChild !== null) {
-			output.removeChild(output.firstChild);
-		}
+		setDisplayList([]);
+		setDisplayString("");
+		setColsNum("auto");
+		setErrorString("");
 		// Sanity check
-		if(charGroupMap.size === 0) {
-			output.append($d("You have no character groups defined."));
-			endEarly = true;
+		if(charGroupsObject.map.length === 0) {
+			errors.push("You have no character groups defined.");
 		}
 		if (!syllToggle && allSyllables.singleWord.components.length === 0) {
-			output.append($d("You have no syllables defined."));
-			endEarly = true;
+			errors.push("You have no syllables defined.");
 		}
 		if (syllToggle && 
 			(
-				(settingsWG.monosyllablesRate > 0 && allSyllables.singleWord.components.length === 0)
+				(monosyllablesRate > 0 && allSyllables.singleWord.components.length === 0)
 				|| allSyllables.wordInitial.components.length === 0
 				|| allSyllables.wordMiddle.components.length === 0
 				|| allSyllables.wordFinal.components.length === 0
 			)
 		) {
-			output.append($d("You are missing one or more types of syllables."));
-			endEarly = true;
+			errors.push("You are missing one or more types of syllables.");
 		}
-		if(endEarly) {
+		if(errors.length > 0) {
+			setErrorString(errors.join(" "));
 			return;
 		}
-		// Check transforms for %CharGroup references and update them if needed
-		transforms.forEach((transform: WGTransformObject) => {
-			let regex: RegExp;
-			if(transform.seek.indexOf("%") !== -1) {
-				// Found a possibility.
-				regex = calculateCharGroupReferenceRegex(transform.seek, charGroupMap) as RegExp;
-			} else {
-				regex = new RegExp(transform.seek, "g");
-			}
-			regExpMap.set(transform.key, regex);
-		});
 		// Determine what we're making.
-		if(type === "text") {
+		if(output === "text") {
 			// pseudotext
-			output.style.columnWidth = "auto";
-			return generatePseudoText(output);
+			return generatePseudoText();
 		}
 		// Every syllable, or a wordlist
 		setIsGenerating(true);
-		const resolveFunc = (type === "syllables") ? getEverySyllable : makeWordlist;
-		const result = await resolveFunc(settingsWG.capitalizeWords);
-		output.style.columnWidth = settingsWG.wordlistMultiColumn ? getWidestWord(result) : "auto";
-		result.forEach((bit: string) => output.append($t(bit, "div")));
+		const resolveFunc = (output === "syllables") ? getEverySyllable : makeWordlist;
+		const result = await resolveFunc();
+		setColsNum(getWidestWord(result));
+		setCopyString(result.join("\n"));
+		setDisplayList(result);
 		// columnar stuff takes a bit to process, so delay a bit?
 		setIsGenerating(false);
 	};
@@ -186,25 +223,12 @@ const WGOut = (props: PageData) => {
 	// // //
 	// Generate a psuedo-text
 	// // //
-	const generatePseudoText = async (where: HTMLElement) => {
-		const text: (string | HTMLElement)[][] = [];
-		const final: HTMLElement = $d();
-		const {
-			sentencesPerText,
-			capitalizeSentences,
-			declarativeSentencePre,
-			declarativeSentencePost,
-			interrogativeSentencePre,
-			interrogativeSentencePost,
-			exclamatorySentencePre,
-			exclamatorySentencePost
-		} = settingsWG;
-		let sentenceNumber = 0;
-		while(sentenceNumber < sentencesPerText) {
-			sentenceNumber++;
-			const sentence: (string | HTMLElement)[] = [];
-			const staging: (string | HTMLElement)[] = [];
-			let wordNumber = 0;
+	const generatePseudoText = async () => {
+		const textInfo: string[][] = [];
+		const text: string[] = [];
+		for(let sentenceNumber = 0; sentenceNumber < sentencesPerText; sentenceNumber++) {
+			const words: (string[])[] = [];
+			const sentence: string[] = [];
 			let maxWords = 3;
 			for(maxWords = 3; true; maxWords = Math.max((maxWords + 1) % 15, 3)) {
 				// The 'true' in there means this loop never ends on its own.
@@ -212,58 +236,58 @@ const WGOut = (props: PageData) => {
 					break;
 				}
 			}
-			while(wordNumber < maxWords) {
-				wordNumber++;
-				sentence.push($t(makeOneWord(wordNumber < 2 && capitalizeSentences)));
+			for(let wordNumber = 0; wordNumber < maxWords; wordNumber++) {
+				const word = makeOneWord(!wordNumber && capitalizeSentences);
+				words.push([word]);
+				sentence.push(word);
 			}
-			let full = text.join(" ");
-			staging.push(sentence.shift()!);
-			while (sentence.length > 1) {
-				staging.push(" ", sentence.shift()!);
-			}
+			let full = sentence.join(" ");
+			const length = words.length - 1;
 			const type = Math.random() * 12;
 			if(type < 9) {
 				// Declarative three-fourths the time
 				full = declarativeSentencePre + full + declarativeSentencePost;
-				declarativeSentencePre && staging.unshift(declarativeSentencePre);
-				declarativeSentencePost && staging.push(declarativeSentencePost);
+				declarativeSentencePre && words[0].unshift(declarativeSentencePre);
+				declarativeSentencePost && words[length].push(declarativeSentencePost);
 			} else if (type < 11) {
 				// Interrogative one-sixth the time
 				full = interrogativeSentencePre + full + interrogativeSentencePost;
-				interrogativeSentencePre && staging.unshift(interrogativeSentencePre);
-				interrogativeSentencePost && staging.push(interrogativeSentencePost);
+				interrogativeSentencePre && words[0].unshift(interrogativeSentencePre);
+				interrogativeSentencePost && words[length].push(interrogativeSentencePost);
 			} else {
 				// Exclamatory one-twelfth the time
 				full = exclamatorySentencePre + full + exclamatorySentencePost;
-				exclamatorySentencePre && staging.unshift(exclamatorySentencePre);
-				exclamatorySentencePost && staging.push(exclamatorySentencePost);
+				exclamatorySentencePre && words[0].unshift(exclamatorySentencePre);
+				exclamatorySentencePost && words[length].push(exclamatorySentencePost);
 			}
-			text.push(staging);
+			text.push(full);
+			textInfo.push(...words.map((word: string[], i: number) => {
+				return [sentence[i], word.join('')];
+			}));
 		}
-		text.length > 0 && final.append(...text.shift()!);
-		while(text.length > 0) {
-			final.append(" ", ...text.shift()!)
-		}
-		where.append(final);
+		const textString = text.join(" ");
+		setDisplayString(textString);
+		setCopyString(textString);
+		setDisplayHTML(textInfo);
 	};
 
 	// // //
 	// Generate Syllables
 	// // //
 	const makeMonosyllable = () => {
-		return makeSyllable(allSyllables.singleWord.components, allSyllables.singleWord.dropoffOveride || settingsWG.syllableBoxDropoff);
+		return makeSyllable(allSyllables.singleWord.components, allSyllables.singleWord.dropoffOveride || syllableBoxDropoff);
 	};
 	const makeFirstSyllable = () => {
 		const o = allSyllables[syllToggle ? "wordInitial" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
+		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
 	};
 	const makeMidSyllable = () => {
 		const o = allSyllables[syllToggle ? "wordMiddle" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
+		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
 	};
 	const makeLastSyllable = () => {
 		const o = allSyllables[syllToggle ? "wordFinal" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || settingsWG.syllableBoxDropoff);
+		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
 		let chosen;
@@ -271,10 +295,10 @@ const WGOut = (props: PageData) => {
 		if(rate === 0) {
 			return translateSyllable(syllList[Math.floor(Math.random() * max)]);
 		}
-		rate = rate + 5;
+		const increasedRate = rate + 5;
 		for(let toPick = 0; true; toPick = (toPick + 1) % max) {
 			// The 'true' in there means this loop never ends on its own.
-			if ((Math.random() * 100) < rate) {
+			if ((Math.random() * 100) < increasedRate) {
 				chosen = syllList[toPick];
 				break;
 			}
@@ -283,32 +307,34 @@ const WGOut = (props: PageData) => {
 	};
 	const translateSyllable = (syll: string) => {
 		const chars: string[] = syll.split("");
-		let output: string = "";
-		const rate = settingsWG.charGroupRunDropoff;
+		let result: string = "";
+		const rate = charGroupRunDropoff;
 		while(chars.length > 0) {
 			const current = chars.shift();
-			const charGroup = charGroupMap.get(current!);
+			const charGroup = charGroupMap[current!];
 			if(charGroup === undefined) {
-				output += current;
+				result += current;
 			} else {
-				const thisRate = (charGroup.dropoffOverride === undefined ? rate : charGroup.dropoffOverride) + 5;
-				const choices = charGroup.run;
-				const max = choices.length;
+				const {
+					dropoffOverride,
+					run
+				} = charGroup;
+				const thisRate = (dropoffOverride === undefined ? rate : dropoffOverride) + 5;
+				const max = run.length;
 				if(thisRate === 0) {
-					output += choices[Math.floor(Math.random() * max)];
+					result += run[Math.floor(Math.random() * max)];
 				} else {
-					let toPick = 0;
-					for(toPick = 0; true; toPick = (toPick + 1) % max) {
+					for(let toPick = 0; true; toPick = (toPick + 1) % max) {
 						// The 'true' in there means this loop never ends on its own.
 						if ((Math.random() * 100) < thisRate) {
-							output += choices[toPick];
+							result += run[toPick];
 							break;
 						}
 					}
 				}
 			}
 		}
-		return output;
+		return result;
 	};
 
 	// // //
@@ -317,11 +343,11 @@ const WGOut = (props: PageData) => {
 	const makeOneWord = (capitalize: boolean) => {
 		let numberOfSyllables = 1;
 		const word: string[] = [];
-		let output: string;
+		let result: string;
 		// Determine number of syllables
-		if((Math.random() * 100) >= settingsWG.monosyllablesRate) {
+		if((Math.random() * 100) >= monosyllablesRate) {
 			// More than 1. Add syllables, favoring a lower number of syllables.
-			const max = settingsWG.maxSyllablesPerWord - 2;
+			const max = maxSyllablesPerWord - 2;
 			numberOfSyllables = 2;
 			for(let toAdd = 0; true; toAdd = (toAdd + 1) % max) {
 				// The 'true' in there means this loop never ends on its own.
@@ -349,18 +375,18 @@ const WGOut = (props: PageData) => {
 			}
 		}
 		// Check for syllable break insertion
-		if(settingsWG.showSyllableBreaks) {
-			output = word.join("\u00b7");
+		if(showSyllableBreaks) {
+			result = word.join("\u00b7");
 		} else {
-			output = word.join("");
+			result = word.join("");
 		}
 		// Apply transformss
-		output = doTransform(output);
+		result = doTransform(result);
 		// Capitalize if needed
 		if(capitalize) {
-			output = output.charAt(0).toUpperCase() + output.slice(1);
+			result = result.charAt(0).toUpperCase() + result.slice(1);
 		}
-		return output;
+		return result;
 	};
 
 
@@ -369,7 +395,7 @@ const WGOut = (props: PageData) => {
 	// // //
 	const doTransform = (word: string) => {
 		transforms.forEach((transform: WGTransformObject) => {
-			word = word.replace(regExpMap.get(transform.key)!, transform.replace);
+			word = word.replace(regExpMap[transform.key]!, transform.replace);
 		});
 		return word;
 	};
@@ -377,8 +403,8 @@ const WGOut = (props: PageData) => {
 	// // //
 	// Generate Every Possible Syllable
 	// // //
-	const getEverySyllable = async (capitalize: boolean = false) => {
-		const output: string[] = [];
+	const getEverySyllable = async () => {
+		const result: string[] = [];
 		let syllables = allSyllables.singleWord.components
 		if(syllToggle) {
 			syllables = syllables.concat(
@@ -403,28 +429,34 @@ const WGOut = (props: PageData) => {
 				}
 			});
 			await res;
-			output.push(...newOutput);
+			result.push(...newOutput);
 		}
 		// Capitalize if needed
-		if(capitalize) {
-			const length = output.length;
+		if(capitalizeWords) {
+			const length = result.length;
 			for(let x = 0; x < length; x++) {
-				const word = output.shift()!;
-				output.push(word.charAt(0).toUpperCase() + word.slice(1));
+				const word = result.shift()!;
+				result.push(word.charAt(0).toUpperCase() + word.slice(1));
 			}
 		}
-		// Remove duplicates
-		const final = Array.from(new Set(output));
 		// Sort if needed
-		if(settingsWG.sortWordlist) {
-			final.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
+		if(sortWordlist) {
+			result.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
-		return final;
+		// Remove duplicates
+		let previous: string | undefined = undefined;
+		return result.filter((word: string) => {
+			if(word === previous) {
+				return false;
+			}
+			previous = word;
+			return true;
+		});
 	};
 	const recurseSyllables = async (previous: string, toGo: string) => {
 		const current = toGo.charAt(0);
 		const next = toGo.slice(1);
-		const charGroup = charGroupMap.get(current);
+		const charGroup = charGroupMap[current];
 		if(charGroup === undefined) {
 			// CharGroup not found - save as written
 			return {
@@ -441,13 +473,29 @@ const WGOut = (props: PageData) => {
 	// // //
 	// Wordlist
 	// // //
-	const makeWordlist = async (capitalize: boolean) => {
-		const words = [];
-		for (let n = 0; n < settingsWG.wordsPerWordlist; n++) {
-			words.push(makeOneWord(capitalize));
+	const makeWordlist = async () => {
+		const tester: {[key: string]: boolean} = {};
+		const words: string[] = [];
+		let counter = wordsPerWordlist * 100;
+		for (
+			let n = 0;
+			n < wordsPerWordlist && counter > 0;
+			n = words.length
+		) {
+			const potential = makeOneWord(capitalizeWords);
+			if(tester[potential]) {
+				counter--;
+			} else {
+				words.push(potential);
+				tester[potential] = true;
+			}
+		}
+		if(counter <= 0) {
+			setErrorString(`Unable to create ${wordsPerWordlist} unique words (maxed out at ${words.length})`);
+			return [];
 		}
 		// Sort if needed
-		if(settingsWG.sortWordlist) {
+		if(sortWordlist) {
 			words.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
 		}
 		return words;
@@ -468,23 +516,44 @@ const WGOut = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
+		// Need to save to lexicon here
+		// Also clear any classes remaining.
+		// $a(".word.saved")...
 		setIsPickingSaving(false);
 	};
-	const maybeSaveThisWord = (el: HTMLElement) => {
-		if(outputPane.classList.contains("pickAndSave")) {
-			const text = el.textContent;
-			if(text) {
-				const CL = el.classList;
-				if(CL.contains("saved")) {
-					CL.remove("saved");
-					dispatch(removeDeferredLexiconItem(text))
-				} else {
-					CL.add("saved");
-					dispatch(addDeferredLexiconItems([text]));
-				}
+
+	// // //
+	// Display
+	// // //
+
+	const parsedWords = useMemo(() => {
+		return displayHTML.map((words: string[], i: number) => {
+			const id = `createdWord${i}`;
+			return <React.Fragment key={i}>
+				<span className="word" id={id} onClick={() => maybeSaveThisWord(words[0], id)}>{words[1]}</span>{' '}
+			</React.Fragment>;
+		});
+	}, [displayHTML, maybeSaveThisWord]);
+	const parsedWordList = useMemo(() => {
+		return displayList.map((word: string, i: number) => {
+			const id = `createdWord${i}`;
+			return <div className="word" key={i} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
+		});
+	}, [displayList, maybeSaveThisWord]);
+	const makeOutput = useCallback(() => {
+		if(displayString) {
+			if(isPickingSaving) {
+				return parsedWords;
 			}
+			return [displayString];
+		} else if (errorString) {
+			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
+		} else if (displayList.length > 0) {
+			return parsedWordList;
 		}
-	};
+		return <></>;
+	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
+
 	return (
 		<IonPage>
 			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
@@ -504,19 +573,24 @@ const WGOut = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<div id="WGoutput">
-					<IonButton
-						expand="block"
-						strong={true}
-						className="EV"
-						color="success"
-						style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
-						onClick={() => {new Promise(() => generateOutput())}}
-					>{
-						isGenerating ? (
-							<span style={ {fontStyle: "italic"} }>Loading...</span>
-						) : "Generate"
-					}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-					<div className="BR">
+					<div className="leftHandSide">
+						<IonButton
+							strong={true}
+							size="small"
+							className="EV"
+							color="success"
+							style={ { width: "max-content", fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+							onClick={() => {new Promise(() => generateOutput())}}
+						>{
+							isGenerating ? (
+								<span style={ {fontStyle: "italic"} }>Loading...</span>
+							) : "Generate"
+						}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
+						<div id="outputPane" style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}} className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}>
+							{makeOutput()}
+						</div>
+					</div>
+					<div className="rightHandSide">
 						<IonButton
 							expand="block"
 							strong={false}
@@ -527,7 +601,7 @@ const WGOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText()}
+							onClick={() => copyText(copyString)}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							expand="block"
@@ -545,7 +619,6 @@ const WGOut = (props: PageData) => {
 							onClick={() => donePickingAndSaving()}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 					</div>
-					<div id="outputPane" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}></div>
 				</div>
 			</IonContent>
 		</IonPage>

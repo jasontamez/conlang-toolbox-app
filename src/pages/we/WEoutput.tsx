@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	useIonViewDidEnter,
 	IonContent,
@@ -86,7 +86,13 @@ const WEOut = (props: PageData) => {
 	const transformsMap: Map<string, RegExp[]> = new Map();
 	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
 	const soundChangeMap: Map<string, soundChangeModified> = new Map();
-	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupsWE.map);
+	const charGroupMap = useMemo(() => {
+		const obj: {[key: string]: WECharGroupObject} = {};
+		charGroupsWE.map.forEach((o: [string, WECharGroupObject]) => {
+			charGroupMap[o[0]] = o[1];
+		});
+		return obj;
+	}, [charGroupsWE.map]);
 
 	const $e = (tag: string, text: string | false = false, classy: string[] | false = false) => {
 		const e: HTMLElement = document.createElement(tag);
@@ -221,7 +227,7 @@ const WEOut = (props: PageData) => {
 		fromTo = assembly.shift() as string;
 		assembly.forEach(unit => {
 			const q = unit[0];
-			const charGroup = charGroupMap.get(q);
+			const charGroup = charGroupMap[q];
 			if(charGroup !== undefined) {
 				// CharGroup found - negation, so do not make into Array
 				fromTo += "[^" + charGroup.run + "]" + unit.slice(1);
@@ -235,7 +241,7 @@ const WEOut = (props: PageData) => {
 		rules.push(assembly.shift()!);
 		assembly.forEach(unit => {
 			const q = unit[0];
-			const charGroup = charGroupMap.get(q);
+			const charGroup = charGroupMap[q];
 			if(charGroup !== undefined) {
 				// CharGroup found
 				rules.push(charGroup.run.split(""), unit.slice(1));

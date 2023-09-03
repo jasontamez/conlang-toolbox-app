@@ -4,7 +4,14 @@ import {
 	WECharGroupObject
 } from './ReduxDucksTypes';
 
-const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<string, WGCharGroupObject | WECharGroupObject>) => {
+interface WGMap {
+	[key: string]: WGCharGroupObject
+}
+interface WEMap {
+	[key: string]: WECharGroupObject
+}
+
+const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: WGMap | WEMap) => {
 	// Check transforms for %CharGroup references
 	// %% condenses to %, so split on those to begin with.
 	const broken = transform.split("%%");
@@ -20,7 +27,7 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<s
 		while(testing.length > 0) {
 			const bit = testing.shift();
 			// What's the character group being negated?
-			const charGroup = charGroupMap.get(bit!.charAt(0));
+			const charGroup = charGroupMap[bit!.charAt(0)];
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [^a-z] construct, where a-z is the character group contents.
@@ -39,7 +46,7 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Map<s
 		while(testing.length > 0) {
 			const bit = testing.shift();
 			// What's the character group?
-			const charGroup = charGroupMap.get(bit!.charAt(0));
+			const charGroup = charGroupMap[bit!.charAt(0)];
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [a-z] construct, where a-z is the character group contents.
