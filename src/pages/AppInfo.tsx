@@ -61,7 +61,9 @@ const AppInfo = (props: PageData) => {
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
 										<li>In MorphoSyntax, on smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li>
 										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
-										<li>If you have word-wrap turned off in the Lexicon, you can tap on an overflowing field to see a popup with the full field entry.</li>
+										<li>You can tap on an overflowing field in the Lexicon to see a popup with the full field entry.</li>
+										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
+										<li>Added a way to create compound meanings in Word Lists.</li>
 										<li>Under-the-hood changes.</li>
 									</ul>
 									<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>
@@ -113,14 +115,8 @@ const AppInfo = (props: PageData) => {
 						</IonCol>
 					</IonRow>
 					<IonRow>
-						<IonCol>&nbsp;</IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol>&nbsp;</IonCol>
-					</IonRow>
-					<IonRow>
 						<IonCol>
-							<div className="ion-text-center"><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "40px", width: "144px" } } /></a></div>
+							<div className="ion-text-center" style={{paddingBottom: "1em", paddingTop: "10em"}}><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "40px", width: "144px" } } /></a></div>
 						</IonCol>
 					</IonRow>
 				</IonGrid>

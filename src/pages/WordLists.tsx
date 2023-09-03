@@ -106,7 +106,11 @@ const Home = (props: PageData) => {
 		});
 	};
 	const doPickAndSave = () => {
-		if(lexColumns.length === 0) {
+		if (pickAndSave) {
+			// Stop saving
+			setPickAndSave(false);
+			return;	
+		} else if(lexColumns.length === 0) {
 			return fireSwal({
 				title: "You need to add columns to the Lexicon before you can add anything to it.",
 				customClass: {popup: 'dangerToast'},
@@ -282,7 +286,7 @@ const Home = (props: PageData) => {
 							)}
 						</div>
 						<div className="controls">
-							<IonButton fill="outline" onClick={() => doPickAndSave()}>
+							<IonButton fill={pickAndSave ? "solid" : "outline"} onClick={() => doPickAndSave()}>
 								<IonIcon slot="icon-only" icon={saveOutline} />
 							</IonButton>
 							<IonButton fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>

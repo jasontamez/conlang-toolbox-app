@@ -57,7 +57,7 @@ ion-card-content ul li {
 	margin: 1rem 0;
 }
 ion-card-content ul.changelog li {
-	margin: 0.25rem 0;
+	margin: 0.25em 1em 0.75em 0;
 }
 
 .charGroups .charGroupLongName,
