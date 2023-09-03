@@ -66,10 +66,10 @@ const Home = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	useEffect(() => {
-		if(linking && !showingCombos) {
-			setLinking(false);
+		if(unlinking && (!showingCombos || combinations.length === 0)) {
+			setUnlinking(false);
 		}
-	}, [showingCombos, linking]);
+	}, [showingCombos, unlinking, combinations]);
 
 	// // //
 	// Save to Lexicon
@@ -157,7 +157,7 @@ const Home = (props: PageData) => {
 				newObject[id] = true;
 			}
 			setSavedWordsObject(newObject);
-		} else if (unlinking && id.length !== 36) {
+		} else if (unlinking && id.length === 36) {
 			dispatch(deleteCustomHybridMeaning(id));
 		}
 	}, [savedWords, savedWordsObject, pickAndSave, linking, unlinking, dispatch]);
@@ -227,6 +227,20 @@ const Home = (props: PageData) => {
 		setSavedWords([]);
 		setSavedWordsObject({});
 	};
+	const toggleUnlinking = () => {
+		if(!unlinking) {
+			fireSwal({
+				title: "Tap combinations you want to delete.",
+				toast: true,
+				customClass: {popup: 'warnToast'},
+				timer: 5000,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		}
+		setUnlinking(!unlinking);
+	};
 
 	return (
 		<IonPage>
@@ -275,7 +289,7 @@ const Home = (props: PageData) => {
 								<IonIcon slot="icon-only" src="svg/link.svg" />
 							</IonButton>
 							{showingCombos &&
-								<IonButton disabled={combinations.length === 0} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => setUnlinking(!unlinking)}>
+								<IonButton disabled={combinations.length === 0} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => toggleUnlinking()}>
 									<IonIcon slot="icon-only" src="svg/unlink.svg" />
 								</IonButton>
 							}
@@ -292,7 +306,7 @@ const Home = (props: PageData) => {
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
-						<IonLabel>Current Combination: {savedWords.join("; ")}</IonLabel>
+						<IonLabel className="ion-text-wrap">Current Combination: {savedWords.map(word => word.word).join("; ")}</IonLabel>
 						<IonButton disabled={savedWords.length <= 1} slot="end" strong={true} color="success" onClick={() => doneLinking()}>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>

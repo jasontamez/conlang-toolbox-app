@@ -315,13 +315,17 @@ export const WLCard = () => {
 					multiple meanings!
 				</p>
 				<h2>Controls</h2>
+				<div className="ion-text-center"><IonIcon color="primary" size="large" icon={saveOutline} /></div>
+				<p>
+					Use the "save" button to quickly save meanings to the Lexicon.
+				</p>
 				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/link.svg" /></div>
 				<p>
 					Use the "join" button to create compound meanings.
 				</p>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" icon={saveOutline} /></div>
+				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/unlink.svg" /></div>
 				<p>
-					Use the "save" button to quickly save meanings to the Lexicon.
+					Use the "unjoin" button to delete compound meanings.
 				</p>
 				<h2>Swadesh Lists</h2>
 				<p>

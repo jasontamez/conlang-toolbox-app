@@ -232,6 +232,9 @@ const reduceWordListsState = (original: types.WordListsState) => {
 		...original,
 		display: [...original.display],
 		combinations: original.combinations.map((obj: types.WLCombo) => {
+			if(Array.isArray(obj)) {
+				return { id: uuidv4(), parts: obj };
+			}
 			const { id, parts } = obj;
 			return { id, parts: parts.map(part => ({...part}))};
 		})
@@ -1239,7 +1242,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 		case consts.ADD_CUSTOM_HYBRID_MEANING:
 			const newState = reduceWordListsState(state.wordListsState);
-			newState.combinations.push(payload);
+			newState.combinations.push({
+				id: uuidv4(),
+				parts: payload
+			});
 			final = {
 				...reduceAllBut(["wordListsState"], state),
 				wordListsState: newState
