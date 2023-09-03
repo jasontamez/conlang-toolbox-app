@@ -114,6 +114,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		} else {
 			// Suitable label found
 			$i("editingShortLabel").value = label;
+			setNewInfo("label", label);
 		}
 	};
 	const cancelEditing = () => {

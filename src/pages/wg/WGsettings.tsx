@@ -160,7 +160,7 @@ const WGSet = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList className="hasSpecialLabels">
+				<IonList className="hasSpecialLabels" lines="full">
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
 					<IonItem style={ { padding: "0.5em" } } lines="none">
 						<div style={ { display: "flex", justifyContent: "center", alignContent: "flex-start", alignItems: "center", flexFlow: "row wrap" } }>

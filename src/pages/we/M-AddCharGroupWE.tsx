@@ -85,6 +85,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		} else {
 			// Suitable label found
 			$i("shortLabel").value = label;
+			setNewInfo("label", label);
 		}
 	};
 	const maybeSaveNewCharGroup = (close: boolean = true) => {

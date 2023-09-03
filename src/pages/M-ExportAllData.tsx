@@ -174,27 +174,7 @@ const MExportAllData = (props: ModalProperties) => {
 				},
 				morphoSyntax,
 				appState: appSettings,
-				lexicon : {
-					id: lexicon.key,
-					lastSave: lexicon.lastSave,
-					title: lexicon.title,
-					description: lexicon.description,
-					truncateColumns: !lexicon.lexiconWrap,
-					columns: lexicon.columnOrder.map((col: any) => {
-						return {
-							id: "0" + String(col),
-							label: lexicon.columnTitles[col],
-							size: lexicon.columnSizes[col]
-						};
-					}),
-					lexicon: lexicon.lexicon.map((lex: any) => {
-						const {key, columns} = lex;
-						return {
-							id: key,
-							columns: lexicon.columnOrder.map((col: number) => columns[col])
-						};
-					})
-				},
+				lexicon : lexicon,
 				wordLists: {
 					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
 					listsDisplayed: convertedListsDisplayed

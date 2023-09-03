@@ -40,7 +40,7 @@ const AppSettings = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList>
+				<IonList lines="full">
 					<IonItem className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
