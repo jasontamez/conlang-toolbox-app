@@ -25,9 +25,11 @@ import { Clipboard } from '@capacitor/clipboard';
 import {
 	WGTransformObject,
 	WGCharGroupObject,
-	PageData
+	PageData,
+	LexiconColumn
 } from '../../components/ReduxDucksTypes';
 import {
+	addItemstoLexiconColumn,
 	changeView
 } from '../../components/ReduxDucksFuncs';
 import { $i } from '../../components/DollarSignExports';
@@ -61,7 +63,6 @@ async function copyText (copyString: string) {
 	});
 };
 
-
 const WGOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -89,12 +90,14 @@ const WGOut = (props: PageData) => {
 		charGroupsObject,
 		syllablesObject,
 		settingsWG,
-		transforms
+		transforms,
+		lexColumns
 	] = useSelector((state: any) => [
 		state.wordgenCharGroups,
 		state.wordgenSyllables,
 		state.wordgenSettings,
-		state.wordgenTransforms.list
+		state.wordgenTransforms.list,
+		state.lexicon.columns
 	], shallowEqual);
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
@@ -505,6 +508,20 @@ const WGOut = (props: PageData) => {
 	// Save to Lexicon
 	// // //
 	const pickAndSave = () => {
+		if (isPickingSaving) {
+			// Stop saving
+			return donePickingAndSaving();
+		} else if(lexColumns.length === 0) {
+			return fireSwal({
+				title: "You need to add columns to the Lexicon before you can add anything to it.",
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 4000,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		}
 		setIsPickingSaving(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
@@ -520,6 +537,44 @@ const WGOut = (props: PageData) => {
 		// Also clear any classes remaining.
 		// $a(".word.saved")...
 		setIsPickingSaving(false);
+		if(savedWords.length > 0) {
+			// Attempt to save
+			saveToLexicon(savedWords);
+		} else {
+			// Just stop saving
+			setIsPickingSaving(false);
+		}
+	};
+	const saveToLexicon = (words: string[]) => {
+		const inputOptions: { [key: string]: string } = {};
+		lexColumns.forEach((col: LexiconColumn, i: number) => {
+			inputOptions[col.id] = col.label;
+		});
+		fireSwal({
+			title: "Select a Column",
+			text: "Your selected meanings will be added to the Lexicon under that column.",
+			input: "select",
+			inputOptions,
+			showCancelButton: true
+		}).then((result: { value?: string }) => {
+			const value = result.value;
+			if(value !== undefined) {
+				// Send off to the lexicon
+				dispatch(addItemstoLexiconColumn(words, value));
+				// Clear info
+				setSavedWords([]);
+				setSavedWordsObject({});
+				setIsPickingSaving(false);
+				fireSwal({
+					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
+					toast: true,
+					timer: 3500,
+					position: 'top',
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		});
 	};
 
 	// // //

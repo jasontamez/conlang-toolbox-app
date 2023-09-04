@@ -108,8 +108,7 @@ const Home = (props: PageData) => {
 	const doPickAndSave = () => {
 		if (pickAndSave) {
 			// Stop saving
-			setPickAndSave(false);
-			return;	
+			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
 			return fireSwal({
 				title: "You need to add columns to the Lexicon before you can add anything to it.",
@@ -133,7 +132,11 @@ const Home = (props: PageData) => {
 	};
 	const donePickingAndSaving = () => {
 		if(savedWords.length > 0) {
+			// Attempt to save
 			saveToLexicon(savedWords);
+		} else {
+			// Just stop saving
+			setPickAndSave(false);
 		}
 	};
 	const saveEverything = () => {

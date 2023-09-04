@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -19,7 +19,8 @@ import {
 	IonReorderGroup,
 	IonReorder,
 	IonCheckbox,
-	IonItemDivider
+	IonItemDivider,
+	IonToggle
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -27,8 +28,7 @@ import {
 	reorderTwo,
 	trashOutline,
 	addCircleOutline,
-	globeOutline,
-	checkmarkOutline
+	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
@@ -46,32 +46,67 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const {
 		lexicon,
 		columns,
-		sortDir,
 		sortPattern,
 		truncateColumns,
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
 	} = lexObject;
-	const [dir, setDir] = useState<boolean>(sortDir);
 	const [order, setOrder] = useState<number[]>(sortPattern);
 	const [cols, setCols] = useState<LexiconColumn[]>(columns);
+	const [colPosition, setColPosition] = useState<number[]>(columns.map((col: any, i: number) => i));
+	const [nextColPos, setNextColPos] = useState<number>(columns.length);
 	const [noWrap, setNoWrap] = useState<boolean>(truncateColumns);
-	const [lex, setLex] = useState<Lexicon[]>(lexicon);
+	const [originalString, setOriginalString] = useState<string>("");
+
+	useEffect(() => {
+		const test =
+			sortPattern.join(",")
+			+ columns.map((col: LexiconColumn, i: number) => col.label + col.size + String(i)).join(',')
+			+ String(truncateColumns);
+		setOriginalString(test);
+	}, [columns, truncateColumns, sortPattern]);
 
 	const setNewInfo = (i: number, val: string) => {
 		const newCols = cols.slice();
 		newCols[i].label = val.trim();
-		setCols(newCols);
+		setCols(truncateColumns);
 	};
-	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
+	const handleCheckboxes = (id: string, i: number, value: "s" | "m" | "l") => {
 		const newCols = cols.slice();
 		newCols[i].size = value;
 		setCols(newCols);
 	};
 	const doneEditingOrder = () => {
-		dispatch(updateLexiconColumnarInfo(lex, cols, order, dir, noWrap));
-		setIsOpen(false);
+		const testString =
+			order.join(",")
+			+ cols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
+			+ String(noWrap);
+		if(testString === originalString) {
+			fireSwal({
+				title: "Nothing to save.",
+				toast: true,
+				customClass: {popup: 'dangerToast'},
+				timer: 2500,
+				position: "top",
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+			closeModal();
+			return;
+		}
+		const lex: Lexicon[] = lexicon.map((lex: Lexicon) => {
+			const { id, columns } = lex;
+			const length = columns.length - 1;
+			const newColumns = colPosition.map((col: number) => {
+				if(col > length) {
+					return "";
+				}
+				return columns[col];
+			})
+			return { id, columns: newColumns };
+		});
+		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap));
 		fireSwal({
 			title: "Saved!",
 			toast: true,
@@ -79,11 +114,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			timerProgressBar: true,
 			showConfirmButton: false
 		});
+		closeModal();
 	};
 	const addNewColumn = () => {
 		setOrder([...order, cols.length]);
 		setCols([...cols, { id: uuidv4(), size: "m", label: "New"}]);
-		setLex(lex.map(lx => ({ id: lx.id, columns: [...lx.columns, ""]})));
+		setColPosition([...colPosition, nextColPos]);
+		setNextColPos(nextColPos + 1);
 		fireSwal({
 			title: "Added New Column",
 			toast: true,
@@ -97,10 +134,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			const target = order[i];
 			setOrder(order.slice(0, i).concat(order.slice(i+1)).map((num: number) => (num > target ? (num - 1) : num)));
 			setCols(cols.slice(0, i).concat(cols.slice(i+1)));
-			setLex(lex.map(lx => {
-				const { id, columns } = lx;
-				return { id, columns: columns.slice(0, i).concat(columns.slice(i+1)) };
-			}));
+			setColPosition(colPosition.slice(0, i).concat(colPosition.slice(i+1)));
 		};
 		if(settings.disableConfirms) {
 			thenFunc();
@@ -121,16 +155,23 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
-		const columnOrder = reorganize(order, ed.from, ed.to);
+		const { from, to } = ed;
+		const columnOrder = reorganize(order, from, to);
 		setOrder(columnOrder);
+		const positionOrder = reorganize(colPosition, from, to);
+		setColPosition(positionOrder);
 		ed.complete();
 	};
-	const doSort = (col: number) => {
-		const newOrder = [col, ...order.filter(o => (o !== col))];
-		setOrder(newOrder);
+	const closeModal = () => {
+		setOrder(sortPattern);
+		setCols(columns);
+		setColPosition(columns.map((col: any, i: number) => i));
+		setNextColPos(columns.length);
+		setNoWrap(truncateColumns);
+		setIsOpen(false);
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => closeModal()} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
@@ -138,7 +179,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => closeModal()}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -147,28 +188,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
 					<IonItemDivider>Lexicon Options</IonItemDivider>
-					<IonItem button={true} onClick={() => setNoWrap(!noWrap)}>
-						<IonLabel>Show Full Column Titles</IonLabel>
-						{noWrap ? <></> : <IonIcon slot="end" icon={checkmarkOutline} />}
-					</IonItem>
-					<IonItemDivider>Sort Column</IonItemDivider>
-					{order.map((placement: number, i: number) => {
-						const { id, label } = columns[i];
-						return (
-							<IonItem key={`${id}:modal:editOrder`} button={true} onClick={() => doSort(i)}>
-								<IonLabel slot="start">{label}</IonLabel>
-								<IonLabel slot="end">{placement}</IonLabel>
-							</IonItem>
-						);
-					})}
-					<IonItemDivider>Sort Direction</IonItemDivider>
-					<IonItem button={true} onClick={() => setDir(false)}>
-						<IonLabel slot="start">Descending ↓</IonLabel>
-						{ dir || <IonIcon slot="end" icon={checkmarkOutline} /> }
-					</IonItem>
-					<IonItem button={true} onClick={() => setDir(true)}>
-						<IonLabel slot="start">Ascending ↑</IonLabel>
-						{ dir && <IonIcon slot="end" icon={checkmarkOutline} /> }
+					<IonItem>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={!noWrap}
+							onIonChange={() => setNoWrap(!noWrap)}
+						>Show Full Column Titles</IonToggle>
 					</IonItem>
 					<IonItemDivider>Rearrange Lexicon Columns</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
@@ -188,13 +214,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 										</IonRow>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Small size" checked={size === "s"} onClick={() => handleCheckboxes(i, "s")}>Small</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:s`} justify="start" aria-label="Small size" checked={size === "s"} onIonChange={() => handleCheckboxes(id, i, "s")}>Small</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Medium size" checked={size === "m"} onClick={() => handleCheckboxes(i, "m")}>Med</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:m`} justify="start" aria-label="Medium size" checked={size === "m"} onIonChange={() => handleCheckboxes(id, i, "m")}>Med</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" justify="start" aria-label="Large size" checked={size === "l"} onClick={() => handleCheckboxes(i, "l")}>Large</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:l`} justify="start" aria-label="Large size" checked={size === "l"} onIonChange={() => handleCheckboxes(id, i, "l")}>Large</IonCheckbox>
 											</IonCol>
 										</IonRow>
 									</IonGrid>

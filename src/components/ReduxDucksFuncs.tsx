@@ -271,6 +271,9 @@ export function updateLexiconOrder(payload: types.Lexicon[]) {
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
 }
+export function updateLexiconSortDir(payload: boolean) {
+	return {type: consts.UPDATE_LEXICON_SORT_DIR, payload};
+}
 export function addDeferredLexiconItems(payload: string[]) {
 	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
 }
@@ -281,8 +284,8 @@ export function clearDeferredLexiconItems() {
 	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
 }
 
-export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], dir: boolean, truncate: boolean) {
-	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, dir, truncate]};
+export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], truncate: boolean) {
+	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, truncate]};
 }
 export function addItemstoLexiconColumn(items: string[], columnId: string) {
 	return {type: consts.ADD_ITEMS_TO_LEXICON_COLUMN, payload: [items, columnId]};

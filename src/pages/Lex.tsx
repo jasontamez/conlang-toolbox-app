@@ -42,7 +42,8 @@ import memoizeOne from 'memoize-one';
 import {
 	updateLexiconText,
 	deleteLexiconItem,
-	addLexiconItem
+	addLexiconItem,
+	updateLexiconSortDir
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconColumn, LexiconObject, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
@@ -57,6 +58,7 @@ import LoadLexiconModal from './M-LoadLexicon';
 import DeleteLexiconModal from './M-DeleteLexicon';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
+import EditLexiconSortModal from './M-EditSort';
 
 interface LexItem {
 	index: number
@@ -158,6 +160,7 @@ const Lex = (props: PageData) => {
 	const [isWorking, setIsWorking] = useState<boolean>(false);
 	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
 	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
+	const [isOpenLexSorter, setIsOpenLexSorter] = useState<boolean>(false);
 	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
 	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
@@ -263,6 +266,7 @@ const Lex = (props: PageData) => {
 				columnInfo={columns}
 			/>
 			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
+			<EditLexiconSortModal {...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)} />
 			<LoadLexiconModal
 				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
 				lexInfo={storedLexInfo}
@@ -331,21 +335,26 @@ const Lex = (props: PageData) => {
 					</IonItem>
 				</IonList>
 				<IonList lines="none" id="mainLexList">
-					<IonGrid id="theLexiconHeader">
-						<IonRow>
-							<IonCol>
-								<h1>{lexicon.length === 1 ? "1 Word" : lexicon.length.toString() + " Words"}</h1>
-							</IonCol>
-							<IonCol size="auto">
-								<h2>Sort: {columns[sortPattern[0].label]} {sortDir ? "↑" : "↓"}</h2>
-							</IonCol>
-							<IonCol size="auto">
-								<IonButton color="tertiary" style={ { padding: "0.25em 0" } } onClick={() => setIsOpenLexOrder(true)}>
-									<IonIcon size="small" icon={settings} />
-								</IonButton>
-							</IonCol>
-						</IonRow>
-					</IonGrid>
+					<div id="theLexiconHeader">
+						<div style={{flexGrow: 1, flexShrink: 1}}>
+							<h1>{lexicon.length === 1 ? "1 Item" : lexicon.length.toString() + " Items"}</h1>
+						</div>
+						<div style={{flexGrow: 0, flexShrink: 1}}>
+							<h2>Sort:</h2>
+							<div className="fakeButton" onClick={() => setIsOpenLexSorter(true)} aria-roledescription="Button" aria-label={columns[sortPattern[0]].label}>
+								<IonIcon src="svg/unfold.svg"></IonIcon>
+								<div>{columns[sortPattern[0]].label}</div>
+							</div>
+							<IonButton color="secondary" onClick={() => dispatch(updateLexiconSortDir(!sortDir))}>
+								<IonIcon size="small" src={`svg/sort-${sortDir ? "up" : "down"}.svg`} />
+							</IonButton>
+						</div>
+						<div style={{flexGrow: 0, flexShrink: 0}}>
+							<IonButton color="tertiary" onClick={() => setIsOpenLexOrder(true)}>
+								<IonIcon size="small" icon={settings} />
+							</IonButton>
+						</div>
+					</div>
 					<IonGrid id="theLexiconHolder">
 						<IonRow>
 							<IonCol id="theLexicon">

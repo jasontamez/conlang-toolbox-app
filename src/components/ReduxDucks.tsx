@@ -1064,18 +1064,31 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_COLUMNAR_INFO:
-			const [lex, cols, order, dir, truncate] = payload;
+			const [lex, cols, order, truncate] = payload;
 			const lexicon = reduceLexiconState({
 				...state.lexicon,
 				lexicon: lex,
 				columns: cols,
 				sortPattern: order,
-				sortDir: dir,
 				truncateColumns: truncate
 			});
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon
+			};
+			break;
+		case consts.UPDATE_LEXICON_SORT:
+			LO = reduceLexiconState({...state.lexicon, sortPattern: payload});
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
+		case consts.UPDATE_LEXICON_SORT_DIR:
+			LO = reduceLexiconState({...state.lexicon, sortDir: payload});
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
 			};
 			break;
 		case consts.ADD_LEXICON_ITEM:
@@ -1210,14 +1223,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		/*case consts.UPDATE_LEXICON_SORT:
-			LO = reduceLexiconState(state.lexicon);
-			LO.sort = payload;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;*/
 
 
 		// Overwrite State
