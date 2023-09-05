@@ -233,12 +233,6 @@ export function setSyntaxText(payload1: keyof types.MorphoSyntaxTextObject, payl
 export function updateLexicon(payload: types.LexiconObject) {
 	return {type: consts.UPDATE_LEXICON, payload};
 }
-export function startEditLexiconItem(payload: number) {
-	return {type: consts.UPDATE_LEXICON_EDITING, payload};
-}
-export function cancelEditLexiconItem() {
-	return {type: consts.UPDATE_LEXICON_EDITING, payload: undefined};
-}
 export function doEditLexiconItem(payload: types.Lexicon) {
 	return {type: consts.DO_EDIT_LEXICON_ITEM, payload};
 }
@@ -248,7 +242,6 @@ export function deleteLexiconItem(payload: string) {
 export function toggleLexiconWrap() {
 	return {type: consts.TOGGLE_LEXICON_WRAP};
 }
-//
 export function addLexiconItem(payload: types.Lexicon) {
 	return {type: consts.ADD_LEXICON_ITEM, payload};
 }
@@ -258,32 +251,12 @@ export function updateLexiconText(prop: "title" | "description" | "id", value: s
 export function updateLexiconNumber(prop: "lastSave", value: number) {
 	return {type: consts.UPDATE_LEXICON_NUM, payload: {prop, value}};
 }
-export function updateLexiconBool(prop: "sorted", value: boolean) {
-	return {type: consts.UPDATE_LEXICON_BOOL, payload: {prop, value}};
-}
-//
-export function updateLexiconColumns(payload: any | undefined) {
-	return {type: consts.UPDATE_LEXICON_COLUMNS, payload};
-}
-export function updateLexiconOrder(payload: types.Lexicon[]) {
-	return {type: consts.UPDATE_LEXICON_ITEM_ORDER, payload};
-}
 export function updateLexiconSort(payload: number[]) {
 	return {type: consts.UPDATE_LEXICON_SORT, payload};
 }
 export function updateLexiconSortDir(payload: boolean) {
 	return {type: consts.UPDATE_LEXICON_SORT_DIR, payload};
 }
-export function addDeferredLexiconItems(payload: string[]) {
-	return {type: consts.ADD_DEFERRED_LEXICON_ITEM, payload};
-}
-export function removeDeferredLexiconItem(payload: string) {
-	return {type:consts.REMOVE_DEFERRED_LEXICON_ITEM, payload}
-}
-export function clearDeferredLexiconItems() {
-	return {type: consts.CLEAR_DEFERRED_LEXICON_ITEMS, payload: undefined};
-}
-
 export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], truncate: boolean) {
 	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, truncate]};
 }

@@ -32,7 +32,7 @@ import {
 	addItemstoLexiconColumn,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-import { $i } from '../../components/DollarSignExports';
+import { $a, $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import fireSwal from '../../components/Swal';
@@ -183,6 +183,8 @@ const WGOut = (props: PageData) => {
 		// Clear any previous output.
 		setDisplayList([]);
 		setDisplayString("");
+		setCopyString("");
+		setDisplayHTML([]);
 		setColsNum("auto");
 		setErrorString("");
 		// Sanity check
@@ -533,26 +535,23 @@ const WGOut = (props: PageData) => {
 		});	
 	};
 	const donePickingAndSaving = () => {
-		// Need to save to lexicon here
-		// Also clear any classes remaining.
-		// $a(".word.saved")...
 		setIsPickingSaving(false);
 		if(savedWords.length > 0) {
 			// Attempt to save
 			saveToLexicon(savedWords);
 		} else {
-			// Just stop saving
+			// Just stop picking
 			setIsPickingSaving(false);
 		}
 	};
 	const saveToLexicon = (words: string[]) => {
 		const inputOptions: { [key: string]: string } = {};
-		lexColumns.forEach((col: LexiconColumn, i: number) => {
+		lexColumns.forEach((col: LexiconColumn) => {
 			inputOptions[col.id] = col.label;
 		});
 		fireSwal({
 			title: "Select a Column",
-			text: "Your selected meanings will be added to the Lexicon under that column.",
+			text: "Your selected words will be added to the Lexicon under that column.",
 			input: "select",
 			inputOptions,
 			showCancelButton: true
@@ -565,6 +564,7 @@ const WGOut = (props: PageData) => {
 				setSavedWords([]);
 				setSavedWordsObject({});
 				setIsPickingSaving(false);
+				$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
 				fireSwal({
 					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
 					toast: true,
@@ -632,7 +632,6 @@ const WGOut = (props: PageData) => {
 						<IonButton
 							strong={true}
 							size="small"
-							className="EV"
 							color="success"
 							style={ { width: "max-content", fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
 							onClick={() => {new Promise(() => generateOutput())}}

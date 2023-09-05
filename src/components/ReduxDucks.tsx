@@ -1117,16 +1117,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-		case consts.UPDATE_LEXICON_BOOL:
-			const bProp: "truncateColumns" | "sortDir" = payload.prop;
-			const tf: boolean = payload.value;
-			LO = reduceLexiconState(state.lexicon);
-			LO[bProp] = tf;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
 		case consts.DO_EDIT_LEXICON_ITEM:
 			LO = {...state.lexicon};
 			LO.lexicon = LO.lexicon.map(lex => lex.id === payload.id ? payload : lex);
@@ -1165,16 +1155,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
-
-// functions below need to be doublechecked
-		/*case consts.UPDATE_LEXICON_EDITING:
-			LO = reduceLexiconState(state.lexicon);
-			LO.editing = payload;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;*/
 		case consts.UPDATE_LEXICON_PROP:
 			const pProp: "title" | "description" | "id" = payload.prop;
 			const value: string = payload.value;
@@ -1190,34 +1170,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			const val: number = payload.value;
 			LO = reduceLexiconState(state.lexicon);
 			LO[nProp] = val;
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;
-		/*case consts.UPDATE_LEXICON_COLUMNS:
-			if(payload === undefined) {
-				LO = {
-					...reduceLexiconState(state.lexicon),
-					colEdit: payload
-				};
-			} else {
-				const minusReorder = {...payload};
-				delete minusReorder.reordering;
-				LO = {
-					...reduceLexiconState(state.lexicon),
-					...minusReorder,
-					colEdit: payload
-				};
-			}
-			final = {
-				...reduceAllBut(["lexicon"], state),
-				lexicon: LO
-			};
-			break;*/
-		case consts.UPDATE_LEXICON_ITEM_ORDER:
-			LO = reduceLexiconState(state.lexicon);
-			LO.lexicon = payload;
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

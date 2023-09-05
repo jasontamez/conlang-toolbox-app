@@ -337,11 +337,11 @@ const Lex = (props: PageData) => {
 				<IonList lines="none" id="mainLexList">
 					<div id="theLexiconHeader">
 						<div style={{flexGrow: 1, flexShrink: 1}}>
-							<h1>{lexicon.length === 1 ? "1 Item" : lexicon.length.toString() + " Items"}</h1>
+							<h1>{lexicon.length === 1 ? "1 Item" : `${lexicon.length} Items`}</h1>
 						</div>
 						<div style={{flexGrow: 0, flexShrink: 1}}>
 							<h2>Sort:</h2>
-							<div className="fakeButton" onClick={() => setIsOpenLexSorter(true)} aria-roledescription="Button" aria-label={columns[sortPattern[0]].label}>
+							<div className="fakeButton" onClick={() => setIsOpenLexSorter(true)} role="button" aria-label={columns[sortPattern[0]].label}>
 								<IonIcon src="svg/unfold.svg"></IonIcon>
 								<div>{columns[sortPattern[0]].label}</div>
 							</div>

@@ -19,7 +19,8 @@ import {
 import {
 	closeCircleOutline,
 	saveOutline,
-	reorderTwo
+	reorderTwo,
+	checkmarkCircle
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
@@ -76,7 +77,8 @@ const EditLexiconSortModal = (props: ModalProperties) => {
 								<IonReorder key={`${id}:modal:sortOrder`}>
 									<IonItem lines="full">
 										<IonIcon icon={reorderTwo} slot="start" />
-										<IonLabel>{label}</IonLabel>
+										<IonLabel style={i ? {} : {fontWeight: "bold"}}>{label}</IonLabel>
+										{i ? <></> : <IonIcon icon={checkmarkCircle} slot="end" />}
 									</IonItem>
 								</IonReorder>
 							);

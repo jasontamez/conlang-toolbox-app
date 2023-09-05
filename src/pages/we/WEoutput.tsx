@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import {
 	useIonViewDidEnter,
 	IonContent,
@@ -15,8 +15,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	changeView,
-	addDeferredLexiconItems,
-	removeDeferredLexiconItem
+	addItemstoLexiconColumn
 } from '../../components/ReduxDucksFuncs';
 import {
 	helpCircleOutline,
@@ -31,7 +30,7 @@ import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
-import { PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
 import { OutCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
@@ -43,8 +42,50 @@ import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 
+type arrayOfStringsAndStringArrays = (string | string[])[];
+
+interface soundChangeModified {
+	seek: arrayOfStringsAndStringArrays | RegExp
+	replace: string | arrayOfStringsAndStringArrays
+	context: (RegExp | null)[]
+	anticontext: (RegExp | null)[]
+	flagged: boolean
+}
+
+async function copyText (copyString: string) {
+	if(copyString) {
+		await Clipboard.write({string: copyString});
+		//navigator.clipboard.writeText(copyText);
+		return fireSwal({
+			title: "Copied to clipboard.",
+			toast: true,
+			timer: 1500,
+			position: 'top',
+			timerProgressBar: true,
+			showConfirmButton: false
+		});	
+	}
+	fireSwal({
+		title: "Nothing to copy.",
+		toast: true,
+		customClass: {popup: 'dangerToast'},
+		timer: 1500,
+		position: 'top',
+		timerProgressBar: true,
+		showConfirmButton: false
+	});
+};
+
 const WEOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
+	const [savedWords, setSavedWords] = useState<string[]>([]);
+	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
+	const [copyString, setCopyString] = useState<string>("");
+	const [errorString, setErrorString] = useState<string>("");
+	const [displayRulesApplied, setDisplayRulesApplied] = useState<string[][][]>([]);
+	const [displayInputOutput, setDisplayInputOutput] = useState<string[][]>([]);
+	const [displayOutputInput, setDisplayOutputInput] = useState<string[][]>([]);
+	const [displayList, setDisplayList] = useState<string[]>([]);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);
@@ -53,121 +94,59 @@ const WEOut = (props: PageData) => {
 	const [isPickingSaving, setIsPickingSaving] = useState<boolean>(false);
 	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
 	const [storedInfo, setStoredInfo] = useState<string[]>([]);
-	type arrayOfStringsAndStringArrays = (string | string[])[];
-	interface soundChangeModified {
-		seek: arrayOfStringsAndStringArrays | RegExp
-		replace: string | arrayOfStringsAndStringArrays
-		context: (RegExp | null)[]
-		anticontext: (RegExp | null)[]
-		flagged: boolean
-	}
-	const outputPane = $i("outputPaneWE");
+	const [needToGenerate, setNeedToGenerate] = useState<boolean>(true);
 	const dispatch = useDispatch();
 	const viewInfo = ['we', 'output'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const [
+		outputType,
 		rawInput,
-		settingsWE,
 		transformObject,
 		soundChangesObject,
 		charGroupsWE,
-		//lexicon
+		lexColumns
 	] = useSelector((state: any) => [
+		state.wordevolveSettings.output,
 		state.wordevolveInput,
-		state.wordevolveSettings,
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges,
 		state.wordevolveCharGroups,
-		//state.lexicon
+		state.lexicon.columns
 	], shallowEqual);
 	const transforms: WETransformObject[] = transformObject.list;
-	const transformsMap: Map<string, RegExp[]> = new Map();
 	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
-	const soundChangeMap: Map<string, soundChangeModified> = new Map();
+
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WECharGroupObject} = {};
 		charGroupsWE.map.forEach((o: [string, WECharGroupObject]) => {
-			charGroupMap[o[0]] = o[1];
+			obj[o[0]] = o[1];
 		});
 		return obj;
 	}, [charGroupsWE.map]);
-
-	const $e = (tag: string, text: string | false = false, classy: string[] | false = false) => {
-		const e: HTMLElement = document.createElement(tag);
-		if (text !== false) {
-			e.textContent = text;
-		}
-		if(classy !== false) {
-			e.classList.add(...classy);
-		}
-		return e;
-	}
-	const $t = (text: string, tag: string = "div", classy: string[] = []) => {
-		const t = document.createElement(tag);
-		t.classList.add("word", ...classy);
-		t.textContent = text;
-		t.addEventListener("click", () => maybeSaveThisWord(t));
-		return t;
-	};
-
-	const copyText = async () => {
-		const copied: string[] = [];
-		if(settingsWE.output === "outputOnly") {
-			// Join with linebreaks
-			$a(".word", outputPane).forEach((word: HTMLElement) => word.textContent && copied.push(word.textContent));
-		} else if (settingsWE.output === "rulesApplied") {
-			// either word arrow word or soundchange arrow word
-			const input = $a("div", outputPane);
-			while(input.length > 0) {
-				const info = input.shift();
-				if(info.classList.contains("ruleExplanation")) {
-					copied.push("\t" + info.textContent);
+	const transformsMap = useMemo(() => {
+		// Check transforms for %CharGroup references and update them if needed
+		const newObj: { [key:string]: RegExp[] } = {};
+		transforms.forEach((transform: WETransformObject) => {
+			let regex: RegExp;
+			const all: RegExp[] = [];
+			const props: (keyof WETransformObject)[] = ["seek", "replace"];
+			props.forEach((prop: keyof WETransformObject) => {
+				if(transform[prop].indexOf("%") !== -1) {
+					// Found a possibility.
+					regex = calculateCharGroupReferenceRegex(transform[prop], charGroupMap) as RegExp;
 				} else {
-					copied.push(info.textContent);
+					regex = new RegExp(transform[prop], "g");
 				}
-			}
-		} else {
-			// word arrow word
-			let pos = 0;
-			let temp: string[] = [];
-			const input = $a("div", outputPane);
-			while(input.length > 0) {
-				pos++;
-				temp.push(input.shift().textContent);
-				if(pos === 3) {
-					pos = 0;
-					copied.push(temp.join(" "));
-					temp = [];
-				}
-			}
-		}
-		if(copied.length > 0 && !copied[0].match(/^You have no/g)) {
-			await Clipboard.write({string: copied.join("\n")});
-			//navigator.clipboard.writeText(copied.join("\n"));
-			return fireSwal({
-				title: "Copied to clipboard.",
-				toast: true,
-				timer: 1500,
-				position: 'top',
-				timerProgressBar: true,
-				showConfirmButton: false
-			});	
-		}
-		fireSwal({
-			title: "Nothing to copy.",
-			toast: true,
-			customClass: {popup: 'dangerToast'},
-			timer: 1500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
+				all.push(regex);	
+			});
+			newObj[transform.key] = all;
 		});
-};
-
+		return newObj;
+	}, [transforms, charGroupMap]);
 	// Go through a from/to string and check for character groups and other regex stuff. Returns an array.
-	const interpretFromAndTo = (input: string) => {
+	const interpretFromAndTo = useCallback((input: string) => {
 		var rules: (string | string[])[] = [],
 			assembly: (string | string[])[] = [],
 			fromTo = "",
@@ -267,40 +246,9 @@ const WEOut = (props: PageData) => {
 			}
 		});
 		return rules;
-	};
-	const evolveOutput = (output: HTMLElement) => {
-		const outputType = settingsWE.output;
-		// Clear any previous output.
-		while(output.firstChild !== null) {
-			output.removeChild(output.firstChild);
-		}
-		// Sanity check
-		const err: HTMLElement[] = [];
-		if(soundChanges.length < 1) {
-			err.push($e("div", "You have no sound changes defined."));
-		} else if (rawInput.length < 1) {
-			err.push($e("div", "You have no input words to evolve."));
-		}
-		if(err.length > 0) {
-			return output.append(...err);
-		}
-		// Check transforms for %CharGroup references and update them if needed
-		transforms.forEach((transformation: WETransformObject) => {
-			let regex: RegExp;
-			const all: RegExp[] = [];
-			const props: (keyof WETransformObject)[] = ["seek", "replace"];
-			props.forEach((prop: keyof WETransformObject) => {
-				if(transformation[prop].indexOf("%") !== -1) {
-					// Found a possibility.
-					regex = calculateCharGroupReferenceRegex(transformation[prop], charGroupMap) as RegExp;
-				} else {
-					regex = new RegExp(transformation[prop], "g");
-				}
-				all.push(regex);	
-			});
-			transformsMap.set(transformation.key, all);
-		});
-		// Check sound changes for %CharGroup references and update them if needed
+	}, [charGroupMap]);
+	const soundChangeMap = useMemo(() => {
+		const newObj: { [key: string]: soundChangeModified } = {};
 		soundChanges.forEach((change: WESoundChangeObject) => {
 			let seek: arrayOfStringsAndStringArrays | RegExp;
 			let replace: string | arrayOfStringsAndStringArrays;
@@ -389,79 +337,132 @@ const WEOut = (props: PageData) => {
 			}
 			anticontext = temp;
 			// SAVE
-			soundChangeMap.set(change.key, {
+			newObj[change.key] = {
 				seek,
 				replace,
 				context,
 				anticontext,
 				flagged: charGroupFlag
-			});
+			};
 		});
-		const modifiedWords = changeTheWords(rawInput);
+		return newObj;
+	}, [soundChanges, interpretFromAndTo, charGroupMap]);
+
+	useEffect(() => {
+		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
+		console.log("!change!")
+		setNeedToGenerate(true);
+	}, [outputType, rawInput, transformObject, soundChangesObject, charGroupsWE]);
+
+	const evolveOutput = () => {
+		if(!needToGenerate) {
+			// We've already generated and nothing has changed, so the output remains the same.
+			console.log("Nope");
+			return;
+		}
+		const errors: string[] = [];
+		// Clear any previous output.
+		setDisplayList([]);
+		setDisplayRulesApplied([]);
+		setDisplayInputOutput([]);
+		setDisplayOutputInput([]);
+		setCopyString("");
+		setErrorString("");
+		// Sanity check
+		if(soundChanges.length < 1) {
+			errors.push("You have no sound changes defined.");
+		}
+		if (rawInput.length < 1) {
+			errors.push("You have no input words to evolve.");
+		}
+		if(errors.length > 0) {
+			setErrorString(errors.join(" "));
+			return;
+		}
 		// Add to screen.
 		const arrowLR = "⟶";
 		const arrowRL = "⟵";
 		const reverse = (outputType === "outputFirst");
-		const arrow = (ltr(output) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
-		const arrowDiv: HTMLElement = $e("div", arrow, ["arrow"])!;
-		const style = output.style;
-		style.gridTemplateColumns = "1fr";
+		const arrow = (ltr($i("outputPaneWE") || document) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
+		let setter: Function = setDisplayOutputInput;
 		switch(outputType) {
 			case "outputOnly":
 				// [word...]
-				modifiedWords.forEach(w => output.append($t(w)));
+				const evolved = changeTheWords({input: rawInput});
+				setDisplayList(evolved);
+				setCopyString(evolved.join("\n"));
 				break;
 			case "inputFirst":
-			case "outputFirst":
 				// [[word, original]...]
+				setter = setDisplayInputOutput;
+			// eslint-disable-next-line no-fallthrough
+			case "outputFirst":
 				// [[original, word]...]
-				style.gridTemplateColumns = (arrow ? "1fr 2em 1fr" : "1fr 1fr");
-				modifiedWords.forEach(bit => {
+				// leadingWord class for the first word
+				const output: string[][] = [];
+				changeTheWords({input: rawInput, reverse: reverse ? 1 : -1}).forEach(bit => {
 					const [one, two] = bit;
-					output.append(outputType === "inputFirst" ? $e("div", one, ["leadingWord"]) : $t(one, "div", ["leadingWord"]));
-					arrow && output.append(arrowDiv.cloneNode(true));
-					output.append(outputType === "inputFirst" ? $t(two) : $e("div", two));
+					output.push([one, arrow, two]);
 				});
+				setter(output);
 				break;
 			case "rulesApplied":
-				// [original, word, [[rule, new word]...]]	grid-template-columns: 1fr 2em 1fr;
-				modifiedWords.forEach(unit => {
-					let div = $e("div", unit.shift() + " " + arrow);
-					div.append(" ", $t(unit.shift(), "span"));
-					output.append(div);
-					unit.shift()!.forEach((bit: string[]) => {
+				// [original, word, [[rule, new word]...]]
+				const rulesApplied: string[][][] = [];
+				changeTheWords({input: rawInput, rulesFlag: true}).forEach(unit => {
+					const [one, two, units] = unit;
+					const rows: string[][] = [
+						[one, arrow, two]
+					];
+					units.forEach((bit: string[]) => {
 						const [rule, to] = bit;
-						output.append($e("div", rule + " " + arrow + " " + to, ["ruleExplanation"]));
+						rows.push([rule, to]);
 					});
+					rulesApplied.push(rows);
 				});
+				setDisplayRulesApplied(rulesApplied);
+				/*
+				[
+					[
+						[from, arrow, to],
+						[rule, to],
+						...
+					],
+					...
+				]
+				*/
 				break;
 			default:
-				output.append("Unknown error occurred.");
+				setErrorString("Unknown error occurred.");
 		}
+		setNeedToGenerate(false);
 	};
 	// Take an array of strings and apply each sound change rule to each string one at a time,
 	//  then return an array according to the style requested
-	const changeTheWords = (input: string[]) => {
-		let rulesThatApplied: string[][] = [];
+	const changeTheWords = (props: { input: string[], rulesFlag?: boolean, reverse?: number}) => {
+		const { input, rulesFlag, reverse = 0 } = props;
 		const output: any[] = [];
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
+			const rulesThatApplied: string[][] = [];
 			// Loop over the transforms.
 			transforms.forEach((tr: WETransformObject) => {
+				const { key, direction, replace, seek } = tr;
 				// Check to see if we apply this rule.
-				if (tr.direction === "in") {
-					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
-				} else if (tr.direction === "both" || tr.direction === "double") {
-					word = word.replace(tr.seek, tr.replace);
+				if (direction === "in") {
+					word = word.replace(transformsMap[key][0], replace);
+				} else if (direction === "both" || direction === "double") {
+					word = word.replace(seek, replace);
 				}
 			});
 			// Loop over every sound change in order.
 			soundChanges.forEach((change: WESoundChangeObject) => {
-				const modified = soundChangeMap.get(change.key)!;
+				const { key, seek, replace, context, anticontext } = change;
+				const modified = soundChangeMap[key];
 				const contx = modified.context;
 				const antix = modified.anticontext;
-				const rule = change.seek + "➜" + change.replace + " / " + change.context + (change.anticontext ? " ! " + change.anticontext : "");
+				const rule = `${seek}➜${replace} / ${context}${anticontext ? ` ! ${anticontext}` : ""}`;
 				let previous = word;
 				if(modified.flagged) {
 					// We have character group matches to deal with.
@@ -475,10 +476,10 @@ const WEOut = (props: PageData) => {
 							seekTextBasic = seekTextBasic + ss;
 							seekTextCharGroup = seekTextCharGroup + ss;
 						} else {
-							let id = "N" + uuidv4().replace(/[^a-zA-Z0-9]/g, "");
-							let ssj = ss.join("");
-							seekTextBasic = seekTextBasic + "[" + ssj + "]";
-							seekTextCharGroup = seekTextCharGroup + "(?<" + id + ">[" + ssj + "])";
+							const id = "N" + uuidv4().replace(/[^a-zA-Z0-9]/g, "");
+							const ssj = ss.join("");
+							seekTextBasic = seekTextBasic + `[${ssj}]`;
+							seekTextCharGroup = seekTextCharGroup + `(?<${id}>[${ssj}])`;
 							ids.push([id, ssj]);
 						}
 					});
@@ -640,37 +641,30 @@ const WEOut = (props: PageData) => {
 						}
 					}
 				}
-				previous !== word && settingsWE.output === "rulesApplied" && rulesThatApplied.push([rule, word]);
+				rulesFlag && previous !== word && rulesThatApplied.push([rule, word]);
 			});
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
+				const { key, replace, seek, direction } = tr;
 				// Check to see if we apply this transform.
-				if (tr.direction === "both") {
-					word = word.replace(tr.replace, tr.seek);
-				} else if (tr.direction === "double") {
-					word = word.replace(tr.seek, tr.replace);
-				} else if (tr.direction === "out") {
-					word = word.replace(transformsMap.get(tr.key)![0], tr.replace);
+				if (direction === "both") {
+					word = word.replace(replace, seek);
+				} else if (direction === "double") {
+					word = word.replace(seek, replace);
+				} else if (direction === "out") {
+					word = word.replace(transformsMap[key][0], replace);
 				}
 			});
 			// Add the mangled word to the output list.
-			let goingOut: any;
-			switch(settingsWE.output) {
-				case "outputOnly":
-					goingOut = word;
-					break;
-				case "rulesApplied":
-					goingOut = [original, word, rulesThatApplied];
-					rulesThatApplied = [];
-					break;
-				case "inputFirst":
-					goingOut = [original, word];
-					break;
-				case "outputFirst":
-					goingOut = [word, original];
-					break;
+			if(rulesFlag) {
+				output.push([original, word, rulesThatApplied]);
+			} else if (reverse > 1) {
+				output.push([word, original]);
+			} else if (reverse) {
+				output.push([original, word])
+			} else {
+				output.push(word);
 			}
-			output.push(goingOut);
 		});
 		// Return the output.
 		return output;
@@ -682,6 +676,20 @@ const WEOut = (props: PageData) => {
 	// // //
 
 	const pickAndSave = () => {
+		if (isPickingSaving) {
+			// Stop saving
+			return donePickingAndSaving();
+		} else if(lexColumns.length === 0) {
+			return fireSwal({
+				title: "You need to add columns to the Lexicon before you can add anything to it.",
+				customClass: {popup: 'dangerToast'},
+				toast: true,
+				timer: 4000,
+				position: 'top',
+				timerProgressBar: true,
+				showConfirmButton: false
+			});
+		}
 		setIsPickingSaving(true);
 		return fireSwal({
 			title: "Tap words you want to save to Lexicon",
@@ -692,24 +700,65 @@ const WEOut = (props: PageData) => {
 			showConfirmButton: false
 		});	
 	};
+	const saveToLexicon = (words: string[]) => {
+		const inputOptions: { [key: string]: string } = {};
+		lexColumns.forEach((col: LexiconColumn) => {
+			inputOptions[col.id] = col.label;
+		});
+		fireSwal({
+			title: "Select a Column",
+			text: "Your selected words will be added to the Lexicon under that column.",
+			input: "select",
+			inputOptions,
+			showCancelButton: true
+		}).then((result: { value?: string }) => {
+			const value = result.value;
+			if(value !== undefined) {
+				// Send off to the lexicon
+				dispatch(addItemstoLexiconColumn(words, value));
+				// Clear info
+				setSavedWords([]);
+				setSavedWordsObject({});
+				setIsPickingSaving(false);
+				$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
+				fireSwal({
+					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
+					toast: true,
+					timer: 3500,
+					position: 'top',
+					timerProgressBar: true,
+					showConfirmButton: false
+				});
+			}
+		});
+	};
 	const donePickingAndSaving = () => {
 		setIsPickingSaving(false);
-	};
-	const maybeSaveThisWord = (el: HTMLElement) => {
-		if(outputPane.classList.contains("pickAndSave")) {
-			const text = el.textContent;
-			if(text) {
-				const CL = el.classList;
-				if(CL.contains("saved")) {
-					CL.remove("saved");
-					dispatch(removeDeferredLexiconItem(text))
-				} else {
-					CL.add("saved");
-					dispatch(addDeferredLexiconItems([text]));
-				}
-			}
+		if(savedWords.length > 0) {
+			// Attempt to save
+			saveToLexicon(savedWords);
+		} else {
+			// Just stop picking
+			setIsPickingSaving(false);
 		}
 	};
+	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
+		if(isPickingSaving) {
+			if(text) {
+				const newObj = {...savedWordsObject};
+				if(savedWordsObject[text]) {
+					setSavedWords(savedWords.filter(word => word !== text));
+					delete newObj[text];
+					id && $i(id).classList.remove("saved");
+				} else {
+					setSavedWords([...savedWords, text]);
+					newObj[text] = true;
+					id && $i(id).classList.add("saved");
+				}
+				setSavedWordsObject(newObj);
+			}
+		}
+	}, [savedWords, savedWordsObject, isPickingSaving]);
 
 
 	// // //
@@ -730,6 +779,115 @@ const WEOut = (props: PageData) => {
 			console.log(err);
 		});
 	};
+
+	// // //
+	// Display
+	// // //
+
+	const parsedWordList = useMemo(() => {
+		// No need to set copyList here
+		return displayList.map((word: string, i: number) => {
+			const id = `evolved:${word}:${i}`;
+			return <div className="word selectable" key={i} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
+		});
+	}, [displayList, maybeSaveThisWord]);
+	const parsedInputOutput = useMemo(() => {
+		if(displayInputOutput.length === 0) {
+			// Don't mess with copyString unless we have something to add to it.
+			return [];
+		}
+		const copiable: string[] = [];
+		const output = displayInputOutput.map((words: string[], i: number) => {
+			const [original, arrow, result] = words;
+			const copystring = `${original} ${arrow} ${result}`;
+			const id = `evolved:${copystring}:${i}`;
+			copiable.push(copystring);
+			return (
+				<div className="inputToOutput selectable" key={i}>
+					<span>{original}</span>{' '}
+					<span>{arrow}</span>{' '}
+					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
+				</div>
+			);
+		});
+		setCopyString(copiable.join("\n"));
+		return output;
+	}, [displayInputOutput, maybeSaveThisWord]);
+	const parsedOutputInput = useMemo(() => {
+		if(displayOutputInput.length === 0) {
+			// Don't mess with copyString unless we have something to add to it.
+			return [];
+		}
+		const copiable: string[] = [];
+		const output = displayOutputInput.map((words: string[], i: number) => {
+			const [original, arrow, result] = words;
+			const copystring = `${result} ${arrow} ${original}`;
+			const id = `evolved:${copystring}:${i}`;
+			copiable.push(copystring);
+			return (
+				<div className="outputToInput selectable" key={i}>
+					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>{' '}
+					<span>{arrow}</span>{' '}
+					<span>{original}</span>
+				</div>
+			);
+		});
+		setCopyString(copiable.join("\n"));
+		return output;
+	}, [displayOutputInput, maybeSaveThisWord]);
+	const parsedRulesApplied = useMemo(() => {
+		if(displayRulesApplied.length === 0) {
+			// Don't mess with copyString unless we have something to add to it.
+			return [];
+		}
+		const copiable: string[] = [];
+		const output = displayRulesApplied.map((group: string[][], i: number) => {
+			const [final, ...rules] = group;
+			const [original, arrow, result] = final;
+			const line = `${original} ${arrow} ${result}`;
+			copiable.push(line);
+			const id = `evolved:${line}:${i}`;
+			return (
+				<div className="rulesApplied" key={i}>
+					<div className="inputToOutput selectable">
+						<span>{original}</span>{' '}
+						<span>{arrow}</span>{' '}
+						<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
+					</div>
+					<div className="rules selectable">
+						{rules.map((pair: string[]) => {
+							const [rule, result] = pair;
+							copiable.push(`\t${rule} ${arrow} ${result}`);
+							return (
+								<div className="inputToOutput selectable">
+									<span>{rule}</span>{' '}
+									<span>{arrow}</span>{' '}
+									<span>{result}</span>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			);
+		});
+		setCopyString(copiable.join("\n"));
+		return output;
+	}, [displayRulesApplied, maybeSaveThisWord]);
+	const makeOutput = useCallback(() => {
+		if (errorString) {
+			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
+		} else if (parsedWordList.length > 0) {
+			return parsedWordList;
+		} else if (parsedRulesApplied.length > 0) {
+			return parsedRulesApplied;
+		} else if (parsedInputOutput.length > 0) {
+			return parsedInputOutput;
+		} else if (parsedOutputInput.length > 0) {
+			return parsedOutputInput;
+		}
+		return <></>;
+	}, [errorString, parsedWordList, parsedRulesApplied, parsedInputOutput, parsedOutputInput]);
+
 	return (
 		<IonPage>
 			<IonLoading
@@ -758,6 +916,9 @@ const WEOut = (props: PageData) => {
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
+						<IonButton onClick={() => openCustomInfoModal()}>
+							<IonIcon icon={saveOutline} />
+						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
@@ -766,27 +927,26 @@ const WEOut = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<div id="WEoutput">
-					<IonButton
-						className="TL"
-						onClick={() => setIsOpenLoadPreset(true)}
-						color="tertiary"
-						strong={true}
-					><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
-					<IonButton
-						onClick={() => openCustomInfoModal()}
-						className="TR"
-						color="tertiary"
-						strong={true}
-					>Save/Load Custom Info</IonButton>
-					<IonButton
-						style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
-						className="EV"
-						strong={true}
-						expand="block"
-						color="success"
-						onClick={() => evolveOutput(outputPane)}
-					>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-					<div className="BR">
+					<div>
+						<IonButton
+							onClick={() => setIsOpenLoadPreset(true)}
+							color="tertiary"
+							strong={true}
+						><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+						<div className="evolving">
+							<IonButton
+								style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+								strong={true}
+								expand="block"
+								color="success"
+								onClick={() => evolveOutput()}
+							>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
+							<div id="outputPaneWE" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}>
+								{makeOutput()}
+							</div>
+						</div>
+					</div>
+					<div className="buttons">
 						<IonButton
 							expand="block"
 							strong={false}
@@ -797,7 +957,7 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText()}
+							onClick={() => copyText(copyString)}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}
@@ -815,7 +975,6 @@ const WEOut = (props: PageData) => {
 							onClick={() => pickAndSave()}
 						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
 					</div>
-					<div id="outputPaneWE" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}></div>
 				</div>
 			</IonContent>
 		</IonPage>

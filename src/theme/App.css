@@ -232,42 +232,6 @@ ion-app .fullScreen .collapse div ion-button {
 	justify-content: stretch;
 	margin: 0.5rem 0.5rem 0;
 }
-#WEoutput {
-	display: grid;
-	grid-template-columns: max-content 1fr min-content;
-	grid-template-rows: min-content min-content max-content;
-	grid-template-areas:
-		"TL TR TR"
-		"EV .. BR"
-		"OP OP BR";
-	gap: 0.25rem;
-	justify-items: start;
-	align-items: start;
-	justify-content: stretch;
-	align-content: start;
-	margin: 0.5rem 0.5rem 0;
-}
-#WEoutput .TL {
-	grid-area: TL;
-}
-#WEoutput .EV,
-#WGoutput .EV {
-	grid-area: EV;
-	display: block;
-}
-#WEoutput .TR {
-	grid-area: TR;
-	justify-self: end;
-}
-#WEoutput .BR,
-#WGoutput .BR {
-	grid-area: BR;
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-end;
-	flex-flow: row wrap;
-	justify-self: end;
-}
 #WGoutput .leftHandSide {
 	flex: 1;
 }
@@ -278,13 +242,41 @@ ion-app .fullScreen .collapse div ion-button {
 	flex-grow: 0;
 	flex-shrink: 0;
 }
-#outputPaneWE,
-#outputPane {
-	grid-area: OP;
+
+#WEoutput {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin: 0.5rem 0.5rem 0;
+	gap: 0.25rem;
+}
+#WEoutput div {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: flex-start;
+	justify-content: flex-start;
+	gap: 0.25rem;
+}
+#WEoutput div.topBar {
+	flex-flow: row wrap;
+}
+#WEoutput div.buttons {
+	justify-content: flex-end;
+	gap: 0;
+}
+#WEoutput div.evolving div {
+	display: block;
+}
+#WEoutput div.evolving div.rulesApplied {
+	margin: 0 0 1rem;
+}
+#WEoutput div.evolving div.rules {
+	margin-inline-start: 2rem;
 }
 
-#outputPane,
-#outputPaneWE {
+#outputPaneWE,
+#outputPane {
 	margin: 1rem 0.5rem;
 }
 #outputPane.pickAndSave .word,
