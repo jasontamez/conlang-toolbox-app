@@ -24,7 +24,7 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import { InpCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
-import { Lexicon, PageData } from '../../components/ReduxDucksTypes';
+import { Lexicon, LexiconColumn, PageData } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
 import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
@@ -39,7 +39,8 @@ const WERew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [rawInput, disableConfirms, lexicon] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
+	const [rawInput, disableConfirms, lexiconObj] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
+	const { columns, lexicon } = lexiconObj;
 	const input = rawInput.join("\n");
 	const updateInput = useCallback((value: string) => {
 		const newInput: string[] = value.split("\n").map(v => v.trim()).filter(v => v);
@@ -73,32 +74,30 @@ const WERew = (props: PageData) => {
 		}
 	};
 	const importLexicon = () => {
-		const cols: number = lexicon.columns;
-		const options: any = {};
-		for(let x = 0; x < cols; x++) {
-			options[x.toString()] = lexicon.columnTitles[x];
-		}
+		const inputOptions: { [key: string]: string } = {};
+		columns.forEach((col: LexiconColumn) => {
+			inputOptions[col.id] = col.label;
+		});
 		const thenFunc = (col: number) => {
-			const lex = lexicon.lexicon;
 			let newInput = $i("lexiconInput").value;
 			if(newInput) {
 				newInput += "\n"
 			}
-			lex.forEach((word: Lexicon) => {
+			lexicon.forEach((word: Lexicon) => {
 				const imp = word.columns[col];
 				imp && (newInput += imp + "\n");
 			});
 			$i("lexiconInput").value = newInput;
 			updateInput(newInput);
 		};
-		if(cols === 1) {
+		if(columns.length === 1) {
 			thenFunc(0);
 		} else {
 			fireSwal({
 				title: 'Import Lexicon',
+				text: 'Which column do you want to input?',
 				input: 'select',
-				inputOptions: options,
-				inputPlaceholder: 'Which column do you want to input?',
+				inputOptions,
 				showCancelButton: true
 			}).then((result: any) => {
 				if(result.isConfirmed && result.value) {
@@ -136,7 +135,7 @@ const WERew = (props: PageData) => {
 						<IonButton onClick={clearInput} disabled={!input} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
-						<IonButton onClick={importLexicon} disabled={lexicon.lexicon.length === 0} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
+						<IonButton onClick={importLexicon} disabled={lexicon.length === 0} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

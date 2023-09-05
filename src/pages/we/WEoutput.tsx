@@ -350,14 +350,12 @@ const WEOut = (props: PageData) => {
 
 	useEffect(() => {
 		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
-		console.log("!change!")
 		setNeedToGenerate(true);
 	}, [outputType, rawInput, transformObject, soundChangesObject, charGroupsWE]);
 
 	const evolveOutput = () => {
 		if(!needToGenerate) {
 			// We've already generated and nothing has changed, so the output remains the same.
-			console.log("Nope");
 			return;
 		}
 		const errors: string[] = [];
@@ -787,8 +785,8 @@ const WEOut = (props: PageData) => {
 	const parsedWordList = useMemo(() => {
 		// No need to set copyList here
 		return displayList.map((word: string, i: number) => {
-			const id = `evolved:${word}:${i}`;
-			return <div className="word selectable" key={i} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
+			const id = `evolved:basic:${word}:${i}`;
+			return <div className="word selectable" key={id} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
 		});
 	}, [displayList, maybeSaveThisWord]);
 	const parsedInputOutput = useMemo(() => {
@@ -800,10 +798,10 @@ const WEOut = (props: PageData) => {
 		const output = displayInputOutput.map((words: string[], i: number) => {
 			const [original, arrow, result] = words;
 			const copystring = `${original} ${arrow} ${result}`;
-			const id = `evolved:${copystring}:${i}`;
+			const id = `evolved:inout:${copystring}:${i}`;
 			copiable.push(copystring);
 			return (
-				<div className="inputToOutput selectable" key={i}>
+				<div className="inputToOutput selectable" key={id}>
 					<span>{original}</span>{' '}
 					<span>{arrow}</span>{' '}
 					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
@@ -822,10 +820,10 @@ const WEOut = (props: PageData) => {
 		const output = displayOutputInput.map((words: string[], i: number) => {
 			const [original, arrow, result] = words;
 			const copystring = `${result} ${arrow} ${original}`;
-			const id = `evolved:${copystring}:${i}`;
+			const id = `evolved:outin:${copystring}:${i}`;
 			copiable.push(copystring);
 			return (
-				<div className="outputToInput selectable" key={i}>
+				<div className="outputToInput selectable" key={id}>
 					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>{' '}
 					<span>{arrow}</span>{' '}
 					<span>{original}</span>
@@ -846,9 +844,9 @@ const WEOut = (props: PageData) => {
 			const [original, arrow, result] = final;
 			const line = `${original} ${arrow} ${result}`;
 			copiable.push(line);
-			const id = `evolved:${line}:${i}`;
+			const id = `evolved:rules:${line}:${i}`;
 			return (
-				<div className="rulesApplied" key={i}>
+				<div className="rulesApplied" key={id}>
 					<div className="inputToOutput selectable">
 						<span>{original}</span>{' '}
 						<span>{arrow}</span>{' '}
