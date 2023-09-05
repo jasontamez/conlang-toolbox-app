@@ -162,7 +162,7 @@ const WERew = (props: PageData) => {
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>
-										<IonIcon size="small" slot="end" src="svg/drag-indicator.svg" />
+										<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 									</IonItem>
 								</IonItemSliding>
 							);

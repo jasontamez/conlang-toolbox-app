@@ -130,7 +130,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 					>{item}</div>
 				))}
 				<div className="xs">
-					<IonIcon size="small" src="svg/drag-indicator.svg" />
+					<IonIcon size="small" src="svg/slide-indicator.svg" />
 				</div>
 			</IonItem>
 		</IonItemSliding>
