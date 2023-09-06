@@ -91,6 +91,7 @@ function updateLexiconObject (input: Lexicon094) {
 		}),
 		sortDir: !!dir,
 		sortPattern: [col, ...columnOrder.filter((c: number, i: number) => (i !== col))],
+		blankSort: "last",
 		lexicon: lexicon.map((lex: any) => {
 			const {key, columns} = lex;
 			return {

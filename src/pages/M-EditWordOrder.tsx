@@ -20,7 +20,9 @@ import {
 	IonReorder,
 	IonCheckbox,
 	IonItemDivider,
-	IonToggle
+	IonToggle,
+	IonSelect,
+	IonSelectOption
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -33,7 +35,7 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../components/ReduxDucksTypes';
+import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn } from '../components/ReduxDucksTypes';
 import {
 	updateLexiconColumnarInfo
 } from '../components/ReduxDucksFuncs';
@@ -48,6 +50,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		columns,
 		sortPattern,
 		truncateColumns,
+		blankSort,
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
@@ -57,15 +60,17 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const [colPosition, setColPosition] = useState<number[]>(columns.map((col: any, i: number) => i));
 	const [nextColPos, setNextColPos] = useState<number>(columns.length);
 	const [noWrap, setNoWrap] = useState<boolean>(truncateColumns);
+	const [sortWhenBlank, setSortWhenBlank] = useState<LexiconBlankSorts>(blankSort);
 	const [originalString, setOriginalString] = useState<string>("");
 
 	useEffect(() => {
 		const test =
 			sortPattern.join(",")
+			+ blankSort
 			+ columns.map((col: LexiconColumn, i: number) => col.label + col.size + String(i)).join(',')
 			+ String(truncateColumns);
 		setOriginalString(test);
-	}, [columns, truncateColumns, sortPattern]);
+	}, [columns, truncateColumns, sortPattern, blankSort]);
 
 	const setNewInfo = (i: number, val: string) => {
 		const newCols = cols.slice();
@@ -80,6 +85,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const doneEditingOrder = () => {
 		const testString =
 			order.join(",")
+			+ sortWhenBlank
 			+ cols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
 			+ String(noWrap);
 		if(testString === originalString) {
@@ -106,7 +112,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			})
 			return { id, columns: newColumns };
 		});
-		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap));
+		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap, sortWhenBlank));
 		fireSwal({
 			title: "Saved!",
 			toast: true,
@@ -195,6 +201,14 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 							checked={!noWrap}
 							onIonChange={() => setNoWrap(!noWrap)}
 						>Show Full Column Titles</IonToggle>
+					</IonItem>
+					<IonItem className="ion-text-wrap">
+						<IonSelect className="ion-text-wrap" label="Sort blank columns:" value={sortWhenBlank} onIonChange={(e) => setSortWhenBlank(e.detail.value)}>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="first">To Top, Always</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="last">To End, Always</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="alphaFirst">As Alphabetically First</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="alphaLast">As Alphabetically Last</IonSelectOption>
+						</IonSelect>
 					</IonItem>
 					<IonItemDivider>Rearrange Lexicon Columns</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>

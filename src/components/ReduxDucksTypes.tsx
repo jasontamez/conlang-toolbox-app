@@ -234,6 +234,7 @@ export interface LexiconColumn {
 	size: "s" | "m" | "l"
 	label: string
 }
+export type LexiconBlankSorts = "alphaFirst" | "alphaLast" | "first" | "last";
 export interface LexiconObject {
 	id: string
 	lastSave: number
@@ -244,6 +245,7 @@ export interface LexiconObject {
 	lexicon: Lexicon[]
 	sortDir: boolean
 	sortPattern: number[]
+	blankSort: LexiconBlankSorts
 	fontType?: string
 }
 

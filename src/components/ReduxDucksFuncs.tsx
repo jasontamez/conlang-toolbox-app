@@ -257,8 +257,8 @@ export function updateLexiconSort(payload: number[]) {
 export function updateLexiconSortDir(payload: boolean) {
 	return {type: consts.UPDATE_LEXICON_SORT_DIR, payload};
 }
-export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], truncate: boolean) {
-	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, truncate]};
+export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.LexiconColumn[], order: number[], truncate: boolean, blankSort: types.LexiconBlankSorts) {
+	return {type: consts.UPDATE_LEXICON_COLUMNAR_INFO, payload: [lex, cols, order, truncate, blankSort]};
 }
 export function addItemstoLexiconColumn(items: string[], columnId: string) {
 	return {type: consts.ADD_ITEMS_TO_LEXICON_COLUMN, payload: [items, columnId]};

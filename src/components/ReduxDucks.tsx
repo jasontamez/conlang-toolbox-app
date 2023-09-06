@@ -151,8 +151,26 @@ const reduceSoundChangesWE = (original: types.WESoundChangeObject) => {
 const reduceSettingsWE = (original: types.WESettingsObject) => {
 	return {...original};
 };
-const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean) => {
+const sortBlank = (dir: boolean, method: types.LexiconBlankSorts) => {
+	// returns [xIsBlank, yIsBlank]
+	const sort = (dir ? "descending-" : "ascending-") + method;
+	switch (sort) {
+		case "descending-last":
+		case "ascending-first":
+		case "descending-alphaFirst":
+		case "ascending-alphaFirst":
+			return [-1, 1];
+		case "ascending-last":
+		case "descending-first":
+		case "descending-alphaLast":
+		case "ascending-alphaLast":
+			return [1, -1];
+	}
+	return [0, 0];
+};
+const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean, blankSort: types.LexiconBlankSorts) => {
 	const maxCol = sortPattern.length;
+	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
 	let newLexicon = [...lexicon];
 	newLexicon.sort((a, b) => {
 		const columnsA = a.columns;
@@ -163,10 +181,21 @@ const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: b
 		//   (or we run out of columns)
 		do {
 			const sortingCol = sortPattern[col];
-			const x = columnsA[sortingCol] || "ZZZZZZZZZZZZZZZZ"; // Send blank columns to the end
-			const y = columnsB[sortingCol] || "ZZZZZZZZZZZZZZZZ";
+			const x = columnsA[sortingCol];
+			const y = columnsB[sortingCol];
 			try {
-				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+				if(!x && !y) {
+					// Blanks are equal
+					comp = 0;
+				} else if (!x) {
+					// first is blank
+					comp = xIsBlank;
+				} else if (!y) {
+					// last is blank
+					comp = yIsBlank;
+				} else {
+					comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+				}
 			} catch(error) {
 				comp = 0;
 				console.log(error);
@@ -181,7 +210,7 @@ const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: b
 		}
 		if(sortDir && comp) {
 			// Reverse order
-			return 0 - comp;
+			return comp * -1;
 		}
 		return comp;
 	});
@@ -192,13 +221,14 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		lexicon,
 		sortPattern,
 		sortDir,
+		blankSort,
 		columns
 	} = original;
 	return {
 		...original,
 		columns: [...columns.map(col => ({...col}))],
 		sortPattern: [...sortPattern],
-		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir)
+		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir, blankSort || "last")
 	};
 };
 const reduceMorphoSyntaxModalState = (original: types.MorphoSyntaxModalStateObject) => {
@@ -352,6 +382,7 @@ export const blankAppState: types.StateObject = {
 		truncateColumns: true,
 		sortDir: false,
 		sortPattern: [0, 1, 2],
+		blankSort: "last",
 		columns: [
 			{
 				id: "00",
@@ -1064,13 +1095,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.UPDATE_LEXICON_COLUMNAR_INFO:
-			const [lex, cols, order, truncate] = payload;
+			const [lex, columns, sortPattern, truncateColumns, blankSort] = payload;
 			const lexicon = reduceLexiconState({
 				...state.lexicon,
 				lexicon: lex,
-				columns: cols,
-				sortPattern: order,
-				truncateColumns: truncate
+				columns,
+				sortPattern,
+				blankSort,
+				truncateColumns
 			});
 			final = {
 				...reduceAllBut(["lexicon"], state),
