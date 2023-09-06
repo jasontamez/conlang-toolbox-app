@@ -1175,6 +1175,17 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				lexicon: LO
 			};
 			break;
+		case consts.MERGE_LEXICON_ITEMS:
+			const [lexList, merged]: [types.Lexicon[], types.Lexicon] = payload;
+			merged.id = uuidv4();
+			LO = {...state.lexicon};
+			LO.lexicon = [merged, ...LO.lexicon.filter((lex) => lexList.every((lx) => lx.id !== lex.id))];
+			LO = reduceLexiconState(LO);
+			final = {
+				...reduceAllBut(["lexicon"], state),
+				lexicon: LO
+			};
+			break;
 
 
 		// Overwrite State

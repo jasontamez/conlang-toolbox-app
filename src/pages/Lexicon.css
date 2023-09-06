@@ -105,6 +105,13 @@
 	padding-inline-end: 0;
 	border: 0;
 }
+#theLexicon .merging {
+	font-weight: bold;
+	background: var(--ion-color-tertiary);
+	color: var(--ion-color-tertiary-contrast);
+	flex: 0 0 1.1rem;
+	text-align: center;
+}
 .lexRow,
 .lexRow::part(native) {
 	--inner-padding-end: 0;
@@ -125,6 +132,20 @@
 .virtualLex {
 	margin: 0;
 	overflow-y: scroll !important;
+	padding-block-end: 5em;
+}
+ion-fab {
+	margin-block-end: var(--ion-safe-area-bottom, 0);
+}
+#mergeLexiconItems ion-select::part(text),
+#mergeLexiconItems .value {
+	text-align: end;
+	justify-content: flex-end;
+}
+#mergeLexiconItems ion-select::part(label),
+#mergeLexiconItems .colLabel {
+	text-align: start;
+	justify-content: flex-start;
 }
 .lexHeader,
 .lexHeader::part(native) {

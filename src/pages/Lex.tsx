@@ -22,7 +22,9 @@ import {
 	useIonViewDidLeave,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	IonFab,
+	IonFabButton
 } from '@ionic/react';
 import {
 	add,
@@ -31,7 +33,8 @@ import {
 	globeOutline,
 	settings,
 	chevronUpCircle,
-	chevronDownCircle
+	chevronDownCircle,
+	addOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
@@ -59,6 +62,7 @@ import DeleteLexiconModal from './M-DeleteLexicon';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 import EditLexiconSortModal from './M-EditSort';
+import MergeLexiconItemsModal from './M-MergeLexiconItems';
 
 interface LexItem {
 	index: number
@@ -69,8 +73,10 @@ interface LexItem {
 		delFromLex: Function
 		beginEdit: Function
 		maybeExpand: Function
+		maybeSetForMerge: Function
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
+		merging: string[]
 	}
 }
 
@@ -94,12 +100,16 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		delFromLex,
 		beginEdit,
 		maybeExpand,
+		maybeSetForMerge,
 		columns,
-		lexicon
+		lexicon,
+		merging
 	} = data;
 	const lex: Lexicon = lexicon[index];
 	const cols = lex.columns;
 	const id = lex.id;
+	const isMerging = merging.indexOf(id) + 1;
+	const maybeMerging = isMerging ? <div className="merging">{isMerging}</div> : <></>;
 	return (
 		<IonItemSliding
 			key={`${id}:slidingItem`}
@@ -107,11 +117,16 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 			style={style}
 			className="lexiconDisplay"
 		>
+			<IonItemOptions side="start" className="serifChars">
+				<IonItemOption color="tertiary" aria-label="Join" onClick={() => maybeSetForMerge(lex)}>
+					<IonIcon slot="icon-only" src="svg/link.svg" />
+				</IonItemOption>
+			</IonItemOptions>
 			<IonItemOptions side="end" className="serifChars">
-				<IonItemOption color="primary" onClick={() => beginEdit(lex)}>
+				<IonItemOption color="primary" aria-label="Edit" onClick={() => beginEdit(lex)}>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
-				<IonItemOption color="danger" onClick={() => delFromLex(lex)}>
+				<IonItemOption color="danger" aria-label="Delete" onClick={() => delFromLex(lex)}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
@@ -119,6 +134,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				"lexRow serifChars "
 				+ (index % 2 ? "even" : "odd")
 			}>
+				{maybeMerging}
 				{cols.map((item: string, i: number) => (
 					<div
 						onClick={(e) => maybeExpand(e)}
@@ -167,6 +183,9 @@ const Lex = (props: PageData) => {
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
 	const [editingItem, setEditingItem] = useState<Lexicon | null>(null);
+	const [merging, setMerging] = useState<string[]>([]);
+	const [mergingObject, setMergingObject] = useState<{[key: string]: Lexicon}>({});
+	const [isOpenMergeItems, setIsOpenMergeItems] = useState<boolean>(false);
 
 	// Height variables
 	const height = useWindowHeight();
@@ -248,15 +267,41 @@ const Lex = (props: PageData) => {
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
 	}, [dispatch, disableConfirms]);
-	const beginEdit = useCallback((item: Lexicon, id: string) => {
+	const beginEdit = useCallback((item: Lexicon) => {
 		setEditingItem(item);
 		setIsOpenEditLexItem(true);
 		$i("mainLexList").closeSlidingItems();
 	}, []);
-	const createItemData = memoizeOne((delFromLex, beginEdit, maybeExpand, columns, lexicon) => ({
-		delFromLex, beginEdit, maybeExpand, columns, lexicon
+	const maybeSetForMerge = useCallback((item: Lexicon) => {
+		const { id } = item;
+		const newObj = {...mergingObject};
+		if(newObj[id]) {
+			// remove
+			delete newObj[id];
+			setMerging(merging.filter(m => m !== id));
+		} else {
+			// add
+			newObj[id] = item;
+			setMerging([...merging, id]);
+		}
+		setMergingObject(newObj);
+		$i("mainLexList").closeSlidingItems();
+	}, [merging, mergingObject]);
+	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging) => ({
+		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging
 	}));
-	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeExpand, columns, lexicon);
+	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging);
+	const mergeButton = merging.length > 1 ? (
+		<IonFab vertical="bottom" horizontal="start" slot="fixed">
+			<IonFabButton color="tertiary" title="Merge selected items" onClick={() => setIsOpenMergeItems(true)}>
+				<IonIcon src="svg/link.svg" />
+			</IonFabButton>
+		</IonFab>
+	) : <></>;
+	const clearMergedInfo = useCallback(() => {
+		setMerging([]);
+		setMergingObject({});
+	}, []);
 	return (
 		<IonPage>
 			<EditLexiconItemModal
@@ -267,6 +312,12 @@ const Lex = (props: PageData) => {
 			/>
 			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
 			<EditLexiconSortModal {...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)} />
+			<MergeLexiconItemsModal
+				{...props.modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
+				merging={merging}
+				mergingObject={mergingObject}
+				clearInfo={clearMergedInfo}
+			/>
 			<LoadLexiconModal
 				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
 				lexInfo={storedLexInfo}
@@ -397,6 +448,7 @@ const Lex = (props: PageData) => {
 						</IonRow>
 					</IonGrid>
 				</IonList>
+				{mergeButton}
 			</IonContent>
 		</IonPage>
 	);

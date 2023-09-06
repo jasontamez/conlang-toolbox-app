@@ -263,6 +263,9 @@ export function updateLexiconColumnarInfo(lex: types.Lexicon[], cols: types.Lexi
 export function addItemstoLexiconColumn(items: string[], columnId: string) {
 	return {type: consts.ADD_ITEMS_TO_LEXICON_COLUMN, payload: [items, columnId]};
 };
+export function mergeLexiconItems(items: types.Lexicon[], final: types.Lexicon) {
+	return {type: consts.MERGE_LEXICON_ITEMS, payload: [items, final]};
+}
 
 //
 // VIEWS

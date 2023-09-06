@@ -60,11 +60,12 @@ const AppInfo = (props: PageData) => {
 									<ul className="changelog">
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
 										<li>In MorphoSyntax, on smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li>
-										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
-										<li>You can tap on an overflowing field in the Lexicon to see a popup with the full field entry.</li>
-										<li>Made sorting the Lexicon more intuitive.</li>
-										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
 										<li>Added a way to create compound meanings in Word Lists.</li>
+										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
+										<li>You can tap on an overflowing field in the Lexicon to see a popup with the full text.</li>
+										<li>Made sorting the Lexicon easier to do.</li>
+										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
+										<li>Created a way to merge Lexicon items together: swipe right on an item to mark it for merging. This lets you import new words from WordGen, new meanings from Word Lists, and merge them together without having to copy and paste.</li>
 										<li>Under-the-hood changes.</li>
 									</ul>
 									<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>
