@@ -163,8 +163,8 @@ const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: b
 		//   (or we run out of columns)
 		do {
 			const sortingCol = sortPattern[col];
-			const x = columnsA[sortingCol];
-			const y = columnsB[sortingCol];
+			const x = columnsA[sortingCol] || "ZZZZZZZZZZZZZZZZ"; // Send blank columns to the end
+			const y = columnsB[sortingCol] || "ZZZZZZZZZZZZZZZZ";
 			try {
 				comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
 			} catch(error) {

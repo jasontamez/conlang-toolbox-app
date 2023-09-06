@@ -50,10 +50,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const { id, columns } = itemToEdit || { id: '', columns: [] };
 	const [ cols, setCols ] = useState<string[]>([...columns]);
 	useEffect(() => {
-		if(cols.join(nonsense) !== columns.join(nonsense)) {
+		if(!isOpen && cols.join(nonsense) !== columns.join(nonsense)) {
 			setCols([...columns]);
 		}
-	}, [cols, columns]);
+	}, [cols, columns, isOpen]);
 	const setNewInfo = (info: string, i: number) => {
 		const newCols = [...cols];
 		newCols[i] = info;
