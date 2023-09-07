@@ -62,6 +62,7 @@ const AppInfo = (props: PageData) => {
 										<li>In MorphoSyntax, on smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li>
 										<li>Added a way to create compound meanings in Word Lists.</li>
 										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
+										<li>In the Lexicon, if the inline input boxes aren't big enough, you can now pop up a modal with full-size inputs.</li>
 										<li>You can tap on an overflowing field in the Lexicon to see a popup with the full text.</li>
 										<li>Made sorting the Lexicon easier to do.</li>
 										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>

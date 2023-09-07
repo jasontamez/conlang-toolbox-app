@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, memo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -54,6 +54,7 @@ import fireSwal from '../components/Swal';
 import escape from '../components/EscapeForHTML';
 import './Lexicon.css';
 
+import AddLexiconItemModal from './M-AddWord';
 import EditLexiconItemModal from './M-EditWord';
 import EditLexiconOrderModal from './M-EditWordOrder';
 import LexiconStorageModal from './M-LexiconStorage';
@@ -171,10 +172,25 @@ const Lex = (props: PageData) => {
 		storedCustomIDs*/
 	} = lexObject;
 	const dispatch = useDispatch();
-	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
+
+	// editing lex item
 	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
+	const [editingItem, setEditingItem] = useState<Lexicon | null>(null);
+
+	// merging lex items
+	const [merging, setMerging] = useState<string[]>([]);
+	const [mergingObject, setMergingObject] = useState<{[key: string]: Lexicon}>({});
+	const [isOpenMergeItems, setIsOpenMergeItems] = useState<boolean>(false);
+
+	// add to lex
+	const [isOpenAddLexItem, setIsOpenAddLexItem] = useState<boolean>(false);
+	const [addingCols, setAddingCols] = useState<{[key: string]: string}>({}); // columnId: "text"
+	const [previousCols, setPreviousCols] = useState<string>("");
+
+	// other modals
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
 	const [isOpenLexSorter, setIsOpenLexSorter] = useState<boolean>(false);
 	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
@@ -182,10 +198,9 @@ const Lex = (props: PageData) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
-	const [editingItem, setEditingItem] = useState<Lexicon | null>(null);
-	const [merging, setMerging] = useState<string[]>([]);
-	const [mergingObject, setMergingObject] = useState<{[key: string]: Lexicon}>({});
-	const [isOpenMergeItems, setIsOpenMergeItems] = useState<boolean>(false);
+
+	// Sliding container
+	const mainLexList = $i("mainLexList");
 
 	// Height variables
 	const height = useWindowHeight();
@@ -199,6 +214,7 @@ const Lex = (props: PageData) => {
 	const lexHeader = $i("theLexiconHeader");
 	const lexColumnNames = $i("lexColumnNames");
 	const lexColumnInputs = $i("lexColumnInputs");
+	// Calculate height
 	useEffect(() => {
 		let used = 0;
 		[
@@ -209,27 +225,70 @@ const Lex = (props: PageData) => {
 			lexColumnNames
 		].forEach(input => input && (used += input.offsetHeight));
 		setLexiconHeight(height - used);
-	}, [hasLoaded, height, lexHeadersHidden, truncateColumns, columns, topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames]);
+	}, [
+		hasLoaded, height, lexHeadersHidden, // state
+		truncateColumns, columns, // redux
+		topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames // HTML elements
+	]);
+
+	// Handle columns and the "add" inputs
+	useEffect(() => {
+		const sortedColumns = columns.map((col: LexiconColumn) => col.id);
+		sortedColumns.sort();
+		// Only change things if the columns themselves change
+		//  - changing order or labels or other parts of columns shouldn't trigger
+		//  - setting values on addingCols shouldn't trigger
+		if(previousCols !== sortedColumns.join(" / ")) {
+			let currentCols = Object.keys(addingCols);
+			const newPrev: string[] = [];
+			const newCols: {[key:string]: string} = {...addingCols};
+			// go through each column
+			columns.forEach((col: LexiconColumn) => {
+				const id = col.id;
+				newPrev.push(id);
+				if(newCols[id] !== undefined) {
+					// column already exists
+					currentCols = currentCols.filter(prop => prop !== id);
+				} else {
+					// create column
+					newCols[id] = "";
+				}
+			});
+			// check for any remaining old columns; they need to be deleted
+			currentCols.forEach((id: string) => {
+				delete newCols[id];
+			});
+			// save new info
+			setAddingCols(newCols);
+			setPreviousCols(newPrev.join(" / "));
+		}
+	}, [columns, previousCols, addingCols]);
+	const setAddInput = (id: string, value: string) => {
+		const newObj = {...addingCols};
+		newObj[id] = value;
+		setAddingCols(newObj);
+	};
+
+	// Update Lexicon description or title
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
-		const value = el.value.trim();
-		dispatch(updateLexiconText(prop, value));
+		el && dispatch(updateLexiconText(prop, el.value.trim()));
 	};
-	const addToLex = () => {
+
+	// Add new Lexicon item
+	const addToLex = useCallback(() => {
 		const newInfo: string[] = [];
+		const newBlank: { [key: string]: string } = {};
+		const ids: string[] = [];
 		let foundFlag = false;
-		let i: number = 0;
-		while(i < columns) {
-			const el = $i("inputLex" + i.toString());
-			if(el !== null) {
-				let info = el.value.trim();
-				if(info) {
-					foundFlag = true;
-				}
-				newInfo.push(info);
-			}
-			i++;
-		}
+		columns.forEach((col: LexiconColumn) => {
+			const id = col.id;
+			const info = addingCols[id] || "";
+			newInfo.push(info);
+			info && (foundFlag = true);
+			newBlank[id] = "";
+			ids.push("inputLex" + id);
+		});
 		if(!foundFlag) {
 			fireSwal({
 				title: "Error",
@@ -238,23 +297,25 @@ const Lex = (props: PageData) => {
 			});
 			return;
 		}
-		i = 0;
-		while(i < columns) {
-			const el = $i("inputLex" + i.toString());
-			if(el !== null) {
-				el.value = "";
-			}
-			i++;
-		}
+		// send to store
 		dispatch(addLexiconItem({
 			id: uuidv4(),
 			columns: newInfo
 		}));
-	};
+		// clear current info
+		setAddingCols(newBlank);
+		// clear all inputs
+		ids.forEach((id: string) => {
+			const el = $i(id);
+			el && el.getInputElement().then((el: any) => (el.value = ""));
+		});
+	}, [columns, dispatch, addingCols]);
+
+	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
 		let title: string = item.columns.join(" / ");
 		const thenFunc = () => dispatch(deleteLexiconItem(item.id));
-		$i("mainLexList").closeSlidingItems();
+		mainLexList.closeSlidingItems();
 		if(disableConfirms) {
 			thenFunc();
 		} else {
@@ -266,12 +327,16 @@ const Lex = (props: PageData) => {
 				confirmButtonText: "Yes, delete it."
 			}).then((result: any) => result.isConfirmed && thenFunc());
 		}
-	}, [dispatch, disableConfirms]);
+	}, [dispatch, disableConfirms, mainLexList]);
+
+	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
 		setEditingItem(item);
 		setIsOpenEditLexItem(true);
-		$i("mainLexList").closeSlidingItems();
-	}, []);
+		mainLexList.closeSlidingItems();
+	}, [mainLexList]);
+
+	// Set up item for merging
 	const maybeSetForMerge = useCallback((item: Lexicon) => {
 		const { id } = item;
 		const newObj = {...mergingObject};
@@ -285,25 +350,36 @@ const Lex = (props: PageData) => {
 			setMerging([...merging, id]);
 		}
 		setMergingObject(newObj);
-		$i("mainLexList").closeSlidingItems();
-	}, [merging, mergingObject]);
-	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging) => ({
-		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging
-	}));
-	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging);
-	const mergeButton = merging.length > 1 ? (
+		mainLexList.closeSlidingItems();
+	}, [merging, mergingObject, mainLexList]);
+	const mergeButton = useMemo(() => merging.length > 1 ? (
 		<IonFab vertical="bottom" horizontal="start" slot="fixed">
 			<IonFabButton color="tertiary" title="Merge selected items" onClick={() => setIsOpenMergeItems(true)}>
 				<IonIcon src="svg/link.svg" />
 			</IonFabButton>
 		</IonFab>
-	) : <></>;
+	) : <></>, [merging.length]);
 	const clearMergedInfo = useCallback(() => {
 		setMerging([]);
 		setMergingObject({});
 	}, []);
+
+	// memoize stuff for Lexicon display
+	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging) => ({
+		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging
+	}));
+	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging);
+
+	// JSX
 	return (
 		<IonPage>
+			<AddLexiconItemModal 
+				{...props.modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
+				openECM={setIsOpenECM}
+				adding={addingCols}
+				setAdding={setAddingCols}
+				columnInfo={columns}
+			/>
 			<EditLexiconItemModal
 				{...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
 				openECM={setIsOpenECM}
@@ -427,7 +503,14 @@ const Lex = (props: PageData) => {
 										const { id, label, size } = column;
 										const key = `inputLex${id}`;
 										return (
-											<IonInput id={key} key={key} aria-label={`${label} input`} className={size} type="text" style={ { overflowY: "hidden" }} />
+											<IonInput
+												id={key}
+												key={key}
+												aria-label={`${label} input`}
+												className={`${size} lexAddInput`}
+												type="text"
+												onIonChange={(e) => setAddInput(id, e.detail.value || "")}
+											/>
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>
@@ -448,6 +531,11 @@ const Lex = (props: PageData) => {
 						</IonRow>
 					</IonGrid>
 				</IonList>
+				<IonFab vertical="bottom" horizontal="end" slot="fixed">
+					<IonFabButton color="primary" title="Add new lexicon item" onClick={() => setIsOpenAddLexItem(true)}>
+						<IonIcon icon={addOutline} />
+					</IonFabButton>
+				</IonFab>
 				{mergeButton}
 			</IonContent>
 		</IonPage>

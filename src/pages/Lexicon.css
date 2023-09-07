@@ -105,6 +105,9 @@
 	padding-inline-end: 0;
 	border: 0;
 }
+#theLexicon ion-input.lexAddInput {
+	overflow-y: hidden;
+}
 #theLexicon .merging {
 	font-weight: bold;
 	background: var(--ion-color-tertiary);
