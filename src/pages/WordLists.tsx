@@ -13,7 +13,10 @@ import {
 	IonItem,
 	IonButton,
 	IonIcon,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	useIonAlert,
+	useIonToast,
+	useIonRouter
 } from '@ionic/react';
 import {
 	helpCircleOutline,
@@ -33,7 +36,6 @@ import {
 import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
-import fireSwal from '../components/Swal';
 import { WLCard } from "./wg/WGCards";
 
 interface SavedWord { id: string, word: string };
@@ -54,6 +56,9 @@ const WordLists = (props: PageData) => {
 		textCenter
 	} = wordListsState;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
+	const navigator = useIonRouter();
 	const toggleChars = (what: keyof WL) => {
 		if(display.some((p: keyof WL) => p === what)) {
 			return dispatch(updateWordListsDisplay(display.filter((p: keyof WL) => p !== what)));
@@ -75,34 +80,51 @@ const WordLists = (props: PageData) => {
 	// Save to Lexicon
 	// // //
 	const saveToLexicon = (words: SavedWord[]) => {
-		const inputOptions: { [key: string]: string } = {};
-		lexColumns.forEach((col: LexiconColumn, i: number) => {
-			inputOptions[col.id] = col.label;
-		});
-		fireSwal({
-			title: "Select a Column",
-			text: "Your selected meanings will be added to the Lexicon under that column.",
-			input: "select",
-			inputOptions,
-			showCancelButton: true
-		}).then((result: { value?: string }) => {
-			const value = result.value;
-			if(value !== undefined) {
-				// Send off to the lexicon
-				dispatch(addItemstoLexiconColumn(words.map((obj: SavedWord) => obj.word), value));
-				// Clear info
-				setSavedWords([]);
-				setSavedWordsObject({});
-				setPickAndSave(false);
-				fireSwal({
-					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
-					toast: true,
-					timer: 3500,
-					position: 'top',
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		doAlert({
+			header: "Select a column",
+			message: "Your selected meanings will be added to the Lexicon under that column.",
+			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
+				return {
+					type: 'radio',
+					label: col.label,
+					value: col,
+					checked: !i
+				};
+			}),
+			buttons: [
+				{
+					text: "Cancel",
+					role: 'cancel'
+				},
+				{
+					text: "Save",
+					handler: (col: LexiconColumn | undefined) => {
+						if(!col) {
+							// Treat as cancel
+							return;
+						}
+						console.log(col);
+						// Send off to the lexicon
+						dispatch(addItemstoLexiconColumn(words.map((obj: SavedWord) => obj.word), col.id));
+						// Clear info
+						setSavedWords([]);
+						setSavedWordsObject({});
+						setPickAndSave(false);
+						// Toast
+						doToast({
+							message: `Selected meanings saved to Lexicon under "${col.label}"`,
+							duration: 3500,
+							position: "top",
+							buttons: [
+								{
+									text: "Go to Lexicon",
+									handler: () => navigator.push("/lex")
+								}
+							]
+						});
+					}
+				}
+			]
 		});
 	};
 	const doPickAndSave = () => {
@@ -110,25 +132,19 @@ const WordLists = (props: PageData) => {
 			// Stop saving
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
-			return fireSwal({
-				title: "You need to add columns to the Lexicon before you can add anything to it.",
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 4000,
-				position: 'top',
-				timerProgressBar: true,
-				showConfirmButton: false
+			return doToast({
+				message: "You need to add columns to the Lexicon before you can add anything to it.",
+				cssClass: "danger",
+				duration: 4000,
+				position: "top"
 			});
 		}
 		setPickAndSave(true);
-		return fireSwal({
-			title: "Tap words you want to save to Lexicon",
-			toast: true,
-			timer: 2500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});	
+		return doToast({
+			message: "Tap words you want to save to Lexicon",
+			duration: 2500,
+			position: "top"
+		});
 	};
 	const donePickingAndSaving = () => {
 		if(savedWords.length > 0) {
@@ -177,30 +193,35 @@ const WordLists = (props: PageData) => {
 		if(linking) {
 			if(savedWords.length > 1) {
 				// We have information left over. Do we want to keep it?
-				const thenFunc = (result: any) => {
-					if(result.isConfirmed === true) {
-						// SAVE
-						saveNewMeaning();
-					} else if (result.isConfirmed !== false) {
-						// Probably just cancelling the alert some other way?
-						return;
-					}
+				const handler = () => {
 					setSavedWords([]);
 					setSavedWordsObject({});
 					setLinking(false);
 				};
 				if(!disableConfirms) {
-					return fireSwal({
-						title: "Stop Linking?",
-						text: "You have selected some meanings. Do you want to save them?",
-						customClass: {popup: 'deleteConfirm'},
-						icon: 'warning',
-						showCancelButton: true,
-						cancelButtonText: "Discard",
-						confirmButtonText: "Save"
-					}).then(thenFunc);
+					return doAlert({
+						header: "Stop Linking?",
+						message: "You have selected some meanings. Do you want to save them?",
+						cssClass: "danger",
+						buttons: [
+							{
+								text: "No, Discard",
+								role: "cancel",
+								cssClass: "cancel",
+								handler
+							},
+							{
+								text: "Yes, Save Them",
+								cssClass: "submit",
+								handler: () => {
+									saveNewMeaning();
+									handler();
+								}
+							}
+						]
+					});
 				}
-				return thenFunc({isConfirmed: false});
+				return handler();
 			}
 			// 0-1 meanings selected: just ignore and toggle off
 			setLinking(false);
@@ -209,24 +230,19 @@ const WordLists = (props: PageData) => {
 			return;
 		}
 		setLinking(true);
-		return fireSwal({
-			title: "Tap meanings you want to link, in the order you wish to link them.",
-			toast: true,
-			timer: 5000,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});
+		return doToast({
+			message: "Tap meanings you want to link, in the order you wish to link them.",
+			duration: 5000,
+			position: "top"
+		})
 	};
 	const saveNewMeaning = (makeToast: boolean = true) => {
 		dispatch(addCustomHybridMeaning(savedWords));
-		makeToast && fireSwal({
-			title: "Combination saved.",
-			toast: true,
-			timer: 2500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
+		makeToast && doToast({
+			message: "Combination saved",
+			duration: 2500,
+			position: "top",
+			cssClass: "success"
 		});
 	};
 	const doneLinking = () => {
@@ -236,14 +252,11 @@ const WordLists = (props: PageData) => {
 	};
 	const toggleUnlinking = () => {
 		if(!unlinking) {
-			fireSwal({
-				title: "Tap combinations you want to delete.",
-				toast: true,
-				customClass: {popup: 'warnToast'},
-				timer: 5000,
-				position: 'top',
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				message: "Tap combinations you want to delete.",
+				duration: 3000,
+				position: "top",
+				cssClass: "warning"
 			});
 		}
 		setUnlinking(!unlinking);
