@@ -182,6 +182,13 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 		setIsOpen(false);
 	};
 
+	const cancelMerge = () => {
+		// clear merged items from Lexicon
+		clearInfo();
+		// close this modal
+		setIsOpen(false);
+	};
+
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
 			<IonHeader>
@@ -232,9 +239,13 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 			</IonContent>
 			<IonFooter id="footerElement">
 				<IonToolbar color="darker">
+					<IonButton color="warning" slot="end" onClick={() => cancelMerge()}>
+						<IonIcon icon={closeCircleOutline} slot="start" />
+						<IonLabel>Cancel Merging</IonLabel>
+					</IonButton>
 					<IonButton color="tertiary" slot="end" onClick={() => saveMerge()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Changes</IonLabel>
+						<IonLabel>Save and Merge</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

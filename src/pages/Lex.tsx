@@ -110,7 +110,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 	const cols = lex.columns;
 	const id = lex.id;
 	const isMerging = merging.indexOf(id) + 1;
-	const maybeMerging = isMerging ? <div className="merging">{isMerging}</div> : <></>;
+	const maybeMerging = isMerging ? <div className="merging">{String(isMerging)}</div> : <></>;
 	return (
 		<IonItemSliding
 			key={`${id}:slidingItem`}
@@ -153,7 +153,6 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		</IonItemSliding>
 	);
 }, areEqual);
-
 
 const Lex = (props: PageData) => {
 	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);

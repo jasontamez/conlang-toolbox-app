@@ -81,7 +81,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 						<IonIcon icon={output === "syllables" ? checkmarkCircleOutline : ellipseOutline} />
 					</IonItem>
 					<IonItemDivider>{output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
-					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>
+					<IonItem className={(output === "text" ? "" : "hide") + " labelled"}>
 						<IonLabel>Number of sentences</IonLabel>
 					</IonItem>
 					<IonItem className={output === "text" ? "" : "hide"}>

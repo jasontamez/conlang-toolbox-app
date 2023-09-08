@@ -59,10 +59,11 @@ const AppInfo = (props: PageData) => {
 									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
 									<ul className="changelog">
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
+										<li>When making a word list in WordGen, it will make sure each word is unique. If it can't generate enough unique words, it will fail with an error message.</li>
 										<li>In MorphoSyntax, on smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li>
 										<li>Added a way to create compound meanings in Word Lists.</li>
 										<li>Added a button to the Lexicon header that will toggle the Title and Description, giving you more room to look at your lexicon items when needed.</li>
-										<li>In the Lexicon, if the inline input boxes aren't big enough, you can now pop up a modal with full-size inputs.</li>
+										<li>In the Lexicon, if you need more space than the inline input boxes provide, you can now pop up a modal with full-size inputs.</li>
 										<li>You can tap on an overflowing field in the Lexicon to see a popup with the full text.</li>
 										<li>Made sorting the Lexicon easier to do.</li>
 										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>

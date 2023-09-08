@@ -288,7 +288,8 @@ ion-app .fullScreen .collapse div ion-button {
 }
 #outputPane.pickAndSave div.word,
 #outputPaneWL.pickAndSave div.word,
-#outputPaneWE.pickAndSave div.word {
+#outputPaneWE.pickAndSave div.word,
+#outputPaneWL.removingCombos div.word {
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-primary-shade);
 }
@@ -297,12 +298,15 @@ ion-app .fullScreen .collapse div ion-button {
 #outputPaneWE.pickAndSave .word.saved {
 	background: var(--ion-color-success);
 	color: var(--ion-color-success-contrast);
-	border-color: var(--ion-color-success-shade);
+	border-color: 1px solid var(--ion-color-success-shade);
+}
+#outputPaneWL.removingCombos div.word {
+	border: 1px solid transparent;
 }
 #outputPaneWL.removingCombos .word.combo {
 	background: var(--ion-color-warning);
 	color: var(--ion-color-warning-contrast);
-	border-color: var(--ion-color-warning-shade);
+	border: 1px solid var(--ion-color-warning-shade);
 }
 #outputPaneWE {
 	display: grid;

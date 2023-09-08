@@ -38,7 +38,7 @@ import { WLCard } from "./wg/WGCards";
 
 interface SavedWord { id: string, word: string };
 
-const Home = (props: PageData) => {
+const WordLists = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [pickAndSave, setPickAndSave] = useState<boolean>(false);
@@ -347,4 +347,4 @@ const Home = (props: PageData) => {
 	);
 };
 
-export default Home;
+export default WordLists;

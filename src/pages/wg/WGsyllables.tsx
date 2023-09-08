@@ -124,7 +124,7 @@ const WGSyl = (props: PageData) => {
 						</IonRange>
 					</IonItem>
 					<IonItem className="ion-text-end">
-						<IonToggle enableOnOffLabels labelPlacement="start" justify="start" checked={syllableObject.toggle} onClick={() => dispatch(toggleSyllables(!syllableObject.toggle))}>Use multiple syllable types</IonToggle>
+						<IonToggle enableOnOffLabels labelPlacement="start" justify="start" disabled={syllableObject.editing} checked={syllableObject.toggle} onClick={() => dispatch(toggleSyllables(!syllableObject.toggle))}>Use multiple syllable types</IonToggle>
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
