@@ -12,7 +12,9 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -20,7 +22,7 @@ import {
 import { shallowEqual, useSelector } from "react-redux";
 import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
-import fireSwal from '../components/Swal';
+import yesNoAlert from '../components/yesNoAlert';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconObject][]
@@ -31,37 +33,37 @@ interface SavedLexProperties extends ModalProperties {
 const DeleteLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
 		setLexInfo([]);
 		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			setLoadingScreen(true);
 			LexiconStorage.removeItem(key).then(() => {
 				setLoadingScreen(false);
 				setLexInfo([]);
 				setIsOpen(false);
-				fireSwal({
-					title: "Lexicon deleted.",
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: "Lexicon deleted.",
+					duration: 2500
 				});
 			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				text: "Are you sure you want to delete \"" + title + "\"? It cannot be reversed.",
-				customClass: {popup: 'dangerConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: `Delete "${title}"?`,
+				cssClass: "danger",
+				message: "Are you sure you want to do this? It cannot be undone.",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

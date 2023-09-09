@@ -13,7 +13,8 @@ import {
 	IonModal,
 	IonChip,
 	IonFooter,
-	IonInput
+	IonInput,
+	useIonToast
 } from '@ionic/react';
 import {
 	checkmarkCircleOutline,
@@ -34,7 +35,6 @@ import {
 	updateExtraCharsToBeSaved
 } from '../components/ReduxDucksFuncs';
 import charData from '../components/ExtraCharactersData';
-import fireSwal from '../components/Swal';
 import debounce from '../components/Debounce';
 
 interface CurrentFavorites {
@@ -66,6 +66,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const data: string[] = display === "Favorites" ? saved : objects[display] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
+	const [doToast] = useIonToast();
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};
@@ -92,15 +93,12 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		dispatch(updateExtraCharsFavorites(saved.filter((fave: string) => fave !== char)));
 	}, [currentFaves, saved, dispatch]);
 	const copyNow = useCallback((char) => {
-		Clipboard.write({string: char}).then(() => fireSwal({
-			title: "copied " + char + " to clipboard",
-			position: 'top',
-			toast: true,
-			timer: 1000,
-			timerProgressBar: true,
-			showConfirmButton: false
+		Clipboard.write({string: char}).then(() => doToast({
+			message: `Copied ${char} to clipboard`,
+			position: "top",
+			duration: 1500
 		}));
-	}, []);
+	}, [doToast]);
 	const saveToBeCopied = useCallback((char) => {
 		dispatch(updateExtraCharsToBeSaved(copyLater + char));
 	}, [dispatch, copyLater]);
@@ -118,36 +116,24 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const toggleOption = useCallback((what: "showNames" | "copyImmediately" | "showHelp") => {
 		dispatch(toggleExtraCharsBoolean(what));
 		if(what === "copyImmediately") {
-			const title = copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.";
-			const customClass = copyImmediately ? {popup: 'dangerToast'} : {};
-			fireSwal({
-				title,
-				toast: true,
-				customClass,
-				timer: 2500,
-				position: "top",
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				header: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
+				duration: 2500,
+				position: "top"
 			});
 		}
-	}, [dispatch, copyImmediately]);
+	}, [dispatch, copyImmediately, doToast]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue) => {
 		setIsFavoriting(newValue);
-		const title = newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites";
-		const customClass = newValue ? {} : {popup: 'dangerToast'};
-		fireSwal({
-			title,
-			toast: true,
-			customClass,
-			timer: 2500,
-			position: "top",
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			header: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
+			duration: 2500,
+			position: "top"
 		});
-	}, []);
+	}, [doToast]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>

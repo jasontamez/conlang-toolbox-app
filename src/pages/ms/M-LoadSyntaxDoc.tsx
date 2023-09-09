@@ -12,7 +12,8 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -22,7 +23,7 @@ import {
 	setMorphoSyntax
 } from '../../components/ReduxDucksFuncs';
 import { ModalProperties, MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
-import fireSwal from '../../components/Swal';
+import yesNoAlert from '../../components/yesNoAlert';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -36,6 +37,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const dispatch = useDispatch();
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const [doAlert] = useIonAlert();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
 		setStoredInfo([]);
@@ -55,20 +57,20 @@ const LoadMSModal = (props: MSmodalProps) => {
 				...old,
 				bool: newBool
 			};
-			const thenFunc = () => {
+			const handler = () => {
 				dispatch(setMorphoSyntax(newObj));
 				setIsOpen(false);
 			};
 			if(settings.disableConfirms) {
-				thenFunc();
+				handler();
 			} else {
-				fireSwal({
-					text: "Are you sure you want to load this? It will overwrite your current MorphoSyntax information and cannot be reversed.",
-					customClass: {popup: 'warningConfirm'},
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, load it."
-				}).then((result: any) => result.isConfirmed && thenFunc());
+				yesNoAlert({
+					message: "Are you sure you want to load this? It will overwrite your current MorphoSyntax information and cannot be reversed.",
+					cssClass: "warning",
+					submit: "Yes, load it",
+					handler,
+					doAlert
+				});
 			}
 			// End loop
 			return false;

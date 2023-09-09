@@ -12,7 +12,9 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -20,7 +22,7 @@ import {
 import { shallowEqual, useSelector } from "react-redux";
 import { ModalProperties, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
-import fireSwal from '../../components/Swal';
+import yesNoAlert from '../../components/yesNoAlert';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -35,37 +37,37 @@ interface MSmodalProps extends ModalProperties {
 const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
 		setStoredInfo([]);
 		setIsOpen(false);
 	};
 	const deleteThis = (key: string, title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			setLoadingScreen(true);
 			MorphoSyntaxStorage.removeItem(key).then(() => {
 				setLoadingScreen(false);
 				setStoredInfo([]);
 				setIsOpen(false);
-				fireSwal({
-					title: "MorphoSyntax document deleted.",
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: "MorphoSyntax document deleted.",
+					duration: 2500
 				});
 			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				text: "Are you sure you want to delete \"" + title + "\"? It cannot be reversed.",
-				customClass: {popup: 'dangerConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: "Are you sure?",
+				message: `This will delete "${title}", and cannot be undone.`,
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

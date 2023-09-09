@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -26,7 +28,7 @@ import {
 	doEditLexiconItem,
 	deleteLexiconItem
 } from '../components/ReduxDucksFuncs';
-import fireSwal from '../components/Swal';
+import yesNoAlert from '../components/yesNoAlert';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
@@ -49,6 +51,8 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
 	const { id, columns } = itemToEdit || { id: '', columns: [] };
 	const [ cols, setCols ] = useState<string[]>([...columns]);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	useEffect(() => {
 		if(!isOpen && cols.join(nonsense) !== columns.join(nonsense)) {
 			setCols([...columns]);
@@ -69,61 +73,59 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			return;
 		}
 		// Otherwise, doublecheck
-		return fireSwal({
-			text: "You have unsaved changes. Are you sure you want to exit?",
-			customClass: {popup: 'deleteConfirm'},
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: "Yes, exit."
-		}).then((result: any) => {
-			if(result.isConfirmed) {
-				setIsOpen(false);
-			}
+		yesNoAlert({
+			header: "Delete everything?",
+			cssClass: "warning",
+			message: "You have unsaved changed. Are you sure you want to exit?",
+			submit: "Yes, exit",
+			handler: () => setIsOpen(false),
+			doAlert
 		});
 	};
 	const maybeSaveNewInfo = () => {
 		if(cols.every((i: string) => !i.trim())) {
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: "You must put some text in at least one box."
+			doAlert({
+				header: "Error",
+				message: "You must put some text in at least one box.",
+				cssClass: "danger",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
 		// Everything ok!
 		setIsOpen(false);
 		dispatch(doEditLexiconItem({id, columns: cols}));
-		fireSwal({
-			title: "Item updated!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
-		});
+		doToast({
+			message: "Item updated!",
+			cssClass: "success",
+			duration: 2500
+		})
 	};
 	const delFromLex = () => {
-		const thenFunc = () => {
+		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteLexiconItem(id));
-			fireSwal({
-				title: "Item deleted",
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 2500,
-				timerProgressBar: true,
-				showConfirmButton: false
-			});
+			doToast({
+				message: "Item deleted.",
+				duration: 2500
+			})
 		};
 		if(disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				text: "Are you sure you want to delete this? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: "Are you sure?",
+				cssClass: "danger",
+				message: "Deleting this cannot be undone.",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

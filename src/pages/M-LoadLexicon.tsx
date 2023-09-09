@@ -12,7 +12,8 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -22,7 +23,7 @@ import {
 	updateLexicon
 } from '../components/ReduxDucksFuncs';
 import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
-import fireSwal from '../components/Swal';
+import yesNoAlert from '../components/yesNoAlert';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconObject][]
@@ -32,7 +33,8 @@ interface SavedLexProperties extends ModalProperties {
 const LoadLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const dispatch = useDispatch();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms, shallowEqual);
+	const [doAlert] = useIonAlert();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
 		setLexInfo([]);
@@ -44,20 +46,20 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				// Continue the loop
 				return true;
 			}
-			const thenFunc = () => {
+			const handler = () => {
 				dispatch(updateLexicon(pair[1]));
 				setIsOpen(false);
 			};
-			if(settings.disableConfirms) {
-				thenFunc();
+			if(disableConfirms) {
+				handler();
 			} else {
-				fireSwal({
-					text: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
-					customClass: {popup: 'warningConfirm'},
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, load it."
-				}).then((result: any) => result.isConfirmed && thenFunc());
+				yesNoAlert({
+					message: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
+					cssClass: "warning",
+					submit: "Yes, load it",
+					handler,
+					doAlert
+				});
 			}
 			// End loop
 			return false;

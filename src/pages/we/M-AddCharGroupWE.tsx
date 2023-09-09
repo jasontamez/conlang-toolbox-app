@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -23,7 +25,6 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
 import { addCharGroupWE } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import { $q, $a, $i } from '../../components/DollarSignExports';
 
 const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
@@ -42,6 +43,8 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const charGroupObject = useSelector((state: any) => state.wordevolveCharGroups, shallowEqual);
 	const charGroupMap = new Map(charGroupObject.map);
 	function setNewInfo<
@@ -74,13 +77,10 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		});
 		if(!label) {
 			// No suitable label found
-			fireSwal({
-				title: "Unable to suggest a unique label from the given descrption.",
-				customClass: {popup: 'warnToast'},
-				toast: true,
-				timer: 4000,
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				message: "Unable to suggest a unique label from the given descrption.",
+				cssClass: "warning",
+				duration: 4000
 			});
 		} else {
 			// Suitable label found
@@ -105,7 +105,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(newCharGroup.label as string) !== -1) {
 				$q(".labelLabel").classList.add("invalidValue");
-				err.push("You cannot use \"" + newCharGroup.label + "\" as a label.");
+				err.push("You cannot use \"" + newCharGroup.label + "\" as a label");
 			}
 		}
 		if(newCharGroup.run === "") {
@@ -114,10 +114,15 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -125,12 +130,10 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addCharGroupWE(newCharGroup));
 		hardReset();
-		fireSwal({
-			title: "Character Group added!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Character Group added!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	return (

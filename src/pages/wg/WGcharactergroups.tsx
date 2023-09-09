@@ -18,7 +18,9 @@ import {
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	addOutline,
@@ -37,15 +39,17 @@ import {
 import { PageData, WGCharGroupMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
-import fireSwal from '../../components/Swal';
 import AddCharGroupModal from './M-AddCharGroup';
 import EditCharGroupModal from './M-EditCharGroup';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import { CharGroupCard } from "./WGCards";
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WGCharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
@@ -63,30 +67,25 @@ const WGCharGroup = (props: PageData) => {
 	};
 	const maybeDeleteCharGroup = (label: any) => {
 		$q(".charGroups").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(deleteCharGroupWG(label));
-				fireSwal({
-					title: "Character Group deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			dispatch(deleteCharGroupWG(label));
+			doToast({
+				message: "Character Group deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete " + label + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: `Delete "${label}"?`,
+				message: "Are you sure? This cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

@@ -15,7 +15,9 @@ import {
 	IonFooter,
 	IonItemDivider,
 	IonRadioGroup,
-	IonRadio
+	IonRadio,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -25,7 +27,6 @@ import {
 import { useDispatch } from "react-redux";
 import { addTransformWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
-import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,6 +51,8 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		$q("ion-radio-group").value = "both";
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	function setNewInfo<
 		KEY extends keyof WETransformObject,
 		VAL extends WETransformObject[KEY]
@@ -70,10 +73,15 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -83,12 +91,10 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addTransformWE(newTransform));
 		hardReset();
-		fireSwal({
-			title: "Transform added!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Transform added!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	return (

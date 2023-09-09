@@ -26,7 +26,7 @@ import doExport from '../../components/ExportServices';
 import { saveAs } from 'file-saver';
 // FOR BROWSER TESTING ONLY
 
-const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClose: Function, setLoading: Function) => {
+const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClose: Function, setLoading: Function, doToast: Function) => {
 	const bool = msInfo.bool;
 	const num = msInfo.num;
 	const text = msInfo.text;
@@ -318,7 +318,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 
 
 	Packer.toBase64String(doc).then((output) => {
-		doExport(output, filename, false)
+		doExport(output, filename, doToast, false)
 			.catch((e = "Error doexport docx") => {
 				console.log(e);
 				doClose();

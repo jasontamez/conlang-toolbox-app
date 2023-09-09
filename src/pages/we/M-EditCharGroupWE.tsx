@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -24,12 +26,14 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
 import { doEditCharGroupWE, cancelEditCharGroupWE, deleteCharGroupWE } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import { $q, $i } from '../../components/DollarSignExports';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [charGroupObject, settings] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings], shallowEqual);
 	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupObject.map);
 	const editing = charGroupObject.editing;
@@ -89,13 +93,10 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		});
 		if(!label) {
 			// No suitable label found
-			fireSwal({
-				title: "Unable to suggest a unique label from the given descrption.",
-				customClass: {popup: 'warnToast'},
-				toast: true,
-				timer: 4000,
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				message: "Unable to suggest a unique label from the given descrption.",
+				cssClass: "warning",
+				duration: 4000
 			});
 		} else {
 			// Suitable label found
@@ -133,10 +134,15 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -144,41 +150,34 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditCharGroupWE(editingCharGroup));
 		hardReset();
-		fireSwal({
-			title: "Character Group saved!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Character Group saved!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	const maybeDeleteCharGroup = () => {
 		$q(".charGroups").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				setIsOpen(false);
-				dispatch(deleteCharGroupWE(editingCharGroup));
-				fireSwal({
-					title: "Character Group deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			setIsOpen(false);
+			dispatch(deleteCharGroupWE(editingCharGroup));
+			doToast({
+				message: "Character Group deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete " + editingCharGroup.label + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: `Delete "${editingCharGroup.label}"?`,
+				message: "Are you sure? This cannot be undone.",
+				cssClass: "warning",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

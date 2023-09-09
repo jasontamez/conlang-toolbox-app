@@ -17,7 +17,9 @@ import {
 	IonInput,
 	IonButton,
 	IonLoading,
-	useIonViewDidEnter
+	useIonViewDidEnter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
@@ -47,11 +49,11 @@ import {
 } from 'ionicons/icons';
 import MaybeLoadPreset from './M-MaybeLoadPreset';
 import ManageCustomInfo from './M-CustomInfo';
-import fireSwal from '../../components/Swal';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WGSet = (props: PageData) => {
 	const dispatch = useDispatch();
@@ -86,32 +88,31 @@ const WGSet = (props: PageData) => {
 		exclamatorySentencePre,
 		exclamatorySentencePost
 	} = settingsWG;
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
 	const maybeClearEverything = () => {
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(clearEverything());
-				fireSwal({
-					title: "Groups, Syllables and Transformations deleted.",
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			dispatch(clearEverything());
+			doToast({
+				message: "Groups, Syllables and Transformations deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Clear Everything?",
-				text: "This will delete all current character groups, syllables and transformations.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, clear everything."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: "Clear Everything?",
+				message: "This will delete all current character groups, syllables and transformations.",
+				cssClass: "warning",
+				submit: "Yes, clear everything",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const openCustomInfoModal = () => {

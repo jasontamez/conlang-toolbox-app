@@ -10,7 +10,10 @@ import {
 	IonTitle,
 	IonButton,
 	IonIcon,
-	IonLoading
+	IonLoading,
+	useIonAlert,
+	useIonToast,
+	useIonRouter
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
@@ -36,7 +39,6 @@ import ModalWrap from "../../components/ModalWrap";
 import OutputOptionsModal from './M-OutputOptions';
 import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
 import ltr from '../../components/LTR';
-import fireSwal from '../../components/Swal';
 import { Clipboard } from '@capacitor/clipboard';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
@@ -52,27 +54,21 @@ interface soundChangeModified {
 	flagged: boolean
 }
 
-async function copyText (copyString: string) {
+async function copyText (copyString: string, doToast: Function) {
 	if(copyString) {
 		await Clipboard.write({string: copyString});
 		//navigator.clipboard.writeText(copyText);
-		return fireSwal({
-			title: "Copied to clipboard.",
-			toast: true,
-			timer: 1500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});	
+		return doToast({
+			message: "Copied to clipboard.",
+			duration: 1500,
+			position: "top"
+		});
 	}
-	fireSwal({
-		title: "Nothing to copy.",
-		toast: true,
-		customClass: {popup: 'dangerToast'},
-		timer: 1500,
-		position: 'top',
-		timerProgressBar: true,
-		showConfirmButton: false
+	doToast({
+		message: "Nothing to copy.",
+		cssClass: "danger",
+		duration: 1500,
+		position: "top"
 	});
 };
 
@@ -100,6 +96,9 @@ const WEOut = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
+	const navigator = useIonRouter();
 	const [
 		outputType,
 		rawInput,
@@ -678,56 +677,67 @@ const WEOut = (props: PageData) => {
 			// Stop saving
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
-			return fireSwal({
-				title: "You need to add columns to the Lexicon before you can add anything to it.",
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 4000,
-				position: 'top',
-				timerProgressBar: true,
-				showConfirmButton: false
+			return doToast({
+				message: "You need to add columns to the Lexicon before you can add anything to it.",
+				cssClass: "danger",
+				duration: 4000,
+				position: "top"
 			});
 		}
 		setIsPickingSaving(true);
-		return fireSwal({
-			title: "Tap words you want to save to Lexicon",
-			toast: true,
-			timer: 2500,
-			position: 'top',
-			timerProgressBar: true,
-			showConfirmButton: false
-		});	
+		return doToast({
+			message: "Tap words you want to save to Lexicon.",
+			duration: 2500,
+			position: "top"
+		});
 	};
 	const saveToLexicon = (words: string[]) => {
-		const inputOptions: { [key: string]: string } = {};
-		lexColumns.forEach((col: LexiconColumn) => {
-			inputOptions[col.id] = col.label;
-		});
-		fireSwal({
-			title: "Select a Column",
-			text: "Your selected words will be added to the Lexicon under that column.",
-			input: "select",
-			inputOptions,
-			showCancelButton: true
-		}).then((result: { value?: string }) => {
-			const value = result.value;
-			if(value !== undefined) {
-				// Send off to the lexicon
-				dispatch(addItemstoLexiconColumn(words, value));
-				// Clear info
-				setSavedWords([]);
-				setSavedWordsObject({});
-				setIsPickingSaving(false);
-				$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
-				fireSwal({
-					title: `Selected meanings saved to Lexicon under "${inputOptions[value]}"`,
-					toast: true,
-					timer: 3500,
-					position: 'top',
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		doAlert({
+			header: "Select a column",
+			message: "Your selected words will be added to the Lexicon under that column.",
+			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
+				return {
+					type: 'radio',
+					label: col.label,
+					value: col,
+					checked: !i
+				};
+			}),
+			buttons: [
+				{
+					text: "Cancel",
+					role: 'cancel'
+				},
+				{
+					text: "Save",
+					handler: (col: LexiconColumn | undefined) => {
+						if(!col) {
+							// Treat as cancel
+							return;
+						}
+						console.log(col);
+						// Send off to the lexicon
+						dispatch(addItemstoLexiconColumn(words, col.id));
+						// Clear info
+						setSavedWords([]);
+						setSavedWordsObject({});
+						setIsPickingSaving(false);
+						$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
+						// Toast
+						doToast({
+							message: `Selected words saved to Lexicon under "${col.label}"`,
+							duration: 3500,
+							position: "top",
+							buttons: [
+								{
+									text: "Go to Lexicon",
+									handler: () => navigator.push("/lex")
+								}
+							]
+						});
+					}
+				}
+			]
 		});
 	};
 	const donePickingAndSaving = () => {
@@ -955,7 +965,7 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText(copyString)}
+							onClick={() => copyText(copyString, doToast)}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}

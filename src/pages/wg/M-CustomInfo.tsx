@@ -14,7 +14,9 @@ import {
 	IonFooter,
 	IonItemGroup,
 	IonItemDivider,
-	IonInput
+	IonInput,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -29,7 +31,7 @@ import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/Redux
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
-import fireSwal from '../../components/Swal';
+import yesNoAlert from '../../components/yesNoAlert';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -39,14 +41,16 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 const ManageCustomInfo = (props: ExtraInfo) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [
-		settings,
+		disableConfirms,
 		settingsWG,
 		charGroups,
 		syllables,
 		transforms
 	] = useSelector((state: any) => [
-		state.appSettings,
+		state.appSettings.disableConfirms,
 		state.wordgenSettings,
 		state.wordgenCharGroups,
 		state.wordgenSyllables,
@@ -60,9 +64,15 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const maybeSaveInfo = () => {
 		const title = escape($i("currentInfoSaveName").value).trim();
 		if(title === "") {
-			return fireSwal({
-				title: "Please enter a title",
-				icon: "error",
+			return doAlert({
+				header: "Please enter a title before saving.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
@@ -73,12 +83,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				{...settingsWG}
 			];
 			CustomStorageWG.setItem(title, save).then(() => {
-				fireSwal({
-					title: "\"" + title + "\" " + msg,
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: `"${title}" ${msg}`,
+					duration: 2500
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -86,82 +93,81 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		CustomStorageWG.getItem(title).then((value: any) => {
 			if(!value) {
 				doSave(title);
-			} else if (settings.disableConfirms) {
+			} else if (disableConfirms) {
 				doSave(title, "overwritten");
 			} else {
-				fireSwal({
-					title: "\"" + title + "\" already exists",
-					text: "This will clear and overwrite the previous save.",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, overwrite it."
-				}).then((result: any) => {
-					if(result.isConfirmed) {
-						doSave(title, "overwritten");
-					}
+				yesNoAlert({
+					header: `"${title}" already exists`,
+					message: "This will clear and overwrite the previous save.",
+					cssClass: "warning",
+					submit: "Yes, overwrite it",
+					handler: () => doSave(title, "overwritten"),
+					doAlert
 				});
 			}
 		});
 	};
 	const maybeLoadInfo = (title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			CustomStorageWG.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWG(value as WGCustomInfo));
-					fireSwal({
-						title: "Preset \"" + title + "\" loaded",
-						toast: true,
-						timer: 2500,
-						timerProgressBar: true,
-						showConfirmButton: false
+					doToast({
+						message: `Preset "${title}" loaded.`,
+						duration: 2500,
+						cssClass: "success"
 					});
 					doCleanClose()
 				} else {
-					fireSwal({
-						title: "Unknown Error",
-						text: "Preset \"" + title + "\" not found",
-						icon: 'error'
+					doAlert({
+						header: "Unknown Error",
+						message: `Preset :${title}" not found.`,
+						buttons: [
+							{
+								text: "Ok",
+								role: "cancel"
+							}
+						]
 					});
 				}
 			});
 		};
-		if(settings.disableConfirms) {
-			thenFunc();
+		if(disableConfirms) {
+			handler();
 		} else {
-			fireSwal({
-				title: "Load \"" + title + "\"?",
-				text: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, load it."
-			}).then((result: any) => { result.isConfirmed && thenFunc() });
-		}
+			yesNoAlert({
+				header: `Load "${title}"?`,
+				message: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
+				cssClass: "warning",
+				submit: "Yes, load it",
+				handler,
+				doAlert
+			});
+	}
 	};
 	const maybeDeleteInfo = (title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			CustomStorageWG.removeItem(title).then(() => {
-				fireSwal({
-					title: "\"" + title + "\" deleted",
-					toast: true,
-					timer: 2500,
-					customClass: {popup: 'dangerToast'},
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: `"${title}" deleted.`,
+					duration: 2500,
+					cssClass: "danger"
 				});
 			});
 		};
-		if(settings.disableConfirms) {
-			thenFunc();
+		if(disableConfirms) {
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete \"" + title + "\"?",
-				text: "This cannot be undone.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => { result.isConfirmed && thenFunc() });
+			yesNoAlert({
+				header: `Delete "${title}"?`,
+				message: "Are you sure? This cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

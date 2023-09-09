@@ -11,7 +11,9 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -19,37 +21,35 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { loadPresetWE } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import { ModalProperties } from '../../components/ReduxDucksTypes';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms, shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const maybeLoadPreset = (preset: string) => {
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(loadPresetWE(preset));
-				fireSwal({
-					title: "Preset \"" + preset + "\" loaded",
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-				setIsOpen(false);
-			}
+		const handler = () => {
+			dispatch(loadPresetWE(preset));
+			doToast({
+				message: `Preset "${preset}" loaded.`,
+				duration: 2500
+			});
+			setIsOpen(false);
 		};
-		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+		if(disableConfirms) {
+			handler();
 		} else {
-			fireSwal({
-				title: "Load " + preset + " preset?",
-				text: "This will clear and overwrite all current character groups, transformations and sound changes.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, load it."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: `Load "${preset}" preset?`,
+				message: "This will clear and overwrite all current character groups, transformations and sound changes.",
+				cssClass: "danger",
+				submit: "Yes, load it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

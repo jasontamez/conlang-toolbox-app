@@ -9,7 +9,9 @@ import {
 	IonIcon,
 	IonLabel,
 	IonInput,
-	IonTextarea
+	IonTextarea,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	SyntaxHeader
@@ -29,7 +31,6 @@ import {
 } from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
 import { MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
-import fireSwal from '../../components/Swal';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import { v4 as uuidv4 } from 'uuid';
 import LoadMS from './M-LoadSyntaxDoc';
@@ -37,6 +38,7 @@ import DeleteMS from './M-DeleteSyntaxDoc';
 import ExportMS from './M-ExportSyntaxDoc';
 import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
+import yesNoAlert from '../../components/yesNoAlert';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -51,20 +53,22 @@ const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [
 		msInfo,
-		appSettings
+		disableConfirms
 	] = useSelector((state: any) => [
 		state.morphoSyntaxInfo,
 		state.morphoSyntaxModalState,
-		state.appSettings
+		state.appSettings.disableConfirms
 	]);
 	const {title, description, bool, num, text} = msInfo;
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const allProps = (Object.keys(bool).length + Object.keys(num).length + Object.keys(text).length);
 	const viewInfo = ['ms', 'msSettings'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const clearMS = () => {
-		const thenFunc = () => {
+		const handler = () => {
 			const newMS: MorphoSyntaxObject = {
 				key: "",
 				lastSave: 0,
@@ -77,25 +81,22 @@ const Syntax = (props: PageData) => {
 			dispatch(setMorphoSyntax(newMS));
 		};
 		if(!(title || msInfo.key || description || (allProps > 0))) {
-			fireSwal({
-				title: "You have no information to clear.",
-				customClass: {popup: 'warnToast'},
-				toast: true,
-				timer: 2500,
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				message: "You have no information to clear.",
+				duration: 2500,
+				cssClass: "warning"
 			});
-		} else if(!appSettings.disableConfirms) {
-			fireSwal({
-				title: "Delete everything?",
-				text: "This will erase everything currently in MorphoSyntax (but not anything previously saved). Are you sure you want to do this?",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, erase it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+		} else if(!disableConfirms) {
+			yesNoAlert({
+				header: "Delete everything?",
+				message: "This will erase everything currently in MorphoSyntax (but not anything previously saved). Are you sure you want to do this?",
+				cssClass: "danger",
+				submit: "Yes, erase it",
+				handler,
+				doAlert
+			});
 		} else {
-			thenFunc();
+			handler();
 		}
 	};
 	const openMSModal = (modalOpener: Function) => {
@@ -112,16 +113,28 @@ const Syntax = (props: PageData) => {
 	};
 	const maybeExportMS = () => {
 		if(!title) {
-			return fireSwal({
-				title: "Error",
-				text: "Please give your MorphoSyntax document a title before exporting it.",
-				icon: 'warning'
+			return doAlert({
+				header: "Error",
+				message: "Please give your MorphoSyntax document a title before exporting it.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 		} else if (allProps < 1) {
-			return fireSwal({
-				title: "Error",
-				text: "Please add information to your MorphoSyntax document in at least one section before exporting it.",
-				icon: 'warning'
+			return doAlert({
+				header: "Error",
+				message: "Please add information to your MorphoSyntax document in at least one section before exporting it.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 		}
 		setIsOpenExportMS(true);
@@ -160,12 +173,9 @@ const Syntax = (props: PageData) => {
 					MorphoSyntaxStorage.removeItem(firstKey);
 				}
 				setIsLoading(false);
-				fireSwal({
-					title: announce,
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: announce,
+					duration: 2500
 				});
 			});
 	};
@@ -178,12 +188,18 @@ const Syntax = (props: PageData) => {
 		saveMSDoc("Information saved as new MorphoSyntax document!", key, false);
 	};
 	const MSSaveError = () => {
-		fireSwal({
-			title: "Error",
-			text: "You must input a title before saving.",
-			icon: 'warning'
+		doAlert({
+			header: "Error",
+			message: "You must input a title before saving.",
+			cssClass: "danger",
+			buttons: [
+				{
+					text: "Ok",
+					role: "cancel"
+				}
+			]
 		});
-	};
+};
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();

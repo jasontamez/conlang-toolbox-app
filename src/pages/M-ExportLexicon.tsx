@@ -11,7 +11,8 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline
@@ -38,6 +39,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		setIsOpen(false);
 		setLoading(false);
 	};
+	const [doToast] = useIonToast();
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
 	const doNewlines = (e: Event) => doText(e, "\n", "\n\n");
@@ -129,7 +131,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		e.preventDefault();
 		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
-		doExport(output, filename)
+		doExport(output, filename, doToast)
 			.catch((e = "Error?") => console.log(e))
 			.then(() => doClose());
 	};

@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -22,7 +24,6 @@ import {
 import { useDispatch } from "react-redux";
 import { addTransformWG } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WGTransformObject } from '../../components/ReduxDucksTypes';
-import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,6 +46,8 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	function setNewInfo<
 		KEY extends keyof WGTransformObject,
 		VAL extends WGTransformObject[KEY]
@@ -65,10 +68,15 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -80,12 +88,10 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addTransformWG(newTransform));
 		hardReset();
-		fireSwal({
-			title: "Transformation added!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Transformation added!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	return (

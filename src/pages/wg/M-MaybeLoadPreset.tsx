@@ -11,7 +11,9 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -19,38 +21,37 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { loadPresetWG } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import { ModalProperties } from '../../components/ReduxDucksTypes';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const maybeLoadPreset = (preset: string) => {
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(loadPresetWG(preset));
-				fireSwal({
-					title: "Preset \"" + preset + "\" loaded",
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-				setIsOpen(false);
-			}
+		const handler = () => {
+			dispatch(loadPresetWG(preset));
+			doToast({
+				message: `Preset "${preset}" loaded.`,
+				duration: 2500,
+				cssClass: "success"
+			});
+			setIsOpen(false);
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Load " + preset + " preset?",
-				text: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, load it."
-			}).then(thenFunc);
-		}
+			yesNoAlert({
+				header: `Load "${preset}"?`,
+				message: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
+				cssClass: "warning",
+				submit: "Yes, load it",
+				handler,
+				doAlert
+			});
+	}
 	};
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>

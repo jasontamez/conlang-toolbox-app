@@ -14,7 +14,9 @@ import {
 	IonFooter,
 	IonItemGroup,
 	IonItemDivider,
-	IonInput
+	IonInput,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -29,7 +31,7 @@ import { ExtraCharactersModalOpener, WECustomInfo } from '../../components/Redux
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWE } from '../../components/PersistentInfo';
-import fireSwal from '../../components/Swal';
+import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 	titles: string[]
@@ -50,6 +52,8 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		state.wordevolveTransforms,
 		state.wordevolveSoundChanges
 	], shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const doCleanClose = () => {
 		setTitles([]);
 		setIsOpen(false);
@@ -57,9 +61,14 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const maybeSaveInfo = () => {
 		const title = escape($i("currentInfoSaveName").value).trim();
 		if(title === "") {
-			return fireSwal({
-				title: "Please enter a title",
-				icon: "error",
+			return doAlert({
+				header: "Please enter a title",
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
@@ -69,12 +78,10 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				soundchanges
 			];
 			CustomStorageWE.setItem(title, save).then(() => {
-				fireSwal({
-					title: "\"" + title + "\" " + msg,
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: `"${title}" ${msg}`,
+					duration: 2500,
+					cssClass: "success"
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -85,78 +92,76 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			} else if (settings.disableConfirms) {
 				doSave(title, "overwritten");
 			} else {
-				fireSwal({
-					title: "\"" + title + "\" already exists",
-					text: "This will clear and overwrite the previous save.",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, overwrite it."
-				}).then((result: any) => {
-					if(result.isConfirmed) {
-						doSave(title, "overwritten");
-					}
+				yesNoAlert({
+					header: `"${title}" already exists`,
+					message: "This will clear and overwrite the previous save.",
+					cssClass: "warning",
+					submit: "Yes, overwrite it",
+					handler: () => doSave(title, "overwritten"),
+					doAlert
 				});
 			}
 		});
 	};
 	const maybeLoadInfo = (title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWE(value as WECustomInfo));
-					fireSwal({
-						title: "Preset \"" + title + "\" loaded",
-						toast: true,
-						timer: 2500,
-						timerProgressBar: true,
-						showConfirmButton: false
+					doToast({
+						message: `Preset "${title}" loaded.`,
+						duration: 2500
 					});
-					doCleanClose()
+					doCleanClose();
 				} else {
-					fireSwal({
-						title: "Unknown Error",
-						text: "Preset \"" + title + "\" not found",
-						icon: 'error'
+					doAlert({
+						header: "Unknown Error",
+						message: `Preset "${title}" not found.`,
+						buttons: [
+							{
+								text: "Ok",
+								role: "cancel"
+							}
+						]
 					});
 				}
 			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				title: "Load \"" + title + "\"?",
-				text: "This will clear and overwrite all current character groups, transformations and sound changes.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, load it."
-			}).then((result: any) => { result.isConfirmed && thenFunc() });
+			yesNoAlert({
+				header: `Load "${title}"?`,
+				message: "This will clear and overwrite all current character groups, transformations and sound changes.",
+				cssClass: "warning",
+				submit: "Yes, load it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const maybeDeleteInfo = (title: string) => {
-		const thenFunc = () => {
+		const handler = () => {
 			setTitles(titles.filter(ci => ci !== title));
 			CustomStorageWE.removeItem(title).then(() => {
-				fireSwal({
-					title: "\"" + title + "\" deleted",
-					toast: true,
-					timer: 2500,
-					customClass: {popup: 'dangerToast'},
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: `"${title}" deleted.`,
+					duration: 2500,
+					cssClass: "danger"
 				});
 			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete \"" + title + "\"?",
-				text: "This cannot be undone.",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => { result.isConfirmed && thenFunc() });
+			yesNoAlert({
+				header: `Delete "${title}"?`,
+				message: "This cannot be undone.",
+				cssClass: "warning",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

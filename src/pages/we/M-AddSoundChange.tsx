@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -22,7 +24,6 @@ import {
 import { useDispatch } from "react-redux";
 import { addSoundChangeWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
-import fireSwal from '../../components/Swal';
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
@@ -49,6 +50,8 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	function setNewInfo<
 		KEY extends keyof WESoundChangeObject,
 		VAL extends WESoundChangeObject[KEY]
@@ -95,10 +98,15 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -113,12 +121,10 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addSoundChangeWE(newSoundChange));
 		hardReset();
-		fireSwal({
-			title: "Sound Change added!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Sound Change added!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	return (

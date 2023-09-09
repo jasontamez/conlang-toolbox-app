@@ -9,7 +9,9 @@ import {
 	IonTitle,
 	useIonViewDidEnter,
 	IonButton,
-	IonIcon
+	IonIcon,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	helpCircleOutline,
@@ -26,9 +28,9 @@ import { InpCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { Lexicon, LexiconColumn, PageData } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import debounce from '../../components/Debounce';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -39,6 +41,8 @@ const WERew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [rawInput, disableConfirms, lexiconObj] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
 	const { columns, lexicon } = lexiconObj;
 	const input = rawInput.join("\n");
@@ -56,21 +60,21 @@ const WERew = (props: PageData) => {
 		debounce(updateInput, [value], 500, "WEinput");
 	}, [updateInput]);
 	const clearInput = () => {
-		const thenFunc = () => {
+		const handler = () => {
 			$i("lexiconInput").value = "";
 			updateInput("");
 		};
 		if(disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				title: 'Clear Lexicon',
-				text: 'Are you sure? This will clear the entire input, and cannot be undone.',
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, clear it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: "Clear Lexicon",
+				message: "Are you sure? This will clear the entire input, and cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, clear it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const importLexicon = () => {
@@ -93,16 +97,40 @@ const WERew = (props: PageData) => {
 		if(columns.length === 1) {
 			thenFunc(0);
 		} else {
-			fireSwal({
-				title: 'Import Lexicon',
-				text: 'Which column do you want to input?',
-				input: 'select',
-				inputOptions,
-				showCancelButton: true
-			}).then((result: any) => {
-				if(result.isConfirmed && result.value) {
-					thenFunc(parseInt(result.value));
-				}
+			doAlert({
+				header: "Import Lexicon",
+				message: "Which column do you want to input?",
+				inputs: columns.map((col: LexiconColumn, i: number) => {
+					return {
+						type: 'radio',
+						label: col.label,
+						value: i + 1,
+						checked: !i
+					};
+				}),
+				buttons: [
+					{
+						text: "Cancel",
+						role: 'cancel'
+					},
+					{
+						text: "Import",
+						handler: (col: number | undefined) => {
+							if(!col) {
+								// Treat as cancel
+								return;
+							}
+							thenFunc(col - 1);
+							// Toast
+							doToast({
+								message: `Imported words from "${columns[col - 1].label}"`,
+								duration: 3500,
+								position: "top",
+								cssClass: "success"
+							});
+						}
+					}
+				]
 			});
 		}
 	};

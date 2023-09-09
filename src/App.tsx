@@ -6,6 +6,7 @@ import {
 	IonApp,
 	IonRouterOutlet,
 	IonSplitPane,
+	useIonAlert,
 	useIonRouter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -21,7 +22,6 @@ import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Info from './pages/AppInfo';
-import fireSwal from './components/Swal';
 
 import doUpdate095 from './updaters/UpdateTo095';
 
@@ -52,6 +52,7 @@ import { VERSION } from './components/ReduxDucksConst';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
+import yesNoAlert from './components/yesNoAlert';
 
 /*interface HistoryObject {
 	pathname: string,
@@ -64,6 +65,7 @@ type Method = "POP" | "PUSH" | "REPLACE";*/
 const MainOutlet = memo(() => {
 	//const history = useHistory();
 	const [modals, setModals] = useState<Function[]>([]);
+	const [doAlert] = useIonAlert();
 	//const [pages, setPages] = useState<string[]>([]);
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
@@ -111,24 +113,17 @@ const MainOutlet = memo(() => {
 			} else {*/
 			} else if (!router.canGoBack()) {
 				// Are we trying to exit the app?
-//				dispatch(addToLog("Possibly exiting?"));
-				fireSwal({
-					title: "Exit App?",
-					text: "Do you want to exit the app?",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: "Yes, exit."
-				}).then((result: any) => {
-					if(result.isConfirmed) {
-						// Exit app!
-						Capacitor.exitApp();
-//					} else {
-//						dispatch(addToLog("Did not exit."));
-					}
+				yesNoAlert({
+					header: "Exit App?",
+					message: "Do you want to exit the app?",
+					cssClass: "warning",
+					submit: "Yes, exit!",
+					handler: Capacitor.exitApp,
+					doAlert
 				});
 			}
 		}).remove;
-	}, [modals, router, dispatch]);
+	}, [modals, router, dispatch, doAlert]);
 	return (
 		<IonRouterOutlet>
 			<Route path="/wg" render={() => <WG {...defaultProps} />} />

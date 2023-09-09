@@ -11,7 +11,9 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	addCircleOutline,
@@ -31,8 +33,8 @@ import {
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
-import fireSwal from '../components/Swal';
 import { blankAppState } from '../components/ReduxDucks';
+import yesNoAlert from '../components/yesNoAlert';
 
 // load, delete, export
 interface StorageModalProps extends ModalProperties {
@@ -53,8 +55,10 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		description,
 		lexicon
 	} = stateLexicon;
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const clearLexicon = () => {
-		const thenFunc = () => {
+		const handler = () => {
 			const newLex: LexiconObject = {
 				...blankAppState.lexicon
 			};
@@ -77,35 +81,29 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			};*/
 			dispatch(updateLexicon(newLex));
 			setIsOpen(false);
-			fireSwal({
-				title: "Lexicon cleared",
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 4000,
-				timerProgressBar: true,
-				position: "top"
+			doToast({
+				message: "Lexicon cleared",
+				duration: 4000
 			});
 		};
 		if(!(title || id || description || lexicon.length > 0)) {
-			fireSwal({
-				title: "Nothing to clear",
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 3000,
-				timerProgressBar: true,
+			doToast({
+				message: "Nothing to clear",
+				cssClass: "danger",
+				duration: 3000,
 				position: "top"
 			});
 		} else if(disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete everything?",
-				text: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, erase it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: "Delete everything?",
+				cssClass: "danger",
+				message: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
+				submit: "Yes, erase it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const openLexiconModal = (whichToOpen: Function) => {
@@ -165,12 +163,9 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				}
 				setLoading(false);
 				setIsOpen(false);
-				fireSwal({
-					title: announce,
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
+				doToast({
+					message: announce,
+					duration: 2500
 				});
 			});
 	};
@@ -183,24 +178,42 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
 	};
 	const lexiconSaveError = () => {
-		fireSwal({
-			title: "Error",
-			text: "You must input a title before saving.",
-			icon: 'warning'
+		doAlert({
+			header: "Error",
+			message: "You must input a title before saving.",
+			cssClass: "danger",
+			buttons: [
+				{
+					text: "Ok",
+					role: "cancel"
+				}
+			]
 		});
-	};
+};
 	const maybeExportLexicon = () => {
 		if(!title) {
-			return fireSwal({
-				title: "Error",
-				text: "Please give your lexicon a title before exporting it.",
-				icon: 'warning'
+			return doAlert({
+				header: "Error",
+				message: "Please give your lexicon a title before exporting it.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 		} else if (lexicon.length < 1) {
-			return fireSwal({
-				title: "Error",
-				text: "Please add words to your lexicon before exporting it.",
-				icon: 'warning'
+			return doAlert({
+				header: "Error",
+				message: "Please add words to your lexicon before exporting it.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 		}
 		setIsOpen(false);

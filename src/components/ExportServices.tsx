@@ -1,9 +1,12 @@
-import escape from '../components/EscapeForHTML';
-import fireSwal from '../components/Swal';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
 
-const doExport = async (output: string, fileName: string, encodeUTF: boolean = true, notify: boolean = true) => {
+const doExport = async (
+	output: string,
+	fileName: string,
+	doToast: Function | false = false,
+	encodeUTF: boolean = true
+) => {
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
@@ -22,12 +25,16 @@ const doExport = async (output: string, fileName: string, encodeUTF: boolean = t
 			console.log('Made dir', ret);
 		} catch(e) {
 			console.error('Unable to make directory', e);
-			notify && fireSwal({
-				html: "Unable to export:<br />" + escape(String(e)).replace(/\n/g, "<br />"),
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 10000,
-				timerProgressBar: true
+			doToast && doToast({
+				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
+				cssClass: "danger",
+				duration: 10000,
+				buttons: [
+					{
+						text: "Ok",
+						role: 'cancel'
+					}
+				]
 			});
 		}
 	} finally {
@@ -39,20 +46,29 @@ const doExport = async (output: string, fileName: string, encodeUTF: boolean = t
 				encoding: encodeUTF ? Encoding.UTF8 : undefined
 			});
 			console.log('Wrote file', result);
-			notify && fireSwal({
-				title: filename + " exported",
-				toast: true,
-				timer: 5000,
-				timerProgressBar: true
+			doToast && doToast({
+				message: `${filename} exported`,
+				cssClass: "success",
+				duration: 5000,
+				buttons: [
+					{
+						text: "Ok",
+						role: 'cancel'
+					}
+				]
 			});
 		} catch(e) {
 			console.error('Unable to write file', e);
-			notify && fireSwal({
-				html: "Unable to export:<br />" + escape(String(e)).replace(/\n/g, "<br />"),
-				customClass: {popup: 'dangerToast'},
-				toast: true,
-				timer: 10000,
-				timerProgressBar: true
+			doToast && doToast({
+				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
+				cssClass: "danger",
+				duration: 10000,
+				buttons: [
+					{
+						text: "Ok",
+						role: 'cancel'
+					}
+				]
 			});
 		}
 	}

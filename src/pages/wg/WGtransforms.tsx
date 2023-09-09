@@ -19,7 +19,9 @@ import {
 	useIonViewDidEnter,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	addOutline,
@@ -41,9 +43,9 @@ import EditTransformModal from './M-EditTransform';
 import { RewCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -56,6 +58,8 @@ const WGRew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [transformsObject, settings] = useSelector((state: any) => [state.wordgenTransforms, state.appSettings], shallowEqual);
 	const transforms = transformsObject.list;
 	const arrow = (ltr() ? "⟶" : "⟵");
@@ -66,30 +70,26 @@ const WGRew = (props: PageData) => {
 	};
 	const maybeDeleteTransform = (transform: WGTransformObject) => {
 		$q(".transforms").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(deleteTransformWG(transform));
-				fireSwal({
-					title: "Transformation deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			dispatch(deleteTransformWG(transform));
+			doToast({
+				message: "Transformation deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete " + transform.seek + arrow + transform.replace + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			const { seek, replace } = transform;
+			yesNoAlert({
+				header: `${seek}${arrow}${replace}`,
+				message: "Are you sure you want to delete this? It cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const doReorder = (event: CustomEvent) => {

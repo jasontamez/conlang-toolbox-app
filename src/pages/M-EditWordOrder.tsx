@@ -22,7 +22,9 @@ import {
 	IonItemDivider,
 	IonToggle,
 	IonSelect,
-	IonSelectOption
+	IonSelectOption,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -39,7 +41,7 @@ import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn }
 import {
 	updateLexiconColumnarInfo
 } from '../components/ReduxDucksFuncs';
-import fireSwal from '../components/Swal';
+import yesNoAlert from '../components/yesNoAlert';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -62,6 +64,8 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const [noWrap, setNoWrap] = useState<boolean>(truncateColumns);
 	const [sortWhenBlank, setSortWhenBlank] = useState<LexiconBlankSorts>(blankSort);
 	const [originalString, setOriginalString] = useState<string>("");
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 
 	useEffect(() => {
 		const test =
@@ -89,14 +93,11 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			+ cols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
 			+ String(noWrap);
 		if(testString === originalString) {
-			fireSwal({
-				title: "Nothing to save.",
-				toast: true,
-				customClass: {popup: 'dangerToast'},
-				timer: 2500,
-				position: "top",
-				timerProgressBar: true,
-				showConfirmButton: false
+			doToast({
+				message: "Nothing to save.",
+				cssClass: "warning",
+				duration: 2500,
+				position: "top"
 			});
 			closeModal();
 			return;
@@ -113,12 +114,10 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			return { id, columns: newColumns };
 		});
 		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap, sortWhenBlank));
-		fireSwal({
-			title: "Saved!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Saved!",
+			duration: 2500,
+			cssClass: "success"
 		});
 		closeModal();
 	};
@@ -127,31 +126,30 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		setCols([...cols, { id: uuidv4(), size: "m", label: "New"}]);
 		setColPosition([...colPosition, nextColPos]);
 		setNextColPos(nextColPos + 1);
-		fireSwal({
-			title: "Added New Column",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Added new column.",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	const deleteField = (i: number) => {
-		const thenFunc = () => {
+		const handler = () => {
 			const target = order[i];
 			setOrder(order.slice(0, i).concat(order.slice(i+1)).map((num: number) => (num > target ? (num - 1) : num)));
 			setCols(cols.slice(0, i).concat(cols.slice(i+1)));
 			setColPosition(colPosition.slice(0, i).concat(colPosition.slice(i+1)));
 		};
 		if(settings.disableConfirms) {
-			thenFunc();
+			handler();
 		} else {
-			fireSwal({
-				html: "<h1>" + cols[i].label + "</h1>Are you sure you want to delete this? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: cols[i].label,
+				cssClass: "danger",
+				message: "Are you sure you want to delete this column? This cannot be undone.",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const doReorder = (event: CustomEvent) => {

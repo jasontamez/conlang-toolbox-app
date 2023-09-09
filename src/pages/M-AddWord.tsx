@@ -13,7 +13,9 @@ import {
 	IonModal,
 	IonInput,
 	IonFooter,
-	IonTextarea
+	IonTextarea,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -27,7 +29,6 @@ import { ExtraCharactersModalOpener, LexiconColumn } from '../components/ReduxDu
 import {
 	addLexiconItem
 } from '../components/ReduxDucksFuncs';
-import fireSwal from '../components/Swal';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	adding: { [keys: string]: string }
@@ -39,6 +40,8 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 	const { isOpen, setIsOpen, openECM, adding, setAdding, columnInfo } = props;
 	const dispatch = useDispatch();
 	const [ cols, setCols ] = useState<{ [keys: string]: string }>({});
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	useEffect(() => {
 		if(!isOpen) {
 			setCols({...adding});
@@ -56,10 +59,16 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			newBlank[id] = "";
 		});
 		if(!foundFlag) {
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: "You did not type any information into any text field."
+			doAlert({
+				header: "Error",
+				message: "You did not type any information into any text field.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -73,14 +82,18 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		// close modal
 		setIsOpen(false);
 		// toast
-		fireSwal({
-			title: "Item added!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			header: "Item added!",
+			duration: 2500,
+			cssClass: "success",
+			buttons: [
+				{
+					text: "Ok",
+					role: "cancel"
+				}
+			]
 		});
-	}, [cols, columnInfo, dispatch, setAdding, setIsOpen]);
+	}, [cols, columnInfo, dispatch, setAdding, setIsOpen, doAlert, doToast]);
 	const cancel = useCallback(() => {
 		setAdding({});
 		setIsOpen(false);

@@ -19,7 +19,9 @@ import {
 	IonReorder,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	addOutline,
@@ -41,9 +43,9 @@ import EditSoundChangeModal from './M-EditSoundChange';
 import { SChCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -56,7 +58,9 @@ const WERew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [soundChangeObject, settings] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings], shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
+	const [soundChangeObject, disableConfirms] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings.disableConfirms], shallowEqual);
 	const soundChange = soundChangeObject.list;
 	const editSoundChange = (label: any) => {
 		$q(".soundChanges").closeSlidingItems();
@@ -66,34 +70,29 @@ const WERew = (props: PageData) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(deleteSoundChangeWE(change));
-				fireSwal({
-					title: "Sound Change deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			dispatch(deleteSoundChangeWE(change));
+			doToast({
+				message: "Sound Change deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
-		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+		if(disableConfirms) {
+			handler();
 		} else {
 			let rule = change.seek + arrow + change.replace + "/" + change.context;
 			if(change.anticontext) {
 				rule += "/" + change.anticontext;
 			}
-			fireSwal({
-				title: "Delete " + rule + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: `Delete "${rule}"?`,
+				message: "Are you sure? This cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const doReorder = (event: CustomEvent) => {

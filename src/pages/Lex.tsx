@@ -24,7 +24,9 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	IonFab,
-	IonFabButton
+	IonFabButton,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	add,
@@ -50,8 +52,6 @@ import {
 } from '../components/ReduxDucksFuncs';
 import { Lexicon, LexiconColumn, LexiconObject, PageData } from '../components/ReduxDucksTypes';
 import { $i } from '../components/DollarSignExports';
-import fireSwal from '../components/Swal';
-import escape from '../components/EscapeForHTML';
 import './Lexicon.css';
 
 import AddLexiconItemModal from './M-AddWord';
@@ -64,6 +64,7 @@ import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 import EditLexiconSortModal from './M-EditSort';
 import MergeLexiconItemsModal from './M-MergeLexiconItems';
+import yesNoAlert from '../components/yesNoAlert';
 
 interface LexItem {
 	index: number
@@ -78,20 +79,25 @@ interface LexItem {
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
 		merging: string[]
+		doToast: Function
 	}
 }
 
-function maybeExpand (e: any) {
+function maybeExpand (e: any, doToast: Function) {
 	// Expand an overflowing field into a toast
 	const span = e.target;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
-		const titleText = (span && (span.textContent as string)) || "<error>";
-		fireSwal({
-			titleText,
-			toast: true,
+		const message = (span && (span.textContent as string)) || "<error>";
+		doToast({
+			message,
+			duration: 10000,
 			position: "top",
-			timer: 6000,
-			timerProgressBar: true,
+			buttons: [
+				{
+					text: "Ok",
+					role: "cancel"
+				}
+			]
 		});
 	}
 };
@@ -104,7 +110,8 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		maybeSetForMerge,
 		columns,
 		lexicon,
-		merging
+		merging,
+		doToast
 	} = data;
 	const lex: Lexicon = lexicon[index];
 	const cols = lex.columns;
@@ -138,7 +145,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				{maybeMerging}
 				{cols.map((item: string, i: number) => (
 					<div
-						onClick={(e) => maybeExpand(e)}
+						onClick={(e) => maybeExpand(e, doToast)}
 						key={`${id}:col${i}`}
 						className={
 							"lexItem selectable "
@@ -171,6 +178,8 @@ const Lex = (props: PageData) => {
 		storedCustomIDs*/
 	} = lexObject;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
 
@@ -289,10 +298,16 @@ const Lex = (props: PageData) => {
 			ids.push("inputLex" + id);
 		});
 		if(!foundFlag) {
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: "You did not type any information into any text field."
+			doAlert({
+				header: "Error",
+				message: "You did not type any information into any text field.",
+				cssClass: "warning",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -308,25 +323,25 @@ const Lex = (props: PageData) => {
 			const el = $i(id);
 			el && el.getInputElement().then((el: any) => (el.value = ""));
 		});
-	}, [columns, dispatch, addingCols]);
+	}, [columns, dispatch, addingCols, doAlert]);
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
 		let title: string = item.columns.join(" / ");
-		const thenFunc = () => dispatch(deleteLexiconItem(item.id));
 		mainLexList.closeSlidingItems();
 		if(disableConfirms) {
-			thenFunc();
+			dispatch(deleteLexiconItem(item.id));
 		} else {
-			fireSwal({
-				html: escape(title) + "<br /><br />Are you sure you want to delete this? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then((result: any) => result.isConfirmed && thenFunc());
+			yesNoAlert({
+				header: title,
+				cssClass: "danger",
+				message: "Are you sure you want to delete this? This cannot be undone.",
+				submit: "Yes, delete it",
+				handler: () => dispatch(deleteLexiconItem(item.id)),
+				doAlert
+			});
 		}
-	}, [dispatch, disableConfirms, mainLexList]);
+	}, [dispatch, disableConfirms, mainLexList, doAlert]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
@@ -364,10 +379,10 @@ const Lex = (props: PageData) => {
 	}, []);
 
 	// memoize stuff for Lexicon display
-	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging) => ({
-		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging
+	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast) => ({
+		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast
 	}));
-	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging);
+	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast);
 
 	// JSX
 	return (

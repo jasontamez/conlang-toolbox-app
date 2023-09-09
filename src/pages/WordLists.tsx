@@ -37,6 +37,7 @@ import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTy
 import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
+import yesNoAlert from '../components/yesNoAlert';
 
 interface SavedWord { id: string, word: string };
 
@@ -199,26 +200,16 @@ const WordLists = (props: PageData) => {
 					setLinking(false);
 				};
 				if(!disableConfirms) {
-					return doAlert({
+					return yesNoAlert({
 						header: "Stop Linking?",
-						message: "You have selected some meanings. Do you want to save them?",
 						cssClass: "danger",
-						buttons: [
-							{
-								text: "No, Discard",
-								role: "cancel",
-								cssClass: "cancel",
-								handler
-							},
-							{
-								text: "Yes, Save Them",
-								cssClass: "submit",
-								handler: () => {
-									saveNewMeaning();
-									handler();
-								}
-							}
-						]
+						message: "You have selected some meanings. Do you want to save them?",
+						submit: "Yes, Save Them",
+						handler: () => {
+							saveNewMeaning();
+							handler();
+						},
+						doAlert
 					});
 				}
 				return handler();

@@ -19,7 +19,9 @@ import {
 	IonReorder,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	addOutline,
@@ -41,9 +43,9 @@ import EditTransformModal from './M-EditTransform';
 import { TraCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
-import fireSwal from '../../components/Swal';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -56,7 +58,9 @@ const WERew = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [transformObject, settings] = useSelector((state: any) => [state.wordevolveTransforms, state.appSettings], shallowEqual);
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
+	const [transformObject, disableConfirms] = useSelector((state: any) => [state.wordevolveTransforms, state.appSettings.disableConfirms], shallowEqual);
 	const transform = transformObject.list;
 	const editTransform = (label: any) => {
 		$q(".transforms").closeSlidingItems();
@@ -86,30 +90,26 @@ const WERew = (props: PageData) => {
 	}
 	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				dispatch(deleteTransformWE(trans));
-				fireSwal({
-					title: "Transform deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			dispatch(deleteTransformWE(trans));
+			doToast({
+				message: "Transform deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
-		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+		if(disableConfirms) {
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete " + trans.seek + " " + makeArrow(trans.direction) + " " + trans.replace + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			const { seek, direction, replace } = trans;
+			yesNoAlert({
+				header: `${seek} ${makeArrow(direction)} ${replace}`,
+				message: "Are you sure you want to delete this? It cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	const doReorder = (event: CustomEvent) => {

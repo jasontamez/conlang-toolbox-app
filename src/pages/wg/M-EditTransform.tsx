@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -27,10 +29,10 @@ import {
 	cancelEditTransformWG,
 	deleteTransformWG
 } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -43,6 +45,8 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		};
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [
 		settings,
 		transformsObject
@@ -92,10 +96,15 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -105,41 +114,35 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditTransformWG(editingTransform));
 		hardReset();
-		fireSwal({
-			title: "Transformation saved!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Transformation saved!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	const maybeDeleteTransform = () => {
 		$q(".transforms").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				setIsOpen(false);
-				dispatch(deleteTransformWG(currentTransform));
-				fireSwal({
-					title: "Transformation deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			setIsOpen(false);
+			dispatch(deleteTransformWG(currentTransform));
+			doToast({
+				message: "Transformation deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
-			fireSwal({
-				title: "Delete " + currentTransform.seek + (ltr() ? "⟶" : "⟵") + currentTransform.replace + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			const { seek, replace } = currentTransform;
+			yesNoAlert({
+				header: `${seek}${ltr() ? "⟶" : "⟵"}${replace}`,
+				message: "Are you sure you want to delete this? It cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (

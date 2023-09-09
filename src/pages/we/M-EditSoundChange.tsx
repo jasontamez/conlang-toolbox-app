@@ -12,7 +12,9 @@ import {
 	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter
+	IonFooter,
+	useIonAlert,
+	useIonToast
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -27,10 +29,10 @@ import {
 	cancelEditSoundChangeWE,
 	deleteSoundChangeWE
 } from '../../components/ReduxDucksFuncs';
-import fireSwal from '../../components/Swal';
 import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
+import yesNoAlert from '../../components/yesNoAlert';
 
 const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -45,6 +47,8 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		};
 	};
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	const [doToast] = useIonToast();
 	const [
 		soundChangesObject,
 		settings
@@ -124,10 +128,15 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		}
 		if(err.length > 0) {
 			// Errors found.
-			fireSwal({
-				title: "Error",
-				icon: "error",
-				text: err.join("; ")
+			doAlert({
+				header: "Error",
+				message: err.join("; "),
+				buttons: [
+					{
+						text: "Cancel",
+						role: "cancel"
+					}
+				]
 			});
 			return;
 		}
@@ -140,32 +149,25 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditSoundChangeWE(editingSoundChange));
 		hardReset();
-		fireSwal({
-			title: "Sound Change saved!",
-			toast: true,
-			timer: 2500,
-			timerProgressBar: true,
-			showConfirmButton: false
+		doToast({
+			message: "Sound Change saved!",
+			duration: 2500,
+			cssClass: "success"
 		});
 	};
 	const maybeDeleteSoundChange = () => {
 		$q(".soundChanges").closeSlidingItems();
-		const thenFunc = (result: any) => {
-			if(result.isConfirmed) {
-				setIsOpen(false);
-				dispatch(deleteSoundChangeWE(currentSoundChange));
-				fireSwal({
-					title: "Sound Change deleted",
-					customClass: {popup: 'dangerToast'},
-					toast: true,
-					timer: 2500,
-					timerProgressBar: true,
-					showConfirmButton: false
-				});
-			}
+		const handler = () => {
+			setIsOpen(false);
+			dispatch(deleteSoundChangeWE(currentSoundChange));
+			doToast({
+				message: "Sound Change deleted.",
+				duration: 2500,
+				cssClass: "danger"
+			});
 		};
 		if(settings.disableConfirms) {
-			thenFunc({isConfirmed: true});
+			handler();
 		} else {
 			let soundChange =
 				currentSoundChange.seek
@@ -176,14 +178,14 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			if(currentSoundChange.anticontext) {
 				soundChange += "/" + currentSoundChange.anticontext;
 			}
-			fireSwal({
-				title: "Delete " + soundChange + "?",
-				text: "Are you sure? This cannot be undone.",
-				customClass: {popup: 'deleteConfirm'},
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonText: "Yes, delete it."
-			}).then(thenFunc);
+			yesNoAlert({
+				header: `Delete "${soundChange}"?`,
+				message: "Are you sure? This cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, delete it",
+				handler,
+				doAlert
+			});
 		}
 	};
 	return (
