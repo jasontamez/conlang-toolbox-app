@@ -43,6 +43,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 import ExtraCharactersModal from '../M-ExtraCharacters';
+import toaster from '../../components/toaster';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -54,21 +55,25 @@ interface soundChangeModified {
 	flagged: boolean
 }
 
-async function copyText (copyString: string, doToast: Function) {
+async function copyText (copyString: string, doToast: Function, undoToast: Function) {
 	if(copyString) {
 		await Clipboard.write({string: copyString});
 		//navigator.clipboard.writeText(copyText);
-		return doToast({
+		return toaster({
 			message: "Copied to clipboard.",
 			duration: 1500,
-			position: "top"
+			position: "top",
+			doToast,
+			undoToast
 		});
 	}
-	doToast({
+	toaster({
 		message: "Nothing to copy.",
-		cssClass: "danger",
+		color: "danger",
 		duration: 1500,
-		position: "top"
+		position: "top",
+		doToast,
+		undoToast
 	});
 };
 
@@ -97,7 +102,7 @@ const WEOut = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
 	const [
 		outputType,
@@ -677,18 +682,22 @@ const WEOut = (props: PageData) => {
 			// Stop saving
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
-			return doToast({
+			return toaster({
 				message: "You need to add columns to the Lexicon before you can add anything to it.",
-				cssClass: "danger",
+				color: "danger",
 				duration: 4000,
-				position: "top"
+				position: "top",
+				doToast,
+				undoToast
 			});
 		}
 		setIsPickingSaving(true);
-		return doToast({
+		return toaster({
 			message: "Tap words you want to save to Lexicon.",
 			duration: 2500,
-			position: "top"
+			position: "top",
+			doToast,
+			undoToast
 		});
 	};
 	const saveToLexicon = (words: string[]) => {
@@ -724,16 +733,19 @@ const WEOut = (props: PageData) => {
 						setIsPickingSaving(false);
 						$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
 						// Toast
-						doToast({
+						toaster({
 							message: `Selected words saved to Lexicon under "${col.label}"`,
 							duration: 3500,
 							position: "top",
+							color: "success",
 							buttons: [
 								{
 									text: "Go to Lexicon",
 									handler: () => navigator.push("/lex")
 								}
-							]
+							],
+							doToast,
+							undoToast
 						});
 					}
 				}
@@ -965,7 +977,7 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText(copyString, doToast)}
+							onClick={() => copyText(copyString, doToast, undoToast)}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}

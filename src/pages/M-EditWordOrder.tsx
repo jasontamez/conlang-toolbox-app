@@ -42,6 +42,7 @@ import {
 	updateLexiconColumnarInfo
 } from '../components/ReduxDucksFuncs';
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -65,7 +66,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const [sortWhenBlank, setSortWhenBlank] = useState<LexiconBlankSorts>(blankSort);
 	const [originalString, setOriginalString] = useState<string>("");
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 
 	useEffect(() => {
 		const test =
@@ -93,11 +94,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			+ cols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
 			+ String(noWrap);
 		if(testString === originalString) {
-			doToast({
+			toaster({
 				message: "Nothing to save.",
-				cssClass: "warning",
+				color: "warning",
 				duration: 2500,
-				position: "top"
+				position: "top",
+				doToast,
+				undoToast
 			});
 			closeModal();
 			return;
@@ -114,10 +117,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			return { id, columns: newColumns };
 		});
 		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap, sortWhenBlank));
-		doToast({
+		toaster({
 			message: "Saved!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 		closeModal();
 	};
@@ -126,10 +131,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		setCols([...cols, { id: uuidv4(), size: "m", label: "New"}]);
 		setColPosition([...colPosition, nextColPos]);
 		setNextColPos(nextColPos + 1);
-		doToast({
+		toaster({
 			message: "Added new column.",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const deleteField = (i: number) => {

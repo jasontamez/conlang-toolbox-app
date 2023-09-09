@@ -23,20 +23,23 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { loadPresetWG } from '../../components/ReduxDucksFuncs';
 import { ModalProperties } from '../../components/ReduxDucksTypes';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const maybeLoadPreset = (preset: string) => {
 		const handler = () => {
 			dispatch(loadPresetWG(preset));
-			doToast({
+			toaster({
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
-				cssClass: "success"
+				color: "success",
+				doToast,
+				undoToast
 			});
 			setIsOpen(false);
 		};

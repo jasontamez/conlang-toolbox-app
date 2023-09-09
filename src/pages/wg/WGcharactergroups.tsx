@@ -44,12 +44,13 @@ import EditCharGroupModal from './M-EditCharGroup';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import { CharGroupCard } from "./WGCards";
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WGCharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
@@ -69,10 +70,12 @@ const WGCharGroup = (props: PageData) => {
 		$q(".charGroups").closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteCharGroupWG(label));
-			doToast({
+			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

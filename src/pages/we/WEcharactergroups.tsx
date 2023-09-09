@@ -37,6 +37,7 @@ import EditCharGroupWEModal from './M-EditCharGroupWE';
 import { $q } from '../../components/DollarSignExports';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WECharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -50,7 +51,7 @@ const WECharGroup = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [charGroupObject, disableConfirms] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings.disableConfirms], shallowEqual);
 	var charGroups: WECharGroupMap[] = charGroupObject.map;
 	const editCharGroup = (label: any) => {
@@ -62,10 +63,12 @@ const WECharGroup = (props: PageData) => {
 		$q(".charGroups").closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteCharGroupWE(label));
-			doToast({
+			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(disableConfirms) {

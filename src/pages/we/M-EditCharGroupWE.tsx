@@ -28,12 +28,13 @@ import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/
 import { doEditCharGroupWE, cancelEditCharGroupWE, deleteCharGroupWE } from '../../components/ReduxDucksFuncs';
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [charGroupObject, settings] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings], shallowEqual);
 	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupObject.map);
 	const editing = charGroupObject.editing;
@@ -93,10 +94,12 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		});
 		if(!label) {
 			// No suitable label found
-			doToast({
+			toaster({
 				message: "Unable to suggest a unique label from the given descrption.",
-				cssClass: "warning",
-				duration: 4000
+				color: "warning",
+				duration: 4000,
+				doToast,
+				undoToast
 			});
 		} else {
 			// Suitable label found
@@ -150,10 +153,12 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditCharGroupWE(editingCharGroup));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Character Group saved!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const maybeDeleteCharGroup = () => {
@@ -161,10 +166,12 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteCharGroupWE(editingCharGroup));
-			doToast({
+			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

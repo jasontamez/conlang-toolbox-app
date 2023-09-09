@@ -33,7 +33,7 @@ interface ExportModalProps extends ModalProperties {
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
 	const dispatch = useDispatch();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const msInfo = useSelector((state: any) => state.morphoSyntaxInfo, shallowEqual);
 	const doClose = () => {
 		setIsOpen(false);
@@ -43,7 +43,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		e.preventDefault();
 		const filename = msInfo.title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
-		doExport(output, filename, doToast)
+		doExport(output, filename, doToast, undoToast)
 			.catch((e = "Error doexport") => {
 				console.log(e);
 				doClose();
@@ -67,7 +67,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload)}>Text Outline (plain)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload, true)}>Text Outline (markdown)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, dispatch, doClose, setLoading, doToast)}>Word Document (docx)</IonItem>
+					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, dispatch, doClose, setLoading, doToast, undoToast)}>Word Document (docx)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e, msInfo, doDownload)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e, msInfo, doDownload)}>XML File</IonItem>
 				</IonList>

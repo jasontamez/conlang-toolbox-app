@@ -33,6 +33,7 @@ import repairRegexErrors from '../../components/RepairRegex';
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -48,7 +49,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [
 		soundChangesObject,
 		settings
@@ -149,10 +150,12 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditSoundChangeWE(editingSoundChange));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Sound Change saved!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const maybeDeleteSoundChange = () => {
@@ -160,10 +163,12 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteSoundChangeWE(currentSoundChange));
-			doToast({
+			toaster({
 				message: "Sound Change deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

@@ -31,6 +31,7 @@ import { $i } from '../../components/DollarSignExports';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -42,7 +43,7 @@ const WERew = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [rawInput, disableConfirms, lexiconObj] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
 	const { columns, lexicon } = lexiconObj;
 	const input = rawInput.join("\n");
@@ -122,11 +123,13 @@ const WERew = (props: PageData) => {
 							}
 							thenFunc(col - 1);
 							// Toast
-							doToast({
+							toaster({
 								message: `Imported words from "${columns[col - 1].label}"`,
 								duration: 3500,
 								position: "top",
-								cssClass: "success"
+								color: "success",
+								doToast,
+								undoToast
 							});
 						}
 					}

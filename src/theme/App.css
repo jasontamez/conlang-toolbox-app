@@ -731,38 +731,14 @@ ion-alert.warning {
 }
 
 ion-toast {
-	--color: var(--ion-color-primary-contrast);
-	--background: var(--ion-color-primary-shade);
 	--border-radius: 1em;
 	--box-shadow: 0.25em 0.25em 0.5em #00000066;
-	--btn-text: var(--ion-color-primary);
-	--btn-background: #00000066;
 	--white-space: wrap;
 }
 ion-toast::part(button) {
-	color: var(--btn-text);
-	background: var(--btn-background);
+	background: #00000033;
 	border-radius: 1em;
 }
 ion-toast::part(message) {
 	text-align: center;
 }
-ion-toast.danger {
-	--color: var(--ion-color-danger-contrast);
-	--background: var(--ion-color-danger-shade);
-	--border-radius: 1em;
-	--btn-text: var(--ion-color-danger);
-}
-ion-toast.warning {
-	--color: var(--ion-color-warning-contrast);
-	--background: var(--ion-color-warning-shade);
-	--border-radius: 1em;
-	--btn-text: var(--ion-color-warning);
-}
-ion-toast.success {
-	--color: var(--ion-color-success-contrast);
-	--background: var(--ion-color-success-shade);
-	--border-radius: 1em;
-	--btn-text: var(--ion-color-success);
-}
-

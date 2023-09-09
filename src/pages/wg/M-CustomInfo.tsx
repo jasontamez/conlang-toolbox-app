@@ -32,6 +32,7 @@ import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -42,7 +43,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [
 		disableConfirms,
 		settingsWG,
@@ -83,9 +84,11 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				{...settingsWG}
 			];
 			CustomStorageWG.setItem(title, save).then(() => {
-				doToast({
+				toaster({
 					message: `"${title}" ${msg}`,
-					duration: 2500
+					duration: 2500,
+					doToast,
+					undoToast
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -112,12 +115,14 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			CustomStorageWG.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWG(value as WGCustomInfo));
-					doToast({
+					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
-						cssClass: "success"
+						color: "success",
+						doToast,
+						undoToast
 					});
-					doCleanClose()
+					doCleanClose();
 				} else {
 					doAlert({
 						header: "Unknown Error",
@@ -150,10 +155,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			const newCustom = customInfo.filter(ci => ci !== title);
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			CustomStorageWG.removeItem(title).then(() => {
-				doToast({
+				toaster({
 					message: `"${title}" deleted.`,
 					duration: 2500,
-					cssClass: "danger"
+					color: "danger",
+					doToast,
+					undoToast
 				});
 			});
 		};

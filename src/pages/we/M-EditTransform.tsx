@@ -35,6 +35,7 @@ import {
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -49,7 +50,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [
 		transformsObject,
 		settings
@@ -116,10 +117,12 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditTransformWE(editingTransform));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Transform saved!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const maybeDeleteTransform = () => {
@@ -128,10 +131,12 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteTransformWE(currentTransform));
-			doToast({
+			toaster({
 				message: "Transform deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

@@ -38,6 +38,7 @@ import { WordList, WordListSources } from '../components/WordLists';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 interface SavedWord { id: string, word: string };
 
@@ -58,7 +59,7 @@ const WordLists = (props: PageData) => {
 	} = wordListsState;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
 	const toggleChars = (what: keyof WL) => {
 		if(display.some((p: keyof WL) => p === what)) {
@@ -112,7 +113,7 @@ const WordLists = (props: PageData) => {
 						setSavedWordsObject({});
 						setPickAndSave(false);
 						// Toast
-						doToast({
+						toaster({
 							message: `Selected meanings saved to Lexicon under "${col.label}"`,
 							duration: 3500,
 							position: "top",
@@ -122,7 +123,9 @@ const WordLists = (props: PageData) => {
 									handler: () => navigator.push("/lex")
 								}
 							],
-							cssClass: "success"
+							color: "success",
+							doToast,
+							undoToast
 						});
 					}
 				}
@@ -134,18 +137,22 @@ const WordLists = (props: PageData) => {
 			// Stop saving
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
-			return doToast({
+			return toaster({
 				message: "You need to add columns to the Lexicon before you can add anything to it.",
-				cssClass: "danger",
+				color: "danger",
 				duration: 4000,
-				position: "top"
+				position: "top",
+				doToast,
+				undoToast
 			});
 		}
 		setPickAndSave(true);
-		return doToast({
+		return toaster({
 			message: "Tap words you want to save to Lexicon",
 			duration: 2500,
-			position: "top"
+			position: "top",
+			doToast,
+			undoToast
 		});
 	};
 	const donePickingAndSaving = () => {
@@ -222,19 +229,23 @@ const WordLists = (props: PageData) => {
 			return;
 		}
 		setLinking(true);
-		return doToast({
+		return toaster({
 			message: "Tap meanings you want to link, in the order you wish to link them.",
 			duration: 5000,
-			position: "top"
+			position: "top",
+			doToast,
+			undoToast
 		})
 	};
 	const saveNewMeaning = (makeToast: boolean = true) => {
 		dispatch(addCustomHybridMeaning(savedWords));
-		makeToast && doToast({
+		makeToast && toaster({
 			message: "Combination saved",
 			duration: 2500,
 			position: "top",
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const doneLinking = () => {
@@ -244,11 +255,13 @@ const WordLists = (props: PageData) => {
 	};
 	const toggleUnlinking = () => {
 		if(!unlinking) {
-			doToast({
+			toaster({
 				message: "Tap combinations you want to delete.",
 				duration: 3000,
 				position: "top",
-				cssClass: "warning"
+				color: "warning",
+				doToast,
+				undoToast
 			});
 		}
 		setUnlinking(!unlinking);

@@ -36,6 +36,7 @@ import {
 } from '../components/ReduxDucksFuncs';
 import charData from '../components/ExtraCharactersData';
 import debounce from '../components/Debounce';
+import toaster from '../components/toaster';
 
 interface CurrentFavorites {
 	[key: string]: boolean
@@ -66,7 +67,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const data: string[] = display === "Favorites" ? saved : objects[display] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};
@@ -93,12 +94,14 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		dispatch(updateExtraCharsFavorites(saved.filter((fave: string) => fave !== char)));
 	}, [currentFaves, saved, dispatch]);
 	const copyNow = useCallback((char) => {
-		Clipboard.write({string: char}).then(() => doToast({
+		Clipboard.write({string: char}).then(() => toaster({
 			message: `Copied ${char} to clipboard`,
 			position: "top",
-			duration: 1500
+			duration: 1500,
+			doToast,
+			undoToast
 		}));
-	}, [doToast]);
+	}, [doToast, undoToast]);
 	const saveToBeCopied = useCallback((char) => {
 		dispatch(updateExtraCharsToBeSaved(copyLater + char));
 	}, [dispatch, copyLater]);
@@ -116,24 +119,28 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const toggleOption = useCallback((what: "showNames" | "copyImmediately" | "showHelp") => {
 		dispatch(toggleExtraCharsBoolean(what));
 		if(what === "copyImmediately") {
-			doToast({
-				header: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
+			toaster({
+				message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
 				duration: 2500,
-				position: "top"
+				position: "top",
+				doToast,
+				undoToast
 			});
 		}
-	}, [dispatch, copyImmediately, doToast]);
+	}, [dispatch, copyImmediately, doToast, undoToast]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue) => {
 		setIsFavoriting(newValue);
-		doToast({
-			header: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
+		toaster({
+			message: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
 			duration: 2500,
-			position: "top"
+			position: "top",
+			doToast,
+			undoToast
 		});
-	}, [doToast]);
+	}, [doToast, undoToast]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>

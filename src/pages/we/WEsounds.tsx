@@ -46,6 +46,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -59,7 +60,7 @@ const WERew = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [soundChangeObject, disableConfirms] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings.disableConfirms], shallowEqual);
 	const soundChange = soundChangeObject.list;
 	const editSoundChange = (label: any) => {
@@ -72,10 +73,12 @@ const WERew = (props: PageData) => {
 		$q(".soundChanges").closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(change));
-			doToast({
+			toaster({
 				message: "Sound Change deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(disableConfirms) {

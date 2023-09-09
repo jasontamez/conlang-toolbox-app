@@ -65,6 +65,7 @@ import ExportLexiconModal from './M-ExportLexicon';
 import EditLexiconSortModal from './M-EditSort';
 import MergeLexiconItemsModal from './M-MergeLexiconItems';
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 interface LexItem {
 	index: number
@@ -79,25 +80,27 @@ interface LexItem {
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
 		merging: string[]
-		doToast: Function
 	}
 }
 
-function maybeExpand (e: any, doToast: Function) {
+function maybeExpand (e: any, doToast: Function, undoToast: Function) {
 	// Expand an overflowing field into a toast
 	const span = e.target;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
 		const message = (span && (span.textContent as string)) || "<error>";
-		doToast({
+		toaster({
 			message,
 			duration: 10000,
 			position: "top",
+			color: "primary",
 			buttons: [
 				{
 					text: "Ok",
 					role: "cancel"
 				}
-			]
+			],
+			doToast,
+			undoToast
 		});
 	}
 };
@@ -110,8 +113,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		maybeSetForMerge,
 		columns,
 		lexicon,
-		merging,
-		doToast
+		merging
 	} = data;
 	const lex: Lexicon = lexicon[index];
 	const cols = lex.columns;
@@ -145,7 +147,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				{maybeMerging}
 				{cols.map((item: string, i: number) => (
 					<div
-						onClick={(e) => maybeExpand(e, doToast)}
+						onClick={(e) => maybeExpand(e)}
 						key={`${id}:col${i}`}
 						className={
 							"lexItem selectable "
@@ -179,7 +181,7 @@ const Lex = (props: PageData) => {
 	} = lexObject;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
 
@@ -379,10 +381,11 @@ const Lex = (props: PageData) => {
 	}, []);
 
 	// memoize stuff for Lexicon display
-	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast) => ({
-		delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast
+	const expander = useCallback((e: any) => maybeExpand(e, doToast, undoToast), [doToast, undoToast]);
+	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging) => ({
+		delFromLex, beginEdit, maybeSetForMerge, maybeExpand: expander, columns, lexicon, merging
 	}));
-	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, maybeExpand, columns, lexicon, merging, doToast);
+	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging);
 
 	// JSX
 	return (

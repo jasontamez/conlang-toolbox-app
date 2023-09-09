@@ -32,6 +32,7 @@ import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 	titles: string[]
@@ -53,7 +54,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		state.wordevolveSoundChanges
 	], shallowEqual);
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const doCleanClose = () => {
 		setTitles([]);
 		setIsOpen(false);
@@ -78,10 +79,12 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				soundchanges
 			];
 			CustomStorageWE.setItem(title, save).then(() => {
-				doToast({
+				toaster({
 					message: `"${title}" ${msg}`,
 					duration: 2500,
-					cssClass: "success"
+					color: "success",
+					doToast,
+					undoToast
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -108,9 +111,11 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
 					dispatch(loadCustomInfoWE(value as WECustomInfo));
-					doToast({
+					toaster({
 						message: `Preset "${title}" loaded.`,
-						duration: 2500
+						duration: 2500,
+						doToast,
+						undoToast
 					});
 					doCleanClose();
 				} else {
@@ -144,10 +149,12 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		const handler = () => {
 			setTitles(titles.filter(ci => ci !== title));
 			CustomStorageWE.removeItem(title).then(() => {
-				doToast({
+				toaster({
 					message: `"${title}" deleted.`,
 					duration: 2500,
-					cssClass: "danger"
+					color: "danger",
+					doToast,
+					undoToast
 				});
 			});
 		};

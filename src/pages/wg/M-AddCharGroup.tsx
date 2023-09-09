@@ -28,6 +28,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { ExtraCharactersModalOpener, WGCharGroupObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import { addCharGroupWG } from '../../components/ReduxDucksFuncs';
 import { $q, $i, $a } from '../../components/DollarSignExports';
+import toaster from '../../components/toaster';
 
 const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -46,7 +47,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [charGroupObject, charGroupRunDropoff] = useSelector((state: any) => [state.wordgenCharGroups, state.wordgenSettings.charGroupRunDropoff], shallowEqual);
 	const charGroupMap = new Map(charGroupObject.map);
 	function setNewInfo<
@@ -89,10 +90,12 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		});
 		if(!label) {
 			// No suitable label found
-			doToast({
+			toaster({
 				message: "Unable to suggest a unique label from the given descrption.",
-				cssClass: "warning",
-				duration: 4000
+				color: "warning",
+				duration: 4000,
+				doToast,
+				undoToast
 			});
 		} else {
 			// Suitable label found
@@ -142,10 +145,12 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addCharGroupWG(newCharGroup));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Character Group added!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	return (

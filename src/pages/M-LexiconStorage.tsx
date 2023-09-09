@@ -35,6 +35,7 @@ import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDuck
 import { LexiconStorage } from '../components/PersistentInfo';
 import { blankAppState } from '../components/ReduxDucks';
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 // load, delete, export
 interface StorageModalProps extends ModalProperties {
@@ -56,7 +57,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		lexicon
 	} = stateLexicon;
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const clearLexicon = () => {
 		const handler = () => {
 			const newLex: LexiconObject = {
@@ -81,17 +82,21 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			};*/
 			dispatch(updateLexicon(newLex));
 			setIsOpen(false);
-			doToast({
+			toaster({
 				message: "Lexicon cleared",
-				duration: 4000
+				duration: 4000,
+				doToast,
+				undoToast
 			});
 		};
 		if(!(title || id || description || lexicon.length > 0)) {
-			doToast({
+			toaster({
 				message: "Nothing to clear",
-				cssClass: "danger",
+				color: "danger",
 				duration: 3000,
-				position: "top"
+				position: "top",
+				doToast,
+				undoToast
 			});
 		} else if(disableConfirms) {
 			handler();
@@ -163,9 +168,11 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				}
 				setLoading(false);
 				setIsOpen(false);
-				doToast({
+				toaster({
 					message: announce,
-					duration: 2500
+					duration: 2500,
+					doToast,
+					undoToast
 				});
 			});
 	};

@@ -23,6 +23,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
 import { LexiconStorage } from '../components/PersistentInfo';
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconObject][]
@@ -34,7 +35,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
 		setLexInfo([]);
@@ -47,9 +48,11 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				setLoadingScreen(false);
 				setLexInfo([]);
 				setIsOpen(false);
-				doToast({
+				toaster({
 					message: "Lexicon deleted.",
-					duration: 2500
+					duration: 2500,
+					doToast,
+					undoToast
 				});
 			});
 		};

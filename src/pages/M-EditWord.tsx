@@ -29,6 +29,7 @@ import {
 	deleteLexiconItem
 } from '../components/ReduxDucksFuncs';
 import yesNoAlert from '../components/yesNoAlert';
+import toaster from '../components/toaster';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
@@ -52,7 +53,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const { id, columns } = itemToEdit || { id: '', columns: [] };
 	const [ cols, setCols ] = useState<string[]>([...columns]);
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	useEffect(() => {
 		if(!isOpen && cols.join(nonsense) !== columns.join(nonsense)) {
 			setCols([...columns]);
@@ -100,19 +101,24 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		// Everything ok!
 		setIsOpen(false);
 		dispatch(doEditLexiconItem({id, columns: cols}));
-		doToast({
+		toaster({
 			message: "Item updated!",
-			cssClass: "success",
-			duration: 2500
+			color: "success",
+			duration: 2500,
+			doToast,
+			undoToast
 		})
 	};
 	const delFromLex = () => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteLexiconItem(id));
-			doToast({
+			toaster({
 				message: "Item deleted.",
-				duration: 2500
+				duration: 2500,
+				color: "danger",
+				doToast,
+				undoToast
 			})
 		};
 		if(disableConfirms) {

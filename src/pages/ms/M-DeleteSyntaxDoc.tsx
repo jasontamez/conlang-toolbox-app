@@ -23,6 +23,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { ModalProperties, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -38,7 +39,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
 	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
 		setStoredInfo([]);
@@ -51,9 +52,11 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				setLoadingScreen(false);
 				setStoredInfo([]);
 				setIsOpen(false);
-				doToast({
+				toaster({
 					message: "MorphoSyntax document deleted.",
-					duration: 2500
+					duration: 2500,
+					doToast,
+					undoToast
 				});
 			});
 		};

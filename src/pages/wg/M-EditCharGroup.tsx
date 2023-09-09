@@ -30,13 +30,14 @@ import { ExtraCharactersModalOpener, WGCharGroupObject, Zero_Fifty } from '../..
 import { doEditCharGroupWG, cancelEditCharGroupWG, deleteCharGroupWG } from '../../components/ReduxDucksFuncs';
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [charGroupObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCharGroups, state.appSettings, state.wordgenSettings], shallowEqual);
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const charGroupMap: Map<string, WGCharGroupObject> = new Map(charGroupObject.map);
 	const editing = charGroupObject.editing;
 	const sourceCharGroup = charGroupMap.get(editing)!;
@@ -107,10 +108,12 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		});
 		if(!label) {
 			// No suitable label found
-			doToast({
+			toaster({
 				message: "Unable to suggest a unique label from the given descrption.",
-				cssClass: "warning",
-				duration: 4000
+				color: "warning",
+				duration: 4000,
+				doToast,
+				undoToast
 			});
 		} else {
 			// Suitable label found
@@ -164,10 +167,12 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		setIsOpen(false);
 		dispatch(doEditCharGroupWG(editingCharGroup));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Character Group saved!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	const maybeDeleteCharGroup = () => {
@@ -175,10 +180,12 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteCharGroupWG(editingCharGroup));
-			doToast({
+			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

@@ -29,6 +29,7 @@ import { addTransformWE } from '../../components/ReduxDucksFuncs';
 import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
 import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
+import toaster from '../../components/toaster';
 
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -52,7 +53,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	function setNewInfo<
 		KEY extends keyof WETransformObject,
 		VAL extends WETransformObject[KEY]
@@ -91,10 +92,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addTransformWE(newTransform));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Transform added!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	return (

@@ -29,6 +29,7 @@ import { ExtraCharactersModalOpener, LexiconColumn } from '../components/ReduxDu
 import {
 	addLexiconItem
 } from '../components/ReduxDucksFuncs';
+import toaster from '../components/toaster';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	adding: { [keys: string]: string }
@@ -41,7 +42,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 	const dispatch = useDispatch();
 	const [ cols, setCols ] = useState<{ [keys: string]: string }>({});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	useEffect(() => {
 		if(!isOpen) {
 			setCols({...adding});
@@ -82,18 +83,20 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		// close modal
 		setIsOpen(false);
 		// toast
-		doToast({
-			header: "Item added!",
+		toaster({
+			message: "Item added!",
 			duration: 2500,
-			cssClass: "success",
+			color: "success",
 			buttons: [
 				{
 					text: "Ok",
 					role: "cancel"
 				}
-			]
+			],
+			doToast,
+			undoToast
 		});
-	}, [cols, columnInfo, dispatch, setAdding, setIsOpen, doAlert, doToast]);
+	}, [cols, columnInfo, dispatch, setAdding, setIsOpen, doAlert, doToast, undoToast]);
 	const cancel = useCallback(() => {
 		setAdding({});
 		setIsOpen(false);

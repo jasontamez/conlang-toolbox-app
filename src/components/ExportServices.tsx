@@ -1,10 +1,12 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
+import toaster from './toaster';
 
 const doExport = async (
 	output: string,
 	fileName: string,
 	doToast: Function | false = false,
+	undoToast: Function | false = false,
 	encodeUTF: boolean = true
 ) => {
 	const Docs = Directory.Documents;
@@ -25,16 +27,18 @@ const doExport = async (
 			console.log('Made dir', ret);
 		} catch(e) {
 			console.error('Unable to make directory', e);
-			doToast && doToast({
+			doToast && undoToast && toaster({
 				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
-				cssClass: "danger",
+				color: "danger",
 				duration: 10000,
 				buttons: [
 					{
 						text: "Ok",
 						role: 'cancel'
 					}
-				]
+				],
+				doToast,
+				undoToast
 			});
 		}
 	} finally {
@@ -46,29 +50,33 @@ const doExport = async (
 				encoding: encodeUTF ? Encoding.UTF8 : undefined
 			});
 			console.log('Wrote file', result);
-			doToast && doToast({
+			doToast && undoToast && toaster({
 				message: `${filename} exported`,
-				cssClass: "success",
+				color: "success",
 				duration: 5000,
 				buttons: [
 					{
 						text: "Ok",
 						role: 'cancel'
 					}
-				]
+				],
+				doToast,
+				undoToast
 			});
 		} catch(e) {
 			console.error('Unable to write file', e);
-			doToast && doToast({
+			doToast && undoToast && toaster({
 				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
-				cssClass: "danger",
+				color: "danger",
 				duration: 10000,
 				buttons: [
 					{
 						text: "Ok",
 						role: 'cancel'
 					}
-				]
+				],
+				doToast,
+				undoToast
 			});
 		}
 	}

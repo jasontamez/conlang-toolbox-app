@@ -46,6 +46,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -59,7 +60,7 @@ const WGRew = (props: PageData) => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const [transformsObject, settings] = useSelector((state: any) => [state.wordgenTransforms, state.appSettings], shallowEqual);
 	const transforms = transformsObject.list;
 	const arrow = (ltr() ? "⟶" : "⟵");
@@ -72,10 +73,12 @@ const WGRew = (props: PageData) => {
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWG(transform));
-			doToast({
+			toaster({
 				message: "Transformation deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {

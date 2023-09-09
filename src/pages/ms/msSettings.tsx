@@ -39,6 +39,7 @@ import ExportMS from './M-ExportSyntaxDoc';
 import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -61,7 +62,7 @@ const Syntax = (props: PageData) => {
 	]);
 	const {title, description, bool, num, text} = msInfo;
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const allProps = (Object.keys(bool).length + Object.keys(num).length + Object.keys(text).length);
 	const viewInfo = ['ms', 'msSettings'];
 	useIonViewDidEnter(() => {
@@ -81,10 +82,12 @@ const Syntax = (props: PageData) => {
 			dispatch(setMorphoSyntax(newMS));
 		};
 		if(!(title || msInfo.key || description || (allProps > 0))) {
-			doToast({
+			toaster({
 				message: "You have no information to clear.",
 				duration: 2500,
-				cssClass: "warning"
+				color: "warning",
+				doToast,
+				undoToast
 			});
 		} else if(!disableConfirms) {
 			yesNoAlert({
@@ -173,9 +176,11 @@ const Syntax = (props: PageData) => {
 					MorphoSyntaxStorage.removeItem(firstKey);
 				}
 				setIsLoading(false);
-				doToast({
+				toaster({
 					message: announce,
-					duration: 2500
+					duration: 2500,
+					doToast,
+					undoToast
 				});
 			});
 	};

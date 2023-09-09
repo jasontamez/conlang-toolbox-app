@@ -27,6 +27,7 @@ import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../component
 import { $q, $a } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
+import toaster from '../../components/toaster';
 
 const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -51,7 +52,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	function setNewInfo<
 		KEY extends keyof WESoundChangeObject,
 		VAL extends WESoundChangeObject[KEY]
@@ -121,10 +122,12 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		close && setIsOpen(false);
 		dispatch(addSoundChangeWE(newSoundChange));
 		hardReset();
-		doToast({
+		toaster({
 			message: "Sound Change added!",
 			duration: 2500,
-			cssClass: "success"
+			color: "success",
+			doToast,
+			undoToast
 		});
 	};
 	return (

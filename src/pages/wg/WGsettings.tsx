@@ -54,6 +54,7 @@ import { OptCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
+import toaster from '../../components/toaster';
 
 const WGSet = (props: PageData) => {
 	const dispatch = useDispatch();
@@ -89,17 +90,19 @@ const WGSet = (props: PageData) => {
 		exclamatorySentencePost
 	} = settingsWG;
 	const [doAlert] = useIonAlert();
-	const [doToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 	const doOnBlur = (func: Function, value: any) => {
 		dispatch(func(value));
 	};
 	const maybeClearEverything = () => {
 		const handler = () => {
 			dispatch(clearEverything());
-			doToast({
+			toaster({
 				message: "Groups, Syllables and Transformations deleted.",
 				duration: 2500,
-				cssClass: "danger"
+				color: "danger",
+				doToast,
+				undoToast
 			});
 		};
 		if(settings.disableConfirms) {
