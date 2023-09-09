@@ -696,7 +696,10 @@ ion-alert .alert-wrapper {
 	border: 1px solid var(--color);
 	border-radius: 2em;
 	color: var(--color);
-}	
+}
+ion-alert .alert-head .alert-title {
+	color: var(--color);
+}
 ion-alert .alert-wrapper .alert-message {
 	color: var(--dim-color);
 }
@@ -717,30 +720,49 @@ ion-alert.danger {
 	--btn-color: var(--ion-color-danger-contrast);
 	--btn-background: #ffffff33;
 }
+ion-alert.warning {
+	--background: var(--ion-color-warning-shade);
+	--color: var(--ion-color-warning-contrast);
+	--dim-color: rgba(var(--ion-color-warning-contrast-rgb), 0.65);
+	--btn-color-cancel: var(--ion-color-warning-contrast);
+	--btn-background-cancel: #00000099;
+	--btn-color: var(--ion-color-warning-contrast);
+	--btn-background: #ffffff33;
+}
 
 ion-toast {
-	--color: var(--ion-color-step-900);
-	--background: var(--ion-color-step-100);
+	--color: var(--ion-color-primary-contrast);
+	--background: var(--ion-color-primary-shade);
 	--border-radius: 1em;
 	--box-shadow: 0.25em 0.25em 0.5em #00000066;
+	--btn-text: var(--ion-color-primary);
+	--btn-background: #00000066;
 	--white-space: wrap;
+}
+ion-toast::part(button) {
+	color: var(--btn-text);
+	background: var(--btn-background);
+	border-radius: 1em;
 }
 ion-toast::part(message) {
 	text-align: center;
 }
 ion-toast.danger {
-	--color: var(--ion-color-danger-shade);
-	--background: var(--ion-color-danger-contrast);
+	--color: var(--ion-color-danger-contrast);
+	--background: var(--ion-color-danger-shade);
 	--border-radius: 1em;
+	--btn-text: var(--ion-color-danger);
 }
 ion-toast.warning {
-	--color: var(--ion-color-warning-shade);
-	--background: var(--ion-color-warning-contrast);
+	--color: var(--ion-color-warning-contrast);
+	--background: var(--ion-color-warning-shade);
 	--border-radius: 1em;
+	--btn-text: var(--ion-color-warning);
 }
 ion-toast.success {
-	--color: var(--ion-color-success-shade);
-	--background: var(--ion-color-success-contrast);
+	--color: var(--ion-color-success-contrast);
+	--background: var(--ion-color-success-shade);
 	--border-radius: 1em;
+	--btn-text: var(--ion-color-success);
 }
 

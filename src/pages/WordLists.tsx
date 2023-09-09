@@ -121,7 +121,8 @@ const WordLists = (props: PageData) => {
 									text: "Go to Lexicon",
 									handler: () => navigator.push("/lex")
 								}
-							]
+							],
+							cssClass: "success"
 						});
 					}
 				}
