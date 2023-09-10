@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -41,6 +41,9 @@ const EditLexiconSortModal = (props: ModalProperties) => {
 		sortPattern,
 	} = useSelector((state: any) => state.lexicon, shallowEqual);
 	const [sorting, setSorting] = useState<number[]>(sortPattern);
+	useEffect(() => {
+		setSorting(sortPattern);
+	}, [sortPattern]);
 
 	const doneSorting = () => {
 		dispatch(updateLexiconSort(sorting));
@@ -72,6 +75,10 @@ const EditLexiconSortModal = (props: ModalProperties) => {
 					<IonItemDivider>Lexicon Sort</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{sorting.map((cNum: number, i: number) => {
+							if(!columns[cNum]) {
+								// in case things aren't updating
+								return <React.Fragment key={`missingColumn:${i}`}></React.Fragment>;
+							}
 							const {id, label} = columns[cNum];
 							return (
 								<IonReorder key={`${id}:modal:sortOrder`}>

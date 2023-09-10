@@ -76,13 +76,27 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			+ String(truncateColumns);
 		setOriginalString(test);
 	}, [columns, truncateColumns, sortPattern, blankSort]);
+	useEffect(() => {
+		setOrder(sortPattern);
+	}, [sortPattern]);
+	useEffect(() => {
+		setSortWhenBlank(blankSort);
+	}, [blankSort]);
+	useEffect(() => {
+		setNoWrap(truncateColumns);
+	}, [truncateColumns]);
+	useEffect(() => {
+		setCols(columns);
+		setColPosition(columns.map((col: any, i: number) => i));
+		setNextColPos(columns.length);
+	}, [columns]);
 
 	const setNewInfo = (i: number, val: string) => {
 		const newCols = cols.slice();
 		newCols[i].label = val.trim();
-		setCols(truncateColumns);
+		setCols(newCols);
 	};
-	const handleCheckboxes = (id: string, i: number, value: "s" | "m" | "l") => {
+	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		const newCols = cols.slice();
 		newCols[i].size = value;
 		setCols(newCols);
@@ -116,7 +130,8 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			})
 			return { id, columns: newColumns };
 		});
-		dispatch(updateLexiconColumnarInfo(lex, cols, order, noWrap, sortWhenBlank));
+		const newColumnOrder = colPosition.map((pos: number) => cols[pos]);
+		dispatch(updateLexiconColumnarInfo(lex, newColumnOrder, order, noWrap, sortWhenBlank));
 		toaster({
 			message: "Saved!",
 			duration: 2500,
@@ -233,13 +248,13 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 										</IonRow>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonCheckbox labelPlacement="start" id={`${id}:${i}:s`} justify="start" aria-label="Small size" checked={size === "s"} onIonChange={() => handleCheckboxes(id, i, "s")}>Small</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:s`} justify="start" aria-label="Small size" checked={size === "s"} onIonChange={() => handleCheckboxes(i, "s")}>Small</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" id={`${id}:${i}:m`} justify="start" aria-label="Medium size" checked={size === "m"} onIonChange={() => handleCheckboxes(id, i, "m")}>Med</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:m`} justify="start" aria-label="Medium size" checked={size === "m"} onIonChange={() => handleCheckboxes(i, "m")}>Med</IonCheckbox>
 											</IonCol>
 											<IonCol>
-												<IonCheckbox labelPlacement="start" id={`${id}:${i}:l`} justify="start" aria-label="Large size" checked={size === "l"} onIonChange={() => handleCheckboxes(id, i, "l")}>Large</IonCheckbox>
+												<IonCheckbox labelPlacement="start" id={`${id}:${i}:l`} justify="start" aria-label="Large size" checked={size === "l"} onIonChange={() => handleCheckboxes(i, "l")}>Large</IonCheckbox>
 											</IonCol>
 										</IonRow>
 									</IonGrid>

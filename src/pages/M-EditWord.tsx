@@ -50,15 +50,18 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
-	const { id, columns } = itemToEdit || { id: '', columns: [] };
-	const [ cols, setCols ] = useState<string[]>([...columns]);
+	const [ id, setId ] = useState<string>("");
+	const [ cols, setCols ] = useState<string[]>([]);
+	const [ originalString, setOriginalString ] = useState<string>("");
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	useEffect(() => {
-		if(!isOpen && cols.join(nonsense) !== columns.join(nonsense)) {
-			setCols([...columns]);
-		}
-	}, [cols, columns, isOpen]);
+		const id = (itemToEdit ? itemToEdit.id : "");
+		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
+		setOriginalString(cols.join(nonsense));
+		setId(id);
+		setCols(cols);
+	}, [itemToEdit]);
 	const setNewInfo = (info: string, i: number) => {
 		const newCols = [...cols];
 		newCols[i] = info;
@@ -69,7 +72,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		//   1) we have disabled confirms
 		//   2) we haven't changed anything
 		// and exit silently if both are true
-		if(disableConfirms || cols.join(nonsense) === columns.join(nonsense)) {
+		if(disableConfirms || cols.join(nonsense) === originalString) {
 			setIsOpen(false);
 			return;
 		}
