@@ -258,7 +258,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")} />
+						<IonInput aria-label="Letters, characters" id="editingWGCharGroupRun" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")} />
 					</IonItem>
 					<IonItem>
 						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => toggleDropoff()} labelPlacement="start" checked={hasDropoff}>Use separate dropoff rate</IonToggle>

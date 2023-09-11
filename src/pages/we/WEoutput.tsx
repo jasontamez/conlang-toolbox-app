@@ -875,11 +875,11 @@ const WEOut = (props: PageData) => {
 						<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
 					</div>
 					<div className="rules selectable">
-						{rules.map((pair: string[]) => {
+						{rules.map((pair: string[], i: number) => {
 							const [rule, result] = pair;
 							copiable.push(`\t${rule} ${arrow} ${result}`);
 							return (
-								<div className="inputToOutput selectable">
+								<div className="inputToOutput selectable" key={`${id}:output:${rule}:${result}:${i}`}>
 									<span>{rule}</span>{' '}
 									<span>{arrow}</span>{' '}
 									<span>{result}</span>
