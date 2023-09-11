@@ -308,6 +308,11 @@ ion-app .fullScreen .collapse div ion-button {
 	color: var(--ion-color-warning-contrast);
 	border: 1px solid var(--ion-color-warning-shade);
 }
+#outputPaneWL.removingCombos .word.combo.saved {
+	background: var(--ion-color-danger);
+	color: var(--ion-color-danger-contrast);
+	border: 1px solid var(--ion-color-danger-shade);
+}
 #outputPaneWE {
 	display: grid;
 	grid-auto-flow: row;

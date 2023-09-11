@@ -1251,9 +1251,9 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				wordListsState: newState
 			};
 			break;
-		case consts.DELETE_CUSTOM_HYBRID_MEANING:
+		case consts.DELETE_CUSTOM_HYBRID_MEANINGS:
 			const newerState = reduceWordListsState(state.wordListsState);
-			newerState.combinations = newerState.combinations.filter(combo => combo.id !== payload);
+			newerState.combinations = newerState.combinations.filter(combo => payload.every((id: string) => id !== combo.id));
 			final = {
 				...reduceAllBut(["wordListsState"], state),
 				wordListsState: newerState

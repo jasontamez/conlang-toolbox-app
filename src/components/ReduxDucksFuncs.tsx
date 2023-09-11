@@ -302,8 +302,8 @@ export function toggleWordListsBoolean(payload: "textCenter" | "showingCombos") 
 export function addCustomHybridMeaning(payload: types.WL[]) {
 	return {type: consts.ADD_CUSTOM_HYBRID_MEANING, payload};
 }
-export function deleteCustomHybridMeaning(payload: string) {
-	return {type: consts.DELETE_CUSTOM_HYBRID_MEANING, payload};
+export function deleteCustomHybridMeanings(payload: string[]) {
+	return {type: consts.DELETE_CUSTOM_HYBRID_MEANINGS, payload};
 }
 
 //

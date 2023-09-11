@@ -31,7 +31,7 @@ import {
 	toggleWordListsBoolean,
 	addItemstoLexiconColumn,
 	addCustomHybridMeaning,
-	deleteCustomHybridMeaning
+	deleteCustomHybridMeanings
 } from '../components/ReduxDucksFuncs';
 import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { WordList, WordListSources } from '../components/WordLists';
@@ -178,8 +178,10 @@ const WordLists = (props: PageData) => {
 		setSavedWords(words);
 		saveToLexicon(words);
 	};
-	const maybeSaveThisWord = useCallback((id: string, text: string) => {
-		if(pickAndSave || linking) {
+	const maybeSaveThisWord = useCallback((id: string, text: string, isCombo: boolean = false) => {
+		if(unlinking && !isCombo) {
+			// Ignore
+		} else if(pickAndSave || linking || unlinking) {
 			const newObject = {...savedWordsObject};
 			if(savedWordsObject[id]) {
 				setSavedWords(savedWords.filter(word => word.id !== id));
@@ -189,10 +191,8 @@ const WordLists = (props: PageData) => {
 				newObject[id] = true;
 			}
 			setSavedWordsObject(newObject);
-		} else if (unlinking && id.length === 36) {
-			dispatch(deleteCustomHybridMeaning(id));
 		}
-	}, [savedWords, savedWordsObject, pickAndSave, linking, unlinking, dispatch]);
+	}, [savedWords, savedWordsObject, pickAndSave, linking, unlinking]);
 
 	// // //
 	// Combine Into New Meaning
@@ -256,13 +256,31 @@ const WordLists = (props: PageData) => {
 	const toggleUnlinking = () => {
 		if(!unlinking) {
 			toaster({
-				message: "Tap combinations you want to delete.",
+				message: "Tap combinations you want to delete, then tap the Unlink button again.",
 				duration: 3000,
 				position: "top",
 				color: "warning",
 				doToast,
 				undoToast
 			});
+		} else if (savedWords.length > 0) {
+			const handler = () => {
+				dispatch(deleteCustomHybridMeanings(savedWords.map(word => word.id)));
+				setSavedWords([]);
+				setSavedWordsObject({});
+				setUnlinking(false);
+			};
+			if(!disableConfirms) {
+				return yesNoAlert({
+					header: `Delete ${savedWords.length} meanings?`,
+					cssClass: "danger",
+					message: "The selected meanings will be removed. This cannot be undone.",
+					submit: "Yes, Delete Them",
+					handler,
+					doAlert
+				});
+			}
+			return handler();
 		}
 		setUnlinking(!unlinking);
 	};
@@ -345,7 +363,7 @@ const WordLists = (props: PageData) => {
 								+ "word combo ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(id, word)} key={id} id={id} className={classes}>{word}</div>
+								<div onClick={() => maybeSaveThisWord(id, word, true)} key={id} id={id} className={classes}>{word}</div>
 							);
 						})}
 						{shown.map((wordObj: WL) => {
