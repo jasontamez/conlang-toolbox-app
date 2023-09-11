@@ -31,7 +31,7 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { startEditCharGroupWE, deleteCharGroupWE, changeView } from '../../components/ReduxDucksFuncs';
 import { CharGroupCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
-import { PageData, WECharGroupMap } from '../../components/ReduxDucksTypes';
+import { PageData, WECharGroupMap, WECharGroupObject } from '../../components/ReduxDucksTypes';
 import AddCharGroupWEModal from './M-AddCharGroupWE';
 import EditCharGroupWEModal from './M-EditCharGroupWE';
 import { $q } from '../../components/DollarSignExports';
@@ -59,10 +59,11 @@ const WECharGroup = (props: PageData) => {
 		dispatch(startEditCharGroupWE(label));
 		setIsOpenEditCharGroupWE(true);
 	};
-	const maybeDeleteCharGroup = (label: any) => {
+	const maybeDeleteCharGroup = (label: string, charGroup: WECharGroupObject) => {
 		$q(".charGroups").closeSlidingItems();
+		const { run } = charGroup;
 		const handler = () => {
-			dispatch(deleteCharGroupWE(label));
+			dispatch(deleteCharGroupWE({...charGroup, label}));
 			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
@@ -75,7 +76,7 @@ const WECharGroup = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${label}"?`,
+				header: `${label}=${run}`,
 				message: "Are you sure? This cannot be undone.",
 				cssClass: "danger",
 				submit: "Yes, delete it",
@@ -116,7 +117,7 @@ const WECharGroup = (props: PageData) => {
 									<IonItemOption color="primary" onClick={() => editCharGroup(label)}>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
-									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(label)}>
+									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(label, charGroup)}>
 										<IonIcon slot="icon-only" icon={trash} />
 									</IonItemOption>
 								</IonItemOptions>

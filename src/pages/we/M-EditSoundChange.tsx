@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -30,63 +30,65 @@ import {
 	deleteSoundChangeWE
 } from '../../components/ReduxDucksFuncs';
 import repairRegexErrors from '../../components/RepairRegex';
-import { $q } from '../../components/DollarSignExports';
+import { $i, $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
 const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	const hardReset = () => {
-		editingSoundChange = {
-			key: "",
-			seek: "",
-			replace: "",
-			context: "",
-			anticontext: "",
-			description: ""
-		};
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const [
 		soundChangesObject,
-		settings
+		disableConfirms
 	] = useSelector((state: any) => [
 		state.wordevolveSoundChanges,
-		state.appSettings
+		state.appSettings.disableConfirms
 	], shallowEqual);
 	const editing = soundChangesObject.editing;
-	let editingSoundChange: WESoundChangeObject = {
-		key: "",
-		seek: "",
-		replace: "",
-		context: "",
-		anticontext: "",
-		description: ""
+
+	const [ editSeekExWESC, setEditSeekExWESC ] = useState<HTMLInputElement | null>(null);
+	const [ editReplaceExWESC, setEditReplaceExWESC ] = useState<HTMLInputElement | null>(null);
+	const [ editContextExWESC, setEditContextExWESC ] = useState<HTMLInputElement | null>(null);
+	const [ editAnticontextExWESC, setEditAnticontextExWESC ] = useState<HTMLInputElement | null>(null);
+	const [ editOptDescWESC, setEditOptDescWESC ] = useState<HTMLInputElement | null>(null);
+	const [ currentSoundChange, setCurrentSoundChange] = useState<WESoundChangeObject | null>(null);
+	const loadInfo = () => {
+		const seekEl = $i("editSeekExWESC");
+		const replaceEl = $i("editReplaceExWESC");
+		const contextEl = $i("editContextExWESC");
+		const antiEl = $i("editAnticontextExWESC");
+		const descEl = $i("editOptDescWESC");
+		setEditSeekExWESC(seekEl || null);
+		setEditReplaceExWESC(replaceEl || null);
+		setEditContextExWESC(contextEl || null);
+		setEditAnticontextExWESC(antiEl || null);
+		setEditOptDescWESC(descEl || null);
+		seekEl && (seekEl.value = "");
+		replaceEl && (replaceEl.value = "");
+		contextEl && (contextEl.value = "");
+		antiEl && (antiEl.value = "");
+		descEl && (descEl.value = "");
+		soundChangesObject.list.forEach((obj: WESoundChangeObject) => {
+			const {key, seek, replace, context, anticontext, description} = obj;
+			if(key === editing) {
+				seekEl && (seekEl.value = seek);
+				replaceEl && (replaceEl.value = replace);
+				contextEl && (contextEl.value = context);
+				antiEl && (antiEl.value = anticontext);
+				descEl && (descEl.value = description);
+				setCurrentSoundChange(obj);
+			}
+		});
 	};
-	let currentSoundChange: WESoundChangeObject;
-	soundChangesObject.list.every((change: WESoundChangeObject) => {
-		if(change.key === editing) {
-			editingSoundChange = {
-				...change
-			};
-			currentSoundChange = change;
-			return false;
-		}
-		return true;
-	});
+
 	const cancelEditing = () => {
-		dispatch(cancelEditSoundChangeWE(editing));
+		dispatch(cancelEditSoundChangeWE(currentSoundChange!));
 		setIsOpen(false);
 	};
-	function setNewInfo<
-		KEY extends keyof WESoundChangeObject,
-		VAL extends WESoundChangeObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		editingSoundChange[prop] = value;
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
@@ -112,18 +114,19 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			return false;
 		};
 		// Test info for validness, then save if needed and reset the editingSoundChange
+		const seek = editSeekExWESC!.value || "";
+		const context = editContextExWESC!.value || "_";
+		const anti = editAnticontextExWESC!.value || "";
 		let temp: boolean | string;
-		if(editingSoundChange.seek === "") {
+		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(editingSoundChange.context === "") {
-			editingSoundChange.context = "_";
-		} else if((temp = contextTest(editingSoundChange.context))) {
+		if((temp = contextTest(context))) {
 			err.push(temp);
 			$q(".contextLabel").classList.add("invalidValue");
 		}
-		if(editingSoundChange.anticontext && (temp = contextTest(editingSoundChange.anticontext, "Anticontext"))) {
+		if(anti && (temp = contextTest(anti, "Anticontext"))) {
 			err.push(temp);
 			$q(".anticontextLabel").classList.add("invalidValue");
 		}
@@ -141,15 +144,18 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			});
 			return;
 		}
-		// Fix any possible regex problems
-		editingSoundChange.seek = repairRegexErrors(editingSoundChange.seek);
-		editingSoundChange.context = repairRegexErrors(editingSoundChange.context);
-		editingSoundChange.replace = repairRegexErrors(editingSoundChange.replace);
-		editingSoundChange.anticontext = repairRegexErrors(editingSoundChange.anticontext);
 		// Everything ok!
+		const replace = editReplaceExWESC!.value || "";
+		const description = editOptDescWESC!.value || "";
 		setIsOpen(false);
-		dispatch(doEditSoundChangeWE(editingSoundChange));
-		hardReset();
+		dispatch(doEditSoundChangeWE({
+			key: currentSoundChange!.key,
+			seek: repairRegexErrors(seek),
+			replace,
+			context: repairRegexErrors(context),
+			anticontext: repairRegexErrors(anti),
+			description
+		}));
 		toaster({
 			message: "Sound Change saved!",
 			duration: 2500,
@@ -162,7 +168,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		$q(".soundChanges").closeSlidingItems();
 		const handler = () => {
 			setIsOpen(false);
-			dispatch(deleteSoundChangeWE(currentSoundChange));
+			dispatch(deleteSoundChangeWE(currentSoundChange!));
 			toaster({
 				message: "Sound Change deleted.",
 				duration: 2500,
@@ -171,21 +177,21 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 				undoToast
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			let soundChange =
-				currentSoundChange.seek
+				currentSoundChange!.seek
 				+ (ltr() ? "⟶" : "⟵")
-				+ currentSoundChange.replace
+				+ currentSoundChange!.replace
 				+ "/"
-				+ currentSoundChange.context;
-			if(currentSoundChange.anticontext) {
-				soundChange += "/" + currentSoundChange.anticontext;
+				+ currentSoundChange!.context;
+			if(currentSoundChange!.anticontext) {
+				soundChange += "/" + currentSoundChange!.anticontext;
 			}
 			yesNoAlert({
-				header: `Delete "${soundChange}"?`,
-				message: "Are you sure? This cannot be undone.",
+				header: soundChange,
+				message: "Are you sure you want to delete this sound change? This cannot be undone.",
 				cssClass: "danger",
 				submit: "Yes, delete it",
 				handler,
@@ -194,7 +200,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={() => loadInfo()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>
@@ -214,31 +220,31 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Beginning Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Beginning expression" id="searchEx" className="ion-margin-top serifChars" value={editingSoundChange!.seek} onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Beginning expression" id="editSeekExWESC" className="ion-margin-top serifChars" onIonChange={e => resetError("seek")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Ending Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Ending expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.replace} onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Ending expression" id="editReplaceExWESC" className="ion-margin-top serifChars"></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="contextLabel">Context Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Context expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.context} onIonChange={e => setNewInfo("context", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Context expression" id="editContextExWESC" className="ion-margin-top serifChars" onIonChange={e => resetError("context")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Anticontext expression" id="replaceEx" className="ion-margin-top serifChars" value={editingSoundChange!.anticontext} onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Anticontext expression" id="editAnticontextExWESC" className="ion-margin-top serifChars" onIonChange={e => resetError("anticontext")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Sound Change Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Description of the sound change" id="optDesc" className="ion-margin-top" value={editingSoundChange!.description} placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Description of the sound change" id="editOptDescWESC" className="ion-margin-top" placeholder="(optional)"></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

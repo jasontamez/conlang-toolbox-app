@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -24,7 +24,8 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
+
+import { ExtraCharactersModalOpener, WECharGroupMap, WECharGroupObject } from '../../components/ReduxDucksTypes';
 import { doEditCharGroupWE, cancelEditCharGroupWE, deleteCharGroupWE } from '../../components/ReduxDucksFuncs';
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -36,46 +37,44 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const [charGroupObject, settings] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings], shallowEqual);
-	const charGroupMap: Map<string, WECharGroupObject> = new Map(charGroupObject.map);
+	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: WECharGroupObject }>({});
 	const editing = charGroupObject.editing;
-	//const sourceCharGroup = charGroupMap.get(editing);
-	let editingCharGroup: WECharGroupObject = {...charGroupMap.get(editing)!};
-	editingCharGroup.label = editing;
-	const hardReset = () => {
-		editingCharGroup = {
-			title: "",
-			label: "",
-			run: ""
-		};
+	const [ editingWECharGroupTitle, setEditingWECharGroupTitle ] = useState<HTMLInputElement | null>(null);
+	const [ editingWEShortLabel, setEditingWEShortLabel ] = useState<HTMLInputElement | null>(null);
+	const [ editingWECharGroupRun, setEditingWECharGroupRun ] = useState<HTMLInputElement | null>(null);
+	const loadInfo = () => {
+		const titleEl = $i("editingWECharGroupTitle");
+		const labelEl = $i("editingWEShortLabel");
+		const runEl = $i("editingWECharGroupRun");
+		setEditingWECharGroupTitle(titleEl || null);
+		setEditingWEShortLabel(labelEl || null);
+		setEditingWECharGroupRun(runEl || null);
+		titleEl && (titleEl.value = "");
+		labelEl && (labelEl.value = "");
+		runEl && (runEl.value = "");
+		const cgm: { [key: string]: WECharGroupObject } = {};
+		charGroupObject.map.forEach((chg: WECharGroupMap) => {
+			const [label, group] = chg;
+			cgm[label] = group;
+			if(label === editing) {
+				const { title, run } = group;
+				titleEl && (titleEl.value = title);
+				labelEl && (labelEl.value = label);
+				runEl && (runEl.value = run);
+			}
+		});
+		setCharGroupMap(cgm);
 	};
-	const makeString = (input: any) => {
-		if(input) {
-			return input as string;
-		}
-		return "";
-	};
-	function setNewInfo (prop: keyof WECharGroupObject, value: any) {
-		// Set the property
-		const madeString = makeString(value).trim();
-		switch(prop) {
-			case "title":
-				editingCharGroup.title = madeString;
-				break;
-			case "run":
-				editingCharGroup.run = madeString;
-				break;
-			case "label":
-				editingCharGroup.label = madeString;
-				break;
-		}
+
+	function resetError (prop: keyof WECharGroupObject) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "LabelEdit");
+		const where = $q(`.${prop}LabelEdit`);
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
-		const words = ($i("editingCharGroupTitle").value as string) // Get the title/description
+		const words = (editingWECharGroupTitle!.value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -86,7 +85,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		// Now check every character one at a time to see if it's a good candidate
 		let label: string | undefined;
 		potentials.every(char => {
-			if(editing === char || !charGroupMap.has(char)) {
+			if(editing === char || !charGroupMap[char]) {
 				label = char;
 				return false;
 			}
@@ -103,8 +102,8 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			$i("editingShortLabel").value = label;
-			setNewInfo("label", label);
+			editingWEShortLabel!.value = label;
+			resetError("label");
 		}
 	};
 	const cancelEditing = () => {
@@ -113,25 +112,28 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const maybeSaveNewInfo = () => {
 		const err: string[] = [];
+		const title = editingWECharGroupTitle!.value.trim();
+		const label = editingWEShortLabel!.value.trim();
+		const run = editingWECharGroupRun!.value.trim();
 		// Test info for validness, then save if needed and reset the editingCharGroup
-		if(editingCharGroup.title === "") {
+		if(title === "") {
 			$q(".titleLabelEdit").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(editingCharGroup.label === "") {
+		if(label === "") {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (editing !== editingCharGroup.label && charGroupMap.has(editingCharGroup.label!)) {
+		} else if (editing !== label && charGroupMap[label!]) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
-			err.push("There is already a label \"" + editingCharGroup.label + "\"");
+			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
-			if (invalid.indexOf(editingCharGroup.label as string) !== -1) {
+			if (invalid.indexOf(label as string) !== -1) {
 				$q(".labelLabelEdit").classList.add("invalidValue");
-				err.push("You cannot use \"" + editingCharGroup.label + "\" as a label.");
+				err.push("You cannot use \"" + label + "\" as a label.");
 			}
 		}
-		if(editingCharGroup.run === "") {
+		if(run === "") {
 			$q(".runLabelEdit").classList.add("invalidValue");
 			err.push("No run present");
 		}
@@ -151,8 +153,11 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		setIsOpen(false);
-		dispatch(doEditCharGroupWE(editingCharGroup));
-		hardReset();
+		dispatch(doEditCharGroupWE({
+			title,
+			label,
+			run
+		}));
 		toaster({
 			message: "Character Group saved!",
 			duration: 2500,
@@ -163,9 +168,11 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const maybeDeleteCharGroup = () => {
 		$q(".charGroups").closeSlidingItems();
+		const editingCharGroup = charGroupMap[editing];
+		const {run} = editingCharGroup
 		const handler = () => {
 			setIsOpen(false);
-			dispatch(deleteCharGroupWE(editingCharGroup));
+			dispatch(deleteCharGroupWE({...editingCharGroup, label: editing}));
 			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
@@ -178,8 +185,8 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${editingCharGroup.label}"?`,
-				message: "Are you sure? This cannot be undone.",
+				header: `${editing}=${run}`,
+				message: "Are you sure you want to delete this Character Group? This cannot be undone.",
 				cssClass: "warning",
 				submit: "Yes, delete it",
 				handler,
@@ -188,7 +195,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={() => loadInfo()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>
@@ -208,12 +215,11 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" value={editingCharGroup.title} id="editingCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", e.detail.value)} autocomplete="on" debounce={250}></IonInput>
+						<IonInput aria-label="Title or description" id="editingWECharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => resetError("title")} autocomplete="on"></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
-						<IonInput aria-label="Short Label" value={editingCharGroup.label} id="editingShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", e.detail.value)} maxlength={1}></IonInput>
-						<IonButton slot="end" onClick={() => generateLabel()}>
+						<IonInput aria-label="Short Label" id="editingWEShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1}></IonInput>						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>
@@ -221,7 +227,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, Characters" value={editingCharGroup.run} className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", e.detail.value)} debounce={250}></IonInput>
+						<IonInput id="editingWECharGroupRun" aria-label="Letters, Characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

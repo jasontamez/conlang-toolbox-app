@@ -43,6 +43,7 @@ import {
 } from '../components/ReduxDucksFuncs';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import { $i } from '../components/DollarSignExports';
 
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
@@ -91,21 +92,21 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		setNextColPos(columns.length);
 	}, [columns]);
 
-	const setNewInfo = (i: number, val: string) => {
-		const newCols = cols.slice();
-		newCols[i].label = val.trim();
-		setCols(newCols);
-	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		const newCols = cols.slice();
 		newCols[i].size = value;
 		setCols(newCols);
 	};
 	const doneEditingOrder = () => {
+		const testCols = cols.map((col: LexiconColumn) => {
+			const c = {...col};
+			c.label = $i(`input_colOrder_${c.id}`).value;
+			return c;
+		});
 		const testString =
 			order.join(",")
 			+ sortWhenBlank
-			+ cols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
+			+ testCols.map((col: LexiconColumn, i: number) => col.label + col.size + String(colPosition[i])).join(',')
 			+ String(noWrap);
 		if(testString === originalString) {
 			toaster({
@@ -130,7 +131,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			})
 			return { id, columns: newColumns };
 		});
-		const newColumnOrder = colPosition.map((pos: number) => cols[pos]);
+		const newColumnOrder = colPosition.map((pos: number) => testCols[pos]);
 		dispatch(updateLexiconColumnarInfo(lex, newColumnOrder, order, noWrap, sortWhenBlank));
 		toaster({
 			message: "Saved!",
@@ -240,7 +241,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 									<IonGrid>
 										<IonRow className="ion-align-items-center">
 											<IonCol>
-												<IonInput aria-label="Field Name" placeholder="Field Name" value={label} onIonChange={(e) => setNewInfo(i, e.target.value as string)} />
+												<IonInput id={`input_colOrder_${id}`} aria-label="Field Name" placeholder="Field Name" value={label} />
 											</IonCol>
 											<IonCol size="auto">
 												<IonButton color="danger" onClick={() => deleteField(i)}><IonIcon icon={trashOutline} /></IonButton>

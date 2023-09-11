@@ -22,39 +22,20 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
-import { addTransformWG } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WGTransformObject } from '../../components/ReduxDucksTypes';
-import { $q, $a } from '../../components/DollarSignExports';
-import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
+
+import { addTransformWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { $q, $a, $i } from '../../components/DollarSignExports';
+import repairRegexErrors from '../../components/RepairRegex';
 import toaster from '../../components/toaster';
 
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newTransform: WGTransformObject = {
-		key: "",
-		seek: "",
-		replace: "",
-		description: ""
-	};
-	const hardReset = () => {
-		newTransform = {
-			key: "",
-			seek: "",
-			replace: "",
-			description: ""
-		};
-		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	function setNewInfo<
-		KEY extends keyof WGTransformObject,
-		VAL extends WGTransformObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		newTransform[prop] = value;
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
@@ -63,7 +44,8 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const maybeSaveNewTransform = (close: boolean = true) => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
-		if(newTransform.seek === "") {
+		const seek = $i("searchEx").value || "";
+		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
@@ -82,13 +64,16 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		// Create unique ID for this transform
-		newTransform.key = uuidv4();
-		newTransform.seek = repairRegexErrors(newTransform.seek);
-		newTransform.replace = repairRegexErrors(newTransform.replace);
+		const replace = repairRegexErrors($i("replaceEx").value || "");
+		const description = $i("optDesc").value || "";
 		close && setIsOpen(false);
-		dispatch(addTransformWG(newTransform));
-		hardReset();
+		dispatch(addTransformWG({
+			key: uuidv4(),
+			seek: repairRegexErrors(seek),
+			replace,
+			description
+		}));
+		$a("ion-list.wgAddTransform ion-input").forEach((input: HTMLInputElement) => input.value = "");
 		toaster({
 			message: "Transformation added!",
 			duration: 2500,
@@ -113,24 +98,24 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
 					<IonItem className="labelled">
 						<IonLabel className="seekLabel">Search Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Search expression" id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Search expression" id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => resetError("seek")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Replacement Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Replacement expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Replacement expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="..."></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transformation Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Transformation description" id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Transformation description" id="optDesc" className="ion-margin-top" placeholder="(optional)"></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

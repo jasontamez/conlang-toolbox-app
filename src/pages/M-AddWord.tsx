@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -30,31 +30,24 @@ import {
 	addLexiconItem
 } from '../components/ReduxDucksFuncs';
 import toaster from '../components/toaster';
+import { $i } from '../components/DollarSignExports';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
-	adding: { [keys: string]: string }
-	setAdding: Function
 	columnInfo: LexiconColumn[]
 }
 
 const AddLexiconItemModal = (props: LexItemProps) => {
-	const { isOpen, setIsOpen, openECM, adding, setAdding, columnInfo } = props;
+	const { isOpen, setIsOpen, openECM, columnInfo } = props;
 	const dispatch = useDispatch();
-	const [ cols, setCols ] = useState<{ [keys: string]: string }>({});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	useEffect(() => {
-		if(!isOpen) {
-			setCols({...adding});
-		}
-	}, [adding, isOpen]);
 	const maybeSaveNewInfo = useCallback(() => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
 		let foundFlag = false;
 		columnInfo.forEach((col: LexiconColumn) => {
 			const id = col.id;
-			const info = cols[id] || "";
+			const info = $i(`input_lexicon_modal_${id}`).value || "";
 			newInfo.push(info);
 			info && (foundFlag = true);
 			newBlank[id] = "";
@@ -78,8 +71,6 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			id: uuidv4(),
 			columns: newInfo
 		}));
-		// clear current info
-		setAdding(newBlank);
 		// close modal
 		setIsOpen(false);
 		// toast
@@ -96,26 +87,18 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			doToast,
 			undoToast
 		});
-	}, [cols, columnInfo, dispatch, setAdding, setIsOpen, doAlert, doToast, undoToast]);
+	}, [columnInfo, dispatch, setIsOpen, doAlert, doToast, undoToast]);
 	const cancel = useCallback(() => {
-		setAdding({});
 		setIsOpen(false);
-	}, [setAdding, setIsOpen]);
-	const setAddInput = useCallback((id: string, value: string) => {
-		const newObj = {...cols};
-		newObj[id] = value;
-		setCols(newObj);
-	}, [cols]);
-	const input = useCallback((label: string, value: string, id: string, size: string) => {
+	}, [setIsOpen]);
+	const input = useCallback((label: string, id: string, size: string) => {
 		if(size === "l") {
 			//const rows = Math.min(12, Math.max(3, value.split(/\n/).length));
 			return (
 				<IonTextarea
 					aria-label={label}
-					id={`${id}:input:column:add`}
+					id={`input_lexicon_modal_${id}`}
 					className="ion-margin-top serifChars"
-					value={value}
-					onIonChange={(e) => setAddInput(id, e.detail.value || "")}
 					rows={5}
 				></IonTextarea>
 			);
@@ -123,13 +106,11 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		return (
 			<IonInput
 				aria-label={label}
-				id={`${id}:input:column:add`}
+				id={`input_lexicon_modal_${id}`}
 				className="ion-margin-top serifChars"
-				value={value}
-				onIonChange={(e) => setAddInput(id, e.detail.value || "")}
 			></IonInput>
 		);
-	}, [setAddInput]);
+	}, []);
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
@@ -155,7 +136,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 									<IonLabel>{label}</IonLabel>
 								</IonItem>
 								<IonItem>
-									{input(`${label} input`, cols[id], id, size)}
+									{input(`${label} input`, id, size)}
 								</IonItem>
 							</React.Fragment>
 						);

@@ -23,42 +23,18 @@ import {
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { addSoundChangeWE } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WESoundChangeObject } from '../../components/ReduxDucksTypes';
-import { $q, $a } from '../../components/DollarSignExports';
+import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { $q, $a, $i } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import { v4 as uuidv4 } from 'uuid';
 import toaster from '../../components/toaster';
 
 const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newSoundChange: WESoundChangeObject = {
-		key: "",
-		seek: "",
-		replace: "",
-		context: "",
-		anticontext: "",
-		description: ""
-	};
-	const hardReset = () => {
-		newSoundChange = {
-			key: "",
-			seek: "",
-			replace: "",
-			context: "",
-			anticontext: "",
-			description: ""
-		};
-		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	function setNewInfo<
-		KEY extends keyof WESoundChangeObject,
-		VAL extends WESoundChangeObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		newSoundChange[prop] = value;
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
@@ -85,16 +61,19 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		};
 		// Test info for validness, then save if needed and reset the newSoundChange
 		let temp: boolean | string;
-		if(newSoundChange.seek === "") {
+		const seek = $i("searchExWESC").value || "";
+		const context = $i("contextExWESC").value || "_";
+		const anticontext = $i("antiExWESC").value || "";
+		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
-		if(newSoundChange.context === "") {
-			newSoundChange.context = "_";
-		} else if((temp = contextTest(newSoundChange.context))) {
+		if((temp = contextTest(context))) {
+			$q(".contextLabel").classList.add("invalidValue");
 			err.push(temp);
 		}
-		if(newSoundChange.anticontext && (temp = contextTest(newSoundChange.anticontext, "Anticontext"))) {
+		if(anticontext && (temp = contextTest(anticontext, "Anticontext"))) {
+			$q(".anticontextLabel").classList.add("invalidValue");
 			err.push(temp);
 		}
 		if(err.length > 0) {
@@ -112,16 +91,19 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		// Create unique ID for this sound change
-		newSoundChange.key = uuidv4();
 		// Fix any possible regex problems
-		newSoundChange.seek = repairRegexErrors(newSoundChange.seek);
-		newSoundChange.context = repairRegexErrors(newSoundChange.context);
-		newSoundChange.replace = repairRegexErrors(newSoundChange.replace);
-		newSoundChange.anticontext = repairRegexErrors(newSoundChange.anticontext);
+		const replace = repairRegexErrors($i("replaceExWESC").value || "");
+		const description = $i("optDescWESC").value.trim() || "";
 		close && setIsOpen(false);
-		dispatch(addSoundChangeWE(newSoundChange));
-		hardReset();
+		dispatch(addSoundChangeWE({
+			key: uuidv4(),
+			seek: repairRegexErrors(seek),
+			replace,
+			context: repairRegexErrors(context),
+			anticontext: repairRegexErrors(anticontext),
+			description
+		}));
+		$a("ion-list.addSoundChangeWE ion-input").forEach((input: HTMLInputElement) => input.value = "");
 		toaster({
 			message: "Sound Change added!",
 			duration: 2500,
@@ -146,42 +128,42 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels addSoundChangeWE">
 					<IonItem className="labelled">
 						<IonLabel className="seekLabel">Search Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Search Expression" id="searchEx" className="ion-margin-top serifChars" placeholder="Sound..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Search Expression" id="searchExWESC" className="ion-margin-top serifChars" placeholder="Sound..." onIonChange={e => resetError("seek")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Replace Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Replace Expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="Changes into..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Replace Expression" id="replaceExWESC" className="ion-margin-top serifChars" placeholder="Changes into..."></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="contextLabel">Context Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Context Expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="Where the change takes place" onIonChange={e => setNewInfo("context", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Context Expression" id="contextExWESC" className="ion-margin-top serifChars" placeholder="Where the change takes place" onIonChange={e => resetError("context")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Anticontext Expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="Where it doesn't" onIonChange={e => setNewInfo("anticontext", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Anticontext Expression" id="antiExWESC" className="ion-margin-top serifChars" placeholder="Where it doesn't" onIonChange={e => resetError("anticontext")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Sound Change Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Sound Change Description" id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Sound Change Description" id="optDescWESC" className="ion-margin-top" placeholder="(optional)"></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="primary" slot="end" onClick={() => maybeSaveNewSoundChange(false)}>
+					<IonButton color="primary" slot="end" onClick={() => maybeSaveNewSoundChange(false)}>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Sound Change</IonLabel>
 					</IonButton>

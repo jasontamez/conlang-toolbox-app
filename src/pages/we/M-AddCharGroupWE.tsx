@@ -23,44 +23,30 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, WECharGroupObject } from '../../components/ReduxDucksTypes';
+
+import { ExtraCharactersModalOpener, WECharGroupMap } from '../../components/ReduxDucksTypes';
 import { addCharGroupWE } from '../../components/ReduxDucksFuncs';
 import { $q, $a, $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
 const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newCharGroup: WECharGroupObject = {
-		title: "",
-		label: "",
-		run: ""
-	};
-	const hardReset = () => {
-		newCharGroup = {
-			title: "",
-			label: "",
-			run: ""
-		};
-		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const charGroupObject = useSelector((state: any) => state.wordevolveCharGroups, shallowEqual);
-	const charGroupMap = new Map(charGroupObject.map);
-	function setNewInfo<
-		KEY extends keyof WECharGroupObject,
-		VAL extends WECharGroupObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		newCharGroup[prop] = value;
+	const charGroupMap: { [key: string]: boolean } = {};
+	const charGroupObject = useSelector((state: any) => state.wordevolveCharGroups.map, shallowEqual);
+	charGroupObject.forEach((cg: WECharGroupMap) => {
+		charGroupMap[cg[0]] = true;
+	});
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "Label");
+		const where = $q(`.${prop}Label`);
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		const words = ($i("newCharGroupTitle").value as string) // Get the title/description
+		const words = ($i("newWECharGroupTitle").value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -70,7 +56,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
 		let label: string | undefined;
 		potentials.every(char => {
-			if(!charGroupMap.has(char)) {
+			if(!charGroupMap[char]) {
 				label = char;
 				return false;
 			}
@@ -87,31 +73,34 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			$i("shortLabel").value = label;
-			setNewInfo("label", label);
+			$i("newWEShortLabel").value = label;
+			resetError("label");
 		}
 	};
 	const maybeSaveNewCharGroup = (close: boolean = true) => {
 		const err: string[] = [];
-		// Test info for validness, then save if needed and reset the newCharGroup
-		if(newCharGroup.title === "") {
+		// Test info for validness, then save if needed and reset the info
+		const title = $i("newWECharGroupTitle").value.trim(),
+			label = $i("newWEShortLabel").value.trim(),
+			run = $i("newWECharGroupRun").value.trim();
+		if(title === "") {
 			$q(".titleLabel").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(newCharGroup.label === "") {
+		if(label === "") {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (charGroupMap.has(newCharGroup.label)) {
+		} else if (charGroupMap[label]) {
 			$q(".labelLabel").classList.add("invalidValue");
-			err.push("There is already a label \"" + newCharGroup.label + "\"");
+			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
-			if (invalid.indexOf(newCharGroup.label as string) !== -1) {
+			if (invalid.indexOf(label as string) !== -1) {
 				$q(".labelLabel").classList.add("invalidValue");
-				err.push("You cannot use \"" + newCharGroup.label + "\" as a label");
+				err.push("You cannot use \"" + label + "\" as a label");
 			}
 		}
-		if(newCharGroup.run === "") {
+		if(run === "") {
 			$q(".runLabel").classList.add("invalidValue");
 			err.push("No run present");
 		}
@@ -131,8 +120,8 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		close && setIsOpen(false);
-		dispatch(addCharGroupWE(newCharGroup));
-		hardReset();
+		dispatch(addCharGroupWE({title, label, run}));
+		$a("ion-list.addWECharGroup ion-input").forEach((input: HTMLInputElement) => input.value = "");
 		toaster({
 			message: "Character Group added!",
 			duration: 2500,
@@ -157,16 +146,16 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels addWECharGroup">
 					<IonItem className="labelled">
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title/Description" id="newCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250}></IonInput>
+						<IonInput aria-label="Title/Description" id="newWECharGroupTitle" className="ion-margin-top" placeholder="Type description here" autocomplete="on" onIonChange={() => resetError("title")}></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
-						<IonInput id="shortLabel" label="Short Label:" aria-label="Short Label" labelPlacement="start" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1}></IonInput>
+						<IonInput id="newWEShortLabel" aria-label="Short Label" labelPlacement="start" className="serifChars labelLabel" placeholder="1 character only" maxlength={1} onIonChange={() => resetError("title")}></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -175,7 +164,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters/Characters" className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250}></IonInput>
+						<IonInput id="newWECharGroupRun" aria-label="Letters/Characters" className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={() => resetError("run")}></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

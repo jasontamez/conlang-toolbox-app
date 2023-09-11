@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -25,41 +25,20 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
-import { addTransformWE } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
-import { $q, $a } from '../../components/DollarSignExports';
 import { v4 as uuidv4 } from 'uuid';
+
+import { addTransformWE } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { $q, $a, $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newTransform: WETransformObject = {
-		key: "",
-		seek: "",
-		replace: "",
-		direction: "both",
-		description: ""
-	};
-	const hardReset = () => {
-		newTransform = {
-			key: "",
-			seek: "",
-			replace: "",
-			direction: "both",
-			description: ""
-		};
-		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-		$q("ion-radio-group").value = "both";
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	function setNewInfo<
-		KEY extends keyof WETransformObject,
-		VAL extends WETransformObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		newTransform[prop] = value;
+	const [ direction, setDirection] = useState<"both" | "in" | "out" | "double">("both");
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
@@ -67,8 +46,9 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	}
 	const maybeSaveNewTransform = (close: boolean = true) => {
 		const err: string[] = [];
+		const seek = $i("searchExWE").value || "";
 		// Test info for validness, then save if needed and reset the newTransform
-		if(newTransform.seek === "") {
+		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
@@ -87,11 +67,18 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		// Create unique ID for this transform
-		newTransform.key = uuidv4();
+		const replace = $i("replaceExWE").value || "";
+		const description = $i("optDescWE").value || "";
 		close && setIsOpen(false);
-		dispatch(addTransformWE(newTransform));
-		hardReset();
+		dispatch(addTransformWE({
+			key: uuidv4(),
+			seek,
+			replace,
+			direction,
+			description
+		}));
+		$a("ion-list.weAddTransform ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		$q("ion-list.weAddTransform ion-radio-group").value = "both";
 		toaster({
 			message: "Transform added!",
 			duration: 2500,
@@ -116,29 +103,29 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels weAddTransform">
 					<IonItem className="labelled">
 						<IonLabel className="seekLabel">Input Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Input expression" id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("seek", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Input expression" id="searchExWE" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => resetError("seek")}></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Output expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => setNewInfo("replace", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Output expression" id="replaceExWE" className="ion-margin-top serifChars" placeholder="..."></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transform Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Description of the transform" id="optDesc" className="ion-margin-top" placeholder="(optional)" onIonChange={e => setNewInfo("description", (e.detail.value as string).trim())}></IonInput>
+						<IonInput aria-label="Description of the transform" id="optDescWE" className="ion-margin-top" placeholder="(optional)"></IonInput>
 					</IonItem>
 					<IonItemDivider>
 						<IonLabel>Transform Direction:</IonLabel>
 					</IonItemDivider>
-					<IonRadioGroup value={newTransform.direction} onIonChange={e => setNewInfo("direction", e.detail.value as "both" | "in" | "out" | "double")}>
+					<IonRadioGroup value={direction} onIonChange={e => setDirection(e.detail.value as "both" | "in" | "out" | "double")}>
 						<IonItem>
 							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
 						</IonItem>

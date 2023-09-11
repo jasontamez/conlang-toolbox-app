@@ -194,13 +194,9 @@ const Lex = (props: PageData) => {
 	const [mergingObject, setMergingObject] = useState<{[key: string]: Lexicon}>({});
 	const [isOpenMergeItems, setIsOpenMergeItems] = useState<boolean>(false);
 
-	// add to lex
-	const [isOpenAddLexItem, setIsOpenAddLexItem] = useState<boolean>(false);
-	const [addingCols, setAddingCols] = useState<{[key: string]: string}>({}); // columnId: "text"
-	const [previousCols, setPreviousCols] = useState<string>("");
-
 	// other modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenAddLexItem, setIsOpenAddLexItem] = useState<boolean>(false);
 	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
 	const [isOpenLexSorter, setIsOpenLexSorter] = useState<boolean>(false);
 	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
@@ -241,44 +237,6 @@ const Lex = (props: PageData) => {
 		topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames // HTML elements
 	]);
 
-	// Handle columns and the "add" inputs
-	useEffect(() => {
-		const sortedColumns = columns.map((col: LexiconColumn) => col.id);
-		sortedColumns.sort();
-		// Only change things if the columns themselves change
-		//  - changing order or labels or other parts of columns shouldn't trigger
-		//  - setting values on addingCols shouldn't trigger
-		if(previousCols !== sortedColumns.join(" / ")) {
-			let currentCols = Object.keys(addingCols);
-			const newPrev: string[] = [];
-			const newCols: {[key:string]: string} = {...addingCols};
-			// go through each column
-			columns.forEach((col: LexiconColumn) => {
-				const id = col.id;
-				newPrev.push(id);
-				if(newCols[id] !== undefined) {
-					// column already exists
-					currentCols = currentCols.filter(prop => prop !== id);
-				} else {
-					// create column
-					newCols[id] = "";
-				}
-			});
-			// check for any remaining old columns; they need to be deleted
-			currentCols.forEach((id: string) => {
-				delete newCols[id];
-			});
-			// save new info
-			setAddingCols(newCols);
-			setPreviousCols(newPrev.join(" / "));
-		}
-	}, [columns, previousCols, addingCols]);
-	const setAddInput = (id: string, value: string) => {
-		const newObj = {...addingCols};
-		newObj[id] = value;
-		setAddingCols(newObj);
-	};
-
 	// Update Lexicon description or title
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
@@ -293,11 +251,12 @@ const Lex = (props: PageData) => {
 		let foundFlag = false;
 		columns.forEach((col: LexiconColumn) => {
 			const id = col.id;
-			const info = addingCols[id] || "";
+			const i_id = `input_lex_${id}`;
+			const info: string = $i(i_id).value || "";
 			newInfo.push(info);
 			info && (foundFlag = true);
 			newBlank[id] = "";
-			ids.push("inputLex" + id);
+			ids.push(i_id);
 		});
 		if(!foundFlag) {
 			doAlert({
@@ -318,14 +277,12 @@ const Lex = (props: PageData) => {
 			id: uuidv4(),
 			columns: newInfo
 		}));
-		// clear current info
-		setAddingCols(newBlank);
 		// clear all inputs
 		ids.forEach((id: string) => {
 			const el = $i(id);
 			el && el.getInputElement().then((el: any) => (el.value = ""));
 		});
-	}, [columns, dispatch, addingCols, doAlert]);
+	}, [columns, dispatch, doAlert]);
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
@@ -393,8 +350,6 @@ const Lex = (props: PageData) => {
 			<AddLexiconItemModal 
 				{...props.modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
 				openECM={setIsOpenECM}
-				adding={addingCols}
-				setAdding={setAddingCols}
 				columnInfo={columns}
 			/>
 			<EditLexiconItemModal
@@ -518,7 +473,7 @@ const Lex = (props: PageData) => {
 								<IonItem id="lexColumnInputs" className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
 									{columns.map((column: LexiconColumn) => {
 										const { id, label, size } = column;
-										const key = `inputLex${id}`;
+										const key = `input_lex_${id}`;
 										return (
 											<IonInput
 												id={key}
@@ -526,7 +481,6 @@ const Lex = (props: PageData) => {
 												aria-label={`${label} input`}
 												className={`${size} lexAddInput`}
 												type="text"
-												onIonChange={(e) => setAddInput(id, e.detail.value || "")}
 											/>
 										);
 									})}

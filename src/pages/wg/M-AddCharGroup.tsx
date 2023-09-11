@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -25,37 +25,25 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { ExtraCharactersModalOpener, WGCharGroupObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
+
+import { ExtraCharactersModalOpener, WGCharGroupMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
 import { addCharGroupWG } from '../../components/ReduxDucksFuncs';
 import { $q, $i, $a } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
 const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
-	let newCharGroup: WGCharGroupObject = {
-		title: "",
-		label: "",
-		run: ""
-	};
-	const hardReset = () => {
-		newCharGroup = {
-			title: "",
-			label: "",
-			run: ""
-		};
-		$a("ion-input").forEach((input: HTMLInputElement) => input.value = "");
-	};
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [charGroupObject, charGroupRunDropoff] = useSelector((state: any) => [state.wordgenCharGroups, state.wordgenSettings.charGroupRunDropoff], shallowEqual);
-	const charGroupMap = new Map(charGroupObject.map);
-	function setNewInfo<
-		KEY extends keyof WGCharGroupObject,
-		VAL extends WGCharGroupObject[KEY]
-	>(prop: KEY, value: VAL) {
-		// Set the property
-		newCharGroup[prop] = value;
+	const [charGroupObject, charGroupRunDropoff] = useSelector((state: any) => [state.wordgenCharGroups.map, state.wordgenSettings.charGroupRunDropoff], shallowEqual);
+	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
+	const [dropoff, setDropoff] = useState<Zero_Fifty>(charGroupRunDropoff);
+	const charGroupMap: { [key: string]: boolean } = {};
+	charGroupObject.forEach((cg: WGCharGroupMap) => {
+		charGroupMap[cg[0]] = true;
+	});
+	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
@@ -63,12 +51,12 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	}
 	const toggleDropoff = () => {
 		const DF = $i("charGroupDropoffAddC");
-		if(newCharGroup.dropoffOverride !== undefined) {
-			delete newCharGroup.dropoffOverride;
+		if(hasDropoff) {
+			setHasDropoff(false);
 			DF.classList.add("hide");
 		} else {
 			DF.classList.remove("hide");
-			$q("ion-range", DF).value = newCharGroup.dropoffOverride = charGroupRunDropoff;
+			setHasDropoff(true);
 		}
 	};
 	const generateLabel = () => {
@@ -82,7 +70,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
 		let label: string | undefined;
 		potentials.every(char => {
-			if(!charGroupMap.has(char)) {
+			if(!charGroupMap[char]) {
 				label = char;
 				return false;
 			}
@@ -100,30 +88,33 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		} else {
 			// Suitable label found
 			$i("shortLabel").value = label;
-			setNewInfo("label", label);
+			resetError("label");
 		}
 	};
 	const maybeSaveNewCharGroup = (close: boolean = true) => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCharGroup
-		if(newCharGroup.title === "") {
+		const title = $i("newWGCharGroupTitle").value.trim(),
+			label = $i("newWGShortLabel").value.trim(),
+			run = $i("newWGCharGroupRun").value.trim();
+		if(title === "") {
 			$q(".titleLabel").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(newCharGroup.label === "") {
+		if(label === "") {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (charGroupMap.has(newCharGroup.label)) {
+		} else if (charGroupMap[label]) {
 			$q(".labelLabel").classList.add("invalidValue");
-			err.push("There is already a label \"" + newCharGroup.label + "\"");
+			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
-			if (invalid.indexOf(newCharGroup.label as string) !== -1) {
+			if (invalid.indexOf(label) !== -1) {
 				$q(".labelLabel").classList.add("invalidValue");
-				err.push("You cannot use \"" + newCharGroup.label + "\" as a label.");
+				err.push("You cannot use \"" + label + "\" as a label.");
 			}
 		}
-		if(newCharGroup.run === "") {
+		if(run === "") {
 			$q(".runLabel").classList.add("invalidValue");
 			err.push("No run present");
 		}
@@ -143,8 +134,15 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		close && setIsOpen(false);
-		dispatch(addCharGroupWG(newCharGroup));
-		hardReset();
+		dispatch(addCharGroupWG({
+			title,
+			label,
+			run,
+			dropoffOverride: hasDropoff ? dropoff : undefined
+		}));
+		$a("ion-list.addWGCharGroup ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		setHasDropoff(false);
+		setDropoff(charGroupRunDropoff);
 		toaster({
 			message: "Character Group added!",
 			duration: 2500,
@@ -169,16 +167,16 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
+				<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
 					<IonItem className="labelled">
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" id="newCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => setNewInfo("title", (e.detail.value as string).trim())} autocomplete="on" debounce={250} />
+						<IonInput aria-label="Title or description" id="newWGCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => resetError("title")} autocomplete="on" />
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
-						<IonInput aria-label="Short Label" id="shortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => setNewInfo("label", (e.detail.value as string).trim())} maxlength={1} />
+						<IonInput aria-label="Short Label" id="newWGShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1} />
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -187,7 +185,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => setNewInfo("run", (e.detail.value as string).trim())} debounce={250} />
+						<IonInput aria-label="Letters, characters" id="newWGCharGroupRun" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")} />
 					</IonItem>
 					<IonItem>
 						<IonToggle
@@ -196,11 +194,11 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							aria-label="Use separate dropoff rate"
 							justify="space-between"
 							onIonChange={() => toggleDropoff()}
-							checked={newCharGroup.dropoffOverride !== undefined}
+							checked={hasDropoff}
 						>Use separate dropoff rate</IonToggle>
 					</IonItem>
 					<IonItem id="charGroupDropoffAddC" className="hide">
-						<IonRange min={0} max={50} pin={true} onIonChange={e => setNewInfo("dropoffOverride", (e.detail.value as Zero_Fifty))} debounce={250}>
+						<IonRange min={0} max={50} pin={true} value={dropoff} onIonChange={e => setDropoff(e.detail.value as Zero_Fifty)} debounce={250}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>

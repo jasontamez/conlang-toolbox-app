@@ -23,6 +23,7 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
+
 import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../components/ReduxDucksTypes';
 import {
 	doEditLexiconItem,
@@ -30,6 +31,7 @@ import {
 } from '../components/ReduxDucksFuncs';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import { $i } from '../components/DollarSignExports';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
@@ -62,17 +64,19 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		setId(id);
 		setCols(cols);
 	}, [itemToEdit]);
-	const setNewInfo = (info: string, i: number) => {
-		const newCols = [...cols];
-		newCols[i] = info;
-		setCols(newCols);
+	const currentInfo = () => {
+		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
+		return cols.map((col: string, i: number) => {
+			const el = $i(`edit_lex_input_${id}_${i}`);
+			return el ? el.value.trim() : "";
+		});
 	};
 	const cancelEditing = () => {
 		// If we're "open" and being closed by some other means, check and see if
 		//   1) we have disabled confirms
 		//   2) we haven't changed anything
 		// and exit silently if both are true
-		if(disableConfirms || cols.join(nonsense) === originalString) {
+		if(disableConfirms || currentInfo().join(nonsense) === originalString) {
 			setIsOpen(false);
 			return;
 		}
@@ -87,7 +91,8 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		});
 	};
 	const maybeSaveNewInfo = () => {
-		if(cols.every((i: string) => !i.trim())) {
+		const cols = currentInfo();
+		if(cols.join("") === "") {
 			doAlert({
 				header: "Error",
 				message: "You must put some text in at least one box.",
@@ -163,10 +168,9 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 								<IonItem>
 									<IonInput
 										aria-label={`${col.label} input`}
-										id={`${id}:input:column${i}`}
+										id={`edit_lex_input_${id}_${i}`}
 										className="ion-margin-top serifChars"
 										value={cols[i]}
-										onIonChange={e => setNewInfo((e.detail.value as string).trim(), i)}
 									></IonInput>
 								</IonItem>
 							</React.Fragment>

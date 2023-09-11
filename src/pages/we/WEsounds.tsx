@@ -89,8 +89,8 @@ const WERew = (props: PageData) => {
 				rule += "/" + change.anticontext;
 			}
 			yesNoAlert({
-				header: `Delete "${rule}"?`,
-				message: "Are you sure? This cannot be undone.",
+				header: rule,
+				message: "Are you sure you want to delete this sound change? This cannot be undone.",
 				cssClass: "danger",
 				submit: "Yes, delete it",
 				handler,
