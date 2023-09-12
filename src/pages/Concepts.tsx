@@ -26,15 +26,15 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 import {
-	updateWordListsDisplay,
+	updateConceptsDisplay,
 	changeView,
-	toggleWordListsBoolean,
+	toggleConceptsBoolean,
 	addItemstoLexiconColumn,
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
 } from '../components/ReduxDucksFuncs';
 import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
-import { WordList, WordListSources } from '../components/WordLists';
+import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
 import { WLCard } from "./wg/WGCards";
 import yesNoAlert from '../components/yesNoAlert';
@@ -42,7 +42,7 @@ import toaster from '../components/toaster';
 
 interface SavedWord { id: string, word: string };
 
-const WordLists = (props: PageData) => {
+const ConceptsPage = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [pickAndSave, setPickAndSave] = useState<boolean>(false);
@@ -50,24 +50,24 @@ const WordLists = (props: PageData) => {
 	const [unlinking, setUnlinking] = useState<boolean>(false);
 	const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
-	const [disableConfirms, wordListsState, lexColumns] = useSelector((state: any) => [state.appSettings.disableConfirms, state.wordListsState, state.lexicon.columns], shallowEqual);
+	const [disableConfirms, conceptsState, lexColumns] = useSelector((state: any) => [state.appSettings.disableConfirms, state.conceptsState, state.lexicon.columns], shallowEqual);
 	const {
 		display,
 		showingCombos,
 		combinations,
 		textCenter
-	} = wordListsState;
+	} = conceptsState;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
 	const toggleChars = (what: keyof WL) => {
 		if(display.some((p: keyof WL) => p === what)) {
-			return dispatch(updateWordListsDisplay(display.filter((p: keyof WL) => p !== what)));
+			return dispatch(updateConceptsDisplay(display.filter((p: keyof WL) => p !== what)));
 		}
-		dispatch(updateWordListsDisplay([...display, what]));
+		dispatch(updateConceptsDisplay([...display, what]));
 	};
-	const shown = WordList.filter((word: WL) => display.some((p: keyof WL) => word[p]));
+	const shown = Concepts.filter((word: WL) => display.some((p: keyof WL) => word[p]));
 	const viewInfo = ['wl', 'home'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -307,9 +307,9 @@ const WordLists = (props: PageData) => {
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
-					<IonTitle>Word Lists</IonTitle>
+					<IonTitle>Concepts</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(toggleWordListsBoolean("textCenter"))}>
+						<IonButton onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
 							<IonIcon size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
 						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
@@ -320,10 +320,10 @@ const WordLists = (props: PageData) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
-					<IonItem className="wordListChips">
+					<IonItem className="conceptsChips">
 						<div className="chips">
 							<span>Display:</span>
-							{WordListSources.map((pair: [string, keyof WL], ind: number) => {
+							{ConceptsSources.map((pair: [string, keyof WL], ind: number) => {
 								const [list, prop] = pair;
 								const current = display.some((p: keyof WL) => p === prop);
 								return (
@@ -333,7 +333,7 @@ const WordLists = (props: PageData) => {
 								);
 							})}
 							{(
-								<IonChip key="combinations" outline={!showingCombos} onClick={() => dispatch(toggleWordListsBoolean("showingCombos"))} className={showingCombos ? "active" : undefined}>
+								<IonChip key="combinations" outline={!showingCombos} onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))} className={showingCombos ? "active" : undefined}>
 									<IonLabel>My Combinations</IonLabel>
 								</IonChip>	
 							)}
@@ -368,7 +368,7 @@ const WordLists = (props: PageData) => {
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPaneWL" className={"wordList" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
+					<div id="outputPaneWL" className={"concepts" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
 						{showingCombos && combinations.map((combo: WLCombo) => {
 							const { id, parts } = combo;
 							const word = parts.map((w: WL) => w.word).join("; ");
@@ -397,4 +397,4 @@ const WordLists = (props: PageData) => {
 	);
 };
 
-export default WordLists;
+export default ConceptsPage;

@@ -305,7 +305,7 @@ export const WLCard = () => {
 		<IonCard>
 			<IonItem>
 				<IonIcon icon={listOutline} slot="start" color="primary" />
-				<IonLabel>Word Lists</IonLabel>
+				<IonLabel>Concepts</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>

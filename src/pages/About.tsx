@@ -133,7 +133,7 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={listOutline} className="ion-align-self-center" />
-									<IonCardTitle className="ion-padding-start ion-align-self-start">Word Lists</IonCardTitle>
+									<IonCardTitle className="ion-padding-start ion-align-self-start">Concepts</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>A small storehouse of basic meanings, useful for starting a lexicon.</p>

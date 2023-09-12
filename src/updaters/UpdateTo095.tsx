@@ -27,6 +27,8 @@ function doUpdate (incomingState: any) {
 	// UPDATE WORD LISTS
 	storedState.wordListsState.combinations = [];
 	storedState.wordListsState.showingCombos = false;
+	storedState.conceptsState = storedState.wordListsState;
+	delete storedState.wordListsState;
 	// UPDATE LEXICON
 	if(storedState.lexicon && storedState.lexicon.key !== undefined) {
 		storedState.lexicon = updateLexiconObject(storedState.lexicon);

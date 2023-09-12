@@ -37,7 +37,7 @@ const MExportAllData = (props: ModalProperties) => {
 		morphoSyntaxInfo,
 		lexicon,
 		extraCharactersState,
-		wordListsState
+		conceptsState
 	} = useSelector((state: any) => state, shallowEqual);
 	const doClose = () => {
 		setIsOpen(false);
@@ -50,7 +50,7 @@ const MExportAllData = (props: ModalProperties) => {
 		const we: any[] = [];
 		const convertedListsDisplayed: any = {};
 		setOutput("...loading");
-		wordListsState.display.forEach((item: string) => {
+		conceptsState.display.forEach((item: string) => {
 			const total:any = {
 				asjp: "ASJP",
 				lj: "Leipzig-Jakarta",
@@ -175,8 +175,12 @@ const MExportAllData = (props: ModalProperties) => {
 				morphoSyntax,
 				appState: appSettings,
 				lexicon : lexicon,
-				wordLists: {
-					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
+//				wordLists: {
+//					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
+//					listsDisplayed: convertedListsDisplayed
+//				},
+				concepts: {
+					...conceptsState,
 					listsDisplayed: convertedListsDisplayed
 				},
 				extraCharacters: {
@@ -209,7 +213,7 @@ const MExportAllData = (props: ModalProperties) => {
 		morphoSyntaxInfo,
 		lexicon,
 		extraCharactersState,
-		wordListsState
+		conceptsState
 	]);
 
 	return (

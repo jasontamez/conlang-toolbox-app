@@ -15,7 +15,7 @@ import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import Menu from './components/Menu';
 
 import About from "./pages/About";
-import WordLists from "./pages/WordLists";
+import ConceptsPage from "./pages/Concepts";
 import WG from "./pages/WG";
 import WE from "./pages/WE";
 import MS from "./pages/MS";
@@ -132,7 +132,7 @@ const MainOutlet = memo(() => {
 			<Route path="/ms" render={() => <MS {...defaultProps} />} />
 			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />
 			<Route path="/settings" render={() => <Settings {...defaultProps} />} />
-			<Route path="/wordlists" render={() => <WordLists {...defaultProps} />} />
+			<Route path="/wordlists" render={() => <ConceptsPage {...defaultProps} />} />
 			<Route exact={true} path="/" render={() => <About {...defaultProps} />} />
 		</IonRouterOutlet>
 	);

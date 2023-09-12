@@ -1,6 +1,6 @@
 import { WL } from "./ReduxDucksTypes";
 
-export const WordListSources: [string, keyof WL][] = [
+export const ConceptsSources: [string, keyof WL][] = [
 	["Swadesh 100", "s100"],
 	["Swadesh 207", "s207"],
 	["Swadesh-Yakhontov", "sy"],
@@ -11,7 +11,7 @@ export const WordListSources: [string, keyof WL][] = [
 	["Landau 200", "l200"]
 ];
 
-export const WordList: WL[] = [
+export const Concepts: WL[] = [
 	{
 		id: "mbmdddsqqqfhzdlhzbncnwh",
 		word: "1st-person plural pronoun (we)",
@@ -2098,7 +2098,7 @@ function garble () {
 	}
 	return output;
 };
-WordList.forEach(word => {
+Concepts.forEach(word => {
 	let id;
 	do {
 		id = garble();

@@ -305,7 +305,7 @@ export interface WLCombo {
 	id: string
 	parts: WL[]
 }
-export interface WordListsState {
+export interface ConceptsState {
 	display: [(keyof WL)][]
 	textCenter: boolean
 	showingCombos: boolean
@@ -335,7 +335,7 @@ export interface StateObject {
 	lexicon: LexiconObject
 	viewState: ViewStateObject
 	extraCharactersState: ExtraCharactersState
-	wordListsState: WordListsState
+	conceptsState: ConceptsState
 //	logs: string[]
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.

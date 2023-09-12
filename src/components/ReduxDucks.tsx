@@ -257,7 +257,7 @@ const reduceExtraCharactersState = (original: types.ExtraCharactersState) => {
 		saved: [...original.saved]
 	};
 }
-const reduceWordListsState = (original: types.WordListsState) => {
+const reduceConceptsState = (original: types.ConceptsState) => {
 	return {
 		...original,
 		display: [...original.display],
@@ -292,7 +292,7 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["lexicon", reduceLexiconState],
 	["viewState", reduceViewState],
 	["extraCharactersState", reduceExtraCharactersState],
-	["wordListsState", reduceWordListsState],
+	["conceptsState", reduceConceptsState],
 //	["logs", reduceLog]
 ];
 export const checkIfState = (possibleState: types.StateObject | any): possibleState is types.StateObject => {
@@ -420,7 +420,7 @@ export const blankAppState: types.StateObject = {
 		showNames: false,
 		showHelp: false
 	},
-	wordListsState: {
+	conceptsState: {
 		display: [],
 		textCenter: true,
 		showingCombos: false,
@@ -1227,36 +1227,36 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			break;
 
 
-		// Word Lists
-		case consts.UPDATE_WORD_LISTS_DISPLAY:
-			const newWordListsState: types.WordListsState = reduceWordListsState(state.wordListsState);
-			newWordListsState.display = payload;
+		// Concepts
+		case consts.UPDATE_CONCEPTS_DISPLAY:
+			const newConceptsState: types.ConceptsState = reduceConceptsState(state.conceptsState);
+			newConceptsState.display = payload;
 			final = {
-				...reduceAllBut(["wordListsState"], state),
-				wordListsState: newWordListsState
+				...reduceAllBut(["conceptsState"], state),
+				conceptsState: newConceptsState
 			};
 			break;
-		case consts.TOGGLE_WORD_LISTS_BOOLEAN:
+		case consts.TOGGLE_CONCEPTS_BOOLEAN:
 			final = reduceAllBut([], state);
-			final.wordListsState[(payload as keyof types.WordListsState) as "textCenter"] = !final.wordListsState[payload as keyof types.WordListsState];
+			final.conceptsState[(payload as keyof types.ConceptsState) as "textCenter"] = !final.conceptsState[payload as keyof types.ConceptsState];
 			break;
 		case consts.ADD_CUSTOM_HYBRID_MEANING:
-			const newState = reduceWordListsState(state.wordListsState);
+			const newState = reduceConceptsState(state.conceptsState);
 			newState.combinations.push({
 				id: uuidv4(),
 				parts: payload
 			});
 			final = {
-				...reduceAllBut(["wordListsState"], state),
-				wordListsState: newState
+				...reduceAllBut(["conceptsState"], state),
+				conceptsState: newState
 			};
 			break;
 		case consts.DELETE_CUSTOM_HYBRID_MEANINGS:
-			const newerState = reduceWordListsState(state.wordListsState);
+			const newerState = reduceConceptsState(state.conceptsState);
 			newerState.combinations = newerState.combinations.filter(combo => payload.every((id: string) => id !== combo.id));
 			final = {
-				...reduceAllBut(["wordListsState"], state),
-				wordListsState: newerState
+				...reduceAllBut(["conceptsState"], state),
+				conceptsState: newerState
 			};
 			break;
 

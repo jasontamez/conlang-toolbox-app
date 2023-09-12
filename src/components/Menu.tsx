@@ -212,7 +212,7 @@ const appMenuPages: MenuSection[] = [
 				id: 'menuitemLX'
 			},
 			{
-				title: 'Word Lists',
+				title: 'Concepts',
 				url: '/wordlists',
 				icon: listSharp,
 				id: 'menuitemWL'

@@ -293,11 +293,11 @@ export function updateExtraCharsToBeSaved(payload: string) {
 //
 // WORD LISTS
 //
-export function updateWordListsDisplay(payload: (keyof types.WL)[]) {
-	return {type: consts.UPDATE_WORD_LISTS_DISPLAY, payload};
+export function updateConceptsDisplay(payload: (keyof types.WL)[]) {
+	return {type: consts.UPDATE_CONCEPTS_DISPLAY, payload};
 }
-export function toggleWordListsBoolean(payload: "textCenter" | "showingCombos") {
-	return {type: consts.TOGGLE_WORD_LISTS_BOOLEAN, payload};
+export function toggleConceptsBoolean(payload: "textCenter" | "showingCombos") {
+	return {type: consts.TOGGLE_CONCEPTS_BOOLEAN, payload};
 }
 export function addCustomHybridMeaning(payload: types.WL[]) {
 	return {type: consts.ADD_CUSTOM_HYBRID_MEANING, payload};
