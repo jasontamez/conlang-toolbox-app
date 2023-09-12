@@ -72,6 +72,7 @@ const AppInfo = (props: PageData) => {
 												<li>If you need more space than the inline input boxes provide, tap the button at the lower right side of the screen. You'll get a pop-up with full-size inputs.</li>
 												<li>You can tap on an overflowing field to see a pop-up with the full text.</li>
 												<li>Made sorting options easier to find and use.</li>
+												<li>Added an option to handle blank columns while sorting. The default is that they are always sorted to the end, no matter if you sort alphabetically or in reverse alphabetic order.</li>
 												<li>Created a way to merge Lexicon items together. To begin, swipe right on an item and tap the button underneath. Once you have at least two marked, the merge button will appear in the lower left.
 													<ul><li>This lets you import new words from WordGen, new meanings from Concepts, and merge them together without having to copy and paste.</li></ul>
 												</li>

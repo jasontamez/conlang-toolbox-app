@@ -281,7 +281,7 @@ export const Concepts: WL[] = [
 	},
 	{
 		id: "zxqfxbqxfxbngsvnxkkxklz",
-		word: "charGroup",
+		word: "cat",
 		ssl: true
 	},
 	{

@@ -339,14 +339,14 @@ const ConceptsPage = (props: PageData) => {
 							)}
 						</div>
 						<div className="controls">
-							<IonButton fill={pickAndSave ? "solid" : "outline"} onClick={() => doPickAndSave()}>
+							<IonButton disabled={linking || unlinking} fill={pickAndSave ? "solid" : "outline"} onClick={() => doPickAndSave()}>
 								<IonIcon slot="icon-only" icon={saveOutline} />
 							</IonButton>
-							<IonButton fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>
+							<IonButton disabled={pickAndSave || unlinking} fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>
 								<IonIcon slot="icon-only" src="svg/link.svg" />
 							</IonButton>
 							{showingCombos &&
-								<IonButton disabled={combinations.length === 0} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => toggleUnlinking()}>
+								<IonButton disabled={combinations.length === 0 || linking || pickAndSave} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => toggleUnlinking()}>
 									<IonIcon slot="icon-only" src="svg/unlink.svg" />
 								</IonButton>
 							}
@@ -359,7 +359,7 @@ const ConceptsPage = (props: PageData) => {
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
 						<IonButton strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
-							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Finish Saving
+							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Save Selected Words
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>

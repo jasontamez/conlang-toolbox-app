@@ -90,12 +90,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		const original = columns.map((col: LexiconColumn, i: number) => {
 			const {label, size} = col;
 			return `${label}/${size}/${i}`;
-		}).join(" : ");
+		}).join(" : ") + ` : ${truncateColumns} : ${blankSort}`;
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			const el = $i(`input_colOrder_${id}`);
 			return `${el ? el.value : "ERROR"}/${size}/${originalPosition}`;
-		}).join(" : ");
+		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort}`;
 		if(testing === original) {
 			toaster({
 				message: "Nothing to save.",
@@ -270,7 +270,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 					</IonItem>
 					<IonItem className="ion-text-wrap">
 						<IonSelect className="ion-text-wrap" label="Sort blank columns:" value={shadowBlankSort} onIonChange={(e) => setShadowBlankSort(e.detail.value)}>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="first">To Top, Always</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="first">To Beginning, Always</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="last">To End, Always</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="alphaFirst">As Alphabetically First</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="alphaLast">As Alphabetically Last</IonSelectOption>

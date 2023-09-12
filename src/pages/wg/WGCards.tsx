@@ -309,10 +309,9 @@ export const WLCard = () => {
 			</IonItem>
 			<IonCardContent>
 				<p>
-					Presented here are a number of lists of English words representing basic concepts
-					for the purposes of historical-comparative linguistics. These may serve as a good
-					source of meanings to start a conlang with. Remember that a single word can have
-					multiple meanings!
+					Presented here are a number of lists of basic concepts, created for the purposes
+					of historical-comparative linguistics. These may serve as a useful source of meanings
+					to start a conlang with.
 				</p>
 				<h2>Controls</h2>
 				<div className="ion-text-center"><IonIcon color="primary" size="large" icon={saveOutline} /></div>
@@ -329,20 +328,20 @@ export const WLCard = () => {
 				</p>
 				<h2>Swadesh Lists</h2>
 				<p>
-					Originally assembled by Morris Swadesh, chosen for their universal, culturally
-					independent availability in as many languages as possible. However, he relied
-					more on his intuition than on a rigorous set of criteria. <strong>Swadesh
+					Originally assembled by Morris Swadesh, this list of concepts was chosen for their
+					universal, culturally independent availability in as many languages as possible.
+					However, he relied more on his intuition than on a rigorous set of criteria. <strong>Swadesh
 					100</strong> is his final list from 1971. The <strong>Swadesh 207</strong> is
 					adapted from his original list from 1952. <strong>Swadesh-Yakhontov</strong> is
 					a subset of the 207 assembled by Sergei Yakhontov. And the <strong>Swadesh-Woodward
 					Sign List</strong> was assembled by James Woodward to take into account the ways
-					sign languages use words and concepts.
+					sign languages behave.
 				</p>
 				<h2>Dolgopolsky List</h2>
 				<p>
 					Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are
 					the least likely to be replaced by other words as a language evolves. It was based
-					on a study of 140 languages from across Eurasia.
+					on a study of 140 languages from across Eurasia, only.
 				</p>
 				<h2>Leipzig-Jakarta List</h2>
 				<p>
