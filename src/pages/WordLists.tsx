@@ -208,16 +208,30 @@ const WordLists = (props: PageData) => {
 					setLinking(false);
 				};
 				if(!disableConfirms) {
-					return yesNoAlert({
+					return doAlert({
 						header: "Stop Linking?",
 						cssClass: "danger",
-						message: "You have selected some meanings. Do you want to save them?",
-						submit: "Yes, Save Them",
-						handler: () => {
-							saveNewMeaning();
-							handler();
-						},
-						doAlert
+						message: "You have some meanings still selected. Do you want to link them?",
+						buttons: [
+							{
+								text: "Cancel",
+								role: "cancel",
+								cssClass: "cancel"
+							},
+							{
+								text: "Yes, Save Them",
+								cssClass: "submit",
+								handler: () => {
+									saveNewMeaning();
+									handler();
+								}
+							},
+							{
+								text: "No, Discard Them",
+								cssClass: "cancel",
+								handler
+							}
+						]
 					});
 				}
 				return handler();
