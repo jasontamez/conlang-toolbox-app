@@ -21,7 +21,7 @@ import { SoundChangesIcon, TransformationsIcon } from '../../components/icons';
 export const InpCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={enterOutline} slot="start" color="primary" />
 				<IonLabel>Input Tab</IonLabel>
 			</IonItem>
@@ -42,7 +42,7 @@ export const InpCard = () => {
 export const CharGroupCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
@@ -65,7 +65,7 @@ export const CharGroupCard = () => {
 export const TraCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
@@ -137,7 +137,7 @@ export const SChCard = () => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<SoundChangesIcon slot="start" color="primary" />
 				<IonLabel>Sound Changes Tab</IonLabel>
 			</IonItem>
@@ -208,7 +208,7 @@ export const SChCard = () => {
 export const OutCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={exitOutline} slot="start" color="primary" />
 				<IonLabel>Output Tab</IonLabel>
 			</IonItem>

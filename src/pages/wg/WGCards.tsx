@@ -22,7 +22,7 @@ import { ConceptsOutlineIcon, LexiconOutlineIcon, SyllablesIcon, Transformations
 export const CharGroupCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
@@ -65,7 +65,7 @@ export const CharGroupCard = () => {
 export const SylCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<SyllablesIcon slot="start" color="primary" />
 				<IonLabel>Syllables Tab</IonLabel>
 			</IonItem>
@@ -113,7 +113,7 @@ export const RewCard = () => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
@@ -185,7 +185,7 @@ export const RewCard = () => {
 export const OutCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={documentTextOutline} slot="start" color="primary" />
 				<IonLabel>Output Tab</IonLabel>
 			</IonItem>
@@ -236,7 +236,7 @@ export const OutCard = () => {
 export const OptCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<IonIcon icon={optionsOutline} slot="start" color="primary" />
 				<IonLabel>Settings Tab</IonLabel>
 			</IonItem>
@@ -301,7 +301,7 @@ export const OptCard = () => {
 export const WLCard = () => {
 	return (
 		<IonCard>
-			<IonItem>
+			<IonItem lines="full">
 				<ConceptsOutlineIcon slot="start" color="primary" />
 				<IonLabel>Concepts</IonLabel>
 			</IonItem>
@@ -312,9 +312,9 @@ export const WLCard = () => {
 					to start a conlang with.
 				</p>
 				<h2>Controls</h2>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" icon={saveOutline} /></div>
+				<div className="ion-text-center"><LexiconOutlineIcon color="primary" size="large" /></div>
 				<p>
-					Use the "save" button to quickly save meanings to the Lexicon.
+					Use the "lexicon" button to quickly save meanings to the Lexicon.
 				</p>
 				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/link.svg" /></div>
 				<p>
