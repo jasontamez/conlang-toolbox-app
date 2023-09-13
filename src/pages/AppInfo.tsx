@@ -60,6 +60,7 @@ const AppInfo = (props: PageData) => {
 									<ul className="changelog">
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
 										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
+										<li>Changed many icons.</li>
 										<li><em>MorphoSyntax</em>
 											<ul><li>On smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li></ul>
 										</li>

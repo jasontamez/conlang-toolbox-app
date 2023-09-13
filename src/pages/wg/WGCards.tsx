@@ -7,25 +7,23 @@ import {
 	IonLabel
 } from '@ionic/react';
 import {
-	gridOutline,
 	optionsOutline,
-	swapHorizontalOutline,
 	documentTextOutline,
-	fileTrayStackedOutline,
+	gridOutline,
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	listOutline,
 	saveOutline
 } from 'ionicons/icons';
 import ltr from '../../components/LTR';
 import I from '../../components/IPA';
+import { ConceptsOutlineIcon, LexiconOutlineIcon, SyllablesIcon, TransformationsIcon } from '../../components/icons';
 
 export const CharGroupCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={fileTrayStackedOutline} slot="start" color="primary" />
+				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -68,7 +66,7 @@ export const SylCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={gridOutline} slot="start" color="primary" />
+				<SyllablesIcon slot="start" color="primary" />
 				<IonLabel>Syllables Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -116,7 +114,7 @@ export const RewCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={swapHorizontalOutline} slot="start" color="primary" />
+				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -304,7 +302,7 @@ export const WLCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={listOutline} slot="start" color="primary" />
+				<ConceptsOutlineIcon slot="start" color="primary" />
 				<IonLabel>Concepts</IonLabel>
 			</IonItem>
 			<IonCardContent>

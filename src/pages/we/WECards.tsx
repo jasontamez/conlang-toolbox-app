@@ -7,17 +7,16 @@ import {
 	IonLabel
 } from '@ionic/react';
 import {
-	syncOutline,
 	enterOutline,
-	megaphoneOutline,
 	exitOutline,
-	libraryOutline,
+	gridOutline,
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
 	saveOutline
 } from 'ionicons/icons';
 import ltr from '../../components/LTR';
+import { SoundChangesIcon, TransformationsIcon } from '../../components/icons';
 
 export const InpCard = () => {
 	return (
@@ -44,7 +43,7 @@ export const CharGroupCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={libraryOutline} slot="start" color="primary" />
+				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -67,7 +66,7 @@ export const TraCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={syncOutline} slot="start" color="primary" />
+				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>
@@ -139,7 +138,7 @@ export const SChCard = () => {
 	return (
 		<IonCard>
 			<IonItem>
-				<IonIcon icon={megaphoneOutline} slot="start" color="primary" />
+				<SoundChangesIcon slot="start" color="primary" />
 				<IonLabel>Sound Changes Tab</IonLabel>
 			</IonItem>
 			<IonCardContent>

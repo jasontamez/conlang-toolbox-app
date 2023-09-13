@@ -9,11 +9,9 @@ import {
 	IonRouterOutlet
 } from '@ionic/react';
 import {
-	gridOutline,
 	optionsOutline,
-	swapHorizontalOutline,
 	documentTextOutline,
-	fileTrayStackedOutline
+	gridOutline
 } from 'ionicons/icons';
 import WGCharGroups from "./wg/WGcharactergroups";
 import WGTransforms from "./wg/WGtransforms";
@@ -21,6 +19,7 @@ import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
 import { PageData } from '../components/ReduxDucksTypes';
+import { SyllablesIcon, TransformationsIcon } from '../components/icons';
 
 
 const WG = (props: PageData) => {
@@ -39,15 +38,15 @@ const WG = (props: PageData) => {
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="charGroups" href="/wg/charGroups">
-					<IonIcon icon={fileTrayStackedOutline} />
+					<IonIcon icon={gridOutline} />
 					<IonLabel>Characters</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="syllables" href="/wg/syllables">
-					<IonIcon icon={gridOutline} />
+					<SyllablesIcon />
 					<IonLabel>Syllables</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="transforms" href="/wg/transforms">
-					<IonIcon icon={swapHorizontalOutline} />
+					<TransformationsIcon />
 					<IonLabel>Transforms</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="output" href="/wg/output">

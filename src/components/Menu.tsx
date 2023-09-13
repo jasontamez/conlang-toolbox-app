@@ -12,23 +12,21 @@ import {
 import React, { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-	createSharp,
-	shuffleSharp,
-	bookSharp,
 	settingsSharp,
 	chatboxEllipsesSharp,
 	caretForwardSharp,
 	ellipseSharp,
-	listSharp,
-	buildSharp,
 //	cogSharp,
 //	volumeHighSharp
 } from 'ionicons/icons';
+
 import './Menu.css';
+import { ConceptsIcon, IonIconProps, LexiconIcon, MorphoSyntaxIcon, WordEvolveIcon, WordGenIcon } from './icons';
 
 interface AppPage {
 	url: string
 	title: string
+	Icon?: Function
 	icon?: string
 	id: string
 	parent?: string
@@ -49,7 +47,7 @@ const appMenuPages: MenuSection[] = [
 			{
 				title: 'MorphoSyntax',
 				url: '/ms',
-				icon: buildSharp,
+				Icon: (props: IonIconProps) => <MorphoSyntaxIcon {...props} />,
 				id: 'menuitemSyntax',
 				parentOf: 'ms'
 			},
@@ -122,7 +120,7 @@ const appMenuPages: MenuSection[] = [
 			{
 				title: 'WordGen',
 				url: '/wg',
-				icon: createSharp,
+				Icon: (props: IonIconProps) => <WordGenIcon {...props} />,
 				id: 'menuitemWG',
 				parentOf: 'wg'
 			},
@@ -159,7 +157,7 @@ const appMenuPages: MenuSection[] = [
 			{
 				title: 'WordEvolve',
 				url: '/we',
-				icon: shuffleSharp,
+				Icon: (props: IonIconProps) => <WordEvolveIcon {...props} />,
 				id: 'menuitemWE',
 				parentOf: 'we'
 			},
@@ -208,13 +206,13 @@ const appMenuPages: MenuSection[] = [
 */			{
 				title: 'Lexicon',
 				url: '/lex',
-				icon: bookSharp,
+				Icon: (props: IonIconProps) => <LexiconIcon {...props} />,
 				id: 'menuitemLX'
 			},
 			{
 				title: 'Concepts',
 				url: '/wordlists',
-				icon: listSharp,
+				Icon: (props: IonIconProps) => <ConceptsIcon {...props} />,
 				id: 'menuitemWL'
 			}
 		],
@@ -242,7 +240,7 @@ const appMenuPages: MenuSection[] = [
 			{
 				title: 'App Info',
 				url: '/appinfo',
-				icon: '',
+//				icon: '',
 				id: 'menuitemAppInfo'
 			}
 		],
@@ -267,45 +265,54 @@ const Menu = () => {
 			<IonContent>
 				{appMenuPages.map((menuSection) => {
 					const pages = menuSection.pages.map((appPage) => {
-						if(appPage.parentOf) {
+						const { parentOf, parent, id, url, icon, Icon, title } = appPage;
+						const MenuIcon = () => icon ?
+							<IonIcon slot="start" icon={icon} />
+						:
+							Icon ?
+								<Icon slot="start" />
+							:
+								<></>
+						;
+						if(parentOf) {
 							return (
 								<IonItem
-									key={appPage.id}
+									key={id}
 									className={
 										'mainHeading'
-										+ (testPath(appPage.url) ? ' selected' : '')
-										+ (menuInfo === appPage.parentOf ? ' toggled' : '')
+										+ (testPath(url) ? ' selected' : '')
+										+ (menuInfo === parentOf ? ' toggled' : '')
 									}
 									lines="none"
 									detail={false}
 									onClick={
 										() => setMenuInfo(
-											menuInfo === appPage.parentOf
+											menuInfo === parentOf
 												? false
-												: appPage.parentOf!
+												: parentOf!
 										)
 									}
 								>
-									<IonIcon slot="start" icon={appPage.icon} />
-									<IonLabel>{appPage.title}</IonLabel>
+									<MenuIcon />
+									<IonLabel>{title}</IonLabel>
 									<IonIcon className="caret" slot="end" icon={caretForwardSharp} />
 								</IonItem>
 							);
-						} else if(appPage.parent) {
+						} else if(parent) {
 							return (
-								<IonMenuToggle key={appPage.id} autoHide={false}>
-									<IonItem className={'subHeading' + (testPath(appPage.url) ? ' selected' : '') + (menuInfo === appPage.parent ? '' : ' hidden')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
-										<IonLabel>{appPage.title}</IonLabel>
+								<IonMenuToggle key={id} autoHide={false}>
+									<IonItem className={'subHeading' + (testPath(url) ? ' selected' : '') + (menuInfo === parent ? '' : ' hidden')} routerLink={url} routerDirection="forward" lines="none" detail={false}>
+										<IonLabel>{title}</IonLabel>
 										<IonIcon slot="end" size="small" icon={ellipseSharp} />
 									</IonItem>
 								</IonMenuToggle>
 							);
 						}
 						return (
-							<IonMenuToggle key={appPage.id} autoHide={false}>
-								<IonItem className={'mainHeading' + (testPath(appPage.url) ? ' selected' : '')} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false}>
-									{appPage.icon ? (<IonIcon slot="start" icon={appPage.icon} />) : ""}
-									<IonLabel>{appPage.title}</IonLabel>
+							<IonMenuToggle key={id} autoHide={false}>
+								<IonItem className={'mainHeading' + (testPath(url) ? ' selected' : '')} routerLink={url} routerDirection="forward" lines="none" detail={false}>
+									<MenuIcon />
+									<IonLabel>{title}</IonLabel>
 								</IonItem>
 							</IonMenuToggle>
 						);

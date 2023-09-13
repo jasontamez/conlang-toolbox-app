@@ -9,11 +9,9 @@ import {
 	IonRouterOutlet
 } from '@ionic/react';
 import {
-	libraryOutline,
-	syncOutline,
+	gridOutline,
 	enterOutline,
-	exitOutline,
-	megaphoneOutline
+	exitOutline
 } from 'ionicons/icons';
 import WECharGroups from "./we/WEcharactergroups";
 import WETransforms from "./we/WEtransforms";
@@ -21,6 +19,7 @@ import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
 import { PageData } from '../components/ReduxDucksTypes';
+import { SoundChangesIcon, TransformationsIcon } from '../components/icons';
 
 
 const WE = (props: PageData) => {
@@ -43,15 +42,15 @@ const WE = (props: PageData) => {
 					<IonLabel>Input</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="charGroups" href="/we/charGroups">
-					<IonIcon icon={libraryOutline} />
+					<IonIcon icon={gridOutline} />
 					<IonLabel>Characters</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="transformations" href="/we/transformations">
-					<IonIcon icon={syncOutline} />
+					<TransformationsIcon />
 					<IonLabel>Transforms</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="soundchanges" href="/we/soundchanges">
-					<IonIcon icon={megaphoneOutline} />
+					<SoundChangesIcon />
 					<IonLabel>Sound Changes</IonLabel>
 				</IonTabButton>
 				<IonTabButton tab="output" href="/we/output">

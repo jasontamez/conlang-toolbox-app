@@ -18,7 +18,6 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
 	caretForwardCircleOutline,
 	settingsOutline,
-	bookOutline,
 	saveOutline,
 	helpCircleOutline,
 	copyOutline
@@ -38,9 +37,10 @@ import {
 import { $a, $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
+import toaster from '../../components/toaster';
+import { LexiconOutlineIcon } from '../../components/icons';
 import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
-import toaster from '../../components/toaster';
 
 async function copyText (copyString: string, doToast: Function, undoToast: Function) {
 	if(copyString) {
@@ -687,7 +687,7 @@ const WGOut = (props: PageData) => {
 							className={isPickingSaving ? "hide" : ""}
 							color="secondary"
 							onClick={() => pickAndSave()}
-						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
+						><LexiconOutlineIcon slot="icon-only" /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}
 							id="doneSavingButton"

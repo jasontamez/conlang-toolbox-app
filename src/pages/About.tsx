@@ -17,17 +17,14 @@ import {
 	IonCardTitle
 } from '@ionic/react';
 import {
-	createSharp,
-	shuffleSharp,
-	bookSharp,
-	globeOutline,
-	listOutline,
-	buildSharp
+	globeOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
+
 import { VERSION } from '../components/ReduxDucksConst';
 import ExtraCharactersModal from './M-ExtraCharacters';
 import { PageData } from '../components/ReduxDucksTypes';
+import { ConceptsIcon, LexiconIcon, WordEvolveIcon, WordGenIcon, MorphoSyntaxIcon } from '../components/icons';
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -53,7 +50,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard button={true} routerLink={`/ms/${ms || "msSettings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={buildSharp} />
+									<MorphoSyntaxIcon />
 									<IonCardTitle className="ion-padding-start">MorphoSyntax</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
@@ -71,7 +68,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard button={true} routerLink={`/wg/${wg || "settings"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={createSharp} />
+									<WordGenIcon />
 									<IonCardTitle className="ion-padding-start">WordGen</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
@@ -90,7 +87,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard button={true} routerLink={`/we/${we || "input"}`} routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={shuffleSharp} />
+									<WordEvolveIcon />
 									<IonCardTitle className="ion-padding-start">WordEvolve</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
@@ -112,7 +109,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard button={true} routerLink="/lex" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={bookSharp} className="ion-align-self-center" />
+									<LexiconIcon className="ion-align-self-center" />
 									<IonCardTitle className="ion-padding-start ion-align-self-start">Lexicon</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
@@ -132,7 +129,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={listOutline} className="ion-align-self-center" />
+									<ConceptsIcon className="ion-align-self-center" />
 									<IonCardTitle className="ion-padding-start ion-align-self-start">Concepts</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>

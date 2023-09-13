@@ -24,26 +24,27 @@ import {
 	helpCircleOutline,
 	caretForwardCircleOutline,
 	settingsOutline,
-	bookOutline,
 	saveOutline,
 	copyOutline,
 	duplicateOutline
 } from 'ionicons/icons';
-import { $i, $a } from '../../components/DollarSignExports';
-import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
-import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
-import { OutCard } from "./WECards";
-import ModalWrap from "../../components/ModalWrap";
-import OutputOptionsModal from './M-OutputOptions';
-import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
-import ltr from '../../components/LTR';
 import { Clipboard } from '@capacitor/clipboard';
+
+import { $i, $a } from '../../components/DollarSignExports';
+import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
+import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import toaster from '../../components/toaster';
+import { LexiconOutlineIcon } from '../../components/icons';
+import ModalWrap from "../../components/ModalWrap";
+import ltr from '../../components/LTR';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import ManageCustomInfoWE from './M-CustomInfoWE';
 import ExtraCharactersModal from '../M-ExtraCharacters';
-import toaster from '../../components/toaster';
+import OutputOptionsModal from './M-OutputOptions';
+import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
+import { OutCard } from "./WECards";
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -993,7 +994,7 @@ const WEOut = (props: PageData) => {
 							strong={false}
 							color="secondary"
 							onClick={() => pickAndSave()}
-						><IonIcon slot="icon-only" icon={bookOutline} /></IonButton>
+						><LexiconOutlineIcon slot="icon-only" /></IonButton>
 					</div>
 				</div>
 			</IonContent>

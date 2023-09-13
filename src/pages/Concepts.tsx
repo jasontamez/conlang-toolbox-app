@@ -36,9 +36,10 @@ import {
 import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
-import { WLCard } from "./wg/WGCards";
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import { LexiconIcon } from '../components/icons';
+import { WLCard } from "./wg/WGCards";
 
 interface SavedWord { id: string, word: string };
 
@@ -310,7 +311,7 @@ const ConceptsPage = (props: PageData) => {
 					<IonTitle>Concepts</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
-							<IonIcon size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
+							<IonIcon flipRtl size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
 						</IonButton>
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
@@ -340,7 +341,7 @@ const ConceptsPage = (props: PageData) => {
 						</div>
 						<div className="controls">
 							<IonButton disabled={linking || unlinking} fill={pickAndSave ? "solid" : "outline"} onClick={() => doPickAndSave()}>
-								<IonIcon slot="icon-only" icon={saveOutline} />
+								<LexiconIcon slot="icon-only" />
 							</IonButton>
 							<IonButton disabled={pickAndSave || unlinking} fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>
 								<IonIcon slot="icon-only" src="svg/link.svg" />
