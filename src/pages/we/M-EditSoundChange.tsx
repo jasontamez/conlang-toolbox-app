@@ -160,6 +160,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			message: "Sound Change saved!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});
@@ -173,6 +174,7 @@ const EditSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 				message: "Sound Change deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

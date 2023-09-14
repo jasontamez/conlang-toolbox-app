@@ -83,6 +83,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					message: `"${title}" ${msg}`,
 					duration: 2500,
 					color: "success",
+					position: "top",
 					doToast,
 					undoToast
 				});
@@ -114,6 +115,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
+						position: "top",
 						doToast,
 						undoToast
 					});
@@ -153,6 +155,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					message: `"${title}" deleted.`,
 					duration: 2500,
 					color: "danger",
+					position: "top",
 					doToast,
 					undoToast
 				});

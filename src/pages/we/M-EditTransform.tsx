@@ -127,6 +127,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 			message: "Transform saved!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});
@@ -141,6 +142,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 				message: "Transform deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

@@ -68,6 +68,7 @@ const WECharGroup = (props: PageData) => {
 				message: "Character Group deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

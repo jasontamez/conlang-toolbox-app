@@ -87,6 +87,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				toaster({
 					message: `"${title}" ${msg}`,
 					duration: 2500,
+					position: "top",
 					doToast,
 					undoToast
 				});
@@ -119,6 +120,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
 						color: "success",
+						position: "top",
 						doToast,
 						undoToast
 					});
@@ -159,6 +161,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					message: `"${title}" deleted.`,
 					duration: 2500,
 					color: "danger",
+					position: "top",
 					doToast,
 					undoToast
 				});

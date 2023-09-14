@@ -101,6 +101,7 @@ const WGSet = (props: PageData) => {
 				message: "Groups, Syllables and Transformations deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

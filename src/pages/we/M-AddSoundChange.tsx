@@ -108,6 +108,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			message: "Sound Change added!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});

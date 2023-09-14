@@ -77,6 +77,7 @@ const WGRew = (props: PageData) => {
 				message: "Transformation deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

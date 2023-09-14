@@ -77,6 +77,7 @@ const WERew = (props: PageData) => {
 				message: "Sound Change deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

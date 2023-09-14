@@ -55,6 +55,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				toaster({
 					message: "MorphoSyntax document deleted.",
 					duration: 2500,
+					position: "top",
 					doToast,
 					undoToast
 				});

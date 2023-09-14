@@ -37,6 +37,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			toaster({
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
+				position: "top",
 				doToast,
 				undoToast
 			});

@@ -38,6 +38,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
 				color: "success",
+				position: "top",
 				doToast,
 				undoToast
 			});

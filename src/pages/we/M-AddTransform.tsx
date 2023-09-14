@@ -83,6 +83,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			message: "Transform added!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});

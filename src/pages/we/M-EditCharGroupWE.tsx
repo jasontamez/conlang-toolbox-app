@@ -97,6 +97,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 				message: "Unable to suggest a unique label from the given descrption.",
 				color: "warning",
 				duration: 4000,
+				position: "top",
 				doToast,
 				undoToast
 			});
@@ -162,6 +163,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			message: "Character Group saved!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});
@@ -177,6 +179,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 				message: "Character Group deleted.",
 				duration: 2500,
 				color: "danger",
+				position: "top",
 				doToast,
 				undoToast
 			});

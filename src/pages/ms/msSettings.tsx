@@ -85,6 +85,7 @@ const Syntax = (props: PageData) => {
 				message: "You have no information to clear.",
 				duration: 2500,
 				color: "warning",
+				position: "top",
 				doToast,
 				undoToast
 			});
@@ -178,6 +179,7 @@ const Syntax = (props: PageData) => {
 				toaster({
 					message: announce,
 					duration: 2500,
+					position: "top",
 					doToast,
 					undoToast
 				});

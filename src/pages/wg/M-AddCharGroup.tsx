@@ -82,6 +82,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 				message: "Unable to suggest a unique label from the given descrption.",
 				color: "warning",
 				duration: 4000,
+				position: "top",
 				doToast,
 				undoToast
 			});
@@ -147,6 +148,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			message: "Character Group added!",
 			duration: 2500,
 			color: "success",
+			position: "top",
 			doToast,
 			undoToast
 		});
