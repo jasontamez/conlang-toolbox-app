@@ -316,6 +316,7 @@ export interface ConceptsState {
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
+	sortLanguage: string
 }
 
 export interface StateObject {

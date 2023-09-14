@@ -10,6 +10,9 @@ export function changeTheme(payload: string) {
 export function toggleDisableConfirm(payload: boolean) {
 	return {type: consts.TOGGLE_DISABLE_CONFIRM, payload};
 }
+export function setSortLanguage(payload: string) {
+	return {type: consts.SET_SORT_LANGUAGE, payload};
+}
 
 //
 // WORDGEN

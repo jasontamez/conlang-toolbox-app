@@ -97,13 +97,15 @@ const WGOut = (props: PageData) => {
 		syllablesObject,
 		settingsWG,
 		transforms,
-		lexColumns
+		lexColumns,
+		sortLanguage
 	] = useSelector((state: any) => [
 		state.wordgenCharGroups,
 		state.wordgenSyllables,
 		state.wordgenSettings,
 		state.wordgenTransforms.list,
-		state.lexicon.columns
+		state.lexicon.columns,
+		state.appSettings.sortLanguage
 	], shallowEqual);
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
@@ -452,7 +454,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			result.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
+			result.sort(new Intl.Collator(sortLanguage, { sensitivity: "variant" }).compare);
 		}
 		// Remove duplicates
 		let previous: string | undefined = undefined;
@@ -507,7 +509,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			words.sort(new Intl.Collator("en", { sensitivity: "variant" }).compare);
+			words.sort(new Intl.Collator(sortLanguage, { sensitivity: "variant" }).compare);
 		}
 		return words;
 	};

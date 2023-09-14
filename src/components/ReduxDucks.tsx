@@ -168,7 +168,7 @@ const sortBlank = (dir: boolean, method: types.LexiconBlankSorts) => {
 	}
 	return [0, 0];
 };
-const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean, blankSort: types.LexiconBlankSorts) => {
+const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean, blankSort: types.LexiconBlankSorts, sortLanguage: string) => {
 	const maxCol = sortPattern.length;
 	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
 	let newLexicon = [...lexicon];
@@ -194,7 +194,7 @@ const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: b
 					// last is blank
 					comp = yIsBlank;
 				} else {
-					comp = x.localeCompare(y, 'en', {numeric: true, usage: 'sort'});
+					comp = x.localeCompare(y, sortLanguage, {numeric: true, usage: 'sort'});
 				}
 			} catch(error) {
 				comp = 0;
@@ -216,7 +216,7 @@ const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: b
 	});
 	return newLexicon;
 };
-const reduceLexiconState = (original: types.LexiconObject) => {
+const reduceLexiconState = (original: types.LexiconObject, sortLanguage: string) => {
 	const {
 		lexicon,
 		sortPattern,
@@ -228,7 +228,7 @@ const reduceLexiconState = (original: types.LexiconObject) => {
 		...original,
 		columns: [...columns.map(col => ({...col}))],
 		sortPattern: [...sortPattern],
-		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir, blankSort || "last")
+		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir, blankSort || "last", sortLanguage)
 	};
 };
 const reduceMorphoSyntaxModalState = (original: types.MorphoSyntaxModalStateObject) => {
@@ -319,7 +319,8 @@ export const blankAppState: types.StateObject = {
 	currentVersion: consts.VERSION.current,
 	appSettings: {
 		theme: "Default",
-		disableConfirms: false
+		disableConfirms: false,
+		sortLanguage: "en"
 	},
 	wordgenCharGroups: {
 		map: [],
@@ -476,6 +477,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				appSettings: {
 					...state.appSettings,
 					disableConfirms: payload
+				}
+			};
+			break;
+		case consts.SET_SORT_LANGUAGE:
+			final = {
+				...reduceAllBut(["appSettings"], state),
+				appSettings: {
+					...state.appSettings,
+					sortLanguage: payload
 				}
 			};
 			break;
@@ -1103,21 +1113,21 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				sortPattern,
 				blankSort,
 				truncateColumns
-			});
+			}, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon
 			};
 			break;
 		case consts.UPDATE_LEXICON_SORT:
-			LO = reduceLexiconState({...state.lexicon, sortPattern: payload});
+			LO = reduceLexiconState({...state.lexicon, sortPattern: payload}, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
 			};
 			break;
 		case consts.UPDATE_LEXICON_SORT_DIR:
-			LO = reduceLexiconState({...state.lexicon, sortDir: payload});
+			LO = reduceLexiconState({...state.lexicon, sortDir: payload}, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
@@ -1126,7 +1136,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.ADD_LEXICON_ITEM:
 			LO = {...state.lexicon};
 			LO.lexicon.push(payload);
-			LO = reduceLexiconState(LO);
+			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
@@ -1135,14 +1145,14 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DELETE_LEXICON_ITEM:
 			LO = {...state.lexicon};
 			LO.lexicon = LO.lexicon.filter(lex => lex.id !== payload);
-			LO = reduceLexiconState(LO);
+			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
 			};
 			break;
 		case consts.TOGGLE_LEXICON_WRAP:
-			LO = reduceLexiconState(state.lexicon);
+			LO = reduceLexiconState(state.lexicon, state.appSettings.sortLanguage);
 			LO.truncateColumns = !LO.truncateColumns;
 			final = {
 				...reduceAllBut(["lexicon"], state),
@@ -1152,7 +1162,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.DO_EDIT_LEXICON_ITEM:
 			LO = {...state.lexicon};
 			LO.lexicon = LO.lexicon.map(lex => lex.id === payload.id ? payload : lex);
-			LO = reduceLexiconState(LO);
+			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
@@ -1181,7 +1191,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 				LO.lexicon.push(obj);
 			});
-			LO = reduceLexiconState(LO);
+			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO
@@ -1190,7 +1200,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.UPDATE_LEXICON_PROP:
 			const pProp: "title" | "description" | "id" = payload.prop;
 			const value: string = payload.value;
-			LO = reduceLexiconState(state.lexicon);
+			LO = reduceLexiconState(state.lexicon, state.appSettings.sortLanguage);
 			LO[pProp] = value;
 			final = {
 				...reduceAllBut(["lexicon"], state),
@@ -1200,7 +1210,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.UPDATE_LEXICON_NUM:
 			const nProp: "lastSave" = payload.prop;
 			const val: number = payload.value;
-			LO = reduceLexiconState(state.lexicon);
+			LO = reduceLexiconState(state.lexicon, state.appSettings.sortLanguage);
 			LO[nProp] = val;
 			final = {
 				...reduceAllBut(["lexicon"], state),
@@ -1212,7 +1222,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			merged.id = uuidv4();
 			LO = {...state.lexicon};
 			LO.lexicon = [merged, ...LO.lexicon.filter((lex) => lexList.every((lx) => lx.id !== lex.id))];
-			LO = reduceLexiconState(LO);
+			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
 				lexicon: LO

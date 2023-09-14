@@ -8,6 +8,7 @@ export const VERSION = {
 const p = "conlangs-toolbox/reducer/";
 export const CHANGE_THEME = p+"CHANGE_THEME";
 export const TOGGLE_DISABLE_CONFIRM = p+"TOGGLE_DISABLE_CONFIRM";
+export const SET_SORT_LANGUAGE = p+"SET_SORT_LANGUAGE";
 
 export const ADD_CHARACTER_GROUP_WG = p+"ADD_CHARACTER_GROUP_WG";
 export const START_EDIT_CHARACTER_GROUP_WG = p+"START_EDIT_CHARACTER_GROUP_WG";

@@ -51,16 +51,17 @@ const MExportAllData = (props: ModalProperties) => {
 		const convertedListsDisplayed: any = {};
 		setOutput("...loading");
 		conceptsState.display.forEach((item: string) => {
-			const total:any = {
+			const total: {[key: string]: string} = {
 				asjp: "ASJP",
 				lj: "Leipzig-Jakarta",
 				d: "Dolgopolsky",
 				sy: "Swadesh-Yakhontov",
 				s100: "Swadesh 100",
 				s207: "Swadesh 207",
-				ssl: "Swadesh-Woodward"
+				ssl: "Swadesh-Woodward",
+				l200: "Landau 200"
 			};
-			const maybe:(string | undefined) = total[item];
+			const maybe: (string | undefined) = total[item];
 			if(maybe) {
 				convertedListsDisplayed[maybe] = true;
 			}
@@ -175,11 +176,11 @@ const MExportAllData = (props: ModalProperties) => {
 				morphoSyntax,
 				appState: appSettings,
 				lexicon : lexicon,
-//				wordLists: {
+//				wordLists: { // v.0.9.4 only
 //					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
 //					listsDisplayed: convertedListsDisplayed
 //				},
-				concepts: {
+				concepts: { // v.0.9.5+ only
 					...conceptsState,
 					listsDisplayed: convertedListsDisplayed
 				},

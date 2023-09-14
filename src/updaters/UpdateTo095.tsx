@@ -35,6 +35,8 @@ function doUpdate (incomingState: any) {
 	}
 	// Update Lexicon Storage
 	LexiconStorage.iterate(lexiconStorageUpdater095);
+	// Update settings
+	storedState.appSettings.sortLanguage = "en";
 	return storedState;
 };
 

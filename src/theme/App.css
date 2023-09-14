@@ -721,7 +721,7 @@ ion-alert.danger {
 	--color: var(--ion-color-danger-contrast);
 	--dim-color: rgba(var(--ion-color-danger-contrast-rgb), 0.65);
 	--btn-color-cancel: var(--ion-color-danger-contrast);
-	--btn-background-cancel: #00000099;
+	--btn-background-cancel: #00000033;
 	--btn-color: var(--ion-color-danger-contrast);
 	--btn-background: #ffffff33;
 }
@@ -730,7 +730,7 @@ ion-alert.warning {
 	--color: var(--ion-color-warning-contrast);
 	--dim-color: rgba(var(--ion-color-warning-contrast-rgb), 0.65);
 	--btn-color-cancel: var(--ion-color-warning-contrast);
-	--btn-background-cancel: #00000099;
+	--btn-background-cancel: #00000033;
 	--btn-color: var(--ion-color-warning-contrast);
 	--btn-background: #ffffff33;
 }

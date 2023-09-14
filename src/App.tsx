@@ -1,5 +1,7 @@
 import React, { useEffect, useState, memo, useMemo } from 'react';
-import { Route, /*useHistory*/ } from 'react-router-dom';
+import {
+	Route
+} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import compareVersions from 'compare-versions';
 import {
@@ -47,51 +49,29 @@ import './theme/variables.css';
 import './theme/App.css';
 
 import { checkIfState, initialAppState } from './components/ReduxDucks';
-import { overwriteState } from './components/ReduxDucksFuncs';
+import { overwriteState, setSortLanguage } from './components/ReduxDucksFuncs';
 import { VERSION } from './components/ReduxDucksConst';
 import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
-
-/*interface HistoryObject {
-	pathname: string,
-	search: string,
-	hash: string,
-	key?: string
-};
-type Method = "POP" | "PUSH" | "REPLACE";*/
+import getLanguage from './components/getLanguage';
 
 const MainOutlet = memo(() => {
-	//const history = useHistory();
 	const [modals, setModals] = useState<Function[]>([]);
 	const [doAlert] = useIonAlert();
-	//const [pages, setPages] = useState<string[]>([]);
+	const [sortLanguage, setSortLang] = useState<string>("en");
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
 	const defaultProps = {
 		modalPropsMaker
 	};
-	/*useEffect(() => {
-		return history.listen((info: HistoryObject, method: Method) => {
-			console.log(`@ ${method} ${JSON.stringify(info)}`);
-			switch (method) {
-				case "POP":
-					// We hit the back button
-					setPages(pages.slice(1));
-					dispatch(addToLog(`POP: ${pages[0]}`));
-					break;
-				case "PUSH":
-					// Navigation
-					const newPages = [info.pathname, ...pages];
-					setPages(newPages.slice(0, 50));
-					dispatch(addToLog(`PUSH: ${newPages[0]}`));
-					break;
-				case "REPLACE":
-					// ignore?
-			}
-		});
-	}, [history, pages, dispatch]);*/
+	getLanguage().then(result => {
+		result !== sortLanguage && setSortLang(result);
+	});
+	useEffect(() => {
+		dispatch(setSortLanguage(sortLanguage));
+	}, [dispatch, sortLanguage]);
 	const router = useIonRouter();
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
