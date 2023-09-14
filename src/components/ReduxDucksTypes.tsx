@@ -141,10 +141,6 @@ export interface WEPresetObject {
 }
 
 
-export interface MorphoSyntaxModalStateObject {
-	[key: string]: boolean
-}
-
 type SyntaxBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess" | "circumfixMost" | "circumfixLess"
 				| "infixMost" | "infixLess" | "actions" | "actionProcesses" | "weather" | "states"
 				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position" | "factive" | "cognition"
@@ -331,7 +327,6 @@ export interface StateObject {
 	wordevolveSoundChanges: WESoundchangeStateObject
 	wordevolveInput: WEInputObject
 	wordevolveSettings: WESettingsObject
-	morphoSyntaxModalState: MorphoSyntaxModalStateObject
 	morphoSyntaxInfo: MorphoSyntaxObject
 	lexicon: LexiconObject
 	viewState: ViewStateObject

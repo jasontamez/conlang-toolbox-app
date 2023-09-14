@@ -206,9 +206,6 @@ export function loadCustomInfoWE(payload: types.WECustomInfo) {
 //
 // MORPHOSYNTAX
 //
-export function setSyntaxState(prop: string, toggle: boolean) {
-	return {type: consts.SET_MORPHOSYNTAX_STATE, payload: [prop, toggle]};
-}
 export function setMorphoSyntax(payload: types.MorphoSyntaxObject) {
 	return {type: consts.SET_MORPHOSYNTAX, payload};
 }

@@ -57,7 +57,6 @@ const Syntax = (props: PageData) => {
 		disableConfirms
 	] = useSelector((state: any) => [
 		state.morphoSyntaxInfo,
-		state.morphoSyntaxModalState,
 		state.appSettings.disableConfirms
 	]);
 	const {title, description, bool, num, text} = msInfo;

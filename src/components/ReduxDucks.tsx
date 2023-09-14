@@ -231,9 +231,6 @@ const reduceLexiconState = (original: types.LexiconObject, sortLanguage: string)
 		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir, blankSort || "last", sortLanguage)
 	};
 };
-const reduceMorphoSyntaxModalState = (original: types.MorphoSyntaxModalStateObject) => {
-	return {...original};
-};
 const reduceMorphoSyntaxInfo = (original: types.MorphoSyntaxObject) => {
 	return {
 		...original,
@@ -287,7 +284,6 @@ const stateObjectProps: [(keyof types.StateObject), Function][] = [
 	["wordevolveSoundChanges", reduceSoundChangeStateWE],
 	["wordevolveInput", (i: string[]) => [...i]],
 	["wordevolveSettings", reduceSettingsWE],
-	["morphoSyntaxModalState", reduceMorphoSyntaxModalState],
 	["morphoSyntaxInfo", reduceMorphoSyntaxInfo],
 	["lexicon", reduceLexiconState],
 	["viewState", reduceViewState],
@@ -365,7 +361,6 @@ export const blankAppState: types.StateObject = {
 	wordevolveSettings: {
 		output: "outputOnly"
 	},
-	morphoSyntaxModalState: {},
 	morphoSyntaxInfo: {
 		key: "",
 		lastSave: 0,
@@ -1041,15 +1036,6 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 
 		// MorphoSyntax
-		case consts.SET_MORPHOSYNTAX_STATE:
-			final = reduceAllBut([], state);
-			const [pp, bb] = payload;
-			if(bb) {
-				final.morphoSyntaxModalState[pp] = true;
-			} else {
-				delete final.morphoSyntaxModalState[pp];
-			}
-			break;
 		case consts.SET_MORPHOSYNTAX:
 			final = reduceAllBut(["morphoSyntaxInfo"], state);
 			final.morphoSyntaxInfo = reduceMorphoSyntaxInfo(payload as types.MorphoSyntaxObject);
@@ -1171,7 +1157,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 		case consts.ADD_ITEMS_TO_LEXICON_COLUMN:
 			LO = {...state.lexicon};
 			LO.lexicon = LO.lexicon.slice();
-			const colsNum = LO.columns.length;
+			const totalNumberOfColumns = LO.columns.length;
 			const [items, columnId]: [ string[], string ] = payload;
 			let columnNumber = 0;
 			LO.columns.every((c, i) => {
@@ -1186,7 +1172,7 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 					id: uuidv4(),
 					columns: []
 				};
-				for(let x = 0; x < colsNum; x++) {
+				for(let x = 0; x < totalNumberOfColumns; x++) {
 					obj.columns.push(x === columnNumber ? item : "");
 				}
 				LO.lexicon.push(obj);
@@ -1218,10 +1204,10 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 			};
 			break;
 		case consts.MERGE_LEXICON_ITEMS:
-			const [lexList, merged]: [types.Lexicon[], types.Lexicon] = payload;
+			const [lexiconItemsBeingMerged, merged]: [types.Lexicon[], types.Lexicon] = payload;
 			merged.id = uuidv4();
 			LO = {...state.lexicon};
-			LO.lexicon = [merged, ...LO.lexicon.filter((lex) => lexList.every((lx) => lx.id !== lex.id))];
+			LO.lexicon = [merged, ...LO.lexicon.filter((lex) => lexiconItemsBeingMerged.every((lx) => lx.id !== lex.id))];
 			LO = reduceLexiconState(LO, state.appSettings.sortLanguage);
 			final = {
 				...reduceAllBut(["lexicon"], state),
