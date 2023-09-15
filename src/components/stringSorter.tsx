@@ -15,7 +15,7 @@ const basicSort = (a: string, b: string, sortLanguage: string, sensitivity: Sear
 };
 
 const makeSorter = (sortLanguage: string, sensitivity: SearchSensitivity) => {
-	console.log(sortLanguage, sensitivity);
+//	console.log(sortLanguage, sensitivity);
 	return (a: string, b: string) => stringSorter(a, b, sortLanguage, sensitivity);
 };
 

@@ -180,7 +180,7 @@ const sortLexicon = (
 	const maxCol = sortPattern.length;
 	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
 	let newLexicon = [...lexicon];
-	console.log(sortLanguage, sensitivity);
+//	console.log(sortLanguage, sensitivity);
 	const stringSorter = makeSorter(sortLanguage, sensitivity);
 	function sortFunction (a: types.Lexicon, b: types.Lexicon) {
 		const columnsA = a.columns;

@@ -53,7 +53,6 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		setEditingWGCharGroupTitle(titleEl || null);
 		setEditingWGShortLabel(labelEl || null);
 		setEditingWGCharGroupRun(runEl || null);
-		console.log("Editing", editing, titleEl, labelEl, runEl);
 		titleEl && (titleEl.value = "");
 		labelEl && (labelEl.value = "");
 		runEl && (runEl.value = "");

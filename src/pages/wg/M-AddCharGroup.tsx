@@ -49,18 +49,8 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		const where = $q("." + prop + "Label");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const toggleDropoff = () => {
-		const DF = $i("charGroupDropoffAddC");
-		if(hasDropoff) {
-			setHasDropoff(false);
-			DF.classList.add("hide");
-		} else {
-			DF.classList.remove("hide");
-			setHasDropoff(true);
-		}
-	};
 	const generateLabel = () => {
-		const words = ($i("newCharGroupTitle").value as string) // Get the title/description
+		const words = ($i("newWGCharGroupTitle").value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -88,7 +78,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			$i("shortLabel").value = label;
+			$i("newWGShortLabel").value = label;
 			resetError("label");
 		}
 	};
@@ -195,11 +185,11 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							labelPlacement="start"
 							aria-label="Use separate dropoff rate"
 							justify="space-between"
-							onIonChange={() => toggleDropoff()}
+							onIonChange={() => setHasDropoff(!hasDropoff)}
 							checked={hasDropoff}
 						>Use separate dropoff rate</IonToggle>
 					</IonItem>
-					<IonItem id="charGroupDropoffAddC" className="hide">
+					<IonItem id="charGroupDropoffAddCWG" className={hasDropoff ? "" : "hide"}>
 						<IonRange min={0} max={50} pin={true} value={dropoff} onIonChange={e => setDropoff(e.detail.value as Zero_Fifty)} debounce={250}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />

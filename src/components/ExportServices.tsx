@@ -12,19 +12,19 @@ const doExport = async (
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	try {
-		const ret = await Filesystem.readdir({
+		/*const ret =*/ await Filesystem.readdir({
 			path: 'ConlangToolbox',
 			directory: Docs
 		});
-		console.log('Read dir', ret);
+//		console.log('Read dir', ret);
 	} catch(e) {
 		try {
-			const ret = await Filesystem.mkdir({
+			/*const ret =*/ await Filesystem.mkdir({
 				path: 'ConlangToolbox',
 				directory: Docs,
 				recursive: false // like mkdir -p
 			});
-			console.log('Made dir', ret);
+//			console.log('Made dir', ret);
 		} catch(e) {
 			console.error('Unable to make directory', e);
 			doToast && undoToast && toaster({
@@ -43,13 +43,13 @@ const doExport = async (
 		}
 	} finally {
 		try {
-			const result = await Filesystem.writeFile({
+			/*const result =*/ await Filesystem.writeFile({
 				path: 'ConlangToolbox/' + filename,
 				data: output,
 				directory: Docs,
 				encoding: encodeUTF ? Encoding.UTF8 : undefined
 			});
-			console.log('Wrote file', result);
+//			console.log('Wrote file', result);
 			doToast && undoToast && toaster({
 				message: `${filename} exported`,
 				color: "success",
