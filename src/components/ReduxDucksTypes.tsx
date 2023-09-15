@@ -313,6 +313,7 @@ export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefin
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
+	// to be used later
 	sensitivity: SearchSensitivity
 	// set automatically, not by user:
 	sortLanguage: string

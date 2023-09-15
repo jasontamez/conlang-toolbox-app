@@ -13,9 +13,9 @@ export function toggleDisableConfirm(payload: boolean) {
 export function setSortLanguage(payload: string) {
 	return {type: consts.SET_SORT_LANGUAGE, payload};
 }
-export function setSortSensitivity(payload: (types.SearchSensitivity | "default")) {
-	return {type: consts.SET_SORT_SENSITIVITY, payload: (payload === "default" ? undefined : payload)};
-}
+//export function setSortSensitivity(payload: (types.SearchSensitivity | "default")) {
+//	return {type: consts.SET_SORT_SENSITIVITY, payload: (payload === "default" ? undefined : payload)};
+//}
 
 
 //

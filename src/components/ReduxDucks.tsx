@@ -169,10 +169,18 @@ const sortBlank = (dir: boolean, method: types.LexiconBlankSorts) => {
 	}
 	return [0, 0];
 };
-const sortLexicon = (lexicon: types.Lexicon[], sortPattern: number[], sortDir: boolean, blankSort: types.LexiconBlankSorts, sortLanguage: string, sensitivity: types.SearchSensitivity) => {
+const sortLexicon = (
+	lexicon: types.Lexicon[],
+	sortPattern: number[],
+	sortDir: boolean,
+	blankSort: types.LexiconBlankSorts,
+	sortLanguage: string,
+	sensitivity: types.SearchSensitivity
+) => {
 	const maxCol = sortPattern.length;
 	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
 	let newLexicon = [...lexicon];
+	console.log(sortLanguage, sensitivity);
 	const stringSorter = makeSorter(sortLanguage, sensitivity);
 	function sortFunction (a: types.Lexicon, b: types.Lexicon) {
 		const columnsA = a.columns;
@@ -227,11 +235,19 @@ const reduceLexiconState = (original: types.LexiconObject, sortLanguage: string,
 		blankSort,
 		columns
 	} = original;
+	const newLex = lexicon.map(lex => reduceLexicon(lex));
 	return {
 		...original,
 		columns: [...columns.map(col => ({...col}))],
 		sortPattern: [...sortPattern],
-		lexicon: sortLexicon(lexicon.map(lex => reduceLexicon(lex)), sortPattern, sortDir, blankSort || "last", sortLanguage, sensitivity)
+		lexicon: (sortLanguage === sensitivity && sensitivity === undefined) ? newLex : sortLexicon(
+			newLex,
+			sortPattern,
+			sortDir,
+			blankSort || "last",
+			sortLanguage,
+			sensitivity
+		)
 	};
 };
 const reduceMorphoSyntaxInfo = (original: types.MorphoSyntaxObject) => {
@@ -489,15 +505,15 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 				}
 			};
 			break;
-		case consts.SET_SORT_SENSITIVITY:
-			final = {
-				...reduceAllBut(["appSettings"], state),
-				appSettings: {
-					...state.appSettings,
-					sensitivity: payload
-				}
-			};
-			break;
+//		case consts.SET_SORT_SENSITIVITY:
+//			final = {
+//				...reduceAllBut(["appSettings"], state),
+//				appSettings: {
+//					...state.appSettings,
+//					sensitivity: payload
+//				}
+//			};
+//			break;
 		//
 		// WORDGEN
 		//
