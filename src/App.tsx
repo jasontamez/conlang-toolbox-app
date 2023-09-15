@@ -138,7 +138,7 @@ const App = memo(() => {
 				}
 				return dispatch(overwriteState(initialAppState));
 			});
-		}
+		};
 	};
 	store.dispatch(maybeSetState());
 	return (

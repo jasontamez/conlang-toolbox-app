@@ -645,7 +645,12 @@ ion-tab-bar.iconsOnly ion-tab-button:not(.moreIndicators) ion-label {
 	font-size: 1.4em;
 }
 
-
+ion-select.settings::part(container) {
+	justify-content: end;
+	align-items: center;
+	text-align: end;
+	color: var(--ion-color-primary);
+}
 ion-select.syntaxSelect {
 	max-width: min-content;
 	padding-inline: 1rem;

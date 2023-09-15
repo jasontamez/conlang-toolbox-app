@@ -37,6 +37,7 @@ function doUpdate (incomingState: any) {
 	LexiconStorage.iterate(lexiconStorageUpdater095);
 	// Update settings
 	storedState.appSettings.sortLanguage = "en";
+	storedState.appSettings.sensitivity = "accent";
 	return storedState;
 };
 

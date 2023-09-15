@@ -11,10 +11,12 @@ import {
 	IonToggle,
 	IonButtons,
 	IonMenuButton,
-	IonNote
+	IonSelect,
+	IonSelectOption
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
+	setSortSensitivity,
 	toggleDisableConfirm
 } from '../components/ReduxDucksFuncs';
 import ChooseThemeModal from './M-Theme';
@@ -27,6 +29,12 @@ const AppSettings = (props: PageData) => {
 	const appSettings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
+	const {
+		disableConfirms,
+		theme,
+		sensitivity,
+		sortLanguage
+	} = appSettings;
 	return (
 		<IonPage>
 			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
@@ -45,7 +53,7 @@ const AppSettings = (props: PageData) => {
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
-							checked={appSettings.disableConfirms}
+							checked={disableConfirms}
 							onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))}
 						>
 							<h2>Disable Confirmation Prompts</h2>
@@ -54,7 +62,16 @@ const AppSettings = (props: PageData) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenTheme(true)}>
 						<IonLabel>Change Theme</IonLabel>
-						<IonNote slot="end" color="primary" style={ { color: "var(--ion-color-primary"} } >{appSettings.theme || "Default"}</IonNote>
+						<IonLabel slot="end" color="primary">{theme || "Default"}</IonLabel>
+					</IonItem>
+					<IonItem className="wrappableInnards">
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Sensitivity:" value={sensitivity || "default"} onIonChange={(e) => dispatch(setSortSensitivity(e.detail.value))}>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="base">Compare base letters only</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="accent">Compare diacritics</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="case">Compare upper/lowercase</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="variant">Compare diacritics, upper/lowercase</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="default">Default behavior for language "{sortLanguage}"</IonSelectOption>
+						</IonSelect>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">

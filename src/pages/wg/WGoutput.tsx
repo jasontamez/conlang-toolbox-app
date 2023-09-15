@@ -41,6 +41,7 @@ import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
+import makeSorter from '../../components/stringSorter';
 
 async function copyText (copyString: string, doToast: Function, undoToast: Function) {
 	if(copyString) {
@@ -98,15 +99,16 @@ const WGOut = (props: PageData) => {
 		settingsWG,
 		transforms,
 		lexColumns,
-		sortLanguage
+		appSettings
 	] = useSelector((state: any) => [
 		state.wordgenCharGroups,
 		state.wordgenSyllables,
 		state.wordgenSettings,
 		state.wordgenTransforms.list,
 		state.lexicon.columns,
-		state.appSettings.sortLanguage
+		state.appSettings
 	], shallowEqual);
+	const {sortLanguage, sensitivity} = appSettings;
 	const syllToggle = syllablesObject.toggle;
 	const allSyllables = syllablesObject.objects;
 	const {
@@ -133,6 +135,10 @@ const WGOut = (props: PageData) => {
 	// // //
 	// Memoized stuff
 	// // //
+
+	const stringSorter = useCallback(
+		(a: string, b: string) => makeSorter(sortLanguage, sensitivity)(a, b),
+	[sortLanguage, sensitivity]);
 
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {
@@ -454,7 +460,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			result.sort(new Intl.Collator(sortLanguage, { sensitivity: "variant" }).compare);
+			result.sort(stringSorter);
 		}
 		// Remove duplicates
 		let previous: string | undefined = undefined;
@@ -509,7 +515,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			words.sort(new Intl.Collator(sortLanguage, { sensitivity: "variant" }).compare);
+			words.sort(stringSorter);
 		}
 		return words;
 	};

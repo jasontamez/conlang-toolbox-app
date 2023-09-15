@@ -308,10 +308,13 @@ export interface ConceptsState {
 	combinations: WLCombo[]
 }
 
+export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
 
 export interface AppSettings {
 	theme: string
 	disableConfirms: boolean
+	sensitivity: SearchSensitivity
+	// set automatically, not by user:
 	sortLanguage: string
 }
 
