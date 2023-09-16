@@ -65,7 +65,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 				titleEl && (titleEl.value = title);
 				labelEl && (labelEl.value = label);
 				runEl && (runEl.value = run);
-				if(dropoffOverride) {
+				if(dropoffOverride !== undefined) {
 					setHasDropoff(true);
 					setDropoff(dropoffOverride);
 				} else {
@@ -84,16 +84,6 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		const where = $q("." + prop + "LabelEdit");
 		(where !== null) && where.classList.remove("invalidValue");
 	}
-	const toggleDropoff = () => {
-		const DF = $i("charGroupDropoffEditC");
-		if(hasDropoff) {
-			setHasDropoff(false);
-			DF.classList.add("hide");
-		} else {
-			DF.classList.remove("hide");
-			setHasDropoff(true);
-		}
-	};
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
 		const words = (editingWGCharGroupTitle!.value as string) // Get the title/description
@@ -263,7 +253,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<IonInput aria-label="Letters, characters" id="editingWGCharGroupRun" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")} />
 					</IonItem>
 					<IonItem>
-						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => toggleDropoff()} labelPlacement="start" checked={hasDropoff}>Use separate dropoff rate</IonToggle>
+						<IonToggle enableOnOffLabels aria-label="Use separate dropoff rate" onClick={() => setHasDropoff(!hasDropoff)} labelPlacement="start" checked={hasDropoff}>Use separate dropoff rate</IonToggle>
 					</IonItem>
 					<IonItem id="charGroupDropoffEditC" className={hasDropoff ? "" : "hide"}>
 						<IonRange min={0} max={50} pin={true} value={dropoff} onIonChange={e => {setDropoff(e.detail.value as Zero_Fifty)}}>
