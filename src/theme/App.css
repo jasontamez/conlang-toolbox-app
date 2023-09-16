@@ -242,6 +242,15 @@ ion-app .fullScreen .collapse div ion-button {
 	flex-grow: 0;
 	flex-shrink: 0;
 }
+.dropoff {
+	background: #00000033;
+	padding: 0.5em;
+	border-radius: 1em;
+	font-style: italic;
+	font-size: smaller;
+	margin-inline-start: 1em;
+	opacity: 0.75;
+}
 
 #WEoutput {
 	display: flex;

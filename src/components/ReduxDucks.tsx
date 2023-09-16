@@ -457,8 +457,8 @@ const saveCurrentState = (state: types.StateObject) => {
 	// Eliminate not-stringifyable properties (if any)
 	// Save
 	StateStorage.setItem("lastState", newState);
-	console.log("Save");
-	console.log(newState);
+//	console.log("Save");
+//	console.log(newState);
 };
 const initialState: types.StateObject = reduceAllBut([], blankAppState);
 
@@ -1354,12 +1354,12 @@ export function reducer(state: types.StateObject = initialState, action: any) {
 
 		// Default
 		default:
-			console.log("DEFAULT: " + action.type);
+//			console.log("DEFAULT: " + action.type);
 			return state;
 	}
 	// Some sort of store-state function goes here
 	debounce(saveCurrentState, [final], 1000, "stateSave");
-	console.log(action.type);
-	console.log(final);
+//	console.log(action.type);
+//	console.log(final);
 	return final;
 };

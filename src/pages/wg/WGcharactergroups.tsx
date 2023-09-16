@@ -130,6 +130,7 @@ const WGCharGroup = (props: PageData) => {
 					</IonItem>
 					{charGroups.map((item: WGCharGroupMap) => {
 						const [label, charGroup] = item;
+						const { run, title, dropoffOverride } = charGroup;
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>
@@ -144,10 +145,13 @@ const WGCharGroup = (props: PageData) => {
 									<IonLabel className="wrappableInnards">
 										<div className="charGroupRun serifChars">
 											<span className="label importantElement">{label}</span>
-											<span className="run">{charGroup.run}</span>
+											<span className="run">{run}</span>
 										</div>
-										<div className="charGroupLongName">{charGroup.title}</div>
+										<div className="charGroupLongName">{title}</div>
 									</IonLabel>
+									{dropoffOverride === undefined ? <></> : (
+										<div slot="end" className="dropoff">{dropoffOverride}%</div>
+									)}
 									<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 								</IonItem>
 							</IonItemSliding>
