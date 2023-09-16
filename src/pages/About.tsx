@@ -41,7 +41,7 @@ const Home = (props: PageData) => {
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
-					<IonTitle className="ion-text-center">Conlang Toolbox</IonTitle>
+					<IonTitle>Conlang Toolbox</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent className="containedCards">

@@ -32,7 +32,7 @@ const AppInfo = (props: PageData) => {
 					 <IonButtons slot="start">
 						 <IonMenuButton />
 					 </IonButtons>
-					<IonTitle className="ion-text-center">App Info</IonTitle>
+					<IonTitle>App Info</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent className="containedCards">

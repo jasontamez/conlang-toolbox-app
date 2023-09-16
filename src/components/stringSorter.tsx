@@ -20,3 +20,41 @@ const makeSorter = (sortLanguage: string, sensitivity: SearchSensitivity) => {
 };
 
 export default makeSorter;
+
+/*
+1) Alter input string to a "sortable" string using only English letters
+2) Sort using these strings
+
+// final unicode seems to be U+10FFFD can that be used?
+
+const FINAL_CHAR = String.fromCodePoint(0x10FFFF);
+const original = "ǡ";
+const alteration = new RegExp(original, "g");
+const replacement = "a" + FINAL_CHAR;
+const restoration = new RegExp(replacement, "g");
+const unsorted = input.map(x => x.replace(alteration, replacement));
+unsorted.sort();
+const output = unsorted.map(x => x.replace(restoration, original));
+
+const quickSortAlgo = (input: any[]) => {
+	if (input.length <= 1) {
+		return input;
+	}
+	const origArray = input.slice();
+	const left: any[] = [];
+	const right: any[] = [];
+	const newArray: any[] = [];
+	const pivot = origArray.pop();
+	const length = origArray.length;
+	for (var i = 0; i < length; i++) {
+		if (origArray[i] <= pivot) {
+			left.push(origArray[i]);
+		} else {
+			right.push(origArray[i]);
+		}
+	}
+	const lefty: any[] = quickSortAlgo(left);
+	const righty: any[] = quickSortAlgo(right);
+	return newArray.concat(lefty, pivot, righty);
+}
+*/
