@@ -33,13 +33,13 @@ import {
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
 } from '../components/ReduxDucksFuncs';
-import { LexiconColumn, PageData, WL, WLCombo } from '../components/ReduxDucksTypes';
+import { LexiconColumn, PageData, Concept, ConceptCombo } from '../components/ReduxDucksTypes';
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import { LexiconIcon } from '../components/icons';
-import { WLCard } from "./wg/WGCards";
+import { ConceptCard } from "./wg/WGCards";
 
 interface SavedWord { id: string, word: string };
 
@@ -62,13 +62,13 @@ const ConceptsPage = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
-	const toggleChars = (what: keyof WL) => {
-		if(display.some((p: keyof WL) => p === what)) {
-			return dispatch(updateConceptsDisplay(display.filter((p: keyof WL) => p !== what)));
+	const toggleChars = (what: keyof Concept) => {
+		if(display.some((p: keyof Concept) => p === what)) {
+			return dispatch(updateConceptsDisplay(display.filter((p: keyof Concept) => p !== what)));
 		}
 		dispatch(updateConceptsDisplay([...display, what]));
 	};
-	const shown = Concepts.filter((word: WL) => display.some((p: keyof WL) => word[p]));
+	const shown = Concepts.filter((word: Concept) => display.some((p: keyof Concept) => word[p]));
 	const viewInfo = ['wl', 'home'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
@@ -168,11 +168,11 @@ const ConceptsPage = (props: PageData) => {
 	const saveEverything = () => {
 		const words = shown.map(word => ({id: word.id, word: word.word}));
 		if(showingCombos) {
-			combinations.forEach((combo: WLCombo) => {
+			combinations.forEach((combo: ConceptCombo) => {
 				const { id, parts } = combo;
 				words.push({
 					id,
-					word: parts.map((w: WL) => w.word).join("; ")
+					word: parts.map((w: Concept) => w.word).join("; ")
 				})
 			});
 		}
@@ -302,7 +302,7 @@ const ConceptsPage = (props: PageData) => {
 
 	return (
 		<IonPage>
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><WLCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
@@ -324,9 +324,9 @@ const ConceptsPage = (props: PageData) => {
 					<IonItem className="conceptsChips">
 						<div className="chips">
 							<span>Display:</span>
-							{ConceptsSources.map((pair: [string, keyof WL], ind: number) => {
+							{ConceptsSources.map((pair: [string, keyof Concept], ind: number) => {
 								const [list, prop] = pair;
-								const current = display.some((p: keyof WL) => p === prop);
+								const current = display.some((p: keyof Concept) => p === prop);
 								return (
 									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
 										<IonLabel>{list}</IonLabel>
@@ -370,9 +370,9 @@ const ConceptsPage = (props: PageData) => {
 						</IonButton>
 					</IonItem>
 					<div id="outputPaneWL" className={"concepts" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
-						{showingCombos && combinations.map((combo: WLCombo) => {
+						{showingCombos && combinations.map((combo: ConceptCombo) => {
 							const { id, parts } = combo;
-							const word = parts.map((w: WL) => w.word).join("; ");
+							const word = parts.map((w: Concept) => w.word).join("; ");
 							const classes =
 								(savedWordsObject[id] ? "saved " : "")
 								+ "word combo ion-text-"
@@ -381,7 +381,7 @@ const ConceptsPage = (props: PageData) => {
 								<div onClick={() => maybeSaveThisWord(id, word, true)} key={id} id={id} className={classes}>{word}</div>
 							);
 						})}
-						{shown.map((wordObj: WL) => {
+						{shown.map((wordObj: Concept) => {
 							const { id, word } = wordObj;
 							const classes =
 								(savedWordsObject[id] ? "saved " : "")

@@ -1,6 +1,6 @@
-import { WL } from "./ReduxDucksTypes";
+import { Concept } from "./ReduxDucksTypes";
 
-export const ConceptsSources: [string, keyof WL][] = [
+export const ConceptsSources: [string, keyof Concept][] = [
 	["Swadesh 100", "s100"],
 	["Swadesh 207", "s207"],
 	["Swadesh-Yakhontov", "sy"],
@@ -11,7 +11,7 @@ export const ConceptsSources: [string, keyof WL][] = [
 	["Landau 200", "l200"]
 ];
 
-export const Concepts: WL[] = [
+export const Concepts: Concept[] = [
 	{
 		id: "mbmdddsqqqfhzdlhzbncnwh",
 		word: "1st-person plural pronoun (we)",

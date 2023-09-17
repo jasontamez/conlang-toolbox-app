@@ -277,7 +277,7 @@ const reduceConceptsState = (original: types.ConceptsState) => {
 	return {
 		...original,
 		display: [...original.display],
-		combinations: original.combinations.map((obj: types.WLCombo) => {
+		combinations: original.combinations.map((obj: types.ConceptCombo) => {
 			if(Array.isArray(obj)) {
 				return { id: uuidv4(), parts: obj };
 			}

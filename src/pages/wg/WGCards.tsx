@@ -298,7 +298,7 @@ export const OptCard = () => {
 		</IonCard>
 	);
 }
-export const WLCard = () => {
+export const ConceptCard = () => {
 	return (
 		<IonCard>
 			<IonItem lines="full">

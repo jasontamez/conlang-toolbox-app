@@ -297,13 +297,13 @@ export function updateExtraCharsToBeSaved(payload: string) {
 //
 // WORD LISTS
 //
-export function updateConceptsDisplay(payload: (keyof types.WL)[]) {
+export function updateConceptsDisplay(payload: (keyof types.Concept)[]) {
 	return {type: consts.UPDATE_CONCEPTS_DISPLAY, payload};
 }
 export function toggleConceptsBoolean(payload: "textCenter" | "showingCombos") {
 	return {type: consts.TOGGLE_CONCEPTS_BOOLEAN, payload};
 }
-export function addCustomHybridMeaning(payload: types.WL[]) {
+export function addCustomHybridMeaning(payload: types.Concept[]) {
 	return {type: consts.ADD_CUSTOM_HYBRID_MEANING, payload};
 }
 export function deleteCustomHybridMeanings(payload: string[]) {

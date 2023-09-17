@@ -285,7 +285,7 @@ export interface ExtraCharactersState {
 }
 
 
-export interface WL {
+export interface Concept {
 	id: string,
 	word: string
 	asjp?: boolean
@@ -297,15 +297,15 @@ export interface WL {
 	ssl?: boolean
 	l200?: boolean
 }
-export interface WLCombo {
+export interface ConceptCombo {
 	id: string
-	parts: WL[]
+	parts: Concept[]
 }
 export interface ConceptsState {
-	display: [(keyof WL)][]
+	display: [(keyof Concept)][]
 	textCenter: boolean
 	showingCombos: boolean
-	combinations: WLCombo[]
+	combinations: ConceptCombo[]
 }
 
 export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
