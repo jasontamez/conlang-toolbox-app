@@ -79,7 +79,7 @@ const MExportAllData = (props: ModalProperties) => {
 		delete morphoSyntax.bool;
 		delete morphoSyntax.num;
 		delete morphoSyntax.text;
-		
+
 		LexiconStorage.iterate((value: LexiconObject, key: string) => {
 			lex.push([key, value]);
 			return; // Blank return keeps the loop going

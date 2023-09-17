@@ -61,5 +61,5 @@ const WG = (props: PageData) => {
 		</IonTabs>
 	);
 };
- 
+
 export default WG;

@@ -208,7 +208,7 @@ const WGOut = (props: PageData) => {
 		if (!syllToggle && allSyllables.singleWord.components.length === 0) {
 			errors.push("You have no syllables defined.");
 		}
-		if (syllToggle && 
+		if (syllToggle &&
 			(
 				(monosyllablesRate > 0 && allSyllables.singleWord.components.length === 0)
 				|| allSyllables.wordInitial.components.length === 0

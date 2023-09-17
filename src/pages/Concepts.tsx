@@ -330,13 +330,13 @@ const ConceptsPage = (props: PageData) => {
 								return (
 									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
 										<IonLabel>{list}</IonLabel>
-									</IonChip>	
+									</IonChip>
 								);
 							})}
 							{(
 								<IonChip key="combinations" outline={!showingCombos} onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))} className={showingCombos ? "active" : undefined}>
 									<IonLabel>My Combinations</IonLabel>
-								</IonChip>	
+								</IonChip>
 							)}
 						</div>
 						<div className="controls">

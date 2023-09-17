@@ -34,7 +34,7 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: WGMap
 				reformed += "[^" + escapeRegexp(charGroup.run) + "]" + bit!.slice(1);
 			} else {
 				// If character group is not found, it gets ignored.
-				reformed = "!%" + bit;				
+				reformed = "!%" + bit;
 			}
 		}
 		// Now check for character groups
@@ -53,7 +53,7 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: WGMap
 				reformed += "[" + escapeRegexp(charGroup.run) + "]" + bit!.slice(1);
 			} else {
 				// If character group is not found, it gets ignored.
-				reformed = "%" + bit;				
+				reformed = "%" + bit;
 			}
 		}
 		// Save reformed for later!

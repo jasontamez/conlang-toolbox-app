@@ -59,7 +59,7 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 							lines.push(
 								String(lesser) + "% " + start + "\n"
 								+ String(100 - lesser) + "% " + end
-							);	
+							);
 						}
 					} else {
 						let counter = min;

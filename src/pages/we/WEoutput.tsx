@@ -144,7 +144,7 @@ const WEOut = (props: PageData) => {
 				} else {
 					regex = new RegExp(transform[prop], "g");
 				}
-				all.push(regex);	
+				all.push(regex);
 			});
 			newObj[transform.key] = all;
 		});

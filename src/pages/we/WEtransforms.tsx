@@ -74,7 +74,7 @@ const WERew = (props: PageData) => {
 		} else if (ltr()) {
 			return "⟶";
 		}
-		return "⟵";		 
+		return "⟵";
 	};
 	const makeDeclaration = (dir: string) => {
 		switch(dir) {

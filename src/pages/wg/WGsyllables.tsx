@@ -71,7 +71,7 @@ const WGSyl = (props: PageData) => {
 						const info: HTMLTextAreaElement = $i("Syl-" + prop);
 						const value = info.value.trim().split(/\s*\r?\n\s*/);
 						dispatch(editSyllables(prop, value.filter((v: string) => v !== "")));
-						dispatch(setEditableSyllables(undefined));			
+						dispatch(setEditableSyllables(undefined));
 					}}
 				>
 					<IonIcon icon={saveSharp} />

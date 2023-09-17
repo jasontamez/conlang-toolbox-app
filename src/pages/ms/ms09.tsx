@@ -45,7 +45,7 @@ const OldSyntax = () => {
 				<IonList lines="none">
 
 					<HeaderItem level="1">9. Pragmatically Marked Structures</HeaderItem>
-					
+
 					<InfoModal title="Pragmatics" label="What are Pragmatics?">
 						<ul>
 							<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:

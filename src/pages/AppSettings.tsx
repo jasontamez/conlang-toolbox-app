@@ -74,7 +74,7 @@ const AppSettings = (props: PageData) => {
 		</IonPage>
 	);
 };
- 
+
 export default AppSettings;
 
 /*

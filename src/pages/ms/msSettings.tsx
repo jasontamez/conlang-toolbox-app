@@ -280,5 +280,5 @@ const Syntax = (props: PageData) => {
 		</IonPage>
 	);
 };
- 
+
 export default Syntax;

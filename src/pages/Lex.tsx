@@ -347,7 +347,7 @@ const Lex = (props: PageData) => {
 	// JSX
 	return (
 		<IonPage>
-			<AddLexiconItemModal 
+			<AddLexiconItemModal
 				{...props.modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
 				openECM={setIsOpenECM}
 				columnInfo={columns}
@@ -512,5 +512,5 @@ const Lex = (props: PageData) => {
 		</IonPage>
 	);
 };
- 
+
 export default Lex;

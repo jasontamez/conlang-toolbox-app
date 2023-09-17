@@ -74,7 +74,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		saved.forEach((selected: string) => (newFaves[selected] = true));
 		setCurrentFaves(newFaves);
 	}, [saved]);
-	
+
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 		showHelp && dispatch(toggleExtraCharsBoolean("showHelp"));
@@ -192,7 +192,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 								return (
 									<IonChip key={title} outline={!current} onClick={() => toggleChars(title)} className={current ? "active" : ""}>
 										<IonLabel>{title}</IonLabel>
-									</IonChip>	
+									</IonChip>
 								);
 							})}
 						</div>
@@ -205,7 +205,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 							{showNames ? (
 								<div className="twoColumnsEC centralized">
 									<h2>{display}</h2>
-									{data.map((character: string) => 
+									{data.map((character: string) =>
 										<div key={"mNamed" + display + character}>
 											<div
 												className={currentFaves[character] ? "char favorite" : "char"}

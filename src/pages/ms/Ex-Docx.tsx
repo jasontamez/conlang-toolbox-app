@@ -213,7 +213,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 											text: labelsCopy.shift() || ""
 										})]
 									})
-								);	
+								);
 							}
 							cells.push(
 								new TableCell({
