@@ -274,7 +274,7 @@ const blankAppState: StateObject = {
 		showNames: false,
 		nowShowing: "Favorites"
 	},
-	appState: {
+	appSettings: {
 		menuToggleName: '',
 		theme: 'Default',
 		disableConfirms: false,

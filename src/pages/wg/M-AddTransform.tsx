@@ -24,8 +24,8 @@ import {
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { addTransformWG } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { addTransformWG } from '../../store/wgSlice';
+import { ExtraCharactersModalOpener } from '../../store/types';
 import { $q, $a, $i } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
 import toaster from '../../components/toaster';
@@ -42,9 +42,10 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		(where !== null) && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewTransform = (close: boolean = true) => {
+		const searchEl = $i("searchEx");
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
-		const seek = $i("searchEx").value || "";
+		const seek = (searchEl && searchEl.value) || "";
 		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
@@ -64,11 +65,13 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		const replace = repairRegexErrors($i("replaceEx").value || "");
-		const description = $i("optDesc").value || "";
+		const descEl = $i("optDesc");
+		const replaceEl = $i("replaceEx");
+		const replace = repairRegexErrors((replaceEl && replaceEl.value) || "");
+		const description = (descEl && descEl.value) || "";
 		close && setIsOpen(false);
 		dispatch(addTransformWG({
-			key: uuidv4(),
+			id: uuidv4(),
 			seek: repairRegexErrors(seek),
 			replace,
 			description

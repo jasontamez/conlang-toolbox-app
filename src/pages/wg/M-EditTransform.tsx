@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -22,63 +22,48 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WGTransformObject } from '../../components/ReduxDucksTypes';
-import {
-	doEditTransformWG,
-	cancelEditTransformWG,
-	deleteTransformWG
-} from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WGTransformObject } from '../../store/types';
+import { editTransformWG, deleteTransformWG } from '../../store/wgSlice';
+
 import repairRegexErrors from '../../components/RepairRegex';
 import { $i, $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-const EditTransformModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface ModalProps extends ExtraCharactersModalOpener {
+	editing: null | WGTransformObject
+	setEditing: Function
+}
+
+const EditTransformModal = (props: ModalProps) => {
+	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [
-		disableConfirms,
-		transformsObject
-	] = useSelector((state: any) => [
-		state.appSettings.disableConfirms,
-		state.wordgenTransforms
-	], shallowEqual)
-	const editing = transformsObject.editing;
+	const { disableConfirms } = useSelector((state: any) => state.appSettings)
 
-	const [ editSearchExWG, setEditSearchExWG ] = useState<HTMLInputElement | null>(null);
-	const [ editReplaceExWG, setEditReplaceExWG ] = useState<HTMLInputElement | null>(null);
-	const [ editOptDescWG, setEditOptDescWG ] = useState<HTMLInputElement | null>(null);
-	const [ currentTransform, setCurrentTransform] = useState<WGTransformObject | null>(null);
-	const loadInfo = () => {
-		const searchEl = $i("editSearchExWG");
-		const replaceEl = $i("editReplaceExWG");
-		const descEl = $i("editOptDescWG");
-		setEditSearchExWG(searchEl || null);
-		setEditReplaceExWG(replaceEl || null);
-		setEditOptDescWG(descEl || null);
-		searchEl && (searchEl.value = "");
-		replaceEl && (replaceEl.value = "");
-		descEl && (descEl.value = "");
-		transformsObject.list.forEach((obj: WGTransformObject) => {
-			const {key, seek, replace, description} = obj;
-			if(key === editing) {
-				searchEl && (searchEl.value = seek);
-				replaceEl && (replaceEl.value = replace);
-				descEl && (descEl.value = description);
-				setCurrentTransform(obj);
-			}
-		});
-	};
-
+	const searchEl = $i("editSearchExWG");
+	const replaceEl = $i("editReplaceExWG");
+	const descEl = $i("editOptDescWG");
+	useEffect(() => {
+		if(editing) {
+			const { seek, replace, description } = editing;
+			searchEl && (searchEl.value = seek);
+			replaceEl && (replaceEl.value = replace);
+			descEl && (descEl.value = description);
+		} else {
+			searchEl && (searchEl.value = "");
+			replaceEl && (replaceEl.value = "");
+			descEl && (descEl.value = "");
+		}
+	}, [editing, isOpen, descEl, replaceEl, searchEl]);
 
 	const cancelEditing = () => {
-		dispatch(cancelEditTransformWG(editing));
 		setIsOpen(false);
+		setEditing(null);
 	};
 	function resetError(prop: string) {
 		// Remove danger color if present
@@ -89,7 +74,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	const maybeSaveNewTransformInfo = () => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
-		const seek = editSearchExWG!.value || "";
+		const seek = (searchEl && searchEl.value) || "";
 		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
@@ -109,11 +94,11 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		const replace = repairRegexErrors(editReplaceExWG!.value || "");
-		const description = editOptDescWG!.value.trim() || "";
+		const replace = repairRegexErrors((replaceEl && replaceEl.value) || "");
+		const description = (descEl || descEl.value.trim()) || "";
 		setIsOpen(false);
-		dispatch(doEditTransformWG({
-			key: currentTransform!.key,
+		dispatch(editTransformWG({
+			id: editing!.id,
 			seek: repairRegexErrors(seek),
 			replace,
 			description
@@ -131,7 +116,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
 			setIsOpen(false);
-			dispatch(deleteTransformWG(currentTransform!));
+			dispatch(deleteTransformWG(editing!.id));
 			toaster({
 				message: "Transformation deleted.",
 				duration: 2500,
@@ -143,8 +128,8 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		};
 		if(disableConfirms) {
 			handler();
-		} else {
-			const { seek, replace } = currentTransform!;
+		} else if (editing) {
+			const { seek, replace } = editing;
 			yesNoAlert({
 				header: `${seek}${ltr() ? "⟶" : "⟵"}${replace}`,
 				message: "Are you sure you want to delete this? It cannot be undone.",
@@ -156,7 +141,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={() => loadInfo()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transformation</IonTitle>

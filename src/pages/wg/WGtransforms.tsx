@@ -30,23 +30,24 @@ import {
 	trash,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { PageData, WGTransformObject } from '../../components/ReduxDucksTypes';
+import { useSelector, useDispatch } from "react-redux";
+
+import { PageData, WGTransformObject } from '../../store/types';
+import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
+
 import {
-	startEditTransformWG,
-	deleteTransformWG,
-	reorderTransformsWG,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-import AddTransformModal from './M-AddTransform';
-import EditTransformModal from './M-EditTransform';
-import { RewCard } from "./WGCards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+
+import AddTransformModal from './M-AddTransform';
+import EditTransformModal from './M-EditTransform';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import { RewCard } from "./WGCards";
 
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -56,17 +57,18 @@ const WGRew = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
+	const [editing, setEditing] = useState<WGTransformObject | null>(null);
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [transformsObject, settings] = useSelector((state: any) => [state.wordgenTransforms, state.appSettings], shallowEqual);
-	const transforms = transformsObject.list;
+	const { transforms } = useSelector((state: any) => state.wg);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
-	const editTransform = (label: any) => {
+	const editTransform = (transform: WGTransformObject) => {
 		$q(".transforms").closeSlidingItems();
-		dispatch(startEditTransformWG(label));
+		setEditing(transform);
 		setIsOpenEditTransform(true);
 	};
 	const maybeDeleteTransform = (transform: WGTransformObject) => {
@@ -82,7 +84,7 @@ const WGRew = (props: PageData) => {
 				undoToast
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			const { seek, replace } = transform;
@@ -104,13 +106,18 @@ const WGRew = (props: PageData) => {
 		};
 		const ed = event.detail;
 		const reorganized = reorganize(transforms, ed.from, ed.to);
-		dispatch(reorderTransformsWG(reorganized));
+		dispatch(rearrangeTransformsWG(reorganized));
 		ed.complete();
 	};
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpen} />
-			<EditTransformModal {...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)} openECM={setIsOpen} />
+			<EditTransformModal
+				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+				openECM={setIsOpen}
+				editing={editing}
+				setEditing={setEditing}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><RewCard /></ModalWrap>
 			<IonHeader>
@@ -133,11 +140,11 @@ const WGRew = (props: PageData) => {
 				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
 						{transforms.map((transform: WGTransformObject) => {
-							const { key, seek, replace, description } = transform;
+							const { id, seek, replace, description } = transform;
 							return (
-								<IonItemSliding key={key}>
+								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editTransform(key)}>
+										<IonItemOption color="primary" onClick={() => editTransform(transform)}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
 										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(transform)}>

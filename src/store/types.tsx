@@ -21,19 +21,27 @@ export interface WGTransformObject {
 }
 export type WGOutputTypes = "text" | "wordlist" | "syllables";
 export type SyllableTypes = "singleWord" | "wordInitial" | "wordMiddle" | "wordFinal";
-export interface Syllables {
-	singleWord: string
-	wordInitial: string
-	wordMiddle: string
-	wordFinal: string
-}
 export interface SyllableDropoffs {
 	singleWord: null | Zero_Fifty
 	wordInitial: null | Zero_Fifty
 	wordMiddle: null | Zero_Fifty
 	wordFinal: null | Zero_Fifty
 }
-export interface WGState {
+export interface WGSettings {
+	// SETTINGS
+	monosyllablesRate: Zero_OneHundred
+	maxSyllablesPerWord: Two_Fifteen
+	characterGroupDropoff: Zero_Fifty
+	syllableBoxDropoff: Zero_Fifty
+	capitalizeSentences: boolean,
+	declarativeSentencePre: string
+	declarativeSentencePost: string
+	interrogativeSentencePre: string
+	interrogativeSentencePost: string
+	exclamatorySentencePre: string
+	exclamatorySentencePost: string
+}
+export interface WGBasic extends WGSettings {
 		// GROUPS
 		characterGroups: WGCharGroupObject[],
 		// SYLLABLES
@@ -45,20 +53,9 @@ export interface WGState {
 		syllableDropoffOverrides: SyllableDropoffs,
 		// TRANSFORMS
 		transforms: WGTransformObject[],
-		// SETTINGS
-		//...simple.wordgenSettings,
-		monosyllablesRate: Zero_OneHundred
-		maxSyllablesPerWord: Two_Fifteen
-		characterGroupDropoff: Zero_Fifty
-		syllableBoxDropoff: Zero_Fifty
-		capitalizeSentences: boolean,
-		declarativeSentencePre: string
-		declarativeSentencePost: string
-		interrogativeSentencePre: string
-		interrogativeSentencePost: string
-		exclamatorySentencePre: string
-		exclamatorySentencePost: string
-		//...end simple.wordgenSettings
+}
+export interface WGState extends WGBasic {
+		// MORE SETTINGS
 		output: WGOutputTypes
 		showSyllableBreaks: boolean
 		sentencesPerText: Five_OneHundred
@@ -69,6 +66,10 @@ export interface WGState {
 		storedCustomInfo: { [key: string]: any },
 		storedCustomIDs: string[]
 }
+export type WGPresetObject = [
+	string,
+	WGBasic
+][];
 
 //
 // WORDEVOLVE
@@ -398,8 +399,18 @@ export interface StateObject {
 	lexicon: LexiconState
 	concepts: ConceptsState
 	ec: { [key: string]: any }
-	appState: { [key: string]: any }
+	appSettings: { [key: string]: any }
 	history: { [key: string]: any }
 }
 
 export type Action = { payload: any }
+
+export interface PageData {
+	modalPropsMaker: Function
+}
+
+export interface ExtraCharactersModalOpener {
+	isOpen: boolean
+	setIsOpen: Function
+	openECM: Function
+}

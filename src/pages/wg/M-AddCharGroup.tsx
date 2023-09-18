@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -26,8 +26,9 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WGCharGroupMap, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { addCharGroupWG } from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WGCharGroupObject, Zero_Fifty } from '../../store/types';
+import { addCharGroupWG } from '../../store/wgSlice';
+
 import { $q, $i, $a } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
@@ -36,13 +37,17 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [charGroupObject, charGroupRunDropoff] = useSelector((state: any) => [state.wordgenCharGroups.map, state.wordgenSettings.charGroupRunDropoff], shallowEqual);
+	const { characterGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
-	const [dropoff, setDropoff] = useState<Zero_Fifty>(charGroupRunDropoff);
-	const charGroupMap: { [key: string]: boolean } = {};
-	charGroupObject.forEach((cg: WGCharGroupMap) => {
-		charGroupMap[cg[0]] = true;
-	});
+	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
+	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: boolean }>({});
+	useEffect(() => {
+		const newMap: { [key: string]: boolean } = {};
+		characterGroups.forEach((cg: WGCharGroupObject) => {
+			newMap[cg.label!] = true;
+		});
+		setCharGroupMap(newMap);
+	}, [characterGroups]);
 	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
@@ -133,7 +138,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		}));
 		$a("ion-list.addWGCharGroup ion-input").forEach((input: HTMLInputElement) => input.value = "");
 		setHasDropoff(false);
-		setDropoff(charGroupRunDropoff);
+		setDropoff(characterGroupDropoff);
 		toaster({
 			message: "Character Group added!",
 			duration: 2500,

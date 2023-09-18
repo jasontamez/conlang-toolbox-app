@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -27,56 +27,54 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WGCharGroupMap, WGCharGroupObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { doEditCharGroupWG, cancelEditCharGroupWG, deleteCharGroupWG } from '../../components/ReduxDucksFuncs';
+import { WGCharGroupObject, Zero_Fifty, ExtraCharactersModalOpener } from '../../store/types';
+import { editCharacterGroupWG, deleteCharGroupWG } from '../../store/wgSlice';
+
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface ModalProps extends ExtraCharactersModalOpener {
+	editing: null | WGCharGroupObject
+	setEditing: Function
+}
+
+const EditCharGroupModal = (props: ModalProps) => {
+	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
-	const [charGroupObject, settings, settingsWG] = useSelector((state: any) => [state.wordgenCharGroups, state.appSettings, state.wordgenSettings], shallowEqual);
+	const { charGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: WGCharGroupObject }>({});
-	const editing = charGroupObject.editing;
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
-	const [dropoff, setDropoff] = useState<Zero_Fifty>(settingsWG.charGroupRunDropoff);
-	const [ editingWGCharGroupTitle, setEditingWGCharGroupTitle ] = useState<HTMLInputElement | null>(null);
-	const [ editingWGShortLabel, setEditingWGShortLabel ] = useState<HTMLInputElement | null>(null);
-	const [ editingWGCharGroupRun, setEditingWGCharGroupRun ] = useState<HTMLInputElement | null>(null);
-	const loadInfo = () => {
-		const titleEl = $i("editingWGCharGroupTitle");
-		const labelEl = $i("editingWGShortLabel");
-		const runEl = $i("editingWGCharGroupRun");
-		setEditingWGCharGroupTitle(titleEl || null);
-		setEditingWGShortLabel(labelEl || null);
-		setEditingWGCharGroupRun(runEl || null);
+	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
+	const titleEl = $i("editingWGCharGroupTitle");
+	const labelEl = $i("editingWGShortLabel");
+	const runEl = $i("editingWGCharGroupRun");
+	const [charGroupMap, setCharGroupMap] = useState<{ [ key: string]: boolean }>({});
+	useEffect(() => {
 		titleEl && (titleEl.value = "");
 		labelEl && (labelEl.value = "");
 		runEl && (runEl.value = "");
-		const cgm: { [key: string]: WGCharGroupObject } = {};
-		charGroupObject.map.forEach((chg: WGCharGroupMap) => {
-			const [label, group] = chg;
-			cgm[label] = group;
-			if(label === editing) {
-				const { title, run, dropoffOverride } = group;
-				titleEl && (titleEl.value = title);
-				labelEl && (labelEl.value = label);
-				runEl && (runEl.value = run);
-				if(dropoffOverride !== undefined) {
-					setHasDropoff(true);
-					setDropoff(dropoffOverride);
-				} else {
-					setHasDropoff(false);
-					setDropoff(settingsWG.charGroupRunDropoff);
-				}
+		if(editing) {
+			const { title, run, dropoffOverride, label } = editing;
+			titleEl && (titleEl.value = title);
+			labelEl && (labelEl.value = label);
+			runEl && (runEl.value = run);
+			if(dropoffOverride !== undefined) {
+				setHasDropoff(true);
+				setDropoff(dropoffOverride);
+			} else {
+				setHasDropoff(false);
+				setDropoff(characterGroupDropoff);
 			}
-		});
-		setCharGroupMap(cgm);
-		console.log(cgm);
-	};
+			const newMap: { [ key: string]: boolean } = {};
+			charGroups.forEach((item: WGCharGroupObject) => {
+				newMap[item.label!] = true;
+			});
+			setCharGroupMap(newMap);
+		}
+	}, [editing, characterGroupDropoff, isOpen, titleEl, labelEl, runEl, charGroups]);
 
 	function resetError (prop: keyof WGCharGroupObject) {
 		// Remove danger color if present
@@ -86,7 +84,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	}
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
-		const words = (editingWGCharGroupTitle!.value as string) // Get the title/description
+		const words = (titleEl!.value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -97,7 +95,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		// Now check every character one at a time to see if it's a good candidate
 		let label: string | undefined;
 		potentials.every(char => {
-			if(editing === char || !charGroupMap[char]) {
+			if(editing!.label === char || !charGroupMap[char]) {
 				label = char;
 				return false;
 			}
@@ -115,20 +113,20 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			editingWGShortLabel!.value = label;
+			labelEl!.value = label;
 			resetError("label");
 		}
 	};
 	const cancelEditing = () => {
-		dispatch(cancelEditCharGroupWG(editing));
 		setIsOpen(false);
+		setEditing(null);
 	};
 	const maybeSaveNewInfo = () => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingWGCharGroup
-		const title = editingWGCharGroupTitle!.value.trim(),
-			label = editingWGShortLabel!.value.trim(),
-			run = editingWGCharGroupRun!.value.trim();
+		const title = titleEl!.value.trim(),
+			label = labelEl!.value.trim(),
+			run = runEl!.value.trim();
 		if(title === "") {
 			$q(".titleLabelEdit").classList.add("invalidValue");
 			err.push("No title present");
@@ -165,12 +163,15 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		setIsOpen(false);
-		dispatch(doEditCharGroupWG({
-			title,
-			label,
-			run,
-			dropoffOverride: hasDropoff ? dropoff : undefined
+		cancelEditing();
+		dispatch(editCharacterGroupWG({
+			old: editing,
+			edited: {
+				title,
+				label,
+				run,
+				dropoffOverride: hasDropoff ? dropoff : undefined
+			}
 		}));
 		toaster({
 			message: "Character Group saved!",
@@ -183,11 +184,11 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	};
 	const maybeDeleteCharGroup = () => {
 		$q(".charGroups").closeSlidingItems();
-		const title = editingWGCharGroupTitle!.value.trim(),
-			label = editingWGShortLabel!.value.trim(),
-			run = editingWGCharGroupRun!.value.trim();
+		const title = titleEl!.value.trim(),
+			label = labelEl!.value.trim(),
+			run = runEl!.value.trim();
 		const handler = () => {
-			setIsOpen(false);
+			cancelEditing();
 			dispatch(deleteCharGroupWG({
 				title,
 				label,
@@ -203,7 +204,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 				undoToast
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
@@ -217,7 +218,7 @@ const EditCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={() => loadInfo()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>

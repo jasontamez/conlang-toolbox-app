@@ -22,56 +22,50 @@ import {
 	globeOutline,
 	saveSharp
 } from 'ionicons/icons';
-import { toggleSyllables, editSyllables, changeView, setEditableSyllables, setSyllableDropoffWG, modSyllableDropoff } from '../../components/ReduxDucksFuncs';
-import { AllWGSyllableObjects, PageData, WGSyllableObject, Zero_Fifty } from '../../components/ReduxDucksTypes';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { SylCard } from "./WGCards";
+import { useSelector, useDispatch } from "react-redux";
+
+import { PageData, SyllableTypes, Zero_Fifty } from '../../store/types';
+import { setSyllableOverride, setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes } from '../../store/wgSlice';
+
+import { changeView } from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import { $i } from '../../components/DollarSignExports';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import { SylCard } from "./WGCards";
 
 const WGSyl = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isEditing, setIsEditing] = useState<SyllableTypes | null>(null);
 	const viewInfo = ['wg', 'syllables'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
-	const [syllableObject, settingsWG] = useSelector((state: any) => [state.wordgenSyllables, state.wordgenSettings], shallowEqual);
+	const { singleWord, wordInitial, wordMiddle, wordFinal, syllableBoxDropoff, multipleSyllableTypes, syllableDropoffOverrides } = useSelector((state: any) => state.wg);
 	const toggleableClassName = (base: string = "") => {
-		return (`${base} toggleable ${(syllableObject.toggle ? " toggled" : "")}`).trim();
-	};
-	const objects = syllableObject.objects;
-	const swO = objects.singleWord;
-	const singleWord = swO.components.join("\n");
-	const swI = objects.wordInitial;
-	const wordInitial = swI.components.join("\n");
-	const swM = objects.wordMiddle;
-	const wordMiddle = swM.components.join("\n");
-	const swF = objects.wordFinal;
-	const wordFinal = swF.components.join("\n");
-	const doIfEditing = (prop: keyof AllWGSyllableObjects, succ: any, fail: any) => {
-		return syllableObject.editing === prop ? succ : fail;
+		return (`${base} toggleable ${(multipleSyllableTypes ? " toggled" : "")}`).trim();
 	};
 	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
-	const toggleDropoff = (prop: keyof AllWGSyllableObjects, o: WGSyllableObject) => {
-		dispatch(modSyllableDropoff(prop, o.dropoffOverride !== undefined ? undefined : (settingsWG.syllableBoxDropoff as Zero_Fifty)))
+	const setSeparateDropoff = (which: SyllableTypes, value: undefined | Zero_Fifty) => {
+		dispatch(setSyllableOverride({ syllables: which, value }));
 	};
-	const firstBox = syllableObject.toggle ? "Single-Syllable\nWords" : "Syllables";
-	const SyllableButton = memo((props: { prop: keyof AllWGSyllableObjects, editing: undefined | string }) => {
-		const { prop, editing } = props;
-		if (editing === prop) {
+	const toggleSeparateDropoff = (prop: SyllableTypes) => {
+		setSeparateDropoff(prop, syllableDropoffOverrides[prop] !== undefined ? syllableBoxDropoff : undefined)
+	};
+	const firstBox = multipleSyllableTypes ? "Single-Syllable\nWords" : "Syllables";
+	const SyllableButton = memo((props: { prop: SyllableTypes }) => {
+		const { prop } = props;
+		if (isEditing === prop) {
 			return (
 				<IonButton
 					color="success"
 					fill="solid"
 					onClick={e => {
 						const info: HTMLTextAreaElement = $i("Syl-" + prop);
-						const value = info.value.trim().split(/\s*\r?\n\s*/);
-						dispatch(editSyllables(prop, value.filter((v: string) => v !== "")));
-						dispatch(setEditableSyllables(undefined));
+						dispatch(setSyllables({syllables: prop, value: info.value}));
+						setIsEditing(null);
 					}}
 				>
 					<IonIcon icon={saveSharp} />
@@ -82,8 +76,8 @@ const WGSyl = (props: PageData) => {
 			<IonButton
 				color="primary"
 				fill="clear"
-				disabled={!!editing}
-				onClick={e => dispatch(setEditableSyllables(prop))}
+				disabled={!!isEditing}
+				onClick={e => dispatch(setIsEditing(prop))}
 			>
 				<IonIcon src="svg/edit.svg" />
 			</IonButton>
@@ -118,30 +112,64 @@ const WGSyl = (props: PageData) => {
 						</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0 to 50" min={0} max={50} value={settingsWG.syllableBoxDropoff} pin={true} onIonChange={(e) => dispatch(setSyllableDropoffWG(e.target.value as Zero_Fifty))}>
+						<IonRange
+							aria-label="From 0 to 50"
+							min={0} max={50}
+							value={syllableBoxDropoff}
+							pin={true}
+							onIonChange={(e) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty))}
+						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
 					<IonItem className="ion-text-end">
-						<IonToggle enableOnOffLabels labelPlacement="start" justify="start" disabled={syllableObject.editing} checked={syllableObject.toggle} onClick={() => dispatch(toggleSyllables(!syllableObject.toggle))}>Use multiple syllable types</IonToggle>
+						<IonToggle
+							enableOnOffLabels
+							labelPlacement="start"
+							justify="start"
+							disabled={!!isEditing}
+							checked={multipleSyllableTypes}
+							onClick={() => dispatch(setMultipleSyllableTypes(!multipleSyllableTypes))}
+						>Use multiple syllable types</IonToggle>
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
 					<IonItem className="nonUnit">
 						<div className="header">{firstBox}</div>
-						<IonTextarea aria-label={firstBox.replace("\n", " ")} disabled={doIfEditing("singleWord", false, true)} className="serifChars" id="Syl-singleWord" value={singleWord} rows={calculateRows(singleWord)} inputmode="text" placeholder="Use character group labels to construct syllables" />
+						<IonTextarea
+							aria-label={firstBox.replace("\n", " ")}
+							disabled={isEditing !== "singleWord"}
+							className="serifChars"
+							id="Syl-singleWord"
+							value={singleWord}
+							rows={calculateRows(singleWord)}
+							inputmode="text"
+							placeholder="Use character group labels to construct syllables"
+						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="singleWord" editing={syllableObject.editing} />
+							<SyllableButton prop="singleWord" />
 						</div>
 					</IonItem>
-					<IonItem className={syllableObject.toggle && syllableObject.editing === "singleWord" ? "" : "hide"}>
+					<IonItem className={multipleSyllableTypes && isEditing === "singleWord" ? "" : "hide"}>
 						<IonList lines="none" style={ { width: "100%" } }>
 							<IonItem className="nonUnit ion-text-end">
-								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("singleWord", swO)} labelPlacement="start" checked={swO.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
+								<IonToggle
+									enableOnOffLabels
+									onClick={() => toggleSeparateDropoff("singleWord")}
+									labelPlacement="start"
+									checked={syllableDropoffOverrides.singleWorld !== undefined}
+								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="singleWordDropoff" className={swO.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swO.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swO.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("singleWord", e.target.value as Zero_Fifty))} debounce={250}>
+							<IonItem id="singleWordDropoff" className={syllableDropoffOverrides.singleWorld === undefined ? "hide" : "nonUnit"}>
+								<IonRange
+									aria-label="From 0 to 50"
+									min={0} max={50}
+									pin={true}
+									value={(syllableDropoffOverrides.singleWorld || 0)}
+									onIonChange={(e) => dispatch(setSeparateDropoff("singleWord", e.target.value as Zero_Fifty))}
+									debounce={250}
+								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -150,18 +178,39 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={toggleableClassName("nonUnit")}>
 						<div className="header">Word-Initial<br />Syllables</div>
-						<IonTextarea aria-label="Word-Initial Syllables" disabled={doIfEditing("wordInitial", false, true)} className="serifChars" id="Syl-wordInitial" value={wordInitial} rows={calculateRows(wordInitial)} inputmode="text" placeholder="These syllables are used to begin words" />
+						<IonTextarea
+							aria-label="Word-Initial Syllables"
+							disabled={isEditing !== "wordInitial"}
+							className="serifChars"
+							id="Syl-wordInitial"
+							value={wordInitial}
+							rows={calculateRows(wordInitial)}
+							inputmode="text"
+							placeholder="These syllables are used to begin words"
+						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordInitial" editing={syllableObject.editing} />
+							<SyllableButton prop="wordInitial" />
 						</div>
 					</IonItem>
-					<IonItem className={syllableObject.editing === "wordInitial" ? "" : "hide"}>
+					<IonItem className={isEditing === "wordInitial" ? "" : "hide"}>
 						<IonList lines="none" style={ { width: "100%" } }>
 							<IonItem className="nonUnit ion-text-end">
-								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordInitial", swI)} labelPlacement="start" checked={swI.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
+								<IonToggle
+									enableOnOffLabels
+									onClick={() => toggleSeparateDropoff("wordInitial")}
+									labelPlacement="start"
+									checked={syllableDropoffOverrides.wordInitial !== undefined}
+								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordInitialDropoff" className={swI.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swI.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swI.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordInitial", e.target.value as Zero_Fifty))} debounce={250}>
+							<IonItem id="wordInitialDropoff" className={syllableDropoffOverrides.wordInitial === undefined ? "hide" : "nonUnit"}>
+								<IonRange
+									aria-label="From 0 to 50"
+									min={0} max={50}
+									pin={true}
+									value={(syllableDropoffOverrides.wordInitial || 0)}
+									onIonChange={(e) => dispatch(setSeparateDropoff("wordInitial", e.target.value as Zero_Fifty))}
+									debounce={250}
+								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -170,18 +219,39 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={toggleableClassName("nonUnit")}>
 						<div className="header">Mid-Word<br />Syllables</div>
-						<IonTextarea aria-label="Mid-Word Syllables" disabled={doIfEditing("wordMiddle", false, true)} className="serifChars" id="Syl-wordMiddle" value={wordMiddle} rows={calculateRows(wordMiddle)} inputmode="text" placeholder="These syllables are used between the first and last syllable of a word" />
+						<IonTextarea
+							aria-label="Mid-Word Syllables"
+							disabled={isEditing !== "wordMiddle"}
+							className="serifChars"
+							id="Syl-wordMiddle"
+							value={wordMiddle}
+							rows={calculateRows(wordMiddle)}
+							inputmode="text"
+							placeholder="These syllables are used between the first and last syllable of a word"
+						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordMiddle" editing={syllableObject.editing} />
+							<SyllableButton prop="wordMiddle" />
 						</div>
 					</IonItem>
-					<IonItem className={syllableObject.editing === "wordMiddle" ? "" : "hide"}>
+					<IonItem className={isEditing === "wordMiddle" ? "" : "hide"}>
 						<IonList lines="none" style={ { width: "100%" } }>
 							<IonItem className="nonUnit ion-text-end">
-								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordMiddle", swM)} labelPlacement="start" checked={swM.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
+								<IonToggle
+									enableOnOffLabels
+									onClick={() => toggleSeparateDropoff("wordMiddle")}
+									labelPlacement="start"
+									checked={syllableDropoffOverrides.wordMiddle !== undefined}
+								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordMiddleDropoff" className={swM.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swM.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swM.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordMiddle", e.target.value as Zero_Fifty))} debounce={250}>
+							<IonItem id="wordMiddleDropoff" className={syllableDropoffOverrides.wordMiddle === undefined ? "hide" : "nonUnit"}>
+								<IonRange
+									aria-label="From 0 to 50"
+									min={0} max={50}
+									pin={true}
+									value={(syllableDropoffOverrides.wordMiddle || 0)}
+									onIonChange={(e) => dispatch(setSeparateDropoff("wordMiddle", e.target.value as Zero_Fifty))}
+									debounce={250}
+								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>
@@ -190,18 +260,39 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={toggleableClassName("nonUnit")}>
 						<div className="header">Word-Final<br />Syllables</div>
-						<IonTextarea aria-label="Word-Final Syllables" disabled={doIfEditing("wordFinal", false, true)} className="serifChars" id="Syl-wordFinal" value={wordFinal} rows={calculateRows(wordFinal)} inputmode="text" placeholder="These syllables are used to end words" />
+						<IonTextarea
+							aria-label="Word-Final Syllables"
+							disabled={isEditing !== "wordFinal"}
+							className="serifChars"
+							id="Syl-wordFinal"
+							value={wordFinal}
+							rows={calculateRows(wordFinal)}
+							inputmode="text"
+							placeholder="These syllables are used to end words"
+						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordFinal" editing={syllableObject.editing} />
+							<SyllableButton prop="wordFinal" />
 						</div>
 					</IonItem>
-					<IonItem className={syllableObject.editing === "wordFinal" ? "" : "hide"}>
+					<IonItem className={isEditing === "wordFinal" ? "" : "hide"}>
 						<IonList lines="none" style={ { width: "100%" } }>
 							<IonItem className="nonUnit ion-text-end">
-								<IonToggle enableOnOffLabels onClick={() => toggleDropoff("wordFinal", swF)} labelPlacement="start" checked={swF.dropoffOverride !== undefined}>Use separate dropoff rate</IonToggle>
+								<IonToggle
+									enableOnOffLabels
+									onClick={() => toggleSeparateDropoff("wordFinal")}
+									labelPlacement="start"
+									checked={syllableDropoffOverrides.wordFinal !== undefined}
+								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordFinalDropoff" className={swF.dropoffOverride === undefined ? "hide" : "nonUnit"}>
-								<IonRange aria-label="From 0 to 50" min={0} max={50} pin={true} value={(swF.dropoffOverride === undefined ? settingsWG.charGroupRunDropoff : swF.dropoffOverride)} onIonChange={(e) => dispatch(modSyllableDropoff("wordFinal", e.target.value as Zero_Fifty))} debounce={250}>
+							<IonItem id="wordFinalDropoff" className={syllableDropoffOverrides.wordFinal === undefined ? "hide" : "nonUnit"}>
+								<IonRange
+									aria-label="From 0 to 50"
+									min={0} max={50}
+									pin={true}
+									value={(syllableDropoffOverrides.wordFinal || 0)}
+									onIonChange={(e) => dispatch(setSeparateDropoff("wordFinal", e.target.value as Zero_Fifty))}
+									debounce={250}
+								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 								</IonRange>

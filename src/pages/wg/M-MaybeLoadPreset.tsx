@@ -19,21 +19,25 @@ import {
 	closeCircleOutline,
 	closeCircleSharp
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { loadPresetWG } from '../../components/ReduxDucksFuncs';
+import { useSelector, useDispatch } from "react-redux";
+
+import WGPresets from '../../store/wgPresets';
+import { WGBasic } from '../../store/types';
+
 import { ModalProperties } from '../../components/ReduxDucksTypes';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import { loadStateWG } from '../../store/wgSlice';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
-	const maybeLoadPreset = (preset: string) => {
+	const {disableConfirms} = useSelector((state: any) => state.appSettings);
+	const maybeLoadPreset = (preset: string, object: WGBasic) => {
 		const handler = () => {
-			dispatch(loadPresetWG(preset));
+			dispatch(loadStateWG(object));
 			toaster({
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
@@ -44,7 +48,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			});
 			setIsOpen(false);
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
@@ -55,7 +59,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				handler,
 				doAlert
 			});
-	}
+		}
 	};
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
@@ -71,27 +75,11 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					<IonItem button={true} onClick={() => maybeLoadPreset('Simple')}>
-						<IonLabel>Simple</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Medium')}>
-						<IonLabel>Medium</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Complex')}>
-						<IonLabel>Complex</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Latin')}>
-						<IonLabel>Pseudo-Latin</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Greek')}>
-						<IonLabel>Pseudo-Greek</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-Chinese')}>
-						<IonLabel>Pseudo-Chinese</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Pseudo-English')}>
-						<IonLabel>Pseudo-English</IonLabel>
-					</IonItem>
+					{WGPresets.map((([title, object]) => (
+						<IonItem button={true} onClick={() => maybeLoadPreset(title, object)}>
+							<IonLabel>{title}</IonLabel>
+						</IonItem>
+					)))}
 				</IonList>
 			</IonContent>
 			<IonFooter>
