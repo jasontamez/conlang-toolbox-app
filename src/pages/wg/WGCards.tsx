@@ -15,6 +15,7 @@ import {
 	reorderTwo,
 	saveOutline
 } from 'ionicons/icons';
+
 import ltr from '../../components/LTR';
 import I from '../../components/IPA';
 import { ConceptsOutlineIcon, LexiconOutlineIcon, SyllablesIcon, TransformationsIcon } from '../../components/icons';

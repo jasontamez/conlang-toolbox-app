@@ -238,6 +238,7 @@ const wgSlice = createSlice({
 		addCharGroupWG: addCharacterGroupFunc,
 		deleteCharGroupWG: deleteCharacterGroupFunc,
 		editCharacterGroupWG: editCharacterGroupFunc,
+	// TO-DO: Import from WE
 	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		setMultipleSyllableTypes: setMultipleSyllableTypesFunc,
 		setSyllables: setSyllablesFunc,
@@ -257,14 +258,15 @@ const wgSlice = createSlice({
 		setInterrogativeSentencePost: setInterrogativeSentencePostFunc,
 		setExclamatorySentencePre: setExclamatorySentencePreFunc,
 		setExclamatorySentencePost: setExclamatorySentencePostFunc,
-	setOutput: setOutputFunc,
-	setShowSyllableBreaks: setShowSyllableBreaksFunc,
-	setSentencesPerText: setSentencesPerTextFunc,
-	setCapitalizeWords: setCapitalizeWordsFunc,
-	setSortWordlist: setSortWordlistFunc,
-	setWordlistMultiColumn: setWordlistMultiColumnFunc,
-	setWordsPerWordlist: setWordsPerWordlistFunc,
+		setOutputTypeWG: setOutputFunc,
+		setSyllableBreaksWG: setShowSyllableBreaksFunc,
+		setSentencesPerTextWG: setSentencesPerTextFunc,
+		setCapitalizeWordsWG: setCapitalizeWordsFunc,
+		setSortWordlistWG: setSortWordlistFunc,
+		setWordlistMulticolumnWG: setWordlistMultiColumnFunc,
+		setWordsPerWordlistWG: setWordsPerWordlistFunc,
 		loadStateWG: loadStateFunc,
+	// TO-DO: Determine if we're keeping this
 	setStoredCustomInfo: setStoredCustomInfoFunc
 	}
 });
@@ -292,13 +294,13 @@ export const {
 	setInterrogativeSentencePost,
 	setExclamatorySentencePre,
 	setExclamatorySentencePost,
-	setOutput,
-	setShowSyllableBreaks,
-	setSentencesPerText,
-	setCapitalizeWords,
-	setSortWordlist,
-	setWordlistMultiColumn,
-	setWordsPerWordlist,
+	setOutputTypeWG,
+	setSyllableBreaksWG,
+	setSentencesPerTextWG,
+	setCapitalizeWordsWG,
+	setSortWordlistWG,
+	setWordlistMulticolumnWG,
+	setWordsPerWordlistWG,
 	loadStateWG,
 	setStoredCustomInfo
 } = wgSlice.actions;

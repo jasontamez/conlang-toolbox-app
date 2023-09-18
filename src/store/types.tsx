@@ -409,6 +409,11 @@ export interface PageData {
 	modalPropsMaker: Function
 }
 
+export interface ModalProperties {
+	isOpen: boolean
+	setIsOpen: Function
+}
+
 export interface ExtraCharactersModalOpener {
 	isOpen: boolean
 	setIsOpen: Function

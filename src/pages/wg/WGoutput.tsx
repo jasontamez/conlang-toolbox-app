@@ -29,9 +29,10 @@ import {
 	WGCharGroupObject,
 	PageData,
 	LexiconColumn
-} from '../../components/ReduxDucksTypes';
+} from '../../store/types';
+import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
+
 import {
-	addItemstoLexiconColumn,
 	changeView
 } from '../../components/ReduxDucksFuncs';
 import { $a, $i } from '../../components/DollarSignExports';
@@ -39,9 +40,9 @@ import ModalWrap from "../../components/ModalWrap";
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
+import makeSorter from '../../components/stringSorter';
 import OutputOptionsModal from './M-OutputOptions';
 import { OutCard } from "./WGCards";
-import makeSorter from '../../components/stringSorter';
 
 async function copyText (copyString: string, doToast: Function, undoToast: Function) {
 	if(copyString) {
@@ -94,24 +95,22 @@ const WGOut = (props: PageData) => {
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const [
-		charGroupsObject,
-		syllablesObject,
-		settingsWG,
-		transforms,
 		lexColumns,
 		appSettings
 	] = useSelector((state: any) => [
-		state.wordgenCharGroups,
-		state.wordgenSyllables,
-		state.wordgenSettings,
-		state.wordgenTransforms.list,
 		state.lexicon.columns,
 		state.appSettings
 	], shallowEqual);
-	const {sortLanguage, sensitivity} = appSettings;
-	const syllToggle = syllablesObject.toggle;
-	const allSyllables = syllablesObject.objects;
+	const { sortLanguage, sensitivity } = appSettings;
 	const {
+		characterGroups,
+		multipleSyllableTypes,
+		singleWord,
+		wordInitial,
+		wordMiddle,
+		wordFinal,
+		syllableDropoffOverrides,
+		transforms,
 		monosyllablesRate,
 		maxSyllablesPerWord,
 		charGroupRunDropoff,
@@ -130,7 +129,7 @@ const WGOut = (props: PageData) => {
 		sortWordlist,
 		wordlistMultiColumn,
 		wordsPerWordlist
-	} = settingsWG;
+	} = useSelector((state: any) => state.wg);
 
 	// // //
 	// Memoized stuff
@@ -159,16 +158,16 @@ const WGOut = (props: PageData) => {
 	}, [savedWords, savedWordsObject, isPickingSaving]);
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WGCharGroupObject} = {};
-		charGroupsObject.map.forEach((o: [string, WGCharGroupObject]) => {
-			obj[o[0]] = o[1];
+		characterGroups.forEach((cg: WGCharGroupObject) => {
+			obj[cg.label!] = cg;
 		});
 		return obj;
-	}, [charGroupsObject.map]);
+	}, [characterGroups]);
 	const regExpMap = useMemo(() => {
 		// Check transforms for %CharGroup references and update them if needed
 		const newObj: { [key:string]: RegExp } = {};
 		transforms.forEach((transform: WGTransformObject) => {
-			const { seek, key } = transform;
+			const { seek, id } = transform;
 			let regex: RegExp;
 			if(transform.seek.indexOf("%") !== -1) {
 				// Found a possibility.
@@ -176,7 +175,7 @@ const WGOut = (props: PageData) => {
 			} else {
 				regex = new RegExp(seek, "g");
 			}
-			newObj[key] = regex;
+			newObj[id] = regex;
 		});
 		return newObj;
 	}, [transforms, charGroupMap]);
@@ -202,18 +201,18 @@ const WGOut = (props: PageData) => {
 		setColsNum("auto");
 		setErrorString("");
 		// Sanity check
-		if(charGroupsObject.map.length === 0) {
+		if(characterGroups.length === 0) {
 			errors.push("You have no character groups defined.");
 		}
-		if (!syllToggle && allSyllables.singleWord.components.length === 0) {
+		if (!multipleSyllableTypes && singleWord.length === 0) {
 			errors.push("You have no syllables defined.");
 		}
-		if (syllToggle &&
+		if (multipleSyllableTypes &&
 			(
-				(monosyllablesRate > 0 && allSyllables.singleWord.components.length === 0)
-				|| allSyllables.wordInitial.components.length === 0
-				|| allSyllables.wordMiddle.components.length === 0
-				|| allSyllables.wordFinal.components.length === 0
+				(monosyllablesRate > 0 && singleWord.length === 0)
+				|| wordInitial.length === 0
+				|| wordMiddle.length === 0
+				|| wordFinal.length === 0
 			)
 		) {
 			errors.push("You are missing one or more types of syllables.");
@@ -294,19 +293,25 @@ const WGOut = (props: PageData) => {
 	// Generate Syllables
 	// // //
 	const makeMonosyllable = () => {
-		return makeSyllable(allSyllables.singleWord.components, allSyllables.singleWord.dropoffOveride || syllableBoxDropoff);
+		return makeSyllable(singleWord, syllableDropoffOverrides.singleWord || syllableBoxDropoff);
 	};
 	const makeFirstSyllable = () => {
-		const o = allSyllables[syllToggle ? "wordInitial" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
+		if(!multipleSyllableTypes) {
+			return makeMonosyllable();
+		}
+		return makeSyllable(wordInitial, syllableDropoffOverrides.wordInitial || syllableBoxDropoff);
 	};
 	const makeMidSyllable = () => {
-		const o = allSyllables[syllToggle ? "wordMiddle" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
+		if(!multipleSyllableTypes) {
+			return makeMonosyllable();
+		}
+		return makeSyllable(wordMiddle, syllableDropoffOverrides.wordMiddle || syllableBoxDropoff);
 	};
 	const makeLastSyllable = () => {
-		const o = allSyllables[syllToggle ? "wordFinal" : "singleWord"];
-		return makeSyllable(o.components, o.dropoffOveride || syllableBoxDropoff);
+		if(!multipleSyllableTypes) {
+			return makeMonosyllable();
+		}
+		return makeSyllable(wordFinal, syllableDropoffOverrides.wordFinal || syllableBoxDropoff);
 	};
 	const makeSyllable = (syllList: string[], rate: number) => {
 		let chosen;
@@ -414,7 +419,7 @@ const WGOut = (props: PageData) => {
 	// // //
 	const doTransform = (word: string) => {
 		transforms.forEach((transform: WGTransformObject) => {
-			word = word.replace(regExpMap[transform.key]!, transform.replace);
+			word = word.replace(regExpMap[transform.id]!, transform.replace);
 		});
 		return word;
 	};
@@ -424,12 +429,12 @@ const WGOut = (props: PageData) => {
 	// // //
 	const getEverySyllable = async () => {
 		const result: string[] = [];
-		let syllables = allSyllables.singleWord.components
-		if(syllToggle) {
+		let syllables = singleWord
+		if(multipleSyllableTypes) {
 			syllables = syllables.concat(
-				allSyllables.wordInitial.components,
-				allSyllables.wordMiddle.components,
-				allSyllables.wordFinal.components
+				wordInitial,
+				wordMiddle,
+				wordFinal
 			);
 		}
 		syllables = syllables.map((syll: string) => ["", syll]);
@@ -582,7 +587,7 @@ const WGOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn(words, col.id));
+						dispatch(addItemstoLexiconColumn([words, col.id]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

@@ -24,10 +24,11 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { loadCustomInfoWG } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WGCustomInfo } from '../../components/ReduxDucksTypes';
+import { WGBasic, ExtraCharactersModalOpener } from '../../store/types';
+import { loadStateWG } from '../../store/wgSlice';
+
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWG } from '../../components/PersistentInfo';
@@ -44,19 +45,28 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [
-		disableConfirms,
-		settingsWG,
-		charGroups,
-		syllables,
-		transforms
-	] = useSelector((state: any) => [
-		state.appSettings.disableConfirms,
-		state.wordgenSettings,
-		state.wordgenCharGroups,
-		state.wordgenSyllables,
-		state.wordgenTransforms
-	], shallowEqual);
+	const {
+		characterGroups,
+		multipleSyllableTypes,
+		singleWord,
+		wordInitial,
+		wordMiddle,
+		wordFinal,
+		syllableDropoffOverrides,
+		transforms,
+		monosyllablesRate,
+		maxSyllablesPerWord,
+		characterGroupDropoff,
+		syllableBoxDropoff,
+		capitalizeSentences,
+		declarativeSentencePre,
+		declarativeSentencePost,
+		interrogativeSentencePre,
+		interrogativeSentencePost,
+		exclamatorySentencePre,
+		exclamatorySentencePost
+	} = useSelector((state: any) => state.wg);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
 	const customInfo: string[] = titles || [];
 	const doCleanClose = () => {
 		setTitles(null);
@@ -77,12 +87,27 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
-			const save: WGCustomInfo = [
-				charGroups,
-				syllables,
+			const save: WGBasic = {
+				characterGroups,
+				multipleSyllableTypes,
+				singleWord,
+				wordInitial,
+				wordMiddle,
+				wordFinal,
+				syllableDropoffOverrides,
 				transforms,
-				{...settingsWG}
-			];
+				monosyllablesRate,
+				maxSyllablesPerWord,
+				characterGroupDropoff,
+				syllableBoxDropoff,
+				capitalizeSentences,
+				declarativeSentencePre,
+				declarativeSentencePost,
+				interrogativeSentencePre,
+				interrogativeSentencePost,
+				exclamatorySentencePre,
+				exclamatorySentencePost
+			};
 			CustomStorageWG.setItem(title, save).then(() => {
 				toaster({
 					message: `"${title}" ${msg}`,
@@ -115,7 +140,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		const handler = () => {
 			CustomStorageWG.getItem(title).then((value: any) => {
 				if(value) {
-					dispatch(loadCustomInfoWG(value as WGCustomInfo));
+					dispatch(loadStateWG(value as WGBasic));
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
