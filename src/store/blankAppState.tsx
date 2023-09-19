@@ -1,16 +1,4 @@
-import { StateObject, WEState } from "./types";
-
-const we: WEState = {
-	input: "",
-	characterGroups: [],
-	transforms: [],
-	soundChanges: [],
-	outputStyle: "outputOnly",
-	inputLower: false,
-	inputAlpha: true,
-	storedCustomInfo: {},
-	storedCustomIDs: []
-};
+import { StateObject } from "./types";
 
 const blankAppState: StateObject = {
 	ms: {
@@ -226,7 +214,17 @@ const blankAppState: StateObject = {
 		storedCustomInfo: {},
 		storedCustomIDs: []
 	},
-	we,
+	we: {
+		input: "",
+		characterGroups: [],
+		transforms: [],
+		soundChanges: [],
+		outputStyle: "outputOnly",
+		inputLower: false,
+		inputAlpha: true,
+		storedCustomInfo: {},
+		storedCustomIDs: []
+	},
 	lexicon: {
 		id: "",
 		lastSave: 0,
@@ -272,46 +270,10 @@ const blankAppState: StateObject = {
 		nowShowing: "Favorites"
 	},
 	appSettings: {
-		menuToggleName: '',
 		theme: 'Default',
 		disableConfirms: false,
-		sizeName: "sm",
-		sizes: {
-			xs: {
-				base: "sm",
-				lg: "md",
-				xl: "lg"
-			},
-			sm: {
-				base: "md",
-				lg: "lg",
-				xl: "xl"
-			},
-			md: {
-				base: "lg",
-				lg: "xl",
-				xl: "2xl"
-			},
-			lg: {
-				base: "xl",
-				lg: "2xl",
-				xl: "3xl"
-			},
-			xl: {
-				base: "2xl",
-				lg: "3xl",
-				xl: "4xl"
-			},
-			x2: {
-				base: "3xl",
-				lg: "4xl",
-				xl: "5xl"
-			}
-		},
-		hasCheckedForOldCustomInfo: false
-	},
-	history: {
-		history: []
+		sortLanguage: "en",
+		sensitivity: undefined
 	}
 };
 

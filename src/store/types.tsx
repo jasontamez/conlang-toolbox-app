@@ -415,6 +415,23 @@ export interface ExtraCharactersState {
 // SETTINGS
 //
 
+export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Solarized Dark";
+
+export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
+
+export interface AppSettings {
+	theme: ThemeNames
+	disableConfirms: boolean
+	// to be used later
+	sensitivity: SearchSensitivity
+	// set automatically, not by user:
+	sortLanguage: string
+}
+
+//
+// MAIN
+//
+
 export interface StateObject {
 	wg: WGState
 	we: WEState
@@ -422,8 +439,7 @@ export interface StateObject {
 	lexicon: LexiconState
 	concepts: ConceptsState
 	ec: ExtraCharactersState
-	appSettings: { [key: string]: any }
-	history: { [key: string]: any }
+	appSettings: AppSettings
 }
 
 export type Action = { payload: any }

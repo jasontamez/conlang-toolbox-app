@@ -19,8 +19,9 @@ import {
 	checkmarkCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { changeTheme } from '../components/ReduxDucksFuncs';
-import { ModalProperties } from '../components/ReduxDucksTypes';
+
+import { setTheme } from '../store/settingsSlice';
+import { ThemeNames, ModalProperties } from '../store/types';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
@@ -30,11 +31,11 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 		setIsOpen(false);
 	};
 	const appTheme = settings.theme || "Default";
-	const changeAppTheme = (theme: string) => {
-		dispatch(changeTheme(theme));
+	const changeAppTheme = (theme: ThemeNames) => {
+		dispatch(setTheme(theme));
 		setIsOpen(false);
 	};
-	const themes = [
+	const themes: ThemeNames[] = [
 		"Default",
 		"Light",
 		"Dark",
