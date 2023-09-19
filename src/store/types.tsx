@@ -386,6 +386,31 @@ export interface ConceptsState {
 // EXTRA CHARACTERS
 //
 
+export interface ExtraCharactersInfo {
+	[key: string]: string
+}
+
+export type ExtraCharactersList = string[];
+
+export type ExtraCharactersGroup = {
+	[key: string]: ExtraCharactersList
+}
+
+export type ExtraCharactersDisplayName = keyof ExtraCharactersGroup | "Favorites";
+
+export interface ExtraCharactersObject {
+	objects: ExtraCharactersGroup
+	contents: (ExtraCharactersDisplayName)[]
+	charactersInfo: ExtraCharactersInfo
+}
+export interface ExtraCharactersState {
+	faves: ExtraCharactersList,
+	toCopy: string,
+	copyImmediately: boolean
+	showNames: boolean
+	nowShowing: ExtraCharactersDisplayName
+}
+
 //
 // SETTINGS
 //
@@ -396,7 +421,7 @@ export interface StateObject {
 	ms: MSState
 	lexicon: LexiconState
 	concepts: ConceptsState
-	ec: { [key: string]: any }
+	ec: ExtraCharactersState
 	appSettings: { [key: string]: any }
 	history: { [key: string]: any }
 }

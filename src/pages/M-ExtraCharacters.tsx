@@ -23,17 +23,13 @@ import {
 	readerOutline,
 	heartOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import capitalize from 'capitalize';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { ExtraCharactersGroup, ModalProperties } from '../components/ReduxDucksTypes';
-import {
-	updateExtraCharsDisplay,
-	updateExtraCharsFavorites,
-	toggleExtraCharsBoolean,
-	updateExtraCharsToBeSaved
-} from '../components/ReduxDucksFuncs';
+import { ExtraCharactersDisplayName, ModalProperties } from '../store/types';
+import { setFaves, setNowShowing, setToCopy, toggleCopyImmediately, toggleShowNames } from '../store/extraCharactersSlice';
+
 import charData from '../components/ExtraCharactersData';
 import debounce from '../components/Debounce';
 import toaster from '../components/toaster';
@@ -59,14 +55,14 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const {
 		display,
 		saved,
-		showHelp,
 		copyImmediately,
 		copyLater,
 		showNames
-	} = useSelector((state: any) => state.extraCharactersState, shallowEqual);
+	} = useSelector((state: any) => state.ec);
 	const data: string[] = display === "Favorites" ? saved : objects[display] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
+	const [showHelp, setShowHelp] = useState<boolean>(false);
 	const [doToast, undoToast] = useIonToast();
 
 	useEffect(() => {
@@ -77,21 +73,20 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 
 	const cancel = useCallback(() => {
 		setIsOpen(false);
-		showHelp && dispatch(toggleExtraCharsBoolean("showHelp"));
-	}, [dispatch, showHelp, setIsOpen]);
-	const toggleChars = useCallback((what: keyof ExtraCharactersGroup | "Favorites") => {
+	}, [setIsOpen]);
+	const toggleChars = useCallback((what: ExtraCharactersDisplayName) => {
 		if(display !== what) {
-			dispatch(updateExtraCharsDisplay(what));
+			dispatch(setNowShowing(what));
 		}
 	}, [dispatch, display]);
 	const toggleFave = useCallback((char) => {
 		if(!currentFaves[char]) {
 			// New fave
-			dispatch(updateExtraCharsFavorites([...saved, char]));
+			dispatch(setFaves([...saved, char]));
 			return;
 		}
 		// Deleting fave
-		dispatch(updateExtraCharsFavorites(saved.filter((fave: string) => fave !== char)));
+		dispatch(setFaves(saved.filter((fave: string) => fave !== char)));
 	}, [currentFaves, saved, dispatch]);
 	const copyNow = useCallback((char) => {
 		Clipboard.write({string: char}).then(() => toaster({
@@ -103,7 +98,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		}));
 	}, [doToast, undoToast]);
 	const saveToBeCopied = useCallback((char) => {
-		dispatch(updateExtraCharsToBeSaved(copyLater + char));
+		dispatch(setToCopy(copyLater + char));
 	}, [dispatch, copyLater]);
 	const characterClicked = useCallback(async (char: string) => {
 		if(isFavoriting) {
@@ -116,20 +111,18 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			saveToBeCopied(char);
 		}
 	}, [toggleFave, copyImmediately, isFavoriting, copyNow, saveToBeCopied]);
-	const toggleOption = useCallback((what: "showNames" | "copyImmediately" | "showHelp") => {
-		dispatch(toggleExtraCharsBoolean(what));
-		if(what === "copyImmediately") {
-			toaster({
-				message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
-				duration: 2500,
-				position: "top",
-				doToast,
-				undoToast
-			});
-		}
+	const toggleCopy = useCallback(() => {
+		toaster({
+			message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
+			duration: 2500,
+			position: "top",
+			doToast,
+			undoToast
+		});
+		dispatch(toggleCopyImmediately());
 	}, [dispatch, copyImmediately, doToast, undoToast]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
-		debounce(dispatch, [updateExtraCharsToBeSaved(toCopy)], 250, "copyExtraChars");
+		debounce(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue) => {
 		setIsFavoriting(newValue);
@@ -147,7 +140,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>Extra Characters</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => toggleOption("showHelp")} color={showHelp ? "secondary" : undefined} fill={showHelp ? "solid" : "clear"}>
+						<IonButton onClick={() => setShowHelp(!showHelp)} color={showHelp ? "secondary" : undefined} fill={showHelp ? "solid" : "clear"}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -167,14 +160,14 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						</div>
 					</IonItem>
 					<IonItem className={"inputItem" + (copyImmediately ? "" : " sticky")}>
-						<IonButton size="default" slot="start" disabled={isFavoriting} onClick={() => toggleOption("copyImmediately")} color={copyImmediately ? "secondary" : undefined} fill={copyImmediately ? "solid" : "clear"}>
+						<IonButton size="default" slot="start" disabled={isFavoriting} onClick={() => toggleCopy()} color={copyImmediately ? "secondary" : undefined} fill={copyImmediately ? "solid" : "clear"}>
 							<IonIcon icon={copyOutline} />
 						</IonButton>
 						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => toggleFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
 							<IonIcon icon={heartOutline} />
 						</IonButton>
 						<IonInput aria-label="Characters to be copied" id="toBeCopied" value={copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
-						<IonButton size="default" slot="end" onClick={() => toggleOption("showNames")} color={showNames ? "secondary" : undefined} fill={showNames ? "solid" : "clear"}>
+						<IonButton size="default" slot="end" onClick={() => dispatch(toggleShowNames())} color={showNames ? "secondary" : undefined} fill={showNames ? "solid" : "clear"}>
 							<IonIcon icon={readerOutline} />
 						</IonButton>
 					</IonItem>
