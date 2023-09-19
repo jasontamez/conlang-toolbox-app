@@ -33,10 +33,9 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, WESoundChangeObject } from '../../store/types';
-import { deleteSoundChangeWE } from '../../store/weSlice';
+import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
 
 import {
-	reorderSoundChangesWE,
 	changeView
 } from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
@@ -109,7 +108,7 @@ const WERew = (props: PageData) => {
 		};
 		const ed = event.detail;
 		const reorganized = reorganize(soundChanges, ed.from, ed.to);
-		dispatch(reorderSoundChangesWE(reorganized));
+		dispatch(rearrangeSoundChangesWE(reorganized));
 		ed.complete();
 	};
 	return (

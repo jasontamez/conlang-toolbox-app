@@ -57,6 +57,7 @@ const morphoSyntaxSlice = createSlice({
 		setSyntaxNum: setSyntaxNumFunc,
 		setSyntaxText: setSyntaxTextFunc,
 		setMorphoSyntax: setMorphoSyntaxFunc,
+	// TO-DO: stored custom info?
 	setStoredCustomInfo: setStoredCustomInfoFunc
 	}
 });

@@ -210,8 +210,9 @@ const lexiconSlice = createSlice({
 		updateLexiconSort: updateLexiconSortFunc,
 		updateLexiconSortDir: updateLexiconSortDirFunc,
 		toggleLexiconWrap: toggleLexiconWrapFunc,
-			setFontType: setFontTypeFunc,
-			setStoredCustomInfo: setStoredCustomInfoFunc,
+	// TO-DO: custom info, font settings?
+	setFontType: setFontTypeFunc,
+	setStoredCustomInfo: setStoredCustomInfoFunc,
 		mergeLexiconItems: mergeLexiconItemsFunc,
 		updateLexiconColumarInfo: updateLexiconColumarInfoFunc
 	}
@@ -228,8 +229,8 @@ export const {
 	updateLexiconSort,
 	updateLexiconSortDir,
 	toggleLexiconWrap,
-		setFontType,
-		setStoredCustomInfo,
+setFontType,
+setStoredCustomInfo,
 	mergeLexiconItems,
 	updateLexiconColumarInfo
 } = lexiconSlice.actions;
