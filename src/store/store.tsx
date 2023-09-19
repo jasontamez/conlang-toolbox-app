@@ -19,23 +19,20 @@ let initialAppState = {...blankAppState};
 //
 //
 
-const getStoreInfo = () => {
-	const reducerConfig = {
-		// SLICES here
-		appSettings: settingsSlice,
-		we: weSlice,
-		wg: wgSlice,
-		ms: msSlice,
-		concepts: conceptsSlice,
-		lexicon: lexiconSlice,
-		ec: extraCharactersSlice,
-	};
-	const reducer = combineReducers(reducerConfig);
-	const store = configureStore({
-		reducer: reducer,
-		preloadedState: initialAppState
-	});
-	return store;
+const reducerConfig = {
+	// SLICES here
+	appSettings: settingsSlice,
+	we: weSlice,
+	wg: wgSlice,
+	ms: msSlice,
+	concepts: conceptsSlice,
+	lexicon: lexiconSlice,
+	ec: extraCharactersSlice,
 };
+const reducer = combineReducers(reducerConfig);
+const store = configureStore({
+	reducer: reducer,
+	preloadedState: initialAppState
+});
 
-export default getStoreInfo;
+export default store;
