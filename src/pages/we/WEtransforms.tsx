@@ -30,23 +30,23 @@ import {
 	trash,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { PageData, WETransformObject } from '../../components/ReduxDucksTypes';
+import { useSelector, useDispatch } from "react-redux";
+
+import { PageData, WETransformObject } from '../../store/types';
+import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
 import {
-	startEditTransformWE,
-	deleteTransformWE,
-	reorderTransformsWE,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-import AddTransformModal from './M-AddTransform';
-import EditTransformModal from './M-EditTransform';
-import { TraCard } from "./WECards";
+
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import AddTransformModal from './M-AddTransform';
+import EditTransformModal from './M-EditTransform';
+import { TraCard } from "./WECards";
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -55,17 +55,18 @@ const WERew = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
+	const [ editing, setEditing ] = useState<WETransformObject | null>(null);
 	const viewInfo = ['we', 'transformations'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [transformObject, disableConfirms] = useSelector((state: any) => [state.wordevolveTransforms, state.appSettings.disableConfirms], shallowEqual);
-	const transform = transformObject.list;
-	const editTransform = (label: any) => {
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { transforms } = useSelector((state: any) => state.we);
+	const editTransform = (transform: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
-		dispatch(startEditTransformWE(label));
+		setEditing(transform);
 		setIsOpenEditTransform(true);
 	};
 	const makeArrow = (dir: string) => {
@@ -76,7 +77,7 @@ const WERew = (props: PageData) => {
 		}
 		return "⟵";
 	};
-	const makeDeclaration = (dir: string) => {
+	const makeDescriptionOfDirection = (dir: string) => {
 		switch(dir) {
 			case "both":
 				return "at input, then undo at output";
@@ -92,7 +93,7 @@ const WERew = (props: PageData) => {
 	const maybeDeleteTransform = (trans: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
-			dispatch(deleteTransformWE(trans));
+			dispatch(deleteTransformWE(trans.id));
 			toaster({
 				message: "Transform deleted.",
 				duration: 2500,
@@ -123,14 +124,19 @@ const WERew = (props: PageData) => {
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
-		const reorganized = reorganize(transform, ed.from, ed.to);
-		dispatch(reorderTransformsWE(reorganized));
+		const reorganized = reorganize(transforms, ed.from, ed.to);
+		dispatch(rearrangeTransformsWE(reorganized));
 		ed.complete();
 	};
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpenECM} />
-			<EditTransformModal {...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)} openECM={setIsOpenECM} />
+			<EditTransformModal
+				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+				openECM={setIsOpenECM}
+				editing={editing}
+				setEditing={setEditing}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><TraCard /></ModalWrap>
 			<IonHeader>
@@ -152,12 +158,12 @@ const WERew = (props: PageData) => {
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
-						{transform.map((trans: WETransformObject) => {
-							const { key, seek, direction, replace, description } = trans;
+						{transforms.map((trans: WETransformObject) => {
+							const { id, seek, direction, replace, description } = trans;
 							return (
-								<IonItemSliding key={key}>
+								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editTransform(key)}>
+										<IonItemOption color="primary" onClick={() => editTransform(trans)}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
 										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(trans)}>
@@ -171,7 +177,7 @@ const WERew = (props: PageData) => {
 												<span className="seek importantUnit">{seek}</span>
 												<span className="arrow unimportantUnit">{makeArrow(direction)}</span>
 												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
-												<span className="unimportantUnit">{makeDeclaration(direction)}</span>
+												<span className="unimportantUnit">{makeDescriptionOfDirection(direction)}</span>
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>

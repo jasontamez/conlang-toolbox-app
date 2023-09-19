@@ -24,10 +24,11 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { loadCustomInfoWE } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener, WECustomInfo } from '../../components/ReduxDucksTypes';
+import { WEPresetObject, ExtraCharactersModalOpener } from '../../store/types';
+import { loadStateWE } from '../../store/weSlice';
+
 import escape from '../../components/EscapeForHTML';
 import { $i } from '../../components/DollarSignExports';
 import { CustomStorageWE } from '../../components/PersistentInfo';
@@ -42,17 +43,8 @@ interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
-	const [
-		settings,
-		charGroups,
-		transforms,
-		soundchanges
-	] = useSelector((state: any) => [
-		state.appSettings,
-		state.wordevolveCharGroups,
-		state.wordevolveTransforms,
-		state.wordevolveSoundChanges
-	], shallowEqual);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { characterGroups, transforms, soundChanges } = useSelector((state: any) => state.we)
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const doCleanClose = () => {
@@ -73,11 +65,17 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
-			const save: WECustomInfo = [
-				charGroups,
+			// TO-DO: convert old storage to new format
+			//const save: WECustomInfo = [
+			//	charGroups,
+			//	transforms,
+			//	soundchanges
+			//];
+			const save: WEPresetObject = {
+				characterGroups,
 				transforms,
-				soundchanges
-			];
+				soundChanges
+			}
 			CustomStorageWE.setItem(title, save).then(() => {
 				toaster({
 					message: `"${title}" ${msg}`,
@@ -93,7 +91,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		CustomStorageWE.getItem(title).then((value: any) => {
 			if(!value) {
 				doSave(title);
-			} else if (settings.disableConfirms) {
+			} else if (disableConfirms) {
 				doSave(title, "overwritten");
 			} else {
 				yesNoAlert({
@@ -111,7 +109,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		const handler = () => {
 			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
-					dispatch(loadCustomInfoWE(value as WECustomInfo));
+					dispatch(loadStateWE(value as WEPresetObject));
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
@@ -134,7 +132,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				}
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
@@ -161,7 +159,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				});
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
@@ -196,8 +194,19 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 							<IonLabel>Save Current Info</IonLabel>
 						</IonItemDivider>
 						<IonItem>
-							<IonInput aria-label="Custom Info Name" id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
-							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
+							<IonInput
+								aria-label="Custom Info Name"
+								id="currentInfoSaveName"
+								inputmode="text"
+								placeholder="Name your custom info"
+								type="text"
+							/>
+							<IonButton
+								slot="end"
+								onClick={() => maybeSaveInfo()}
+								strong={true}
+								color="success"
+							>Save</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
@@ -211,8 +220,19 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 								return (
 									<IonItem key={title}>
 										<IonLabel className="ion-text-wrap">{title}</IonLabel>
-										<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
-										<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
+										<IonButton
+											style={ { margin: "0 1em"} }
+											slot="end"
+											color="warning"
+											onClick={() => maybeLoadInfo(title)}
+											strong={true}
+										>Load</IonButton>
+										<IonButton
+											className="ion-no-margin"
+											slot="end"
+											color="danger"
+											onClick={() => maybeDeleteInfo(title)}
+										><IonIcon icon={trashOutline} /></IonButton>
 									</IonItem>
 								);
 							})

@@ -30,23 +30,24 @@ import {
 	trash,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { PageData, WESoundChangeObject } from '../../components/ReduxDucksTypes';
+import { useSelector, useDispatch } from "react-redux";
+
+import { PageData, WESoundChangeObject } from '../../store/types';
+import { deleteSoundChangeWE } from '../../store/weSlice';
+
 import {
-	startEditSoundChangeWE,
-	deleteSoundChangeWE,
 	reorderSoundChangesWE,
 	changeView
 } from '../../components/ReduxDucksFuncs';
-import AddSoundChangeModal from './M-AddSoundChange';
-import EditSoundChangeModal from './M-EditSoundChange';
-import { SChCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import AddSoundChangeModal from './M-AddSoundChange';
+import EditSoundChangeModal from './M-EditSoundChange';
+import { SChCard } from "./WECards";
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -55,17 +56,18 @@ const WERew = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
 	const [isOpenEditSoundChange, setIsOpenEditSoundChange] = useState<boolean>(false);
+	const [editing, setEditing] = useState<null | WESoundChangeObject>(null);
 	const viewInfo = ['we', 'soundchanges'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [soundChangeObject, disableConfirms] = useSelector((state: any) => [state.wordevolveSoundChanges, state.appSettings.disableConfirms], shallowEqual);
-	const soundChange = soundChangeObject.list;
-	const editSoundChange = (label: any) => {
+	const {disableConfirms} = useSelector((state: any) => state.appSettings);
+	const soundChanges = useSelector((state: any) => state.we);
+	const editSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
-		dispatch(startEditSoundChangeWE(label));
+		setEditing(change)
 		setIsOpenEditSoundChange(true);
 	};
 	const arrow = (ltr() ? "⟶" : "⟵");
@@ -106,14 +108,19 @@ const WERew = (props: PageData) => {
 			return remains.slice(0, to).concat(moved, remains.slice(to));
 		};
 		const ed = event.detail;
-		const reorganized = reorganize(soundChange, ed.from, ed.to);
+		const reorganized = reorganize(soundChanges, ed.from, ed.to);
 		dispatch(reorderSoundChangesWE(reorganized));
 		ed.complete();
 	};
 	return (
 		<IonPage>
 			<AddSoundChangeModal {...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)} openECM={setIsOpenECM} />
-			<EditSoundChangeModal {...props.modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)} openECM={setIsOpenECM} />
+			<EditSoundChangeModal
+				{...props.modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
+				openECM={setIsOpenECM}
+				editing={editing}
+				setEditing={setEditing}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><SChCard /></ModalWrap>
 			<IonHeader>
@@ -135,12 +142,12 @@ const WERew = (props: PageData) => {
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="soundChanges units dragArea" lines="none">
 					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
-						{soundChange.map((change: WESoundChangeObject) => {
-							const { key, seek, replace, context, anticontext, description } = change;
+						{soundChanges.map((change: WESoundChangeObject) => {
+							const { id, seek, replace, context, anticontext, description } = change;
 							return (
-								<IonItemSliding key={key}>
+								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editSoundChange(key)}>
+										<IonItemOption color="primary" onClick={() => editSoundChange(change)}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
 										<IonItemOption color="danger" onClick={() => maybeDeleteSoundChange(change)}>
@@ -161,7 +168,7 @@ const WERew = (props: PageData) => {
 														<span className="unimportantUnit">!</span>
 														<span className="replace importantUnit">{anticontext}</span>
 													</span>
-												) : ""}
+												) : <></>}
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>

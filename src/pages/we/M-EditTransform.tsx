@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -25,64 +25,51 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WETransformObject } from '../../components/ReduxDucksTypes';
-import {
-	doEditTransformWE,
-	cancelEditTransformWE,
-	deleteTransformWE
-} from '../../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, WETransformDirection, WETransformObject } from '../../store/types';
+import { editTransformWE, deleteTransformWE } from '../../store/weSlice';
+
 import { $i, $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-const EditTransformModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface ModalProps extends ExtraCharactersModalOpener {
+	editing: null | WETransformObject
+	setEditing: Function
+}
+
+const EditTransformModal = (props: ModalProps) => {
+	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [
-		transformsObject,
-		settings
-	] = useSelector((state: any) => [
-		state.wordevolveTransforms,
-		state.appSettings
-	], shallowEqual);
-	const editing = transformsObject.editing;
 
-	const [ editSearchExWE, setEditSearchExWE ] = useState<HTMLInputElement | null>(null);
-	const [ editReplaceExWE, setEditReplaceExWE ] = useState<HTMLInputElement | null>(null);
-	const [ editOptDescWE, setEditOptDescWE ] = useState<HTMLInputElement | null>(null);
-	const [ direction, setDirection] = useState<"both" | "in" | "out" | "double">("both");
-	const [ currentTransform, setCurrentTransform] = useState<WETransformObject | null>(null);
-	const loadInfo = () => {
-		const searchEl = $i("editSearchExWE");
-		const replaceEl = $i("editReplaceExWE");
-		const descEl = $i("editOptDescWE");
-		setEditSearchExWE(searchEl || null);
-		setEditReplaceExWE(replaceEl || null);
-		setEditOptDescWE(descEl || null);
-		searchEl && (searchEl.value = "");
-		replaceEl && (replaceEl.value = "");
-		descEl && (descEl.value = "");
-		transformsObject.list.forEach((obj: WETransformObject) => {
-			const {key, seek, replace, description, direction} = obj;
-			if(key === editing) {
-				searchEl && (searchEl.value = seek);
-				replaceEl && (replaceEl.value = replace);
-				descEl && (descEl.value = description);
-				setDirection(direction);
-				setCurrentTransform(obj);
-			}
-		});
-	};
+	const [ direction, setDirection ] = useState<WETransformDirection>("both");
+	const searchEl = $i("editSearchExWE");
+	const replaceEl = $i("editReplaceExWE");
+	const descEl = $i("editOptDescWE");
+	useEffect(() => {
+		if(editing) {
+			const { seek, replace, description, direction } = editing;
+			searchEl && (searchEl.value = seek);
+			replaceEl && (replaceEl.value = replace);
+			descEl && (descEl.value = description);
+			setDirection(direction);
+		} else {
+			searchEl && (searchEl.value = "");
+			replaceEl && (replaceEl.value = "");
+			descEl && (descEl.value = "");	
+		}
+	}, [editing, isOpen, searchEl, replaceEl, descEl]);
+	//const { transforms } = useSelector((state: any) => state.we)
+	const { disableConfirms } = useSelector((state: any) => state.appSettings)
 
 
 	const cancelEditing = () => {
-		dispatch(cancelEditTransformWE(editing));
 		setIsOpen(false);
+		setEditing(null);
 	};
 	function resetError(prop: string) {
 		// Remove danger color if present
@@ -93,7 +80,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 	const maybeSaveNewTransformInfo = () => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
-		const seek = editSearchExWE!.value || "";
+		const seek = (searchEl && searchEl.value) || "";
 		if(seek === "") {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
@@ -113,16 +100,16 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		const replace = editReplaceExWE!.value || "";
-		const description = editOptDescWE!.value.trim() || "";
-		setIsOpen(false);
-		dispatch(doEditTransformWE({
-			key: currentTransform!.key,
+		const replace = (replaceEl && replaceEl.value) || "";
+		const description = (descEl && descEl.value.trim()) || "";
+		dispatch(editTransformWE({
+			id: editing!.id,
 			seek,
 			replace,
 			direction,
 			description
 		}));
+		cancelEditing();
 		toaster({
 			message: "Transform saved!",
 			duration: 2500,
@@ -136,8 +123,8 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
-			setIsOpen(false);
-			dispatch(deleteTransformWE(currentTransform!));
+			dispatch(deleteTransformWE(editing!.id));
+			cancelEditing();
 			toaster({
 				message: "Transform deleted.",
 				duration: 2500,
@@ -147,10 +134,10 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 				undoToast
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
-			const { seek, direction, replace } = currentTransform!;
+			const { seek, direction, replace } = editing!;
 			yesNoAlert({
 				header: `${seek} ${makeArrow(direction)} ${replace}`,
 				message: "Are you sure you want to delete this? This cannot be undone.",
@@ -162,7 +149,7 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={() => loadInfo()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
@@ -182,24 +169,41 @@ const EditTransformModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Input Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Input expression" id="editSearchExWE" className="ion-margin-top serifChars" onIonChange={e => resetError("seek")}></IonInput>
+						<IonInput
+							aria-label="Input expression"
+							id="editSearchExWE"
+							className="ion-margin-top serifChars"
+							onIonChange={e => resetError("seek")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Output expression" id="editReplaceExWE" className="ion-margin-top serifChars"></IonInput>
+						<IonInput
+							aria-label="Output expression"
+							id="editReplaceExWE"
+							className="ion-margin-top serifChars"
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transform Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Description of the transform" id="editOptDescWE" className="ion-margin-top" placeholder="(optional)"></IonInput>
+						<IonInput
+							aria-label="Description of the transform"
+							id="editOptDescWE"
+							className="ion-margin-top"
+							placeholder="(optional)"
+						></IonInput>
 					</IonItem>
 					<IonItemDivider>
 						<IonLabel>Transform Direction:</IonLabel>
 					</IonItemDivider>
-					<IonRadioGroup value={direction} onIonChange={e => setDirection(e.detail.value as "both" | "in" | "out" | "double")}>
+					<IonRadioGroup
+						value={direction}
+						onIonChange={e => setDirection(e.detail.value as WETransformDirection)}
+					>
 						<IonItem>
 							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
 						</IonItem>

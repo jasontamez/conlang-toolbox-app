@@ -22,11 +22,13 @@ import {
 	globeOutline
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
-import { addSoundChangeWE } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { v4 as uuidv4 } from 'uuid';
+
+import { addSoundChangeWE } from '../../store/weSlice';
+import { ExtraCharactersModalOpener } from '../../store/types';
+
 import { $q, $a, $i } from '../../components/DollarSignExports';
 import repairRegexErrors from '../../components/RepairRegex';
-import { v4 as uuidv4 } from 'uuid';
 import toaster from '../../components/toaster';
 
 const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
@@ -96,7 +98,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		const description = $i("optDescWESC").value.trim() || "";
 		close && setIsOpen(false);
 		dispatch(addSoundChangeWE({
-			key: uuidv4(),
+			id: uuidv4(),
 			seek: repairRegexErrors(seek),
 			replace,
 			context: repairRegexErrors(context),
@@ -134,31 +136,59 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Search Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Search Expression" id="searchExWESC" className="ion-margin-top serifChars" placeholder="Sound..." onIonChange={e => resetError("seek")}></IonInput>
+						<IonInput
+							aria-label="Search Expression"
+							id="searchExWESC"
+							className="ion-margin-top serifChars"
+							placeholder="Sound..."
+							onIonChange={e => resetError("seek")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Replace Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Replace Expression" id="replaceExWESC" className="ion-margin-top serifChars" placeholder="Changes into..."></IonInput>
+						<IonInput
+							aria-label="Replace Expression"
+							id="replaceExWESC"
+							className="ion-margin-top serifChars"
+							placeholder="Changes into..."
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="contextLabel">Context Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Context Expression" id="contextExWESC" className="ion-margin-top serifChars" placeholder="Where the change takes place" onIonChange={e => resetError("context")}></IonInput>
+						<IonInput
+							aria-label="Context Expression"
+							id="contextExWESC"
+							className="ion-margin-top serifChars"
+							placeholder="Where the change takes place"
+							onIonChange={e => resetError("context")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Anticontext Expression" id="antiExWESC" className="ion-margin-top serifChars" placeholder="Where it doesn't" onIonChange={e => resetError("anticontext")}></IonInput>
+						<IonInput
+							aria-label="Anticontext Expression"
+							id="antiExWESC"
+							className="ion-margin-top serifChars"
+							placeholder="Where it doesn't"
+							onIonChange={e => resetError("anticontext")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Sound Change Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Sound Change Description" id="optDescWESC" className="ion-margin-top" placeholder="(optional)"></IonInput>
+						<IonInput
+							aria-label="Sound Change Description"
+							id="optDescWESC"
+							className="ion-margin-top"
+							placeholder="(optional)"
+						></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

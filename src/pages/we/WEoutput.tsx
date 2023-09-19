@@ -15,11 +15,7 @@ import {
 	useIonToast,
 	useIonRouter
 } from '@ionic/react';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	changeView,
-	addItemstoLexiconColumn
-} from '../../components/ReduxDucksFuncs';
+import { useSelector, useDispatch } from "react-redux";
 import {
 	helpCircleOutline,
 	caretForwardCircleOutline,
@@ -32,9 +28,14 @@ import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { Clipboard } from '@capacitor/clipboard';
 
+import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
+import {
+	changeView,
+	addItemstoLexiconColumn
+} from '../../components/ReduxDucksFuncs';
+
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
-import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
 import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import ModalWrap from "../../components/ModalWrap";
@@ -105,31 +106,26 @@ const WEOut = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
-	const [
-		outputType,
-		rawInput,
-		transformObject,
-		soundChangesObject,
-		charGroupsWE,
-		lexColumns
-	] = useSelector((state: any) => [
-		state.wordevolveSettings.output,
-		state.wordevolveInput,
-		state.wordevolveTransforms,
-		state.wordevolveSoundChanges,
-		state.wordevolveCharGroups,
-		state.lexicon.columns
-	], shallowEqual);
-	const transforms: WETransformObject[] = transformObject.list;
-	const soundChanges: WESoundChangeObject[] = soundChangesObject.list;
+	const {
+		input,
+		characterGroups,
+		transforms,
+		soundChanges,
+		outputStyle,
+// TO-DO: use these two properties, make a modal to set them?
+//		inputLower,
+//		inputAlpha
+	} = useSelector((state: any) => state.we);
+	const { columns } = useSelector((state: any) => state.lexicon);
+	const rawInput = input.split(/\n/);
 
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WECharGroupObject} = {};
-		charGroupsWE.map.forEach((o: [string, WECharGroupObject]) => {
-			obj[o[0]] = o[1];
+		characterGroups.forEach((o: WECharGroupObject) => {
+			obj[o.label!] = o;
 		});
 		return obj;
-	}, [charGroupsWE.map]);
+	}, [characterGroups]);
 	const transformsMap = useMemo(() => {
 		// Check transforms for %CharGroup references and update them if needed
 		const newObj: { [key:string]: RegExp[] } = {};
@@ -356,7 +352,7 @@ const WEOut = (props: PageData) => {
 	useEffect(() => {
 		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
 		setNeedToGenerate(true);
-	}, [outputType, rawInput, transformObject, soundChangesObject, charGroupsWE]);
+	}, [outputStyle, input, transforms, soundChanges, characterGroups]);
 
 	const evolveOutput = () => {
 		if(!needToGenerate) {
@@ -385,10 +381,10 @@ const WEOut = (props: PageData) => {
 		// Add to screen.
 		const arrowLR = "⟶";
 		const arrowRL = "⟵";
-		const reverse = (outputType === "outputFirst");
+		const reverse = (outputStyle === "outputFirst");
 		const arrow = (ltr($i("outputPaneWE") || document) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
 		let setter: Function = setDisplayOutputInput;
-		switch(outputType) {
+		switch(outputStyle) {
 			case "outputOnly":
 				// [word...]
 				const evolved = changeTheWords({input: rawInput});
@@ -682,7 +678,7 @@ const WEOut = (props: PageData) => {
 		if (isPickingSaving) {
 			// Stop saving
 			return donePickingAndSaving();
-		} else if(lexColumns.length === 0) {
+		} else if(columns.length === 0) {
 			return toaster({
 				message: "You need to add columns to the Lexicon before you can add anything to it.",
 				color: "danger",
@@ -705,7 +701,7 @@ const WEOut = (props: PageData) => {
 		doAlert({
 			header: "Select a column",
 			message: "Your selected words will be added to the Lexicon under that column.",
-			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
+			inputs: columns.map((col: LexiconColumn, i: number) => {
 				return {
 					type: 'radio',
 					label: col.label,

@@ -22,10 +22,11 @@ import {
 	chevronBackOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WECharGroupMap } from '../../components/ReduxDucksTypes';
-import { addCharGroupWE } from '../../components/ReduxDucksFuncs';
+import { WECharGroupObject, ExtraCharactersModalOpener } from '../../store/types';
+import { addCharacterGroupWE } from '../../store/weSlice';
+
 import { $q, $a, $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
@@ -35,9 +36,9 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const charGroupMap: { [key: string]: boolean } = {};
-	const charGroupObject = useSelector((state: any) => state.wordevolveCharGroups.map, shallowEqual);
-	charGroupObject.forEach((cg: WECharGroupMap) => {
-		charGroupMap[cg[0]] = true;
+	const { characterGroups } = useSelector((state: any) => state.we);
+	characterGroups.forEach((cg: WECharGroupObject) => {
+		charGroupMap[cg.label || ""] = true;
 	});
 	function resetError(prop: string) {
 		// Remove danger color if present
@@ -50,7 +51,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
-			.split(/[-\s_/]+/) // split along word and word-ish boundaries
+			.split(/[-\s_/]+/); // split along word and word-ish boundaries
 		// Create an array of single character strings starting with the first characters
 		//   of every word, followed by the remaining characters of every word
 		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
@@ -121,7 +122,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 		// Everything ok!
 		close && setIsOpen(false);
-		dispatch(addCharGroupWE({title, label, run}));
+		dispatch(addCharacterGroupWE({title, label, run}));
 		$a("ion-list.addWECharGroup ion-input").forEach((input: HTMLInputElement) => input.value = "");
 		toaster({
 			message: "Character Group added!",
@@ -153,11 +154,26 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title/Description" id="newWECharGroupTitle" className="ion-margin-top" placeholder="Type description here" autocomplete="on" onIonChange={() => resetError("title")}></IonInput>
+						<IonInput
+							aria-label="Title/Description"
+							id="newWECharGroupTitle"
+							className="ion-margin-top"
+							placeholder="Type description here"
+							autocomplete="on"
+							onIonChange={() => resetError("title")}
+						></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
-						<IonInput id="newWEShortLabel" aria-label="Short Label" labelPlacement="start" className="serifChars labelLabel" placeholder="1 character only" maxlength={1} onIonChange={() => resetError("title")}></IonInput>
+						<IonInput
+							id="newWEShortLabel"
+							aria-label="Short Label"
+							labelPlacement="start"
+							className="serifChars labelLabel"
+							placeholder="1 character only"
+							maxlength={1}
+							onIonChange={() => resetError("title")}
+						></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -166,7 +182,13 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="newWECharGroupRun" aria-label="Letters/Characters" className="importantElement ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={() => resetError("run")}></IonInput>
+						<IonInput
+							id="newWECharGroupRun"
+							aria-label="Letters/Characters"
+							className="importantElement ion-margin-top serifChars"
+							placeholder="Enter characters in group here"
+							onIonChange={() => resetError("run")}
+						></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

@@ -27,17 +27,19 @@ import {
 	trash,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { startEditCharGroupWE, deleteCharGroupWE, changeView } from '../../components/ReduxDucksFuncs';
-import { CharGroupCard } from "./WECards";
+import { useSelector, useDispatch } from "react-redux";
+
+import { PageData, WECharGroupObject } from '../../store/types';
+
+import { deleteCharGroupWE, changeView } from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
-import { PageData, WECharGroupMap, WECharGroupObject } from '../../components/ReduxDucksTypes';
-import AddCharGroupWEModal from './M-AddCharGroupWE';
-import EditCharGroupWEModal from './M-EditCharGroupWE';
 import { $q } from '../../components/DollarSignExports';
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import AddCharGroupWEModal from './M-AddCharGroupWE';
+import EditCharGroupWEModal from './M-EditCharGroupWE';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import { CharGroupCard } from "./WECards";
 
 const WECharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -46,17 +48,18 @@ const WECharGroup = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddCharGroupWE, setIsOpenAddCharGroupWE] = useState<boolean>(false);
 	const [isOpenEditCharGroupWE, setIsOpenEditCharGroupWE] = useState<boolean>(false);
+	const [editing, setEditing] = useState<WECharGroupObject | null>(null);
 	const viewInfo = ['we', 'charGroups'];
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [charGroupObject, disableConfirms] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings.disableConfirms], shallowEqual);
-	var charGroups: WECharGroupMap[] = charGroupObject.map;
-	const editCharGroup = (label: any) => {
+	const { characterGroups } = useSelector((state: any) => state.we);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const editCharGroup = (group: any) => {
 		$q(".charGroups").closeSlidingItems();
-		dispatch(startEditCharGroupWE(label));
+		setEditing(group);
 		setIsOpenEditCharGroupWE(true);
 	};
 	const maybeDeleteCharGroup = (label: string, charGroup: WECharGroupObject) => {
@@ -88,8 +91,16 @@ const WECharGroup = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCharGroupWEModal {...props.modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)} openECM={setIsOpenECM} />
-			<EditCharGroupWEModal {...props.modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)} openECM={setIsOpenECM} />
+			<AddCharGroupWEModal
+				{...props.modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)}
+				openECM={setIsOpenECM}
+			/>
+			<EditCharGroupWEModal
+				{...props.modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)}
+				editing={editing}
+				setEditing={setEditing}
+				openECM={setIsOpenECM}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CharGroupCard /></ModalWrap>
 			<IonHeader>
@@ -110,12 +121,12 @@ const WECharGroup = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="charGroups units" lines="none">
-					{charGroups.map((item: WECharGroupMap) => {
-						const [label, charGroup] = item;
+					{characterGroups.map((charGroup: WECharGroupObject) => {
+						const { label = "", title, run } = charGroup;
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>
-									<IonItemOption color="primary" onClick={() => editCharGroup(label)}>
+									<IonItemOption color="primary" onClick={() => editCharGroup(charGroup)}>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
 									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(label, charGroup)}>
@@ -126,9 +137,9 @@ const WECharGroup = (props: PageData) => {
 									<IonLabel className="wrappableInnards">
 										<div className="charGroupRun serifChars">
 											<span className="label importantElement">{label}</span>
-											<span className="run">{charGroup.run}</span>
+											<span className="run">{run}</span>
 										</div>
-										<div className="charGroupLongName">{charGroup.title}</div>
+										<div className="charGroupLongName">{title}</div>
 									</IonLabel>
 									<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 								</IonItem>

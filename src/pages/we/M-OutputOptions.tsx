@@ -15,20 +15,22 @@ import {
 	IonRadioGroup,
 	IonRadio
 } from '@ionic/react';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { WEOutputTypes } from '../../components/ReduxDucksTypes';
-import {
-	setOutputTypeWE
-} from '../../components/ReduxDucksFuncs';
+import { useSelector, useDispatch } from "react-redux";
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { ModalProperties } from '../../components/ReduxDucksTypes';
+
+import { WEOutputTypes, ModalProperties } from '../../store/types';
+import { setOutputWE } from '../../store/weSlice';
 
 const OutputOptionsModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const settingsWE = useSelector((state: any) => state.wordevolveSettings, shallowEqual);
+	const {
+		outputStyle,
+//		inputLower,
+//		inputAlpha
+	} = useSelector((state: any) => state.we);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
@@ -43,7 +45,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
-					<IonRadioGroup value={settingsWE.output} onIonChange={e => dispatch(setOutputTypeWE(e.detail.value as WEOutputTypes))}>
+					<IonRadioGroup value={outputStyle} onIonChange={e => dispatch(setOutputWE(e.detail.value as WEOutputTypes))}>
 						<IonItem className="ion-text-wrap">
 							<IonRadio value="outputOnly" labelPlacement="end" justify="start">Output Only</IonRadio>
 						</IonItem>

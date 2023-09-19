@@ -5,12 +5,9 @@ const we: WEState = {
 	characterGroups: [],
 	transforms: [],
 	soundChanges: [],
-	settings: {
-		outputStyle: "outputOnly",
-		multicolumn: true,
-		inputLower: false,
-		inputAlpha: true,
-	},
+	outputStyle: "outputOnly",
+	inputLower: false,
+	inputAlpha: true,
 	storedCustomInfo: {},
 	storedCustomIDs: []
 };

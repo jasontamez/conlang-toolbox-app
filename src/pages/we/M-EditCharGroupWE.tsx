@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -23,48 +23,48 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WECharGroupMap, WECharGroupObject } from '../../components/ReduxDucksTypes';
-import { doEditCharGroupWE, cancelEditCharGroupWE, deleteCharGroupWE } from '../../components/ReduxDucksFuncs';
+import { deleteCharacterGroupWE, editCharacterGroupWE } from '../../store/weSlice';
+import { ExtraCharactersModalOpener, WECharGroupObject } from '../../store/types';
+
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface ModalProps extends ExtraCharactersModalOpener {
+	editing: null | WECharGroupObject,
+	setEditing: Function
+}
+
+const EditCharGroupWEModal = (props: ModalProps) => {
+	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [charGroupObject, settings] = useSelector((state: any) => [state.wordevolveCharGroups, state.appSettings], shallowEqual);
+	const { characterGroups } = useSelector((state: any) => state.we);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: WECharGroupObject }>({});
-	const editing = charGroupObject.editing;
-	const [ editingWECharGroupTitle, setEditingWECharGroupTitle ] = useState<HTMLInputElement | null>(null);
-	const [ editingWEShortLabel, setEditingWEShortLabel ] = useState<HTMLInputElement | null>(null);
-	const [ editingWECharGroupRun, setEditingWECharGroupRun ] = useState<HTMLInputElement | null>(null);
-	const loadInfo = () => {
-		const titleEl = $i("editingWECharGroupTitle");
-		const labelEl = $i("editingWEShortLabel");
-		const runEl = $i("editingWECharGroupRun");
-		setEditingWECharGroupTitle(titleEl || null);
-		setEditingWEShortLabel(labelEl || null);
-		setEditingWECharGroupRun(runEl || null);
-		titleEl && (titleEl.value = "");
-		labelEl && (labelEl.value = "");
-		runEl && (runEl.value = "");
-		const cgm: { [key: string]: WECharGroupObject } = {};
-		charGroupObject.map.forEach((chg: WECharGroupMap) => {
-			const [label, group] = chg;
-			cgm[label] = group;
-			if(label === editing) {
-				const { title, run } = group;
-				titleEl && (titleEl.value = title);
-				labelEl && (labelEl.value = label);
-				runEl && (runEl.value = run);
-			}
-		});
-		setCharGroupMap(cgm);
-	};
+	const titleEl = $i("editingWECharGroupTitle");
+	const labelEl = $i("editingWEShortLabel");
+	const runEl = $i("editingWECharGroupRun");
+	useEffect(() => {
+		if(editing) {
+			const { label, title, run } = editing;
+			titleEl && (titleEl.value = title);
+			labelEl && (labelEl.value = label);
+			runEl && (runEl.value = run);
+			const cgm: { [key: string]: WECharGroupObject } = {};
+			characterGroups.forEach((chg: WECharGroupObject) => {
+				cgm[chg.label || ""] = chg;
+			});
+			setCharGroupMap(cgm);
+		} else {
+			titleEl && (titleEl.value = "");
+			labelEl && (labelEl.value = "");
+			runEl && (runEl.value = "");	
+		}
+	}, [editing, isOpen, titleEl, labelEl, runEl, characterGroups]);
 
 	function resetError (prop: keyof WECharGroupObject) {
 		// Remove danger color if present
@@ -74,7 +74,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	}
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
-		const words = (editingWECharGroupTitle!.value as string) // Get the title/description
+		const words = (titleEl!.value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -85,7 +85,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		// Now check every character one at a time to see if it's a good candidate
 		let label: string | undefined;
 		potentials.every(char => {
-			if(editing === char || !charGroupMap[char]) {
+			if(editing!.label === char || !charGroupMap[char]) {
 				label = char;
 				return false;
 			}
@@ -103,19 +103,19 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			editingWEShortLabel!.value = label;
+			labelEl!.value = label;
 			resetError("label");
 		}
 	};
 	const cancelEditing = () => {
-		dispatch(cancelEditCharGroupWE(editing));
+		setEditing(null);
 		setIsOpen(false);
 	};
 	const maybeSaveNewInfo = () => {
 		const err: string[] = [];
-		const title = editingWECharGroupTitle!.value.trim();
-		const label = editingWEShortLabel!.value.trim();
-		const run = editingWECharGroupRun!.value.trim();
+		const title = titleEl!.value.trim();
+		const label = labelEl!.value.trim();
+		const run = runEl!.value.trim();
 		// Test info for validness, then save if needed and reset the editingCharGroup
 		if(title === "") {
 			$q(".titleLabelEdit").classList.add("invalidValue");
@@ -153,12 +153,15 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		setIsOpen(false);
-		dispatch(doEditCharGroupWE({
-			title,
-			label,
-			run
+		dispatch(editCharacterGroupWE({
+			label: (editing && editing.label) || "",
+			edited: {
+				title,
+				label,
+				run
+			}
 		}));
+		cancelEditing();
 		toaster({
 			message: "Character Group saved!",
 			duration: 2500,
@@ -169,12 +172,10 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		});
 	};
 	const maybeDeleteCharGroup = () => {
-		$q(".charGroups").closeSlidingItems();
-		const editingCharGroup = charGroupMap[editing];
-		const {run} = editingCharGroup
+		const { label = "", run } = editing!;
 		const handler = () => {
-			setIsOpen(false);
-			dispatch(deleteCharGroupWE({...editingCharGroup, label: editing}));
+			dispatch(deleteCharacterGroupWE(label));
+			cancelEditing();
 			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,
@@ -184,11 +185,11 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 				undoToast
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `${editing}=${run}`,
+				header: `${label}=${run}`,
 				message: "Are you sure you want to delete this Character Group? This cannot be undone.",
 				cssClass: "warning",
 				submit: "Yes, delete it",
@@ -198,7 +199,7 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={() => loadInfo()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>
@@ -222,7 +223,8 @@ const EditCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
-						<IonInput aria-label="Short Label" id="editingWEShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1}></IonInput>						<IonButton slot="end" onClick={() => generateLabel()}>
+						<IonInput aria-label="Short Label" id="editingWEShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1}></IonInput>
+						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
 					</IonItem>

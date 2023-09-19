@@ -80,11 +80,12 @@ export interface WECharGroupObject {
 	label?: string
 	run: string
 }
+export type WETransformDirection = "both" | "in" | "out" | "double";
 export interface WETransformObject {
 	id: string
 	seek: string
 	replace: string
-	direction: "both" | "in" | "out" | "double"
+	direction: WETransformDirection
 	description: string
 }
 export interface WESoundChangeObject {
@@ -96,26 +97,23 @@ export interface WESoundChangeObject {
 	description: string
 }
 export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
-export interface WESettingsObject {
+export interface WEPresetObject {
+	characterGroups: WECharGroupObject[],
+	soundChanges: WESoundChangeObject[],
+	transforms: WETransformObject[]
+}
+export interface WEState extends WEPresetObject {
+	input: string
 	outputStyle: WEOutputTypes
-	multicolumn: boolean
 	inputLower: boolean
 	inputAlpha: boolean
-}
-/*export interface WEPresetObject {
-	charGroups: WECharGroupObject[],
-	soundchanges: WESoundChangeObject[],
-	transforms: WETransformObject[]
-}*/
-export interface WEState {
-	characterGroups: WECharGroupObject[]
-	transforms: WETransformObject[]
-	soundChanges: WESoundChangeObject[]
-	input: string
-	settings: WESettingsObject
-	storedCustomInfo: { [key: string]: any },
+	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }
+export type WEPresets = [
+	string,
+	WEPresetObject
+][];
 
 //
 // MORPHOSYNTAX

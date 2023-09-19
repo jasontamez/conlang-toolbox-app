@@ -20,8 +20,11 @@ import {
 	closeCircleSharp
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import { loadPresetWE } from '../../components/ReduxDucksFuncs';
-import { ModalProperties } from '../../components/ReduxDucksTypes';
+
+import { ModalProperties, WEPresetObject } from '../../store/types';
+import { loadStateWE } from '../../store/weSlice';
+import WEPresets from '../../store/wePresets';
+
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
@@ -31,9 +34,9 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms, shallowEqual);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const maybeLoadPreset = (preset: string) => {
+	const maybeLoadPreset = (preset: string, object: WEPresetObject) => {
 		const handler = () => {
-			dispatch(loadPresetWE(preset));
+			dispatch(loadStateWE(object));
 			toaster({
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
@@ -70,27 +73,11 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					<IonItem button={true} onClick={() => maybeLoadPreset('Grassmann\'s Law')}>
-						<IonLabel>Grassmann's Law</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Ruki Rule')}>
-						<IonLabel>Ruki Rule</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Dahl\'s Law')}>
-						<IonLabel>Dahl's Law</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Ingvaeonic Nasal Spirant Law')}>
-						<IonLabel>Ingvaeonic Nasal Spirant Law</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Grim\'s Law')}>
-						<IonLabel>Grim's Law</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('Great English Vowel Shift')}>
-						<IonLabel>Great English Vowel Shift</IonLabel>
-					</IonItem>
-					<IonItem button={true} onClick={() => maybeLoadPreset('High German Consonant Shift')}>
-						<IonLabel>High German Consonant Shift</IonLabel>
-					</IonItem>
+					{WEPresets.map((preset) => (
+						<IonItem button={true} onClick={() => maybeLoadPreset(...preset)}>
+							<IonLabel>{preset[0]}</IonLabel>
+						</IonItem>
+					))}
 				</IonList>
 			</IonContent>
 			<IonFooter>

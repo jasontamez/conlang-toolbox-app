@@ -183,7 +183,6 @@ const EditCharGroupModal = (props: ModalProps) => {
 		});
 	};
 	const maybeDeleteCharGroup = () => {
-		$q(".charGroups").closeSlidingItems();
 		const title = titleEl!.value.trim(),
 			label = labelEl!.value.trim(),
 			run = runEl!.value.trim();

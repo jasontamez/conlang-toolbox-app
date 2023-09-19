@@ -27,8 +27,9 @@ import {
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { addTransformWE } from '../../components/ReduxDucksFuncs';
-import { ExtraCharactersModalOpener } from '../../components/ReduxDucksTypes';
+import { WETransformDirection, ExtraCharactersModalOpener } from '../../store/types';
+import { addTransformWE } from '../../store/weSlice';
+
 import { $q, $a, $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 
@@ -37,7 +38,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [ direction, setDirection] = useState<"both" | "in" | "out" | "double">("both");
+	const [ direction, setDirection ] = useState<WETransformDirection>("both");
 	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
@@ -71,7 +72,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		const description = $i("optDescWE").value || "";
 		close && setIsOpen(false);
 		dispatch(addTransformWE({
-			key: uuidv4(),
+			id: uuidv4(),
 			seek,
 			replace,
 			direction,
@@ -109,24 +110,43 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Input Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Input expression" id="searchExWE" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => resetError("seek")}></IonInput>
+						<IonInput
+							aria-label="Input expression"
+							id="searchExWE"
+							className="ion-margin-top serifChars"
+							placeholder="..."
+							onIonChange={e => resetError("seek")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Output expression" id="replaceExWE" className="ion-margin-top serifChars" placeholder="..."></IonInput>
+						<IonInput
+							aria-label="Output expression"
+							id="replaceExWE"
+							className="ion-margin-top serifChars"
+							placeholder="..."
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transform Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Description of the transform" id="optDescWE" className="ion-margin-top" placeholder="(optional)"></IonInput>
+						<IonInput
+							aria-label="Description of the transform"
+							id="optDescWE"
+							className="ion-margin-top"
+							placeholder="(optional)"
+						></IonInput>
 					</IonItem>
 					<IonItemDivider>
 						<IonLabel>Transform Direction:</IonLabel>
 					</IonItemDivider>
-					<IonRadioGroup value={direction} onIonChange={e => setDirection(e.detail.value as "both" | "in" | "out" | "double")}>
+					<IonRadioGroup
+						value={direction}
+						onIonChange={e => setDirection(e.detail.value as WETransformDirection)}
+					>
 						<IonItem>
 							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
 						</IonItem>

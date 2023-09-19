@@ -19,21 +19,23 @@ import {
 	trashBinOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { Lexicon, LexiconColumn, PageData } from '../../store/types';
+import { setInputWE } from '../../store/weSlice';
+
 import {
 	changeView,
-	updateInputLexicon
 } from '../../components/ReduxDucksFuncs';
-import { InpCard } from "./WECards";
 import ModalWrap from "../../components/ModalWrap";
-import { Lexicon, LexiconColumn, PageData } from '../../components/ReduxDucksTypes';
 import { $i } from '../../components/DollarSignExports';
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import ExtraCharactersModal from '../M-ExtraCharacters';
+import { InpCard } from "./WECards";
 
-const WERew = (props: PageData) => {
+const WEInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -44,25 +46,25 @@ const WERew = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const [rawInput, disableConfirms, lexiconObj] = useSelector((state: any) => [state.wordevolveInput, state.appSettings.disableConfirms, state.lexicon], shallowEqual);
-	const { columns, lexicon } = lexiconObj;
-	const input = rawInput.join("\n");
+	const { columns, lexicon } = useSelector((state: any) => state.lexicon);
+	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { input } = useSelector((state: any) => state.we);
 	const updateInput = useCallback((value: string) => {
-		const newInput: string[] = value.split("\n").map(v => v.trim()).filter(v => v);
-		dispatch(updateInputLexicon(newInput));
+		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
+		dispatch(setInputWE(trimmed));
 	}, [dispatch]);
 	const inputUpdated = useCallback((e: any) => {
 		let value: string;
 		if(e.target && e.target.value !== undefined) {
 			value = (e.target.value);
 		} else {
-			value = ($i("lexiconInput").value);
+			value = ($i("weInput").value);
 		}
 		debounce(updateInput, [value], 500, "WEinput");
 	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
-			$i("lexiconInput").value = "";
+			$i("weInput").value = "";
 			updateInput("");
 		};
 		if(disableConfirms) {
@@ -84,7 +86,7 @@ const WERew = (props: PageData) => {
 			inputOptions[col.id] = col.label;
 		});
 		const thenFunc = (col: number) => {
-			let newInput = $i("lexiconInput").value;
+			let newInput = $i("weInput").value;
 			if(newInput) {
 				newInput += "\n"
 			}
@@ -92,14 +94,14 @@ const WERew = (props: PageData) => {
 				const imp = word.columns[col];
 				imp && (newInput += imp + "\n");
 			});
-			$i("lexiconInput").value = newInput;
+			$i("weInput").value = newInput;
 			updateInput(newInput);
 		};
 		if(columns.length === 1) {
 			thenFunc(0);
 		} else {
 			doAlert({
-				header: "Import Lexicon",
+				header: "Import from Lexicon",
 				message: "Which column do you want to input?",
 				inputs: columns.map((col: LexiconColumn, i: number) => {
 					return {
@@ -159,7 +161,7 @@ const WERew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
 				<div className="WEinput">
-					<textarea spellCheck={false} aria-label="Words to Evolve" id="lexiconInput" placeholder="Enter words here, one per line" defaultValue={input} onChange={inputUpdated} />
+					<textarea spellCheck={false} aria-label="Words to Evolve" id="weInput" placeholder="Enter words here, one per line" defaultValue={input} onChange={inputUpdated} />
 				</div>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -174,4 +176,4 @@ const WERew = (props: PageData) => {
 	);
 };
 
-export default WERew;
+export default WEInput;
