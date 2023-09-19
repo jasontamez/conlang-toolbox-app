@@ -27,13 +27,16 @@ import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 import {
 	updateConceptsDisplay,
-	changeView,
 	toggleConceptsBoolean,
-	addItemstoLexiconColumn,
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
+} from '../store/conceptsSlice';
+import { addItemstoLexiconColumn } from '../store/lexiconSlice';
+import { LexiconColumn, PageData, Concept, ConceptCombo } from '../store/types';
+
+import {
+	changeView,
 } from '../components/ReduxDucksFuncs';
-import { LexiconColumn, PageData, Concept, ConceptCombo } from '../components/ReduxDucksTypes';
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
 import yesNoAlert from '../components/yesNoAlert';
@@ -108,7 +111,7 @@ const ConceptsPage = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn(words.map((obj: SavedWord) => obj.word), col.id));
+						dispatch(addItemstoLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});
