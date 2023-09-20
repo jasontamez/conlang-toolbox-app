@@ -5,19 +5,21 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
+import { useDispatch } from "react-redux";
+
+import { ViewState, PageData } from '../../store/types';
+import { saveView } from '../../store/viewSlice';
+
 import {
 	SyntaxHeader,
 	parseMSJSON
 } from './MorphoSyntaxElements';
-import { changeView } from '../../components/ReduxDucksFuncs';
-import { useDispatch } from "react-redux";
-import { PageData } from '../../components/ReduxDucksTypes';
 
 const Syntax = (props: PageData) => {
 	const dispatch = useDispatch();
-	const viewInfo = ['ms', 'ms09'];
+	const viewInfo = { key: "ms" as keyof ViewState, page: "ms09" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	return (
 		<IonPage>
@@ -34,7 +36,7 @@ const Syntax = (props: PageData) => {
 /*
 const OldSyntax = () => {
 	const dispatch = useDispatch();
-	const viewInfo = ['ms', 'ms09'];
+	const viewInfo = { key: "ms" as keyof ViewState, page: "ms09" };
 	useIonViewDidEnter(() => {
 		dispatch(changeView(viewInfo));
 	});

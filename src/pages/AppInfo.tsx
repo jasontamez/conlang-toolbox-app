@@ -19,7 +19,7 @@ import {
 	IonCardTitle
 } from '@ionic/react';
 import { shallowEqual, useSelector } from "react-redux";
-import { PageData } from '../components/ReduxDucksTypes';
+import { PageData } from '../store/types';
 
 const AppInfo = (props: PageData) => {
 	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);

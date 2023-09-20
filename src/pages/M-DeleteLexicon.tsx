@@ -20,13 +20,15 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
-import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
+
+import { LexiconState, ModalProperties } from '../store/types';
+
 import { LexiconStorage } from '../components/PersistentInfo';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 
 interface SavedLexProperties extends ModalProperties {
-	lexInfo: [string, LexiconObject][]
+	lexInfo: [string, LexiconState][]
 	setLexInfo: Function
 	setLoadingScreen: Function
 }
@@ -83,7 +85,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
+					{data.length > 0 ? data.map((pair: [string, LexiconState]) => {
 						const key = pair[0];
 						const lex = pair[1];
 						const time = new Date(lex.lastSave);

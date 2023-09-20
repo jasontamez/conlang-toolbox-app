@@ -32,12 +32,10 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, WGTransformObject } from '../../store/types';
+import { PageData, ViewState, WGTransformObject } from '../../store/types';
 import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
@@ -52,14 +50,14 @@ import { RewCard } from "./WGCards";
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const viewInfo = ['wg', 'transforms'];
+	const viewInfo = { key: "wg" as keyof ViewState, page: "transforms" };
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGTransformObject | null>(null);
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -74,7 +72,7 @@ const WGRew = (props: PageData) => {
 	const maybeDeleteTransform = (transform: WGTransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
-			dispatch(deleteTransformWG(transform));
+			dispatch(deleteTransformWG(transform.id));
 			toaster({
 				message: "Transformation deleted.",
 				duration: 2500,

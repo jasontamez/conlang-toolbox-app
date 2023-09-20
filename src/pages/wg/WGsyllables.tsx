@@ -24,10 +24,10 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, SyllableTypes, Zero_Fifty } from '../../store/types';
+import { PageData, SyllableTypes, ViewState, Zero_Fifty } from '../../store/types';
 import { setSyllableOverride, setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes } from '../../store/wgSlice';
+import { saveView } from '../../store/viewSlice';
 
-import { changeView } from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import ExtraCharactersModal from '../M-ExtraCharacters';
@@ -39,20 +39,20 @@ const WGSyl = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isEditing, setIsEditing] = useState<SyllableTypes | null>(null);
-	const viewInfo = ['wg', 'syllables'];
+	const viewInfo = { key: "wg" as keyof ViewState, page: "syllables" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const { singleWord, wordInitial, wordMiddle, wordFinal, syllableBoxDropoff, multipleSyllableTypes, syllableDropoffOverrides } = useSelector((state: any) => state.wg);
 	const toggleableClassName = (base: string = "") => {
 		return (`${base} toggleable ${(multipleSyllableTypes ? " toggled" : "")}`).trim();
 	};
 	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
-	const setSeparateDropoff = (which: SyllableTypes, value: undefined | Zero_Fifty) => {
+	const setSeparateDropoff = (which: SyllableTypes, value: null | Zero_Fifty) => {
 		dispatch(setSyllableOverride({ syllables: which, value }));
 	};
 	const toggleSeparateDropoff = (prop: SyllableTypes) => {
-		setSeparateDropoff(prop, syllableDropoffOverrides[prop] !== undefined ? syllableBoxDropoff : undefined)
+		setSeparateDropoff(prop, syllableDropoffOverrides[prop] !== undefined ? syllableBoxDropoff : null)
 	};
 	const firstBox = multipleSyllableTypes ? "Single-Syllable\nWords" : "Syllables";
 	const SyllableButton = memo((props: { prop: SyllableTypes }) => {

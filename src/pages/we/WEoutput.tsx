@@ -28,11 +28,9 @@ import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { LexiconColumn, PageData, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../components/ReduxDucksTypes';
-import {
-	changeView,
-	addItemstoLexiconColumn
-} from '../../components/ReduxDucksFuncs';
+import { LexiconColumn, PageData, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
+import { saveView } from '../../store/viewSlice';
+import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
 
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
@@ -99,9 +97,9 @@ const WEOut = (props: PageData) => {
 	const [storedInfo, setStoredInfo] = useState<string[]>([]);
 	const [needToGenerate, setNeedToGenerate] = useState<boolean>(true);
 	const dispatch = useDispatch();
-	const viewInfo = ['we', 'output'];
+	const viewInfo = { key: "we" as keyof ViewState, page: "output" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -142,7 +140,7 @@ const WEOut = (props: PageData) => {
 				}
 				all.push(regex);
 			});
-			newObj[transform.key] = all;
+			newObj[transform.id] = all;
 		});
 		return newObj;
 	}, [transforms, charGroupMap]);
@@ -338,7 +336,7 @@ const WEOut = (props: PageData) => {
 			}
 			anticontext = temp;
 			// SAVE
-			newObj[change.key] = {
+			newObj[change.id] = {
 				seek,
 				replace,
 				context,
@@ -447,18 +445,18 @@ const WEOut = (props: PageData) => {
 			const rulesThatApplied: string[][] = [];
 			// Loop over the transforms.
 			transforms.forEach((tr: WETransformObject) => {
-				const { key, direction, replace, seek } = tr;
+				const { id, direction, replace, seek } = tr;
 				// Check to see if we apply this rule.
 				if (direction === "in") {
-					word = word.replace(transformsMap[key][0], replace);
+					word = word.replace(transformsMap[id][0], replace);
 				} else if (direction === "both" || direction === "double") {
 					word = word.replace(seek, replace);
 				}
 			});
 			// Loop over every sound change in order.
 			soundChanges.forEach((change: WESoundChangeObject) => {
-				const { key, seek, replace, context, anticontext } = change;
-				const modified = soundChangeMap[key];
+				const { id, seek, replace, context, anticontext } = change;
+				const modified = soundChangeMap[id];
 				const contx = modified.context;
 				const antix = modified.anticontext;
 				const rule = `${seek}➜${replace} / ${context}${anticontext ? ` ! ${anticontext}` : ""}`;
@@ -644,14 +642,14 @@ const WEOut = (props: PageData) => {
 			});
 			// Loop over the transforms again.
 			transforms.forEach((tr: WETransformObject) => {
-				const { key, replace, seek, direction } = tr;
+				const { id, replace, seek, direction } = tr;
 				// Check to see if we apply this transform.
 				if (direction === "both") {
 					word = word.replace(replace, seek);
 				} else if (direction === "double") {
 					word = word.replace(seek, replace);
 				} else if (direction === "out") {
-					word = word.replace(transformsMap[key][0], replace);
+					word = word.replace(transformsMap[id][0], replace);
 				}
 			});
 			// Add the mangled word to the output list.
@@ -723,7 +721,7 @@ const WEOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn(words, col.id));
+						dispatch(addItemstoLexiconColumn([words, col.id]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

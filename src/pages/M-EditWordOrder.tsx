@@ -37,13 +37,12 @@ import {
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn } from '../components/ReduxDucksTypes';
-import {
-	updateLexiconColumnarInfo
-} from '../components/ReduxDucksFuncs';
+import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn } from '../store/types';
+
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import { $i } from '../components/DollarSignExports';
+import { updateLexiconColumarInfo } from '../store/lexiconSlice';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
@@ -162,7 +161,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		// finish by tacking on the positions that were not found
 		newSortPattern.push(...missingColumns);
 		// dispatch
-		dispatch(updateLexiconColumnarInfo(lex, newColumns, newSortPattern, shadowTruncate, shadowBlankSort));
+		dispatch(updateLexiconColumarInfo([lex, newColumns, newSortPattern, shadowTruncate, shadowBlankSort]));
 		toaster({
 			message: "Saved!",
 			duration: 2500,

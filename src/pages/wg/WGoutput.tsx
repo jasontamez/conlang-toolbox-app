@@ -28,13 +28,12 @@ import {
 	WGTransformObject,
 	WGCharGroupObject,
 	PageData,
-	LexiconColumn
+	LexiconColumn,
+	ViewState
 } from '../../store/types';
 import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
 import { $a, $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
@@ -83,9 +82,9 @@ const WGOut = (props: PageData) => {
 
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
-	const viewInfo = ['wg', 'output'];
+	const viewInfo = { key: "wg" as keyof ViewState, page: "output" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 
 	const [doAlert] = useIonAlert();

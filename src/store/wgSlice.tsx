@@ -1,37 +1,52 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import blankAppState from './blankAppState';
 import {
-	Action,
+	Fifty_OneThousand,
+	Five_OneHundred,
 	SyllableDropoffs,
 	SyllableTypes,
+	Two_Fifteen,
 	WGBasic,
 	WGCharGroupObject,
+	WGOutputTypes,
 	WGState,
 	WGTransformObject,
-	Zero_Fifty
+	Zero_Fifty,
+	Zero_OneHundred
 } from './types';
+import { StateStorage } from '../components/PersistentInfo';
+import debounce from '../components/Debounce';
 
 const initialState: WGState = blankAppState.wg;
 
+// Storage
+const saveCurrentState = (state: WGState) => {
+	debounce(StateStorage.setItem, ["lastStateWG", state], 1000, "savingStateWG");
+};
+
 // GROUPS
-const addCharacterGroupFunc = (state: WGState, action: { payload: WGCharGroupObject }) => {
+const addCharacterGroupFunc = (state: WGState, action: PayloadAction<WGCharGroupObject>) => {
 	// {label, description, run, ?dropoff}
 	state.characterGroups.push(action.payload);
+	saveCurrentState(state);
 	return state;
 };
-const deleteCharacterGroupFunc = (state: WGState, action: { payload: WGCharGroupObject }) => {
+const deleteCharacterGroupFunc = (state: WGState, action: PayloadAction<WGCharGroupObject>) => {
 	const { label } = action.payload;
 	state.characterGroups = state.characterGroups.filter(group => group.label !== label);
+	saveCurrentState(state);
 	return state;
 };
-const editCharacterGroupFunc = (state: WGState, action: Action) => {
+const editCharacterGroupFunc = (state: WGState, action: PayloadAction<{ old: WGCharGroupObject, edited: WGCharGroupObject }>) => {
 	const {old, edited} = action.payload;
 	const { label } = old;
 	state.characterGroups = state.characterGroups.map(group => group.label === label ? edited : group);
+	saveCurrentState(state);
 	return state;
 };
-const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: Action) => {
-	const newCharacterGroups: WGCharGroupObject[] = action.payload;
+const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAction<WGCharGroupObject[]>) => {
+	const newCharacterGroups = action.payload;
 	const { characterGroups } = state;
 	let incoming: { [key: string]: WGCharGroupObject } = {};
 	newCharacterGroups.forEach(cg => {
@@ -58,132 +73,159 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: Action) =>
 		}
 	});
 	state.characterGroups = final;
+	saveCurrentState(state);
 	return state;
 };
 
 // SYLLABLES
 
-const setMultipleSyllableTypesFunc = (state: WGState, action: Action) => {
+const setMultipleSyllableTypesFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.multipleSyllableTypes = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setSyllablesFunc = (state: WGState, action: Action) => {
-	const { syllables, value }: { syllables: SyllableTypes, value: string } = action.payload;
+const setSyllablesFunc = (state: WGState, action: PayloadAction<{ syllables: SyllableTypes, value: string }>) => {
+	const { syllables, value } = action.payload;
 	state[syllables] = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
+	saveCurrentState(state);
 	return state;
 };
-const setSyllableOverrideFunc = (state: WGState, action: Action) => {
-	const { syllables, value }: { syllables: SyllableTypes, value: Zero_Fifty } = action.payload;
+const setSyllableOverrideFunc = (state: WGState, action: PayloadAction<{ syllables: SyllableTypes, value: Zero_Fifty | null }>) => {
+	const { syllables, value } = action.payload;
 	state.syllableDropoffOverrides[syllables] = value;
+	saveCurrentState(state);
 	return state;
 };
 
 // TRANSFORMS
-const addTransformFunc = (state: WGState, action: Action) => {
+const addTransformFunc = (state: WGState, action: PayloadAction<WGTransformObject>) => {
 	// { id, search, replace, ?description }
 	state.transforms.push(action.payload);
+	saveCurrentState(state);
 	return state;
 };
-const deleteTransformFunc = (state: WGState, action: Action) => {
+const deleteTransformFunc = (state: WGState, action: PayloadAction<string>) => {
 	const id = action.payload;
 	state.transforms = state.transforms.filter(t => t.id !== id);
+	saveCurrentState(state);
 	return state;
 };
-const editTransformFunc = (state: WGState, action: Action) => {
+const editTransformFunc = (state: WGState, action: PayloadAction<WGTransformObject>) => {
 	const item = action.payload;
 	const { id } = item;
 	state.transforms = state.transforms.map(t => t.id === id ? item : t);
+	saveCurrentState(state);
 	return state;
 };
-const rearrangeTransformsFunc = (state: WGState, action: Action) => {
+const rearrangeTransformsFunc = (state: WGState, action: PayloadAction<WGTransformObject[]>) => {
 	state.transforms = action.payload;
+	saveCurrentState(state);
 	return state;
 };
 
 // SETTINGS
-const setMonosyllablesRateFunc = (state: WGState, action: Action) => {
+const setMonosyllablesRateFunc = (state: WGState, action: PayloadAction<Zero_OneHundred>) => {
 	state.monosyllablesRate = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setMaxSyllablesPerWordFunc = (state: WGState, action: Action) => {
+const setMaxSyllablesPerWordFunc = (state: WGState, action: PayloadAction<Two_Fifteen>) => {
 	state.maxSyllablesPerWord = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setCharacterGroupDropoffFunc = (state: WGState, action: { payload: Zero_Fifty }) => {
+const setCharacterGroupDropoffFunc = (state: WGState, action: PayloadAction<Zero_Fifty>) => {
 	state.characterGroupDropoff = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setSyllableBoxDropoffFunc = (state: WGState, action: Action) => {
+const setSyllableBoxDropoffFunc = (state: WGState, action: PayloadAction<Zero_Fifty>) => {
 	state.syllableBoxDropoff = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setCapitalizeSentencesFunc = (state: WGState, action: Action) => {
+const setCapitalizeSentencesFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.capitalizeSentences = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setDeclarativeSentencePreFunc = (state: WGState, action: Action) => {
+const setDeclarativeSentencePreFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.declarativeSentencePre = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setDeclarativeSentencePostFunc = (state: WGState, action: Action) => {
+const setDeclarativeSentencePostFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.declarativeSentencePost = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setInterrogativeSentencePreFunc = (state: WGState, action: Action) => {
+const setInterrogativeSentencePreFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.interrogativeSentencePre = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setInterrogativeSentencePostFunc = (state: WGState, action: Action) => {
+const setInterrogativeSentencePostFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.interrogativeSentencePost = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setExclamatorySentencePreFunc = (state: WGState, action: Action) => {
+const setExclamatorySentencePreFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.exclamatorySentencePre = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setExclamatorySentencePostFunc = (state: WGState, action: Action) => {
+const setExclamatorySentencePostFunc = (state: WGState, action: PayloadAction<string>) => {
 	state.exclamatorySentencePost = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setOutputFunc = (state: WGState, action: Action) => {
+const setOutputFunc = (state: WGState, action: PayloadAction<WGOutputTypes>) => {
 	state.output = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setShowSyllableBreaksFunc = (state: WGState, action: Action) => {
+const setShowSyllableBreaksFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.showSyllableBreaks = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setSentencesPerTextFunc = (state: WGState, action: Action) => {
+const setSentencesPerTextFunc = (state: WGState, action: PayloadAction<Five_OneHundred>) => {
 	state.sentencesPerText = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setCapitalizeWordsFunc = (state: WGState, action: Action) => {
+const setCapitalizeWordsFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.capitalizeWords = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setSortWordlistFunc = (state: WGState, action: Action) => {
+const setSortWordlistFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.sortWordlist = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setWordlistMultiColumnFunc = (state: WGState, action: Action) => {
+const setWordlistMultiColumnFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.wordlistMultiColumn = action.payload;
+	saveCurrentState(state);
 	return state;
 };
-const setWordsPerWordlistFunc = (state: WGState, action: Action) => {
+const setWordsPerWordlistFunc = (state: WGState, action: PayloadAction<Fifty_OneThousand>) => {
 	state.wordsPerWordlist = action.payload;
+	saveCurrentState(state);
 	return state;
 };
 
 // STORED CUSTOM INFO
-const setStoredCustomInfoFunc = (state: WGState, action: Action) => {
+const setStoredCustomInfoFunc = (state: WGState, action: PayloadAction<any>) => {
 	const { payload } = action;
 	state.storedCustomInfo = payload;
 	state.storedCustomIDs = Object.keys(payload);
+	saveCurrentState(state);
 	return state;
 };
 
 // LOAD INFO and CLEAR ALL
-const loadStateFunc = (state: WGState, action: { payload: WGBasic | null }) => {
+const loadStateFunc = (state: WGState, action: PayloadAction<WGBasic | null>) => {
 	// If payload is null (or falsy), then initialState is used
 	const {
 		characterGroups,
@@ -442,4 +484,46 @@ const testIfArrayOfObjectsAreUnequal = (A: Testing[], B: Testing[], props: strin
 			const b = B[i];
 			return (a !== b) && props.some(p => a[p as keyof Testing] !== b[p as keyof Testing]);
 		});
+};
+
+
+// Testing if state
+export const _WG: { simple: (keyof WGState)[], possiblyFalsy: (keyof WGState)[]} = {
+	simple: [
+		"maxSyllablesPerWord",
+		"characterGroups",
+		"syllableDropoffOverrides",
+		"transforms",
+		"output",
+		"sentencesPerText",
+		"wordsPerWordlist",
+		"storedCustomInfo",
+		"storedCustomIDs"
+	],
+	possiblyFalsy: [
+		"monosyllablesRate",
+		"characterGroupDropoff",
+		"syllableBoxDropoff",
+		"capitalizeSentences",
+		"declarativeSentencePre",
+		"declarativeSentencePost",
+		"interrogativeSentencePre",
+		"interrogativeSentencePost",
+		"exclamatorySentencePre",
+		"exclamatorySentencePost",
+		"multipleSyllableTypes",
+		"singleWord",
+		"wordInitial",
+		"wordMiddle",
+		"wordFinal",
+		"showSyllableBreaks",
+		"capitalizeWords",
+		"sortWordlist",
+		"wordlistMultiColumn"
+	]
+};
+export const checkIfWG = (possible: WGState | any): possible is WGState => {
+	const check = possible as WGState;
+	const { simple, possiblyFalsy } = _WG;
+	return simple.every(prop => check[prop]) && possiblyFalsy.every(prop => (check[prop] !== undefined));
 };

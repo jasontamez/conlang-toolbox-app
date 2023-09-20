@@ -8,6 +8,11 @@ import {
 	IonRouterOutlet,
 	IonIcon
 } from '@ionic/react';
+import { shallowEqual, useSelector } from "react-redux";
+import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons/icons';
+
+import { PageData } from '../store/types';
+
 import MSSettings from "./ms/msSettings";
 import MS01 from "./ms/ms01";
 import MS02 from "./ms/ms02";
@@ -19,10 +24,7 @@ import MS07 from "./ms/ms07";
 import MS08 from "./ms/ms08";
 import MS09 from "./ms/ms09";
 import MS10 from "./ms/ms10";
-import { shallowEqual, useSelector } from "react-redux";
 import './ms/MS.css';
-import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons/icons';
-import { PageData } from '../components/ReduxDucksTypes';
 
 const range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 function decrease (n: number) {

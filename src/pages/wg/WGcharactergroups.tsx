@@ -37,12 +37,11 @@ import {
 import {
 	WGCharGroupObject,
 	Zero_Fifty,
-	PageData
+	PageData,
+	ViewState
 } from '../../store/types';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
 import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import yesNoAlert from '../../components/yesNoAlert';
@@ -62,9 +61,9 @@ const WGCharGroup = (props: PageData) => {
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
 	const [isOpenEditCharGroup, setIsOpenEditCharGroup] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGCharGroupObject | null>(null);
-	const viewInfo = ['wg', 'charGroups'];
+	const viewInfo = { key: "wg" as keyof ViewState, page: "charGroups" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const { charGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
 	const { disableConfirms } = useSelector((state: any) => state.appSettings);

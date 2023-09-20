@@ -22,12 +22,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import WGPresets from '../../store/wgPresets';
-import { WGBasic } from '../../store/types';
+import { WGBasic, ModalProperties } from '../../store/types';
+import { loadStateWG } from '../../store/wgSlice';
 
-import { ModalProperties } from '../../components/ReduxDucksTypes';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import { loadStateWG } from '../../store/wgSlice';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;

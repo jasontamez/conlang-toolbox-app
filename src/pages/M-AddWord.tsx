@@ -25,10 +25,9 @@ import {
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, LexiconColumn } from '../components/ReduxDucksTypes';
-import {
-	addLexiconItem
-} from '../components/ReduxDucksFuncs';
+import { addLexiconItem } from '../store/lexiconSlice';
+import { ExtraCharactersModalOpener, LexiconColumn } from '../store/types';
+
 import toaster from '../components/toaster';
 import { $i } from '../components/DollarSignExports';
 

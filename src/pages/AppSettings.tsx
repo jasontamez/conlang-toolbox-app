@@ -15,13 +15,12 @@ import {
 //	IonSelectOption
 } from '@ionic/react';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-//	setSortSensitivity,
-	toggleDisableConfirm
-} from '../components/ReduxDucksFuncs';
+
+import { PageData } from '../store/types';
+import { setDisableConfirms } from '../store/settingsSlice';
+
 import ChooseThemeModal from './M-Theme';
 import ExportAllData from './M-ExportAllData';
-import { PageData } from '../components/ReduxDucksTypes';
 
 
 const AppSettings = (props: PageData) => {
@@ -54,7 +53,7 @@ const AppSettings = (props: PageData) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={disableConfirms}
-							onIonChange={e => dispatch(toggleDisableConfirm(e.detail.checked))}
+							onIonChange={e => dispatch(setDisableConfirms(e.detail.checked))}
 						>
 							<h2>Disable Confirmation Prompts</h2>
 							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>

@@ -32,12 +32,10 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, WESoundChangeObject } from '../../store/types';
+import { PageData, ViewState, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
@@ -56,9 +54,9 @@ const WERew = (props: PageData) => {
 	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
 	const [isOpenEditSoundChange, setIsOpenEditSoundChange] = useState<boolean>(false);
 	const [editing, setEditing] = useState<null | WESoundChangeObject>(null);
-	const viewInfo = ['we', 'soundchanges'];
+	const viewInfo = { key: "we" as keyof ViewState, page: "soundchanges" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -73,7 +71,7 @@ const WERew = (props: PageData) => {
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		const handler = () => {
-			dispatch(deleteSoundChangeWE(change));
+			dispatch(deleteSoundChangeWE(change.id));
 			toaster({
 				message: "Sound Change deleted.",
 				duration: 2500,

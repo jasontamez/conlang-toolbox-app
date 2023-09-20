@@ -32,6 +32,7 @@ import {
 	Two_Fifteen,
 	Zero_Fifty,
 	PageData,
+	ViewState
 } from '../../store/types';
 import {
 	setMonosyllablesRate,
@@ -47,10 +48,8 @@ import {
 	setExclamatorySentencePost,
 	loadStateWG
 } from '../../store/wgSlice';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -70,9 +69,9 @@ const WGSet = (props: PageData) => {
 	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
 	const [infoModalTitles, setInfoModalTitles] = useState<string[] | null>(null);
 	const { modalPropsMaker } = props;
-	const viewInfo = ['wg', 'settings'];
+	const viewInfo = { key: "wg" as keyof ViewState, page: "settings" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const { disableConfirms }= useSelector((state: any) => state.appSettings);
 	const {

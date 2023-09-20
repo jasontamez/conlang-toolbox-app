@@ -1,4 +1,4 @@
-import { Concept } from "./ReduxDucksTypes";
+import { Concept } from "../store/types";
 
 export const ConceptsSources: [string, keyof Concept][] = [
 	["Swadesh 100", "s100"],

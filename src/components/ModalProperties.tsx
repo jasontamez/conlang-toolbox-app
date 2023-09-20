@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-//import { addToLog } from "./ReduxDucksFuncs";
 
 // This returns a function which can then be used to create properties for a modal
 function modalPropertiesFunc (modals: Function[], setModals: Function, dispatch: Function) {

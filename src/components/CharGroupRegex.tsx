@@ -1,17 +1,11 @@
 import escapeRegexp from 'escape-string-regexp';
-import {
-	WGCharGroupObject,
-	WECharGroupObject
-} from './ReduxDucksTypes';
+import { WECharGroupObject, WGCharGroupObject } from '../store/types';
 
-interface WGMap {
-	[key: string]: WGCharGroupObject
-}
-interface WEMap {
-	[key: string]: WECharGroupObject
+interface Mapped {
+	[key: string]: WGCharGroupObject | WECharGroupObject
 }
 
-const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: WGMap | WEMap) => {
+const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Mapped) => {
 	// Check transforms for %CharGroup references
 	// %% condenses to %, so split on those to begin with.
 	const broken = transform.split("%%");

@@ -44,15 +44,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
 
-import {
-	updateLexiconText,
-	deleteLexiconItem,
-	addLexiconItem,
-	updateLexiconSortDir
-} from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconColumn, LexiconObject, PageData } from '../components/ReduxDucksTypes';
-import { $i } from '../components/DollarSignExports';
-import './Lexicon.css';
+import { addLexiconItem, deleteLexiconItem, updateLexiconSortDir, updateLexiconText } from '../store/lexiconSlice';
+
+import { Lexicon, LexiconColumn, LexiconState, PageData } from '../store/types';
 
 import AddLexiconItemModal from './M-AddWord';
 import EditLexiconItemModal from './M-EditWord';
@@ -64,8 +58,10 @@ import ExtraCharactersModal from './M-ExtraCharacters';
 import ExportLexiconModal from './M-ExportLexicon';
 import EditLexiconSortModal from './M-EditSort';
 import MergeLexiconItemsModal from './M-MergeLexiconItems';
+import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import './Lexicon.css';
 
 interface LexItem {
 	index: number
@@ -203,7 +199,7 @@ const Lex = (props: PageData) => {
 	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
-	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconObject][]>([]);
+	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
 
 	// Sliding container
 	const mainLexList = $i("mainLexList");
@@ -240,7 +236,7 @@ const Lex = (props: PageData) => {
 	// Update Lexicon description or title
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
-		el && dispatch(updateLexiconText(prop, el.value.trim()));
+		el && dispatch(updateLexiconText([prop, el.value.trim()]));
 	};
 
 	// Add new Lexicon item

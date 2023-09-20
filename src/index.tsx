@@ -5,7 +5,7 @@ import { setupIonicReact } from '@ionic/react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import store from "./components/ReduxStore";
+import store from "./store/store";
 
 setupIonicReact({});
 

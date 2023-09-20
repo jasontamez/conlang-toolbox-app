@@ -14,6 +14,8 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 
+import { checkIfSettings, loadStateSettings, setSortLanguage } from './store/settingsSlice';
+
 import Menu from './components/Menu';
 
 import About from "./pages/About";
@@ -25,7 +27,9 @@ import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Info from './pages/AppInfo';
 
+import { currentVersion } from './store/blankAppState';
 import doUpdate095 from './updaters/UpdateTo095';
+import doUpdate096 from './updaters/UpdateTo096';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -48,14 +52,18 @@ import './theme/variables.css';
 /* My theming */
 import './theme/App.css';
 
-import { checkIfState, initialAppState } from './components/ReduxDucks';
-import { overwriteState, setSortLanguage } from './components/ReduxDucksFuncs';
-import { VERSION } from './components/ReduxDucksConst';
-import store from './components/ReduxStore';
 import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
+
+import { checkIfWG, loadStateWG } from './store/wgSlice';
+import { checkIfWE, loadStateWE } from './store/weSlice';
+import { checkIfMS, loadStateMS } from './store/msSlice';
+import { checkIfEC, loadStateEC } from './store/extraCharactersSlice';
+import { checkIfConcepts, loadStateConcepts } from './store/conceptsSlice';
+import { checkIfLexicon, loadStateLex } from './store/lexiconSlice';
+import { checkIfView, loadViewState } from './store/viewSlice';
 
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
@@ -119,28 +127,54 @@ const MainOutlet = memo(() => {
 });
 
 const App = memo(() => {
-	const maybeSetState = () => {
-		return (dispatch: any) => {
-			return StateStorage.getItem("lastState").then((storedState: any) => {
-				if(storedState !== null) {
-					if(storedState && (typeof storedState) === "object") {
-						if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
-							storedState = doUpdate095(storedState);
-						}
-						if (compareVersions.compare(storedState.currentVersion, VERSION.current, "<")) {
-							// Do stuff to possibly bring storedState up to date
-							storedState.currentVersion = VERSION.current;
-						}
-						if(checkIfState(storedState)) {
-							return dispatch(overwriteState(storedState));
-						}
+	const dispatch = useDispatch();
+	// useEffect should keep this from firing except once per session
+	useEffect(() => {
+		// 0.9.5 and older
+		StateStorage.getItem("lastState").then((storedState: any) => {
+			if(storedState !== null) {
+				if(storedState && (typeof storedState) === "object") {
+					if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
+						storedState = doUpdate095(storedState);
+					}
+					doUpdate096(storedState, dispatch);
+					// We're not doing global state again.
+					StateStorage.removeItem("lastState");
+				}
+			}
+		});
+		// 0.9.6 and newer
+		const saves: [string, Function, Function][] = [
+			["WG", checkIfWG, loadStateWG],
+			["WE", checkIfWE, loadStateWE],
+			["MS", checkIfMS, loadStateMS],
+			["EC", checkIfEC, loadStateEC],
+			["Concepts", checkIfConcepts, loadStateConcepts],
+			["Lex", checkIfLexicon, loadStateLex],
+			["Settings", checkIfSettings, loadStateSettings]
+		];
+		saves.forEach(([suffix, checker, setter]) => {
+			StateStorage.getItem("lastState" + suffix).then((storedState: any) => {
+				if(storedState && (typeof storedState) === "object") {
+					if (compareVersions.compare(storedState.currentVersion, currentVersion, "<")) {
+						// Do stuff to possibly bring storedState up to date
+						storedState.currentVersion = currentVersion;
+					}
+					if(checker(storedState)) {
+						return dispatch(setter(storedState));
 					}
 				}
-				return dispatch(overwriteState(initialAppState));
 			});
-		};
-	};
-	store.dispatch(maybeSetState());
+		});
+		// view state doesn't need version-checking
+		StateStorage.getItem("lastStateView").then((storedState: any) => {
+			if(storedState && (typeof storedState) === "object") {
+				if(checkIfView(storedState)) {
+					return dispatch(loadViewState(storedState));
+				}
+			}
+		});
+	}, [dispatch]);
 	return (
 		<IonApp>
 			<IonReactRouter>

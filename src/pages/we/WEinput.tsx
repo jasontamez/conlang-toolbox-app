@@ -21,12 +21,10 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Lexicon, LexiconColumn, PageData } from '../../store/types';
+import { Lexicon, LexiconColumn, PageData, ViewState } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
+import { saveView } from '../../store/viewSlice';
 
-import {
-	changeView,
-} from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
@@ -40,9 +38,9 @@ const WEInput = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
-	const viewInfo = ['we', 'input'];
+	const viewInfo = { key: "we" as keyof ViewState, page: "input" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();

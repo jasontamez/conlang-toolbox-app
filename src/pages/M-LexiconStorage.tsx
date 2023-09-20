@@ -26,14 +26,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-	updateLexiconText,
-	updateLexiconNumber,
-	updateLexicon
-} from '../components/ReduxDucksFuncs';
-import { Lexicon, LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
+import { loadStateLex, updateLexiconNumber, updateLexiconText } from '../store/lexiconSlice';
+import { Lexicon, LexiconState, ModalProperties } from '../store/types';
+import blankAppState from '../store/blankAppState';
+
 import { LexiconStorage } from '../components/PersistentInfo';
-import { blankAppState } from '../components/ReduxDucks';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 
@@ -60,10 +57,10 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 	const [doToast, undoToast] = useIonToast();
 	const clearLexicon = () => {
 		const handler = () => {
-			const newLex: LexiconObject = {
+			const newLex: LexiconState = {
 				...blankAppState.lexicon
 			};
-			/*const newLex: LexiconObject = {
+			/*const newLex: LexiconState = {
 				key: "",
 				lastSave: 0,
 				title: "",
@@ -80,7 +77,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				colEdit: undefined,
 				lexiconWrap: lexiconWrap
 			};*/
-			dispatch(updateLexicon(newLex));
+			dispatch(loadStateLex(newLex));
 			setIsOpen(false);
 			toaster({
 				message: "Lexicon cleared",
@@ -112,9 +109,9 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		}
 	};
 	const openLexiconModal = (whichToOpen: Function) => {
-		const info: [string, LexiconObject][] = [];
+		const info: [string, LexiconState][] = [];
 		setLoading(true);
-		LexiconStorage.iterate((value: LexiconObject, key: string) => {
+		LexiconStorage.iterate((value: LexiconState, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
@@ -137,14 +134,14 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			return lexiconSaveError();
 		} else if(!saveKey) {
 			saveKey = uuidv4();
-			dispatch(updateLexiconText("id", saveKey));
+			dispatch(updateLexiconText(["id", saveKey]));
 		}
 		// Dispatch to state
-		dispatch(updateLexiconNumber("lastSave", now));
+		dispatch(updateLexiconNumber(["lastSave", now]));
 		setLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		const lex: LexiconObject = {...stateLexicon};
+		const lex: LexiconState = {...stateLexicon};
 		// Use possibly-new key
 		lex.id = saveKey;
 		// Use 'now'
@@ -181,7 +178,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			return lexiconSaveError();
 		}
 		const newKey = uuidv4();
-		dispatch(updateLexiconText("id", newKey));
+		dispatch(updateLexiconText(["id", newKey]));
 		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
 	};
 	const lexiconSaveError = () => {

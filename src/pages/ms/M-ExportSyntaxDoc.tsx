@@ -18,12 +18,14 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
+import { ModalProperties } from '../../store/types';
+
 import doExport from '../../components/ExportServices';
 import doText from './Ex-Text';
 import doDocx from './Ex-Docx';
 import doXML from './Ex-XML';
 import doJSON from './Ex-JSON';
-import { ModalProperties } from '../../components/ReduxDucksTypes';
 //import doODT from './Ex-ODT';
 
 interface ExportModalProps extends ModalProperties {

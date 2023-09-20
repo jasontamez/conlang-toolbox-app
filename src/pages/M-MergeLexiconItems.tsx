@@ -26,8 +26,8 @@ import {
 	useDispatch
 } from "react-redux";
 
-import { Lexicon, LexiconColumn, ModalProperties } from '../components/ReduxDucksTypes';
-import { mergeLexiconItems } from '../components/ReduxDucksFuncs';
+import { Lexicon, LexiconColumn, ModalProperties } from '../store/types';
+import { mergeLexiconItems } from '../store/lexiconSlice';
 
 interface MergeProps extends ModalProperties {
 	merging: string[]
@@ -177,7 +177,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 		// clear merged items from Lexicon
 		clearInfo();
 		// dispatch info to store
-		mergedResult && dispatch(mergeLexiconItems(items, mergedResult));
+		mergedResult && dispatch(mergeLexiconItems([items, mergedResult]));
 		// close this modal
 		setIsOpen(false);
 	};

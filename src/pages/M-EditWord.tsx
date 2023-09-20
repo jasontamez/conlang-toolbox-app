@@ -24,11 +24,9 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../components/ReduxDucksTypes';
-import {
-	doEditLexiconItem,
-	deleteLexiconItem
-} from '../components/ReduxDucksFuncs';
+import { deleteLexiconItem, doEditLexiconItem } from '../store/lexiconSlice';
+import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../store/types';
+
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import { $i } from '../components/DollarSignExports';

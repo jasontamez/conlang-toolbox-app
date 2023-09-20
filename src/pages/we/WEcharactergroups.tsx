@@ -29,9 +29,10 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, WECharGroupObject } from '../../store/types';
+import { PageData, ViewState, WECharGroupObject } from '../../store/types';
+import { saveView } from '../../store/viewSlice';
+import { deleteCharacterGroupWE } from '../../store/weSlice';
 
-import { deleteCharGroupWE, changeView } from '../../components/ReduxDucksFuncs';
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -49,9 +50,9 @@ const WECharGroup = (props: PageData) => {
 	const [isOpenAddCharGroupWE, setIsOpenAddCharGroupWE] = useState<boolean>(false);
 	const [isOpenEditCharGroupWE, setIsOpenEditCharGroupWE] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WECharGroupObject | null>(null);
-	const viewInfo = ['we', 'charGroups'];
+	const viewInfo = { key: "we" as keyof ViewState, page: "charGroups" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -66,7 +67,7 @@ const WECharGroup = (props: PageData) => {
 		$q(".charGroups").closeSlidingItems();
 		const { run } = charGroup;
 		const handler = () => {
-			dispatch(deleteCharGroupWE({...charGroup, label}));
+			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
 				message: "Character Group deleted.",
 				duration: 2500,

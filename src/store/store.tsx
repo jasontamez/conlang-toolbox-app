@@ -8,6 +8,7 @@ import lexiconSlice from './lexiconSlice';
 import wgSlice from './wgSlice';
 import weSlice from './weSlice';
 import extraCharactersSlice from './extraCharactersSlice';
+import viewSlice from './viewSlice';
 import blankAppState from './blankAppState';
 
 //
@@ -28,6 +29,7 @@ const reducerConfig = {
 	concepts: conceptsSlice,
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
+	view: viewSlice
 };
 const reducer = combineReducers(reducerConfig);
 const store = configureStore({

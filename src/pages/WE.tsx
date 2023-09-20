@@ -13,13 +13,15 @@ import {
 	enterOutline,
 	exitOutline
 } from 'ionicons/icons';
+
+import { PageData } from '../store/types';
+
+import { SoundChangesIcon, TransformationsIcon } from '../components/icons';
 import WECharGroups from "./we/WEcharactergroups";
 import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
 import WEInput from "./we/WEinput";
 import WEOutput from "./we/WEoutput";
-import { PageData } from '../components/ReduxDucksTypes';
-import { SoundChangesIcon, TransformationsIcon } from '../components/icons';
 
 
 const WE = (props: PageData) => {

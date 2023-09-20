@@ -1,32 +1,53 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import blankAppState from './blankAppState';
-import { Action, Concept, ConceptsState } from './types';
+import { Concept, ConceptsState } from './types';
 import { v4 as uuidv4 } from 'uuid';
+import debounce from '../components/Debounce';
+import { StateStorage } from '../components/PersistentInfo';
 
 const initialState = blankAppState.concepts;
 
-const updateConceptsDisplayFunc = (state: ConceptsState, action: Action) => {
+// Storage
+const saveCurrentState = (state: ConceptsState) => {
+	debounce(StateStorage.setItem, ["lastStateConcepts", state], 1000, "savingStateConcepts");
+};
+
+const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<(keyof Concept)[]>) => {
 	state.display = action.payload;
+	saveCurrentState(state);
 	return state;
 };
 
-const toggleConceptsBooleanFunc = (state: ConceptsState, action: { payload: "textCenter" }) => {
+const toggleConceptsBooleanFunc = (state: ConceptsState, action: PayloadAction<"textCenter" | "showingCombos">) => {
 	state[action.payload] = !state[action.payload];
+	saveCurrentState(state);
 	return state;
 };
 
-const addCustomHybridMeaningFunc = (state: ConceptsState, action: { payload: Concept[] }) => {
+const addCustomHybridMeaningFunc = (state: ConceptsState, action: PayloadAction<Concept[]>) => {
 	state.combinations.push({
 		id: uuidv4(),
 		parts: action.payload
 	});
+	saveCurrentState(state);
 	return state;
 };
 
-const removeCustomHybridMeaningsFunc = (state: ConceptsState, action: { payload: string[] }) => {
+const removeCustomHybridMeaningsFunc = (state: ConceptsState, action: PayloadAction<string[]>) => {
 	state.combinations = state.combinations.filter(combo => action.payload.every((id: string) => id !== combo.id));
+	saveCurrentState(state);
 	return state;
 };
+
+const loadStateConceptsFunc = (state: ConceptsState, action: PayloadAction<ConceptsState>) => {
+	const final = {
+		...state,
+		...action.payload
+	};
+	saveCurrentState(final);
+	return final;
+};
+
 
 const conceptsSlice = createSlice({
 	name: 'concepts',
@@ -35,7 +56,8 @@ const conceptsSlice = createSlice({
 		updateConceptsDisplay: updateConceptsDisplayFunc,
 		toggleConceptsBoolean: toggleConceptsBooleanFunc,
 		addCustomHybridMeaning: addCustomHybridMeaningFunc,
-		deleteCustomHybridMeanings: removeCustomHybridMeaningsFunc
+		deleteCustomHybridMeanings: removeCustomHybridMeaningsFunc,
+		loadStateConcepts: loadStateConceptsFunc
 	}
 });
 
@@ -43,7 +65,8 @@ export const {
 	updateConceptsDisplay,
 	toggleConceptsBoolean,
 	addCustomHybridMeaning,
-	deleteCustomHybridMeanings
+	deleteCustomHybridMeanings,
+	loadStateConcepts
 } = conceptsSlice.actions;
 
 export default conceptsSlice.reducer;
@@ -88,3 +111,20 @@ export const equalityCheck = (stateA: ConceptsState, stateB: ConceptsState) => {
 	}
 };
 */
+
+// Testing if state
+export const _Concepts: { simple: (keyof ConceptsState)[], possiblyFalsy: (keyof ConceptsState)[]} = {
+	simple: [
+		"textCenter",
+		"showingCombos"
+	],
+	possiblyFalsy: [
+		"display",
+		"combinations"
+	]
+};
+export const checkIfConcepts = (possible: ConceptsState | any): possible is ConceptsState => {
+	const check = possible as ConceptsState;
+	const { simple, possiblyFalsy } = _Concepts;
+	return simple.every(prop => check[prop]) && possiblyFalsy.every(prop => (check[prop] !== undefined));
+};

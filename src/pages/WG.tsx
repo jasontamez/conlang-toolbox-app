@@ -13,13 +13,15 @@ import {
 	documentTextOutline,
 	gridOutline
 } from 'ionicons/icons';
+
+import { PageData } from '../store/types';
+
+import { SyllablesIcon, TransformationsIcon } from '../components/icons';
 import WGCharGroups from "./wg/WGcharactergroups";
 import WGTransforms from "./wg/WGtransforms";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
-import { PageData } from '../components/ReduxDucksTypes';
-import { SyllablesIcon, TransformationsIcon } from '../components/icons';
 
 
 const WG = (props: PageData) => {

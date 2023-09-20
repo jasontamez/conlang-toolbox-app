@@ -14,32 +14,37 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	SyntaxHeader
-} from './MorphoSyntaxElements';
-import {
 	addCircleOutline,
 	codeDownloadOutline,
 	removeCircleOutline,
 	saveOutline,
 	trashOutline
 } from 'ionicons/icons';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
-	changeView,
 	setMorphoSyntax,
 	setMorphoSyntaxNum,
 	setMorphoSyntaxText
 } from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
-import { MorphoSyntaxObject, PageData } from '../../components/ReduxDucksTypes';
+
+import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { ViewState, PageData } from '../../store/types';
+import { saveView } from '../../store/viewSlice';
+
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
-import { v4 as uuidv4 } from 'uuid';
-import LoadMS from './M-LoadSyntaxDoc';
-import DeleteMS from './M-DeleteSyntaxDoc';
-import ExportMS from './M-ExportSyntaxDoc';
 import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+
+import {
+	SyntaxHeader
+} from './MorphoSyntaxElements';
+import LoadMS from './M-LoadSyntaxDoc';
+import DeleteMS from './M-DeleteSyntaxDoc';
+import ExportMS from './M-ExportSyntaxDoc';
 
 interface MSOmod extends MorphoSyntaxObject {
 	boolStrings?: string[]
@@ -63,9 +68,9 @@ const Syntax = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const allProps = (Object.keys(bool).length + Object.keys(num).length + Object.keys(text).length);
-	const viewInfo = ['ms', 'msSettings'];
+	const viewInfo = { key: "ms" as keyof ViewState, page: "msSettings" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const clearMS = () => {
 		const handler = () => {

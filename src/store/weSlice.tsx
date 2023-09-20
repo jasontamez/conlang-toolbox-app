@@ -1,34 +1,46 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import blankAppState from './blankAppState';
-import { Action, WECharGroupObject, WEOutputTypes, WEPresetObject, WEState } from './types';
+import { WECharGroupObject, WEOutputTypes, WEPresetObject, WESoundChangeObject, WEState, WETransformObject } from './types';
+import debounce from '../components/Debounce';
+import { StateStorage } from '../components/PersistentInfo';
 
 const initialState: WEState = blankAppState.we as WEState;
 
+// Storage
+const saveCurrentState = (state: WEState) => {
+	debounce(StateStorage.setItem, ["lastStateWE", state], 1000, "savingStateWE");
+};
+
 // INPUT
-const setInputFunc = (state: WEState, action: Action) => {
+const setInputFunc = (state: WEState, action: PayloadAction<string>) => {
 	const { payload } = action;
 	state.input = payload.trim().replace(/(\s*\r?\n\s*)+/g, "\n");
+	saveCurrentState(state);
 	return state;
 };
 
 // GROUPS
-const addCharacterGroupFunc = (state: WEState, action: Action) => {
+const addCharacterGroupFunc = (state: WEState, action: PayloadAction<WECharGroupObject>) => {
 	// {label, description, run}
 	state.characterGroups.push(action.payload);
+	saveCurrentState(state);
 	return state;
 };
-const deleteCharacterGroupFunc = (state: WEState, action: Action) => {
+const deleteCharacterGroupFunc = (state: WEState, action: PayloadAction<WECharGroupObject>) => {
 	const { label } = action.payload;
 	state.characterGroups = state.characterGroups.filter(group => group.label !== label);
+	saveCurrentState(state);
 	return state;
 };
-const editCharacterGroupFunc = (state: WEState, action: { payload: { label: string, edited: WECharGroupObject } }) => {
+const editCharacterGroupFunc = (state: WEState, action: PayloadAction<{ label: string, edited: WECharGroupObject }>) => {
 	const {label, edited} = action.payload;
 	state.characterGroups = state.characterGroups.map(group => group.label === label ? edited : group);
+	saveCurrentState(state);
 	return state;
 };
-const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: Action) => {
-	const newCharacterGroups: WECharGroupObject[] = action.payload;
+const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: PayloadAction<WECharGroupObject[]>) => {
+	const newCharacterGroups = action.payload;
 	const { characterGroups } = state;
 	let incoming: { [key: string]: WECharGroupObject } = {};
 	newCharacterGroups.forEach(cg => {
@@ -55,55 +67,64 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: Action) =>
 		}
 	});
 	state.characterGroups = final;
+	saveCurrentState(state);
 	return state;
 };
 
 // TRANSFORMS
-const addTransformFunc = (state: WEState, action: Action) => {
+const addTransformFunc = (state: WEState, action: PayloadAction<WETransformObject>) => {
 	// { id, search, replace, direction, ?description }
 	state.transforms.push(action.payload);
+	saveCurrentState(state);
 	return state;
 };
-const deleteTransformFunc = (state: WEState, action: Action) => {
+const deleteTransformFunc = (state: WEState, action: PayloadAction<string>) => {
 	const id = action.payload;
 	state.transforms = state.transforms.filter(t => t.id !== id);
+	saveCurrentState(state);
 	return state;
 };
-const editTransformFunc = (state: WEState, action: Action) => {
+const editTransformFunc = (state: WEState, action: PayloadAction<WETransformObject>) => {
 	const item = action.payload;
 	const { id } = item;
 	state.transforms = state.transforms.map(t => t.id === id ? item : t);
+	saveCurrentState(state);
 	return state;
 };
-const rearrangeTransformsFunc = (state: WEState, action: Action) => {
+const rearrangeTransformsFunc = (state: WEState, action: PayloadAction<WETransformObject[]>) => {
 	state.transforms = action.payload;
+	saveCurrentState(state);
 	return state;
 };
 
 // SOUND CHANGES
-const addSoundChangeFunc = (state: WEState, action: Action) => {
+const addSoundChangeFunc = (state: WEState, action: PayloadAction<WESoundChangeObject>) => {
 	// { id, beginning, ending, context, exception }
 	state.soundChanges.push(action.payload);
+	saveCurrentState(state);
 	return state;
 };
-const deleteSoundChangeFunc = (state: WEState, action: Action) => {
+const deleteSoundChangeFunc = (state: WEState, action: PayloadAction<string>) => {
 	const id = action.payload;
 	state.soundChanges = state.soundChanges.filter(t => t.id !== id);
+	saveCurrentState(state);
 	return state;
 };
-const editSoundChangeFunc = (state: WEState, action: Action) => {
+const editSoundChangeFunc = (state: WEState, action: PayloadAction<WESoundChangeObject>) => {
 	const item = action.payload;
 	const { id } = item;
 	state.soundChanges = state.soundChanges.map(t => t.id === id ? item : t);
+	saveCurrentState(state);
 	return state;
 };
-const rearrangeSoundChangesFunc = (state: WEState, action: Action) => {
+const rearrangeSoundChangesFunc = (state: WEState, action: PayloadAction<WESoundChangeObject[]>) => {
 	state.soundChanges = action.payload;
+	saveCurrentState(state);
 	return state;
 };
 
 // SETTINGS
-const setOutputFunc = (state: WEState, action: { payload: WEOutputTypes }) => {
+const setOutputFunc = (state: WEState, action: PayloadAction<WEOutputTypes>) => {
 	const outputStyle = action.payload;
 	switch(outputStyle) {
 		case "outputOnly":
@@ -115,36 +136,41 @@ const setOutputFunc = (state: WEState, action: { payload: WEOutputTypes }) => {
 		default:
 			console.log(`INVALID OUTPUT STYLE [${outputStyle}]`);
 	}
+	saveCurrentState(state);
 	return state;
 };
-const setFlagFunc = (state: WEState, action: Action) => {
-	const [prop, value]: ["inputLower" | "inputAlpha", boolean] = action.payload;
+const setFlagFunc = (state: WEState, action: PayloadAction<["inputLower" | "inputAlpha", boolean]>) => {
+	const [prop, value] = action.payload;
 	state[prop] = value;
+	saveCurrentState(state);
 	return state;
 };
 
 // STORED CUSTOM INFO
-const setStoredCustomInfoFunc = (state: WEState, action: Action) => {
+const setStoredCustomInfoFunc = (state: WEState, action: PayloadAction<any>) => {
 	const { payload } = action;
 	state.storedCustomInfo = payload;
 	state.storedCustomIDs = Object.keys(payload);
+	saveCurrentState(state);
 	return state;
 };
 
 // LOAD INFO and CLEAR ALL
-const loadStateFunc = (state: WEState, action: { payload: WEPresetObject }) => {
+const loadStateFunc = (state: WEState, action: PayloadAction<WEPresetObject>) => {
 	// If payload is null (or falsy), then initialState is used
 	const {
 		characterGroups,
 		transforms,
 		soundChanges
 	} = action.payload || initialState;
-	return {
+	const newState = {
 		...state,
 		characterGroups: [...characterGroups],
 		transforms: [...transforms],
 		soundChanges: [...soundChanges]
 	};
+	saveCurrentState(newState);
+	return newState;
 };
 
 const weSlice = createSlice({
@@ -193,3 +219,26 @@ export const {
 } = weSlice.actions;
 
 export default weSlice.reducer;
+
+// Testing if state
+export const _WE: { simple: (keyof WEState)[], possiblyFalsy: (keyof WEState)[]} = {
+	simple: [
+		"characterGroups",
+		"soundChanges",
+		"transforms",
+		"storedCustomInfo",
+		"storedCustomIDs"
+	],
+	possiblyFalsy: [
+		"outputStyle",
+		"input",
+		"inputLower",
+		"inputAlpha"
+	]
+};
+export const checkIfWE = (possible: WEState | any): possible is WEState => {
+	const check = possible as WEState;
+	const { simple, possiblyFalsy } = _WE;
+	return simple.every(prop => check[prop]) && possiblyFalsy.every(prop => (check[prop] !== undefined));
+};
+

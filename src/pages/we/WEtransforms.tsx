@@ -32,11 +32,9 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, WETransformObject } from '../../store/types';
+import { PageData, ViewState, WETransformObject } from '../../store/types';
 import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
-import {
-	changeView
-} from '../../components/ReduxDucksFuncs';
+import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -56,9 +54,9 @@ const WERew = (props: PageData) => {
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [ editing, setEditing ] = useState<WETransformObject | null>(null);
-	const viewInfo = ['we', 'transformations'];
+	const viewInfo = { key: "we" as keyof ViewState, page: "transformations" };
 	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
+		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();

@@ -16,8 +16,10 @@ import {
 } from '@ionic/react';
 import { closeCircleOutline } from "ionicons/icons";
 import { shallowEqual, useSelector } from 'react-redux';
+
+import { LexiconState, ModalProperties, MSState } from '../store/types';
+
 import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../components/PersistentInfo';
-import { LexiconObject, ModalProperties, MorphoSyntaxObject } from '../components/ReduxDucksTypes';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
@@ -80,11 +82,11 @@ const MExportAllData = (props: ModalProperties) => {
 		delete morphoSyntax.num;
 		delete morphoSyntax.text;
 
-		LexiconStorage.iterate((value: LexiconObject, key: string) => {
+		LexiconStorage.iterate((value: LexiconState, key: string) => {
 			lex.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
-			return MorphoSyntaxStorage.iterate((value: MorphoSyntaxObject, key: string) => {
+			return MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
 				ms.push([key, value]);
 				return; // Blank return keeps the loop going
 			});

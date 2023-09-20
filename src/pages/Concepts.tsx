@@ -13,7 +13,6 @@ import {
 	IonItem,
 	IonButton,
 	IonIcon,
-	useIonViewDidEnter,
 	useIonAlert,
 	useIonToast,
 	useIonRouter
@@ -34,9 +33,6 @@ import {
 import { addItemstoLexiconColumn } from '../store/lexiconSlice';
 import { LexiconColumn, PageData, Concept, ConceptCombo } from '../store/types';
 
-import {
-	changeView,
-} from '../components/ReduxDucksFuncs';
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
 import yesNoAlert from '../components/yesNoAlert';
@@ -72,10 +68,6 @@ const ConceptsPage = (props: PageData) => {
 		dispatch(updateConceptsDisplay([...display, what]));
 	};
 	const shown = Concepts.filter((word: Concept) => display.some((p: keyof Concept) => word[p]));
-	const viewInfo = ['wl', 'home'];
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
 	useEffect(() => {
 		if(unlinking && (!showingCombos || combinations.length === 0)) {
 			setUnlinking(false);

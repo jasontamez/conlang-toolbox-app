@@ -24,8 +24,8 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
-import { ModalProperties } from '../components/ReduxDucksTypes';
-import { updateLexiconSort } from '../components/ReduxDucksFuncs';
+import { ModalProperties } from '../store/types';
+import { updateLexiconSort } from '../store/lexiconSlice';
 
 function reorganize (what: any[], from: number, to: number) {
 	const moved = what[from];

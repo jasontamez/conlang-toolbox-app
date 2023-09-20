@@ -42,29 +42,30 @@ export interface WGSettings {
 	exclamatorySentencePost: string
 }
 export interface WGBasic extends WGSettings {
-		// GROUPS
-		characterGroups: WGCharGroupObject[],
-		// SYLLABLES
-		multipleSyllableTypes: boolean
-		singleWord: string
-		wordInitial: string
-		wordMiddle: string
-		wordFinal: string
-		syllableDropoffOverrides: SyllableDropoffs,
-		// TRANSFORMS
-		transforms: WGTransformObject[],
+	// GROUPS
+	characterGroups: WGCharGroupObject[],
+	// SYLLABLES
+	multipleSyllableTypes: boolean
+	singleWord: string
+	wordInitial: string
+	wordMiddle: string
+	wordFinal: string
+	syllableDropoffOverrides: SyllableDropoffs,
+	// TRANSFORMS
+	transforms: WGTransformObject[],
 }
 export interface WGState extends WGBasic {
-		// MORE SETTINGS
-		output: WGOutputTypes
-		showSyllableBreaks: boolean
-		sentencesPerText: Five_OneHundred
-		capitalizeWords: boolean
-		sortWordlist: boolean
-		wordlistMultiColumn: boolean
-		wordsPerWordlist: Fifty_OneThousand
-		storedCustomInfo: { [key: string]: any },
-		storedCustomIDs: string[]
+	currentVersion: string
+	// MORE SETTINGS
+	output: WGOutputTypes
+	showSyllableBreaks: boolean
+	sentencesPerText: Five_OneHundred
+	capitalizeWords: boolean
+	sortWordlist: boolean
+	wordlistMultiColumn: boolean
+	wordsPerWordlist: Fifty_OneThousand
+	storedCustomInfo: { [key: string]: any },
+	storedCustomIDs: string[]
 }
 export type WGPresetObject = [
 	string,
@@ -103,6 +104,7 @@ export interface WEPresetObject {
 	transforms: WETransformObject[]
 }
 export interface WEState extends WEPresetObject {
+	currentVersion: string
 	input: string
 	outputStyle: WEOutputTypes
 	inputLower: boolean
@@ -120,6 +122,7 @@ export type WEPresets = [
 //
 
 export interface MSState {
+	currentVersion: string
 	id: string
 	lastSave: number
 	title: string
@@ -340,6 +343,7 @@ export interface LexiconColumn {
 }
 export type LexiconBlankSorts = "alphaFirst" | "alphaLast" | "first" | "last";
 export interface LexiconState {
+	currentVersion: string
 	id: string
 	lastSave: number
 	title: string
@@ -376,7 +380,8 @@ export interface ConceptCombo {
 	parts: Concept[]
 }
 export interface ConceptsState {
-	display: [(keyof Concept)][]
+	currentVersion: string
+	display: (keyof Concept)[]
 	textCenter: boolean
 	showingCombos: boolean
 	combinations: ConceptCombo[]
@@ -404,6 +409,7 @@ export interface ExtraCharactersObject {
 	charactersInfo: ExtraCharactersInfo
 }
 export interface ExtraCharactersState {
+	currentVersion: string
 	faves: ExtraCharactersList,
 	toCopy: string,
 	copyImmediately: boolean
@@ -420,12 +426,23 @@ export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Sol
 export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
 
 export interface AppSettings {
+	currentVersion: string
 	theme: ThemeNames
 	disableConfirms: boolean
 	// to be used later
 	sensitivity: SearchSensitivity
 	// set automatically, not by user:
 	sortLanguage: string
+}
+
+//
+// VIEW STATE
+//
+
+export interface ViewState {
+	wg: string,
+	we: string,
+	ms: string
 }
 
 //
@@ -440,6 +457,7 @@ export interface StateObject {
 	concepts: ConceptsState
 	ec: ExtraCharactersState
 	appSettings: AppSettings
+	lastView: ViewState
 }
 
 export type Action = { payload: any }

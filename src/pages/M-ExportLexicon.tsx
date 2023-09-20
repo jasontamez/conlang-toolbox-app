@@ -18,9 +18,8 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
-import { Lexicon, ModalProperties } from '../components/ReduxDucksTypes';
+import { Lexicon, ModalProperties } from '../store/types';
 import doExport from '../components/ExportServices';
-//import { $q, $delay } from '../components/DollarSignExports';
 
 interface ExportModalProps extends ModalProperties {
 	setLoading: Function

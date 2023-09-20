@@ -21,10 +21,11 @@ import {
 } from 'ionicons/icons';
 import { shallowEqual, useSelector } from "react-redux";
 
-import { VERSION } from '../components/ReduxDucksConst';
-import ExtraCharactersModal from './M-ExtraCharacters';
-import { PageData } from '../components/ReduxDucksTypes';
+import { PageData } from '../store/types';
+import { currentVersion } from '../store/blankAppState';
+
 import { ConceptsIcon, LexiconIcon, WordEvolveIcon, WordGenIcon, MorphoSyntaxIcon } from '../components/icons';
+import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -178,7 +179,7 @@ const Home = (props: PageData) => {
 									<IonCardTitle className="ion-align-self-start">App Info</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
-									<div className="ion-text-center">v.{VERSION.current}</div>
+									<div className="ion-text-center">v.{currentVersion}</div>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>

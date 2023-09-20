@@ -1,4 +1,4 @@
-import { SearchSensitivity } from "./ReduxDucksTypes";
+import { SearchSensitivity } from "../store/types";
 
 const stringSorter = (a: string, b: string, sortLanguage: string, sensitivity: SearchSensitivity) => {
 	// If we need to do more stuff, insert the code here.

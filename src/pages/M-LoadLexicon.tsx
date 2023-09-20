@@ -19,14 +19,14 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	updateLexicon
-} from '../components/ReduxDucksFuncs';
-import { LexiconObject, ModalProperties } from '../components/ReduxDucksTypes';
+
+import { loadStateLex } from '../store/lexiconSlice';
+import { LexiconState, ModalProperties } from '../store/types';
+
 import yesNoAlert from '../components/yesNoAlert';
 
 interface SavedLexProperties extends ModalProperties {
-	lexInfo: [string, LexiconObject][]
+	lexInfo: [string, LexiconState][]
 	setLexInfo: Function
 }
 
@@ -41,13 +41,13 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 		setIsOpen(false);
 	};
 	const loadThis = (key: string) => {
-		data.every((pair: [string, LexiconObject]) => {
+		data.every((pair: [string, LexiconState]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
 				return true;
 			}
 			const handler = () => {
-				dispatch(updateLexicon(pair[1]));
+				dispatch(loadStateLex(pair[1]));
 				setIsOpen(false);
 			};
 			if(disableConfirms) {
@@ -79,7 +79,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data && data.length > 0 ? data.map((pair: [string, LexiconObject]) => {
+					{data && data.length > 0 ? data.map((pair: [string, LexiconState]) => {
 						const key = pair[0];
 						const lex = pair[1];
 						const time = new Date(lex.lastSave);
