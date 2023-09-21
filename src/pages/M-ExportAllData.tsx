@@ -15,9 +15,9 @@ import {
 	IonTextarea
 } from '@ionic/react';
 import { closeCircleOutline } from "ionicons/icons";
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { LexiconState, ModalProperties, MSState } from '../store/types';
+import { LexiconState, ModalProperties, MSState, StateObject } from '../store/types';
 
 import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../components/PersistentInfo';
 
@@ -25,198 +25,106 @@ const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const [output, setOutput] = useState<string>("...loading");
 	const {
-		currentVersion,
-		appSettings,
-		wordgenCharGroups,
-		wordgenSyllables,
-		wordgenTransforms,
-		wordgenSettings,
-		wordevolveCharGroups,
-		wordevolveTransforms,
-		wordevolveSoundChanges,
-		wordevolveInput,
-		wordevolveSettings,
-		morphoSyntaxInfo,
+		wg,
+		we,
+		ms,
 		lexicon,
-		extraCharactersState,
-		conceptsState
-	} = useSelector((state: any) => state, shallowEqual);
+		concepts,
+		ec,
+		appSettings
+	} = useSelector((state: StateObject) => state);
 	const doClose = () => {
 		setIsOpen(false);
 	};
 
 	useEffect(() => {
-		const lex: any[] = [];
-		const ms: any[] = [];
-		const wg: any[] = [];
-		const we: any[] = [];
-		const convertedListsDisplayed: any = {};
+		const lexS: any[] = [];
+		const msS: any[] = [];
+		const wgS: any[] = [];
+		const weS: any[] = [];
 		setOutput("...loading");
-		conceptsState.display.forEach((item: string) => {
-			const total: {[key: string]: string} = {
-				asjp: "ASJP",
-				lj: "Leipzig-Jakarta",
-				d: "Dolgopolsky",
-				sy: "Swadesh-Yakhontov",
-				s100: "Swadesh 100",
-				s207: "Swadesh 207",
-				ssl: "Swadesh-Woodward",
-				l200: "Landau 200"
-			};
-			const maybe: (string | undefined) = total[item];
-			if(maybe) {
-				convertedListsDisplayed[maybe] = true;
-			}
-		});
-		const morphoSyntax = {...morphoSyntaxInfo};
-		Object.keys(morphoSyntaxInfo.bool).forEach((prop: string) => {
-			morphoSyntax["BOOL_" + prop] = true;
-		});
-		Object.keys(morphoSyntaxInfo.num).forEach((prop: string) => {
-			morphoSyntax["NUM_" + prop] = morphoSyntaxInfo.num[prop];
-		});
-		Object.keys(morphoSyntaxInfo.text).forEach((prop: string) => {
-			morphoSyntax["TEXT_" + prop] = morphoSyntaxInfo.text[prop];
-		});
-		delete morphoSyntax.bool;
-		delete morphoSyntax.num;
-		delete morphoSyntax.text;
 
 		LexiconStorage.iterate((value: LexiconState, key: string) => {
-			lex.push([key, value]);
+			lexS.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
 			return MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
-				ms.push([key, value]);
+				msS.push([key, value]);
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
 			return CustomStorageWE.iterate((value: any, title: string) => {
-				we.push([title, value]);
+				weS.push([title, value]);
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
 			return CustomStorageWG.iterate((value: any, title: string) => {
-				wg.push([title, value]);
+				wgS.push([title, value]);
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
+			const {storedCustomIDs, storedCustomInfo, ..._wg} = wg;
+			const {storedCustomIDs: x, storedCustomInfo: y, ..._we} = we;
+			const {storedCustomIDs: j, storedCustomInfo: k, ..._ms} = ms;
+			const {storedCustomIDs: q, storedCustomInfo: p, ..._lex} = lexicon;
+			const {sortLanguage, ..._settings} = appSettings
 			setOutput(JSON.stringify({
-				currentVersion,
 				wg: {
-					characterGroups: wordgenCharGroups.map.map((obj: any) => {
-						const {title, run, dropoffOverride} = obj[1];
-						return {
-							label: obj[0],
-							description: title,
-							run,
-							dropoffOverride
-						};
-					}),
-					transforms: wordgenTransforms.list.map((obj: any) => {
-						const {key, seek, replace, description} = obj;
-						return {
-							id: key,
-							search: seek,
-							replace,
-							description
-						};
-					}),
-					multipleSyllableTypes: wordgenSyllables.toggle,
-					syllableDropoffOverrides: {
-						singleWord: wordgenSyllables.objects.singleWord.dropoffOverride === undefined ? null : wordgenSyllables.objects.singleWord.dropoffOverride,
-						wordInitial: wordgenSyllables.objects.wordInitial.dropoffOverride === undefined ? null : wordgenSyllables.objects.wordInitial.dropoffOverride,
-						wordMiddle: wordgenSyllables.objects.wordMiddle.dropoffOverride === undefined ? null : wordgenSyllables.objects.wordMiddle.dropoffOverride,
-						wordFinal: wordgenSyllables.objects.wordFinal.dropoffOverride === undefined ? null : wordgenSyllables.objects.wordFinal.dropoffOverride
-					},
-					singleWord: wordgenSyllables.objects.singleWord.components.join("\n"),
-					wordInitial: wordgenSyllables.objects.wordInitial.components.join("\n"),
-					wordMiddle: wordgenSyllables.objects.wordMiddle.components.join("\n"),
-					wordFinal: wordgenSyllables.objects.wordFinal.components.join("\n"),
-					...wordgenSettings
+					..._wg,
+					characterGroups: wg.characterGroups.map((obj) => ({...obj})),
+					transforms: wg.transforms.map((obj) => ({...obj}))
 				},
 				we: {
-					characterGroups: wordevolveCharGroups.map.map((obj: any) => {
-						const {title, run} = obj[1];
-						return {
-							label: obj[0],
-							description: title,
-							run
-						};
-					}),
-					transforms: wordevolveTransforms.list.map((obj: any) => {
-						const {key, seek, replace, direction, description} = obj;
-						return {
-							id: key,
-							search: seek,
-							replace,
-							direction,
-							description
-						};
-					}),
-					input: wordevolveInput.join("\n"),
-					soundChanges: wordevolveSoundChanges.list.map((obj: any) => {
-						const { key, seek, replace, context, anticontext, description } = obj;
-						return {
-							id: key,
-							beginning: seek,
-							ending: replace,
-							context,
-							exception: anticontext,
-							description
-						};
-					}),
-					settings: {
-						outputStyle: {
-							outputOnly: "output",
-							rulesApplied: "rules",
-							inputFirst: "inputoutput",
-							outputFirst: "outputinput"
-						}[wordevolveSettings.output as "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst"]
-					}
+					..._we,
+					characterGroups: we.characterGroups.map((obj) => ({...obj})),
+					transforms: we.transforms.map((obj) => ({...obj})),
+					soundChanges: we.soundChanges.map((obj) => ({...obj})),
 				},
-				morphoSyntax,
-				appState: appSettings,
-				lexicon : lexicon,
+				ms: {
+					..._ms
+				},
+				appSettings: _settings,
+				lexicon: {
+					..._lex,
+					sortPattern: [...lexicon.sortPattern],
+					columns: lexicon.columns.map((obj) => ({...obj})),
+					lexicon: lexicon.lexicon.map((obj) => ({
+						id: obj.id,
+						columns: [...obj.columns]
+					}))
+				},
 //				wordLists: { // v.0.9.4 only
 //					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
 //					listsDisplayed: convertedListsDisplayed
 //				},
 				concepts: { // v.0.9.5+ only
-					...conceptsState,
-					listsDisplayed: convertedListsDisplayed
+					...concepts,
+					display: [...concepts.display],
+					combinations: concepts.combinations.map((obj) => ({
+						id: obj.id,
+						parts: obj.parts.map((obj) => ({...obj}))
+					}))
 				},
-				extraCharacters: {
-					nowShowing: extraCharactersState.display,
-					faves: extraCharactersState.saved,
-					copyImmediately: extraCharactersState.copyImmediately,
-					toCopy: extraCharactersState.copyLater,
-					showNames: extraCharactersState.showNames
+				ec: {
+					...ec,
+					faves: [...ec.faves]
 				},
 				storages: {
-					lex,
-					ms,
-					wg,
-					we
+					lex: lexS,
+					mx: msS,
+					wg: wgS,
+					we: weS
 				}
 			}));
 		});
 	}, [
-		currentVersion,
-		appSettings,
-		wordgenCharGroups,
-		wordgenSyllables,
-		wordgenTransforms,
-		wordgenSettings,
-		wordevolveCharGroups,
-		wordevolveTransforms,
-		wordevolveSoundChanges,
-		wordevolveInput,
-		wordevolveSettings,
-		morphoSyntaxInfo,
+		wg,
+		we,
+		ms,
 		lexicon,
-		extraCharactersState,
-		conceptsState
+		concepts,
+		ec,
+		appSettings
 	]);
 
 	return (

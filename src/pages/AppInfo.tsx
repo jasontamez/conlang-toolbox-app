@@ -18,11 +18,12 @@ import {
 	IonItem,
 	IonCardTitle
 } from '@ionic/react';
-import { shallowEqual, useSelector } from "react-redux";
-import { PageData } from '../store/types';
+import { useSelector } from "react-redux";
+
+import { PageData, StateObject } from '../store/types';
 
 const AppInfo = (props: PageData) => {
-	const [originalTheme] = useSelector((state: any) => [state.appSettings.theme], shallowEqual);
+	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (

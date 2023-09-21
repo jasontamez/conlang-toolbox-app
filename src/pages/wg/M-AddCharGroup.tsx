@@ -24,9 +24,9 @@ import {
 	chevronBackOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WGCharGroupObject, Zero_Fifty } from '../../store/types';
+import { ExtraCharactersModalOpener, StateObject, WGCharGroupObject, Zero_Fifty } from '../../store/types';
 import { addCharGroupWG } from '../../store/wgSlice';
 
 import { $q, $i, $a } from '../../components/DollarSignExports';
@@ -37,7 +37,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { characterGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
+	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: boolean }>({});

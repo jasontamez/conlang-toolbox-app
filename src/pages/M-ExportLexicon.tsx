@@ -17,8 +17,8 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
-import { Lexicon, ModalProperties } from '../store/types';
+import { useSelector } from "react-redux";
+import { Lexicon, ModalProperties, StateObject } from '../store/types';
 import doExport from '../components/ExportServices';
 
 interface ExportModalProps extends ModalProperties {
@@ -30,14 +30,15 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	const {
 		title,
 		description,
-		columnTitles,
 		lexicon,
 		columns
-	} = useSelector((state: any) => state.lexicon, shallowEqual);
+	} = useSelector((state: StateObject) => state.lexicon);
 	const doClose = () => {
 		setIsOpen(false);
 		setLoading(false);
 	};
+	const columnTitles = columns.map((obj) => obj.label);
+	const length = columns.length;
 	const [doToast, undoToast] = useIonToast();
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
@@ -55,16 +56,16 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			(lex: Lexicon) => lines.push(lex.columns.map((title: string) => quotify(title)).join(","))
 		);
 		let filler = "";
-		if(columns > 2) {
+		if(length > 2) {
 			let x = 2;
-			while(x < columns) {
+			while(x < length) {
 				x++;
 				filler = filler + ",";
 			}
 		}
 		const output = `"TITLE",${quotify(title)}${filler}\n`
 			+ `"Description",${description}${filler}\n`
-			+ lines.join(columns < 2 ? ",\n" : "\n") + "\n";
+			+ lines.join(length < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
 	const doCSV = (e: Event) => {
@@ -98,7 +99,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		};
 		lexicon.forEach((lex: Lexicon) => {
 			const item: any = {};
-			for(let x = 0; x < columns; x++) {
+			for(let x = 0; x < length; x++) {
 				item[colTitles[x]] = lex.columns[x];
 			}
 			base.content.push(item);

@@ -18,10 +18,10 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { loadStateLex } from '../store/lexiconSlice';
-import { LexiconState, ModalProperties } from '../store/types';
+import { LexiconState, ModalProperties, StateObject } from '../store/types';
 
 import yesNoAlert from '../components/yesNoAlert';
 
@@ -33,7 +33,7 @@ interface SavedLexProperties extends ModalProperties {
 const LoadLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms, shallowEqual);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {

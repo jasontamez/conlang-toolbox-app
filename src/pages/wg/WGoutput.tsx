@@ -12,9 +12,10 @@ import {
 	useIonViewDidEnter,
 	useIonAlert,
 	useIonToast,
-	useIonRouter
+	useIonRouter,
+	AlertInput
 } from '@ionic/react';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	caretForwardCircleOutline,
 	settingsOutline,
@@ -29,7 +30,8 @@ import {
 	WGCharGroupObject,
 	PageData,
 	LexiconColumn,
-	ViewState
+	ViewState,
+	StateObject
 } from '../../store/types';
 import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
 import { saveView } from '../../store/viewSlice';
@@ -93,14 +95,8 @@ const WGOut = (props: PageData) => {
 
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
-	const [
-		lexColumns,
-		appSettings
-	] = useSelector((state: any) => [
-		state.lexicon.columns,
-		state.appSettings
-	], shallowEqual);
-	const { sortLanguage, sensitivity } = appSettings;
+	const lexColumns = useSelector((state: StateObject) => state.lexicon.columns);
+	const { sortLanguage, sensitivity } = useSelector((state: StateObject) => state.appSettings);
 	const {
 		characterGroups,
 		multipleSyllableTypes,
@@ -112,7 +108,7 @@ const WGOut = (props: PageData) => {
 		transforms,
 		monosyllablesRate,
 		maxSyllablesPerWord,
-		charGroupRunDropoff,
+		characterGroupDropoff,
 		syllableBoxDropoff,
 		output,
 		showSyllableBreaks,
@@ -128,7 +124,7 @@ const WGOut = (props: PageData) => {
 		sortWordlist,
 		wordlistMultiColumn,
 		wordsPerWordlist
-	} = useSelector((state: any) => state.wg);
+	} = useSelector((state: StateObject) => state.wg);
 
 	// // //
 	// Memoized stuff
@@ -312,8 +308,9 @@ const WGOut = (props: PageData) => {
 		}
 		return makeSyllable(wordFinal, syllableDropoffOverrides.wordFinal || syllableBoxDropoff);
 	};
-	const makeSyllable = (syllList: string[], rate: number) => {
+	const makeSyllable = (syllables: string, rate: number) => {
 		let chosen;
+		const syllList = syllables.split(/\r?\n/);
 		const max = syllList.length;
 		if(rate === 0) {
 			return translateSyllable(syllList[Math.floor(Math.random() * max)]);
@@ -331,7 +328,7 @@ const WGOut = (props: PageData) => {
 	const translateSyllable = (syll: string) => {
 		const chars: string[] = syll.split("");
 		let result: string = "";
-		const rate = charGroupRunDropoff;
+		const rate = characterGroupDropoff;
 		while(chars.length > 0) {
 			const current = chars.shift();
 			const charGroup = charGroupMap[current!];
@@ -428,17 +425,17 @@ const WGOut = (props: PageData) => {
 	// // //
 	const getEverySyllable = async () => {
 		const result: string[] = [];
-		let syllables = singleWord
+		let syllables: string[] | string[][] = singleWord.split(/\r?\n/);
 		if(multipleSyllableTypes) {
 			syllables = syllables.concat(
-				wordInitial,
-				wordMiddle,
-				wordFinal
+				wordInitial.split(/\r?\n/),
+				wordMiddle.split(/\r?\n/),
+				wordFinal.split(/\r?\n/)
 			);
 		}
 		syllables = syllables.map((syll: string) => ["", syll]);
 		while(syllables.length > 0) {
-			const [current, toGo] = syllables.shift();
+			const [current, toGo] = syllables.shift()!;
 			const res = recurseSyllables(current, toGo);
 			const newOutput: string[] = [];
 			res.then((res: any) => {
@@ -565,12 +562,13 @@ const WGOut = (props: PageData) => {
 			header: "Select a column",
 			message: "Your selected words will be added to the Lexicon under that column.",
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
-				return {
+				const obj: AlertInput = {
 					type: 'radio',
 					label: col.label,
 					value: col,
 					checked: !i
 				};
+				return obj;
 			}),
 			buttons: [
 				{

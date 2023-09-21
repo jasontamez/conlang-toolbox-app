@@ -21,12 +21,11 @@ import {
 	saveOutline
 } from 'ionicons/icons';
 import {
-	shallowEqual,
 	useSelector,
 	useDispatch
 } from "react-redux";
 
-import { Lexicon, LexiconColumn, ModalProperties } from '../store/types';
+import { Lexicon, LexiconColumn, ModalProperties, StateObject } from '../store/types';
 import { mergeLexiconItems } from '../store/lexiconSlice';
 
 interface MergeProps extends ModalProperties {
@@ -127,9 +126,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 	const [mergeMethods, setMergeMethods] = useState<(keyof Method)[]>([]);
 	const [mergedResult, setMergedResult] = useState<Lexicon | null>(null);
 	const dispatch = useDispatch();
-	const {
-		columns
-	} = useSelector((state: any) => state.lexicon, shallowEqual);
+	const { columns } = useSelector((state: StateObject) => state.lexicon);
 
 	const makeMergedItem = useCallback((itsByCols: string[][], mMeths: (keyof Method)[]) => {
 		const result: Lexicon = {

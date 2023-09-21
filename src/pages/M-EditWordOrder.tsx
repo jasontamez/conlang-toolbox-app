@@ -34,10 +34,10 @@ import {
 	addCircleOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn } from '../store/types';
+import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn, StateObject } from '../store/types';
 
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
@@ -51,7 +51,7 @@ interface ShadowColumn extends LexiconColumn {
 const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
-	const [settings, lexObject] = useSelector((state: any) => [state.appSettings, state.lexicon], shallowEqual);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		lexicon,
 		columns,
@@ -61,7 +61,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
-	} = lexObject;
+	} = useSelector((state: StateObject) => state.lexicon);
 	const [shadowTruncate, setShadowTruncate] = useState<boolean>(truncateColumns);
 	const [shadowBlankSort, setShadowBlankSort] = useState<LexiconBlankSorts>(blankSort);
 	const [shadowColumns, setShadowColumns] = useState<ShadowColumn[]>([]);
@@ -206,7 +206,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 			// save result
 			setShadowColumns(newColumns);
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({

@@ -16,12 +16,10 @@ import {
 	IonContent,
 	IonCardTitle
 } from '@ionic/react';
-import {
-	globeOutline
-} from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
+import { globeOutline } from 'ionicons/icons';
+import { useSelector } from "react-redux";
 
-import { PageData } from '../store/types';
+import { PageData, StateObject } from '../store/types';
 import { currentVersion } from '../store/blankAppState';
 
 import { ConceptsIcon, LexiconIcon, WordEvolveIcon, WordGenIcon, MorphoSyntaxIcon } from '../components/icons';
@@ -29,9 +27,8 @@ import ExtraCharactersModal from './M-ExtraCharacters';
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const originalTheme = useSelector((state: any) => state.appSettings.theme, shallowEqual);
-	const views = useSelector((state: any) => state.viewState, shallowEqual);
-	const {ms, we, wg} = views;
+	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
+	const { ms, we, wg } = useSelector((state: StateObject) => state.lastView);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (

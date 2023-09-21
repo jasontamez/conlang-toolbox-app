@@ -28,7 +28,7 @@ import {
 	trash,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
 	setCharacterGroupDropoff,
@@ -38,7 +38,8 @@ import {
 	WGCharGroupObject,
 	Zero_Fifty,
 	PageData,
-	ViewState
+	ViewState,
+	StateObject
 } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
@@ -65,8 +66,8 @@ const WGCharGroup = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
-	const { charGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = (charGroup: WGCharGroupObject) => {
 		$q(".charGroups").closeSlidingItems();
 		setIsOpenEditCharGroup(true);
@@ -139,7 +140,7 @@ const WGCharGroup = (props: PageData) => {
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					{charGroups.map((charGroup: WGCharGroupObject) => {
+					{characterGroups.map((charGroup: WGCharGroupObject) => {
 						const { run, title, dropoffOverride, label } = charGroup;
 						return (
 							<IonItemSliding key={label}>

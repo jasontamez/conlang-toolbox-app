@@ -19,9 +19,9 @@ import {
 //	cogSharp,
 //	volumeHighSharp
 } from 'ionicons/icons';
+import { ConceptsIcon, IonIconProps, LexiconIcon, MorphoSyntaxIcon, WordEvolveIcon, WordGenIcon } from './icons';
 
 import './Menu.css';
-import { ConceptsIcon, IonIconProps, LexiconIcon, MorphoSyntaxIcon, WordEvolveIcon, WordGenIcon } from './icons';
 
 interface AppPage {
 	url: string
@@ -316,12 +316,13 @@ const Menu = () => {
 								</IonItem>
 							</IonMenuToggle>
 						);
-				});
-					const head: any = (menuSection.header) ? (<IonListHeader>{menuSection.header}</IonListHeader>) : '';
-					const note: any = (menuSection.note) ? (<IonNote>{menuSection.note}</IonNote>) : '';
+					});
+					const { header, note } = menuSection;
+					const head: any = (header) ? (<IonListHeader>{header}</IonListHeader>) : '';
+					const notation: any = (note) ? (<IonNote>{note}</IonNote>) : '';
 					return (
 						<IonList key={menuSection.id} id={menuSection.id}>
-							{head}{note}
+							{head}{notation}
 							{pages}
 						</IonList>
 					);

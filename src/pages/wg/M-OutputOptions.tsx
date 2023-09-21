@@ -16,7 +16,7 @@ import {
 	IonIcon,
 	IonFooter
 } from '@ionic/react';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	checkmarkCircleOutline,
 	closeCircleOutline,
@@ -26,7 +26,8 @@ import {
 import {
 	Fifty_OneThousand,
 	Five_OneHundred,
-	ModalProperties
+	ModalProperties,
+	StateObject
 } from '../../store/types';
 import {
 	setOutputTypeWG,
@@ -41,7 +42,6 @@ import {
 const OutputOptionsModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const settingsWG = useSelector((state: any) => state.wordgenSettings, shallowEqual);
 	const {
 		output,
 		showSyllableBreaks,
@@ -50,7 +50,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		sortWordlist,
 		wordlistMultiColumn,
 		wordsPerWordlist
-	} = settingsWG;
+	} = useSelector((state: StateObject) => state.wg);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>

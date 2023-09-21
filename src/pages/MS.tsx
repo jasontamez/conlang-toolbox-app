@@ -8,10 +8,10 @@ import {
 	IonRouterOutlet,
 	IonIcon
 } from '@ionic/react';
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons/icons';
 
-import { PageData } from '../store/types';
+import { PageData, StateObject } from '../store/types';
 
 import MSSettings from "./ms/msSettings";
 import MS01 from "./ms/ms01";
@@ -35,7 +35,7 @@ function increase (n: number) {
 }
 
 const MS = (props: PageData) => {
-	const msPage: string = useSelector((state: any) => state.viewState.ms, shallowEqual) || "msSettings";
+	const msPage: string = useSelector((state: StateObject) => state.lastView.ms) || "msSettings";
 	const page = Number(msPage.slice(-2)) || 0;
 	// 'center' should not fall more that two places from an edge
 	const [center, setCenter] = useState<number>(Math.min(Math.max(page, 2), 8));

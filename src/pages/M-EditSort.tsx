@@ -22,9 +22,9 @@ import {
 	reorderTwo,
 	checkmarkCircle
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ModalProperties } from '../store/types';
+import { ModalProperties, StateObject } from '../store/types';
 import { updateLexiconSort } from '../store/lexiconSlice';
 
 function reorganize (what: any[], from: number, to: number) {
@@ -39,7 +39,7 @@ const EditLexiconSortModal = (props: ModalProperties) => {
 	const {
 		columns,
 		sortPattern,
-	} = useSelector((state: any) => state.lexicon, shallowEqual);
+	} = useSelector((state: StateObject) => state.lexicon);
 	const [sorting, setSorting] = useState<number[]>(sortPattern);
 	useEffect(() => {
 		setSorting(sortPattern);

@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import capitalize from 'capitalize';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { ExtraCharactersDisplayName, ModalProperties } from '../store/types';
+import { ExtraCharactersDisplayName, ModalProperties, StateObject } from '../store/types';
 import { setFaves, setNowShowing, setToCopy, toggleCopyImmediately, toggleShowNames } from '../store/extraCharactersSlice';
 
 import charData from '../components/ExtraCharactersData';
@@ -53,13 +53,13 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	} = props;
 	const dispatch = useDispatch();
 	const {
-		display,
-		saved,
+		nowShowing,
+		faves,
 		copyImmediately,
-		copyLater,
+		toCopy,
 		showNames
-	} = useSelector((state: any) => state.ec);
-	const data: string[] = display === "Favorites" ? saved : objects[display] || [];
+	} = useSelector((state: StateObject) => state.ec);
+	const data: string[] = nowShowing === "Favorites" ? faves : objects[nowShowing] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
 	const [showHelp, setShowHelp] = useState<boolean>(false);
@@ -67,27 +67,27 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};
-		saved.forEach((selected: string) => (newFaves[selected] = true));
+		faves.forEach((selected: string) => (newFaves[selected] = true));
 		setCurrentFaves(newFaves);
-	}, [saved]);
+	}, [faves]);
 
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const toggleChars = useCallback((what: ExtraCharactersDisplayName) => {
-		if(display !== what) {
+		if(nowShowing !== what) {
 			dispatch(setNowShowing(what));
 		}
-	}, [dispatch, display]);
+	}, [dispatch, nowShowing]);
 	const toggleFave = useCallback((char) => {
 		if(!currentFaves[char]) {
 			// New fave
-			dispatch(setFaves([...saved, char]));
+			dispatch(setFaves([...faves, char]));
 			return;
 		}
 		// Deleting fave
-		dispatch(setFaves(saved.filter((fave: string) => fave !== char)));
-	}, [currentFaves, saved, dispatch]);
+		dispatch(setFaves(faves.filter((fave: string) => fave !== char)));
+	}, [currentFaves, faves, dispatch]);
 	const copyNow = useCallback((char) => {
 		Clipboard.write({string: char}).then(() => toaster({
 			message: `Copied ${char} to clipboard`,
@@ -98,8 +98,8 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		}));
 	}, [doToast, undoToast]);
 	const saveToBeCopied = useCallback((char) => {
-		dispatch(setToCopy(copyLater + char));
-	}, [dispatch, copyLater]);
+		dispatch(setToCopy(toCopy + char));
+	}, [dispatch, toCopy]);
 	const characterClicked = useCallback(async (char: string) => {
 		if(isFavoriting) {
 			toggleFave(char);
@@ -166,7 +166,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => toggleFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
 							<IonIcon icon={heartOutline} />
 						</IonButton>
-						<IonInput aria-label="Characters to be copied" id="toBeCopied" value={copyLater} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
+						<IonInput aria-label="Characters to be copied" id="toBeCopied" value={toCopy} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
 						<IonButton size="default" slot="end" onClick={() => dispatch(toggleShowNames())} color={showNames ? "secondary" : undefined} fill={showNames ? "solid" : "clear"}>
 							<IonIcon icon={readerOutline} />
 						</IonButton>
@@ -177,11 +177,11 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 					<IonItem>
 						<div className="ion-flex-row-wrap ion-align-items-center ion-justify-content-center displayChips">
 							<span>Display:</span>
-							<IonChip outline={display !== "Favorites"} onClick={() => toggleChars("Favorites")} className={"ion-margin-start" + (display === "Favorites" ? " active" : "")}>
+							<IonChip outline={nowShowing !== "Favorites"} onClick={() => toggleChars("Favorites")} className={"ion-margin-start" + (nowShowing === "Favorites" ? " active" : "")}>
 								<IonLabel>Favorites</IonLabel>
 							</IonChip>
 							{contents.map((title) => {
-								const current = display === title;
+								const current = nowShowing === title;
 								return (
 									<IonChip key={title} outline={!current} onClick={() => toggleChars(title)} className={current ? "active" : ""}>
 										<IonLabel>{title}</IonLabel>
@@ -191,15 +191,15 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						</div>
 					</IonItem>
 					<IonItem className="extraHelp">
-						<div>Characters will display below. Tap them to copy them to the copy-bar above.</div>
+						<div>Characters will nowShowing below. Tap them to copy them to the copy-bar above.</div>
 					</IonItem>
 					{data ? (
-						<IonItem key={`${display}-Group`}>
+						<IonItem key={`${nowShowing}-Group`}>
 							{showNames ? (
 								<div className="twoColumnsEC centralized">
-									<h2>{display}</h2>
+									<h2>{nowShowing}</h2>
 									{data.map((character: string) =>
-										<div key={"mNamed" + display + character}>
+										<div key={"mNamed" + nowShowing + character}>
 											<div
 												className={currentFaves[character] ? "char favorite" : "char"}
 												onClick={() => characterClicked(character)}
@@ -210,11 +210,11 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 								</div>
 							) : (
 								<div className="multiColumnEC centralized">
-									<h2>{display}</h2>
+									<h2>{nowShowing}</h2>
 									<div>
 										{data.map((character: string) =>
 											<div
-												key={"mUnnamed" + display + character}
+												key={"mUnnamed" + nowShowing + character}
 												className={currentFaves[character] ? "char favorite" : "char"}
 												onClick={() => characterClicked(character)}
 											>{character}</div>

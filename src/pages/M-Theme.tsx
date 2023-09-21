@@ -18,19 +18,18 @@ import {
 	closeCircleSharp,
 	checkmarkCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { setTheme } from '../store/settingsSlice';
-import { ThemeNames, ModalProperties } from '../store/types';
+import { ThemeNames, ModalProperties, StateObject } from '../store/types';
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const appTheme = useSelector((state: StateObject) => state.appSettings.theme) || "Default";
 	const cancel = () => {
 		setIsOpen(false);
 	};
-	const appTheme = settings.theme || "Default";
 	const changeAppTheme = (theme: ThemeNames) => {
 		dispatch(setTheme(theme));
 		setIsOpen(false);

@@ -15,14 +15,15 @@ import {
 	IonIcon,
 	useIonAlert,
 	useIonToast,
-	useIonRouter
+	useIonRouter,
+	AlertInput
 } from '@ionic/react';
 import {
 	helpCircleOutline,
 	saveOutline,
 	checkmarkDoneOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
 	updateConceptsDisplay,
@@ -31,7 +32,7 @@ import {
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
 import { addItemstoLexiconColumn } from '../store/lexiconSlice';
-import { LexiconColumn, PageData, Concept, ConceptCombo } from '../store/types';
+import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject } from '../store/types';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
@@ -50,13 +51,14 @@ const ConceptsPage = (props: PageData) => {
 	const [unlinking, setUnlinking] = useState<boolean>(false);
 	const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
-	const [disableConfirms, conceptsState, lexColumns] = useSelector((state: any) => [state.appSettings.disableConfirms, state.conceptsState, state.lexicon.columns], shallowEqual);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
+	const lexColumns = useSelector((state: StateObject) => state.lexicon.columns);
 	const {
 		display,
 		showingCombos,
 		combinations,
 		textCenter
-	} = conceptsState;
+	} = useSelector((state: StateObject) => state.concepts);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -82,12 +84,13 @@ const ConceptsPage = (props: PageData) => {
 			header: "Select a column",
 			message: "Your selected meanings will be added to the Lexicon under that column.",
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
-				return {
+				const obj: AlertInput = {
 					type: 'radio',
-					label: col.label,
+					label: col.label || "",
 					value: col,
 					checked: !i
 				};
+				return obj;
 			}),
 			buttons: [
 				{

@@ -19,9 +19,9 @@ import {
 	closeCircleOutline,
 	closeCircleSharp
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ModalProperties, WEPresetObject } from '../../store/types';
+import { ModalProperties, StateObject, WEPresetObject } from '../../store/types';
 import { loadStateWE } from '../../store/weSlice';
 import WEPresets from '../../store/wePresets';
 
@@ -31,7 +31,7 @@ import toaster from '../../components/toaster';
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms, shallowEqual);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const maybeLoadPreset = (preset: string, object: WEPresetObject) => {

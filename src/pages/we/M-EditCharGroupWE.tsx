@@ -26,7 +26,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { deleteCharacterGroupWE, editCharacterGroupWE } from '../../store/weSlice';
-import { ExtraCharactersModalOpener, WECharGroupObject } from '../../store/types';
+import { ExtraCharactersModalOpener, StateObject, WECharGroupObject } from '../../store/types';
 
 import { $q, $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -42,8 +42,8 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { characterGroups } = useSelector((state: any) => state.we);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { characterGroups } = useSelector((state: StateObject) => state.we);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: WECharGroupObject }>({});
 	const titleEl = $i("editingWECharGroupTitle");
 	const labelEl = $i("editingWEShortLabel");
@@ -174,7 +174,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 	const maybeDeleteCharGroup = () => {
 		const { label = "", run } = editing!;
 		const handler = () => {
-			dispatch(deleteCharacterGroupWE(label));
+			dispatch(deleteCharacterGroupWE(editing!));
 			cancelEditing();
 			toaster({
 				message: "Character Group deleted.",

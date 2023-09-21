@@ -29,7 +29,7 @@ const reducerConfig = {
 	concepts: conceptsSlice,
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
-	view: viewSlice
+	lastView: viewSlice
 };
 const reducer = combineReducers(reducerConfig);
 const store = configureStore({

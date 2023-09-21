@@ -25,9 +25,9 @@ import {
 	trashOutline,
 	globeOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { WGCharGroupObject, Zero_Fifty, ExtraCharactersModalOpener } from '../../store/types';
+import { WGCharGroupObject, Zero_Fifty, ExtraCharactersModalOpener, StateObject } from '../../store/types';
 import { editCharacterGroupWG, deleteCharGroupWG } from '../../store/wgSlice';
 
 import { $q, $i } from '../../components/DollarSignExports';
@@ -42,8 +42,8 @@ interface ModalProps extends ExtraCharactersModalOpener {
 const EditCharGroupModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
-	const { charGroups, characterGroupDropoff } = useSelector((state: any) => state.wg, shallowEqual);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
@@ -69,12 +69,12 @@ const EditCharGroupModal = (props: ModalProps) => {
 				setDropoff(characterGroupDropoff);
 			}
 			const newMap: { [ key: string]: boolean } = {};
-			charGroups.forEach((item: WGCharGroupObject) => {
+			characterGroups.forEach((item: WGCharGroupObject) => {
 				newMap[item.label!] = true;
 			});
 			setCharGroupMap(newMap);
 		}
-	}, [editing, characterGroupDropoff, isOpen, titleEl, labelEl, runEl, charGroups]);
+	}, [editing, characterGroupDropoff, isOpen, titleEl, labelEl, runEl, characterGroups]);
 
 	function resetError (prop: keyof WGCharGroupObject) {
 		// Remove danger color if present
@@ -165,7 +165,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		// Everything ok!
 		cancelEditing();
 		dispatch(editCharacterGroupWG({
-			old: editing,
+			old: editing!,
 			edited: {
 				title,
 				label,

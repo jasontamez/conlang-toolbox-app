@@ -14,9 +14,9 @@ import {
 //	IonSelect,
 //	IonSelectOption
 } from '@ionic/react';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { PageData } from '../store/types';
+import { PageData, StateObject } from '../store/types';
 import { setDisableConfirms } from '../store/settingsSlice';
 
 import ChooseThemeModal from './M-Theme';
@@ -25,7 +25,6 @@ import ExportAllData from './M-ExportAllData';
 
 const AppSettings = (props: PageData) => {
 	const dispatch = useDispatch();
-	const appSettings = useSelector((state: any) => state.appSettings, shallowEqual);
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const {
@@ -33,7 +32,7 @@ const AppSettings = (props: PageData) => {
 		theme,
 //		sensitivity,
 //		sortLanguage
-	} = appSettings;
+	} = useSelector((state: StateObject) => state.appSettings);
 	return (
 		<IonPage>
 			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
