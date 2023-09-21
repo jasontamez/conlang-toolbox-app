@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import blankAppState from './blankAppState';
-import { MSBool, MSNum, MSText, MSState } from './types';
+import { MSBool, MSNum, MSText, MSState, MSBasic } from './types';
 import debounce from '../components/Debounce';
 import { StateStorage } from '../components/PersistentInfo';
 
@@ -45,10 +45,16 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[string, string
 	return state;
 };
 
-const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSState>) => {
-	// If payload is null (or falsy), then initialState is used
+const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSBasic | MSState>) => {
+	const {
+		currentVersion,
+		storedCustomIDs,
+		storedCustomInfo
+	} = state;
 	const final = {
-		...state,
+		currentVersion,
+		storedCustomIDs,
+		storedCustomInfo,
 		...action.payload
 	};
 	saveCurrentState(final);

@@ -121,12 +121,7 @@ export type WEPresets = [
 // MORPHOSYNTAX
 //
 
-export interface MSState {
-	currentVersion: string
-	id: string
-	lastSave: number
-	title: string
-	description: string
+export interface MSInfo {
 	BOOL_prefixMost?: boolean
 	BOOL_prefixLess?: boolean
 	BOOL_suffixMost?: boolean
@@ -288,7 +283,16 @@ export interface MSState {
 	TEXT_clauseChainEtc?: string
 	TEXT_relClauses?: string
 	TEXT_coords?: string
-	storedCustomInfo: { [key: string]: any },
+}
+export interface MSBasic extends MSInfo {
+	id: string
+	lastSave: number
+	title: string
+	description: string
+}
+export interface MSState extends MSBasic {
+	currentVersion: string
+	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }
 export type MSBool = "BOOL_prefixMost" | "BOOL_prefixLess" | "BOOL_suffixMost" | "BOOL_suffixLess"

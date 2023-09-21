@@ -37,4 +37,12 @@ const store = configureStore({
 	preloadedState: initialAppState
 });
 
+/* THE BELOW IS RECOMMENDED, but I don't know if I need it. Keeping it just in case I want it later.
+// Infer the `RootState` and `AppDispatch` types from the store itself
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+*/
+
 export default store;

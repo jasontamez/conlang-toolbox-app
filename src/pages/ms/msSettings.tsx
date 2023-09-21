@@ -21,17 +21,12 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
-
-import {
-	setMorphoSyntax,
-	setMorphoSyntaxNum,
-	setMorphoSyntaxText
-} from '../../components/ReduxDucksFuncs';
 import { useDispatch, useSelector } from "react-redux";
 
-import { MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, MSState, MSBasic } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
+import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
+import blankAppState from '../../store/blankAppState';
 
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import debounce from '../../components/Debounce';
@@ -46,46 +41,29 @@ import LoadMS from './M-LoadSyntaxDoc';
 import DeleteMS from './M-DeleteSyntaxDoc';
 import ExportMS from './M-ExportSyntaxDoc';
 
-interface MSOmod extends MorphoSyntaxObject {
-	boolStrings?: string[]
-}
-
 const Syntax = (props: PageData) => {
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
 	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [storedInfo, setStoredInfo] = useState<[string, MSOmod][]>([]);
+	const [storedInfo, setStoredInfo] = useState<[string, MSBasic][]>([]);
 	const dispatch = useDispatch();
-	const [
-		msInfo,
-		disableConfirms
-	] = useSelector((state: any) => [
-		state.morphoSyntaxInfo,
-		state.appSettings.disableConfirms
-	]);
-	const {title, description, bool, num, text} = msInfo;
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
+	const ms: MSState = useSelector((state: any) => state.ms);
+	const {title, description, id, lastSave, currentVersion, storedCustomIDs, storedCustomInfo, ...rest} = ms;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const allProps = (Object.keys(bool).length + Object.keys(num).length + Object.keys(text).length);
+	const allProps = Object.keys(rest).length;
 	const viewInfo = { key: "ms" as keyof ViewState, page: "msSettings" };
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
 	const clearMS = () => {
 		const handler = () => {
-			const newMS: MorphoSyntaxObject = {
-				key: "",
-				lastSave: 0,
-				title: "",
-				description: "",
-				bool: {},
-				num: {},
-				text: {}
-			};
-			dispatch(setMorphoSyntax(newMS));
+			const {currentVersion, storedCustomIDs, storedCustomInfo, ...newMS}: MSState = {...blankAppState.ms};
+			dispatch(loadStateMS(newMS));
 		};
-		if(!(title || msInfo.key || description || (allProps > 0))) {
+		if(!(title || id || description || (allProps > 0))) {
 			toaster({
 				message: "You have no information to clear.",
 				duration: 2500,
@@ -108,9 +86,9 @@ const Syntax = (props: PageData) => {
 		}
 	};
 	const openMSModal = (modalOpener: Function) => {
-		const info: [string, MSOmod][] = [];
+		const info: [string, MSBasic][] = [];
 		setIsLoading(true);
-		MorphoSyntaxStorage.iterate((value: MorphoSyntaxObject, key: string) => {
+		MorphoSyntaxStorage.iterate((value: MSBasic, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
@@ -147,32 +125,34 @@ const Syntax = (props: PageData) => {
 		}
 		setIsOpenExportMS(true);
 	};
-	const saveMSDoc: any = (announce: string = "MorphoSyntax document saved.", key: string = msInfo.key, overwrite: boolean = true) => {
-		// Save original key
-		const firstKey = msInfo.key;
+	const saveMSDoc = (
+		announce: string = "MorphoSyntax document saved.",
+		key: string = id,
+		overwrite: boolean = true
+	) => {
+		// Save original id
+		const firstKey = key;
 		// Save 'now'
 		const now = Date.now();
 		if(!title) {
 			return MSSaveError();
 		} else if(!key) {
 			key = uuidv4();
-			dispatch(setMorphoSyntaxText("key", key));
+			dispatch(setMorphoSyntaxText(["id", key]));
 		}
 		// Dispatch to state
-		dispatch(setMorphoSyntaxNum("lastSave", now));
+		dispatch(setMorphoSyntaxNum(["lastSave", now]));
 		setIsLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		const ms: any = {
-			...msInfo,
+		const ms: MSBasic = {
 			// Use possibly-new key
-			key: key,
+			id: key,
 			// Use 'now'
 			lastSave: now,
-			bool: {},
-			boolStrings: Object.keys(bool),
-			num: {...num},
-			text: {...text}
+			title,
+			description,
+			...rest
 		};
 		MorphoSyntaxStorage.setItem(key, ms)
 			.then(() => {
@@ -195,7 +175,7 @@ const Syntax = (props: PageData) => {
 			return MSSaveError();
 		}
 		const key = uuidv4();
-		dispatch(setMorphoSyntaxText("key", key));
+		dispatch(setMorphoSyntaxText(["id", key]));
 		saveMSDoc("Information saved as new MorphoSyntax document!", key, false);
 	};
 	const MSSaveError = () => {
@@ -214,7 +194,7 @@ const Syntax = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		debounce(dispatch, [setMorphoSyntaxText(prop, value)], (prop === "description" ? 2000 : 1000), "saveMS");
+		debounce(dispatch, [setMorphoSyntaxText([prop, value])], (prop === "description" ? 2000 : 1000), "saveMS");
 	};
 	return (
 		<IonPage>

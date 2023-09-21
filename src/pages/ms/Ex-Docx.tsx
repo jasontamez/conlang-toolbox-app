@@ -11,25 +11,26 @@ import {
 	TextRun,
 	WidthType
 } from "docx";
-import {
-	MorphoSyntaxTextObject,
-	MorphoSyntaxNumberObject,
-	MorphoSyntaxBoolObject,
-	MorphoSyntaxObject
-} from '../../components/ReduxDucksTypes';
+
+import { MSBool, MSNum, MSState, MSText } from "../../store/types";
+
+import doExport from '../../components/ExportServices';
 import { exportProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
-import doExport from '../../components/ExportServices';
 
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
 // FOR BROWSER TESTING ONLY
 
-const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClose: Function, setLoading: Function, doToast: Function, undoToast: Function) => {
-	const bool = msInfo.bool;
-	const num = msInfo.num;
-	const text = msInfo.text;
+const doDocx = (
+	e: Event,
+	msInfo: MSState,
+	doClose: Function,
+	setLoading: Function,
+	doToast: Function,
+	undoToast: Function
+) => {
 	const msSections: string[] = ms.sections;
 	const sections: any[] = [];
 	const spacing = {
@@ -63,7 +64,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 					break;
 				case "Range":
 					const min = 0;
-					const value = num[prop as keyof MorphoSyntaxNumberObject] || min;
+					const value = msInfo[prop as MSNum] || min;
 					const paragraph: any[] = [];
 					if(spectrum) {
 						const div = 100 / (max - min);
@@ -116,7 +117,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 						text: (content || "[TEXT PROMPT]"),
 						spacing: spacing
 					}))
-					const tArr: string[] = (text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
+					const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
 					tArr.forEach((t: string, i: number) => {
 						const run: any[] = [];
 						t.split(/\n/).forEach((x: string, j: number) => {
@@ -136,7 +137,6 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 					});
 					break;
 				case "Checkboxes":
-					//const value = bool[prop as keyof MorphoSyntaxBoolObject];
 					if(!display) {
 						children.push(new Paragraph({ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }))
 					} else {
@@ -195,7 +195,7 @@ const doDocx = (e: Event, msInfo: MorphoSyntaxObject, dispatch: Function, doClos
 										type: WidthType.PERCENTAGE
 									},
 									children: [new Paragraph({
-										text: bool[cell as keyof MorphoSyntaxBoolObject] ? "X" : " "
+										text: msInfo[cell as MSBool] ? "X" : " "
 									})]
 								}));
 							});

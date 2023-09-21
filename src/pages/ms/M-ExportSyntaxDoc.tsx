@@ -17,7 +17,7 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { ModalProperties } from '../../store/types';
 
@@ -34,9 +34,8 @@ interface ExportModalProps extends ModalProperties {
 
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
-	const dispatch = useDispatch();
 	const [doToast, undoToast] = useIonToast();
-	const msInfo = useSelector((state: any) => state.morphoSyntaxInfo, shallowEqual);
+	const msInfo = useSelector((state: any) => state.ms);
 	const doClose = () => {
 		setIsOpen(false);
 		setLoading(false);
@@ -69,7 +68,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload)}>Text Outline (plain)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload, true)}>Text Outline (markdown)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, dispatch, doClose, setLoading, doToast, undoToast)}>Word Document (docx)</IonItem>
+					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, doClose, setLoading, doToast, undoToast)}>Word Document (docx)</IonItem>
 					<IonItem button={true} onClick={(e: any) => doJSON(e, msInfo, doDownload)}>JSON File</IonItem>
 					<IonItem button={true} onClick={(e: any) => doXML(e, msInfo, doDownload)}>XML File</IonItem>
 				</IonList>

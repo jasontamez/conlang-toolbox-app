@@ -18,25 +18,26 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector, useDispatch } from "react-redux";
-import {
-	setMorphoSyntax
-} from '../../components/ReduxDucksFuncs';
-import { ModalProperties, MorphoSyntaxBoolObject, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { useSelector, useDispatch } from "react-redux";
+
+import { MSBasic, MSBool, ModalProperties } from '../../store/types';
+import { loadStateMS } from '../../store/msSlice';
+
 import yesNoAlert from '../../components/yesNoAlert';
 
-interface MSOmod extends MorphoSyntaxObject {
-	boolStrings?: string[]
-}
+
 interface MSmodalProps extends ModalProperties {
-	storedInfo: [string, MSOmod][]
+	storedInfo: [string, MSBasic][]
 	setStoredInfo: Function
+}
+interface OldStyleSave extends MSBasic {
+	boolStrings?: MSBool[]
 }
 
 const LoadMSModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const dispatch = useDispatch();
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
@@ -44,24 +45,18 @@ const LoadMSModal = (props: MSmodalProps) => {
 		setIsOpen(false);
 	};
 	const loadThis = (key: string) => {
-		data.every((pair: [string, MSOmod]) => {
+		data.every((pair: [string, OldStyleSave]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
 				return true;
 			}
-			const newBool: MorphoSyntaxBoolObject = {};
-			const old = pair[1];
-			(old.boolStrings || []).forEach((s) => (newBool[s as keyof MorphoSyntaxBoolObject] = true));
-			delete old.boolStrings;
-			const newObj: MorphoSyntaxObject = {
-				...old,
-				bool: newBool
-			};
 			const handler = () => {
-				dispatch(setMorphoSyntax(newObj));
+				const {boolStrings, ...newObj} = pair[1];
+				boolStrings && boolStrings.forEach((s) => (newObj[s as MSBool] = true));
+				dispatch(loadStateMS(newObj));
 				setIsOpen(false);
 			};
-			if(settings.disableConfirms) {
+			if(disableConfirms) {
 				handler();
 			} else {
 				yesNoAlert({
@@ -90,7 +85,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, MorphoSyntaxObject]) => {
+					{data.length > 0 ? data.map((pair: [string, MSBasic]) => {
 						const key = pair[0];
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);

@@ -1,18 +1,10 @@
+import { MSBool, MSNum, MSState, MSText } from '../../store/types';
+
 import { exportProp, specificPageInfo } from './MorphoSyntaxElements';
 import ms from './ms.json';
-import {
-	MorphoSyntaxTextObject,
-	MorphoSyntaxNumberObject,
-	MorphoSyntaxBoolObject,
-	MorphoSyntaxObject
-} from '../../components/ReduxDucksTypes';
 
-
-const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md = false) => {
+const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => {
 	const lines: string[] = [];
-	const bool = msInfo.bool;
-	const num = msInfo.num;
-	const text = msInfo.text;
 	const sections: string[] = ms.sections;
 	sections.forEach((sec: string) => {
 		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
@@ -44,7 +36,7 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 					break;
 				case "Range":
 					const min = 0;
-					const value = num[prop as keyof MorphoSyntaxNumberObject] || min;
+					const value = msInfo[prop as MSNum] || min;
 					if(spectrum) {
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
@@ -83,7 +75,7 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 				case "Text":
 					if(md) {
 						let txt = "";
-						const tArr: string[] = (text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]").split(/\n\n+/);
+						const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
 						tArr.forEach((t: string, i: number) => {
 							if(i > 0) {
 								txt += "\n\n"; // inserts paragraph break
@@ -97,37 +89,36 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 						});
 						lines.push(content || "[TEXT PROMPT]", txt);
 					} else {
-						lines.push(content || "[TEXT PROMPT]", text[prop as keyof MorphoSyntaxTextObject] || "[NO TEXT ENTERED]");
+						lines.push(content || "[TEXT PROMPT]", msInfo[prop as MSText] || "[NO TEXT ENTERED]");
 					}
 					break;
 				case "Checkboxes":
-					//const value = bool[prop as keyof MorphoSyntaxBoolObject];
 					const expo: exportProp = display!.export!;
 					const output = expo.output;
 					if(output) {
 						const map = output.map((bit) => bit.map((b) => {
-								if(typeof b === "string") {
-									return b;
+							if(typeof b === "string") {
+								return b;
+							}
+							const found: string[] = [];
+							b.forEach((pair) => {
+								if(msInfo[pair[0] as MSBool]) {
+									found.push(pair[1]);
 								}
-								const found: string[] = [];
-								b.forEach((pair) => {
-									if(bool[pair[0] as keyof MorphoSyntaxBoolObject]) {
-										found.push(pair[1]);
-									}
-								});
-								if (found.length === 0) {
-									return md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
-								} else if (found.length === 1) {
-									return md ? "*" + found[0] + "*" : found[0];
-								} else if (found.length === 2) {
-									return md ? "*" + found[0] + "* and *" + found[1] : found[0] + " and " + found[1];
-								}
-								const final = found.pop();
-								if(md) {
-									return "*" + found.join("*, *") + "*, and *" + final + "*";
-								}
-								return found.join(", ") + ", and " + final;
-							}).join(""));
+							});
+							if (found.length === 0) {
+								return md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
+							} else if (found.length === 1) {
+								return md ? "*" + found[0] + "*" : found[0];
+							} else if (found.length === 2) {
+								return md ? "*" + found[0] + "* and *" + found[1] : found[0] + " and " + found[1];
+							}
+							const final = found.pop();
+							if(md) {
+								return "*" + found.join("*, *") + "*, and *" + final + "*";
+							}
+							return found.join(", ") + ", and " + final;
+						}).join(""));
 						lines.push(map.join("\n"));
 					} else {
 						const title = expo.title || "";
@@ -138,7 +129,7 @@ const doText = (e: Error, msInfo: MorphoSyntaxObject, doDownload: Function, md =
 						while(boxesCopy.length > 0) {
 							const box = boxesCopy.shift();
 							const label = labels.shift();
-							if(bool[box as keyof MorphoSyntaxBoolObject]) {
+							if(msInfo[box as MSBool]) {
 								found.push(label || "[ERROR]");
 							}
 						}

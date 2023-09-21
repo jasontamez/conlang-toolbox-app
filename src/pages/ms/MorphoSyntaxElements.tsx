@@ -21,18 +21,20 @@ import {
 	IonCol
 } from '@ionic/react';
 import { globeOutline } from 'ionicons/icons';
-import ExtraCharactersModal from '../M-ExtraCharacters';
 import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
+import { Element, Text } from 'domhandler/lib/node';
+import doParse from 'html-react-parser';
+
 import {
 	setSyntaxBool,
 	setSyntaxNum,
 	setSyntaxText
-} from '../../components/ReduxDucksFuncs';
-import { MorphoSyntaxBoolObject, MorphoSyntaxNumberObject, MorphoSyntaxTextObject } from '../../components/ReduxDucksTypes';
-import doParse from 'html-react-parser';
+} from '../../store/msSlice';
+import { MSBool, MSNum, MSText } from '../../store/types';
+
+import ExtraCharactersModal from '../M-ExtraCharacters';
 import ms from './ms.json';
-import { Element, Text } from 'domhandler/lib/node';
 
 interface ModalProperties {
 	title?: string
@@ -68,18 +70,18 @@ export const SyntaxHeader = (props: ModalProperties) => {
 };
 const RadioBox = (props: any) => {
 	const dispatch = useDispatch();
-	const synBool = useSelector((state: any) => state.morphoSyntaxInfo.bool)
-	const what = props.prop as keyof MorphoSyntaxBoolObject
-	const setBool = (what: keyof MorphoSyntaxBoolObject, value: boolean) => {
-		dispatch(setSyntaxBool(what, value));
+	const ms = useSelector((state: any) => state.ms);
+	const what = props.prop as MSBool;
+	const setBool = (what: MSBool, value: boolean) => {
+		dispatch(setSyntaxBool([what, value]));
 	};
 	return (
-		<IonCheckbox aria-label={props.label} onIonChange={(e) => setBool(what, e.detail.checked)} checked={synBool[what] || false} />
+		<IonCheckbox aria-label={props.label} onIonChange={(e) => setBool(what, e.detail.checked)} checked={ms[what] || false} />
 	);
 };
 const RangeItem = (props: any) => {
 	const dispatch = useDispatch();
-	const synNum = useSelector((state: any) => state.morphoSyntaxInfo.num)
+	const ms = useSelector((state: any) => state.ms)
 	const {
 		prop,
 		start = "",
@@ -88,17 +90,17 @@ const RangeItem = (props: any) => {
 		max = 4,
 		className
 	} = props;
-	const what = prop as keyof MorphoSyntaxNumberObject;
+	const what = prop as MSNum;
 	const classes = className ? className + " content" : "content";
-	const setNum = useCallback((what: keyof MorphoSyntaxNumberObject, value: number) => {
-		dispatch(setSyntaxNum(what, value));
+	const setNum = useCallback((what: MSNum, value: number) => {
+		dispatch(setSyntaxNum([what, value]));
 	}, [dispatch]);
 	return (
 		<IonItem className={classes}>
 			<IonRange
 				aria-label={`Range from ${start} to ${end}`}
 				onIonChange={(e) => setNum(what, e.target.value as number)}
-				value={synNum[what] || 0}
+				value={ms[what] || 0}
 				className={innerClass}
 				color="secondary"
 				snaps={true}
@@ -123,11 +125,11 @@ const TextItem = (props: any) => {
 		children
 	} = props;
 	const dispatch = useDispatch();
-	const synText = useSelector((state: any) => state.morphoSyntaxInfo.text);
-	const text = synText[prop] || "";
+	const ms = useSelector((state: any) => state.ms);
+	const text = ms[prop] || "";
 	const classes = className ? className + " " : "";
-	const setText = (what: keyof MorphoSyntaxTextObject, value: string) => {
-		dispatch(setSyntaxText(what, value));
+	const setText = (what: MSText, value: string) => {
+		dispatch(setSyntaxText([what, value]));
 	};
 	const expandedRows = Math.min(Math.max(rows, text.split(/\n/).length), 12);
 	return (

@@ -19,25 +19,26 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { shallowEqual, useSelector } from "react-redux";
-import { ModalProperties, MorphoSyntaxObject } from '../../components/ReduxDucksTypes';
+import { useSelector } from "react-redux";
+
+import { MSBasic, MSBool, ModalProperties } from '../../store/types';
+
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-interface MSOmod extends MorphoSyntaxObject {
-	boolStrings?: string[]
+interface OldStyleSave extends MSBasic {
+	boolStrings?: MSBool[]
 }
 interface MSmodalProps extends ModalProperties {
 	setLoadingScreen: Function
-	storedInfo: [string, MSOmod][]
+	storedInfo: [string, OldStyleSave][]
 	setStoredInfo: Function
 }
 
-
 const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
-	const settings = useSelector((state: any) => state.appSettings, shallowEqual);
+	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
@@ -61,7 +62,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				});
 			});
 		};
-		if(settings.disableConfirms) {
+		if(disableConfirms) {
 			handler();
 		} else {
 			yesNoAlert({
@@ -88,7 +89,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, MSOmod]) => {
+					{data.length > 0 ? data.map((pair: [string, OldStyleSave]) => {
 						const key = pair[0];
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);

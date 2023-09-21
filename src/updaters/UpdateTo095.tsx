@@ -1,5 +1,5 @@
 import { LexiconStorage } from "../components/PersistentInfo";
-import { LexiconObject } from "../components/ReduxDucksTypes";
+import { LexiconObject } from "./oldReduxTypes";
 
 // Updating to 0.9.5
 function doUpdate (incomingState: any) {
