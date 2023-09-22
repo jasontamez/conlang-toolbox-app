@@ -19,7 +19,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
-import { ModalProperties } from '../../store/types';
+import { ModalProperties, StateObject } from '../../store/types';
 
 import doExport from '../../components/ExportServices';
 import doText from './Ex-Text';
@@ -35,7 +35,7 @@ interface ExportModalProps extends ModalProperties {
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
 	const [doToast, undoToast] = useIonToast();
-	const msInfo = useSelector((state: any) => state.ms);
+	const msInfo = useSelector((state: StateObject) => state.ms);
 	const doClose = () => {
 		setIsOpen(false);
 		setLoading(false);

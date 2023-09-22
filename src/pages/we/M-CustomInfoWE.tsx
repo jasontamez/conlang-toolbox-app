@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WEPresetObject, ExtraCharactersModalOpener } from '../../store/types';
+import { WEPresetObject, ExtraCharactersModalOpener, StateObject } from '../../store/types';
 import { loadStateWE } from '../../store/weSlice';
 
 import escape from '../../components/EscapeForHTML';
@@ -43,8 +43,8 @@ interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
-	const { characterGroups, transforms, soundChanges } = useSelector((state: any) => state.we)
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const doCleanClose = () => {

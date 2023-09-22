@@ -32,7 +32,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, ViewState, WESoundChangeObject } from '../../store/types';
+import { PageData, StateObject, ViewState, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -60,8 +60,8 @@ const WERew = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const {disableConfirms} = useSelector((state: any) => state.appSettings);
-	const { soundChanges } = useSelector((state: any) => state.we);
+	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
+	const { soundChanges } = useSelector((state: StateObject) => state.we);
 	const editSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		setEditing(change)

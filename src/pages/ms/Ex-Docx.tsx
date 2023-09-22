@@ -2,6 +2,7 @@ import {
 	BorderStyle,
 	Document,
 	HeadingLevel,
+	ITableBordersOptions,
 	Packer,
 	Paragraph,
 	SectionType,
@@ -23,6 +24,12 @@ import ms from './ms.json';
 import { saveAs } from 'file-saver';
 // FOR BROWSER TESTING ONLY
 
+type Child = (Paragraph | Table);
+interface Section {
+	properties: { type: SectionType }
+	children: Child[]
+}
+
 const doDocx = (
 	e: Event,
 	msInfo: MSState,
@@ -32,13 +39,13 @@ const doDocx = (
 	undoToast: Function
 ) => {
 	const msSections: string[] = ms.sections;
-	const sections: any[] = [];
+	const sections: Section[] = [];
 	const spacing = {
 		before: 200
 	}
 	msSections.forEach((sec: string) => {
 		const msSection = (ms[sec as keyof typeof ms] as specificPageInfo[]);
-		const children: any[] = [];
+		const children: Child[] = [];
 		msSection.forEach((item: specificPageInfo) => {
 			const {
 				tag,
@@ -65,7 +72,7 @@ const doDocx = (
 				case "Range":
 					const min = 0;
 					const value = msInfo[prop as MSNum] || min;
-					const paragraph: any[] = [];
+					const paragraph: TextRun[] = [];
 					if(spectrum) {
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
@@ -119,7 +126,7 @@ const doDocx = (
 					}))
 					const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
 					tArr.forEach((t: string, i: number) => {
-						const run: any[] = [];
+						const run: TextRun[] = [];
 						t.split(/\n/).forEach((x: string, j: number) => {
 							run.push(new TextRun(
 								(j > 0) ? {
@@ -152,9 +159,9 @@ const doDocx = (
 						const labelsForTheRow = (expo.labelOverrideDocx ? (expo.labels || labelsCopy).slice() : rowLabels.slice()) || [];
 						const rows: string[][] = [];
 						let colCount = 0;
-						let temp: any[] = [];
+						let temp: string[] = [];
 						let count = 0;
-						const output: any[] = [];
+						const output: TableRow[] = [];
 						const colWidths: number[] = [];
 						let allColumns = 6;
 						for(let x = 0; x < perRow; x++) {
@@ -175,15 +182,32 @@ const doDocx = (
 								temp = [];
 							}
 						});
-						const border: any = {
-							style: BorderStyle.SINGLE,
-							size: 1,
-							color: "000000"
+						const border: ITableBordersOptions = {
+							top: {
+								style: BorderStyle.SINGLE,
+								size: 1,
+								color: "000000"
+							},
+							bottom: {
+								style: BorderStyle.SINGLE,
+								size: 1,
+								color: "000000"
+							},
+							left: {
+								style: BorderStyle.SINGLE,
+								size: 1,
+								color: "000000"
+							},
+							right: {
+								style: BorderStyle.SINGLE,
+								size: 1,
+								color: "000000"
+							},
 						}
 						rows.forEach((row: string[]) => {
 							// cell[s] [label] rowLabel
 							const cols = colWidths.slice();
-							const cells: any[] = [];
+							const cells: TableCell[] = [];
 							let leftover = 100;
 							row.forEach((cell) => {
 								const percent = Math.floor(cols.shift()! * portion);
@@ -234,7 +258,7 @@ const doDocx = (
 							}));
 						});
 						if(inlineHeaders) {
-							const cells: any[] = [];
+							const cells: TableCell[] = [];
 							let leftover = 100;
 							const cols = colWidths.slice();
 							inlineHeaders.forEach((cell: string) => {

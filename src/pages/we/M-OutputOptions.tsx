@@ -20,7 +20,7 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 
-import { WEOutputTypes, ModalProperties } from '../../store/types';
+import { WEOutputTypes, ModalProperties, StateObject } from '../../store/types';
 import { setOutputWE } from '../../store/weSlice';
 
 const OutputOptionsModal = (props: ModalProperties) => {
@@ -30,7 +30,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		outputStyle,
 //		inputLower,
 //		inputAlpha
-	} = useSelector((state: any) => state.we);
+	} = useSelector((state: StateObject) => state.we);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>

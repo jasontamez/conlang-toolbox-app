@@ -78,7 +78,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		doDownload(e, output, "csv");
 	};
 	const doJSON = (e: Event) => {
-		const counter: any = {};
+		const counter: {[key: string]: number} = {};
 		const colTitles: string[] = [];
 		columnTitles.forEach((columnTitle: string) => {
 			let colTitle = columnTitle;
@@ -92,7 +92,11 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			counter[colTitle] = 1;
 			colTitles.push(colTitle);
 		});
-		const base: any = {
+		const base: {
+			title: string,
+			description: string,
+			content: any[]
+		} = {
 			title,
 			description,
 			content: []

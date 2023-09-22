@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WGTransformObject } from '../../store/types';
+import { ExtraCharactersModalOpener, StateObject, WGTransformObject } from '../../store/types';
 import { editTransformWG, deleteTransformWG } from '../../store/wgSlice';
 
 import repairRegexErrors from '../../components/RepairRegex';
@@ -43,7 +43,7 @@ const EditTransformModal = (props: ModalProps) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { disableConfirms } = useSelector((state: any) => state.appSettings)
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings)
 	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
 	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
 	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);

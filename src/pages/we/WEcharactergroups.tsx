@@ -29,7 +29,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, ViewState, WECharGroupObject } from '../../store/types';
+import { PageData, StateObject, ViewState, WECharGroupObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { deleteCharacterGroupWE } from '../../store/weSlice';
 
@@ -56,9 +56,9 @@ const WECharGroup = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { characterGroups } = useSelector((state: any) => state.we);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
-	const editCharGroup = (group: any) => {
+	const { characterGroups } = useSelector((state: StateObject) => state.we);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const editCharGroup = (group: WECharGroupObject) => {
 		$q(".charGroups").closeSlidingItems();
 		setEditing(group);
 		setIsOpenEditCharGroupWE(true);

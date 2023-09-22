@@ -20,7 +20,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { MSBasic, MSBool, ModalProperties } from '../../store/types';
+import { MSBasic, MSBool, ModalProperties, StateObject } from '../../store/types';
 import { loadStateMS } from '../../store/msSlice';
 
 import yesNoAlert from '../../components/yesNoAlert';
@@ -37,7 +37,7 @@ interface OldStyleSave extends MSBasic {
 const LoadMSModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {

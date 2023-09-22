@@ -318,11 +318,9 @@ const Menu = () => {
 						);
 					});
 					const { header, note } = menuSection;
-					const head: any = (header) ? (<IonListHeader>{header}</IonListHeader>) : '';
-					const notation: any = (note) ? (<IonNote>{note}</IonNote>) : '';
 					return (
 						<IonList key={menuSection.id} id={menuSection.id}>
-							{head}{notation}
+							{(header) ? (<IonListHeader>{header}</IonListHeader>) : <></>}{(note) ? (<IonNote>{note}</IonNote>) : <></>}
 							{pages}
 						</IonList>
 					);

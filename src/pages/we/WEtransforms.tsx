@@ -32,7 +32,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, ViewState, WETransformObject } from '../../store/types';
+import { PageData, StateObject, ViewState, WETransformObject } from '../../store/types';
 import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -60,8 +60,8 @@ const WERew = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
-	const { transforms } = useSelector((state: any) => state.we);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const { transforms } = useSelector((state: StateObject) => state.we);
 	const editTransform = (transform: WETransformObject) => {
 		$q(".transforms").closeSlidingItems();
 		setEditing(transform);

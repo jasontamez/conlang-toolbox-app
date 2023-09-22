@@ -464,8 +464,6 @@ export interface StateObject {
 	lastView: ViewState
 }
 
-export type Action = { payload: any }
-
 export interface PageData {
 	modalPropsMaker: Function
 }

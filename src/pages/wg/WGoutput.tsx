@@ -425,27 +425,28 @@ const WGOut = (props: PageData) => {
 	// // //
 	const getEverySyllable = async () => {
 		const result: string[] = [];
-		let syllables: string[] | string[][] = singleWord.split(/\r?\n/);
+		let initial: string[] = singleWord.split(/\r?\n/);
 		if(multipleSyllableTypes) {
-			syllables = syllables.concat(
+			initial = initial.concat(
 				wordInitial.split(/\r?\n/),
 				wordMiddle.split(/\r?\n/),
 				wordFinal.split(/\r?\n/)
 			);
 		}
-		syllables = syllables.map((syll: string) => ["", syll]);
+		const syllables: string[][] = initial.map((syll: string) => ["", syll]);
 		while(syllables.length > 0) {
 			const [current, toGo] = syllables.shift()!;
 			const res = recurseSyllables(current, toGo);
 			const newOutput: string[] = [];
-			res.then((res: any) => {
-				const { next } = res;
+			res.then((res: { results: string[], next: string }) => {
+				const { next, results } = res;
 				if(next === "") {
 					// This one is done - run through transforms
-					newOutput.push(...res.results.map((word: string) => doTransform(word)));
+					newOutput.push(...results.map((word: string) => doTransform(word)));
 				} else {
 					// Add to syllables
-					syllables.push(...res.results.map((word: string) => [word, next]));
+					const converted: string[][] = results.map((word: string) => [word, next]);
+					syllables.push(...converted);
 				}
 			});
 			await res;

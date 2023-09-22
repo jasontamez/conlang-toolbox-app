@@ -45,8 +45,7 @@ import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
 
 import { addLexiconItem, deleteLexiconItem, updateLexiconSortDir, updateLexiconText } from '../store/lexiconSlice';
-
-import { Lexicon, LexiconColumn, LexiconState, PageData } from '../store/types';
+import { Lexicon, LexiconColumn, LexiconState, PageData, StateObject } from '../store/types';
 
 import AddLexiconItemModal from './M-AddWord';
 import EditLexiconItemModal from './M-EditWord';
@@ -160,7 +159,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 }, areEqual);
 
 const Lex = (props: PageData) => {
-	const [disableConfirms, lexObject] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		//id,
 		//lastSave,
@@ -174,7 +173,7 @@ const Lex = (props: PageData) => {
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
-	} = lexObject;
+	} = useSelector((state: StateObject) => state.lexicon);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();

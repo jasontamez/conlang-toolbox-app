@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { loadStateLex, updateLexiconNumber, updateLexiconText } from '../store/lexiconSlice';
-import { Lexicon, LexiconState, ModalProperties } from '../store/types';
+import { Lexicon, LexiconState, ModalProperties, StateObject } from '../store/types';
 import blankAppState from '../store/blankAppState';
 
 import { LexiconStorage } from '../components/PersistentInfo';
@@ -46,7 +46,7 @@ interface StorageModalProps extends ModalProperties {
 const LexiconStorageModal = (props: StorageModalProps) => {
 	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading, setLexInfo } = props;
 	const dispatch = useDispatch();
-	const [disableConfirms, stateLexicon] = useSelector((state: any) => [state.appSettings.disableConfirms, state.lexicon]);
+	const [disableConfirms, stateLexicon]: [boolean, LexiconState] = useSelector((state: StateObject) => [state.appSettings.disableConfirms, state.lexicon]);
 	const {
 		id,
 		title,
@@ -60,23 +60,6 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			const newLex: LexiconState = {
 				...blankAppState.lexicon
 			};
-			/*const newLex: LexiconState = {
-				key: "",
-				lastSave: 0,
-				title: "",
-				description: "",
-				columns: columns,
-				columnOrder: [...columnOrder],
-				columnTitles: [...columnTitles],
-				columnSizes: [...columnSizes],
-				sort: [...sort],
-				sorted: true,
-				lexicon: [],
-				waitingToAdd: [...waitingToAdd],
-				editing: undefined,
-				colEdit: undefined,
-				lexiconWrap: lexiconWrap
-			};*/
 			dispatch(loadStateLex(newLex));
 			setIsOpen(false);
 			toaster({
@@ -121,7 +104,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			whichToOpen(true);
 		});
 	};
-	const saveLexicon: any = (
+	const saveLexicon = (
 		announce: string = "Lexicon saved.",
 		saveKey: string = id,
 		overwrite: boolean = true

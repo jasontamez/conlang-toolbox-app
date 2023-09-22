@@ -31,7 +31,7 @@ import {
 	setSyntaxNum,
 	setSyntaxText
 } from '../../store/msSlice';
-import { MSBool, MSNum, MSText } from '../../store/types';
+import { MSBool, MSNum, MSText, StateObject } from '../../store/types';
 
 import ExtraCharactersModal from '../M-ExtraCharacters';
 import ms from './ms.json';
@@ -68,20 +68,30 @@ export const SyntaxHeader = (props: ModalProperties) => {
 		</IonHeader>
 	);
 };
-const RadioBox = (props: any) => {
+const RadioBox = (props: {
+	prop: MSBool,
+	label: string
+}) => {
 	const dispatch = useDispatch();
-	const ms = useSelector((state: any) => state.ms);
-	const what = props.prop as MSBool;
+	const ms = useSelector((state: StateObject) => state.ms);
+	const {prop, label} = props;
 	const setBool = (what: MSBool, value: boolean) => {
 		dispatch(setSyntaxBool([what, value]));
 	};
 	return (
-		<IonCheckbox aria-label={props.label} onIonChange={(e) => setBool(what, e.detail.checked)} checked={ms[what] || false} />
+		<IonCheckbox aria-label={label} onIonChange={(e) => setBool(prop, e.detail.checked)} checked={ms[prop] || false} />
 	);
 };
-const RangeItem = (props: any) => {
+const RangeItem = (props: {
+	prop: MSNum,
+	start: string | undefined,
+	end: string | undefined,
+	innerClass: string | undefined,
+	max?: number,
+	className?: string
+}) => {
 	const dispatch = useDispatch();
-	const ms = useSelector((state: any) => state.ms)
+	const ms = useSelector((state: StateObject) => state.ms)
 	const {
 		prop,
 		start = "",
@@ -115,7 +125,14 @@ const RangeItem = (props: any) => {
 		</IonItem>
 	);
 };
-const TextItem = (props: any) => {
+const TextItem = (props: {
+	placeholder?: string,
+	prop: MSText,
+	rows?: number,
+	className?: string,
+	label?: string,
+	children: any
+}) => {
 	const {
 		placeholder = "",
 		prop,
@@ -125,8 +142,8 @@ const TextItem = (props: any) => {
 		children
 	} = props;
 	const dispatch = useDispatch();
-	const ms = useSelector((state: any) => state.ms);
-	const text = ms[prop] || "";
+	const ms = useSelector((state: StateObject) => state.ms);
+	const text = ms[prop as MSText] || "";
 	const classes = className ? className + " " : "";
 	const setText = (what: MSText, value: string) => {
 		dispatch(setSyntaxText([what, value]));
@@ -143,12 +160,16 @@ const TextItem = (props: any) => {
 		</>
 	);
 };
-const HeaderItem = (props: any) => (
+const HeaderItem = (props: { level?: number, children: any }) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>
 );
-const TransTable = (props: any) => {
+const TransTable = (props: {
+	rows?: string,
+	className?: string,
+	children: any
+}) => {
 	const {
 		rows,
 		className,
@@ -171,7 +192,12 @@ const TransTable = (props: any) => {
 		});
 	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
-const InfoModal = (props: any) => {
+interface InfoModalProps extends ModalProperties {
+	label?: string,
+	className?: string,
+	children: any,
+}
+const InfoModal = (props: InfoModalProps) => {
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const dispatch = useDispatch();
 	const {
@@ -233,7 +259,7 @@ export interface displayProp {
 	export?: exportProp
 }
 interface checkboxItemProps {
-	boxes: string[],
+	boxes: MSBool[],
 	display: displayProp
 }
 const CheckboxItem = (props: checkboxItemProps) => {
@@ -242,7 +268,7 @@ const CheckboxItem = (props: checkboxItemProps) => {
 		boxes = []
 	} = props;
 	const {
-		rowLabels = [],
+		rowLabels,
 		boxesPerRow,
 		labels = [],
 		header,
@@ -252,38 +278,49 @@ const CheckboxItem = (props: checkboxItemProps) => {
 	const _rowLabels = rowLabels.slice();
 	const _labels = labels.slice();
 	let count = 0;
-	const rows: string[][] = [];
-	let temp: string[] = [];
+	const rows: MSBool[][] = [];
+	let temp: MSBool[] = [];
 	boxes.forEach((box) => {
 		count++;
 		temp.push(box || "Error");
 		if(count >= boxesPerRow) {
-			temp.push(_rowLabels.shift() || "Error");
 			count = 0;
 			rows.push(temp);
 			temp = [];
 		}
 	});
-	const printRow = (row: string[], key: number, headers: undefined | string[]) => {
-		const label = row.pop() || "";
+	const printRow = (row: MSBool[], label: string, key: number, headers: undefined | string[]) => {
 		const textLabel = stripHtml(label);
 		let cc = 0;
 		return (
 			<IonRow key={"ROW-" + String(key)}>
-				{row.map((c, i) => <IonCol className="cbox" key={"X-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
+				{row.map((prop, i) => (
+					<IonCol className="cbox" key={"X-" + String(cc++)}>
+						<RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={prop} />
+					</IonCol>
+				))}
 				<IonCol key={"LX-" + String(cc++)}><div>{doParse(label)}</div></IonCol>
 			</IonRow>
 		);
 	};
-	const printRowWithLabel = (row: string[], key: number, headers: undefined | string[]) => {
-		const final = row.pop() || "";
+	const printRowWithLabel = (row: MSBool[], final: string, key: number, headers: undefined | string[]) => {
 		const label = _labels.shift() || "";
 		const textLabel = stripHtml(label) + (final ? ", " + stripHtml(final) : "") ;
 		let cc = 0;
 		return (
 			<IonRow key={"ROW-" + String(key)}>
-				{row.map((c, i) => <IonCol className="cbox" key={"C-" + String(cc++)}><RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={String(c)} /></IonCol>)}
-				{label && <IonCol className={labelClass} key={"LC-" + String(cc++)}><div>{doParse(label)}</div></IonCol>}
+				{row.map((prop, i) => (
+					<IonCol className="cbox" key={"C-" + String(cc++)}>
+						<RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={prop} />
+					</IonCol>
+				))}
+				{label ?
+					<IonCol className={labelClass} key={"LC-" + String(cc++)}>
+						<div>{doParse(label)}</div>
+					</IonCol>
+				:
+					<></>
+				}
 				<IonCol key={"FC-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
 			</IonRow>
 		);
@@ -304,29 +341,44 @@ const CheckboxItem = (props: checkboxItemProps) => {
 	return (
 		<IonItem className="content">
 			<IonGrid className={display.class}>
-				{header ? <IonRow key="headerRow-0" className="header"><IonCol><div>{doParse(header)}</div></IonCol></IonRow> : ""}
-				{inlineHeaders ? printHeaderRow(inlineHeaders.slice(), count++, !!labels) : ""}
-				{rows.map((r) => labels ? printRowWithLabel(r.slice(), count++, inlineHeaders && inlineHeaders.slice()) : printRow(r.slice(), count++, inlineHeaders && inlineHeaders.slice()))}
+				{ header ?
+					<IonRow key="headerRow-0" className="header">
+						<IonCol><div>{doParse(header)}</div></IonCol>
+					</IonRow>
+				:
+					<></>
+				}
+				{ inlineHeaders ?
+					printHeaderRow(inlineHeaders.slice(), count++, !!labels)
+				:
+					<></>
+				}
+				{ rows.map((row) => (
+					labels ?
+						printRowWithLabel(row.slice(), _rowLabels.shift() || "Error", count++, inlineHeaders && inlineHeaders.slice())
+					:
+						printRow(row.slice(), _rowLabels.shift() || "Error", count++, inlineHeaders && inlineHeaders.slice())
+				))}
 			</IonGrid>
 		</IonItem>
 	);
 };
+
 export interface specificPageInfo {
 	tag: string
 	level?: number
 	content?: string
 	title?: string
 	label?: string
-	prop?: string
+	prop?: MSNum | MSText
 	rows?: number
 	start?: string
 	end?: string
 	spectrum?: boolean
 	max?: number
-	boxes?: string[]
+	boxes?: MSBool[]
 	display?: displayProp
 }
-
 interface parsingProp {
 	page: keyof (typeof ms),
 	modalPropsMaker: Function
@@ -355,14 +407,14 @@ export const parseMSJSON = (props: parsingProp) => {
 			title,
 			display,
 			boxes = []
-		} = bit;
+		}: specificPageInfo = bit;
 		switch(tag) {
 			case "Header":
 				return <HeaderItem key={key + String(counter)} level={level}>{content}</HeaderItem>;
 			case "Range":
-				return <RangeItem key={key + String(counter)} prop={prop} start={start} end={end} innerClass={spectrum ? "spectrum" : undefined} max={max} />;
+				return <RangeItem key={key + String(counter)} prop={prop as MSNum} start={start} end={end} innerClass={spectrum ? "spectrum" : undefined} max={max} />;
 			case "Text":
-				return <TextItem key={key + String(counter)} prop={prop} rows={rows} label={label || ""}>{content}</TextItem>
+				return <TextItem key={key + String(counter)} prop={prop as MSText} rows={rows} label={label || ""}>{content}</TextItem>
 			case "Modal":
 				return <InfoModal key={key + String(counter)} title={title} label={label} modalPropsMaker={modalPropsMaker}>{
 					doParse(content, {

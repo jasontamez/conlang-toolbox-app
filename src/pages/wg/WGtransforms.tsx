@@ -32,7 +32,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, ViewState, WGTransformObject } from '../../store/types';
+import { PageData, StateObject, ViewState, WGTransformObject } from '../../store/types';
 import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -61,8 +61,8 @@ const WGRew = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { transforms } = useSelector((state: any) => state.wg);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { transforms } = useSelector((state: StateObject) => state.wg);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const editTransform = (transform: WGTransformObject) => {
 		$q(".transforms").closeSlidingItems();

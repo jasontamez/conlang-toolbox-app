@@ -27,7 +27,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, WETransformDirection, WETransformObject } from '../../store/types';
+import { ExtraCharactersModalOpener, StateObject, WETransformDirection, WETransformObject } from '../../store/types';
 import { editTransformWE, deleteTransformWE } from '../../store/weSlice';
 
 import { $i, $q } from '../../components/DollarSignExports';
@@ -46,7 +46,7 @@ const EditTransformModal = (props: ModalProps) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 
-	const { disableConfirms } = useSelector((state: any) => state.appSettings)
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings)
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
 	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
 	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);

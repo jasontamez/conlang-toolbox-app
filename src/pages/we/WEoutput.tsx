@@ -13,7 +13,8 @@ import {
 	IonLoading,
 	useIonAlert,
 	useIonToast,
-	useIonRouter
+	useIonRouter,
+	AlertInput
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -28,7 +29,7 @@ import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { LexiconColumn, PageData, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
+import { LexiconColumn, PageData, StateObject, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
 
@@ -113,8 +114,8 @@ const WEOut = (props: PageData) => {
 // TO-DO: use these two properties, make a modal to set them?
 //		inputLower,
 //		inputAlpha
-	} = useSelector((state: any) => state.we);
-	const { columns } = useSelector((state: any) => state.lexicon);
+	} = useSelector((state: StateObject) => state.we);
+	const { columns } = useSelector((state: StateObject) => state.lexicon);
 	const rawInput = input.split(/\n/);
 
 	const charGroupMap = useMemo(() => {
@@ -386,7 +387,7 @@ const WEOut = (props: PageData) => {
 			case "outputOnly":
 				// [word...]
 				const evolved = changeTheWords({input: rawInput});
-				setDisplayList(evolved);
+				setDisplayList(evolved as string[]);
 				setCopyString(evolved.join("\n"));
 				break;
 			case "inputFirst":
@@ -398,7 +399,7 @@ const WEOut = (props: PageData) => {
 				// leadingWord class for the first word
 				const output: string[][] = [];
 				changeTheWords({input: rawInput, reverse: reverse ? 1 : -1}).forEach(bit => {
-					const [one, two] = bit;
+					const [one, two] = bit as [string, string];
 					output.push([one, arrow, two]);
 				});
 				setter(output);
@@ -407,7 +408,7 @@ const WEOut = (props: PageData) => {
 				// [original, word, [[rule, new word]...]]
 				const rulesApplied: string[][][] = [];
 				changeTheWords({input: rawInput, rulesFlag: true}).forEach(unit => {
-					const [one, two, units] = unit;
+					const [one, two, units] = unit as [string, string, [string, string][]];
 					const rows: string[][] = [
 						[one, arrow, two]
 					];
@@ -438,11 +439,11 @@ const WEOut = (props: PageData) => {
 	//  then return an array according to the style requested
 	const changeTheWords = (props: { input: string[], rulesFlag?: boolean, reverse?: number}) => {
 		const { input, rulesFlag, reverse = 0 } = props;
-		const output: any[] = [];
+		const output: (string | [string, string] | [string, string, [string, string][]])[] = [];
 		// Loop over every inputted word in order.
 		input.forEach((original: string) => {
 			let word = original;
-			const rulesThatApplied: string[][] = [];
+			const rulesThatApplied: [string, string][] = [];
 			// Loop over the transforms.
 			transforms.forEach((tr: WETransformObject) => {
 				const { id, direction, replace, seek } = tr;
@@ -700,12 +701,13 @@ const WEOut = (props: PageData) => {
 			header: "Select a column",
 			message: "Your selected words will be added to the Lexicon under that column.",
 			inputs: columns.map((col: LexiconColumn, i: number) => {
-				return {
+				const input: AlertInput = {
 					type: 'radio',
 					label: col.label,
 					value: col,
 					checked: !i
 				};
+				return input;
 			}),
 			buttons: [
 				{

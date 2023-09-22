@@ -22,7 +22,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import WGPresets from '../../store/wgPresets';
-import { WGBasic, ModalProperties } from '../../store/types';
+import { WGBasic, ModalProperties, StateObject } from '../../store/types';
 import { loadStateWG } from '../../store/wgSlice';
 
 import yesNoAlert from '../../components/yesNoAlert';
@@ -33,7 +33,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const {disableConfirms} = useSelector((state: any) => state.appSettings);
+	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const maybeLoadPreset = (preset: string, object: WGBasic) => {
 		const handler = () => {
 			dispatch(loadStateWG(object));

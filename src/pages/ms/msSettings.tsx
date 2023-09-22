@@ -23,7 +23,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData, MSState, MSBasic } from '../../store/types';
+import { ViewState, PageData, MSState, MSBasic, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import blankAppState from '../../store/blankAppState';
@@ -48,8 +48,8 @@ const Syntax = (props: PageData) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [storedInfo, setStoredInfo] = useState<[string, MSBasic][]>([]);
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
-	const ms: MSState = useSelector((state: any) => state.ms);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
+	const ms: MSState = useSelector((state: StateObject) => state.ms);
 	const {title, description, id, lastSave, currentVersion, storedCustomIDs, storedCustomInfo, ...rest} = ms;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();

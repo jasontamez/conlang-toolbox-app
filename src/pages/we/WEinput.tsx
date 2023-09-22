@@ -11,7 +11,8 @@ import {
 	IonButton,
 	IonIcon,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	AlertInput
 } from '@ionic/react';
 import {
 	helpCircleOutline,
@@ -21,7 +22,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Lexicon, LexiconColumn, PageData, ViewState } from '../../store/types';
+import { Lexicon, LexiconColumn, PageData, StateObject, ViewState } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -44,9 +45,9 @@ const WEInput = (props: PageData) => {
 	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { columns, lexicon } = useSelector((state: any) => state.lexicon);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
-	const { input } = useSelector((state: any) => state.we);
+	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const { input } = useSelector((state: StateObject) => state.we);
 	const updateInput = useCallback((value: string) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
 		dispatch(setInputWE(trimmed));
@@ -102,12 +103,13 @@ const WEInput = (props: PageData) => {
 				header: "Import from Lexicon",
 				message: "Which column do you want to input?",
 				inputs: columns.map((col: LexiconColumn, i: number) => {
-					return {
+					const input: AlertInput = {
 						type: 'radio',
 						label: col.label,
 						value: i + 1,
 						checked: !i
 					};
+					return input;
 				}),
 				buttons: [
 					{

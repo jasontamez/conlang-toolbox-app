@@ -32,7 +32,8 @@ import {
 	Two_Fifteen,
 	Zero_Fifty,
 	PageData,
-	ViewState
+	ViewState,
+	StateObject
 } from '../../store/types';
 import {
 	setMonosyllablesRate,
@@ -73,11 +74,11 @@ const WGSet = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
-	const { disableConfirms }= useSelector((state: any) => state.appSettings);
+	const { disableConfirms }= useSelector((state: StateObject) => state.appSettings);
 	const {
 		monosyllablesRate,
 		maxSyllablesPerWord,
-		charGroupRunDropoff,
+		characterGroupDropoff,
 		syllableBoxDropoff,
 		capitalizeSentences,
 		declarativeSentencePre,
@@ -86,12 +87,9 @@ const WGSet = (props: PageData) => {
 		interrogativeSentencePost,
 		exclamatorySentencePre,
 		exclamatorySentencePost
-	} = useSelector((state: any) => state.wg);
+	} = useSelector((state: StateObject) => state.wg);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const doOnBlur = (func: Function, value: any) => {
-		dispatch(func(value));
-	};
 	const maybeClearEverything = () => {
 		const handler = () => {
 			dispatch(loadStateWG(null));
@@ -177,7 +175,7 @@ const WGSet = (props: PageData) => {
 						<IonLabel>Rate of monosyllable words</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0% to 100%" debounce={250} min={0} max={100} value={monosyllablesRate} pin={true} onIonChange={(e) => doOnBlur(setMonosyllablesRate, e.target.value as Zero_OneHundred)}>
+						<IonRange aria-label="From 0% to 100%" debounce={250} min={0} max={100} value={monosyllablesRate} pin={true} onIonChange={(e) => dispatch(setMonosyllablesRate(e.target.value as Zero_OneHundred))}>
 							<div slot="start">Never</div>
 							<div slot="end">Always</div>
 						</IonRange>
@@ -186,7 +184,7 @@ const WGSet = (props: PageData) => {
 						<IonLabel>Maximum number of syllables per word</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 2 to 15" debounce={250} min={2} max={15} value={maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} onIonChange={(e) => doOnBlur(setMaxSyllablesPerWord, e.target.value as Two_Fifteen)}>
+						<IonRange aria-label="From 2 to 15" debounce={250} min={2} max={15} value={maxSyllablesPerWord} pin={true} snaps={true} ticks={true} step={1} onIonChange={(e) => dispatch(setMaxSyllablesPerWord(e.target.value as Two_Fifteen))}>
 							<div slot="start">2</div>
 							<div slot="end">15</div>
 						</IonRange>
@@ -195,7 +193,7 @@ const WGSet = (props: PageData) => {
 						<IonLabel className="ion-padding-bottom">Character Group run dropoff</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={charGroupRunDropoff} pin={true} onIonChange={(e) => doOnBlur(setCharacterGroupDropoff, e.target.value as Zero_Fifty)}>
+						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={characterGroupDropoff} pin={true} onIonChange={(e) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -204,7 +202,7 @@ const WGSet = (props: PageData) => {
 						<IonLabel className="ion-padding-bottom">Syllable box dropoff</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={syllableBoxDropoff} pin={true} onIonChange={(e) => doOnBlur(setSyllableBoxDropoff, e.target.value as Zero_Fifty)}>
+						<IonRange aria-label="From 0 to 50" debounce={250} min={0} max={50} value={syllableBoxDropoff} pin={true} onIonChange={(e) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty))}>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -217,37 +215,37 @@ const WGSet = (props: PageData) => {
 						<IonLabel className="ion-padding-bottom">Declarative sentence beginning</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Declarative sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={declarativeSentencePre} onIonChange={(e) => doOnBlur(setDeclarativeSentencePre, e.target.value as string)} />
+						<IonInput aria-label="Declarative sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={declarativeSentencePre} onIonChange={(e) => dispatch(setDeclarativeSentencePre(e.target.value as string))} />
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Declarative sentence ending</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Declarative sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={declarativeSentencePost} onIonChange={(e) => doOnBlur(setDeclarativeSentencePost, e.target.value as string)} />
+						<IonInput aria-label="Declarative sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={declarativeSentencePost} onIonChange={(e) => dispatch(setDeclarativeSentencePost(e.target.value as string))} />
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Interrogative sentence beginning</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Interrogative sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={interrogativeSentencePre} onIonChange={(e) => doOnBlur(setInterrogativeSentencePre, e.target.value as string)} />
+						<IonInput aria-label="Interrogative sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={interrogativeSentencePre} onIonChange={(e) => dispatch(setInterrogativeSentencePre(e.target.value as string))} />
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Interrogative sentence ending</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Interrogative sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={interrogativeSentencePost} onIonChange={(e) => doOnBlur(setInterrogativeSentencePost, e.target.value as string)} />
+						<IonInput aria-label="Interrogative sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={interrogativeSentencePost} onIonChange={(e) => dispatch(setInterrogativeSentencePost(e.target.value as string))} />
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Exclamatory sentence beginning</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Exclamatory sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={exclamatorySentencePre} onIonChange={(e) => doOnBlur(setExclamatorySentencePre, e.target.value as string)} />
+						<IonInput aria-label="Exclamatory sentence beginning" inputmode="text" maxlength={5} minlength={0} size={3} value={exclamatorySentencePre} onIonChange={(e) => dispatch(setExclamatorySentencePre(e.target.value as string))} />
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Exclamatory sentence ending</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Exclamatory sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={exclamatorySentencePost} onIonChange={(e) => doOnBlur(setExclamatorySentencePost, e.target.value as string)} />
+						<IonInput aria-label="Exclamatory sentence ending" inputmode="text" maxlength={5} minlength={0} size={3} value={exclamatorySentencePost} onIonChange={(e) => dispatch(setExclamatorySentencePost(e.target.value as string))} />
 					</IonItem>
 				</IonList>
 			</IonContent>

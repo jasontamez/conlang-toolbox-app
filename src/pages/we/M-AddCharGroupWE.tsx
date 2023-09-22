@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WECharGroupObject, ExtraCharactersModalOpener } from '../../store/types';
+import { WECharGroupObject, ExtraCharactersModalOpener, StateObject } from '../../store/types';
 import { addCharacterGroupWE } from '../../store/weSlice';
 
 import { $q, $a, $i } from '../../components/DollarSignExports';
@@ -36,7 +36,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const charGroupMap: { [key: string]: boolean } = {};
-	const { characterGroups } = useSelector((state: any) => state.we);
+	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	characterGroups.forEach((cg: WECharGroupObject) => {
 		charGroupMap[cg.label || ""] = true;
 	});

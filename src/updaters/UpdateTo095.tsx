@@ -87,7 +87,7 @@ function updateLexiconObject (input: Lexicon094) {
 		title,
 		description,
 		truncateColumns: !lexiconWrap,
-		columns: columnOrder.map((col: any) => {
+		columns: columnOrder.map((col: number) => {
 			return {
 				id: "0" + String(col),
 				label: columnTitles[col],

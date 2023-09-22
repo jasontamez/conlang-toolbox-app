@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WGBasic, ExtraCharactersModalOpener } from '../../store/types';
+import { WGBasic, ExtraCharactersModalOpener, StateObject } from '../../store/types';
 import { loadStateWG } from '../../store/wgSlice';
 
 import escape from '../../components/EscapeForHTML';
@@ -65,8 +65,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		interrogativeSentencePost,
 		exclamatorySentencePre,
 		exclamatorySentencePost
-	} = useSelector((state: any) => state.wg);
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	} = useSelector((state: StateObject) => state.wg);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const customInfo: string[] = titles || [];
 	const doCleanClose = () => {
 		setTitles(null);

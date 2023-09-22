@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
-import { MSBasic, MSBool, ModalProperties } from '../../store/types';
+import { MSBasic, MSBool, ModalProperties, StateObject } from '../../store/types';
 
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -38,7 +38,7 @@ interface MSmodalProps extends ModalProperties {
 
 const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];

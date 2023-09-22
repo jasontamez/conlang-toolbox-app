@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, SyllableTypes, ViewState, Zero_Fifty } from '../../store/types';
+import { PageData, StateObject, SyllableTypes, ViewState, Zero_Fifty } from '../../store/types';
 import { setSyllableOverride, setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes } from '../../store/wgSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -43,7 +43,15 @@ const WGSyl = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
-	const { singleWord, wordInitial, wordMiddle, wordFinal, syllableBoxDropoff, multipleSyllableTypes, syllableDropoffOverrides } = useSelector((state: any) => state.wg);
+	const {
+		singleWord,
+		wordInitial,
+		wordMiddle,
+		wordFinal,
+		syllableBoxDropoff,
+		multipleSyllableTypes,
+		syllableDropoffOverrides
+	} = useSelector((state: StateObject) => state.wg);
 	const toggleableClassName = (base: string = "") => {
 		return (`${base} toggleable ${(multipleSyllableTypes ? " toggled" : "")}`).trim();
 	};
@@ -158,15 +166,15 @@ const WGSyl = (props: PageData) => {
 									enableOnOffLabels
 									onClick={() => toggleSeparateDropoff("singleWord")}
 									labelPlacement="start"
-									checked={syllableDropoffOverrides.singleWorld !== undefined}
+									checked={syllableDropoffOverrides.singleWord !== undefined}
 								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="singleWordDropoff" className={syllableDropoffOverrides.singleWorld === undefined ? "hide" : "nonUnit"}>
+							<IonItem id="singleWordDropoff" className={syllableDropoffOverrides.singleWord === undefined ? "hide" : "nonUnit"}>
 								<IonRange
 									aria-label="From 0 to 50"
 									min={0} max={50}
 									pin={true}
-									value={(syllableDropoffOverrides.singleWorld || 0)}
+									value={(syllableDropoffOverrides.singleWord || 0)}
 									onIonChange={(e) => dispatch(setSeparateDropoff("singleWord", e.target.value as Zero_Fifty))}
 									debounce={250}
 								>

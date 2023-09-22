@@ -24,13 +24,14 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WESoundChangeObject, ExtraCharactersModalOpener } from '../../store/types';
+import { WESoundChangeObject, ExtraCharactersModalOpener, StateObject } from '../../store/types';
+import { deleteSoundChangeWE, editSoundChangeWE } from '../../store/weSlice';
+
 import repairRegexErrors from '../../components/RepairRegex';
 import { $i, $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import { deleteSoundChangeWE, editSoundChangeWE } from '../../store/weSlice';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WESoundChangeObject
@@ -42,7 +43,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const { disableConfirms } = useSelector((state: any) => state.appSettings);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
 	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);

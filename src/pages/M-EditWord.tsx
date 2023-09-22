@@ -25,7 +25,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { deleteLexiconItem, doEditLexiconItem } from '../store/lexiconSlice';
-import { ExtraCharactersModalOpener, Lexicon, LexiconColumn } from '../store/types';
+import { ExtraCharactersModalOpener, Lexicon, LexiconColumn, StateObject } from '../store/types';
 
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
@@ -49,7 +49,7 @@ const nonsense = garble();
 const EditLexiconItemModal = (props: LexItemProps) => {
 	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo } = props;
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: any) => state.appSettings.disableConfirms);
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [ id, setId ] = useState<string>("");
 	const [ cols, setCols ] = useState<string[]>([]);
 	const [ originalString, setOriginalString ] = useState<string>("");
