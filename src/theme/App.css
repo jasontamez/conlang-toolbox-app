@@ -356,24 +356,15 @@ i.ipa {
 
 ion-app .WEinput {
 	height: calc(100% - 4rem);
-	width: 100%;
+	width: calc(100% - 2rem);
 	padding: 0;
-	margin: 0;
-	display: grid;
-	grid-template-columns: 1rem 1fr 1rem;
-	grid-template-rows: 2rem 1fr;
-	grid-template-areas:
-		". . ."
-		". x .";
-	/*grid-template-columns: 1rem 1fr 1rem;
-	grid-template-rows: 1rem min-content 1rem 1fr 1rem;
-	grid-template-areas:
-		". . ."
-		". b ."
-		". . ."
-		". x ."
-		". . .";*/
-	}
+	margin: 0.25rem 1rem 0;
+	display: flex;
+}
+ion-app .WEinput textarea {
+	height: 100%;
+	width: 100%;
+}
 .hasSpecialLabels ion-label {
 	font-size: 1.25rem;
 	padding: 0;

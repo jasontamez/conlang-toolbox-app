@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -44,27 +44,37 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const [doToast, undoToast] = useIonToast();
 	const { disableConfirms } = useSelector((state: any) => state.appSettings);
 
-	const seekEl = $i("editSeekExWESC");
-	const replaceEl = $i("editReplaceExWESC");
-	const contextEl = $i("editContextExWESC");
-	const antiEl = $i("editAnticontextExWESC");
-	const descEl = $i("editOptDescWESC");
-	useEffect(() => {
+	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
+	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
+	const [contextEl, setContextEl] = useState<HTMLInputElement | null>(null);
+	const [antiEl, setAntiEl] = useState<HTMLInputElement | null>(null);
+	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
+	const onLoad = () => {
+		const _seekEl = $i("editSeekExWESC");
+		const _replaceEl = $i("editReplaceExWESC");
+		const _contextEl = $i("editContextExWESC");
+		const _antiEl = $i("editAnticontextExWESC");
+		const _descEl = $i("editOptDescWESC");
 		if(editing) {
 			const { seek, replace, context, anticontext, description } = editing;
-			seekEl && (seekEl.value = seek);
-			replaceEl && (replaceEl.value = replace);
-			contextEl && (contextEl.value = context);
-			antiEl && (antiEl.value = anticontext);
-			descEl && (descEl.value = description);
+			_seekEl && (_seekEl.value = seek);
+			_replaceEl && (_replaceEl.value = replace);
+			_contextEl && (_contextEl.value = context);
+			_antiEl && (_antiEl.value = anticontext);
+			_descEl && (_descEl.value = description);
 		} else {
-			seekEl && (seekEl.value = "");
-			replaceEl && (replaceEl.value = "");
-			contextEl && (contextEl.value = "");
-			antiEl && (antiEl.value = "");
-			descEl && (descEl.value = "");	
+			_seekEl && (_seekEl.value = "");
+			_replaceEl && (_replaceEl.value = "");
+			_contextEl && (_contextEl.value = "");
+			_antiEl && (_antiEl.value = "");
+			_descEl && (_descEl.value = "");	
 		}
-	}, [editing, isOpen, seekEl, replaceEl, contextEl, antiEl, descEl]);
+		setSeekEl(_seekEl);
+		setReplaceEl(_replaceEl);
+		setContextEl(_contextEl);
+		setAntiEl(_antiEl);
+		setDescEl(_descEl);
+	};
 
 	const cancelEditing = () => {
 		setEditing(null);
@@ -165,13 +175,13 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			handler();
 		} else {
 			let soundChange =
-				seekEl!.seek
+				editing!.seek
 				+ (ltr() ? "⟶" : "⟵")
-				+ replaceEl!.replace
+				+ editing!.replace
 				+ "/"
-				+ contextEl!.context;
-			if(antiEl!.anticontext) {
-				soundChange += "/" + antiEl.anticontext;
+				+ editing!.context;
+			if(editing!.anticontext) {
+				soundChange += "/" + editing!.anticontext;
 			}
 			yesNoAlert({
 				header: soundChange,
@@ -184,7 +194,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>

@@ -2,10 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppSettings, ThemeNames } from './types';
 import blankAppState from './blankAppState';
+import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 
 const initialState = blankAppState.appSettings;
 
 const setThemeFunc = (state: AppSettings, action: PayloadAction<ThemeNames>) => {
+	if(state.theme !== action.payload) {
+		maybeUpdateTheme(state.theme, action.payload);
+	}
 	state.theme = action.payload;
 	return state;
 };

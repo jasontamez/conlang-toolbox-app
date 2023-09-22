@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -44,22 +44,28 @@ const EditTransformModal = (props: ModalProps) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const { disableConfirms } = useSelector((state: any) => state.appSettings)
+	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
+	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
+	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
 
-	const searchEl = $i("editSearchExWG");
-	const replaceEl = $i("editReplaceExWG");
-	const descEl = $i("editOptDescWG");
-	useEffect(() => {
+	const onLoad = () => {
+		const _searchEl = $i("editSearchExWG");
+		const _replaceEl = $i("editReplaceExWG");
+		const _descEl = $i("editOptDescWG");
 		if(editing) {
 			const { seek, replace, description } = editing;
-			searchEl && (searchEl.value = seek);
-			replaceEl && (replaceEl.value = replace);
-			descEl && (descEl.value = description);
+			_searchEl && (_searchEl.value = seek);
+			_replaceEl && (_replaceEl.value = replace);
+			_descEl && (_descEl.value = description);
 		} else {
-			searchEl && (searchEl.value = "");
-			replaceEl && (replaceEl.value = "");
-			descEl && (descEl.value = "");
+			_searchEl && (_searchEl.value = "");
+			_replaceEl && (_replaceEl.value = "");
+			_descEl && (_descEl.value = "");
 		}
-	}, [editing, isOpen, descEl, replaceEl, searchEl]);
+		setSearchEl(_searchEl);
+		setReplaceEl(_replaceEl);
+		setDescEl(_descEl);
+	};
 
 	const cancelEditing = () => {
 		setIsOpen(false);
@@ -95,7 +101,7 @@ const EditTransformModal = (props: ModalProps) => {
 		}
 		// Everything ok!
 		const replace = repairRegexErrors((replaceEl && replaceEl.value) || "");
-		const description = (descEl || descEl.value.trim()) || "";
+		const description = (descEl && descEl.value.trim()) || "";
 		setIsOpen(false);
 		dispatch(editTransformWG({
 			id: editing!.id,
@@ -141,7 +147,7 @@ const EditTransformModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transformation</IonTitle>

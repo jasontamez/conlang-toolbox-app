@@ -75,7 +75,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
 					{WGPresets.map((([title, object]) => (
-						<IonItem button={true} onClick={() => maybeLoadPreset(title, object)}>
+						<IonItem key={title} button={true} onClick={() => maybeLoadPreset(title, object)}>
 							<IonLabel>{title}</IonLabel>
 						</IonItem>
 					)))}

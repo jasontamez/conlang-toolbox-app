@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -48,19 +48,19 @@ const EditCharGroupModal = (props: ModalProps) => {
 	const [doToast, undoToast] = useIonToast();
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
-	const titleEl = $i("editingWGCharGroupTitle");
-	const labelEl = $i("editingWGShortLabel");
-	const runEl = $i("editingWGCharGroupRun");
 	const [charGroupMap, setCharGroupMap] = useState<{ [ key: string]: boolean }>({});
-	useEffect(() => {
-		titleEl && (titleEl.value = "");
-		labelEl && (labelEl.value = "");
-		runEl && (runEl.value = "");
+	const [titleEl, setTitleEl] = useState<HTMLInputElement | null>(null);
+	const [labelEl, setLabelEl] = useState<HTMLInputElement | null>(null);
+	const [runEl, setRunEl] = useState<HTMLInputElement | null>(null);
+	const onLoad = () => {
+		const _titleEl = $i("editingWGCharGroupTitle");
+		const _labelEl = $i("editingWGShortLabel");
+		const _runEl = $i("editingWGCharGroupRun");
 		if(editing) {
 			const { title, run, dropoffOverride, label } = editing;
-			titleEl && (titleEl.value = title);
-			labelEl && (labelEl.value = label);
-			runEl && (runEl.value = run);
+			_titleEl && (_titleEl.value = title);
+			_labelEl && (_labelEl.value = label);
+			_runEl && (_runEl.value = run);
 			if(dropoffOverride !== undefined) {
 				setHasDropoff(true);
 				setDropoff(dropoffOverride);
@@ -73,8 +73,15 @@ const EditCharGroupModal = (props: ModalProps) => {
 				newMap[item.label!] = true;
 			});
 			setCharGroupMap(newMap);
+		} else {
+			_titleEl && (_titleEl.value = "");
+			_labelEl && (_labelEl.value = "");
+			_runEl && (_runEl.value = "");	
 		}
-	}, [editing, characterGroupDropoff, isOpen, titleEl, labelEl, runEl, characterGroups]);
+		setTitleEl(_titleEl);
+		setLabelEl(_labelEl);
+		setRunEl(_runEl);
+	};
 
 	function resetError (prop: keyof WGCharGroupObject) {
 		// Remove danger color if present
@@ -134,7 +141,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		if(label === "") {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
-		} else if (editing !== label && charGroupMap[label]) {
+		} else if (editing!.label !== label && charGroupMap[label]) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("There is already a label \"" + label + "\"");
 		} else {
@@ -217,7 +224,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Character Group</IonTitle>

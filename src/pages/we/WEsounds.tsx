@@ -61,7 +61,7 @@ const WERew = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const {disableConfirms} = useSelector((state: any) => state.appSettings);
-	const soundChanges = useSelector((state: any) => state.we);
+	const { soundChanges } = useSelector((state: any) => state.we);
 	const editSoundChange = (change: WESoundChangeObject) => {
 		$q(".soundChanges").closeSlidingItems();
 		setEditing(change)

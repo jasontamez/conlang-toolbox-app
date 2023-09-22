@@ -77,7 +77,7 @@ const WGSyl = (props: PageData) => {
 				color="primary"
 				fill="clear"
 				disabled={!!isEditing}
-				onClick={e => dispatch(setIsEditing(prop))}
+				onClick={e => setIsEditing(prop)}
 			>
 				<IonIcon src="svg/edit.svg" />
 			</IonButton>

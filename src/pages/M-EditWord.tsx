@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -55,13 +55,17 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const [ originalString, setOriginalString ] = useState<string>("");
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	useEffect(() => {
+	const onLoad = () => {
 		const id = (itemToEdit ? itemToEdit.id : "");
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
+		cols.forEach((col: string, i: number) => {
+			const el = $i(`edit_lex_input_${id}_${i}`);
+			el && (el.value = col);
+		});
 		setOriginalString(cols.join(nonsense));
 		setId(id);
 		setCols(cols);
-	}, [itemToEdit]);
+	};
 	const currentInfo = () => {
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		return cols.map((col: string, i: number) => {
@@ -141,7 +145,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Lexicon Item</IonTitle>

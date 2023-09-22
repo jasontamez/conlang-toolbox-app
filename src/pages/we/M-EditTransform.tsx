@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -46,25 +46,30 @@ const EditTransformModal = (props: ModalProps) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 
+	const { disableConfirms } = useSelector((state: any) => state.appSettings)
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
-	const searchEl = $i("editSearchExWE");
-	const replaceEl = $i("editReplaceExWE");
-	const descEl = $i("editOptDescWE");
-	useEffect(() => {
+	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
+	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
+	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
+	const onLoad = () => {
+		const _searchEl = $i("editSearchExWE");
+		const _replaceEl = $i("editReplaceExWE");
+		const _descEl = $i("editOptDescWE");
 		if(editing) {
 			const { seek, replace, description, direction } = editing;
-			searchEl && (searchEl.value = seek);
-			replaceEl && (replaceEl.value = replace);
-			descEl && (descEl.value = description);
+			_searchEl && (_searchEl.value = seek);
+			_replaceEl && (_replaceEl.value = replace);
+			_descEl && (_descEl.value = description);
 			setDirection(direction);
 		} else {
-			searchEl && (searchEl.value = "");
-			replaceEl && (replaceEl.value = "");
-			descEl && (descEl.value = "");	
+			_searchEl && (_searchEl.value = "");
+			_replaceEl && (_replaceEl.value = "");
+			_descEl && (_descEl.value = "");
 		}
-	}, [editing, isOpen, searchEl, replaceEl, descEl]);
-	//const { transforms } = useSelector((state: any) => state.we)
-	const { disableConfirms } = useSelector((state: any) => state.appSettings)
+		setSearchEl(_searchEl);
+		setReplaceEl(_replaceEl);
+		setDescEl(_descEl);
+	};
 
 
 	const cancelEditing = () => {
@@ -149,7 +154,7 @@ const EditTransformModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
