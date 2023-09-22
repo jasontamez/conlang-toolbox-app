@@ -1,4 +1,5 @@
 import localForage from 'localforage';
+import debounce from './Debounce';
 
 export const StateStorage = localForage.createInstance({
 	name: 'Conlang Toolbox',
@@ -6,6 +7,13 @@ export const StateStorage = localForage.createInstance({
 	version: 1,
 	description: 'Stores state information for the next time we load.'
 });
+export const saveCurrentState = (state: Object, namespace: string) => {
+	const copy = {...state};
+	const func = () => {
+		StateStorage.setItem("lastStateSettings", copy);
+	}
+	debounce(func, [], 1000, namespace);
+};
 
 export const LexiconStorage = localForage.createInstance({
 	name: 'Conlang Toolbox',

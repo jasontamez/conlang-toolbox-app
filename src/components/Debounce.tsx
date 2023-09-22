@@ -6,10 +6,14 @@ function debounce (func: Function, args: any[], amount: number, namespace: strin
 	}
 	bouncing[namespace] = setTimeout(
 		() => {
+//			console.log(namespace, ...(args ? args : []));
 			delete bouncing[namespace];
 			func.call(null, ...args);
 		},
-	amount);
+		amount
+	);
+//	console.log(">>", namespace, ...(args ? args : []));
+//	console.trace();
 }
 
 export default debounce;

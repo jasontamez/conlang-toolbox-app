@@ -4,15 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import blankAppState from './blankAppState';
 import { Lexicon, LexiconBlankSorts, LexiconColumn, LexiconState } from './types';
 import makeSorter from '../components/stringSorter';
-import debounce from '../components/Debounce';
-import { StateStorage } from '../components/PersistentInfo';
 
 const initialState = blankAppState.lexicon;
-
-// Storage
-const saveCurrentState = (state: LexiconState) => {
-	debounce(StateStorage.setItem, ["lastStateLex", state], 1000, "savingStateLex");
-};
 
 const sortBlank = (dir: boolean, method: LexiconBlankSorts) => {
 	// returns [xIsBlank, yIsBlank]
@@ -96,24 +89,20 @@ const loadStateFunc = (state: LexiconState, action: PayloadAction<LexiconState>)
 		...action.payload,
 		truncateColumns: state.truncateColumns
 	};
-	saveCurrentState(state);
 	return final;
 };
 const updateLexiconTextFunc = (state: LexiconState, action: PayloadAction<["title" | "description" | "id", string]>) => {
 	const [ prop, value ] = action.payload;
 	state[prop] = value;
-	saveCurrentState(state);
 	return state;
 };
 const updateLexiconNumberFunc = (state: LexiconState, action: PayloadAction<["lastSave", number]>) => {
 	const [ prop, value ] = action.payload;
 	state[prop] = value;
-	saveCurrentState(state);
 	return state;
 };
 const addLexiconItemFunc = (state: LexiconState, action: PayloadAction<Lexicon>) => {
 	state.lexicon = sortLexicon([action.payload, ...state.lexicon], state.sortPattern, state.sortDir, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const addItemstoLexiconColumnFunc = (state: LexiconState, action: PayloadAction<[ string[], string ]>) => {
@@ -139,7 +128,6 @@ const addItemstoLexiconColumnFunc = (state: LexiconState, action: PayloadAction<
 	});
 	//addMultipleItemsAsColumn({words: [array], column: "id"})
 	state.lexicon = sortLexicon(state.lexicon, state.sortPattern, state.sortDir, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const editLexiconItemFunc = (state: LexiconState, action: PayloadAction<Lexicon>) => {
@@ -148,41 +136,35 @@ const editLexiconItemFunc = (state: LexiconState, action: PayloadAction<Lexicon>
 	const editedID = editedItem.id;
 	const editedLexicon = state.lexicon.map(item => item.id === editedID ? editedItem : item);
 	state.lexicon = sortLexicon(editedLexicon, state.sortPattern, state.sortDir, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const deleteLexiconItemFunc = (state: LexiconState, action: PayloadAction<string>) => {
 	//deleteLexiconItem("id")
 	const id = action.payload;
 	state.lexicon = state.lexicon.filter(item => item.id !== id);
-	saveCurrentState(state);
 	return state;
 };
 const updateLexiconSortFunc = (state: LexiconState, action: PayloadAction<number[]>) => {
 	const { payload } = action;
 	state.sortPattern = payload;
 	state.lexicon = sortLexicon([...state.lexicon], payload, state.sortDir, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const updateLexiconSortDirFunc = (state: LexiconState, action: PayloadAction<boolean>) => {
 	const { payload } = action;
 	state.sortDir = payload;
 	state.lexicon = sortLexicon([...state.lexicon], state.sortPattern, payload, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const toggleLexiconWrapFunc = (state: LexiconState) => {
 	//setTruncate(boolean)
 	state.truncateColumns = !state.truncateColumns;
-	saveCurrentState(state);
 	return state;
 };
 const setFontTypeFunc = (state: LexiconState, action: PayloadAction<string>) => {
 	//setFontType("Noto Serif" | "Noto Sans" | "Source Code Pro")
 	//  SEE: consts.fontsMap
 	state.fontType = action.payload;
-	saveCurrentState(state);
 	return state;
 };
 const setStoredCustomInfoFunc = (state: LexiconState, action: PayloadAction<any>) => {
@@ -193,7 +175,6 @@ const setStoredCustomInfoFunc = (state: LexiconState, action: PayloadAction<any>
 	const { payload } = action;
 	state.storedCustomInfo = payload;
 	state.storedCustomIDs = Object.keys(payload);
-	saveCurrentState(state);
 	return state;
 };
 const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexicon[], Lexicon]>) => {
@@ -201,7 +182,6 @@ const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexi
 	merged.id = uuidv4();
 	const newLexicon = [merged, ...state.lexicon.filter((lex) => lexiconItemsBeingMerged.every((lx) => lx.id !== lex.id))];
 	state.lexicon = sortLexicon(newLexicon, state.sortPattern, state.sortDir, state.blankSort);
-	saveCurrentState(state);
 	return state;
 };
 const updateLexiconColumarInfoFunc = (state: LexiconState, action: PayloadAction<[Lexicon[], LexiconColumn[], number[], boolean, LexiconBlankSorts]>) => {
@@ -214,7 +194,6 @@ const updateLexiconColumarInfoFunc = (state: LexiconState, action: PayloadAction
 		blankSort,
 		lexicon: sortLexicon(lex, sortPattern, state.sortDir, blankSort)
 	};
-	saveCurrentState(final);
 	return final;
 };
 
@@ -338,27 +317,3 @@ export const equalityCheck = (stateA: LexiconState, stateB: LexiconState) => {
 	});
 };
 
-// Testing if state
-export const _Lex: { simple: (keyof LexiconState)[], possiblyFalsy: (keyof LexiconState)[]} = {
-	simple: [
-		"columns",
-		"lexicon",
-		"sortPattern",
-		"blankSort",
-		"storedCustomInfo",
-		"storedCustomIDs"
-	],
-	possiblyFalsy: [
-		"id",
-		"lastSave",
-		"title",
-		"description",
-		"truncateColumns",
-		"sortDir"
-	]
-};
-export const checkIfLexicon = (possible: LexiconState | any): possible is LexiconState => {
-	const check = possible as LexiconState;
-	const { simple, possiblyFalsy } = _Lex;
-	return simple.every(prop => check[prop]) && possiblyFalsy.every(prop => (check[prop] !== undefined));
-};

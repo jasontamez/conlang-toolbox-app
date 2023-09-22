@@ -2,25 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import blankAppState from './blankAppState';
 import { Concept, ConceptsState } from './types';
 import { v4 as uuidv4 } from 'uuid';
-import debounce from '../components/Debounce';
-import { StateStorage } from '../components/PersistentInfo';
 
 const initialState = blankAppState.concepts;
 
-// Storage
-const saveCurrentState = (state: ConceptsState) => {
-	debounce(StateStorage.setItem, ["lastStateConcepts", state], 1000, "savingStateConcepts");
-};
-
 const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<(keyof Concept)[]>) => {
 	state.display = action.payload;
-	saveCurrentState(state);
 	return state;
 };
 
 const toggleConceptsBooleanFunc = (state: ConceptsState, action: PayloadAction<"textCenter" | "showingCombos">) => {
 	state[action.payload] = !state[action.payload];
-	saveCurrentState(state);
 	return state;
 };
 
@@ -29,13 +20,11 @@ const addCustomHybridMeaningFunc = (state: ConceptsState, action: PayloadAction<
 		id: uuidv4(),
 		parts: action.payload
 	});
-	saveCurrentState(state);
 	return state;
 };
 
 const removeCustomHybridMeaningsFunc = (state: ConceptsState, action: PayloadAction<string[]>) => {
 	state.combinations = state.combinations.filter(combo => action.payload.every((id: string) => id !== combo.id));
-	saveCurrentState(state);
 	return state;
 };
 
@@ -44,7 +33,6 @@ const loadStateConceptsFunc = (state: ConceptsState, action: PayloadAction<Conce
 		...state,
 		...action.payload
 	};
-	saveCurrentState(final);
 	return final;
 };
 
@@ -111,20 +99,3 @@ export const equalityCheck = (stateA: ConceptsState, stateB: ConceptsState) => {
 	}
 };
 */
-
-// Testing if state
-export const _Concepts: { simple: (keyof ConceptsState)[], possiblyFalsy: (keyof ConceptsState)[]} = {
-	simple: [
-		"textCenter",
-		"showingCombos"
-	],
-	possiblyFalsy: [
-		"display",
-		"combinations"
-	]
-};
-export const checkIfConcepts = (possible: ConceptsState | any): possible is ConceptsState => {
-	const check = possible as ConceptsState;
-	const { simple, possiblyFalsy } = _Concepts;
-	return simple.every(prop => check[prop]) && possiblyFalsy.every(prop => (check[prop] !== undefined));
-};

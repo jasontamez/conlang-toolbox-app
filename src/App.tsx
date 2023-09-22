@@ -14,7 +14,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 
-import { checkIfSettings, loadStateSettings, setSortLanguage } from './store/settingsSlice';
+import { setSortLanguage } from './store/settingsSlice';
 
 import Menu from './components/Menu';
 
@@ -27,7 +27,6 @@ import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import Info from './pages/AppInfo';
 
-import { currentVersion } from './store/blankAppState';
 import doUpdate095 from './updaters/UpdateTo095';
 import doUpdate096 from './updaters/UpdateTo096';
 
@@ -56,14 +55,6 @@ import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
-
-import { checkIfWG, loadStateWG } from './store/wgSlice';
-import { checkIfWE, loadStateWE } from './store/weSlice';
-import { checkIfMS, loadStateMS } from './store/msSlice';
-import { checkIfEC, loadStateEC } from './store/extraCharactersSlice';
-import { checkIfConcepts, loadStateConcepts } from './store/conceptsSlice';
-import { checkIfLexicon, loadStateLex } from './store/lexiconSlice';
-import { checkIfView, loadViewState } from './store/viewSlice';
 
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
@@ -140,37 +131,6 @@ const App = memo(() => {
 					doUpdate096(storedState, dispatch);
 					// We're not doing global state again.
 					StateStorage.removeItem("lastState");
-				}
-			}
-		});
-		// 0.9.6 and newer
-		const saves: [string, Function, Function][] = [
-			["WG", checkIfWG, loadStateWG],
-			["WE", checkIfWE, loadStateWE],
-			["MS", checkIfMS, loadStateMS],
-			["EC", checkIfEC, loadStateEC],
-			["Concepts", checkIfConcepts, loadStateConcepts],
-			["Lex", checkIfLexicon, loadStateLex],
-			["Settings", checkIfSettings, loadStateSettings]
-		];
-		saves.forEach(([suffix, checker, setter]) => {
-			StateStorage.getItem("lastState" + suffix).then((storedState: any) => {
-				if(storedState && (typeof storedState) === "object") {
-					if (compareVersions.compare(storedState.currentVersion, currentVersion, "<")) {
-						// Do stuff to possibly bring storedState up to date
-						storedState.currentVersion = currentVersion;
-					}
-					if(checker(storedState)) {
-						return dispatch(setter(storedState));
-					}
-				}
-			});
-		});
-		// view state doesn't need version-checking
-		StateStorage.getItem("lastStateView").then((storedState: any) => {
-			if(storedState && (typeof storedState) === "object") {
-				if(checkIfView(storedState)) {
-					return dispatch(loadViewState(storedState));
 				}
 			}
 		});
