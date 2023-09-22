@@ -144,9 +144,11 @@ const OutputOptionsModal = (props: ModalProperties) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem button={true} onClick={() => setIsOpen(false)} color="success">
-					<IonLabel>Done</IonLabel>
-				</IonItem>
+				<IonToolbar>
+					<IonButton color="success" slot="end" onClick={() => setIsOpen(false)}>
+						<IonLabel>Done</IonLabel>
+					</IonButton>
+				</IonToolbar>
 			</IonFooter>
 		</IonModal>
 	);

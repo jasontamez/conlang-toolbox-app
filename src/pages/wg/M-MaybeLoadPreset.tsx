@@ -82,10 +82,12 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem color="danger" button={true} onClick={() => setIsOpen(false)}>
-					<IonIcon icon={closeCircleSharp} slot="start" />
-					<IonLabel>Cancel</IonLabel>
-				</IonItem>
+				<IonToolbar>
+					<IonButton color="danger" slot="end" onClick={() => setIsOpen(false)}>
+						<IonIcon icon={closeCircleSharp} slot="start" />
+						<IonLabel>Cancel</IonLabel>
+					</IonButton>
+				</IonToolbar>
 			</IonFooter>
 		</IonModal>
 	);

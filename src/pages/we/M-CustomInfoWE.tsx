@@ -241,10 +241,12 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				</IonList>
 			</IonContent>
 			<IonFooter>
-				<IonItem color="danger" button={true} onClick={() => doCleanClose()}>
-					<IonIcon icon={closeCircleSharp} slot="start" />
-					<IonLabel>Cancel</IonLabel>
-				</IonItem>
+				<IonToolbar>
+					<IonButton color="danger" slot="end" onClick={() => doCleanClose()}>
+						<IonIcon icon={closeCircleSharp} slot="start" />
+						<IonLabel>Cancel</IonLabel>
+					</IonButton>
+				</IonToolbar>
 			</IonFooter>
 		</IonModal>
 	);
