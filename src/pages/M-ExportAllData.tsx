@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { LexiconState, ModalProperties, MSState, StateObject } from '../store/types';
 
 import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../components/PersistentInfo';
+import { currentVersion } from '../store/blankAppState';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
@@ -69,6 +70,7 @@ const MExportAllData = (props: ModalProperties) => {
 			const {storedCustomIDs: q, storedCustomInfo: p, ..._lex} = lexicon;
 			const {sortLanguage, ..._settings} = appSettings
 			setOutput(JSON.stringify({
+				currentVersion,
 				wg: {
 					..._wg,
 					characterGroups: wg.characterGroups.map((obj) => ({...obj})),

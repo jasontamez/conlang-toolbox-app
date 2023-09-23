@@ -5,7 +5,6 @@ export const currentVersion = packageJson.version;
 
 const blankAppState: StateObject = {
 	ms: {
-		currentVersion,
 		id: "",
 		lastSave: 0,
 		title: "",
@@ -178,7 +177,6 @@ const blankAppState: StateObject = {
 		storedCustomIDs: []
 	},
 	wg: {
-		currentVersion,
 		// GROUPS
 		characterGroups: [],
 		// SYLLABLES
@@ -220,7 +218,6 @@ const blankAppState: StateObject = {
 		storedCustomIDs: []
 	},
 	we: {
-		currentVersion,
 		input: "",
 		characterGroups: [],
 		transforms: [],
@@ -232,7 +229,6 @@ const blankAppState: StateObject = {
 		storedCustomIDs: []
 	},
 	lexicon: {
-		currentVersion,
 		id: "",
 		lastSave: 0,
 		title: "",
@@ -264,14 +260,12 @@ const blankAppState: StateObject = {
 		storedCustomIDs: []
 	},
 	concepts: {
-		currentVersion,
 		textCenter: true,
 		display: [],
 		showingCombos: false,
 		combinations: []
 	},
 	ec: {
-		currentVersion,
 		faves: [],
 		copyImmediately: false,
 		toCopy: "",
@@ -279,7 +273,6 @@ const blankAppState: StateObject = {
 		nowShowing: "Favorites"
 	},
 	appSettings: {
-		currentVersion,
 		theme: 'Default',
 		disableConfirms: false,
 		sortLanguage: "en",

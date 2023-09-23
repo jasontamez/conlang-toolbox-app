@@ -17,11 +17,11 @@ import { MSBool, MSNum, MSState, MSText } from "../../store/types";
 
 import doExport from '../../components/ExportServices';
 import { exportProp, specificPageInfo } from './MorphoSyntaxElements';
-import ms from './ms.json';
-
+import msRawInfo from './ms.json';
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
+import { isPlatform } from "@ionic/react";
 // FOR BROWSER TESTING ONLY
 
 type Child = (Paragraph | Table);
@@ -38,13 +38,13 @@ const doDocx = (
 	doToast: Function,
 	undoToast: Function
 ) => {
-	const msSections: string[] = ms.sections;
+	const msSections: string[] = msRawInfo.sections;
 	const sections: Section[] = [];
 	const spacing = {
 		before: 200
 	}
 	msSections.forEach((sec: string) => {
-		const msSection = (ms[sec as keyof typeof ms] as specificPageInfo[]);
+		const msSection = (msRawInfo[sec as keyof typeof msRawInfo] as specificPageInfo[]);
 		const children: Child[] = [];
 		msSection.forEach((item: specificPageInfo) => {
 			const {
@@ -333,11 +333,14 @@ const doDocx = (
 
 
 	// FOR BROWSER TESTING ONLY
-	Packer.toBlob(doc).then((blob) => {
-		saveAs(blob, filename);
-	}).catch((e = "Error blob") => {
-		console.log(e);
-	});
+	if(!isPlatform("android")) {
+		Packer.toBlob(doc).then((blob) => {
+			saveAs(blob, filename);
+		}).catch((e = "Error blob") => {
+			console.log(e);
+		});
+		return;
+	}
 	// FOR BROWSER TESTING ONLY
 
 

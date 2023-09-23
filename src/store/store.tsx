@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
+	//createMigrate,
 	persistStore,
 	persistReducer,
 	FLUSH,
@@ -21,6 +22,9 @@ import weSlice from './weSlice';
 import extraCharactersSlice from './extraCharactersSlice';
 import viewSlice from './viewSlice';
 import blankAppState from './blankAppState';
+import debounce from '../components/Debounce';
+import maybeUpdateTheme from '../components/MaybeUpdateTheme';
+import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 //
 //
@@ -30,6 +34,16 @@ const initialAppState = {...blankAppState};
 // ----- END
 //
 //
+
+// BELOW is where future version adjustments can happen
+/*
+const migrations = {
+	1: (state) => {
+		// change state here and return it
+		return {...state};
+	}
+}
+*/
 
 const reducerConfig = {
 	// SLICES here
@@ -42,10 +56,18 @@ const reducerConfig = {
 	ec: extraCharactersSlice,
 	lastView: viewSlice
 };
+const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
+	if(incomingState && originalState && (incomingState.appSettings.theme !== originalState.appSettings.theme)) {
+		debounce(maybeUpdateTheme, [originalState.appSettings.theme, incomingState.appSettings.theme], 100, "rehydrateTheme");
+	}
+	return autoMergeLevel1(incomingState, originalState, reducedState, config);
+};
 const persistConfig = {
 	key: 'root',
-	version: 1,
+	version: 0,
 	storage,
+	stateReconciler
+	//migrate: createMigrate(migrations, { debug: false })
 };
 const reducer = combineReducers(reducerConfig);
 const persistedReducer = persistReducer(persistConfig, reducer);

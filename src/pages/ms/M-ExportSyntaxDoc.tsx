@@ -36,13 +36,14 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
 	const [doToast, undoToast] = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
+	const { title = "[Untitled]" } = msInfo;
 	const doClose = () => {
 		setIsOpen(false);
 		setLoading(false);
 	};
 	const doDownload = (e: Event, output: string, extension: string) => {
 		e.preventDefault();
-		const filename = msInfo.title + " - " + (new Date()).toDateString() + "." + extension;
+		const filename = `${title} - ${(new Date()).toDateString()}.${extension}`;
 		setLoading(true);
 		doExport(output, filename, doToast, undoToast)
 			.catch((e = "Error doexport") => {
@@ -55,7 +56,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export MorphoSyntax Document: {msInfo.title || "[Untitled]"}</IonTitle>
+					<IonTitle>Export MorphoSyntax Document: {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />

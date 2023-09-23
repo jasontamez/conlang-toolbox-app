@@ -21,7 +21,6 @@ import {
 import { loadStateWE } from "../store/weSlice";
 import { loadStateWG } from "../store/wgSlice";
 import * as oldTypes from "./oldReduxTypes";
-import { currentVersion } from "../store/blankAppState";
 
 // Updating to 0.9.6
 function doUpdate (incomingState: oldTypes.StateObject, dispatch: Function) {
@@ -30,10 +29,7 @@ function doUpdate (incomingState: oldTypes.StateObject, dispatch: Function) {
 	dispatch(loadStateWE(updateWE(incomingState)));
 	dispatch(loadStateMS(updateMS(incomingState)));
 	dispatch(loadStateLex(updateLex(incomingState)));
-	dispatch(loadStateConcepts({
-		currentVersion,
-		...incomingState.conceptsState
-	}));
+	dispatch(loadStateConcepts({...incomingState.conceptsState}));
 	dispatch(loadStateEC(updateEC(incomingState)));
 	dispatch(loadStateSettings(updateSettings(incomingState)));
 }
@@ -62,7 +58,6 @@ function updateWG (incomingState: oldTypes.StateObject) {
 		...wordgenSettings
 	};
 	const wg: WGState = {
-		currentVersion,
 		characterGroups: wordgenCharGroups.map.map(map => map[1]),
 		multipleSyllableTypes: wordgenSyllables.toggle,
 		singleWord: singleWord.components.join("\n"),
@@ -99,7 +94,6 @@ function updateWE (incomingState: oldTypes.StateObject) {
 		wordevolveSettings
 	} = incomingState;
 	const we: WEState = {
-		currentVersion,
 		input: wordevolveInput.join("\n"),
 		characterGroups: wordevolveCharGroups.map.map(obj => {
 			const { title, label, run } = obj[1];
@@ -152,7 +146,6 @@ function updateMS (incomingState: oldTypes.StateObject) {
 		NUM[newProp] = num[key as keyof oldTypes.MorphoSyntaxNumberObject];
 	});
 	const ms: MSState = {
-		currentVersion,
 		id: key,
 		lastSave,
 		title,
@@ -168,7 +161,6 @@ function updateMS (incomingState: oldTypes.StateObject) {
 
 function updateLex (incomingState: oldTypes.StateObject) {
 	const lex: LexiconState = {
-		currentVersion,
 		...incomingState.lexicon,
 		storedCustomInfo: {},
 		storedCustomIDs: []
@@ -187,7 +179,6 @@ function updateEC (incomingState: oldTypes.StateObject) {
 		copyLater
 	} = incomingState.extraCharactersState;
 	const ec: ExtraCharactersState = {
-		currentVersion,
 		nowShowing: display,
 		toCopy: copyLater,
 		showNames,
@@ -205,7 +196,6 @@ function updateSettings (incomingState: oldTypes.StateObject) {
 		sortLanguage
 	} = incomingState.appSettings;
 	const settings: AppSettings = {
-		currentVersion,
 		theme: theme as ThemeNames,
 		disableConfirms,
 		sensitivity,

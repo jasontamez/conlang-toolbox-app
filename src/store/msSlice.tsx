@@ -35,12 +35,10 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[string, string
 
 const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSBasic | MSState>) => {
 	const {
-		currentVersion,
 		storedCustomIDs,
 		storedCustomInfo
 	} = state;
 	const final = {
-		currentVersion,
 		storedCustomIDs,
 		storedCustomInfo,
 		...action.payload

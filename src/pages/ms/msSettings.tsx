@@ -48,19 +48,26 @@ const Syntax = (props: PageData) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [storedInfo, setStoredInfo] = useState<[string, MSBasic][]>([]);
 	const dispatch = useDispatch();
-	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
-	const ms: MSState = useSelector((state: StateObject) => state.ms);
-	const {title, description, id, lastSave, currentVersion, storedCustomIDs, storedCustomInfo, ...rest} = ms;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const allProps = Object.keys(rest).length;
+	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
+	const {
+		title,
+		description,
+		id,
+		lastSave,
+		storedCustomIDs,
+		storedCustomInfo,
+		...msRemainder
+	} = useSelector((state: StateObject) => state.ms);
+	const allProps = Object.keys(msRemainder).length;
 	const viewInfo = { key: "ms" as keyof ViewState, page: "msSettings" };
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
 	const clearMS = () => {
 		const handler = () => {
-			const {currentVersion, storedCustomIDs, storedCustomInfo, ...newMS}: MSState = {...blankAppState.ms};
+			const { storedCustomIDs, storedCustomInfo, ...newMS }: MSState = blankAppState.ms;
 			dispatch(loadStateMS(newMS));
 		};
 		if(!(title || id || description || (allProps > 0))) {
@@ -152,7 +159,7 @@ const Syntax = (props: PageData) => {
 			lastSave: now,
 			title,
 			description,
-			...rest
+			...msRemainder
 		};
 		MorphoSyntaxStorage.setItem(key, ms)
 			.then(() => {

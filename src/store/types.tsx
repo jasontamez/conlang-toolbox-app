@@ -55,7 +55,6 @@ export interface WGBasic extends WGSettings {
 	transforms: WGTransformObject[],
 }
 export interface WGState extends WGBasic {
-	currentVersion: string
 	// MORE SETTINGS
 	output: WGOutputTypes
 	showSyllableBreaks: boolean
@@ -104,7 +103,6 @@ export interface WEPresetObject {
 	transforms: WETransformObject[]
 }
 export interface WEState extends WEPresetObject {
-	currentVersion: string
 	input: string
 	outputStyle: WEOutputTypes
 	inputLower: boolean
@@ -291,7 +289,6 @@ export interface MSBasic extends MSInfo {
 	description: string
 }
 export interface MSState extends MSBasic {
-	currentVersion: string
 	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }
@@ -347,7 +344,6 @@ export interface LexiconColumn {
 }
 export type LexiconBlankSorts = "alphaFirst" | "alphaLast" | "first" | "last";
 export interface LexiconState {
-	currentVersion: string
 	id: string
 	lastSave: number
 	title: string
@@ -384,7 +380,6 @@ export interface ConceptCombo {
 	parts: Concept[]
 }
 export interface ConceptsState {
-	currentVersion: string
 	display: (keyof Concept)[]
 	textCenter: boolean
 	showingCombos: boolean
@@ -413,7 +408,6 @@ export interface ExtraCharactersObject {
 	charactersInfo: ExtraCharactersInfo
 }
 export interface ExtraCharactersState {
-	currentVersion: string
 	faves: ExtraCharactersList,
 	toCopy: string,
 	copyImmediately: boolean
@@ -430,7 +424,6 @@ export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Sol
 export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
 
 export interface AppSettings {
-	currentVersion: string
 	theme: ThemeNames
 	disableConfirms: boolean
 	// to be used later

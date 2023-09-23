@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonPage,
 	IonHeader,
@@ -16,15 +16,56 @@ import {
 	IonContent,
 	IonList,
 	IonItem,
-	IonCardTitle
+	IonCardTitle,
+	useIonAlert,
+	getPlatforms,
+	useIonToast
 } from '@ionic/react';
 import { useSelector } from "react-redux";
+import { Clipboard } from '@capacitor/clipboard';
 
 import { PageData, StateObject } from '../store/types';
 
+import toaster from '../components/toaster';
+
 const AppInfo = (props: PageData) => {
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
+	const [debug, setDebug] = useState<number>(1);
+	const [doAlert] = useIonAlert();
+	const [doToast, undoToast] = useIonToast();
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
+
+	const maybeDebug = () => {
+		if(debug < 7) {
+			setDebug(debug + 1);
+			return;
+		}
+		setDebug(1);
+		const info = getPlatforms().join(", ");
+		doAlert({
+			header: "Debug Info",
+			message: info,
+			cssClass: "warning",
+			buttons: [
+				{
+					text: "Copy",
+					cssClass: "submit",
+					handler: () => Clipboard.write({string: info}).then(() => toaster({
+						message: `Copied to clipboard`,
+						position: "middle",
+						duration: 1500,
+						doToast,
+						undoToast
+					}))
+				},
+				{
+					text: "Ok",
+					role: "cancel",
+					cssClass: "cancel"
+				}
+			]
+		});
+	};
 
 	return (
 		<IonPage className={theme}>
@@ -57,7 +98,7 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.9.5</strong></h2>
 									<ul className="changelog">
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
 										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
@@ -95,7 +136,6 @@ const AppInfo = (props: PageData) => {
 										<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>
 										<li>Added "Landau 200" to Concepts.</li>
 									</ul>
-									{/*<div>To-do: Make it more intuitive to add words to Lexicon from other pages</div>*/}
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
