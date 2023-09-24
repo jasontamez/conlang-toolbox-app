@@ -1,11 +1,11 @@
-import { SearchSensitivity } from "../store/types";
+import { SortSensitivity } from "../store/types";
 
-const stringSorter = (a: string, b: string, sortLanguage: string, sensitivity: SearchSensitivity) => {
+const stringSorter = (a: string, b: string, sortLanguage: string, sensitivity: SortSensitivity) => {
 	// If we need to do more stuff, insert the code here.
 	return basicSort(a, b, sortLanguage, sensitivity);
 };
 
-const basicSort = (a: string, b: string, sortLanguage: string, sensitivity: SearchSensitivity) => {
+const basicSort = (a: string, b: string, sortLanguage: string, sensitivity: SortSensitivity) => {
 	// Basic search function. Falls back to "old" JS method if needed.
 	if(a.localeCompare) {
 		return a.localeCompare(b, sortLanguage, {numeric: true, usage: 'sort', sensitivity: sensitivity || "variant" });
@@ -14,7 +14,7 @@ const basicSort = (a: string, b: string, sortLanguage: string, sensitivity: Sear
 	return a === b ? 0 : (a < b ? -1 : 1);
 };
 
-const makeSorter = (sortLanguage: string, sensitivity: SearchSensitivity) => {
+const makeSorter = (sortLanguage: string, sensitivity: SortSensitivity) => {
 //	console.log(sortLanguage, sensitivity);
 	return (a: string, b: string) => stringSorter(a, b, sortLanguage, sensitivity);
 };

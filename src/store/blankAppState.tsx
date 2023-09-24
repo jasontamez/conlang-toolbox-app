@@ -275,8 +275,11 @@ const blankAppState: StateObject = {
 	appSettings: {
 		theme: 'Default',
 		disableConfirms: false,
-		sortLanguage: "en",
-		sensitivity: undefined
+		currentSort: null
+	},
+	sortSettings: {
+		sortLanguage: null,
+		customSorts: []
 	},
 	lastView: {
 		wg: 'charGroups',

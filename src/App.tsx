@@ -14,7 +14,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 
-import { setSortLanguage } from './store/settingsSlice';
+import { setSortLanguage } from './store/sortingSlice';
 
 import Menu from './components/Menu';
 
@@ -55,18 +55,22 @@ import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
+import { LanguageCode } from 'iso-639-1';
 
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
 	const [doAlert] = useIonAlert();
-	const [sortLanguage, setSortLang] = useState<string>("en");
+	const [sortLanguage, setSortLang] = useState<LanguageCode | null>("en");
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
 	const defaultProps = {
 		modalPropsMaker
 	};
 	getLanguage().then(result => {
-		result !== sortLanguage && setSortLang(result);
+		if(result !== sortLanguage) {
+			const code = result ? (result.slice(0, 2) as LanguageCode) : null;
+			setSortLang(code);
+		}
 	});
 	useEffect(() => {
 		dispatch(setSortLanguage(sortLanguage));

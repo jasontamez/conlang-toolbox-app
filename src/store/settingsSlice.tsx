@@ -19,11 +19,6 @@ const setDisableConfirmsFunc = (state: AppSettings, action: PayloadAction<boolea
 	return state;
 };
 
-const setSortLanguageFunc = (state: AppSettings, action: PayloadAction<string>) => {
-	state.sortLanguage = action.payload;
-	return state;
-};
-
 const loadStateSettingsFunc = (state: AppSettings, action: PayloadAction<AppSettings>) => {
 	const final = {
 		...state,
@@ -39,7 +34,6 @@ const appStateSlice = createSlice({
 	reducers: {
 		setTheme: setThemeFunc,
 		setDisableConfirms: setDisableConfirmsFunc,
-		setSortLanguage: setSortLanguageFunc,
 		loadStateSettings: loadStateSettingsFunc
 	}
 });
@@ -47,7 +41,6 @@ const appStateSlice = createSlice({
 export const {
 	setTheme,
 	setDisableConfirms,
-	setSortLanguage,
 	loadStateSettings
 } = appStateSlice.actions;
 

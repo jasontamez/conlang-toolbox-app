@@ -96,7 +96,6 @@ const WGOut = (props: PageData) => {
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
 	const lexColumns = useSelector((state: StateObject) => state.lexicon.columns);
-	const { sortLanguage, sensitivity } = useSelector((state: StateObject) => state.appSettings);
 	const {
 		characterGroups,
 		multipleSyllableTypes,
@@ -131,8 +130,9 @@ const WGOut = (props: PageData) => {
 	// // //
 
 	const stringSorter = useCallback(
-		(a: string, b: string) => makeSorter(sortLanguage, sensitivity)(a, b),
-	[sortLanguage, sensitivity]);
+		// Temporary kludge until I finish the sort settings.
+		(a: string, b: string) => makeSorter("en", "variant")(a, b),
+	[]);
 
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {

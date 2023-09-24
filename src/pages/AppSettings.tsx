@@ -10,9 +10,7 @@ import {
 	IonItem,
 	IonToggle,
 	IonButtons,
-	IonMenuButton,
-//	IonSelect,
-//	IonSelectOption
+	IonMenuButton
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -21,21 +19,22 @@ import { setDisableConfirms } from '../store/settingsSlice';
 
 import ChooseThemeModal from './M-Theme';
 import ExportAllData from './M-ExportAllData';
+import SortSettingsModal from './M-SortSettings';
 
 
 const AppSettings = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
+	const [isOpenSort, setIsOpenSort] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const {
 		disableConfirms,
-		theme,
-//		sensitivity,
-//		sortLanguage
+		theme
 	} = useSelector((state: StateObject) => state.appSettings);
 	return (
 		<IonPage>
 			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
+			<SortSettingsModal {...props.modalPropsMaker(isOpenSort, setIsOpenSort)} />
 			<ExportAllData {...props.modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<IonHeader>
 				<IonToolbar>
@@ -62,6 +61,9 @@ const AppSettings = (props: PageData) => {
 						<IonLabel>Change Theme</IonLabel>
 						<IonLabel slot="end" color="primary">{theme || "Default"}</IonLabel>
 					</IonItem>
+					<IonItem button={true} onClick={() => setIsOpenSort(true)}>
+						<IonLabel>Sort Settings</IonLabel>
+					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">
 							<h2>Export All App Info</h2>
@@ -74,17 +76,3 @@ const AppSettings = (props: PageData) => {
 };
 
 export default AppSettings;
-
-/*
-
-					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Sensitivity:" value={sensitivity || "default"} onIonChange={(e) => dispatch(setSortSensitivity(e.detail.value))}>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="base">Compare base letters only</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="accent">Compare diacritics</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="case">Compare upper/lowercase</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="variant">Compare diacritics, upper/lowercase</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-right" value="default">Default behavior for language "{sortLanguage}"</IonSelectOption>
-						</IonSelect>
-					</IonItem>
-
-*/

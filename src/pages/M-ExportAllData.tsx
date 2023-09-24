@@ -32,7 +32,8 @@ const MExportAllData = (props: ModalProperties) => {
 		lexicon,
 		concepts,
 		ec,
-		appSettings
+		appSettings,
+		sortSettings
 	} = useSelector((state: StateObject) => state);
 	const doClose = () => {
 		setIsOpen(false);
@@ -68,7 +69,6 @@ const MExportAllData = (props: ModalProperties) => {
 			const {storedCustomIDs: x, storedCustomInfo: y, ..._we} = we;
 			const {storedCustomIDs: j, storedCustomInfo: k, ..._ms} = ms;
 			const {storedCustomIDs: q, storedCustomInfo: p, ..._lex} = lexicon;
-			const {sortLanguage, ..._settings} = appSettings
 			setOutput(JSON.stringify({
 				currentVersion,
 				wg: {
@@ -85,7 +85,8 @@ const MExportAllData = (props: ModalProperties) => {
 				ms: {
 					..._ms
 				},
-				appSettings: _settings,
+				appSettings: {...appSettings},
+				sortSettings: {...sortSettings},
 				lexicon: {
 					..._lex,
 					sortPattern: [...lexicon.sortPattern],
@@ -126,7 +127,8 @@ const MExportAllData = (props: ModalProperties) => {
 		lexicon,
 		concepts,
 		ec,
-		appSettings
+		appSettings,
+		sortSettings
 	]);
 
 	return (

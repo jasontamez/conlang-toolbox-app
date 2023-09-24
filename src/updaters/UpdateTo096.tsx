@@ -191,15 +191,12 @@ function updateEC (incomingState: oldTypes.StateObject) {
 function updateSettings (incomingState: oldTypes.StateObject) {
 	const {
 		theme,
-		disableConfirms,
-		sensitivity,
-		sortLanguage
+		disableConfirms
 	} = incomingState.appSettings;
 	const settings: AppSettings = {
 		theme: theme as ThemeNames,
 		disableConfirms,
-		sensitivity,
-		sortLanguage
+		currentSort: null
 	};
 	return settings;
 }

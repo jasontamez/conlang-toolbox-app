@@ -25,6 +25,7 @@ import blankAppState from './blankAppState';
 import debounce from '../components/Debounce';
 import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
+import sortingSlice from './sortingSlice';
 
 //
 //
@@ -54,7 +55,8 @@ const reducerConfig = {
 	concepts: conceptsSlice,
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
-	lastView: viewSlice
+	lastView: viewSlice,
+	sortSettings: sortingSlice
 };
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
 	if(incomingState && originalState && (incomingState.appSettings.theme !== originalState.appSettings.theme)) {

@@ -423,15 +423,45 @@ export interface ExtraCharactersState {
 
 export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Solarized Dark";
 
-export type SearchSensitivity = "base" | "accent" | "case" | "variant" | undefined;
-
 export interface AppSettings {
 	theme: ThemeNames
 	disableConfirms: boolean
-	// to be used later
-	sensitivity: SearchSensitivity
+	currentSort: string | null
+}
+
+//
+// SORTING SETTINGS
+//
+
+export interface ComparisonObject {
+	base: string
+	pre: string[]
+	post: string[]
+}
+
+export interface EqualityObject {
+	base: string
+	equals: string[]
+}
+
+export type SortSensitivity = "base" | "accent" | "case" | "variant";
+
+export interface SortObject {
+	id: string
+	title: string
+	sortLanguage?: LanguageCode | null
+	sensitivity?: SortSensitivity
+	customAlphabet?: string[]
+	comparisons?: ComparisonObject[]
+	equalities?: EqualityObject[]
+}
+
+export interface SortSettings {
+	customSorts: SortObject[]
+	sensitivity?: SortSensitivity
 	// set automatically, not by user:
-	sortLanguage: LanguageCode
+	sortLanguageCustom?: LanguageCode | null
+	sortLanguage: LanguageCode | null
 }
 
 //
@@ -456,6 +486,7 @@ export interface StateObject {
 	concepts: ConceptsState
 	ec: ExtraCharactersState
 	appSettings: AppSettings
+	sortSettings: SortSettings
 	lastView: ViewState
 }
 
