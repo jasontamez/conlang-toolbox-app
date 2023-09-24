@@ -40,10 +40,10 @@ import { LexiconOutlineIcon } from '../../components/icons';
 import ModalWrap from "../../components/ModalWrap";
 import ltr from '../../components/LTR';
 import { CustomStorageWE } from '../../components/PersistentInfo';
-import ManageCustomInfoWE from './M-CustomInfoWE';
-import ExtraCharactersModal from '../M-ExtraCharacters';
-import OutputOptionsModal from './M-OutputOptions';
-import MaybeLoadPreset from "./M-MaybeLoadWEPreset";
+import ManageCustomInfoWE from './modals/CustomInfoWE';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
+import OutputOptionsModal from './modals/OutputOptions';
+import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WECards";
 
 type arrayOfStringsAndStringArrays = (string | string[])[];

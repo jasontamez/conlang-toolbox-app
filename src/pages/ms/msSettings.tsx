@@ -37,9 +37,9 @@ import toaster from '../../components/toaster';
 import {
 	SyntaxHeader
 } from './MorphoSyntaxElements';
-import LoadMS from './M-LoadSyntaxDoc';
-import DeleteMS from './M-DeleteSyntaxDoc';
-import ExportMS from './M-ExportSyntaxDoc';
+import LoadMS from './modals/LoadSyntaxDoc';
+import DeleteMS from './modals/DeleteSyntaxDoc';
+import ExportMS from './modals/ExportSyntaxDoc';
 
 const Syntax = (props: PageData) => {
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);

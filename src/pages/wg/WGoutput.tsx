@@ -42,7 +42,7 @@ import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import makeSorter from '../../components/stringSorter';
-import OutputOptionsModal from './M-OutputOptions';
+import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGCards";
 
 async function copyText (copyString: string, doToast: Function, undoToast: Function) {

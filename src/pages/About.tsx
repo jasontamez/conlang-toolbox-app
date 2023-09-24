@@ -23,7 +23,7 @@ import { PageData, StateObject } from '../store/types';
 import { currentVersion } from '../store/blankAppState';
 
 import { ConceptsIcon, LexiconIcon, WordEvolveIcon, WordGenIcon, MorphoSyntaxIcon } from '../components/icons';
-import ExtraCharactersModal from './M-ExtraCharacters';
+import ExtraCharactersModal from './modals/ExtraCharacters';
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);

@@ -31,7 +31,7 @@ import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { InpCard } from "./WECards";
 
 const WEInput = (props: PageData) => {

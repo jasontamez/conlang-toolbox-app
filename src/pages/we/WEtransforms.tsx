@@ -39,11 +39,11 @@ import { saveView } from '../../store/viewSlice';
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import AddTransformModal from './M-AddTransform';
-import EditTransformModal from './M-EditTransform';
+import AddTransformModal from './modals/AddTransform';
+import EditTransformModal from './modals/EditTransform';
 import { TraCard } from "./WECards";
 
 const WERew = (props: PageData) => {

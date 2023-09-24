@@ -47,9 +47,9 @@ import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import AddCharGroupModal from './M-AddCharGroup';
-import EditCharGroupModal from './M-EditCharGroup';
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import AddCharGroupModal from './modals/AddCharGroup';
+import EditCharGroupModal from './modals/EditCharGroup';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { CharGroupCard } from "./WGCards";
 
 const WGCharGroup = (props: PageData) => {

@@ -56,9 +56,9 @@ import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import ModalWrap from "../../components/ModalWrap";
 
-import ExtraCharactersModal from '../M-ExtraCharacters';
-import MaybeLoadPreset from './M-MaybeLoadPreset';
-import ManageCustomInfo from './M-CustomInfo';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
+import MaybeLoadPreset from './modals/MaybeLoadPreset';
+import ManageCustomInfo from './modals/CustomInfo';
 import { OptCard } from "./WGCards";
 
 const WGSet = (props: PageData) => {

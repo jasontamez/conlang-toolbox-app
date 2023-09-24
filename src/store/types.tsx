@@ -433,7 +433,7 @@ export interface AppSettings {
 // SORTING SETTINGS
 //
 
-export interface ComparisonObject {
+export interface RelationObject {
 	base: string
 	pre: string[]
 	post: string[]
@@ -444,15 +444,17 @@ export interface EqualityObject {
 	equals: string[]
 }
 
+export type SortLanguage = LanguageCode | null;
+
 export type SortSensitivity = "base" | "accent" | "case" | "variant";
 
 export interface SortObject {
 	id: string
 	title: string
-	sortLanguage?: LanguageCode | null
+	defaultSortLanguage?: SortLanguage
 	sensitivity?: SortSensitivity
 	customAlphabet?: string[]
-	comparisons?: ComparisonObject[]
+	relations?: RelationObject[]
 	equalities?: EqualityObject[]
 }
 
@@ -460,8 +462,8 @@ export interface SortSettings {
 	customSorts: SortObject[]
 	sensitivity?: SortSensitivity
 	// set automatically, not by user:
-	sortLanguageCustom?: LanguageCode | null
-	sortLanguage: LanguageCode | null
+	sortLanguage?: SortLanguage
+	defaultSortLanguage: SortLanguage
 }
 
 //

@@ -278,7 +278,7 @@ const blankAppState: StateObject = {
 		currentSort: null
 	},
 	sortSettings: {
-		sortLanguage: null,
+		defaultSortLanguage: null,
 		customSorts: []
 	},
 	lastView: {

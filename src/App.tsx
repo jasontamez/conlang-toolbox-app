@@ -14,7 +14,8 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 
-import { setSortLanguage } from './store/sortingSlice';
+import { setDefaultSortLanguage } from './store/sortingSlice';
+import { SortLanguage } from './store/types';
 
 import Menu from './components/Menu';
 
@@ -60,21 +61,21 @@ import { LanguageCode } from 'iso-639-1';
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
 	const [doAlert] = useIonAlert();
-	const [sortLanguage, setSortLang] = useState<LanguageCode | null>("en");
+	const [defaultSortLanguage, setSortLang] = useState<SortLanguage>("en");
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
 	const defaultProps = {
 		modalPropsMaker
 	};
 	getLanguage().then(result => {
-		if(result !== sortLanguage) {
+		if(result !== defaultSortLanguage) {
 			const code = result ? (result.slice(0, 2) as LanguageCode) : null;
 			setSortLang(code);
 		}
 	});
 	useEffect(() => {
-		dispatch(setSortLanguage(sortLanguage));
-	}, [dispatch, sortLanguage]);
+		dispatch(setDefaultSortLanguage(defaultSortLanguage));
+	}, [dispatch, defaultSortLanguage]);
 	const router = useIonRouter();
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.

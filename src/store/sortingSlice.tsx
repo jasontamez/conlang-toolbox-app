@@ -1,22 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LanguageCode } from 'iso-639-1';
 
-import { SortSensitivity, SortSettings } from './types';
+import { SortLanguage, SortSensitivity, SortSettings } from './types';
 import blankAppState from './blankAppState';
 
 const initialState = blankAppState.sortSettings;
 
-const setSortLanguageFunc = (state: SortSettings, action: PayloadAction<LanguageCode | null>) => {
-	state.sortLanguage = action.payload;
+const setDefaultSortLanguageFunc = (state: SortSettings, action: PayloadAction<SortLanguage>) => {
+	state.defaultSortLanguage = action.payload;
 	return state;
 };
 
-const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<LanguageCode | null>) => {
+const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<SortLanguage>) => {
 	const value = action.payload;
 	if(value) {
-		state.sortLanguageCustom = value;
+		state.sortLanguage = value;
 	} else {
-		delete state.sortLanguageCustom;
+		delete state.sortLanguage;
 	}
 	return state;
 };
@@ -35,14 +34,14 @@ const appStateSlice = createSlice({
 	name: 'appState',
 	initialState,
 	reducers: {
-		setSortLanguage: setSortLanguageFunc,
+		setDefaultSortLanguage: setDefaultSortLanguageFunc,
 		setSortLanguageCustom: setSortLanguageCustomFunc,
 		setSortSensitivity: setSortSensitivityFunc
 	}
 });
 
 export const {
-	setSortLanguage,
+	setDefaultSortLanguage,
 	setSortLanguageCustom,
 	setSortSensitivity
 } = appStateSlice.actions;

@@ -42,9 +42,9 @@ import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-import AddTransformModal from './M-AddTransform';
-import EditTransformModal from './M-EditTransform';
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import AddTransformModal from './modals/AddTransform';
+import EditTransformModal from './modals/EditTransform';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { RewCard } from "./WGCards";
 
 const WGRew = (props: PageData) => {

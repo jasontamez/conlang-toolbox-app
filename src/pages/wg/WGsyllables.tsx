@@ -30,7 +30,7 @@ import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGCards";
 
 const WGSyl = (props: PageData) => {

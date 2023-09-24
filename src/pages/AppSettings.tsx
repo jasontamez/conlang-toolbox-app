@@ -17,9 +17,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { PageData, StateObject } from '../store/types';
 import { setDisableConfirms } from '../store/settingsSlice';
 
-import ChooseThemeModal from './M-Theme';
-import ExportAllData from './M-ExportAllData';
-import SortSettingsModal from './M-SortSettings';
+import ChooseThemeModal from './modals/Theme';
+import ExportAllData from './modals/ExportAllData';
+import SortSettingsModal from './modals/SortSettings';
 
 
 const AppSettings = (props: PageData) => {

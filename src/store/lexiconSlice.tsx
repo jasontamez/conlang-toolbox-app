@@ -33,7 +33,6 @@ const sortLexicon = (
 	const maxCol = sortPattern.length;
 	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
 	let newLexicon = [...lexicon];
-//	console.log(sortLanguage, sensitivity);
 	// TO-DO: fix sorting somehow
 	const stringSorter = makeSorter("en", "variant");
 	function sortFunction (a: Lexicon, b: Lexicon) {

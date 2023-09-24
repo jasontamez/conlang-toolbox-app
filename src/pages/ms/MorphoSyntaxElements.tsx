@@ -33,7 +33,7 @@ import {
 } from '../../store/msSlice';
 import { MSBool, MSNum, MSText, StateObject } from '../../store/types';
 
-import ExtraCharactersModal from '../M-ExtraCharacters';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
 import ms from './ms.json';
 
 interface ModalProperties {

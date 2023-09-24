@@ -41,9 +41,9 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import ExtraCharactersModal from '../M-ExtraCharacters';
-import AddSoundChangeModal from './M-AddSoundChange';
-import EditSoundChangeModal from './M-EditSoundChange';
+import ExtraCharactersModal from '../modals/ExtraCharacters';
+import AddSoundChangeModal from './modals/AddSoundChange';
+import EditSoundChangeModal from './modals/EditSoundChange';
 import { SChCard } from "./WECards";
 
 const WERew = (props: PageData) => {
