@@ -23,10 +23,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTheme } from '../store/settingsSlice';
 import { ThemeNames, ModalProperties, StateObject } from '../store/types';
 
-const MaybeLoadPresetModal = (props: ModalProperties) => {
+const ThemeModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const appTheme = useSelector((state: StateObject) => state.appSettings.theme) || "Default";
+	const {
+		theme = "Default"
+	} = useSelector((state: StateObject) => state.appSettings);
 	const cancel = () => {
 		setIsOpen(false);
 	};
@@ -55,10 +57,10 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{themes.map((theme) => (
-						<IonItem key={theme} button={true} onClick={() => changeAppTheme(theme)}>
-							<IonLabel>{theme}</IonLabel>
-							{appTheme === theme ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
+					{themes.map((themeName) => (
+						<IonItem key={themeName} button={true} onClick={() => changeAppTheme(themeName)}>
+							<IonLabel>{themeName}</IonLabel>
+							{theme === themeName ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
 						</IonItem>
 					))}
 				</IonList>
@@ -75,4 +77,4 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	);
 };
 
-export default MaybeLoadPresetModal;
+export default ThemeModal;

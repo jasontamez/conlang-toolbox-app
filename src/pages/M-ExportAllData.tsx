@@ -18,9 +18,9 @@ import { closeCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
 
 import { LexiconState, ModalProperties, MSState, StateObject } from '../store/types';
+import { currentVersion } from '../store/blankAppState';
 
 import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../components/PersistentInfo';
-import { currentVersion } from '../store/blankAppState';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
