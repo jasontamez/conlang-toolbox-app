@@ -26,6 +26,7 @@ import WE from "./pages/WE";
 import MS from "./pages/MS";
 import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
+import SortSettings from './pages/SortSettings';
 import Info from './pages/AppInfo';
 
 import doUpdate095 from './updaters/UpdateTo095';
@@ -116,6 +117,7 @@ const MainOutlet = memo(() => {
 			<Route path="/ms" render={() => <MS {...defaultProps} />} />
 			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />
 			<Route path="/settings" render={() => <Settings {...defaultProps} />} />
+			<Route path="/sortSettings" render={() => <SortSettings {...defaultProps} />} />
 			<Route path="/wordlists" render={() => <ConceptsPage {...defaultProps} />} />
 			<Route exact={true} path="/" render={() => <About {...defaultProps} />} />
 		</IonRouterOutlet>

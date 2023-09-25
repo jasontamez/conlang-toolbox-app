@@ -434,12 +434,14 @@ export interface AppSettings {
 //
 
 export interface RelationObject {
+	id: string
 	base: string
 	pre: string[]
 	post: string[]
 }
 
 export interface EqualityObject {
+	id: string
 	base: string
 	equals: string[]
 }

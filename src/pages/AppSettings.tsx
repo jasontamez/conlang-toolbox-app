@@ -19,13 +19,11 @@ import { setDisableConfirms } from '../store/settingsSlice';
 
 import ChooseThemeModal from './modals/Theme';
 import ExportAllData from './modals/ExportAllData';
-import SortSettingsModal from './modals/SortSettings';
 
 
 const AppSettings = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
-	const [isOpenSort, setIsOpenSort] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const {
 		disableConfirms,
@@ -34,7 +32,6 @@ const AppSettings = (props: PageData) => {
 	return (
 		<IonPage>
 			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
-			<SortSettingsModal {...props.modalPropsMaker(isOpenSort, setIsOpenSort)} />
 			<ExportAllData {...props.modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<IonHeader>
 				<IonToolbar>
@@ -61,7 +58,7 @@ const AppSettings = (props: PageData) => {
 						<IonLabel>Change Theme</IonLabel>
 						<IonLabel slot="end" color="primary">{theme || "Default"}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => setIsOpenSort(true)}>
+					<IonItem button={true} routerLink="/sortSettings" routerDirection="forward">
 						<IonLabel>Sort Settings</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
