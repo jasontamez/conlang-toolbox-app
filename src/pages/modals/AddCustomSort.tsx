@@ -33,7 +33,15 @@ import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 import { LanguageCode } from 'iso-639-1';
 
-import { EqualityObject, ExtraCharactersModalOpener, ModalProperties, RelationObject, SortLanguage, SortObject, SortSensitivity } from '../../store/types';
+import {
+	EqualityObject,
+	ExtraCharactersModalOpener,
+	ModalProperties,
+	RelationObject,
+	SortLanguage,
+	SortObject,
+	SortSensitivity
+} from '../../store/types';
 import { addNewCustomSort } from '../../store/sortingSlice';
 
 import { $i } from '../../components/DollarSignExports';
@@ -50,6 +58,8 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 	savedEquality: EqualityObject | null
 	setSavedEquality: Function
 }
+
+type Separator = "" | "," | ";" | " " | ".";
 
 const AddCustomSort = (props: CustomSortModal) => {
 	const {
@@ -71,10 +81,9 @@ const AddCustomSort = (props: CustomSortModal) => {
 	const [sortLang, setSortLang] = useState<SortLanguage | "unicode" | "default">("default");
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
+	const [separator, setSeparator] = useState<Separator>("");
 	const [relations, setRelations] = useState<RelationObject[]>([]);
 	const [equalities, setEqualities] = useState<EqualityObject[]>([]);
-	const sortTitle = $i("sortTitle");
-	const customAlphabet = $i("customAlphabet");
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setRelations([]);
@@ -82,9 +91,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
+		const sortTitle = $i("sortTitle");
 		sortTitle && (sortTitle.value = "");
+		const customAlphabet = $i("customAlphabet");
 		customAlphabet && (customAlphabet.value = "");
-	}, [setIsOpen, sortTitle, customAlphabet]);
+	}, [setIsOpen]);
 	// Accept new relation from other modal
 	useEffect(() => {
 		if(savedRelation) {
@@ -116,30 +127,90 @@ const AddCustomSort = (props: CustomSortModal) => {
 		}
 	}, [savedEquality, setSavedEquality, equalities]);
 	const maybeSaveNewSort = () => {
-		const id = uuidv4();
+		const sortTitle = $i("sortTitle");
 		const title = sortTitle ? sortTitle.value.trim() : "";
 		if(!title) {
-			toaster({
+			doAlert({
 				message: "You must provide a title before saving.",
-				position: "middle",
-				color: "danger",
-				doToast,
-				undoToast
-			});
+				cssClass: "danger",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel",
+						cssClass: "submit"
+					}
+				]
+			})
 			return;
 		}
-		const customSort: SortObject = { id, title };
+		let test: boolean = false;
+		const customSort: SortObject = {
+			id: uuidv4(),
+			title
+		};
+		if(usingAlpha) {
+			const customAlphabet = $i("customAlphabet");
+			const alpha: string[] = customAlphabet.value.split(separator).filter((char: string) => char);
+			if(alpha.length === 0) {
+				doAlert({
+					message: "Blank alphabet provided.",
+					cssClass: "danger",
+					buttons: [
+						{
+							text: "Ok",
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				})
+				return;
+			}
+			customSort.customAlphabet = alpha;
+			test = true;
+		}
+		if(sortLang !== "default") {
+			customSort.sortLanguage = sortLang;
+			test = true;
+		}
+		if(sortSensitivity !== "default") {
+			customSort.sensitivity = sortSensitivity;
+			test = true;
+		}
+		if(relations.length > 0) {
+			customSort.relations = relations;
+			test = true;
+		}
+		if(equalities.length > 0) {
+			customSort.equalities = equalities;
+			test = true;
+		}
+		if(!test) {
+			doAlert({
+				message: "You did not enter any information.",
+				cssClass: "danger",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel",
+						cssClass: "submit"
+					}
+				]
+			})
+			return;
+		}
 		dispatch(addNewCustomSort(customSort));
 		closeModal();
 		toaster({
 			message: "Custom sort saved.",
 			position: "middle",
 			color: "success",
+			duration: 2000,
 			doToast,
 			undoToast
 		});
 	};
 	const maybeCancel = () => {
+		const customAlphabet = $i("customAlphabet");
 		if(
 			sortLang !== "default" || sortSensitivity !== "default"
 			|| (usingAlpha && customAlphabet && customAlphabet.value.trim())
@@ -148,6 +219,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 			return yesNoAlert({
 				header: "Unsaved Info",
 				message: "Are you sure you want to discard this?",
+				cssClass: "warning",
 				submit: "Yes, Close",
 				handler: closeModal,
 				doAlert
@@ -179,7 +251,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="none">
+				<IonList lines="full">
 					<IonItem>
 						<div slot="start" className="ion-margin-end">Title:</div>
 						<IonInput aria-label="Title" id="sortTitle" placeholder="Title for this sort" />
@@ -202,7 +274,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="variant">[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItem className="wrappableInnards">
+					<IonItem className="wrappableInnards" lines={usingAlpha ? "none" : undefined}>
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
@@ -213,15 +285,30 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<p>Items will be sorted according to the order you provide. Characters not in your alphabet will be sorted according to the rules above.</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem className={usingAlpha ? "" : "hidden"}>
-						<IonInput aria-label="Custom Alphabet" id="customAlphabet" placeholder="Write your alphabet here." />
-					</IonItem>
-					<IonItem className="wrappableInnards">
+					{ usingAlpha ?
+						<>
+							<IonItem lines="none">
+								<IonInput aria-label="Custom Alphabet" id="customAlphabet" placeholder="Write your alphabet here." />
+							</IonItem>
+							<IonItem className="wrappableInnards">
+								<IonSelect color="primary" className="ion-text-wrap settings" label="Alphabet separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
+									<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
+									<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
+									<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
+									<IonSelectOption className="ion-text-wrap ion-text-align-end" value=".">[a.b.c.d.e]: Period</IonSelectOption>
+									<IonSelectOption className="ion-text-wrap ion-text-align-end" value=";">[a;b;c;d;e]: Semicolon</IonSelectOption>
+								</IonSelect>
+							</IonItem>
+						</>
+					:
+						<></>
+					}
+					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
 							<h2>Relations</h2>
 							<p>Similar characters that should be sorted separately.</p>
 						</IonLabel>
-						<IonButton color="success" slot="end" onClick={maybeAddNewRelation}>
+						<IonButton color="secondary" slot="end" onClick={maybeAddNewRelation}>
 							<IonIcon icon={addOutline} slot="end" />
 							<IonLabel>Add New</IonLabel>
 						</IonButton>
@@ -259,12 +346,12 @@ const AddCustomSort = (props: CustomSortModal) => {
 								<IonLabel className="ion-text-align-end"><em>(none)</em></IonLabel>
 							</IonItem>
 					}
-					<IonItem className="wrappableInnards">
+					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
 							<h2>Equalities</h2>
 							<p>Characters that should be sorted together as if they were strictly equal.</p>
 						</IonLabel>
-						<IonButton color="success" slot="end" onClick={maybeAddNewEquality}>
+						<IonButton color="secondary" slot="end" onClick={maybeAddNewEquality}>
 							<IonIcon icon={addOutline} slot="end" />
 							<IonLabel>Add New</IonLabel>
 						</IonButton>

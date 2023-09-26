@@ -14,7 +14,7 @@ const toaster = (props: Toast) => {
 	const {
 		color = "primary",
 		message,
-		duration,
+		duration = 5000,
 		doToast,
 		undoToast,
 		position,

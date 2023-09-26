@@ -446,14 +446,14 @@ export interface EqualityObject {
 	equals: string[]
 }
 
-export type SortLanguage = LanguageCode | null;
+export type SortLanguage = LanguageCode | "unicode";
 
 export type SortSensitivity = "base" | "accent" | "case" | "variant";
 
 export interface SortObject {
 	id: string
 	title: string
-	defaultSortLanguage?: SortLanguage
+	sortLanguage?: SortLanguage
 	sensitivity?: SortSensitivity
 	customAlphabet?: string[]
 	relations?: RelationObject[]

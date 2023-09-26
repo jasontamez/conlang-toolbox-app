@@ -10,7 +10,7 @@ const setDefaultSortLanguageFunc = (state: SortSettings, action: PayloadAction<S
 	return state;
 };
 
-const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<SortLanguage>) => {
+const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<SortLanguage | null>) => {
 	const value = action.payload;
 	if(value) {
 		state.sortLanguage = value;

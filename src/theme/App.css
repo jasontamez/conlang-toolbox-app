@@ -752,3 +752,21 @@ ion-toast::part(button) {
 ion-toast::part(message) {
 	text-align: center;
 }
+
+ion-list.sortSettings ion-item-sliding.customSorts ion-label.customSortDescription {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: flex-start;
+}
+ion-label.customSortDescription h2 {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin: 0;
+}
+ion-label.customSortDescription p {
+	flex: 1;
+	text-indent: 0;
+	font-size: smaller;
+	padding: 0 0 0 1rem;
+}

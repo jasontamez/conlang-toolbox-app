@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -15,7 +15,6 @@ import {
 	IonSelect,
 	IonSelectOption,
 	IonPage,
-	useIonRouter,
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption
@@ -37,11 +36,19 @@ import AddCustomSort from './modals/AddCustomSort';
 import AddCustomSortRelation from './modals/AddCustomSortRelation';
 import AddCustomSortEquality from './modals/AddCustomSortEquality';
 
+const codes = ISO6391.getAllCodes();
+const names = ISO6391.getAllNativeNames();
+const languages = Intl.Collator.supportedLocalesOf(codes);
+const langObj: {[key: string]: string} = {
+	unicode: "language-independent"
+};
+codes.forEach((code, i) => {
+	langObj[code] = names[i];
+});
+
 const SortSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const nav = useIonRouter();
-	const [langObj, setLangObj] = useState<{[key: string]: string}>({});
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [addModalOpen, setAddModalOpen] = useState<boolean>(false);
 	const [addRelationOpen, setAddRelationOpen] = useState<boolean>(false);
@@ -49,24 +56,14 @@ const SortSettings = (props: PageData) => {
 	const [addEqualityOpen, setAddEqualityOpen] = useState<boolean>(false);
 	const [savedEquality, setSavedEquality] = useState<EqualityObject | null>(null);
 	const { defaultSortLanguage, sortLanguage, sensitivity, customSorts } = useSelector((state: StateObject) => state.sortSettings);
-	const codes = ISO6391.getAllCodes();
-	const names = ISO6391.getAllNativeNames();
-	const languages = Intl.Collator.supportedLocalesOf(codes);
 	const setCustomLang = (value: LanguageCode | "unicode") => {
-		dispatch(setSortLanguageCustom(value === "unicode" ? null : value));
+		dispatch(setSortLanguageCustom(value));
 	};
 	const setSensitivity = (value: SortSensitivity | "unicode") => {
 		dispatch(setSortSensitivity(value === "unicode" ? null : value));
 	};
-	useEffect(() => {
-		const newLangs: {[key: string]: string} = {};
-		codes.forEach((code, i) => {
-			newLangs[code] = names[i];
-		});
-		setLangObj(newLangs);
-	}, [codes, names]);
-	const addRelationModalInfo = useMemo(() => modalPropsMaker(addRelationOpen, setAddRelationOpen), [addRelationOpen, modalPropsMaker]);
-	const addEqualityModalInfo = useMemo(() => modalPropsMaker(addEqualityOpen, setAddEqualityOpen), [addEqualityOpen, modalPropsMaker]);
+	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
+	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
 	return (
 		<IonPage>
 			<AddCustomSort
@@ -84,15 +81,11 @@ const SortSettings = (props: PageData) => {
 			<AddCustomSortRelation
 				{...addRelationModalInfo}
 				openECM={setIsOpenECM}
-				langObj={langObj}
-				languages={languages}
 				setSavedRelation={setSavedRelation}
 			/>
 			<AddCustomSortEquality
 				{...addEqualityModalInfo}
 				openECM={setIsOpenECM}
-				langObj={langObj}
-				languages={languages}
 				setSavedEquality={setSavedEquality}
 			/>
 			{ /* Eventual Edit modal will need access to the two adders above */}
@@ -101,14 +94,14 @@ const SortSettings = (props: PageData) => {
 				<IonToolbar color="primary">
 					<IonTitle>Manage Sort Methods</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => nav.goBack()}>
+						<IonButton routerLink='/settings' routerDirection='back'>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" className="buttonFilled">
+				<IonList lines="full" className="buttonFilled sortSettings">
 					<IonItemDivider>Basic Sort</IonItemDivider>
 					<IonItem className="wrappableInnards">
 						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Language:" value={sortLanguage || defaultSortLanguage || "unicode"} onIonChange={(e) => setCustomLang(e.detail.value)}>
@@ -132,20 +125,20 @@ const SortSettings = (props: PageData) => {
 							const {
 								id,
 								title,
-								defaultSortLanguage,
-								sensitivity = "variant",
+								sortLanguage,
+								sensitivity,
 								customAlphabet,
 								relations,
 								equalities
 							} = sorter;
 							const desc: string[] = [];
-							defaultSortLanguage && desc.push(defaultSortLanguage);
-							desc.push(sensitivity || "variant");
+							sortLanguage && desc.push(langObj[sortLanguage]);
+							sensitivity && desc.push(sensitivity);
 							customAlphabet && desc.push("custom alphabet");
 							relations && relations.length > 0 && desc.push(`${relations.length} relations`);
 							equalities && equalities.length > 0 && desc.push(`${equalities.length} equalities`);
 							return (
-								<IonItemSliding key={id}>
+								<IonItemSliding key={id} className="customSorts">
 									<IonItemOptions side="end" className="serifChars">
 										<IonItemOption color="primary" aria-label="Edit" onClick={() => 3}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
@@ -155,7 +148,7 @@ const SortSettings = (props: PageData) => {
 										</IonItemOption>
 									</IonItemOptions>
 									<IonItem>
-										<IonLabel>
+										<IonLabel className="customSortDescription">
 											<h2>{title}</h2>
 											<p>{desc.join("; ")}</p>
 										</IonLabel>
@@ -173,11 +166,11 @@ const SortSettings = (props: PageData) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="primary" slot="start" onClick={() => 333}>
+					<IonButton color="primary" slot="start" onClick={() => setAddModalOpen(true)}>
 						<IonIcon icon={addCircleSharp} slot="end" />
 						<IonLabel>New Custom Sort</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => nav.goBack()}>
+					<IonButton color="success" slot="end" routerLink='/settings' routerDirection='back'>
 						<IonIcon icon={checkmarkCircleSharp} slot="end" />
 						<IonLabel>Done</IonLabel>
 					</IonButton>

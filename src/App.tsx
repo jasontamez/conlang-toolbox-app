@@ -70,14 +70,14 @@ const MainOutlet = memo(() => {
 	};
 	getLanguage().then(result => {
 		if(result !== defaultSortLanguage) {
-			const code = result ? (result.slice(0, 2) as LanguageCode) : null;
+			const code = result ? (result.slice(0, 2) as LanguageCode) : "unicode";
 			setSortLang(code);
 		}
 	});
 	useEffect(() => {
 		dispatch(setDefaultSortLanguage(defaultSortLanguage));
 	}, [dispatch, defaultSortLanguage]);
-	const router = useIonRouter();
+	const navigator = useIonRouter();
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
 		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
@@ -96,7 +96,7 @@ const MainOutlet = memo(() => {
 				history.go(-1);
 				console.log("!back");
 			} else {*/
-			} else if (!router.canGoBack()) {
+			} else if (!navigator.canGoBack()) {
 				// Are we trying to exit the app?
 				yesNoAlert({
 					header: "Exit App?",
@@ -108,7 +108,7 @@ const MainOutlet = memo(() => {
 				});
 			}
 		}).remove;
-	}, [modals, router, dispatch, doAlert]);
+	}, [modals, navigator, dispatch, doAlert]);
 	return (
 		<IonRouterOutlet>
 			<Route path="/wg" render={() => <WG {...defaultProps} />} />
