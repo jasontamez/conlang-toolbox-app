@@ -35,6 +35,7 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import AddCustomSort from './modals/AddCustomSort';
 import AddCustomSortRelation from './modals/AddCustomSortRelation';
 import AddCustomSortEquality from './modals/AddCustomSortEquality';
+import EditCustomSortRelation from './modals/EditCustomSortRelation';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -55,6 +56,9 @@ const SortSettings = (props: PageData) => {
 	const [savedRelation, setSavedRelation] = useState<RelationObject | null>(null);
 	const [addEqualityOpen, setAddEqualityOpen] = useState<boolean>(false);
 	const [savedEquality, setSavedEquality] = useState<EqualityObject | null>(null);
+	const [editRelationOpen, setEditRelationOpen] = useState<boolean>(false);
+	const [incomingRelation, setIncomingRelation] = useState<RelationObject | null>(null);
+	const [outgoingRelation, setOutgoingRelation] = useState<RelationObject | null | string>(null);
 	const { defaultSortLanguage, sortLanguage, sensitivity, customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	const setCustomLang = (value: LanguageCode | "unicode") => {
 		dispatch(setSortLanguageCustom(value));
@@ -64,6 +68,7 @@ const SortSettings = (props: PageData) => {
 	};
 	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
+	const editRelationModalInfo = modalPropsMaker(editRelationOpen, setEditRelationOpen);
 	return (
 		<IonPage>
 			<AddCustomSort
@@ -74,6 +79,10 @@ const SortSettings = (props: PageData) => {
 				addRelationModalInfo={addRelationModalInfo}
 				savedRelation={savedRelation}
 				setSavedRelation={setSavedRelation}
+				editRelationModalInfo={editRelationModalInfo}
+				setIncomingRelation={setIncomingRelation}
+				outgoingRelation={outgoingRelation}
+				setOutgoingRelation={setOutgoingRelation}
 				addEqualityModalInfo={addEqualityModalInfo}
 				savedEquality={savedEquality}
 				setSavedEquality={setSavedEquality}
@@ -82,6 +91,11 @@ const SortSettings = (props: PageData) => {
 				{...addRelationModalInfo}
 				openECM={setIsOpenECM}
 				setSavedRelation={setSavedRelation}
+			/>
+			<EditCustomSortRelation
+				{...editRelationModalInfo}
+				incomingRelation={incomingRelation}
+				setOutgoingRelation={setOutgoingRelation}
 			/>
 			<AddCustomSortEquality
 				{...addEqualityModalInfo}

@@ -25,7 +25,7 @@ import {
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EqualityObject, ExtraCharactersModalOpener } from '../../store/types';
+import { EqualityObject, ExtraCharactersModalOpener, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -35,22 +35,20 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 	setSavedEquality: Function
 }
 
-type Separator = "" | "," | ";" | " " | ".";
-
 const AddCustomSortEquality = (props: CustomSortModal) => {
 	const { isOpen, setIsOpen, openECM, setSavedEquality } = props;
-	const [separator, setSeparator] = useState<Separator>("");
+	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const close = () => {
-		const _base = $i("baseEquality");
+		const _base = $i("addBaseEquality");
 		const _equals = $i("addEquality");
 		_base && (_base.value = "");
 		_equals && (_equals.value = "");
 		setIsOpen(false);
 	};
 	const maybeSaveEquality = () => {
-		const _base = $i("baseEquality");
+		const _base = $i("addBaseEquality");
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
@@ -82,7 +80,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const equality: EqualityObject = { id: uuidv4(), base, equals };
+		const equality: EqualityObject = { id: uuidv4(), base, equals, separator };
 		setSavedEquality(equality);
 		close();
 		toaster({
@@ -95,7 +93,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		});
 	};
 	const maybeCancel = () => {
-		const _base = $i("baseEquality");
+		const _base = $i("addBaseEquality");
 		const _equals = $i("addEquality");
 		if(_base && _equals && (_base.value + _equals.value)) {
 			return yesNoAlert({
@@ -128,14 +126,14 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
 						<div slot="start" className="ion-margin-end">Base Character:</div>
-						<IonInput aria-label="Base character" id="baseEquality" placeholder="The base character" />
+						<IonInput aria-label="Base character" id="addBaseEquality" placeholder="The base character" />
 					</IonItem>
 					<IonItem className="labelled" lines="none"><IonLabel>Equal to the Base:</IonLabel></IonItem>
 					<IonItem>
 						<IonInput aria-label="Characters equal to the base" id="addEquality" placeholder="Characters to be equal to the Base." />
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Characters Separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Characters SortSeparator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>

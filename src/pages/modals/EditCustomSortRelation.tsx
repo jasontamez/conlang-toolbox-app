@@ -21,9 +21,9 @@ import {
 import {
 	closeCircleOutline,
 	saveOutline,
-	globeOutline
+	globeOutline,
+	trashOutline
 } from 'ionicons/icons';
-import { v4 as uuidv4 } from 'uuid';
 
 import { ExtraCharactersModalOpener, RelationObject, SortSeparator } from '../../store/types';
 
@@ -32,25 +32,43 @@ import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
-	setSavedRelation: Function
+	incomingRelation: RelationObject | null
+	setOutgoingRelation: Function
 }
 
-const AddCustomSortRelation = (props: CustomSortModal) => {
-	const { isOpen, setIsOpen, openECM, setSavedRelation } = props;
-	const [separator, setSeparator] = useState<SortSeparator>("");
+const EditCustomSortRelation = (props: CustomSortModal) => {
+	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
+	const [separator, setSeparator] = useState<SortSeparator>("");
+	const [_base, setBase] = useState<HTMLInputElement | null>(null);
+	const [_pre, setPre] = useState<HTMLInputElement | null>(null);
+	const [_post, setPost] = useState<HTMLInputElement | null>(null);
+	const onLoad = () => {
+		const {
+			separator = ",",
+			base = "ERROR",
+			pre = ["ERROR"],
+			post = ["ERROR"]
+		} = incomingRelation || {};
+		setSeparator(separator);
+		const _base = $i("editBaseRelation");
+		const _pre = $i("editPreRelation");
+		const _post = $i("editPostRelation");
+		setBase(_base);
+		setPre(_pre);
+		setPost(_post);
+		_base.value = base;
+		_pre.value = pre.join(separator);
+		_post.value = post.join(separator);
+	};
 	const close = () => {
-		const _base = $i("addBaseRelation");
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
 		_base && (_base.value = "");
 		_pre && (_pre.value = "");
 		_post && (_post.value = "");
 		setIsOpen(false);
 	};
 	const maybeSaveRelation = () => {
-		const _base = $i("addBaseRelation");
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
@@ -66,8 +84,6 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
 		const pre = _pre ? _pre.value.split(separator) : [];
 		const post = _post ? _post.value.split(separator) : [];
 		if(!(pre.length + post.length)) {
@@ -84,11 +100,11 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const relation: RelationObject = { id: uuidv4(), base, pre, post, separator };
-		setSavedRelation(relation);
+		const relation: RelationObject = { id: incomingRelation!.id, base, pre, post, separator };
+		setOutgoingRelation(relation);
 		close();
 		toaster({
-			message: "Relation added.",
+			message: "Relation edited.",
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -96,24 +112,22 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			undoToast
 		});
 	};
-	const maybeCancel = () => {
-		const _base = $i("addBaseRelation");
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
-		if(_base && _pre && _post && (_base.value + _pre.value + _post.value)) {
-			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
-				submit: "Yes, Close",
-				cssClass: "warning",
-				handler: close,
-				doAlert
-			});
-		}
-		close();
+	const maybeDelete = () => {
+		const handler = () => {
+			setOutgoingRelation(incomingRelation!.id);
+			close();
+		};
+		yesNoAlert({
+			header: "Delete This",
+			message: "Are you sure?",
+			submit: "Yes, Delete It",
+			cssClass: "danger",
+			handler,
+			doAlert
+		});
 	};
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Relation</IonTitle>
@@ -121,7 +135,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={maybeCancel}>
+						<IonButton onClick={close}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -131,13 +145,13 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
 						<div slot="start" className="ion-margin-end">Base Character:</div>
-						<IonInput aria-label="Base character" id="addBaseRelation" placeholder="The base character" />
+						<IonInput aria-label="Base character" id="editBaseRelation" placeholder="The base character" />
 					</IonItem>
 					<IonItem className="labelled" lines="none"><IonLabel>Sorted Before the Base:</IonLabel></IonItem>
 					<IonItem>
 						<IonInput
 							aria-label="Characters sorted before the base"
-							id="addPreRelation"
+							id="editPreRelation"
 							placeholder="End with the one just before the Base."
 						/>
 					</IonItem>
@@ -145,18 +159,12 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 					<IonItem>
 						<IonInput
 							aria-label="Characters sorted after the base"
-							id="addPostRelation"
+							id="editPostRelation"
 							placeholder="Start with the one just after the Base."
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label="Pre/Post SortSeparator:"
-							value={separator}
-							onIonChange={(e) => setSeparator(e.detail.value)}
-						>
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Pre/Post SortSeparator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
@@ -168,9 +176,9 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>
 				<IonToolbar>
-					<IonButton color="warning" slot="start" onClick={maybeCancel}>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+					<IonButton color="danger" slot="start" onClick={maybeDelete}>
+						<IonIcon icon={trashOutline} slot="end" />
+						<IonLabel>Delete</IonLabel>
 					</IonButton>
 					<IonButton color="success" slot="end" onClick={maybeSaveRelation}>
 						<IonIcon icon={saveOutline} slot="end" />
@@ -182,4 +190,4 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 	);
 };
 
-export default AddCustomSortRelation;
+export default EditCustomSortRelation;

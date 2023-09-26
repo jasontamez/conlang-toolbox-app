@@ -433,17 +433,21 @@ export interface AppSettings {
 // SORTING SETTINGS
 //
 
+export type SortSeparator = "" | "," | ";" | " " | ".";
+
 export interface RelationObject {
 	id: string
 	base: string
 	pre: string[]
 	post: string[]
+	separator: SortSeparator
 }
 
 export interface EqualityObject {
 	id: string
 	base: string
 	equals: string[]
+	separator: SortSeparator
 }
 
 export type SortLanguage = LanguageCode | "unicode";
@@ -456,6 +460,7 @@ export interface SortObject {
 	sortLanguage?: SortLanguage
 	sensitivity?: SortSensitivity
 	customAlphabet?: string[]
+	separator?: SortSeparator
 	relations?: RelationObject[]
 	equalities?: EqualityObject[]
 }
