@@ -17,7 +17,8 @@ import {
 	IonPage,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	useIonAlert
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -28,14 +29,18 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import ISO6391, { LanguageCode } from "iso-639-1";
 
-import { EqualityObject, PageData, RelationObject, SortSensitivity, StateObject } from '../store/types';
-import { setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
+import { EqualityObject, PageData, RelationObject, SortObject, SortSensitivity, StateObject } from '../store/types';
+import { deleteCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
 
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import AddCustomSort from './modals/AddCustomSort';
 import AddCustomSortRelation from './modals/AddCustomSortRelation';
 import AddCustomSortEquality from './modals/AddCustomSortEquality';
 import EditCustomSortRelation from './modals/EditCustomSortRelation';
+import EditCustomSortEquality from './modals/EditCustomSortEquality';
+import EditCustomSort from './modals/EditCustomSort';
+import yesNoAlert from '../components/yesNoAlert';
+import { $i } from '../components/DollarSignExports';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -50,15 +55,27 @@ codes.forEach((code, i) => {
 const SortSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [doAlert] = useIonAlert();
+	// main modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [addModalOpen, setAddModalOpen] = useState<boolean>(false);
+	const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+	const [editingCustomSort, setEditingCustomSort] = useState<SortObject | null>(null);
+	// submodal: add relation
 	const [addRelationOpen, setAddRelationOpen] = useState<boolean>(false);
 	const [savedRelation, setSavedRelation] = useState<RelationObject | null>(null);
+	// submodal: add equality
 	const [addEqualityOpen, setAddEqualityOpen] = useState<boolean>(false);
 	const [savedEquality, setSavedEquality] = useState<EqualityObject | null>(null);
+	// submodal: edit relation
 	const [editRelationOpen, setEditRelationOpen] = useState<boolean>(false);
 	const [incomingRelation, setIncomingRelation] = useState<RelationObject | null>(null);
 	const [outgoingRelation, setOutgoingRelation] = useState<RelationObject | null | string>(null);
+	// submodal: edit equality
+	const [editEqualityOpen, setEditEqualityOpen] = useState<boolean>(false);
+	const [incomingEquality, setIncomingEquality] = useState<EqualityObject | null>(null);
+	const [outgoingEquality, setOutgoingEquality] = useState<EqualityObject | null | string>(null);
+
 	const { defaultSortLanguage, sortLanguage, sensitivity, customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	const setCustomLang = (value: LanguageCode | "unicode") => {
 		dispatch(setSortLanguageCustom(value));
@@ -69,23 +86,49 @@ const SortSettings = (props: PageData) => {
 	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
 	const editRelationModalInfo = modalPropsMaker(editRelationOpen, setEditRelationOpen);
+	const editEqualityModalInfo = modalPropsMaker(editEqualityOpen, setEditEqualityOpen);
+	const openEditor = (sorter: SortObject) => {
+		$i("listOfCustomSorts").closeSlidingItems();
+		setEditingCustomSort(sorter);
+		setEditModalOpen(true);
+	};
+	const maybeDeleteSort = (id: string, title: string) => {
+		$i("listOfCustomSorts").closeSlidingItems();
+		yesNoAlert({
+			header: `Delete "${title}"?`,
+			message: "Are you sure? This cannot be undone.",
+			submit: "Yes, Delete It",
+			cssClass: "danger",
+			handler: () => dispatch(deleteCustomSort(id)),
+			doAlert
+		});
+	};
 	return (
 		<IonPage>
 			<AddCustomSort
 				{...modalPropsMaker(addModalOpen, setAddModalOpen)}
 				openECM={setIsOpenECM}
+
 				langObj={langObj}
 				languages={languages}
+
 				addRelationModalInfo={addRelationModalInfo}
 				savedRelation={savedRelation}
 				setSavedRelation={setSavedRelation}
+
 				editRelationModalInfo={editRelationModalInfo}
 				setIncomingRelation={setIncomingRelation}
 				outgoingRelation={outgoingRelation}
 				setOutgoingRelation={setOutgoingRelation}
+
 				addEqualityModalInfo={addEqualityModalInfo}
 				savedEquality={savedEquality}
 				setSavedEquality={setSavedEquality}
+
+				editEqualityModalInfo={editEqualityModalInfo}
+				setIncomingEquality={setIncomingEquality}
+				outgoingEquality={outgoingEquality}
+				setOutgoingEquality={setOutgoingEquality}
 			/>
 			<AddCustomSortRelation
 				{...addRelationModalInfo}
@@ -102,7 +145,37 @@ const SortSettings = (props: PageData) => {
 				openECM={setIsOpenECM}
 				setSavedEquality={setSavedEquality}
 			/>
-			{ /* Eventual Edit modal will need access to the two adders above */}
+			<EditCustomSortEquality
+				{...editEqualityModalInfo}
+				incomingEquality={incomingEquality}
+				setOutgoingEquality={setOutgoingEquality}
+			/>
+			<EditCustomSort
+				{...modalPropsMaker(editModalOpen, setEditModalOpen)}
+				openECM={setIsOpenECM}
+				editingCustomSort={editingCustomSort}
+
+				langObj={langObj}
+				languages={languages}
+
+				addRelationModalInfo={addRelationModalInfo}
+				savedRelation={savedRelation}
+				setSavedRelation={setSavedRelation}
+
+				editRelationModalInfo={editRelationModalInfo}
+				setIncomingRelation={setIncomingRelation}
+				outgoingRelation={outgoingRelation}
+				setOutgoingRelation={setOutgoingRelation}
+
+				addEqualityModalInfo={addEqualityModalInfo}
+				savedEquality={savedEquality}
+				setSavedEquality={setSavedEquality}
+
+				editEqualityModalInfo={editEqualityModalInfo}
+				setIncomingEquality={setIncomingEquality}
+				outgoingEquality={outgoingEquality}
+				setOutgoingEquality={setOutgoingEquality}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar color="primary">
@@ -115,7 +188,7 @@ const SortSettings = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" className="buttonFilled sortSettings">
+				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings">
 					<IonItemDivider>Basic Sort</IonItemDivider>
 					<IonItem className="wrappableInnards">
 						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Language:" value={sortLanguage || defaultSortLanguage || "unicode"} onIonChange={(e) => setCustomLang(e.detail.value)}>
@@ -154,10 +227,10 @@ const SortSettings = (props: PageData) => {
 							return (
 								<IonItemSliding key={id} className="customSorts">
 									<IonItemOptions side="end" className="serifChars">
-										<IonItemOption color="primary" aria-label="Edit" onClick={() => 3}>
+										<IonItemOption color="primary" aria-label="Edit" onClick={() => openEditor(sorter)}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
-										<IonItemOption color="danger" aria-label="Delete" onClick={() => 3}>
+										<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteSort(id, title)}>
 											<IonIcon slot="icon-only" icon={trash} />
 										</IonItemOption>
 									</IonItemOptions>

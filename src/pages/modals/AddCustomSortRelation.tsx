@@ -153,7 +153,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Pre/Post SortSeparator:"
+							label="Pre/Post Separator:"
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>

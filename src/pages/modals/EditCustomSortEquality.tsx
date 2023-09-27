@@ -25,50 +25,44 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, RelationObject, SortSeparator } from '../../store/types';
+import { ExtraCharactersModalOpener, EqualityObject, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
-	incomingRelation: RelationObject | null
-	setOutgoingRelation: Function
+	incomingEquality: EqualityObject | null
+	setOutgoingEquality: Function
 }
 
-const EditCustomSortRelation = (props: CustomSortModal) => {
-	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
+const EditCustomSortEquality = (props: CustomSortModal) => {
+	const { isOpen, setIsOpen, openECM, incomingEquality, setOutgoingEquality } = props;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [_base, setBase] = useState<HTMLInputElement | null>(null);
-	const [_pre, setPre] = useState<HTMLInputElement | null>(null);
-	const [_post, setPost] = useState<HTMLInputElement | null>(null);
+	const [_equals, setEquals] = useState<HTMLInputElement | null>(null);
 	const onLoad = () => {
 		const {
 			separator = ",",
 			base = "ERROR",
-			pre = ["ERROR"],
-			post = ["ERROR"]
-		} = incomingRelation || {};
+			equals = ["ERROR"]
+		} = incomingEquality || {};
 		setSeparator(separator);
-		const _base = $i("editBaseRelation");
-		const _pre = $i("editPreRelation");
-		const _post = $i("editPostRelation");
+		const _base = $i("editBaseEquality");
+		const _equals = $i("editEqualsEquality");
 		setBase(_base);
-		setPre(_pre);
-		setPost(_post);
+		setEquals(_equals);
 		_base.value = base;
-		_pre.value = pre.join(separator);
-		_post.value = post.join(separator);
+		_equals.value = equals.join(separator);
 	};
 	const close = () => {
 		_base && (_base.value = "");
-		_pre && (_pre.value = "");
-		_post && (_post.value = "");
+		_equals && (_equals.value = "");
 		setIsOpen(false);
 	};
-	const maybeSaveRelation = () => {
+	const maybeSaveEquality = () => {
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
@@ -84,11 +78,10 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const pre = _pre ? _pre.value.split(separator) : [];
-		const post = _post ? _post.value.split(separator) : [];
-		if(!(pre.length + post.length)) {
+		const equals = _equals ? _equals.value.split(separator) : [];
+		if(equals.length === 0) {
 			doAlert({
-				message: `You must provide some "pre" or "post" characters.`,
+				message: `You must provide some "equal" characters.`,
 				cssClass: "danger",
 				buttons: [
 					{
@@ -100,11 +93,11 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const relation: RelationObject = { id: incomingRelation!.id, base, pre, post, separator };
-		setOutgoingRelation(relation);
+		const equality: EqualityObject = { id: incomingEquality!.id, base, equals, separator };
+		setOutgoingEquality(equality);
 		close();
 		toaster({
-			message: "Relation edited.",
+			message: "Equality edited.",
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -114,7 +107,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 	};
 	const maybeDelete = () => {
 		const handler = () => {
-			setOutgoingRelation(incomingRelation!.id);
+			setOutgoingEquality(incomingEquality!.id);
 			close();
 		};
 		yesNoAlert({
@@ -130,7 +123,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Relation</IonTitle>
+					<IonTitle>Add Equality</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -145,26 +138,18 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
 						<div slot="start" className="ion-margin-end">Base Character:</div>
-						<IonInput aria-label="Base character" id="editBaseRelation" placeholder="The base character" />
+						<IonInput aria-label="Base character" id="editBaseEquality" placeholder="The base character" />
 					</IonItem>
-					<IonItem className="labelled" lines="none"><IonLabel>Sorted Before the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none"><IonLabel>Equal to the Base:</IonLabel></IonItem>
 					<IonItem>
 						<IonInput
 							aria-label="Characters sorted before the base"
-							id="editPreRelation"
+							id="editEqualsEquality"
 							placeholder="End with the one just before the Base."
 						/>
 					</IonItem>
-					<IonItem className="labelled" lines="none"><IonLabel>Sorted After the Base:</IonLabel></IonItem>
-					<IonItem>
-						<IonInput
-							aria-label="Characters sorted after the base"
-							id="editPostRelation"
-							placeholder="Start with the one just after the Base."
-						/>
-					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Pre/Post Separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Equalities Separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
@@ -180,7 +165,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 						<IonIcon icon={trashOutline} slot="end" />
 						<IonLabel>Delete</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={maybeSaveRelation}>
+					<IonButton color="success" slot="end" onClick={maybeSaveEquality}>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Save</IonLabel>
 					</IonButton>
@@ -190,4 +175,4 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 	);
 };
 
-export default EditCustomSortRelation;
+export default EditCustomSortEquality;

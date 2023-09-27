@@ -43,7 +43,7 @@ import {
 	SortSensitivity,
 	SortSeparator
 } from '../../store/types';
-import { addNewCustomSort } from '../../store/sortingSlice';
+import { deleteCustomSort, editCustomSort } from '../../store/sortingSlice';
 
 import { $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
@@ -52,6 +52,8 @@ import yesNoAlert from '../../components/yesNoAlert';
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	langObj: {[key: string]: string}
 	languages: LanguageCode[]
+
+	editingCustomSort: SortObject | null
 
 	addRelationModalInfo: ModalProperties
 	savedRelation: RelationObject | null
@@ -72,11 +74,12 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 	setOutgoingEquality: Function
 }
 
-const AddCustomSort = (props: CustomSortModal) => {
+const EditCustomSort = (props: CustomSortModal) => {
 	const {
 		isOpen,
 		setIsOpen,
 		openECM,
+		editingCustomSort,
 
 		langObj,
 		languages,
@@ -102,23 +105,51 @@ const AddCustomSort = (props: CustomSortModal) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
+	const [id, setId] = useState<string>("");
 	const [sortLang, setSortLang] = useState<SortLanguage | "unicode" | "default">("default");
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [relations, setRelations] = useState<RelationObject[]>([]);
 	const [equalities, setEqualities] = useState<EqualityObject[]>([]);
+	const onLoad = () => {
+		const {
+			id = "ERROR",
+			title = "ERROR",
+			sortLanguage = "default",
+			sensitivity = "default",
+			customAlphabet = [],
+			separator = ",",
+			relations = [],
+			equalities = []
+		} = editingCustomSort || {};
+		setId(id);
+		const editSortTitle = $i("editSortTitle");
+		editSortTitle && (editSortTitle.value = title);
+		setSortLang(sortLanguage);
+		setSortSensitivity(sensitivity);
+		if(customAlphabet.length > 0) {
+			setUsingAlpha(true);
+		}
+		const editCustomAlphabet = $i("editCustomAlphabet");
+		editCustomAlphabet && (editCustomAlphabet.value = customAlphabet.join(separator));
+		setSeparator(separator);
+		setRelations(relations);
+		setEqualities(equalities);
+	};
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
-		setRelations([]);
-		setEqualities([]);
+		setId("");
+		const editSortTitle = $i("editSortTitle");
+		editSortTitle && (editSortTitle.value = "");
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
-		const addSortTitle = $i("addSortTitle");
-		addSortTitle && (addSortTitle.value = "");
-		const addCustomAlphabet = $i("addCustomAlphabet");
-		addCustomAlphabet && (addCustomAlphabet.value = "");
+		const editCustomAlphabet = $i("editCustomAlphabet");
+		editCustomAlphabet && (editCustomAlphabet.value = "");
+		setSeparator(",");
+		setRelations([]);
+		setEqualities([]);
 	}, [setIsOpen]);
 	// Accept new relation from other modal
 	useEffect(() => {
@@ -174,9 +205,9 @@ const AddCustomSort = (props: CustomSortModal) => {
 			setOutgoingEquality(null);
 		}
 	}, [isOpen, outgoingEquality, setOutgoingEquality, equalities]);
-	const maybeSaveNewSort = () => {
-		const addSortTitle = $i("addSortTitle");
-		const title = addSortTitle ? addSortTitle.value.trim() : "";
+	const maybeSaveEditedSort = () => {
+		const editSortTitle = $i("editSortTitle");
+		const title = editSortTitle ? editSortTitle.value.trim() : "";
 		if(!title) {
 			doAlert({
 				message: "You must provide a title before saving.",
@@ -197,8 +228,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 			title
 		};
 		if(usingAlpha) {
-			const addCustomAlphabet = $i("addCustomAlphabet");
-			const alpha: string[] = addCustomAlphabet.value.split(separator).filter((char: string) => char);
+			const editCustomAlphabet = $i("editCustomAlphabet");
+			const alpha: string[] = editCustomAlphabet.value.split(separator).filter((char: string) => char);
 			if(alpha.length === 0) {
 				doAlert({
 					message: "Blank alphabet provided.",
@@ -247,7 +278,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		dispatch(addNewCustomSort(customSort));
+		dispatch(editCustomSort([id, customSort]));
 		closeModal();
 		toaster({
 			message: "Custom sort saved.",
@@ -258,23 +289,27 @@ const AddCustomSort = (props: CustomSortModal) => {
 			undoToast
 		});
 	};
-	const maybeCancel = () => {
-		const addCustomAlphabet = $i("addCustomAlphabet");
-		if(
-			sortLang !== "default" || sortSensitivity !== "default"
-			|| (usingAlpha && addCustomAlphabet && addCustomAlphabet.value.trim())
-			|| ((relations.length + equalities.length) > 0)
-		) {
-			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
-				cssClass: "warning",
-				submit: "Yes, Close",
-				handler: closeModal,
-				doAlert
+	const maybeDeleteSort = () => {
+		const handler = () => {
+			dispatch(deleteCustomSort(id));
+			setIsOpen(false);
+			toaster({
+				message: "Custom sort deleted.",
+				color: "danger",
+				duration: 2000,
+				position: "top",
+				doToast,
+				undoToast
 			});
-		}
-		closeModal();
+		};
+		yesNoAlert({
+			header: `"Delete This Sort"`,
+			message: "Are you sure you want to do this? It cannot be undone.",
+			submit: "Yes, Delete It",
+			cssClass: "danger",
+			handler,
+			doAlert
+		});
 	};
 	const maybeAddNewRelation = () => {
 		setSavedRelation(null);
@@ -285,12 +320,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 		addEqualityModalInfo.setIsOpen(true);
 	};
 	const editRelation = (relation: RelationObject) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		$i("editingCustomSortList").closeSlidingItems();
 		setIncomingRelation(relation);
 		editRelationModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteRelation = (id: string) => {
-		$i("addingCustomSortList").closeSlidingItems();
 		yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",
@@ -301,12 +335,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 		});
 	};
 	const editEquality = (relation: EqualityObject) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		$i("editingCustomSortList").closeSlidingItems();
 		setIncomingEquality(relation);
 		editEqualityModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteEquality = (id: string) => {
-		$i("addingCustomSortList").closeSlidingItems();
 		yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",
@@ -317,25 +350,25 @@ const AddCustomSort = (props: CustomSortModal) => {
 		});
 	};
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Custom Sort</IonTitle>
+					<IonTitle>Edit Custom Sort</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={maybeCancel}>
+						<IonButton onClick={closeModal}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="addingCustomSortList">
+				<IonList lines="full" id="editingCustomSortList">
 					<IonItem>
 						<div slot="start" className="ion-margin-end">Title:</div>
-						<IonInput aria-label="Title" id="addSortTitle" placeholder="Title for this sort" />
+						<IonInput aria-label="Title" id="editSortTitle" placeholder="Title for this sort" />
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
@@ -383,7 +416,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonItem lines="none">
 								<IonInput
 									aria-label="Custom Alphabet"
-									id="addCustomAlphabet"
+									id="editCustomAlphabet"
 									placeholder="Write your alphabet here."
 								/>
 							</IonItem>
@@ -509,11 +542,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>
 				<IonToolbar>
-					<IonButton color="warning" slot="start" onClick={maybeCancel}>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+					<IonButton color="danger" slot="start" onClick={maybeDeleteSort}>
+						<IonIcon icon={trash} slot="end" />
+						<IonLabel>Delete Sort</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={maybeSaveNewSort}>
+					<IonButton color="success" slot="end" onClick={maybeSaveEditedSort}>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Save</IonLabel>
 					</IonButton>
@@ -523,4 +556,4 @@ const AddCustomSort = (props: CustomSortModal) => {
 	);
 };
 
-export default AddCustomSort;
+export default EditCustomSort;

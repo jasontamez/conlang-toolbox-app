@@ -133,7 +133,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 						<IonInput aria-label="Characters equal to the base" id="addEquality" placeholder="Characters to be equal to the Base." />
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Characters SortSeparator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Characters Separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
