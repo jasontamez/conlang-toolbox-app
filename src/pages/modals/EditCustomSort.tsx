@@ -303,7 +303,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			});
 		};
 		yesNoAlert({
-			header: `"Delete This Sort"`,
+			header: "Delete This Sort",
 			message: "Are you sure you want to do this? It cannot be undone.",
 			submit: "Yes, Delete It",
 			cssClass: "danger",

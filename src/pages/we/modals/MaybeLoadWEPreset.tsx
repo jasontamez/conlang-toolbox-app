@@ -74,7 +74,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
 					{WEPresets.map((preset) => (
-						<IonItem button={true} onClick={() => maybeLoadPreset(...preset)}>
+						<IonItem key={preset[0]} button={true} onClick={() => maybeLoadPreset(...preset)}>
 							<IonLabel>{preset[0]}</IonLabel>
 						</IonItem>
 					))}
