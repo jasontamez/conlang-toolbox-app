@@ -5,6 +5,30 @@ import blankAppState from './blankAppState';
 
 const initialState = blankAppState.sortSettings;
 
+const checkForMultiples = (obj: SortObject) => {
+	const {
+		customAlphabet = [],
+		relations= [],
+		equalities= []
+	} = obj;
+	const multiples = customAlphabet.concat(
+		...relations.map(rel => {
+			return [
+				rel.base,
+				...rel.pre,
+				...rel.post
+			];
+		}),
+		...equalities.map(eq => {
+			return [
+				eq.base,
+				...eq.equals
+			];
+		})
+	).filter(char => char.length > 1);
+	return multiples;
+};
+
 const setDefaultSortLanguageFunc = (state: SortSettings, action: PayloadAction<SortLanguage>) => {
 	state.defaultSortLanguage = action.payload;
 	return state;
@@ -31,12 +55,15 @@ const setSortSensitivityFunc = (state: SortSettings, action: PayloadAction<SortS
 };
 
 const addNewCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObject>) => {
-	state.customSorts.push(action.payload);
+	const newObj = action.payload;
+	newObj.multiples = checkForMultiples(newObj);
+	state.customSorts.push(newObj);
 	return state;
 };
 
 const editCustomSortFunc = (state: SortSettings, action: PayloadAction<[string, SortObject]>) => {
 	const [ id, newObj ] = action.payload;
+	newObj.multiples = checkForMultiples(newObj);
 	state.customSorts = state.customSorts.map((obj => {
 		if(obj.id === id) {
 			return newObj;

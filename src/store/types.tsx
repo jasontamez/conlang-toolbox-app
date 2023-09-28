@@ -463,13 +463,14 @@ export interface SortObject {
 	separator?: SortSeparator
 	relations?: RelationObject[]
 	equalities?: EqualityObject[]
+	multiples?: string[]
 }
 
 export interface SortSettings {
 	customSorts: SortObject[]
+	sortLanguage?: SortLanguage
 	sensitivity?: SortSensitivity
 	// set automatically, not by user:
-	sortLanguage?: SortLanguage
 	defaultSortLanguage: SortLanguage
 }
 
