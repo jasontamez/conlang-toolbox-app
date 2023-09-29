@@ -29,7 +29,7 @@ import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { LexiconColumn, PageData, StateObject, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
+import { LexiconColumn, PageData, SortObject, StateObject, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
 
@@ -45,6 +45,7 @@ import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WECards";
+import makeSorter from '../../components/stringSorter';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -115,8 +116,29 @@ const WEOut = (props: PageData) => {
 //		inputLower,
 //		inputAlpha
 	} = useSelector((state: StateObject) => state.we);
-	const { columns } = useSelector((state: StateObject) => state.lexicon);
 	const rawInput = input.split(/\n/);
+	const {
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		defaultSortLanguage,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
+	const {
+		columns,
+		customSort
+	} = useSelector((state: StateObject) => state.lexicon);
+	let customSortObj: SortObject | undefined;
+	let defaultCustomSortObj: SortObject | undefined;
+	customSorts.every(obj => {
+		if(obj.id === customSort) {
+			customSortObj = obj;
+		} else if (obj.id === defaultCustomSort) {
+			defaultCustomSortObj = obj;
+		}
+		return !(customSortObj && defaultCustomSortObj);
+	})
+	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
 
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WECharGroupObject} = {};
@@ -723,7 +745,7 @@ const WEOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id]));
+						dispatch(addItemstoLexiconColumn([words, col.id, sorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

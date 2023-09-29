@@ -33,10 +33,11 @@ import { $i } from '../../components/DollarSignExports';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	columnInfo: LexiconColumn[]
+	sorter: Function
 }
 
 const AddLexiconItemModal = (props: LexItemProps) => {
-	const { isOpen, setIsOpen, openECM, columnInfo } = props;
+	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -66,10 +67,10 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			return;
 		}
 		// send to store
-		dispatch(addLexiconItem({
+		dispatch(addLexiconItem([{
 			id: uuidv4(),
 			columns: newInfo
-		}));
+		}, sorter]));
 		// close modal
 		setIsOpen(false);
 		// toast
@@ -86,7 +87,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			doToast,
 			undoToast
 		});
-	}, [columnInfo, dispatch, setIsOpen, doAlert, doToast, undoToast]);
+	}, [columnInfo, dispatch, setIsOpen, doAlert, doToast, undoToast, sorter]);
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);

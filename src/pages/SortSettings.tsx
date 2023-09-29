@@ -219,7 +219,7 @@ const SortSettings = (props: PageData) => {
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
 									key={`customSortChooser:${sorter.id}:${sorter.title}`}
-									value={sorter}
+									value={sorter.id}
 								>{sorter.title}</IonSelectOption>
 							))}
 						</IonSelect>
@@ -233,17 +233,27 @@ const SortSettings = (props: PageData) => {
 								sortLanguage,
 								sensitivity,
 								customAlphabet,
-								relations,
-								equalities
+								customizations
 							} = sorter;
 							const desc: string[] = [];
 							sortLanguage && desc.push(langObj[sortLanguage]);
 							sensitivity && desc.push(sensitivity);
 							customAlphabet && desc.push("custom alphabet");
-							relations && relations.length > 0 && desc.push(`${relations.length} relations`);
-							equalities && equalities.length > 0 && desc.push(`${equalities.length} equalities`);
+							if(customizations && customizations.length) {
+								let r: number = 0;
+								let e: number = 0;
+								customizations.forEach(custom => {
+									if("equals" in custom) {
+										e++;
+									} else {
+										r++;
+									}
+								});
+								r > 0 && desc.push(`${r} relations`);
+								e > 0 && desc.push(`${e} equalities`);
+							}
 							return (
-								<IonItemSliding key={id} className="customSorts">
+								<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
 									<IonItemOptions side="end" className="serifChars">
 										<IonItemOption color="primary" aria-label="Edit" onClick={() => openEditor(sorter)}>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />

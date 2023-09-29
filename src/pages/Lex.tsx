@@ -45,7 +45,7 @@ import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
 
 import { addLexiconItem, deleteLexiconItem, updateLexiconSortDir, updateLexiconText } from '../store/lexiconSlice';
-import { Lexicon, LexiconColumn, LexiconState, PageData, StateObject } from '../store/types';
+import { Lexicon, LexiconColumn, LexiconState, PageData, SortObject, StateObject } from '../store/types';
 
 import AddLexiconItemModal from './modals/AddWord';
 import EditLexiconItemModal from './modals/EditWord';
@@ -60,6 +60,7 @@ import MergeLexiconItemsModal from './modals/MergeLexiconItems';
 import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import makeSorter from '../components/stringSorter';
 import './Lexicon.css';
 
 interface LexItem {
@@ -170,6 +171,7 @@ const Lex = (props: PageData) => {
 		columns,
 		sortDir,
 		sortPattern,
+		customSort,
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
@@ -179,6 +181,26 @@ const Lex = (props: PageData) => {
 	const [doToast, undoToast] = useIonToast();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
+
+	// lexicon sorting
+	const {
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		defaultSortLanguage,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
+	let customSortObj: SortObject | undefined;
+	let defaultCustomSortObj: SortObject | undefined;
+	customSorts.every(obj => {
+		if(obj.id === customSort) {
+			customSortObj = obj;
+		} else if (obj.id === defaultCustomSort) {
+			defaultCustomSortObj = obj;
+		}
+		return !(customSortObj && defaultCustomSortObj);
+	})
+	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
 
 	// editing lex item
 	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
@@ -268,16 +290,16 @@ const Lex = (props: PageData) => {
 			return;
 		}
 		// send to store
-		dispatch(addLexiconItem({
+		dispatch(addLexiconItem([{
 			id: uuidv4(),
 			columns: newInfo
-		}));
+		}, sorter]));
 		// clear all inputs
 		ids.forEach((id: string) => {
 			const el = $i(id);
 			el && el.getInputElement().then((el: any) => (el.value = ""));
 		});
-	}, [columns, dispatch, doAlert]);
+	}, [columns, dispatch, doAlert, sorter]);
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
@@ -346,20 +368,30 @@ const Lex = (props: PageData) => {
 				{...props.modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
 				openECM={setIsOpenECM}
 				columnInfo={columns}
+				sorter={sorter}
 			/>
 			<EditLexiconItemModal
 				{...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
 				openECM={setIsOpenECM}
 				itemToEdit={editingItem}
 				columnInfo={columns}
+				sorter={sorter}
 			/>
-			<EditLexiconOrderModal {...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)} openECM={setIsOpenECM} />
-			<EditLexiconSortModal {...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)} />
+			<EditLexiconOrderModal
+				{...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
+				openECM={setIsOpenECM}
+				sorter={sorter}
+			/>
+			<EditLexiconSortModal
+				{...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
+				sorter={sorter}
+			/>
 			<MergeLexiconItemsModal
 				{...props.modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
 				merging={merging}
 				mergingObject={mergingObject}
 				clearInfo={clearMergedInfo}
+				sorter={sorter}
 			/>
 			<LoadLexiconModal
 				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
@@ -439,7 +471,7 @@ const Lex = (props: PageData) => {
 								<IonIcon src="svg/unfold.svg"></IonIcon>
 								<div>{columns[sortPattern[0]].label}</div>
 							</div>
-							<IonButton color="secondary" onClick={() => dispatch(updateLexiconSortDir(!sortDir))}>
+							<IonButton color="secondary" onClick={() => dispatch(updateLexiconSortDir([!sortDir, sorter]))}>
 								<IonIcon size="small" src={`svg/sort-${sortDir ? "up" : "down"}.svg`} />
 							</IonButton>
 						</div>

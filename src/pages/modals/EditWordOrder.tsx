@@ -42,14 +42,18 @@ import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn, 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
-import { updateLexiconColumarInfo } from '../../store/lexiconSlice';
+import { setCustomSort, updateLexiconColumarInfo } from '../../store/lexiconSlice';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
 }
 
-const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
+interface OrderModalProps extends ExtraCharactersModalOpener {
+	sorter: Function
+}
+
+const EditLexiconOrderModal = (props: OrderModalProps) => {
+	const { isOpen, setIsOpen, openECM, sorter } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -58,10 +62,12 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		sortPattern,
 		truncateColumns,
 		blankSort,
+		customSort,
 		/*fontType,
 		storedCustomInfo,
 		storedCustomIDs*/
 	} = useSelector((state: StateObject) => state.lexicon);
+	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	const [shadowTruncate, setShadowTruncate] = useState<boolean>(truncateColumns);
 	const [shadowBlankSort, setShadowBlankSort] = useState<LexiconBlankSorts>(blankSort);
 	const [shadowColumns, setShadowColumns] = useState<ShadowColumn[]>([]);
@@ -161,7 +167,7 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 		// finish by tacking on the positions that were not found
 		newSortPattern.push(...missingColumns);
 		// dispatch
-		dispatch(updateLexiconColumarInfo([lex, newColumns, newSortPattern, shadowTruncate, shadowBlankSort]));
+		dispatch(updateLexiconColumarInfo([lex, newColumns, newSortPattern, shadowTruncate, shadowBlankSort, sorter]));
 		toaster({
 			message: "Saved!",
 			duration: 2500,
@@ -266,6 +272,14 @@ const EditLexiconOrderModal = (props: ExtraCharactersModalOpener) => {
 							checked={!shadowTruncate}
 							onIonChange={() => setShadowTruncate(!shadowTruncate)}
 						>Show Full Column Titles</IonToggle>
+					</IonItem>
+					<IonItem className="ion-text-wrap">
+						<IonSelect className="ion-text-wrap" label="Sort method:" value={customSort || null} onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default sort</IonSelectOption>
+							{customSorts.map(sorter => (
+								<IonSelectOption key={`lex:modal:${sorter.id}`} className="ion-text-wrap ion-text-align-end" value={sorter.id}>{sorter.title}</IonSelectOption>
+							))}
+						</IonSelect>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
 						<IonSelect className="ion-text-wrap" label="Sort blank columns:" value={shadowBlankSort} onIonChange={(e) => setShadowBlankSort(e.detail.value)}>

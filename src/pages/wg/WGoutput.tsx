@@ -31,7 +31,8 @@ import {
 	PageData,
 	LexiconColumn,
 	ViewState,
-	StateObject
+	StateObject,
+	SortObject
 } from '../../store/types';
 import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
 import { saveView } from '../../store/viewSlice';
@@ -95,7 +96,6 @@ const WGOut = (props: PageData) => {
 
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
-	const lexColumns = useSelector((state: StateObject) => state.lexicon.columns);
 	const {
 		characterGroups,
 		multipleSyllableTypes,
@@ -124,6 +124,28 @@ const WGOut = (props: PageData) => {
 		wordlistMultiColumn,
 		wordsPerWordlist
 	} = useSelector((state: StateObject) => state.wg);
+	const {
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		defaultSortLanguage,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
+	const {
+		columns: lexColumns,
+		customSort
+	} = useSelector((state: StateObject) => state.lexicon);
+	let customSortObj: SortObject | undefined;
+	let defaultCustomSortObj: SortObject | undefined;
+	customSorts.every(obj => {
+		if(obj.id === customSort) {
+			customSortObj = obj;
+		} else if (obj.id === defaultCustomSort) {
+			defaultCustomSortObj = obj;
+		}
+		return !(customSortObj && defaultCustomSortObj);
+	})
+	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
 
 	// // //
 	// Memoized stuff
@@ -585,7 +607,7 @@ const WGOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id]));
+						dispatch(addItemstoLexiconColumn([words, col.id, sorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

@@ -33,8 +33,12 @@ function reorganize (what: any[], from: number, to: number) {
 	return remains.slice(0, to).concat(moved, remains.slice(to));
 };
 
-const EditLexiconSortModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
+interface EditSortModal extends ModalProperties {
+	sorter: Function
+}
+
+const EditLexiconSortModal = (props: EditSortModal) => {
+	const { isOpen, setIsOpen, sorter } = props;
 	const dispatch = useDispatch();
 	const {
 		columns,
@@ -46,7 +50,7 @@ const EditLexiconSortModal = (props: ModalProperties) => {
 	}, [sortPattern]);
 
 	const doneSorting = () => {
-		dispatch(updateLexiconSort(sorting));
+		dispatch(updateLexiconSort([sorting, sorter]));
 		setIsOpen(false);
 	};
 	const doReorder = (event: CustomEvent) => {

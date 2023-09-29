@@ -106,12 +106,10 @@ const AddCustomSort = (props: CustomSortModal) => {
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<SortSeparator>("");
-	const [relations, setRelations] = useState<RelationObject[]>([]);
-	const [equalities, setEqualities] = useState<EqualityObject[]>([]);
+	const [customizations, setCustomizations] = useState<(RelationObject | EqualityObject)[]>([]);
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
-		setRelations([]);
-		setEqualities([]);
+		setCustomizations([]);
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
@@ -123,57 +121,57 @@ const AddCustomSort = (props: CustomSortModal) => {
 	// Accept new relation from other modal
 	useEffect(() => {
 		if(isOpen && savedRelation) {
-			if(relations.length === 0) {
-				setRelations([savedRelation]);
+			if(customizations.length === 0) {
+				setCustomizations([savedRelation]);
 			} else {
-				if(relations.slice().pop()!.id === savedRelation.id) {
+				if(customizations.slice().pop()!.id === savedRelation.id) {
 					// We already saved this.
 					return;
 				}
-				setRelations([...relations, savedRelation]);
+				setCustomizations([...customizations, savedRelation]);
 			}
 			setSavedRelation(null);
 		}
-	}, [isOpen, savedRelation, setSavedRelation, relations]);
+	}, [isOpen, savedRelation, setSavedRelation, customizations]);
 	// Accept edited relation from other modal
 	useEffect(() => {
 		if(isOpen && outgoingRelation) {
 			if(typeof outgoingRelation === "string") {
 				// a string means the relation was deleted
-				setRelations(relations.filter(obj => obj.id !== outgoingRelation));
+				setCustomizations(customizations.filter(obj => obj.id !== outgoingRelation));
 			} else {
-				setRelations(relations.map(obj => (obj.id === outgoingRelation.id ? outgoingRelation : obj)));
+				setCustomizations(customizations.map(obj => (obj.id === outgoingRelation.id ? outgoingRelation : obj)));
 			}
 			setOutgoingRelation(null);
 		}
-	}, [isOpen, outgoingRelation, setOutgoingRelation, relations]);
+	}, [isOpen, outgoingRelation, setOutgoingRelation, customizations]);
 	// Accept new equality from other modal
 	useEffect(() => {
 		if(isOpen && savedEquality) {
-			if(equalities.length === 0) {
-				setEqualities([savedEquality]);
+			if(customizations.length === 0) {
+				setCustomizations([savedEquality]);
 			} else {
-				if(equalities.slice().pop()!.id === savedEquality.id) {
+				if(customizations.slice().pop()!.id === savedEquality.id) {
 					// We already saved this.
 					return;
 				}
-				setEqualities([...equalities, savedEquality]);
+				setCustomizations([...customizations, savedEquality]);
 			}
 			setSavedEquality(null);
 		}
-	}, [isOpen, savedEquality, setSavedEquality, equalities]);
+	}, [isOpen, savedEquality, setSavedEquality, customizations]);
 	// Accept edited equality from other modal
 	useEffect(() => {
 		if(isOpen && outgoingEquality) {
 			if(typeof outgoingEquality === "string") {
 				// a string means the relation was deleted
-				setEqualities(equalities.filter(obj => obj.id !== outgoingEquality));
+				setCustomizations(customizations.filter(obj => obj.id !== outgoingEquality));
 			} else {
-				setEqualities(equalities.map(obj => (obj.id === outgoingEquality.id ? outgoingEquality : obj)));
+				setCustomizations(customizations.map(obj => (obj.id === outgoingEquality.id ? outgoingEquality : obj)));
 			}
 			setOutgoingEquality(null);
 		}
-	}, [isOpen, outgoingEquality, setOutgoingEquality, equalities]);
+	}, [isOpen, outgoingEquality, setOutgoingEquality, customizations]);
 	const maybeSaveNewSort = () => {
 		const addSortTitle = $i("addSortTitle");
 		const title = addSortTitle ? addSortTitle.value.trim() : "";
@@ -225,12 +223,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 			customSort.sensitivity = sortSensitivity;
 			test = true;
 		}
-		if(relations.length > 0) {
-			customSort.relations = relations;
-			test = true;
-		}
-		if(equalities.length > 0) {
-			customSort.equalities = equalities;
+		if(customizations.length > 0) {
+			customSort.customizations = customizations;
 			test = true;
 		}
 		if(!test) {
@@ -263,7 +257,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		if(
 			sortLang !== "default" || sortSensitivity !== "default"
 			|| (usingAlpha && addCustomAlphabet && addCustomAlphabet.value.trim())
-			|| ((relations.length + equalities.length) > 0)
+			|| (customizations.length > 0)
 		) {
 			return yesNoAlert({
 				header: "Unsaved Info",
@@ -296,7 +290,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 			message: "Are you sure?",
 			submit: "Yes, Delete It",
 			cssClass: "danger",
-			handler: () => setRelations(relations.filter(obj => obj.id !== id)),
+			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
 	};
@@ -312,7 +306,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 			message: "Are you sure?",
 			submit: "Yes, Delete It",
 			cssClass: "danger",
-			handler: () => setEqualities(equalities.filter(obj => obj.id !== id)),
+			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
 	};
@@ -416,52 +410,6 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonLabel>Add New</IonLabel>
 						</IonButton>
 					</IonItem>
-					{
-						relations.length > 0 ?
-							relations.map(rel => {
-								const {
-									id,
-									base,
-									pre,
-									post,
-									separator
-								} = rel;
-								return (
-									<IonItemSliding className="customSortItem" key={`relation:${id}`}>
-										<IonItemOptions side="end" className="serifChars">
-											<IonItemOption
-												color="primary"
-												aria-label="Edit"
-												onClick={() => editRelation(rel)}
-											>
-												<IonIcon slot="icon-only" src="svg/edit.svg" />
-											</IonItemOption>
-											<IonItemOption
-												color="danger"
-												aria-label="Delete"
-												onClick={() => maybeDeleteRelation(id)}
-											>
-												<IonIcon slot="icon-only" icon={trash} />
-											</IonItemOption>
-										</IonItemOptions>
-										<IonItem className="relation">
-											<div className={pre.length ? "pre" : "hidden"}>
-												{pre.map((ch, i) => <div key={`pre:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
-											</div>
-											<div className="base">{base}</div>
-											<div className={post.length ? "post" : "hidden"}>
-												{post.map((ch, i) => <div key={`post:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
-											</div>
-											<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
-										</IonItem>
-									</IonItemSliding>
-								);
-							})
-						:
-							<IonItem>
-								<IonLabel className="ion-text-align-end"><em>(none)</em></IonLabel>
-							</IonItem>
-					}
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
 							<h2>Equalities</h2>
@@ -473,32 +421,74 @@ const AddCustomSort = (props: CustomSortModal) => {
 						</IonButton>
 					</IonItem>
 					{
-						equalities.length > 0 ?
-							equalities.map(eq => {
-								const {
-									id,
-									base,
-									equals,
-									separator
-								} = eq;
-								return (
-									<IonItemSliding className="customSortItem" key={`relation:${id}`}>
-										<IonItemOptions side="end" className="serifChars">
-											<IonItemOption color="primary" aria-label="Edit" onClick={() => editEquality(eq)}>
-												<IonIcon slot="icon-only" src="svg/edit.svg" />
-											</IonItemOption>
-											<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteEquality(id)}>
-												<IonIcon slot="icon-only" icon={trash} />
-											</IonItemOption>
-										</IonItemOptions>
-										<IonItem className="equality">
-											<div>{base}</div>
-											<div>=</div>
-											<div>{equals.map((ch, i) => <div key={`equality:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}</div>
-											<div><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
-										</IonItem>
-									</IonItemSliding>
-								);
+						customizations.length > 0 ?
+							customizations.map(obj => {
+								if("equals" in obj) {
+									const {
+										id,
+										base,
+										equals,
+										separator
+									} = obj;
+									return (
+										<IonItemSliding className="customSortItem" key={`relation:${id}`}>
+											<IonItemOptions side="end" className="serifChars">
+												<IonItemOption color="primary" aria-label="Edit" onClick={() => editEquality(obj)}>
+													<IonIcon slot="icon-only" src="svg/edit.svg" />
+												</IonItemOption>
+												<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteEquality(id)}>
+													<IonIcon slot="icon-only" icon={trash} />
+												</IonItemOption>
+											</IonItemOptions>
+											<IonItem className="equality customization">
+												<div className="base">{base}</div>
+												<div className="equals">=</div>
+												<div className="equalities">{equals.map((ch, i) => <div key={`equality:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}</div>
+												<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
+											</IonItem>
+										</IonItemSliding>
+									);
+								} else {
+									const {
+										id,
+										base,
+										pre,
+										post,
+										separator
+									} = obj;
+									return (
+										<IonItemSliding className="customSortItem" key={`relation:${id}`}>
+											<IonItemOptions side="end" className="serifChars">
+												<IonItemOption
+													color="primary"
+													aria-label="Edit"
+													onClick={() => editRelation(obj)}
+												>
+													<IonIcon slot="icon-only" src="svg/edit.svg" />
+												</IonItemOption>
+												<IonItemOption
+													color="danger"
+													aria-label="Delete"
+													onClick={() => maybeDeleteRelation(id)}
+												>
+													<IonIcon slot="icon-only" icon={trash} />
+												</IonItemOption>
+											</IonItemOptions>
+											<IonItem className="relation customization">
+												<div className={pre.length ? "pre" : "hidden"}>
+													{pre.map((ch, i) => <div key={`pre:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
+												</div>
+												<div className={pre.length ? "lessthan" : "hidden"}>&lt;</div>
+												<div className="base">{base}</div>
+												<div className={post.length ? "lessthan" : "hidden"}>&lt;</div>
+												<div className={post.length ? "post" : "hidden"}>
+													{post.map((ch, i) => <div key={`post:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
+												</div>
+												<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
+											</IonItem>
+										</IonItemSliding>
+									);
+								}
 							})
 						:
 							<IonItem>

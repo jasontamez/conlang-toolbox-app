@@ -770,45 +770,49 @@ ion-label.customSortDescription p {
 	font-size: smaller;
 	padding: 0 0 0 1rem;
 }
-ion-item.equality,
-ion-item.relation {
+ion-item.customization {
 	--background: var(--ion-color-step-100);
 }
-ion-item.equality:nth-child(even),
-ion-item.relation:nth-child(even) {
+ion-item.customization:nth-child(even) {
 	--background: var(--ion-color-step-50);
 }
-ion-item.equality > div,
-ion-item.relation > div {
+ion-item.customization > div {
 	flex-grow: 1;
 	flex-shrink: 1;
 }
-ion-item.equality > div:nth-child(-n+2),
-ion-item.equality > div:last-child,
-ion-item.relation > div.icon,
-ion-item.relation > div.base {
+ion-item.customization > div.base,
+ion-item.customization > div.equals,
+ion-item.customization > div.lessthan,
+ion-item.customization > div.icon {
 	flex-grow: 0;
 	flex-shrink: 0;
 }
-ion-item.equality > div:nth-child(2),
-ion-item.relation > div.base {
+ion-item.customization > div.hidden {
+	display: none;
+}
+ion-item.relation > div.base,
+ion-item.customization > div.equals {
 	margin-inline: 0.5rem;
 }
-ion-item.equality > div:nth-child(3),
-ion-item.relation > div.post,
-ion-item.relation > div.pre {
+ion-item.customization > div.equalities,
+ion-item.customization > div.post,
+ion-item.customization > div.pre {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 	justify-content: flex-start;
 	font-weight: bold;
 }
-ion-item.relation > div.pre {
+ion-item.customization > div.pre {
 	justify-content: flex-end;
 }
-ion-item.equality > div:first-child,
-ion-item.relation > div.base {
+ion-item.customization > div.base {
 	font-size: larger;
 	border: 1px solid var(--ion-text-color);
+	padding: 0.1rem 0.25rem;
+}
+ion-item.customization > div.lessthan {
+	font-size: larger;
+	font-weight: bold;
 	padding: 0.1rem 0.25rem;
 }

@@ -256,6 +256,7 @@ const blankAppState: StateObject = {
 		lexicon: [],
 		blankSort: "alphaFirst",
 		fontType: "Noto Serif",
+		customSort: undefined,
 		storedCustomInfo: {},
 		storedCustomIDs: []
 	},
@@ -279,6 +280,7 @@ const blankAppState: StateObject = {
 	},
 	sortSettings: {
 		defaultSortLanguage: "unicode",
+		sensitivity: "variant",
 		customSorts: []
 	},
 	lastView: {

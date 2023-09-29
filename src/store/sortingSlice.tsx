@@ -8,21 +8,20 @@ const initialState = blankAppState.sortSettings;
 const checkForMultiples = (obj: SortObject) => {
 	const {
 		customAlphabet = [],
-		relations= [],
-		equalities= []
+		customizations = []
 	} = obj;
 	const multiples = customAlphabet.concat(
-		...relations.map(rel => {
+		...customizations.map(o => {
+			if("equals" in o) {
+				return [
+					o.base,
+					...o.equals
+				];
+			}
 			return [
-				rel.base,
-				...rel.pre,
-				...rel.post
-			];
-		}),
-		...equalities.map(eq => {
-			return [
-				eq.base,
-				...eq.equals
+				o.base,
+				...o.pre,
+				...o.post
 			];
 		})
 	).filter(char => char.length > 1);
@@ -74,7 +73,7 @@ const deleteCustomSortFunc = (state: SortSettings, action: PayloadAction<string>
 	return state;
 };
 
-const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObject | null>) => {
+const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<string | null>) => {
 	const { payload } = action;
 	if(payload) {
 		state.defaultCustomSort = payload;

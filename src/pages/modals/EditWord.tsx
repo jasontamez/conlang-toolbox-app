@@ -34,6 +34,7 @@ import { $i } from '../../components/DollarSignExports';
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
 	columnInfo: LexiconColumn[]
+	sorter: Function
 }
 
 function garble () {
@@ -47,7 +48,7 @@ function garble () {
 const nonsense = garble();
 
 const EditLexiconItemModal = (props: LexItemProps) => {
-	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo } = props;
+	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [ id, setId ] = useState<string>("");
@@ -110,7 +111,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 		// Everything ok!
 		setIsOpen(false);
-		dispatch(doEditLexiconItem({id, columns: cols}));
+		dispatch(doEditLexiconItem([{id, columns: cols}, sorter]));
 		toaster({
 			message: "Item updated!",
 			color: "success",

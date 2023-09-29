@@ -54,12 +54,11 @@ function makeSorter (
 		sortLanguage = sortLanguageDefault,
 		sensitivity = sensitivityDefault,
 		customAlphabet,
-		relations,
-		equalities,
+		customizations,
 		multiples
 	} = obj;
 	const basicSort = (a: string, b: string) => basicSorter(a, b, sortLanguage, sensitivity);
-	if(!(customAlphabet || relations || equalities)) {
+	if(!(customAlphabet || customizations)) {
 		// Simple sort
 		return basicSort;
 	}
@@ -77,26 +76,24 @@ function makeSorter (
 		customAlphabet.forEach((char, i) => logic[char] = i+1);
 		functions.push((a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN));
 	}
-	if(relations && relations.length > 0) {
-		// Create a comparison function for every given relation
-		relations.forEach(relation => {
-			const { base, pre, post } = relation;
-			const basePos = pre.length + 1;
-			const logic: OrderLogic = {};
-			pre.forEach((char, i) => logic[char] = i+1);
-			logic[base] = basePos;
-			post.forEach((char, i) => logic[char] = basePos+i+1);
-			functions.push((a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN));
-		});
-	}
-	if(equalities && equalities.length > 0) {
-		// Create a comparison function for every given equality
-		equalities.forEach(equality => {
-			const { base, equals } = equality;
-			const logic: OrderLogic = {};
-			logic[base] = 1;
-			equals.forEach(char => logic[char] = 1);
-			functions.push((a: string, b: string) => logic[a] && logic[b] ? 0 : NaN);
+	if(customizations && customizations.length > 0) {
+		// Create a comparison function for every given relation and equality
+		customizations.forEach(object => {
+			if("equals" in object) {
+				const { base, equals } = object;
+				const logic: OrderLogic = {};
+				logic[base] = 1;
+				equals.forEach(char => logic[char] = 1);
+				functions.push((a: string, b: string) => logic[a] && logic[b] ? 0 : NaN);
+			} else {
+				const { base, pre, post } = object;
+				const basePos = pre.length + 1;
+				const logic: OrderLogic = {};
+				pre.forEach((char, i) => logic[char] = i+1);
+				logic[base] = basePos;
+				post.forEach((char, i) => logic[char] = basePos+i+1);
+				functions.push((a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN));
+			}
 		});
 	}
 	return (a: string, b: string) => {

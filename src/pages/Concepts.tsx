@@ -32,7 +32,7 @@ import {
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
 import { addItemstoLexiconColumn } from '../store/lexiconSlice';
-import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject } from '../store/types';
+import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject } from '../store/types';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
@@ -40,8 +40,18 @@ import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import { LexiconIcon } from '../components/icons';
 import { ConceptCard } from "./wg/WGCards";
+import makeSorter from '../components/stringSorter';
 
 interface SavedWord { id: string, word: string };
+
+/*
+	customSorts: SortObject[]
+	sortLanguage?: SortLanguage
+	sensitivity: SortSensitivity
+	defaultCustomSort?: SortObject
+	// set automatically, not by user:
+	defaultSortLanguage: SortLanguage
+ */
 
 const ConceptsPage = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -52,7 +62,28 @@ const ConceptsPage = (props: PageData) => {
 	const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
-	const lexColumns = useSelector((state: StateObject) => state.lexicon.columns);
+	const {
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		defaultSortLanguage,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
+	const {
+		columns: lexColumns,
+		customSort
+	} = useSelector((state: StateObject) => state.lexicon);
+	let customSortObj: SortObject | undefined;
+	let defaultCustomSortObj: SortObject | undefined;
+	customSorts.every(obj => {
+		if(obj.id === customSort) {
+			customSortObj = obj;
+		} else if (obj.id === defaultCustomSort) {
+			defaultCustomSortObj = obj;
+		}
+		return !(customSortObj && defaultCustomSortObj);
+	})
+	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
 	const {
 		display,
 		showingCombos,
@@ -106,7 +137,7 @@ const ConceptsPage = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id]));
+						dispatch(addItemstoLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id, sorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

@@ -32,6 +32,7 @@ interface MergeProps extends ModalProperties {
 	merging: string[]
 	mergingObject: { [key: string]: Lexicon }
 	clearInfo: Function
+	sorter: Function
 }
 
 interface Method {
@@ -120,7 +121,7 @@ const methodDescriptions: MethodDescriptions = {
 };
 
 const MergeLexiconItemsModal = (props: MergeProps) => {
-	const { isOpen, setIsOpen, merging, mergingObject, clearInfo } = props;
+	const { isOpen, setIsOpen, merging, mergingObject, clearInfo, sorter } = props;
 	const [items, setItems] = useState<Lexicon[]>([]);
 	const [itemsByColumn, setItemsByColumn] = useState<string[][]>([]);
 	const [mergeMethods, setMergeMethods] = useState<(keyof Method)[]>([]);
@@ -174,7 +175,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 		// clear merged items from Lexicon
 		clearInfo();
 		// dispatch info to store
-		mergedResult && dispatch(mergeLexiconItems([items, mergedResult]));
+		mergedResult && dispatch(mergeLexiconItems([items, mergedResult, sorter]));
 		// close this modal
 		setIsOpen(false);
 	};
