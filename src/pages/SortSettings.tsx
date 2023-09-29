@@ -30,7 +30,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ISO6391, { LanguageCode } from "iso-639-1";
 
 import { EqualityObject, PageData, RelationObject, SortObject, SortSensitivity, StateObject } from '../store/types';
-import { deleteCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
+import { deleteCustomSort, setDefaultCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
 
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import AddCustomSort from './modals/AddCustomSort';
@@ -76,12 +76,18 @@ const SortSettings = (props: PageData) => {
 	const [incomingEquality, setIncomingEquality] = useState<EqualityObject | null>(null);
 	const [outgoingEquality, setOutgoingEquality] = useState<EqualityObject | null | string>(null);
 
-	const { defaultSortLanguage, sortLanguage, sensitivity, customSorts } = useSelector((state: StateObject) => state.sortSettings);
+	const {
+		defaultSortLanguage,
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
 	const setCustomLang = (value: LanguageCode | "unicode") => {
 		dispatch(setSortLanguageCustom(value));
 	};
-	const setSensitivity = (value: SortSensitivity | "unicode") => {
-		dispatch(setSortSensitivity(value === "unicode" ? null : value));
+	const setSensitivity = (value: SortSensitivity) => {
+		dispatch(setSortSensitivity(value));
 	};
 	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
@@ -206,7 +212,19 @@ const SortSettings = (props: PageData) => {
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="variant">[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider>Custom Sort Methods</IonItemDivider>
+					<IonItem className="wrappableInnards">
+						<IonSelect color="primary" className="ion-text-wrap settings" label="Using Custom Sort:" value={defaultCustomSort || null} onIonChange={(e) => setDefaultCustomSort(e.detail.value)}>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>(none)</IonSelectOption>
+							{customSorts.map(sorter => (
+								<IonSelectOption
+									className="ion-text-wrap ion-text-align-end"
+									key={`customSortChooser:${sorter.id}:${sorter.title}`}
+									value={sorter}
+								>{sorter.title}</IonSelectOption>
+							))}
+						</IonSelect>
+					</IonItem>
+					<IonItemDivider>All Custom Sort Methods</IonItemDivider>
 					{customSorts.length > 0 ?
 						customSorts.map(sorter => {
 							const {

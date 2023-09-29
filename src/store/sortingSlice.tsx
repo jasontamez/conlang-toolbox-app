@@ -44,13 +44,8 @@ const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<So
 	return state;
 };
 
-const setSortSensitivityFunc = (state: SortSettings, action: PayloadAction<SortSensitivity | null>) => {
-	const value = action.payload;
-	if(value) {
-		state.sensitivity = value;
-	} else {
-		delete state.sensitivity;
-	}
+const setSortSensitivityFunc = (state: SortSettings, action: PayloadAction<SortSensitivity>) => {
+	state.sensitivity = action.payload;
 	return state;
 };
 
@@ -79,6 +74,16 @@ const deleteCustomSortFunc = (state: SortSettings, action: PayloadAction<string>
 	return state;
 };
 
+const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObject | null>) => {
+	const { payload } = action;
+	if(payload) {
+		state.defaultCustomSort = payload;
+	} else {
+		delete state.defaultCustomSort;
+	}
+	return state;
+};
+
 const appStateSlice = createSlice({
 	name: 'appState',
 	initialState,
@@ -88,7 +93,8 @@ const appStateSlice = createSlice({
 		setSortSensitivity: setSortSensitivityFunc,
 		addNewCustomSort: addNewCustomSortFunc,
 		editCustomSort: editCustomSortFunc,
-		deleteCustomSort: deleteCustomSortFunc
+		deleteCustomSort: deleteCustomSortFunc,
+		setDefaultCustomSort: setDefaultCustomSortFunc
 	}
 });
 
@@ -98,7 +104,8 @@ export const {
 	setSortSensitivity,
 	addNewCustomSort,
 	editCustomSort,
-	deleteCustomSort
+	deleteCustomSort,
+	setDefaultCustomSort
 } = appStateSlice.actions;
 
 export default appStateSlice.reducer;

@@ -469,7 +469,8 @@ export interface SortObject {
 export interface SortSettings {
 	customSorts: SortObject[]
 	sortLanguage?: SortLanguage
-	sensitivity?: SortSensitivity
+	sensitivity: SortSensitivity
+	defaultCustomSort?: SortObject
 	// set automatically, not by user:
 	defaultSortLanguage: SortLanguage
 }
