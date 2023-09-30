@@ -154,6 +154,11 @@ const setOutputFunc = (state: WGState, action: PayloadAction<WGOutputTypes>) => 
 	state.output = action.payload;
 	return state;
 };
+const setCustomSortFunc = (state: WGState, action: PayloadAction<string | null>) => {
+	state.customSort = action.payload;
+	console.log(action.payload);
+	return state;
+};
 const setShowSyllableBreaksFunc = (state: WGState, action: PayloadAction<boolean>) => {
 	state.showSyllableBreaks = action.payload;
 	return state;
@@ -209,7 +214,8 @@ const loadStateFunc = (state: WGState, action: PayloadAction<WGBasic | null>) =>
 		interrogativeSentencePre,
 		interrogativeSentencePost,
 		exclamatorySentencePre,
-		exclamatorySentencePost
+		exclamatorySentencePost,
+		customSort
 	} = action.payload || initialState;
 	return {
 		...state,
@@ -231,7 +237,8 @@ const loadStateFunc = (state: WGState, action: PayloadAction<WGBasic | null>) =>
 		interrogativeSentencePre,
 		interrogativeSentencePost,
 		exclamatorySentencePre,
-		exclamatorySentencePost
+		exclamatorySentencePost,
+		customSort
 	};
 };
 
@@ -264,6 +271,7 @@ const wgSlice = createSlice({
 		setExclamatorySentencePre: setExclamatorySentencePreFunc,
 		setExclamatorySentencePost: setExclamatorySentencePostFunc,
 		setOutputTypeWG: setOutputFunc,
+		setCustomSort: setCustomSortFunc,
 		setSyllableBreaksWG: setShowSyllableBreaksFunc,
 		setSentencesPerTextWG: setSentencesPerTextFunc,
 		setCapitalizeWordsWG: setCapitalizeWordsFunc,
@@ -300,6 +308,7 @@ export const {
 	setExclamatorySentencePre,
 	setExclamatorySentencePost,
 	setOutputTypeWG,
+	setCustomSort,
 	setSyllableBreaksWG,
 	setSentencesPerTextWG,
 	setCapitalizeWordsWG,
@@ -337,6 +346,7 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	const exclamatorySentencePreA = stateA.exclamatorySentencePre;
 	const exclamatorySentencePostA = stateA.exclamatorySentencePost;
 	const outputA = stateA.output;
+	const customSortA = stateA.customSort;
 	const showSyllableBreaksA = stateA.showSyllableBreaks;
 	const sentencesPerTextA = stateA.sentencesPerText;
 	const capitalizeWordsA = stateA.capitalizeWords;
@@ -365,6 +375,7 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	const exclamatorySentencePreB = stateB.exclamatorySentencePre;
 	const exclamatorySentencePostB = stateB.exclamatorySentencePost;
 	const outputB = stateB.output;
+	const customSortB = stateB.customSort;
 	const showSyllableBreaksB = stateB.showSyllableBreaks;
 	const sentencesPerTextB = stateB.sentencesPerText;
 	const capitalizeWordsB = stateB.capitalizeWords;
@@ -391,6 +402,7 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 		|| exclamatorySentencePreA !== exclamatorySentencePreB
 		|| exclamatorySentencePostA !== exclamatorySentencePostB
 		|| outputA !== outputB
+		|| customSortA !== customSortB
 		|| showSyllableBreaksA !== showSyllableBreaksB
 		|| sentencesPerTextA !== sentencesPerTextB
 		|| capitalizeWordsA !== capitalizeWordsB

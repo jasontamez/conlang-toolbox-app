@@ -112,11 +112,10 @@ const WEOut = (props: PageData) => {
 		transforms,
 		soundChanges,
 		outputStyle,
-// TO-DO: use these two properties, make a modal to set them?
-//		inputLower,
-//		inputAlpha
+		inputLower,
+		inputAlpha,
+		customSort
 	} = useSelector((state: StateObject) => state.we);
-	const rawInput = input.split(/\n/);
 	const {
 		sortLanguage,
 		sensitivity,
@@ -126,19 +125,51 @@ const WEOut = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.sortSettings);
 	const {
 		columns,
-		customSort
+		customSort: customSortLex
 	} = useSelector((state: StateObject) => state.lexicon);
-	let customSortObj: SortObject | undefined;
-	let defaultCustomSortObj: SortObject | undefined;
-	customSorts.every(obj => {
-		if(obj.id === customSort) {
-			customSortObj = obj;
-		} else if (obj.id === defaultCustomSort) {
-			defaultCustomSortObj = obj;
+	const [customSortObj, defaultCustomSortObj, customSortLexObj] = useMemo(() => {
+		let customSortObj: SortObject | undefined;
+		let defaultCustomSortObj: SortObject | undefined;
+		let customSortLexObj: SortObject | undefined;
+		customSorts.every(obj => {
+			if(obj.id === customSortLex) {
+				customSortLexObj = obj;
+			}
+			if(obj.id === customSort) {
+				customSortObj = obj;
+			}
+			if (obj.id === defaultCustomSort) {
+				defaultCustomSortObj = obj;
+			}
+			return !(customSortObj && defaultCustomSortObj && customSortLexObj);
+		});
+		return [customSortObj, defaultCustomSortObj, customSortLexObj];
+	}, [customSort, customSorts, customSortLex, defaultCustomSort]);
+	const lexSorter = makeSorter(
+		sortLanguage || defaultSortLanguage,
+		sensitivity,
+		customSortLexObj || defaultCustomSortObj
+	);
+	const rawInput = useMemo(() => {
+		let lines = input.split(/\n/);
+		if(inputLower) {
+			lines = lines.map(line => line.toLocaleLowerCase(sortLanguage || defaultSortLanguage || undefined));
 		}
-		return !(customSortObj && defaultCustomSortObj);
-	})
-	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
+		if(inputAlpha) {
+			lines = lines.sort(
+				makeSorter(
+					sortLanguage || defaultSortLanguage,
+					sensitivity,
+					customSortObj || defaultCustomSortObj
+				)
+			);
+		}
+		return lines;
+	}, [
+		input, inputLower, inputAlpha,
+		sortLanguage, sensitivity, defaultSortLanguage,
+		customSortObj, defaultCustomSortObj
+	]);
 
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WECharGroupObject} = {};
@@ -745,7 +776,7 @@ const WEOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id, sorter]));
+						dispatch(addItemstoLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

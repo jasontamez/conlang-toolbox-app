@@ -1,4 +1,5 @@
 import packageJson from '../../package.json';
+import PermanentInfo from '../components/PermanentInfo';
 import { StateObject } from "./types";
 
 export const currentVersion = packageJson.version;
@@ -206,6 +207,7 @@ const blankAppState: StateObject = {
 		interrogativeSentencePost: "?",
 		exclamatorySentencePre: "",
 		exclamatorySentencePost: "!",
+		customSort: null,
 		//...end simple.wordgenSettings
 		output: "text",
 		showSyllableBreaks: false,
@@ -225,6 +227,7 @@ const blankAppState: StateObject = {
 		outputStyle: "outputOnly",
 		inputLower: false,
 		inputAlpha: true,
+		customSort: null,
 		storedCustomInfo: {},
 		storedCustomIDs: []
 	},
@@ -281,7 +284,9 @@ const blankAppState: StateObject = {
 	sortSettings: {
 		defaultSortLanguage: "unicode",
 		sensitivity: "variant",
-		customSorts: []
+		customSorts: [
+			PermanentInfo.sort.permanentCustomSortObjs["complex-preset-sort"]
+		]
 	},
 	lastView: {
 		wg: 'charGroups',

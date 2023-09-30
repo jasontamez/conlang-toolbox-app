@@ -78,6 +78,7 @@ function updateWG (incomingState: oldTypes.StateObject) {
 		})),
 		characterGroupDropoff: charGroupRunDropoff,
 		output: output as WGOutputTypes,
+		customSort: null,
 		...rest,
 		storedCustomIDs: [],
 		storedCustomInfo: {}
@@ -121,6 +122,7 @@ function updateWE (incomingState: oldTypes.StateObject) {
 		outputStyle: wordevolveSettings.output,
 		inputLower: false,
 		inputAlpha: false,
+		customSort: null,
 		storedCustomIDs: [],
 		storedCustomInfo: {}
 	};
@@ -162,6 +164,7 @@ function updateMS (incomingState: oldTypes.StateObject) {
 function updateLex (incomingState: oldTypes.StateObject) {
 	const lex: LexiconState = {
 		...incomingState.lexicon,
+		customSort: undefined,
 		storedCustomInfo: {},
 		storedCustomIDs: []
 	};

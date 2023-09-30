@@ -770,10 +770,10 @@ ion-label.customSortDescription p {
 	font-size: smaller;
 	padding: 0 0 0 1rem;
 }
-ion-item.customization {
+ion-item-sliding ion-item.customization {
 	--background: var(--ion-color-step-100);
 }
-ion-item.customization:nth-child(even) {
+ion-item-sliding:nth-child(even) ion-item.customization {
 	--background: var(--ion-color-step-50);
 }
 ion-item.customization > div {
@@ -783,7 +783,8 @@ ion-item.customization > div {
 ion-item.customization > div.base,
 ion-item.customization > div.equals,
 ion-item.customization > div.lessthan,
-ion-item.customization > div.icon {
+ion-item.customization > div.icon,
+ion-item.customization > ion-reorder {
 	flex-grow: 0;
 	flex-shrink: 0;
 }

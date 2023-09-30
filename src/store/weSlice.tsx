@@ -123,6 +123,10 @@ const setFlagFunc = (state: WEState, action: PayloadAction<["inputLower" | "inpu
 	state[prop] = value;
 	return state;
 };
+const setCustomSortFunc = (state: WEState, action: PayloadAction<string | null>) => {
+	state.customSort = action.payload;
+	return state;
+};
 
 // STORED CUSTOM INFO
 const setStoredCustomInfoFunc = (state: WEState, action: PayloadAction<any>) => {
@@ -168,7 +172,8 @@ const weSlice = createSlice({
 		editSoundChangeWE: editSoundChangeFunc,
 		rearrangeSoundChangesWE: rearrangeSoundChangesFunc,
 		setOutputWE: setOutputFunc,
-	setFlag: setFlagFunc,
+		setFlag: setFlagFunc,
+		setCustomSort: setCustomSortFunc,
 		loadStateWE: loadStateFunc,
 	setStoredCustomInfo: setStoredCustomInfoFunc
 	}
@@ -190,6 +195,7 @@ export const {
 	rearrangeSoundChangesWE,
 	setOutputWE,
 	setFlag,
+	setCustomSort,
 	loadStateWE,
 	setStoredCustomInfo
 } = weSlice.actions;

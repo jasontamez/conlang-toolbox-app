@@ -14,7 +14,9 @@ import {
 	IonRange,
 	IonModal,
 	IonIcon,
-	IonFooter
+	IonFooter,
+	IonSelect,
+	IonSelectOption
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -36,7 +38,8 @@ import {
 	setCapitalizeWordsWG,
 	setSortWordlistWG,
 	setWordlistMulticolumnWG,
-	setWordsPerWordlistWG
+	setWordsPerWordlistWG,
+	setCustomSort
 } from '../../../store/wgSlice';
 
 const OutputOptionsModal = (props: ModalProperties) => {
@@ -49,8 +52,10 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		capitalizeWords,
 		sortWordlist,
 		wordlistMultiColumn,
-		wordsPerWordlist
+		wordsPerWordlist,
+		customSort
 	} = useSelector((state: StateObject) => state.wg);
+	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
@@ -117,6 +122,24 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							checked={sortWordlist}
 							onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))}
 						>Sort output</IonToggle>
+					</IonItem>
+					<IonItem className={(output === "text" || !sortWordlist) ? "hide" : ""}>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Sort Method:"
+							value={customSort || null}
+							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
+						>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default</IonSelectOption>
+							{customSorts.map(sorter => (
+								<IonSelectOption
+									className="ion-text-wrap ion-text-align-end"
+									key={`customSortChooser:${sorter.id}:${sorter.title}`}
+									value={sorter.id}
+								>{sorter.title}</IonSelectOption>
+							))}
+						</IonSelect>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
 						<IonToggle

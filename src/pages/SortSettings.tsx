@@ -41,6 +41,7 @@ import EditCustomSortEquality from './modals/EditCustomSortEquality';
 import EditCustomSort from './modals/EditCustomSort';
 import yesNoAlert from '../components/yesNoAlert';
 import { $i } from '../components/DollarSignExports';
+import PermanentInfo from '../components/PermanentInfo';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -51,6 +52,7 @@ const langObj: {[key: string]: string} = {
 codes.forEach((code, i) => {
 	langObj[code] = names[i];
 });
+const permanents = PermanentInfo.sort.permanentCustomSorts;
 
 const SortSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -100,6 +102,21 @@ const SortSettings = (props: PageData) => {
 	};
 	const maybeDeleteSort = (id: string, title: string) => {
 		$i("listOfCustomSorts").closeSlidingItems();
+		let message = permanents[id];
+		if(message) {
+			return doAlert({
+				header: "",
+				message,
+				cssClass: "danger",
+				buttons: [
+					{
+						text: "Ok",
+						role: "cancel",
+						cssClass: "submit"
+					}
+				]
+			});
+		}
 		yesNoAlert({
 			header: `Delete "${title}"?`,
 			message: "Are you sure? This cannot be undone.",

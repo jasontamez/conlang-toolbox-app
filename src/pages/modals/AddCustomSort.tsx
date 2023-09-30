@@ -20,14 +20,17 @@ import {
 	IonToggle,
 	IonItemSliding,
 	IonItemOptions,
-	IonItemOption
+	IonItemOption,
+	IonReorderGroup,
+	IonReorder
 } from '@ionic/react';
 import {
 	closeCircleOutline,
 	saveOutline,
 	globeOutline,
 	addOutline,
-	trash
+	trash,
+	reorderTwo
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
@@ -310,6 +313,17 @@ const AddCustomSort = (props: CustomSortModal) => {
 			doAlert
 		});
 	};
+	const doReorder = (event: CustomEvent) => {
+		const ed = event.detail;
+		// move things around
+		const { from, to } = ed;
+		const moved = customizations[from];
+		const remains = customizations.slice(0, from).concat(customizations.slice(from + 1));
+		const final = remains.slice(0, to).concat(moved, remains.slice(to));
+		// save result
+		setCustomizations(final);
+		ed.complete();
+	};
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
@@ -420,8 +434,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonLabel>Add New</IonLabel>
 						</IonButton>
 					</IonItem>
-					{
-						customizations.length > 0 ?
+					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
+						{customizations.length > 0 ?
 							customizations.map(obj => {
 								if("equals" in obj) {
 									const {
@@ -441,6 +455,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 											</IonItemOptions>
 											<IonItem className="equality customization">
+												<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
 												<div className="base">{base}</div>
 												<div className="equals">=</div>
 												<div className="equalities">{equals.map((ch, i) => <div key={`equality:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}</div>
@@ -475,6 +490,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 											</IonItemOptions>
 											<IonItem className="relation customization">
+												<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
 												<div className={pre.length ? "pre" : "hidden"}>
 													{pre.map((ch, i) => <div key={`pre:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
 												</div>
@@ -494,7 +510,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonItem>
 								<IonLabel className="ion-text-align-end"><em>(none)</em></IonLabel>
 							</IonItem>
-					}
+						}
+					</IonReorderGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>

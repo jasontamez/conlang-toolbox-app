@@ -93,6 +93,7 @@ export interface WGSettings {
 	interrogativeSentencePost: string
 	exclamatorySentencePre: string
 	exclamatorySentencePost: string
+	customSort: string | null
 }
 export interface WGBasic extends WGSettings {
 	// GROUPS
@@ -160,6 +161,7 @@ export interface WEState extends WEPresetObject {
 	outputStyle: WEOutputTypes
 	inputLower: boolean
 	inputAlpha: boolean
+	customSort: string | null
 	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }

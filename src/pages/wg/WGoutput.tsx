@@ -110,6 +110,7 @@ const WGOut = (props: PageData) => {
 		characterGroupDropoff,
 		syllableBoxDropoff,
 		output,
+		customSort,
 		showSyllableBreaks,
 		sentencesPerText,
 		capitalizeSentences,
@@ -133,28 +134,41 @@ const WGOut = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.sortSettings);
 	const {
 		columns: lexColumns,
-		customSort
+		customSort: customSortLex
 	} = useSelector((state: StateObject) => state.lexicon);
-	let customSortObj: SortObject | undefined;
-	let defaultCustomSortObj: SortObject | undefined;
-	customSorts.every(obj => {
-		if(obj.id === customSort) {
-			customSortObj = obj;
-		} else if (obj.id === defaultCustomSort) {
-			defaultCustomSortObj = obj;
-		}
-		return !(customSortObj && defaultCustomSortObj);
-	})
-	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
 
 	// // //
 	// Memoized stuff
 	// // //
 
-	const stringSorter = useCallback(
-		// Temporary kludge until I finish the sort settings.
-		(a: string, b: string) => makeSorter("en", "variant")(a, b),
-	[]);
+	const [customSortObj, defaultCustomSortObj, customSortLexObj] = useMemo(() => {
+		let customSortObj: SortObject | undefined;
+		let defaultCustomSortObj: SortObject | undefined;
+		let customSortLexObj: SortObject | undefined;
+		customSorts.every(obj => {
+			if(obj.id === customSortLex) {
+				customSortLexObj = obj;
+			}
+			if(obj.id === customSort) {
+				customSortObj = obj;
+			}
+			if (obj.id === defaultCustomSort) {
+				defaultCustomSortObj = obj;
+			}
+			return !(customSortObj && defaultCustomSortObj && customSortLexObj);
+		});
+		return [customSortObj, defaultCustomSortObj, customSortLexObj];
+	}, [customSort, customSorts, customSortLex, defaultCustomSort]);
+	const wgSorter = makeSorter(
+		sortLanguage || defaultSortLanguage,
+		sensitivity,
+		customSortObj || defaultCustomSortObj
+	);
+	const lexSorter = makeSorter(
+		sortLanguage || defaultSortLanguage,
+		sensitivity,
+		customSortLexObj || defaultCustomSortObj
+	);
 
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {
@@ -484,7 +498,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			result.sort(stringSorter);
+			result.sort(wgSorter);
 		}
 		// Remove duplicates
 		let previous: string | undefined = undefined;
@@ -539,7 +553,7 @@ const WGOut = (props: PageData) => {
 		}
 		// Sort if needed
 		if(sortWordlist) {
-			words.sort(stringSorter);
+			words.sort(wgSorter);
 		}
 		return words;
 	};
@@ -607,7 +621,7 @@ const WGOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id, sorter]));
+						dispatch(addItemstoLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

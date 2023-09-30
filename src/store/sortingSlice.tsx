@@ -49,7 +49,7 @@ const setSortSensitivityFunc = (state: SortSettings, action: PayloadAction<SortS
 };
 
 const addNewCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObject>) => {
-	const newObj = action.payload;
+	const newObj = {...action.payload};
 	newObj.multiples = checkForMultiples(newObj);
 	state.customSorts.push(newObj);
 	return state;

@@ -64,7 +64,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		interrogativeSentencePre,
 		interrogativeSentencePost,
 		exclamatorySentencePre,
-		exclamatorySentencePost
+		exclamatorySentencePost,
+		customSort
 	} = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const customInfo: string[] = titles || [];
@@ -106,7 +107,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				interrogativeSentencePre,
 				interrogativeSentencePost,
 				exclamatorySentencePre,
-				exclamatorySentencePost
+				exclamatorySentencePost,
+				customSort
 			};
 			CustomStorageWG.setItem(title, save).then(() => {
 				toaster({
