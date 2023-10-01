@@ -182,26 +182,36 @@ const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexi
 	state.lexicon = sortLexicon(newLexicon, state.sortPattern, state.sortDir, state.blankSort, sorter);
 	return state;
 };
-const updateLexiconColumarInfoFunc = (state: LexiconState, action: PayloadAction<[Lexicon[], LexiconColumn[], number[], boolean, LexiconBlankSorts, Function]>) => {
-	const [lex, columns, sortPattern, truncateColumns, blankSort, sorter] = action.payload;
-	const final = {
+const updateLexiconColumarInfoFunc = (
+	state: LexiconState,
+	action: PayloadAction<[
+		Lexicon[],
+		LexiconColumn[],
+		number[],
+		boolean,
+		LexiconBlankSorts,
+		string | undefined,
+		Function]>
+) => {
+	const [
+		lex,
+		columns,
+		sortPattern,
+		truncateColumns,
+		blankSort,
+		customSort,
+		sorter
+	] = action.payload;
+	const final: LexiconState = {
 		...state,
 		columns,
 		sortPattern,
 		truncateColumns,
 		blankSort,
+		customSort,
 		lexicon: sortLexicon(lex, sortPattern, state.sortDir, blankSort, sorter)
 	};
 	return final;
-};
-const setCustomSortFunc = (state: LexiconState, action: PayloadAction<string | null>) => {
-	const { payload } = action;
-	if(payload) {
-		state.customSort = payload;
-	} else {
-		delete state.customSort;
-	}
-	return state;
 };
 
 const lexiconSlice = createSlice({
@@ -222,8 +232,7 @@ const lexiconSlice = createSlice({
 	setFontType: setFontTypeFunc,
 	setStoredCustomInfo: setStoredCustomInfoFunc,
 		mergeLexiconItems: mergeLexiconItemsFunc,
-		updateLexiconColumarInfo: updateLexiconColumarInfoFunc,
-		setCustomSort: setCustomSortFunc
+		updateLexiconColumarInfo: updateLexiconColumarInfoFunc
 	}
 });
 
@@ -241,8 +250,7 @@ export const {
 setFontType,
 setStoredCustomInfo,
 	mergeLexiconItems,
-	updateLexiconColumarInfo,
-	setCustomSort
+	updateLexiconColumarInfo
 } = lexiconSlice.actions;
 
 export default lexiconSlice.reducer;

@@ -38,7 +38,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn, StateObject } from '../../store/types';
-import { setCustomSort, updateLexiconColumarInfo } from '../../store/lexiconSlice';
+import { updateLexiconColumarInfo } from '../../store/lexiconSlice';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -72,6 +72,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const [shadowTruncate, setShadowTruncate] = useState<boolean>(truncateColumns);
 	const [shadowBlankSort, setShadowBlankSort] = useState<LexiconBlankSorts>(blankSort);
 	const [shadowColumns, setShadowColumns] = useState<ShadowColumn[]>([]);
+	const [shadowCustomSort, setShadowCustomSort] = useState<string | null>(customSort || null);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 
@@ -96,12 +97,12 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		const original = columns.map((col: LexiconColumn, i: number) => {
 			const {label, size} = col;
 			return `${label}/${size}/${i}`;
-		}).join(" : ") + ` : ${truncateColumns} : ${blankSort}`;
+		}).join(" : ") + ` : ${truncateColumns} : ${blankSort} : ${customSort}`;
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			const el = $i(`input_colOrder_${id}`);
 			return `${el ? el.value : "ERROR"}/${size}/${originalPosition}`;
-		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort}`;
+		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort} : ${shadowCustomSort}`;
 		if(testing === original) {
 			toaster({
 				message: "Nothing to save.",
@@ -168,7 +169,15 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		// finish by tacking on the positions that were not found
 		newSortPattern.push(...missingColumns);
 		// dispatch
-		dispatch(updateLexiconColumarInfo([lex, newColumns, newSortPattern, shadowTruncate, shadowBlankSort, sorter]));
+		dispatch(updateLexiconColumarInfo([
+			lex,
+			newColumns,
+			newSortPattern,
+			shadowTruncate,
+			shadowBlankSort,
+			shadowCustomSort || undefined,
+			sorter
+		]));
 		toaster({
 			message: "Saved!",
 			duration: 2500,
@@ -275,7 +284,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						>Show Full Column Titles</IonToggle>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
-						<IonSelect className="ion-text-wrap" label="Sort method:" value={customSort || null} onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}>
+						<IonSelect className="ion-text-wrap" label="Sort method:" value={customSort || null} onIonChange={(e) => setShadowCustomSort(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default sort</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption key={`lex:modal:${sorter.id}`} className="ion-text-wrap ion-text-align-end" value={sorter.id}>{sorter.title}</IonSelectOption>

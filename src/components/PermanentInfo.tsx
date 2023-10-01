@@ -2,12 +2,8 @@ import { EqualityObject, SortObject } from "../store/types";
 
 interface Perms {
 	sort: {
-		permanentCustomSorts: {
-			[key: string]: string
-		},
-		permanentCustomSortObjs: [
-			SortObject
-		]
+		permanentCustomSorts: { [key: string]: string },
+		permanentCustomSortObjs: SortObject[]
 	}
 }
 
