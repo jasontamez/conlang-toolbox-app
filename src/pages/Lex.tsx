@@ -381,7 +381,8 @@ const Lex = (props: PageData) => {
 			<EditLexiconOrderModal
 				{...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
 				openECM={setIsOpenECM}
-				sorter={sorter}
+				sortLang={sortLanguage || defaultSortLanguage}
+				sensitivity={sensitivity}
 			/>
 			<EditLexiconSortModal
 				{...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}

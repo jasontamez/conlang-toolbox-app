@@ -37,24 +37,35 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn, StateObject } from '../../store/types';
+import {
+	ExtraCharactersModalOpener,
+	Lexicon,
+	LexiconBlankSorts,
+	LexiconColumn,
+	SortLanguage,
+	SortObject,
+	SortSensitivity,
+	StateObject
+} from '../../store/types';
 import { updateLexiconColumarInfo } from '../../store/lexiconSlice';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import PermanentInfo from '../../components/PermanentInfo';
+import makeSorter from '../../components/stringSorter';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
 }
 
 interface OrderModalProps extends ExtraCharactersModalOpener {
-	sorter: Function
+	sortLang: SortLanguage
+	sensitivity: SortSensitivity
 }
 
 const EditLexiconOrderModal = (props: OrderModalProps) => {
-	const { isOpen, setIsOpen, openECM, sorter } = props;
+	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -168,6 +179,18 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		});
 		// finish by tacking on the positions that were not found
 		newSortPattern.push(...missingColumns);
+		// Make new sorter
+		let newSortObj: SortObject | undefined = undefined;
+		if(shadowCustomSort) {
+			customSorts.every(obj => {
+				if(obj.id === shadowCustomSort) {
+					newSortObj = obj;
+					return false;
+				}
+				return true;
+			});
+		}
+		const sorter = makeSorter(sortLang, sensitivity, newSortObj);
 		// dispatch
 		dispatch(updateLexiconColumarInfo([
 			lex,
