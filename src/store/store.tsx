@@ -79,7 +79,16 @@ const store = configureStore({
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
 			serializableCheck: {
-				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+				ignoredActions: [
+					FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
+					'lexicon/addLexiconItem',
+					'lexicon/addItemsToLexiconColumn',
+					'lexicon/doEditLexiconItem',
+					'lexicon/updateLexiconSort',
+					'lexicon/updateLexiconSortDir',
+					'lexicon/mergeLexiconItems',
+					'lexicon/updateLexiconColumarInfo'
+				],
 			},
 	  	})
 });

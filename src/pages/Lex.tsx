@@ -57,6 +57,7 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import ExportLexiconModal from './modals/ExportLexicon';
 import EditLexiconSortModal from './modals/EditSort';
 import MergeLexiconItemsModal from './modals/MergeLexiconItems';
+import PermanentInfo from '../components/PermanentInfo';
 import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
@@ -192,7 +193,7 @@ const Lex = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.sortSettings);
 	let customSortObj: SortObject | undefined;
 	let defaultCustomSortObj: SortObject | undefined;
-	customSorts.every(obj => {
+	customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
 		if(obj.id === customSort) {
 			customSortObj = obj;
 		} else if (obj.id === defaultCustomSort) {

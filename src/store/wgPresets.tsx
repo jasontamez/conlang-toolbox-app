@@ -12,7 +12,7 @@ const basicSettings: WGSettings = {
 	interrogativeSentencePost: "?",
 	exclamatorySentencePre: "",
 	exclamatorySentencePost: "!",
-	customSort: null
+	customSort: "wg-preset-sort"
 };
 
 const WGPresets: WGPresetObject = [
@@ -834,8 +834,7 @@ const WGPresets: WGPresetObject = [
 		interrogativeSentencePre: "<",
 		interrogativeSentencePost: ">",
 		exclamatorySentencePre: "[",
-		exclamatorySentencePost: "]",
-		customSort: "complex-preset-sort"
+		exclamatorySentencePost: "]"
 	}],
 	["Pseudo-Latin", {
 		characterGroups: [

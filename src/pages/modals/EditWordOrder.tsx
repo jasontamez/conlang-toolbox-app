@@ -38,11 +38,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { ExtraCharactersModalOpener, Lexicon, LexiconBlankSorts, LexiconColumn, StateObject } from '../../store/types';
+import { setCustomSort, updateLexiconColumarInfo } from '../../store/lexiconSlice';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
-import { setCustomSort, updateLexiconColumarInfo } from '../../store/lexiconSlice';
+import PermanentInfo from '../../components/PermanentInfo';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
@@ -276,7 +277,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 					<IonItem className="ion-text-wrap">
 						<IonSelect className="ion-text-wrap" label="Sort method:" value={customSort || null} onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default sort</IonSelectOption>
-							{customSorts.map(sorter => (
+							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption key={`lex:modal:${sorter.id}`} className="ion-text-wrap ion-text-align-end" value={sorter.id}>{sorter.title}</IonSelectOption>
 							))}
 						</IonSelect>

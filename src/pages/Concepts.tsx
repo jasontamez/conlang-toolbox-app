@@ -38,20 +38,12 @@ import { Concepts, ConceptsSources } from '../components/Concepts';
 import ModalWrap from "../components/ModalWrap";
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
+import makeSorter from '../components/stringSorter';
+import PermanentInfo from '../components/PermanentInfo';
 import { LexiconIcon } from '../components/icons';
 import { ConceptCard } from "./wg/WGCards";
-import makeSorter from '../components/stringSorter';
 
 interface SavedWord { id: string, word: string };
-
-/*
-	customSorts: SortObject[]
-	sortLanguage?: SortLanguage
-	sensitivity: SortSensitivity
-	defaultCustomSort?: SortObject
-	// set automatically, not by user:
-	defaultSortLanguage: SortLanguage
- */
 
 const ConceptsPage = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -75,7 +67,7 @@ const ConceptsPage = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.lexicon);
 	let customSortObj: SortObject | undefined;
 	let defaultCustomSortObj: SortObject | undefined;
-	customSorts.every(obj => {
+	customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
 		if(obj.id === customSort) {
 			customSortObj = obj;
 		} else if (obj.id === defaultCustomSort) {

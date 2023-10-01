@@ -232,7 +232,7 @@ const SortSettings = (props: PageData) => {
 					<IonItem className="wrappableInnards">
 						<IonSelect color="primary" className="ion-text-wrap settings" label="Using Custom Sort:" value={defaultCustomSort || null} onIonChange={(e) => setDefaultCustomSort(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>(none)</IonSelectOption>
-							{customSorts.map(sorter => (
+							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
 									key={`customSortChooser:${sorter.id}:${sorter.title}`}
@@ -242,58 +242,52 @@ const SortSettings = (props: PageData) => {
 						</IonSelect>
 					</IonItem>
 					<IonItemDivider>All Custom Sort Methods</IonItemDivider>
-					{customSorts.length > 0 ?
-						customSorts.map(sorter => {
-							const {
-								id,
-								title,
-								sortLanguage,
-								sensitivity,
-								customAlphabet,
-								customizations
-							} = sorter;
-							const desc: string[] = [];
-							sortLanguage && desc.push(langObj[sortLanguage]);
-							sensitivity && desc.push(sensitivity);
-							customAlphabet && desc.push("custom alphabet");
-							if(customizations && customizations.length) {
-								let r: number = 0;
-								let e: number = 0;
-								customizations.forEach(custom => {
-									if("equals" in custom) {
-										e++;
-									} else {
-										r++;
-									}
-								});
-								r > 0 && desc.push(`${r} relations`);
-								e > 0 && desc.push(`${e} equalities`);
-							}
-							return (
-								<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
-									<IonItemOptions side="end" className="serifChars">
-										<IonItemOption color="primary" aria-label="Edit" onClick={() => openEditor(sorter)}>
-											<IonIcon slot="icon-only" src="svg/edit.svg" />
-										</IonItemOption>
-										<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteSort(id, title)}>
-											<IonIcon slot="icon-only" icon={trash} />
-										</IonItemOption>
-									</IonItemOptions>
-									<IonItem>
-										<IonLabel className="customSortDescription">
-											<h2>{title}</h2>
-											<p>{desc.join("; ")}</p>
-										</IonLabel>
-										<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
-									</IonItem>
-								</IonItemSliding>
-							);
-						})
-					:
-						<IonItem>
-							<IonLabel className="ion-text-align-end"><em>(none)</em></IonLabel>
-						</IonItem>
-					}
+					{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => {
+						const {
+							id,
+							title,
+							sortLanguage,
+							sensitivity,
+							customAlphabet,
+							customizations
+						} = sorter;
+						const desc: string[] = [];
+						sortLanguage && desc.push(langObj[sortLanguage]);
+						sensitivity && desc.push(sensitivity);
+						customAlphabet && desc.push("custom alphabet");
+						if(customizations && customizations.length) {
+							let r: number = 0;
+							let e: number = 0;
+							customizations.forEach(custom => {
+								if("equals" in custom) {
+									e++;
+								} else {
+									r++;
+								}
+							});
+							r > 0 && desc.push(`${r} relations`);
+							e > 0 && desc.push(`${e} equalities`);
+						}
+						return (
+							<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
+								<IonItemOptions side="end" className="serifChars">
+									<IonItemOption color="primary" aria-label="Edit" onClick={() => openEditor(sorter)}>
+										<IonIcon slot="icon-only" src="svg/edit.svg" />
+									</IonItemOption>
+									<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteSort(id, title)}>
+										<IonIcon slot="icon-only" icon={trash} />
+									</IonItemOption>
+								</IonItemOptions>
+								<IonItem>
+									<IonLabel className="customSortDescription">
+										<h2>{title}</h2>
+										<p>{desc.join("; ")}</p>
+									</IonLabel>
+									<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+								</IonItem>
+							</IonItemSliding>
+						);
+					})}
 				</IonList>
 			</IonContent>
 			<IonFooter>

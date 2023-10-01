@@ -1,5 +1,4 @@
 import packageJson from '../../package.json';
-import PermanentInfo from '../components/PermanentInfo';
 import { StateObject } from "./types";
 
 export const currentVersion = packageJson.version;
@@ -284,9 +283,7 @@ const blankAppState: StateObject = {
 	sortSettings: {
 		defaultSortLanguage: "unicode",
 		sensitivity: "variant",
-		customSorts: [
-			PermanentInfo.sort.permanentCustomSortObjs["complex-preset-sort"]
-		]
+		customSorts: []
 	},
 	lastView: {
 		wg: 'charGroups',

@@ -42,6 +42,8 @@ import {
 	setCustomSort
 } from '../../../store/wgSlice';
 
+import PermanentInfo from '../../../components/PermanentInfo';
+
 const OutputOptionsModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
@@ -132,7 +134,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
 						>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default</IonSelectOption>
-							{customSorts.map(sorter => (
+							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
 									key={`customSortChooser:${sorter.id}:${sorter.title}`}

@@ -43,6 +43,7 @@ import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
 import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import makeSorter from '../../components/stringSorter';
+import PermanentInfo from '../../components/PermanentInfo';
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGCards";
 
@@ -145,7 +146,7 @@ const WGOut = (props: PageData) => {
 		let customSortObj: SortObject | undefined;
 		let defaultCustomSortObj: SortObject | undefined;
 		let customSortLexObj: SortObject | undefined;
-		customSorts.every(obj => {
+		customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
 			if(obj.id === customSortLex) {
 				customSortLexObj = obj;
 			}

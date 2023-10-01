@@ -40,12 +40,13 @@ import { LexiconOutlineIcon } from '../../components/icons';
 import ModalWrap from "../../components/ModalWrap";
 import ltr from '../../components/LTR';
 import { CustomStorageWE } from '../../components/PersistentInfo';
+import makeSorter from '../../components/stringSorter';
+import PermanentInfo from '../../components/PermanentInfo';
 import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WECards";
-import makeSorter from '../../components/stringSorter';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -131,7 +132,7 @@ const WEOut = (props: PageData) => {
 		let customSortObj: SortObject | undefined;
 		let defaultCustomSortObj: SortObject | undefined;
 		let customSortLexObj: SortObject | undefined;
-		customSorts.every(obj => {
+		customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
 			if(obj.id === customSortLex) {
 				customSortLexObj = obj;
 			}
