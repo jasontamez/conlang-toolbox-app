@@ -83,10 +83,17 @@ const AppInfo = (props: PageData) => {
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle>Notice</IonCardTitle>
+									<IonCardTitle className="ion-align-self-start">Credits and Acknowledgements</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
-									<p>The promised "major update" hit some unexpected, major snags and won't be happening.<br /><br />However, I <strong>WILL</strong> keep incrementally updating this app.</p>
+									<IonList className="ion-text-center">
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
+										</IonItem>
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
+										</IonItem>
+									</IonList>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
@@ -100,9 +107,19 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent className="ion-padding-start">
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.9.6</strong></h2>
 									<ul className="changelog">
+										<li>Added sorting settings under the main Settings page. Your options are limited to the languages provided by your phone, but you can create custom sorting routines to alphabetize your data if you need it. These routines can be used inside WordGen, WordEvolve and Lexicon.</li>
+										<li><em>WordGen</em>
+											<ul><li>Presets now use their own special sorting routine when generating a wordlist.</li></ul>
+										</li>
+										<li><em>WordEvolve</em>
+											<ul><li>Added options to transform input to lowercase and/or sort input before applying sound changes.</li></ul>
+										</li>
+										<li>Numerous changes invisible to the user.</li>
+									</ul>
+									<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
+									<ul className="changelog">
 										<li>You can now swipe left on Lexicon items, Character Groups, Transforms and Sound Changes to edit or delete them.</li>
 										<li>Changed the way you export information into the Lexicon from other components. It should be more intuitive now.</li>
-										{/*<li>Added an option to app settings that affects how WordGen and Lexicon sort items alphabetically.</li>*/}
 										<li>Changed many icons.</li>
 										<li><em>MorphoSyntax</em>
 											<ul><li>On smaller screens where all pages can't fit into the tab bar, you will find left and right buttons to scroll through the tabs.</li></ul>
@@ -136,25 +153,6 @@ const AppInfo = (props: PageData) => {
 										<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>
 										<li>Added "Landau 200" to Concepts.</li>
 									</ul>
-								</IonCardContent>
-							</IonCard>
-						</IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol>
-							<IonCard>
-								<IonCardHeader className="ion-text-center">
-									<IonCardTitle className="ion-align-self-start">Credits and Acknowledgements</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<IonList className="ion-text-center">
-										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
-										</IonItem>
-										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
-										</IonItem>
-									</IonList>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
