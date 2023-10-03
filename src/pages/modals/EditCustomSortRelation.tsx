@@ -84,8 +84,8 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const pre = _pre ? _pre.value.split(separator) : [];
-		const post = _post ? _post.value.split(separator) : [];
+		const pre = _pre && _pre.value ? _pre.value.split(separator) : [];
+		const post = _post && _post.value ? _post.value.split(separator) : [];
 		if(!(pre.length + post.length)) {
 			doAlert({
 				message: `You must provide some "pre" or "post" characters.`,

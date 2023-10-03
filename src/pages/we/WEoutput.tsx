@@ -405,7 +405,7 @@ const WEOut = (props: PageData) => {
 	useEffect(() => {
 		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
 		setNeedToGenerate(true);
-	}, [outputStyle, input, transforms, soundChanges, characterGroups]);
+	}, [outputStyle, input, transforms, soundChanges, characterGroups, inputLower, inputAlpha, customSort]);
 
 	const evolveOutput = () => {
 		if(!needToGenerate) {

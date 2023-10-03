@@ -1,4 +1,4 @@
-import { EqualityObject, SortObject } from "../store/types";
+import { SortObject } from "../store/types";
 
 interface Perms {
 	sort: {
@@ -75,13 +75,17 @@ const PermanentInfo: Perms = {
 				separator: ",",
 				customizations: [
 					{
+						id: "wg-preset-eq-1",
 						base: "a",
-						equals: [ "à" ]
-					} as EqualityObject,
+						equals: [ "à" ],
+						separator: ""
+					},
 					{
+						id: "wg-preset-eq-2",
 						base: "e",
-						equals: [ "ê" ]
-					} as EqualityObject
+						equals: [ "ê" ],
+						separator: ""
+					}
 				],
 				multiples: [
 					"aĭ",

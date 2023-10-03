@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -87,10 +87,10 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 
-	useEffect(() => {
+	const onLoad = () => {
 		setShadowColumns(columns.slice().map((col: LexiconColumn, i: number) => ({...col, originalPosition: i})));
-	}, [columns]);
-
+		setShadowCustomSort(customSort || null);
+	};
 	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
 		const newCols = shadowColumns.slice();
 		newCols[i].size = value;
@@ -281,7 +281,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		setIsOpen(false);
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => closeModal()} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => closeModal()} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Columns</IonTitle>
@@ -307,7 +307,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						>Show Full Column Titles</IonToggle>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
-						<IonSelect className="ion-text-wrap" label="Sort method:" value={customSort || null} onIonChange={(e) => setShadowCustomSort(e.detail.value)}>
+						<IonSelect className="ion-text-wrap" label="Sort method:" value={shadowCustomSort} onIonChange={(e) => setShadowCustomSort(e.detail.value)}>
 							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default sort</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption key={`lex:modal:${sorter.id}`} className="ion-text-wrap ion-text-align-end" value={sorter.id}>{sorter.title}</IonSelectOption>

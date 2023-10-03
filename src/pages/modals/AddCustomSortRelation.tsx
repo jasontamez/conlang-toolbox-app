@@ -68,8 +68,8 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 		}
 		const _pre = $i("addPreRelation");
 		const _post = $i("addPostRelation");
-		const pre = _pre ? _pre.value.split(separator) : [];
-		const post = _post ? _post.value.split(separator) : [];
+		const pre = _pre && _pre.value ? _pre.value.split(separator) : [];
+		const post = _post && _post.value ? _post.value.split(separator) : [];
 		if(!(pre.length + post.length)) {
 			doAlert({
 				message: `You must provide some "pre" or "post" characters.`,

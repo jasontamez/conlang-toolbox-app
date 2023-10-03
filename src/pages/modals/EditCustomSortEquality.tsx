@@ -78,7 +78,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const equals = _equals ? _equals.value.split(separator) : [];
+		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
 		if(equals.length === 0) {
 			doAlert({
 				message: `You must provide some "equal" characters.`,

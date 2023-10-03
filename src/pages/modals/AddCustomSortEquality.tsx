@@ -65,7 +65,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 			return;
 		}
 		const _equals = $i("addEquality");
-		const equals = _equals ? _equals.value.split(separator) : [];
+		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
 		if(!equals.length) {
 			doAlert({
 				message: `You must provide some "equal" characters.`,

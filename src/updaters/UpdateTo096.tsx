@@ -58,7 +58,7 @@ function updateWG (incomingState: oldTypes.StateObject) {
 		...wordgenSettings
 	};
 	const wg: WGState = {
-		characterGroups: wordgenCharGroups.map.map(map => map[1]),
+		characterGroups: wordgenCharGroups.map.map(([label, object]) => ({...object, label})),
 		multipleSyllableTypes: wordgenSyllables.toggle,
 		singleWord: singleWord.components.join("\n"),
 		wordInitial: wordInitial.components.join("\n"),
@@ -96,15 +96,7 @@ function updateWE (incomingState: oldTypes.StateObject) {
 	} = incomingState;
 	const we: WEState = {
 		input: wordevolveInput.join("\n"),
-		characterGroups: wordevolveCharGroups.map.map(obj => {
-			const { title, label, run } = obj[1];
-			return {
-				id: obj[0],
-				title,
-				label,
-				run
-			}
-		}),
+		characterGroups: wordevolveCharGroups.map.map(([label, object]) => ({...object, label})),
 		transforms: wordevolveTransforms.list.map(obj => {
 			const {key, ...rest} = obj;
 			return {

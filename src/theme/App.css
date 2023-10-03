@@ -791,8 +791,11 @@ ion-item.customization > ion-reorder {
 ion-item.customization > div.hidden {
 	display: none;
 }
-ion-item.relation > div.base,
+ion-item.customization > div.lessthan,
+ion-item.customization > div.greaterthan,
 ion-item.customization > div.equals {
+	font-size: larger;
+	font-weight: bold;
 	margin-inline: 0.5rem;
 }
 ion-item.customization > div.equalities,
@@ -802,7 +805,6 @@ ion-item.customization > div.pre {
 	flex-flow: row nowrap;
 	align-items: center;
 	justify-content: flex-start;
-	font-weight: bold;
 }
 ion-item.customization > div.pre {
 	justify-content: flex-end;
@@ -810,10 +812,5 @@ ion-item.customization > div.pre {
 ion-item.customization > div.base {
 	font-size: larger;
 	border: 1px solid var(--ion-text-color);
-	padding: 0.1rem 0.25rem;
-}
-ion-item.customization > div.lessthan {
-	font-size: larger;
-	font-weight: bold;
 	padding: 0.1rem 0.25rem;
 }

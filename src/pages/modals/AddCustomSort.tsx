@@ -30,7 +30,7 @@ import {
 	globeOutline,
 	addOutline,
 	trash,
-	reorderTwo
+	reorderThree
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
@@ -437,12 +437,14 @@ const AddCustomSort = (props: CustomSortModal) => {
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{customizations.length > 0 ?
 							customizations.map(obj => {
+								const {
+									id,
+									base,
+									separator
+								} = obj;
 								if("equals" in obj) {
 									const {
-										id,
-										base,
-										equals,
-										separator
+										equals
 									} = obj;
 									return (
 										<IonItemSliding className="customSortItem" key={`relation:${id}`}>
@@ -455,7 +457,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 											</IonItemOptions>
 											<IonItem className="equality customization">
-												<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
+												<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
 												<div className="base">{base}</div>
 												<div className="equals">=</div>
 												<div className="equalities">{equals.map((ch, i) => <div key={`equality:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}</div>
@@ -465,11 +467,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 									);
 								} else {
 									const {
-										id,
-										base,
 										pre,
-										post,
-										separator
+										post
 									} = obj;
 									return (
 										<IonItemSliding className="customSortItem" key={`relation:${id}`}>
@@ -490,16 +489,28 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 											</IonItemOptions>
 											<IonItem className="relation customization">
-												<IonReorder className="ion-padding-end"><IonIcon icon={reorderTwo} /></IonReorder>
-												<div className={pre.length ? "pre" : "hidden"}>
-													{pre.map((ch, i) => <div key={`pre:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
-												</div>
-												<div className={pre.length ? "lessthan" : "hidden"}>&lt;</div>
+											<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
+												{pre.length ?
+													<>
+														<div className="pre">
+															{pre.map((ch, i) => <div key={`pre:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
+														</div>
+														<div className="lessthan">&lt;</div>
+													</>
+												:
+													<></>
+												}
 												<div className="base">{base}</div>
-												<div className={post.length ? "lessthan" : "hidden"}>&lt;</div>
-												<div className={post.length ? "post" : "hidden"}>
-													{post.map((ch, i) => <div key={`post:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
-												</div>
+												{post.length ?
+													<>
+														<div className="lessthan">&lt;</div>
+														<div className="post">
+															{post.map((ch, i) => <div key={`post:${ch}:${i}`}>{i ? separator : ""}{ch}</div>)}
+														</div>
+													</>
+												:
+													<></>
+												}
 												<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
 											</IonItem>
 										</IonItemSliding>

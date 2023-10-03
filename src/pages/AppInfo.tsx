@@ -107,7 +107,7 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent className="ion-padding-start">
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.9.6</strong></h2>
 									<ul className="changelog">
-										<li>Added sorting settings under the main Settings page. Your options are limited to the languages provided by your phone, but you can create custom sorting routines to alphabetize your data if you need it. These routines can be used inside WordGen, WordEvolve and Lexicon.</li>
+										<li>Added sorting settings under the main Settings page. Your options are limited to the languages supported by your device, but you can create custom sorting routines to alphabetize your data if you need it. These routines can be used inside WordGen, WordEvolve and Lexicon.</li>
 										<li><em>WordGen</em>
 											<ul><li>Presets now use their own special sorting routine when generating a wordlist.</li></ul>
 										</li>
