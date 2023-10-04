@@ -70,7 +70,7 @@ const WEInput = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear Lexicon",
+				header: "Clear Input",
 				message: "Are you sure? This will clear the entire input, and cannot be undone.",
 				cssClass: "danger",
 				submit: "Yes, clear it",
@@ -148,7 +148,7 @@ const WEInput = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Input Lexicon</IonTitle>
+					<IonTitle>Input</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />

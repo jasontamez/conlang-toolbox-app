@@ -91,7 +91,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const copyNow = useCallback((char) => {
 		Clipboard.write({string: char}).then(() => toaster({
 			message: `Copied ${char} to clipboard`,
-			position: "top",
+			position: "middle",
 			duration: 1500,
 			doToast,
 			undoToast
@@ -115,7 +115,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		toaster({
 			message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
 			duration: 2500,
-			position: "top",
+			position: "middle",
 			doToast,
 			undoToast
 		});
@@ -129,7 +129,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		toaster({
 			message: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
 			duration: 2500,
-			position: "top",
+			position: "middle",
 			doToast,
 			undoToast
 		});
@@ -191,7 +191,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						</div>
 					</IonItem>
 					<IonItem className="extraHelp">
-						<div>Characters will nowShowing below. Tap them to copy them to the copy-bar above.</div>
+						<div>Characters will display below. Tap them to copy them to the copy-bar above.</div>
 					</IonItem>
 					{data ? (
 						<IonItem key={`${nowShowing}-Group`}>
