@@ -28,7 +28,8 @@ import {
 	helpCircleOutline,
 	reorderTwo,
 	trash,
-	globeOutline
+	globeOutline,
+	trashBinOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -126,6 +127,31 @@ const WERew = (props: PageData) => {
 		dispatch(rearrangeTransformsWE(reorganized));
 		ed.complete();
 	};
+	const maybeClearEverything = () => {
+		const handler = () => {
+			dispatch(deleteTransformWE(null));
+			toaster({
+				message: "Transformations have been deleted.",
+				duration: 2500,
+				color: "danger",
+				position: "top",
+				doToast,
+				undoToast
+			});
+		};
+		if(disableConfirms) {
+			handler();
+		} else {
+			yesNoAlert({
+				header: "Clear Everything?",
+				message: "This will delete all current transformations, and cannot be undone.",
+				cssClass: "warning",
+				submit: "Yes, Delete Them",
+				handler,
+				doAlert
+			});
+		}
+	};
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpenECM} />
@@ -144,6 +170,13 @@ const WERew = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>Transformations</IonTitle>
 					<IonButtons slot="end">
+						{transforms.length > 0 ?
+							<IonButton onClick={() => maybeClearEverything()}>
+								<IonIcon icon={trashBinOutline} />
+							</IonButton>
+						:
+							<></>
+						}
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>

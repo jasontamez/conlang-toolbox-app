@@ -28,7 +28,8 @@ import {
 	helpCircleOutline,
 	reorderTwo,
 	trash,
-	globeOutline
+	globeOutline,
+	trashBinOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -109,6 +110,31 @@ const WERew = (props: PageData) => {
 		dispatch(rearrangeSoundChangesWE(reorganized));
 		ed.complete();
 	};
+	const maybeClearEverything = () => {
+		const handler = () => {
+			dispatch(deleteSoundChangeWE(null));
+			toaster({
+				message: "Sound Changes have been deleted.",
+				duration: 2500,
+				color: "danger",
+				position: "top",
+				doToast,
+				undoToast
+			});
+		};
+		if(disableConfirms) {
+			handler();
+		} else {
+			yesNoAlert({
+				header: "Clear Everything?",
+				message: "This will delete all current sound changes, and cannot be undone.",
+				cssClass: "warning",
+				submit: "Yes, Delete Them",
+				handler,
+				doAlert
+			});
+		}
+	};
 	return (
 		<IonPage>
 			<AddSoundChangeModal {...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)} openECM={setIsOpenECM} />
@@ -127,6 +153,13 @@ const WERew = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>Sound Changes</IonTitle>
 					<IonButtons slot="end">
+						{soundChanges.length > 0 ?
+							<IonButton onClick={() => maybeClearEverything()}>
+								<IonIcon icon={trashBinOutline} />
+							</IonButton>
+						:
+							<></>
+						}
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>

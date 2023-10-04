@@ -17,9 +17,7 @@ import {
 	IonInput,
 	IonButton,
 	IonLoading,
-	useIonViewDidEnter,
-	useIonAlert,
-	useIonToast
+	useIonViewDidEnter
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -46,14 +44,11 @@ import {
 	setInterrogativeSentencePre,
 	setInterrogativeSentencePost,
 	setExclamatorySentencePre,
-	setExclamatorySentencePost,
-	loadStateWG
+	setExclamatorySentencePost
 } from '../../store/wgSlice';
 import { saveView } from '../../store/viewSlice';
 
 import { CustomStorageWG } from '../../components/PersistentInfo';
-import yesNoAlert from '../../components/yesNoAlert';
-import toaster from '../../components/toaster';
 import ModalWrap from "../../components/ModalWrap";
 
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -74,7 +69,6 @@ const WGSet = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
-	const { disableConfirms }= useSelector((state: StateObject) => state.appSettings);
 	const {
 		monosyllablesRate,
 		maxSyllablesPerWord,
@@ -88,33 +82,6 @@ const WGSet = (props: PageData) => {
 		exclamatorySentencePre,
 		exclamatorySentencePost
 	} = useSelector((state: StateObject) => state.wg);
-	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
-	const maybeClearEverything = () => {
-		const handler = () => {
-			dispatch(loadStateWG(null));
-			toaster({
-				message: "Character Groups, Syllables and Transformations have been deleted, and the other settings have been reset.",
-				duration: 2500,
-				color: "danger",
-				position: "top",
-				doToast,
-				undoToast
-			});
-		};
-		if(disableConfirms) {
-			handler();
-		} else {
-			yesNoAlert({
-				header: "Clear Everything?",
-				message: "This will delete all current character groups, syllables and transformations, and reset all values on this page to their default values.",
-				cssClass: "warning",
-				submit: "Yes, clear everything",
-				handler,
-				doAlert
-			});
-		}
-	};
 	const openCustomInfoModal = () => {
 		const titles: string[] = [];
 		CustomStorageWG.iterate((value: any, title: string) => {
@@ -166,8 +133,7 @@ const WGSet = (props: PageData) => {
 					<IonItem style={ { padding: "0.5em" } } lines="none">
 						<div style={ { display: "flex", justifyContent: "center", alignContent: "flex-start", alignItems: "center", flexFlow: "row wrap" } }>
 							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => setIsOpenLoadPreset(true)} strong={true} color="secondary" shape="round">Load Preset</IonButton>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => maybeClearEverything()} strong={true} color="danger" shape="round">Clear All Fields</IonButton>
-							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => openCustomInfoModal()} strong={true} color="secondary" shape="round">Save/Load Custom Info</IonButton>
+							<IonButton style={ { margin: "0.25em 0.5em" } } onClick={() => openCustomInfoModal()} strong={true} color="tertiary" shape="round">Save/Load Custom Info</IonButton>
 						</div>
 					</IonItem>
 					<IonItemDivider>Word Generation Controls</IonItemDivider>

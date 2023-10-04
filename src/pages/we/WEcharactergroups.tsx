@@ -25,7 +25,8 @@ import {
 	helpCircleOutline,
 	addOutline,
 	trash,
-	globeOutline
+	globeOutline,
+	trashBinOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -90,6 +91,31 @@ const WECharGroup = (props: PageData) => {
 			});
 		}
 	};
+	const maybeClearEverything = () => {
+		const handler = () => {
+			dispatch(deleteCharacterGroupWE(null));
+			toaster({
+				message: "Character Groups have been deleted.",
+				duration: 2500,
+				color: "danger",
+				position: "top",
+				doToast,
+				undoToast
+			});
+		};
+		if(disableConfirms) {
+			handler();
+		} else {
+			yesNoAlert({
+				header: "Clear Character Groups?",
+				message: "This will delete all current character groups, and cannot be undone.",
+				cssClass: "warning",
+				submit: "Yes, Delete Them",
+				handler,
+				doAlert
+			});
+		}
+	};
 	return (
 		<IonPage>
 			<AddCharGroupWEModal
@@ -111,6 +137,13 @@ const WECharGroup = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>Character Groups</IonTitle>
 					<IonButtons slot="end">
+						{characterGroups.length > 0 ?
+							<IonButton onClick={() => maybeClearEverything()}>
+								<IonIcon icon={trashBinOutline} />
+							</IonButton>
+						:
+							<></>
+						}
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>

@@ -18,7 +18,11 @@ const addCharacterGroupFunc = (state: WEState, action: PayloadAction<WECharGroup
 	state.characterGroups.push(action.payload);
 	return state;
 };
-const deleteCharacterGroupFunc = (state: WEState, action: PayloadAction<WECharGroupObject>) => {
+const deleteCharacterGroupFunc = (state: WEState, action: PayloadAction<WECharGroupObject | null>) => {
+	if(!action.payload) {
+		state.characterGroups = [];
+		return state;
+	}
 	const { label } = action.payload;
 	state.characterGroups = state.characterGroups.filter(group => group.label !== label);
 	return state;
@@ -65,7 +69,11 @@ const addTransformFunc = (state: WEState, action: PayloadAction<WETransformObjec
 	state.transforms.push(action.payload);
 	return state;
 };
-const deleteTransformFunc = (state: WEState, action: PayloadAction<string>) => {
+const deleteTransformFunc = (state: WEState, action: PayloadAction<string | null>) => {
+	if(!action.payload) {
+		state.transforms = [];
+		return state;
+	}
 	const id = action.payload;
 	state.transforms = state.transforms.filter(t => t.id !== id);
 	return state;
@@ -87,7 +95,11 @@ const addSoundChangeFunc = (state: WEState, action: PayloadAction<WESoundChangeO
 	state.soundChanges.push(action.payload);
 	return state;
 };
-const deleteSoundChangeFunc = (state: WEState, action: PayloadAction<string>) => {
+const deleteSoundChangeFunc = (state: WEState, action: PayloadAction<string | null>) => {
+	if(!action.payload) {
+		state.soundChanges = [];
+		return state;
+	}
 	const id = action.payload;
 	state.soundChanges = state.soundChanges.filter(t => t.id !== id);
 	return state;

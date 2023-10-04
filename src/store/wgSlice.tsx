@@ -24,7 +24,11 @@ const addCharacterGroupFunc = (state: WGState, action: PayloadAction<WGCharGroup
 	state.characterGroups.push(action.payload);
 	return state;
 };
-const deleteCharacterGroupFunc = (state: WGState, action: PayloadAction<WGCharGroupObject>) => {
+const deleteCharacterGroupFunc = (state: WGState, action: PayloadAction<WGCharGroupObject | null>) => {
+	if(!action.payload) {
+		state.characterGroups = [];
+		return state;
+	}
 	const { label } = action.payload;
 	state.characterGroups = state.characterGroups.filter(group => group.label !== label);
 	return state;
@@ -89,7 +93,11 @@ const addTransformFunc = (state: WGState, action: PayloadAction<WGTransformObjec
 	state.transforms.push(action.payload);
 	return state;
 };
-const deleteTransformFunc = (state: WGState, action: PayloadAction<string>) => {
+const deleteTransformFunc = (state: WGState, action: PayloadAction<string | null>) => {
+	if(!action.payload) {
+		state.transforms = [];
+		return state;
+	}
 	const id = action.payload;
 	state.transforms = state.transforms.filter(t => t.id !== id);
 	return state;
