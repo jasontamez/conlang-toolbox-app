@@ -205,7 +205,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			message: "Saved!",
 			duration: 2500,
 			color: "success",
-			position: "top",
+			position: "middle",
 			doToast,
 			undoToast
 		});

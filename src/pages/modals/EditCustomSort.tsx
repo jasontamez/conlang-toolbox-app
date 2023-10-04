@@ -33,7 +33,6 @@ import {
 	reorderThree
 } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from 'uuid';
 import { LanguageCode } from 'iso-639-1';
 
 import {
@@ -241,7 +240,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 		}
 		let test: boolean = false;
 		const customSort: SortObject = {
-			id: uuidv4(),
+			id,
 			title
 		};
 		if(usingAlpha) {
@@ -291,7 +290,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		dispatch(editCustomSort([id, customSort]));
+		dispatch(editCustomSort(customSort));
 		closeModal();
 		toaster({
 			message: "Custom sort saved.",

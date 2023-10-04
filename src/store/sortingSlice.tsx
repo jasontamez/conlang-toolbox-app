@@ -55,8 +55,9 @@ const addNewCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObj
 	return state;
 };
 
-const editCustomSortFunc = (state: SortSettings, action: PayloadAction<[string, SortObject]>) => {
-	const [ id, newObj ] = action.payload;
+const editCustomSortFunc = (state: SortSettings, action: PayloadAction<SortObject>) => {
+	const newObj = action.payload;
+	const { id } = newObj;
 	newObj.multiples = checkForMultiples(newObj);
 	state.customSorts = state.customSorts.map((obj => {
 		if(obj.id === id) {
