@@ -90,12 +90,6 @@ function maybeExpand (e: any, doToast: Function, undoToast: Function) {
 			duration: 10000,
 			position: "top",
 			color: "primary",
-			buttons: [
-				{
-					text: "Ok",
-					role: "cancel"
-				}
-			],
 			doToast,
 			undoToast
 		});

@@ -31,12 +31,6 @@ const doExport = async (
 				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
 				duration: 10000,
-				buttons: [
-					{
-						text: "Ok",
-						role: 'cancel'
-					}
-				],
 				doToast,
 				undoToast
 			});
@@ -54,12 +48,6 @@ const doExport = async (
 				message: `${filename} exported`,
 				color: "success",
 				duration: 5000,
-				buttons: [
-					{
-						text: "Ok",
-						role: 'cancel'
-					}
-				],
 				doToast,
 				undoToast
 			});
@@ -69,12 +57,6 @@ const doExport = async (
 				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
 				duration: 10000,
-				buttons: [
-					{
-						text: "Ok",
-						role: 'cancel'
-					}
-				],
 				doToast,
 				undoToast
 			});

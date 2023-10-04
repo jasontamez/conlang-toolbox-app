@@ -78,12 +78,6 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			message: "Item added!",
 			duration: 2500,
 			color: "success",
-			buttons: [
-				{
-					text: "Ok",
-					role: "cancel"
-				}
-			],
 			doToast,
 			undoToast
 		});

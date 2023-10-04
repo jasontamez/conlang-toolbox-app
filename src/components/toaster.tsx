@@ -18,7 +18,12 @@ const toaster = (props: Toast) => {
 		doToast,
 		undoToast,
 		position,
-		buttons
+		buttons = [
+			{
+				text: "Ok",
+				role: 'cancel'
+			}
+		]
 	} = props;
 	undoToast().then(() => doToast({
 		message,
