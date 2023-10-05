@@ -142,6 +142,15 @@ const deleteLexiconItemFunc = (state: LexiconState, action: PayloadAction<string
 	state.lexicon = state.lexicon.filter(item => item.id !== id);
 	return state;
 };
+const deleteMultipleLexiconItemsFunc = (state: LexiconState, action: PayloadAction<string[]>) => {
+	//deleteLexiconItem("id")
+	const ids = action.payload;
+	state.lexicon = state.lexicon.filter(item => {
+		const { id } = item;
+		return ids.every(del => del !== id);
+	});
+	return state;
+};
 const updateLexiconSortFunc = (state: LexiconState, action: PayloadAction<[number[], Function]>) => {
 	const [sortPattern, sorter] = action.payload;
 	state.sortPattern = sortPattern;
@@ -225,6 +234,7 @@ const lexiconSlice = createSlice({
 		addItemstoLexiconColumn: addItemstoLexiconColumnFunc,
 		doEditLexiconItem: editLexiconItemFunc,
 		deleteLexiconItem: deleteLexiconItemFunc,
+		deleteMultipleLexiconItems: deleteMultipleLexiconItemsFunc,
 		updateLexiconSort: updateLexiconSortFunc,
 		updateLexiconSortDir: updateLexiconSortDirFunc,
 		toggleLexiconWrap: toggleLexiconWrapFunc,
@@ -244,6 +254,7 @@ export const {
 	addItemstoLexiconColumn,
 	doEditLexiconItem,
 	deleteLexiconItem,
+	deleteMultipleLexiconItems,
 	updateLexiconSort,
 	updateLexiconSortDir,
 	toggleLexiconWrap,

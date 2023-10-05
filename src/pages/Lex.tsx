@@ -26,7 +26,8 @@ import {
 	IonFab,
 	IonFabButton,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	IonFabList
 } from '@ionic/react';
 import {
 	add,
@@ -36,7 +37,9 @@ import {
 	settings,
 	chevronUpCircle,
 	chevronDownCircle,
-	addOutline
+	construct,
+	closeCircle,
+	addCircle
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
@@ -44,7 +47,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
 
-import { addLexiconItem, deleteLexiconItem, updateLexiconSortDir, updateLexiconText } from '../store/lexiconSlice';
+import {
+	addLexiconItem,
+	deleteLexiconItem,
+	deleteMultipleLexiconItems,
+	updateLexiconSortDir,
+	updateLexiconText
+} from '../store/lexiconSlice';
 import { Lexicon, LexiconColumn, LexiconState, PageData, SortObject, StateObject } from '../store/types';
 
 import AddLexiconItemModal from './modals/AddWord';
@@ -77,6 +86,18 @@ interface LexItem {
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
 		merging: string[]
+	}
+}
+interface LexItemDeleting {
+	index: number
+	style: {
+		[key: string]: any
+	}
+	data: {
+		columns: LexiconColumn[]
+		lexicon: Lexicon[]
+		toggleDeleting: Function,
+		deletingObj: { [ key: string ]: boolean }
 	}
 }
 
@@ -154,6 +175,43 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 	);
 }, areEqual);
 
+const RenderLexiconDeleting = memo(({index, style, data}: LexItemDeleting) => {
+	const {
+		columns,
+		lexicon,
+		toggleDeleting,
+		deletingObj
+	} = data;
+	const lex: Lexicon = lexicon[index];
+	const cols = lex.columns;
+	const id = lex.id;
+	const deleting = deletingObj[id];
+	return (
+		<IonItem
+			key={`${id}:deletingItem`}
+			id={`del:${id}`}
+			style={style}
+			className={
+				"lexRow serifChars lexiconDeletingDisplay "
+				+ (index % 2 ? "even" : "odd")
+				+ (deleting ? " deleting" : "")
+			}
+			onClick={() => toggleDeleting(lex)}
+		>
+			{cols.map((item: string, i: number) => (
+				<div
+					key={`del:${id}:col${i}`}
+					className={
+						"lexItem selectable "
+						+ columns[i].size
+					}
+				>{item}</div>
+			))}
+			<div className="xs"></div>
+		</IonItem>
+	);
+}, areEqual);
+
 const Lex = (props: PageData) => {
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -216,6 +274,49 @@ const Lex = (props: PageData) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
+
+	// deleting multiple lex items
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [deleting, setDeleting] = useState<Lexicon[]>([]);
+	const [deletingObj, setDeletingObj] = useState<{[key: string]: boolean}>({});
+	function maybeFinishDeleting (cancel: boolean = false) {
+		if(cancel || deleting.length === 0) {
+			setDeleting([]);
+			return setIsDeleting(false);
+		}
+		const handler = () => {
+			dispatch(deleteMultipleLexiconItems(deleting.map(obj => obj.id)));
+			toaster({
+				message: `Deleted ${deleting.length} items.`,
+				color: "danger",
+				position: "middle",
+				doToast,
+				undoToast
+			});
+			setDeleting([]);
+			return setIsDeleting(false);
+		};
+		yesNoAlert({
+			header: `Delete ${deleting.length} Items?`,
+			message: "This action cannot be undone. Are you sure?",
+			submit: "Yes, Delete Them",
+			cssClass: "danger",
+			handler,
+			doAlert
+		})
+	};
+	const beginMassDeleteMode = () => {
+		clearMergedInfo();
+		setIsDeleting(true);
+		toaster({
+			message: "Tap on items to mark them for deletion. Finish deleting by tapping the top floating button. Cancel by tapping the bottom floating button.",
+			duration: 8000,
+			position: "bottom",
+			color: "danger",
+			doToast,
+			undoToast
+		})
+	};
 
 	// Sliding container
 	const mainLexList = $i("mainLexList");
@@ -355,6 +456,23 @@ const Lex = (props: PageData) => {
 		delFromLex, beginEdit, maybeSetForMerge, maybeExpand: expander, columns, lexicon, merging
 	}));
 	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging);
+	const toggleDeleting = useCallback((item: Lexicon) => {
+		const {id} = item;
+		const newObj = {...deletingObj};
+		if(deletingObj[id]) {
+			delete newObj[id];
+			const newList = deleting.filter(obj => obj.id !== id);
+			setDeleting(newList);
+		} else {
+			newObj[id] = true;
+			setDeleting([...deleting, item]);
+		}
+		setDeletingObj(newObj);
+	}, [deleting, deletingObj]);
+	const otherItemData = memoizeOne((columns, lexicon, toggleDeleting, deletingObj) => ({
+		columns, lexicon, toggleDeleting, deletingObj
+	}));
+	const otherData = otherItemData(columns, lexicon, toggleDeleting, deletingObj);
 
 	// JSX
 	return (
@@ -436,10 +554,10 @@ const Lex = (props: PageData) => {
 						<IonButton color={lexHeadersHidden ? "secondary" : undefined} onClick={() => setLexHeadersHidden(!lexHeadersHidden)}>
 							<IonIcon icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle} slot="icon-only" />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenECM(true)} slot="icon-only">
+						<IonButton disabled={isDeleting} onClick={() => setIsOpenECM(true)} slot="icon-only">
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenLexStorage(true)} slot="icon-only">
+						<IonButton disabled={isDeleting} onClick={() => setIsOpenLexStorage(true)} slot="icon-only">
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 					</IonButtons>
@@ -472,7 +590,7 @@ const Lex = (props: PageData) => {
 							</IonButton>
 						</div>
 						<div style={{flexGrow: 0, flexShrink: 0}}>
-							<IonButton color="tertiary" onClick={() => setIsOpenLexOrder(true)}>
+							<IonButton disabled={isDeleting} color="tertiary" onClick={() => setIsOpenLexOrder(true)}>
 								<IonIcon size="small" icon={settings} />
 							</IonButton>
 						</div>
@@ -504,32 +622,68 @@ const Lex = (props: PageData) => {
 												aria-label={`${label} input`}
 												className={`${size} lexAddInput`}
 												type="text"
+												disabled={isDeleting}
 											/>
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>
-										<IonButton color="success" onClick={() => addToLex()}>
+										<IonButton disabled={isDeleting} color="success" onClick={() => addToLex()}>
 											<IonIcon icon={add} style={ { margin: 0 } } />
 										</IonButton>
 									</div>
 								</IonItem>
-								<FixedSizeList
-									className="virtualLex"
-									height={lexiconHeight}
-									itemCount={lexicon.length}
-									itemData={fixedSizeListData}
-									itemSize={48}
-									width="100%"
-								>{RenderLexiconItem}</FixedSizeList>
+								{isDeleting ?
+									<FixedSizeList
+										className="virtualLex"
+										height={lexiconHeight}
+										itemCount={lexicon.length}
+										itemData={otherData}
+										itemSize={48}
+										width="100%"
+									>{RenderLexiconDeleting}</FixedSizeList>
+								:
+									<FixedSizeList
+										className="virtualLex"
+										height={lexiconHeight}
+										itemCount={lexicon.length}
+										itemSize={48}
+										itemData={fixedSizeListData}
+										width="100%"
+									>{RenderLexiconItem}</FixedSizeList>
+								}
 							</IonCol>
 						</IonRow>
 					</IonGrid>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="primary" title="Add new lexicon item" onClick={() => setIsOpenAddLexItem(true)}>
-						<IonIcon icon={addOutline} />
+					<IonFabButton color="primary" disabled={isDeleting}>
+						<IonIcon icon={construct} />
 					</IonFabButton>
+					<IonFabList side="top">
+						<IonFabButton color="danger" title="Delete multiple lexicon items" onClick={() => beginMassDeleteMode()}>
+							<IonIcon icon={trash} />
+						</IonFabButton>
+						<IonFabButton color="success" title="Add new lexicon item" onClick={() => setIsOpenAddLexItem(true)}>
+							<IonIcon icon={addCircle} />
+						</IonFabButton>
+					</IonFabList>
 				</IonFab>
+				{isDeleting ?
+					<>
+						<IonFab vertical="top" horizontal="start" edge={true} slot="fixed">
+							<IonFabButton color="danger" title="Delete selected lexicon items" onClick={() => maybeFinishDeleting()}>
+								<IonIcon icon={trash} />
+							</IonFabButton>
+						</IonFab>
+						<IonFab vertical="bottom" horizontal="start" slot="fixed">
+							<IonFabButton color="warning" title="Cancel deleting" onClick={() => maybeFinishDeleting(true)}>
+								<IonIcon icon={closeCircle} />
+							</IonFabButton>
+						</IonFab>
+					</>
+				:
+					<></>
+				}
 				{mergeButton}
 			</IonContent>
 		</IonPage>

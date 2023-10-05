@@ -178,6 +178,7 @@ ion-fab {
 .lexItem.ion-text-wrap {
 	overflow: auto;
 }
+
 .lexiconDisplay {
 	border-block-start: 2px solid var(--ion-background-color);
 }
@@ -188,6 +189,22 @@ ion-fab {
 	border-block-start: 2px solid var(--ion-background-color);
 	border-block-end: 2px solid var(--ion-background-color);
 }
+.lexiconDeletingDisplay.deleting {
+	border-block-start: 2px solid var(--ion-color-danger-shade);
+	background: var(--ion-color-danger);
+	color: var(--ion-color-danger-contrast);
+}
+.lexiconDeletingDisplay.deleting:last-child {
+	border-block-end: 2px solid var(--ion-color-danger-shade);
+}
+
+.virtualLex .lexRow.lexiconDeletingDisplay.deleting.even::part(native) {
+	background: var(--ion-background-shader);
+}
+.virtualLex .lexRow.lexiconDeletingDisplay.deleting.odd::part(native) {
+	background: var(--ion-background-tinter);
+}
+
 #lexiconPage #lexiconSort::part(text)::before {
 	content: "Sort: ";
 	margin-inline-end: 0.5rem;
