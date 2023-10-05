@@ -30,7 +30,7 @@ import SortSettings from './pages/SortSettings';
 import Info from './pages/AppInfo';
 
 import doUpdate095 from './updaters/UpdateTo095';
-import doUpdate096 from './updaters/UpdateTo096';
+import doUpdate0100 from './updaters/UpdateTo0100';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -131,7 +131,7 @@ const App = memo(() => {
 					if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
 						storedState = doUpdate095(storedState);
 					}
-					doUpdate096(storedState, dispatch);
+					doUpdate0100(storedState, dispatch);
 					// We're not doing global state again.
 					StateStorage.removeItem("lastState");
 				}

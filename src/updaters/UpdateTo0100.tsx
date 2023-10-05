@@ -22,7 +22,7 @@ import { loadStateWE } from "../store/weSlice";
 import { loadStateWG } from "../store/wgSlice";
 import * as oldTypes from "./oldReduxTypes";
 
-// Updating to 0.9.6
+// Updating to 0.10.0
 function doUpdate (incomingState: oldTypes.StateObject, dispatch: Function) {
 	// TO-DO: update stored custom info
 	dispatch(loadStateWG(updateWG(incomingState)));
