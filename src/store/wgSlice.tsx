@@ -76,14 +76,23 @@ const setMultipleSyllableTypesFunc = (state: WGState, action: PayloadAction<bool
 	state.multipleSyllableTypes = action.payload;
 	return state;
 };
-const setSyllablesFunc = (state: WGState, action: PayloadAction<{ syllables: SyllableTypes, value: string }>) => {
-	const { syllables, value } = action.payload;
+const setSyllablesFunc = (state: WGState, action: PayloadAction<{ syllables: SyllableTypes, value: string, override: Zero_Fifty | null }>) => {
+	const { syllables, value, override } = action.payload;
 	state[syllables] = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
+	state.syllableDropoffOverrides[syllables] = override;
 	return state;
 };
-const setSyllableOverrideFunc = (state: WGState, action: PayloadAction<{ syllables: SyllableTypes, value: Zero_Fifty | null }>) => {
-	const { syllables, value } = action.payload;
-	state.syllableDropoffOverrides[syllables] = value;
+const clearSyllablesFunc = (state: WGState, action: PayloadAction) => {
+	state.singleWord = "";
+	state.wordInitial = "";
+	state.wordMiddle = "";
+	state.wordFinal = "";
+	state.syllableDropoffOverrides = {
+		singleWord: null,
+		wordInitial: null,
+		wordMiddle: null,
+		wordFinal: null
+	};
 	return state;
 };
 
@@ -262,7 +271,7 @@ const wgSlice = createSlice({
 	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		setMultipleSyllableTypes: setMultipleSyllableTypesFunc,
 		setSyllables: setSyllablesFunc,
-		setSyllableOverride: setSyllableOverrideFunc,
+		clearSyllables: clearSyllablesFunc,
 		addTransformWG: addTransformFunc,
 		deleteTransformWG: deleteTransformFunc,
 		editTransformWG: editTransformFunc,
@@ -299,7 +308,7 @@ export const {
 	copyCharacterGroupsFromElsewhere,
 	setMultipleSyllableTypes,
 	setSyllables,
-	setSyllableOverride,
+	clearSyllables,
 	addTransformWG,
 	deleteTransformWG,
 	editTransformWG,
