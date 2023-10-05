@@ -474,7 +474,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
 							<h2>Relations</h2>
-							<p>Similar characters that should be sorted separately.</p>
+							<p>Similar characters that should be sorted in a specific order.</p>
 						</IonLabel>
 						<IonButton color="secondary" slot="end" onClick={maybeAddNewRelation}>
 							<IonIcon icon={addOutline} slot="end" />

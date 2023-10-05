@@ -37,6 +37,7 @@ ion-app .important {
 }
 ion-app .hide {
 	display: none !important;
+	overflow: hidden;
 }
 ion-row:nth-child(odd) {
 	margin: 16px 0;
@@ -150,19 +151,7 @@ ion-app ion-list.syllables .toggleable {
 	overflow: hidden;
 	display: none;
 }
-ion-app ion-list.syllables .toggleable.toggled,
-ion-app ion-list.syllables .toggleable.reverseToggle {
-	display: flex;
-}
-ion-app ion-list.syllables .toggleable.reverseToggle.toggled {
-	display: none;
-}
-ion-app ion-list.syllables .header.toggleable,
-ion-app ion-list.syllables .header.toggleable.reverseToggle.toggled {
-	display: none;
-}
-ion-app ion-list.syllables .header.toggleable.toggled,
-ion-app ion-list.syllables .header.toggleable.reverseToggle {
+ion-app ion-list.syllables .toggleable.toggled {
 	display: flex;
 }
 
