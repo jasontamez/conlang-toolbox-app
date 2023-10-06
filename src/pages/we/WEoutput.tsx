@@ -31,7 +31,7 @@ import { Clipboard } from '@capacitor/clipboard';
 
 import { LexiconColumn, PageData, SortObject, StateObject, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
-import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
+import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
@@ -777,7 +777,7 @@ const WEOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id, lexSorter]));
+						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

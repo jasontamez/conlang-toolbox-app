@@ -160,8 +160,10 @@ ion-app ion-list.syllables div.header div.percentage {
 	font-size: smaller;
 	font-style: italic;
 	padding: 0.25rem 0.5rem;
-	margin-top: 1rem;
-	background-color: var(--ion-background-tinter);
+	margin-block-start: 1rem;
+	border-radius: 1rem;
+	background-color: var(--ion-background-shader);
+	opacity: 0.75;
 }
 ion-app ion-list.syllables .toggleable {
 	overflow: hidden;
@@ -248,7 +250,7 @@ ion-app .fullScreen .collapse div ion-button {
 	flex-shrink: 0;
 }
 .dropoff {
-	background: #00000033;
+	background: var(--ion-background-shader);
 	padding: 0.5em;
 	border-radius: 1em;
 	font-style: italic;

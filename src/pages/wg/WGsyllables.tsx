@@ -210,7 +210,7 @@ const WGSyl = (props: PageData) => {
 					<IonItem className="nonUnit">
 						<div className="header">
 							<div className="title">{firstBox}</div>
-							{swDropoff ?
+							{swDropoff !== null ?
 								<div className="percentage">{swDropoff}%</div>
 							:
 								<></>
@@ -258,7 +258,7 @@ const WGSyl = (props: PageData) => {
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
 							<div className="title">Word-Initial<br />Syllables</div>
-							{wiDropoff ?
+							{wiDropoff !== null ?
 								<div className="percentage">{wiDropoff}%</div>
 							:
 								<></>
@@ -306,7 +306,7 @@ const WGSyl = (props: PageData) => {
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
 							<div className="title">Mid-Word<br />Syllables</div>
-							{wmDropoff ?
+							{wmDropoff !== null ?
 								<div className="percentage">{wmDropoff}%</div>
 							:
 								<></>
@@ -354,7 +354,7 @@ const WGSyl = (props: PageData) => {
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
 							<div className="title">Word-Final<br />Syllables</div>
-							{wfDropoff ?
+							{wfDropoff !== null ?
 								<div className="percentage">{wfDropoff}%</div>
 							:
 								<></>

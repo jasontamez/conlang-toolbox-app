@@ -103,7 +103,7 @@ const addLexiconItemFunc = (state: LexiconState, action: PayloadAction<[Lexicon,
 	state.lexicon = sortLexicon([lexObj, ...state.lexicon], state.sortPattern, state.sortDir, state.blankSort, sorter);
 	return state;
 };
-const addItemstoLexiconColumnFunc = (state: LexiconState, action: PayloadAction<[ string[], string, Function ]>) => {
+const addItemsToLexiconColumnFunc = (state: LexiconState, action: PayloadAction<[ string[], string, Function ]>) => {
 	const totalNumberOfColumns = state.columns.length;
 	const [items, columnId, sorter] = action.payload;
 	let columnNumber = 0;
@@ -231,7 +231,7 @@ const lexiconSlice = createSlice({
 		updateLexiconText: updateLexiconTextFunc,
 		updateLexiconNumber: updateLexiconNumberFunc,
 		addLexiconItem: addLexiconItemFunc,
-		addItemstoLexiconColumn: addItemstoLexiconColumnFunc,
+		addItemsToLexiconColumn: addItemsToLexiconColumnFunc,
 		doEditLexiconItem: editLexiconItemFunc,
 		deleteLexiconItem: deleteLexiconItemFunc,
 		deleteMultipleLexiconItems: deleteMultipleLexiconItemsFunc,
@@ -251,7 +251,7 @@ export const {
 	updateLexiconText,
 	updateLexiconNumber,
 	addLexiconItem,
-	addItemstoLexiconColumn,
+	addItemsToLexiconColumn,
 	doEditLexiconItem,
 	deleteLexiconItem,
 	deleteMultipleLexiconItems,

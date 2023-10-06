@@ -34,7 +34,7 @@ import {
 	StateObject,
 	SortObject
 } from '../../store/types';
-import { addItemstoLexiconColumn } from '../../store/lexiconSlice';
+import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 import { saveView } from '../../store/viewSlice';
 
 import { $a, $i } from '../../components/DollarSignExports';
@@ -622,7 +622,7 @@ const WGOut = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words, col.id, lexSorter]));
+						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});

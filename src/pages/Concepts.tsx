@@ -31,7 +31,7 @@ import {
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
-import { addItemstoLexiconColumn } from '../store/lexiconSlice';
+import { addItemsToLexiconColumn } from '../store/lexiconSlice';
 import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject } from '../store/types';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
@@ -129,7 +129,7 @@ const ConceptsPage = (props: PageData) => {
 						}
 						console.log(col);
 						// Send off to the lexicon
-						dispatch(addItemstoLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id, sorter]));
+						dispatch(addItemsToLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id, sorter]));
 						// Clear info
 						setSavedWords([]);
 						setSavedWordsObject({});
