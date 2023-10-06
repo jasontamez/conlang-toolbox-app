@@ -145,7 +145,9 @@ const doDocx = (
 					break;
 				case "Checkboxes":
 					if(!display) {
-						children.push(new Paragraph({ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }))
+						children.push(new Paragraph(
+							{ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }
+						));
 					} else {
 						const expo: exportProp = display.export!;
 						const {
@@ -156,7 +158,12 @@ const doDocx = (
 						} = display;
 						const perRow = display.boxesPerRow || 1;
 						const labelsCopy = labels ? labels.slice() : [];
-						const labelsForTheRow = (expo.labelOverrideDocx ? (expo.labels || labelsCopy).slice() : rowLabels.slice()) || [];
+						const labelsForTheRow = (
+							expo.labelOverrideDocx ?
+								(expo.labels || labelsCopy).slice()
+							:
+								rowLabels.slice()
+						) || [];
 						const rows: string[][] = [];
 						let colCount = 0;
 						let temp: string[] = [];
@@ -262,7 +269,12 @@ const doDocx = (
 							let leftover = 100;
 							const cols = colWidths.slice();
 							inlineHeaders.forEach((cell: string) => {
-								const percent = cols.length > 0 ? Math.floor(cols.shift()! * portion) : leftover;
+								const percent = (
+									cols.length > 0 ?
+										Math.floor(cols.shift()! * portion)
+									:
+										leftover
+								);
 								leftover -= percent;
 								cells.push(new TableCell({
 									borders: border,

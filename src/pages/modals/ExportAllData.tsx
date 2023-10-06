@@ -20,7 +20,12 @@ import { useSelector } from 'react-redux';
 import { LexiconState, ModalProperties, MSState, StateObject } from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
 
-import { CustomStorageWE, CustomStorageWG, LexiconStorage, MorphoSyntaxStorage } from '../../components/PersistentInfo';
+import {
+	CustomStorageWE,
+	CustomStorageWG,
+	LexiconStorage,
+	MorphoSyntaxStorage
+} from '../../components/PersistentInfo';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
@@ -147,11 +152,19 @@ const MExportAllData = (props: ModalProperties) => {
 				<IonList>
 					<IonItem lines="full">
 						<IonLabel className="ion-text-center ion-text-wrap">
-							<h2 className="ion-text-center ion-text-wrap">Save this info to a note or file.<br />You will be able to use it later to restore your data.</h2>
+							<h2 className="ion-text-center ion-text-wrap">
+								Save this info to a note or file.
+								<br />You will be able to use it later to restore your data.
+							</h2>
 						</IonLabel>
 					</IonItem>
 					<IonItem lines="none">
-						<IonTextarea aria-label="Exported Data" wrap="soft" rows={12} value={output}></IonTextarea>
+						<IonTextarea
+							aria-label="Exported Data"
+							wrap="soft"
+							rows={12}
+							value={output}
+						></IonTextarea>
 					</IonItem>
 				</IonList>
 			</IonContent>

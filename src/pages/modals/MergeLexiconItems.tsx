@@ -202,7 +202,11 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 			<IonContent id="mergeLexiconItems">
 				<IonList lines="full">
 					<IonItem>
-						<IonLabel className="ion-text-wrap">The Lexicon will be sorted alphabetically in the order you choose. It sorts by the first column you choose. If two items are identical in that column, it will sort them by the next column in the sort list, and so on.</IonLabel>
+						<IonLabel className="ion-text-wrap">
+							The Lexicon will be sorted alphabetically in the order you choose. It sorts
+							by the first column you choose. If two items are identical in that column,
+							it will sort them by the next column in the sort list, and so on.
+						</IonLabel>
 					</IonItem>
 					<IonItemDivider>How to Merge</IonItemDivider>
 					{
@@ -210,10 +214,19 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 							const { id, label } = col;
 							return (
 								<IonItem key={`${id}:selector`} className="ion-text-wrap">
-									<IonSelect className="ion-text-wrap" value={mergeMethods[i]} label={label + ":"} onIonChange={(e) => setMethod(e.detail.value, i)}>
+									<IonSelect
+										className="ion-text-wrap"
+										value={mergeMethods[i]}
+										label={label + ":"}
+										onIonChange={(e) => setMethod(e.detail.value, i)}
+									>
 										{methods.map((m: (keyof Method)) => {
 											return (
-												<IonSelectOption className="ion-text-wrap ion-text-align-end" key={`${id}:selector:${m}`} value={m}>{methodDescriptions[m]}</IonSelectOption>
+												<IonSelectOption
+													className="ion-text-wrap ion-text-align-end"
+													key={`${id}:selector:${m}`}
+													value={m}
+												>{methodDescriptions[m]}</IonSelectOption>
 											);
 										})}
 									</IonSelect>
@@ -227,8 +240,13 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 							const { id, label } = col;
 							return (
 								<IonItem key={`${id}:selector`}>
-									<IonLabel slot="start" className="colLabel">{label}:</IonLabel>
-									<IonLabel className="ion-text-wrap value">{mergedResult && mergedResult.columns[i]}</IonLabel>
+									<IonLabel
+										slot="start"
+										className="colLabel"
+									>{label}:</IonLabel>
+									<IonLabel
+										className="ion-text-wrap value"
+									>{mergedResult && mergedResult.columns[i]}</IonLabel>
 								</IonItem>
 							);
 						})

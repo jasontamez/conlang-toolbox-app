@@ -147,7 +147,21 @@ export const SChCard = () => {
 					phonological rules for describing sound changes:
 				</p>
 				<div className="emphasizedSection">
-					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">d_</span><span className="unimportantUnit">!</span><span className="importantUnit">_h</span>
+					<span
+						className="importantUnit"
+					>s</span><span
+						className="unimportantUnit"
+					>{arrow}</span><span
+						className="importantUnit"
+					>z</span><span
+						className="unimportantUnit"
+					>/</span><span
+						className="importantUnit"
+					>d_</span><span
+						className="unimportantUnit"
+					>!</span><span
+						className="importantUnit"
+					>_h</span>
 				</div>
 				<p>
 					The above means that "s" changes to "z" after a "d", but not when it's before an "h".
@@ -170,8 +184,8 @@ export const SChCard = () => {
 					replaced with %Z, and those groups have runs "ptk" and "bdg", "p" will be
 					replaced with "b", "t" will be replaced with "d", and "k" will be replaced by
 					"g". (If the first group has more letters than the second, the second group's
-					run will be repeated until it's long enough to find a match.) <strong>NOTE:</strong> If
-					you have unequal numbers of %Groups in
+					run will be repeated until it's long enough to find a
+					match.) <strong>NOTE:</strong> If you have unequal numbers of %Groups in
 					the <em>beginning</em> and <em>ending</em> expressions, errors may occur.
 				</p><p>
 					The <em>context expression</em> describes where in the word the <em>beginning
@@ -188,7 +202,17 @@ export const SChCard = () => {
 					could create the following:
 				</p>
 				<div className="emphasizedSection">
-					<span className="importantUnit">s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">z</span><span className="unimportantUnit">/</span><span className="importantUnit">#_</span>
+					<span
+						className="importantUnit"
+					>s</span><span
+						className="unimportantUnit"
+					>{arrow}</span><span
+						className="importantUnit"
+					>z</span><span
+						className="unimportantUnit"
+					>/</span><span
+						className="importantUnit"
+					>#_</span>
 				</div>
 				<p>
 					If you have no special rules for where in a word a replacement can happen,

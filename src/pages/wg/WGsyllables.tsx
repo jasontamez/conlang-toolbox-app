@@ -231,7 +231,9 @@ const WGSyl = (props: PageData) => {
 							<SyllableButton prop="singleWord" value={sw} dropoff={swDropoff} />
 						</div>
 					</IonItem>
-					<IonItem className={multipleSyllableTypes && isEditing === "singleWord" ? "" : "hide"}>
+					<IonItem
+						className={multipleSyllableTypes && isEditing === "singleWord" ? "" : "hide"}
+					>
 						<IonList lines="none" style={ { width: "100%" } }>
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
@@ -241,7 +243,10 @@ const WGSyl = (props: PageData) => {
 									checked={swDropoff !== null}
 								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="singleWordDropoff" className={swDropoff === null ? "hide" : "nonUnit"}>
+							<IonItem
+								id="singleWordDropoff"
+								className={swDropoff === null ? "hide" : "nonUnit"}
+							>
 								<IonRange
 									aria-label="From 0 to 50"
 									min={0} max={50}
@@ -289,7 +294,10 @@ const WGSyl = (props: PageData) => {
 									checked={wiDropoff !== null}
 								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordInitialDropoff" className={wiDropoff === null ? "hide" : "nonUnit"}>
+							<IonItem
+								id="wordInitialDropoff"
+								className={wiDropoff === null ? "hide" : "nonUnit"}
+							>
 								<IonRange
 									aria-label="From 0 to 50"
 									min={0} max={50}
@@ -337,7 +345,10 @@ const WGSyl = (props: PageData) => {
 									checked={wmDropoff !== null}
 								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordMiddleDropoff" className={wmDropoff === null ? "hide" : "nonUnit"}>
+							<IonItem
+								id="wordMiddleDropoff"
+								className={wmDropoff === null ? "hide" : "nonUnit"}
+							>
 								<IonRange
 									aria-label="From 0 to 50"
 									min={0} max={50}
@@ -385,7 +396,10 @@ const WGSyl = (props: PageData) => {
 									checked={wfDropoff !== null}
 								>Use separate dropoff rate</IonToggle>
 							</IonItem>
-							<IonItem id="wordFinalDropoff" className={wfDropoff === null ? "hide" : "nonUnit"}>
+							<IonItem
+								id="wordFinalDropoff"
+								className={wfDropoff === null ? "hide" : "nonUnit"}
+							>
 								<IonRange
 									aria-label="From 0 to 50"
 									min={0} max={50}

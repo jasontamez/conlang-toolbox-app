@@ -92,11 +92,17 @@ const LoadMSModal = (props: MSmodalProps) => {
 						return (
 							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
 								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
-								<IonNote className="ion-text-wrap" slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
+								<IonNote
+									className="ion-text-wrap"
+									slot="end"
+									style={ { fontStyle: "italic" } }
+								>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1 style={ { margin: "2rem auto", textAlign: "center" } }>No Saved MorphoSyntax Documents</h1>
+						<h1
+							style={ { margin: "2rem auto", textAlign: "center" } }
+						>No Saved MorphoSyntax Documents</h1>
 					)}
 				</IonList>
 			</IonContent>

@@ -99,7 +99,8 @@ const WGSet = (props: PageData) => {
 	return (
 		<IonPage>
 			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} titles={infoModalTitles} setTitles={setInfoModalTitles} />
+			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} titles={infoModalTitles} setTitles={setInfoModalTitles}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OptCard /></ModalWrap>
 			<IonLoading
@@ -233,8 +234,8 @@ const WGSet = (props: PageData) => {
 							enableOnOffLabels
 							aria-label="Capitalize sentences"
 							checked={capitalizeSentences}
-							onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))}>Capitalize sentences</IonToggle
-						>
+							onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))}
+						>Capitalize sentences</IonToggle>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-padding-bottom">Declarative sentence beginning</IonLabel>

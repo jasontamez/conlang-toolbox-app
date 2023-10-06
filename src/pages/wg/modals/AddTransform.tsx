@@ -107,29 +107,53 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="seekLabel">Search Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Search expression" id="searchEx" className="ion-margin-top serifChars" placeholder="..." onIonChange={e => resetError("seek")}></IonInput>
+						<IonInput
+							aria-label="Search expression"
+							id="searchEx"
+							className="ion-margin-top serifChars"
+							placeholder="..."
+							onIonChange={e => resetError("seek")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Replacement Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Replacement expression" id="replaceEx" className="ion-margin-top serifChars" placeholder="..."></IonInput>
+						<IonInput
+							aria-label="Replacement expression"
+							id="replaceEx"
+							className="ion-margin-top serifChars"
+							placeholder="..."
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transformation Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Transformation description" id="optDesc" className="ion-margin-top" placeholder="(optional)"></IonInput>
+						<IonInput
+							aria-label="Transformation description"
+							id="optDesc"
+							className="ion-margin-top"
+							placeholder="(optional)"
+						></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransform(false)}>
+					<IonButton
+						color="tertiary"
+						slot="end"
+						onClick={() => maybeSaveNewTransform(false)}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Transformation</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewTransform()}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => maybeSaveNewTransform()}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>

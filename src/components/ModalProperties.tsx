@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // This returns a function which can then be used to create properties for a modal
-function modalPropertiesFunc (modals: Function[], setModals: Function, dispatch: Function) {
+function modalPropertiesFunc (modals: Function[], setModals: Function) {
 	return function (isOpen: boolean, setIsOpen: Function) {
 		const [previous, setPrevious] = useState<boolean>(isOpen);
 		useEffect(() => {

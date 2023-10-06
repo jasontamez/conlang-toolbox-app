@@ -46,7 +46,11 @@ const Home = (props: PageData) => {
 				<IonGrid>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink={`/ms/${ms || "msSettings"}`} routerDirection="forward">
+							<IonCard
+								button={true}
+								routerLink={`/ms/${ms || "msSettings"}`}
+								routerDirection="forward"
+							>
 								<IonCardHeader className="ion-text-center">
 									<MorphoSyntaxIcon />
 									<IonCardTitle className="ion-padding-start">MorphoSyntax</IonCardTitle>
@@ -64,7 +68,11 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink={`/wg/${wg || "settings"}`} routerDirection="forward">
+							<IonCard
+								button={true}
+								routerLink={`/wg/${wg || "settings"}`}
+								routerDirection="forward"
+							>
 								<IonCardHeader className="ion-text-center">
 									<WordGenIcon />
 									<IonCardTitle className="ion-padding-start">WordGen</IonCardTitle>
@@ -83,7 +91,11 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink={`/we/${we || "input"}`} routerDirection="forward">
+							<IonCard
+								button={true}
+								routerLink={`/we/${we || "input"}`}
+								routerDirection="forward"
+							>
 								<IonCardHeader className="ion-text-center">
 									<WordEvolveIcon />
 									<IonCardTitle className="ion-padding-start">WordEvolve</IonCardTitle>
@@ -108,7 +120,9 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink="/lex" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<LexiconIcon className="ion-align-self-center" />
-									<IonCardTitle className="ion-padding-start ion-align-self-start">Lexicon</IonCardTitle>
+									<IonCardTitle
+										className="ion-padding-start ion-align-self-start"
+									>Lexicon</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>A place to store your conlangs.</p>
@@ -128,7 +142,9 @@ const Home = (props: PageData) => {
 							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
 								<IonCardHeader className="ion-text-center">
 									<ConceptsIcon className="ion-align-self-center" />
-									<IonCardTitle className="ion-padding-start ion-align-self-start">Concepts</IonCardTitle>
+									<IonCardTitle
+										className="ion-padding-start ion-align-self-start"
+									>Concepts</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>A small storehouse of basic meanings, useful for starting a lexicon.</p>
@@ -147,7 +163,9 @@ const Home = (props: PageData) => {
 							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
 								<IonCardHeader className="ion-text-center">
 									<IonIcon icon={globeOutline} className="ion-align-self-center" />
-									<IonCardTitle className="ion-padding-start ion-align-self-start">Extra Characters</IonCardTitle>
+									<IonCardTitle
+										className="ion-padding-start ion-align-self-start"
+									>Extra Characters</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<p>On many pages, you'll see the Extra Characters icon at the top of the page.</p>
@@ -171,9 +189,16 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard id="appInfo" button={true} routerLink="/appinfo" routerDirection="forward">
+							<IonCard
+								id="appInfo"
+								button={true}
+								routerLink="/appinfo"
+								routerDirection="forward"
+							>
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle className="ion-align-self-start">App Info</IonCardTitle>
+									<IonCardTitle
+										className="ion-align-self-start"
+									>App Info</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{currentVersion}</div>

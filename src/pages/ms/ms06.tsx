@@ -24,7 +24,10 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader title="6. Grammatical Relations" {...props} />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+			<IonContent fullscreen
+				className="evenBackground disappearingHeaderKludgeFix"
+				id="morphoSyntaxPage"
+			>
 				<IonList lines="none" className="hasSpecialLabels">
 					{parseMSJSON({page: "s6", ...props})}
 				</IonList>

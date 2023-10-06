@@ -54,8 +54,19 @@ const MS = (props: PageData) => {
 			}
 		}
 		return (
-			<IonTabButton className={n < min || n > max ? "possiblyTooFar" : ""} key={n} tab={"Section-" + goto} layout="icon-hide" href={"/ms/ms" + goto}>
-				<IonLabel>{n > 0 ? (<strong>{n}</strong>) : (<IonIcon style={ {verticalAlign: "middle"} } icon={settingsSharp} />)}</IonLabel>
+			<IonTabButton
+				className={n < min || n > max ? "possiblyTooFar" : ""}
+				key={n}
+				tab={"Section-" + goto}
+				layout="icon-hide"
+				href={"/ms/ms" + goto}
+			>
+				<IonLabel>{
+					n > 0 ?
+						(<strong>{n}</strong>)
+					:
+						(<IonIcon style={ {verticalAlign: "middle"} } icon={settingsSharp} />)
+				}</IonLabel>
 			</IonTabButton>
 		);
 	};

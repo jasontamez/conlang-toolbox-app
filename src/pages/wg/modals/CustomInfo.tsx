@@ -229,8 +229,19 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 							<IonLabel>Save Current Info</IonLabel>
 						</IonItemDivider>
 						<IonItem>
-							<IonInput aria-label="Name of save" id="currentInfoSaveName" inputmode="text" placeholder="Name your custom info" type="text" />
-							<IonButton slot="end" onClick={() => maybeSaveInfo()} strong={true} color="success">Save</IonButton>
+							<IonInput
+								aria-label="Name of save"
+								id="currentInfoSaveName"
+								inputmode="text"
+								placeholder="Name your custom info"
+								type="text"
+							/>
+							<IonButton
+								slot="end"
+								onClick={() => maybeSaveInfo()}
+								strong={true}
+								color="success"
+							>Save</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
@@ -241,12 +252,29 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 							return (
 								<IonItem key={title}>
 									<IonLabel className="ion-text-wrap">{title}</IonLabel>
-									<IonButton style={ { margin: "0 1em"} } slot="end" color="warning" onClick={() => maybeLoadInfo(title)} strong={true}>Load</IonButton>
-									<IonButton className="ion-no-margin" slot="end" color="danger" onClick={() => maybeDeleteInfo(title)}><IonIcon icon={trashOutline} /></IonButton>
+									<IonButton
+										style={ { margin: "0 1em"} }
+										slot="end"
+										color="warning"
+										onClick={() => maybeLoadInfo(title)}
+										strong={true}
+									>Load</IonButton>
+									<IonButton
+										className="ion-no-margin"
+										slot="end"
+										color="danger"
+										onClick={() => maybeDeleteInfo(title)}><IonIcon
+										icon={trashOutline}
+									/></IonButton>
 								</IonItem>
 							);
 						})}
-						{(customInfo.length === 0) ? (<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>) : ""}
+						{
+							(customInfo.length === 0) ?
+								<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>
+							:
+								<></>
+						}
 					</IonItemGroup>
 				</IonList>
 			</IonContent>

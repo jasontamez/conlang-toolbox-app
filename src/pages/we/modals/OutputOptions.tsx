@@ -75,7 +75,10 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							value={customSort || null}
 							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
 						>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value={null}
+							>Default</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
@@ -85,25 +88,48 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							))}
 						</IonSelect>
 					</IonItem>
-					<IonRadioGroup value={outputStyle} onIonChange={e => dispatch(setOutputWE(e.detail.value as WEOutputTypes))}>
+					<IonRadioGroup
+						value={outputStyle}
+						onIonChange={e => dispatch(setOutputWE(e.detail.value as WEOutputTypes))}
+					>
 						<IonItem className="ion-text-wrap">
-							<IonRadio value="outputOnly" labelPlacement="end" justify="start">Output Only</IonRadio>
+							<IonRadio
+								value="outputOnly"
+								labelPlacement="end"
+								justify="start"
+							>Output Only</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
-							<IonRadio value="rulesApplied" labelPlacement="end" justify="start">Output and Sound-Change Rules</IonRadio>
+							<IonRadio
+								value="rulesApplied"
+								labelPlacement="end"
+								justify="start"
+							>Output and Sound-Change Rules</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
-							<IonRadio value="inputFirst" labelPlacement="end" justify="start">Input, then Output</IonRadio>
+							<IonRadio
+								value="inputFirst"
+								labelPlacement="end"
+								justify="start"
+							>Input, then Output</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap" lines="full">
-							<IonRadio value="outputFirst" labelPlacement="end" justify="start">Output, then Input</IonRadio>
+							<IonRadio
+								value="outputFirst"
+								labelPlacement="end"
+								justify="start"
+							>Output, then Input</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="success" slot="end" onClick={() => setIsOpen(false)}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => setIsOpen(false)}
+					>
 						<IonLabel>Done</IonLabel>
 					</IonButton>
 				</IonToolbar>

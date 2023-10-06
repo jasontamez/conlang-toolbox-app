@@ -125,7 +125,12 @@ const EditTransformModal = (props: ModalProps) => {
 		});
 	};
 	const maybeDeleteTransform = () => {
-		const makeArrow = (dir: string) => (dir === "both" ? "⟷" : ((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵"));
+		const makeArrow = (dir: string) => (
+			dir === "both" ?
+				"⟷"
+			:
+				((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵")
+		);
 		$q(".transforms").closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWE(editing!.id));
@@ -154,7 +159,11 @@ const EditTransformModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
+		<IonModal
+			isOpen={isOpen}
+			onDidDismiss={() => setIsOpen(false)}
+			onIonModalDidPresent={onLoad}
+		>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transform</IonTitle>
@@ -210,27 +219,51 @@ const EditTransformModal = (props: ModalProps) => {
 						onIonChange={e => setDirection(e.detail.value as WETransformDirection)}
 					>
 						<IonItem>
-							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
+							<IonRadio
+								value="both"
+								labelPlacement="end"
+								justify="start"
+							>At Input, Then Undo At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="double" labelPlacement="end" justify="start">At Input and At Output</IonRadio>
+							<IonRadio
+								value="double"
+								labelPlacement="end"
+								justify="start"
+							>At Input and At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="in" labelPlacement="end" justify="start">At Input Only</IonRadio>
+							<IonRadio
+								value="in"
+								labelPlacement="end"
+								justify="start"
+							>At Input Only</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="out" labelPlacement="end" justify="start">At Output Only</IonRadio>
+							<IonRadio
+								value="out"
+								labelPlacement="end"
+								justify="start"
+							>At Output Only</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransformInfo()}>
+					<IonButton
+						color="tertiary"
+						slot="end"
+						onClick={() => maybeSaveNewTransformInfo()}
+					>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Transform</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteTransform()}>
+					<IonButton
+						color="danger"
+						slot="start"
+						onClick={() => maybeDeleteTransform()}
+					>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>Delete Item</IonLabel>
 					</IonButton>

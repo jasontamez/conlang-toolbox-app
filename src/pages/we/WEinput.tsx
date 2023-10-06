@@ -161,14 +161,33 @@ const WEInput = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground">
 				<div className="WEinput">
-					<textarea spellCheck={false} aria-label="Words to Evolve" id="weInput" placeholder="Enter words here, one per line" defaultValue={input} onChange={inputUpdated} />
+					<textarea
+						spellCheck={false}
+						aria-label="Words to Evolve"
+						id="weInput"
+						placeholder="Enter words here, one per line"
+						defaultValue={input}
+						onChange={inputUpdated}
+					/>
 				</div>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonButton onClick={clearInput} disabled={!input} color="warning" fill="solid" shape="round"><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
+						<IonButton
+							onClick={clearInput}
+							disabled={!input}
+							color="warning"
+							fill="solid"
+							shape="round"
+						><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
-						<IonButton onClick={importLexicon} disabled={lexicon.length === 0} color="primary" fill="solid" shape="round"><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
+						<IonButton
+							onClick={importLexicon}
+							disabled={lexicon.length === 0}
+							color="primary"
+							fill="solid"
+							shape="round"
+						><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

@@ -201,7 +201,12 @@ const Syntax = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i(id);
 		const value = el.value.trim();
-		debounce(dispatch, [setMorphoSyntaxText([prop, value])], (prop === "description" ? 2000 : 1000), "saveMS");
+		debounce(
+			dispatch,
+			[setMorphoSyntaxText([prop, value])],
+			(prop === "description" ? 2000 : 1000),
+			"saveMS"
+		);
 	};
 	return (
 		<IonPage>
@@ -227,19 +232,37 @@ const Syntax = (props: PageData) => {
 				setLoadingScreen={setIsLoading}
 			/>
 			<SyntaxHeader title="MorphoSyntax Settings" {...props} />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+			<IonContent fullscreen
+				className="evenBackground disappearingHeaderKludgeFix"
+				id="morphoSyntaxPage"
+			>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
 						<IonLabel>MorphoSyntax Title:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title" value={title} id="msTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("msTitle", "title")}></IonInput>
+						<IonInput
+							aria-label="Title"
+							value={title}
+							id="msTitle"
+							className="ion-margin-top"
+							placeholder="Usually the language name."
+							onIonChange={() => setNewInfo("msTitle", "title")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonTextarea aria-label="Description" value={description} id="msDesc" className="ion-margin-top" placeholder="A short description of this document." rows={3} onIonChange={() => setNewInfo("msDesc", "description")} />
+						<IonTextarea
+							aria-label="Description"
+							value={description}
+							id="msDesc"
+							className="ion-margin-top"
+							placeholder="A short description of this document."
+							rows={3}
+							onIonChange={() => setNewInfo("msDesc", "description")}
+						/>
 					</IonItem>
 				</IonList>
 				<IonList lines="none" className="ion-float-end aside">

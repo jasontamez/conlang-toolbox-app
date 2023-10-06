@@ -94,9 +94,17 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);
 						return (
-							<IonItem key={key} button={true} onClick={() => deleteThis(key, ms.title)}>
+							<IonItem
+								key={key}
+								button={true}
+								onClick={() => deleteThis(key, ms.title)}
+							>
 								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
-								<IonNote className="ion-text-wrap" slot="end" style={ { fontStyle: "italic" } }>Saved: {time.toLocaleString()}</IonNote>
+								<IonNote
+									className="ion-text-wrap"
+									slot="end"
+									style={{ fontStyle: "italic" }}
+								>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
 					}) : (

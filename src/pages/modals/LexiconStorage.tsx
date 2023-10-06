@@ -44,9 +44,19 @@ interface StorageModalProps extends ModalProperties {
 }
 
 const LexiconStorageModal = (props: StorageModalProps) => {
-	const { isOpen, setIsOpen, openLoad, openDelete, openExport, setLoading, setLexInfo } = props;
+	const {
+		isOpen,
+		setIsOpen,
+		openLoad,
+		openDelete,
+		openExport,
+		setLoading,
+		setLexInfo
+	} = props;
 	const dispatch = useDispatch();
-	const [disableConfirms, stateLexicon]: [boolean, LexiconState] = useSelector((state: StateObject) => [state.appSettings.disableConfirms, state.lexicon]);
+	const [disableConfirms, stateLexicon]: [boolean, LexiconState] = useSelector(
+		(state: StateObject) => [state.appSettings.disableConfirms, state.lexicon]
+	);
 	const {
 		id,
 		title,
@@ -244,7 +254,12 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			<IonFooter>
 				<IonToolbar className="ion-text-wrap">
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} slot="end" fill="solid" color="success">
+						<IonButton
+							onClick={() => setIsOpen(false)}
+							slot="end"
+							fill="solid"
+							color="success"
+						>
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
 							<IonLabel>Done</IonLabel>
 						</IonButton>

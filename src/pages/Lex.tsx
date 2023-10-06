@@ -512,7 +512,10 @@ const Lex = (props: PageData) => {
 				lexInfo={storedLexInfo}
 				setLexInfo={setStoredLexInfo}
 			/>
-			<ExportLexiconModal {...props.modalPropsMaker(isOpenExportLex, setIsOpenExportLex)} setLoading={setIsLoading} />
+			<ExportLexiconModal
+				{...props.modalPropsMaker(isOpenExportLex, setIsOpenExportLex)}
+				setLoading={setIsLoading}
+			/>
 			<DeleteLexiconModal
 				{...props.modalPropsMaker(isOpenDelLex, setIsOpenDelLex)}
 				setLoadingScreen={setIsWorking}
@@ -551,27 +554,60 @@ const Lex = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>Lexicon</IonTitle>
 					<IonButtons slot="end">
-						<IonButton color={lexHeadersHidden ? "secondary" : undefined} onClick={() => setLexHeadersHidden(!lexHeadersHidden)}>
-							<IonIcon icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle} slot="icon-only" />
+						<IonButton
+							color={lexHeadersHidden ? "secondary" : undefined}
+							onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
+						>
+							<IonIcon
+								icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
+								slot="icon-only"
+							/>
 						</IonButton>
-						<IonButton disabled={isDeleting} onClick={() => setIsOpenECM(true)} slot="icon-only">
+						<IonButton
+							disabled={isDeleting}
+							onClick={() => setIsOpenECM(true)}
+							slot="icon-only"
+						>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton disabled={isDeleting} onClick={() => setIsOpenLexStorage(true)} slot="icon-only">
+						<IonButton
+							disabled={isDeleting}
+							onClick={() => setIsOpenLexStorage(true)}
+							slot="icon-only"
+						>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
-				<IonList lines="none" id="lexiconTitleAndDescription" className={lexHeadersHidden ? "hide" : undefined}>
+				<IonList
+					lines="none"
+					id="lexiconTitleAndDescription"
+					className={lexHeadersHidden ? "hide" : undefined}
+				>
 					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
 					<IonItem>
-						<IonInput aria-label="Lexicon title" value={title} id="lexTitle" className="ion-margin-top" placeholder="Usually the language name." onIonChange={() => setNewInfo("lexTitle", "title")}></IonInput>
+						<IonInput
+							aria-label="Lexicon title"
+							value={title}
+							id="lexTitle"
+							className="ion-margin-top"
+							placeholder="Usually the language name."
+							onIonChange={() => setNewInfo("lexTitle", "title")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled"><IonLabel>Description:</IonLabel></IonItem>
 					<IonItem>
-						<IonTextarea aria-label="Description" value={description} id="lexDesc" className="ion-margin-top" placeholder="A short description of this lexicon." rows={3} onIonChange={() => setNewInfo("lexDesc", "description")} />
+						<IonTextarea
+							aria-label="Description"
+							value={description}
+							id="lexDesc"
+							className="ion-margin-top"
+							placeholder="A short description of this lexicon."
+							rows={3}
+							onIonChange={() => setNewInfo("lexDesc", "description")}
+						/>
 					</IonItem>
 				</IonList>
 				<IonList lines="none" id="mainLexList">
@@ -581,16 +617,28 @@ const Lex = (props: PageData) => {
 						</div>
 						<div style={{flexGrow: 0, flexShrink: 1}}>
 							<h2>Sort:</h2>
-							<div className="fakeButton" onClick={() => setIsOpenLexSorter(true)} role="button" aria-label={columns[sortPattern[0]].label}>
+							<div
+								className="fakeButton"
+								onClick={() => setIsOpenLexSorter(true)}
+								role="button"
+								aria-label={columns[sortPattern[0]].label}
+							>
 								<IonIcon src="svg/unfold.svg"></IonIcon>
 								<div>{columns[sortPattern[0]].label}</div>
 							</div>
-							<IonButton color="secondary" onClick={() => dispatch(updateLexiconSortDir([!sortDir, sorter]))}>
+							<IonButton
+								color="secondary"
+								onClick={() => dispatch(updateLexiconSortDir([!sortDir, sorter]))}
+							>
 								<IonIcon size="small" src={`svg/sort-${sortDir ? "up" : "down"}.svg`} />
 							</IonButton>
 						</div>
 						<div style={{flexGrow: 0, flexShrink: 0}}>
-							<IonButton disabled={isDeleting} color="tertiary" onClick={() => setIsOpenLexOrder(true)}>
+							<IonButton
+								disabled={isDeleting}
+								color="tertiary"
+								onClick={() => setIsOpenLexOrder(true)}
+							>
 								<IonIcon size="small" icon={settings} />
 							</IonButton>
 						</div>
@@ -598,7 +646,11 @@ const Lex = (props: PageData) => {
 					<IonGrid id="theLexiconHolder">
 						<IonRow>
 							<IonCol id="theLexicon">
-								<IonItem id="lexColumnNames" className="lexRow lexHeader" style={ { order: -2, overflowY: "scroll" } }>
+								<IonItem
+									id="lexColumnNames"
+									className="lexRow lexHeader"
+									style={ { order: -2, overflowY: "scroll" } }
+								>
 									{columns.map((column: LexiconColumn) => (
 										<div
 											className={
@@ -611,7 +663,11 @@ const Lex = (props: PageData) => {
 									))}
 									<div className="xs" style={ { overflowY: "hidden" }}></div>
 								</IonItem>
-								<IonItem id="lexColumnInputs" className="lexRow serifChars lexInputs" style={ { order: -1, overflowY: "scroll" } }>
+								<IonItem
+									id="lexColumnInputs"
+									className="lexRow serifChars lexInputs"
+									style={ { order: -1, overflowY: "scroll" } }
+								>
 									{columns.map((column: LexiconColumn) => {
 										const { id, label, size } = column;
 										const key = `input_lex_${id}`;
@@ -627,7 +683,11 @@ const Lex = (props: PageData) => {
 										);
 									})}
 									<div className="xs" style={ { overflowY: "hidden" }}>
-										<IonButton disabled={isDeleting} color="success" onClick={() => addToLex()}>
+										<IonButton
+											disabled={isDeleting}
+											color="success"
+											onClick={() => addToLex()}
+										>
 											<IonIcon icon={add} style={ { margin: 0 } } />
 										</IonButton>
 									</div>
@@ -660,10 +720,18 @@ const Lex = (props: PageData) => {
 						<IonIcon icon={construct} />
 					</IonFabButton>
 					<IonFabList side="top">
-						<IonFabButton color="danger" title="Delete multiple lexicon items" onClick={() => beginMassDeleteMode()}>
+						<IonFabButton
+							color="danger"
+							title="Delete multiple lexicon items"
+							onClick={() => beginMassDeleteMode()}
+						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
-						<IonFabButton color="success" title="Add new lexicon item" onClick={() => setIsOpenAddLexItem(true)}>
+						<IonFabButton
+							color="success"
+							title="Add new lexicon item"
+							onClick={() => setIsOpenAddLexItem(true)}
+						>
 							<IonIcon icon={addCircle} />
 						</IonFabButton>
 					</IonFabList>
@@ -671,12 +739,20 @@ const Lex = (props: PageData) => {
 				{isDeleting ?
 					<>
 						<IonFab vertical="top" horizontal="start" edge={true} slot="fixed">
-							<IonFabButton color="danger" title="Delete selected lexicon items" onClick={() => maybeFinishDeleting()}>
+							<IonFabButton
+								color="danger"
+								title="Delete selected lexicon items"
+								onClick={() => maybeFinishDeleting()}
+							>
 								<IonIcon icon={trash} />
 							</IonFabButton>
 						</IonFab>
 						<IonFab vertical="bottom" horizontal="start" slot="fixed">
-							<IonFabButton color="warning" title="Cancel deleting" onClick={() => maybeFinishDeleting(true)}>
+							<IonFabButton
+								color="warning"
+								title="Cancel deleting"
+								onClick={() => maybeFinishDeleting(true)}
+							>
 								<IonIcon icon={closeCircle} />
 							</IonFabButton>
 						</IonFab>

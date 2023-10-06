@@ -160,29 +160,49 @@ const WECharGroup = (props: PageData) => {
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>
-									<IonItemOption color="primary" onClick={() => editCharGroup(charGroup)}>
+									<IonItemOption
+										color="primary"
+										onClick={() => editCharGroup(charGroup)}
+									>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
-									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(label, charGroup)}>
+									<IonItemOption
+										color="danger"
+										onClick={() => maybeDeleteCharGroup(label, charGroup)}
+									>
 										<IonIcon slot="icon-only" icon={trash} />
 									</IonItemOption>
 								</IonItemOptions>
 								<IonItem>
 									<IonLabel className="wrappableInnards">
 										<div className="charGroupRun serifChars">
-											<span className="label importantElement">{label}</span>
-											<span className="run">{run}</span>
+											<span
+												className="label importantElement"
+											>{label}</span>
+											<span
+												className="run"
+											>{run}</span>
 										</div>
-										<div className="charGroupLongName">{title}</div>
+										<div
+											className="charGroupLongName"
+										>{title}</div>
 									</IonLabel>
-									<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+									<IonIcon
+										size="small"
+										slot="end"
+										src="svg/slide-indicator.svg"
+									/>
 								</IonItem>
 							</IonItemSliding>
 						);
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new group" onClick={() => setIsOpenAddCharGroupWE(true)}>
+					<IonFabButton
+						color="secondary"
+						title="Add new group"
+						onClick={() => setIsOpenAddCharGroupWE(true)}
+					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

@@ -53,7 +53,9 @@ export const SyntaxHeader = (props: ModalProperties) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	return (
 		<IonHeader>
-			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ExtraCharactersModal
+				{...modalPropsMaker(isOpenECM, setIsOpenECM)}
+			/>
 			<IonToolbar>
 				<IonButtons slot="start">
 					<IonMenuButton />
@@ -79,7 +81,11 @@ const RadioBox = (props: {
 		dispatch(setSyntaxBool([what, value]));
 	};
 	return (
-		<IonCheckbox aria-label={label} onIonChange={(e) => setBool(prop, e.detail.checked)} checked={ms[prop] || false} />
+		<IonCheckbox
+			aria-label={label}
+			onIonChange={(e) => setBool(prop, e.detail.checked)}
+			checked={ms[prop] || false}
+		/>
 	);
 };
 const RangeItem = (props: {
@@ -155,7 +161,15 @@ const TextItem = (props: {
 				<IonLabel>{children}</IonLabel>
 			</IonItem>
 			<IonItem className={`${classes} morphoSyntaxTextItem content`}>
-				<IonTextarea aria-label={label} onIonChange={(e) => setText(prop, e.target.value || "")} value={text} placeholder={placeholder} rows={expandedRows} enterkeyhint="done" inputmode="text" />
+				<IonTextarea
+					aria-label={label}
+					onIonChange={(e) => setText(prop, e.target.value || "")}
+					value={text}
+					placeholder={placeholder}
+					rows={expandedRows}
+					enterkeyhint="done"
+					inputmode="text"
+				/>
 			</IonItem>
 		</>
 	);
@@ -186,10 +200,14 @@ const TransTable = (props: {
 		}
 		const tds = row.split(/\s+/);
 		length = Math.max(length, tds.length);
-		return <tr key={"ROW-" + String(i)}>{
-				tds.filter((el: string) => el).map((el: string, i: number) => <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td>)
-			}</tr>;
-		});
+		return (
+			<tr key={"ROW-" + String(i)}>{
+				tds.filter((el: string) => el).map(
+					(el: string, i: number) => <td key={"TD-" + String(i)}>{el.replace(/__/g, " ")}</td>
+				)
+			}</tr>
+		);
+	});
 	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
 interface InfoModalProps extends ModalProperties {
@@ -226,8 +244,16 @@ const InfoModal = (props: InfoModalProps) => {
 				<IonFooter>
 					<IonToolbar className="ion-text-wrap">
 						<IonButtons slot="end">
-							<IonButton onClick={() => setIsOpen(false)} slot="end" fill="solid" color="success">
-								<IonIcon icon={checkmarkCircleOutline} slot="start" />
+							<IonButton
+								onClick={() => setIsOpen(false)}
+								slot="end"
+								fill="solid"
+								color="success"
+							>
+								<IonIcon
+									icon={checkmarkCircleOutline}
+									slot="start"
+								/>
 								<IonLabel>Done</IonLabel>
 							</IonButton>
 						</IonButtons>
@@ -235,7 +261,14 @@ const InfoModal = (props: InfoModalProps) => {
 				</IonFooter>
 			</IonModal>
 			<IonButton color="primary" onClick={() => setIsOpen(true)}>
-				<IonIcon icon={informationCircleSharp} slot="start" style={{ marginInlineStart: "0", marginInlineEnd: "0.5rem"}} />
+				<IonIcon
+					icon={informationCircleSharp}
+					slot="start"
+					style={{
+						marginInlineStart: "0",
+						marginInlineEnd: "0.5rem"
+					}}
+				/>
 				{label}
 			</IonButton>
 		</IonItem>
@@ -289,21 +322,34 @@ const CheckboxItem = (props: checkboxItemProps) => {
 			temp = [];
 		}
 	});
-	const printRow = (row: MSBool[], label: string, key: number, headers: undefined | string[]) => {
+	const printRow = (
+		row: MSBool[],
+		label: string,
+		key: number,
+		headers: undefined | string[]
+	) => {
 		const textLabel = stripHtml(label);
 		let cc = 0;
 		return (
 			<IonRow key={"ROW-" + String(key)}>
 				{row.map((prop, i) => (
 					<IonCol className="cbox" key={"X-" + String(cc++)}>
-						<RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={prop} />
+						<RadioBox
+							label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel}
+							prop={prop}
+						/>
 					</IonCol>
 				))}
 				<IonCol key={"LX-" + String(cc++)}><div>{doParse(label)}</div></IonCol>
 			</IonRow>
 		);
 	};
-	const printRowWithLabel = (row: MSBool[], final: string, key: number, headers: undefined | string[]) => {
+	const printRowWithLabel = (
+		row: MSBool[],
+		final: string,
+		key: number,
+		headers: undefined | string[]
+	) => {
 		const label = _labels.shift() || "";
 		const textLabel = stripHtml(label) + (final ? ", " + stripHtml(final) : "") ;
 		let cc = 0;
@@ -311,7 +357,10 @@ const CheckboxItem = (props: checkboxItemProps) => {
 			<IonRow key={"ROW-" + String(key)}>
 				{row.map((prop, i) => (
 					<IonCol className="cbox" key={"C-" + String(cc++)}>
-						<RadioBox label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel} prop={prop} />
+						<RadioBox
+							label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel}
+							prop={prop}
+						/>
 					</IonCol>
 				))}
 				{label ?
@@ -331,8 +380,18 @@ const CheckboxItem = (props: checkboxItemProps) => {
 		let cc = 0;
 		return (
 			<IonRow className="header" key={"ROW-" + String(key)}>
-				{row.map((c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>)}
-				{label && <IonCol className={labelClass} key={"L-" + String(cc++)}><div>{doParse(label)}</div></IonCol>}
+				{row.map(
+					(c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>
+				)}
+				{
+					label ?
+						<IonCol
+							className={labelClass}
+							key={"L-" + String(cc++)}
+						><div>{doParse(label)}</div></IonCol>
+					:
+						<></>
+				}
 				<IonCol key={"F-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
 			</IonRow>
 		);
@@ -355,9 +414,19 @@ const CheckboxItem = (props: checkboxItemProps) => {
 				}
 				{ rows.map((row) => (
 					labels ?
-						printRowWithLabel(row.slice(), _rowLabels.shift() || "Error", count++, inlineHeaders && inlineHeaders.slice())
+						printRowWithLabel(
+							row.slice(),
+							_rowLabels.shift() || "Error",
+							count++,
+							inlineHeaders && inlineHeaders.slice()
+						)
 					:
-						printRow(row.slice(), _rowLabels.shift() || "Error", count++, inlineHeaders && inlineHeaders.slice())
+						printRow(
+							row.slice(),
+							_rowLabels.shift() || "Error",
+							count++,
+							inlineHeaders && inlineHeaders.slice()
+						)
 				))}
 			</IonGrid>
 		</IonItem>
@@ -410,22 +479,64 @@ export const parseMSJSON = (props: parsingProp) => {
 		}: specificPageInfo = bit;
 		switch(tag) {
 			case "Header":
-				return <HeaderItem key={key + String(counter)} level={level}>{content}</HeaderItem>;
+				return (
+					<HeaderItem
+						key={key + String(counter)}
+						level={level}
+					>{content}</HeaderItem>
+				);
 			case "Range":
-				return <RangeItem key={key + String(counter)} prop={prop as MSNum} start={start} end={end} innerClass={spectrum ? "spectrum" : undefined} max={max} />;
+				return (
+					<RangeItem
+						key={key + String(counter)}
+						prop={prop as MSNum}
+						start={start}
+						end={end}
+						innerClass={spectrum ? "spectrum" : undefined}
+						max={max}
+					/>
+				);
 			case "Text":
-				return <TextItem key={key + String(counter)} prop={prop as MSText} rows={rows} label={label || ""}>{content}</TextItem>
+				return (
+					<TextItem
+						key={key + String(counter)}
+						prop={prop as MSText}
+						rows={rows}
+						label={label || ""}
+					>{content}</TextItem>
+				);
 			case "Modal":
-				return <InfoModal key={key + String(counter)} title={title} label={label} modalPropsMaker={modalPropsMaker}>{
-					doParse(content, {
-						replace: node => {
-							if(node instanceof Element && node.attribs && node.name === "transtable") {
-								return <TransTable rows={node.attribs.rows} className={node.attribs.className || ""}>{node.children.length ? (node.children[0] as Text).data : ""}</TransTable>;
+				return (
+					<InfoModal
+						key={key + String(counter)}
+						title={title}
+						label={label}
+						modalPropsMaker={modalPropsMaker}
+					>{
+						doParse(content, {
+							replace: node => {
+								if(
+									node instanceof Element
+									&& node.attribs
+									&& node.name === "transtable"
+								) {
+									return (
+										<TransTable
+											rows={node.attribs.rows}
+											className={node.attribs.className || undefined}
+										>{
+											node.children.length ?
+												(node.children[0] as Text).data
+											:
+												<></>
+										}</TransTable>
+									);
+								}
+								return node;
 							}
-							return node;
-						}
-					})
-				}</InfoModal>;
+						})
+					}</InfoModal>
+				);
 			case "Checkboxes":
 				return display ?
 					<CheckboxItem key={key + String(counter)} display={display} boxes={boxes} />

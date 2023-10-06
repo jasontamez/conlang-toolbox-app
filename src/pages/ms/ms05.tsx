@@ -23,8 +23,14 @@ const Syntax = (props: PageData) => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title="5. Predicate Nominals and Related Constructions" {...props} />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
+			<SyntaxHeader
+				title="5. Predicate Nominals and Related Constructions"
+				{...props}
+			/>
+			<IonContent fullscreen
+				className="evenBackground disappearingHeaderKludgeFix"
+				id="morphoSyntaxPage"
+			>
 				<IonList lines="none" className="hasSpecialLabels">
 					{parseMSJSON({page: "s5", ...props})}
 				</IonList>

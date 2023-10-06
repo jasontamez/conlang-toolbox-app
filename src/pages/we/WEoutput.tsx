@@ -987,10 +987,16 @@ const WEOut = (props: PageData) => {
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openCustomInfoModal()} disabled={isPickingSaving}>
+						<IonButton
+							onClick={() => openCustomInfoModal()}
+							disabled={isPickingSaving}
+						>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
+						<IonButton
+							onClick={() => setIsOpenInfo(true)}
+							disabled={isPickingSaving}
+						>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -1007,14 +1013,26 @@ const WEOut = (props: PageData) => {
 						><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
 						<div className="evolving">
 							<IonButton
-								style={ { fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+								style={
+									{
+										fontSize: "1.35rem",
+										padding: "0.5rem 0",
+										minHeight: "3.25rem"
+									}
+								}
 								strong={true}
 								expand="block"
 								color="success"
 								onClick={() => evolveOutput()}
 								disabled={isPickingSaving}
-							>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-							<div id="outputPaneWE" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}>
+							>Evolve <IonIcon
+								icon={caretForwardCircleOutline}
+								style={ { marginLeft: "0.25em" } }
+							/></IonButton>
+							<div
+								id="outputPaneWE"
+								className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
+							>
 								{makeOutput()}
 							</div>
 						</div>

@@ -148,27 +148,51 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						onIonChange={e => setDirection(e.detail.value as WETransformDirection)}
 					>
 						<IonItem>
-							<IonRadio value="both" labelPlacement="end" justify="start">At Input, Then Undo At Output</IonRadio>
+							<IonRadio
+								value="both"
+								labelPlacement="end"
+								justify="start"
+							>At Input, Then Undo At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="double" labelPlacement="end" justify="start">At Input and At Output</IonRadio>
+							<IonRadio
+								value="double"
+								labelPlacement="end"
+								justify="start"
+							>At Input and At Output</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="in" labelPlacement="end" justify="start">At Input Only</IonRadio>
+							<IonRadio
+								value="in"
+								labelPlacement="end"
+								justify="start"
+							>At Input Only</IonRadio>
 						</IonItem>
 						<IonItem>
-							<IonRadio value="out" labelPlacement="end" justify="start">At Output Only</IonRadio>
+							<IonRadio
+								value="out"
+								labelPlacement="end"
+								justify="start"
+							>At Output Only</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransform(false)}>
+				<IonButton
+					color="tertiary"
+					slot="end"
+					onClick={() => maybeSaveNewTransform(false)}
+				>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Transform</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewTransform()}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => maybeSaveNewTransform()}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>

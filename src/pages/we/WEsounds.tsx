@@ -137,7 +137,10 @@ const WERew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddSoundChangeModal {...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)} openECM={setIsOpenECM} />
+			<AddSoundChangeModal
+				{...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)}
+				openECM={setIsOpenECM}
+			/>
 			<EditSoundChangeModal
 				{...props.modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
 				openECM={setIsOpenECM}
@@ -171,38 +174,68 @@ const WERew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="soundChanges units dragArea" lines="none">
-					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+					<IonReorderGroup
+						disabled={false}
+						className="hideWhileAdding"
+						onIonItemReorder={doReorder}
+					>
 						{soundChanges.map((change: WESoundChangeObject) => {
 							const { id, seek, replace, context, anticontext, description } = change;
 							return (
 								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editSoundChange(change)}>
+										<IonItemOption
+											color="primary"
+											onClick={() => editSoundChange(change)}
+										>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
-										<IonItemOption color="danger" onClick={() => maybeDeleteSoundChange(change)}>
+										<IonItemOption
+											color="danger"
+											onClick={() => maybeDeleteSoundChange(change)}
+										>
 											<IonIcon slot="icon-only" icon={trash} />
 										</IonItemOption>
 									</IonItemOptions>
 									<IonItem>
-										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonReorder
+											className="dragHandle ion-margin-end"
+										><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
 										<IonLabel className="wrappableInnards">
 											<div className="importantElement serifChars">
-												<span className="seek importantUnit">{seek}</span>
-												<span className="arrow unimportantUnit">{arrow}</span>
-												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
-												<span className="arrow unimportantUnit">/</span>
-												<span className="replace importantUnit">{context}</span>
+												<span
+													className="seek importantUnit"
+												>{seek}</span>
+												<span
+													className="arrow unimportantUnit"
+												>{arrow}</span>
+												<span
+													className="replace importantUnit"
+												>{replace || String.fromCharCode(160)}</span>
+												<span
+													className="arrow unimportantUnit"
+												>/</span>
+												<span
+													className="replace importantUnit"
+												>{context}</span>
 												{anticontext ? (
 													<span>
-														<span className="unimportantUnit">!</span>
-														<span className="replace importantUnit">{anticontext}</span>
+														<span
+															className="unimportantUnit"
+														>!</span>
+														<span
+															className="replace importantUnit"
+														>{anticontext}</span>
 													</span>
 												) : <></>}
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>
-										<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+										<IonIcon
+											size="small"
+											slot="end"
+											src="svg/slide-indicator.svg"
+										/>
 									</IonItem>
 								</IonItemSliding>
 							);
@@ -210,7 +243,11 @@ const WERew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new sound change" onClick={() => setIsOpenAddSoundChange(true)}>
+					<IonFabButton
+						color="secondary"
+						title="Add new sound change"
+						onClick={() => setIsOpenAddSoundChange(true)}
+					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

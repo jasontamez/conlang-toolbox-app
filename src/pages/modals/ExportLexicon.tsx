@@ -154,13 +154,34 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
 					<IonItem>Choose a format:</IonItem>
-					<IonItem button={true} onClick={(e: any) => doTabbed(e)}>Text, Tabbed</IonItem>
-					<IonItem button={true} onClick={(e: any) => doSemicolons(e)}>Text, Semicolons</IonItem>
-					<IonItem button={true} onClick={(e: any) => doNewlines(e)}>Text, Newlines</IonItem>
-					<IonItem button={true} onClick={(e: any) => doCSVall(e)}>CSV File</IonItem>
-					<IonItem button={true} onClick={(e: any) => doCSV(e)}>CSV File, no title/description</IonItem>
-					<IonItem button={true} onClick={(e: any) => doJSON(e)}>JSON File</IonItem>
-					<IonItem button={true} onClick={(e: any) => doXML(e)}>XML File</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doTabbed(e)}
+					>Text, Tabbed</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doSemicolons(e)}
+					>Text, Semicolons</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doNewlines(e)}
+					>Text, Newlines</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doCSVall(e)}
+					>CSV File</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doCSV(e)}
+					>CSV File, no title/description</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doJSON(e)}
+					>JSON File</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doXML(e)}
+					>XML File</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>

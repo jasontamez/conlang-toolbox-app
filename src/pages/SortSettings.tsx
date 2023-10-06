@@ -214,30 +214,84 @@ const SortSettings = (props: PageData) => {
 				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings">
 					<IonItemDivider>Basic Sort</IonItemDivider>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Language:" value={sortLanguage || defaultSortLanguage || "unicode"} onIonChange={(e) => setCustomLang(e.detail.value)}>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Sort Language:"
+							value={sortLanguage || defaultSortLanguage || "unicode"}
+							onIonChange={(e) => setCustomLang(e.detail.value)}
+						>
 							{languages.map((language) => (
-								<IonSelectOption key={`knownLang:${language}`} className="ion-text-wrap ion-text-align-end" value={language}>{langObj[language] || language}</IonSelectOption>
+								<IonSelectOption
+									key={`knownLang:${language}`}
+									className="ion-text-wrap ion-text-align-end"
+									value={language}
+								>{langObj[language] || language}</IonSelectOption>
 							))}
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="unicode">Unicode sort (language-independent)</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="unicode"
+							>
+								Unicode sort (language-independent)
+							</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Sort Sensitivity:" value={sensitivity || "variant"} onIonChange={(e) => setSensitivity(e.detail.value)}>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="base">[ȁ = Ȁ, a = ȁ]: Base letters only</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="accent">[ȁ = Ȁ, a ≠ ȁ]: Diacritics</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="case">[ȁ ≠ Ȁ, a = ȁ]: Upper/lowercase</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="variant">[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase</IonSelectOption>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Sort Sensitivity:"
+							value={sensitivity || "variant"}
+							onIonChange={(e) => setSensitivity(e.detail.value)}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="base"
+							>
+								[ȁ = Ȁ, a = ȁ]: Base letters only
+							</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="accent"
+							>
+								[ȁ = Ȁ, a ≠ ȁ]: Diacritics
+							</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="case"
+							>
+								[ȁ ≠ Ȁ, a = ȁ]: Upper/lowercase
+							</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="variant"
+							>
+								[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase
+							</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Using Custom Sort:" value={defaultCustomSort || null} onIonChange={(e) => setDefaultCustomSort(e.detail.value)}>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>(none)</IonSelectOption>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Using Custom Sort:"
+							value={defaultCustomSort || null}
+							onIonChange={(e) => setDefaultCustomSort(e.detail.value)}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value={null}
+							>
+								(none)
+							</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
 									key={`customSortChooser:${sorter.id}:${sorter.title}`}
 									value={sorter.id}
-								>{sorter.title}</IonSelectOption>
+								>
+									{sorter.title}
+								</IonSelectOption>
 							))}
 						</IonSelect>
 					</IonItem>
@@ -271,10 +325,18 @@ const SortSettings = (props: PageData) => {
 						return (
 							<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
 								<IonItemOptions side="end" className="serifChars">
-									<IonItemOption color="primary" aria-label="Edit" onClick={() => openEditor(sorter)}>
+									<IonItemOption
+										color="primary"
+										aria-label="Edit"
+										onClick={() => openEditor(sorter)}
+									>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
-									<IonItemOption color="danger" aria-label="Delete" onClick={() => maybeDeleteSort(id, title)}>
+									<IonItemOption
+										color="danger"
+										aria-label="Delete"
+										onClick={() => maybeDeleteSort(id, title)}
+									>
 										<IonIcon slot="icon-only" icon={trash} />
 									</IonItemOption>
 								</IonItemOptions>
@@ -292,11 +354,20 @@ const SortSettings = (props: PageData) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="primary" slot="start" onClick={() => setAddModalOpen(true)}>
+					<IonButton
+						color="primary"
+						slot="start"
+						onClick={() => setAddModalOpen(true)}
+					>
 						<IonIcon icon={addCircleSharp} slot="end" />
 						<IonLabel>New Custom Sort</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" routerLink='/settings' routerDirection='back'>
+					<IonButton
+						color="success"
+						slot="end"
+						routerLink='/settings'
+						routerDirection='back'
+					>
 						<IonIcon icon={checkmarkCircleSharp} slot="end" />
 						<IonLabel>Done</IonLabel>
 					</IonButton>

@@ -35,7 +35,11 @@ function recurseSplit (input: string, incomingSplits: string[]) {
 const basicSorter = (a: string, b: string, sortLanguage: string, sensitivity: SortSensitivity) => {
 	// Basic search function. Falls back to "old" JS method if needed.
 	if(sortLanguage !== "unicode" && a.localeCompare) {
-		return a.localeCompare(b, sortLanguage, {usage: 'sort', sensitivity: sensitivity || "variant" });
+		return a.localeCompare(
+			b,
+			sortLanguage,
+			{usage: 'sort', sensitivity: sensitivity || "variant" }
+		);
 	}
 	return a === b ? 0 : (a < b ? -1 : 1);
 };
@@ -48,7 +52,12 @@ function makeSorter (
 ) {
 	if(!obj) {
 		// Just use the default language and sensitivity
-		return (a: string, b: string) => basicSorter(a, b, sortLanguageDefault, sensitivityDefault);
+		return (a: string, b: string) => basicSorter(
+			a,
+			b,
+			sortLanguageDefault,
+			sensitivityDefault
+		);
 	}
 	const {
 		sortLanguage = sortLanguageDefault,
@@ -57,7 +66,12 @@ function makeSorter (
 		customizations,
 		multiples
 	} = obj;
-	const basicSort = (a: string, b: string) => basicSorter(a, b, sortLanguage, sensitivity);
+	const basicSort = (a: string, b: string) => basicSorter(
+		a,
+		b,
+		sortLanguage,
+		sensitivity
+	);
 	if(!(customAlphabet || customizations)) {
 		// Simple sort
 		return basicSort;
@@ -74,7 +88,9 @@ function makeSorter (
 		// Create a comparison function for a custom alphabet
 		const logic: OrderLogic = {};
 		customAlphabet.forEach((char, i) => logic[char] = i+1);
-		functions.push((a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN));
+		functions.push(
+			(a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN)
+		);
 	}
 	if(customizations && customizations.length > 0) {
 		// Create a comparison function for every given relation and equality
@@ -84,7 +100,10 @@ function makeSorter (
 				const logic: OrderLogic = {};
 				logic[base] = 1;
 				equals.forEach(char => logic[char] = 1);
-				functions.push((a: string, b: string) => logic[a] && logic[b] ? 0 : NaN);
+				functions.push(
+					(a: string, b: string) =>
+						logic[a] && logic[b] ? 0 : NaN
+				);
 			} else {
 				const { base, pre, post } = object;
 				const basePos = pre.length + 1;
@@ -92,7 +111,10 @@ function makeSorter (
 				pre.forEach((char, i) => logic[char] = i+1);
 				logic[base] = basePos;
 				post.forEach((char, i) => logic[char] = basePos+i+1);
-				functions.push((a: string, b: string) => (logic[a] || NaN) - (logic[b] || NaN));
+				functions.push(
+					(a: string, b: string) =>
+						(logic[a] || NaN) - (logic[b] || NaN)
+				);
 			}
 		});
 	}

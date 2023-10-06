@@ -135,7 +135,9 @@ const WGRew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpen} />
+			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
+				openECM={setIsOpen}
+			/>
 			<EditTransformModal
 				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
 				openECM={setIsOpen}
@@ -169,26 +171,40 @@ const WGRew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="transforms units dragArea" lines="none">
-					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+					<IonReorderGroup
+						disabled={false}
+						className="hideWhileAdding"
+						onIonItemReorder={doReorder}
+					>
 						{transforms.map((transform: WGTransformObject) => {
 							const { id, seek, replace, description } = transform;
 							return (
 								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editTransform(transform)}>
+										<IonItemOption
+											color="primary"
+											onClick={() => editTransform(transform)}
+										>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
-										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(transform)}>
+										<IonItemOption
+											color="danger"
+											onClick={() => maybeDeleteTransform(transform)}
+										>
 											<IonIcon slot="icon-only" icon={trash} />
 										</IonItemOption>
 									</IonItemOptions>
 									<IonItem>
-										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonReorder className="dragHandle ion-margin-end">
+											<IonIcon icon={reorderTwo} className="dragHandle" />
+										</IonReorder>
 										<IonLabel className="wrappableInnards">
 											<div className="importantElement serifChars">
 												<span className="seek importantUnit">{seek}</span>
 												<span className="arrow unimportantUnit">{arrow}</span>
-												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
+												<span className="replace importantUnit">
+													{replace || String.fromCharCode(160)}
+												</span>
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>
@@ -200,7 +216,11 @@ const WGRew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new transformation" onClick={() => setIsOpenAddTransform(true)}>
+					<IonFabButton
+						color="tertiary"
+						title="Add new transformation"
+						onClick={() => setIsOpenAddTransform(true)}
+					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

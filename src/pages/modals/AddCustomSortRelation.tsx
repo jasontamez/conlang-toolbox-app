@@ -130,10 +130,19 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
-						<div slot="start" className="ion-margin-end">Base Character:</div>
-						<IonInput aria-label="Base character" id="addBaseRelation" placeholder="The base character" />
+						<div
+							slot="start"
+							className="ion-margin-end"
+						>Base Character:</div>
+						<IonInput
+							aria-label="Base character"
+							id="addBaseRelation"
+							placeholder="The base character"
+						/>
 					</IonItem>
-					<IonItem className="labelled" lines="none"><IonLabel>Sorted Before the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none">
+						<IonLabel>Sorted Before the Base:</IonLabel>
+					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label="Characters sorted before the base"
@@ -141,7 +150,9 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 							placeholder="End with the one just before the Base."
 						/>
 					</IonItem>
-					<IonItem className="labelled" lines="none"><IonLabel>Sorted After the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none">
+						<IonLabel>Sorted After the Base:</IonLabel>
+					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label="Characters sorted after the base"
@@ -157,22 +168,45 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=".">[a.b.c.d.e]: Period</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=";">[a;b;c;d;e]: Semicolon</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=""
+							>[abcde]: No separator</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=" "
+							>[a b c d e]: Space</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=","
+							>[a,b,c,d,e]: Comma</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="."
+							>[a.b.c.d.e]: Period</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=";"
+							>[a;b;c;d;e]: Semicolon</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>
 				<IonToolbar>
-					<IonButton color="warning" slot="start" onClick={maybeCancel}>
+					<IonButton
+						color="warning"
+						slot="start"
+						onClick={maybeCancel}
+					>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={maybeSaveRelation}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={maybeSaveRelation}
+					>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Save</IonLabel>
 					</IonButton>

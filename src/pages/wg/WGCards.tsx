@@ -56,8 +56,8 @@ export const CharGroupCard = () => {
 					The letters/characters in your group are called a <em>run</em>. The run should be
 					put in a specific order. The first letter is more likely to be used than the second,
 					the second more likely than the third, and so on. This mimics natural languages, which
-					tend to use certain sounds more than others. You can adjust this <em>dropoff rate</em>, or
-					eliminate it entirely, on the <strong>Settings</strong> tab.
+					tend to use certain sounds more than others. You can adjust this <em>dropoff
+					rate</em>, or eliminate it entirely, on the <strong>Settings</strong> tab.
 				</p>
 			</IonCardContent>
 		</IonCard>
@@ -86,18 +86,19 @@ export const SylCard = () => {
 					</strong>
 				</div>
 				<p>
-					The above can generate syllables such as <em>pla</em>, <em>ku</em>, or <em>brep</em>, which
-					could then be combined into words such as <em>plabrep</em> or <em>kupla</em>. You can
-					also put characters in a syllable that don't correspond to a group: <strong>sILV</strong> could
+					The above can generate syllables such as <em>pla</em>, <em>ku</em>,
+					or <em>brep</em>, which could then be combined into words such
+					as <em>plabrep</em> or <em>kupla</em>. You can also put characters in a
+					syllable that don't correspond to a group: <strong>sILV</strong> could
 					generate syllables such as <em>sbra</em> or <em>spli</em>.
 				</p><p>
 					If you desire a greater amount of control over your words, you can turn on
 					the <strong>Use multiple syllable types</strong> toggle. This will show you four
-					separate boxes, each with a different role in a word: <strong>single-word syllables</strong> are
-					used exclusively for one-syllable words, <strong>word-initial syllables</strong> are
-					only used at the start of a word, <strong>word-final syllables</strong> are only used
-					at the end of a word, and <strong>mid-word syllables</strong> fill out the middle
-					of words when needed.
+					separate boxes, each with a different role in a word: <strong>single-word
+					syllables</strong> are used exclusively for one-syllable words, <strong>word-initial
+					syllables</strong> are only used at the start of a word, <strong>word-final
+					syllables</strong> are only used at the end of a word, and <strong>mid-word
+					syllables</strong> fill out the middle of words when needed.
 				</p><p>
 					The order of syllables in each box makes a difference. The first syllable listed is
 					more likely to be used than the second, the second more likely than the third, and
@@ -140,7 +141,13 @@ export const RewCard = () => {
 					the following:
 				</p>
 				<div className="emphasizedSection serifChars">
-					<span className="importantUnit">C</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ch</span>
+					<span
+						className="importantUnit"
+					>C</span><span
+						className="unimportantUnit"
+					>{arrow}</span><span
+						className="importantUnit"
+					>ch</span>
 				</div>
 				<p>
 					Click the (+) button to add a new transformation. The first transformation in the
@@ -156,26 +163,44 @@ export const RewCard = () => {
 				<ul>
 					<li>Consonant harmony:
 						<div className="emphasizedSection serifChars">
-							RtL: <span className="importantUnit">s(?=.*ʃ)</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">ʃ</span>
+							RtL: <span className="importantUnit"
+							>s(?=.*ʃ)</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>ʃ</span>
 							<br />
-							LtR: <span className="importantUnit">(ʃ.+)s</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">$1ʃ</span>
+							LtR: <span className="importantUnit"
+							>(ʃ.+)s</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>$1ʃ</span>
 						</div>
 					</li>
 					<li>Liquid dissimilation:
 						<div className="emphasizedSection serifChars">
-							<span className="importantUnit">r(.+)r</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">r$1l</span>
+							<span className="importantUnit"
+							>r(.+)r</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>r$1l</span>
 							<br />
-							<span className="importantUnit">l(.+)l</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">l$1r</span>
+							<span className="importantUnit"
+							>l(.+)l</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>l$1r</span>
 						</div>
 					</li>
 					<li>Synchronic epenthesis:
 						<div className="emphasizedSection serifChars">
-							<span className="importantUnit">r([aeiou]r)$</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">rd$1</span>
+							<span className="importantUnit"
+							>r([aeiou]r)$</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>rd$1</span>
 						</div>
 					</li>
 					<li>Anticipatory assimilation:
 						<div className="emphasizedSection serifChars">
-							<span className="importantUnit">[kp]t+</span><span className="unimportantUnit">{arrow}</span><span className="importantUnit">tt</span>
+							<span className="importantUnit"
+							>[kp]t+</span><span className="unimportantUnit"
+							>{arrow}</span><span className="importantUnit"
+							>tt</span>
 						</div>
 					</li>
 				</ul>
@@ -222,12 +247,13 @@ export const OutCard = () => {
 					please note that it will break any <em>transformations</em> that try to work across syllable
 					boundaries.
 				</p><p>
-					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click the
-					book <IonIcon icon={bookOutline} size="small" /> button and you're presented with two options. <em>Save
-					everything</em> will store every single generated word for the Lexicon. <em>Choose what to
-					save</em> will highlight every word, and you can tap on a word to store it; when you're done
-					choosing, hit the save <IonIcon icon={saveOutline} size="small" /> button that appears. In
-					either case, you will need to go to the <strong>Lexicon</strong> to add these stored words to
+					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click
+					the book <IonIcon icon={bookOutline} size="small" /> button and you're presented with
+					two options. <em>Save everything</em> will store every single generated word for the
+					Lexicon. <em>Choose what to save</em> will highlight every word, and you can tap on a
+					word to store it; when you're done choosing, hit the
+					save <IonIcon icon={saveOutline} size="small" /> button that appears. In either case,
+					you will need to go to the <strong>Lexicon</strong> to add these stored words to
 					your lexicon.
 				</p>
 			</IonCardContent>

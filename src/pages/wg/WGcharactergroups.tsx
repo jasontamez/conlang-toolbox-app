@@ -127,7 +127,9 @@ const WGCharGroup = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddCharGroupModal {...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)} openECM={setIsOpenECM} />
+			<AddCharGroupModal {...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
+				openECM={setIsOpenECM}
+			/>
 			<EditCharGroupModal
 				{...props.modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)}
 				openECM={setIsOpenECM}
@@ -168,7 +170,13 @@ const WGCharGroup = (props: PageData) => {
 						</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonRange min={0} max={50} value={characterGroupDropoff} pin={true} onIonChange={(e) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty))}>
+						<IonRange
+							min={0}
+							max={50}
+							value={characterGroupDropoff}
+							pin={true}
+							onIonChange={(e) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty))}
+						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -178,10 +186,16 @@ const WGCharGroup = (props: PageData) => {
 						return (
 							<IonItemSliding key={label}>
 								<IonItemOptions>
-									<IonItemOption color="primary" onClick={() => editCharGroup(charGroup)}>
+									<IonItemOption
+										color="primary"
+										onClick={() => editCharGroup(charGroup)}
+									>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
-									<IonItemOption color="danger" onClick={() => maybeDeleteCharGroup(charGroup)}>
+									<IonItemOption
+										color="danger"
+										onClick={() => maybeDeleteCharGroup(charGroup)}
+									>
 										<IonIcon slot="icon-only" icon={trash} />
 									</IonItemOption>
 								</IonItemOptions>
@@ -203,7 +217,11 @@ const WGCharGroup = (props: PageData) => {
 					})}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="secondary" title="Add new character group" onClick={() => setIsOpenAddCharGroup(true)}>
+					<IonFabButton
+						color="secondary"
+						title="Add new character group"
+						onClick={() => setIsOpenAddCharGroup(true)}
+					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

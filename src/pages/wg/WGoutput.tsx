@@ -657,14 +657,25 @@ const WGOut = (props: PageData) => {
 		return displayHTML.map((words: string[], i: number) => {
 			const id = `createdWord${i}`;
 			return <React.Fragment key={i}>
-				<span className="word" id={id} onClick={() => maybeSaveThisWord(words[0], id)}>{words[1]}</span>{' '}
+				<span
+					className="word"
+					id={id}
+					onClick={() => maybeSaveThisWord(words[0], id)}
+				>{words[1]}</span>{' '}
 			</React.Fragment>;
 		});
 	}, [displayHTML, maybeSaveThisWord]);
 	const parsedWordList = useMemo(() => {
 		return displayList.map((word: string, i: number) => {
 			const id = `createdWord${i}`;
-			return <div className="word" key={i} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
+			return (
+				<div
+					className="word"
+					key={i}
+					id={id}
+					onClick={() => maybeSaveThisWord(word, id)}
+				>{word}</div>
+			);
 		});
 	}, [displayList, maybeSaveThisWord]);
 	const makeOutput = useCallback(() => {
@@ -705,15 +716,29 @@ const WGOut = (props: PageData) => {
 							strong={true}
 							size="small"
 							color="success"
-							style={ { width: "max-content", fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
+							style={{
+								width: "max-content",
+								fontSize: "1.35rem",
+								padding: "0.5rem 0",
+								minHeight: "3.25rem"
+							}}
 							onClick={() => {new Promise(() => generateOutput())}}
 							disabled={isPickingSaving}
-						>{
-							isGenerating ? (
-								<span style={ {fontStyle: "italic"} }>Loading...</span>
-							) : "Generate"
-						}<IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
-						<div id="outputPane" style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}} className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}>
+						>
+							{
+								isGenerating ? (
+									<span style={ {fontStyle: "italic"} }>Loading...</span>
+								) : "Generate"
+							}<IonIcon
+								icon={caretForwardCircleOutline}
+								style={ { marginLeft: "0.25em" } }
+							/>
+						</IonButton>
+						<div
+							id="outputPane"
+							style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}}
+							className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
+						>
 							{makeOutput()}
 						</div>
 					</div>

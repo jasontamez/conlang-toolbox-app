@@ -295,22 +295,46 @@ const Menu = () => {
 								>
 									<MenuIcon />
 									<IonLabel>{title}</IonLabel>
-									<IonIcon className="caret" slot="end" icon={caretForwardSharp} />
+									<IonIcon
+										className="caret"
+										slot="end"
+										icon={caretForwardSharp}
+									/>
 								</IonItem>
 							);
 						} else if(parent) {
 							return (
 								<IonMenuToggle key={id} autoHide={false}>
-									<IonItem className={'subHeading' + (testPath(url) ? ' selected' : '') + (menuInfo === parent ? '' : ' hidden')} routerLink={url} routerDirection="forward" lines="none" detail={false}>
+									<IonItem
+										className={
+											'subHeading'
+											+ (testPath(url) ? ' selected' : '')
+											+ (menuInfo === parent ? '' : ' hidden')
+										}
+										routerLink={url}
+										routerDirection="forward"
+										lines="none"
+										detail={false}
+									>
 										<IonLabel>{title}</IonLabel>
-										<IonIcon slot="end" size="small" icon={ellipseSharp} />
+										<IonIcon
+											slot="end"
+											size="small"
+											icon={ellipseSharp}
+										/>
 									</IonItem>
 								</IonMenuToggle>
 							);
 						}
 						return (
 							<IonMenuToggle key={id} autoHide={false}>
-								<IonItem className={'mainHeading' + (testPath(url) ? ' selected' : '')} routerLink={url} routerDirection="forward" lines="none" detail={false}>
+								<IonItem
+									className={'mainHeading' + (testPath(url) ? ' selected' : '')}
+									routerLink={url}
+									routerDirection="forward"
+									lines="none"
+									detail={false}
+								>
 									<MenuIcon />
 									<IonLabel>{title}</IonLabel>
 								</IonItem>
@@ -320,7 +344,12 @@ const Menu = () => {
 					const { header, note } = menuSection;
 					return (
 						<IonList key={menuSection.id} id={menuSection.id}>
-							{(header) ? (<IonListHeader>{header}</IonListHeader>) : <></>}{(note) ? (<IonNote>{note}</IonNote>) : <></>}
+							{
+								(header) ?
+									(<IonListHeader>{header}</IonListHeader>)
+								:
+									<></>
+							}{(note) ? (<IonNote>{note}</IonNote>) : <></>}
 							{pages}
 						</IonList>
 					);

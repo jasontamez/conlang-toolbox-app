@@ -195,7 +195,11 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
+		<IonModal
+			isOpen={isOpen}
+			onDidDismiss={() => setIsOpen(false)}
+			onIonModalDidPresent={onLoad}
+		>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Sound Change</IonTitle>
@@ -269,11 +273,19 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="primary" slot="end" onClick={() => maybeSaveNewSoundChangeInfo()}>
+					<IonButton
+						color="primary"
+						slot="end"
+						onClick={() => maybeSaveNewSoundChangeInfo()}
+					>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Sound Change</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteSoundChange()}>
+					<IonButton
+						color="danger"
+						slot="start"
+						onClick={() => maybeDeleteSoundChange()}
+					>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>Delete Item</IonLabel>
 					</IonButton>

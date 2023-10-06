@@ -123,7 +123,9 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		// Everything ok!
 		close && setIsOpen(false);
 		dispatch(addCharacterGroupWE({title, label, run}));
-		$a("ion-list.addWECharGroup ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		$a("ion-list.addWECharGroup ion-input").forEach(
+			(input: HTMLInputElement) => input.value = ""
+		);
 		toaster({
 			message: "Character Group added!",
 			duration: 2500,
@@ -164,7 +166,10 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
-						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<div
+							slot="start"
+							className="ion-margin-end labelLabelEdit"
+						>Short Label:</div>
 						<IonInput
 							id="newWEShortLabel"
 							aria-label="Short Label"
@@ -194,11 +199,19 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCharGroup(false)}>
+					<IonButton
+						color="secondary"
+						slot="end"
+						onClick={() => maybeSaveNewCharGroup(false)}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Character Group</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCharGroup()}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => maybeSaveNewCharGroup()}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>

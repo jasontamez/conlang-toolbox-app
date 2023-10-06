@@ -225,11 +225,25 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" id="editingWECharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => resetError("title")} autocomplete="on"></IonInput>
+						<IonInput
+							aria-label="Title or description"
+							id="editingWECharGroupTitle"
+							className="ion-margin-top"
+							placeholder="Type description here"
+							onIonChange={e => resetError("title")}
+							autocomplete="on"
+						></IonInput>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
-						<IonInput aria-label="Short Label" id="editingWEShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1}></IonInput>
+						<IonInput
+							aria-label="Short Label"
+							id="editingWEShortLabel"
+							className="serifChars"
+							placeholder="1 character only"
+							onIonChange={e => resetError("label")}
+							maxlength={1}
+						></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -238,17 +252,31 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput id="editingWECharGroupRun" aria-label="Letters, Characters" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")}></IonInput>
+						<IonInput
+							id="editingWECharGroupRun"
+							aria-label="Letters, Characters"
+							className="ion-margin-top serifChars"
+							placeholder="Enter characters in group here"
+							onIonChange={e => resetError("run")}
+						></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton
+						color="secondary"
+						slot="end"
+						onClick={() => maybeSaveNewInfo()}
+					>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Save Group</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCharGroup()}>
+					<IonButton
+						color="danger"
+						slot="start"
+						onClick={() => maybeDeleteCharGroup()}
+					>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>Delete Group</IonLabel>
 					</IonButton>

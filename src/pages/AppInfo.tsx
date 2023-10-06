@@ -106,10 +106,14 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent>
 									<IonList className="ion-text-center">
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project</IonLabel>
+											<IonLabel className="ion-text-center ion-text-wrap">
+												App icon is based on <a href="https://thenounproject.com/term/toolbox/2586725/">Toolbox by Maxicons</a> from the Noun Project
+											</IonLabel>
 										</IonItem>
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder</IonLabel>
+											<IonLabel className="ion-text-center ion-text-wrap">
+												WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder
+											</IonLabel>
 										</IonItem>
 									</IonList>
 								</IonCardContent>
@@ -188,7 +192,9 @@ const AppInfo = (props: PageData) => {
 					</IonRow>*/}
 					<IonRow>
 						<IonCol>
-							<div className="ion-text-center">Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a></div>
+							<div className="ion-text-center">
+								Contact: <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a>
+							</div>
 						</IonCol>
 					</IonRow>
 					<IonRow>

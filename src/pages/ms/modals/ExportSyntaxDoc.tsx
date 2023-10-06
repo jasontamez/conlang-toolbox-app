@@ -67,11 +67,34 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
 					<IonItem>Choose a format:</IonItem>
-					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload)}>Text Outline (plain)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doText(e, msInfo, doDownload, true)}>Text Outline (markdown)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doDocx(e, msInfo, doClose, setLoading, doToast, undoToast)}>Word Document (docx)</IonItem>
-					<IonItem button={true} onClick={(e: any) => doJSON(e, msInfo, doDownload)}>JSON File</IonItem>
-					<IonItem button={true} onClick={(e: any) => doXML(e, msInfo, doDownload)}>XML File</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doText(e, msInfo, doDownload)}
+					>Text Outline (plain)</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doText(e, msInfo, doDownload, true)}
+					>Text Outline (markdown)</IonItem>
+					<IonItem
+						button={true}
+						onClick={
+							(e: any) => doDocx(
+								e,
+								msInfo,
+								doClose,
+								setLoading,
+								doToast,
+								undoToast
+							)}
+					>Word Document (docx)</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doJSON(e, msInfo, doDownload)}
+					>JSON File</IonItem>
+					<IonItem
+						button={true}
+						onClick={(e: any) => doXML(e, msInfo, doDownload)}
+					>XML File</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>

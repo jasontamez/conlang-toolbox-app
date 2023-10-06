@@ -89,7 +89,10 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 						});
 						lines.push(content || "[TEXT PROMPT]", txt);
 					} else {
-						lines.push(content || "[TEXT PROMPT]", msInfo[prop as MSText] || "[NO TEXT ENTERED]");
+						lines.push(
+							content || "[TEXT PROMPT]",
+							msInfo[prop as MSText] || "[NO TEXT ENTERED]"
+						);
 					}
 					break;
 				case "Checkboxes":
@@ -109,15 +112,20 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 							if (found.length === 0) {
 								return md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
 							} else if (found.length === 1) {
-								return md ? "*" + found[0] + "*" : found[0];
+								return md ? `*${found[0]}*` : found[0];
 							} else if (found.length === 2) {
-								return md ? "*" + found[0] + "* and *" + found[1] : found[0] + " and " + found[1];
+								return (
+									md ?
+										`*${found[0]}* and *${found[1]}*`
+									:
+									`${found[0]} and ${found[1]}`
+								);
 							}
 							const final = found.pop();
 							if(md) {
-								return "*" + found.join("*, *") + "*, and *" + final + "*";
+								return `*${found.join("*, *")}*, and *${final}*`;
 							}
-							return found.join(", ") + ", and " + final;
+							return `${found.join(", ")}, and ${final}`;
 						}).join(""));
 						lines.push(map.join("\n"));
 					} else {
@@ -139,14 +147,26 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 							result = md ? "*" + found[0] + "*" : found[0];
 						} else if (found.length === 2) {
 							const final = found.pop();
-							result = md ? ("*" + found.join("*, *") + "*, and *" + final) : (found.join(", ") + ", and " + final);
+							result = (
+								md ?
+									`*${found.join("*, *")}*, and *${final}*`
+								:
+									`${found.join(", ")}, and ${final}`
+							);
 						}
-						lines.push(title + " " + result);
+						lines.push(`${title} ${result}`);
 					}
 			}
 		});
 	});
-	const output = (md ? "# " : "") + msInfo.title + "\n\n" + (md ? "*" : "") + (msInfo.description || "[NO DESCRIPTION PROVIDED]") + (md ? "*" : "") + "\n\n" + lines.join("\n\n") + "\n";
+	const output =
+		(md ? "# " : "")
+		+ msInfo.title + "\n\n" + (md ? "*" : "")
+		+ (msInfo.description || "[NO DESCRIPTION PROVIDED]")
+		+ (md ? "*" : "")
+		+ "\n\n"
+		+ lines.join("\n\n")
+		+ "\n";
 	doDownload(e, output, md ? "md" : "txt");
 };
 

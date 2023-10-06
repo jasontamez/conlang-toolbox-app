@@ -125,31 +125,73 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
-						<div slot="start" className="ion-margin-end">Base Character:</div>
-						<IonInput aria-label="Base character" id="addBaseEquality" placeholder="The base character" />
+						<div
+							slot="start"
+							className="ion-margin-end"
+						>Base Character:</div>
+						<IonInput
+							aria-label="Base character"
+							id="addBaseEquality"
+							placeholder="The base character"
+						/>
 					</IonItem>
-					<IonItem className="labelled" lines="none"><IonLabel>Equal to the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none">
+						<IonLabel>Equal to the Base:</IonLabel>
+					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Characters equal to the base" id="addEquality" placeholder="Characters to be equal to the Base." />
+						<IonInput
+							aria-label="Characters equal to the base"
+							id="addEquality"
+							placeholder="Characters to be equal to the Base."
+						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect color="primary" className="ion-text-wrap settings" label="Characters Separator:" value={separator} onIonChange={(e) => setSeparator(e.detail.value)}>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="">[abcde]: No separator</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=" ">[a b c d e]: Space</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=",">[a,b,c,d,e]: Comma</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=".">[a.b.c.d.e]: Period</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value=";">[a;b;c;d;e]: Semicolon</IonSelectOption>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Characters Separator:"
+							value={separator}
+							onIonChange={(e) => setSeparator(e.detail.value)}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=""
+							>[abcde]: No separator</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=" "
+							>[a b c d e]: Space</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=","
+							>[a,b,c,d,e]: Comma</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="."
+							>[a.b.c.d.e]: Period</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=";"
+							>[a;b;c;d;e]: Semicolon</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>
 				<IonToolbar>
-					<IonButton color="warning" slot="start" onClick={maybeCancel}>
+					<IonButton
+						color="warning"
+						slot="start"
+						onClick={maybeCancel}
+					>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={maybeSaveEquality}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={maybeSaveEquality}
+					>
 						<IonIcon icon={saveOutline} slot="end" />
 						<IonLabel>Save</IonLabel>
 					</IonButton>

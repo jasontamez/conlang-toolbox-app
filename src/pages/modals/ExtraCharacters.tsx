@@ -140,34 +140,83 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>Extra Characters</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setShowHelp(!showHelp)} color={showHelp ? "secondary" : undefined} fill={showHelp ? "solid" : "clear"}>
+						<IonButton
+							onClick={() => setShowHelp(!showHelp)}
+							color={showHelp ? "secondary" : undefined}
+							fill={showHelp ? "solid" : "clear"}
+						>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList id="ExtraCharactersModalList" lines="none" className={showHelp ? "showingHelp" : undefined}>
+				<IonList
+					id="ExtraCharactersModalList"
+					lines="none"
+					className={showHelp ? "showingHelp" : undefined}
+				>
 					<IonItem className="extraHelp">
 						<div>
-							<div>This is a place to find and copy characters that may not be easily accessible to you on your device's keyboard. The other buttons can be toggled for additional effects:</div>
+							<div>
+								This is a place to find and copy characters that may not be
+								easily accessible to you on your device's keyboard. The other
+								buttons can be toggled for additional effects:
+							</div>
 							<div className="central"><IonIcon icon={copyOutline} /></div>
-							<div>When active, copies any character you tap directly to the clipboard. When inactive, copies tapped characters to the copy-bar below, where you can copy them at your leisure.</div>
+							<div>
+								When active, copies any character you tap directly to the
+								clipboard. When inactive, copies tapped characters to the
+								copy-bar below, where you can copy them at your leisure.
+							</div>
 							<div className="central"><IonIcon icon={heartOutline} /></div>
-							<div>When active, tapping on a character adds or removes it from your Favorites list. Characters will not be copied to the clipboard or the copy-bar.</div>
+							<div>
+								When active, tapping on a character adds or removes it from your
+								Favorites list. Characters will not be copied to the clipboard or
+								the copy-bar.
+							</div>
 							<div className="central"><IonIcon icon={readerOutline} /></div>
-							<div>When active, shows the standard Unicode name of every character. When inactive, the characters are presented by themselves.</div>
+							<div>
+								When active, shows the standard Unicode name of every character.
+								When inactive, the characters are presented by themselves.
+							</div>
 						</div>
 					</IonItem>
 					<IonItem className={"inputItem" + (copyImmediately ? "" : " sticky")}>
-						<IonButton size="default" slot="start" disabled={isFavoriting} onClick={() => toggleCopy()} color={copyImmediately ? "secondary" : undefined} fill={copyImmediately ? "solid" : "clear"}>
+						<IonButton
+							size="default"
+							slot="start"
+							disabled={isFavoriting}
+							onClick={() => toggleCopy()}
+							color={copyImmediately ? "secondary" : undefined}
+							fill={copyImmediately ? "solid" : "clear"}
+						>
 							<IonIcon icon={copyOutline} />
 						</IonButton>
-						<IonButton size="default" slot="start" disabled={copyImmediately} onClick={() => toggleFavoriting(!isFavoriting)} color={isFavoriting ? "secondary" : undefined} fill={isFavoriting ? "solid" : "clear"}>
+						<IonButton
+							size="default"
+							slot="start"
+							disabled={copyImmediately}
+							onClick={() => toggleFavoriting(!isFavoriting)}
+							color={isFavoriting ? "secondary" : undefined}
+							fill={isFavoriting ? "solid" : "clear"}
+						>
 							<IonIcon icon={heartOutline} />
 						</IonButton>
-						<IonInput aria-label="Characters to be copied" id="toBeCopied" value={toCopy} onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)} placeholder="Tap characters to add them here" />
-						<IonButton size="default" slot="end" onClick={() => dispatch(toggleShowNames())} color={showNames ? "secondary" : undefined} fill={showNames ? "solid" : "clear"}>
+						<IonInput
+							aria-label="Characters to be copied"
+							id="toBeCopied"
+							value={toCopy}
+							onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)}
+							placeholder="Tap characters to add them here"
+						/>
+						<IonButton
+							size="default"
+							slot="end"
+							onClick={() => dispatch(toggleShowNames())}
+							color={showNames ? "secondary" : undefined}
+							fill={showNames ? "solid" : "clear"}
+						>
 							<IonIcon icon={readerOutline} />
 						</IonButton>
 					</IonItem>
@@ -177,13 +226,22 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 					<IonItem>
 						<div className="ion-flex-row-wrap ion-align-items-center ion-justify-content-center displayChips">
 							<span>Display:</span>
-							<IonChip outline={nowShowing !== "Favorites"} onClick={() => toggleChars("Favorites")} className={"ion-margin-start" + (nowShowing === "Favorites" ? " active" : "")}>
+							<IonChip
+								outline={nowShowing !== "Favorites"}
+								onClick={() => toggleChars("Favorites")}
+								className={"ion-margin-start" + (nowShowing === "Favorites" ? " active" : "")}
+							>
 								<IonLabel>Favorites</IonLabel>
 							</IonChip>
 							{contents.map((title) => {
 								const current = nowShowing === title;
 								return (
-									<IonChip key={title} outline={!current} onClick={() => toggleChars(title)} className={current ? "active" : ""}>
+									<IonChip
+										key={title}
+										outline={!current}
+										onClick={() => toggleChars(title)}
+										className={current ? "active" : ""}
+									>
 										<IonLabel>{title}</IonLabel>
 									</IonChip>
 								);
@@ -204,7 +262,9 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 												className={currentFaves[character] ? "char favorite" : "char"}
 												onClick={() => characterClicked(character)}
 											>{character}</div>
-											<div className="label">{capitalize.words(charactersInfo[character])}</div>
+											<div
+												className="label"
+											>{capitalize.words(charactersInfo[character])}</div>
 										</div>
 									)}
 								</div>

@@ -332,7 +332,12 @@ const ConceptsPage = (props: PageData) => {
 					<IonTitle>Concepts</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
-							<IonIcon flipRtl size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
+							<IonIcon
+								flipRtl
+								size="small"
+								slot="end"
+								src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
+							/>
 						</IonButton>
 						<IonButton disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
@@ -349,48 +354,101 @@ const ConceptsPage = (props: PageData) => {
 								const [list, prop] = pair;
 								const current = display.some((p: keyof Concept) => p === prop);
 								return (
-									<IonChip key={prop} outline={!current} onClick={() => toggleChars(prop)} className={(ind === 0 ? ("ion-margin-start" + (current ? " " : "")) : "") + (current ? "active" : "")}>
+									<IonChip
+										key={prop}
+										outline={!current}
+										onClick={() => toggleChars(prop)}
+										className={
+											(ind === 0 ?
+												("ion-margin-start" + (current ? " " : ""))
+											:
+												""
+											) + (current ? "active" : "")
+										}
+									>
 										<IonLabel>{list}</IonLabel>
 									</IonChip>
 								);
 							})}
 							{(
-								<IonChip key="combinations" outline={!showingCombos} onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))} className={showingCombos ? "active" : undefined}>
+								<IonChip
+									key="combinations"
+									outline={!showingCombos}
+									onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))}
+									className={showingCombos ? "active" : undefined}
+								>
 									<IonLabel>My Combinations</IonLabel>
 								</IonChip>
 							)}
 						</div>
 						<div className="controls">
-							<IonButton disabled={linking || unlinking} fill={pickAndSave ? "solid" : "outline"} onClick={() => doPickAndSave()}>
+							<IonButton
+								disabled={linking || unlinking}
+								fill={pickAndSave ? "solid" : "outline"}
+								onClick={() => doPickAndSave()}
+							>
 								<LexiconIcon slot="icon-only" />
 							</IonButton>
-							<IonButton disabled={pickAndSave || unlinking} fill={linking ? "solid" : "outline"} color="secondary" onClick={() => toggleLinking()}>
+							<IonButton
+								disabled={pickAndSave || unlinking}
+								fill={linking ? "solid" : "outline"}
+								color="secondary"
+								onClick={() => toggleLinking()}
+							>
 								<IonIcon slot="icon-only" src="svg/link.svg" />
 							</IonButton>
 							{showingCombos &&
-								<IonButton disabled={combinations.length === 0 || linking || pickAndSave} fill={unlinking ? "solid" : "outline"} color="secondary" onClick={() => toggleUnlinking()}>
+								<IonButton
+									disabled={combinations.length === 0 || linking || pickAndSave}
+									fill={unlinking ? "solid" : "outline"}
+									color="secondary"
+									onClick={() => toggleUnlinking()}
+								>
 									<IonIcon slot="icon-only" src="svg/unlink.svg" />
 								</IonButton>
 							}
 						</div>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
-						<IonButton strong={true} color="tertiary" onClick={() => saveEverything()}>
+						<IonButton
+							strong={true}
+							color="tertiary"
+							onClick={() => saveEverything()}
+						>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save All Words
 						</IonButton>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
-						<IonButton strong={true} color="secondary" onClick={() => donePickingAndSaving()}>
+						<IonButton
+							strong={true}
+							color="secondary"
+							onClick={() => donePickingAndSaving()}
+						>
 							<IonIcon icon={checkmarkDoneOutline} style={ { marginRight: "0.5em" } } /> Save Selected Words
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
-						<IonLabel className="ion-text-wrap">Current Combination: {savedWords.map(word => word.word).join("; ")}</IonLabel>
-						<IonButton disabled={savedWords.length <= 1} slot="end" strong={true} color="success" onClick={() => doneLinking()}>
+						<IonLabel className="ion-text-wrap">
+							Current Combination: {savedWords.map(word => word.word).join("; ")}
+						</IonLabel>
+						<IonButton
+							disabled={savedWords.length <= 1}
+							slot="end"
+							strong={true}
+							color="success"
+							onClick={() => doneLinking()}
+						>
 							<IonIcon icon={saveOutline} style={ { marginRight: "0.5em" } } /> Save
 						</IonButton>
 					</IonItem>
-					<div id="outputPaneWL" className={"concepts" + (pickAndSave || linking ? " pickAndSave" : "") + (unlinking ? " removingCombos" : "")}>
+					<div
+						id="outputPaneWL"
+						className={
+							"concepts"
+							+ (pickAndSave || linking ? " pickAndSave" : "")
+							+ (unlinking ? " removingCombos" : "")
+						}
+					>
 						{showingCombos && combinations.map((combo: ConceptCombo) => {
 							const { id, parts } = combo;
 							const word = parts.map((w: Concept) => w.word).join("; ");
@@ -399,7 +457,12 @@ const ConceptsPage = (props: PageData) => {
 								+ "word combo ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(id, word, true)} key={id} id={id} className={classes}>{word}</div>
+								<div
+									onClick={() => maybeSaveThisWord(id, word, true)}
+									key={id}
+									id={id}
+									className={classes}
+								>{word}</div>
 							);
 						})}
 						{shown.map((wordObj: Concept) => {
@@ -409,7 +472,12 @@ const ConceptsPage = (props: PageData) => {
 								+ "word ion-text-"
 								+ (textCenter ? "center" : "start");
 							return (
-								<div onClick={() => maybeSaveThisWord(id, word)} key={id} id={id} className={classes}>{word}</div>
+								<div
+									onClick={() => maybeSaveThisWord(id, word)}
+									key={id}
+									id={id}
+									className={classes}
+								>{word}</div>
 							)
 						})}
 					</div>

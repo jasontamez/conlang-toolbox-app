@@ -154,7 +154,10 @@ const WERew = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} openECM={setIsOpenECM} />
+			<AddTransformModal
+				{...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
+				openECM={setIsOpenECM}
+			/>
 			<EditTransformModal
 				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
 				openECM={setIsOpenECM}
@@ -188,27 +191,47 @@ const WERew = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="transforms units dragArea" lines="none">
-					<IonReorderGroup disabled={false} className="hideWhileAdding" onIonItemReorder={doReorder}>
+					<IonReorderGroup
+						disabled={false}
+						className="hideWhileAdding"
+						onIonItemReorder={doReorder}
+					>
 						{transforms.map((trans: WETransformObject) => {
 							const { id, seek, direction, replace, description } = trans;
 							return (
 								<IonItemSliding key={id}>
 									<IonItemOptions>
-										<IonItemOption color="primary" onClick={() => editTransform(trans)}>
+										<IonItemOption
+											color="primary"
+											onClick={() => editTransform(trans)}
+										>
 											<IonIcon slot="icon-only" src="svg/edit.svg" />
 										</IonItemOption>
-										<IonItemOption color="danger" onClick={() => maybeDeleteTransform(trans)}>
+										<IonItemOption
+											color="danger"
+											onClick={() => maybeDeleteTransform(trans)}
+										>
 											<IonIcon slot="icon-only" icon={trash} />
 										</IonItemOption>
 									</IonItemOptions>
 									<IonItem>
-										<IonReorder className="dragHandle ion-margin-end"><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+										<IonReorder className="dragHandle ion-margin-end">
+											<IonIcon icon={reorderTwo} className="dragHandle" />
+										</IonReorder>
 										<IonLabel className="wrappableInnards">
 											<div className="importantElement serifChars">
-												<span className="seek importantUnit">{seek}</span>
-												<span className="arrow unimportantUnit">{makeArrow(direction)}</span>
-												<span className="replace importantUnit">{replace || String.fromCharCode(160)}</span>
-												<span className="unimportantUnit">{makeDescriptionOfDirection(direction)}</span>
+												<span
+													className="seek importantUnit"
+												>{seek}</span>
+												<span
+													className="arrow unimportantUnit"
+												>{makeArrow(direction)}</span>
+												<span
+													className="replace importantUnit"
+												>{replace || String.fromCharCode(160)}</span>
+												<span
+													className="unimportantUnit"
+												>{makeDescriptionOfDirection(direction)}</span>
 											</div>
 											<div className="description">{description}</div>
 										</IonLabel>
@@ -220,7 +243,11 @@ const WERew = (props: PageData) => {
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
-					<IonFabButton color="tertiary" title="Add new transform" onClick={() => setIsOpenAddTransform(true)}>
+					<IonFabButton
+						color="tertiary"
+						title="Add new transform"
+						onClick={() => setIsOpenAddTransform(true)}
+					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>
 				</IonFab>

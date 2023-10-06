@@ -74,7 +74,12 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
 					<IonItem>
-						<IonLabel className="ion-text-wrap">The Lexicon will be sorted alphabetically in the order you choose. It sorts by the first column you choose. If two items are identical in that column, it will sort them by the next column in the sort list, and so on.</IonLabel>
+						<IonLabel className="ion-text-wrap">
+							The Lexicon will be sorted alphabetically in the order you choose.
+							It sorts by the first column you choose. If two items are identical
+							in that column, it will sort them by the next column in the
+							sort list, and so on.
+						</IonLabel>
 					</IonItem>
 					<IonItemDivider>Lexicon Sort</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
@@ -88,7 +93,9 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 								<IonReorder key={`${id}:modal:sortOrder`}>
 									<IonItem lines="full">
 										<IonIcon icon={reorderTwo} slot="start" />
-										<IonLabel style={i ? {} : {fontWeight: "bold"}}>{label}</IonLabel>
+										<IonLabel
+											style={i ? {} : {fontWeight: "bold"}}
+										>{label}</IonLabel>
 										{i ? <></> : <IonIcon icon={checkmarkCircle} slot="end" />}
 									</IonItem>
 								</IonReorder>

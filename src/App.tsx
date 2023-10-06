@@ -62,7 +62,7 @@ const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
 	const [doAlert] = useIonAlert();
 	const dispatch = useDispatch();
-	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals, dispatch), [modals, setModals, dispatch]);
+	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
 	const defaultProps = {
 		modalPropsMaker
 	};

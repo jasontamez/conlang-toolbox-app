@@ -105,7 +105,9 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			anticontext: repairRegexErrors(anticontext),
 			description
 		}));
-		$a("ion-list.addSoundChangeWE ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		$a("ion-list.addSoundChangeWE ion-input").forEach(
+			(input: HTMLInputElement) => input.value = ""
+		);
 		toaster({
 			message: "Sound Change added!",
 			duration: 2500,
@@ -194,11 +196,19 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="primary" slot="end" onClick={() => maybeSaveNewSoundChange(false)}>
+					<IonButton
+						color="primary"
+						slot="end"
+						onClick={() => maybeSaveNewSoundChange(false)}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Sound Change</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewSoundChange()}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => maybeSaveNewSoundChange()}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>

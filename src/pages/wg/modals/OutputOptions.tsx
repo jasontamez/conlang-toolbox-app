@@ -83,17 +83,28 @@ const OutputOptionsModal = (props: ModalProperties) => {
 					<IonItemDivider>What to Generate:</IonItemDivider>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('text'))}>
 						<IonLabel>Pseudo-text</IonLabel>
-						<IonIcon icon={output === "text" ? checkmarkCircleOutline : ellipseOutline} />
+						<IonIcon
+							icon={output === "text" ? checkmarkCircleOutline : ellipseOutline}
+						/>
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('wordlist'))}>
 						<IonLabel>Wordlist</IonLabel>
-						<IonIcon icon={output === "wordlist" ? checkmarkCircleOutline : ellipseOutline} />
+						<IonIcon
+							icon={output === "wordlist" ? checkmarkCircleOutline : ellipseOutline}
+						/>
 					</IonItem>
 					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('syllables'))}>
 						<IonLabel>All possible syllables</IonLabel>
-						<IonIcon icon={output === "syllables" ? checkmarkCircleOutline : ellipseOutline} />
+						<IonIcon
+							icon={output === "syllables" ? checkmarkCircleOutline : ellipseOutline}
+						/>
 					</IonItem>
-					<IonItemDivider>{output === "text" ? "Pseudo-text Controls" : "Wordlist and Syllable-List Controls"}</IonItemDivider>
+					<IonItemDivider>{
+						output === "text" ?
+							"Pseudo-text Controls"
+						:
+							"Wordlist and Syllable-List Controls"
+					}</IonItemDivider>
 					<IonItem className={(output === "text" ? "" : "hide") + " labelled"}>
 						<IonLabel>Number of sentences</IonLabel>
 					</IonItem>
@@ -133,7 +144,10 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							value={customSort || null}
 							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
 						>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value={null}>Default</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value={null}
+							>Default</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"

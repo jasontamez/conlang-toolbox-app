@@ -147,7 +147,11 @@ const EditTransformModal = (props: ModalProps) => {
 		}
 	};
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} onIonModalDidPresent={onLoad}>
+		<IonModal
+			isOpen={isOpen}
+			onDidDismiss={() => setIsOpen(false)}
+			onIonModalDidPresent={onLoad}
+		>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Edit Transformation</IonTitle>
@@ -167,19 +171,33 @@ const EditTransformModal = (props: ModalProps) => {
 						<IonLabel className="seekLabel">Search Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Search expression" id="editSearchExWG" className="ion-margin-top serifChars" onIonChange={e => resetError("seek")}></IonInput>
+						<IonInput
+							aria-label="Search expression"
+							id="editSearchExWG"
+							className="ion-margin-top serifChars"
+							onIonChange={e => resetError("seek")}
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="replaceLabel">Replacement Expression:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Replacement expression" id="editReplaceExWG" className="ion-margin-top serifChars"></IonInput>
+						<IonInput
+							aria-label="Replacement expression"
+							id="editReplaceExWG"
+							className="ion-margin-top serifChars"
+						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel>Transformation Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Description of transformation" id="editOptDescWG" className="ion-margin-top" placeholder="(optional)"></IonInput>
+						<IonInput
+							aria-label="Description of transformation"
+							id="editOptDescWG"
+							className="ion-margin-top"
+							placeholder="(optional)"
+						></IonInput>
 					</IonItem>
 				</IonList>
 			</IonContent>

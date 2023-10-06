@@ -169,11 +169,25 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="titleLabel">Title/Description:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Title or description" id="newWGCharGroupTitle" className="ion-margin-top" placeholder="Type description here" onIonChange={e => resetError("title")} autocomplete="on" />
+						<IonInput
+							aria-label="Title or description"
+							id="newWGCharGroupTitle"
+							className="ion-margin-top"
+							placeholder="Type description here"
+							onIonChange={e => resetError("title")}
+							autocomplete="on"
+						/>
 					</IonItem>
 					<IonItem style={{marginTop: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
-						<IonInput aria-label="Short Label" id="newWGShortLabel" className="serifChars" placeholder="1 character only" onIonChange={e => resetError("label")} maxlength={1} />
+						<IonInput
+							aria-label="Short Label"
+							id="newWGShortLabel"
+							className="serifChars"
+							placeholder="1 character only"
+							onIonChange={e => resetError("label")}
+							maxlength={1}
+						/>
 						<IonButton slot="end" onClick={() => generateLabel()}>
 							<IonIcon icon={chevronBackOutline} />Suggest
 						</IonButton>
@@ -182,7 +196,13 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
 					</IonItem>
 					<IonItem>
-						<IonInput aria-label="Letters, characters" id="newWGCharGroupRun" className="ion-margin-top serifChars" placeholder="Enter characters in group here" onIonChange={e => resetError("run")} />
+						<IonInput
+							aria-label="Letters, characters"
+							id="newWGCharGroupRun"
+							className="ion-margin-top serifChars"
+							placeholder="Enter characters in group here"
+							onIonChange={e => resetError("run")}
+						/>
 					</IonItem>
 					<IonItem>
 						<IonToggle
@@ -195,7 +215,14 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						>Use separate dropoff rate</IonToggle>
 					</IonItem>
 					<IonItem id="charGroupDropoffAddCWG" className={hasDropoff ? "" : "hide"}>
-						<IonRange min={0} max={50} pin={true} value={dropoff} onIonChange={e => setDropoff(e.detail.value as Zero_Fifty)} debounce={250}>
+						<IonRange
+							min={0}
+							max={50}
+							pin={true}
+							value={dropoff}
+							onIonChange={e => setDropoff(e.detail.value as Zero_Fifty)}
+							debounce={250}
+						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
@@ -204,11 +231,19 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewCharGroup(false)}>
+					<IonButton
+						color="secondary"
+						slot="end"
+						onClick={() => maybeSaveNewCharGroup(false)}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add Group</IonLabel>
 					</IonButton>
-					<IonButton color="success" slot="end" onClick={() => maybeSaveNewCharGroup()}>
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={() => maybeSaveNewCharGroup()}
+					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>Add and Close</IonLabel>
 					</IonButton>

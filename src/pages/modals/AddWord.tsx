@@ -139,7 +139,11 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			</IonContent>
 			<IonFooter style={{borderTop: "2px solid #00000033"}}>
 				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton
+						color="tertiary"
+						slot="end"
+						onClick={() => maybeSaveNewInfo()}
+					>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>Add Item</IonLabel>
 					</IonButton>
