@@ -23,12 +23,30 @@ import {
 } from '@ionic/react';
 import { useSelector } from "react-redux";
 import { Clipboard } from '@capacitor/clipboard';
+import { useWindowWidth } from '@react-hook/window-size/throttled';
 
 import { PageData, StateObject } from '../store/types';
 
 import toaster from '../components/toaster';
 
+function getBannerDimensions (windowWidth: number) {
+	// original banner size: 545x153
+	// original reduced banner size: 144x40 (which is about 26.422%x26.144%, for some reason)
+	const w = 545;
+	const h = 153;
+	let width = w;
+	let ratio = 1;
+	// Max should be half the width or a quarter of the banner size, whichever is greater
+	const max = Math.max(w / 4, windowWidth / 2);
+	while(width > max) {
+		ratio -= 0.05;
+		width = w * ratio;
+	}
+	return {width: `${Math.round(width)}px`, height: `${Math.round(h * ratio)}px`};
+}
+
 const AppInfo = (props: PageData) => {
+	const width = useWindowWidth();
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
 	const [debug, setDebug] = useState<number>(1);
 	const [doAlert] = useIonAlert();
@@ -175,7 +193,15 @@ const AppInfo = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<div className="ion-text-center" style={{paddingBottom: "1em", paddingTop: "10em"}}><a href="https://www.buymeacoffee.com/jasontank"><img src="default-blue.webp" alt="Buy Me A Coffee" style={ { height: "40px", width: "144px" } } /></a></div>
+							<div className="ion-text-center" style={{paddingBottom: "1em", paddingTop: "10em"}}>
+								<a href="https://www.buymeacoffee.com/jasontank">
+									<img
+										src="default-blue.webp"
+										alt="Buy Me A Coffee"
+										style={ getBannerDimensions(width) }
+									/>
+								</a>
+							</div>
 						</IonCol>
 					</IonRow>
 				</IonGrid>
