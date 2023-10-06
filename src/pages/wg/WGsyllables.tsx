@@ -208,7 +208,14 @@ const WGSyl = (props: PageData) => {
 				</IonList>
 				<IonList className="syllables units" lines="none">
 					<IonItem className="nonUnit">
-						<div className="header">{firstBox}</div>
+						<div className="header">
+							<div className="title">{firstBox}</div>
+							{swDropoff ?
+								<div className="percentage">{swDropoff}%</div>
+							:
+								<></>
+							}
+						</div>
 						<IonTextarea
 							aria-label={firstBox.replace("\n", " ")}
 							disabled={isEditing !== "singleWord"}
@@ -249,7 +256,14 @@ const WGSyl = (props: PageData) => {
 						</IonList>
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
-						<div className="header">Word-Initial<br />Syllables</div>
+						<div className="header">
+							<div className="title">Word-Initial<br />Syllables</div>
+							{wiDropoff ?
+								<div className="percentage">{wiDropoff}%</div>
+							:
+								<></>
+							}
+						</div>
 						<IonTextarea
 							aria-label="Word-Initial Syllables"
 							disabled={isEditing !== "wordInitial"}
@@ -290,7 +304,14 @@ const WGSyl = (props: PageData) => {
 						</IonList>
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
-						<div className="header">Mid-Word<br />Syllables</div>
+						<div className="header">
+							<div className="title">Mid-Word<br />Syllables</div>
+							{wmDropoff ?
+								<div className="percentage">{wmDropoff}%</div>
+							:
+								<></>
+							}
+						</div>
 						<IonTextarea
 							aria-label="Mid-Word Syllables"
 							disabled={isEditing !== "wordMiddle"}
@@ -331,7 +352,14 @@ const WGSyl = (props: PageData) => {
 						</IonList>
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
-						<div className="header">Word-Final<br />Syllables</div>
+						<div className="header">
+							<div className="title">Word-Final<br />Syllables</div>
+							{wfDropoff ?
+								<div className="percentage">{wfDropoff}%</div>
+							:
+								<></>
+							}
+						</div>
 						<IonTextarea
 							aria-label="Word-Final Syllables"
 							disabled={isEditing !== "wordFinal"}

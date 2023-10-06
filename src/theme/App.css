@@ -141,11 +141,27 @@ ion-app ion-list.syllables > ion-item ion-textarea {
 	flex-shrink: 5;
 	flex-basis: calc((100% - 2em) * 0.6);
 }
-ion-app ion-list.syllables .header {
+ion-app ion-list.syllables div.header {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0.5rem 1rem 1rem;
+}
+ion-app ion-list.syllables div.header div.title {
 	display: block;
 	font-weight: bold;
 	font-size: larger;
-	margin: 0.5rem 1rem 1rem;
+	text-align: start;
+}
+ion-app ion-list.syllables div.header div.percentage {
+	display: block;
+	align-self: flex-end;
+	font-size: smaller;
+	font-style: italic;
+	padding: 0.25rem 0.5rem;
+	margin-top: 1rem;
+	background-color: var(--ion-background-tinter);
 }
 ion-app ion-list.syllables .toggleable {
 	overflow: hidden;
