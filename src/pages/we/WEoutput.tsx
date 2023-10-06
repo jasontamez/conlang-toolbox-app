@@ -983,14 +983,14 @@ const WEOut = (props: PageData) => {
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
-						 <IonMenuButton />
+						 <IonMenuButton disabled={isPickingSaving} />
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openCustomInfoModal()}>
+						<IonButton onClick={() => openCustomInfoModal()} disabled={isPickingSaving}>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -1003,6 +1003,7 @@ const WEOut = (props: PageData) => {
 							onClick={() => setIsOpenLoadPreset(true)}
 							color="tertiary"
 							strong={true}
+							disabled={isPickingSaving}
 						><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
 						<div className="evolving">
 							<IonButton
@@ -1011,6 +1012,7 @@ const WEOut = (props: PageData) => {
 								expand="block"
 								color="success"
 								onClick={() => evolveOutput()}
+								disabled={isPickingSaving}
 							>Evolve <IonIcon icon={caretForwardCircleOutline} style={ { marginLeft: "0.25em" } } /></IonButton>
 							<div id="outputPaneWE" className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}>
 								{makeOutput()}
@@ -1023,12 +1025,14 @@ const WEOut = (props: PageData) => {
 							strong={false}
 							color="secondary"
 							onClick={() => setIsOpenOptions(true)}
+							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
 							strong={false}
 							color="secondary"
 							onClick={() => copyText(copyString, doToast, undoToast)}
+							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}

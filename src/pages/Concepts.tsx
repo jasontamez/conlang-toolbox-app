@@ -327,14 +327,14 @@ const ConceptsPage = (props: PageData) => {
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
-						 <IonMenuButton />
+						 <IonMenuButton disabled={pickAndSave} />
 					 </IonButtons>
 					<IonTitle>Concepts</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
 							<IonIcon flipRtl size="small" slot="end" src={`svg/align-${textCenter ? "left" : "center" }-material.svg`} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

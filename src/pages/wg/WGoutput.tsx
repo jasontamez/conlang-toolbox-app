@@ -688,11 +688,11 @@ const WGOut = (props: PageData) => {
 			<IonHeader>
 				<IonToolbar>
 					 <IonButtons slot="start">
-						 <IonMenuButton />
+						 <IonMenuButton disabled={isPickingSaving} />
 					 </IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -707,6 +707,7 @@ const WGOut = (props: PageData) => {
 							color="success"
 							style={ { width: "max-content", fontSize: "1.35rem", padding: "0.5rem 0", minHeight: "3.25rem" } }
 							onClick={() => {new Promise(() => generateOutput())}}
+							disabled={isPickingSaving}
 						>{
 							isGenerating ? (
 								<span style={ {fontStyle: "italic"} }>Loading...</span>
@@ -722,12 +723,14 @@ const WGOut = (props: PageData) => {
 							strong={false}
 							color="secondary"
 							onClick={() => setIsOpenOptions(true)}
+							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
 							strong={false}
 							color="secondary"
 							onClick={() => copyText(copyString, doToast, undoToast)}
+							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
 							expand="block"
