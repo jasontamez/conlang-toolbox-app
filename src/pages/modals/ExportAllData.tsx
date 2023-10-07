@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -40,6 +40,34 @@ const MExportAllData = (props: ModalProperties) => {
 		appSettings,
 		sortSettings
 	} = useSelector((state: StateObject) => state);
+
+	const exportedSortSettings = useMemo(() => {
+		const { defaultSortLanguage, customSorts, ...etc } = sortSettings;
+		return {
+			...etc,
+			customSorts: customSorts.map(obj => {
+				return {
+					...obj,
+					customAlphabet: obj.customAlphabet && [...obj.customAlphabet],
+					multiples: obj.multiples && [...obj.multiples],
+					customizations: obj.customizations && obj.customizations.map(custom => {
+						if("equals" in custom) {
+							return {
+								...custom,
+								equals: [...custom.equals]
+							};
+						}
+						return {
+							...custom,
+							pre: [...custom.pre],
+							post: [...custom.post]
+						};
+					})
+				};
+			})	
+		};
+	}, [sortSettings]);
+
 	const doClose = () => {
 		setIsOpen(false);
 	};
@@ -91,7 +119,6 @@ const MExportAllData = (props: ModalProperties) => {
 					..._ms
 				},
 				appSettings: {...appSettings},
-				sortSettings: {...sortSettings},
 				lexicon: {
 					..._lex,
 					sortPattern: [...lexicon.sortPattern],
@@ -113,6 +140,7 @@ const MExportAllData = (props: ModalProperties) => {
 						parts: obj.parts.map((obj) => ({...obj}))
 					}))
 				},
+				sortSettings: exportedSortSettings, // v.0.10.0+ only
 				ec: {
 					...ec,
 					faves: [...ec.faves]
@@ -133,7 +161,7 @@ const MExportAllData = (props: ModalProperties) => {
 		concepts,
 		ec,
 		appSettings,
-		sortSettings
+		exportedSortSettings
 	]);
 
 	return (
