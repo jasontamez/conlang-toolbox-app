@@ -62,7 +62,7 @@ export interface SortSettings {
 //
 export interface WGCharGroupObject {
 	title: string
-	label?: string
+	label: string
 	run: string
 	dropoffOverride?: Zero_Fifty
 }
@@ -86,7 +86,7 @@ export interface WGSettings {
 	maxSyllablesPerWord: Two_Fifteen
 	characterGroupDropoff: Zero_Fifty
 	syllableBoxDropoff: Zero_Fifty
-	capitalizeSentences: boolean,
+	capitalizeSentences: boolean
 	declarativeSentencePre: string
 	declarativeSentencePost: string
 	interrogativeSentencePre: string
@@ -97,16 +97,16 @@ export interface WGSettings {
 }
 export interface WGBasic extends WGSettings {
 	// GROUPS
-	characterGroups: WGCharGroupObject[],
+	characterGroups: WGCharGroupObject[]
 	// SYLLABLES
 	multipleSyllableTypes: boolean
 	singleWord: string
 	wordInitial: string
 	wordMiddle: string
 	wordFinal: string
-	syllableDropoffOverrides: SyllableDropoffs,
+	syllableDropoffOverrides: SyllableDropoffs
 	// TRANSFORMS
-	transforms: WGTransformObject[],
+	transforms: WGTransformObject[]
 }
 export interface WGState extends WGBasic {
 	// MORE SETTINGS
@@ -117,7 +117,7 @@ export interface WGState extends WGBasic {
 	sortWordlist: boolean
 	wordlistMultiColumn: boolean
 	wordsPerWordlist: Fifty_OneThousand
-	storedCustomInfo: { [key: string]: any },
+	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }
 export type WGPresetObject = [
@@ -152,8 +152,8 @@ export interface WESoundChangeObject {
 }
 export type WEOutputTypes = "outputOnly" | "rulesApplied" | "inputFirst" | "outputFirst";
 export interface WEPresetObject {
-	characterGroups: WECharGroupObject[],
-	soundChanges: WESoundChangeObject[],
+	characterGroups: WECharGroupObject[]
+	soundChanges: WESoundChangeObject[]
 	transforms: WETransformObject[]
 }
 export interface WEState extends WEPresetObject {
@@ -411,7 +411,7 @@ export interface LexiconState {
 	blankSort: LexiconBlankSorts
 	fontType?: string
 	customSort: string | undefined
-	storedCustomInfo: { [key: string]: any },
+	storedCustomInfo: { [key: string]: any }
 	storedCustomIDs: string[]
 }
 
@@ -420,7 +420,7 @@ export interface LexiconState {
 //
 
 export interface Concept {
-	id: string,
+	id: string
 	word: string
 	asjp?: boolean
 	lj?: boolean
@@ -464,8 +464,8 @@ export interface ExtraCharactersObject {
 	charactersInfo: ExtraCharactersInfo
 }
 export interface ExtraCharactersState {
-	faves: ExtraCharactersList,
-	toCopy: string,
+	faves: ExtraCharactersList
+	toCopy: string
 	copyImmediately: boolean
 	showNames: boolean
 	nowShowing: ExtraCharactersDisplayName
@@ -488,8 +488,8 @@ export interface AppSettings {
 //
 
 export interface ViewState {
-	wg: string,
-	we: string,
+	wg: string
+	we: string
 	ms: string
 }
 

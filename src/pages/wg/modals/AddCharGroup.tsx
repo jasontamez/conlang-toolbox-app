@@ -44,7 +44,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	useEffect(() => {
 		const newMap: { [key: string]: boolean } = {};
 		characterGroups.forEach((cg: WGCharGroupObject) => {
-			newMap[cg.label!] = true;
+			newMap[cg.label] = true;
 		});
 		setCharGroupMap(newMap);
 	}, [characterGroups]);
@@ -63,7 +63,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		// Create an array of single character strings starting with the first characters
 		//   of every word, followed by the remaining characters of every word
 		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
-		let label: string | undefined;
+		let label: string = "";
 		potentials.every(char => {
 			if(!charGroupMap[char]) {
 				label = char;
@@ -97,7 +97,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			$q(".titleLabel").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(label === "") {
+		if(!label) {
 			$q(".labelLabel").classList.add("invalidValue");
 			err.push("No label present");
 		} else if (charGroupMap[label]) {

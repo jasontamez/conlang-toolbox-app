@@ -70,7 +70,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 			}
 			const newMap: { [ key: string]: boolean } = {};
 			characterGroups.forEach((item: WGCharGroupObject) => {
-				newMap[item.label!] = true;
+				newMap[item.label] = true;
 			});
 			setCharGroupMap(newMap);
 		} else {
@@ -100,7 +100,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		//   of every word, followed by the remaining characters of every word
 		const potentials = words.map(word => word[0]).concat(...words.map(word => word.slice(1).split('')));
 		// Now check every character one at a time to see if it's a good candidate
-		let label: string | undefined;
+		let label: string = "";
 		potentials.every(char => {
 			if(editing!.label === char || !charGroupMap[char]) {
 				label = char;
@@ -138,7 +138,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 			$q(".titleLabelEdit").classList.add("invalidValue");
 			err.push("No title present");
 		}
-		if(label === "") {
+		if(!label) {
 			$q(".labelLabelEdit").classList.add("invalidValue");
 			err.push("No label present");
 		} else if (editing!.label !== label && charGroupMap[label]) {

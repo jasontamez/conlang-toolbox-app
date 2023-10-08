@@ -191,7 +191,7 @@ const WGOut = (props: PageData) => {
 	const charGroupMap = useMemo(() => {
 		const obj: {[key: string]: WGCharGroupObject} = {};
 		characterGroups.forEach((cg: WGCharGroupObject) => {
-			obj[cg.label!] = cg;
+			obj[cg.label] = cg;
 		});
 		return obj;
 	}, [characterGroups]);

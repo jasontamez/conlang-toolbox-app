@@ -44,16 +44,16 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAct
 	const { characterGroups } = state;
 	let incoming: { [key: string]: WGCharGroupObject } = {};
 	newCharacterGroups.forEach(cg => {
-		incoming[cg.label!] = cg;
+		incoming[cg.label] = cg;
 	});
 	const final: WGCharGroupObject[] = [];
 	characterGroups.forEach(cg => {
 		const {label} = cg;
 		// Check for replacement
-		if(incoming[label!]) {
+		if(incoming[label]) {
 			// Use replacement
-			final.push(incoming[label!]);
-			delete incoming[label!];
+			final.push(incoming[label]);
+			delete incoming[label];
 		} else {
 			// Use original
 			final.push(cg);
@@ -62,7 +62,7 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAct
 	newCharacterGroups.forEach(cg => {
 		const {label} = cg;
 		// Only save if we haven't used this to replace an old one
-		if(incoming[label!]) {
+		if(incoming[label]) {
 			final.push(cg);
 		}
 	});
@@ -469,7 +469,7 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	return true;
 };
 
-type Testing = WGCharGroupObject | WGTransformObject | SyllableDropoffs
+type Testing = WGCharGroupObject | WGTransformObject | SyllableDropoffs;
 const testIfArrayOfObjectsAreUnequal = (A: Testing[], B: Testing[], props: string[]) => {
 	return A.length !== B.length
 		|| A.some((a, i) => {
