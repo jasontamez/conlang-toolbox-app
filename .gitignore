@@ -20,6 +20,7 @@
 .env.production.local
 .vscode
 /public/sounds
+__webserver*.*
 
 npm-debug.log*
 yarn-debug.log*

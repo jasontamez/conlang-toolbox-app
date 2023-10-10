@@ -852,7 +852,7 @@
 		},
 		{
 			"tag": "Text",
-			"prop": "case",
+			"prop": "nCase",
 			"rows": 4,
 			"content": "Do nouns exhibit morphological case? If so, what cases exist?"
 		},
@@ -1056,7 +1056,7 @@
 		},
 		{
 			"tag": "Text",
-			"prop": "predEx",
+			"prop": "predPoss",
 			"rows": 3,
 			"content": "Does the language use a verb or copula strategy?"
 		}
