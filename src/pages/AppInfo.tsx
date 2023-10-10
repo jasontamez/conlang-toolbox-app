@@ -127,8 +127,9 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.10.0</strong></h2>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.10.1</strong></h2>
 									<ul className="changelog">
+										<li>Bugfix: some properties were not being saved or were otherwise coded wrong in MorphoSyntax. This has been fixed.</li>
 										<li>Added sorting settings under the main Settings page. Your options are limited to the languages supported by your device, but you can create custom sorting routines to alphabetize your data if you need it. These routines can be used inside WordGen, WordEvolve and Lexicon.</li>
 										<li>Most Wordgen and WordEvolve pages now have header buttons that can be used to clear everything on the page.</li>
 										<li>WordGen presets now use their own special sorting routine when generating a list of words or syllables.</li>
