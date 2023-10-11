@@ -5,17 +5,47 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
 import {
+	CheckboxItem,
+	HeaderItem,
+	InfoModal,
 	SyntaxHeader,
-	parseMSJSON
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 
 const Syntax = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const {
+		BOOL_chainFirst,
+		BOOL_chainLast,
+		BOOL_chainN,
+		BOOL_chainV,
+		BOOL_chainCj,
+		BOOL_chainT,
+		BOOL_chainA,
+		BOOL_chainPer,
+		BOOL_chainNum,
+		BOOL_chainOther,
+		BOOL_relPre,
+		BOOL_relPost,
+		BOOL_relInternal,
+		BOOL_relHeadless,
+		BOOL_coordMid,
+		BOOL_coordTwo,
+		BOOL_coordLast,
+		TEXT_serialVerbs,
+		TEXT_complClauses,
+		TEXT_advClauses,
+		TEXT_clauseChainEtc,
+		TEXT_relClauses,
+		TEXT_coords
+	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	const viewInfo = { key: "ms" as keyof ViewState, page: "ms10" };
 	useIonViewDidEnter(() => {
@@ -29,29 +59,12 @@ const Syntax = (props: PageData) => {
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON({page: "s10", ...props})}
-				</IonList>
-			</IonContent>
-		</IonPage>
-	);
-};
-
-/*
-const OldSyntax = () => {
-	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms10" };
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
-	return (
-		<IonPage>
-			<SyntaxHeader title="10. Clause Combinations" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-
-					<HeaderItem level="1">10. Clause Combinations</HeaderItem>
-
-					<InfoModal title="Terms" label="Quick Primer on Clauses">
+					<HeaderItem level={1}>10. Clause Combinations</HeaderItem>
+					<InfoModal
+						title="Terms"
+						label="Quick Primer on Clauses"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>An <strong>Independant Clause</strong> is one that is fully inflected and can stand on its own.</li>
 							<li>A <strong>Dependant Clause</strong> depends on some other clause for at least a part of its inflectional information.</li>
@@ -69,18 +82,22 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-
-					<HeaderItem level="1">10.1. Serial Verbs</HeaderItem>
-
-					<InfoModal title="Serial Verbs" label="Go Tap on This">
+					<HeaderItem level={1}>10.1. Serial Verbs</HeaderItem>
+					<InfoModal
+						title="Serial Verbs"
+						label="Go Tap on This"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Serial Verbs</strong> are two or more verb roots that aren't compounded (8.2) or members of different clauses.</li>
 							<li>These occur in all sorts of languages, but may be more common in isolating languages (1.1).</li>
 							<li>English marginally employs serial verbs, e.g. "Run go get me a coffee" having three in a row.</li>
 							<li className="newSection">Typically, verbs in a series will each express a facet of one complex event.
-								<ul><li>For example, the English word "bring" has a facet "get something" and another that's "move towards place". In a language like Yoruba, this is expressed with serial verbs:
-									<ul><li>"mo mú ìwé wá ilé" / I take book come house - "I brought a book home"</li></ul>
-								</li></ul>
+								<ul>
+									<li>For example, the English word "bring" has a facet "get something" and another that's "move towards place". In a language like Yoruba, this is expressed with serial verbs:
+										<ul><li>"mo mú ìwé wá ilé" / I take book come house - "I brought a book home"</li></ul>
+									</li>
+								</ul>
 							</li>
 							<li className="newSection">In general, serial verbs tend to follow these patterns:
 								<ul>
@@ -93,7 +110,8 @@ const OldSyntax = () => {
 									<li>They can get ambiguous out of context.
 										<ul>
 											<li>Thai: "John khàp rót chon kwaay taay" / John drive car collide buffalo die</li>
-											<li>The above means "John drove the car into the buffalo and [any one of those three] died." Only context can make it clear that John, the buffalo or the car died.</li></ul>
+											<li>The above means "John drove the car into the buffalo and [any one of those three] died." Only context can make it clear that John, the buffalo or the car died.</li>
+										</ul>
 									</li>
 								</ul>
 							</li>
@@ -114,11 +132,17 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="serialVerbs" rows={4}>Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxilliaries or adpositions?</TextItem>
-
-					<HeaderItem level="1">10.2. Complement Clauses</HeaderItem>
-
-					<InfoModal title="Complement Clauses" label="Enter The Matrix">
+					<TextItem
+						prop="TEXT_serialVerbs"
+						value={TEXT_serialVerbs}
+						rows={4}
+					>Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?</TextItem>
+					<HeaderItem level={1}>10.2. Complement Clauses</HeaderItem>
+					<InfoModal
+						title="Complement Clauses"
+						label="Enter The Matrix"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>A <strong>Complement Clause</strong> (or Embedded Clause) functions as an argument to another clause.</li>
 							<li>A <strong>Matrix Clause</strong> (or Main Clause) has a Complement Clause as an argument.</li>
@@ -159,24 +183,26 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="complClauses" rows={6}>What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?</TextItem>
-
-					<HeaderItem level="1">10.3. Adverbial Clauses</HeaderItem>
-
-					<InfoModal title="Adverbial Clauses" label="Tap This When You're Ready">
+					<TextItem
+						prop="TEXT_complClauses"
+						value={TEXT_complClauses}
+						rows={6}
+					>What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?</TextItem>
+					<HeaderItem level={1}>10.3. Adverbial Clauses</HeaderItem>
+					<InfoModal
+						title="Adverbial Clauses"
+						label="Tap This When You're Ready"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Also called <em>Adjuncts</em>, <strong>Adverbial Clauses</strong> behave as adverbs.</li>
 							<li>They can convey certain kinds of information:
 								<ul>
 									<li><em>Time</em>:
-										<ul>
-											<li>"We will go [when he gets here]."</li>
-										</ul>
+										<ul><li>"We will go [when he gets here]."</li></ul>
 									</li>
 									<li><em>Location</em>:
-										<ul>
-											<li>"I will meet you [where the old oak tree used to stand]."</li>
-										</ul>
+										<ul><li>"I will meet you [where the old oak tree used to stand]."</li></ul>
 									</li>
 									<li><em>Manner</em>:
 										<ul>
@@ -185,19 +211,13 @@ const OldSyntax = () => {
 										</ul>
 									</li>
 									<li><em>Purpose</em>:
-										<ul>
-											<li>"He stands on tiptoes [in order to see better]."</li>
-										</ul>
+										<ul><li>"He stands on tiptoes [in order to see better]."</li></ul>
 									</li>
 									<li><em>Reason</em>:
-										<ul>
-											<li>"He arrived early [because he wanted a good seat]."</li>
-										</ul>
+										<ul><li>"He arrived early [because he wanted a good seat]."</li></ul>
 									</li>
 									<li><em>Circumstantial</em> adverbial clauses are rare:
-										<ul>
-											<li>"He got into the army [by lying about his age]."</li>
-										</ul>
+										<ul><li>"He got into the army [by lying about his age]."</li></ul>
 									</li>
 									<li><em>Simultaneous</em>:
 										<ul>
@@ -206,44 +226,38 @@ const OldSyntax = () => {
 										</ul>
 									</li>
 									<li><em>Conditional</em>:
-										<ul>
-											<li>"[If it's raining outside], then my car is getting wet."</li>
-										</ul>
+										<ul><li>"[If it's raining outside], then my car is getting wet."</li></ul>
 									</li>
 									<li><em>Negative Conditional</em>:
-										<ul>
-											<li>"[Unless it rains], we will be having a picnic."</li>
-										</ul>
+										<ul><li>"[Unless it rains], we will be having a picnic."</li></ul>
 									</li>
 									<li><em>Concessive Clause</em>:
-										<ul>
-											<li>"[Even though the band sucks], she agreed to go to the concert."</li>
-										</ul>
+										<ul><li>"[Even though the band sucks], she agreed to go to the concert."</li></ul>
 									</li>
 									<li><em>Substitutive</em>:
-										<ul>
-											<li>"[Instead of barbecuing chicken], we went out to eat."</li>
-										</ul>
+										<ul><li>"[Instead of barbecuing chicken], we went out to eat."</li></ul>
 									</li>
 									<li><em>Additive</em>:
-										<ul>
-											<li>"You must have your hand stamped [in addition to having your ticket]."</li>
-										</ul>
+										<ul><li>"You must have your hand stamped [in addition to having your ticket]."</li></ul>
 									</li>
 									<li><em>Absolutive</em>:
-										<ul>
-											<li>"[Seeing a bully], Billy hid behind a curtain."</li>
-										</ul>
+										<ul><li>"[Seeing a bully], Billy hid behind a curtain."</li></ul>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="advClauses" rows={6}>How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?</TextItem>
-
-					<HeaderItem level="1">10.4. Clause Chaining, Medial Clauses, and Switch References</HeaderItem>
-
-					<InfoModal title="Clause Chaining, Medial Clauses, and Switch References" label="Chain Chain Chain...">
+					<TextItem
+						prop="TEXT_advClauses"
+						value={TEXT_advClauses}
+						rows={6}
+					>How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?</TextItem>
+					<HeaderItem level={1}>10.4. Clause Chaining, Medial Clauses, and Switch References</HeaderItem>
+					<InfoModal
+						title="Clause Chaining, Medial Clauses, and Switch References"
+						label="Chain Chain Chain..."
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Clause Chains</strong> are clauses presented in series. They can form a large part of discourse in many languages, such as the ones of New Guinea, Australia, and the Americas.
 								<ul>
@@ -262,12 +276,8 @@ const OldSyntax = () => {
 								<ul>
 									<li>Yuman uses <em>-k</em> to indicate the next verb uses the same subject (SS) as this one, and <em>-m</em> to indicate the next verb will have a different subject (DS).
 										<ul>
-											<li>"I sang and danced"<br />
-												<TransTable rows="Nyaa '-ashvar-k '-iima-k / I 1-sing-SS 1-dance-ASPECT" />
-											</li>
-											<li>"Bonnie sang and I danced"<br />
-												<TransTable rows="Bonnie-sh 0-ashvar-m '-iima-k / Bon&shy;nie-SUBJ 3-sing-DS 1-dance-ASPECT" />
-											</li>
+											<li>"I sang and danced"<br /><TransTable rows="Nyaa '-ashvar-k '-iima-k / I 1-sing-SS 1-dance-ASPECT" /></li>
+											<li>"Bonnie sang and I danced"<br /><TransTable rows="Bonnie-sh 0-ashvar-m '-iima-k / Bon&shy;nie-SUBJ 3-sing-DS 1-dance-ASPECT" /></li>
 										</ul>
 									</li>
 									<li className="newSection">Ergative languages often have complex Switch Reference systems that indicate the temporal relations of the clauses, whether or not the verbs' subjects agree, and strongly indicate a reason why the clauses are linked.
@@ -288,72 +298,50 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Which Clause is Inflected?</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainFirst" /></IonCol>
-								<IonCol>First</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainLast" /></IonCol>
-								<IonCol>Last</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Which Element is Marked?</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainN" /></IonCol>
-								<IonCol>Noun</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainV" /></IonCol>
-								<IonCol>Verb</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainCj" /></IonCol>
-								<IonCol>Conjunction</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>What Other Information Does the Marker Encode?</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainT" /></IonCol>
-								<IonCol>Tense</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainA" /></IonCol>
-								<IonCol>Aspect</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainPer" /></IonCol>
-								<IonCol>Person</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainNum" /></IonCol>
-								<IonCol>Number</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="chainOther" /></IonCol>
-								<IonCol>Other</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<TextItem text="clauseChainEtc" rows={6}>Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
-
-					<HeaderItem level="1">10.5. Relative Clauses</HeaderItem>
-
-					<InfoModal title="Relative Clauses" label="Clauses as Adjectives">
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Which Clause is Inflected?",
+							rowLabels: ["First", "Last"],
+							export: {
+								title: "Inflected Clause:" } }}
+						boxes={["BOOL_chainFirst", "BOOL_chainLast"]}
+						values={[BOOL_chainFirst, BOOL_chainLast]}
+					/>
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Which Element is Marked?",
+							rowLabels: ["Noun", "Verb", "Conjunction"],
+							export: {
+								title: "Element Marked:" } }}
+						boxes={["BOOL_chainN", "BOOL_chainV", "BOOL_chainCj"]}
+						values={[BOOL_chainN, BOOL_chainV, BOOL_chainCj]}
+					/>
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "What Other Information Does the Marker Encode?",
+							rowLabels: ["Tense", "Aspect", "Person", "Number", "Other"],
+							export: {
+								title: "Marker Encodes:" } }}
+						boxes={["BOOL_chainT", "BOOL_chainA", "BOOL_chainPer", "BOOL_chainNum", "BOOL_chainOther"]}
+						values={[BOOL_chainT, BOOL_chainA, BOOL_chainPer, BOOL_chainNum, BOOL_chainOther]}
+					/>
+					<TextItem
+						prop="TEXT_clauseChainEtc"
+						value={TEXT_clauseChainEtc}
+						rows={6}
+					>Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?</TextItem>
+					<HeaderItem level={1}>10.5. Relative Clauses</HeaderItem>
+					<InfoModal
+						title="Relative Clauses"
+						label="Clauses as Adjectives"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>A <strong>Relative Clause</strong> is a clause that functions as a nominal modifier. They can be identified by four points.
 								<ul>
@@ -372,23 +360,14 @@ const OldSyntax = () => {
 									<li><em>Prenomial</em>: before the Head</li>
 									<li><em>Postnomial</em>: after the Head (most common, especially in VP languages)</li>
 									<li><em>Internally headed</em>: the Head is placed within the relative clause
-										<ul>
-											<li>This is common in PV languages, such as Bambara:<br />
-												<TransTable rows="ne ye so ye / 1s PST horse see">"I saw a horse"</TransTable>
-												<TransTable rows="ce ye [ne ye so min ye] san / man PST 1s PST horse REL see buy">"The man bought the horse that I saw"</TransTable>
-											</li>
-										</ul>
+										<ul><li>This is common in PV languages, such as Bambara:<br /><TransTable rows="ne ye so ye / 1s PST horse see">"I saw a horse"</TransTable><TransTable rows="ce ye [ne ye so min ye] san / man PST 1s PST horse REL see buy">"The man bought the horse that I saw"</TransTable></li></ul>
 									</li>
 									<li><em>Headless</em>: the clause itself refers to the Head
 										<ul>
 											<li>This is common in languages that use nouns to modify other nouns, such as Ndjuká:
 												<ul>
-													<li>Non-specific subject:<br />
-														<TransTable rows="[Di o doo fosi] o wini / REL FUT arrive first FUT win">"Whoever arrives first will win"</TransTable>
-													</li>
-													<li>Specific subject:<br />
-														<TransTable rows="A mainsí ya a [di e tan a ini se] / the eel here COP REL CONT stay LOC in&shy;side sea">"The eel is what (the one that) lives in the sea"</TransTable>
-													</li>
+													<li>Non-specific subject:<br /><TransTable rows="[Di o doo fosi] o wini / REL FUT arrive first FUT win">"Whoever arrives first will win"</TransTable></li>
+													<li>Specific subject:<br /><TransTable rows="A mainsí ya a [di e tan a ini se] / the eel here COP REL CONT stay LOC in&shy;side sea">"The eel is what (the one that) lives in the sea"</TransTable></li>
 												</ul>
 											</li>
 											<li>But it can happen in other languages, such as English:
@@ -411,8 +390,7 @@ const OldSyntax = () => {
 											<li>English uses this:
 												<ul>
 													<li>Example: The man [that I loved 0] died.</li>
-													<li>Full noun phrase: [I loved the man]</li>
-												</ul>
+													<li>Full noun phrase: [I loved the man]</li></ul>
 											</li>
 											<li>This is a useful strategy when the semantic role of the Head is different in the RC:
 												<ul>
@@ -421,11 +399,7 @@ const OldSyntax = () => {
 												</ul>
 											</li>
 											<li>However, this can become ambiguous if the constituent order changes often, or when the A and P are next to each other in normal discourse:
-												<ul>
-													<li>Ithsmus Zapotee is a VAP language.<br />
-														<TransTable rows="junaa ni [najii 0__Juan] / junaa ni [najii Juan__0] / woman REL loves John">This could be either "A woman that loves John" (top) or "A woman that Jon loves".</TransTable>
-													</li>
-												</ul>
+												<ul><li>Ithsmus Zapotee is a VAP language.<br /><TransTable rows="junaa ni [najii 0__Juan] / junaa ni [najii Juan__0] / woman REL loves John">This could be either "A woman that loves John" (top) or "A woman that Jon loves".</TransTable></li></ul>
 											</li>
 										</ul>
 									</li>
@@ -437,30 +411,11 @@ const OldSyntax = () => {
 										</ul>
 									</li>
 									<li className="newSection">The Relativizer may be marked to show the NPR's role.
-										<ul>
-											<li>Chickasaw:<br />
-												<TransTable rows="
-													ihoo yamma-ay ofi' pĩs-tokat illi-tok
-													/ woman that-SUB dog see-PST:DEP:SS die-PST
-												">"The woman that saw the dog died"</TransTable>
-												<br />
-												<TransTable rows="
-													ihoo-at ofi' yamma pĩs-tokã illi-tok
-													/ woman-SUB dog that see-PST:DEP:DS die-PST
-												">"The woman that the dog saw died"</TransTable>
-											</li>
-										</ul>
+										<ul><li>Chickasaw:<br /><TransTable rows="ihoo yamma-ay ofi' pĩs-tokat illi-tok/ woman that-SUB dog see-PST:DEP:SS die-PST">"The woman that saw the dog died"</TransTable><br /><TransTable rows="ihoo-at ofi' yamma pĩs-tokã illi-tok/ woman-SUB dog that see-PST:DEP:DS die-PST">"The woman that the dog saw died"</TransTable></li></ul>
 									</li>
 								</ul>
 							</li>
-							<li className="newSection">Relativization Hierarchy:
-								<ul>
-									<li>Subject</li>
-									<li>Direct Object</li>
-									<li>Indirect Object</li>
-									<li>Oblique</li>
-									<li>Possessor</li>
-								</ul>
+							<li className="newSection">Relativization Hierarchy:<ul><li>Subject</li><li>Direct Object</li><li>Indirect Object</li><li>Oblique</li><li>Possessor</li></ul>
 							</li>
 							<li>No language (that uses the above grammatical roles) allows relativization of an element, using a single strategy, without also allowing relativizing of the elements above it in the hierarchy. Other elements may have other relativization strategies. For example, English uses the Gap Strategy down through the Obliques, but it doesn't apply to the Possessors:
 								<ul>
@@ -470,115 +425,97 @@ const OldSyntax = () => {
 									<li><em>Oblique</em>: I hate the guy that [she lived with 0].</li>
 									<li><em>Oblique</em>: I hate the guy that [she is older than 0].</li>
 									<li><em>Possessor</em>: <del>I hate the guy that [0 head is bald].</del>
-										<ul>
-											<li>This is not valid English. Another strategy has to be used: "I hate the guy [whose head is bald]."</li>
-										</ul>
+										<ul><li>This is not valid English. Another strategy has to be used: "I hate the guy [whose head is bald]."</li></ul>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</InfoModal>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Types of Relative Clauses</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="relPre" /></IonCol>
-								<IonCol>Prenomial</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="relPost" /></IonCol>
-								<IonCol>Postnomial</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="relInternal" /></IonCol>
-								<IonCol>Internally Headed</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="relHeadless" /></IonCol>
-								<IonCol>Headless</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<TextItem text="relClauses" rows={6}>Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).</TextItem>
-
-					<HeaderItem level="1">10.6. Coordinating Clauses</HeaderItem>
-
-					<InfoModal title="Coordinating Clauses" label="This And That">
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Types of Relative Clauses",
+							rowLabels: ["Prenomial", "Postnomial", "Internally Headed", "Headless"],
+							export: {
+								title: "Type of Relative Clauses:"
+							}
+						}}
+						boxes={["BOOL_relPre", "BOOL_relPost", "BOOL_relInternal", "BOOL_relHeadless"]}
+						values={[BOOL_relPre, BOOL_relPost, BOOL_relInternal, BOOL_relHeadless]}
+					/>
+					<TextItem
+						prop="TEXT_relClauses"
+						value={TEXT_relClauses}
+						rows={6}
+					>Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).</TextItem>
+					<HeaderItem level={1}>10.6. Coordinating Clauses</HeaderItem>
+					<InfoModal
+						title="Coordinating Clauses"
+						label="This And That"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Coordinating Clauses</strong> are linked together, equal in grammatical status. They may be difficult to distinguish from juxtaposition.</li>
 							<li>They often use methods identical to those used to join noun phrases:
-								<ul>
-									<li>John <em>and</em> Mary</li>
-									<li>John cried <em>and</em> Mary laughed.</li>
-								</ul>
+								<ul><li>John <em>and</em> Mary</li><li>John cried <em>and</em> Mary laughed.</li></ul>
 							</li>
 							<li>It's also common for special strategies to exist that do not work for noun phrases:
-								<ul>
-									<li>John cried <em>but</em> Mary laughed.</li>
-								</ul>
+								<ul><li>John cried <em>but</em> Mary laughed.</li></ul>
 							</li>
 							<li className="newSection">CCs often express <strong>Coordination</strong> (x and y, neither x nor y), <strong>Disjunction</strong> (either x or y), and <strong>Exclusion</strong> (x and not y).</li>
 							<li className="newSection">The <strong>Zero Strategy</strong> looks just like juxtaposition. Vietnamese:
 								<ul>
-									<li><em>Noun Phrases</em>:<br />
-										<TransTable rows="Nháng tiráp [tilêt, callóh, acóq] / we pre&shy;pare bas&shy;ket spear knife">We prepared the basket, the spear and the knife.</TransTable>
-									</li>
-									<li><em>Prepositional Phrases</em>:<br />
-										<TransTable rows="Do chô [tôq cyâq, tôq apây] / she re&shy;turn to hus&shy;band to grand&shy;moth&shy;er">She returned to her husband and to her grandmother.</TransTable>
-									</li>
-									<li><em>Verb Phrases</em>:<br />
-										<TransTable rows="Do [chô tôq cayâq, chô tôq apây] / she re&shy;turn to hus&shy;band re&shy;turn to grand&shy;moth&shy;er">She returned to her husband and returned to her grandmother.</TransTable>
-									</li>
+									<li><em>Noun Phrases</em>:<br /><TransTable rows="Nháng tiráp [tilêt, callóh, acóq] / we pre&shy;pare bas&shy;ket spear knife">We prepared the basket, the spear and the knife.</TransTable></li>
+									<li><em>Prepositional Phrases</em>:<br /><TransTable rows="Do chô [tôq cyâq, tôq apây] / she re&shy;turn to hus&shy;band to grand&shy;moth&shy;er">She returned to her husband and to her grandmother.</TransTable></li>
+									<li><em>Verb Phrases</em>:<br /><TransTable rows="Do [chô tôq cayâq, chô tôq apây] / she re&shy;turn to hus&shy;band re&shy;turn to grand&shy;moth&shy;er">She returned to her husband and returned to her grandmother.</TransTable></li>
 								</ul>
 							</li>
 							<li className="newSection"><strong>Coordinating Conjunctions</strong> (CCs) are a common strategy.
-								<li>The conjunction is often the same as "with". English uses "and" and "but", among others.</li>
-								<li>In VP languages:
-									<ul>
-										<li>The CC is usually between the two clauses:
-											<ul><li>The dog growled <em>and</em> the cat hissed.</li></ul>
-										</li>
-										<li>But sometimes, the CC comes after the first element of the second clause.
-											<ul>
-												<li>Yoruba:<br />
-													<TransTable rows="mo mú ìwé; mo sì w's ilé / I take book I and come house">I took a book and I came home.</TransTable>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li>In PV languages, the CC either comes between the two clauses (Farsi) or after the last element (Walapai).</li>
+								<ul>
+									<li>The conjunction is often the same as "with". English uses "and" and "but", among others.</li>
+									<li>In VP languages:
+										<ul>
+											<li>The CC is usually between the two clauses:
+												<ul><li>The dog growled <em>and</em> the cat hissed.</li></ul>
+											</li>
+											<li>But sometimes, the CC comes after the first element of the second clause.
+												<ul><li>Yoruba:<br /><TransTable rows="mo mú ìwé; mo sì w's ilé / I take book I and come house">I took a book and I came home.</TransTable></li></ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
 							</li>
+							<li>In PV languages, the CC either comes between the two clauses (Farsi) or after the last element (Walapai).</li>
 						</ul>
 					</InfoModal>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Coordinating Conjunction Positions</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="coordMid" /></IonCol>
-								<IonCol>Between the clauses</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="coordTwo" /></IonCol>
-								<IonCol>After the first element of the second clause</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="coordLast" /></IonCol>
-								<IonCol>After the last element</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<TextItem text="coords" rows={6}>Describe how Conjunction, Disjunction and Exclusion are expressed in the language.</TextItem>
-
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Coordinating Conjunction Positions",
+							rowLabels: [
+								"Between the clauses",
+								"After the first element of the second clause",
+								"After the last element"
+							],
+							export: {
+								title: "Coordinating Conjunction Positions:"
+							}
+						}}
+						boxes={["BOOL_coordMid", "BOOL_coordTwo", "BOOL_coordLast"]}
+						values={[BOOL_coordMid, BOOL_coordTwo, BOOL_coordLast]}
+					/>
+					<TextItem
+						prop="TEXT_coords"
+						value={TEXT_coords}
+						rows={6}
+					>Describe how Conjunction, Disjunction and Exclusion are expressed in the language.</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
 	);
 };
-*/
+
 
 export default Syntax;

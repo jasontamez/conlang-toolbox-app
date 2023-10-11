@@ -5,17 +5,64 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
 import {
+	CheckboxItem,
+	HeaderItem,
+	InfoModal,
 	SyntaxHeader,
-	parseMSJSON
+	TextItem,
+	TransTable
 } from './MorphoSyntaxElements';
 
 const Syntax = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const {
+		BOOL_actions,
+		BOOL_actionProcesses,
+		BOOL_weather,
+		BOOL_states,
+		BOOL_involuntaryProcesses,
+		BOOL_bodyFunctions,
+		BOOL_motion,
+		BOOL_position,
+		BOOL_factive,
+		BOOL_cognition,
+		BOOL_sensation,
+		BOOL_emotion,
+		BOOL_utterance,
+		BOOL_manipulation,
+		BOOL_otherVerbClass,
+		BOOL_lexVerb,
+		BOOL_lexNoun,
+		BOOL_lexVN,
+		BOOL_lexVorN,
+		BOOL_adjectives,
+		BOOL_baseFive,
+		BOOL_baseTen,
+		BOOL_baseTwenty,
+		BOOL_baseOther,
+		BOOL_numGL,
+		BOOL_numLG,
+		BOOL_numNone,
+		BOOL_multiNumSets,
+		BOOL_inflectNum,
+		TEXT_propNames,
+		TEXT_possessable,
+		TEXT_countMass,
+		TEXT_pronounAnaphClitic,
+		TEXT_semanticRole,
+		TEXT_verbClass,
+		TEXT_verbStructure,
+		TEXT_propClass,
+		TEXT_quantifier,
+		TEXT_numeral,
+		TEXT_adverb
+	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	const viewInfo = { key: "ms" as keyof ViewState, page: "ms02" };
 	useIonViewDidEnter(() => {
@@ -32,45 +79,31 @@ const Syntax = (props: PageData) => {
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON({page: "s2", ...props})}
-				</IonList>
-			</IonContent>
-		</IonPage>
-	);
-};
-
-/*
-const OldSyntax = () => {
-	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms02" };
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
-	return (
-		<IonPage>
-			<SyntaxHeader title="2. Grammatical Categories" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-
-					<HeaderItem level="1">2. Grammatical Categories</HeaderItem>
-
-					<HeaderItem level="2">2.1. Nouns (the most time-stable concepts)</HeaderItem>
-
-					<HeaderItem level="3">2.1.1. Types of Nouns</HeaderItem>
-
-					<HeaderItem>2.1.1.1. Proper Names</HeaderItem>
-
-					<InfoModal title="Proper Names" label="Read About Them">
+					<HeaderItem level={1}>2. Grammatical Categories</HeaderItem>
+					<HeaderItem level={2}>2.1. Nouns (the most time-stable concepts)</HeaderItem>
+					<HeaderItem level={3}>2.1.1. Types of Nouns</HeaderItem>
+					<HeaderItem level={4}>2.1.1.1. Proper Names</HeaderItem>
+					<InfoModal
+						title="Proper Names"
+						label="Read About Them"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>In English, they do not easily take articles, quantifiers and other modifiers.</li>
 							<li>Other languages may have special case markers (4.4) for them.</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="propNames">Are there any special rules involving proper names?</TextItem>
-
-					<HeaderItem>2.1.1.2. Possessability</HeaderItem>
-
-					<InfoModal title="Possessability" label="Systems of Possession">
+					<TextItem
+						prop="TEXT_propNames"
+						value={TEXT_propNames}
+						rows={undefined}
+					>Are there any special rules involving proper names?</TextItem>
+					<HeaderItem level={4}>2.1.1.2. Possessability</HeaderItem>
+					<InfoModal
+						title="Possessability"
+						label="Systems of Possession"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Languages may have one of the following systems to differentiate nouns.
 								<ul>
@@ -90,21 +123,33 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="possessable" rows={4}>Describe how the language handles possession.</TextItem>
-
-					<HeaderItem>2.1.1.3. Count vs Mass</HeaderItem>
-
-					<InfoModal title="Count Nouns and Mass Nouns" label="A Piece of Information">
+					<TextItem
+						prop="TEXT_possessable"
+						value={TEXT_possessable}
+						rows={4}
+					>Describe how the language handles possession.</TextItem>
+					<HeaderItem level={4}>2.1.1.3. Count vs Mass</HeaderItem>
+					<InfoModal
+						title="Count Nouns and Mass Nouns"
+						label="A Piece of Information"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Typically, most nouns are countable, while fewer are considered as a mass.</li>
 							<li>e.g. "sand" requires "a grain of sand" to be countable, and "confetti" requires "a piece of confetti".</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="countMass">Write any specific notes about count/mass noun distinctions here.</TextItem>
-
-					<HeaderItem level="3">2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
-
-					<InfoModal label="What Are They?" title="Pronouns and Anaphoric Clitics">
+					<TextItem
+						prop="TEXT_countMass"
+						value={TEXT_countMass}
+						rows={undefined}
+					>Write any specific notes about count/mass noun distinctions here.</TextItem>
+					<HeaderItem level={3}>2.1.2. Pronouns and Anaphoric Clitics</HeaderItem>
+					<InfoModal
+						title="Pronouns and Anaphoric Clitics"
+						label="What Are They?"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Pronouns</strong>:
 								<ul>
@@ -116,11 +161,7 @@ const OldSyntax = () => {
 								<ul>
 									<li>A <em>clitic</em> is a bound morpheme that functions on the phrase or clause level, but is bound phonologically to another word.</li>
 									<li>An Anaphoric Clitic functions as a full noun phrase.
-										<ul>
-											<li>Spanish:<br />
-												<TransTable rows="lav-o el auto / wash-1s the car">"I wash the car" :: <strong>-o</strong> functions as the noun phrase "I"</TransTable>
-											</li>
-										</ul>
+										<ul><li>Spanish:<br /><TransTable rows="lav-o el auto / wash-1s the car">"I wash the car" :: <strong>-o</strong> functions as the noun phrase "I"</TransTable></li></ul>
 									</li>
 								</ul>
 							</li>
@@ -129,13 +170,18 @@ const OldSyntax = () => {
 							<li>Spanish has anaphoric forms attached to the verb, but will use pronouns for emphasis or contrast.</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="pronounAnaphClitic" rows={4}>Which system(s) are used by the language?</TextItem>
-
-					<HeaderItem level="2">2.2. Verbs (the least time-stable concepts)</HeaderItem>
-
-					<HeaderItem level="3">2.2.1. Semantic Roles</HeaderItem>
-
-					<InfoModal title="Semantic Roles" label="A Quick Primer">
+					<TextItem
+						prop="TEXT_pronounAnaphClitic"
+						value={TEXT_pronounAnaphClitic}
+						rows={4}
+					>Which system(s) are used by the language?</TextItem>
+					<HeaderItem level={2}>2.2. Verbs (the least time-stable concepts)</HeaderItem>
+					<HeaderItem level={3}>2.2.1. Semantic Roles</HeaderItem>
+					<InfoModal
+						title="Semantic Roles"
+						label="A Quick Primer"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Verbs can be divided into groups depending on which roles they require.
 								<ul>
@@ -157,117 +203,95 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="semanticRole" rows={6}>Describe which semantic roles are important.</TextItem>
-
-					<HeaderItem level="3">2.2.2. Verb Classes</HeaderItem>
-
-					<IonItem className="content">
-						<IonGrid className="striped">
-							<IonRow className="header">
-								<IonCol className="cbox">Special?</IonCol>
-								<IonCol className="label">Type</IonCol>
-								<IonCol>Description</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="actions" /></IonCol>
-								<IonCol className="label">Actions</IonCol>
-								<IonCol>Agent affects Patient.</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="actionProcesses" /></IonCol>
-								<IonCol className="label">Action-Processes</IonCol>
-								<IonCol>Agent only.</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="weather" /></IonCol>
-								<IonCol className="label">Weather Verbs</IonCol>
-								<IonCol>In English, these require a dummy Agent ("<em>It</em> is raining"); this is not the case in many other languages!</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="states" /></IonCol>
-								<IonCol className="label">States</IonCol>
-								<IonCol>be hot, be broken, be frozen, etc; may be predicate-bound.</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="involuntaryProcesses" /></IonCol>
-								<IonCol className="label">Involuntary Processes</IonCol>
-								<IonCol>He grew; It broke; They died; etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="bodyFunctions" /></IonCol>
-								<IonCol className="label">Bodily Functions</IonCol>
-								<IonCol>cough, sweat, bleed, cry, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="motion" /></IonCol>
-								<IonCol className="label">Motion</IonCol>
-								<IonCol>go, float, proceed, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="position" /></IonCol>
-								<IonCol className="label">Position</IonCol>
-								<IonCol>sit, stand, hang, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="factive" /></IonCol>
-								<IonCol className="label">Factive</IonCol>
-								<IonCol>Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="cognition" /></IonCol>
-								<IonCol className="label">Cognition</IonCol>
-								<IonCol>know, suspect, forget etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="sensation" /></IonCol>
-								<IonCol className="label">Sensation</IonCol>
-								<IonCol>hear, see, taste, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="emotion" /></IonCol>
-								<IonCol className="label">Emotion</IonCol>
-								<IonCol>be happy, be afraid, be mellow, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="utterance" /></IonCol>
-								<IonCol className="label">Utterance</IonCol>
-								<IonCol>say, yell, murmur, declare, chat, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="manipulation" /></IonCol>
-								<IonCol className="label">Manipulation</IonCol>
-								<IonCol>force, urge, cause, let, permit, allow, compel, etc</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="otherVerbClass" /></IonCol>
-								<IonCol className="label">Other Verb Class(es)</IonCol>
-								<IonCol>(you might have a distinction different from those already listed)</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-
-					<TextItem text="verbClass" rows={8}>If you've marked a verb class as "Special", describe how the language treats it differently than the "regular" verbs.</TextItem>
-
-					<HeaderItem level="3">2.2.3. Verb Structure</HeaderItem>
-
-					<InfoModal title="Verb Structure" label="Structure and Operations Info">
+					<TextItem
+						prop="TEXT_semanticRole"
+						value={TEXT_semanticRole}
+						rows={6}
+					>Describe which semantic roles are important.</TextItem>
+					<HeaderItem level={3}>2.2.2. Verb Classes</HeaderItem>
+					<CheckboxItem
+						display={
+							{
+								class: "striped",
+								boxesPerRow: 1,
+								inlineHeaders: ["Special?", "Type", "Description"],
+								labels: [
+									"Actions",
+									"Action-Processes",
+									"Weather Verbs",
+									"States",
+									"Involuntary Processes",
+									"Bodily Functions",
+									"Motion",
+									"Position",
+									"Factive",
+									"Cognition",
+									"Sensation",
+									"Emotion",
+									"Utterance",
+									"Manipulation",
+									"Other Verb Class(es)"
+								],
+								rowLabels: [
+									"Agent affects Patient.",
+									"Agent only.",
+									"In English, these require a dummy Agent (\"<em>It</em> is raining\"); this is not the case in many other languages!",
+									"be hot, be broken, be frozen, etc; may be predicate-bound",
+									"He grew; It broke; They died; etc.",
+									"cough, sweat, bleed, cry, etc.",
+									"go, float, proceed, etc.",
+									"sit, stand, hang, etc.",
+									"Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions", "know, suspect, forget etc.",
+									"hear, see, taste, etc.",
+									"be happy, be afraid, be mellow, etc.",
+									"say, yell, murmur, declare, chat, etc.",
+									"force, urge, cause, let, permit, allow, compel, etc.",
+									"(you might have a distinction different from those already listed)"
+								],
+								export: {
+									title: "Verb Types that are handled in a special way:",
+									labelOverrideDocx: true,
+									labels: [
+										"Agent affects Patient.",
+										"Agent only.",
+										"In English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!",
+										"be hot, be broken, be frozen, etc; may be predicate-bound",
+										"He grew; It broke; They died; etc.",
+										"cough, sweat, bleed, cry, etc.",
+										"go, float, proceed, etc.",
+										"sit, stand, hang, etc.",
+										"Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions", "know, suspect, forget etc.",
+										"hear, see, taste, etc.",
+										"be happy, be afraid, be mellow, etc.",
+										"say, yell, murmur, declare, chat, etc.",
+										"force, urge, cause, let, permit, allow, compel, etc.",
+										"(you might have a distinction different from those already listed)"
+									]
+								}
+							}
+						}
+						boxes={["BOOL_actions", "BOOL_actionProcesses", "BOOL_weather", "BOOL_states", "BOOL_involuntaryProcesses", "BOOL_bodyFunctions", "BOOL_motion", "BOOL_position", "BOOL_factive", "BOOL_cognition", "BOOL_sensation", "BOOL_emotion", "BOOL_utterance", "BOOL_manipulation", "BOOL_otherVerbClass"]}
+						values={[BOOL_actions, BOOL_actionProcesses, BOOL_weather, BOOL_states, BOOL_involuntaryProcesses, BOOL_bodyFunctions, BOOL_motion, BOOL_position, BOOL_factive, BOOL_cognition, BOOL_sensation, BOOL_emotion, BOOL_utterance, BOOL_manipulation, BOOL_otherVerbClass]}
+					/>
+					<TextItem
+						prop="TEXT_verbClass"
+						value={TEXT_verbClass}
+						rows={8}
+					>If you've marked a verb class as "Special", describe how the language treats it differently than the "regular" verbs.</TextItem>
+					<HeaderItem level={3}>2.2.3. Verb Structure</HeaderItem>
+					<InfoModal
+						title="Verb Structure"
+						label="Structure and Operations Info"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>In polysynthetic languages, verbs tend to be the most complex.
 								<ul>
 									<li>English is very simple:
-										<ul><li>root verb
-											<br />+ (optional tense marker OR agreement marker)</li></ul>
+										<ul><li>root verb<br />+ (optional tense marker OR agreement marker)</li></ul>
 									</li>
 									<li>Panare is much more complex:
-										<ul>
-											<li>person/neutral marker
-												<br />+ (optional valence marker)
-												<br />+ (optional detransification marker)
-												<br />+ (optional incorporation marker)
-												<br />+ root verb
-												<br />+ (optional derivation marker)
-												<br />+ tense/aspect/mode marker</li>
-										</ul>
+										<ul><li>person/neutral marker<br />+ (optional valence marker)<br />+ (optional detransification marker)<br />+ (optional incorporation marker)<br />+ root verb<br />+ (optional derivation marker)<br />+ tense/aspect/mode marker</li></ul>
 									</li>
 								</ul>
 							</li>
@@ -295,40 +319,46 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="verbStructure" rows={6}>Describe the verb structure here.</TextItem>
-
-					<HeaderItem level="2">2.3. Modifiers</HeaderItem>
-
-					<HeaderItem level="3">2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
-
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow>
-								<IonCol className="header">Different Ways Property Concepts Are Handled in Human Language</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="lexVerb" /></IonCol>
-								<IonCol>Lexicalized as verbs (Acehnese)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="lexNoun" /></IonCol>
-								<IonCol>Lexicalized as nouns (Finnish)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="lexVN" /></IonCol>
-								<IonCol>Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="lexVorN" /></IonCol>
-								<IonCol>Some are lexicalized as nouns, others are lexicalized as verbs (Yoruba)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="adjectives" /></IonCol>
-								<IonCol>Distinct class of "adjectives" (English)</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<InfoModal title="Property Concepts" label="More Info">
+					<TextItem
+						prop="TEXT_verbStructure"
+						value={TEXT_verbStructure}
+						rows={6}
+					>Describe the verb structure here.</TextItem>
+					<HeaderItem level={2}>2.3. Modifiers</HeaderItem>
+					<HeaderItem level={3}>2.3.1. Property Concepts (Descriptive Adjectives)</HeaderItem>
+					<CheckboxItem
+						display={
+							{
+								class: "cols2",
+								boxesPerRow: 1,
+								header: "Different Ways Property Concepts Are Handled in Human Language",
+								rowLabels: [
+									"Lexicalized as verbs (Acehnese)",
+									"Lexicalized as nouns (Finnish)",
+									"Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)",
+									"Some are lexicalized as nouns, others are lexicalized as verbs (Yoruba)",
+									"Distinct class of \"adjectives\" (English)"
+								],
+								export: {
+									title: "Property Concepts:",
+									labels: [
+										"Lexicalized as verbs",
+										"Lexicalized as nouns",
+										"Lexicalized as nouns or verbs depending on the demands of discourse",
+										"Some are lexicalized as nouns, others are lexicalized as verbs",
+										"Distinct class of \"adjectives\""
+									]
+								}
+							}
+						}
+						boxes={["BOOL_lexVerb", "BOOL_lexNoun", "BOOL_lexVN", "BOOL_lexVorN", "BOOL_adjectives"]}
+						values={[BOOL_lexVerb, BOOL_lexNoun, BOOL_lexVN, BOOL_lexVorN, BOOL_adjectives]}
+					/>
+					<InfoModal
+						title="Property Concepts"
+						label="More Info"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>If Property Concepts (adjectives) exist as a separate category, they will express:
 								<ul>
@@ -354,23 +384,29 @@ const OldSyntax = () => {
 								<ol>
 									<li>They cannot take past tense like a verb, nor do they "agree" with their head noun in the same way.</li>
 									<li>They do not take plural markers like a noun, nor can they take articles, modifiers or quantifiers.
-										<ul>
-											<li>Rarely, an adjective can be treated as a noun (e.g. "<em>The wealthy</em> are obnoxious", "Which car do you prefer, <em>the gray</em> or <em>the red</em>?"), but these are actually <em>zero derivations</em> (8.1).</li>
-										</ul>
+										<ul><li>Rarely, an adjective can be treated as a noun (e.g. "<em>The wealthy</em> are obnoxious", "Which car do you prefer, <em>the gray</em> or <em>the red</em>?"), but these are actually <em>zero derivations</em> (8.1).</li></ul>
 									</li>
 								</ol>
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="propClass">How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
-
-					<HeaderItem level="3">2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
-
-					<TextItem text="quantifier">Which quantifiers exist?</TextItem>
-
-					<HeaderItem level="3">2.3.3. Numerals</HeaderItem>
-
-					<InfoModal title="Numerals" label="Things to Consider">
+					<TextItem
+						prop="TEXT_propClass"
+						value={TEXT_propClass}
+						rows={undefined}
+					>How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
+					<HeaderItem level={3}>2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
+					<TextItem
+						prop="TEXT_quantifier"
+						value={TEXT_quantifier}
+						rows={undefined}
+					>Which quantifiers exist?</TextItem>
+					<HeaderItem level={3}>2.3.3. Numerals</HeaderItem>
+					<InfoModal
+						title="Numerals"
+						label="Things to Consider"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Extent</strong>:
 								<ul>
@@ -400,60 +436,83 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Number Base</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="baseFive" /></IonCol>
-								<IonCol>Base Five</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="baseTen" /></IonCol>
-								<IonCol>Base Ten</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="baseTwenty" /></IonCol>
-								<IonCol>Base Twenty</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="baseOther" /></IonCol>
-								<IonCol>Other</IonCol>
-							</IonRow>
-							<IonRow className="header">
-								<IonCol>Number Format</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="numGL" /></IonCol>
-								<IonCol>Greatest-to-Least (twenty-two)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="numLG" /></IonCol>
-								<IonCol>Least-to-Greatest (two-twenty)</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="numNone" /></IonCol>
-								<IonCol>Single Digits Only (two-two)</IonCol>
-							</IonRow>
-							<IonRow className="header">
-								<IonCol>Other Properties</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="multiNumSets" /></IonCol>
-								<IonCol>Multiple Sets of Numerals</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="inflectNum" /></IonCol>
-								<IonCol>Numerals Agree With Head</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-					<TextItem text="numeral" rows={6}>Describe the language's numeral system.</TextItem>
-
-					<HeaderItem level="2">2.4. Adverbs</HeaderItem>
-
-					<InfoModal title="Adverbs" label='A "Catch-All" Category'>
+					<CheckboxItem
+						display={
+							{
+								class: "cols2",
+								boxesPerRow: 1,
+								header: "Number Base",
+								rowLabels: [
+									"Base Five",
+									"Base Ten",
+									"Base Twenty",
+									"Other"
+								],
+								export: {
+									title: "Number Base:",
+									labels: [
+										"Base Five",
+										"Base Ten",
+										"Base Twenty",
+										"Not Base Five, Ten or Twenty"
+									]
+								}
+							}
+						}
+						boxes={["BOOL_baseFive", "BOOL_baseTen", "BOOL_baseTwenty", "BOOL_baseOther"]}
+						values={[BOOL_baseFive, BOOL_baseTen, BOOL_baseTwenty, BOOL_baseOther]}
+					/>
+					<CheckboxItem
+						display={
+							{
+								class: "cols2",
+								boxesPerRow: 1,
+								header: "Number Format",
+								rowLabels: [
+									"Greatest-to-Least (twenty-two)",
+									"Least-to-Greatest (two-twenty)",
+									"Single Digits Only (two-two)"
+								],
+								export: {
+									title: "Number Format:",
+									labels: [
+										"Greatest-to-Least",
+										"Least-to-Greatest",
+										"Single Digits Only"
+									]
+								}
+							}
+						}
+						boxes={["BOOL_numGL", "BOOL_numLG", "BOOL_numNone"]}
+						values={[BOOL_numGL, BOOL_numLG, BOOL_numNone]}
+					/>
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Other Properties",
+							rowLabels: [
+								"Multiple Sets of Numerals",
+								"Numerals Agree With Head"
+							],
+							export: {
+								title: "Other Number Properties:"
+							}
+						}}
+						boxes={["BOOL_multiNumSets", "BOOL_inflectNum"]}
+						values={[BOOL_multiNumSets, BOOL_inflectNum]}
+					/>
+					<TextItem
+						prop="TEXT_numeral"
+						value={TEXT_numeral}
+						rows={6}
+					>Describe the language's numeral system.</TextItem>
+					<HeaderItem level={2}>2.4. Adverbs</HeaderItem>
+					<InfoModal
+						title="Adverbs"
+						label={'A "Catch-All" Category'}
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>These may or may not exist as a separate category of words.</li>
 							<li>Languages may use adjectives in special phrases to fulfill this role.</li>
@@ -467,13 +526,16 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="adverb" rows={4}>How are adverbs (or adverb-like phrases) handled?</TextItem>
-
+					<TextItem
+						prop="TEXT_adverb"
+						value={TEXT_adverb}
+						rows={4}
+					>How are adverbs (or adverb-like phrases) handled?</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
 	);
 };
-*/
+
 
 export default Syntax;

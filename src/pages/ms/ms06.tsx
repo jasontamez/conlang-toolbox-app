@@ -5,17 +5,26 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
 import {
+	CheckboxItem,
+	HeaderItem,
+	InfoModal,
 	SyntaxHeader,
-	parseMSJSON
+	TextItem
 } from './MorphoSyntaxElements';
 
 const Syntax = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const {
+		BOOL_nomAcc,
+		BOOL_ergAbs,
+		TEXT_ergative
+	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	const viewInfo = { key: "ms" as keyof ViewState, page: "ms06" };
 	useIonViewDidEnter(() => {
@@ -29,29 +38,12 @@ const Syntax = (props: PageData) => {
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON({page: "s6", ...props})}
-				</IonList>
-			</IonContent>
-		</IonPage>
-	);
-};
-
-/*
-const Syntax = () => {
-	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms06" };
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
-	return (
-		<IonPage>
-			<SyntaxHeader title="6. Grammatical Relations" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-
-					<HeaderItem level="1">6. Grammatical Relations</HeaderItem>
-
-					<InfoModal title="Alignments" label="Show the Alignments">
+					<HeaderItem level={1}>6. Grammatical Relations</HeaderItem>
+					<InfoModal
+						title="Alignments"
+						label="Show the Alignments"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Nominative/Accusative Alignment</strong>:
 								<ul>
@@ -62,15 +54,11 @@ const Syntax = () => {
 										</ul>
 									</li>
 									<li>(P)atients are given the accusative case.
-										<ul>
-											<li>I pushed <em>him</em>.</li>
-										</ul>
+										<ul><li>I pushed <em>him</em>.</li></ul>
 									</li>
 									<li>S and A are both viewed as agents, having volition</li>
 									<li>A tends to stick with the (V)erb, leaving the P floating:
-										<ul>
-											<li>AVP; PAV; VAP; PVA</li>
-										</ul>
+										<ul><li>AVP; PAV; VAP; PVA</li></ul>
 									</li>
 								</ul>
 							</li>
@@ -83,15 +71,11 @@ const Syntax = () => {
 										</ul>
 									</li>
 									<li>(A)gents are given the absolutive case.
-										<ul>
-											<li><em>Me</em> pushed he.</li>
-										</ul>
+										<ul><li><em>Me</em> pushed he.</li></ul>
 									</li>
 									<li>S and P are both viewed as typically being new information, or undergoing change.</li>
 									<li>P tends to stick with the (V)erb, leaving the A floating:
-										<ul>
-											<li>AVP; VPA; APV; PVA</li>
-										</ul>
+										<ul><li>AVP; VPA; APV; PVA</li></ul>
 									</li>
 									<li className="newSection"><strong>Split Ergativity</strong>:
 										<ul>
@@ -117,30 +101,29 @@ const Syntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-
-					<IonItem className="content">
-						<IonGrid className="cols2">
-							<IonRow className="header">
-								<IonCol>Primary Alignment System</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="nomAcc" /></IonCol>
-								<IonCol>Nominative / Accusative</IonCol>
-							</IonRow>
-							<IonRow>
-								<IonCol className="cbox"><RadioBox prop="ergAbs" /></IonCol>
-								<IonCol>Ergative / Absolutive</IonCol>
-							</IonRow>
-						</IonGrid>
-					</IonItem>
-
-					<TextItem text="ergative" rows={8}>Are there any exceptions to the primary alignment? Do they exist in a hierarchy?</TextItem>
-
+					<CheckboxItem
+						display={{
+							class: "cols2",
+							boxesPerRow: 1,
+							header: "Primary Alignment System",
+							rowLabels: ["Nominative / Accusative", "Ergative / Absolutive"],
+							export: {
+								title: "Primary Alignment System:"
+							}
+						}}
+						boxes={["BOOL_nomAcc", "BOOL_ergAbs"]}
+						values={[BOOL_nomAcc, BOOL_ergAbs]}
+					/>
+					<TextItem
+						prop="TEXT_ergative"
+						value={TEXT_ergative}
+						rows={8}
+					>Are there any exceptions to the primary alignment? Do they exist in a hierarchy?</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
 	);
 };
-*/
+
 
 export default Syntax;

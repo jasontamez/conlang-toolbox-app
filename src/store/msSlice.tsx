@@ -20,16 +20,14 @@ const setSyntaxBoolFunc = (state: MSState, action: PayloadAction<[MSBool, boolea
 	state[prop] = value;
 	return state;
 };
-const setSyntaxNumFunc = (state: MSState, action: PayloadAction<[string, number]>) => {
+const setSyntaxNumFunc = (state: MSState, action: PayloadAction<[MSNum, number]>) => {
 	const [prop, value] = action.payload;
-	const newProp = ("NUM_" + prop) as MSNum;
-	state[newProp] = value;
+	state[prop] = value;
 	return state;
 };
-const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[string, string]>) => {
+const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[MSText, string]>) => {
 	const [prop, value] = action.payload;
-	const newProp = ("TEXT_" + prop) as MSText;
-	state[newProp] = value;
+	state[prop] = value;
 	return state;
 };
 

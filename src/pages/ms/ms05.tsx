@@ -5,17 +5,26 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
 import {
+	HeaderItem,
+	InfoModal,
 	SyntaxHeader,
-	parseMSJSON
+	TextItem
 } from './MorphoSyntaxElements';
 
 const Syntax = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const {
+		TEXT_predNom,
+		TEXT_predLoc,
+		TEXT_predEx,
+		TEXT_predPoss
+	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	const viewInfo = { key: "ms" as keyof ViewState, page: "ms05" };
 	useIonViewDidEnter(() => {
@@ -32,29 +41,12 @@ const Syntax = (props: PageData) => {
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON({page: "s5", ...props})}
-				</IonList>
-			</IonContent>
-		</IonPage>
-	);
-};
-
-/*
-const OldSyntax = () => {
-	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms05" };
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
-	return (
-		<IonPage>
-			<SyntaxHeader title="5. Predicate Nominals and Related Constructions" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-
-					<HeaderItem level="1">5. Predicate Nominals and Related Constructions</HeaderItem>
-
-					<InfoModal title="Predicate Nominals" label="General Information to Consider">
+					<HeaderItem level={1}>5. Predicate Nominals and Related Constructions</HeaderItem>
+					<InfoModal
+						title="Predicate Nominals"
+						label="General Information to Consider"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>These forms generally encode the following information:
 								<ul>
@@ -69,10 +61,12 @@ const OldSyntax = () => {
 							<li>The forms at the top of the list are much more likely to lack a semantically rich verb, while those at the bottom are less likely to.</li>
 						</ul>
 					</InfoModal>
-
-					<HeaderItem level="2">5.1. Predicate Nominals and Adjecives</HeaderItem>
-
-					<InfoModal title="Predicate Nominals and Adjecives" label="What It Is and What It Seems Like">
+					<HeaderItem level={2}>5.1. Predicate Nominals and Adjectives</HeaderItem>
+					<InfoModal
+						title="Predicate Nominals and Adjectives"
+						label="What It Is and What It Seems Like"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>May encode <em>proper inclusion</em> (X is a Y) and <em>equation</em> (X is Y)</li>
 							<li>Predicate adjectives are usually handled the same as predicate nominals, though they will sometimes use a different copula than the nouns.</li>
@@ -94,7 +88,7 @@ const OldSyntax = () => {
 														<ul>
 															<li>These tend to be very irregular verbs.</li>
 															<li>They tend to belong to the same verb class as stative verbs.</li>
-															<li>They tend to function as auxilliaries in other constructions.</li>
+															<li>They tend to function as auxiliaries in other constructions.</li>
 															<li>Ex: Steve is a doctor.</li>
 														</ul>
 													</li>
@@ -125,28 +119,38 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="predNom" rows={6}>Describe the language's strategy for predicate nominals and adjectives.</TextItem>
-
-					<HeaderItem level="2">5.2. Predicate Locatives</HeaderItem>
-
-					<InfoModal title="Predicate Locatives" label="Where It Is">
+					<TextItem
+						prop="TEXT_predNom"
+						value={TEXT_predNom}
+						rows={6}
+					>Describe the language's strategy for predicate nominals and adjectives.</TextItem>
+					<HeaderItem level={2}>5.2. Predicate Locatives</HeaderItem>
+					<InfoModal
+						title="Predicate Locatives"
+						label="Where It Is"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Many languages use a word that gets translated as "be at".</li>
 							<li>The locative word is often the same as a locative adposition.</li>
 							<li>Word order usually distinguishes possessive clauses from locational clauses.
-								<ul>
-									<li>Ex: Steve has a cat (possessive); the cat is behind Steve (locational).</li>
-								</ul>
+								<ul><li>Ex: Steve has a cat (possessive); the cat is behind Steve (locational).</li></ul>
 							</li>
 							<li className="newSection">English bases locatives on possessive clauses, but with an inanimate possessor.</li>
 							<li>Russian bases possessive clauses on locatives, but with an animate possessor.</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="predLoc" rows={6}>How does the language handle predicate locatives?</TextItem>
-
-					<HeaderItem level="2">5.3. Existentials</HeaderItem>
-
-					<InfoModal title="Existentials" label="These Exist">
+					<TextItem
+						prop="TEXT_predLoc"
+						value={TEXT_predLoc}
+						rows={6}
+					>How does the language handle predicate locatives?</TextItem>
+					<HeaderItem level={2}>5.3. Existentials</HeaderItem>
+					<InfoModal
+						title="Existentials"
+						label="These Exist"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>These constructions usually serve a presentative function, introducing new participants.</li>
 							<li>Usually, the nominal is indefinite: Consider "There are lions in Africa" (valid) vs. "There are the lions in Africa" (invalid).</li>
@@ -165,11 +169,16 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="predEx" rows={6}>How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?</TextItem>
-
-					<HeaderItem level="2">5.4. Possessive Clauses</HeaderItem>
-
-					<InfoModal title="Possessive Clauses">
+					<TextItem
+						prop="TEXT_predEx"
+						value={TEXT_predEx}
+						rows={6}
+					>How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?</TextItem>
+					<HeaderItem level={2}>5.4. Possessive Clauses</HeaderItem>
+					<InfoModal
+						title="Possessive Clauses"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>These follow two main strategies:
 								<ul>
@@ -179,13 +188,16 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="predEx" rows={3}>Does the language use a verb or copula strategy?</TextItem>
-
+					<TextItem
+						prop="TEXT_predPoss"
+						value={TEXT_predPoss}
+						rows={3}
+					>Does the language use a verb or copula strategy?</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
 	);
 };
-*/
+
 
 export default Syntax;

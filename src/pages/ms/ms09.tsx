@@ -5,17 +5,29 @@ import {
 	IonList,
 	useIonViewDidEnter
 } from '@ionic/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData } from '../../store/types';
+import { ViewState, PageData, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 
 import {
+	HeaderItem,
+	InfoModal,
 	SyntaxHeader,
-	parseMSJSON
+	TransTable,
+	TextItem
 } from './MorphoSyntaxElements';
 
 const Syntax = (props: PageData) => {
+	const { modalPropsMaker } = props;
+	const {
+		TEXT_pragFocusEtc,
+		TEXT_negation,
+		TEXT_declaratives,
+		TEXT_YNQs,
+		TEXT_QWQs,
+		TEXT_imperatives
+	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	const viewInfo = { key: "ms" as keyof ViewState, page: "ms09" };
 	useIonViewDidEnter(() => {
@@ -29,36 +41,17 @@ const Syntax = (props: PageData) => {
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{parseMSJSON({page: "s9", ...props})}
-				</IonList>
-			</IonContent>
-		</IonPage>
-	);
-};
-
-/*
-const OldSyntax = () => {
-	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms09" };
-	useIonViewDidEnter(() => {
-		dispatch(changeView(viewInfo));
-	});
-	return (
-		<IonPage>
-			<SyntaxHeader title="9. Pragmatically Marked Structures" />
-			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix" id="morphoSyntaxPage">
-				<IonList lines="none">
-
-					<HeaderItem level="1">9. Pragmatically Marked Structures</HeaderItem>
-
-					<InfoModal title="Pragmatics" label="What are Pragmatics?">
+					<HeaderItem level={1}>9. Pragmatically Marked Structures</HeaderItem>
+					<InfoModal
+						title="Pragmatics"
+						label="What are Pragmatics?"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Pragmatics is the interpretation of utterances, and Pragmatic Statuses relate the <em>content</em> of an utterance to its <em>context</em>. They cover the following concepts:
 								<ul>
 									<li><strong>Identifiability</strong>: can an argument be identified by the listener?
-										<ul>
-											<li>English uses proper names and "the" to indicate identifiability.</li>
-										</ul>
+										<ul><li>English uses proper names and "the" to indicate identifiability.</li></ul>
 									</li>
 									<li><strong>Objective Referentiality</strong>: is an argument a bounded, individual entity?
 										<ul>
@@ -103,9 +96,12 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<HeaderItem level="2">9.1 Focus, Contrast and Topicalization</HeaderItem>
-
-					<InfoModal title="Focus, Contrast, etc." label="Focus is What This is About">
+					<HeaderItem level={2}>9.1 Focus, Contrast and Topicalization</HeaderItem>
+					<InfoModal
+						title="Focus, Contrast, etc."
+						label="Focus is What This is About"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Intonation and Vocalization</strong>, such as tempo changes ("Do. Not. Do. That."), volume changes (screaming, whispering), and pitch changes ("Do <em>not</em> do that"), are nearly universal.</li>
 							<li className="newSection"><strong>Constituent Order</strong>:
@@ -120,9 +116,7 @@ const OldSyntax = () => {
 										<ul><li>"<em>Termites</em>. Why does the universe hate me?"</li></ul>
 									</li>
 									<li><strong>Clefting</strong> is a type of predicate nominal where a noun phrase is joined to a relative clause that references that original noun phrase. (See below.)
-										<ul>
-											<li>"<em>You</em> are <em>the one that I want</em>."</li>
-										</ul>
+										<ul><li>"<em>You</em> are <em>the one that I want</em>."</li></ul>
 									</li>
 								</ul>
 							</li>
@@ -139,10 +133,10 @@ const OldSyntax = () => {
 										<ul>
 											<li className="newSection">Aghem uses verb morphology and focus particles to express various pragmatic nuances.
 												<ul>
-													<li>"énáʔ <em>mɔ̀</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah gave fufu to his friends.</li>
-													<li>"énáʔ <em>má՚á</em> fúo kí-bɛ́ â fín-ghɔ́" - Inah <em>DID</em> give fufu to his friends. (truth focus)</li>
-													<li className="newSection">"fú kí mɔ̀ ñiŋ <em>nò</em> á kí-՚bé" - The rat <em>ran</em> (did not walk, scurry, etc) in the compound.</li>
-													<li>"fú kí mɔ̀ ñiŋ á kí-՚bé <em>nò</em>" - The rat ran in <em>the compound</em> (not in the house, church, etc.).</li>
+													<li>\"énáʔ <em>mɔ̀</em> fúo kí-bɛ́ â fín-ghɔ́\" - Inah gave fufu to his friends.</li>
+													<li>\"énáʔ <em>má՚á</em> fúo kí-bɛ́ â fín-ghɔ́\" - Inah <em>DID</em> give fufu to his friends. (truth focus)</li>
+													<li className="newSection">\"fú kí mɔ̀ ñiŋ <em>nò</em> á kí-՚bé\" - The rat <em>ran</em> (did not walk, scurry, etc) in the compound.</li>
+													<li>\"fú kí mɔ̀ ñiŋ á kí-՚bé <em>nò</em>\" - The rat ran in <em>the compound</em> (not in the house, church, etc.).</li>
 												</ul>
 											</li>
 											<li className="newSection">Akam has a focus particle <em>na</em> and a contrastive particle <em>de</em>.
@@ -152,13 +146,15 @@ const OldSyntax = () => {
 												</ul>
 											</li>
 											<li className="newSection"><strong>Overlay</strong> systems are a combination of case-marking systems and pragmatic status-marking systems: one or more basic case markers are replaced (overlaid) by the status marker when a nominal is singled out for pragmatic treatment.
-												<ul><li>The Japanese topic marker <em>wa</em> can overlay the subject marker <em>ga</em> or the object marker <em>o</em>.
-													<ul>
-														<li>"taroo <em>ga</em> hon <em>o</em> katta." - Taro bought a book.</li>
-														<li>"taroo <em>wa</em> hon o katta." - As for Taro, he bought a book.</li>
-														<li>"hon <em>wa</em> taroo ga katta." - As for the book, Taro bought it.</li>
-													</ul>
-												</li></ul>
+												<ul>
+													<li>The Japanese topic marker <em>wa</em> can overlay the subject marker <em>ga</em> or the object marker <em>o</em>.
+														<ul>
+															<li>"taroo <em>ga</em> hon <em>o</em> katta." - Taro bought a book.</li>
+															<li>"taroo <em>wa</em> hon o katta." - As for Taro, he bought a book.</li>
+															<li>"hon <em>wa</em> taroo ga katta." - As for the book, Taro bought it.</li>
+														</ul>
+													</li>
+												</ul>
 											</li>
 										</ul>
 									</li>
@@ -166,11 +162,17 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="pragFocusEtc" rows={8}>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
-
-					<HeaderItem level="2">9.2 Negation</HeaderItem>
-
-					<InfoModal title="Negation" label="Don't not read this.">
+					<TextItem
+						prop="TEXT_pragFocusEtc"
+						value={TEXT_pragFocusEtc}
+						rows={8}
+					>Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.</TextItem>
+					<HeaderItem level={2}>9.2 Negation</HeaderItem>
+					<InfoModal
+						title="Negation"
+						label="Don't not read this."
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Common negation strategies:
 								<ul>
@@ -259,9 +261,7 @@ const OldSyntax = () => {
 												<ul><li>A few languages have special person/number ot TAM markers on verbs in negative clauses. (Negative verbs tend to hold onto older patterns that have been lost in affirmative clauses!)</li></ul>
 											</li>
 											<li>Alternative case-marking patterns:
-												<ul>
-													<li>Special case-marking patterns may occur in negative clauses. For example, with certain Russian verbs, the object will be in accusative for affirmative clauses and in genitive case in negative clauses.</li>
-												</ul>
+												<ul><li>Special case-marking patterns may occur in negative clauses. For example, with certain Russian verbs, the object will be in accusative for affirmative clauses and in genitive case in negative clauses.</li></ul>
 											</li>
 										</ul>
 									</li>
@@ -324,24 +324,35 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="negation" rows={8}>Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?</TextItem>
-
-					<HeaderItem level="2">9.3 Non-Declarative Speech</HeaderItem>
-
-					<InfoModal title="Declarative Statements" label="Minor Note on Declaratives">
+					<TextItem
+						prop="TEXT_negation"
+						value={TEXT_negation}
+						rows={8}
+					>Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?</TextItem>
+					<HeaderItem level={2}>9.3 Non-Declarative Speech</HeaderItem>
+					<InfoModal
+						title="Declarative Statements"
+						label="Minor Note on Declaratives"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>A declarative statement is an assertion. Most speech is declarative.</li>
 							<li>Other types of statements are usually handled as "modes" in a language, such as interrogative (questions) and imperatives (commands).</li>
 							<li className="newSection">Most often, a language will leave declarative statements unmarked and only mark the others. But some (e.g. Tibetan) will mark declaratives, too.</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="declaratives" rows={3}>If declaratives are marked, describe how.</TextItem>
-
-					<HeaderItem level="3">9.3.1 Interrogatives</HeaderItem>
-
-					<HeaderItem level="4">9.3.1.1. Yes/No Questions</HeaderItem>
-
-					<InfoModal title="Yes/NoQuestions" label="Yes? No?">
+					<TextItem
+						prop="TEXT_declaratives"
+						value={TEXT_declaratives}
+						rows={3}
+					>If declaratives are marked, describe how.</TextItem>
+					<HeaderItem level={3}>9.3.1 Interrogatives</HeaderItem>
+					<HeaderItem level={4}>9.3.1.1. Yes/No Questions</HeaderItem>
+					<InfoModal
+						title="Yes/No Questions"
+						label="Yes? No?"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li><strong>Yes/No Questions</strong>, hereafter referred to as <em>YNQs</em>, are interrogative clauses where the expected answer is either "yes" or "no". They can employ any or all of the strategies below.</li>
 							<li className="newSection"><em>Intonation</em>:
@@ -360,11 +371,11 @@ const OldSyntax = () => {
 											<li>"datangkah bapak nanti" - Will father come later?</li>
 										</ul>
 									</li>
-									<li>English has a strange system where it reverses the Agent and the auxilliary verb. If no auxilliary is present, the verb "do" is inserted.
+									<li>English has a strange system where it reverses the Agent and the auxiliary verb. If no auxiliary is present, the verb "do" is inserted.
 										<ul>
 											<li>"He will arrive on time" → "Will he arrive on time?"</li>
 											<li>"They can eat cake" → "Can they eat cake?"</li>
-											<li>"You want to join me" (no auxilliary) → "Do you want to join me?"</li>
+											<li>"You want to join me" (no auxiliary) → "Do you want to join me?"</li>
 										</ul>
 									</li>
 									<li>American English uses simple Agent/Verb inversion in predicate nominals, existential and locational clauses. British English extends this to possessive constructions.
@@ -382,22 +393,14 @@ const OldSyntax = () => {
 									<li>Question Particles (QPs) are very common, especially among PV languages, but they do appear in VP languages, too.</li>
 									<li>The QP can be cliticized to the first constituent in the clause, either before or after it.
 										<ul>
-											<li>Latin:<br />
-												<TransTable rows="erat-ne te-cum / he:was-QP you-with">Was he with you?</TransTable>
-											</li>
-											<li>Mandarin:<br />
-												<TransTable rows="tā xihuan chī pǐngguǒ ma / she like eat apple QP">Does she like to eat apples?</TransTable>
-											</li>
-											<li>Tagalog:<br />
-												<TransTable rows="mabait ba si Pilar? / kind QP is Pilar">Is Pilar kind?</TransTable>
-											</li>
+											<li>Latin:<br /><TransTable rows="erat-ne te-cum / he:was-QP you-with">Was he with you?</TransTable></li>
+											<li>Mandarin:<br /><TransTable rows="tā xihuan chī pǐngguǒ ma / she like eat apple QP">Does she like to eat apples?</TransTable></li>
+											<li>Tagalog:<br /><TransTable rows="mabait ba si Pilar? / kind QP is Pilar">Is Pilar kind?</TransTable></li>
 										</ul>
 									</li>
 									<li>Often, the QP can be omitted, letting context and intonation do the job instead.</li>
 									<li className="newSection">Some varieties of English has developed a QP as an alternative to word order inversion
-										<ul>
-											<li>"You want to go for a ride, <em>eh</em>?"</li>
-										</ul>
+										<ul><li>"You want to go for a ride, <em>eh</em>?"</li></ul>
 									</li>
 								</ul>
 							</li>
@@ -424,11 +427,17 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="YNQs" rows={4}>How are yes/no questions formed? Do they serve other discourse functions other than the obvious?</TextItem>
-
-					<HeaderItem level="4">9.3.1.2. Questions-Word Questions</HeaderItem>
-
-					<InfoModal title="Question-Word Questions" label="Who? What? Why?">
+					<TextItem
+						prop="TEXT_YNQs"
+						value={TEXT_YNQs}
+						rows={4}
+					>How are yes/no questions formed? Do they serve other discourse functions other than the obvious?</TextItem>
+					<HeaderItem level={4}>9.3.1.2. Questions-Word Questions</HeaderItem>
+					<InfoModal
+						title="Question-Word Questions"
+						label="Who? What? Why?"
+						modalPropsMaker={modalPropsMaker}
+					>
 						<ul>
 							<li>Also known as <strong>Content Questions</strong> or <strong>Information Questions</strong>, Question-Word Questions (QWs) are best exemplified by the English words who, whom, what, where, when, why, which, and how.</li>
 							<li>All languages have a set of special QWQs. Often, they're similar or identical to a set of pronouns used elsewhere in the language. (e.g. English's who, where, when.)</li>
@@ -439,9 +448,7 @@ const OldSyntax = () => {
 								</ol>
 							</li>
 							<li className="newSection">In VP languages (like English) it is typical for the QW to appear at the start of the clause, possibly leaving a gap in the normal position.
-								<ul>
-									<li>"Mark gave the cakes to Jimmy." → "Who gave the cakes to Jimmy?" → "Who did Mark give the cakes to?"</li>
-								</ul>
+								<ul><li>"Mark gave the cakes to Jimmy." → "Who gave the cakes to Jimmy?" → "Who did Mark give the cakes to?"</li></ul>
 							</li>
 							<li>Many PV languages leave the QW in the "normal" position, such as Japanese and Tibetan.</li>
 							<li>Most PV languages can either leave the QW in position, or it can move to the front.</li>
@@ -455,33 +462,29 @@ const OldSyntax = () => {
 							</li>
 						</ul>
 					</InfoModal>
-					<TextItem text="QWQs" rows={4}>How are information questions formed?</TextItem>
-
-					<HeaderItem level="4">9.3.2. Imperatives</HeaderItem>
-
-					<InfoModal title="Imperatives" label="Command Sentences">
-						<ul>
-							<li>Imperatives are direct commands to an addressee.</li>
-							<li>It is often not necessary to indicate the Agent (addressee), since the actor is obvious.</li>
-							<li>Fewer TAM constructs are typically allowed, since it is pragmatically impossible to perform certain actions (past tense, present progressive, etc).</li>
-							<li>Sometimes imperatives take special verb forms or affixes, as in Greenlandic Iñupiat, and/or special negation strategies.</li>
-							<li className="newSection">Imperatives are often associated with Irrealis modes (8.3.3)</li>
-							<li className="newSection">Sometimes imperatives affect case marking.
-								<ul><li>Finnish puts the Patients of imperatives in nominative case instead of accusative case.</li></ul>
-							</li>
-							<li className="newSection">Different types of imperatives may exist.
-								<ul><li>In Panare, the suffix <em>-kë</em> is for plain imperatives, while <em>-ta'</em> is used for imperatives involving motion.</li></ul>
-							</li>
-							<li className="newSection">First-person imperatives are rare. (e.g. "Let's eat." vs "Come eat with me.")</li>
-						</ul>
+					<TextItem
+						prop="TEXT_QWQs"
+						value={TEXT_QWQs}
+						rows={4}
+					>How are information questions formed?</TextItem>
+					<HeaderItem level={4}>9.3.2. Imperatives</HeaderItem>
+					<InfoModal
+						title="Imperatives"
+						label="Command Sentences"
+						modalPropsMaker={modalPropsMaker}
+					>
+						<ul><li>Imperatives are direct commands to an addressee.</li><li>It is often not necessary to indicate the Agent (addressee), since the actor is obvious.</li><li>Fewer TAM constructs are typically allowed, since it is pragmatically impossible to perform certain actions (past tense, present progressive, etc).</li><li>Sometimes imperatives take special verb forms or affixes, as in Greenlandic Iñupiat, and/or special negation strategies.</li><li className="newSection">Imperatives are often associated with Irrealis modes (8.3.3)</li><li className="newSection">Sometimes imperatives affect case marking.<ul><li>Finnish puts the Patients of imperatives in nominative case instead of accusative case.</li></ul></li><li className="newSection">Different types of imperatives may exist.<ul><li>In Panare, the suffix <em>-kë</em> is for plain imperatives, while <em>-ta'</em> is used for imperatives involving motion.</li></ul></li><li className="newSection">First-person imperatives are rare. (e.g. "Let's eat." vs "Come eat with me.")</li></ul>
 					</InfoModal>
-					<TextItem text="imperatives" rows={4}>How are imperatives formed? Are there "polite" imperatives that contrast with more direct imperatives?</TextItem>
-
+					<TextItem
+						prop="TEXT_imperatives"
+						value={TEXT_imperatives}
+						rows={4}
+					>How are imperatives formed? Are there "polite" imperatives that contrast with more direct imperatives?</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>
 	);
 };
-*/
+
 
 export default Syntax;
