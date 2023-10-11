@@ -89,7 +89,7 @@ const Syntax = (props: PageData) => {
 						</ul>
 					</InfoModal>
 					<HeaderItem level={3}>Synthesis</HeaderItem>
-					<IonItem className="content" style={{ background: "#ffffff66" }}>
+					<IonItem className="content">
 						<IonRange
 							aria-label="Range from Isolating to Polysynthetic"
 							onIonChange={(e) => dispatch(setSyntaxNum(["NUM_synthesis", e.target.value as number]))}
