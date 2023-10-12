@@ -167,8 +167,7 @@ const Syntax = (props: PageData) => {
 								</ul>
 							</li>
 							<li>In Latin, if a Patient occurs in some other case, either the sentence is ungrammatical or another sense of the verb results.</li>
-							<li>In some languages, verbs and/or adpositions <em>govern</em> their arguments, requiring a specific case marker on their nouns. This allows similar-sounding verbs to be discerned by these case markers. For example, in Yagua, the verb
-								<em>dííy</em> can mean either "kill" or "see" depending on which case the Patient is in:
+							<li>In some languages, verbs and/or adpositions <em>govern</em> their arguments, requiring a specific case marker on their nouns. This allows similar-sounding verbs to be discerned by these case markers. For example, in Yagua, the verb <em>dííy</em> can mean either "kill" or "see" depending on which case the Patient is in:
 								<ul>
 									<li>He killed the alligator:<br /><TransTable rows="sa-dííy nurutú-0 / he-kill alligator-ACC" /></li>
 									<li>He saw the alligator:<TransTable rows="sa-dííy nurutí-íva / he-see alligator-DAT" /></li>
@@ -229,9 +228,7 @@ const Syntax = (props: PageData) => {
 						<ul>
 							<li>Class system often require classifiers (special operators) to declare class.</li>
 							<li>Pure gender systems use "agreement" instead of classifiers. At the very least, numerical expressions will "agree" with their head noun.</li>
-							<li>Classes generally care about one dimension of reality, such as biological gender, animacy, shape, or function. (Other dimensions may be relevant, too.) There are almost always exceptions to the rule, however (e.g. Yagua treats rocks and
-								pineapples as animates).
-							</li>
+							<li>Classes generally care about one dimension of reality, such as biological gender, animacy, shape, or function. (Other dimensions may be relevant, too.) There are almost always exceptions to the rule, however (e.g. Yagua treats rocks and pineapples as animates).</li>
 							<li>Classifiers may occur with verbs, numerals and adjectives, though they may serve a different function in those cases.</li>
 						</ul>
 					</InfoModal>

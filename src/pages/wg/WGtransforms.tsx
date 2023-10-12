@@ -46,7 +46,7 @@ import toaster from '../../components/toaster';
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { RewCard } from "./WGCards";
+import { TransCard } from "./WGCards";
 
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -145,7 +145,7 @@ const WGRew = (props: PageData) => {
 				setEditing={setEditing}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><RewCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><TransCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

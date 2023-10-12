@@ -65,12 +65,6 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
-			// TO-DO: convert old storage to new format
-			//const save: WECustomInfo = [
-			//	charGroups,
-			//	transforms,
-			//	soundchanges
-			//];
 			const save: WEPresetObject = {
 				characterGroups,
 				transforms,
@@ -109,7 +103,15 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		const handler = () => {
 			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
-					dispatch(loadStateWE(value as WEPresetObject));
+					const newValue = {...value};
+					if(newValue.soundchanges) {
+						// converting old format to new expected format
+						// TO-DO: move this into a store migration when a migration is needed
+						newValue.soundChanges = newValue.soundchanges;
+						delete newValue.soundchanges;
+						CustomStorageWE.setItem(title, newValue);
+					}
+					dispatch(loadStateWE(newValue as WEPresetObject));
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,

@@ -119,8 +119,7 @@ const Syntax = (props: PageData) => {
 								<ul>
 									<li><strong>Structural Distance</strong>
 										<ul>
-											<li>If the language has more than one formal type of causative, the "smaller" one will be used for more direct causation, while the "larger" one will be used for less direct causation. Longer linguistic distance correlates
-												to greater conceptual distance.
+											<li>If the language has more than one formal type of causative, the "smaller" one will be used for more direct causation, while the "larger" one will be used for less direct causation. Longer linguistic distance correlates to greater conceptual distance.
 												<ul>
 													<li>"George killed Joe" is more direct than "George caused Joe to die".</li>
 													<li>Amharic has an <em>a-</em> prefix for direct causation, <em>as-</em> for indirect.</li>
@@ -139,9 +138,7 @@ const Syntax = (props: PageData) => {
 										<ul>
 											<li>The more distant the cause from the effect in space or time, the more finite the verb will be.
 												<ul>
-													<li>Ex: <em>"Jorge <strong>hizo comer</strong> pan a Josef"</em> indicates Jorge forced Josef to eat bread directly, while <em>"Jorge <strong>hizo</strong> que Josef <strong>comiera</strong> pan"</em> indicates he
-														forced Josef indirectly, maybe by removing all other food.
-													</li>
+													<li>Ex: <em>"Jorge <strong>hizo comer</strong> pan a Josef"</em> indicates Jorge forced Josef to eat bread directly, while <em>"Jorge <strong>hizo</strong> que Josef <strong>comiera</strong> pan"</em> indicates he forced Josef indirectly, maybe by removing all other food.</li>
 												</ul>
 											</li>
 										</ul>

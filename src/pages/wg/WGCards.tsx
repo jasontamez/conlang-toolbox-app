@@ -17,8 +17,11 @@ import {
 } from 'ionicons/icons';
 
 import ltr from '../../components/LTR';
-import I from '../../components/IPA';
-import { ConceptsOutlineIcon, LexiconOutlineIcon, SyllablesIcon, TransformationsIcon } from '../../components/icons';
+import IPA from '../../components/IPA';
+import {
+	SyllablesIcon,
+	TransformationsIcon
+} from '../../components/icons';
 
 export const CharGroupCard = () => {
 	return (
@@ -32,9 +35,9 @@ export const CharGroupCard = () => {
 					This is where you define groups of sounds. The two simplest groupings
 					are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
 					character groups depending on how you want your language's syllables formed. For
-					example, the consonants <I>pbk</I> in English may be followed by the
-					consonants <I>lr</I> at the beginning of syllables. So you might choose them as
-					groups, while also putting <I>pbklr</I> in a third group for general consonants.
+					example, the consonants <IPA>pbk</IPA> in English may be followed by the
+					consonants <IPA>lr</IPA> at the beginning of syllables. So you might choose them as
+					groups, while also putting <IPA>pbklr</IPA> in a third group for general consonants.
 				</p><p>
 					Click the (+) button to add a new character group. When you make a group, you must
 					give it a <em>description</em> and a one-character <em>label</em>. The label can be
@@ -111,7 +114,7 @@ export const SylCard = () => {
 		</IonCard>
 	);
 }
-export const RewCard = () => {
+export const TransCard = () => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
@@ -316,85 +319,18 @@ export const OptCard = () => {
 					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
 					letter.
 				</p><p>
-					The remaining options determine what your sentences look like. By default,
-					three-fourths of all sentences will be <em>declarative</em>, one-sixth will
-					be <em>interrogative</em> (questions), and one-twelfth will be <em>exclamatory</em>. You
-					can put special punctuation before and after these sentences if you wish.
+					The remaining options determine what your sentences look like. Three-fourths of all
+					sentences will be <em>declarative</em> (simple statements), one-sixth will
+					be <em>interrogative</em> (questions), and the remaining one-twelfth will
+					be <em>exclamatory</em> (excited utterances). You can put special punctuation before and
+					after these sentences if you wish.
 				</p>
 			</IonCardContent>
 		</IonCard>
 	);
 }
-export const ConceptCard = () => {
-	return (
-		<IonCard>
-			<IonItem lines="full">
-				<ConceptsOutlineIcon slot="start" color="primary" />
-				<IonLabel>Concepts</IonLabel>
-			</IonItem>
-			<IonCardContent>
-				<p>
-					Presented here are a number of lists of basic concepts, created for the purposes
-					of historical-comparative linguistics. These may serve as a useful source of meanings
-					to start a conlang with.
-				</p>
-				<h2>Controls</h2>
-				<div className="ion-text-center"><LexiconOutlineIcon color="primary" size="large" /></div>
-				<p>
-					Use the "lexicon" button to quickly save meanings to the Lexicon.
-				</p>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/link.svg" /></div>
-				<p>
-					Use the "join" button to create compound meanings.
-				</p>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/unlink.svg" /></div>
-				<p>
-					Use the "unjoin" button to delete compound meanings.
-				</p>
-				<h2>Swadesh Lists</h2>
-				<p>
-					Originally assembled by Morris Swadesh, this list of concepts was chosen for their
-					universal, culturally independent availability in as many languages as possible.
-					However, he relied more on his intuition than on a rigorous set of criteria. <strong>Swadesh
-					100</strong> is his final list from 1971. The <strong>Swadesh 207</strong> is
-					adapted from his original list from 1952. <strong>Swadesh-Yakhontov</strong> is
-					a subset of the 207 assembled by Sergei Yakhontov. And the <strong>Swadesh-Woodward
-					Sign List</strong> was assembled by James Woodward to take into account the ways
-					sign languages behave.
-				</p>
-				<h2>Dolgopolsky List</h2>
-				<p>
-					Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are
-					the least likely to be replaced by other words as a language evolves. It was based
-					on a study of 140 languages from across Eurasia, only.
-				</p>
-				<h2>Leipzig-Jakarta List</h2>
-				<p>
-					Similar to the Dolgopolsky list, this is a list of words judged to be the most
-					resistant to borrowing. Experts on 41 languages from across the world were given a
-					uniform vocabulary list and asked to provide the words for each item in the language
-					on which they were an expert, as well as information on how strong the evidence that
-					each word was borrowed was. The 100 concepts that were found in most languages and
-					were most resistant to borrowing formed the Leipzig-Jakarta list.
-				</p>
-				<h2>ASJP List</h2>
-				<p>
-					<strong>Automated Similarity Judgment Program</strong> is a collaborative project
-					applying computational approaches to comparative linguistics using a database of word
-					lists. It uses a 40-word list to evaluate the similarity of words with the same
-					meaning from different languages.
-				</p>
-				<h2>Landau 200</h2>
-				<p>
-					The <strong>Basic 200 List</strong> is a subset of the <strong>Landau Core Vocabulary
-					(LCV)</strong> developed by James Landau. It is Part I of the entire LCV. This list
-					consists of 200 basic concepts that basically all anthropic cultures will have and
-					have words for. This list makes many semantic distinctions that are not made in
-					English (e.g "leaf (on plant)" vs. "leaf (fallen off)"), and some that are not made
-					in any "Standard Average European" language (e.g. "river (flowing into the sea)" vs.
-					"river (flowing into another river)").
-				</p>
-			</IonCardContent>
-		</IonCard>
-	);
-}
+	// TO-DO: Introduce other sentence types? Adjust ratios?
+	// [pre] sentence label [post] weight: [number]
+	// []    declarative    [.]    weight: [9]
+	// []    interrogative  [?]    weight: [2]
+	// []    exclamatory    [!]    weight: [1]

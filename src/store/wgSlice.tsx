@@ -267,7 +267,7 @@ const wgSlice = createSlice({
 		addCharGroupWG: addCharacterGroupFunc,
 		deleteCharGroupWG: deleteCharacterGroupFunc,
 		editCharacterGroupWG: editCharacterGroupFunc,
-	// TO-DO: Import from WE
+	// TO-DO: copy character groups from WE (and from WG to WE!)
 	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		setMultipleSyllableTypes: setMultipleSyllableTypesFunc,
 		setSyllables: setSyllablesFunc,

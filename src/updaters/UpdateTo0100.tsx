@@ -24,7 +24,6 @@ import * as oldTypes from "./oldReduxTypes";
 
 // Updating to 0.10.0
 function doUpdate (incomingState: oldTypes.StateObject, dispatch: Function) {
-	// TO-DO: update stored custom info
 	dispatch(loadStateWG(updateWG(incomingState)));
 	dispatch(loadStateWE(updateWE(incomingState)));
 	dispatch(loadStateMS(updateMS(incomingState)));

@@ -173,7 +173,7 @@ const weSlice = createSlice({
 		addCharacterGroupWE: addCharacterGroupFunc,
 		deleteCharacterGroupWE: deleteCharacterGroupFunc,
 		editCharacterGroupWE: editCharacterGroupFunc,
-	// TO-DO: copy from WG
+	// TO-DO: copy character groups from WG (and from WE to WG!)
 	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		addTransformWE: addTransformFunc,
 		deleteTransformWE: deleteTransformFunc,
