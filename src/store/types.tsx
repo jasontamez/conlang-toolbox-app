@@ -446,38 +446,50 @@ export interface ConceptsState {
 // DECLENJUGATOR
 //
 
+export type DJSeparator = "," | ";" | " " | "/";
+
+export type RegexPair = [string, string]; // simple regex match and replacement
+
 export interface DJIdentifier {
-	title?: string	// only used by State
+	title: string	// only used by State
 	id: string
-	usingOR: boolean
+	usingAND: boolean
 	startsWith: string[]
 	endsWith: string[]
 	regex: string[]
+	separator: DJSeparator
 }
 
 export interface Declenjugation {
 	title: string
 	id: string
-	ending?: string	// added to end of word/root
-	beginning?: string
-	regex?: [string, string] // simple regex match and replacement
-	operateOnRootOnly: boolean
+	ending: string	// added to end of word/stem
+	beginning: string
+	regex?: RegexPair
+	requiresWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
 
-export interface DJGroup {
-	title: string
-	id: string
-	identifier?: DJIdentifier
+export interface DJGroup extends DJIdentifier {
 	declenjugations: Declenjugation[]
-	rootFinder?: string
+	stemBegins: string
+	stemEnds: string // e.g. "ar" for some Spanish conjugations
+	stemRegex: RegexPair
+}
+
+export interface DJColumnIdentifier extends DJIdentifier {
+	importColumnTitle: string
+	importColumnID: string // the lex column to import
+	testColumTitle: string
+	testColumnID: string // the lex column to test
 }
 
 export interface DJState {
 	input: string[]
-	useLexiconForInput: boolean
-	savedIdentifiers: DJIdentifier[]
+	usingLexiconForInput: null | DJColumnIdentifier
+	identifiers: DJColumnIdentifier[]
 	declenjugationGroups: DJGroup[]
 }
+// TO-DO: add to ViewState
 
 //
 // EXTRA CHARACTERS
@@ -523,6 +535,7 @@ export interface AppSettings {
 //
 // VIEW STATE
 //
+// TO-DO: change 'string' into specific types for each component
 
 export interface ViewState {
 	wg: string
