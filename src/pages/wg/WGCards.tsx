@@ -319,18 +319,18 @@ export const OptCard = () => {
 					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
 					letter.
 				</p><p>
-					The remaining options determine what your sentences look like. Three-fourths of all
-					sentences will be <em>declarative</em> (simple statements), one-sixth will
+					The remaining options determine what your sentences look like. Three-fourths of
+					all sentences will be <em>declarative</em> (simple statements), one-sixth will
 					be <em>interrogative</em> (questions), and the remaining one-twelfth will
-					be <em>exclamatory</em> (excited utterances). You can put special punctuation before and
-					after these sentences if you wish.
+					be <em>exclamatory</em> (excited utterances). You can put special punctuation
+					before and after these sentences if you wish.
 				</p>
 			</IonCardContent>
 		</IonCard>
 	);
 }
-	// TO-DO: Introduce other sentence types? Adjust ratios?
-	// [pre] sentence label [post] weight: [number]
-	// []    declarative    [.]    weight: [9]
-	// []    interrogative  [?]    weight: [2]
-	// []    exclamatory    [!]    weight: [1]
+// TO-DO: Introduce other sentence types? Adjust ratios?
+// [pre] sentence label [post] weight: [number]
+//   []  declarative     [.]   weight: [9]
+//   []  interrogative   [?]   weight: [2]
+//   []  exclamatory     [!]   weight: [1]

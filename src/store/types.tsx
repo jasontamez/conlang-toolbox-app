@@ -443,6 +443,43 @@ export interface ConceptsState {
 }
 
 //
+// DECLENJUGATOR
+//
+
+export interface DJIdentifier {
+	title?: string	// only used by State
+	id: string
+	usingOR: boolean
+	startsWith: string[]
+	endsWith: string[]
+	regex: string[]
+}
+
+export interface Declenjugation {
+	title: string
+	id: string
+	ending?: string	// added to end of word/root
+	beginning?: string
+	regex?: [string, string] // simple regex match and replacement
+	operateOnRootOnly: boolean
+}
+
+export interface DJGroup {
+	title: string
+	id: string
+	identifier?: DJIdentifier
+	declenjugations: Declenjugation[]
+	rootFinder?: string
+}
+
+export interface DJState {
+	input: string[]
+	useLexiconForInput: boolean
+	savedIdentifiers: DJIdentifier[]
+	declenjugationGroups: DJGroup[]
+}
+
+//
 // EXTRA CHARACTERS
 //
 
