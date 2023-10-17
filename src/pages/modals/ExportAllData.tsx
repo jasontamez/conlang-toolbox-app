@@ -17,7 +17,7 @@ import {
 import { closeCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
 
-import { LexiconState, ModalProperties, MSState, StateObject } from '../../store/types';
+import { DJColumnIdentifier, DJGroup, LexiconState, ModalProperties, MSState, StateObject } from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
 
 import {
@@ -34,6 +34,7 @@ const MExportAllData = (props: ModalProperties) => {
 		wg,
 		we,
 		ms,
+		dj,
 		lexicon,
 		concepts,
 		ec,
@@ -79,6 +80,16 @@ const MExportAllData = (props: ModalProperties) => {
 		const weS: any[] = [];
 		setOutput("...loading");
 
+		const copyDJIdentifiers = (input: DJColumnIdentifier | DJGroup) => {
+			return {
+				...input,
+				startsWith: [...input.startsWith],
+				endsWith: [...input.endsWith],
+				regex: [...input.regex]
+			};
+		};
+
+		// TO-DO: Add the inevitable DJ storage to this chain
 		LexiconStorage.iterate((value: LexiconState, key: string) => {
 			lexS.push([key, value]);
 			return; // Blank return keeps the loop going
@@ -98,29 +109,42 @@ const MExportAllData = (props: ModalProperties) => {
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
-			const {storedCustomIDs, storedCustomInfo, ..._wg} = wg;
-			const {storedCustomIDs: x, storedCustomInfo: y, ..._we} = we;
-			const {storedCustomIDs: j, storedCustomInfo: k, ..._ms} = ms;
-			const {storedCustomIDs: q, storedCustomInfo: p, ..._lex} = lexicon;
 			setOutput(JSON.stringify({
 				currentVersion,
 				wg: {
-					..._wg,
+					...wg,
 					characterGroups: wg.characterGroups.map((obj) => ({...obj})),
 					transforms: wg.transforms.map((obj) => ({...obj}))
 				},
 				we: {
-					..._we,
+					...we,
 					characterGroups: we.characterGroups.map((obj) => ({...obj})),
 					transforms: we.transforms.map((obj) => ({...obj})),
 					soundChanges: we.soundChanges.map((obj) => ({...obj})),
 				},
-				ms: {
-					..._ms
+				ms,
+				dj: { // v.0.11.0+ only
+					input: [...dj.input],
+					usingLexiconForInput: dj.usingLexiconForInput ? copyDJIdentifiers(dj.usingLexiconForInput) : null,
+					identifiers: dj.identifiers.map((obj) => copyDJIdentifiers(obj)),
+					declenjugationGroups: dj.declenjugationGroups.map(
+						(obj) => ({
+							...copyDJIdentifiers(obj),
+							declenjugations: obj.declenjugations.map(obj => {
+								return obj.regex ?
+									{
+										...obj,
+										regex: [...obj.regex]
+									}
+								:
+									{...obj}
+							})
+						})
+					)
 				},
 				appSettings: {...appSettings},
 				lexicon: {
-					..._lex,
+					...lexicon,
 					sortPattern: [...lexicon.sortPattern],
 					columns: lexicon.columns.map((obj) => ({...obj})),
 					lexicon: lexicon.lexicon.map((obj) => ({
@@ -157,6 +181,7 @@ const MExportAllData = (props: ModalProperties) => {
 		wg,
 		we,
 		ms,
+		dj,
 		lexicon,
 		concepts,
 		ec,

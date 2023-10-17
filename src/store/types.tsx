@@ -455,8 +455,8 @@ export interface DJIdentifier {
 export interface Declenjugation {
 	title: string
 	id: string
+	prefix?: string
 	suffix?: string
-	affix?: string
 	regex?: RegexPair
 	useWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
