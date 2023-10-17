@@ -1,0 +1,90 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { DJColumnIdentifier, DJGroup, DJState } from './types';
+import blankAppState from './blankAppState';
+
+const initialState = blankAppState.dj;
+
+const setInputFunc = (state: DJState, action: PayloadAction<string[]>) => {
+	state.input = action.payload;
+	return state;
+};
+
+const setUsingLexiconForInputFunc = (state: DJState, action: PayloadAction<null | DJColumnIdentifier>) => {
+	state.usingLexiconForInput = action.payload;
+	return state;
+};
+
+const addIdentifierFunc = (state: DJState, action: PayloadAction<DJColumnIdentifier>) => {
+	state.identifiers.push(action.payload);
+	return state;
+};
+
+const editIdentifierFunc = (state: DJState, action: PayloadAction<DJColumnIdentifier>) => {
+	const newObj = action.payload;
+	const { id } = newObj;
+	state.identifiers = state.identifiers.map((obj => {
+		if(obj.id === id) {
+			return newObj;
+		}
+		return obj;
+	}));
+	return state;
+};
+
+const deleteIdentifierFunc = (state: DJState, action: PayloadAction<string>) => {
+	const { payload } = action;
+	state.identifiers = state.identifiers.filter(obj => (obj.id !== payload));
+	return state;
+};
+
+const addGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
+	state.declenjugationGroups.push(action.payload);
+	return state;
+};
+
+const editGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
+	const newObj = action.payload;
+	const { id } = newObj;
+	state.declenjugationGroups = state.declenjugationGroups.map((obj => {
+		if(obj.id === id) {
+			return newObj;
+		}
+		return obj;
+	}));
+	return state;
+};
+
+const deleteGroupFunc = (state: DJState, action: PayloadAction<string>) => {
+	const { payload } = action;
+	state.declenjugationGroups = state.declenjugationGroups.filter(obj => (obj.id !== payload));
+	return state;
+};
+
+const declenjugatorSlice = createSlice({
+	name: 'dj',
+	initialState,
+	reducers: {
+		setInput: setInputFunc,
+		setUsingLexiconForInput: setUsingLexiconForInputFunc,
+		addIdentifier: addIdentifierFunc,
+		editIdentifier: editIdentifierFunc,
+		deleteIdentifier: deleteIdentifierFunc,
+		addGroup: addGroupFunc,
+		editGroup: editGroupFunc,
+		deleteGroup: deleteGroupFunc
+	}
+});
+
+export const {
+	setInput,
+	setUsingLexiconForInput,
+	addIdentifier,
+	editIdentifier,
+	deleteIdentifier,
+	addGroup,
+	editGroup,
+	deleteGroup
+} = declenjugatorSlice.actions;
+
+export default declenjugatorSlice.reducer;

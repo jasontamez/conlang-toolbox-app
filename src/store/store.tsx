@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-	//createMigrate,
+	createMigrate,
 	persistStore,
 	persistReducer,
 	FLUSH,
@@ -11,7 +11,10 @@ import {
 	REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
+import debounce from '../components/Debounce';
+import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 //import packageJson from '../package.json';
 import msSlice from './msSlice';
 import conceptsSlice from './conceptsSlice';
@@ -21,11 +24,9 @@ import wgSlice from './wgSlice';
 import weSlice from './weSlice';
 import extraCharactersSlice from './extraCharactersSlice';
 import viewSlice from './viewSlice';
-import blankAppState from './blankAppState';
-import debounce from '../components/Debounce';
-import maybeUpdateTheme from '../components/MaybeUpdateTheme';
-import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 import sortingSlice from './sortingSlice';
+import declenjugatorSlice from './declenjugatorSlice';
+import blankAppState from './blankAppState';
 
 //
 //
@@ -36,15 +37,30 @@ const initialAppState = {...blankAppState};
 //
 //
 
-// BELOW is where future version adjustments can happen
-/*
+// BELOW is where version adjustments can happen
 const migrations = {
-	1: (state) => {
+	1: (state: any) => {
 		// change state here and return it
-		return {...state};
+		const newState = {
+			...state,
+			dj: {
+				input: [],
+				usingLexiconForInput: null,
+				identifiers: [],
+				declenjugationGroups: []
+			}
+		};
+		delete newState.wg.storedCustomInfo;
+		delete newState.wg.storedCustomIDs;
+		delete newState.we.storedCustomInfo;
+		delete newState.we.storedCustomIDs;
+		delete newState.ms.storedCustomInfo;
+		delete newState.ms.storedCustomIDs;
+		delete newState.lexicon.storedCustomInfo;
+		delete newState.lexicon.storedCustomIDs;
+		return newState;
 	}
 }
-*/
 
 const reducerConfig = {
 	// SLICES here
@@ -52,6 +68,7 @@ const reducerConfig = {
 	we: weSlice,
 	wg: wgSlice,
 	ms: msSlice,
+	dj: declenjugatorSlice,
 	concepts: conceptsSlice,
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
@@ -66,10 +83,10 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 };
 const persistConfig = {
 	key: 'root',
-	version: 0,
+	version: 1,
 	storage,
-	stateReconciler
-	//migrate: createMigrate(migrations, { debug: false })
+	stateReconciler,
+	migrate: createMigrate(migrations, { debug: false })
 };
 const reducer = combineReducers(reducerConfig);
 const persistedReducer = persistReducer(persistConfig, reducer);

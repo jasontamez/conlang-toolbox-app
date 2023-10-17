@@ -117,8 +117,6 @@ export interface WGState extends WGBasic {
 	sortWordlist: boolean
 	wordlistMultiColumn: boolean
 	wordsPerWordlist: Fifty_OneThousand
-	storedCustomInfo: { [key: string]: any }
-	storedCustomIDs: string[]
 }
 export type WGPresetObject = [
 	string,
@@ -162,8 +160,6 @@ export interface WEState extends WEPresetObject {
 	inputLower: boolean
 	inputAlpha: boolean
 	customSort: string | null
-	storedCustomInfo: { [key: string]: any }
-	storedCustomIDs: string[]
 }
 export type WEPresets = [
 	string,
@@ -344,8 +340,6 @@ export interface MSBasic extends MSInfo {
 	description: string
 }
 export interface MSState extends MSBasic {
-	storedCustomInfo: { [key: string]: any }
-	storedCustomIDs: string[]
 }
 export type MSBool = "BOOL_prefixMost" | "BOOL_prefixLess" | "BOOL_suffixMost" | "BOOL_suffixLess"
 				| "BOOL_circumfixMost" | "BOOL_circumfixLess" | "BOOL_infixMost" | "BOOL_infixLess"
@@ -411,8 +405,6 @@ export interface LexiconState {
 	blankSort: LexiconBlankSorts
 	fontType?: string
 	customSort: string | undefined
-	storedCustomInfo: { [key: string]: any }
-	storedCustomIDs: string[]
 }
 
 //
@@ -463,17 +455,15 @@ export interface DJIdentifier {
 export interface Declenjugation {
 	title: string
 	id: string
-	ending: string	// added to end of word/stem
-	beginning: string
+	suffix?: string
+	affix?: string
 	regex?: RegexPair
-	requiresWholeWord: boolean // by default, operates on stem; set true to operate on entire word
+	useWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
 
 export interface DJGroup extends DJIdentifier {
 	declenjugations: Declenjugation[]
-	stemBegins: string
-	stemEnds: string // e.g. "ar" for some Spanish conjugations
-	stemRegex: RegexPair
+	// usingAND, startsWith, endsWith, regex, separator...
 }
 
 export interface DJColumnIdentifier extends DJIdentifier {
@@ -481,6 +471,7 @@ export interface DJColumnIdentifier extends DJIdentifier {
 	importColumnID: string // the lex column to import
 	testColumTitle: string
 	testColumnID: string // the lex column to test
+	// usingAND, startsWith, endsWith, regex, separator...
 }
 
 export interface DJState {
@@ -551,6 +542,7 @@ export interface StateObject {
 	wg: WGState
 	we: WEState
 	ms: MSState
+	dj: DJState
 	lexicon: LexiconState
 	concepts: ConceptsState
 	ec: ExtraCharactersState

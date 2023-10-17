@@ -171,10 +171,7 @@ const blankAppState: StateObject = {
 		TEXT_advClauses: "",
 		TEXT_clauseChainEtc: "",
 		TEXT_relClauses: "",
-		TEXT_coords: "",
-
-		storedCustomInfo: {},
-		storedCustomIDs: []
+		TEXT_coords: ""
 	},
 	wg: {
 		// GROUPS
@@ -214,9 +211,7 @@ const blankAppState: StateObject = {
 		capitalizeWords: false,
 		sortWordlist: true,
 		wordlistMultiColumn: true,
-		wordsPerWordlist: 250,
-		storedCustomInfo: {},
-		storedCustomIDs: []
+		wordsPerWordlist: 250
 	},
 	we: {
 		input: "",
@@ -226,9 +221,13 @@ const blankAppState: StateObject = {
 		outputStyle: "outputOnly",
 		inputLower: false,
 		inputAlpha: true,
-		customSort: null,
-		storedCustomInfo: {},
-		storedCustomIDs: []
+		customSort: null
+	},
+	dj: {
+		input: [],
+		usingLexiconForInput: null,
+		identifiers: [],
+		declenjugationGroups: []
 	},
 	lexicon: {
 		id: "",
@@ -258,9 +257,7 @@ const blankAppState: StateObject = {
 		lexicon: [],
 		blankSort: "alphaFirst",
 		fontType: "Noto Serif",
-		customSort: undefined,
-		storedCustomInfo: {},
-		storedCustomIDs: []
+		customSort: undefined
 	},
 	concepts: {
 		textCenter: true,

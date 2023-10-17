@@ -84,8 +84,8 @@ const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<str
 	return state;
 };
 
-const appStateSlice = createSlice({
-	name: 'appState',
+const sortSettingsSlice = createSlice({
+	name: 'sortSettings',
 	initialState,
 	reducers: {
 		setDefaultSortLanguage: setDefaultSortLanguageFunc,
@@ -106,6 +106,6 @@ export const {
 	editCustomSort,
 	deleteCustomSort,
 	setDefaultCustomSort
-} = appStateSlice.actions;
+} = sortSettingsSlice.actions;
 
-export default appStateSlice.reducer;
+export default sortSettingsSlice.reducer;

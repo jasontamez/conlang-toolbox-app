@@ -28,8 +28,8 @@ const loadStateSettingsFunc = (state: AppSettings, action: PayloadAction<AppSett
 };
 
 
-const appStateSlice = createSlice({
-	name: 'appState',
+const appSettingsSlice = createSlice({
+	name: 'appSettings',
 	initialState,
 	reducers: {
 		setTheme: setThemeFunc,
@@ -42,6 +42,6 @@ export const {
 	setTheme,
 	setDisableConfirms,
 	loadStateSettings
-} = appStateSlice.actions;
+} = appSettingsSlice.actions;
 
-export default appStateSlice.reducer;
+export default appSettingsSlice.reducer;
