@@ -201,14 +201,6 @@ const setWordsPerWordlistFunc = (state: WGState, action: PayloadAction<Fifty_One
 	return state;
 };
 
-// STORED CUSTOM INFO
-const setStoredCustomInfoFunc = (state: WGState, action: PayloadAction<any>) => {
-	const { payload } = action;
-	state.storedCustomInfo = payload;
-	state.storedCustomIDs = Object.keys(payload);
-	return state;
-};
-
 // LOAD INFO and CLEAR ALL
 const loadStateFunc = (state: WGState, action: PayloadAction<WGBasic | null>) => {
 	// If payload is null (or falsy), then initialState is used
@@ -295,9 +287,7 @@ const wgSlice = createSlice({
 		setSortWordlistWG: setSortWordlistFunc,
 		setWordlistMulticolumnWG: setWordlistMultiColumnFunc,
 		setWordsPerWordlistWG: setWordsPerWordlistFunc,
-		loadStateWG: loadStateFunc,
-	// TO-DO: Determine if we're keeping this
-	setStoredCustomInfo: setStoredCustomInfoFunc
+		loadStateWG: loadStateFunc
 	}
 });
 
@@ -332,8 +322,7 @@ export const {
 	setSortWordlistWG,
 	setWordlistMulticolumnWG,
 	setWordsPerWordlistWG,
-	loadStateWG,
-	setStoredCustomInfo
+	loadStateWG
 } = wgSlice.actions;
 
 export default wgSlice.reducer;
@@ -370,7 +359,6 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	const sortWordlistA = stateA.sortWordlist;
 	const wordlistMultiColumnA = stateA.wordlistMultiColumn;
 	const wordsPerWordlistA = stateA.wordsPerWordlist;
-	const storedCustomInfoA = stateA.storedCustomInfo;
 	// stateB
 	const characterGroupsB = stateB.characterGroups;
 	const multipleSyllableTypesB = stateB.multipleSyllableTypes;
@@ -399,7 +387,6 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	const sortWordlistB = stateB.sortWordlist;
 	const wordlistMultiColumnB = stateB.wordlistMultiColumn;
 	const wordsPerWordlistB = stateB.wordsPerWordlist;
-	const storedCustomInfoB = stateB.storedCustomInfo;
 	// Test simple values
 	if (
 		multipleSyllableTypesA !== multipleSyllableTypesB
@@ -455,15 +442,6 @@ export const equalityCheck = (stateA: WGState, stateB: WGState) => {
 	)) {
 		// At least one was unequal
 		return false;
-	}
-	// Test custom info
-	if(storedCustomInfoA !== storedCustomInfoB) {
-		const customA = Object.keys(storedCustomInfoA).sort().map(ci => ci + storedCustomInfoA[ci]).join(' ');
-		const customB = Object.keys(storedCustomInfoB).sort().map(ci => ci + storedCustomInfoB[ci]).join(' ');
-		if(customA !== customB) {
-			// unequal
-			return false;
-		}
 	}
 	// Made it through everything?
 	return true;

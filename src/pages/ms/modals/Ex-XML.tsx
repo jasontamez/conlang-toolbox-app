@@ -6,8 +6,6 @@ const doXML = (e: Event, msInfo: MSState, doDownload: Function) => {
 		lastSave,
 		title,
 		description,
-		storedCustomIDs,
-		storedCustomInfo,
 		...rest
 	} = msInfo;
 	let XML: string =

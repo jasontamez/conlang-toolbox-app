@@ -78,9 +78,7 @@ function updateWG (incomingState: oldTypes.StateObject) {
 		characterGroupDropoff: charGroupRunDropoff,
 		output: output as WGOutputTypes,
 		customSort: null,
-		...rest,
-		storedCustomIDs: [],
-		storedCustomInfo: {}
+		...rest
 	};
 	return wg;
 };
@@ -113,9 +111,7 @@ function updateWE (incomingState: oldTypes.StateObject) {
 		outputStyle: wordevolveSettings.output,
 		inputLower: false,
 		inputAlpha: false,
-		customSort: null,
-		storedCustomIDs: [],
-		storedCustomInfo: {}
+		customSort: null
 	};
 	return we;
 }
@@ -145,9 +141,7 @@ function updateMS (incomingState: oldTypes.StateObject) {
 		description,
 		...BOOL,
 		...NUM,
-		...TEXT,
-		storedCustomIDs: [],
-		storedCustomInfo: {}
+		...TEXT
 	};
 	return ms;
 }
@@ -155,9 +149,7 @@ function updateMS (incomingState: oldTypes.StateObject) {
 function updateLex (incomingState: oldTypes.StateObject) {
 	const lex: LexiconState = {
 		...incomingState.lexicon,
-		customSort: undefined,
-		storedCustomInfo: {},
-		storedCustomIDs: []
+		customSort: undefined
 	};
 	return lex;
 }

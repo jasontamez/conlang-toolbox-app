@@ -32,23 +32,11 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[MSText, string
 };
 
 const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSBasic | MSState>) => {
-	const {
-		storedCustomIDs,
-		storedCustomInfo
-	} = state;
 	const final = {
-		storedCustomIDs,
-		storedCustomInfo,
+		...state,
 		...action.payload
 	};
 	return final;
-};
-// STORED CUSTOM INFO
-const setStoredCustomInfoFunc = (state: MSState, action: PayloadAction<any>) => {
-	const { payload } = action;
-	state.storedCustomInfo = payload;
-	state.storedCustomIDs = Object.keys(payload);
-	return state;
 };
 
 const morphoSyntaxSlice = createSlice({
@@ -60,9 +48,7 @@ const morphoSyntaxSlice = createSlice({
 		setSyntaxBool: setSyntaxBoolFunc,
 		setSyntaxNum: setSyntaxNumFunc,
 		setSyntaxText: setSyntaxTextFunc,
-		loadStateMS: setMorphoSyntaxFunc,
-	// TO-DO: stored custom info?
-	setStoredCustomInfo: setStoredCustomInfoFunc
+		loadStateMS: setMorphoSyntaxFunc
 	}
 });
 
@@ -72,8 +58,7 @@ export const {
 	setSyntaxBool,
 	setSyntaxNum,
 	setSyntaxText,
-	loadStateMS,
-	setStoredCustomInfo
+	loadStateMS
 } = morphoSyntaxSlice.actions;
 
 export default morphoSyntaxSlice.reducer;

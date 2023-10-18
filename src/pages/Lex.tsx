@@ -225,9 +225,7 @@ const Lex = (props: PageData) => {
 		sortDir,
 		sortPattern,
 		customSort,
-		/*fontType,
-		storedCustomInfo,
-		storedCustomIDs*/
+		/*fontType*/
 	} = useSelector((state: StateObject) => state.lexicon);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();

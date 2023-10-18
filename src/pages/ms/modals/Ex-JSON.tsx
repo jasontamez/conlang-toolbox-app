@@ -1,7 +1,7 @@
 import { MSState } from "../../../store/types";
 
 const doJSON = (e: Event, msInfo: MSState, doDownload: Function) => {
-	const { id, lastSave, storedCustomIDs, storedCustomInfo, ...output } = msInfo;
+	const { id, lastSave, ...output } = msInfo;
 	doDownload(e, JSON.stringify(output), "json");
 };
 

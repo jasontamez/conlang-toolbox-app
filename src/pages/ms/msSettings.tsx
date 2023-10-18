@@ -23,7 +23,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData, MSState, MSBasic, StateObject } from '../../store/types';
+import { ViewState, PageData, MSBasic, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import blankAppState from '../../store/blankAppState';
@@ -56,8 +56,6 @@ const Syntax = (props: PageData) => {
 		description,
 		id,
 		lastSave,
-		storedCustomIDs,
-		storedCustomInfo,
 		...msRemainder
 	} = useSelector((state: StateObject) => state.ms);
 	const allProps = Object.keys(msRemainder).length;
@@ -67,8 +65,7 @@ const Syntax = (props: PageData) => {
 	});
 	const clearMS = () => {
 		const handler = () => {
-			const { storedCustomIDs, storedCustomInfo, ...newMS }: MSState = blankAppState.ms;
-			dispatch(loadStateMS(newMS));
+			dispatch(loadStateMS(blankAppState.ms));
 		};
 		if(!(title || id || description || (allProps > 0))) {
 			toaster({

@@ -174,16 +174,6 @@ const setFontTypeFunc = (state: LexiconState, action: PayloadAction<string>) => 
 	state.fontType = action.payload;
 	return state;
 };
-const setStoredCustomInfoFunc = (state: LexiconState, action: PayloadAction<any>) => {
-	//setStoredCustomInfo({
-	//  id: [title, lastSave, lexicon-length, columns],
-	//  ...
-	//})
-	const { payload } = action;
-	state.storedCustomInfo = payload;
-	state.storedCustomIDs = Object.keys(payload);
-	return state;
-};
 const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexicon[], Lexicon, Function]>) => {
 	const [lexiconItemsBeingMerged, merged, sorter] = action.payload;
 	merged.id = uuidv4();
@@ -240,7 +230,6 @@ const lexiconSlice = createSlice({
 		toggleLexiconWrap: toggleLexiconWrapFunc,
 	// TO-DO: custom info, font settings?
 	setFontType: setFontTypeFunc,
-	setStoredCustomInfo: setStoredCustomInfoFunc,
 		mergeLexiconItems: mergeLexiconItemsFunc,
 		updateLexiconColumarInfo: updateLexiconColumarInfoFunc
 	}
@@ -259,7 +248,6 @@ export const {
 	updateLexiconSortDir,
 	toggleLexiconWrap,
 setFontType,
-setStoredCustomInfo,
 	mergeLexiconItems,
 	updateLexiconColumarInfo
 } = lexiconSlice.actions;
@@ -292,8 +280,6 @@ export const equalityCheck = (stateA: LexiconState, stateB: LexiconState) => {
 	const blankSortA = stateA.blankSort;
 	const fontTypeA = stateA.fontType;
 	const customSortA = stateA.customSort;
-	const storedCustomInfoA = stateA.storedCustomInfo;
-	const storedCustomIDsA = stateA.storedCustomIDs;
 	// stateB
 	const titleB = stateB.title;
 	const descriptionB = stateB.description;
@@ -305,8 +291,6 @@ export const equalityCheck = (stateA: LexiconState, stateB: LexiconState) => {
 	const blankSortB = stateB.blankSort;
 	const fontTypeB = stateB.fontType;
 	const customSortB = stateB.customSort;
-	const storedCustomInfoB = stateB.storedCustomInfo;
-	const storedCustomIDsB = stateB.storedCustomIDs;
 	if (
 		titleA !== titleB
 		|| descriptionA !== descriptionB
@@ -314,10 +298,8 @@ export const equalityCheck = (stateA: LexiconState, stateB: LexiconState) => {
 		|| sortDirA !== sortDirB
 		|| blankSortA !== blankSortB
 		|| fontTypeA !== fontTypeB
-		|| storedCustomInfoA !== storedCustomInfoB
 		|| customSortA !== customSortB
 		|| String(sortPatternA) !== String(sortPatternB)
-		|| String(storedCustomIDsA) !== String(storedCustomIDsB)
 	) {
 		return false;
 	}

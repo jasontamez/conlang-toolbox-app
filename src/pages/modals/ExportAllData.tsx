@@ -178,12 +178,12 @@ const MExportAllData = (props: ModalProperties) => {
 					identifiers: dj.identifiers.map((obj) => copyDJIdentifiers(obj) as DJColumnIdentifier),
 					declenjugationGroups: dj.declenjugationGroups.map(
 						(obj) => ({
-							...copyDJIdentifiers(obj),
+							...(copyDJIdentifiers(obj) as DJGroup),
 							declenjugations: obj.declenjugations.map(obj => {
 								return obj.regex ?
 									{
 										...obj,
-										regex: [...obj.regex]
+										regex: [obj.regex[0], obj.regex[1]]
 									}
 								:
 									{...obj}
@@ -268,6 +268,7 @@ const MExportAllData = (props: ModalProperties) => {
 		}
 		if(!export_set) {
 			delete exportable.appSettings;
+			delete exportable.sortSettings;
 		}
 		if(!export_wgStored) {
 			delete exportable.wgStored;
@@ -305,8 +306,24 @@ const MExportAllData = (props: ModalProperties) => {
 		export_lexStored
 	]);
 
+	function onLoad() {
+		setExport_wg(true);
+		setExport_we(true);
+		setExport_ms(true);
+		setExport_dj(true);
+		setExport_lex(true);
+		setExport_con(true);
+		setExport_ec(true);
+		setExport_set(true);
+		setExport_wgStored(true);
+		setExport_weStored(true);
+		setExport_msStored(true);
+		setExport_djStored(true);
+		setExport_lexStored(true);
+	};
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Export Info</IonTitle>
@@ -333,6 +350,7 @@ const MExportAllData = (props: ModalProperties) => {
 							wrap="soft"
 							rows={12}
 							id="exportedData"
+							value={outputString}
 						></IonTextarea>
 					</IonItem>
 					<IonItem lines="none">
@@ -397,14 +415,6 @@ const MExportAllData = (props: ModalProperties) => {
 							onIonChange={() => setExport_weStored(!export_weStored)}
 						>Stored WordEvolve Settings</IonToggle>
 					</IonItem>
-					<IonItem>
-						<IonToggle
-							enableOnOffLabels
-							aria-label="Stored Lexicons"
-							checked={export_lexStored}
-							onIonChange={() => setExport_lexStored(!export_lexStored)}
-						>Stored Lexicons</IonToggle>
-					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
@@ -428,6 +438,14 @@ const MExportAllData = (props: ModalProperties) => {
 							checked={export_lex}
 							onIonChange={() => setExport_lex(!export_lex)}
 						>Current Lexicon Settings</IonToggle>
+					</IonItem>
+					<IonItem>
+						<IonToggle
+							enableOnOffLabels
+							aria-label="Stored Lexicons"
+							checked={export_lexStored}
+							onIonChange={() => setExport_lexStored(!export_lexStored)}
+						>Stored Lexicons</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle

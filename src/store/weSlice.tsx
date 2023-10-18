@@ -140,14 +140,6 @@ const setCustomSortFunc = (state: WEState, action: PayloadAction<string | null>)
 	return state;
 };
 
-// STORED CUSTOM INFO
-const setStoredCustomInfoFunc = (state: WEState, action: PayloadAction<any>) => {
-	const { payload } = action;
-	state.storedCustomInfo = payload;
-	state.storedCustomIDs = Object.keys(payload);
-	return state;
-};
-
 // LOAD INFO and CLEAR ALL
 const loadStateFunc = (state: WEState, action: PayloadAction<WEPresetObject>) => {
 	// If payload is null (or falsy), then initialState is used
@@ -186,8 +178,7 @@ const weSlice = createSlice({
 		setOutputWE: setOutputFunc,
 		setFlag: setFlagFunc,
 		setCustomSort: setCustomSortFunc,
-		loadStateWE: loadStateFunc,
-	setStoredCustomInfo: setStoredCustomInfoFunc
+		loadStateWE: loadStateFunc
 	}
 });
 
@@ -208,8 +199,7 @@ export const {
 	setOutputWE,
 	setFlag,
 	setCustomSort,
-	loadStateWE,
-	setStoredCustomInfo
+	loadStateWE
 } = weSlice.actions;
 
 export default weSlice.reducer;

@@ -75,9 +75,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		truncateColumns,
 		blankSort,
 		customSort,
-		/*fontType,
-		storedCustomInfo,
-		storedCustomIDs*/
+		/*fontType*/
 	} = useSelector((state: StateObject) => state.lexicon);
 	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	const [shadowTruncate, setShadowTruncate] = useState<boolean>(truncateColumns);
