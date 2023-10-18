@@ -474,11 +474,14 @@ export interface DJColumnIdentifier extends DJIdentifier {
 	// usingAND, startsWith, endsWith, regex, separator...
 }
 
-export interface DJState {
-	input: string[]
+export interface DJCustomInfo {
 	usingLexiconForInput: null | DJColumnIdentifier
 	identifiers: DJColumnIdentifier[]
 	declenjugationGroups: DJGroup[]
+}
+
+export interface DJState extends DJCustomInfo {
+	input: string[]
 }
 // TO-DO: add to ViewState
 

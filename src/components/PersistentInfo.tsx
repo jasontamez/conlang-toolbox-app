@@ -34,3 +34,10 @@ export const MorphoSyntaxStorage = localForage.createInstance({
 	version: 1,
 	description: 'Stores MorphoSyntax custom information.'
 });
+
+export const DeclenjugatorStorage = localForage.createInstance({
+	name: 'Conlang Toolbox',
+	storeName: 'declenjugatorStorage',
+	version: 1,
+	description: 'Stores Declenjugator custom information.'
+});
