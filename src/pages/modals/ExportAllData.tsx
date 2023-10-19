@@ -21,7 +21,7 @@ import { closeCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { DJColumnIdentifier, DJCustomInfo, DJGroup, LexiconState, ModalProperties, MSState, SortSettings, StateObject } from '../../store/types';
+import { DJIdentifier, DJCustomInfo, DJGroup, LexiconState, ModalProperties, MSState, SortSettings, StateObject } from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
 
 import {
@@ -124,7 +124,7 @@ const MExportAllData = (props: ModalProperties) => {
 		const where = $i("exportedData");
 		where && (where.value = "...loading");
 
-		const copyDJIdentifiers = (input: DJColumnIdentifier | DJGroup) => {
+		const copyDJIdentifiers = (input: DJIdentifier | DJGroup) => {
 			return {
 				...input,
 				startsWith: [...input.startsWith],
@@ -174,8 +174,18 @@ const MExportAllData = (props: ModalProperties) => {
 				ms,
 				dj: { // versions >= 0.11.0
 					input: [...dj.input],
-					usingLexiconForInput: dj.usingLexiconForInput ? copyDJIdentifiers(dj.usingLexiconForInput) as DJColumnIdentifier : null,
-					identifiers: dj.identifiers.map((obj) => copyDJIdentifiers(obj) as DJColumnIdentifier),
+					usingLexiconForInput: dj.usingLexiconForInput ? {
+						importFromColumns: dj.usingLexiconForInput.importFromColumns.map(obj => ({...obj})),
+						testColumns: dj.usingLexiconForInput.testColumns.map(obj => {
+							return {
+								...obj,
+								testColumnName: obj.testColumnName.map(obj => ({...obj})),
+								testColumnContents: [...obj.testColumnContents]
+							}
+						}),
+						usingAND: dj.usingLexiconForInput.usingAND
+					} : null,
+					identifiers: dj.identifiers.map((obj) => copyDJIdentifiers(obj) as DJIdentifier),
 					declenjugationGroups: dj.declenjugationGroups.map(
 						(obj) => ({
 							...(copyDJIdentifiers(obj) as DJGroup),

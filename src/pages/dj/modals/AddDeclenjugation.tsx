@@ -67,13 +67,13 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		const addDJTitle = $i("addDJTitle");
 		const title = addDJTitle ? addDJTitle.value.trim() : "";
 		const addDJPrefix = $i("addDJPrefix");
-		const prefix = addDJPrefix && addDJPrefix.value ? addDJPrefix.value.trim() : "";
+		const prefix = addDJPrefix && addDJPrefix.value ? addDJPrefix.value : "";
 		const addDJSuffix = $i("addDJSuffix");
-		const suffix = addDJSuffix && addDJSuffix.value ? addDJSuffix.value.trim() : "";
+		const suffix = addDJSuffix && addDJSuffix.value ? addDJSuffix.value : "";
 		const addDJRegex1 = $i("addDJRegex1");
-		const regex1 = addDJRegex1 && addDJRegex1.value ? addDJRegex1.value.trim() : "";
+		const regex1 = addDJRegex1 && addDJRegex1.value ? addDJRegex1.value : "";
 		const addDJRegex2 = $i("addDJRegex2");
-		const regex2 = addDJRegex2 && addDJRegex2.value ? addDJRegex2.value.trim() : "";
+		const regex2 = addDJRegex2 && addDJRegex2.value ? addDJRegex2.value : "";
 		return {
 			title,
 			prefix,
@@ -171,7 +171,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Custom Sort</IonTitle>
+					<IonTitle>Add Unit</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -183,13 +183,11 @@ const AddDeclenjugation = (props: AddDJModal) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="addingCustomDJList" className="hasSpecialLabels">
+				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels">
 					<IonItem>
-						<div slot="start" className="ion-margin-end">Title/Description:</div>
 						<IonInput
-							aria-label="Title"
+							label="Title/Description:"
 							id="addDJTitle"
-							placeholder="Title/Description for this declension/conjugation"
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -218,7 +216,6 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						<>
 							<IonItem className="wrappableInnards">
 								<IonInput
-									aria-label="Match expression"
 									id="addDJRegex1"
 									label="Match Expression:"
 									label-placement="stacked"
@@ -226,7 +223,6 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							</IonItem>
 							<IonItem className="wrappableInnards">
 								<IonInput
-									aria-label="Replacement expression"
 									id="addDJRegex2"
 									label="Replacement Expression:"
 									label-placement="stacked"
@@ -240,7 +236,6 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							</IonItem>
 							<IonItem className="wrappableInnards">
 								<IonInput
-									aria-label="Prefix"
 									id="addDJPrefix"
 									label="Prefix"
 									label-labelPlacement="stacked"
@@ -251,7 +246,6 @@ const AddDeclenjugation = (props: AddDJModal) => {
 									style={{paddingInline: "1rem"}}
 								><strong>{useWholeWord ? "word" : "stem"}</strong></div>
 								<IonInput
-									aria-label="Suffix"
 									id="addDJSuffix"
 									label="Suffix"
 									label-labelPlacement="stacked"

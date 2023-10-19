@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DJColumnIdentifier, DJGroup, DJState } from './types';
+import { DJIdentifier, DJGroup, DJState, DJPicker } from './types';
 import blankAppState from './blankAppState';
 
 const initialState = blankAppState.dj;
@@ -10,17 +10,17 @@ const setInputFunc = (state: DJState, action: PayloadAction<string[]>) => {
 	return state;
 };
 
-const setUsingLexiconForInputFunc = (state: DJState, action: PayloadAction<null | DJColumnIdentifier>) => {
+const setUsingLexiconForInputFunc = (state: DJState, action: PayloadAction<null | DJPicker>) => {
 	state.usingLexiconForInput = action.payload;
 	return state;
 };
 
-const addIdentifierFunc = (state: DJState, action: PayloadAction<DJColumnIdentifier>) => {
+const addIdentifierFunc = (state: DJState, action: PayloadAction<DJIdentifier>) => {
 	state.identifiers.push(action.payload);
 	return state;
 };
 
-const editIdentifierFunc = (state: DJState, action: PayloadAction<DJColumnIdentifier>) => {
+const editIdentifierFunc = (state: DJState, action: PayloadAction<DJIdentifier>) => {
 	const newObj = action.payload;
 	const { id } = newObj;
 	state.identifiers = state.identifiers.map((obj => {

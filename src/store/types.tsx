@@ -443,9 +443,10 @@ export type DJSeparator = "," | ";" | " " | "/";
 export type RegexPair = [string, string]; // simple regex match and replacement
 
 export interface DJIdentifier {
-	title: string	// only used by State
+	title: string
 	id: string
 	usingAND: boolean
+	equals: string[]
 	startsWith: string[]
 	endsWith: string[]
 	regex: string[]
@@ -466,17 +467,26 @@ export interface DJGroup extends DJIdentifier {
 	// usingAND, startsWith, endsWith, regex, separator...
 }
 
-export interface DJColumnIdentifier extends DJIdentifier {
-	importColumnTitle: string
-	importColumnID: string // the lex column to import
-	testColumTitle: string
-	testColumnID: string // the lex column to test
-	// usingAND, startsWith, endsWith, regex, separator...
+export interface DJColumnIdentifier {
+	lexicon?: string
+	identifier?: string
+}
+
+export interface DJColumnPicker {
+	testColumnName: DJColumnIdentifier[]
+	testColumnContents: string[]
+	usingAND: boolean
+}
+
+export interface DJPicker {
+	importFromColumns: DJColumnIdentifier[]
+	testColumns: DJColumnPicker[]
+	usingAND: boolean
 }
 
 export interface DJCustomInfo {
-	usingLexiconForInput: null | DJColumnIdentifier
-	identifiers: DJColumnIdentifier[]
+	usingLexiconForInput: null | DJPicker
+	identifiers: DJIdentifier[]
 	declenjugationGroups: DJGroup[]
 }
 
