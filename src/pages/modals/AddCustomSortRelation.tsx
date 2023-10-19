@@ -192,7 +192,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 					</IonItem>
 				</IonList>
 			</IonContent>
-			<IonFooter style={{borderTop: "2px solid #00000033"}}>
+			<IonFooter className="modalBorderTop">
 				<IonToolbar>
 					<IonButton
 						color="warning"
