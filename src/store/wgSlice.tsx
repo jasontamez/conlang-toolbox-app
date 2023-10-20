@@ -7,7 +7,7 @@ import {
 	SyllableDropoffs,
 	SyllableTypes,
 	Two_Fifteen,
-	WGBasic,
+	Base_WG,
 	WGCharGroupObject,
 	WGOutputTypes,
 	WGState,
@@ -202,7 +202,7 @@ const setWordsPerWordlistFunc = (state: WGState, action: PayloadAction<Fifty_One
 };
 
 // LOAD INFO and CLEAR ALL
-const loadStateFunc = (state: WGState, action: PayloadAction<WGBasic | null>) => {
+const loadStateFunc = (state: WGState, action: PayloadAction<Base_WG | null>) => {
 	// If payload is null (or falsy), then initialState is used
 	const {
 		characterGroups,

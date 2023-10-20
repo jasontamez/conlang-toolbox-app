@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WGBasic, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
+import { Base_WG, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
 
 import escape from '../../../components/EscapeForHTML';
@@ -88,7 +88,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
-			const save: WGBasic = {
+			const save: Base_WG = {
 				characterGroups,
 				multipleSyllableTypes,
 				singleWord,
@@ -142,7 +142,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		const handler = () => {
 			CustomStorageWG.getItem(title).then((value: any) => {
 				if(value) {
-					dispatch(loadStateWG(value as WGBasic));
+					dispatch(loadStateWG(value as Base_WG));
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,

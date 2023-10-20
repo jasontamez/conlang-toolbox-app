@@ -95,7 +95,7 @@ export interface WGSettings {
 	exclamatorySentencePost: string
 	customSort: string | null
 }
-export interface WGBasic extends WGSettings {
+export interface Base_WG extends WGSettings {
 	// GROUPS
 	characterGroups: WGCharGroupObject[]
 	// SYLLABLES
@@ -108,7 +108,7 @@ export interface WGBasic extends WGSettings {
 	// TRANSFORMS
 	transforms: WGTransformObject[]
 }
-export interface WGState extends WGBasic {
+export interface WGState extends Base_WG {
 	// MORE SETTINGS
 	output: WGOutputTypes
 	showSyllableBreaks: boolean
@@ -120,7 +120,7 @@ export interface WGState extends WGBasic {
 }
 export type WGPresetObject = [
 	string,
-	WGBasic
+	Base_WG
 ][];
 
 //
@@ -333,13 +333,11 @@ export interface MSInfo {
 	TEXT_relClauses?: string
 	TEXT_coords?: string
 }
-export interface MSBasic extends MSInfo {
+export interface MSState extends MSInfo {
 	id: string
 	lastSave: number
 	title: string
 	description: string
-}
-export interface MSState extends MSBasic {
 }
 export type MSBool = "BOOL_prefixMost" | "BOOL_prefixLess" | "BOOL_suffixMost" | "BOOL_suffixLess"
 				| "BOOL_circumfixMost" | "BOOL_circumfixLess" | "BOOL_infixMost" | "BOOL_infixLess"
@@ -451,21 +449,26 @@ export interface Declenjugation {
 	useWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
 
-export interface DJIdentifier {
+export interface Base_DJIdentifier {
 	title: string
 	id: string
-	usingAND: boolean
-	inverse: boolean
-	equals: string[]
 	startsWith: string[]
 	endsWith: string[]
-	regex: string[]
 	separator: DJSeparator
 }
 
-export interface DJGroup extends DJIdentifier {
+export interface DJIdentifier extends Base_DJIdentifier {
+	equals: string[]
+	regex: string[]
+	usingAND: boolean
+	inverse: boolean
+	// title, id, startsWith, endsWith, regex, separator...
+}
+
+export interface DJGroup extends Base_DJIdentifier {
+	regex?: RegexPair
 	declenjugations: Declenjugation[]
-	// usingAND, inverse, startsWith, endsWith, regex, separator...
+	// title, id, startsWith, endsWith, separator...
 }
 
 export interface DJColumnIdentifier {
