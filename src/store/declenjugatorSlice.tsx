@@ -55,9 +55,9 @@ const editGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
 	return state;
 };
 
-const deleteGroupFunc = (state: DJState, action: PayloadAction<string>) => {
+const deleteGroupFunc = (state: DJState, action: PayloadAction<string | null>) => {
 	const { payload } = action;
-	state.declenjugationGroups = state.declenjugationGroups.filter(obj => (obj.id !== payload));
+	state.declenjugationGroups = payload ? state.declenjugationGroups.filter(obj => (obj.id !== payload)) : [];
 	return state;
 };
 

@@ -442,17 +442,6 @@ export type DJSeparator = "," | ";" | " " | "/";
 
 export type RegexPair = [string, string]; // simple regex match and replacement
 
-export interface DJIdentifier {
-	title: string
-	id: string
-	usingAND: boolean
-	equals: string[]
-	startsWith: string[]
-	endsWith: string[]
-	regex: string[]
-	separator: DJSeparator
-}
-
 export interface Declenjugation {
 	title: string
 	id: string
@@ -462,9 +451,21 @@ export interface Declenjugation {
 	useWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
 
+export interface DJIdentifier {
+	title: string
+	id: string
+	usingAND: boolean
+	inverse: boolean
+	equals: string[]
+	startsWith: string[]
+	endsWith: string[]
+	regex: string[]
+	separator: DJSeparator
+}
+
 export interface DJGroup extends DJIdentifier {
 	declenjugations: Declenjugation[]
-	// usingAND, startsWith, endsWith, regex, separator...
+	// usingAND, inverse, startsWith, endsWith, regex, separator...
 }
 
 export interface DJColumnIdentifier {
@@ -485,12 +486,12 @@ export interface DJPicker {
 }
 
 export interface DJCustomInfo {
-	usingLexiconForInput: null | DJPicker
 	identifiers: DJIdentifier[]
 	declenjugationGroups: DJGroup[]
 }
 
 export interface DJState extends DJCustomInfo {
+	usingLexiconForInput: null | DJPicker
 	input: string[]
 }
 // TO-DO: add to ViewState

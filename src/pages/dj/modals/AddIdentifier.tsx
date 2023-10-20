@@ -18,7 +18,8 @@ import {
 	useIonToast,
 	IonToggle,
 	IonSelect,
-	IonSelectOption
+	IonSelectOption,
+	IonItemDivider
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -52,6 +53,7 @@ const AddDeclenjugation = (props: ExtraCharactersModalOpener) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const [usingAND, setUsingAND] = useState<boolean>(false);
+	const [inverse, setInverse] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const onLoad = useCallback(() => {
 		setIsOpen(false);
@@ -124,6 +126,7 @@ const AddDeclenjugation = (props: ExtraCharactersModalOpener) => {
 			id: uuidv4(),
 			title,
 			usingAND,
+			inverse,
 			equals,
 			startsWith,
 			endsWith,
@@ -193,9 +196,25 @@ const AddDeclenjugation = (props: ExtraCharactersModalOpener) => {
 							onIonChange={e => setUsingAND(!usingAND)}
 						>
 							<h2>Match All Conditions</h2>
-							<p>If turned off, only one condition needs to be matched.</p>
+							<p>If off, only one condition needs to be matched.</p>
+							<div>Off: <em>"Starts with 'en'"</em> and <em>"Ends with 'en'"</em> does not match <em>'enter' or 'men'</em></div>
+							<div>On: <em>"Starts with 'en'"</em> and <em>"Ends with 'en'"</em> matches both <em>'enter' and 'men'</em></div>
 						</IonToggle>
 					</IonItem>
+					<IonItem className="wrappableInnards">
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={inverse}
+							onIonChange={e => setInverse(!inverse)}
+						>
+							<h2>Reverse Conditions</h2>
+							<p>If on, the opposite of the condition needs to be matched.</p>
+							<div>Off: <em>"Starts with 'en'"</em> matches <em>'enter'</em> and not <em>'men'</em></div>
+							<div>On: <em>"Starts with 'en'"</em> matches <em>'men'</em> but not <em>'enter'</em></div>
+						</IonToggle>
+					</IonItem>
+					<IonItemDivider>Conditions</IonItemDivider>
 					<IonItem>
 						<IonInput
 							label="Info Is Exactly..."
