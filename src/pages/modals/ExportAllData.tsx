@@ -21,7 +21,16 @@ import { closeCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { DJIdentifier, DJCustomInfo, DJGroup, LexiconState, ModalProperties, MSState, SortSettings, StateObject } from '../../store/types';
+import {
+	DJIdentifier,
+	DJCustomInfo,
+	DJGroup,
+	LexiconState,
+	ModalProperties,
+	MSState,
+	SortSettings,
+	StateObject
+} from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
 
 import {
@@ -129,7 +138,7 @@ const MExportAllData = (props: ModalProperties) => {
 				...input,
 				startsWith: [...input.startsWith],
 				endsWith: [...input.endsWith],
-				regex: [...input.regex]
+				regex: input.regex ? [input.regex[0], input.regex[1]] : undefined
 			};
 		};
 

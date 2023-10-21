@@ -21,13 +21,13 @@ import {
 } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
-import { MSBasic, MSBool, ModalProperties, StateObject } from '../../../store/types';
+import { MSState, MSBool, ModalProperties, StateObject } from '../../../store/types';
 
 import { MorphoSyntaxStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 
-interface OldStyleSave extends MSBasic {
+interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
 }
 interface MSmodalProps extends ModalProperties {

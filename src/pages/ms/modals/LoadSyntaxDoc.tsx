@@ -20,17 +20,17 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { MSBasic, MSBool, ModalProperties, StateObject } from '../../../store/types';
+import { MSState, MSBool, ModalProperties, StateObject } from '../../../store/types';
 import { loadStateMS } from '../../../store/msSlice';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 
 
 interface MSmodalProps extends ModalProperties {
-	storedInfo: [string, MSBasic][]
+	storedInfo: [string, MSState][]
 	setStoredInfo: Function
 }
-interface OldStyleSave extends MSBasic {
+interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
 }
 
@@ -85,7 +85,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, MSBasic]) => {
+					{data.length > 0 ? data.map((pair: [string, MSState]) => {
 						const key = pair[0];
 						const ms = pair[1];
 						const time = new Date(ms.lastSave);

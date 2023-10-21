@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import blankAppState from './blankAppState';
-import { MSBool, MSNum, MSText, MSState, MSBasic } from './types';
+import { MSBool, MSNum, MSText, MSState } from './types';
 
 const initialState: MSState = blankAppState.ms;
 
@@ -31,7 +31,7 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[MSText, string
 	return state;
 };
 
-const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSBasic | MSState>) => {
+const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSState>) => {
 	const final = {
 		...state,
 		...action.payload

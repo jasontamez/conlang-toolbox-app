@@ -23,7 +23,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData, MSBasic, StateObject } from '../../store/types';
+import { ViewState, PageData, MSState, StateObject } from '../../store/types';
 import { saveView } from '../../store/viewSlice';
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import blankAppState from '../../store/blankAppState';
@@ -46,7 +46,7 @@ const Syntax = (props: PageData) => {
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
 	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [storedInfo, setStoredInfo] = useState<[string, MSBasic][]>([]);
+	const [storedInfo, setStoredInfo] = useState<[string, MSState][]>([]);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -90,9 +90,9 @@ const Syntax = (props: PageData) => {
 		}
 	};
 	const openMSModal = (modalOpener: Function) => {
-		const info: [string, MSBasic][] = [];
+		const info: [string, MSState][] = [];
 		setIsLoading(true);
-		MorphoSyntaxStorage.iterate((value: MSBasic, key: string) => {
+		MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
 			info.push([key, value]);
 			return; // Blank return keeps the loop going
 		}).then(() => {
@@ -149,7 +149,7 @@ const Syntax = (props: PageData) => {
 		setIsLoading(true);
 		// These dispatches will NOT be ready by the time Storage loads and saves
 		//  so we will need to do some creative variable work
-		const ms: MSBasic = {
+		const ms: MSState = {
 			// Use possibly-new key
 			id: key,
 			// Use 'now'
