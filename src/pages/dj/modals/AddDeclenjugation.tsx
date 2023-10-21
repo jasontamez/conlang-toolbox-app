@@ -273,7 +273,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						slot="start"
 						onClick={maybeCancel}
 					>
-						<IonIcon icon={saveOutline} slot="end" />
+						<IonIcon icon={closeCircleOutline} slot="end" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>
 					<IonButton

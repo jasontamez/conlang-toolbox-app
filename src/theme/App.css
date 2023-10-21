@@ -833,3 +833,59 @@ ion-item.prefixSuffix div.stem {
 	flex-grow: 0;
 	flex-shrink: 0;
 }
+
+ion-list.djGroups {
+	--transition-duration: 0.2s;
+}
+ion-item-sliding.djGroupMain ion-item ion-button {
+	margin: 0;
+	margin-inline-end: 1em;
+}
+ion-item.djGroupInfo::part(native) {
+	background: var(--ion-background-shader);
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	font-size: 0.8em;
+	min-height: 2em;
+	height: 2em;
+	padding-inline: 2.5rem;
+	transition: all var(--transition-duration) ease-in;
+}
+ion-item.djGroupInfo.toggled::part(native) {
+	min-height: 0;
+	height: 0;
+	transition: all var(--transition-duration) ease-out;
+	border-bottom: 0;
+}
+ion-item.djGroupInfo {
+	transition: all var(--transition-duration) ease-in;
+}
+ion-item.djGroupInfo.toggled {
+	transition: all var(--transition-duration) ease-out;
+	border-bottom: 0;
+}
+.djGroup-caret {
+	transition: transform var(--transition-duration) ease-out;
+}
+.djGroup-caret.toggled {
+	transform: rotate(-90deg);
+	transition: transform var(--transition-duration) ease-in;
+}
+ion-item.djGroupInfo div.title {
+	flex-grow: 2;
+	flex-shrink: 1;
+	text-align: start;
+}
+ion-item.djGroupInfo div.description {
+	flex-grow: 1;
+	flex-shrink: 1;
+	text-align: end;
+}
+ion-item.djGroupInfo div.ww {
+	font-size: 0.5em;
+	flex-grow: 0;
+	flex-shrink: 0;
+	text-align: end;
+	padding-inline-start: 1em;
+}

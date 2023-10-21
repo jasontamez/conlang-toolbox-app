@@ -22,7 +22,8 @@ import {
 	IonReorder,
 	IonItemOption,
 	IonItemOptions,
-	IonItemSliding
+	IonItemSliding,
+	IonToggle
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -81,6 +82,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const [doToast, undoToast] = useIonToast();
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
+	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {
@@ -169,7 +171,7 @@ const AddGroup = (props: AddGroupProps) => {
 				]
 			})
 			return;
-		} else if ((regex1 || regex2) && (!regex1 || !regex2)) {
+		} else if (useAdvancedMethod && (!regex1 || !regex2)) {
 			doAlert({
 				message: "If using regular expressions, you must provide both match and replacement expressions.",
 				cssClass: "danger",
@@ -182,9 +184,9 @@ const AddGroup = (props: AddGroupProps) => {
 				]
 			})
 			return;
-		} else if(!regex1 && (startsWith.length + endsWith.length === 0)) {
+		} else if(!useAdvancedMethod && (startsWith.length + endsWith.length === 0)) {
 			doAlert({
-				message: "You must provide at least one condition (equal, start, end or regex match and replacement) before saving.",
+				message: "You must provide at least one condition (start or end) before saving.",
 				cssClass: "danger",
 				buttons: [
 					{
@@ -260,7 +262,6 @@ const AddGroup = (props: AddGroupProps) => {
 		});
 	};
 
-
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
@@ -287,77 +288,95 @@ const AddGroup = (props: AddGroupProps) => {
 							id="addTitle"
 						/>
 					</IonItem>
-					<IonItemDivider>Simple Root Finder</IonItemDivider>
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from Start of Word to Find Root:</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label="Remove from start of word to find root:"
-							id="addStarts"
-						/>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from End of Word to Find Root:</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label="Remove From End:"
-							id="addEnds"
-							labelPlacement="stacked"
-						/>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Separate Multiple Conditions With:</IonLabel>
-					</IonItem>
 					<IonItem className="wrappableInnards">
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label="Separator:"
-							value={separator}
-							onIonChange={(e) => setSeparator(e.detail.value)}
-							interfaceOptions={{header: "Separator"}}
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={useAdvancedMethod}
+							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=" "
-							>[ ] Space</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=","
-							>[,] Comma</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=";"
-							>[;] Semicolon</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="/"
-							>[/] Slash</IonSelectOption>
-						</IonSelect>
+							<h2>Use advanced method</h2>
+							<p>Use regular expressions to identify the root.</p>
+						</IonToggle>
 					</IonItem>
-					<IonItemDivider>Regular Expression</IonItemDivider>
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Matching Expression:</IonLabel>
-					</IonItem>
-					<IonItem lines="none">
-						<IonInput
-							aria-label="Matching Expression:"
-							id="addRegex1"
-							labelPlacement="stacked"
-						/>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label="Replacement Expression:"
-							id="addRegex2"
-							labelPlacement="stacked"
-						/>
-					</IonItem>
+					{useAdvancedMethod ?
+						<>
+							<IonItemDivider>Regular Expression</IonItemDivider>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Matching Expression:</IonLabel>
+							</IonItem>
+							<IonItem lines="none">
+								<IonInput
+									aria-label="Matching Expression:"
+									id="addRegex1"
+									labelPlacement="stacked"
+								/>
+							</IonItem>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
+							</IonItem>
+							<IonItem>
+								<IonInput
+									aria-label="Replacement Expression:"
+									id="addRegex2"
+									labelPlacement="stacked"
+								/>
+							</IonItem>
+						</>
+					:
+						<>
+							<IonItemDivider>Simple Root Finder</IonItemDivider>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from Start of Word to Find Root:</IonLabel>
+							</IonItem>
+							<IonItem>
+								<IonInput
+									aria-label="Remove from start of word to find root:"
+									id="addStarts"
+								/>
+							</IonItem>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from End of Word to Find Root:</IonLabel>
+							</IonItem>
+							<IonItem>
+								<IonInput
+									aria-label="Remove From End:"
+									id="addEnds"
+									labelPlacement="stacked"
+								/>
+							</IonItem>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Separate Multiple Conditions With:</IonLabel>
+							</IonItem>
+							<IonItem className="wrappableInnards">
+								<IonSelect
+									color="primary"
+									className="ion-text-wrap settings"
+									label="Separator:"
+									value={separator}
+									onIonChange={(e) => setSeparator(e.detail.value)}
+									interfaceOptions={{header: "Separator"}}
+								>
+									<IonSelectOption
+										className="ion-text-wrap ion-text-align-end"
+										value=" "
+									>[ ] Space</IonSelectOption>
+									<IonSelectOption
+										className="ion-text-wrap ion-text-align-end"
+										value=","
+									>[,] Comma</IonSelectOption>
+									<IonSelectOption
+										className="ion-text-wrap ion-text-align-end"
+										value=";"
+									>[;] Semicolon</IonSelectOption>
+									<IonSelectOption
+										className="ion-text-wrap ion-text-align-end"
+										value="/"
+									>[/] Slash</IonSelectOption>
+								</IonSelect>
+							</IonItem>
+						</>
+					}
 					<IonItemDivider>Declensions/Conjugations</IonItemDivider>
 					<IonItem>
 						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
@@ -436,7 +455,7 @@ const AddGroup = (props: AddGroupProps) => {
 						slot="start"
 						onClick={maybeCancel}
 					>
-						<IonIcon icon={saveOutline} slot="end" />
+						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>
 					</IonButton>
 					<IonButton

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -25,7 +25,8 @@ import {
 //	helpCircleOutline,
 	trash,
 	globeOutline,
-	trashBinOutline
+	trashBinOutline,
+	caretDown
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -33,6 +34,7 @@ import { DJGroup, Declenjugation, PageData, StateObject } from '../../store/type
 import { deleteGroup } from '../../store/declenjugatorSlice';
 
 import { $q } from '../../components/DollarSignExports';
+import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
@@ -53,11 +55,14 @@ function makeDeclenjugationDescription (group: DJGroup) {
 }
 
 // TO-DO: add ability to reorder groups
-// TO-DO: add ability to collapse declenjugations
+// TO-DO: make collapsed/expanded state a setting?
 
 const DJGroups = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+
+	const [toggles, setToggles] = useState<{[key: string]: boolean}>({});
+
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
 //	const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
@@ -116,6 +121,11 @@ if(incomingDeclenjugation) {
 			});
 		}
 	};
+	const doToggle = useCallback((id: string) => {
+		const newToggles = {...toggles};
+		newToggles[id] = !newToggles[id];
+		setToggles(newToggles);
+	}, [toggles]);
 	return (
 		<IonPage>
 			<AddGroup
@@ -174,9 +184,10 @@ if(incomingDeclenjugation) {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="djGroups units dragArea" lines="full">
-					{declenjugationGroups.map((group: DJGroup) => {
+					{declenjugationGroups.map((group: DJGroup, i: number) => {
 						const { title, id: mainID, declenjugations } = group;
 						const max = declenjugations.length - 1;
+						const classID = "x" + mainID;
 						return (
 							<React.Fragment key={mainID}>
 								<IonItemSliding className="djGroupMain">
@@ -194,7 +205,14 @@ if(incomingDeclenjugation) {
 											<IonIcon slot="icon-only" icon={trash} />
 										</IonItemOption>
 									</IonItemOptions>
-									<IonItem lines="none">
+									<IonItem lines={toggles[classID] ? "full" : "none"}>
+										<IonButton fill="clear" slot="start" onClick={() => doToggle(classID)}>
+											<IonIcon
+											 	className={`djGroup-caret${toggles[classID] ? " toggled": ""}`}
+												slot="icon-only"
+												icon={caretDown}
+											/>
+										</IonButton>
 										<IonLabel className="wrappableInnards">
 											<div><strong>{title}</strong></div>
 											<div className="description"><em>{makeDeclenjugationDescription(group)}</em></div>
@@ -204,30 +222,31 @@ if(incomingDeclenjugation) {
 								</IonItemSliding>
 								{declenjugations.map((dj, i) => {
 									const { title, id, prefix, suffix, regex, useWholeWord } = dj;
-									let root = "";
+									let root = <></>;
 									if(regex) {
-										root = "(regex)";
+										const arrow = (ltr() ? "⟶" : "⟵");
+										const [match, replace] = regex;
+										root = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
 									} else {
-										root = "-";
-										prefix && (root = prefix + root);
-										suffix && (root = root + suffix);
+										let rootling = "-";
+										prefix && (rootling = prefix + rootling);
+										suffix && (rootling = rootling + suffix);
+										root = <em>{rootling}</em>
 									}
 									return (
 										<IonItem
-											className="djGroupInfo"
+											className={`djGroupInfo${toggles[classID] ? " toggled": ""}`}
 											lines={max === i ? "full" : "none"}
 											key={`${mainID}/${id}`}
 										>
-											<div><strong>{title}</strong></div>
-											<div slot="end">
-												<em>{root}</em>
-												{
-													useWholeWord ?
-														<em style={{fontSize: "0.25rem"}}>[W]</em>
-													:
-														<></>
-												}
-											</div>
+											<div className="title"><strong>{title}</strong></div>
+											<div className="description"><em>{root}</em></div>
+											{
+												useWholeWord ?
+													<div className="ww">[W]</div>
+												:
+													<></>
+											}
 										</IonItem>
 									);
 								})}
