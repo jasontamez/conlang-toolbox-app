@@ -152,7 +152,7 @@ const AddDeclenjugation = (props: ExtraCharactersModalOpener) => {
 			endsWith,
 			regex
 		} = grabInfo();
-		if(title || (equals.length + startsWith.length + endsWith.length + regex.length === 0)) {
+		if(title || (equals.length + startsWith.length + endsWith.length + regex.length > 0)) {
 			return yesNoAlert({
 				header: "Unsaved Info",
 				message: "Are you sure you want to discard this?",

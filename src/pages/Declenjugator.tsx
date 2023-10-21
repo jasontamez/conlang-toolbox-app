@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React from 'react';
 import { Route } from 'react-router-dom';
 import {
@@ -17,22 +16,21 @@ import {
 
 import { PageData } from '../store/types';
 
-import WGCharGroups from "./wg/WGcharactergroups";
-import WGSyllables from "./wg/WGsyllables";
-import WGOutput from "./wg/WGoutput";
+import DJGroups from './dj/DJGroups';
 
 
-const WG = (props: PageData) => {
+const DJ = (props: PageData) => {
 	return (
 		<IonTabs>
 			<IonRouterOutlet>
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
-				*/}
 				<Route path="/dj/input" render={() => <WGSyllables {...props} /> } exact={true} />
 				<Route path="/dj/groups" render={() => <WGCharGroups {...props} />} exact={true} />
 				<Route path="/dj/output" render={() => <WGOutput {...props} />} exact={true} />
+				*/}
+				<Route path="/dj/groups" render={() => <DJGroups {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="input" href="/dj/input">
@@ -52,4 +50,4 @@ const WG = (props: PageData) => {
 	);
 };
 
-export default WG;
+export default DJ;

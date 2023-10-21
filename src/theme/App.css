@@ -824,3 +824,12 @@ ion-item.customization > div.base {
 	border: 1px solid var(--ion-text-color);
 	padding: 0.1rem 0.25rem;
 }
+
+ion-item.prefixSuffix ion-input {
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+ion-item.prefixSuffix div.stem {
+	flex-grow: 0;
+	flex-shrink: 0;
+}

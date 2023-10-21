@@ -57,6 +57,7 @@ import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
+import DJ from './pages/Declenjugator';
 
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
@@ -109,6 +110,7 @@ const MainOutlet = memo(() => {
 		<IonRouterOutlet>
 			<Route path="/wg" render={() => <WG {...defaultProps} />} />
 			<Route path="/we" render={() => <WE {...defaultProps} />} />
+			<Route path="/dj" render={() => <DJ {...defaultProps} />} />
 			<Route path="/lex" render={() => <Lexicon {...defaultProps} />} />
 			<Route path="/ms" render={() => <MS {...defaultProps} />} />
 			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />

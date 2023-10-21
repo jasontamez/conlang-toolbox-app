@@ -15,7 +15,8 @@ import {
 	IonFooter,
 	useIonAlert,
 	useIonToast,
-	IonToggle
+	IonToggle,
+	IonItemDivider
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -48,8 +49,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 	const [doToast, undoToast] = useIonToast();
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
-	const closeModal = useCallback(() => {
-		setIsOpen(false);
+	const onLoad = useCallback(() => {
 		setUseAdvancedMethod(false);
 		setUseWholeWord(false);
 		const addDJTitle = $i("addDJTitle");
@@ -62,6 +62,9 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		addDJRegex1 && (addDJRegex1.value = "");
 		const addDJRegex2 = $i("addDJRegex2");
 		addDJRegex2 && (addDJRegex2.value = "");
+	}, []);
+	const closeModal = useCallback(() => {
+		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = () => {
 		const addDJTitle = $i("addDJTitle");
@@ -168,7 +171,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		closeModal();
 	};
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Add Unit</IonTitle>
@@ -184,9 +187,12 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels">
+					<IonItem className="labelled">
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this Declension or Conjugation:</IonLabel>
+					</IonItem>
 					<IonItem>
 						<IonInput
-							label="Title/Description:"
+							aria-label="Title or description of this declension or conjugation:"
 							id="addDJTitle"
 						/>
 					</IonItem>
@@ -212,43 +218,47 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							<p>Use regular expressions to craft a declension or conjugation.</p>
 						</IonToggle>
 					</IonItem>
+					<IonItemDivider>Modification</IonItemDivider>
 					{useAdvancedMethod ?
 						<>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Match Expression:</IonLabel>
+							</IonItem>
 							<IonItem className="wrappableInnards">
 								<IonInput
 									id="addDJRegex1"
-									label="Match Expression:"
-									label-placement="stacked"
+									aria-label="Match Expression:"
 								/>
+							</IonItem>
+							<IonItem className="labelled">
+								<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
 							</IonItem>
 							<IonItem className="wrappableInnards">
 								<IonInput
 									id="addDJRegex2"
-									label="Replacement Expression:"
-									label-placement="stacked"
+									aria-label="Replacement Expression:"
 								/>
 							</IonItem>
 						</>
 					:
 						<>
-							<IonItem className="labelled" lines="none">
-								<IonLabel>Prefix/Suffix/Circumfix:</IonLabel>
+							<IonItem className="labelled">
+								<div slot="start">Prefix</div>
+								<div slot="end">Suffix</div>
 							</IonItem>
-							<IonItem className="wrappableInnards">
+							<IonItem className="wrappableInnards prefixSuffix">
 								<IonInput
 									id="addDJPrefix"
-									label="Prefix"
-									label-labelPlacement="stacked"
+									aria-label="Prefix"
 									className="ion-text-end"
 								/>
 								<div
-									className="ion-text-center"
+									className="ion-text-center stem"
 									style={{paddingInline: "1rem"}}
 								><strong>{useWholeWord ? "word" : "stem"}</strong></div>
 								<IonInput
 									id="addDJSuffix"
-									label="Suffix"
-									label-labelPlacement="stacked"
+									aria-label="Suffix"
 									className="ion-text-start"
 								/>
 							</IonItem>
