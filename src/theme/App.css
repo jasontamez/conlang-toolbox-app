@@ -841,16 +841,23 @@ ion-item-sliding.djGroupMain ion-item ion-button {
 	margin: 0;
 	margin-inline-end: 1em;
 }
-ion-item.djGroupInfo::part(native) {
-	background: var(--ion-background-shader);
+ion-item.djGroupInfo::part(native),
+ion-item.groupedDeclenjugation::part(native) {
+	background: var(--ion-color-step-50);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	font-size: 0.8em;
 	min-height: 2em;
 	height: 2em;
-	padding-inline: 2.5rem;
 	transition: all var(--transition-duration) ease-in;
+}
+ion-item.djGroupInfo::part(native) {
+	font-size: 0.8em;
+	padding-inline: 2.5rem;
+}
+ion-item.groupedDeclenjugation::part(native) {
+	--inner-padding-end: 0;
+	padding-inline: 0.5em;
 }
 ion-item.djGroupInfo.toggled::part(native) {
 	min-height: 0;
@@ -872,15 +879,26 @@ ion-item.djGroupInfo.toggled {
 	transform: rotate(-90deg);
 	transition: transform var(--transition-duration) ease-in;
 }
-ion-item.djGroupInfo div.title {
+ion-item.djGroupInfo div.title,
+ion-item.groupedDeclenjugation div.title {
 	flex-grow: 2;
 	flex-shrink: 1;
 	text-align: start;
 }
-ion-item.djGroupInfo div.description {
+ion-item.djGroupInfo div.description,
+ion-item.groupedDeclenjugation div.root {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: end;
+}
+ion-item.groupedDeclenjugation div.icon,
+ion-item.groupedDeclenjugation ion-reorder {
+	flex-grow: 0;
+	flex-shrink: 0;
+	text-align: center;
+}
+ion-item.groupedDeclenjugation div.icon {
+	padding-inline-start: 1em;
 }
 ion-item.djGroupInfo div.ww {
 	font-size: 0.5em;

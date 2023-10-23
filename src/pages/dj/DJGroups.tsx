@@ -48,6 +48,7 @@ import toaster from '../../components/toaster';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddGroup from './modals/AddGroup';
 import AddDeclenjugation from './modals/AddDeclenjugation';
+import EditGroup from './modals/EditGroup';
 //import EditDeclenjugation from './modals/EditTransform';
 
 function makeDeclenjugationDesc (group: DJGroup) {
@@ -70,8 +71,9 @@ const DJGroups = (props: PageData) => {
 
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
-//	const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
+	const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [editingGroup, setEditingGroup] = useState<DJGroup | null>(null);
 	// submodal: add declenjugation
 	const [addDeclenjugationOpen, setAddDeclenjugationOpen] = useState<boolean>(false);
 	const [savedDeclenjugation, setSavedDeclenjugation] = useState<Declenjugation | null>(null);
@@ -88,10 +90,10 @@ const DJGroups = (props: PageData) => {
 	const addDeclenjugationModalInfo = modalPropsMaker(addDeclenjugationOpen, setAddDeclenjugationOpen);
 	const editDeclenjugationModalInfo = modalPropsMaker(editDeclenjugationOpen, setEditDeclenjugationOpen);
 
-	const editGroup = (transform: DJGroup) => {
+	const editGroup = (group: DJGroup) => {
 		$q(".djGroups").closeSlidingItems();
-//		setEditing(transform);
-//		setIsOpenEditTransform(true);
+		setEditingGroup(group);
+		setIsOpenEditGroup(true);
 	};
 	const maybeDeleteGroup = (transform: DJGroup) => {
 		$q(".djGroups").closeSlidingItems();
@@ -169,6 +171,23 @@ if(incomingDeclenjugation) {
 				outgoingDeclenjugation={outgoingDeclenjugation}
 				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
 			/>
+			<EditGroup
+				{...modalPropsMaker(isOpenEditGroup, setIsOpenEditGroup)}
+				openECM={setIsOpenECM}
+
+				editingGroup={editingGroup}
+
+				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
+				savedDeclenjugation={savedDeclenjugation}
+				setSavedDeclenjugation={setSavedDeclenjugation}
+
+				editDeclenjugationModalInfo={editDeclenjugationModalInfo}
+				setIncomingDeclenjugation={setIncomingDeclenjugation}
+				outgoingDeclenjugation={outgoingDeclenjugation}
+				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
+			/>
+
+
 			<AddDeclenjugation
 				{...addDeclenjugationModalInfo}
 				openECM={setIsOpenECM}
