@@ -23,7 +23,8 @@ import {
 	IonItemOption,
 	IonItemOptions,
 	IonItemSliding,
-	IonToggle
+	IonToggle,
+	IonReorderGroup
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -261,6 +262,17 @@ const AddGroup = (props: AddGroupProps) => {
 			doAlert
 		});
 	};
+	const doReorder = (event: CustomEvent) => {
+		const ed = event.detail;
+		// move things around
+		const { from, to } = ed;
+		const moved = declenjugations[from];
+		const remains = declenjugations.slice(0, from).concat(declenjugations.slice(from + 1));
+		const final = remains.slice(0, to).concat(moved, remains.slice(to));
+		// save result
+		setDeclenjugations(final);
+		ed.complete();
+	};
 
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
@@ -384,68 +396,73 @@ const AddGroup = (props: AddGroupProps) => {
 							Add New
 						</IonButton>
 					</IonItem>
-					{declenjugations.map(dj => {
-						const {
-							title,
-							id,
-							prefix,
-							suffix,
-							regex,
-							useWholeWord
-						} = dj;
-						let root = "";
-						if(regex) {
-							const [match, replace] = regex;
-							root = `/${match}/ => ${replace}`;
-						} else {
-							root = "-";
-							prefix && (root = prefix + root);
-							suffix && (root = root + suffix);
-						}
-						return (
-							<IonItemSliding
-								className="groupedDeclenjugation"
-								key={`add:${id}`}
-							>
-								<IonItemOptions side="end" className="serifChars">
-									<IonItemOption
-										color="primary"
-										aria-label="Edit"
-										onClick={() => editDeclenjugation(dj)}
-									>
-										<IonIcon
-											slot="icon-only"
-											src="svg/edit.svg"
-										/>
-									</IonItemOption>
-									<IonItemOption
-										color="danger"
-										aria-label="Delete"
-										onClick={() => maybeDeleteDeclenjugation(id)}
-									>
-										<IonIcon
-											slot="icon-only"
-											icon={trash}
-										/>
-									</IonItemOption>
-								</IonItemOptions>
-								<IonItem>
-									<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
-									<div className="title"><strong>{title}</strong></div>
-									<div className="root">
-										<em>{root}</em>
-										{
-											useWholeWord ?
-												<em style={{fontSize: "0.25rem"}}>[W]</em>
-											:
-												<></>
-										}
-									</div>
-									<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
-								</IonItem>
-							</IonItemSliding>
-						);
-					})}
+					<IonReorderGroup
+						disabled={false}
+						onIonItemReorder={doReorder}
+					>
+						{declenjugations.map(dj => {
+							const {
+								title,
+								id,
+								prefix,
+								suffix,
+								regex,
+								useWholeWord
+							} = dj;
+							let root = "";
+							if(regex) {
+								const [match, replace] = regex;
+								root = `/${match}/ => ${replace}`;
+							} else {
+								root = "-";
+								prefix && (root = prefix + root);
+								suffix && (root = root + suffix);
+							}
+							return (
+								<IonItemSliding
+									className="groupedDeclenjugation"
+									key={`add:${id}`}
+								>
+									<IonItemOptions side="end" className="serifChars">
+										<IonItemOption
+											color="primary"
+											aria-label="Edit"
+											onClick={() => editDeclenjugation(dj)}
+										>
+											<IonIcon
+												slot="icon-only"
+												src="svg/edit.svg"
+											/>
+										</IonItemOption>
+										<IonItemOption
+											color="danger"
+											aria-label="Delete"
+											onClick={() => maybeDeleteDeclenjugation(id)}
+										>
+											<IonIcon
+												slot="icon-only"
+												icon={trash}
+											/>
+										</IonItemOption>
+									</IonItemOptions>
+									<IonItem>
+										<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
+										<div className="title"><strong>{title}</strong></div>
+										<div className="root">
+											<em>{root}</em>
+											{
+												useWholeWord ?
+													<em style={{fontSize: "0.25rem"}}>[W]</em>
+												:
+													<></>
+											}
+										</div>
+										<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
+									</IonItem>
+								</IonItemSliding>
+							);
+						})}
+					</IonReorderGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter className="modalBorderTop">

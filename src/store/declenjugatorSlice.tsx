@@ -61,6 +61,11 @@ const deleteGroupFunc = (state: DJState, action: PayloadAction<string | null>) =
 	return state;
 };
 
+const reorderGroupsFunc = (state: DJState, action: PayloadAction<DJGroup[]>) => {
+	state.declenjugationGroups = action.payload;
+	return state;
+};
+
 const declenjugatorSlice = createSlice({
 	name: 'dj',
 	initialState,
@@ -72,7 +77,8 @@ const declenjugatorSlice = createSlice({
 		deleteIdentifier: deleteIdentifierFunc,
 		addGroup: addGroupFunc,
 		editGroup: editGroupFunc,
-		deleteGroup: deleteGroupFunc
+		deleteGroup: deleteGroupFunc,
+		reorderGroups: reorderGroupsFunc
 	}
 });
 
@@ -84,7 +90,8 @@ export const {
 	deleteIdentifier,
 	addGroup,
 	editGroup,
-	deleteGroup
+	deleteGroup,
+	reorderGroups
 } = declenjugatorSlice.actions;
 
 export default declenjugatorSlice.reducer;

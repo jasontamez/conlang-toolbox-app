@@ -18,7 +18,10 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	IonReorderGroup,
+	IonReorder,
+	ItemReorderCustomEvent
 } from '@ionic/react';
 import {
 	addOutline,
@@ -26,12 +29,15 @@ import {
 	trash,
 	globeOutline,
 	trashBinOutline,
-	caretDown
+	caretDown,
+	reorderThree,
+	swapVerticalOutline,
+	checkmarkDoneOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import { DJGroup, Declenjugation, PageData, StateObject } from '../../store/types';
-import { deleteGroup } from '../../store/declenjugatorSlice';
+import { deleteGroup, reorderGroups } from '../../store/declenjugatorSlice';
 
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
@@ -44,7 +50,7 @@ import AddGroup from './modals/AddGroup';
 import AddDeclenjugation from './modals/AddDeclenjugation';
 //import EditDeclenjugation from './modals/EditTransform';
 
-function makeDeclenjugationDescription (group: DJGroup) {
+function makeDeclenjugationDesc (group: DJGroup) {
 	const { startsWith, endsWith, regex, separator } = group;
 	if(regex) {
 		const [match, replace] = regex;
@@ -54,14 +60,13 @@ function makeDeclenjugationDescription (group: DJGroup) {
 	return total.join(separator);
 }
 
-// TO-DO: add ability to reorder groups
-// TO-DO: make collapsed/expanded state a setting?
-
 const DJGroups = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 
 	const [toggles, setToggles] = useState<{[key: string]: boolean}>({});
+	const [reordering, setReordering] = useState<boolean>(false);
+	const [tempGroups, setTempGroups] = useState<DJGroup[]>([])
 
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
@@ -126,6 +131,29 @@ if(incomingDeclenjugation) {
 		newToggles[id] = !newToggles[id];
 		setToggles(newToggles);
 	}, [toggles]);
+
+	const doReorder = (event: ItemReorderCustomEvent) => {
+		const ed = event.detail;
+		// move things around
+		const { from, to } = ed;
+		const moved = declenjugationGroups[from];
+		const remains = declenjugationGroups.slice(0, from).concat(declenjugationGroups.slice(from + 1));
+		const final = remains.slice(0, to).concat(moved, remains.slice(to));
+		// save result
+		setTempGroups(final);
+		ed.complete();
+	};
+
+	const toggleReorder = () => {
+		if(!reordering) {
+			$q(".djGroups").closeSlidingItems();
+			setTempGroups(declenjugationGroups);
+		} else {
+			dispatch(reorderGroups(tempGroups));
+		}
+		setReordering(!reordering);
+	};
+
 	return (
 		<IonPage>
 			<AddGroup
@@ -184,83 +212,105 @@ if(incomingDeclenjugation) {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="djGroups units dragArea" lines="full">
-					{declenjugationGroups.map((group: DJGroup, i: number) => {
-						const { title, id: mainID, declenjugations } = group;
-						const max = declenjugations.length - 1;
-						const classID = "x" + mainID;
-						return (
-							<React.Fragment key={mainID}>
-								<IonItemSliding className="djGroupMain">
-									<IonItemOptions>
-										<IonItemOption
-											color="primary"
-											onClick={() => editGroup(group)}
-										>
-											<IonIcon slot="icon-only" src="svg/edit.svg" />
-										</IonItemOption>
-										<IonItemOption
-											color="danger"
-											onClick={() => maybeDeleteGroup(group)}
-										>
-											<IonIcon slot="icon-only" icon={trash} />
-										</IonItemOption>
-									</IonItemOptions>
-									<IonItem lines={toggles[classID] ? "full" : "none"}>
-										<IonButton fill="clear" slot="start" onClick={() => doToggle(classID)}>
-											<IonIcon
-											 	className={`djGroup-caret${toggles[classID] ? " toggled": ""}`}
-												slot="icon-only"
-												icon={caretDown}
-											/>
-										</IonButton>
-										<IonLabel className="wrappableInnards">
-											<div><strong>{title}</strong></div>
-											<div className="description"><em>{makeDeclenjugationDescription(group)}</em></div>
-										</IonLabel>
-										<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
-									</IonItem>
-								</IonItemSliding>
-								{declenjugations.map((dj, i) => {
-									const { title, id, prefix, suffix, regex, useWholeWord } = dj;
-									let root = <></>;
-									if(regex) {
-										const arrow = (ltr() ? "⟶" : "⟵");
-										const [match, replace] = regex;
-										root = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
-									} else {
-										let rootling = "-";
-										prefix && (rootling = prefix + rootling);
-										suffix && (rootling = rootling + suffix);
-										root = <em>{rootling}</em>
-									}
-									return (
-										<IonItem
-											className={`djGroupInfo${toggles[classID] ? " toggled": ""}`}
-											lines={max === i ? "full" : "none"}
-											key={`${mainID}/${id}`}
-										>
-											<div className="title"><strong>{title}</strong></div>
-											<div className="description"><em>{root}</em></div>
+					<IonReorderGroup
+						disabled={false}
+						onIonItemReorder={doReorder}
+					>
+						{declenjugationGroups.map((group: DJGroup, i: number) => {
+							const { title, id: mainID, declenjugations } = group;
+							const max = declenjugations.length - 1;
+							const classID = "x" + mainID;
+							return (
+								<React.Fragment key={mainID}>
+									<IonItemSliding className="djGroupMain" disabled={reordering}>
+										<IonItemOptions>
+											<IonItemOption
+												color="primary"
+												onClick={() => editGroup(group)}
+											>
+												<IonIcon slot="icon-only" src="svg/edit.svg" />
+											</IonItemOption>
+											<IonItemOption
+												color="danger"
+												onClick={() => maybeDeleteGroup(group)}
+											>
+												<IonIcon slot="icon-only" icon={trash} />
+											</IonItemOption>
+										</IonItemOptions>
+										<IonItem lines={toggles[classID] ? "full" : "none"}>
 											{
-												useWholeWord ?
-													<div className="ww">[W]</div>
+												reordering ?
+													<IonReorder slot="start">
+														<IonIcon icon={reorderThree} />
+													</IonReorder>
 												:
-													<></>
+												<IonButton fill="clear" onClick={() => doToggle(classID)}>
+													<IonIcon
+													 	className={`djGroup-caret${toggles[classID] ? " toggled": ""}`}
+														slot="icon-only"
+														icon={caretDown}
+													/>
+												</IonButton>
 											}
+											<IonLabel className="wrappableInnards">
+												<div><strong>{title}</strong></div>
+												<div className="description"><em>{makeDeclenjugationDesc(group)}</em></div>
+											</IonLabel>
+											<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 										</IonItem>
-									);
-								})}
-							</React.Fragment>
-						);
-					})}
+									</IonItemSliding>
+									{reordering ? [] : declenjugations.map((dj, i) => {
+										const { title, id, prefix, suffix, regex, useWholeWord } = dj;
+										let root = <></>;
+										if(regex) {
+											const arrow = (ltr() ? "⟶" : "⟵");
+											const [match, replace] = regex;
+											root = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
+										} else {
+											let rootling = "-";
+											prefix && (rootling = prefix + rootling);
+											suffix && (rootling = rootling + suffix);
+											root = <em>{rootling}</em>;
+										}
+										return (
+											<IonItem
+												className={`djGroupInfo${toggles[classID] ? " toggled": ""}`}
+												lines={max === i ? "full" : "none"}
+												key={`${mainID}/${id}`}
+											>
+												<div className="title"><strong>{title}</strong></div>
+												<div className="description"><em>{root}</em></div>
+												{
+													useWholeWord ?
+														<div className="ww">[W]</div>
+													:
+														<></>
+												}
+											</IonItem>
+										);
+									})}
+								</React.Fragment>
+							);
+						})}
+					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="tertiary"
 						title="Add new group"
 						onClick={() => setIsOpenAddGroup(true)}
+						disabled={reordering}
 					>
 						<IonIcon icon={addOutline} />
+					</IonFabButton>
+				</IonFab>
+				<IonFab vertical="bottom" horizontal="start" slot="fixed">
+					<IonFabButton
+						color={reordering ? "success" : "secondary"}
+						title="Reorder groups"
+						onClick={() => toggleReorder()}
+					>
+						<IonIcon icon={reordering ? checkmarkDoneOutline : swapVerticalOutline} />
 					</IonFabButton>
 				</IonFab>
 			</IonContent>
