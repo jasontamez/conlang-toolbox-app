@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	IonItem,
 	IonIcon,
@@ -32,7 +32,8 @@ import {
 	globeOutline,
 	addCircleOutline,
 	trash,
-	reorderThree
+	reorderThree,
+	trashOutline
 } from 'ionicons/icons';
 
 import {
@@ -40,13 +41,15 @@ import {
 	DJSeparator,
 	Declenjugation,
 	ExtraCharactersModalOpener,
-	ModalProperties
+	ModalProperties,
+	StateObject
 } from '../../../store/types';
-import { editGroup } from '../../../store/declenjugatorSlice';
+import { deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
 
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
+import ltr from '../../../components/LTR';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
@@ -89,6 +92,7 @@ const EditGroup = (props: EditGroupProps) => {
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {
@@ -267,10 +271,37 @@ const EditGroup = (props: EditGroupProps) => {
 			regex1,
 			regex2
 		} = grabInfo();
-		if(title || regex1 || regex2 || (startsWith.length + endsWith.length > 0)) {
+		const {
+			title: _title,
+			startsWith: starts = [],
+			endsWith: ends = [],
+			regex = ["",""],
+			separator: _sep,
+			declenjugations: _dec = []
+		} = editingGroup || {};
+		const mapper = (decl: Declenjugation) => {
+			const {
+				title,
+				prefix = "",
+				suffix = "",
+				regex = [],
+				useWholeWord
+			} = decl;
+			return `${title}...${prefix},,,${suffix}---${regex.join("///")}===${useWholeWord}`;
+		};
+		const changed = (
+			title !== _title
+			|| _sep !== separator
+			|| starts.join(separator) !== startsWith.join(separator)
+			|| ends.join(separator) !== endsWith.join(separator)
+			|| regex.join(separator) !== `${regex1}${separator}${regex2}`
+			|| _dec.length !== declenjugations.length
+			|| _dec.map(mapper).join(separator) !== declenjugations.map(mapper).join(separator)
+		);
+		if(changed) {
 			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
+				header: "Unsaved Changes",
+				message: "Are you sure you want to discard your edits?",
 				cssClass: "warning",
 				submit: "Yes, Close",
 				handler: closeModal,
@@ -279,24 +310,60 @@ const EditGroup = (props: EditGroupProps) => {
 		}
 		closeModal();
 	};
+	const maybeDeleteGroup = () => {
+		const handler = () => {
+			dispatch(deleteGroup(id));
+			closeModal();
+			toaster({
+				message: "Group deleted.",
+				position: "middle",
+				color: "danger",
+				duration: 2000,
+				doToast,
+				undoToast
+			});
+		};
+		if(!disableConfirms) {
+			return yesNoAlert({
+				header: "Delete Entire Group",
+				message: "Are you sure you want to delete this entire Group? It cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, Delete",
+				handler,
+				doAlert
+			});
+		}
+		handler();
+	};
 
 	const maybeAddNewDeclenjugation = () => {
 		setSavedDeclenjugation(null);
 		addDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const editDeclenjugation = (declenjugation: Declenjugation) => {
-		$i("addingDJGroup").closeSlidingItems();
+		$i("editingDJGroup").closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteDeclenjugation = (id: string) => {
-		$i("addingDJGroup").closeSlidingItems();
-		yesNoAlert({
+		$i("editingDJGroup").closeSlidingItems();
+		const handler = () => {
+			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
+			toaster({
+				message: "Deleted.",
+				position: "middle",
+				color: "danger",
+				duration: 2000,
+				doToast,
+				undoToast
+			});
+		};
+		disableConfirms ? handler() : yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",
 			submit: "Yes, Delete It",
 			cssClass: "danger",
-			handler: () => setDeclenjugations(declenjugations.filter(obj => obj.id !== id)),
+			handler,
 			doAlert
 		});
 	};
@@ -317,7 +384,7 @@ const EditGroup = (props: EditGroupProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Group</IonTitle>
+					<IonTitle>Edit Group</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -329,7 +396,7 @@ const EditGroup = (props: EditGroupProps) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="addingDJGroup" className="hasSpecialLabels">
+				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this declension or conjugation grouping:</IonLabel>
 					</IonItem>
@@ -450,8 +517,9 @@ const EditGroup = (props: EditGroupProps) => {
 							} = dj;
 							let root = "";
 							if(regex) {
+								const arrow = (ltr() ? "⟶" : "⟵");
 								const [match, replace] = regex;
-								root = `/${match}/ => ${replace}`;
+								root = `/${match}/ ${arrow} ${replace}`;
 							} else {
 								root = "-";
 								prefix && (root = prefix + root);
@@ -507,12 +575,12 @@ const EditGroup = (props: EditGroupProps) => {
 			<IonFooter className="modalBorderTop">
 				<IonToolbar>
 					<IonButton
-						color="warning"
+						color="danger"
 						slot="start"
-						onClick={maybeCancel}
+						onClick={maybeDeleteGroup}
 					>
-						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonIcon icon={trashOutline} slot="start" />
+						<IonLabel>Delete</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

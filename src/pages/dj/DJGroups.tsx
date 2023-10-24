@@ -49,6 +49,7 @@ import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddGroup from './modals/AddGroup';
 import AddDeclenjugation from './modals/AddDeclenjugation';
 import EditGroup from './modals/EditGroup';
+import EditDeclenjugation from './modals/EditDeclenjugation';
 //import EditDeclenjugation from './modals/EditTransform';
 
 function makeDeclenjugationDesc (group: DJGroup) {
@@ -95,14 +96,31 @@ const DJGroups = (props: PageData) => {
 		setEditingGroup(group);
 		setIsOpenEditGroup(true);
 	};
-	const maybeDeleteGroup = (transform: DJGroup) => {
+	const maybeDeleteGroup = (group: DJGroup) => {
 		$q(".djGroups").closeSlidingItems();
-//		setEditing(transform);
-//		setIsOpenEditTransform(true);
+		const handler = () => {
+			dispatch(deleteGroup(group.id));
+			toaster({
+				message: "Group deleted.",
+				position: "middle",
+				color: "danger",
+				duration: 2000,
+				doToast,
+				undoToast
+			});
+		};
+		if(!disableConfirms) {
+			return yesNoAlert({
+				header: "Delete Entire Group",
+				message: "Are you sure you want to delete this entire Group? It cannot be undone.",
+				cssClass: "danger",
+				submit: "Yes, Delete",
+				handler,
+				doAlert
+			});
+		}
+		handler();
 	};
-if(incomingDeclenjugation) {
-	// delete this later
-}
 	const maybeClearEverything = () => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
@@ -138,8 +156,8 @@ if(incomingDeclenjugation) {
 		const ed = event.detail;
 		// move things around
 		const { from, to } = ed;
-		const moved = declenjugationGroups[from];
-		const remains = declenjugationGroups.slice(0, from).concat(declenjugationGroups.slice(from + 1));
+		const moved = tempGroups[from];
+		const remains = tempGroups.slice(0, from).concat(tempGroups.slice(from + 1));
 		const final = remains.slice(0, to).concat(moved, remains.slice(to));
 		// save result
 		setTempGroups(final);
@@ -187,24 +205,18 @@ if(incomingDeclenjugation) {
 				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
 			/>
 
-
 			<AddDeclenjugation
 				{...addDeclenjugationModalInfo}
 				openECM={setIsOpenECM}
 				setSavedDeclenjugation={setSavedDeclenjugation}
 			/>
-{/*			<EditDeclenjugation
+			<EditDeclenjugation
 				{...editDeclenjugationModalInfo}
+				openECM={setIsOpenECM}
 				incomingDeclenjugation={incomingDeclenjugation}
 				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
 			/>
 
-			<EditTransformModal
-				{...modalPropsMaker(isOpenEditGroup, setIsOpenEditGroup)}
-				openECM={setIsOpen}
-				editing={editing}
-				setEditing={setEditing}
-			/> */}
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	IonItem,
 	IonIcon,
@@ -41,13 +41,15 @@ import {
 	DJSeparator,
 	Declenjugation,
 	ExtraCharactersModalOpener,
-	ModalProperties
+	ModalProperties,
+	StateObject
 } from '../../../store/types';
 import { addGroup } from '../../../store/declenjugatorSlice';
 
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
+import ltr from '../../../components/LTR';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
@@ -84,6 +86,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {
@@ -253,12 +256,23 @@ const AddGroup = (props: AddGroupProps) => {
 	};
 	const maybeDeleteDeclenjugation = (id: string) => {
 		$i("addingDJGroup").closeSlidingItems();
-		yesNoAlert({
+		const handler = () => {
+			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
+			toaster({
+				message: "Deleted.",
+				position: "middle",
+				color: "danger",
+				duration: 2000,
+				doToast,
+				undoToast
+			});
+		};
+		disableConfirms ? handler() : yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",
 			submit: "Yes, Delete It",
 			cssClass: "danger",
-			handler: () => setDeclenjugations(declenjugations.filter(obj => obj.id !== id)),
+			handler,
 			doAlert
 		});
 	};
@@ -411,8 +425,9 @@ const AddGroup = (props: AddGroupProps) => {
 							} = dj;
 							let root = "";
 							if(regex) {
+								const arrow = (ltr() ? "⟶" : "⟵");
 								const [match, replace] = regex;
-								root = `/${match}/ => ${replace}`;
+								root = `/${match}/ ${arrow} ${replace}`;
 							} else {
 								root = "-";
 								prefix && (root = prefix + root);
@@ -445,7 +460,7 @@ const AddGroup = (props: AddGroupProps) => {
 											/>
 										</IonItemOption>
 									</IonItemOptions>
-									<IonItem>
+									<IonItem className="groupedDeclenjugation">
 										<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
 										<div className="title"><strong>{title}</strong></div>
 										<div className="root">
