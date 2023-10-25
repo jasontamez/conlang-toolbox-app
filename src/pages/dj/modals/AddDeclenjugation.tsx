@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -21,13 +21,15 @@ import {
 import {
 	closeCircleOutline,
 	saveOutline,
-	globeOutline
+	globeOutline,
+	addCircle
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
 	Declenjugation,
-	ExtraCharactersModalOpener
+	ExtraCharactersModalOpener,
+	ModalProperties
 } from '../../../store/types';
 
 import { $i } from '../../../components/DollarSignExports';
@@ -36,6 +38,9 @@ import yesNoAlert from '../../../components/yesNoAlert';
 
 interface AddDJModal extends ExtraCharactersModalOpener {
 	setSavedDeclenjugation: Function
+	caseMakerModalInfo: ModalProperties
+	savedTitle: string
+	setSavedTitle: Function
 }
 
 const AddDeclenjugation = (props: AddDJModal) => {
@@ -43,7 +48,10 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		isOpen,
 		setIsOpen,
 		openECM,
-		setSavedDeclenjugation
+		setSavedDeclenjugation,
+		caseMakerModalInfo,
+		savedTitle,
+		setSavedTitle
 	} = props;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -85,6 +93,21 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			regex2
 		};
 	};
+
+	// Accept new title from other modal
+	useEffect(() => {
+		const addDJTitle = $i("addDJTitle");
+		if(isOpen && savedTitle && addDJTitle) {
+			const title = addDJTitle ? addDJTitle.value.trim() : "";
+			if(!title) {
+				addDJTitle.value = savedTitle;
+			} else {
+				addDJTitle.value = addDJTitle.value + " " + savedTitle;
+			}
+			setSavedTitle("");
+		}
+	}, [isOpen, savedTitle, setSavedTitle]);
+
 	const maybeSaveNewDeclenjugation = () => {
 		const {
 			title,
@@ -104,7 +127,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						cssClass: "submit"
 					}
 				]
-			})
+			});
 			return;
 		}
 		const newDJ: Declenjugation = {
@@ -123,7 +146,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						cssClass: "submit"
 					}
 				]
-			})
+			});
 			return;
 		}
 		if(useAdvancedMethod) {
@@ -195,6 +218,9 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							aria-label="Title or description of this declension or conjugation:"
 							id="addDJTitle"
 						/>
+						<IonButton color="primary" onClick={() => caseMakerModalInfo.setIsOpen(true)} slot="end">
+							<IonIcon icon={addCircle} slot="icon-only" />
+						</IonButton>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonToggle

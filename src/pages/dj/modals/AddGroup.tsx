@@ -88,6 +88,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
+	// Accept new declenjugation from other modal
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {
 			if(declenjugations.length === 0) {

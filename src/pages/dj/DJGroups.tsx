@@ -82,6 +82,9 @@ const DJGroups = (props: PageData) => {
 	const [editDeclenjugationOpen, setEditDeclenjugationOpen] = useState<boolean>(false);
 	const [incomingDeclenjugation, setIncomingDeclenjugation] = useState<Declenjugation | null>(null);
 	const [outgoingDeclenjugation, setOutgoingDeclenjugation] = useState<Declenjugation | null | string>(null);
+	// submodal: add declenjugation
+	const [caseMakerOpen, setCaseMakerOpen] = useState<boolean>(false);
+	const [savedTitle, setSavedTitle] = useState<string>("");
 
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -90,6 +93,7 @@ const DJGroups = (props: PageData) => {
 
 	const addDeclenjugationModalInfo = modalPropsMaker(addDeclenjugationOpen, setAddDeclenjugationOpen);
 	const editDeclenjugationModalInfo = modalPropsMaker(editDeclenjugationOpen, setEditDeclenjugationOpen);
+	const caseMakerModalInfo = modalPropsMaker(caseMakerOpen, setCaseMakerOpen);
 
 	const editGroup = (group: DJGroup) => {
 		$q(".djGroups").closeSlidingItems();
@@ -180,6 +184,9 @@ const DJGroups = (props: PageData) => {
 				{...modalPropsMaker(isOpenAddGroup, setIsOpenAddGroup)}
 				openECM={setIsOpenECM}
 
+				caseMakerModalInfo={caseMakerModalInfo}
+				savedTitle={savedTitle}
+
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}
 				setSavedDeclenjugation={setSavedDeclenjugation}
@@ -195,6 +202,9 @@ const DJGroups = (props: PageData) => {
 
 				editingGroup={editingGroup}
 
+				caseMakerModalInfo={caseMakerModalInfo}
+				savedTitle={savedTitle}
+
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}
 				setSavedDeclenjugation={setSavedDeclenjugation}
@@ -209,12 +219,23 @@ const DJGroups = (props: PageData) => {
 				{...addDeclenjugationModalInfo}
 				openECM={setIsOpenECM}
 				setSavedDeclenjugation={setSavedDeclenjugation}
+				caseMakerModalInfo={caseMakerModalInfo}
+				savedTitle={savedTitle}
+				setSavedTitle={setSavedTitle}
 			/>
 			<EditDeclenjugation
 				{...editDeclenjugationModalInfo}
 				openECM={setIsOpenECM}
 				incomingDeclenjugation={incomingDeclenjugation}
 				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
+				caseMakerModalInfo={caseMakerModalInfo}
+				savedTitle={savedTitle}
+				setSavedTitle={setSavedTitle}
+			/>
+			<AddDeclenjugation
+				{...caseMakerModalInfo}
+				openECM={setIsOpenECM}
+				setSavedTitle={setSavedTitle}
 			/>
 
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
