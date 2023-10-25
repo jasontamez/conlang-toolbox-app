@@ -167,7 +167,10 @@ const Syntax = (props: PageData) => {
 					>
 						<ul>
 							<li>The verb is marked for the role of a direct object, bringing a peripheral participant (the applied object) on stage in a more central role.
-								<ul><li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)<br /><span><br />"I arrived at Shionti's" in Nomatsiguenga.</span><TransTable rows="n-areeka Sionti-ke/ I-arrive Shionti-LOC__(valence:__1)/ n-areeka-re Sionti/ I-arrive-him Shionti__(valence:__2)" /></li></ul>
+								<ul><li>This may turn a transitive verb ditransitive, or it may replace the direct object entirely (which technically isn't valence-increasing!)
+									<br /><span><br />"I arrived at Shionti's" in Nomatsiguenga.</span>
+									<TransTable rows="n-areeka Sionti-ke / I-arrive Shionti-LOC__(valence:__1) / n-areeka-re Sionti / I-arrive-him Shionti__(valence:__2)" />
+								</li></ul>
 							</li>
 						</ul>
 					</InfoModal>
@@ -227,7 +230,7 @@ const Syntax = (props: PageData) => {
 					>
 						<ul>
 							<li>In many languages, this exists separate from a dative of interest.
-								<ul><li>"I fixed the railroad track" in Choctaw.<br /><TransTable rows="Tali i-hina-ya ayska-li-tok/ rock AGR(III)-road-NS fix-1s-PST__(nor&shy;mal__con&shy;struc&shy;tion)/ Tali-ya hina im-ayska-li-tok/ rock-NS road AGR(III)-fix-1s-PST__(pos&shy;ses&shy;sor__raised)" /></li></ul>
+								<ul><li>"I fixed the railroad track" in Choctaw.<br /><TransTable rows="Tali i-hina-ya ayska-li-tok / rock AGR(III)-road-NS fix-1s-PST__(nor&shy;mal__con&shy;struc&shy;tion) / Tali-ya hina im-ayska-li-tok / rock-NS road AGR(III)-fix-1s-PST__(pos&shy;ses&shy;sor__raised)" /></li></ul>
 							</li>
 						</ul>
 					</InfoModal>
