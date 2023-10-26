@@ -197,7 +197,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Unit</IonTitle>
+					<IonTitle>Add Declension/Conjugation</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

@@ -25,7 +25,6 @@ import {
 } from '@ionic/react';
 import {
 	addOutline,
-//	helpCircleOutline,
 	trash,
 	globeOutline,
 	trashBinOutline,
@@ -44,13 +43,12 @@ import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-//import EditTransformModal from './modals/EditTransform';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddGroup from './modals/AddGroup';
 import AddDeclenjugation from './modals/AddDeclenjugation';
 import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
-//import EditDeclenjugation from './modals/EditTransform';
+import CaseMaker from './modals/CaseMaker';
 
 function makeDeclenjugationDesc (group: DJGroup) {
 	const { startsWith, endsWith, regex, separator } = group;
@@ -232,7 +230,7 @@ const DJGroups = (props: PageData) => {
 				savedTitle={savedTitle}
 				setSavedTitle={setSavedTitle}
 			/>
-			<AddDeclenjugation
+			<CaseMaker
 				{...caseMakerModalInfo}
 				openECM={setIsOpenECM}
 				setSavedTitle={setSavedTitle}

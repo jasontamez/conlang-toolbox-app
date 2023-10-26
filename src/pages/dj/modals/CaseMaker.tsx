@@ -34,17 +34,25 @@ interface CaseMakerModal extends ExtraCharactersModalOpener {
 }
 
 const titleOptions = [
-	["Modifiers", "non-", "formal", "diminutive", "augmentative", "emphatic"],
-	["Number", "singular", "plural", "dual", "trial", "paucal", "definite", "indefinite"],
-	["Noun Case", "male", "female", "neuter", "animate", "inanimate"],
-	["Grammatical Case", "nominative", "accusative", "genitive", "locative", "vocative",
-		"dative", "ablative", "instrumental", "ergative", "partitive", "absolutive",
-		"abessive", "adessive", "allative", "benefactive", "causal", "causal", "comitative",
-		"delative", "distributive", "elative", "essive", "illative", "inessive", "instructive",
-		"interrogative", "semblative", "sociative", "sublative", "superessive", "temporal",
-		"terminative", "translative", "proximal", "relative", "adverbial",
-		"oblique", "prepositional"
-	]
+	["Modifiers", "non-", "high-", "low-", "formal ", "diminutive ", "augmentative ", "emphatic "],
+	["Number", "singular ", "plural ", "dual ", "trial ", "paucal ", "definite ", "indefinite "],
+	["Noun Case", "male ", "female ", "neuter ", "animate ", "inanimate "],
+	["Grammatical Case", "nominative ", "accusative ", "genitive ", "locative ", "vocative ",
+		"dative ", "ablative ", "instrumental ", "ergative ", "partitive ", "absolutive ",
+		"abessive ", "adessive ", "allative ", "benefactive ", "causal ", "comitative ",
+		"delative ", "distributive ", "elative ", "essive ", "illative ", "inessive ",
+		"instructive ", "interrogative ", "semblative ", "sociative ", "sublative ",
+		"superessive ", "temporal ", "terminative ", "translative ", "proximal ", "relative ",
+		"adverbial ", "oblique ", "prepositional "
+	],
+	["Tense", "past ", "present ", "future "],
+	["Aspect", "perfective ", "imperfective ", "perfect ", "pluperfect ", "completive ",
+		"inceptive ", "progressive ", "continuative ", "habitual ", "punctual ", "iterative ",
+		"atelic ", "telic ", "static "],
+	["Mode", "realis ", "irrealis ", "subjunctive ", "optative ", "deontic ", "hypothetical ",
+		"potential ", "evidentiality ", "validationality ", "mirativity "],
+	["Valence", "causative ", "applicative ", "reflexive ", "reciprocal ", "passive ", "inverse ",
+		"anticausative ", "antipassive "]
 ];
 
 const CaseMaker = (props: CaseMakerModal) => {
@@ -76,7 +84,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 				undoToast
 			});
 		}
-		setSavedTitle(titleParts.join(""));
+		setSavedTitle(titleParts.join("").trim());
 		closeModal();
 		toaster({
 			message: "Title saved.",
@@ -133,7 +141,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 					<IonItemDivider sticky>
 						<div id="titleOutput">
 							{titleParts.map((part: string, i: number) => {
-								return <div onClick={() => remove(i)}>{part}</div>
+								return <div onClick={() => remove(i)} key={`title-output:${part}:${i}`}>{part}</div>
 							})}
 						</div>
 					</IonItemDivider>
@@ -143,7 +151,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 							return (
 								<IonItem key={`grouping:${header}`} className="wrappableInnards">
 									<div className="titleOptions">
-										<div className="grouping">{header}</div>
+										<div className="title">{header}</div>
 										<div className="options">
 											{rest.map(option => (
 												<div
