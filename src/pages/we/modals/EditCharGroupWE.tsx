@@ -234,7 +234,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 							autocomplete="on"
 						></IonInput>
 					</IonItem>
-					<IonItem style={{marginTop: "0.25rem"}}>
+					<IonItem style={{marginBlockStart: "0.25rem"}}>
 						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
 						<IonInput
 							aria-label="Short Label"

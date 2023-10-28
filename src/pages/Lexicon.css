@@ -240,7 +240,7 @@ ion-fab {
 }
 
 #lexColumnInputs {
-	border-bottom: 2px solid var(--ion-background-shader);
+	border-block-end: 2px solid var(--ion-background-shader);
 }
 #lexiconTitleAndDescription {
 	padding: 0.5rem 0 2.5rem;

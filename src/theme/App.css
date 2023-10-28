@@ -380,7 +380,7 @@ ion-app .WEinput textarea {
 .hasSpecialLabels ion-item.labelled {
 	padding: 0;
 	margin: 0;
-	margin-top: 1rem;
+	margin-block-start: 1rem;
 	min-height: 0;
 	--border-color: transparent;
 }
@@ -408,10 +408,10 @@ ion-loading.pageSwitchBackground {
 ion-content.containedCards ion-grid {
 	margin: 0 auto;
 	max-width: 31rem;
-	padding-bottom: 0;
+	padding-block-end: 0;
 }
 ion-content.containedCards ion-grid ion-row:last-of-type ion-col {
-	padding-bottom: 0;
+	padding-block-end: 0;
 }
 ion-content.containedCards ion-card {
 	max-width: 30rem;
@@ -437,11 +437,11 @@ ion-content.containedCards ion-card ion-card-header * {
 	font-size: 1.25rem;
 	font-weight: bold;
 	color: var(--ion-color-primary);
-	margin-top: 0;
+	margin-block-start: 0;
 }
 ion-content.containedCards ion-card#appInfo {
 	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
-	margin-bottom: 0;
+	margin-block-end: 0;
 	position: relative;
 }
 
@@ -450,7 +450,7 @@ ion-modal::part(content) ion-list.buttonFilled ion-item:nth-of-type(even)::part(
 	background: var(--ion-background-shader);
 }
 ion-modal ion-footer.modalBorderTop {
-	border-top: 2px solid var(--ion-background-shader);
+	border-block-start: 2px solid var(--ion-background-shader);
 }
 
 ion-list.multiLinePossible ion-item {
@@ -673,7 +673,7 @@ ion-select.syntaxSelect::part(text) {
 	max-width: max-content;
 }
 ion-select.syntaxSelect::part(icon) {
-	margin-left: 1rem;
+	margin-inline-start: 1rem;
 }
 .alertSelect {
 	--min-height: 90vh;

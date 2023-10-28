@@ -144,7 +144,7 @@ const DJOutput = (props: PageData) => {
 							Export
 							<IonIcon
 								icon={codeDownloadOutline}
-								style={ { marginLeft: "0.25em" } }
+								style={ { marginInlineStart: "0.25em" } }
 							/>
 						</IonButton>
 						<IonButton
@@ -161,7 +161,7 @@ const DJOutput = (props: PageData) => {
 							Generate
 							<IonIcon
 								icon={caretForwardCircleOutline}
-								style={ { marginLeft: "0.25em" } }
+								style={ { marginInlineStart: "0.25em" } }
 							/>
 						</IonButton>
 					</div>

@@ -165,7 +165,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 							onIonChange={() => resetError("title")}
 						></IonInput>
 					</IonItem>
-					<IonItem style={{marginTop: "0.25rem"}}>
+					<IonItem style={{marginBlockStart: "0.25rem"}}>
 						<div
 							slot="start"
 							className="ion-margin-end labelLabelEdit"
