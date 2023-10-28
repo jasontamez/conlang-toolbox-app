@@ -17,6 +17,7 @@ import {
 import { PageData } from '../store/types';
 
 import DJGroups from './dj/DJGroups';
+import DJOutput from './dj/DJOutput';
 
 
 const DJ = (props: PageData) => {
@@ -31,6 +32,7 @@ const DJ = (props: PageData) => {
 				<Route path="/dj/output" render={() => <WGOutput {...props} />} exact={true} />
 				*/}
 				<Route path="/dj/groups" render={() => <DJGroups {...props} />} exact={true} />
+				<Route path="/dj/output" render={() => <DJOutput {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				<IonTabButton tab="input" href="/dj/input">

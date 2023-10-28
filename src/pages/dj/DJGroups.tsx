@@ -287,7 +287,7 @@ const DJGroups = (props: PageData) => {
 												<IonIcon slot="icon-only" icon={trash} />
 											</IonItemOption>
 										</IonItemOptions>
-										<IonItem lines={toggles[classID] ? "full" : "none"}>
+										<IonItem className={"wrappableInnards doubleable" + (toggles[classID] ? "" : " toggled")}>
 											{
 												reordering ?
 													<IonReorder slot="start">

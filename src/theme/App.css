@@ -834,12 +834,56 @@ ion-item.prefixSuffix div.stem {
 	flex-shrink: 0;
 }
 
-ion-list.djGroups {
+ion-list.djGroups,
+ion-list.djOutput {
 	--transition-duration: 0.2s;
 }
+
+ion-list.djOutput {
+	padding-block-end: 0;
+}
+ion-list.djOutput ion-item.doubleable::part(native) {
+	transition: all 0s ease-in var(--transition-duration);
+}
+ion-list.djOutput ion-item.doubleable.toggled::part(native) {
+	border-block-end-width: 0;
+	transition: all 0s ease-out;
+}
+ion-list.djOutput ion-item.toggleable::part(native) {
+	min-height: 3em;
+	height: 3em;
+	transition:
+		all var(--transition-duration) ease-in,
+		border-block-end-width var(--transition-duration) ease-in;
+}
+ion-list.djOutput ion-item.toggleable.toggled::part(native) {
+	min-height: 0;
+	height: 0;
+	border-block-end-width: 0;
+	transition:
+		all var(--transition-duration) ease-out,
+		border-block-end-width var(--transition-duration) ease-out;
+}
+#DJOutput .buttons {
+	display: flex;
+	flex-flow: row-reverse wrap;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-content: stretch;
+	width: 100%;
+	padding: 0 1rem;
+}
+
 ion-item-sliding.djGroupMain ion-item ion-button {
 	margin: 0;
 	margin-inline-end: 1em;
+}
+ion-item-sliding.djGroupMain ion-item.doubleable::part(native) {
+	transition: all 0s ease-in var(--transition-duration);
+}
+ion-item-sliding.djGroupMain ion-item.doubleable.toggled::part(native) {
+	border-block-end-width: 0;
+	transition: all 0s ease-out;
 }
 ion-item.djGroupInfo::part(native),
 ion-item.groupedDeclenjugation::part(native) {
@@ -862,15 +906,15 @@ ion-item.groupedDeclenjugation::part(native) {
 ion-item.djGroupInfo.toggled::part(native) {
 	min-height: 0;
 	height: 0;
+	border-block-end-width: 0;
 	transition: all var(--transition-duration) ease-out;
-	border-bottom: 0;
 }
 ion-item.djGroupInfo {
 	transition: all var(--transition-duration) ease-in;
 }
 ion-item.djGroupInfo.toggled {
 	transition: all var(--transition-duration) ease-out;
-	border-bottom: 0;
+	border-block-end: 0;
 }
 .djGroup-caret {
 	transition: transform var(--transition-duration) ease-out;

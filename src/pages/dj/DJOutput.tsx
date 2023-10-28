@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -6,16 +6,17 @@ import {
 	IonToolbar,
 	IonMenuButton,
 	IonButtons,
-	IonTitle
+	IonTitle,
+	IonList,
+	IonItem,
+	IonSelect,
+	IonSelectOption,
+	IonToggle,
+	IonButton,
+	IonIcon
 } from '@ionic/react';
 //import { useSelector, useDispatch } from "react-redux";
-import {
-//	caretForwardCircleOutline,
-//	settingsOutline,
-//	saveOutline,
-//	helpCircleOutline,
-//	copyOutline
-} from 'ionicons/icons';
+import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
 //import { Clipboard } from '@capacitor/clipboard';
 
 import {
@@ -60,6 +61,8 @@ some other sort?
 display without any input?
 
 */
+type DisplayTypes = "text" | "chart";
+type Orders = "group" | "input" | "inputAlpha"
 
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
@@ -67,6 +70,9 @@ const DJOutput = (props: PageData) => {
 //	const [doAlert] = useIonAlert();
 //	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
+	const [displayType, setDisplayType] = useState<DisplayTypes>("chart");
+	const [usingInput, setUsingInput] = useState<boolean>(false);
+	const [order, setOrder] = useState<Orders>("group");
 
 	return (
 		<IonPage>
@@ -84,68 +90,80 @@ const DJOutput = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
+				<IonList lines="full" className="djOutput">
+					<IonItem>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Display as:"
+							value={displayType}
+							onIonChange={(e) => setDisplayType(e.detail.value)}
+						>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="chart">Chart</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="text">Text</IonSelectOption>
+						</IonSelect>
+					</IonItem>
+					<IonItem lines={usingInput ? "none" : "full"} className={"wrappableInnards doubleable" + (usingInput ? " toggled" : "")}>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={usingInput}
+							onIonChange={e => setUsingInput(!usingInput)}
+						>
+							<h2>Use Input</h2>
+							<p>Display the declensions/conjugations of words in the input.</p>
+						</IonToggle>
+					</IonItem>
+					<IonItem className={"toggleable" + (usingInput ? "" : " toggled")}>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Sort Input:"
+							value={order}
+							onIonChange={(e) => setOrder(e.detail.value)}
+						>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="group">by Group</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="input">by Input (unsorted)</IonSelectOption>
+							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="inputAlpha">by Input (alphabetized)</IonSelectOption>
+						</IonSelect>
+					</IonItem>
+				</IonList>
 				<div id="DJOutput">
-					<div className="leftHandSide">
-						{/*<IonButton
+					<div className="buttons">
+						<IonButton
+							strong={true}
+							size="small"
+							color="tertiary"
+							style={{
+								width: "max-content",
+								fontSize: "1.35rem",
+								padding: "0.5rem 0"
+							}}
+							onClick={() => 44}
+						>
+							Export
+							<IonIcon
+								icon={codeDownloadOutline}
+								style={ { marginLeft: "0.25em" } }
+							/>
+						</IonButton>
+						<IonButton
 							strong={true}
 							size="small"
 							color="success"
 							style={{
 								width: "max-content",
 								fontSize: "1.35rem",
-								padding: "0.5rem 0",
-								minHeight: "3.25rem"
+								padding: "0.5rem 0"
 							}}
-							onClick={() => {new Promise(() => generateOutput())}}
-							disabled={isPickingSaving}
+							onClick={() => 33}
 						>
-							{
-								isGenerating ? (
-									<span style={ {fontStyle: "italic"} }>Loading...</span>
-								) : "Generate"
-							}<IonIcon
+							Generate
+							<IonIcon
 								icon={caretForwardCircleOutline}
 								style={ { marginLeft: "0.25em" } }
 							/>
 						</IonButton>
-						<div
-							id="outputPane"
-							style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}}
-							className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
-						>
-							{makeOutput()}
-						</div>*/}
-					</div>
-					<div className="rightHandSide">
-						{/*<IonButton
-							expand="block"
-							strong={false}
-							color="secondary"
-							onClick={() => setIsOpenOptions(true)}
-							disabled={isPickingSaving}
-						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
-						<IonButton
-							expand="block"
-							strong={false}
-							color="secondary"
-							onClick={() => copyText(copyString, doToast, undoToast)}
-							disabled={isPickingSaving}
-						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
-						<IonButton
-							expand="block"
-							strong={true}
-							className={isPickingSaving ? "hide" : ""}
-							color="secondary"
-							onClick={() => pickAndSave()}
-						><LexiconOutlineIcon slot="icon-only" /></IonButton>
-						<IonButton
-							className={isPickingSaving ? "" : "hide"}
-							id="doneSavingButton"
-							expand="block"
-							strong={true}
-							color="success"
-							onClick={() => donePickingAndSaving()}
-						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>*/}
 					</div>
 				</div>
 			</IonContent>
