@@ -457,13 +457,13 @@ export interface Base_DJIdentifier {
 	separator: DJSeparator
 }
 
-export interface DJIdentifier extends Base_DJIdentifier {
+/*export interface DJIdentifier extends Base_DJIdentifier {
 	equals: string[]
 	regex: string[]
 	usingAND: boolean
 	inverse: boolean
 	// title, id, startsWith, endsWith, regex, separator...
-}
+}*/
 
 export interface DJGroup extends Base_DJIdentifier {
 	regex?: RegexPair
@@ -471,7 +471,7 @@ export interface DJGroup extends Base_DJIdentifier {
 	// title, id, startsWith, endsWith, separator...
 }
 
-export interface DJColumnIdentifier {
+/*export interface DJColumnIdentifier {
 	lexicon?: string
 	identifier?: string
 }
@@ -486,18 +486,16 @@ export interface DJPicker {
 	importFromColumns: DJColumnIdentifier[]
 	testColumns: DJColumnPicker[]
 	usingAND: boolean
-}
+}*/
 
 export interface DJCustomInfo {
-	identifiers: DJIdentifier[]
 	declenjugationGroups: DJGroup[]
 }
 
 export interface DJState extends DJCustomInfo {
-	usingLexiconForInput: null | DJPicker
-	input: string[]
+	input: string
 }
-// TO-DO: add to ViewState
+// TO-DO: add to ViewState?
 
 //
 // EXTRA CHARACTERS

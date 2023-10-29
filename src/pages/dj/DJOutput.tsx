@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -15,19 +15,19 @@ import {
 	IonButton,
 	IonIcon
 } from '@ionic/react';
-//import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
 //import { Clipboard } from '@capacitor/clipboard';
 
-import {
-	PageData
-} from '../../store/types';
+import { DJGroup, PageData, SortObject, StateObject } from '../../store/types';
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
 //import { $a, $i } from '../../components/DollarSignExports';
 //import toaster from '../../components/toaster';
 //import { LexiconOutlineIcon } from '../../components/icons';
 //import PermanentInfo from '../../components/PermanentInfo';
+import makeSorter from '../../components/stringSorter';
+import PermanentInfo from '../../components/PermanentInfo';
 
 /*
 
@@ -53,16 +53,27 @@ async function copyText (copyString: string, doToast: Function, undoToast: Funct
 	});
 };
 
-sort output by group?
-and by declenjugation?
-only by input?
-some other sort?
-
-display without any input?
-
 */
 type DisplayTypes = "text" | "chart";
-type Orders = "group" | "input" | "inputAlpha"
+type Orders = "group" | "groupAlpha" | "input" | "inputAlpha";
+type Data = null | {
+	order: Orders,
+	input: string[]
+};
+
+const doGenerate = (
+	displayType: DisplayTypes,
+	declenjugationGroups: DJGroup[],
+	data: Data
+) => {
+	switch(displayType) {
+		case "text":
+			return;
+		case "chart":
+			return;
+	}
+	console.log("ERROR: " + displayType);
+};
 
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
@@ -73,6 +84,49 @@ const DJOutput = (props: PageData) => {
 	const [displayType, setDisplayType] = useState<DisplayTypes>("chart");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [order, setOrder] = useState<Orders>("group");
+	const { declenjugationGroups, input } = useSelector((state: StateObject) => state.dj);
+	const {
+		sortLanguage,
+		sensitivity,
+		defaultCustomSort,
+		defaultSortLanguage,
+		customSorts
+	} = useSelector((state: StateObject) => state.sortSettings);
+
+	// Memoized stuff
+	const sortObject = useMemo(() => {
+		let defaultCustomSortObj: SortObject | undefined;
+		customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
+			if (obj.id === defaultCustomSort) {
+				defaultCustomSortObj = obj;
+			}
+			return !(defaultCustomSortObj);
+		});
+		return makeSorter(
+			sortLanguage || defaultSortLanguage,
+			sensitivity,
+			defaultCustomSortObj
+		);
+	}, [customSorts, defaultCustomSort, defaultSortLanguage, sensitivity, sortLanguage]);
+	const data: Data = useMemo(() => {
+		if(usingInput) {
+			// Grab input
+			const newInput = input.split(/\n/);
+			//
+			// Handle alphabetization
+			let newOrder = order;
+			if(order === "groupAlpha" || order === "inputAlpha") {
+				newOrder = order.slice(0, 5) as Orders;
+				newInput.sort(sortObject);
+			}
+			// Return data
+			return {
+				order: newOrder,
+				input: newInput
+			};
+		}
+		return null;
+	}, [usingInput, input, order, sortObject]);
 
 	return (
 		<IonPage>
@@ -99,11 +153,20 @@ const DJOutput = (props: PageData) => {
 							value={displayType}
 							onIonChange={(e) => setDisplayType(e.detail.value)}
 						>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="chart">Chart</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="text">Text</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="chart"
+							>Chart</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="text"
+							>Text</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItem lines={usingInput ? "none" : "full"} className={"wrappableInnards doubleable" + (usingInput ? " toggled" : "")}>
+					<IonItem
+						lines={usingInput ? "none" : "full"}
+						className={"wrappableInnards doubleable" + (usingInput ? " toggled" : "")}
+					>
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
@@ -122,49 +185,62 @@ const DJOutput = (props: PageData) => {
 							value={order}
 							onIonChange={(e) => setOrder(e.detail.value)}
 						>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="group">by Group</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="input">by Input (unsorted)</IonSelectOption>
-							<IonSelectOption className="ion-text-wrap ion-text-align-end" value="inputAlpha">by Input (alphabetized)</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="input"
+							>by Input (unsorted)</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="inputAlpha"
+							>by Input (alphabetized)</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="group"
+							>by Group (unsorted input)</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="groupAlpha"
+							>by Group (alphabetized input)</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
-				<div id="DJOutput">
-					<div className="buttons">
-						<IonButton
-							strong={true}
-							size="small"
-							color="tertiary"
-							style={{
-								width: "max-content",
-								fontSize: "1.35rem",
-								padding: "0.5rem 0"
-							}}
-							onClick={() => 44}
-						>
-							Export
-							<IonIcon
-								icon={codeDownloadOutline}
-								style={ { marginInlineStart: "0.25em" } }
-							/>
-						</IonButton>
-						<IonButton
-							strong={true}
-							size="small"
-							color="success"
-							style={{
-								width: "max-content",
-								fontSize: "1.35rem",
-								padding: "0.5rem 0"
-							}}
-							onClick={() => 33}
-						>
-							Generate
-							<IonIcon
-								icon={caretForwardCircleOutline}
-								style={ { marginInlineStart: "0.25em" } }
-							/>
-						</IonButton>
-					</div>
+				<div className="DJOutputButtons">
+					<IonButton
+						strong={true}
+						size="small"
+						color="tertiary"
+						style={{
+							width: "max-content",
+							fontSize: "1.35rem",
+							padding: "0.5rem 0"
+						}}
+						onClick={() => 44}
+					>
+						Export
+						<IonIcon
+							icon={codeDownloadOutline}
+							style={ { marginInlineStart: "0.25em" } }
+						/>
+					</IonButton>
+					<IonButton
+						strong={true}
+						size="small"
+						color="success"
+						style={{
+							width: "max-content",
+							fontSize: "1.35rem",
+							padding: "0.5rem 0"
+						}}
+						onClick={() => doGenerate(displayType, declenjugationGroups, data)}
+					>
+						Generate
+						<IonIcon
+							icon={caretForwardCircleOutline}
+							style={ { marginInlineStart: "0.25em" } }
+						/>
+					</IonButton>
+				</div>
+				<div id="DJOutput" className="selectable">
 				</div>
 			</IonContent>
 		</IonPage>

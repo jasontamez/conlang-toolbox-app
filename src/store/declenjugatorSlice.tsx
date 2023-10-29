@@ -1,20 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DJIdentifier, DJGroup, DJState, DJPicker } from './types';
+import { /*DJIdentifier,*/ DJGroup, DJState } from './types';
 import blankAppState from './blankAppState';
 
 const initialState = blankAppState.dj;
 
-const setInputFunc = (state: DJState, action: PayloadAction<string[]>) => {
+const setInputFunc = (state: DJState, action: PayloadAction<string>) => {
 	state.input = action.payload;
 	return state;
 };
-
-const setUsingLexiconForInputFunc = (state: DJState, action: PayloadAction<null | DJPicker>) => {
-	state.usingLexiconForInput = action.payload;
-	return state;
-};
-
+/*
 const addIdentifierFunc = (state: DJState, action: PayloadAction<DJIdentifier>) => {
 	state.identifiers.push(action.payload);
 	return state;
@@ -37,7 +32,7 @@ const deleteIdentifierFunc = (state: DJState, action: PayloadAction<string>) => 
 	state.identifiers = state.identifiers.filter(obj => (obj.id !== payload));
 	return state;
 };
-
+*/
 const addGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
 	state.declenjugationGroups.push(action.payload);
 	return state;
@@ -71,10 +66,9 @@ const declenjugatorSlice = createSlice({
 	initialState,
 	reducers: {
 		setInput: setInputFunc,
-		setUsingLexiconForInput: setUsingLexiconForInputFunc,
-		addIdentifier: addIdentifierFunc,
-		editIdentifier: editIdentifierFunc,
-		deleteIdentifier: deleteIdentifierFunc,
+//		addIdentifier: addIdentifierFunc,
+//		editIdentifier: editIdentifierFunc,
+//		deleteIdentifier: deleteIdentifierFunc,
 		addGroup: addGroupFunc,
 		editGroup: editGroupFunc,
 		deleteGroup: deleteGroupFunc,
@@ -84,10 +78,9 @@ const declenjugatorSlice = createSlice({
 
 export const {
 	setInput,
-	setUsingLexiconForInput,
-	addIdentifier,
-	editIdentifier,
-	deleteIdentifier,
+//	addIdentifier,
+//	editIdentifier,
+//	deleteIdentifier,
 	addGroup,
 	editGroup,
 	deleteGroup,

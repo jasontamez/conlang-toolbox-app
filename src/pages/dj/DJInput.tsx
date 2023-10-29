@@ -7,7 +7,6 @@ import {
 	IonMenuButton,
 	IonButtons,
 	IonTitle,
-	useIonViewDidEnter,
 	IonButton,
 	IonIcon,
 	useIonAlert,
@@ -15,55 +14,47 @@ import {
 	AlertInput
 } from '@ionic/react';
 import {
-	helpCircleOutline,
 	enterOutline,
 	trashBinOutline,
 	globeOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Lexicon, LexiconColumn, PageData, StateObject, ViewState } from '../../store/types';
-import { setInputWE } from '../../store/weSlice';
-import { saveView } from '../../store/viewSlice';
+import { Lexicon, LexiconColumn, PageData, StateObject } from '../../store/types';
+import { setInput } from '../../store/declenjugatorSlice';
 
-import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { InpCard } from "./WECards";
 
-const WEInput = (props: PageData) => {
+const DJInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
-	const viewInfo = { key: "we" as keyof ViewState, page: "input" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
+	const { input } = useSelector((state: StateObject) => state.dj);
 	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
-	const { input } = useSelector((state: StateObject) => state.we);
+
 	const updateInput = useCallback((value: string) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
-		dispatch(setInputWE(trimmed));
+		dispatch(setInput(trimmed));
 	}, [dispatch]);
 	const inputUpdated = useCallback((e: any) => {
 		let value: string;
 		if(e.target && e.target.value !== undefined) {
 			value = (e.target.value);
 		} else {
-			value = ($i("weInput").value);
+			value = ($i("djInput").value);
 		}
-		debounce(updateInput, [value], 500, "WEinput");
+		debounce(updateInput, [value], 500, "DJInput");
 	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
-			$i("weInput").value = "";
+			$i("djInput").value = "";
 			updateInput("");
 		};
 		if(disableConfirms) {
@@ -85,7 +76,7 @@ const WEInput = (props: PageData) => {
 			inputOptions[col.id] = col.label;
 		});
 		const thenFunc = (col: number) => {
-			let newInput = $i("weInput").value;
+			let newInput = $i("djInput").value;
 			if(newInput) {
 				newInput += "\n"
 			}
@@ -93,7 +84,7 @@ const WEInput = (props: PageData) => {
 				const imp = word.columns[col];
 				imp && (newInput += imp + "\n");
 			});
-			$i("weInput").value = newInput;
+			$i("djInput").value = newInput;
 			updateInput(newInput);
 		};
 		if(columns.length === 1) {
@@ -142,7 +133,6 @@ const WEInput = (props: PageData) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><InpCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -153,9 +143,6 @@ const WEInput = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
@@ -163,8 +150,8 @@ const WEInput = (props: PageData) => {
 				<div className="hasMaxTextArea">
 					<textarea
 						spellCheck={false}
-						aria-label="Words to Evolve"
-						id="weInput"
+						aria-label="Words to Send through Declenjugator"
+						id="djInput"
 						placeholder="Enter words here, one per line"
 						defaultValue={input}
 						onChange={inputUpdated}
@@ -195,4 +182,4 @@ const WEInput = (props: PageData) => {
 	);
 };
 
-export default WEInput;
+export default DJInput;

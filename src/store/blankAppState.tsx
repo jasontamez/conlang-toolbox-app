@@ -224,9 +224,7 @@ const blankAppState: StateObject = {
 		customSort: null
 	},
 	dj: {
-		input: [],
-		usingLexiconForInput: null,
-		identifiers: [],
+		input: "",
 		declenjugationGroups: []
 	},
 	lexicon: {

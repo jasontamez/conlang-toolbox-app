@@ -361,14 +361,14 @@ i.ipa {
 	padding: 0 0.1rem;
 }
 
-ion-app .WEinput {
+ion-app .hasMaxTextArea {
 	height: calc(100% - 4rem);
 	width: calc(100% - 2rem);
 	padding: 0;
 	margin: 0.25rem 1rem 0;
 	display: flex;
 }
-ion-app .WEinput textarea {
+ion-app .hasMaxTextArea textarea {
 	height: 100%;
 	width: 100%;
 }
@@ -834,6 +834,14 @@ ion-item.prefixSuffix div.stem {
 	flex-shrink: 0;
 }
 
+/*
+*
+*
+* DECLENJUGATOR
+*
+*
+*/
+
 ion-list.djGroups,
 ion-list.djOutput {
 	--transition-duration: 0.2s;
@@ -864,7 +872,7 @@ ion-list.djOutput ion-item.toggleable.toggled::part(native) {
 		all var(--transition-duration) ease-out,
 		border-block-end-width var(--transition-duration) ease-out;
 }
-#DJOutput .buttons {
+#DJOutputButtons {
 	display: flex;
 	flex-flow: row-reverse wrap;
 	justify-content: space-between;
@@ -872,6 +880,9 @@ ion-list.djOutput ion-item.toggleable.toggled::part(native) {
 	align-content: stretch;
 	width: 100%;
 	padding: 0 1rem;
+}
+#DJOutput {
+	display: block;
 }
 
 ion-item-sliding.djGroupMain ion-item ion-button {
@@ -959,7 +970,6 @@ ion-item.djGroupInfo div.ww {
 	align-items: center;
 	width: 100%;
 }
-
 #makingTitle #titleOutput div,
 #makingTitle .titleOptions .options div {
 	display: inline-block;
@@ -967,12 +977,10 @@ ion-item.djGroupInfo div.ww {
 	margin: 0.5rem 0.5rem;
 	border-radius: 0.5rem;
 }
-
 #makingTitle #titleOutput div {
 	background: var(--ion-color-primary);
 	color: var(--ion-color-primary-contrast);
 }
-
 #makingTitle .titleOptions {
 	display: flex;
 	flex-flow: column nowrap;
@@ -980,7 +988,6 @@ ion-item.djGroupInfo div.ww {
 	align-items: center;
 	width: 100%;
 }
-
 #makingTitle .titleOptions .title {
 	background-color: var(--ion-background-tinter);
 	text-align: center;
@@ -989,19 +996,16 @@ ion-item.djGroupInfo div.ww {
 	padding: 0.25rem 0.5rem;
 	border-radius: 2rem;
 }
-
 #makingTitle .titleOptions .options {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
 }
-
 #makingTitle ion-item .titleOptions .options div {
 	background: var(--ion-color-secondary);
 	color: var(--ion-color-secondary-contrast);
 }
-
 #makingTitle ion-item:nth-child(even) .titleOptions .options div {
 	background: var(--ion-color-tertiary);
 	color: var(--ion-color-tertiary-contrast);
