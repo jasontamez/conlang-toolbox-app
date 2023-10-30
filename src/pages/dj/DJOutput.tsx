@@ -83,6 +83,7 @@ const DJOutput = (props: PageData) => {
 //	const navigator = useIonRouter();
 	const [displayType, setDisplayType] = useState<DisplayTypes>("chart");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
+	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
 	const [order, setOrder] = useState<Orders>("group");
 	const { declenjugationGroups, input } = useSelector((state: StateObject) => state.dj);
 	const {
@@ -144,7 +145,7 @@ const DJOutput = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>
-				<IonList lines="full" className="djOutput">
+				<IonList lines="full" className="djOutput hasToggles">
 					<IonItem>
 						<IonSelect
 							color="primary"
@@ -181,7 +182,7 @@ const DJOutput = (props: PageData) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Input:"
+							label="Sort Output:"
 							value={order}
 							onIonChange={(e) => setOrder(e.detail.value)}
 						>
@@ -203,8 +204,19 @@ const DJOutput = (props: PageData) => {
 							>by Group (alphabetized input)</IonSelectOption>
 						</IonSelect>
 					</IonItem>
+					<IonItem className={"toggleable" + (usingInput ? "" : " toggled")}>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={showUnmatched}
+							onIonChange={e => setShowUnmatched(!showUnmatched)}
+						>
+							<h2>Show Unmatched Words</h2>
+							<p>Display any words that were not matched by any group.</p>
+						</IonToggle>
+					</IonItem>
 				</IonList>
-				<div className="DJOutputButtons">
+				<div id="DJOutputButtons">
 					<IonButton
 						strong={true}
 						size="small"
@@ -241,6 +253,7 @@ const DJOutput = (props: PageData) => {
 					</IonButton>
 				</div>
 				<div id="DJOutput" className="selectable">
+					{/*Output goes here */}
 				</div>
 			</IonContent>
 		</IonPage>

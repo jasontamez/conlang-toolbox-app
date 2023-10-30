@@ -22,7 +22,6 @@ import { useSelector } from 'react-redux';
 import { Clipboard } from '@capacitor/clipboard';
 
 import {
-	DJIdentifier,
 	DJCustomInfo,
 	DJGroup,
 	LexiconState,
@@ -133,13 +132,24 @@ const MExportAllData = (props: ModalProperties) => {
 		const where = $i("exportedData");
 		where && (where.value = "...loading");
 
-		const copyDJIdentifiers = (input: DJIdentifier | DJGroup) => {
-			return {
+		const copyDJGroup = (input: DJGroup) => {
+			const {startsWith, endsWith, regex, declenjugations} = input;
+			const output: DJGroup = {
 				...input,
-				startsWith: [...input.startsWith],
-				endsWith: [...input.endsWith],
-				regex: input.regex ? [input.regex[0], input.regex[1]] : undefined
+				startsWith: [...startsWith],
+				endsWith: [...endsWith],
+				regex: regex ? [regex[0], regex[1]] : undefined,
+				declenjugations: declenjugations.map(obj => {
+					return obj.regex ?
+						{
+							...obj,
+							regex: [obj.regex[0], obj.regex[1]]
+						}
+					:
+						{...obj}
+				})
 			};
+			return output;
 		};
 
 		// TO-DO: Add the inevitable DJ storage to this chain
@@ -182,33 +192,8 @@ const MExportAllData = (props: ModalProperties) => {
 				},
 				ms,
 				dj: { // versions >= 0.11.0
-					input: [...dj.input],
-					usingLexiconForInput: dj.usingLexiconForInput ? {
-						importFromColumns: dj.usingLexiconForInput.importFromColumns.map(obj => ({...obj})),
-						testColumns: dj.usingLexiconForInput.testColumns.map(obj => {
-							return {
-								...obj,
-								testColumnName: obj.testColumnName.map(obj => ({...obj})),
-								testColumnContents: [...obj.testColumnContents]
-							}
-						}),
-						usingAND: dj.usingLexiconForInput.usingAND
-					} : null,
-					identifiers: dj.identifiers.map((obj) => copyDJIdentifiers(obj) as DJIdentifier),
-					declenjugationGroups: dj.declenjugationGroups.map(
-						(obj) => ({
-							...(copyDJIdentifiers(obj) as DJGroup),
-							declenjugations: obj.declenjugations.map(obj => {
-								return obj.regex ?
-									{
-										...obj,
-										regex: [obj.regex[0], obj.regex[1]]
-									}
-								:
-									{...obj}
-							})
-						})
-					)
+					input: dj.input,
+					declenjugationGroups: dj.declenjugationGroups.map((obj) => ({...copyDJGroup(obj)}))
 				},
 				appSettings: {...appSettings},
 				lexicon: {

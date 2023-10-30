@@ -9,9 +9,7 @@ import {
 	IonTitle,
 	IonButton,
 	IonIcon,
-	useIonAlert,
-	useIonToast,
-	AlertInput
+	useIonAlert
 } from '@ionic/react';
 import {
 	enterOutline,
@@ -20,23 +18,23 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Lexicon, LexiconColumn, PageData, StateObject } from '../../store/types';
+import { PageData, StateObject } from '../../store/types';
 import { setInput } from '../../store/declenjugatorSlice';
 
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
-import toaster from '../../components/toaster';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
+import LexiconImporterModal from '../modals/ImportFromLexicon';
 
 const DJInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
 	const { input } = useSelector((state: StateObject) => state.dj);
-	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
+	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	const updateInput = useCallback((value: string) => {
@@ -70,7 +68,7 @@ const DJInput = (props: PageData) => {
 			});
 		}
 	};
-	const importLexicon = () => {
+	/*const importLexicon = () => {
 		const inputOptions: { [key: string]: string } = {};
 		columns.forEach((col: LexiconColumn) => {
 			inputOptions[col.id] = col.label;
@@ -129,10 +127,16 @@ const DJInput = (props: PageData) => {
 				]
 			});
 		}
-	};
+	};*/
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<LexiconImporterModal
+				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
+				openECM={setIsOpenECM}
+				currentInput={input}
+				dispatchFunc={setInput}
+			/>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -169,7 +173,7 @@ const DJInput = (props: PageData) => {
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
-							onClick={importLexicon}
+							onClick={() => setIsOpenLexImport(true)}
 							disabled={lexicon.length === 0}
 							color="primary"
 							fill="solid"
