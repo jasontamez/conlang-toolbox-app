@@ -20,7 +20,8 @@ const map: Map = {
 //	wordEvolveOutline: "middleware-outline-material-design",
 	syllables: "table-row-material-design",
 	transformations: "transfer-right-material-design",
-	soundChanges: "transit-connection-variant-material-design"
+	soundChanges: "transit-connection-variant-material-design",
+	declenjugator: "read-more-material-design"
 };
 
 export interface IonIconProps {
@@ -62,3 +63,5 @@ export const WordGenIcon = (props: IonIconProps) => <IonIcon flipRtl {...props} 
 export const SyllablesIcon = (props: IonIconProps) => <Icon flipRtl which="syllables" {...props}></Icon>;
 export const TransformationsIcon = (props: IonIconProps) => <Icon flipRtl which="transformations" {...props}></Icon>;
 export const SoundChangesIcon = (props: IonIconProps) => <Icon flipRtl which="soundChanges" {...props}></Icon>;
+
+export const DeclenjugatorIcon = (props: IonIconProps) => <Icon flipRtl which="declenjugator" {...props}></Icon>;

@@ -19,7 +19,15 @@ import {
 //	cogSharp,
 //	volumeHighSharp
 } from 'ionicons/icons';
-import { ConceptsIcon, IonIconProps, LexiconIcon, MorphoSyntaxIcon, WordEvolveIcon, WordGenIcon } from './icons';
+import {
+	ConceptsIcon,
+	IonIconProps,
+	LexiconIcon,
+	MorphoSyntaxIcon,
+	WordEvolveIcon,
+	WordGenIcon,
+	DeclenjugatorIcon
+} from './icons';
 
 import './Menu.css';
 
@@ -191,13 +199,32 @@ const appMenuPages: MenuSection[] = [
 				id: 'menuitemWEout',
 				parent: 'we'
 			},
-/*			{
-				title: 'Declenjugator',
-				url: '/dc',
-				icon: cogSharp,
-				id: 'menuitemDC'
-			}, // https://github.com/apache/cordova-plugin-media
 			{
+				title: 'Declenjugator',
+				url: '/dj',
+				Icon: (props: IonIconProps) => <DeclenjugatorIcon {...props} />,
+				id: 'menuitemDJ',
+				parentOf: 'dj'
+			},
+			{
+				title: 'Input',
+				url: '/dj/input',
+				id: 'menuitemDJinp',
+				parent: 'dj'
+			},
+			{
+				title: 'Character Groups',
+				url: '/dj/groups',
+				id: 'menuitemDJgroup',
+				parent: 'dj'
+			},
+			{
+				title: 'Output',
+				url: '/dj/output',
+				id: 'menuitemDJout',
+				parent: 'dj'
+			},
+/*			{ // https://github.com/apache/cordova-plugin-media
 				title: 'PhonoGraph',
 				url: '/ph',
 				icon: volumeHighSharp,
