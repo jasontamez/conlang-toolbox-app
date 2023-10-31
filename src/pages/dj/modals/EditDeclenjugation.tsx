@@ -87,6 +87,9 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		const editDJRegex2 = $i("editDJRegex2");
 		editDJRegex2 && (editDJRegex2.value = regex2);
 	}, [incomingDeclenjugation]);
+	useEffect(() => {
+		onLoad();
+	}, [onLoad])
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
@@ -242,7 +245,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Unit</IonTitle>
+					<IonTitle>Edit Unit</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

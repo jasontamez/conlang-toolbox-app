@@ -851,6 +851,10 @@ ion-list.hasToggles {
 	--toggle-height: 3em;
 }
 
+ion-item-sliding.importFromLexiconSlider ion-item::part(native) {
+	background: var(--ion-color-step-100);
+}
+
 ion-list.lexiconImporter ion-item.biggerToggle {
 	--toggle-min-height: 4em;
 	--toggle-height: 4em;

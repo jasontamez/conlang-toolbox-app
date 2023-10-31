@@ -86,13 +86,13 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 // Printing out matching tests
 const displayTest = (text: string, deleter: Function, finalFlag: boolean) => {
 	return (
-		<IonItemSliding className="djGroupMain">
+		<IonItemSliding className="importFromLexiconSlider" key={`displayingTest:${text}`}>
 			<IonItemOptions>
 				<IonItemOption color="danger" onClick={() => deleter()}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
-			<IonItem lines={finalFlag ? "full" : "none"}>
+			<IonItem>
 				<IonLabel className="wrappableInnards ion-text-end">{text}</IonLabel>
 				<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 			</IonItem>
@@ -115,8 +115,8 @@ const LexiconImporterModal = (props: ImporterProps) => {
 	const [importing, setImporting] = useState<boolean[]>([]);
 	const [addingWordTest, setAddingWordTest] = useState<boolean>(false);
 	const [addingWordMatch, setAddingWordMatch] = useState<boolean>(false);
-	const [addingColumnTest, setAddingColumnTest] = useState<boolean>(false);
 	const [addingColumn, setAddingColumn] = useState<number>(0);
+	const [addingColumnTest, setAddingColumnTest] = useState<boolean>(false);
 	const [addingColumnMatch, setAddingColumnMatch] = useState<boolean>(false);
 	const [wordTests, setWordTests] = useState<string[]>([]);
 	const [columnTests, setColumnTests] = useState<ColumnTest[]>([]);
@@ -152,6 +152,11 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		setColumnTests([]);
 		setWordMatches([]);
 		setColumnMatches([]);
+		setAddingWordTest(false);
+		setAddingWordMatch(false);
+		setAddingColumnTest(false);
+		setAddingColumnMatch(false);
+		setMatchAll(false);
 	};
 
 	const onLoad = () => {
@@ -320,7 +325,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		}
 		const input = el.value;
 		setColumnTests([
-			...columnTests.filter(x => x.col === addingColumn && x.test === input),
+			...columnTests.filter(x => x.col !== addingColumn && x.test !== input),
 			{
 				col: addingColumn,
 				test: input
@@ -352,7 +357,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		}
 		const input = el.value;
 		setColumnMatches([
-			...columnMatches.filter(x => x.col === addingColumn && x.test === input),
+			...columnMatches.filter(x => x.col !== addingColumn && x.test !== input),
 			{
 				col: addingColumn,
 				test: input
@@ -379,10 +384,10 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		setWordMatches(wordMatches.filter(x => x !== test));
 	};
 	const deleteColumnTest = (col: number, test: string) => {
-		setColumnTests(columnTests.filter(x => x.col === col && x.test === test));
+		setColumnTests(columnTests.filter(x => x.col !== col && x.test !== test));
 	};
 	const deleteColumnMatch = (col: number, test: string) => {
-		setColumnMatches(columnMatches.filter(x => x.col === col && x.test === test));
+		setColumnMatches(columnMatches.filter(x => x.col !== col && x.test !== test));
 	};
 
 	return (
@@ -401,7 +406,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList id="lexiconImporter" lines="full" className="hasSpecialLabels lexiconImporter hasToggles">
+				<IonList id="lexiconImporter" lines="full" className="lexiconImporter hasToggles">
 					<IonItem>
 						<IonLabel>Import from which column(s)?</IonLabel>
 					</IonItem>
@@ -542,22 +547,9 @@ const LexiconImporterModal = (props: ImporterProps) => {
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 
-							{
-								((
-									wordTests.length
-									+ wordMatches.length
-									+ columnTests.length
-									+ columnMatches.length
-								) > 0) ?
-									<IonItemDivider>Current Conditions</IonItemDivider>
-								:
-									<></>
-							}
 							{ wordTests.length > 0 ?
 								<>
-									<IonItem className="labelled">
-										<IonLabel>Words that contain:</IonLabel>
-									</IonItem>
+									<IonItemDivider>Words that contain:</IonItemDivider>
 									{wordTests.map((test, i) => {
 										return displayTest(
 											test,
@@ -569,9 +561,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 							: <></> }
 							{ wordMatches.length > 0 ?
 								<>
-									<IonItem className="labelled">
-										<IonLabel>Words that match:</IonLabel>
-									</IonItem>
+									<IonItemDivider>Words that match:</IonItemDivider>
 									{wordMatches.map((test, i) => {
 										return displayTest(
 											`/${test}/`,
@@ -583,24 +573,20 @@ const LexiconImporterModal = (props: ImporterProps) => {
 							: <></> }
 							{ columnTests.length > 0 ?
 								<>
-								<IonItem className="labelled">
-									<IonLabel>Words where the column:</IonLabel>
-								</IonItem>
-								{columnTests.map((obj, i) => {
-									const {col, test} = obj;
-									return displayTest(
-										`[${columns[col].label}] contains "${test}"`,
-										() => deleteColumnTest(col, test),
-										(i + 1) === columnTests.length
-									)
-								})}
-							</>
-						: <></> }
+									<IonItemDivider>Words where the column:</IonItemDivider>
+									{columnTests.map((obj, i) => {
+										const {col, test} = obj;
+										return displayTest(
+											`[${columns[col].label}] contains "${test}"`,
+											() => deleteColumnTest(col, test),
+											(i + 1) === columnTests.length
+										)
+									})}
+								</>
+							: <></> }
 							{ columnMatches.length > 0 ?
 								<>
-									<IonItem className="labelled">
-										<IonLabel>Words that match:</IonLabel>
-									</IonItem>
+									<IonItemDivider>Words that match:</IonItemDivider>
 									{columnMatches.map((obj, i) => {
 										const {col, test} = obj;
 										return displayTest(

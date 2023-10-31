@@ -468,7 +468,7 @@ const AddGroup = (props: AddGroupProps) => {
 											<em>{root}</em>
 											{
 												useWholeWord ?
-													<em style={{fontSize: "0.25rem"}}>[W]</em>
+													<em style={{fontSize: "0.5rem"}}>[W]</em>
 												:
 													<></>
 											}
