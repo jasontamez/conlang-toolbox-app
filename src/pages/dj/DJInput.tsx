@@ -50,6 +50,10 @@ const DJInput = (props: PageData) => {
 		}
 		debounce(updateInput, [value], 500, "DJInput");
 	}, [updateInput]);
+	const acceptImport = useCallback((value: string) => {
+		$i("djInput").value = value;
+		updateInput(value);
+	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
 			$i("djInput").value = "";
@@ -68,66 +72,6 @@ const DJInput = (props: PageData) => {
 			});
 		}
 	};
-	/*const importLexicon = () => {
-		const inputOptions: { [key: string]: string } = {};
-		columns.forEach((col: LexiconColumn) => {
-			inputOptions[col.id] = col.label;
-		});
-		const thenFunc = (col: number) => {
-			let newInput = $i("djInput").value;
-			if(newInput) {
-				newInput += "\n"
-			}
-			lexicon.forEach((word: Lexicon) => {
-				const imp = word.columns[col];
-				imp && (newInput += imp + "\n");
-			});
-			$i("djInput").value = newInput;
-			updateInput(newInput);
-		};
-		if(columns.length === 1) {
-			thenFunc(0);
-		} else {
-			doAlert({
-				header: "Import from Lexicon",
-				message: "Which column do you want to input?",
-				inputs: columns.map((col: LexiconColumn, i: number) => {
-					const input: AlertInput = {
-						type: 'radio',
-						label: col.label,
-						value: i + 1,
-						checked: !i
-					};
-					return input;
-				}),
-				buttons: [
-					{
-						text: "Cancel",
-						role: 'cancel'
-					},
-					{
-						text: "Import",
-						handler: (col: number | undefined) => {
-							if(!col) {
-								// Treat as cancel
-								return;
-							}
-							thenFunc(col - 1);
-							// Toast
-							toaster({
-								message: `Imported words from "${columns[col - 1].label}"`,
-								duration: 3500,
-								position: "top",
-								color: "success",
-								doToast,
-								undoToast
-							});
-						}
-					}
-				]
-			});
-		}
-	};*/
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -135,7 +79,7 @@ const DJInput = (props: PageData) => {
 				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
 				openECM={setIsOpenECM}
 				currentInput={input}
-				dispatchFunc={setInput}
+				importFunc={acceptImport}
 			/>
 			<IonHeader>
 				<IonToolbar>

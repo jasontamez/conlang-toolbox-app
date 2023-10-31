@@ -10,9 +10,7 @@ import {
 	useIonViewDidEnter,
 	IonButton,
 	IonIcon,
-	useIonAlert,
-	useIonToast,
-	AlertInput
+	useIonAlert
 } from '@ionic/react';
 import {
 	helpCircleOutline,
@@ -22,7 +20,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Lexicon, LexiconColumn, PageData, StateObject, ViewState } from '../../store/types';
+import { PageData, StateObject, ViewState } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 import { saveView } from '../../store/viewSlice';
 
@@ -30,22 +28,22 @@ import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
-import toaster from '../../components/toaster';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { InpCard } from "./WECards";
+import LexiconImporterModal from '../modals/ImportFromLexicon';
 
 const WEInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
 	const viewInfo = { key: "we" as keyof ViewState, page: "input" };
 	useIonViewDidEnter(() => {
 		dispatch(saveView(viewInfo));
 	});
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
-	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
+	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { input } = useSelector((state: StateObject) => state.we);
 	const updateInput = useCallback((value: string) => {
@@ -60,6 +58,10 @@ const WEInput = (props: PageData) => {
 			value = ($i("weInput").value);
 		}
 		debounce(updateInput, [value], 500, "WEinput");
+	}, [updateInput]);
+	const acceptImport = useCallback((value: string) => {
+		$i("weInput").value = value;
+		updateInput(value);
 	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
@@ -79,70 +81,16 @@ const WEInput = (props: PageData) => {
 			});
 		}
 	};
-	const importLexicon = () => {
-		const inputOptions: { [key: string]: string } = {};
-		columns.forEach((col: LexiconColumn) => {
-			inputOptions[col.id] = col.label;
-		});
-		const thenFunc = (col: number) => {
-			let newInput = $i("weInput").value;
-			if(newInput) {
-				newInput += "\n"
-			}
-			lexicon.forEach((word: Lexicon) => {
-				const imp = word.columns[col];
-				imp && (newInput += imp + "\n");
-			});
-			$i("weInput").value = newInput;
-			updateInput(newInput);
-		};
-		if(columns.length === 1) {
-			thenFunc(0);
-		} else {
-			doAlert({
-				header: "Import from Lexicon",
-				message: "Which column do you want to input?",
-				inputs: columns.map((col: LexiconColumn, i: number) => {
-					const input: AlertInput = {
-						type: 'radio',
-						label: col.label,
-						value: i + 1,
-						checked: !i
-					};
-					return input;
-				}),
-				buttons: [
-					{
-						text: "Cancel",
-						role: 'cancel'
-					},
-					{
-						text: "Import",
-						handler: (col: number | undefined) => {
-							if(!col) {
-								// Treat as cancel
-								return;
-							}
-							thenFunc(col - 1);
-							// Toast
-							toaster({
-								message: `Imported words from "${columns[col - 1].label}"`,
-								duration: 3500,
-								position: "top",
-								color: "success",
-								doToast,
-								undoToast
-							});
-						}
-					}
-				]
-			});
-		}
-	};
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><InpCard /></ModalWrap>
+			<LexiconImporterModal
+				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
+				openECM={setIsOpenECM}
+				currentInput={input}
+				importFunc={acceptImport}
+			/>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
@@ -182,7 +130,7 @@ const WEInput = (props: PageData) => {
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
-							onClick={importLexicon}
+							onClick={() => setIsOpenLexImport(true)}
 							disabled={lexicon.length === 0}
 							color="primary"
 							fill="solid"

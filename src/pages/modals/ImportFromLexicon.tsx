@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
 	IonContent,
 	IonHeader,
@@ -10,7 +10,6 @@ import {
 	IonIcon,
 	useIonAlert,
 	useIonToast,
-	AlertInput,
 	IonModal,
 	IonList,
 	IonItem,
@@ -21,7 +20,10 @@ import {
 	IonInput,
 	IonSelect,
 	IonSelectOption,
-	IonItemDivider
+	IonItemDivider,
+	IonItemSliding,
+	IonItemOptions,
+	IonItemOption
 } from '@ionic/react';
 import {
 	enterOutline,
@@ -29,10 +31,11 @@ import {
 	closeCircleOutline,
 	add,
 	save,
-	close
+	close,
+	trash
 } from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, Lexicon, LexiconColumn, StateObject } from '../../store/types';
+import { ExtraCharactersModalOpener, StateObject } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -40,7 +43,7 @@ import { $i } from '../../components/DollarSignExports';
 
 interface ImporterProps extends ExtraCharactersModalOpener {
 	currentInput: string
-	dispatchFunc: Function
+	importFunc: Function
 }
 
 interface ColumnTest {
@@ -48,19 +51,67 @@ interface ColumnTest {
 	test: string
 }
 
+// Testing words to see if they are eligible for importing
+const testColumns = (lex: string[], tests: ColumnTest[], matchAll: boolean) => {
+	const method = matchAll ? "every" : "some";
+	return tests[method](testObject => {
+		const { col, test } = testObject;
+		const word = lex[col] || "";
+		return word.indexOf(test) >= 0;
+	});
+};
+const testColumnMatches = (lex: string[], tests: ColumnTest[], matchAll: boolean) => {
+	const method = matchAll ? "every" : "some";
+	return tests[method](testObject => {
+		const { col, test } = testObject;
+		const regex = new RegExp(test);
+		const word = lex[col] || "";
+		return word.match(regex);
+	});
+};
+const testWords = (word: string, tests: string[], matchAll: boolean) => {
+	const method = matchAll ? "every" : "some";
+	return tests[method](testString => {
+		return word.indexOf(testString) >= 0;
+	});
+};
+const testMatches = (word: string, tests: string[], matchAll: boolean) => {
+	const method = matchAll ? "every" : "some";
+	return tests[method](testString => {
+		const regex = new RegExp(testString);
+		return word.match(regex);
+	});
+};
+
+// Printing out matching tests
+const displayTest = (text: string, deleter: Function, finalFlag: boolean) => {
+	return (
+		<IonItemSliding className="djGroupMain">
+			<IonItemOptions>
+				<IonItemOption color="danger" onClick={() => deleter()}>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem lines={finalFlag ? "full" : "none"}>
+				<IonLabel className="wrappableInnards ion-text-end">{text}</IonLabel>
+				<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+			</IonItem>
+		</IonItemSliding>
+	);
+};
+
 const LexiconImporterModal = (props: ImporterProps) => {
 	const {
 		isOpen,
 		setIsOpen,
 		openECM,
 		currentInput,
-		dispatchFunc
+		importFunc
 	} = props;
 	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const maxCols = columns.length - 1;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
-	const dispatch = useDispatch();
 	const [importing, setImporting] = useState<boolean[]>([]);
 	const [addingWordTest, setAddingWordTest] = useState<boolean>(false);
 	const [addingWordMatch, setAddingWordMatch] = useState<boolean>(false);
@@ -72,12 +123,6 @@ const LexiconImporterModal = (props: ImporterProps) => {
 	const [wordMatches, setWordMatches] = useState<string[]>([]);
 	const [columnMatches, setColumnMatches] = useState<ColumnTest[]>([]);
 	const [matchAll, setMatchAll] = useState<boolean>(false);
-
-	useEffect(() => {
-		const bools: boolean[] = [];
-		columns.forEach(col => bools.push(false));
-		setImporting(bools);
-	}, [columns]);
 
 	const maybeDoClose = () => {
 		// Check for unsaved info?
@@ -92,7 +137,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		) {
 			return yesNoAlert({
 				message: "Exit Without Importing?",
-				submit: "Are you sure?",
+				submit: "Yes, Exit",
 				cssClass: "warning",
 				handler: doClose,
 				doAlert
@@ -109,6 +154,108 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		setColumnMatches([]);
 	};
 
+	const onLoad = () => {
+		const bools: boolean[] = [];
+		columns.forEach(col => bools.push(false));
+		setImporting(bools);
+	};
+
+	// Import words from Lexicon
+	const importLexicon = () => {
+		const cols: number[] = [];
+		importing.forEach((imp, i) => {
+			if(imp) {
+				cols.push(i);
+			}
+		});
+		if(cols.length === 0) {
+			return toaster({
+				message: "Please select at least one column to import from.",
+				color: "danger",
+				duration: 2500,
+				position: "middle",
+				doToast,
+				undoToast
+			});
+		}
+		// We have column(s) to import from.
+		const possibles: string[] = [];
+		// Go through the lexicon and test each item.
+		lexicon.forEach(lex => {
+			let flag: boolean | null = null;
+			if(columnTests.length > 0) {
+				flag = testColumns(lex.columns, columnTests, matchAll);
+				if(matchAll && !flag) {
+					// Matching has failed (column tests)
+					return;
+				}
+			}
+			if(columnMatches.length > 0) {
+				flag = testColumnMatches(lex.columns, columnMatches, matchAll);
+				if(matchAll && !flag) {
+					// Matching has failed (column matches)
+					return;
+				}
+			}
+			// At this point, we only need to look at the word itself
+			const words = cols.map(col => lex.columns[col]).filter(word => {
+				if(!word) {
+					// Ignore blanks
+					return false;
+				} else if(!matchAll && flag) {
+					// This word has already qualified
+					return true;
+				}
+				// At this point, flag is either false or null, or it's true with matchAll true
+				let innerFlag: boolean | null = flag;
+				if(wordTests.length > 0) {
+					innerFlag = testWords(word, wordTests, matchAll);
+					if(matchAll && !innerFlag) {
+						// Matching has failed (word tests)
+						return false;
+					}
+				}
+				if(wordMatches.length > 0) {
+					// Last set of matches determines it all
+					return testMatches(word, wordMatches, matchAll);
+				}
+				// At this point, innerFlag is either false or null, or it's true with matchAll true
+				// If null, there were no tests to match, so it goes through
+				return (innerFlag === null) ? true : innerFlag;
+			});
+			possibles.push(...words);
+		});
+		if(possibles.length === 0) {
+			return toaster({
+				message: "Did not find anything to import.",
+				color: "danger",
+				duration: 4500,
+				position: "middle",
+				doToast,
+				undoToast
+			});
+		}
+		const final = possibles.join("\n");
+		// Save information
+		const base = currentInput ? currentInput + "\n" : "";
+		importFunc(base + final);
+		toaster({
+			message: `Imported ${possibles.length} word${possibles.length === 1 ? "" : "s"} from Lexicon.`,
+			color: "success",
+			duration: 3500,
+			position: "middle",
+			doToast,
+			undoToast
+		});
+		doClose();
+	};
+	const toggleImport = (col: number) => {
+		const newImporting = [...importing];
+		newImporting[col] = !importing[col];
+		setImporting(newImporting);
+	};
+
+	// Add various tests
 	const addWordTest = () => {
 		const el = $i("word");
 		if(!el || !el.value) {
@@ -121,7 +268,8 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				undoToast
 			});
 		}
-		setWordTests([...wordTests, el.value]);
+		const input = el.value;
+		setWordTests([...wordTests.filter(x => x !== input), input]);
 		setAddingWordTest(false);
 		el.value = "";
 		return toaster({
@@ -145,7 +293,8 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				undoToast
 			});
 		}
-		setWordMatches([...wordTests, el.value]);
+		const input = el.value;
+		setWordMatches([...wordMatches.filter(x => x !== input), input]);
 		setAddingWordMatch(false);
 		el.value = "";
 		return toaster({
@@ -169,10 +318,14 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				undoToast
 			});
 		}
-		setColumnTests([...columnTests, {
-			col: addingColumn,
-			test: el.value
-		}]);
+		const input = el.value;
+		setColumnTests([
+			...columnTests.filter(x => x.col === addingColumn && x.test === input),
+			{
+				col: addingColumn,
+				test: input
+			}
+		]);
 		setAddingColumnTest(false);
 		setAddingColumn(0);
 		el.value = "";
@@ -197,10 +350,14 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				undoToast
 			});
 		}
-		setColumnMatches([...columnMatches, {
-			col: addingColumn,
-			test: el.value
-		}]);
+		const input = el.value;
+		setColumnMatches([
+			...columnMatches.filter(x => x.col === addingColumn && x.test === input),
+			{
+				col: addingColumn,
+				test: input
+			}
+		]);
 		setAddingColumnMatch(false);
 		setAddingColumn(0);
 		el.value = "";
@@ -214,70 +371,22 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		});
 	};
 
-	const importLexicon = () => {
-		// NEEDS MASSIVE CHANGE
-		const inputOptions: { [key: string]: string } = {};
-		columns.forEach((col: LexiconColumn) => {
-			inputOptions[col.id] = col.label;
-		});
-		const thenFunc = (cols: number[]) => {
-			let newInput = currentInput;
-			if(newInput) {
-				newInput += "\n"
-			}
-			lexicon.forEach((word: Lexicon) => {
-				cols.forEach(col => {
-					const imp = word.columns[col];
-					imp && (newInput += imp + "\n");	
-				})
-			});
-			dispatch(dispatchFunc(newInput));
-		};
-		if(columns.length === 1) {
-			thenFunc([0]);
-		} else {
-			doAlert({
-				header: "Import from Lexicon",
-				message: "Which column do you want to input?",
-				inputs: columns.map((col: LexiconColumn, i: number) => {
-					const input: AlertInput = {
-						type: 'radio',
-						label: col.label,
-						value: i + 1,
-						checked: !i
-					};
-					return input;
-				}),
-				buttons: [
-					{
-						text: "Cancel",
-						role: 'cancel'
-					},
-					{
-						text: "Import",
-						handler: (col: number | undefined) => {
-							if(!col) {
-								// Treat as cancel
-								return;
-							}
-							thenFunc([col - 1]);
-							// Toast
-							toaster({
-								message: `Imported words from "${columns[col - 1].label}"`,
-								duration: 3500,
-								position: "top",
-								color: "success",
-								doToast,
-								undoToast
-							});
-						}
-					}
-				]
-			});
-		}
+	// Remove various tests
+	const deleteWordTest = (test: string) => {
+		setWordTests(wordTests.filter(x => x !== test));
 	};
+	const deleteWordMatch = (test: string) => {
+		setWordMatches(wordMatches.filter(x => x !== test));
+	};
+	const deleteColumnTest = (col: number, test: string) => {
+		setColumnTests(columnTests.filter(x => x.col === col && x.test === test));
+	};
+	const deleteColumnMatch = (col: number, test: string) => {
+		setColumnMatches(columnMatches.filter(x => x.col === col && x.test === test));
+	};
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Import From Lexicon</IonTitle>
@@ -308,12 +417,13 @@ const LexiconImporterModal = (props: ImporterProps) => {
 										key={`lexColImporter:${col.id}`}
 										lines={i === maxCols ? "full" : "none"}
 										className="columnListing"
+										onClick={() => toggleImport(i)}
 									>
 										<IonCheckbox checked={importing[i]}>{col.label}</IonCheckbox>
 									</IonItem>
 								);
 							})}
-							<IonItemDivider>Conditions (optional)</IonItemDivider>
+							<IonItemDivider>Add Conditions (optional)</IonItemDivider>
 							<IonItem className={"wrappableInnards doubleable" + (addingWordTest ? " toggled" : "")}>
 								<IonLabel className="ion-text-wrap">Word must contain [x]</IonLabel>
 								<IonButton
@@ -432,17 +542,74 @@ const LexiconImporterModal = (props: ImporterProps) => {
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 
+							{
+								((
+									wordTests.length
+									+ wordMatches.length
+									+ columnTests.length
+									+ columnMatches.length
+								) > 0) ?
+									<IonItemDivider>Current Conditions</IonItemDivider>
+								:
+									<></>
+							}
 							{ wordTests.length > 0 ?
-								<IonItem>{wordTests.map(test => test)}</IonItem>
+								<>
+									<IonItem className="labelled">
+										<IonLabel>Words that contain:</IonLabel>
+									</IonItem>
+									{wordTests.map((test, i) => {
+										return displayTest(
+											test,
+											() => deleteWordTest(test),
+											(i + 1) === wordTests.length
+										)
+									})}
+								</>
 							: <></> }
 							{ wordMatches.length > 0 ?
-								<IonItem>{wordMatches.map(test => test)}</IonItem>
+								<>
+									<IonItem className="labelled">
+										<IonLabel>Words that match:</IonLabel>
+									</IonItem>
+									{wordMatches.map((test, i) => {
+										return displayTest(
+											`/${test}/`,
+											() => deleteWordMatch(test),
+											(i + 1) === wordMatches.length
+										)
+									})}
+								</>
 							: <></> }
 							{ columnTests.length > 0 ?
-								<IonItem>{columnTests.map(coltest => <></>)}</IonItem>
-							: <></> }
+								<>
+								<IonItem className="labelled">
+									<IonLabel>Words where the column:</IonLabel>
+								</IonItem>
+								{columnTests.map((obj, i) => {
+									const {col, test} = obj;
+									return displayTest(
+										`[${columns[col].label}] contains "${test}"`,
+										() => deleteColumnTest(col, test),
+										(i + 1) === columnTests.length
+									)
+								})}
+							</>
+						: <></> }
 							{ columnMatches.length > 0 ?
-								<IonItem>{columnMatches.map(coltest => <></>)}</IonItem>
+								<>
+									<IonItem className="labelled">
+										<IonLabel>Words that match:</IonLabel>
+									</IonItem>
+									{columnMatches.map((obj, i) => {
+										const {col, test} = obj;
+										return displayTest(
+											`[${columns[col].label}] matches /${test}/`,
+											() => deleteColumnMatch(col, test),
+											(i + 1) === columnMatches.length
+										)
+									})}
+								</>
 							: <></> }
 							<IonItem
 								className={
