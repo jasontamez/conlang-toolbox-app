@@ -947,7 +947,11 @@ ion-list.lexiconImporter,
 ion-list.hasToggles {
 	--transition-duration: 0.2s;
 	--toggle-min-height: 3em;
-	--toggle-height: 3em;
+	--toggle-max-height: 8em;
+}
+ion-list.djOutput .wrappableInnards {
+	--toggle-min-height: 5em;
+	--toggle-max-height: 12em;
 }
 
 ion-item-sliding.importFromLexiconSlider ion-item::part(native) {
@@ -956,7 +960,7 @@ ion-item-sliding.importFromLexiconSlider ion-item::part(native) {
 
 ion-list.lexiconImporter ion-item.biggerToggle {
 	--toggle-min-height: 4em;
-	--toggle-height: 4em;
+	--toggle-max-height: 10em;
 }
 ion-item.columnListing::part(native) {
 	background: var(--ion-color-step-100);
@@ -974,14 +978,14 @@ ion-list.hasToggles ion-item.doubleable.toggled::part(native) {
 }
 ion-list.hasToggles ion-item.toggleable::part(native) {
 	min-height: var(--toggle-min-height);
-	height: var(--toggle-height);
+	max-height: var(--toggle-max-height);
 	transition:
 		all var(--transition-duration) ease-in,
 		border-block-end-width var(--transition-duration) ease-in;
 }
 ion-list.hasToggles ion-item.toggleable.toggled::part(native) {
 	min-height: 0;
-	height: 0;
+	max-height: 0;
 	border-block-end-width: 0;
 	transition:
 		all var(--transition-duration) ease-out,

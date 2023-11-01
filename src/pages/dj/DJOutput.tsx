@@ -185,7 +185,7 @@ const DJOutput = (props: PageData) => {
 							<p>Display the declensions/conjugations of words in the input.</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem className={"toggleable" + (usingInput ? "" : " toggled")}>
+					<IonItem lines="none" className={"toggleable" + (usingInput ? "" : " toggled")}>
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
@@ -211,7 +211,7 @@ const DJOutput = (props: PageData) => {
 							>by Group (alphabetized input)</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItem className={"toggleable" + (usingInput ? "" : " toggled")}>
+					<IonItem className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}>
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
