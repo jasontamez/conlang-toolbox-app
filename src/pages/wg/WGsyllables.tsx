@@ -36,6 +36,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGCards";
+import { $i } from '../../components/DollarSignExports';
 
 const WGSyl = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -96,14 +97,16 @@ const WGSyl = (props: PageData) => {
 		func(value === null ? syllableBoxDropoff : null);
 	};
 	const firstBox = multipleSyllableTypes ? "Single-Syllable\nWords" : "Syllables";
-	const SyllableButton = memo((props: { prop: SyllableTypes, value: string, dropoff: Zero_Fifty | null }) => {
-		const { prop, value, dropoff } = props;
+	const SyllableButton = memo((props: { prop: SyllableTypes, dropoff: Zero_Fifty | null }) => {
+		const { prop, dropoff } = props;
 		if (isEditing === prop) {
 			return (
 				<IonButton
 					color="success"
 					fill="solid"
 					onClick={e => {
+						const el = $i("Syl-" + prop);
+						const value = el.value;
 						dispatch(setSyllables({syllables: prop, value, override: dropoff }));
 						setIsEditing(null);
 					}}
@@ -228,7 +231,7 @@ const WGSyl = (props: PageData) => {
 							placeholder="Use character group labels to construct syllables"
 						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="singleWord" value={sw} dropoff={swDropoff} />
+							<SyllableButton prop="singleWord" dropoff={swDropoff} />
 						</div>
 					</IonItem>
 					<IonItem
@@ -281,7 +284,7 @@ const WGSyl = (props: PageData) => {
 							placeholder="These syllables are used to begin words"
 						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordInitial" value={wi} dropoff={wiDropoff} />
+							<SyllableButton prop="wordInitial" dropoff={wiDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordInitial" ? "" : "hide"}>
@@ -332,7 +335,7 @@ const WGSyl = (props: PageData) => {
 							placeholder="These syllables are used between the first and last syllable of a word"
 						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordMiddle" value={wm} dropoff={wmDropoff} />
+							<SyllableButton prop="wordMiddle" dropoff={wmDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordMiddle" ? "" : "hide"}>
@@ -383,7 +386,7 @@ const WGSyl = (props: PageData) => {
 							placeholder="These syllables are used to end words"
 						/>
 						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
-							<SyllableButton prop="wordFinal" value={wf} dropoff={wfDropoff} />
+							<SyllableButton prop="wordFinal" dropoff={wfDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordFinal" ? "" : "hide"}>
