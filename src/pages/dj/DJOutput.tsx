@@ -15,7 +15,7 @@ import {
 	IonButton,
 	IonIcon
 } from '@ionic/react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
 //import { Clipboard } from '@capacitor/clipboard';
 
@@ -26,8 +26,16 @@ import { DJGroup, PageData, SortObject, StateObject } from '../../store/types';
 //import toaster from '../../components/toaster';
 //import { LexiconOutlineIcon } from '../../components/icons';
 //import PermanentInfo from '../../components/PermanentInfo';
+import {
+	DJDisplayData,
+	DJDisplayTypes,
+	DJOrders,
+	displayChart,
+	displayText
+} from '../../components/DJOutputFormat';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
+import log from '../../components/Logging';
 
 /*
 
@@ -54,26 +62,6 @@ async function copyText (copyString: string, doToast: Function, undoToast: Funct
 };
 
 */
-type DisplayTypes = "text" | "chart";
-type Orders = "group" | "groupAlpha" | "input" | "inputAlpha";
-type Data = null | {
-	order: Orders,
-	input: string[]
-};
-
-const doGenerate = (
-	displayType: DisplayTypes,
-	declenjugationGroups: DJGroup[],
-	data: Data
-) => {
-	switch(displayType) {
-		case "text":
-			return;
-		case "chart":
-			return;
-	}
-	console.log("ERROR: " + displayType);
-};
 
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
@@ -81,10 +69,11 @@ const DJOutput = (props: PageData) => {
 //	const [doAlert] = useIonAlert();
 //	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
-	const [displayType, setDisplayType] = useState<DisplayTypes>("chart");
+	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chart");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
-	const [order, setOrder] = useState<Orders>("group");
+	const [order, setOrder] = useState<DJOrders>("group");
+	const [outputText, setOutputText] = useState<string[]>([]);
 	const { declenjugationGroups, input } = useSelector((state: StateObject) => state.dj);
 	const {
 		sortLanguage,
@@ -93,6 +82,7 @@ const DJOutput = (props: PageData) => {
 		defaultSortLanguage,
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
+	const dispatch = useDispatch();
 
 	// Memoized stuff
 	const sortObject = useMemo(() => {
@@ -109,7 +99,7 @@ const DJOutput = (props: PageData) => {
 			defaultCustomSortObj
 		);
 	}, [customSorts, defaultCustomSort, defaultSortLanguage, sensitivity, sortLanguage]);
-	const data: Data = useMemo(() => {
+	const data: DJDisplayData = useMemo(() => {
 		if(usingInput) {
 			// Grab input
 			const newInput = input.split(/\n/);
@@ -117,7 +107,7 @@ const DJOutput = (props: PageData) => {
 			// Handle alphabetization
 			let newOrder = order;
 			if(order === "groupAlpha" || order === "inputAlpha") {
-				newOrder = order.slice(0, 5) as Orders;
+				newOrder = order.slice(0, 5) as DJOrders;
 				newInput.sort(sortObject);
 			}
 			// Return data
@@ -129,6 +119,23 @@ const DJOutput = (props: PageData) => {
 		return null;
 	}, [usingInput, input, order, sortObject]);
 
+	const doGenerate = (
+		displayType: DJDisplayTypes,
+		declenjugationGroups: DJGroup[],
+		data: DJDisplayData
+	) => {
+		switch(displayType) {
+			case "text":
+				setOutputText(displayText(declenjugationGroups, data));
+				break;
+			case "chart":
+				displayChart(declenjugationGroups, data);
+				break;
+			default:
+				log(dispatch, [`Invalid display type? [${displayType}]`]);
+		}
+	};
+	
 	return (
 		<IonPage>
 			<IonHeader>
@@ -237,7 +244,12 @@ const DJOutput = (props: PageData) => {
 					</IonButton>
 				</div>
 				<div id="DJOutput" className="selectable">
-					{/*Output goes here */}
+					{outputText.length > 0 ?
+						outputText.map(text => text)
+					:
+						<></>
+					}
+					{/*Chart info here */}
 				</div>
 			</IonContent>
 		</IonPage>

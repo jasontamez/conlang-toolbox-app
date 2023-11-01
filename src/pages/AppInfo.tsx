@@ -131,6 +131,7 @@ const AppInfo = (props: PageData) => {
 										<li>Added Declenjugator for crafting declensions and conjugations.</li>
 										<li>Export All Data has a copy-to-clipboard button, and you can limit what you export.</li>
 										<li>Bugfix: some tables were not displaying correctly in MorphoSyntax info modals.</li>
+										<li>Bugfix: fixed some bugs in WordGen where syllables weren't saving and where Transforms with %X references were crashing if no category "X" existed. </li>
 									</ul>
 									<h2 className="ion-text-center"><strong>v.0.10.1</strong></h2>
 									<ul className="changelog">
