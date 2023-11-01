@@ -559,7 +559,7 @@ const EditGroup = (props: EditGroupProps) => {
 											<em>{root}</em>
 											{
 												useWholeWord ?
-													<em style={{fontSize: "0.5rem"}}>[W]</em>
+													<em className="mini">[W]</em>
 												:
 													<></>
 											}

@@ -136,6 +136,10 @@
 .morphoSyntaxModal ul > li ul > li ul > li ul > li ul > li ul > li ul > li ul > li::before {
 	color: var(--ion-color-tertiary);
 }
+.msModalHelpIcon {
+	margin-inline-start: 0;
+	margin-inline-end: 0.5rem;
+}
 #morphoSyntaxPage table,
 .morphoSyntaxModal table {
 	background: var(--ion-background-shader);

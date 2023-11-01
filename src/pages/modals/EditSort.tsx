@@ -93,9 +93,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 								<IonReorder key={`${id}:modal:sortOrder`}>
 									<IonItem lines="full">
 										<IonIcon icon={reorderTwo} slot="start" />
-										<IonLabel
-											style={i ? {} : {fontWeight: "bold"}}
-										>{label}</IonLabel>
+										<IonLabel className={i ? "" : "bold"}>{label}</IonLabel>
 										{i ? <></> : <IonIcon icon={checkmarkCircle} slot="end" />}
 									</IonItem>
 								</IonReorder>

@@ -221,35 +221,19 @@ const DJOutput = (props: PageData) => {
 						strong={true}
 						size="small"
 						color="tertiary"
-						style={{
-							width: "max-content",
-							fontSize: "1.35rem",
-							padding: "0.5rem 0"
-						}}
 						onClick={() => 44}
 					>
 						Export
-						<IonIcon
-							icon={codeDownloadOutline}
-							style={ { marginInlineStart: "0.25em" } }
-						/>
+						<IonIcon icon={codeDownloadOutline} />
 					</IonButton>
 					<IonButton
 						strong={true}
 						size="small"
 						color="success"
-						style={{
-							width: "max-content",
-							fontSize: "1.35rem",
-							padding: "0.5rem 0"
-						}}
 						onClick={() => doGenerate(displayType, declenjugationGroups, data)}
 					>
 						Generate
-						<IonIcon
-							icon={caretForwardCircleOutline}
-							style={ { marginInlineStart: "0.25em" } }
-						/>
+						<IonIcon icon={caretForwardCircleOutline} />
 					</IonButton>
 				</div>
 				<div id="DJOutput" className="selectable">

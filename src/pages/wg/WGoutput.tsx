@@ -711,23 +711,14 @@ const WGOut = (props: PageData) => {
 							strong={true}
 							size="small"
 							color="success"
-							style={{
-								width: "max-content",
-								fontSize: "1.35rem",
-								padding: "0.5rem 0",
-								minHeight: "3.25rem"
-							}}
 							onClick={() => {new Promise(() => generateOutput())}}
 							disabled={isPickingSaving}
 						>
 							{
 								isGenerating ? (
-									<span style={ {fontStyle: "italic"} }>Loading...</span>
+									<span className="ital">Loading...</span>
 								) : "Generate"
-							}<IonIcon
-								icon={caretForwardCircleOutline}
-								style={ { marginInlineStart: "0.25em" } }
-							/>
+							}<IonIcon icon={caretForwardCircleOutline} />
 						</IonButton>
 						<div
 							id="outputPane"

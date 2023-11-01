@@ -250,3 +250,17 @@ ion-fab {
 	margin: 0;
 }
 
+#lexColumnNames {
+	order: -2;
+	overflow-y: scroll
+}
+#lexColumnInputs {
+	order: -1;
+	overflow-y: scroll;
+}
+.overflow-none {
+	overflow-y: hidden;
+}
+.marginless {
+	margin: 0;
+}

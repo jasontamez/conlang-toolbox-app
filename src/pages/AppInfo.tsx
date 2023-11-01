@@ -205,7 +205,7 @@ const AppInfo = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<div className="ion-text-center" style={{paddingBlockEnd: "1em", paddingBlockStart: "10em"}}>
+							<div id="coffee" className="ion-text-center">
 								<a href="https://www.buymeacoffee.com/jasontank">
 									<img
 										src="default-blue.webp"

@@ -415,7 +415,7 @@ const ConceptsPage = (props: PageData) => {
 							color="tertiary"
 							onClick={() => saveEverything()}
 						>
-							<IonIcon icon={saveOutline} style={ { marginInlineEnd: "0.5em" } } /> Save All Words
+							<IonIcon icon={saveOutline} className="conceptIcons" /> Save All Words
 						</IonButton>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
@@ -424,7 +424,7 @@ const ConceptsPage = (props: PageData) => {
 							color="secondary"
 							onClick={() => donePickingAndSaving()}
 						>
-							<IonIcon icon={checkmarkDoneOutline} style={ { marginInlineEnd: "0.5em" } } /> Save Selected Words
+							<IonIcon icon={checkmarkDoneOutline} className="conceptIcons" /> Save Selected Words
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
@@ -438,7 +438,7 @@ const ConceptsPage = (props: PageData) => {
 							color="success"
 							onClick={() => doneLinking()}
 						>
-							<IonIcon icon={saveOutline} style={ { marginInlineEnd: "0.5em" } } /> Save
+							<IonIcon icon={saveOutline} className="conceptIcons" /> Save
 						</IonButton>
 					</IonItem>
 					<div

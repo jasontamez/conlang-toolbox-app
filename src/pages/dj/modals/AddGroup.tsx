@@ -468,7 +468,7 @@ const AddGroup = (props: AddGroupProps) => {
 											<em>{root}</em>
 											{
 												useWholeWord ?
-													<em style={{fontSize: "0.5rem"}}>[W]</em>
+													<em className="mini">[W]</em>
 												:
 													<></>
 											}
@@ -490,6 +490,42 @@ const AddGroup = (props: AddGroupProps) => {
 					>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>
+					</IonButton>
+					<IonButton
+						color="primary"
+						onClick={() => {
+							dispatch(addGroup({
+								id: uuidv4(),
+								title: "Test 4",
+								startsWith: [],
+								endsWith: ["ar"],
+								separator: " ",
+								declenjugations: [
+									{
+										title: "xxx",
+										id: uuidv4(),
+										useWholeWord: false,
+										prefix: "be"
+									},
+									{
+										title: "yyy",
+										id: uuidv4(),
+										useWholeWord: false,
+										suffix: "ll"
+									},
+									{
+										title: "zzz",
+										id: uuidv4(),
+										useWholeWord: true,
+										prefix: "up",
+										suffix: "que"
+									}
+								]
+							}))
+						}}
+					>
+						<IonIcon icon={saveOutline} slot="end" />
+						<IonLabel>ADD</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

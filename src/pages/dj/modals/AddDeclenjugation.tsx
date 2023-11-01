@@ -278,10 +278,9 @@ const AddDeclenjugation = (props: AddDJModal) => {
 									aria-label="Prefix"
 									className="ion-text-end"
 								/>
-								<div
-									className="ion-text-center stem"
-									style={{paddingInline: "1rem"}}
-								><strong>{useWholeWord ? "word" : "stem"}</strong></div>
+								<div className="ion-text-center stem pad-horizontal-rem">
+									<strong>{useWholeWord ? "word" : "stem"}</strong>
+								</div>
 								<IonInput
 									id="addDJSuffix"
 									aria-label="Suffix"

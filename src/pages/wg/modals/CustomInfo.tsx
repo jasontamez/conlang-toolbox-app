@@ -253,7 +253,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 								<IonItem key={title}>
 									<IonLabel className="ion-text-wrap">{title}</IonLabel>
 									<IonButton
-										style={ { margin: "0 1em"} }
+										className="loadButton"
 										slot="end"
 										color="warning"
 										onClick={() => maybeLoadInfo(title)}

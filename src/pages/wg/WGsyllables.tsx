@@ -224,14 +224,14 @@ const WGSyl = (props: PageData) => {
 							inputmode="text"
 							placeholder="Use character group labels to construct syllables"
 						/>
-						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
+						<div className="button">
 							<SyllableButton prop="singleWord" dropoff={swDropoff} />
 						</div>
 					</IonItem>
 					<IonItem
 						className={multipleSyllableTypes && isEditing === "singleWord" ? "" : "hide"}
 					>
-						<IonList lines="none" style={ { width: "100%" } }>
+						<IonList lines="none" className="sublist">
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
@@ -277,12 +277,12 @@ const WGSyl = (props: PageData) => {
 							inputmode="text"
 							placeholder="These syllables are used to begin words"
 						/>
-						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
+						<div className="button">
 							<SyllableButton prop="wordInitial" dropoff={wiDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordInitial" ? "" : "hide"}>
-						<IonList lines="none" style={ { width: "100%" } }>
+						<IonList lines="none" className="sublist">
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
@@ -328,12 +328,12 @@ const WGSyl = (props: PageData) => {
 							inputmode="text"
 							placeholder="These syllables are used between the first and last syllable of a word"
 						/>
-						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
+						<div className="button">
 							<SyllableButton prop="wordMiddle" dropoff={wmDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordMiddle" ? "" : "hide"}>
-						<IonList lines="none" style={ { width: "100%" } }>
+						<IonList lines="none" className="sublist">
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
@@ -379,12 +379,12 @@ const WGSyl = (props: PageData) => {
 							inputmode="text"
 							placeholder="These syllables are used to end words"
 						/>
-						<div style={ { alignSelf: "center", margin: "0 0 0 1rem" } }>
+						<div className="button">
 							<SyllableButton prop="wordFinal" dropoff={wfDropoff} />
 						</div>
 					</IonItem>
 					<IonItem className={isEditing === "wordFinal" ? "" : "hide"}>
-						<IonList lines="none" style={ { width: "100%" } }>
+						<IonList lines="none" className="sublist">
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels

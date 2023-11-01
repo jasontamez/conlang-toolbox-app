@@ -1017,22 +1017,12 @@ const WEOut = (props: PageData) => {
 						><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
 						<div className="evolving">
 							<IonButton
-								style={
-									{
-										fontSize: "1.35rem",
-										padding: "0.5rem 0",
-										minHeight: "3.25rem"
-									}
-								}
 								strong={true}
 								expand="block"
 								color="success"
 								onClick={() => evolveOutput()}
 								disabled={isPickingSaving}
-							>Evolve <IonIcon
-								icon={caretForwardCircleOutline}
-								style={ { marginLeft: "0.25em" } }
-							/></IonButton>
+							>Evolve <IonIcon icon={caretForwardCircleOutline} /></IonButton>
 							<div
 								id="outputPaneWE"
 								className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}

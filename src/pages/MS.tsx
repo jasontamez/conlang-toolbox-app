@@ -65,7 +65,7 @@ const MS = (props: PageData) => {
 					n > 0 ?
 						(<strong>{n}</strong>)
 					:
-						(<IonIcon style={ {verticalAlign: "middle"} } icon={settingsSharp} />)
+						(<IonIcon className="align-middle" icon={settingsSharp} />)
 				}</IonLabel>
 			</IonTabButton>
 		);
@@ -97,7 +97,7 @@ const MS = (props: PageData) => {
 					onClick={() => setCenter(decrease(center))}
 					disabled={center <= 2}
 				>
-					<IonIcon icon={chevronBackCircle} style={ {verticalAlign: "middle"} } />
+					<IonIcon icon={chevronBackCircle} className="align-middle" />
 				</IonTabButton>
 				{range.map((n: number) => {
 					return makeTab(n);
@@ -109,7 +109,7 @@ const MS = (props: PageData) => {
 					onClick={() => setCenter(increase(center))}
 					disabled={center >= 8}
 				>
-					<IonIcon icon={chevronForwardCircle} style={ {verticalAlign: "middle"} } />
+					<IonIcon icon={chevronForwardCircle} className="align-middle" />
 				</IonTabButton>
 			</IonTabBar>
 		</IonTabs>

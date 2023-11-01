@@ -217,11 +217,8 @@ export const InfoModal = (props: InfoModalProps) => {
 			<IonButton color="primary" onClick={() => setIsOpen(true)}>
 				<IonIcon
 					icon={informationCircleSharp}
+					className="msModalHelpIcon"
 					slot="start"
-					style={{
-						marginInlineStart: "0",
-						marginInlineEnd: "0.5rem"
-					}}
 				/>
 				{label}
 			</IonButton>

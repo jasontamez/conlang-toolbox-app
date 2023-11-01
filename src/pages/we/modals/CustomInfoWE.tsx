@@ -223,11 +223,11 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 									<IonItem key={title}>
 										<IonLabel className="ion-text-wrap">{title}</IonLabel>
 										<IonButton
-											style={ { margin: "0 1em"} }
 											slot="end"
 											color="warning"
 											onClick={() => maybeLoadInfo(title)}
 											strong={true}
+											className="weCustomButon"
 										>Load</IonButton>
 										<IonButton
 											className="ion-no-margin"

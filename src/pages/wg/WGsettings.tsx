@@ -125,24 +125,15 @@ const WGSet = (props: PageData) => {
 			<IonContent fullscreen>
 				<IonList className="hasSpecialLabels" lines="full">
 					<IonItemDivider>Presets and Stored Info</IonItemDivider>
-					<IonItem style={{ padding: "0.5em" }} lines="none">
-						<div style={{
-							display: "flex",
-							justifyContent: "center",
-							alignContent: "flex-start",
-							alignItems: "center",
-							flexFlow: "row wrap",
-							width: "100%"
-						}}>
+					<IonItem lines="none" id="presetsSection">
+						<div>
 							<IonButton
-								style={{ margin: "0.25em 0.5em" }}
 								onClick={() => setIsOpenLoadPreset(true)}
 								strong={true}
 								color="secondary"
 								shape="round"
 							>Load Preset</IonButton>
 							<IonButton
-								style={{ margin: "0.25em 0.5em" }}
 								onClick={() => openCustomInfoModal()}
 								strong={true}
 								color="tertiary"

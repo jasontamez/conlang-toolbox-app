@@ -610,10 +610,10 @@ const Lex = (props: PageData) => {
 				</IonList>
 				<IonList lines="none" id="mainLexList">
 					<div id="theLexiconHeader">
-						<div style={{flexGrow: 1, flexShrink: 1}}>
+						<div className="flex-basic">
 							<h1>{lexicon.length === 1 ? "1 Item" : `${lexicon.length} Items`}</h1>
 						</div>
-						<div style={{flexGrow: 0, flexShrink: 1}}>
+						<div className="flex-shrinker">
 							<h2>Sort:</h2>
 							<div
 								className="fakeButton"
@@ -631,7 +631,7 @@ const Lex = (props: PageData) => {
 								<IonIcon size="small" src={`svg/sort-${sortDir ? "up" : "down"}.svg`} />
 							</IonButton>
 						</div>
-						<div style={{flexGrow: 0, flexShrink: 0}}>
+						<div className="unflexable">
 							<IonButton
 								disabled={isDeleting}
 								color="tertiary"
@@ -647,24 +647,22 @@ const Lex = (props: PageData) => {
 								<IonItem
 									id="lexColumnNames"
 									className="lexRow lexHeader"
-									style={ { order: -2, overflowY: "scroll" } }
 								>
 									{columns.map((column: LexiconColumn) => (
 										<div
 											className={
-												(truncateColumns ? "" : "ion-text-wrap ")
+												"overflow-y-none "
+												+ (truncateColumns ? "" : "ion-text-wrap ")
 												+ column.size
 											}
-											style={ { overflowY: "hidden" }}
 											key={column.id}
 										>{column.label}</div>
 									))}
-									<div className="xs" style={ { overflowY: "hidden" }}></div>
+									<div className="xs overflow-y-none"></div>
 								</IonItem>
 								<IonItem
 									id="lexColumnInputs"
 									className="lexRow serifChars lexInputs"
-									style={ { order: -1, overflowY: "scroll" } }
 								>
 									{columns.map((column: LexiconColumn) => {
 										const { id, label, size } = column;
@@ -680,13 +678,13 @@ const Lex = (props: PageData) => {
 											/>
 										);
 									})}
-									<div className="xs" style={ { overflowY: "hidden" }}>
+									<div className="xs overflow-y-none">
 										<IonButton
 											disabled={isDeleting}
 											color="success"
 											onClick={() => addToLex()}
 										>
-											<IonIcon icon={add} style={ { margin: 0 } } />
+											<IonIcon icon={add} className="marginless" />
 										</IonButton>
 									</div>
 								</IonItem>

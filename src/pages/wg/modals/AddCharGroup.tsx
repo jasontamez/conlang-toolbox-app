@@ -178,7 +178,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							autocomplete="on"
 						/>
 					</IonItem>
-					<IonItem style={{marginBlockStart: "0.25rem"}}>
+					<IonItem className="margin-top-quarter">
 						<div slot="start" className="ion-margin-end labelLabel">Short Label:</div>
 						<IonInput
 							aria-label="Short Label"

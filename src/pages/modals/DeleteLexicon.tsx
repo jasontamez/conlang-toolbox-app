@@ -102,19 +102,13 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 									[{lex.lexicon.length.toString()}&nbsp;words]
 								</IonLabel>
 								<IonNote
-									className="ion-text-wrap"
+									className="ion-text-wrap ital"
 									slot="end"
-									style={{ fontStyle: "italic" }}
 								>Saved: {time.toLocaleString()}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1
-							style={{
-								margin: "2rem auto",
-								textAlign: "center"
-							}}
-						>No Saved Lexicons</h1>
+						<h1>No Saved Lexicons</h1>
 					)}
 				</IonList>
 			</IonContent>

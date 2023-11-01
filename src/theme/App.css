@@ -43,6 +43,38 @@ ion-row:nth-child(odd) {
 	margin: 16px 0;
 }
 
+.flex-basic {
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+.flex-shrinker {
+	flex-grow: 0;
+	flex-shrink: 1;
+}
+.flex-grower {
+	flex-grow: 1;
+	flex-shrink: 0;
+}
+.unflexable {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+.align-middle {
+	vertical-align: middle;
+}
+.pad-horizontal-rem {
+	padding-inline: 1rem;
+}
+.margin-top-quarter {
+	margin-block-start: 0.25rem;
+}
+.ital {
+	font-style: italic;
+}
+.bold {
+	font-weight: bold;
+}
+
 .emphasizedSection {
 	text-align: center;
 	margin-inline-start: auto;
@@ -59,6 +91,10 @@ ion-card-content ul li {
 }
 ion-card-content ul.changelog li {
 	margin: 0.25em 1em 0.75em 0;
+}
+#coffee {
+	padding-block-end: 1em;
+	padding-block-start: 10em;
 }
 
 .charGroups .charGroupLongName,
@@ -165,6 +201,15 @@ ion-app ion-list.syllables div.header div.percentage {
 	background-color: var(--ion-background-shader);
 	opacity: 0.75;
 }
+ion-app ion-list.syllables div.button {
+	align-self: center;
+	margin-block: 0;
+	margin-inline-start: 1rem;
+	margin-inline-end: 0;
+}
+ion-app ion-list.syllables ion-list.sublist {
+	width: 100%;
+}
 ion-app ion-list.syllables .toggleable {
 	overflow: hidden;
 	display: none;
@@ -242,6 +287,16 @@ ion-app .fullScreen .collapse div ion-button {
 #WGoutput .leftHandSide {
 	flex: 1;
 }
+#WGoutput .leftHandSide ion-button {
+	width: max-content;
+	font-size: 1.35rem;
+	min-height: 3.25rem;
+	padding-block: 0.5rem;
+	padding-inline: 0;
+}
+#WGoutput .leftHandSide ion-button ion-icon {
+	margin-inline-start: 0.25rem;
+}
 #WGoutput .rightHandSide {
 	flex-flow: column nowrap;
 	justify-content: center;
@@ -257,6 +312,21 @@ ion-app .fullScreen .collapse div ion-button {
 	font-size: smaller;
 	margin-inline-start: 1em;
 	opacity: 0.75;
+}
+#presetsSection {
+	padding: 0.5rem;
+}
+#presetsSection div {
+	display: flex;
+	justify-content: center;
+	align-content: flex-start;
+	align-items: center;
+	flex-flow: row wrap;
+	width: 100%;
+}
+#presetsSection div ion-button {
+	margin-block: 0.25em;
+	margin-inline: 0.5em;
 }
 
 #WEoutput {
@@ -289,6 +359,20 @@ ion-app .fullScreen .collapse div ion-button {
 }
 #WEoutput div.evolving div.rules {
 	margin-inline-start: 2rem;
+}
+#WEoutput div.evolving ion-button {
+	font-size: 1.35rem;
+	padding-inline: 0;
+	padding-block: 0.5rem;
+	min-height: 3.25rem;
+}
+#WEoutput div.evolving ion-button ion-icon {
+	margin-inline-start: 0.25em;
+}
+
+.weCustomButton {
+	margin-block: 0;
+	margin-inline: 1em;
 }
 
 #outputPaneWE,
@@ -389,7 +473,9 @@ ion-app .hasMaxTextArea textarea {
 }
 
 .selectable,
-.selectable::part(native) {
+.selectable *,
+.selectable::part(native),
+.selectable *::part(native) {
 	-moz-user-select: text !important;
 	-webkit-user-select: text !important;
 	-ms-user-select: text !important;
@@ -449,6 +535,16 @@ ion-modal::part(content) ion-item-group.buttonFilled ion-item:nth-of-type(even):
 ion-modal::part(content) ion-list.buttonFilled ion-item:nth-of-type(even)::part(native) {
 	background: var(--ion-background-shader);
 }
+.buttonFilled h1 {
+	margin-block: 2rem;
+	margin-inline: auto;
+	text-align: center;
+}
+.buttonFilled ion-button.loadButton {
+	margin-block: 0;
+	margin-inline: 1em;
+}
+
 ion-modal ion-footer.modalBorderTop {
 	border-block-start: 2px solid var(--ion-background-shader);
 }
@@ -628,6 +724,9 @@ ion-item.wrappableInnards h2 {
 	flex-grow: 0;
 	flex-shrink: 0;
 	margin: 0 auto 0 0.25rem
+}
+.conceptIcons {
+	margin-inline-end: 0.5em;
 }
 
 .ion-text-wrap {
@@ -897,6 +996,15 @@ ion-list.hasToggles ion-item.toggleable.toggled::part(native) {
 	width: 100%;
 	padding: 0 1rem;
 }
+#DJOutputButtons ion-button {
+	width: max-content;
+	font-size: 1.35rem;
+	padding-block: 0.25rem;
+	padding-inline: 0;
+}
+#DJOutputButtons ion-button ion-icon {
+	margin-inline-start: 0.25em;
+}
 #DJOutput {
 	display: block;
 }
@@ -961,6 +1069,10 @@ ion-item.groupedDeclenjugation div.root {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: end;
+}
+ion-item.djGroupInfo div.description,
+ion-item.groupedDeclenjugation div.root em.mini {
+	font-size: 0.5rem;
 }
 ion-item.groupedDeclenjugation div.icon,
 ion-item.groupedDeclenjugation ion-reorder {
