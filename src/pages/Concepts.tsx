@@ -128,7 +128,6 @@ const ConceptsPage = (props: PageData) => {
 							// Treat as cancel
 							return;
 						}
-						console.log(col);
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words.map((obj: SavedWord) => obj.word), col.id, sorter]));
 						// Clear info

@@ -17,10 +17,11 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ModalProperties, StateObject } from '../../../store/types';
 
+import logger from '../../../components/Logging';
 import doExport from '../../../components/ExportServices';
 import doText from './Ex-Text';
 import doDocx from './Ex-Docx';
@@ -41,13 +42,15 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		setIsOpen(false);
 		setLoading(false);
 	};
+	const dispatch = useDispatch();
+	const log = (info: string[]) => logger(dispatch, info);
 	const doDownload = (e: Event, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = `${title} - ${(new Date()).toDateString()}.${extension}`;
 		setLoading(true);
 		doExport(output, filename, doToast, undoToast)
 			.catch((e = "Error doexport") => {
-				console.log(e);
+				log(["ExportModal / doDownload", e]);
 				doClose();
 			})
 			.then(() => doClose());
@@ -84,7 +87,8 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 								doClose,
 								setLoading,
 								doToast,
-								undoToast
+								undoToast,
+								log
 							)}
 					>Word Document (docx)</IonItem>
 					<IonItem

@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import blankAppState from './blankAppState';
 import { WECharGroupObject, WEOutputTypes, WEPresetObject, WESoundChangeObject, WEState, WETransformObject } from './types';
+import log from '../components/Logging';
 
 const initialState: WEState = blankAppState.we as WEState;
 
@@ -126,7 +127,7 @@ const setOutputFunc = (state: WEState, action: PayloadAction<WEOutputTypes>) => 
 			state.outputStyle = outputStyle;
 			break;
 		default:
-			console.log(`INVALID OUTPUT STYLE [${outputStyle}]`);
+			log(null, [`INVALID OUTPUT STYLE [${outputStyle}]`]);
 	}
 	return state;
 };

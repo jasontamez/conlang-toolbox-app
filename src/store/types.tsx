@@ -338,6 +338,7 @@ export interface MSState extends MSInfo {
 	lastSave: number
 	title: string
 	description: string
+	lastView: string
 }
 export type MSBool = "BOOL_prefixMost" | "BOOL_prefixLess" | "BOOL_suffixMost" | "BOOL_suffixLess"
 				| "BOOL_circumfixMost" | "BOOL_circumfixLess" | "BOOL_infixMost" | "BOOL_infixLess"
@@ -495,7 +496,6 @@ export interface DJCustomInfo {
 export interface DJState extends DJCustomInfo {
 	input: string
 }
-// TO-DO: add to ViewState?
 
 //
 // EXTRA CHARACTERS
@@ -539,17 +539,6 @@ export interface AppSettings {
 }
 
 //
-// VIEW STATE
-//
-// TO-DO: change 'string' into specific types for each component
-
-export interface ViewState {
-	wg: string
-	we: string
-	ms: string
-}
-
-//
 // MAIN
 //
 
@@ -563,7 +552,7 @@ export interface StateObject {
 	ec: ExtraCharactersState
 	appSettings: AppSettings
 	sortSettings: SortSettings
-	lastView: ViewState
+	logs: string[]
 }
 
 export interface PageData {

@@ -50,7 +50,7 @@ type storedDJ = [string, DJCustomInfo][];
 
 type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
 
-type OutputObject = Omit<StateObject, "sortSettings" | "lastView"> & {
+type OutputObject = Omit<StateObject, "sortSettings" | "lastView" | "logs"> & {
 	currentVersion: string
 	sortSettings: SaveableSortSettings
 	lexStored: storedLex
@@ -190,7 +190,10 @@ const MExportAllData = (props: ModalProperties) => {
 					transforms: we.transforms.map((obj) => ({...obj})),
 					soundChanges: we.soundChanges.map((obj) => ({...obj})),
 				},
-				ms,
+				ms: {
+					...ms,
+					lastView: "msSettings"
+				},
 				dj: { // versions >= 0.11.0
 					input: dj.input,
 					declenjugationGroups: dj.declenjugationGroups.map((obj) => ({...copyDJGroup(obj)}))

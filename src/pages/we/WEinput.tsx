@@ -7,7 +7,6 @@ import {
 	IonMenuButton,
 	IonButtons,
 	IonTitle,
-	useIonViewDidEnter,
 	IonButton,
 	IonIcon,
 	useIonAlert
@@ -20,9 +19,8 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, ViewState } from '../../store/types';
+import { PageData, StateObject } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
-import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
@@ -38,10 +36,6 @@ const WEInput = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
-	const viewInfo = { key: "we" as keyof ViewState, page: "input" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);

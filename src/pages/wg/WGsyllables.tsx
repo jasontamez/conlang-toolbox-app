@@ -14,7 +14,6 @@ import {
 	IonLabel,
 	IonTextarea,
 	IonToggle,
-	useIonViewDidEnter,
 	IonRange,
 	useIonToast,
 	useIonAlert
@@ -27,9 +26,8 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, SyllableTypes, ViewState, Zero_Fifty } from '../../store/types';
+import { PageData, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
 import { setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes, clearSyllables } from '../../store/wgSlice';
-import { saveView } from '../../store/viewSlice';
 
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -52,10 +50,6 @@ const WGSyl = (props: PageData) => {
 	const [wi, setWi] = useState<string>("");
 	const [wm, setWm] = useState<string>("");
 	const [wf, setWf] = useState<string>("");
-	const viewInfo = { key: "wg" as keyof ViewState, page: "syllables" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const {
 		singleWord,
 		wordInitial,

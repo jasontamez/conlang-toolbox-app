@@ -16,8 +16,7 @@ import {
 	IonToggle,
 	IonInput,
 	IonButton,
-	IonLoading,
-	useIonViewDidEnter
+	IonLoading
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -30,7 +29,6 @@ import {
 	Two_Fifteen,
 	Zero_Fifty,
 	PageData,
-	ViewState,
 	StateObject
 } from '../../store/types';
 import {
@@ -46,10 +44,10 @@ import {
 	setExclamatorySentencePre,
 	setExclamatorySentencePost
 } from '../../store/wgSlice';
-import { saveView } from '../../store/viewSlice';
 
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import ModalWrap from "../../components/ModalWrap";
+import log from '../../components/Logging';
 
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import MaybeLoadPreset from './modals/MaybeLoadPreset';
@@ -65,10 +63,6 @@ const WGSet = (props: PageData) => {
 	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
 	const [infoModalTitles, setInfoModalTitles] = useState<string[] | null>(null);
 	const { modalPropsMaker } = props;
-	const viewInfo = { key: "wg" as keyof ViewState, page: "settings" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const {
 		monosyllablesRate,
 		maxSyllablesPerWord,
@@ -92,7 +86,7 @@ const WGSet = (props: PageData) => {
 			setLoadingOpen(false);
 			setIsOpenManageCustom(true);
 		}).catch((err: any) => {
-			console.log(err);
+			log(dispatch, ["WG Custom Info Modal", err]);
 		});
 		setLoadingOpen(true);
 	};

@@ -9,6 +9,7 @@ const blankAppState: StateObject = {
 		lastSave: 0,
 		title: "",
 		description: "",
+		lastView: "msSettings",
 
 		BOOL_prefixMost: false,
 		BOOL_prefixLess: false,
@@ -280,11 +281,7 @@ const blankAppState: StateObject = {
 		sensitivity: "variant",
 		customSorts: []
 	},
-	lastView: {
-		wg: 'charGroups',
-		we: 'input',
-		ms: 'msSettings'
-	}
+	logs: []
 };
 
 export default blankAppState;

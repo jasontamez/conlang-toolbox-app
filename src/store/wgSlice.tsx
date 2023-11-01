@@ -15,6 +15,7 @@ import {
 	Zero_Fifty,
 	Zero_OneHundred
 } from './types';
+import log from '../components/Logging';
 
 const initialState: WGState = blankAppState.wg;
 
@@ -173,7 +174,7 @@ const setOutputFunc = (state: WGState, action: PayloadAction<WGOutputTypes>) => 
 };
 const setCustomSortFunc = (state: WGState, action: PayloadAction<string | null>) => {
 	state.customSort = action.payload;
-	console.log(action.payload);
+	log(null, [action.payload]);
 	return state;
 };
 const setShowSyllableBreaksFunc = (state: WGState, action: PayloadAction<boolean>) => {

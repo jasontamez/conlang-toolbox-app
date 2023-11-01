@@ -28,7 +28,6 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
-	const { ms, we, wg } = useSelector((state: StateObject) => state.lastView);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
@@ -48,7 +47,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard
 								button={true}
-								routerLink={`/ms/${ms || "msSettings"}`}
+								routerLink="/ms/msSettings"
 								routerDirection="forward"
 							>
 								<IonCardHeader className="ion-text-center">
@@ -70,7 +69,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard
 								button={true}
-								routerLink={`/wg/${wg || "settings"}`}
+								routerLink="/wg/settings"
 								routerDirection="forward"
 							>
 								<IonCardHeader className="ion-text-center">
@@ -93,7 +92,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonCard
 								button={true}
-								routerLink={`/we/${we || "input"}`}
+								routerLink="/we/input"
 								routerDirection="forward"
 							>
 								<IonCardHeader className="ion-text-center">

@@ -23,9 +23,8 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData, MSState, StateObject } from '../../store/types';
-import { saveView } from '../../store/viewSlice';
-import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
+import { PageData, MSState, StateObject } from '../../store/types';
+import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText, saveView } from '../../store/msSlice';
 import blankAppState from '../../store/blankAppState';
 
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
@@ -59,9 +58,8 @@ const Syntax = (props: PageData) => {
 		...msRemainder
 	} = useSelector((state: StateObject) => state.ms);
 	const allProps = Object.keys(msRemainder).length;
-	const viewInfo = { key: "ms" as keyof ViewState, page: "msSettings" };
 	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
+		dispatch(saveView("msSettings"));
 	});
 	const clearMS = () => {
 		const handler = () => {

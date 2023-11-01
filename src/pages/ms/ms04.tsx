@@ -7,8 +7,8 @@ import {
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ViewState, PageData, StateObject } from '../../store/types';
-import { saveView } from '../../store/viewSlice';
+import { PageData, StateObject } from '../../store/types';
+import { saveView } from '../../store/msSlice';
 
 import {
 	CheckboxItem,
@@ -47,9 +47,8 @@ const Syntax = (props: PageData) => {
 		TEXT_dimAug
 	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
-	const viewInfo = { key: "ms" as keyof ViewState, page: "ms04" };
 	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
+		dispatch(saveView("ms04"));
 	});
 	return (
 		<IonPage>

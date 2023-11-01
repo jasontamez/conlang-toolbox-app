@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import blankAppState from './blankAppState';
 import { Lexicon, LexiconBlankSorts, LexiconColumn, LexiconState } from './types';
+import log from '../components/Logging';
 
 const initialState = blankAppState.lexicon;
 
@@ -59,7 +60,7 @@ const sortLexicon = (
 				}
 			} catch(error) {
 				comp = 0;
-				console.log(error);
+				log(null, ["Lexicon Slice / sortFunction", error]);
 			}
 		} while (!comp && ++col < maxCol);
 		if(col === maxCol) {

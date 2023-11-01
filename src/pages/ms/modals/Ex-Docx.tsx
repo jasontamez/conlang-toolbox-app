@@ -16,6 +16,8 @@ import {
 import { MSBool, MSNum, MSState, MSText } from "../../../store/types";
 
 import doExport from '../../../components/ExportServices';
+import logger from '../../../components/Logging';
+
 import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
 import msRawInfo from '../ms.json';
 
@@ -36,7 +38,8 @@ const doDocx = (
 	doClose: Function,
 	setLoading: Function,
 	doToast: Function,
-	undoToast: Function
+	undoToast: Function,
+	log: Function
 ) => {
 	const msSections: string[] = msRawInfo.sections;
 	const sections: Section[] = [];
@@ -349,7 +352,7 @@ const doDocx = (
 		Packer.toBlob(doc).then((blob) => {
 			saveAs(blob, filename);
 		}).catch((e = "Error blob") => {
-			console.log(e);
+			logger(null, e);
 		});
 		return;
 	}
@@ -359,12 +362,12 @@ const doDocx = (
 	Packer.toBase64String(doc).then((output) => {
 		doExport(output, filename, doToast, undoToast, false)
 			.catch((e = "Error doexport docx") => {
-				console.log(e);
+				log(["Ex-Doc / Packer / doExport", e]);
 				doClose();
 			})
 			.then(() => doClose());
 	}).catch((e = "Error 64") => {
-		console.log(e);
+		log(["Ex-Doc / Packer", e]);
 		doClose();
 	});
 

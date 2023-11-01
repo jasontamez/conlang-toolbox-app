@@ -16,7 +16,6 @@ import {
 	IonLabel,
 	IonReorder,
 	IonReorderGroup,
-	useIonViewDidEnter,
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption,
@@ -33,9 +32,8 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, ViewState, WGTransformObject } from '../../store/types';
+import { PageData, StateObject, WGTransformObject } from '../../store/types';
 import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
-import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -51,15 +49,11 @@ import { TransCard } from "./WGCards";
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const viewInfo = { key: "wg" as keyof ViewState, page: "transforms" };
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGTransformObject | null>(null);
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const { transforms } = useSelector((state: StateObject) => state.wg);

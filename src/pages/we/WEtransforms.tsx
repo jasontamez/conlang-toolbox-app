@@ -14,7 +14,6 @@ import {
 	IonItem,
 	IonLabel,
 	IonButton,
-	useIonViewDidEnter,
 	IonReorderGroup,
 	IonReorder,
 	IonItemSliding,
@@ -33,9 +32,8 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, ViewState, WETransformObject } from '../../store/types';
+import { PageData, StateObject, WETransformObject } from '../../store/types';
 import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
-import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -55,10 +53,6 @@ const WERew = (props: PageData) => {
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [ editing, setEditing ] = useState<WETransformObject | null>(null);
-	const viewInfo = { key: "we" as keyof ViewState, page: "transformations" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);

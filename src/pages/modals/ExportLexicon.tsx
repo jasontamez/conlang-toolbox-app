@@ -17,9 +17,12 @@ import {
 import {
 	closeCircleOutline
 } from 'ionicons/icons';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Lexicon, ModalProperties, StateObject } from '../../store/types';
+
 import doExport from '../../components/ExportServices';
+import log from '../../components/Logging';
 
 interface ExportModalProps extends ModalProperties {
 	setLoading: Function
@@ -37,6 +40,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		setIsOpen(false);
 		setLoading(false);
 	};
+	const dispatch = useDispatch();
 	const columnTitles = columns.map((obj) => obj.label);
 	const length = columns.length;
 	const [doToast, undoToast] = useIonToast();
@@ -136,7 +140,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
 		doExport(output, filename, doToast, undoToast)
-			.catch((e = "Error?") => console.log(e))
+			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))
 			.then(() => doClose());
 	};
 	return (

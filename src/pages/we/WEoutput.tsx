@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import {
-	useIonViewDidEnter,
 	IonContent,
 	IonPage,
 	IonHeader,
@@ -29,8 +28,15 @@ import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
 import { Clipboard } from '@capacitor/clipboard';
 
-import { LexiconColumn, PageData, SortObject, StateObject, ViewState, WECharGroupObject, WESoundChangeObject, WETransformObject } from '../../store/types';
-import { saveView } from '../../store/viewSlice';
+import {
+	LexiconColumn,
+	PageData,
+	SortObject,
+	StateObject,
+	WECharGroupObject,
+	WESoundChangeObject,
+	WETransformObject
+} from '../../store/types';
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
 import { $i, $a } from '../../components/DollarSignExports';
@@ -42,6 +48,8 @@ import ltr from '../../components/LTR';
 import { CustomStorageWE } from '../../components/PersistentInfo';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
+import log from '../../components/Logging';
+
 import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
@@ -100,10 +108,6 @@ const WEOut = (props: PageData) => {
 	const [storedInfo, setStoredInfo] = useState<string[]>([]);
 	const [needToGenerate, setNeedToGenerate] = useState<boolean>(true);
 	const dispatch = useDispatch();
-	const viewInfo = { key: "we" as keyof ViewState, page: "output" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
@@ -775,7 +779,7 @@ const WEOut = (props: PageData) => {
 							// Treat as cancel
 							return;
 						}
-						console.log(col);
+						log(dispatch, ["WE Save to lex?", col]);
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
@@ -847,7 +851,7 @@ const WEOut = (props: PageData) => {
 			setLoadingOpen(false);
 			setIsOpenManageCustomWE(true);
 		}).catch((err) => {
-			console.log(err);
+			log(dispatch, ["Open Custom Info Modal", err])
 		});
 	};
 

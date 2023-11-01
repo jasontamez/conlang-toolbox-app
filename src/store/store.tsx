@@ -23,10 +23,10 @@ import lexiconSlice from './lexiconSlice';
 import wgSlice from './wgSlice';
 import weSlice from './weSlice';
 import extraCharactersSlice from './extraCharactersSlice';
-import viewSlice from './viewSlice';
 import sortingSlice from './sortingSlice';
 import declenjugatorSlice from './declenjugatorSlice';
 import blankAppState from './blankAppState';
+import logsSlice from './logsSlice';
 
 //
 //
@@ -48,8 +48,10 @@ const migrations = {
 				usingLexiconForInput: null,
 				identifiers: [],
 				declenjugationGroups: []
-			}
+			},
+			logs: []
 		};
+		newState.ms.lastView = "msSettings";
 		delete newState.wg.storedCustomInfo;
 		delete newState.wg.storedCustomIDs;
 		delete newState.we.storedCustomInfo;
@@ -58,6 +60,7 @@ const migrations = {
 		delete newState.ms.storedCustomIDs;
 		delete newState.lexicon.storedCustomInfo;
 		delete newState.lexicon.storedCustomIDs;
+		delete newState.viewState;
 		return newState;
 	}
 }
@@ -72,8 +75,8 @@ const reducerConfig = {
 	concepts: conceptsSlice,
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
-	lastView: viewSlice,
-	sortSettings: sortingSlice
+	sortSettings: sortingSlice,
+	logs: logsSlice
 };
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
 	if(incomingState && originalState && (incomingState.appSettings.theme !== originalState.appSettings.theme)) {

@@ -14,7 +14,6 @@ import {
 	IonItem,
 	IonLabel,
 	IonButton,
-	useIonViewDidEnter,
 	IonReorderGroup,
 	IonReorder,
 	IonItemSliding,
@@ -33,9 +32,8 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, ViewState, WESoundChangeObject } from '../../store/types';
+import { PageData, StateObject, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
-import { saveView } from '../../store/viewSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -55,10 +53,6 @@ const WERew = (props: PageData) => {
 	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
 	const [isOpenEditSoundChange, setIsOpenEditSoundChange] = useState<boolean>(false);
 	const [editing, setEditing] = useState<null | WESoundChangeObject>(null);
-	const viewInfo = { key: "we" as keyof ViewState, page: "soundchanges" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);

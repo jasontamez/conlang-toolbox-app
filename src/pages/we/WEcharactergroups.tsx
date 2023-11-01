@@ -14,7 +14,6 @@ import {
 	IonFabButton,
 	IonIcon,
 	IonButton,
-	useIonViewDidEnter,
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption,
@@ -30,8 +29,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, ViewState, WECharGroupObject } from '../../store/types';
-import { saveView } from '../../store/viewSlice';
+import { PageData, StateObject, WECharGroupObject } from '../../store/types';
 import { deleteCharacterGroupWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
@@ -51,10 +49,6 @@ const WECharGroup = (props: PageData) => {
 	const [isOpenAddCharGroupWE, setIsOpenAddCharGroupWE] = useState<boolean>(false);
 	const [isOpenEditCharGroupWE, setIsOpenEditCharGroupWE] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WECharGroupObject | null>(null);
-	const viewInfo = { key: "we" as keyof ViewState, page: "charGroups" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const { characterGroups } = useSelector((state: StateObject) => state.we);

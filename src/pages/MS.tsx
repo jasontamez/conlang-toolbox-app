@@ -35,7 +35,7 @@ function increase (n: number) {
 }
 
 const MS = (props: PageData) => {
-	const msPage: string = useSelector((state: StateObject) => state.lastView.ms) || "msSettings";
+	const msPage: string = useSelector((state: StateObject) => state.ms.lastView) || "msSettings";
 	const page = Number(msPage.slice(-2)) || 0;
 	// 'center' should not fall more that two places from an edge
 	const [center, setCenter] = useState<number>(Math.min(Math.max(page, 2), 8));

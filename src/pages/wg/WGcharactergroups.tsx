@@ -18,7 +18,6 @@ import {
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption,
-	useIonViewDidEnter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
@@ -39,10 +38,8 @@ import {
 	WGCharGroupObject,
 	Zero_Fifty,
 	PageData,
-	ViewState,
 	StateObject
 } from '../../store/types';
-import { saveView } from '../../store/viewSlice';
 
 import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
@@ -63,10 +60,6 @@ const WGCharGroup = (props: PageData) => {
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
 	const [isOpenEditCharGroup, setIsOpenEditCharGroup] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGCharGroupObject | null>(null);
-	const viewInfo = { key: "wg" as keyof ViewState, page: "charGroups" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = (charGroup: WGCharGroupObject) => {

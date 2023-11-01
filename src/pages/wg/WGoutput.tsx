@@ -9,7 +9,6 @@ import {
 	IonTitle,
 	IonButton,
 	IonIcon,
-	useIonViewDidEnter,
 	useIonAlert,
 	useIonToast,
 	useIonRouter,
@@ -30,12 +29,10 @@ import {
 	WGCharGroupObject,
 	PageData,
 	LexiconColumn,
-	ViewState,
 	StateObject,
 	SortObject
 } from '../../store/types';
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
-import { saveView } from '../../store/viewSlice';
 
 import { $a, $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
@@ -44,6 +41,8 @@ import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
+import log from '../../components/Logging';
+
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGCards";
 
@@ -86,10 +85,6 @@ const WGOut = (props: PageData) => {
 
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
-	const viewInfo = { key: "wg" as keyof ViewState, page: "output" };
-	useIonViewDidEnter(() => {
-		dispatch(saveView(viewInfo));
-	});
 
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -620,7 +615,7 @@ const WGOut = (props: PageData) => {
 							// Treat as cancel
 							return;
 						}
-						console.log(col);
+						log(dispatch, ["WG Send to Lexicon", col]);
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
