@@ -25,10 +25,10 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Mappe
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [^a-z] construct, where a-z is the character group contents.
-				reformed += "[^" + escapeRegexp(charGroup.run) + "]" + bit!.slice(1);
+				reformed += `[^${escapeRegexp(charGroup.run)}]${bit!.slice(1)}`;
 			} else {
 				// If character group is not found, it gets ignored.
-				reformed = "!%" + bit;
+				reformed += "!%" + bit;
 			}
 		}
 		// Now check for character groups
@@ -44,18 +44,24 @@ const calculateCharGroupReferenceRegex = (transform: string, charGroupMap: Mappe
 			// Does it exist?
 			if(charGroup !== undefined) {
 				// CharGroup found. Replace with [a-z] construct, where a-z is the character group contents.
-				reformed += "[" + escapeRegexp(charGroup.run) + "]" + bit!.slice(1);
+				reformed += `[^${escapeRegexp(charGroup.run)}]${bit!.slice(1)}`;
 			} else {
 				// If character group is not found, it gets ignored.
-				reformed = "%" + bit;
+				reformed += "%" + bit;
 			}
 		}
 		// Save reformed for later!
 		final.push(reformed);
 	}
 	// Reform info with %% reduced back to % and save as regexp
-	return new RegExp(final.join("%"), "g");
+	let returnValue: RegExp;
+	try {
+		// In case there's an invalid grouping for some reason.
+		returnValue = new RegExp(final.join("%"), "g");
+	} catch (any) {
+		returnValue = new RegExp("^$");
+	}
+	return returnValue;
 };
-
 
 export default calculateCharGroupReferenceRegex;
