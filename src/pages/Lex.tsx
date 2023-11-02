@@ -2,12 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import {
 	IonPage,
 	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonTitle,
-	IonButtons,
 	IonButton,
-	IonMenuButton,
 	IonIcon,
 	IonList,
 	IonItem,
@@ -66,6 +61,7 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import ExportLexiconModal from './modals/ExportLexicon';
 import EditLexiconSortModal from './modals/EditSort';
 import MergeLexiconItemsModal from './modals/MergeLexiconItems';
+import Header from '../components/Header';
 import PermanentInfo from '../components/PermanentInfo';
 import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
@@ -545,39 +541,38 @@ const Lex = (props: PageData) => {
 				duration={1000}
 			/>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<IonHeader id="lexiconTopBar">
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>Lexicon</IonTitle>
-					<IonButtons slot="end">
-						<IonButton
-							color={lexHeadersHidden ? "secondary" : undefined}
-							onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
-						>
-							<IonIcon
-								icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
-								slot="icon-only"
-							/>
-						</IonButton>
-						<IonButton
-							disabled={isDeleting}
-							onClick={() => setIsOpenECM(true)}
+			<Header
+				id="lexiconTopBar"
+				title="Lexicon"
+				endButtons={[
+					<IonButton
+						color={lexHeadersHidden ? "secondary" : undefined}
+						onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
+						key="hideLexiconTopButton"
+					>
+						<IonIcon
+							icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
 							slot="icon-only"
-						>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton
-							disabled={isDeleting}
-							onClick={() => setIsOpenLexStorage(true)}
-							slot="icon-only"
-						>
-							<IonIcon icon={saveOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+						/>
+					</IonButton>,
+					<IonButton
+						disabled={isDeleting}
+						onClick={() => setIsOpenECM(true)}
+						slot="icon-only"
+						key="openExtraCharsLexButton"
+					>
+						<IonIcon icon={globeOutline} />
+					</IonButton>,
+					<IonButton
+						disabled={isDeleting}
+						onClick={() => setIsOpenLexStorage(true)}
+						slot="icon-only"
+						key="openLexStorageButton"
+					>
+						<IonIcon icon={saveOutline} />
+					</IonButton>
+				]}
+			/>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
 				<IonList
 					lines="none"

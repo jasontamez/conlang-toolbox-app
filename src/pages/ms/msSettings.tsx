@@ -33,9 +33,7 @@ import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 
-import {
-	SyntaxHeader
-} from './MorphoSyntaxElements';
+import { SyntaxHeader } from './MorphoSyntaxElements';
 import LoadMS from './modals/LoadSyntaxDoc';
 import DeleteMS from './modals/DeleteSyntaxDoc';
 import ExportMS from './modals/ExportSyntaxDoc';

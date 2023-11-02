@@ -3,20 +3,16 @@ import {
 	IonLabel,
 	IonPage,
 	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonTitle,
 	IonList,
 	IonItem,
-	IonToggle,
-	IonButtons,
-	IonMenuButton
+	IonToggle
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject } from '../store/types';
 import { setDisableConfirms } from '../store/settingsSlice';
 
+import Header from '../components/Header';
 import ChooseThemeModal from './modals/Theme';
 import ExportAllData from './modals/ExportAllData';
 
@@ -33,14 +29,7 @@ const AppSettings = (props: PageData) => {
 		<IonPage>
 			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
 			<ExportAllData {...props.modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>App Settings</IonTitle>
-				</IonToolbar>
-			</IonHeader>
+			<Header title="App Settings" />
 			<IonContent fullscreen>
 				<IonList lines="full">
 					<IonItem className="wrappableInnards">

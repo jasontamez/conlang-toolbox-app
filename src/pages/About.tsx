@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import {
 	IonPage,
-	IonHeader,
 	IonIcon,
-	IonTitle,
-	IonToolbar,
 	IonGrid,
 	IonRow,
 	IonCol,
 	IonCard,
 	IonCardHeader,
 	IonCardContent,
-	IonButtons,
-	IonMenuButton,
 	IonContent,
 	IonCardTitle
 } from '@ionic/react';
@@ -22,7 +17,14 @@ import { useSelector } from "react-redux";
 import { PageData, StateObject } from '../store/types';
 import { currentVersion } from '../store/blankAppState';
 
-import { ConceptsIcon, LexiconIcon, WordEvolveIcon, WordGenIcon, MorphoSyntaxIcon } from '../components/icons';
+import {
+	ConceptsIcon,
+	LexiconIcon,
+	WordEvolveIcon,
+	WordGenIcon,
+	MorphoSyntaxIcon
+} from '../components/icons';
+import Header from '../components/Header';
 import ExtraCharactersModal from './modals/ExtraCharacters';
 
 const Home = (props: PageData) => {
@@ -33,14 +35,7 @@ const Home = (props: PageData) => {
 	return (
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<IonHeader>
-				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
-					<IonTitle>Conlang Toolbox</IonTitle>
-				</IonToolbar>
-			</IonHeader>
+			<Header title="Conlang Toolbox" />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>

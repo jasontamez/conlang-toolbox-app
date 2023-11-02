@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
 	IonPage,
-	IonHeader,
-	IonTitle,
-	IonToolbar,
 	IonGrid,
 	IonRow,
 	IonCol,
@@ -11,8 +8,6 @@ import {
 	IonCard,
 	IonCardHeader,
 	IonCardContent,
-	IonButtons,
-	IonMenuButton,
 	IonContent,
 	IonList,
 	IonItem,
@@ -27,6 +22,7 @@ import { useWindowWidth } from '@react-hook/window-size/throttled';
 import { PageData, StateObject, ThemeNames } from '../store/types';
 
 import toaster from '../components/toaster';
+import Header from '../components/Header';
 
 function getBannerDimensions (windowWidth: number) {
 	// original banner size: 545x153
@@ -86,14 +82,7 @@ const AppInfo = (props: PageData) => {
 
 	return (
 		<IonPage className={theme}>
-			<IonHeader>
-				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
-					<IonTitle>App Info</IonTitle>
-				</IonToolbar>
-			</IonHeader>
+			<Header title="App Info" />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>

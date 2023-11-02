@@ -5,7 +5,6 @@ import {
 	IonTitle,
 	IonButtons,
 	IonButton,
-	IonMenuButton,
 	IonIcon,
 	IonList,
 	IonItem,
@@ -19,7 +18,6 @@ import {
 	IonRow,
 	IonCol
 } from '@ionic/react';
-import { globeOutline } from 'ionicons/icons';
 import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import doParse from 'html-react-parser';
@@ -30,7 +28,7 @@ import {
 } from '../../store/msSlice';
 import { MSBool, MSNum, MSText } from '../../store/types';
 
-import ExtraCharactersModal from '../modals/ExtraCharacters';
+import Header from '../../components/Header';
 
 interface ModalProperties {
 	title?: string
@@ -46,24 +44,8 @@ export const SyntaxHeader = (props: ModalProperties) => {
 		title = "MorphoSyntax",
 		modalPropsMaker
 	} = props;
-	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	return (
-		<IonHeader>
-			<ExtraCharactersModal
-				{...modalPropsMaker(isOpenECM, setIsOpenECM)}
-			/>
-			<IonToolbar>
-				<IonButtons slot="start">
-					<IonMenuButton />
-				</IonButtons>
-				<IonTitle>{title}</IonTitle>
-				<IonButtons slot="end">
-					<IonButton onClick={() => setIsOpenECM(true)}>
-						<IonIcon icon={globeOutline} />
-					</IonButton>
-				</IonButtons>
-			</IonToolbar>
-		</IonHeader>
+		<Header extraChars={modalPropsMaker} title={title} />
 	);
 };
 const RadioBox = (props: {
@@ -416,5 +398,3 @@ export interface specificPageInfo {
 	boxes?: MSBool[]
 	display?: displayProp
 }
-
-export default SyntaxHeader;

@@ -1,11 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
 	IonPage,
-	IonHeader,
-	IonTitle,
-	IonToolbar,
-	IonButtons,
-	IonMenuButton,
 	IonContent,
 	IonList,
 	IonLabel,
@@ -38,6 +33,7 @@ import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import { ConceptsOutlineIcon, LexiconIcon, LexiconOutlineIcon } from '../components/icons';
+import Header from '../components/Header';
 import ModalWrap from "../components/ModalWrap";
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
@@ -324,27 +320,22 @@ const ConceptsPage = (props: PageData) => {
 	return (
 		<IonPage>
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
-			<IonHeader>
-				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton disabled={pickAndSave} />
-					 </IonButtons>
-					<IonTitle>Concepts</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
-							<IonIcon
-								flipRtl
-								size="small"
-								slot="end"
-								src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
-							/>
-						</IonButton>
-						<IonButton disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<Header
+				title="Concepts"
+				endButtons={[
+					<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
+						<IonIcon
+							flipRtl
+							size="small"
+							slot="end"
+							src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
+						/>
+					</IonButton>,
+					<IonButton key="conceptsHelpButton" disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+						<IonIcon icon={helpCircleOutline} />
+					</IonButton>
+				]}
+			/>
 			<IonContent>
 				<IonList lines="none">
 					<IonItem className="conceptsChips">
