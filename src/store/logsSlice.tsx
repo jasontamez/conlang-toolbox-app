@@ -3,8 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: string[] = [];
 
 const logFunc = (state: string[], action: PayloadAction<any[]>) => {
-	const logs: string[] = state.concat(action.payload.map(line => typeof line === "string" ? line : JSON.stringify(line)));
-	while(logs.length > 50) {
+	const logs: string[] = state.concat(
+		action.payload.map(
+			line => typeof line === "string" ? line : JSON.stringify(line)
+		),
+		"---"
+	);
+	while(logs.length > 75) {
 		logs.shift();
 	}
 	return logs;

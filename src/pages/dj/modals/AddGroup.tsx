@@ -127,6 +127,8 @@ const AddGroup = (props: AddGroupProps) => {
 		setDeclenjugations([]);
 		const addTitle = $i("addTitle");
 		addTitle && (addTitle.value = "");
+		const addAppliesTo = $i("addAppliesTo");
+		addAppliesTo && (addAppliesTo.value = "");
 		const addStarts = $i("addStarts");
 		addStarts && (addStarts.value = "");
 		const addEnds = $i("addEnds");
@@ -139,6 +141,8 @@ const AddGroup = (props: AddGroupProps) => {
 	const grabInfo = () => {
 		const addTitle = $i("addTitle");
 		const title = addTitle ? addTitle.value.trim() : "";
+		const addAppliesTo = $i("addAppliesTo");
+		const appliesTo = addAppliesTo ? addAppliesTo.value.trim() : "";
 		const addStarts = $i("addStarts");
 		const startsWith: string[] = addStarts && addStarts.value ? clearBlanks(addStarts.value.split(separator)) : [];
 		const addEnds = $i("addEnds");
@@ -149,6 +153,7 @@ const AddGroup = (props: AddGroupProps) => {
 		const regex2: string = (addRegex2 && addRegex2.value) || "";
 		return {
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			regex1,
@@ -158,6 +163,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const maybeSaveNewGroup = () => {
 		const {
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			regex1,
@@ -206,6 +212,7 @@ const AddGroup = (props: AddGroupProps) => {
 		const newGroup: DJGroup = {
 			id: uuidv4(),
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			separator,
@@ -313,6 +320,16 @@ const AddGroup = (props: AddGroupProps) => {
 						<IonInput
 							aria-label="Title or Description of this declension or conjugation grouping:"
 							id="addTitle"
+						/>
+					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Type(s) of word this group affects:</IonLabel>
+					</IonItem>
+					<IonItem>
+						<IonInput
+							aria-label="Type(s) of word this group affects:"
+							id="addAppliesTo"
+							placeholder="nouns? verbs? adjectives?"
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -490,42 +507,6 @@ const AddGroup = (props: AddGroupProps) => {
 					>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>Cancel</IonLabel>
-					</IonButton>
-					<IonButton
-						color="primary"
-						onClick={() => {
-							dispatch(addGroup({
-								id: uuidv4(),
-								title: "Test 4",
-								startsWith: [],
-								endsWith: ["ar"],
-								separator: " ",
-								declenjugations: [
-									{
-										title: "xxx",
-										id: uuidv4(),
-										useWholeWord: false,
-										prefix: "be"
-									},
-									{
-										title: "yyy",
-										id: uuidv4(),
-										useWholeWord: false,
-										suffix: "ll"
-									},
-									{
-										title: "zzz",
-										id: uuidv4(),
-										useWholeWord: true,
-										prefix: "up",
-										suffix: "que"
-									}
-								]
-							}))
-						}}
-					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>ADD</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

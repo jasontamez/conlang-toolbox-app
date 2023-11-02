@@ -50,7 +50,7 @@ import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
 import CaseMaker from './modals/CaseMaker';
 
-function makeDeclenjugationDesc (group: DJGroup) {
+function makeDJGroupDescription (group: DJGroup) {
 	const { startsWith, endsWith, regex, separator } = group;
 	if(regex) {
 		const [match, replace] = regex;
@@ -267,7 +267,7 @@ const DJGroups = (props: PageData) => {
 						onIonItemReorder={doReorder}
 					>
 						{declenjugationGroups.map((group: DJGroup, i: number) => {
-							const { title, id: mainID, declenjugations } = group;
+							const { title, id: mainID, appliesTo, declenjugations } = group;
 							const max = declenjugations.length - 1;
 							const classID = "x" + mainID;
 							return (
@@ -304,7 +304,7 @@ const DJGroups = (props: PageData) => {
 											}
 											<IonLabel className="wrappableInnards">
 												<div><strong>{title}</strong></div>
-												<div className="description"><em>{makeDeclenjugationDesc(group)}</em></div>
+												<div className="description"><em>{makeDJGroupDescription(group)}; applies to {appliesTo}</em></div>
 											</IonLabel>
 											<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
 										</IonItem>
@@ -369,36 +369,3 @@ const DJGroups = (props: PageData) => {
 };
 
 export default DJGroups;
-
-/*
-function makeDescription (group: DJGroup) {
-	const { usingAND, inverse, equals, startsWith, endsWith, regex, separator } = group;
-	if(regex.length > 0) {
-		return "(regular expressions)";
-	}
-	if(usingAND) {
-		if(
-			(equals.length > 1 || startsWith.length > 1 || endsWith.length > 1)
-			|| (equals.length && (startsWith.length + endsWith.length))
-			|| (equals.length + startsWith.length + endsWith.length === 0)
-		) {
-			return "(invalid)";
-		}
-		if(equals.length) {
-			return (inverse ? "not " : "") + equals[0];
-		}
-		if(startsWidth.length) {
-			if(endsWith.length) {
-				return `${(inverse ? "not " : "")}${startsWith[0]}-${endsWith[0]}`;
-			}
-			return `${(inverse ? "not " : "")}${startsWith[0]}-`;
-		}
-		return `${(inverse ? "not " : "")}-${endsWith[0]}`;
-	}
-	const total = equals.slice().concat(
-		startsWith.map(line => line + "-"),
-		endsWith.map(line => "-" + line)
-	);
-	return `${(inverse ? "not " : "")}${total.join(separator)}`;
-}
-*/

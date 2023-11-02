@@ -450,44 +450,16 @@ export interface Declenjugation {
 	useWholeWord: boolean // by default, operates on stem; set true to operate on entire word
 }
 
-export interface Base_DJIdentifier {
+export interface DJGroup {
 	title: string
+	appliesTo: string
 	id: string
 	startsWith: string[]
 	endsWith: string[]
 	separator: DJSeparator
-}
-
-/*export interface DJIdentifier extends Base_DJIdentifier {
-	equals: string[]
-	regex: string[]
-	usingAND: boolean
-	inverse: boolean
-	// title, id, startsWith, endsWith, regex, separator...
-}*/
-
-export interface DJGroup extends Base_DJIdentifier {
 	regex?: RegexPair
 	declenjugations: Declenjugation[]
-	// title, id, startsWith, endsWith, separator...
 }
-
-/*export interface DJColumnIdentifier {
-	lexicon?: string
-	identifier?: string
-}
-
-export interface DJColumnPicker {
-	testColumnName: DJColumnIdentifier[]
-	testColumnContents: string[]
-	usingAND: boolean
-}
-
-export interface DJPicker {
-	importFromColumns: DJColumnIdentifier[]
-	testColumns: DJColumnPicker[]
-	usingAND: boolean
-}*/
 
 export interface DJCustomInfo {
 	declenjugationGroups: DJGroup[]

@@ -131,6 +131,7 @@ const EditGroup = (props: EditGroupProps) => {
 		const {
 			id = "ERROR",
 			title = "ERROR",
+			appliesTo = "",
 			startsWith = ["ERROR"],
 			endsWith = ["ERROR"],
 			regex,
@@ -142,6 +143,8 @@ const EditGroup = (props: EditGroupProps) => {
 		setDeclenjugations(declenjugations);
 		const editTitle = $i("editTitle");
 		editTitle && (editTitle.value = title);
+		const editAppliesTo = $i("editAppliesTo");
+		editAppliesTo && (editAppliesTo.value = appliesTo);
 		const editStarts = $i("editStarts");
 		editStarts && (editStarts.value = startsWith.join(separator));
 		const editEnds = $i("editEnds");
@@ -162,6 +165,8 @@ const EditGroup = (props: EditGroupProps) => {
 		setId("");
 		const editSortTitle = $i("editSortTitle");
 		editSortTitle && (editSortTitle.value = "");
+		const editAppliesTo = $i("editAppliesTo");
+		editAppliesTo && (editAppliesTo.value = "");
 		setSeparator(" ");
 		setDeclenjugations([]);
 		const editStarts = $i("editStarts");
@@ -177,6 +182,8 @@ const EditGroup = (props: EditGroupProps) => {
 	const grabInfo = () => {
 		const editTitle = $i("editTitle");
 		const title = editTitle ? editTitle.value.trim() : "";
+		const editAppliesTo = $i("editAppliesTo");
+		const appliesTo = editAppliesTo ? editAppliesTo.value.trim() : "";
 		const editStarts = $i("editStarts");
 		const startsWith: string[] = editStarts && editStarts.value ? clearBlanks(editStarts.value.split(separator)) : [];
 		const editEnds = $i("editEnds");
@@ -187,6 +194,7 @@ const EditGroup = (props: EditGroupProps) => {
 		const regex2: string = (editRegex2 && editRegex2.value) || "";
 		return {
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			regex1,
@@ -196,6 +204,7 @@ const EditGroup = (props: EditGroupProps) => {
 	const maybeSaveGroup = () => {
 		const {
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			regex1,
@@ -244,6 +253,7 @@ const EditGroup = (props: EditGroupProps) => {
 		const editedGroup: DJGroup = {
 			id,
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			separator,
@@ -266,6 +276,7 @@ const EditGroup = (props: EditGroupProps) => {
 	const maybeCancel = () => {
 		const {
 			title,
+			appliesTo,
 			startsWith,
 			endsWith,
 			regex1,
@@ -273,6 +284,7 @@ const EditGroup = (props: EditGroupProps) => {
 		} = grabInfo();
 		const {
 			title: _title,
+			appliesTo: _appliesTo,
 			startsWith: starts = [],
 			endsWith: ends = [],
 			regex = ["",""],
@@ -291,6 +303,7 @@ const EditGroup = (props: EditGroupProps) => {
 		};
 		const changed = (
 			title !== _title
+			|| appliesTo !== _appliesTo
 			|| _sep !== separator
 			|| starts.join(separator) !== startsWith.join(separator)
 			|| ends.join(separator) !== endsWith.join(separator)
@@ -404,6 +417,16 @@ const EditGroup = (props: EditGroupProps) => {
 						<IonInput
 							aria-label="Title or Description of this declension or conjugation grouping:"
 							id="editTitle"
+						/>
+					</IonItem>
+					<IonItem className="labelled">
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Type(s) of word this group affects:</IonLabel>
+					</IonItem>
+					<IonItem>
+						<IonInput
+							aria-label="Type(s) of word this group affects:"
+							id="editAppliesTo"
+							placeholder="nouns? verbs? adjectives?"
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
