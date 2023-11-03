@@ -62,7 +62,8 @@ function makeDJGroupDescription (group: DJGroup) {
 	const { startsWith, endsWith, regex, separator } = group;
 	if(regex) {
 		const [match, replace] = regex;
-		return `/${match}/ => ${replace}`;
+		const arrow = (ltr() ? "⟶" : "⟵");
+		return `/${match}/ ${arrow} ${replace}`;
 	}
 	const total = startsWith.map(line => line + "-").concat(endsWith.map(line => "-" + line));
 	return total.join(separator);

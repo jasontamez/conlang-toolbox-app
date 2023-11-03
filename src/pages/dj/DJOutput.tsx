@@ -195,9 +195,10 @@ const DJOutput = (props: PageData) => {
 									<IonSelect
 										color="primary"
 										className="ion-text-wrap settings"
-										label="Display:"
+										label="Group(s):"
 										value={type}
 										onIonChange={(e) => setType(e.detail.value)}
+										multiple
 									>
 										{
 											declensions.length > 0 ?
