@@ -226,7 +226,9 @@ const blankAppState: StateObject = {
 	},
 	dj: {
 		input: "",
-		declenjugationGroups: []
+		declensions: [],
+		conjugations: [],
+		other: []
 	},
 	lexicon: {
 		id: "",

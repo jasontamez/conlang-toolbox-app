@@ -37,6 +37,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import {
+	DJCustomInfo,
 	DJGroup,
 	DJSeparator,
 	Declenjugation,
@@ -86,6 +87,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
+	const [type, setType] = useState<keyof DJCustomInfo>("declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	// Accept new declenjugation from other modal
@@ -221,7 +223,7 @@ const AddGroup = (props: AddGroupProps) => {
 		if(regex1) {
 			newGroup.regex = [regex1, regex2];
 		}
-		dispatch(addGroup(newGroup));
+		dispatch(addGroup({type, group: newGroup}));
 		setIsOpen(false);
 		toaster({
 			message: "Group saved.",
@@ -321,6 +323,29 @@ const AddGroup = (props: AddGroupProps) => {
 							aria-label="Title or Description of this declension or conjugation grouping:"
 							id="addTitle"
 						/>
+					</IonItem>
+					<IonItem>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Type:"
+							value={type}
+							onIonChange={(e) => setType(e.detail.value)}
+							interfaceOptions={{header: "Type"}}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="declensions"
+							>Declension</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="conjugations"
+							>Conjugation</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="other"
+							>Other</IonSelectOption>
+						</IonSelect>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">Type(s) of word this group affects:</IonLabel>

@@ -37,6 +37,7 @@ import {
 } from 'ionicons/icons';
 
 import {
+	DJCustomInfo,
 	DJGroup,
 	DJSeparator,
 	Declenjugation,
@@ -44,7 +45,7 @@ import {
 	ModalProperties,
 	StateObject
 } from '../../../store/types';
-import { deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
+import { addGroup, deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
 
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
@@ -57,6 +58,7 @@ function clearBlanks (input: string[]) {
 
 interface EditGroupProps extends ExtraCharactersModalOpener {
 	editingGroup: DJGroup | null
+	editingType: keyof DJCustomInfo | null
 
 	addDeclenjugationModalInfo: ModalProperties
 	savedDeclenjugation: Declenjugation | null
@@ -75,6 +77,7 @@ const EditGroup = (props: EditGroupProps) => {
 		openECM,
 
 		editingGroup,
+		editingType,
 
 		addDeclenjugationModalInfo,
 		savedDeclenjugation,
@@ -92,6 +95,7 @@ const EditGroup = (props: EditGroupProps) => {
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
+	const [type, setType] = useState<keyof DJCustomInfo>("declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	useEffect(() => {
@@ -140,6 +144,7 @@ const EditGroup = (props: EditGroupProps) => {
 		} = editingGroup || {};
 		setId(id);
 		setSeparator(separator);
+		editingType && setType(editingType);
 		setDeclenjugations(declenjugations);
 		const editTitle = $i("editTitle");
 		editTitle && (editTitle.value = title);
@@ -158,7 +163,7 @@ const EditGroup = (props: EditGroupProps) => {
 		} else {
 			setUseAdvancedMethod(false);
 		}
-	}, [editingGroup]);
+	}, [editingGroup, editingType]);
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
@@ -262,7 +267,12 @@ const EditGroup = (props: EditGroupProps) => {
 		if(regex1) {
 			editedGroup.regex = [regex1, regex2];
 		}
-		dispatch(editGroup(editedGroup));
+		if(type === editingType) {
+			dispatch(editGroup({type, group: editedGroup}));
+		} else {
+			dispatch(deleteGroup([editingType!, id]));
+			dispatch(addGroup({type, group: editedGroup}))
+		}
 		closeModal();
 		toaster({
 			message: "Group saved.",
@@ -303,6 +313,7 @@ const EditGroup = (props: EditGroupProps) => {
 		};
 		const changed = (
 			title !== _title
+			|| type !== editingType
 			|| appliesTo !== _appliesTo
 			|| _sep !== separator
 			|| starts.join(separator) !== startsWith.join(separator)
@@ -325,7 +336,7 @@ const EditGroup = (props: EditGroupProps) => {
 	};
 	const maybeDeleteGroup = () => {
 		const handler = () => {
-			dispatch(deleteGroup(id));
+			dispatch(deleteGroup([editingType!, id]));
 			closeModal();
 			toaster({
 				message: "Group deleted.",
@@ -418,6 +429,29 @@ const EditGroup = (props: EditGroupProps) => {
 							aria-label="Title or Description of this declension or conjugation grouping:"
 							id="editTitle"
 						/>
+					</IonItem>
+					<IonItem>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							label="Type:"
+							value={type}
+							onIonChange={(e) => setType(e.detail.value)}
+							interfaceOptions={{header: "Type"}}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="declensions"
+							>Declension</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="conjugations"
+							>Conjugation</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="other"
+							>Other</IonSelectOption>
+						</IonSelect>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">Type(s) of word this group affects:</IonLabel>

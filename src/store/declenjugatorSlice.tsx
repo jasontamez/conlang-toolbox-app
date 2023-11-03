@@ -1,7 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DJGroup, DJState } from './types';
+import { DJCustomInfo, DJGroup, DJState } from './types';
 import blankAppState from './blankAppState';
+
+interface DJGroupPayload {
+	type: keyof DJCustomInfo
+	group: DJGroup
+}
+interface DJGroupsPayload {
+	type: keyof DJCustomInfo
+	groups: DJGroup[]
+}
 
 const initialState = blankAppState.dj;
 
@@ -10,31 +19,40 @@ const setInputFunc = (state: DJState, action: PayloadAction<string>) => {
 	return state;
 };
 
-const addGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
-	state.declenjugationGroups.push(action.payload);
+const addGroupFunc = (state: DJState, action: PayloadAction<DJGroupPayload>) => {
+	const { type, group } = action.payload;
+	state[type].push(group);
 	return state;
 };
 
-const editGroupFunc = (state: DJState, action: PayloadAction<DJGroup>) => {
-	const newObj = action.payload;
-	const { id } = newObj;
-	state.declenjugationGroups = state.declenjugationGroups.map((obj => {
+const editGroupFunc = (state: DJState, action: PayloadAction<DJGroupPayload>) => {
+	const { type, group } = action.payload;
+	const { id } = group;
+	state[type] = state[type].map((obj => {
 		if(obj.id === id) {
-			return newObj;
+			return group;
 		}
 		return obj;
 	}));
 	return state;
 };
 
-const deleteGroupFunc = (state: DJState, action: PayloadAction<string | null>) => {
+const deleteGroupFunc = (state: DJState, action: PayloadAction<[keyof DJCustomInfo, string] | null>) => {
 	const { payload } = action;
-	state.declenjugationGroups = payload ? state.declenjugationGroups.filter(obj => (obj.id !== payload)) : [];
+	if(payload) {
+		const [type, id] = payload;
+		state[type] = id ? state[type].filter(obj => (obj.id !== id)) : [];
+	} else {
+		state.declensions = [];
+		state.conjugations = [];
+		state.other = [];
+	}
 	return state;
 };
 
-const reorderGroupsFunc = (state: DJState, action: PayloadAction<DJGroup[]>) => {
-	state.declenjugationGroups = action.payload;
+const reorderGroupsFunc = (state: DJState, action: PayloadAction<DJGroupsPayload>) => {
+	const { type, groups } = action.payload;
+	state[type] = groups;
 	return state;
 };
 

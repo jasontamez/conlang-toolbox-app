@@ -462,7 +462,9 @@ export interface DJGroup {
 }
 
 export interface DJCustomInfo {
-	declenjugationGroups: DJGroup[]
+	declensions: DJGroup[]
+	conjugations: DJGroup[]
+	other: DJGroup[]
 }
 
 export interface DJState extends DJCustomInfo {

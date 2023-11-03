@@ -196,7 +196,9 @@ const MExportAllData = (props: ModalProperties) => {
 				},
 				dj: { // versions >= 0.11.0
 					input: dj.input,
-					declenjugationGroups: dj.declenjugationGroups.map((obj) => ({...copyDJGroup(obj)}))
+					declensions: dj.declensions.map((obj) => ({...copyDJGroup(obj)})),
+					conjugations: dj.conjugations.map((obj) => ({...copyDJGroup(obj)})),
+					other: dj.other.map((obj) => ({...copyDJGroup(obj)}))
 				},
 				appSettings: {...appSettings},
 				lexicon: {
