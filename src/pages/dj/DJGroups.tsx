@@ -80,9 +80,11 @@ const DJGroups = (props: PageData) => {
 	const [editDeclenjugationOpen, setEditDeclenjugationOpen] = useState<boolean>(false);
 	const [incomingDeclenjugation, setIncomingDeclenjugation] = useState<Declenjugation | null>(null);
 	const [outgoingDeclenjugation, setOutgoingDeclenjugation] = useState<Declenjugation | null | string>(null);
-	// submodal: add declenjugation
+	// submodal: add and edit declenjugation
 	const [caseMakerOpen, setCaseMakerOpen] = useState<boolean>(false);
 	const [savedTitle, setSavedTitle] = useState<string>("");
+	// all modals
+	const [declenjugationTypeString, setDeclenjugationTypeString] = useState<string>("");
 
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -282,6 +284,7 @@ const DJGroups = (props: PageData) => {
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}
 				setSavedDeclenjugation={setSavedDeclenjugation}
+				setDeclenjugationType={setDeclenjugationTypeString}
 
 				editDeclenjugationModalInfo={editDeclenjugationModalInfo}
 				setIncomingDeclenjugation={setIncomingDeclenjugation}
@@ -300,6 +303,7 @@ const DJGroups = (props: PageData) => {
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}
 				setSavedDeclenjugation={setSavedDeclenjugation}
+				setDeclenjugationType={setDeclenjugationTypeString}
 
 				editDeclenjugationModalInfo={editDeclenjugationModalInfo}
 				setIncomingDeclenjugation={setIncomingDeclenjugation}
@@ -314,6 +318,7 @@ const DJGroups = (props: PageData) => {
 				caseMakerModalInfo={caseMakerModalInfo}
 				savedTitle={savedTitle}
 				setSavedTitle={setSavedTitle}
+				typeString={declenjugationTypeString}
 			/>
 			<EditDeclenjugation
 				{...editDeclenjugationModalInfo}
@@ -323,6 +328,7 @@ const DJGroups = (props: PageData) => {
 				caseMakerModalInfo={caseMakerModalInfo}
 				savedTitle={savedTitle}
 				setSavedTitle={setSavedTitle}
+				typeString={declenjugationTypeString}
 			/>
 			<CaseMaker
 				{...caseMakerModalInfo}

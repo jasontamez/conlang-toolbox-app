@@ -41,6 +41,7 @@ interface AddDJModal extends ExtraCharactersModalOpener {
 	caseMakerModalInfo: ModalProperties
 	savedTitle: string
 	setSavedTitle: Function
+	typeString: string
 }
 
 const AddDeclenjugation = (props: AddDJModal) => {
@@ -51,7 +52,8 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		setSavedDeclenjugation,
 		caseMakerModalInfo,
 		savedTitle,
-		setSavedTitle
+		setSavedTitle,
+		typeString
 	} = props;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -158,7 +160,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		setSavedDeclenjugation(newDJ);
 		closeModal();
 		toaster({
-			message: "Declension/conjugation saved.",
+			message: typeString + " saved.",
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -197,7 +199,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Declension/Conjugation</IonTitle>
+					<IonTitle>Add {typeString.slice(0, -1)}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -211,11 +213,11 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			<IonContent>
 				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this Declension or Conjugation:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this {typeString.slice(0, -1)}:</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title or description of this declension or conjugation:"
+							aria-label={`Title or description of this ${typeString.slice(0, -1)}:`}
 							id="addDJTitle"
 						/>
 						<IonButton color="primary" onClick={() => caseMakerModalInfo.setIsOpen(true)} slot="end">
@@ -241,7 +243,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
 							<h2>Use advanced method</h2>
-							<p>Use regular expressions to craft a declension or conjugation.</p>
+							<p>Use regular expressions to craft a {typeString.toLocaleLowerCase()}.</p>
 						</IonToggle>
 					</IonItem>
 					<IonItemDivider>Modification</IonItemDivider>

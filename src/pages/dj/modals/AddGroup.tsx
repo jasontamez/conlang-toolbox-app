@@ -60,6 +60,7 @@ interface AddGroupProps extends ExtraCharactersModalOpener {
 	addDeclenjugationModalInfo: ModalProperties
 	savedDeclenjugation: Declenjugation | null
 	setSavedDeclenjugation: Function
+	setDeclenjugationType: Function
 	editDeclenjugationModalInfo: ModalProperties
 	setIncomingDeclenjugation: Function
 	outgoingDeclenjugation: Declenjugation | null | string
@@ -75,6 +76,7 @@ const AddGroup = (props: AddGroupProps) => {
 		addDeclenjugationModalInfo,
 		savedDeclenjugation,
 		setSavedDeclenjugation,
+		setDeclenjugationType,
 
 		editDeclenjugationModalInfo,
 		setIncomingDeclenjugation,
@@ -88,6 +90,7 @@ const AddGroup = (props: AddGroupProps) => {
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const [type, setType] = useState<keyof DJCustomInfo>("declensions");
+	const [typeString, setTypeString] = useState<string>("Declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	// Accept new declenjugation from other modal
@@ -123,6 +126,17 @@ const AddGroup = (props: AddGroupProps) => {
 			setOutgoingDeclenjugation(null);
 		}
 	}, [isOpen, outgoingDeclenjugation, setOutgoingDeclenjugation, declenjugations]);
+	// Set typeString
+	useEffect(() => {
+		let typingString: string;
+		if(type === "other") {
+			typingString = "Declensions/Conjugations/Etc.";
+		} else {
+			typingString = type.charAt(0).toLocaleUpperCase() + type.slice(1);
+		}
+		setDeclenjugationType(typingString);
+		setTypeString(typingString);
+	}, [type, setDeclenjugationType]);
 
 	const onLoad = useCallback(() => {
 		setSeparator(" ");
@@ -302,7 +316,7 @@ const AddGroup = (props: AddGroupProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Group</IonTitle>
+					<IonTitle>Add {typeString} Group</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -316,11 +330,11 @@ const AddGroup = (props: AddGroupProps) => {
 			<IonContent>
 				<IonList lines="full" id="addingDJGroup" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this declension or conjugation grouping:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this {typeString.toLocaleLowerCase().slice(0, -1)} grouping:</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title or Description of this declension or conjugation grouping:"
+							aria-label={`Title or Description of this ${typeString.toLocaleLowerCase().slice(0, -1)} grouping:`}
 							id="addTitle"
 						/>
 					</IonItem>
@@ -438,11 +452,7 @@ const AddGroup = (props: AddGroupProps) => {
 								>[/] Slash</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider color="secondary">{type === "other" ?
-						"Declensions/Conjugations/Etc."
-					:
-						type.charAt(0).toUpperCase() + type.slice(1)
-					}</IonItemDivider>
+					<IonItemDivider color="secondary">{typeString}</IonItemDivider>
 					<IonItem>
 						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
 							<IonIcon slot="start" icon={addCircleOutline} />

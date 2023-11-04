@@ -44,6 +44,7 @@ interface EditDJModal extends ExtraCharactersModalOpener {
 	caseMakerModalInfo: ModalProperties
 	savedTitle: string
 	setSavedTitle: Function
+	typeString: string
 }
 
 const EditDeclenjugation = (props: EditDJModal) => {
@@ -55,7 +56,8 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		setOutgoingDeclenjugation,
 		caseMakerModalInfo,
 		savedTitle,
-		setSavedTitle
+		setSavedTitle,
+		typeString
 	} = props;
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -177,7 +179,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		setOutgoingDeclenjugation(editedDJ);
 		closeModal();
 		toaster({
-			message: "Declension/conjugation saved.",
+			message: typeString + " saved.",
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -231,7 +233,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: "Delete Declension/Conjugation",
+				header: "Delete " + typeString,
 				message: "Are you sure you want to delete this? It cannot be undone.",
 				cssClass: "danger",
 				submit: "Yes, Delete",
@@ -245,7 +247,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Unit</IonTitle>
+					<IonTitle>Edit {typeString.slice(0, -1)}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -259,11 +261,11 @@ const EditDeclenjugation = (props: EditDJModal) => {
 			<IonContent>
 				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this Declension or Conjugation:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or description of this {typeString.toLocaleLowerCase().slice(0, -1)}:</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title or description of this declension or conjugation:"
+							aria-label={`Title or description of this ${typeString.toLocaleLowerCase().slice(0, -1)}:`}
 							id="editDJTitle"
 						/>
 						<IonButton color="primary" onClick={() => caseMakerModalInfo.setIsOpen(true)} slot="end">
@@ -289,7 +291,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
 							<h2>Use advanced method</h2>
-							<p>Use regular expressions to craft a declension or conjugation.</p>
+							<p>Use regular expressions to craft a {typeString.toLocaleLowerCase()}.</p>
 						</IonToggle>
 					</IonItem>
 					<IonItemDivider>Modification</IonItemDivider>
