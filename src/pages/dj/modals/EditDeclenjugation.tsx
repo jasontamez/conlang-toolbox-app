@@ -257,7 +257,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels">
+				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this Declension or Conjugation:</IonLabel>
 					</IonItem>
@@ -293,50 +293,43 @@ const EditDeclenjugation = (props: EditDJModal) => {
 						</IonToggle>
 					</IonItem>
 					<IonItemDivider>Modification</IonItemDivider>
-					{useAdvancedMethod ?
-						<>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Match Expression:</IonLabel>
-							</IonItem>
-							<IonItem className="wrappableInnards">
-								<IonInput
-									id="editDJRegex1"
-									aria-label="Match Expression:"
-								/>
-							</IonItem>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
-							</IonItem>
-							<IonItem className="wrappableInnards">
-								<IonInput
-									id="editDJRegex2"
-									aria-label="Replacement Expression:"
-								/>
-							</IonItem>
-						</>
-					:
-						<>
-							<IonItem className="labelled">
-								<div slot="start">Prefix</div>
-								<div slot="end">Suffix</div>
-							</IonItem>
-							<IonItem className="wrappableInnards prefixSuffix">
-								<IonInput
-									id="editDJPrefix"
-									aria-label="Prefix"
-									className="ion-text-end"
-								/>
-								<div className="ion-text-center stem pad-horizontal-rem">
-									<strong>{useWholeWord ? "word" : "stem"}</strong>
-								</div>
-								<IonInput
-									id="editDJSuffix"
-									aria-label="Suffix"
-									className="ion-text-start"
-								/>
-							</IonItem>
-						</>
-					}
+					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Match Expression:</IonLabel>
+					</IonItem>
+					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonInput
+							id="editDJRegex1"
+							aria-label="Match Expression:"
+						/>
+					</IonItem>
+					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
+					</IonItem>
+					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonInput
+							id="editDJRegex2"
+							aria-label="Replacement Expression:"
+						/>
+					</IonItem>
+					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<div slot="start">Prefix</div>
+						<div slot="end">Suffix</div>
+					</IonItem>
+					<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonInput
+							id="editDJPrefix"
+							aria-label="Prefix"
+							className="ion-text-end"
+						/>
+						<div className="ion-text-center stem pad-horizontal-rem">
+							<strong>{useWholeWord ? "word" : "stem"}</strong>
+						</div>
+						<IonInput
+							id="editDJSuffix"
+							aria-label="Suffix"
+							className="ion-text-start"
+						/>
+					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter className="modalBorderTop">

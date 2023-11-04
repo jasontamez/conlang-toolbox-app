@@ -57,8 +57,7 @@ function clearBlanks (input: string[]) {
 }
 
 interface EditGroupProps extends ExtraCharactersModalOpener {
-	editingGroup: DJGroup | null
-	editingType: keyof DJCustomInfo | null
+	editingGroupInfo: [keyof DJCustomInfo, DJGroup] | null
 
 	addDeclenjugationModalInfo: ModalProperties
 	savedDeclenjugation: Declenjugation | null
@@ -76,8 +75,7 @@ const EditGroup = (props: EditGroupProps) => {
 		setIsOpen,
 		openECM,
 
-		editingGroup,
-		editingType,
+		editingGroupInfo,
 
 		addDeclenjugationModalInfo,
 		savedDeclenjugation,
@@ -131,7 +129,9 @@ const EditGroup = (props: EditGroupProps) => {
 		}
 	}, [isOpen, outgoingDeclenjugation, setOutgoingDeclenjugation, declenjugations]);
 
-	const onLoad = useCallback(() => {
+	const onLoad = () => {
+		const [editingType, editingGroup] = editingGroupInfo || ["declensions", null];
+		console.log(editingGroupInfo);
 		const {
 			id = "ERROR",
 			title = "ERROR",
@@ -152,18 +152,25 @@ const EditGroup = (props: EditGroupProps) => {
 		editAppliesTo && (editAppliesTo.value = appliesTo);
 		const editStarts = $i("editStarts");
 		editStarts && (editStarts.value = startsWith.join(separator));
+		console.log(editStarts);
+		console.log(startsWith.join(separator));
 		const editEnds = $i("editEnds");
 		editEnds && (editEnds.value = endsWith.join(separator));
+		console.log(editEnds);
+		console.log(endsWith.join(separator));
 		if(regex) {
 			setUseAdvancedMethod(true);
 			const editRegex1 = $i("editRegex1");
 			editRegex1 && (editRegex1.value = regex[0]);
 			const editRegex2 = $i("editRegex2");
 			editRegex2 && (editRegex2.value = regex[1]);
+			console.log(editRegex1);
+			console.log(editRegex2);
+			console.log(regex);
 		} else {
 			setUseAdvancedMethod(false);
 		}
-	}, [editingGroup, editingType]);
+	};
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
@@ -267,10 +274,11 @@ const EditGroup = (props: EditGroupProps) => {
 		if(regex1) {
 			editedGroup.regex = [regex1, regex2];
 		}
+		const editingType = editingGroupInfo![0];
 		if(type === editingType) {
 			dispatch(editGroup({type, group: editedGroup}));
 		} else {
-			dispatch(deleteGroup([editingType!, id]));
+			dispatch(deleteGroup([editingType, id]));
 			dispatch(addGroup({type, group: editedGroup}))
 		}
 		closeModal();
@@ -292,6 +300,7 @@ const EditGroup = (props: EditGroupProps) => {
 			regex1,
 			regex2
 		} = grabInfo();
+		const [editingType, editingGroup] = editingGroupInfo!;
 		const {
 			title: _title,
 			appliesTo: _appliesTo,
@@ -336,7 +345,7 @@ const EditGroup = (props: EditGroupProps) => {
 	};
 	const maybeDeleteGroup = () => {
 		const handler = () => {
-			dispatch(deleteGroup([editingType!, id]));
+			dispatch(deleteGroup([editingGroupInfo![0], id]));
 			closeModal();
 			toaster({
 				message: "Group deleted.",
@@ -420,7 +429,7 @@ const EditGroup = (props: EditGroupProps) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels">
+				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this declension or conjugation grouping:</IonLabel>
 					</IonItem>
@@ -474,85 +483,81 @@ const EditGroup = (props: EditGroupProps) => {
 							<p>Use regular expressions to identify the root.</p>
 						</IonToggle>
 					</IonItem>
-					{useAdvancedMethod ?
-						<>
-							<IonItemDivider>Regular Expression</IonItemDivider>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Matching Expression:</IonLabel>
-							</IonItem>
-							<IonItem lines="none">
-								<IonInput
-									aria-label="Matching Expression:"
-									id="editRegex1"
-									labelPlacement="stacked"
-								/>
-							</IonItem>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
-							</IonItem>
-							<IonItem>
-								<IonInput
-									aria-label="Replacement Expression:"
-									id="editRegex2"
-									labelPlacement="stacked"
-								/>
-							</IonItem>
-						</>
+					<IonItemDivider>{useAdvancedMethod ? "Regular Expression" : "Simple Root Finder"}</IonItemDivider>
+					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Matching Expression:</IonLabel>
+					</IonItem>
+					<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonInput
+							aria-label="Matching Expression:"
+							id="editRegex1"
+							labelPlacement="stacked"
+						/>
+					</IonItem>
+					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
+					</IonItem>
+					<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+						<IonInput
+							aria-label="Replacement Expression:"
+							id="editRegex2"
+							labelPlacement="stacked"
+						/>
+					</IonItem>
+					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from Start of Word to Find Root:</IonLabel>
+					</IonItem>
+					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonInput
+							aria-label="Remove from start of word to find root:"
+							id="editStarts"
+						/>
+					</IonItem>
+					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from End of Word to Find Root:</IonLabel>
+					</IonItem>
+					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonInput
+							aria-label="Remove From End:"
+							id="editEnds"
+							labelPlacement="stacked"
+						/>
+					</IonItem>
+					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">Separate Multiple Conditions With:</IonLabel>
+					</IonItem>
+					<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+						<IonSelect
+							color="primary"
+							className="ion-text-wrap settings"
+							aria-label="Choose Separator"
+							value={separator}
+							onIonChange={(e) => setSeparator(e.detail.value)}
+							interfaceOptions={{header: "Separator"}}
+						>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=" "
+							>[ ] Space</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=","
+							>[,] Comma</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value=";"
+							>[;] Semicolon</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="/"
+								>[/] Slash</IonSelectOption>
+						</IonSelect>
+					</IonItem>
+					<IonItemDivider color="secondary">{type === "other" ?
+						"Declensions/Conjugations/Etc."
 					:
-						<>
-							<IonItemDivider>Simple Root Finder</IonItemDivider>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from Start of Word to Find Root:</IonLabel>
-							</IonItem>
-							<IonItem>
-								<IonInput
-									aria-label="Remove from start of word to find root:"
-									id="editStarts"
-								/>
-							</IonItem>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from End of Word to Find Root:</IonLabel>
-							</IonItem>
-							<IonItem>
-								<IonInput
-									aria-label="Remove From End:"
-									id="editEnds"
-									labelPlacement="stacked"
-								/>
-							</IonItem>
-							<IonItem className="labelled">
-								<IonLabel className="ion-text-wrap ion-padding-bottom">Separate Multiple Conditions With:</IonLabel>
-							</IonItem>
-							<IonItem className="wrappableInnards">
-								<IonSelect
-									color="primary"
-									className="ion-text-wrap settings"
-									label="Separator:"
-									value={separator}
-									onIonChange={(e) => setSeparator(e.detail.value)}
-									interfaceOptions={{header: "Separator"}}
-								>
-									<IonSelectOption
-										className="ion-text-wrap ion-text-align-end"
-										value=" "
-									>[ ] Space</IonSelectOption>
-									<IonSelectOption
-										className="ion-text-wrap ion-text-align-end"
-										value=","
-									>[,] Comma</IonSelectOption>
-									<IonSelectOption
-										className="ion-text-wrap ion-text-align-end"
-										value=";"
-									>[;] Semicolon</IonSelectOption>
-									<IonSelectOption
-										className="ion-text-wrap ion-text-align-end"
-										value="/"
-									>[/] Slash</IonSelectOption>
-								</IonSelect>
-							</IonItem>
-						</>
-					}
-					<IonItemDivider>Declensions/Conjugations</IonItemDivider>
+						type.charAt(0).toUpperCase() + type.slice(1)
+					}</IonItemDivider>
 					<IonItem>
 						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
 							<IonIcon slot="start" icon={addCircleOutline} />

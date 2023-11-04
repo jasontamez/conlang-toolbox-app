@@ -229,17 +229,17 @@ ion-list.units {
 	background: transparent;
 	padding: 0;
 }
-.units ion-item,
-.units ion-item-option,
-.units ion-item-option button {
+ion-list.units > ion-item,
+ion-list.units > ion-item-option,
+ion-list.units > ion-item-option button {
 	border-block-end: 0.1rem solid var(--ion-background-color);
 }
-.units ion-item-sliding:first-of-type ion-item,
-.units ion-item-sliding:first-of-type ion-item-option,
-.units ion-item-sliding:first-of-type ion-item-option button {
+ion-list.units > ion-item-sliding:first-of-type > ion-item,
+ion-list.units > ion-item-sliding:first-of-type > ion-item-option,
+ion-list.units > ion-item-sliding:first-of-type > ion-item-option button {
 	border-block-start: 0.1rem solid var(--ion-background-color);
 }
-.units ion-item.nonUnit {
+ion-list.units > ion-item.nonUnit {
 	border-block-end: 0;
 	border-block-start: 0;
 }
@@ -465,11 +465,17 @@ ion-app .hasMaxTextArea textarea {
 	padding: 0;
 	margin: 0;
 	margin-block-start: 1rem;
-	min-height: 0;
 	--border-color: transparent;
 }
 .hasSpecialLabels ion-item.labelled::part(native) {
 	min-height: 0;
+}
+.hasSpecialLabels ion-item.labelled.toggleable::part(native) {
+	--toggle-min-height: 0;
+	--toggle-height: 1.25em;
+}
+.hasSpecialLabels ion-item.labelled.toggleable.toggled {
+	margin-block-start: 0;
 }
 
 .selectable,
@@ -948,6 +954,7 @@ ion-list.hasToggles {
 	--transition-duration: 0.2s;
 	--toggle-min-height: 3em;
 	--toggle-max-height: 8em;
+	--toggle-height: var(--toggle-min-height);
 }
 ion-list.djOutput .wrappableInnards {
 	--toggle-min-height: 5em;
@@ -969,6 +976,12 @@ ion-item.columnListing::part(native) {
 ion-list.djOutput {
 	padding-block-end: 0;
 }
+
+ion-list.hasToggles {
+	--transition-duration: 0.2s;
+	--toggle-min-height: 3em;
+	--toggle-max-height: 8em;
+}
 ion-list.hasToggles ion-item.doubleable::part(native) {
 	transition: all 0s ease-in var(--transition-duration);
 }
@@ -978,18 +991,22 @@ ion-list.hasToggles ion-item.doubleable.toggled::part(native) {
 }
 ion-list.hasToggles ion-item.toggleable::part(native) {
 	min-height: var(--toggle-min-height);
+	height: var(--toggle-height);
 	max-height: var(--toggle-max-height);
-	transition:
-		all var(--transition-duration) ease-in,
-		border-block-end-width var(--transition-duration) ease-in;
+	transition: all var(--transition-duration) ease-in;
 }
 ion-list.hasToggles ion-item.toggleable.toggled::part(native) {
-	min-height: 0;
-	max-height: 0;
+	--toggle-min-height: 0;
+	--toggle-max-height: 0;
+	height: 0;
 	border-block-end-width: 0;
-	transition:
-		all var(--transition-duration) ease-out,
-		border-block-end-width var(--transition-duration) ease-out;
+	transition: all var(--transition-duration) ease-out;
+}
+ion-list.hasToggles ion-item.toggleable {
+	transition: all var(--transition-duration) ease-in;
+}
+ion-list.hasToggles ion-item.toggleable.toggled {
+	transition: all var(--transition-duration) ease-out;
 }
 #DJOutputButtons {
 	display: flex;
@@ -1013,47 +1030,49 @@ ion-list.hasToggles ion-item.toggleable.toggled::part(native) {
 	display: block;
 }
 
+ion-item.innerList {
+	justify-content: stretch;
+}
+ion-item.innerList::part(native) {
+	--inner-padding-end: 0;
+	padding: 0;
+}
+ion-item.innerList > ion-list {
+	padding: 0;
+	width: 100%;
+}
+ion-item.innerList > ion-list ion-item::part(native) {
+	--border-width: 0;
+}
+
+ion-item-sliding.djGroupMain ion-reorder {
+	margin-inline-end: 0.5em;
+}
 ion-item-sliding.djGroupMain ion-item ion-button {
 	margin: 0;
 	margin-inline-end: 1em;
 }
-ion-item-sliding.djGroupMain ion-item.doubleable::part(native) {
-	transition: all 0s ease-in var(--transition-duration);
+ion-item-sliding.djGroupMain ion-item.toggleable::part(native) {
+	--toggle-min-height: 2em;
+	--toggle-max-height: 2em;
+	--transition-duration: 2s;
+	font-size: 0.8em;
+	padding-inline: 2.5rem;
 }
-ion-item-sliding.djGroupMain ion-item.doubleable.toggled::part(native) {
-	border-block-end-width: 0;
-	transition: all 0s ease-out;
-}
-ion-item.djGroupInfo::part(native),
+ion-item-sliding.djGroupMain ion-item.toggleable::part(native),
 ion-item.groupedDeclenjugation::part(native) {
 	background: var(--ion-color-step-50);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	min-height: 2em;
-	height: 2em;
-	transition: all var(--transition-duration) ease-in;
 }
-ion-item.djGroupInfo::part(native) {
-	font-size: 0.8em;
-	padding-inline: 2.5rem;
+ion-item.groupedDeclenjugation::part(native) {
+	min-height: 2em;
+	max-height: 2em;
 }
 ion-item.groupedDeclenjugation::part(native) {
 	--inner-padding-end: 0;
 	padding-inline: 0.5em;
-}
-ion-item.djGroupInfo.toggled::part(native) {
-	min-height: 0;
-	height: 0;
-	border-block-end-width: 0;
-	transition: all var(--transition-duration) ease-out;
-}
-ion-item.djGroupInfo {
-	transition: all var(--transition-duration) ease-in;
-}
-ion-item.djGroupInfo.toggled {
-	transition: all var(--transition-duration) ease-out;
-	border-block-end: 0;
 }
 .djGroup-caret {
 	transition: transform var(--transition-duration) ease-out;
@@ -1062,19 +1081,19 @@ ion-item.djGroupInfo.toggled {
 	transform: rotate(-90deg);
 	transition: transform var(--transition-duration) ease-in;
 }
-ion-item.djGroupInfo div.title,
+ion-item-sliding.djGroupMain ion-item.toggleable div.title,
 ion-item.groupedDeclenjugation div.title {
 	flex-grow: 2;
 	flex-shrink: 1;
 	text-align: start;
 }
-ion-item.djGroupInfo div.description,
+ion-item-sliding.djGroupMain ion-item.toggleable div.description,
 ion-item.groupedDeclenjugation div.root {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: end;
 }
-ion-item.djGroupInfo div.description,
+ion-item-sliding.djGroupMain ion-item.toggleable div.description,
 ion-item.groupedDeclenjugation div.root em.mini {
 	font-size: 0.5rem;
 }
@@ -1087,7 +1106,7 @@ ion-item.groupedDeclenjugation ion-reorder {
 ion-item.groupedDeclenjugation div.icon {
 	padding-inline-start: 1em;
 }
-ion-item.djGroupInfo div.ww {
+ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	font-size: 0.5em;
 	flex-grow: 0;
 	flex-shrink: 0;
