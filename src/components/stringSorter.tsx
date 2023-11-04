@@ -77,7 +77,7 @@ function makeSorter (
 		return basicSort;
 	}
 	// Create a function to split strings into their component characters
-	const splitter = (multiples && multiples.length > 0) ? 
+	const splitter = (multiples && multiples.length > 0) ?
 		(input: string) => recurseSplit(input, multiples)
 	:
 		(input: string) => input.split('')

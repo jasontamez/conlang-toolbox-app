@@ -161,7 +161,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 											))}
 										</div>
 									</div>
-								</IonItem>		
+								</IonItem>
 							);
 						})
 					}

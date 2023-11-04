@@ -76,7 +76,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		} else {
 			_titleEl && (_titleEl.value = "");
 			_labelEl && (_labelEl.value = "");
-			_runEl && (_runEl.value = "");	
+			_runEl && (_runEl.value = "");
 		}
 		setTitleEl(_titleEl);
 		setLabelEl(_labelEl);

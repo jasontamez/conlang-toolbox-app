@@ -68,7 +68,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			_replaceEl && (_replaceEl.value = "");
 			_contextEl && (_contextEl.value = "");
 			_antiEl && (_antiEl.value = "");
-			_descEl && (_descEl.value = "");	
+			_descEl && (_descEl.value = "");
 		}
 		setSeekEl(_seekEl);
 		setReplaceEl(_replaceEl);

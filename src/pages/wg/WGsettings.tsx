@@ -108,9 +108,9 @@ const WGSet = (props: PageData) => {
 			/>
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton />
+					</IonButtons>
 					<IonTitle>Settings</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>

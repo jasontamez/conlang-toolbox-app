@@ -152,14 +152,14 @@ const DJOutput = (props: PageData) => {
 				log(dispatch, [`Invalid display type? [${displayType}]`]);
 		}
 	};
-	
+
 	return (
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton />
+					</IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
 						{/*<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
@@ -206,7 +206,7 @@ const DJOutput = (props: PageData) => {
 													<IonSelectOption
 														className="ion-text-wrap ion-text-align-end"
 														value="declensions"
-													>Declensions</IonSelectOption>		
+													>Declensions</IonSelectOption>
 												)
 											:
 												<></>
@@ -217,7 +217,7 @@ const DJOutput = (props: PageData) => {
 													<IonSelectOption
 														className="ion-text-wrap ion-text-align-end"
 														value="conjugations"
-													>Conjugations</IonSelectOption>		
+													>Conjugations</IonSelectOption>
 												)
 											:
 												<></>
@@ -228,13 +228,13 @@ const DJOutput = (props: PageData) => {
 													<IonSelectOption
 														className="ion-text-wrap ion-text-align-end"
 														value="other"
-													>Other</IonSelectOption>		
+													>Other</IonSelectOption>
 												)
 											:
 												<></>
 										}
 									</IonSelect>
-								</IonItem>		
+								</IonItem>
 							)
 						:
 							<></>

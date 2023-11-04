@@ -986,9 +986,9 @@ const WEOut = (props: PageData) => {
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
 			<IonHeader>
 				<IonToolbar>
-					 <IonButtons slot="start">
-						 <IonMenuButton disabled={isPickingSaving} />
-					 </IonButtons>
+					<IonButtons slot="start">
+						<IonMenuButton disabled={isPickingSaving} />
+					</IonButtons>
 					<IonTitle>Output</IonTitle>
 					<IonButtons slot="end">
 						<IonButton

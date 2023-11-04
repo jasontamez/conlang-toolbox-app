@@ -113,7 +113,7 @@ const MExportAllData = (props: ModalProperties) => {
 						};
 					})
 				};
-			})	
+			})
 		};
 		return exportedSettings;
 	}, [sortSettings]);

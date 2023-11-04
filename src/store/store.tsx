@@ -110,7 +110,7 @@ const store = configureStore({
 					'lexicon/updateLexiconColumarInfo'
 				],
 			},
-	  	})
+	})
 });
 const persistor = persistStore(store);
 const storeInfo = { store, persistor };
