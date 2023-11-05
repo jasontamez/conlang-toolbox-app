@@ -1,19 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
 import {
 	IonContent,
 	IonPage,
-	IonHeader,
-	IonToolbar,
-	IonMenuButton,
-	IonButtons,
-	IonTitle,
 	IonList,
 	IonItem,
 	IonSelect,
 	IonSelectOption,
 	IonToggle,
 	IonButton,
-	IonIcon
+	IonIcon,
+	useIonToast
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
@@ -23,19 +19,22 @@ import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/typ
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
 //import { $a, $i } from '../../components/DollarSignExports';
-//import toaster from '../../components/toaster';
+import toaster from '../../components/toaster';
 //import { LexiconOutlineIcon } from '../../components/icons';
 //import PermanentInfo from '../../components/PermanentInfo';
 import {
+	DJChartDirection,
 	DJDisplayData,
 	DJDisplayTypes,
 	DJOrders,
+	DJTypeObject,
 	displayChart,
 	displayText
 } from '../../components/DJOutputFormat';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
+import Header from '../../components/Header';
 
 /*
 
@@ -67,14 +66,16 @@ const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
 //	const dispatch = useDispatch();
 //	const [doAlert] = useIonAlert();
-//	const [doToast, undoToast] = useIonToast();
+	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
-	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chart");
+	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chartH");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
+	const [showGroupInfo, setShowGroupInfo] = useState<boolean>(true);
 	const [order, setOrder] = useState<DJOrders>("group");
-	const [outputText, setOutputText] = useState<string[]>([]);
 	const [type, setType] = useState<(keyof DJCustomInfo)[]>([]);
+	const [typeObj, setTypeObj] = useState<DJTypeObject>({});
+	const [displayOutput, setDisplayOutput] = useState<ReactElement[]>([]);
 	const { declensions, conjugations, other, input } = useSelector((state: StateObject) => state.dj);
 	const numberOfTypes =
 		(declensions.length > 0 ? 1 : 0)
@@ -96,6 +97,11 @@ const DJOutput = (props: PageData) => {
 		other.length > 0 && types.push("other");
 		setType(types);
 	}, [declensions, conjugations, other]);
+	useEffect(() => {
+		const obj: DJTypeObject = {};
+		type.forEach(key => (obj[key] = true));
+		setTypeObj(obj);
+	}, [type]);
 
 	// Memoized stuff
 	const sortObject = useMemo(() => {
@@ -126,48 +132,62 @@ const DJOutput = (props: PageData) => {
 			// Return data
 			return {
 				order: newOrder,
-				input: newInput
+				input: newInput,
+				showGroups: showGroupInfo
 			};
 		}
+		// Not using input? Leave as null.
 		return null;
-	}, [usingInput, input, order, sortObject]);
+	}, [usingInput, input, order, sortObject, showGroupInfo]);
 
 	const doGenerate = (
 		displayType: DJDisplayTypes,
 		types: (keyof DJCustomInfo)[],
 		data: DJDisplayData
 	) => {
+		if(types.length === 0) {
+			return toaster({
+				message: "Please choose at least one group to display.",
+				color: "danger",
+				doToast,
+				undoToast
+			});
+		}
+		let which: DJChartDirection = "v";
+		const output: ReactElement[] = [];
+		const {declensions: dec, conjugations: con, other: oth} = typeObj;
 		switch(displayType) {
 			case "text":
-				setOutputText(displayText(declensions, data));
-				setOutputText(displayText(conjugations, data));
-				setOutputText(displayText(other, data));
+				dec && output.push(...displayText(declensions, data));
+				con && output.push(...displayText(conjugations, data));
+				oth && output.push(...displayText(other, data));
 				break;
-			case "chart":
-				displayChart(declensions, data);
-				displayChart(conjugations, data);
-				displayChart(other, data);
+			case "chartH":
+				which = "h";
+				//eslint-disable-next-line no-fallthrough
+			case "chartV":
+				dec && output.push(...displayChart(declensions, data, which));
+				con && output.push(...displayChart(conjugations, data, which));
+				oth && output.push(...displayChart(other, data, which));
 				break;
 			default:
 				log(dispatch, [`Invalid display type? [${displayType}]`]);
+				toaster({
+					message: "ERROR. Please report to the developer.",
+					color: "danger",
+					doToast,
+					undoToast
+				});
 		}
+		setDisplayOutput(output);
 	};
 
 	return (
 		<IonPage>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>Output</IonTitle>
-					<IonButtons slot="end">
+			<Header title="Output" />
 						{/*<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>*/}
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
 			<IonContent fullscreen>
 				<IonList lines="full" className="djOutput hasToggles">
 					<IonItem>
@@ -180,8 +200,12 @@ const DJOutput = (props: PageData) => {
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
-								value="chart"
-							>Chart</IonSelectOption>
+								value="chartH"
+							>Chart, Horizontal Headers</IonSelectOption>
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="chartV"
+							>Chart, Vertical Headers</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="text"
@@ -253,11 +277,25 @@ const DJOutput = (props: PageData) => {
 							<p>Display the declensions/conjugations of words in the input.</p>
 						</IonToggle>
 					</IonItem>
+					<IonItem
+						lines="none"
+						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
+					>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={showGroupInfo}
+							onIonChange={e => setShowGroupInfo(!showGroupInfo)}
+						>
+							<h2>Show Group Info</h2>
+							<p>Include the group information along with the declensions/conjugations.</p>
+						</IonToggle>
+					</IonItem>
 					<IonItem lines="none" className={"toggleable" + (usingInput ? "" : " toggled")}>
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Output:"
+							label="Organize Output:"
 							value={order}
 							onIonChange={(e) => setOrder(e.detail.value)}
 						>
@@ -312,12 +350,7 @@ const DJOutput = (props: PageData) => {
 					</IonButton>
 				</div>
 				<div id="DJOutput" className="selectable">
-					{outputText.length > 0 ?
-						outputText.map(text => text)
-					:
-						<></>
-					}
-					{/*Chart info here */}
+					{displayOutput}
 				</div>
 			</IonContent>
 		</IonPage>
