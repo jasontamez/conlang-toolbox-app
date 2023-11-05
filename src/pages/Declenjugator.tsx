@@ -8,17 +8,13 @@ import {
 	IonTabs,
 	IonRouterOutlet
 } from '@ionic/react';
-import {
-	listOutline,
-	logInOutline,
-	logOutOutline
-} from 'ionicons/icons';
 
 import { PageData } from '../store/types';
 
 import DJInput from './dj/DJInput';
 import DJGroups from './dj/DJGroups';
 import DJOutput from './dj/DJOutput';
+import { appPagesObject } from '../components/appPagesInfo';
 
 
 const DJ = (props: PageData) => {
@@ -34,18 +30,15 @@ const DJ = (props: PageData) => {
 				<Route path="/dj/output" render={() => <DJOutput {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="input" href="/dj/input">
-					<IonIcon icon={logInOutline} />
-					<IonLabel>Input</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="groups" href="/dj/groups">
-					<IonIcon icon={listOutline} />
-					<IonLabel>Groups</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="output" href="/dj/output">
-					<IonIcon icon={logOutOutline} />
-					<IonLabel>Output</IonLabel>
-				</IonTabButton>
+				{appPagesObject.dj!.map(obj => {
+					const { title, url, tab, icon } = obj;
+					return (
+						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
+							{icon ? <IonIcon icon={icon} /> : <></>}
+							<IonLabel>{title}</IonLabel>
+						</IonTabButton>
+					);
+				})}
 			</IonTabBar>
 		</IonTabs>
 	);

@@ -8,15 +8,10 @@ import {
 	IonTabs,
 	IonRouterOutlet
 } from '@ionic/react';
-import {
-	optionsOutline,
-	documentTextOutline,
-	gridOutline
-} from 'ionicons/icons';
 
 import { PageData } from '../store/types';
 
-import { SyllablesIcon, TransformationsIcon } from '../components/icons';
+import { appPagesObject } from '../components/appPagesInfo';
 import WGCharGroups from "./wg/WGcharactergroups";
 import WGTransforms from "./wg/WGtransforms";
 import WGSyllables from "./wg/WGsyllables";
@@ -39,26 +34,15 @@ const WG = (props: PageData) => {
 				<Route path="/wg/settings" render={() => <WGSettings {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="charGroups" href="/wg/charGroups">
-					<IonIcon icon={gridOutline} />
-					<IonLabel>Characters</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="syllables" href="/wg/syllables">
-					<SyllablesIcon />
-					<IonLabel>Syllables</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="transforms" href="/wg/transforms">
-					<TransformationsIcon />
-					<IonLabel>Transforms</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="output" href="/wg/output">
-					<IonIcon icon={documentTextOutline} />
-					<IonLabel>Output</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="settings" href="/wg/settings">
-					<IonIcon icon={optionsOutline} />
-					<IonLabel>Settings</IonLabel>
-				</IonTabButton>
+				{appPagesObject.wg!.map(obj => {
+					const { title, url, tab, icon, Icon } = obj;
+					return (
+						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
+							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
+							<IonLabel>{title}</IonLabel>
+						</IonTabButton>
+					);
+				})}
 			</IonTabBar>
 		</IonTabs>
 	);

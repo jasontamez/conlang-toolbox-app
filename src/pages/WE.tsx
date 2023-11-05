@@ -8,15 +8,10 @@ import {
 	IonTabs,
 	IonRouterOutlet
 } from '@ionic/react';
-import {
-	gridOutline,
-	enterOutline,
-	exitOutline
-} from 'ionicons/icons';
 
 import { PageData } from '../store/types';
 
-import { SoundChangesIcon, TransformationsIcon } from '../components/icons';
+import { appPagesObject } from '../components/appPagesInfo';
 import WECharGroups from "./we/WEcharactergroups";
 import WETransforms from "./we/WEtransforms";
 import WESounds from "./we/WEsounds";
@@ -39,26 +34,15 @@ const WE = (props: PageData) => {
 				<Route path="/we/output" render={() => <WEOutput {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				<IonTabButton tab="input" href="/we/input">
-					<IonIcon icon={enterOutline} />
-					<IonLabel>Input</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="charGroups" href="/we/charGroups">
-					<IonIcon icon={gridOutline} />
-					<IonLabel>Characters</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="transformations" href="/we/transformations">
-					<TransformationsIcon />
-					<IonLabel>Transforms</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="soundchanges" href="/we/soundchanges">
-					<SoundChangesIcon />
-					<IonLabel>Sound Changes</IonLabel>
-				</IonTabButton>
-				<IonTabButton tab="output" href="/we/output">
-					<IonIcon icon={exitOutline} />
-					<IonLabel>Output</IonLabel>
-				</IonTabButton>
+				{appPagesObject.we!.map(obj => {
+					const { title, url, tab, icon, Icon } = obj;
+					return (
+						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
+							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
+							<IonLabel>{title}</IonLabel>
+						</IonTabButton>
+					);
+				})}
 			</IonTabBar>
 		</IonTabs>
 	);
