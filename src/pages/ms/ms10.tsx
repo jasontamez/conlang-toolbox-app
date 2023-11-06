@@ -411,7 +411,7 @@ const Syntax = (props: PageData) => {
 										</ul>
 									</li>
 									<li className="newSection">The Relativizer may be marked to show the NPR's role.
-										<ul><li>Chickasaw:<br /><TransTable rows="ihoo yamma-ay ofi' pĩs-tokat illi-tok/ woman that-SUB dog see-PST:DEP:SS die-PST">"The woman that saw the dog died"</TransTable><br /><TransTable rows="ihoo-at ofi' yamma pĩs-tokã illi-tok/ woman-SUB dog that see-PST:DEP:DS die-PST">"The woman that the dog saw died"</TransTable></li></ul>
+										<ul><li>Chickasaw:<br /><TransTable rows="ihoo yamma-ay ofi' pĩs-tokat illi-tok / woman that-SUB dog see-PST:DEP:SS die-PST">"The woman that saw the dog died"</TransTable><br /><TransTable rows="ihoo-at ofi' yamma pĩs-tokã illi-tok / woman-SUB dog that see-PST:DEP:DS die-PST">"The woman that the dog saw died"</TransTable></li></ul>
 									</li>
 								</ul>
 							</li>
