@@ -29,7 +29,8 @@ import {
 	DJOrders,
 	DJTypeObject,
 	displayChart,
-	displayText
+	displayText,
+	findCommons
 } from '../../components/DJOutputFormat';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
@@ -76,6 +77,7 @@ const DJOutput = (props: PageData) => {
 	const [type, setType] = useState<(keyof DJCustomInfo)[]>([]);
 	const [typeObj, setTypeObj] = useState<DJTypeObject>({});
 	const [displayOutput, setDisplayOutput] = useState<ReactElement[]>([]);
+	const [displayUnmatched, setDisplayUnmatched] = useState<ReactElement[]>([]);
 	const { declensions, conjugations, other, input } = useSelector((state: StateObject) => state.dj);
 	const numberOfTypes =
 		(declensions.length > 0 ? 1 : 0)
@@ -155,20 +157,45 @@ const DJOutput = (props: PageData) => {
 		}
 		let which: DJChartDirection = "v";
 		const output: ReactElement[] = [];
+		const unmatched: string[][] = [];
 		const {declensions: dec, conjugations: con, other: oth} = typeObj;
 		switch(displayType) {
 			case "text":
-				dec && output.push(...displayText(declensions, data));
-				con && output.push(...displayText(conjugations, data));
-				oth && output.push(...displayText(other, data));
+				if (dec) {
+					const [els, remainder] = displayText(declensions, data, "declensions");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
+				if (con) {
+					const [els, remainder] = displayText(conjugations, data, "conjugations");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
+				if (oth) {
+					const [els, remainder] = displayText(other, data, "other");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
 				break;
 			case "chartH":
 				which = "h";
 				//eslint-disable-next-line no-fallthrough
 			case "chartV":
-				dec && output.push(...displayChart(declensions, data, which));
-				con && output.push(...displayChart(conjugations, data, which));
-				oth && output.push(...displayChart(other, data, which));
+				if (dec) {
+					const [els, remainder] = displayChart(declensions, data, which, "declensions");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
+				if (con) {
+					const [els, remainder] = displayChart(conjugations, data, which, "conjugations");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
+				if (oth) {
+					const [els, remainder] = displayChart(other, data, which, "other");
+					output.push(...els);
+					unmatched.push(remainder);
+				}
 				break;
 			default:
 				log(dispatch, [`Invalid display type? [${displayType}]`]);
@@ -180,6 +207,14 @@ const DJOutput = (props: PageData) => {
 				});
 		}
 		setDisplayOutput(output);
+		// Handle unmatched
+		const unfound: string[] = findCommons(unmatched);
+		setDisplayUnmatched(unfound.length > 0 ? [
+			<div className="unmatchedWords">
+				<div className="title">Unmatched words:</div>
+				<div className="contents">{unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)}</div>
+			</div>
+		] : []);
 	};
 
 	return (
@@ -351,6 +386,7 @@ const DJOutput = (props: PageData) => {
 				</div>
 				<div id="DJOutput" className="selectable">
 					{displayOutput}
+					{displayUnmatched}
 				</div>
 			</IonContent>
 		</IonPage>

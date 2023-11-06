@@ -145,7 +145,6 @@ const EditGroup = (props: EditGroupProps) => {
 
 	const onLoad = () => {
 		const [editingType, editingGroup] = editingGroupInfo || [type, null];
-		console.log(editingGroupInfo);
 		const {
 			id = "ERROR",
 			title = "ERROR",
@@ -166,12 +165,8 @@ const EditGroup = (props: EditGroupProps) => {
 		editAppliesTo && (editAppliesTo.value = appliesTo);
 		const editStarts = $i("editStarts");
 		editStarts && (editStarts.value = startsWith.join(separator));
-		console.log(editStarts);
-		console.log(startsWith.join(separator));
 		const editEnds = $i("editEnds");
 		editEnds && (editEnds.value = endsWith.join(separator));
-		console.log(editEnds);
-		console.log(endsWith.join(separator));
 		if(regex) {
 			setUseAdvancedMethod(true);
 			const editRegex1 = $i("editRegex1");

@@ -1029,6 +1029,16 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 #DJOutput {
 	display: block;
 }
+#DJOutput div {
+	border: 1px solid red;
+	padding: 1rem;
+}
+#DJOutput div span {
+	display: inline-block;
+	background: #f0f1;
+	padding: 1rem;
+	margin: 0.5rem;
+}
 
 ion-item.innerList {
 	justify-content: stretch;
