@@ -208,13 +208,17 @@ const DJOutput = (props: PageData) => {
 		}
 		setDisplayOutput(output);
 		// Handle unmatched
-		const unfound: string[] = findCommons(unmatched);
-		setDisplayUnmatched(unfound.length > 0 ? [
-			<div className="unmatchedWords">
-				<div className="title">Unmatched words:</div>
-				<div className="contents">{unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)}</div>
-			</div>
-		] : []);
+		if(showUnmatched) {
+			const unfound: string[] = findCommons(unmatched);
+			setDisplayUnmatched(unfound.length > 0 ? [
+				<div className="unmatchedWords">
+					<div className="title">Unmatched words:</div>
+					<div className="contents">{unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)}</div>
+				</div>
+			] : []);
+		} else {
+			setDisplayUnmatched([]);
+		}
 	};
 
 	return (
