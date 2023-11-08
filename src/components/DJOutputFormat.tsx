@@ -1,14 +1,12 @@
 import React, { ReactElement } from "react";
-import { DJCustomInfo, DJGroup, Declenjugation, RegexPair } from "../store/types";
+import { DJCustomInfo, DJGroup, RegexPair } from "../store/types";
 import ltr from "./LTR";
 
 export type DJDisplayTypes = "text" | "chartH" | "chartV";
 export type DJTypeObject = {[key in keyof DJCustomInfo]?: boolean};
 export type DJChartDirection = "h" | "v";
-export type DJOrders = "group" | "groupAlpha" | "input" | "inputAlpha";
 type Triple = [string, string, string];
 export type DJDisplayData = null | {
-	order: DJOrders
 	input: string[]
 	showGroups: boolean
 };
@@ -63,11 +61,6 @@ const changeWord = (
 	return prefix + word + suffix;
 };
 
-const getDeclenjugation = (group: Declenjugation, word: string, stem: string): Triple => {
-	const { id, title, prefix, suffix, regex, useWholeWord } = group;
-	return [title, id, changeWord(useWholeWord ? word : stem, prefix, suffix, regex)];
-};
-
 const getGroupDescription = (group: DJGroup): Triple => {
 	const { title, id, appliesTo, startsWith, endsWith, separator, regex } = group;
 	let parameters: string = "";
@@ -87,78 +80,40 @@ const getGroupDescription = (group: DJGroup): Triple => {
 	return [title, id, "matches " + parameters];
 };
 
-let counter = 0;
-
-const displayPair = (
-	title: string,
-	id: string,
-	word: string,
-	differentiator: string,
-	classRow: string = "pair",
-	classOne: string = "title",
-	classTwo: string = "word"
-): ReactElement => {
-	return <div className={classRow} key={`displayPair:declenjugation:${differentiator}${id}:${title}:${word}-#${counter++}`}>
-		<span>pair</span><div className={classOne}><span>{classOne}</span>{title}</div>
-		<div className={classTwo}><span>{classTwo}</span>{word}</div>
-	</div>;
-};
-
-const displaySinglet = (id: string, word: string, className: string, differentiator: string = ""): ReactElement => {
-	return <div className={className} key={`displaySinglet:declenjugation:${differentiator}${id}:${word}-#${counter++}`}>
-		<span>{className}</span><div className="word"><span>word</span>{word}</div>
-	</div>;
-};
-
-const displayVertical = (declenjugations: Declenjugation[], type: string, id: string) => {
-	return (
-		<div
-			className="declenjugations vertical"
-			key={`${type}:displayGroup:chart:info:vertical${id}`}
-		>
-			{declenjugations.map((unit: Declenjugation) => {
-				const [title, subId, word] = getDeclenjugation(unit, "[word]", "[stem]");
-				return displayPair(title, subId, word, `group:vertical:${id}:${type}:`, "row", "title cell", "word cell");
-			})}
-		</div>
-	);
-};
-
-const displayHorizontal = (declenjugations: Declenjugation[], type: string, id: string) => {
-	const titles: string[] = [];
-	const ids: string[] = [];
-	const words: string[] = [];
-	declenjugations.forEach((unit: Declenjugation) => {
-		const [title, id, word] = getDeclenjugation(unit, "[word]", "[stem]");
-		titles.push(title);
-		ids.push(id);
-		words.push(word);
+const tableRows = (
+	rows: string[][],
+	rowIds: string[],
+	columnIds: string[],
+	rowClasses: (string | null)[],
+	columnClasses: (string | null)[],
+	groupId: string
+): ReactElement[] => {
+	const output: ReactElement[] = [];
+	const maxRowClass = rowClasses.length - 1;
+	const maxColClass = columnClasses.length - 1;
+	rows.forEach((row, i) => {
+		const rowId = rowIds[i] || "error";
+		const rowClass = rowClasses[i > maxRowClass ? maxRowClass : i];
+		const cells: ReactElement[] = [];
+		row.forEach((col, j) => {
+			const colId = columnIds[j] || "error";
+			const colClass = columnClasses[j > maxColClass ? maxColClass : j];
+			cells.push(
+				<div
+					className={colClass ? `${colClass} cell` : "cell"}
+					key={`${groupId}:cell:${rowId}:${colId}:${col}`}
+				>{col}</div>
+			);
+		});
+		output.push(
+			<div
+				className={rowClass ? `${rowClass} row` : "row"}
+				key={`${groupId}:row:${rowId}`}
+			>{cells}</div>
+		);
 	});
-	return (
-		<div
-			key={`${type}:displayGroup:chart:info:vertical:${id}`}
-			className="declenjugations horizontal"
-		>
-			<div className="row">
-				{titles.map((title, i) => (
-					<div
-						key={`${type}:displayGroup:chart:info:vertical:${id}:title:${ids[i]!}`}
-						className="title cell"
-					>{title}</div>
-				))}
-			</div>
-			<div className="row">
-				{words.map((word, i) => (
-					<div
-						key={`${type}:displayGroup:chart:info:vertical:${id}:word:${ids[i]!}`}
-						className="word cell"
-					>{word}</div>
-				))}
-			</div>
-		</div>
-	);
+	return output;
 };
-
 
 export const findCommons = (input: string[][]): string[] => {
 	const listings = input.slice();
@@ -199,199 +154,153 @@ export const displayChart = (
 	const output: ReactElement[] = [
 		<div className="djTypeTitle" key={`${type}-title`}>{type}</div>
 	];
-	const groupRawDescriptionInfo: Triple[] = [];
-	const unmatched: string[] = [];
-	const needToGetGroupInfo = (!data) || (data.showGroups && data.order === "input");
+	const typeString = type === "other" ? "Form" : type.charAt(0).toLocaleUpperCase() + type.slice(1, -1);
+	const unfound: string[][] = [];
+	const {input = [], showGroups = true} = data || {};
 	// Gather group info
 	groups.forEach(group => {
-		const [title, id, description] = getGroupDescription(group);
-		// Save basic info
-		groupRawDescriptionInfo.push([title, id, description]);
-		// Create Group Info for non-input-based outputs
-		needToGetGroupInfo && output.push(
-			<div key={`${type}:displayGroup:chart:${id}`} className="djChartOutputGroup">
-				<div className="header">
-					<div className="title">{title}</div>
-					<div className="description">{description}</div>
-				</div>
-				{data ? <></> : (
-					which === "h" ?
-						displayHorizontal(group.declenjugations, type, id)
-					:
-						displayVertical(group.declenjugations, type, id)
-				)}
+		const [title, groupId, description] = getGroupDescription(group);
+		const { declenjugations } = group;
+		const rows: string[][] = [];
+		const rowIds: string[] = [];
+		const rowClasses: (string | null)[] = [];
+		const columnIds: string[] = [];
+		const columnClasses: (string | null)[] = [];
+		let className: string;
+		if(which === "h") {
+			// header  header
+			// example example
+			// item1   item1
+			// item2   item2
+			className = "horizontal";
+			const headers: string[] = [typeString];
+			const examples: string[] = ["Examples"];
+			const missing: string[] = [];
+			rowClasses.push("headers");
+			rowIds.push("headerRow");
+			columnClasses.push("end");
+			if(showGroups) {
+				rowClasses.push("examples");
+				rowIds.push("exampleRow");
+			}
+			// Get header info, plus columnar info
+			declenjugations.forEach((unit, i) => {
+				const { title, id, useWholeWord, prefix, suffix, regex } = unit;
+				headers.push(title);
+				columnIds.push(id);
+				columnClasses.push((i % 2) ? "start" : "start striped");
+				showGroups && examples.push(
+					changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
+				);
+			});
+			// Go through each word and make a row out of each
+			input.forEach(word => {
+				const stem = findStem(word, group);
+				if(stem) {
+					rowIds.push(`${word}:${stem}`);
+					const wordRow: string[] = [word];
+					// Make a column out of each declenjugation of this word
+					declenjugations.forEach(unit => {
+						const { prefix, suffix, regex, useWholeWord } = unit;
+						wordRow.push(changeWord(useWholeWord ? word : stem, prefix, suffix, regex));
+					});
+					rows.push(wordRow);
+					rowClasses.push(null);
+				} else {
+					missing.push(word);
+				}
+			});
+			// Add examples row (if needed)
+			showGroups && rows.unshift(examples);
+			// Add row of headers
+			rows.unshift(headers);
+			// Save missing words
+			unfound.push(missing);
+		} else {
+			// header example item1 item2
+			// header example item1 item2
+			className = "vertical";
+			const stems: string[] = [];
+			const found: string[] = [];
+			const missing: string[] = [];
+			columnClasses.push("headers");
+			showGroups && columnClasses.push("examples");
+			columnClasses.push(null);
+			input.forEach(word => {
+				const stem = findStem(word, group);
+				if(stem) {
+					stems.push(stem);
+					found.push(word);
+					// col ids are the word + stem
+					columnIds.push(`${word}:${stem}`);
+				} else {
+					missing.push(word);
+				}
+			});
+			const headers: string[] = [...found];
+			rowClasses.push(null);
+			if(showGroups) {
+				headers.unshift("Example");
+			}
+			rows.push([typeString, ...headers]);
+			declenjugations.forEach((unit, i) => {
+				const { id, title, prefix, suffix, regex, useWholeWord } = unit;
+				const row: string[] = [title];
+				if (showGroups) {
+					row.push(changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex));
+				}
+				row.push(
+					...found.map((word, i) => changeWord(
+						useWholeWord ? word : stems[i]!,
+						prefix,
+						suffix,
+						regex
+					)
+				));
+				rows.push(row);
+				// row ids are the declenjugation ids
+				rowIds.push(id);
+				// stripe every other row
+				rowClasses.push((i % 2) ? null : "striped");
+			});
+			unfound.push(missing);
+		}
+		// Output
+		output.push(
+			<div
+				key={`${type}:displayGroup:chart:${groupId}`}
+				className="djChartOutputGroup"
+			>
+				{showGroups ? (
+					<div className="header">
+						<div className="title">{title}</div>
+						<div className="description">{description}</div>
+					</div>
+				) : <></>}
+				<div className={`${className} declenjugations`}>{
+					tableRows(
+						rows,
+						rowIds,
+						columnIds,
+						rowClasses,
+						columnClasses,
+						groupId
+					)
+				}</div>
 			</div>
 		);
 	});
-	if(!data) {
-		// Nothing else to do.
-		return [output, unmatched];
-	}
-	const {order, input, showGroups} = data;
-	// order will be either "input" or "group" and input will be pre-sorted
-	if(order === "group") {
-		// Use order of groups
-		let listing = input.slice();
-		const unfound: string[][] = [];
-		groups.forEach((group, i) => {
-			const found: [string, string][] = [];
-			const nextGroup: string[] = [];
-			while(listing.length > 0) {
-				const word = listing.shift()!;
-				const stem = findStem(word, group);
-				if(stem === null) {
-					nextGroup.push(word);
-					continue;
-				}
-				found.push([word, stem]);
-			}
-			// Use found words
-			const [title, id, description] = groupRawDescriptionInfo[i]!;
-			const headers: ReactElement[] = [
-				displaySinglet("baseTitleCard", "Base Word", "title", `header:${id}:${type}:`)
-			];
-			const examples: ReactElement[] = [
-				displaySinglet("base[Word]Card", "[word]", "word", `example:${id}:${type}:`)
-			];
-			const originals: ReactElement[][] = [
-				found.map((pair, i) => {
-					const word = pair[0];
-					return displaySinglet(
-						"inputWords",
-						word,
-						"original",
-						`singlet:originalWord:${id}:${type}:`
-					)
-				})
-			];
-			const changed: ReactElement[][] = [];
-			group.declenjugations.forEach(unit => {
-				const {id: subId, title, prefix, suffix, regex, useWholeWord} = unit;
-				headers.push(displaySinglet(subId, title, "title", `header:${id}:${type}:`));
-				showGroups && examples.push(
-					displaySinglet(
-						subId,
-						changeWord(
-							useWholeWord ? "[word]" : "[stem]",
-							prefix,
-							suffix,
-							regex
-						),
-						"word",
-						`example:${id}:${type}:`
-					)
-				);
-				changed.push(
-					found.map((pair, i) => {
-						const [word, stem] = pair;
-						return displaySinglet(
-							subId,
-							changeWord(useWholeWord ? word : stem, prefix, suffix, regex),
-							"word",
-							`from:${word}:${id}:${type}:`
-						);
-					})
-				);
-			});
-			output.push(
-				<div key={`${type}:displayGroup:chart:grouping:${id}`} className="djChartOutputGroup"><span>djChartOutputGroup</span>
-					<div className="header"><span>header</span>
-						<div className="title"><span>title</span>{title}</div>
-						<div className="description"><span>description</span>{description}</div>
-					</div>
-					<div
-						className={"declenjugations " + (which === "h" ? "horizontal" : "vertical")}
-						key={`${type}:displayGroup:chart:grouping:${id}:foundPair-${i}`}
-					><span>declenjugations + v/h</span>
-						<div className="headers"><span>headers</span>
-							{headers}
-						</div>
-						{showGroups ? <div className="examples"><span>examples</span>{examples}</div> : <></>}
-						{found.length ? (
-							<>
-								<div className="originals"><span>originals</span>{originals}</div>
-								{changed.map((els, i) =>(
-									<div
-										className="changed"
-										key={`${type}:${id}:singlets:changedWords:row-${i}`}
-									><span>changed</span>{els}</div>
-								))}
-							</>
-						) : <></>}
-					</div>
-				</div>
-			);
-			// Set for next loop
-			unfound.push(listing);
-			listing = nextGroup;
-		});
-		// Save unmatched words
-		unmatched.push(...findCommons(unfound));
-	} else {
-		// Use input order
-		// (Output should already have group info, if needed)
-		const headers: ReactElement[] = [];
-		const changed: ReactElement[][] = [];
-		// Go through each input item
-		input.forEach((word, wi) => {
-			// Find a matching group
-			let groupStem: [string, DJGroup] | null = null;
-			const copy = groups.slice();
-			while(copy.length > 0 && groupStem === null) {
-				const group = copy.shift()!;
-				const stem = findStem(word, group);
-				if(stem !== null) {
-					groupStem = [stem, group];
-				}
-			}
-			if(groupStem) {
-				// We found a group
-				// Save original word
-				const [stem, group] = groupStem;
-				const {id, title} = group;
-				headers.push(
-					displayPair(title, id, word, `foundGroupFromInput:${word}:${type}:`, "pair", "group", "word")
-				);
-				// Create all declensions/conjugations
-				const changes: ReactElement[] = [];
-				group.declenjugations.forEach(
-					unit => {
-						const [title, id, w] = getDeclenjugation(unit, word, stem);
-						changes.push(
-							displayPair(title, id, w, `fromGroup:${group.id}:${type}:`, "pair", "declenjugation")
-						)
-					}
-				);
-				changed.push(changes);
-				// Save changes to output
-			} else {
-				unmatched.push(word);
-			}
-		});
-		if (headers.length > 0) {
-			output.push(
-				<div
-					className={"djInputBasedChart " + (which === "h" ? "horizontal" : "vertical")}
-					key={`${type}:displayInput:chart:info:`}
-				><span>djInputBasedChart</span>
-					<div className="headers"><span>headers</span>{headers}</div>
-					{changed.map((words, i) => (
-						<div className="changed" key={`changedOutput:#${i}`}><span>changed</span>{words}</div>
-					))}
-				</div>
-			);
-		} else {
-			output.push(
-				<div
-					className={"djNoInput " + (which === "h" ? "horizontal" : "vertical")}
-					key={`${type}:displayInput:no-info:`}
-				><span>djNoInput</span>No words matched any of these.</div>
-			)
-		}
-	}
-	return [output, unmatched];
+	return [output, findCommons(unfound)];
 };
 
+// TO-DO: option to not let previously matched words continue
+//          - needs to work across declensions, conjugations and other!
+// TO-DO: "show group info" off should still show examples and the name of the group
+//          - extra option for showing example?
+// TO-DO: remove duplicates in input
+// TO-DO: Add message when nothing matches a group
+//          - if nothing matches, should a table even be rendered?
+// TO-DO: displayText
 export const displayText = (
 	groups: DJGroup[],
 	data: DJDisplayData,

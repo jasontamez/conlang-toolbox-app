@@ -355,7 +355,7 @@ const DJGroups = (props: PageData) => {
 					</IonButton>*/
 				]}
 			/>
-			<IonContent fullscreen className="hasFabButton">
+			<IonContent className="hasFabButton">
 				<IonList className="djGroups units dragArea" lines="full">
 					{declensions.length === 0 ?
 						<></>

@@ -26,7 +26,6 @@ import {
 	DJChartDirection,
 	DJDisplayData,
 	DJDisplayTypes,
-	DJOrders,
 	DJTypeObject,
 	displayChart,
 	displayText,
@@ -73,7 +72,7 @@ const DJOutput = (props: PageData) => {
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
 	const [showGroupInfo, setShowGroupInfo] = useState<boolean>(true);
-	const [order, setOrder] = useState<DJOrders>("group");
+	const [sortInput, setSortInput] = useState<boolean>(false);
 	const [type, setType] = useState<(keyof DJCustomInfo)[]>([]);
 	const [typeObj, setTypeObj] = useState<DJTypeObject>({});
 	const [displayOutput, setDisplayOutput] = useState<ReactElement[]>([]);
@@ -126,21 +125,18 @@ const DJOutput = (props: PageData) => {
 			const newInput = input.split(/\n/);
 			//
 			// Handle alphabetization
-			let newOrder = order;
-			if(order === "groupAlpha" || order === "inputAlpha") {
-				newOrder = order.slice(0, 5) as DJOrders;
+			if(sortInput) {
 				newInput.sort(sortObject);
 			}
 			// Return data
 			return {
-				order: newOrder,
 				input: newInput,
 				showGroups: showGroupInfo
 			};
 		}
 		// Not using input? Leave as null.
 		return null;
-	}, [usingInput, input, order, sortObject, showGroupInfo]);
+	}, [usingInput, input, sortInput, sortObject, showGroupInfo]);
 
 	const doGenerate = (
 		displayType: DJDisplayTypes,
@@ -211,9 +207,11 @@ const DJOutput = (props: PageData) => {
 		if(showUnmatched) {
 			const unfound: string[] = findCommons(unmatched);
 			setDisplayUnmatched(unfound.length > 0 ? [
-				<div className="unmatchedWords">
-					<div className="title">Unmatched words:</div>
-					<div className="contents">{unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)}</div>
+				<div className="unmatchedWords" key="unmatched:all">
+					<div className="title">Unmatched Words</div>
+					<div className="contents">{
+						unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)
+					}</div>
 				</div>
 			] : []);
 		} else {
@@ -227,7 +225,7 @@ const DJOutput = (props: PageData) => {
 						{/*<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>*/}
-			<IonContent fullscreen>
+			<IonContent>
 				<IonList lines="full" className="djOutput hasToggles">
 					<IonItem>
 						<IonSelect
@@ -240,11 +238,11 @@ const DJOutput = (props: PageData) => {
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="chartH"
-							>Chart, Horizontal Headers</IonSelectOption>
+							>Chart, Top Headers</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="chartV"
-							>Chart, Vertical Headers</IonSelectOption>
+							>Chart, Side Headers</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="text"
@@ -330,31 +328,18 @@ const DJOutput = (props: PageData) => {
 							<p>Include the group information along with the declensions/conjugations.</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem lines="none" className={"toggleable" + (usingInput ? "" : " toggled")}>
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label="Organize Output:"
-							value={order}
-							onIonChange={(e) => setOrder(e.detail.value)}
+					<IonItem
+						lines="none"
+						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
+					>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={sortInput}
+							onIonChange={e => setSortInput(!sortInput)}
 						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="input"
-							>by Input (unsorted)</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="inputAlpha"
-							>by Input (alphabetized)</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="group"
-							>by Group (unsorted input)</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="groupAlpha"
-							>by Group (alphabetized input)</IonSelectOption>
-						</IonSelect>
+							<h2>Sort Input</h2>
+						</IonToggle>
 					</IonItem>
 					<IonItem className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}>
 						<IonToggle

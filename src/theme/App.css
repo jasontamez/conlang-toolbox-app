@@ -1029,78 +1029,88 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 #DJOutput {
 	display: block;
 }
-#DJOutput div {
-	border: 1px solid red;
-	padding: 1rem;
-}
-#DJOutput div span {
-	display: inline-block;
-	background: #f0f1;
-	padding: 1rem;
-	margin: 0.5rem;
-}
-#DJOutput .djTypeTitle {
-	background: var(--ion-color-step-100);
+#DJOutput .djTypeTitle,
+#DJOutput .unmatchedWords .title {
+	background: var(--ion-color-secondary);
 	font-variant: small-caps;
 	border-width: 0.1em 0;
-	border-color: var(--ion-color-step-150);
+	border-color: var(--ion-color-secondary-tint);
 	border-style: solid;
 	font-size: 1.5em;
-	padding: 0.25em 2em;
+	padding: 0 2em;
+	color: var(--ion-color-secondary-contrast);
+}
+#DJOutput .unmatchedWords .contents {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+	justify-content: center;
+	padding: 0.5em;
+}
+#DJOutput .unmatchedWords .contents span {
+	display: inline-block;
+	background: var(--ion-background-shader);
+	padding: 0.25em 0.5em;
+	margin: 0.5em;
 }
 #DJOutput .djTypeTitle::first-letter {
 	text-transform: capitalize;
 }
 #DJOutput .djChartOutputGroup {
-	margin: 0 1em 2em 1em;
-	padding: 0 1em;
-	border: 0;
+	margin: 0 0.5em 2em 0.5em;
+	padding: 0 0.25em;
+	max-width: 100%;
+	overflow-x: auto;
 }
 #DJOutput .djChartOutputGroup .header {
-	background: var(--ion-background-tinter);
-	margin: 0;
-	padding: 1em 2em;
-	border: 0;
+	background: var(--ion-color-step-150);
+	padding: 1em;
 }
 #DJOutput .djChartOutputGroup .header .title {
 	font-weight: bold;
 	font-size: 1.1em;
-	margin: 0;
-	padding: 0;
-	border: 0;
 }
 #DJOutput .djChartOutputGroup .header .description {
 	font-style: italic;
-	margin: 0;
-	padding: 0;
-	border: 0;
+	text-indent: -1em;
+	padding-inline-start: 1em;
 }
 #DJOutput .djChartOutputGroup .declenjugations {
-	margin: 0;
-	padding: 0;
-	border: 0;
 	display: table;
 }
 #DJOutput .djChartOutputGroup .declenjugations .row {
-	margin: 0;
-	padding: 0;
-	border: 0;
 	display: table-row;
 }
 #DJOutput .djChartOutputGroup .declenjugations .row .cell {
-	margin: 0;
 	padding: 0.25em 0.5em;
-	border: 0;
 	display: table-cell;
-	text-align: end;
+	text-align: center;
+	border: 1px solid var(--ion-background-color);
+	background: var(--ion-color-step-50);
+	hyphens: manual;
+	overflow-wrap: break-word;
 }
-#DJOutput .djChartOutputGroup .declenjugations .row .title {
+#DJOutput .djChartOutputGroup .declenjugations .headers,
+#DJOutput .djChartOutputGroup .declenjugations.horizontal .examples .cell:first-child,
+#DJOutput .djChartOutputGroup .declenjugations.vertical .row:first-child .examples {
 	font-weight: bold;
 }
-#DJOutput .djChartOutputGroup .declenjugations.horizontal .row .cell {
-	text-align: center;
+#DJOutput .djChartOutputGroup .declenjugations .row.headers .cell,
+#DJOutput .djChartOutputGroup .declenjugations .row .cell.headers {
+	background: var(--ion-color-step-100);
 }
-#DJOutput .djChartOutputGroup .declenjugations.vertical .row .word {
+#DJOutput .djChartOutputGroup .declenjugations .row .cell:first-child {
+	border-inline-start-width: 0;
+}
+#DJOutput .djChartOutputGroup .declenjugations .row.striped:not(.headers) .cell:not(.headers),
+#DJOutput .djChartOutputGroup .declenjugations .row:not(.headers) .cell.striped:not(.headers) {
+	background: var(--ion-background-shader);
+}
+#DJOutput .djChartOutputGroup .declenjugations .row .cell.end {
+	text-align: end;
+}
+#DJOutput .djChartOutputGroup .declenjugations .row .cell.start {
 	text-align: start;
 }
 #DJOutput .djChartOutputGroup .declenjugations.vertical span {

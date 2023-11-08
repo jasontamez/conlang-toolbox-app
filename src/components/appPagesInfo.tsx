@@ -259,7 +259,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'dj'
 			},
 			{
-				title: 'Character Groups',
+				title: 'Groups',
 				url: '/dj/groups',
 				tab: 'groups',
 				id: 'menuitemDJgroup',
