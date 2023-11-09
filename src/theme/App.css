@@ -472,7 +472,6 @@ ion-app .hasMaxTextArea textarea {
 }
 .hasSpecialLabels ion-item.labelled.toggleable::part(native) {
 	--toggle-min-height: 0;
-	--toggle-height: 1.25em;
 }
 .hasSpecialLabels ion-item.labelled.toggleable.toggled {
 	margin-block-start: 0;
@@ -952,12 +951,11 @@ ion-list.djOutput,
 ion-list.lexiconImporter,
 ion-list.hasToggles {
 	--transition-duration: 0.2s;
-	--toggle-min-height: 3em;
+	--toggle-min-height: var(--min-height);
 	--toggle-max-height: 8em;
-	--toggle-height: var(--toggle-min-height);
 }
 ion-list.djOutput .wrappableInnards {
-	--toggle-min-height: 5em;
+	--toggle-min-height: var(--min-height);
 	--toggle-max-height: 12em;
 }
 
@@ -977,11 +975,6 @@ ion-list.djOutput {
 	padding-block-end: 0;
 }
 
-ion-list.hasToggles {
-	--transition-duration: 0.2s;
-	--toggle-min-height: 3em;
-	--toggle-max-height: 8em;
-}
 ion-list.hasToggles ion-item.doubleable::part(native) {
 	transition: all 0s ease-in var(--transition-duration);
 }
@@ -991,14 +984,12 @@ ion-list.hasToggles ion-item.doubleable.toggled::part(native) {
 }
 ion-list.hasToggles ion-item.toggleable::part(native) {
 	min-height: var(--toggle-min-height);
-	height: var(--toggle-height);
 	max-height: var(--toggle-max-height);
 	transition: all var(--transition-duration) ease-in;
 }
 ion-list.hasToggles ion-item.toggleable.toggled::part(native) {
 	--toggle-min-height: 0;
 	--toggle-max-height: 0;
-	height: 0;
 	border-block-end-width: 0;
 	transition: all var(--transition-duration) ease-out;
 }
@@ -1116,6 +1107,10 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 #DJOutput .djChartOutputGroup .declenjugations.vertical span {
 	display: none;
 }
+#DJOutput .djChartOutputGroup .unmatched {
+	margin: 0.25em 1em;
+	font-style: italic;
+}
 
 ion-item.innerList {
 	justify-content: stretch;
@@ -1140,9 +1135,8 @@ ion-item-sliding.djGroupMain ion-item ion-button {
 	margin-inline-end: 1em;
 }
 ion-item-sliding.djGroupMain ion-item.toggleable::part(native) {
-	--toggle-min-height: 2em;
+	--toggle-min-height: var(--min-height);
 	--toggle-max-height: 2em;
-	--transition-duration: 2s;
 	font-size: 0.8em;
 	padding-inline: 2.5rem;
 }

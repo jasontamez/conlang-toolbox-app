@@ -73,6 +73,8 @@ const DJOutput = (props: PageData) => {
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
 	const [showGroupInfo, setShowGroupInfo] = useState<boolean>(true);
 	const [sortInput, setSortInput] = useState<boolean>(false);
+	const [showExamples, setShowExamples] = useState<boolean>(true);
+	const [oneMatchOnly, setOneMatchOnly] = useState<boolean>(false);
 	const [type, setType] = useState<(keyof DJCustomInfo)[]>([]);
 	const [typeObj, setTypeObj] = useState<DJTypeObject>({});
 	const [displayOutput, setDisplayOutput] = useState<ReactElement[]>([]);
@@ -121,8 +123,8 @@ const DJOutput = (props: PageData) => {
 	}, [customSorts, defaultCustomSort, defaultSortLanguage, sensitivity, sortLanguage]);
 	const data: DJDisplayData = useMemo(() => {
 		if(usingInput) {
-			// Grab input
-			const newInput = input.split(/\n/);
+			// Grab input, removing duplicates
+			const newInput = [...(new Set(input.split(/\n/)))];
 			//
 			// Handle alphabetization
 			if(sortInput) {
@@ -131,12 +133,14 @@ const DJOutput = (props: PageData) => {
 			// Return data
 			return {
 				input: newInput,
-				showGroups: showGroupInfo
+				showGroups: showGroupInfo,
+				showExamples,
+				oneMatchOnly
 			};
 		}
 		// Not using input? Leave as null.
 		return null;
-	}, [usingInput, input, sortInput, sortObject, showGroupInfo]);
+	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, oneMatchOnly]);
 
 	const doGenerate = (
 		displayType: DJDisplayTypes,
@@ -155,22 +159,33 @@ const DJOutput = (props: PageData) => {
 		const output: ReactElement[] = [];
 		const unmatched: string[][] = [];
 		const {declensions: dec, conjugations: con, other: oth} = typeObj;
+		let newData: DJDisplayData = data && {...data};
+		function handleRemainder (data: DJDisplayData, remainder: string[]) {
+			if(data && data.oneMatchOnly) {
+				newData = {
+					...data,
+					input: remainder
+				};
+				return;
+			}
+			unmatched.push(remainder);
+		}
 		switch(displayType) {
 			case "text":
 				if (dec) {
-					const [els, remainder] = displayText(declensions, data, "declensions");
+					const [els, remainder] = displayText(declensions, newData, "declensions");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				if (con) {
-					const [els, remainder] = displayText(conjugations, data, "conjugations");
+					const [els, remainder] = displayText(conjugations, newData, "conjugations");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				if (oth) {
-					const [els, remainder] = displayText(other, data, "other");
+					const [els, remainder] = displayText(other, newData, "other");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				break;
 			case "chartH":
@@ -178,19 +193,19 @@ const DJOutput = (props: PageData) => {
 				//eslint-disable-next-line no-fallthrough
 			case "chartV":
 				if (dec) {
-					const [els, remainder] = displayChart(declensions, data, which, "declensions");
+					const [els, remainder] = displayChart(declensions, newData, which, "declensions");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				if (con) {
-					const [els, remainder] = displayChart(conjugations, data, which, "conjugations");
+					const [els, remainder] = displayChart(conjugations, newData, which, "conjugations");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				if (oth) {
-					const [els, remainder] = displayChart(other, data, which, "other");
+					const [els, remainder] = displayChart(other, newData, which, "other");
 					output.push(...els);
-					unmatched.push(remainder);
+					handleRemainder(newData, remainder);
 				}
 				break;
 			default:
@@ -205,7 +220,7 @@ const DJOutput = (props: PageData) => {
 		setDisplayOutput(output);
 		// Handle unmatched
 		if(showUnmatched) {
-			const unfound: string[] = findCommons(unmatched);
+			const unfound: string[] = (newData && newData.oneMatchOnly) ? newData.input : findCommons(unmatched);
 			setDisplayUnmatched(unfound.length > 0 ? [
 				<div className="unmatchedWords" key="unmatched:all">
 					<div className="title">Unmatched Words</div>
@@ -300,10 +315,7 @@ const DJOutput = (props: PageData) => {
 						:
 							<></>
 					}
-					<IonItem
-						lines={usingInput ? "none" : "full"}
-						className={"wrappableInnards doubleable" + (usingInput ? " toggled" : "")}
-					>
+					<IonItem className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
@@ -315,7 +327,6 @@ const DJOutput = (props: PageData) => {
 						</IonToggle>
 					</IonItem>
 					<IonItem
-						lines="none"
 						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
 					>
 						<IonToggle
@@ -325,11 +336,23 @@ const DJOutput = (props: PageData) => {
 							onIonChange={e => setShowGroupInfo(!showGroupInfo)}
 						>
 							<h2>Show Group Info</h2>
-							<p>Include the group information along with the declensions/conjugations.</p>
+							<p>Include general group information.</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem
-						lines="none"
+						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
+					>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={showExamples}
+							onIonChange={e => setShowExamples(!showExamples)}
+						>
+							<h2>Show Examples</h2>
+							<p>Include generic example.</p>
+						</IonToggle>
+					</IonItem>
+					<IonItem
 						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
 					>
 						<IonToggle
@@ -339,6 +362,19 @@ const DJOutput = (props: PageData) => {
 							onIonChange={e => setSortInput(!sortInput)}
 						>
 							<h2>Sort Input</h2>
+						</IonToggle>
+					</IonItem>
+					<IonItem
+						className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}
+					>
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={oneMatchOnly}
+							onIonChange={e => setOneMatchOnly(!oneMatchOnly)}
+						>
+							<h2>One Match</h2>
+							<p>Input words can only match one declension/conjugation/etc.</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}>

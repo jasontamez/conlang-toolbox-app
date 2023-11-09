@@ -9,6 +9,8 @@ type Triple = [string, string, string];
 export type DJDisplayData = null | {
 	input: string[]
 	showGroups: boolean
+	showExamples: boolean
+	oneMatchOnly: boolean
 };
 
 const findStem = (
@@ -156,9 +158,11 @@ export const displayChart = (
 	];
 	const typeString = type === "other" ? "Form" : type.charAt(0).toLocaleUpperCase() + type.slice(1, -1);
 	const unfound: string[][] = [];
-	const {input = [], showGroups = true} = data || {};
+	const {input: originalInput = [], showGroups = true, showExamples = true, oneMatchOnly = false} = data || {};
+	let input = originalInput.slice();
 	// Gather group info
 	groups.forEach(group => {
+		let foundFlag = false;
 		const [title, groupId, description] = getGroupDescription(group);
 		const { declenjugations } = group;
 		const rows: string[][] = [];
@@ -179,7 +183,7 @@ export const displayChart = (
 			rowClasses.push("headers");
 			rowIds.push("headerRow");
 			columnClasses.push("end");
-			if(showGroups) {
+			if(showExamples) {
 				rowClasses.push("examples");
 				rowIds.push("exampleRow");
 			}
@@ -189,7 +193,7 @@ export const displayChart = (
 				headers.push(title);
 				columnIds.push(id);
 				columnClasses.push((i % 2) ? "start" : "start striped");
-				showGroups && examples.push(
+				showExamples && examples.push(
 					changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
 				);
 			});
@@ -197,6 +201,7 @@ export const displayChart = (
 			input.forEach(word => {
 				const stem = findStem(word, group);
 				if(stem) {
+					foundFlag = true;
 					rowIds.push(`${word}:${stem}`);
 					const wordRow: string[] = [word];
 					// Make a column out of each declenjugation of this word
@@ -211,10 +216,13 @@ export const displayChart = (
 				}
 			});
 			// Add examples row (if needed)
-			showGroups && rows.unshift(examples);
+			showExamples && rows.unshift(examples);
 			// Add row of headers
 			rows.unshift(headers);
 			// Save missing words
+			if(oneMatchOnly) {
+				input = missing;
+			}
 			unfound.push(missing);
 		} else {
 			// header example item1 item2
@@ -224,11 +232,12 @@ export const displayChart = (
 			const found: string[] = [];
 			const missing: string[] = [];
 			columnClasses.push("headers");
-			showGroups && columnClasses.push("examples");
+			showExamples && columnClasses.push("examples");
 			columnClasses.push(null);
 			input.forEach(word => {
 				const stem = findStem(word, group);
 				if(stem) {
+					foundFlag = true;
 					stems.push(stem);
 					found.push(word);
 					// col ids are the word + stem
@@ -239,14 +248,14 @@ export const displayChart = (
 			});
 			const headers: string[] = [...found];
 			rowClasses.push(null);
-			if(showGroups) {
+			if(showExamples) {
 				headers.unshift("Example");
 			}
 			rows.push([typeString, ...headers]);
 			declenjugations.forEach((unit, i) => {
 				const { id, title, prefix, suffix, regex, useWholeWord } = unit;
 				const row: string[] = [title];
-				if (showGroups) {
+				if (showExamples) {
 					row.push(changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex));
 				}
 				row.push(
@@ -263,6 +272,9 @@ export const displayChart = (
 				// stripe every other row
 				rowClasses.push((i % 2) ? null : "striped");
 			});
+			if(oneMatchOnly) {
+				input = missing;
+			}
 			unfound.push(missing);
 		}
 		// Output
@@ -271,13 +283,11 @@ export const displayChart = (
 				key={`${type}:displayGroup:chart:${groupId}`}
 				className="djChartOutputGroup"
 			>
-				{showGroups ? (
-					<div className="header">
-						<div className="title">{title}</div>
-						<div className="description">{description}</div>
-					</div>
-				) : <></>}
-				<div className={`${className} declenjugations`}>{
+				<div className="header">
+					<div className="title">{title}</div>
+					{ showGroups ? <div className="description">{description}</div> : <></> }
+				</div>
+				{(!data || (foundFlag || showExamples)) ? <div className={`${className} declenjugations`}>{
 					tableRows(
 						rows,
 						rowIds,
@@ -286,20 +296,17 @@ export const displayChart = (
 						columnClasses,
 						groupId
 					)
-				}</div>
+				}</div> : <></>}
+				{!data || foundFlag ? <></> : <div className="unmatched">No words matched this group.</div>}
 			</div>
 		);
 	});
-	return [output, findCommons(unfound)];
+	return [
+		output,
+		oneMatchOnly ? (unfound.pop() || []) : findCommons(unfound)
+	];
 };
 
-// TO-DO: option to not let previously matched words continue
-//          - needs to work across declensions, conjugations and other!
-// TO-DO: "show group info" off should still show examples and the name of the group
-//          - extra option for showing example?
-// TO-DO: remove duplicates in input
-// TO-DO: Add message when nothing matches a group
-//          - if nothing matches, should a table even be rendered?
 // TO-DO: displayText
 export const displayText = (
 	groups: DJGroup[],
