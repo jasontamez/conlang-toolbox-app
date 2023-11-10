@@ -9,9 +9,11 @@ import {
 	IonCardHeader,
 	IonCardContent,
 	IonContent,
-	IonCardTitle
+	IonCardTitle,
+	IonButton,
+	IonLabel
 } from '@ionic/react';
-import { globeOutline } from 'ionicons/icons';
+//import { globeOutline } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
 import { PageData, StateObject } from '../store/types';
@@ -22,10 +24,17 @@ import {
 	LexiconIcon,
 	WordEvolveIcon,
 	WordGenIcon,
-	MorphoSyntaxIcon
+	MorphoSyntaxIcon,
+	DeclenjugatorIcon
 } from '../components/icons';
 import Header from '../components/Header';
 import ExtraCharactersModal from './modals/ExtraCharacters';
+import { appPagesObject } from '../components/appPagesInfo';
+import { helpCircle } from 'ionicons/icons';
+
+// TO-DO: Fix "app Info" at bottom, and the AppInfo page
+// TO-DO: Add 'overview' pages as help pages
+//         - extra chars will need its own somehow
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -36,123 +45,138 @@ const Home = (props: PageData) => {
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<Header title="Conlang Toolbox" />
-			<IonContent className="containedCards">
+			<IonContent className="containedCards" id="about">
 				<IonGrid>
-					<IonRow>
+
+				<IonRow className="major">
 						<IonCol>
-							<IonCard
-								button={true}
-								routerLink="/ms/msSettings"
-								routerDirection="forward"
-							>
-								<IonCardHeader className="ion-text-center">
-									<MorphoSyntaxIcon />
-									<IonCardTitle className="ion-padding-start">MorphoSyntax</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>This tool is for designing the basic structure of your language.</p>
-									<ul>
-										<li>Covers large-scale structures and small</li>
-										<li>Grouped into ten sections</li>
-										<li>Use as many or as little of the prompts as you like</li>
-									</ul>
-								</IonCardContent>
-							</IonCard>
+							<IonButton size="large" routerLink="/ms/msSettings" routerDirection="forward">
+								<MorphoSyntaxIcon slot="start" />
+								<IonLabel>MorphoSyntax</IonLabel>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard
-								button={true}
-								routerLink="/wg/settings"
-								routerDirection="forward"
-							>
-								<IonCardHeader className="ion-text-center">
-									<WordGenIcon />
-									<IonCardTitle className="ion-padding-start">WordGen</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>This tool is for creating words according to rules you set up.</p>
-									<ul>
-										<li>Organize your language's sounds into groups</li>
-										<li>Construct syllable formations using those groups</li>
-										<li>Tweak the output through transformations</li>
-										<li>Jumpstart your process with built-in presets</li>
-									</ul>
-								</IonCardContent>
-							</IonCard>
+							{appPagesObject.ms!.map((obj, i) => {
+								const { url, tab, icon, Icon } = obj;
+								return (
+									<IonButton routerLink={url} routerDirection="forward" key={"msBtn-" + tab}>
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
+									</IonButton>
+								);
+							})}
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className="major">
+						<IonCol>
+							<IonButton size="large" routerLink="/wg/settings" routerDirection="forward">
+								<WordGenIcon slot="start" />
+								<IonLabel>WordGen</IonLabel>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard
-								button={true}
-								routerLink="/we/input"
-								routerDirection="forward"
-							>
-								<IonCardHeader className="ion-text-center">
-									<WordEvolveIcon />
-									<IonCardTitle className="ion-padding-start">WordEvolve</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>
-										This tool is for modifying words according to rules you set up,
-										mimicking the evolution of natural languages.
-									</p>
-									<ul>
-										<li>Start with words from a language (natural or otherwise)</li>
-										<li>Use standard rules to determine how they evolve</li>
-										<li>Tweak the output through transformations</li>
-										{/*<li>Multiple presets to get you going</li>*/}
-									</ul>
-								</IonCardContent>
-							</IonCard>
+							{appPagesObject.wg!.map((obj, i) => {
+								const { url, tab, icon, Icon } = obj;
+								return (
+									<IonButton routerLink={url} routerDirection="forward" key={"wgBtn-" + tab}>
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
+									</IonButton>
+								);
+							})}
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className="major">
+						<IonCol>
+							<IonButton size="large" routerLink="/we/input" routerDirection="forward">
+								<WordEvolveIcon slot="start" />
+								<IonLabel>WordEvolve</IonLabel>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/lex" routerDirection="forward">
-								<IonCardHeader className="ion-text-center">
-									<LexiconIcon className="ion-align-self-center" />
-									<IonCardTitle
-										className="ion-padding-start ion-align-self-start"
-									>Lexicon</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>A place to store your conlangs.</p>
-									<ul>
-										<li>Store bits of information for each word, such as part of speech or definition</li>
-										<li>Sort your words by any criteria</li>
-										<li>Easily add words from WordGen and WordEvolve</li>
-										<li>Store multiple lexicons</li>
-										<li>Export your data</li>
-									</ul>
-								</IonCardContent>
-							</IonCard>
+							{appPagesObject.we!.map((obj, i) => {
+								const { url, tab, icon, Icon } = obj;
+								return (
+									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
+									</IonButton>
+								);
+							})}
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className="major">
+						<IonCol>
+							<IonButton size="large" routerLink="/dj/groups" routerDirection="forward">
+								<DeclenjugatorIcon slot="start" />
+								<IonLabel>Declenjugator</IonLabel>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonCard button={true} routerLink="/wordlists" routerDirection="forward">
-								<IonCardHeader className="ion-text-center">
-									<ConceptsIcon className="ion-align-self-center" />
-									<IonCardTitle
-										className="ion-padding-start ion-align-self-start"
-									>Concepts</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>A small storehouse of basic meanings, useful for starting a lexicon.</p>
-									<ul>
-										<li>Easily add meanings to Lexicon</li>
-										<li>Contains the Swadesh-100, -207 and other variants</li>
-										<li>Also contains Dogolposky, Leipzig-Jakarta, and ASJP lists</li>
-										<li>Create hybrid meanings for your own use</li>
-									</ul>
-								</IonCardContent>
-							</IonCard>
+							{appPagesObject.dj!.map((obj, i) => {
+								const { url, tab, icon, Icon } = obj;
+								return (
+									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
+									</IonButton>
+								);
+							})}
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className="major">
+						<IonCol>
+							<IonButton size="large" routerLink="/lex" routerDirection="forward">
+								<LexiconIcon slot="start" />
+								<IonLabel>Lexicon</IonLabel>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
+						<IonCol>
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className="major">
+						<IonCol>
+							<IonButton size="large" routerLink="/wordlists" routerDirection="forward">
+								<ConceptsIcon slot="start" />
+								<IonLabel>Concepts</IonLabel>
+							</IonButton>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+								<IonIcon icon={helpCircle} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+
+					{/*<IonRow>
 						<IonCol>
 							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
 								<IonCardHeader className="ion-text-center">
@@ -171,17 +195,8 @@ const Home = (props: PageData) => {
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol></IonCol>
-					</IonRow>
-					<IonRow>
+					</IonRow>*/}
+					<IonRow className="final">
 						<IonCol>
 							<IonCard
 								id="appInfo"

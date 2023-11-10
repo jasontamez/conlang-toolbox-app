@@ -216,9 +216,9 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-input-fg: var(--ion-color-dark-contrast);
 	--ion-color-input-border: var(--ion-color-light-shade);
 
-	--ion-card-color: var(--ion-color-light-shade);
-	--ion-card-background: var(--ion-color-step-50);
-	--ion-card-highlight: var(--ion-color-step-100);
+	--subtle-color: var(--ion-color-light-shade);
+	--subtle-background: var(--ion-color-step-50);
+	--subtle-highlight: var(--ion-color-step-100);
 
 	--ion-item-background: var(--ion-color-step-50);
 
@@ -346,9 +346,9 @@ div.SolarizedLightTheme {
 
 	--ion-tab-bar-background: var(--ion-color-light-shade);
 
-	--ion-card-color: var(--ion-color-dark-tint);
-	--ion-card-background: var(--ion-color-light-tint);
-	--ion-card-highlight: var(--ion-color-light-shade);
+	--subtle-color: var(--ion-color-dark-tint);
+	--subtle-background: var(--ion-color-light-tint);
+	--subtle-highlight: var(--ion-color-light-shade);
 
 	--ion-color-step-50: #f0ecda;
 	--ion-color-step-100: #e4e2d2;
@@ -455,9 +455,9 @@ div.SolarizedDarkTheme {
 
 	--ion-tab-bar-background: var(--ion-color-light);
 
-	--ion-card-background: var(--ion-color-light-shade);
-	--ion-card-color: var(--ion-color-dark-shade);
-	--ion-card-highlight: var(--ion-color-light-tint);
+	--subtle-background: var(--ion-color-light-shade);
+	--subtle-color: var(--ion-color-dark-shade);
+	--subtle-highlight: var(--ion-color-light-tint);
 
 	--ion-color-step-50: #0d353f;
 	--ion-color-step-100: #193f47;
@@ -563,9 +563,9 @@ div.DarkTheme {
 
 	--ion-tab-bar-background: var(--ion-color-dark);
 
-	--ion-card-background: var(--ion-color-dark-shade);
-	--ion-card-color: var(--ion-color-light-shade);
-	--ion-card-highlight: var(--ion-color-dark-tint);
+	--subtle-background: var(--ion-color-dark-shade);
+	--subtle-color: var(--ion-color-light-shade);
+	--subtle-highlight: var(--ion-color-dark-tint);
 
 	--ion-color-step-50: #1b1b1b;
 	--ion-color-step-100: #252525;
@@ -672,9 +672,9 @@ div.LightTheme {
 
 	--ion-tab-bar-background: #ffffff;
 
-	--ion-card-background: #ffffff;
-	--ion-card-color: var(--ion-color-dark-shade);
-	--ion-card-highlight: var(--ion-color-light-shade);
+	--subtle-background: #ffffff;
+	--subtle-color: var(--ion-color-dark-shade);
+	--subtle-highlight: var(--ion-color-light-shade);
 
 	--ion-color-step-50: #f3f3f3;
 	--ion-color-step-100: #e7e7e7;

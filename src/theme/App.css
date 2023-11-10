@@ -39,9 +39,6 @@ ion-app .hide {
 	display: none !important;
 	overflow: hidden;
 }
-ion-row:nth-child(odd) {
-	margin: 16px 0;
-}
 
 .flex-basic {
 	flex-grow: 1;
@@ -496,44 +493,61 @@ ion-loading.pageSwitchBackground {
 	--background-opacity: 1.0;
 }
 
-ion-content.containedCards ion-grid {
+#about ion-grid {
 	margin: 0 auto;
 	max-width: 31rem;
 	padding-block-end: 0;
 }
-ion-content.containedCards ion-grid ion-row:last-of-type ion-col {
-	padding-block-end: 0;
-}
-ion-content.containedCards ion-card {
+#about ion-grid ion-col {
 	max-width: 30rem;
-	margin: 0.5rem 2rem;
-	border-radius: 1.5rem;
-}
-ion-content.containedCards ion-card * {
-	--inner-border-width: 0;
-}
-ion-content.containedCards ion-card p {
-	text-indent: 0 !important;
-	text-align: center;
-	background: var(--ion-card-highlight);
-	border-radius: 2rem;
-}
-ion-content.containedCards ion-card ion-card-header {
+	margin: 0 2rem;
+	padding: 0;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
+	align-content: center;
 }
-ion-content.containedCards ion-card ion-card-header * {
-	font-size: 1.25rem;
-	font-weight: bold;
+#about ion-row,
+#about ion-row.major.solo {
+	padding: 0 0 1.5rem 0;
+}
+#about ion-row.major {
+	padding: 0 0 0 0;
+}
+#about ion-row.major:nth-child(1) {
+	padding: 1rem 0 0 0;
+}
+#about ion-col ion-button {
+	text-transform: none;
+	margin: 0.25rem 0.25rem;
+}
+#about ion-col ion-button::part(native) {
+	background: var(--subtle-background);
+	color: var(--ion-color-secondary);
+	padding: 0.25rem 1rem;
+}
+#about ion-row.major ion-button {
+	border-radius: 2rem;
+	width: 100%;
+	max-width: 30rem;
+	text-transform: none;
+}
+#about ion-row.major ion-button::part(native) {
+	border-radius: 2rem;
+	background: var(--subtle-highlight);
 	color: var(--ion-color-primary);
-	margin-block-start: 0;
+	font-weight: bold;
+	letter-spacing: 0;
 }
-ion-content.containedCards ion-card#appInfo {
-	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
-	margin-block-end: 0;
-	position: relative;
+#about ion-row ion-button.help::part(native) {
+	color: var(--ion-color-tertiary);
+}
+#about ion-row.final {
+	padding: 10rem 0 0 0;
+}
+#about ion-row.final ion-col {
+	padding: 0 0 0 0;
 }
 
 ion-modal::part(content) ion-item-group.buttonFilled ion-item:nth-of-type(even)::part(native),
