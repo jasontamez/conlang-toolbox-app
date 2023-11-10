@@ -8,7 +8,7 @@ export type DJChartDirection = "h" | "v";
 type Triple = [string, string, string];
 export type DJDisplayData = null | {
 	input: string[]
-	showGroups: boolean
+	showGroupInfo: boolean
 	showExamples: boolean
 	oneMatchOnly: boolean
 };
@@ -82,41 +82,6 @@ const getGroupDescription = (group: DJGroup): Triple => {
 	return [title, id, "matches " + parameters];
 };
 
-const tableRows = (
-	rows: string[][],
-	rowIds: string[],
-	columnIds: string[],
-	rowClasses: (string | null)[],
-	columnClasses: (string | null)[],
-	groupId: string
-): ReactElement[] => {
-	const output: ReactElement[] = [];
-	const maxRowClass = rowClasses.length - 1;
-	const maxColClass = columnClasses.length - 1;
-	rows.forEach((row, i) => {
-		const rowId = rowIds[i] || "error";
-		const rowClass = rowClasses[i > maxRowClass ? maxRowClass : i];
-		const cells: ReactElement[] = [];
-		row.forEach((col, j) => {
-			const colId = columnIds[j] || "error";
-			const colClass = columnClasses[j > maxColClass ? maxColClass : j];
-			cells.push(
-				<div
-					className={colClass ? `${colClass} cell` : "cell"}
-					key={`${groupId}:cell:${rowId}:${colId}:${col}`}
-				>{col}</div>
-			);
-		});
-		output.push(
-			<div
-				className={rowClass ? `${rowClass} row` : "row"}
-				key={`${groupId}:row:${rowId}`}
-			>{cells}</div>
-		);
-	});
-	return output;
-};
-
 export const findCommons = (input: string[][]): string[] => {
 	const listings = input.slice();
 	const length = listings.length;
@@ -147,18 +112,18 @@ export const findCommons = (input: string[][]): string[] => {
 	return output;
 }
 
-export const displayChart = (
+export const display = (
 	groups: DJGroup[],
 	data: DJDisplayData,
-	which: DJChartDirection,
+	which: DJDisplayTypes,
 	type: string
 ): [ReactElement[], string[]] => {
 	const output: ReactElement[] = [
 		<div className="djTypeTitle" key={`${type}-title`}>{type}</div>
 	];
-	const typeString = type === "other" ? "Form" : type.charAt(0).toLocaleUpperCase() + type.slice(1, -1);
+	const typeString = type === "other" ? "Forms" : type.charAt(0).toLocaleUpperCase() + type.slice(1);
 	const unfound: string[][] = [];
-	const {input: originalInput = [], showGroups = true, showExamples = true, oneMatchOnly = false} = data || {};
+	const {input: originalInput = [], showGroupInfo = true, showExamples = true, oneMatchOnly = false} = data || {};
 	let input = originalInput.slice();
 	// Gather group info
 	groups.forEach(group => {
@@ -170,64 +135,11 @@ export const displayChart = (
 		const rowClasses: (string | null)[] = [];
 		const columnIds: string[] = [];
 		const columnClasses: (string | null)[] = [];
-		let className: string;
-		if(which === "h") {
-			// header  header
-			// example example
-			// item1   item1
-			// item2   item2
-			className = "horizontal";
-			const headers: string[] = [typeString];
-			const examples: string[] = ["Examples"];
-			const missing: string[] = [];
-			rowClasses.push("headers");
-			rowIds.push("headerRow");
-			columnClasses.push("end");
-			if(showExamples) {
-				rowClasses.push("examples");
-				rowIds.push("exampleRow");
-			}
-			// Get header info, plus columnar info
-			declenjugations.forEach((unit, i) => {
-				const { title, id, useWholeWord, prefix, suffix, regex } = unit;
-				headers.push(title);
-				columnIds.push(id);
-				columnClasses.push((i % 2) ? "start" : "start striped");
-				showExamples && examples.push(
-					changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
-				);
-			});
-			// Go through each word and make a row out of each
-			input.forEach(word => {
-				const stem = findStem(word, group);
-				if(stem) {
-					foundFlag = true;
-					rowIds.push(`${word}:${stem}`);
-					const wordRow: string[] = [word];
-					// Make a column out of each declenjugation of this word
-					declenjugations.forEach(unit => {
-						const { prefix, suffix, regex, useWholeWord } = unit;
-						wordRow.push(changeWord(useWholeWord ? word : stem, prefix, suffix, regex));
-					});
-					rows.push(wordRow);
-					rowClasses.push(null);
-				} else {
-					missing.push(word);
-				}
-			});
-			// Add examples row (if needed)
-			showExamples && rows.unshift(examples);
-			// Add row of headers
-			rows.unshift(headers);
-			// Save missing words
-			if(oneMatchOnly) {
-				input = missing;
-			}
-			unfound.push(missing);
-		} else {
+		let className: string = which === "text" ? "text" : "chart";
+		if(which === "chartV") {
 			// header example item1 item2
 			// header example item1 item2
-			className = "vertical";
+			className += " vertical";
 			const stems: string[] = [];
 			const found: string[] = [];
 			const missing: string[] = [];
@@ -276,28 +188,125 @@ export const displayChart = (
 				input = missing;
 			}
 			unfound.push(missing);
+		} else {
+			//////// chartH and text
+			// header  header
+			// example example
+			// item1   item1
+			// item2   item2
+			which !== "text" && (className += " horizontal");
+			const headers: string[] = [typeString];
+			const examples: string[] = ["Examples"];
+			const missing: string[] = [];
+			rowClasses.push("headers");
+			rowIds.push("headerRow");
+			columnClasses.push("first");
+			if(showExamples) {
+				rowClasses.push("examples");
+				rowIds.push("exampleRow");
+			}
+			// Get header info, plus columnar info
+			declenjugations.forEach((unit, i) => {
+				const { title, id, useWholeWord, prefix, suffix, regex } = unit;
+				headers.push(title);
+				columnIds.push(id);
+				columnClasses.push((i % 2) ? "mid" : "mid striped");
+				showExamples && examples.push(
+					changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
+				);
+			});
+			// Go through each word and make a row out of each
+			input.forEach(word => {
+				const stem = findStem(word, group);
+				if(stem) {
+					foundFlag = true;
+					rowIds.push(`${word}:${stem}`);
+					const wordRow: string[] = [word];
+					// Make a column out of each declenjugation of this word
+					declenjugations.forEach(unit => {
+						const { prefix, suffix, regex, useWholeWord } = unit;
+						wordRow.push(changeWord(useWholeWord ? word : stem, prefix, suffix, regex));
+					});
+					rows.push(wordRow);
+					rowClasses.push(null);
+				} else {
+					missing.push(word);
+				}
+			});
+			// Add examples row (if needed)
+			showExamples && rows.unshift(examples);
+			// Add row of headers
+			rows.unshift(headers);
+			// Save missing words
+			if(oneMatchOnly) {
+				input = missing;
+			}
+			unfound.push(missing);
 		}
 		// Output
+		const span = which === "text";
+		const inner: ReactElement[] = [];
+		if(!data || (foundFlag || showExamples)) {
+			const maxRowClass = rowClasses.length - 1;
+			const maxColClass = columnClasses.length - 1;
+			rows.forEach((row, i) => {
+				const rowId = rowIds[i] || "error";
+				const rowClass = rowClasses[i > maxRowClass ? maxRowClass : i];
+				const cells: ReactElement[] = [];
+				const maxRow = row.length - 1;
+				row.forEach((col, j) => {
+					const colId = columnIds[j] || "error";
+					const colClass = columnClasses[j > maxColClass ? maxColClass : j];
+					const period = (j === maxRow) ? "." : "";
+					if(span) {
+						if(j > 0) {
+							cells.push(
+								<React.Fragment key={`${groupId}:cell:${rowId}:${colId}:${col}`}>
+									{(j === 1) ? ' ' :', '}<span className={colClass ? `${colClass} word` : "word"}>{col}{period}</span>
+								</React.Fragment>
+							);
+						} else {
+							cells.push(
+								<span
+									className={colClass ? `${colClass} word` : "word"}
+									key={`${groupId}:word:${rowId}:${colId}:${col}`}
+								>{col}{period || ":"}</span>
+							);	
+						}
+					} else {
+						cells.push(
+							<div
+								className={colClass ? `${colClass} cell` : "cell"}
+								key={`${groupId}:cell:${rowId}:${colId}:${col}`}
+							>{col}</div>
+						);
+					}
+				});	
+				inner.push(
+					<div
+						className={rowClass ? `${rowClass} row` : "row"}
+						key={`${groupId}:row:${rowId}`}
+					>{cells}</div>
+				);
+			});
+		}
+		const guts = inner.length > 0 ? (
+			<div className="declenjugations">
+				{inner}
+			</div>
+		) : <></>;
+		// Send output
 		output.push(
 			<div
-				key={`${type}:displayGroup:chart:${groupId}`}
-				className="djChartOutputGroup"
+				key={`${type}:displayGroup:${className}:${groupId}`}
+				className={"djOutputGroup " + className}
 			>
 				<div className="header">
 					<div className="title">{title}</div>
-					{ showGroups ? <div className="description">{description}</div> : <></> }
+					{ showGroupInfo ? <div className="description">{description}</div> : <></> }
 				</div>
-				{(!data || (foundFlag || showExamples)) ? <div className={`${className} declenjugations`}>{
-					tableRows(
-						rows,
-						rowIds,
-						columnIds,
-						rowClasses,
-						columnClasses,
-						groupId
-					)
-				}</div> : <></>}
-				{!data || foundFlag ? <></> : <div className="unmatched">No words matched this group.</div>}
+				{guts}
+				{(!data || foundFlag) ? <></> : <div className="unmatched">No words matched this group.</div>}
 			</div>
 		);
 	});
@@ -307,13 +316,3 @@ export const displayChart = (
 	];
 };
 
-// TO-DO: displayText
-export const displayText = (
-	groups: DJGroup[],
-	data: DJDisplayData,
-	type: string
-): [ReactElement[], string[]] => {
-	const output: ReactElement[] = [];
-	const unmatched: string[] = [];
-	return [output, unmatched];
-};

@@ -11,7 +11,7 @@ import {
 	IonIcon,
 	useIonToast
 } from '@ionic/react';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
 //import { Clipboard } from '@capacitor/clipboard';
 
@@ -23,17 +23,14 @@ import toaster from '../../components/toaster';
 //import { LexiconOutlineIcon } from '../../components/icons';
 //import PermanentInfo from '../../components/PermanentInfo';
 import {
-	DJChartDirection,
 	DJDisplayData,
 	DJDisplayTypes,
 	DJTypeObject,
-	displayChart,
-	displayText,
+	display,
 	findCommons
 } from '../../components/DJOutputFormat';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
-import log from '../../components/Logging';
 import Header from '../../components/Header';
 
 /*
@@ -91,7 +88,6 @@ const DJOutput = (props: PageData) => {
 		defaultSortLanguage,
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const types: (keyof DJCustomInfo)[] = [];
@@ -133,7 +129,7 @@ const DJOutput = (props: PageData) => {
 			// Return data
 			return {
 				input: newInput,
-				showGroups: showGroupInfo,
+				showGroupInfo,
 				showExamples,
 				oneMatchOnly
 			};
@@ -155,7 +151,6 @@ const DJOutput = (props: PageData) => {
 				undoToast
 			});
 		}
-		let which: DJChartDirection = "v";
 		const output: ReactElement[] = [];
 		const unmatched: string[][] = [];
 		const {declensions: dec, conjugations: con, other: oth} = typeObj;
@@ -170,52 +165,20 @@ const DJOutput = (props: PageData) => {
 			}
 			unmatched.push(remainder);
 		}
-		switch(displayType) {
-			case "text":
-				if (dec) {
-					const [els, remainder] = displayText(declensions, newData, "declensions");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				if (con) {
-					const [els, remainder] = displayText(conjugations, newData, "conjugations");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				if (oth) {
-					const [els, remainder] = displayText(other, newData, "other");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				break;
-			case "chartH":
-				which = "h";
-				//eslint-disable-next-line no-fallthrough
-			case "chartV":
-				if (dec) {
-					const [els, remainder] = displayChart(declensions, newData, which, "declensions");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				if (con) {
-					const [els, remainder] = displayChart(conjugations, newData, which, "conjugations");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				if (oth) {
-					const [els, remainder] = displayChart(other, newData, which, "other");
-					output.push(...els);
-					handleRemainder(newData, remainder);
-				}
-				break;
-			default:
-				log(dispatch, [`Invalid display type? [${displayType}]`]);
-				toaster({
-					message: "ERROR. Please report to the developer.",
-					color: "danger",
-					doToast,
-					undoToast
-				});
+		if (dec) {
+			const [els, remainder] = display(declensions, newData, displayType, "declensions");
+			output.push(...els);
+			handleRemainder(newData, remainder);
+		}
+		if (con) {
+			const [els, remainder] = display(conjugations, newData, displayType, "conjugations");
+			output.push(...els);
+			handleRemainder(newData, remainder);
+		}
+		if (oth) {
+			const [els, remainder] = display(other, newData, displayType, "other");
+			output.push(...els);
+			handleRemainder(newData, remainder);
 		}
 		setDisplayOutput(output);
 		// Handle unmatched
