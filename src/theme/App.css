@@ -65,12 +65,20 @@ ion-app .hide {
 .margin-top-quarter {
 	margin-block-start: 0.25rem;
 }
+.pad-top-rem {
+	padding-block-start: 1rem;
+}
 .ital {
 	font-style: italic;
 }
 .bold {
 	font-weight: bold;
 }
+.center {
+	text-align: center;
+	text-indent: 0;
+}
+
 
 .emphasizedSection {
 	text-align: center;

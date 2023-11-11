@@ -40,6 +40,7 @@ export interface AppPage {
 	parent?: Parents
 	parentOf?: string
 	tab?: string
+	tabTitle?: string
 	hidden?: boolean
 }
 export interface MenuSection {
@@ -173,6 +174,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Character Groups',
 				url: '/wg/charGroups',
 				tab: 'charGroups',
+				tabTitle: 'Char Groups',
 				id: 'menuitemWGcharGroup',
 				icon: gridOutline,
 				parent: 'wg'
@@ -189,6 +191,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Transformations',
 				url: '/wg/transforms',
 				tab: 'transforms',
+				tabTitle: 'Transforms',
 				id: 'menuitemWGrew',
 				Icon: (props: IonIconProps) => <TransformationsIcon {...props} />,
 				parent: 'wg'
@@ -237,6 +240,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Character Groups',
 				url: '/we/charGroups',
 				tab: 'charGroups',
+				tabTitle: 'Char Groups',
 				id: 'menuitemWEcharGroup',
 				icon: gridOutline,
 				parent: 'we'
@@ -245,6 +249,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Transformations',
 				url: '/we/transformations',
 				tab: 'transformations',
+				tabTitle: 'Transforms',
 				id: 'menuitemWEtns',
 				Icon: (props: IonIconProps) => <TransformationsIcon {...props} />,
 				parent: 'we'
@@ -253,6 +258,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Sound Changes',
 				url: '/we/soundchanges',
 				tab: 'soundchanges',
+				tabTitle: 'Changes',
 				id: 'menuitemWEscs',
 				Icon: (props: IonIconProps) => <SoundChangesIcon {...props} />,
 				parent: 'we'

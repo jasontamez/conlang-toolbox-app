@@ -37,11 +37,11 @@ const WG = (props: PageData) => {
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				{appPagesObject.wg.filter(obj => !obj.hidden).map(obj => {
-					const { title, url, tab, icon, Icon } = obj;
+					const { title, tabTitle, url, tab, icon, Icon } = obj;
 					return (
 						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
 							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
-							<IonLabel>{title}</IonLabel>
+							<IonLabel>{tabTitle || title}</IonLabel>
 						</IonTabButton>
 					);
 				})}

@@ -28,7 +28,7 @@ const WE = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/wg/overview" render={() => <WEinfo {...props} />} exact={true} />
+				<Route path="/we/overview" render={() => <WEinfo {...props} />} exact={true} />
 				<Route path="/we/input" render={() => <WEInput {...props} />} exact={true} />
 				<Route path="/we/charGroups" render={() => <WECharGroups {...props} />} exact={true} />
 				<Route path="/we/transformations" render={() => <WETransforms {...props} />} exact={true} />
@@ -37,11 +37,11 @@ const WE = (props: PageData) => {
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				{appPagesObject.we.filter(obj => !obj.hidden).map(obj => {
-					const { title, url, tab, icon, Icon } = obj;
+					const { title, tabTitle, url, tab, icon, Icon } = obj;
 					return (
 						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
 							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
-							<IonLabel>{title}</IonLabel>
+							<IonLabel>{tabTitle || title}</IonLabel>
 						</IonTabButton>
 					);
 				})}

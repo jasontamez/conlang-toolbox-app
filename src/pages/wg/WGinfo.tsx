@@ -17,7 +17,6 @@ import {
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	saveOutline,
 	helpCircle
 } from 'ionicons/icons';
 
@@ -158,10 +157,13 @@ export const TransCard = (props: CardProps) => {
 				</p><p>
 					When you make a new <em>transformation</em>, you provide
 					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
-					a <em>transformation description</em> for your own benefit. Both expressions can
-					use <strong>regular expressions</strong>, which are beyond the scope of this
-					tutorial. You can also use the special expression %X to indicate any character
-					in group X's run, or !%X to indicate any character <em>not</em> in that run.
+					a <em>transformation description</em> for your own benefit.
+				</p><p>
+					Both expressions can use <strong>regular expressions</strong> (an explanation
+					can be found at the end of this section). You can also use the special
+					expression %X to indicate any character in group X's run, or !%X to indicate
+					any character <em>not</em> in that run. (e.g, If <em>X=abc</em>, then %X will
+					be treated as if it was the regular expression <em>[abc]</em>.)
 				</p><p>
 					So, you could make a search expression <strong>C</strong> with a replacement
 					expression <strong>ch</strong>, which will result in <em>Cu</em> above
@@ -232,6 +234,24 @@ export const TransCard = (props: CardProps) => {
 						</div>
 					</li>
 				</ul>
+				<hr />
+				<h2>Regular Expressions</h2>
+				<p>
+					In short, a <em>regular expression</em> is a sequence of characters that specifies
+					a match pattern in text. <em>Regexes</em> are found in many programming languages
+					and text editors. <strong>Conlang Toolbox</strong> uses JavaScript-style regexes
+					without the surrounding slash characters.
+				</p><p>
+					Fully explaining regular expressions is a topic that's too complicated for this
+					app to cover, but they are very useful. Here are some resources where you can
+					learn more about them:
+				</p>
+				<ul>
+					<li><a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia: Regular Expression</a></li>
+					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern">MDN: Writing a regular expression</a></li>
+					<li><a href="https://www.regular-expressions.info">Regular-Expressions.info</a>, a tutorial site.</li>
+					<li><a href="https://www.geeksforgeeks.org/write-regular-expressions/">Geeks for Geeks: Write Reguar Expressions</a></li>
+				</ul>
 			</IonCardContent>
 		</IonCard>
 	);
@@ -249,10 +269,12 @@ export const OutCard = (props: CardProps) => {
 					This is where the magic happens. Click the <strong>Generate</strong> button and your
 					output will appear below. Press the button again and a new set of output
 					will replace it.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={settingsOutline} color="tertiary" size="large" />
 				</p><p>
-					Click on the gear icon <IonIcon icon={settingsOutline} size="small" /> to open a
-					list of options. The first is a drop-down menu where you can select what to output.
-					The choices are <strong>Pseudo-text</strong>, <strong>Wordlist</strong> and <strong>All
+					Click on the gear icon to open a list of options. The first is a drop-down menu where
+					you can select what to output. The choices
+					are <strong>Pseudo-text</strong>, <strong>Wordlist</strong> and <strong>All
 					possible syllables</strong>.
 				</p><p>
 					The <strong>pseudo-text</strong> will create words and put them into sentences, making a
@@ -275,15 +297,15 @@ export const OutCard = (props: CardProps) => {
 					will in·sert a dot be·tween eve·ry syl·la·ble in each word. While this option can be useful,
 					please note that it will break any <em>transformations</em> that try to work across syllable
 					boundaries.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={bookOutline} color="tertiary" size="large" />
 				</p><p>
 					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click
-					the book <IonIcon icon={bookOutline} size="small" /> button and you're presented with
-					two options. <em>Save everything</em> will store every single generated word for the
-					Lexicon. <em>Choose what to save</em> will highlight every word, and you can tap on a
-					word to store it; when you're done choosing, hit the
-					save <IonIcon icon={saveOutline} size="small" /> button that appears. In either case,
-					you will need to go to the <strong>Lexicon</strong> to add these stored words to
-					your lexicon.
+					the book button and you're presented with two options. <em>Save everything</em> will
+					store every single generated word for the Lexicon. <em>Choose what to save</em> will
+					highlight every word, and you can tap on a word to store it; when you're done choosing,
+					hit the save button that appears and you will be able to choose how they are imported
+					into the <strong>Lexicon</strong>.
 				</p>
 			</IonCardContent>
 		</IonCard>
@@ -299,7 +321,7 @@ export const OptCard = (props: CardProps) => {
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This final pane fine-tunes the output. These can make a huge difference in
+					This final tab fine-tunes the output. These can make a huge difference in
 					how your conlang appears.
 				</p>
 				<h2>The Buttons</h2>

@@ -78,7 +78,7 @@ const Home = (props: PageData) => {
 
 					<IonRow className="major">
 						<IonCol>
-							<IonButton size="large" routerLink="/wg/settings" routerDirection="forward">
+							<IonButton size="large" routerLink="/wg/overview" routerDirection="forward">
 								<WordGenIcon slot="start" />
 								<IonLabel>WordGen</IonLabel>
 							</IonButton>
@@ -94,7 +94,7 @@ const Home = (props: PageData) => {
 									</IonButton>
 								);
 							})}
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton routerLink="/wg/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -102,7 +102,7 @@ const Home = (props: PageData) => {
 
 					<IonRow className="major">
 						<IonCol>
-							<IonButton size="large" routerLink="/we/input" routerDirection="forward">
+							<IonButton size="large" routerLink="/we/overview" routerDirection="forward">
 								<WordEvolveIcon slot="start" />
 								<IonLabel>WordEvolve</IonLabel>
 							</IonButton>
@@ -118,7 +118,7 @@ const Home = (props: PageData) => {
 									</IonButton>
 								);
 							})}
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton routerLink="/we/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>

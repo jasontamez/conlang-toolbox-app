@@ -17,7 +17,6 @@ import {
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	saveOutline,
 	helpCircle
 } from 'ionicons/icons';
 
@@ -51,7 +50,7 @@ export const InpCard = (props: CardProps) => {
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This pane has one purpose: determining which words you want to change.
+					This tab has one purpose: determining which words you want to change.
 				</p><p>
 					The easiest way is to copy-paste a list of words, each on a line by itself. Or, you
 					can use the <strong>Import From Lexicon</strong> button to pull in words stored in
@@ -268,12 +267,13 @@ export const OutCard = (props: CardProps) => {
 				<p>
 					This is where the magic happens. Click the <strong>Generate</strong> button and the
 					evolver will process all your input words and present your output in the space below.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={settingsOutline} color="tertiary" size="large" />
 				</p><p>
-					Click on the gear icon <IonIcon icon={settingsOutline} size="small" /> to open a
-					list of options. The first is a drop-down menu where you can select what to output.
-					The choices are <strong>Output only</strong>, <strong>Output and Sound-Change
-					Rules</strong>, <strong>Input, then Output</strong> and <strong>Output, then
-					Input</strong>.
+					Click on the gear icon to open a list of options. The first is a drop-down menu
+					where you can select what to output. The choices are <strong>Output
+					only</strong>, <strong>Output and Sound-Change Rules</strong>, <strong>Input, then
+					Output</strong> and <strong>Output, then Input</strong>.
 				</p><p>
 					Choosing <strong>Output only</strong> will display a simple list of evolved words.
 				</p><p>
@@ -289,15 +289,15 @@ export const OutCard = (props: CardProps) => {
 				</p><p>
 					The second option under the gear icon determines the style of arrow that is displayed
 					with the output.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={bookOutline} color="tertiary" size="large" />
 				</p><p>
 					Once you've evolved words, you can save them to the <strong>Lexicon</strong>. Click the
-					book <IonIcon icon={bookOutline} size="small" /> button and you're presented with two
-					options. <em>Save everything</em> will store every single evolved word for the
-					Lexicon. <em>Choose what to save</em> will highlight every evolved word,
-					and you can tap on a word to store it; when you're done choosing, hit
-					the save <IonIcon icon={saveOutline} size="small" /> button that appears. In either
-					case, you will need to go to the <strong>Lexicon</strong> to add these stored words
-					to your lexicon.
+					book button and you're presented with two options. <em>Save everything</em> will store
+					every single evolved word for the Lexicon. <em>Choose what to save</em> will highlight
+					every evolved word, and you can tap on a word to store it; when you're done choosing,
+					hit the save button that appears and you will be able to choose how they are imported
+					into the <strong>Lexicon</strong>.
 				</p>
 			</IonCardContent>
 		</IonCard>
