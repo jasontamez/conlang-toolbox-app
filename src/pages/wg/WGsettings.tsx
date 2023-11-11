@@ -52,7 +52,7 @@ import log from '../../components/Logging';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import MaybeLoadPreset from './modals/MaybeLoadPreset';
 import ManageCustomInfo from './modals/CustomInfo';
-import { OptCard } from "./WGCards";
+import { OptCard } from "./WGinfo";
 
 const WGSet = (props: PageData) => {
 	const dispatch = useDispatch();

@@ -33,7 +33,7 @@ import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { SylCard } from "./WGCards";
+import { SylCard } from "./WGinfo";
 import { $i } from '../../components/DollarSignExports';
 
 const WGSyl = (props: PageData) => {

@@ -44,7 +44,7 @@ import toaster from '../../components/toaster';
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { TransCard } from "./WGCards";
+import { TransCard } from "./WGinfo";
 
 const WGRew = (props: PageData) => {
 	const { modalPropsMaker } = props;

@@ -44,7 +44,7 @@ import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
 
 import OutputOptionsModal from './modals/OutputOptions';
-import { OutCard } from "./WGCards";
+import { OutCard } from "./WGinfo";
 
 async function copyText (copyString: string, doToast: Function, undoToast: Function) {
 	if(copyString) {

@@ -43,7 +43,7 @@ import toaster from '../../components/toaster';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddSoundChangeModal from './modals/AddSoundChange';
 import EditSoundChangeModal from './modals/EditSoundChange';
-import { SChCard } from "./WECards";
+import { SChCard } from "./WEinfo";
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;

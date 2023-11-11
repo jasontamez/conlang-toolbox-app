@@ -544,10 +544,50 @@ ion-loading.pageSwitchBackground {
 	color: var(--ion-color-tertiary);
 }
 #about ion-row.final {
-	padding: 10rem 0 0 0;
+	padding: 6rem 0 0 0;
 }
-#about ion-row.final ion-col {
-	padding: 0 0 0 0;
+#about ion-card {
+	max-width: 30rem;
+	margin: 0.5rem 2rem;
+	border-radius: 1.5rem;
+}
+#about ion-card * {
+	--inner-border-width: 0;
+}
+#about ion-card ion-card-header {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+}
+#about ion-card ion-card-header * {
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: var(--ion-color-primary);
+	margin-top: 0;
+}
+#about ion-row.final ion-card {
+	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
+	width: 100%;
+	margin-bottom: 0;
+}
+
+ion-card {
+	--ion-border-color: var(--ion-color-step-150);
+}
+ion-card-content {
+	color: var(--ion-color-step-750);
+}
+ion-card-content h2 {
+	color: var(--ion-text-color);
+	font-size: 1.5em !important;
+}
+ion-card-content hr {
+	border: 0;
+	border-color: var(--ion-color-step-150);
+	border-block-start-width: 1px;
+	border-style: solid;
+	margin: 1em 0 2em 0;
 }
 
 ion-modal::part(content) ion-item-group.buttonFilled ion-item:nth-of-type(even)::part(native),

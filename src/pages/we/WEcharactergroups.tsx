@@ -39,7 +39,7 @@ import toaster from '../../components/toaster';
 import AddCharGroupWEModal from './modals/AddCharGroupWE';
 import EditCharGroupWEModal from './modals/EditCharGroupWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { CharGroupCard } from "./WECards";
+import { CharGroupCard } from "./WEinfo";
 
 const WECharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;

@@ -43,7 +43,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
-import { TraCard } from "./WECards";
+import { TraCard } from "./WEinfo";
 
 const WERew = (props: PageData) => {
 	const { modalPropsMaker } = props;

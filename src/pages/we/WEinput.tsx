@@ -27,8 +27,8 @@ import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { InpCard } from "./WECards";
 import LexiconImporterModal from '../modals/ImportFromLexicon';
+import { InpCard } from "./WEinfo";
 
 const WEInput = (props: PageData) => {
 	const { modalPropsMaker } = props;

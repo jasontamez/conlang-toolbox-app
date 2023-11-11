@@ -48,7 +48,7 @@ import toaster from '../../components/toaster';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
-import { CharGroupCard } from "./WGCards";
+import { CharGroupCard } from "./WGinfo";
 
 const WGCharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;

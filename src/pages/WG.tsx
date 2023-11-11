@@ -17,6 +17,7 @@ import WGTransforms from "./wg/WGtransforms";
 import WGSyllables from "./wg/WGsyllables";
 import WGOutput from "./wg/WGoutput";
 import WGSettings from "./wg/WGsettings";
+import WGinfo from './wg/WGinfo';
 
 
 const WG = (props: PageData) => {
@@ -27,6 +28,7 @@ const WG = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
+				<Route path="/wg/overview" render={() => <WGinfo {...props} />} exact={true} />
 				<Route path="/wg/charGroups" render={() => <WGCharGroups {...props} /> } exact={true} />
 				<Route path="/wg/syllables" render={() => <WGSyllables {...props} />} exact={true} />
 				<Route path="/wg/transforms" render={() => <WGTransforms {...props} />} exact={true} />
@@ -34,7 +36,7 @@ const WG = (props: PageData) => {
 				<Route path="/wg/settings" render={() => <WGSettings {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				{appPagesObject.wg!.map(obj => {
+				{appPagesObject.wg.filter(obj => !obj.hidden).map(obj => {
 					const { title, url, tab, icon, Icon } = obj;
 					return (
 						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>

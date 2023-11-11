@@ -480,7 +480,7 @@ const ConceptsPage = (props: PageData) => {
 
 export default ConceptsPage;
 
-const ConceptCard = () => {
+export const ConceptCard = () => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -489,10 +489,14 @@ const ConceptCard = () => {
 			</IonItem>
 			<IonCardContent>
 				<p>
-					Presented here are a number of lists of basic concepts, created for the purposes
-					of historical-comparative linguistics. These may serve as a useful source of meanings
-					to start a conlang with.
+					Presented here are a number of lists of basic concepts, which were originaly created
+					for the purposes of historical-comparative linguistics.
 				</p>
+				<p>
+					They are included in this app because they may serve you as a useful source of meanings
+					to start a conlang with. Remember: you can combine multiple meanings into a single word!
+				</p>
+				<hr />
 				<h2>Controls</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="primary" size="large" /></div>
 				<p>
@@ -506,6 +510,7 @@ const ConceptCard = () => {
 				<p>
 					Use the "unjoin" button to delete compound meanings.
 				</p>
+				<hr />
 				<h2>Swadesh Lists</h2>
 				<p>
 					Originally assembled by Morris Swadesh, this list of concepts was chosen for their

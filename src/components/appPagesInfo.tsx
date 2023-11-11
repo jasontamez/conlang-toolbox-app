@@ -9,7 +9,8 @@ import {
 	exitOutline,
 	logOutOutline,
 	logInOutline,
-	listOutline
+	listOutline,
+	helpOutline
 } from 'ionicons/icons';
 
 import {
@@ -25,6 +26,8 @@ import {
 	SoundChangesIcon
 } from './icons';
 
+type Parents = 'ms' | 'dj' | 'wg' | 'we';
+
 export interface AppPage {
 	url: string
 	title: string
@@ -34,9 +37,10 @@ export interface AppPage {
 	icon?: string
 	noIcon?: string
 	id: string
-	parent?: string
+	parent?: Parents
 	parentOf?: string
 	tab?: string
+	hidden?: boolean
 }
 export interface MenuSection {
 	header?: string
@@ -157,6 +161,15 @@ export const appMenuInfo: MenuSection[] = [
 				parentOf: 'wg'
 			},
 			{
+				title: 'Overview',
+				url: '/wg/overview',
+				tab: 'overview',
+				id: 'menuitemWGoverview',
+				icon: helpOutline,
+				parent: 'wg',
+				hidden: true
+			},
+			{
 				title: 'Character Groups',
 				url: '/wg/charGroups',
 				tab: 'charGroups',
@@ -202,6 +215,15 @@ export const appMenuInfo: MenuSection[] = [
 				MenuIcon: (props: IonIconProps) => <WordEvolveIcon {...props} />,
 				id: 'menuitemWE',
 				parentOf: 'we'
+			},
+			{
+				title: 'Overview',
+				url: '/we/overview',
+				tab: 'overview',
+				id: 'menuitemWEoverview',
+				icon: helpOutline,
+				parent: 'we',
+				hidden: true
 			},
 			{
 				title: 'Input',
@@ -324,7 +346,12 @@ export const appMenuInfo: MenuSection[] = [
 	}
 ];
 
-const tempObject: {[key: string]: AppPage[]} = {};
+const tempObject: {[key in Parents]: AppPage[]} = {
+	ms: [],
+	dj: [],
+	wg: [],
+	we: []
+};
 
 appMenuInfo[0].pages.forEach(page => {
 	const { parent } = page;

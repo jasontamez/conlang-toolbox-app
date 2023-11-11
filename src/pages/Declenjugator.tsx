@@ -24,6 +24,8 @@ const DJ = (props: PageData) => {
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
+					TO-DO:
+					<Route path="/dj/overview" render={() => <DJinfo {...props} /> } exact={true} />
 				*/}
 				<Route path="/dj/input" render={() => <DJInput {...props} /> } exact={true} />
 				<Route path="/dj/groups" render={() => <DJGroups {...props} />} exact={true} />

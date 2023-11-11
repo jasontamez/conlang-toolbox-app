@@ -1,10 +1,14 @@
 import React from 'react';
 import {
+	IonButton,
 	IonCard,
 	IonCardContent,
+	IonContent,
+	IonHeader,
 	IonIcon,
 	IonItem,
-	IonLabel
+	IonLabel,
+	IonPage
 } from '@ionic/react';
 import {
 	enterOutline,
@@ -13,17 +17,37 @@ import {
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	saveOutline
+	saveOutline,
+	helpCircle
 } from 'ionicons/icons';
+
+import { PageData } from '../../store/types';
+
 import ltr from '../../components/LTR';
+import Header from '../../components/Header';
 import { SoundChangesIcon, TransformationsIcon } from '../../components/icons';
 
-export const InpCard = () => {
+interface CardProps {
+	hideOverview?: boolean
+}
+const OverviewButton = (props: CardProps) => {
+	if(props.hideOverview) {
+		return <></>;
+	}
+	return (
+		<IonButton color="secondary" slot="end" routerLink="/we/overview" routerDirection="forward">
+			<IonIcon icon={helpCircle} />
+		</IonButton>
+	);
+};
+
+export const InpCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={enterOutline} slot="start" color="primary" />
 				<IonLabel>Input Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -39,12 +63,13 @@ export const InpCard = () => {
 		</IonCard>
 	);
 };
-export const CharGroupCard = () => {
+export const CharGroupCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -62,12 +87,13 @@ export const CharGroupCard = () => {
 		</IonCard>
 	);
 };
-export const TraCard = () => {
+export const TraCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -133,13 +159,14 @@ export const TraCard = () => {
 		</IonCard>
 	);
 };
-export const SChCard = () => {
+export const SChCard = (props: CardProps) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<SoundChangesIcon slot="start" color="primary" />
 				<IonLabel>Sound Changes Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -229,12 +256,13 @@ export const SChCard = () => {
 		</IonCard>
 	);
 };
-export const OutCard = () => {
+export const OutCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={exitOutline} slot="start" color="primary" />
 				<IonLabel>Output Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -275,3 +303,23 @@ export const OutCard = () => {
 		</IonCard>
 	);
 };
+
+const WEinfo = (props: PageData) => {
+
+	return (
+		<IonPage>
+			<IonHeader>
+				<Header title="Overview" />
+			</IonHeader>
+			<IonContent className="overview">
+				<InpCard hideOverview />
+				<CharGroupCard hideOverview />
+				<TraCard hideOverview />
+				<SChCard hideOverview />
+				<OutCard hideOverview />
+			</IonContent>
+		</IonPage>
+	);
+};
+
+export default WEinfo;

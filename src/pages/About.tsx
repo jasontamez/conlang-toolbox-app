@@ -14,6 +14,7 @@ import {
 	IonLabel
 } from '@ionic/react';
 //import { globeOutline } from 'ionicons/icons';
+import { helpCircle } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
 import { PageData, StateObject } from '../store/types';
@@ -28,9 +29,10 @@ import {
 	DeclenjugatorIcon
 } from '../components/icons';
 import Header from '../components/Header';
-import ExtraCharactersModal from './modals/ExtraCharacters';
 import { appPagesObject } from '../components/appPagesInfo';
-import { helpCircle } from 'ionicons/icons';
+import ModalWrap from '../components/ModalWrap';
+import { ConceptCard } from './Concepts';
+import ExtraCharactersModal from './modals/ExtraCharacters';
 
 // TO-DO: Fix "app Info" at bottom, and the AppInfo page
 // TO-DO: Add 'overview' pages as help pages
@@ -38,12 +40,14 @@ import { helpCircle } from 'ionicons/icons';
 
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...props.modalPropsMaker(isOpenConcepts, setIsOpenConcepts)}><ConceptCard /></ModalWrap>
 			<Header title="Conlang Toolbox" />
 			<IonContent className="containedCards" id="about">
 				<IonGrid>
@@ -58,7 +62,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.ms!.map((obj, i) => {
+							{appPagesObject.ms.map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"msBtn-" + tab}>
@@ -82,7 +86,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.wg!.map((obj, i) => {
+							{appPagesObject.wg.map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"wgBtn-" + tab}>
@@ -106,7 +110,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.we!.map((obj, i) => {
+							{appPagesObject.we.map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
@@ -130,7 +134,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.dj!.map((obj, i) => {
+							{appPagesObject.dj.map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
@@ -170,7 +174,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton className="help" onClick={() => setIsOpenConcepts(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -199,7 +203,6 @@ const Home = (props: PageData) => {
 					<IonRow className="final">
 						<IonCol>
 							<IonCard
-								id="appInfo"
 								button={true}
 								routerLink="/appinfo"
 								routerDirection="forward"

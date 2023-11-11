@@ -54,7 +54,7 @@ import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
-import { OutCard } from "./WECards";
+import { OutCard } from "./WEinfo";
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 

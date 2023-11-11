@@ -1,10 +1,14 @@
 import React from 'react';
 import {
+	IonButton,
 	IonCard,
 	IonCardContent,
+	IonContent,
+	IonHeader,
 	IonIcon,
 	IonItem,
-	IonLabel
+	IonLabel,
+	IonPage
 } from '@ionic/react';
 import {
 	optionsOutline,
@@ -13,22 +17,41 @@ import {
 	bookOutline,
 	settingsOutline,
 	reorderTwo,
-	saveOutline
+	saveOutline,
+	helpCircle
 } from 'ionicons/icons';
+
+import { PageData } from '../../store/types';
 
 import ltr from '../../components/LTR';
 import IPA from '../../components/IPA';
+import Header from '../../components/Header';
 import {
 	SyllablesIcon,
 	TransformationsIcon
 } from '../../components/icons';
 
-export const CharGroupCard = () => {
+interface CardProps {
+	hideOverview?: boolean
+}
+const OverviewButton = (props: CardProps) => {
+	if(props.hideOverview) {
+		return <></>;
+	}
+	return (
+		<IonButton color="secondary" slot="end" routerLink="/wg/overview" routerDirection="forward">
+			<IonIcon icon={helpCircle} />
+		</IonButton>
+	);
+};
+
+export const CharGroupCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
 				<IonLabel>Character Groups Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -66,12 +89,13 @@ export const CharGroupCard = () => {
 		</IonCard>
 	);
 }
-export const SylCard = () => {
+export const SylCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<SyllablesIcon slot="start" color="primary" />
 				<IonLabel>Syllables Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -114,13 +138,14 @@ export const SylCard = () => {
 		</IonCard>
 	);
 }
-export const TransCard = () => {
+export const TransCard = (props: CardProps) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
 				<IonLabel>Transformations Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -211,12 +236,13 @@ export const TransCard = () => {
 		</IonCard>
 	);
 }
-export const OutCard = () => {
+export const OutCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={documentTextOutline} slot="start" color="primary" />
 				<IonLabel>Output Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -263,12 +289,13 @@ export const OutCard = () => {
 		</IonCard>
 	);
 }
-export const OptCard = () => {
+export const OptCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={optionsOutline} slot="start" color="primary" />
 				<IonLabel>Settings Tab</IonLabel>
+				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
@@ -329,6 +356,27 @@ export const OptCard = () => {
 		</IonCard>
 	);
 }
+
+const WGinfo = (props: PageData) => {
+
+	return (
+		<IonPage>
+			<IonHeader>
+				<Header title="Overview" />
+			</IonHeader>
+			<IonContent className="overview">
+				<CharGroupCard hideOverview />
+				<SylCard hideOverview />
+				<TransCard hideOverview />
+				<OutCard hideOverview />
+				<OptCard hideOverview />
+			</IonContent>
+		</IonPage>
+	);
+};
+
+export default WGinfo;
+
 // TO-DO: Introduce other sentence types? Adjust ratios?
 // [pre] sentence label [post] weight: [number]
 //   []  declarative     [.]   weight: [9]
