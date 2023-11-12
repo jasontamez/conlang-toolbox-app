@@ -161,7 +161,7 @@ const WGCharGroup = (props: PageData) => {
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
 							<div><strong>Dropoff Rate</strong></div>
-							<div className="minor">Characters at the beginning of a group tend to be picked more often than characters at the end of the group. This slider controls this tendency. A rate of zero is flat, making all characters equiprobable.</div>
+							<div className="minor ion-text-wrap">Characters at the beginning of a group tend to be picked more often than characters at the end of the group. This slider controls this tendency. A rate of zero is flat, making all characters equiprobable.</div>
 						</IonLabel>
 					</IonItem>
 					<IonItem>

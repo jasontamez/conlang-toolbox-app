@@ -179,7 +179,7 @@ const WGSyl = (props: PageData) => {
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
 							<div><strong>Dropoff Rate</strong></div>
-							<div className="minor">Syllables at the top of a box tend to be picked more often than syllables at the bottom of the box. This slider controls this tendency. A rate of zero is flat, making all syllables equiprobable.</div>
+							<div className="minor ion-text-wrap">Syllables at the top of a box tend to be picked more often than syllables at the bottom of the box. This slider controls this tendency. A rate of zero is flat, making all syllables equiprobable.</div>
 						</IonLabel>
 					</IonItem>
 					<IonItem>
