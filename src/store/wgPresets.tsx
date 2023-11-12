@@ -12,7 +12,20 @@ const basicSettings: WGSettings = {
 	interrogativeSentencePost: "?",
 	exclamatorySentencePre: "",
 	exclamatorySentencePost: "!",
-	customSort: "wg-preset-sort"
+	customSort: "wg-preset-sort",
+};
+
+const simpleSyllables = {
+	multipleSyllableTypes: false,
+	wordInitial: "",
+	wordMiddle: "",
+	wordFinal: "",
+	syllableDropoffOverrides: {
+		singleWord: null,
+		wordInitial: null,
+		wordMiddle: null,
+		wordFinal: null
+	}
 };
 
 const WGPresets: WGPresetObject = [
@@ -34,17 +47,8 @@ const WGPresets: WGPresetObject = [
 				run: "rl"
 			}
 		],
-		multipleSyllableTypes: false,
 		singleWord: "CV\nV\nCLV",
-		wordInitial: "",
-		wordMiddle: "",
-		wordFinal: "",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		...simpleSyllables,
 		transforms: [
 			{
 				id: "0",
@@ -80,17 +84,8 @@ const WGPresets: WGPresetObject = [
 				run: "nŋ"
 			}
 		],
-		multipleSyllableTypes: false,
 		singleWord: "CV\nV\nCVN",
-		wordInitial: "",
-		wordMiddle: "",
-		wordFinal: "",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		...simpleSyllables,
 		transforms: [
 			{
 				id: "0",
@@ -176,12 +171,7 @@ const WGPresets: WGPresetObject = [
 		wordInitial: "SV\nV\nSVC",
 		wordMiddle: "SV\nI\nCV\nSVC",
 		wordFinal: "I\nVEJ\nV\nVEJ\nSVEJ\nV\nCV\nVEJ\nCVEJ",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		syllableDropoffOverrides: simpleSyllables.syllableDropoffOverrides,
 		transforms: [
 			{
 				id: "50.1",
@@ -869,17 +859,8 @@ const WGPresets: WGPresetObject = [
 				run: "nsrmltc"
 			}
 		],
-		multipleSyllableTypes: false,
 		singleWord: "CV\nCUF\nV\nUF\nPLV\nPLUF",
-		wordInitial: "",
-		wordMiddle: "",
-		wordFinal: "",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		...simpleSyllables,
 		transforms: [
 			{
 				id: "0",
@@ -936,17 +917,8 @@ const WGPresets: WGPresetObject = [
 				run: "ptkč"
 			}
 		],
-		multipleSyllableTypes: false,
 		singleWord: "CV\nAʰV\nCVD\nCVF\nVF\nV\nAʰVF",
-		wordInitial: "",
-		wordMiddle: "",
-		wordFinal: "",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		...simpleSyllables,
 		transforms: [
 			{
 				id: "0",
@@ -999,17 +971,8 @@ const WGPresets: WGPresetObject = [
 				run: "rly"
 			}
 		],
-		multipleSyllableTypes: false,
 		singleWord: "CV\nV\nCVC\nCLV",
-		wordInitial: "",
-		wordMiddle: "",
-		wordFinal: "",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		...simpleSyllables,
 		transforms: [
 			{
 				id: "0",
@@ -1064,12 +1027,7 @@ const WGPresets: WGPresetObject = [
 		wordInitial: "CVC\nCV\nVC\nPLV\nsPLV\nV",
 		wordMiddle: "CV\nCV\nCV\nVC\nV",
 		wordFinal: "CV\nCVC\nCVLF\nCVNF\nCVgh\nVC\nV\nVgh",
-		syllableDropoffOverrides: {
-			singleWord: null,
-			wordInitial: null,
-			wordMiddle: null,
-			wordFinal: null
-		},
+		syllableDropoffOverrides: simpleSyllables.syllableDropoffOverrides,
 		transforms: [
 			{
 				id: "15",
@@ -1272,6 +1230,53 @@ const WGPresets: WGPresetObject = [
 		],
 		...basicSettings,
 		maxSyllablesPerWord: 5
+	}],
+	["Pseudo-Japanese", {
+		characterGroups: [
+			{
+				label: "C",
+				title: "Consonants",
+				run: "kgsztdnhbpmyr"
+			},
+			{
+				label: "V",
+				title: "Vowels",
+				run: "aiueo"
+			}
+		],
+		singleWord: "CV\nV\nCV\nV\nCVn\nVn",
+		...simpleSyllables,
+		transforms: [
+			{
+				id: "1",
+				seek: "y([ie])",
+				replace: "r$1",
+				description: "replace forbidden syllable"
+			},
+			{
+				id: "2",
+				seek: "w([ieu])",
+				replace: "b$1",
+				description: "replace forbidden syllable"
+			},
+			{
+				id: "3",
+				seek: "(.)\\1+",
+				replace: "$1",
+				description: "remove duplicate characters"
+			},
+			{
+				id: "4",
+				seek: "(%V%V)%V+",
+				replace: "$1",
+				description: "reduce 3+ vowels in a row down to just 2"
+			}
+		],
+		...basicSettings,
+		monosyllablesRate: 5,
+		maxSyllablesPerWord: 8,
+		characterGroupDropoff: 10,
+		syllableBoxDropoff: 40	
 	}]
 ];
 
