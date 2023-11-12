@@ -142,7 +142,9 @@ const WERew = (props: PageData) => {
 				setEditing={setEditing}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><SChCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<SChCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

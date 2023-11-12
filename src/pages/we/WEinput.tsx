@@ -78,7 +78,9 @@ const WEInput = (props: PageData) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><InpCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<InpCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<LexiconImporterModal
 				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
 				openECM={setIsOpenECM}

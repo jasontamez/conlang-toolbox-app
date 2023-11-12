@@ -24,17 +24,25 @@ import { PageData } from '../../store/types';
 
 import ltr from '../../components/LTR';
 import Header from '../../components/Header';
-import { SoundChangesIcon, TransformationsIcon } from '../../components/icons';
+import { SoundChangesIcon, TransformationsIcon, WordEvolveIcon } from '../../components/icons';
 
 interface CardProps {
 	hideOverview?: boolean
+	setIsOpenInfo?: Function
 }
 const OverviewButton = (props: CardProps) => {
-	if(props.hideOverview) {
+	const { hideOverview, setIsOpenInfo } = props;
+	if(hideOverview) {
 		return <></>;
 	}
 	return (
-		<IonButton color="secondary" slot="end" routerLink="/we/overview" routerDirection="forward">
+		<IonButton
+			color="secondary"
+			slot="end"
+			routerLink="/we/overview"
+			routerDirection="forward"
+			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
+		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>
 	);
@@ -113,10 +121,12 @@ export const TraCard = (props: CardProps) => {
 					<li>
 						<strong>Input only:</strong> Before anything else happens, input words are
 						searched, and any instances of the <em>input expression</em> are replaced with
-						the <em>output expression</em>. Regular expressions and %Group references
-						are allowed in the <em>input expression</em> only. (A group reference is
-						something like %G to indicate any character in characyer group C's run, or
-						!%G to indicate any character <em>not</em> in that run.)
+						the <em>output expression</em>. <strong>Regular expressions</strong> (see
+						the <strong>Sound Changes</strong> {props.hideOverview ? " section"
+						: " tab's help section"}) and %Group references are allowed in the <em>input
+						expression</em> only. (A group reference is something like %G to indicate any
+						character in characyer group C's run, or !%G to indicate any
+						character <em>not</em> in that run.)
 					</li><li>
 						<strong>Output only:</strong> After all <strong>sound changes</strong> are
 						processed, any instances of the <em>input expression</em> are replaced with
@@ -196,7 +206,8 @@ export const SChCard = (props: CardProps) => {
 					expression</em>, the third is the <em>context expression</em>, and the last is
 					the <em>exception expression</em>.
 				</p><p>
-					The <em>beginning expression</em> can include plain text or regular expressions. It
+					The <em>beginning expression</em> can include plain text or <strong>regular
+					expressions</strong> (see the end of this section for more info). It
 					can also contain %Group references. (A group reference is something like %G to
 					indicate any character in character group C's run, or !%G to indicate any character
 					that is <em>not</em> in that run.)
@@ -250,6 +261,30 @@ export const SChCard = (props: CardProps) => {
 					sound-changes to avoid any such effects by using
 					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
 				</p>
+				<hr />
+				<h2>Regular Expressions</h2>
+				<p>
+					In short, a <em>regular expression</em> is a sequence of characters that specifies
+					a match pattern in text. <em>Regexes</em> are found in many programming languages
+					and text editors. <strong>Conlang Toolbox</strong> uses JavaScript-style regexes
+					without the surrounding slash characters.
+				</p><p>
+					Fully explaining regular expressions is a topic that's too complicated for this
+					app to cover, but they are very useful. Here are some resources where you can
+					learn more about them:
+				</p>
+				<ul>
+					<li><a href="https://en.wikipedia.org/wiki/Regular_expression"
+					>Wikipedia: Regular Expression</a></li>
+					<li><a href={
+						"https://developer.mozilla.org/en-US/docs/Web/JavaScript/"
+						+ "Guide/Regular_expressions#writing_a_regular_expression_pattern"}
+					>MDN: Writing a regular expression</a></li>
+					<li><a href="https://www.regular-expressions.info"
+					>Regular-Expressions.info</a>, a tutorial site.</li>
+					<li><a href="https://www.geeksforgeeks.org/write-regular-expressions/"
+					>Geeks for Geeks: Write Reguar Expressions</a></li>
+				</ul>
 
 			</IonCardContent>
 		</IonCard>
@@ -309,9 +344,44 @@ const WEinfo = (props: PageData) => {
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title="Overview" />
+				<Header title="Overview: WordEvolve" />
 			</IonHeader>
 			<IonContent className="overview">
+				<IonCard>
+					<IonItem lines="full">
+						<WordEvolveIcon slot="start" color="primary" />
+						<IonLabel>What is WordEvolve?</IonLabel>
+					</IonItem>
+					<IonCardContent>
+						<p>
+							This tool is designed to take a list of words and transform them into
+							(possibly) new forms. The idea is to mimic the way natural languages
+							change over time.
+						</p><p>
+							This is the most basic use case:
+						</p><div>
+							<ol>
+								<li>Decide on how your language will evolve over time.</li>
+								<li>Identify which parts will change, such as vowels and consonants.</li>
+								<li>
+									Note the environment in which the sound change takes place.
+									(For example, a vowel may change only if it's preceded by a
+									nasal consonant.)
+								</li>
+							</ol>
+						</div><p>
+							The <strong>Input</strong> tab holds the words you wish to
+							change. <strong>Character Groups</strong> can hold categories of sounds
+							that will change in the same way. <strong>Transformations</strong> is a
+							place where you can define complex transformations that may be needed
+							to simplify your sound changes. (For example, you may want to simplify
+							multi-letter sounds into a single character.) The <strong>Sound
+							Changes</strong> tab is where you define the various changes you want
+							to make, and the <strong>Output</strong> tab is where you can see the
+							results.
+						</p>
+					</IonCardContent>
+				</IonCard>
 				<InpCard hideOverview />
 				<CharGroupCard hideOverview />
 				<TraCard hideOverview />

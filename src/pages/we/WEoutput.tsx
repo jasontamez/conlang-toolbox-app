@@ -983,7 +983,9 @@ const WEOut = (props: PageData) => {
 				setTitles={setStoredInfo}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><OutCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<OutCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
