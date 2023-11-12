@@ -22,7 +22,9 @@ import {
 	IonFabButton,
 	useIonAlert,
 	useIonToast,
-	IonFabList
+	IonFabList,
+	IonCard,
+	IonCardContent
 } from '@ionic/react';
 import {
 	add,
@@ -34,7 +36,9 @@ import {
 	chevronDownCircle,
 	construct,
 	closeCircle,
-	addCircle
+	addCircle,
+	helpCircleOutline,
+	reorderTwo
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useWindowHeight } from '@react-hook/window-size/throttled';
@@ -68,6 +72,8 @@ import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import './Lexicon.css';
+import { LexiconIcon } from '../components/icons';
+import ModalWrap from '../components/ModalWrap';
 
 interface LexItem {
 	index: number
@@ -260,6 +266,7 @@ const Lex = (props: PageData) => {
 
 	// other modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddLexItem, setIsOpenAddLexItem] = useState<boolean>(false);
 	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
 	const [isOpenLexSorter, setIsOpenLexSorter] = useState<boolean>(false);
@@ -541,6 +548,7 @@ const Lex = (props: PageData) => {
 				duration={1000}
 			/>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}><LexCard /></ModalWrap>
 			<Header
 				id="lexiconTopBar"
 				title="Lexicon"
@@ -570,6 +578,14 @@ const Lex = (props: PageData) => {
 						key="openLexStorageButton"
 					>
 						<IonIcon icon={saveOutline} />
+					</IonButton>,
+					<IonButton
+						disabled={isDeleting}
+						onClick={() => setIsOpenInfo(true)}
+						slot="icon-only"
+						key="openLexHelpButton"
+					>
+						<IonIcon icon={helpCircleOutline} />
 					</IonButton>
 				]}
 			/>
@@ -758,3 +774,83 @@ const Lex = (props: PageData) => {
 };
 
 export default Lex;
+
+export const LexCard = () => {
+	return (
+		<IonCard>
+			<IonItem lines="full">
+				<LexiconIcon slot="start" color="primary" />
+				<IonLabel>Lexicon</IonLabel>
+			</IonItem>
+			<IonCardContent>
+				<p>
+					This tool is for storing the raw info of your language, whether that be words or
+					something else. The default setup includes dictionary-style columns such as
+					"word", "part of speec" and "definition", but you can add, remove, or rename
+					columns as you see fit.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={chevronUpCircle} color="tertiary" size="large" />
+				</p><p>
+					At the top of the page is a place where you can title your collection and give it
+					a short description. You can toggle this entire section by using the (^) button at
+					the top of the page.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={saveOutline} color="tertiary" size="large" />
+				</p><p>
+					The save button at the top can be used to store, delete, and export entire Lexicons.
+				</p><p>
+					At the top of the Lexicon you'll find a counter displaying how many words you have
+					stored. Next to it is are two sort buttons, where you can choose which columns will
+					be used to sort your collection.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={settings} color="tertiary" size="large" />
+				</p><p>
+					The gear icon opens the "Edit Columns" settings. You can choose whether or not to
+					show the columns' full names, the method you wish to use to sort the Lexicon, and
+					how blank columns will be handled. Below that you'll find a list of all current
+					columns. You can edit them, delete them, add more, or use
+					the <IonIcon icon={reorderTwo} color="tertiary" /> drag handles to rearrange their
+					order.
+				</p><p>
+					The second row contains the titles of the columns. Beneath them are input boxes
+					for quickly adding info to the Lexicon. Use the small (+) button to save what you've
+					typed.
+				</p><p>
+					Under those boxes you'll find the meat of Lexicon: all the items you've stored.
+					They will appear as striped rows. You can swipe left on each one to find Edit
+					and Delete buttons.
+				</p><p className="center pad-top-rem">
+					<IonIcon icon={construct} color="tertiary" size="large" />
+				</p><p>
+					At the bottom of the page, you'll find a large tool button. You can tap on it to
+					pull up a small menu. Tap on the (+) button to pop up a large form for adding
+					to the Lexicon. Tap on the trash can to enter mass-delete mode, where you can
+					select multiple entries and delete them all at once.
+				</p>
+				<hr />
+				<p className="center">
+					<IonIcon color="tertiary" size="large" src="svg/link.svg" />
+				</p><p>
+					You can swipe right on a lexicon item to find the <strong>Merge</strong> button. You
+					can use this to mark multiple entries. Once you've selected at least two, a large
+					paperclip button will appear at the bottom of the page. Tapping on it will prompt you
+					to merge the selected items into one entry.
+				</p><p>
+					Several tools in <strong>Conlang Toolbox</strong> can export info into the Lexicon.
+					The merge function can be used to merge all this different info. Here's an example:
+				</p>
+				<ol>
+					<li>You begin by naming columns in the Lexicon "original", "changed", and
+					"definition".</li>
+					<li>Then, you use <strong>WordGen</strong> to create a bunch of new words, which you
+					export to Lexicon under the "original" column.</li>
+					<li>Next, you change those words with <strong>WordEvolve</strong> and export
+					the changed words to "changed".</li>
+					<li>Then, you visit <strong>Concepts</strong> and export meanings to "definition".</li>
+					<li>Finally, you swipe link each "original", "changed" and "definition" column with
+					each other and merge them into single entries.</li>
+				</ol>
+			</IonCardContent>
+		</IonCard>
+	);
+}

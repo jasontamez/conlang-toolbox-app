@@ -31,8 +31,9 @@ import {
 import Header from '../components/Header';
 import { appPagesObject } from '../components/appPagesInfo';
 import ModalWrap from '../components/ModalWrap';
-import { ConceptCard } from './Concepts';
 import ExtraCharactersModal from './modals/ExtraCharacters';
+import { ConceptCard } from './Concepts';
+import { LexCard } from './Lex';
 
 // TO-DO: Fix "app Info" at bottom, and the AppInfo page
 // TO-DO: Add 'overview' pages as help pages
@@ -41,6 +42,7 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
+	const [isOpenLexicon, setIsOpenLexicon] = useState<boolean>(false);
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
@@ -48,11 +50,12 @@ const Home = (props: PageData) => {
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...props.modalPropsMaker(isOpenConcepts, setIsOpenConcepts)}><ConceptCard /></ModalWrap>
+			<ModalWrap {...props.modalPropsMaker(isOpenLexicon, setIsOpenLexicon)}><LexCard /></ModalWrap>
 			<Header title="Conlang Toolbox" />
 			<IonContent className="containedCards" id="about">
 				<IonGrid>
 
-				<IonRow className="major">
+					<IonRow className="major">
 						<IonCol>
 							<IonButton size="large" routerLink="/ms/msSettings" routerDirection="forward">
 								<MorphoSyntaxIcon slot="start" />
@@ -66,7 +69,7 @@ const Home = (props: PageData) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"msBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>p.{i}</IonLabel>)}
 									</IonButton>
 								);
 							})}
@@ -86,7 +89,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.wg.map((obj, i) => {
+							{appPagesObject.wg.filter(obj => !obj.hidden).map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"wgBtn-" + tab}>
@@ -110,7 +113,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.we.map((obj, i) => {
+							{appPagesObject.we.filter(obj => !obj.hidden).map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
@@ -158,7 +161,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton className="help" onClick={() => setIsOpenLexicon(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -180,7 +183,8 @@ const Home = (props: PageData) => {
 						</IonCol>
 					</IonRow>
 
-					{/*<IonRow>
+					{/*TO-DO: Make this into a modal
+					<IonRow>
 						<IonCol>
 							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
 								<IonCardHeader className="ion-text-center">
