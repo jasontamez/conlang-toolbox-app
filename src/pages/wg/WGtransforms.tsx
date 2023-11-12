@@ -139,7 +139,9 @@ const WGRew = (props: PageData) => {
 				setEditing={setEditing}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><TransCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<TransCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

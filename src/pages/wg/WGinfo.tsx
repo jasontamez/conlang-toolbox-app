@@ -27,18 +27,27 @@ import IPA from '../../components/IPA';
 import Header from '../../components/Header';
 import {
 	SyllablesIcon,
-	TransformationsIcon
+	TransformationsIcon,
+	WordGenIcon
 } from '../../components/icons';
 
 interface CardProps {
 	hideOverview?: boolean
+	setIsOpenInfo?: Function
 }
 const OverviewButton = (props: CardProps) => {
-	if(props.hideOverview) {
+	const { hideOverview, setIsOpenInfo } = props;
+	if(hideOverview) {
 		return <></>;
 	}
 	return (
-		<IonButton color="secondary" slot="end" routerLink="/wg/overview" routerDirection="forward">
+		<IonButton
+			color="secondary"
+			slot="end"
+			routerLink="/wg/overview"
+			routerDirection="forward"
+			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
+		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>
 	);
@@ -84,11 +93,25 @@ export const CharGroupCard = (props: CardProps) => {
 					tend to use certain sounds more than others. You can adjust this <em>dropoff
 					rate</em>, or eliminate it entirely, on the <strong>Settings</strong> tab.
 				</p>
+				{props.hideOverview ?
+					<p>
+						<strong>Character Group run dropoff</strong> is explained in
+						the <strong>Settings</strong> section below.
+					</p>
+				:
+					<p>
+						<strong>Character Group run dropoff</strong> ranges from 0 to 50. At zero (flat),
+						group choices are all equiprobable. Otherwise, the higher the number, the more
+						likely it is that the first characters in the group are used. See the help section
+						on the <strong>Settings</strong> page for more information.
+					</p>
+				}
 			</IonCardContent>
 		</IonCard>
 	);
 }
 export const SylCard = (props: CardProps) => {
+	const { hideOverview } = props;
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -99,9 +122,26 @@ export const SylCard = (props: CardProps) => {
 			<IonCardContent>
 				<p>
 					This is where you determine how your syllables are formed. You use the <em>labels</em> to
-					describe the elements that make up a syllable. For example, using the labels above, you
-					could decide to make a list of syllables such as the following:
+					describe the elements that make up a syllable.
+						{ hideOverview ? "" :
+						" For example, using the groups in the previous section, you could decide"
+						+ " to make a list of syllables such as the following:"}
 				</p>
+				{hideOverview ? (
+					<>
+						<p>For example, if you have these <strong>character groups</strong>...</p>
+						<div className="emphasizedSection">
+							<strong>I=pbk</strong>
+							<br />
+							<strong>L=lr</strong>
+							<br />
+							<strong>C=pbklr</strong>
+							<br />
+							<strong>V=eioau</strong>
+						</div>
+						<p>...you could decide to make a list of syllables such as the following:</p>
+					</>
+				) : <></>}
 				<div className="emphasizedSection">
 					<strong>
 						ILV
@@ -133,6 +173,19 @@ export const SylCard = (props: CardProps) => {
 					often one-syllable words are generated, and put an upper limit on the number of
 					syllables any one word can have.
 				</p>
+				{props.hideOverview ?
+					<p>
+						<strong>Syllable box dropoff</strong> is explained in
+						the <strong>Settings</strong> section below.
+					</p>
+				:
+					<p>
+						<strong>Syllable box dropoff</strong> ranges from 0 to 50. At zero (flat),
+						syllable choices are all equiprobable. Otherwise, the higher the number, the
+						more likely it is that the first lines in the box are used. See the
+						help section on the <strong>Settings</strong> page for more information.
+					</p>
+				}
 			</IonCardContent>
 		</IonCard>
 	);
@@ -247,10 +300,16 @@ export const TransCard = (props: CardProps) => {
 					learn more about them:
 				</p>
 				<ul>
-					<li><a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia: Regular Expression</a></li>
-					<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern">MDN: Writing a regular expression</a></li>
-					<li><a href="https://www.regular-expressions.info">Regular-Expressions.info</a>, a tutorial site.</li>
-					<li><a href="https://www.geeksforgeeks.org/write-regular-expressions/">Geeks for Geeks: Write Reguar Expressions</a></li>
+					<li><a href="https://en.wikipedia.org/wiki/Regular_expression"
+					>Wikipedia: Regular Expression</a></li>
+					<li><a href={
+						"https://developer.mozilla.org/en-US/docs/Web/JavaScript/"
+						+ "Guide/Regular_expressions#writing_a_regular_expression_pattern"}
+					>MDN: Writing a regular expression</a></li>
+					<li><a href="https://www.regular-expressions.info"
+					>Regular-Expressions.info</a>, a tutorial site.</li>
+					<li><a href="https://www.geeksforgeeks.org/write-regular-expressions/"
+					>Geeks for Geeks: Write Reguar Expressions</a></li>
 				</ul>
 			</IonCardContent>
 		</IonCard>
@@ -267,8 +326,7 @@ export const OutCard = (props: CardProps) => {
 			<IonCardContent>
 				<p>
 					This is where the magic happens. Click the <strong>Generate</strong> button and your
-					output will appear below. Press the button again and a new set of output
-					will replace it.
+					output will appear. Press the button again and a new set of output will replace it.
 				</p><p className="center pad-top-rem">
 					<IonIcon icon={settingsOutline} color="tertiary" size="large" />
 				</p><p>
@@ -350,7 +408,7 @@ export const OptCard = (props: CardProps) => {
 					<strong>Maximum number of syllables per word</strong> sets an upper limit on how long
 					your words can grow.
 				</p><p>
-					<strong>Character Group run dropoff</strong> and <strong>syllable run dropoff</strong> run
+					<strong>Character Group run dropoff</strong> and <strong>syllable box dropoff</strong> range
 					from 0 to 50. At zero (flat), group and syllable choices are all equiprobable.
 					Otherwise, the number becomes a percentage. The higher the number, the more likely it
 					is that the first syllables or group characters are used. (This mimics natural
@@ -368,7 +426,7 @@ export const OptCard = (props: CardProps) => {
 					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
 					letter.
 				</p><p>
-					The remaining options determine what your sentences look like. Three-fourths of
+					The other options determine what your sentences look like. Three-fourths of
 					all sentences will be <em>declarative</em> (simple statements), one-sixth will
 					be <em>interrogative</em> (questions), and the remaining one-twelfth will
 					be <em>exclamatory</em> (excited utterances). You can put special punctuation
@@ -384,9 +442,38 @@ const WGinfo = (props: PageData) => {
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title="Overview" />
+				<Header title="Overview: WordGen" />
 			</IonHeader>
 			<IonContent className="overview">
+				<IonCard>
+					<IonItem lines="full">
+						<WordGenIcon slot="start" color="primary" />
+						<IonLabel>What is WordGen?</IonLabel>
+					</IonItem>
+					<IonCardContent>
+						<p>
+							This tool is for attempting to generate new words based on rules you set up.
+						</p><p>
+							The basic unit of a "word" is a syllable. A "syllable" generally has a vowel, and
+							may have one or more consonants in it.
+						</p><p>
+							This is the most basic use case:
+						</p><div>
+							<ol>
+								<li>Decide what sounds your language will have.</li>
+								<li>Separate these sounds into groups, such as vowels and consonants.</li>
+								<li>Decide how these sounds combine to form syllables.</li>
+							</ol>
+						</div><p>
+							The <strong>Character Groups</strong> tab is for holding groups of sounds, and
+							the <strong>Syllables</strong> tab describes how they fit together. For more
+							complex words, the <strong>Transformations</strong> tab provides a way to tweak
+							the generated output with search/replace expressions. The <strong>Output</strong> tab
+							is where the new words can be found, and the <strong>Settings</strong> tab has
+							other options you can tweak if needed.
+						</p>
+					</IonCardContent>
+				</IonCard>
 				<CharGroupCard hideOverview />
 				<SylCard hideOverview />
 				<TransCard hideOverview />

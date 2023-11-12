@@ -130,7 +130,9 @@ const WGCharGroup = (props: PageData) => {
 				setEditing={setEditing}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><CharGroupCard /></ModalWrap>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<CharGroupCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

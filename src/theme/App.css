@@ -68,6 +68,9 @@ ion-app .hide {
 .pad-top-rem {
 	padding-block-start: 1rem;
 }
+.no-pad-bottom {
+	padding-block-end: 0;
+}
 .ital {
 	font-style: italic;
 }
@@ -100,6 +103,30 @@ ion-card-content ul.changelog li {
 #coffee {
 	padding-block-end: 1em;
 	padding-block-start: 10em;
+}
+ion-card {
+	--ion-border-color: var(--ion-color-step-150);
+	border-radius: 1.5rem;
+}
+ion-card-content {
+	color: var(--ion-color-step-750);
+}
+ion-card-content ol {
+	background: var(--ion-background-tinter);
+	margin: 0;
+	padding-block: 1em;
+	border-radius: 1rem;
+}
+ion-card-content h2 {
+	color: var(--ion-text-color);
+	font-size: 1.5em !important;
+}
+ion-card-content hr {
+	border: 0;
+	border-color: var(--ion-color-step-150);
+	border-block-start-width: 1px;
+	border-style: solid;
+	margin: 1em 0 2em 0;
 }
 
 .charGroups .charGroupLongName,
@@ -557,7 +584,6 @@ ion-loading.pageSwitchBackground {
 #about ion-card {
 	max-width: 30rem;
 	margin: 0.5rem 2rem;
-	border-radius: 1.5rem;
 }
 #about ion-card * {
 	--inner-border-width: 0;
@@ -578,24 +604,6 @@ ion-loading.pageSwitchBackground {
 	border-radius: 50% 50% 0px 0px / 100% 100% 0px 0px;
 	width: 100%;
 	margin-bottom: 0;
-}
-
-ion-card {
-	--ion-border-color: var(--ion-color-step-150);
-}
-ion-card-content {
-	color: var(--ion-color-step-750);
-}
-ion-card-content h2 {
-	color: var(--ion-text-color);
-	font-size: 1.5em !important;
-}
-ion-card-content hr {
-	border: 0;
-	border-color: var(--ion-color-step-150);
-	border-block-start-width: 1px;
-	border-style: solid;
-	margin: 1em 0 2em 0;
 }
 
 ion-modal::part(content) ion-item-group.buttonFilled ion-item:nth-of-type(even)::part(native),
