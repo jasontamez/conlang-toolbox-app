@@ -395,8 +395,8 @@ export const OptCard = (props: CardProps) => {
 					groups</em>, <em>syllables</em> and <em>transformations</em>, but does not
 					affect any other settings.
 				</p><p>
-					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your own
-					<em>character groups</em>, <em>syllables</em>, <em>transformations</em> and the
+					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your
+					own <em>character groups</em>, <em>syllables</em>, <em>transformations</em> and the
 					settings on this page. This allows you to switch between your own personal
 					language settings.
 				</p>

@@ -271,7 +271,7 @@ export const display = (
 									className={colClass ? `${colClass} word` : "word"}
 									key={`${groupId}:word:${rowId}:${colId}:${col}`}
 								>{col}{period || ":"}</span>
-							);	
+							);
 						}
 					} else {
 						cells.push(
@@ -281,7 +281,7 @@ export const display = (
 							>{col}</div>
 						);
 					}
-				});	
+				});
 				inner.push(
 					<div
 						className={rowClass ? `${rowClass} row` : "row"}
