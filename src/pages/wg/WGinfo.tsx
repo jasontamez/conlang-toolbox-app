@@ -454,23 +454,56 @@ const WGinfo = (props: PageData) => {
 						<p>
 							This tool is for attempting to generate new words based on rules you set up.
 						</p><p>
-							The basic unit of a "word" is a syllable. A "syllable" generally has a vowel, and
-							may have one or more consonants in it.
+							WordGen makes a few assumptions:
+							The basic unit of a "word" is a syllable.
+							A "syllable" can be described as a combination of sounds that are spoken together.
 						</p><p>
 							This is the most basic use case:
 						</p><div>
 							<ol>
-								<li>Decide what sounds your language will have.</li>
-								<li>Separate these sounds into groups, such as vowels and consonants.</li>
-								<li>Decide how these sounds combine to form syllables.</li>
+								<li>
+									Choose what sounds your language will have, and the characters (letters)
+									that will represent these sounds.
+								</li>
+								<li>Separate these characters into groups, such as vowels and consonants.</li>
+								<li>Decide the structure(s) of the syllables these sounds form.</li>
 							</ol>
 						</div><p>
+							For example, a (very rough) approximation of Japanese might be:
+						</p><div>
+							<ol>
+								<li>
+									Uses the sounds k, g, s, z, t, d, n, h, b, p, m, y, r,
+									w, a, i, u, e, and o.
+								</li>
+								<li>Sounds can be grouped like this:
+									<ol>
+										<li>k, g, s, z, t, d, n, h, b, p, m, r</li>
+										<li>a, i, u, e, o</li>
+										<li>y</li>
+										<li>a, u, o</li>
+										<li>w</li>
+										<li>a, o</li>
+										<li>n</li>
+									</ol>
+								</li>
+								<li>
+									Syllables can be made from (i)+(ii), (iii)+(iv), (v)+(vi),
+									(ii) by itself, and (vii) by itself.
+								</li>
+							</ol>
+						</div><p>
+							With that information, you can proceed into the rest of this tool:
+						</p><p>
 							The <strong>Character Groups</strong> tab is for holding groups of sounds, and
 							the <strong>Syllables</strong> tab describes how they fit together. For more
 							complex words, the <strong>Transformations</strong> tab provides a way to tweak
 							the generated output with search/replace expressions. The <strong>Output</strong> tab
 							is where the new words can be found, and the <strong>Settings</strong> tab has
 							other options you can tweak if needed.
+						</p><p>
+							Be sure to check out the <em>Presets</em> over on the Settings tab. The
+							"Pseudo-Japanese" preset shows one way to put the above info to use.
 						</p>
 					</IonCardContent>
 				</IonCard>
