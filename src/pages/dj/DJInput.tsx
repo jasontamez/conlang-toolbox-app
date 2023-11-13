@@ -14,7 +14,8 @@ import {
 import {
 	enterOutline,
 	trashBinOutline,
-	globeOutline
+	globeOutline,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -26,11 +27,14 @@ import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
+import ModalWrap from '../../components/ModalWrap';
+import { InputCard } from './DJinfo';
 
 const DJInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
 	const [doAlert] = useIonAlert();
 	const { input } = useSelector((state: StateObject) => state.dj);
@@ -75,6 +79,9 @@ const DJInput = (props: PageData) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<InputCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<LexiconImporterModal
 				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
 				openECM={setIsOpenECM}
@@ -90,6 +97,9 @@ const DJInput = (props: PageData) => {
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
+						</IonButton>
+						<IonButton onClick={() => setIsOpenInfo(true)}>
+							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>

@@ -279,6 +279,14 @@ export const appMenuInfo: MenuSection[] = [
 				parentOf: 'dj'
 			},
 			{
+				title: 'Overview',
+				url: '/dj/overview',
+				tab: 'overview',
+				id: 'menuitemDJoverview',
+				hidden: true,
+				parent: 'dj'
+			},
+			{
 				title: 'Input',
 				url: '/dj/input',
 				tab: 'input',

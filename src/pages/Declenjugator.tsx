@@ -11,10 +11,11 @@ import {
 
 import { PageData } from '../store/types';
 
+import { appPagesObject } from '../components/appPagesInfo';
 import DJInput from './dj/DJInput';
 import DJGroups from './dj/DJGroups';
 import DJOutput from './dj/DJOutput';
-import { appPagesObject } from '../components/appPagesInfo';
+import DJinfo from './dj/DJinfo';
 
 
 const DJ = (props: PageData) => {
@@ -27,17 +28,18 @@ const DJ = (props: PageData) => {
 					TO-DO:
 					<Route path="/dj/overview" render={() => <DJinfo {...props} /> } exact={true} />
 				*/}
+				<Route path="/dj/overview" render={() => <DJinfo {...props} /> } exact={true} />
 				<Route path="/dj/input" render={() => <DJInput {...props} /> } exact={true} />
 				<Route path="/dj/groups" render={() => <DJGroups {...props} />} exact={true} />
 				<Route path="/dj/output" render={() => <DJOutput {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				{appPagesObject.dj!.map(obj => {
-					const { title, url, tab, icon } = obj;
+				{appPagesObject.dj.filter(obj => !obj.hidden).map(obj => {
+					const { title, tabTitle, url, tab, icon } = obj;
 					return (
-						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
+						<IonTabButton tab={tab!} href={url} key={"djTab-" + tab}>
 							{icon ? <IonIcon icon={icon} /> : <></>}
-							<IonLabel>{title}</IonLabel>
+							<IonLabel>{tabTitle || title}</IonLabel>
 						</IonTabButton>
 					);
 				})}

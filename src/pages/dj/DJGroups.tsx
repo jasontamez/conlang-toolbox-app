@@ -26,7 +26,8 @@ import {
 	globeOutline,
 	trashBinOutline,
 	caretDown,
-	reorderThree
+	reorderThree,
+	helpCircleOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -45,6 +46,8 @@ import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
 import CaseMaker from './modals/CaseMaker';
 import Header from '../../components/Header';
+import ModalWrap from '../../components/ModalWrap';
+import { GroupCard } from './DJinfo';
 
 interface GroupingInfo {
 	label: string
@@ -82,6 +85,7 @@ const DJGroups = (props: PageData) => {
 	const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [editingGroup, setEditingGroup] = useState<[keyof DJCustomInfo, DJGroup] | null>(null);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	// submodal: add declenjugation
 	const [addDeclenjugationOpen, setAddDeclenjugationOpen] = useState<boolean>(false);
 	const [savedDeclenjugation, setSavedDeclenjugation] = useState<Declenjugation | null>(null);
@@ -164,10 +168,10 @@ const DJGroups = (props: PageData) => {
 		const output = [
 			<IonButton key="djGroupsExtraChars" onClick={() => setIsOpenECM(true)}>
 				<IonIcon icon={globeOutline} />
-			</IonButton>/*,
+			</IonButton>,
 			<IonButton key="djGroupsHelpButton" onClick={() => setIsOpenInfo(true)}>
 				<IonIcon icon={helpCircleOutline} />
-			</IonButton>*/
+			</IonButton>
 		];
 		canTrash && output.unshift(
 			<IonButton key="djGroupsClearEverything" onClick={() => maybeClearEverything()}>
@@ -380,6 +384,9 @@ const DJGroups = (props: PageData) => {
 			/>
 
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<GroupCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
 			<Header
 				title="Groups"
 				endButtons={headerButtons}

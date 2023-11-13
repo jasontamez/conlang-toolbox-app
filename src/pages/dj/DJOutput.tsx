@@ -12,7 +12,7 @@ import {
 	useIonToast
 } from '@ionic/react';
 import { useSelector } from "react-redux";
-import { caretForwardCircleOutline, codeDownloadOutline } from 'ionicons/icons';
+import { caretForwardCircleOutline, codeDownloadOutline, helpCircleOutline } from 'ionicons/icons';
 //import { Clipboard } from '@capacitor/clipboard';
 
 import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
@@ -32,6 +32,8 @@ import {
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import Header from '../../components/Header';
+import ModalWrap from '../../components/ModalWrap';
+import { OutputCard } from './DJinfo';
 
 /*
 
@@ -65,6 +67,7 @@ const DJOutput = (props: PageData) => {
 //	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chartH");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
@@ -199,10 +202,17 @@ const DJOutput = (props: PageData) => {
 
 	return (
 		<IonPage>
-			<Header title="Output" />
-						{/*<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>*/}
+			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<OutputCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
+			<Header
+				title="Output"
+				endButtons={[
+					<IonButton key="djOutputHelpButton" onClick={() => setIsOpenInfo(true)}>
+						<IonIcon icon={helpCircleOutline} />
+					</IonButton>
+				]}
+			/>
 			<IonContent>
 				<IonList lines="full" className="djOutput hasToggles">
 					<IonItem>

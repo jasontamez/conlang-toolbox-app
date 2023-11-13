@@ -145,7 +145,7 @@ const Home = (props: PageData) => {
 									</IonButton>
 								);
 							})}
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton routerLink="/dj/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
