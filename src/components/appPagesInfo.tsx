@@ -67,6 +67,15 @@ export const appMenuInfo: MenuSection[] = [
 				parentOf: 'ms'
 			},
 			{
+				title: 'Overview',
+				url: '/ms/overview',
+				id: 'menuitemMSOverview',
+				icon: helpOutline,
+				parent: 'ms',
+				tab: 'Section-Overview',
+				hidden: true
+			},
+			{
 				title: 'Settings',
 				url: '/ms/msSettings',
 				id: 'menuitemMSSettings',

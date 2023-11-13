@@ -35,7 +35,6 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import { ConceptCard } from './Concepts';
 import { LexCard } from './Lex';
 
-// TO-DO: Fix "app Info" at bottom, and the AppInfo page
 // TO-DO: Add 'overview' pages as help pages
 //         - extra chars will need its own somehow
 
@@ -65,15 +64,15 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.ms.map((obj, i) => {
-								const { url, tab, icon, Icon } = obj;
+							{appPagesObject.ms.filter(obj => !obj.hidden).map(obj => {
+								const { url, tab, icon, Icon, noIcon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"msBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>p.{i}</IonLabel>)}
+										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>p.{noIcon}</IonLabel>)}
 									</IonButton>
 								);
 							})}
-							<IonButton routerLink="{url}" className="help" routerDirection="forward">
+							<IonButton routerLink="/ms/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>

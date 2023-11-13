@@ -13,6 +13,7 @@ import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons
 
 import { PageData, StateObject } from '../store/types';
 
+import MSinfo from './ms/MSinfo';
 import MSSettings from "./ms/msSettings";
 import MS01 from "./ms/ms01";
 import MS02 from "./ms/ms02";
@@ -77,6 +78,7 @@ const MS = (props: PageData) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
+				<Route path="/ms/overview" render={() => <MSinfo {...props} />} exact={true} />
 				<Route path="/ms/msSettings" render={() => <MSSettings {...props} />} exact={true} />
 				<Route path="/ms/ms01" render={() => <MS01 {...props} />} exact={true} />
 				<Route path="/ms/ms02" render={() => <MS02 {...props} />} exact={true} />

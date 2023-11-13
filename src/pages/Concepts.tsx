@@ -498,15 +498,15 @@ export const ConceptCard = () => {
 				</p>
 				<hr />
 				<h2>Controls</h2>
-				<div className="ion-text-center"><LexiconOutlineIcon color="primary" size="large" /></div>
+				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
 				<p>
 					Use the "lexicon" button to quickly save meanings to the Lexicon.
 				</p>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/link.svg" /></div>
+				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
 				<p>
 					Use the "join" button to create compound meanings.
 				</p>
-				<div className="ion-text-center"><IonIcon color="primary" size="large" src="svg/unlink.svg" /></div>
+				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/unlink.svg" /></div>
 				<p>
 					Use the "unjoin" button to delete compound meanings.
 				</p>

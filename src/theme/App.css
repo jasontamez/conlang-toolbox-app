@@ -134,8 +134,14 @@ ion-card-content .example .title:first-child {
 	margin-block-start: 0;
 }
 ion-card-content .example ul li,
-ion-card-content .example ul {
+ion-card-content .example ul,
+ion-card-content ol ul,
+ion-card-content ol ul li {
 	margin: 0;
+}
+ion-card-content ol ul {
+	padding-inline-start: 1.5em;
+	list-style-type: disc;
 }
 ion-card-content ol ol {
 	margin-block: 0.25em;

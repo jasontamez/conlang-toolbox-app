@@ -432,9 +432,8 @@ const WGinfo = (props: PageData) => {
 						<p>
 							This tool is for attempting to generate new words based on rules you set up.
 						</p><p>
-							WordGen makes a few assumptions:
-							The basic unit of a "word" is a syllable.
-							A "syllable" can be described as a combination of sounds that are spoken together.
+							WordGen makes a few assumptions: 1) the basic unit of a "word" is a syllable, and
+							2) a "syllable" can be described as a combination of sounds that are spoken together.
 						</p><p>
 							This is the most basic use case:
 						</p><div>

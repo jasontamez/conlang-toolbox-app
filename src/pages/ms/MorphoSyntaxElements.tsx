@@ -18,7 +18,7 @@ import {
 	IonRow,
 	IonCol
 } from '@ionic/react';
-import { checkmarkCircleOutline, informationCircleSharp } from 'ionicons/icons';
+import { checkmarkCircleOutline, helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import doParse from 'html-react-parser';
 
@@ -45,7 +45,15 @@ export const SyntaxHeader = (props: ModalProperties) => {
 		modalPropsMaker
 	} = props;
 	return (
-		<Header extraChars={modalPropsMaker} title={title} />
+		<Header
+			extraChars={modalPropsMaker}
+			title={title}
+			endButtons={[
+				<IonButton key="msHelpButton" routerLink="/ms/overview" routerDirection="forward">
+					<IonIcon icon={helpCircleOutline} />
+				</IonButton>
+			]}
+		/>
 	);
 };
 const RadioBox = (props: {
