@@ -24,13 +24,13 @@ import {
 	helpCircleOutline,
 	addOutline,
 	trash,
-	globeOutline,
-	trashBinOutline
+	trashBinOutline,
+	copyOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject, WECharGroupObject } from '../../store/types';
-import { deleteCharacterGroupWE } from '../../store/weSlice';
+import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -52,6 +52,7 @@ const WECharGroup = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
+	const { characterGroups: wgCharatcterGroups } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = (group: WECharGroupObject) => {
 		$q(".charGroups").closeSlidingItems();
@@ -110,6 +111,32 @@ const WECharGroup = (props: PageData) => {
 			});
 		}
 	};
+	const maybeCopyFromWG = () => {
+		const handler = () => {
+			dispatch(copyCharacterGroupsFromElsewhere(wgCharatcterGroups));
+			toaster({
+				message: `${wgCharatcterGroups.length} Character Groups imported.`,
+				duration: 2500,
+				color: "danger",
+				position: "top",
+				doToast,
+				undoToast
+			});
+		};
+		if(disableConfirms) {
+			handler();
+		} else {
+			yesNoAlert({
+				header: "Import from WordGen?",
+				message: "If any current Group has the same label as an incoming Group, "
+					+ "the current Group will be overwritten. Do you want to continue?",
+				cssClass: "warning",
+				submit: "Yes, Import",
+				handler,
+				doAlert
+			});
+		}
+	};
 	return (
 		<IonPage>
 			<AddCharGroupWEModal
@@ -140,9 +167,13 @@ const WECharGroup = (props: PageData) => {
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenECM(true)}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
+						{wgCharatcterGroups.length > 0 ?
+							<IonButton onClick={() => maybeCopyFromWG()}>
+								<IonIcon icon={copyOutline} />
+							</IonButton>
+						:
+							<></>
+						}
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

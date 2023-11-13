@@ -25,14 +25,15 @@ import {
 	addOutline,
 	helpCircleOutline,
 	trash,
-	globeOutline,
-	trashBinOutline
+	trashBinOutline,
+	copyOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import {
 	setCharacterGroupDropoff,
-	deleteCharGroupWG
+	deleteCharGroupWG,
+	copyCharacterGroupsFromElsewhere
 } from '../../store/wgSlice';
 import {
 	WGCharGroupObject,
@@ -61,6 +62,7 @@ const WGCharGroup = (props: PageData) => {
 	const [isOpenEditCharGroup, setIsOpenEditCharGroup] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGCharGroupObject | null>(null);
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
+	const { characterGroups: weCharatcterGroups } = useSelector((state: StateObject) => state.we);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = (charGroup: WGCharGroupObject) => {
 		$q(".charGroups").closeSlidingItems();
@@ -118,6 +120,32 @@ const WGCharGroup = (props: PageData) => {
 			});
 		}
 	};
+	const maybeCopyFromWE = () => {
+		const handler = () => {
+			dispatch(copyCharacterGroupsFromElsewhere(weCharatcterGroups));
+			toaster({
+				message: `${weCharatcterGroups.length} Character Groups imported.`,
+				duration: 2500,
+				color: "danger",
+				position: "top",
+				doToast,
+				undoToast
+			});
+		};
+		if(disableConfirms) {
+			handler();
+		} else {
+			yesNoAlert({
+				header: "Import from WordEvolve?",
+				message: "If any current Group has the same label as an incoming Group, "
+					+ "the current Group will be overwritten. Do you want to continue?",
+				cssClass: "warning",
+				submit: "Yes, Import",
+				handler,
+				doAlert
+			});
+		}
+	};
 	return (
 		<IonPage>
 			<AddCharGroupModal {...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
@@ -147,9 +175,13 @@ const WGCharGroup = (props: PageData) => {
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenECM(true)}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
+						{weCharatcterGroups.length > 0 ?
+							<IonButton onClick={() => maybeCopyFromWE()}>
+								<IonIcon icon={copyOutline} />
+							</IonButton>
+						:
+							<></>
+						}
 						<IonButton onClick={() => setIsOpenInfo(true)}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

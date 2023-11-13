@@ -13,7 +13,8 @@ import {
 	WGState,
 	WGTransformObject,
 	Zero_Fifty,
-	Zero_OneHundred
+	Zero_OneHundred,
+	WECharGroupObject
 } from './types';
 import log from '../components/Logging';
 
@@ -40,12 +41,22 @@ const editCharacterGroupFunc = (state: WGState, action: PayloadAction<{ old: WGC
 	state.characterGroups = state.characterGroups.map(group => group.label === label ? edited : group);
 	return state;
 };
-const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAction<WGCharGroupObject[]>) => {
+const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAction<WECharGroupObject[]>) => {
 	const newCharacterGroups = action.payload;
 	const { characterGroups } = state;
-	let incoming: { [key: string]: WGCharGroupObject } = {};
+	const incoming: { [key: string]: WGCharGroupObject } = {};
 	newCharacterGroups.forEach(cg => {
-		incoming[cg.label] = cg;
+		const {
+			title,
+			label,
+			run
+		} = cg;
+		const output: WGCharGroupObject = {
+			title,
+			label: label!,
+			run
+		};
+		incoming[label!] = output;
 	});
 	const final: WGCharGroupObject[] = [];
 	characterGroups.forEach(cg => {
@@ -63,8 +74,8 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WGState, action: PayloadAct
 	newCharacterGroups.forEach(cg => {
 		const {label} = cg;
 		// Only save if we haven't used this to replace an old one
-		if(incoming[label]) {
-			final.push(cg);
+		if(incoming[label!]) {
+			final.push(incoming[label!]);
 		}
 	});
 	state.characterGroups = final;
@@ -260,8 +271,7 @@ const wgSlice = createSlice({
 		addCharGroupWG: addCharacterGroupFunc,
 		deleteCharGroupWG: deleteCharacterGroupFunc,
 		editCharacterGroupWG: editCharacterGroupFunc,
-	// TO-DO: copy character groups from WE (and from WG to WE!)
-	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
+		copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		setMultipleSyllableTypes: setMultipleSyllableTypesFunc,
 		setSyllables: setSyllablesFunc,
 		clearSyllables: clearSyllablesFunc,

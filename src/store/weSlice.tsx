@@ -1,7 +1,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import blankAppState from './blankAppState';
-import { WECharGroupObject, WEOutputTypes, WEPresetObject, WESoundChangeObject, WEState, WETransformObject } from './types';
+import {
+	WECharGroupObject,
+	WEOutputTypes,
+	WEPresetObject,
+	WESoundChangeObject,
+	WEState,
+	WETransformObject,
+	WGCharGroupObject
+} from './types';
 import log from '../components/Logging';
 
 const initialState: WEState = blankAppState.we as WEState;
@@ -33,12 +41,17 @@ const editCharacterGroupFunc = (state: WEState, action: PayloadAction<{ label: s
 	state.characterGroups = state.characterGroups.map(group => group.label === label ? edited : group);
 	return state;
 };
-const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: PayloadAction<WECharGroupObject[]>) => {
+const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: PayloadAction<WGCharGroupObject[]>) => {
 	const newCharacterGroups = action.payload;
 	const { characterGroups } = state;
-	let incoming: { [key: string]: WECharGroupObject } = {};
+	const incoming: { [key: string]: WECharGroupObject } = {};
 	newCharacterGroups.forEach(cg => {
-		incoming[cg.label!] = cg;
+		const { title, label, run } = cg;
+		incoming[label] = {
+			title,
+			label,
+			run
+		};
 	});
 	const final: WECharGroupObject[] = [];
 	characterGroups.forEach(cg => {
@@ -56,8 +69,8 @@ const copyCharacterGroupsFromElsewhereFunc = (state: WEState, action: PayloadAct
 	newCharacterGroups.forEach(cg => {
 		const {label} = cg;
 		// Only save if we haven't used this to replace an old one
-		if(incoming[label!]) {
-			final.push(cg);
+		if(incoming[label]) {
+			final.push(incoming[label]);
 		}
 	});
 	state.characterGroups = final;
@@ -166,8 +179,7 @@ const weSlice = createSlice({
 		addCharacterGroupWE: addCharacterGroupFunc,
 		deleteCharacterGroupWE: deleteCharacterGroupFunc,
 		editCharacterGroupWE: editCharacterGroupFunc,
-	// TO-DO: copy character groups from WG (and from WE to WG!)
-	copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
+		copyCharacterGroupsFromElsewhere: copyCharacterGroupsFromElsewhereFunc,
 		addTransformWE: addTransformFunc,
 		deleteTransformWE: deleteTransformFunc,
 		editTransformWE: editTransformFunc,
