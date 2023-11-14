@@ -392,5 +392,6 @@ const DJOutput = (props: PageData) => {
 };
 
 // TO-DO: Export as CSV, DOCx, and Text
+// TO-DO: Copy display to clipboard
 
 export default DJOutput;

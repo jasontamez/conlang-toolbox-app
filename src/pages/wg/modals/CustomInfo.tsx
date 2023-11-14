@@ -121,7 +121,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		CustomStorageWG.getItem(title).then((value: any) => {
+		CustomStorageWG.getItem<Base_WG>(title).then((value) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
@@ -140,9 +140,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const handler = () => {
-			CustomStorageWG.getItem(title).then((value: any) => {
+			CustomStorageWG.getItem<Base_WG>(title).then((value) => {
 				if(value) {
-					dispatch(loadStateWG(value as Base_WG));
+					dispatch(loadStateWG(value));
 					toaster({
 						message: `Save "${title}" loaded.`,
 						duration: 2500,

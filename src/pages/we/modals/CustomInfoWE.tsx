@@ -82,7 +82,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		CustomStorageWE.getItem(title).then((value: any) => {
+		CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
@@ -101,9 +101,9 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const handler = () => {
-			CustomStorageWE.getItem(title).then((value: any) => {
+			CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
 				if(value) {
-					dispatch(loadStateWE(value as WEPresetObject));
+					dispatch(loadStateWE(value));
 					toaster({
 						message: `Save "${title}" loaded.`,
 						duration: 2500,

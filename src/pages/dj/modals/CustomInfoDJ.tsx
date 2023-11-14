@@ -87,7 +87,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		DeclenjugatorStorage.getItem(title).then((value: any) => {
+		DeclenjugatorStorage.getItem<DJCustomInfo>(title).then((value) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
@@ -106,9 +106,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const handler = () => {
-			DeclenjugatorStorage.getItem(title).then((value: any) => {
+			DeclenjugatorStorage.getItem<DJCustomInfo>(title).then((value) => {
 				if(value) {
-					dispatch(loadStateDJ(value as DJCustomInfo));
+					dispatch(loadStateDJ(value));
 					toaster({
 						message: `Save "${title}" loaded.`,
 						duration: 2500,
