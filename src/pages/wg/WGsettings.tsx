@@ -54,6 +54,12 @@ import MaybeLoadPreset from './modals/MaybeLoadPreset';
 import ManageCustomInfo from './modals/CustomInfo';
 import { OptCard } from "./WGinfo";
 
+// TO-DO: Introduce other sentence types? Adjust ratios?
+// [pre] sentence label [post] weight: [number]
+//   []  declarative     [.]   weight: [9]
+//   []  interrogative   [?]   weight: [2]
+//   []  exclamatory     [!]   weight: [1]
+
 const WGSet = (props: PageData) => {
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);

@@ -35,9 +35,6 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import { ConceptCard } from './Concepts';
 import { LexCard } from './Lex';
 
-// TO-DO: Add 'overview' pages as help pages
-//         - extra chars will need its own somehow
-
 const Home = (props: PageData) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
@@ -182,27 +179,6 @@ const Home = (props: PageData) => {
 						</IonCol>
 					</IonRow>
 
-					{/*TO-DO: Make this into a modal
-					<IonRow>
-						<IonCol>
-							<IonCard button={true} onClick={() => setIsOpenECM(true)}>
-								<IonCardHeader className="ion-text-center">
-									<IonIcon icon={globeOutline} className="ion-align-self-center" />
-									<IonCardTitle
-										className="ion-padding-start ion-align-self-start"
-									>Extra Characters</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent>
-									<p>On many pages, you'll see the Extra Characters icon at the top of the page.</p>
-									<ul>
-										<li>Contains hundreds of characters that may not appear on your mobile keyboard, organized according to groups such as Latin, Cyrillic, Arabic and Katakana</li>
-										<li>All IPA (International Phonetic Alphabet) characters grouped together</li>
-										<li>Save your often-used characters to the Favorites section for easy access</li>
-									</ul>
-								</IonCardContent>
-							</IonCard>
-						</IonCol>
-					</IonRow>*/}
 					<IonRow className="final">
 						<IonCol>
 							<IonCard

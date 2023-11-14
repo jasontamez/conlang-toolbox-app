@@ -495,9 +495,3 @@ const WGinfo = (props: PageData) => {
 };
 
 export default WGinfo;
-
-// TO-DO: Introduce other sentence types? Adjust ratios?
-// [pre] sentence label [post] weight: [number]
-//   []  declarative     [.]   weight: [9]
-//   []  interrogative   [?]   weight: [2]
-//   []  exclamatory     [!]   weight: [1]
