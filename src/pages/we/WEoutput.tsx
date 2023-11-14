@@ -851,7 +851,7 @@ const WEOut = (props: PageData) => {
 			setLoadingOpen(false);
 			setIsOpenManageCustomWE(true);
 		}).catch((err) => {
-			log(dispatch, ["Open Custom Info Modal", err])
+			log(dispatch, ["Open Custom Info Modal (we)", err])
 		});
 	};
 
@@ -974,10 +974,10 @@ const WEOut = (props: PageData) => {
 				/*duration={300000}*/
 				duration={1000}
 			/>
-			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
-			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
+			<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
 			<ManageCustomInfoWE
-				{...props.modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)}
+				{...modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)}
 				openECM={setIsOpenECM}
 				titles={storedInfo}
 				setTitles={setStoredInfo}

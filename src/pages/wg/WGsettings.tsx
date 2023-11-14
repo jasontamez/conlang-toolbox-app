@@ -98,8 +98,12 @@ const WGSet = (props: PageData) => {
 	};
 	return (
 		<IonPage>
-			<MaybeLoadPreset {...props.modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfo {...props.modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)} openECM={setIsOpenECM} titles={infoModalTitles} setTitles={setInfoModalTitles}
+			<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+			<ManageCustomInfo
+				{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
+				openECM={setIsOpenECM}
+				titles={infoModalTitles}
+				setTitles={setInfoModalTitles}
 			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>

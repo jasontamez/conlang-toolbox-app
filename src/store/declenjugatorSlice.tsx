@@ -56,6 +56,22 @@ const reorderGroupsFunc = (state: DJState, action: PayloadAction<DJGroupsPayload
 	return state;
 };
 
+// LOAD INFO and CLEAR ALL
+const loadStateFunc = (state: DJState, action: PayloadAction<DJCustomInfo | null>) => {
+	// If payload is null (or falsy), then initialState is used
+	const {
+		declensions,
+		conjugations,
+		other
+	} = action.payload || initialState;
+	return {
+		...state,
+		declensions,
+		conjugations,
+		other
+	};
+};
+
 const declenjugatorSlice = createSlice({
 	name: 'dj',
 	initialState,
@@ -64,7 +80,8 @@ const declenjugatorSlice = createSlice({
 		addGroup: addGroupFunc,
 		editGroup: editGroupFunc,
 		deleteGroup: deleteGroupFunc,
-		reorderGroups: reorderGroupsFunc
+		reorderGroups: reorderGroupsFunc,
+		loadStateDJ: loadStateFunc
 	}
 });
 
@@ -73,7 +90,8 @@ export const {
 	addGroup,
 	editGroup,
 	deleteGroup,
-	reorderGroups
+	reorderGroups,
+	loadStateDJ
 } = declenjugatorSlice.actions;
 
 export default declenjugatorSlice.reducer;

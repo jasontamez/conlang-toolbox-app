@@ -21,6 +21,7 @@
 .vscode
 /public/sounds
 __webserver*.*
+CT export*.json
 
 npm-debug.log*
 yarn-debug.log*

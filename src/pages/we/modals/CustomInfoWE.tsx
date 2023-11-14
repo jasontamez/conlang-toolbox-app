@@ -105,7 +105,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				if(value) {
 					dispatch(loadStateWE(value as WEPresetObject));
 					toaster({
-						message: `Preset "${title}" loaded.`,
+						message: `Save "${title}" loaded.`,
 						duration: 2500,
 						position: "top",
 						doToast,
@@ -115,7 +115,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				} else {
 					doAlert({
 						header: "Unknown Error",
-						message: `Preset "${title}" not found.`,
+						message: `Save "${title}" not found.`,
 						buttons: [
 							{
 								text: "Ok",

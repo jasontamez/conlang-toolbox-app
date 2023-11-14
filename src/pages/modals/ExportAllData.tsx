@@ -152,7 +152,6 @@ const MExportAllData = (props: ModalProperties) => {
 			return output;
 		};
 
-		// TO-DO: Add the inevitable DJ storage to this chain
 		LexiconStorage.iterate((value: LexiconState, key: string) => {
 			lexS.push([key, value]);
 			return; // Blank return keeps the loop going

@@ -18,16 +18,17 @@ import {
 	IonReorder,
 	ItemReorderCustomEvent,
 	ItemReorderEventDetail,
-	IonItemDivider
+	IonItemDivider,
+	IonLoading
 } from '@ionic/react';
 import {
 	addOutline,
 	trash,
-	globeOutline,
 	trashBinOutline,
 	caretDown,
 	reorderThree,
-	helpCircleOutline
+	helpCircleOutline,
+	saveOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -38,7 +39,10 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import log from '../../components/Logging';
+import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 
+import ManageCustomInfo from './modals/CustomInfoDJ';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddGroup from './modals/AddGroup';
 import AddDeclenjugation from './modals/AddDeclenjugation';
@@ -83,7 +87,6 @@ const DJGroups = (props: PageData) => {
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
 	const [isOpenEditGroup, setIsOpenEditGroup] = useState<boolean>(false);
-	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [editingGroup, setEditingGroup] = useState<[keyof DJCustomInfo, DJGroup] | null>(null);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	// submodal: add declenjugation
@@ -96,6 +99,11 @@ const DJGroups = (props: PageData) => {
 	// submodal: add and edit declenjugation
 	const [caseMakerOpen, setCaseMakerOpen] = useState<boolean>(false);
 	const [savedTitle, setSavedTitle] = useState<string>("");
+	// other modals
+	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
+	const [infoModalTitles, setInfoModalTitles] = useState<string[] | null>(null);
+	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
 	// all modals
 	const [declenjugationTypeString, setDeclenjugationTypeString] = useState<string>("");
 
@@ -164,10 +172,27 @@ const DJGroups = (props: PageData) => {
 			});
 		}
 	}, [dispatch, doToast, undoToast, doAlert, disableConfirms]);
+	const openCustomInfoModal = useCallback(() => {
+		setLoadingOpen(true);
+		const titles: string[] = [];
+		DeclenjugatorStorage.iterate((value, title) => {
+			titles.push(title);
+			return; // Blank return keeps the loop going
+		}).then(() => {
+			setInfoModalTitles(titles);
+			setLoadingOpen(false);
+			setIsOpenManageCustom(true);
+		}).catch((err) => {
+			log(dispatch, ["Open Custom Info Modal (dj)", err]);
+		});
+	}, [dispatch]);
 	const headerButtons = useMemo(() => {
 		const output = [
-			<IonButton key="djGroupsExtraChars" onClick={() => setIsOpenECM(true)}>
-				<IonIcon icon={globeOutline} />
+			<IonButton
+				onClick={() => openCustomInfoModal()}
+				key="djGroupsCustomInfoModalButton"
+			>
+				<IonIcon icon={saveOutline} />
 			</IonButton>,
 			<IonButton key="djGroupsHelpButton" onClick={() => setIsOpenInfo(true)}>
 				<IonIcon icon={helpCircleOutline} />
@@ -179,7 +204,7 @@ const DJGroups = (props: PageData) => {
 			</IonButton>
 		);
 		return output;
-	}, [canTrash, maybeClearEverything]);
+	}, [canTrash, maybeClearEverything, openCustomInfoModal]);
 
 
 	const doReorder = useCallback((ed: ItemReorderEventDetail, type: keyof DJCustomInfo) => {
@@ -383,10 +408,25 @@ const DJGroups = (props: PageData) => {
 				setSavedTitle={setSavedTitle}
 			/>
 
+			<ManageCustomInfo
+				{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
+				openECM={setIsOpenECM}
+				titles={infoModalTitles}
+				setTitles={setInfoModalTitles}
+			/>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<GroupCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
+			<IonLoading
+				cssClass='loadingPage'
+				isOpen={loadingOpen}
+				onDidDismiss={() => setLoadingOpen(false)}
+				message={'Please wait...'}
+				spinner="bubbles"
+				/*duration={300000}*/
+				duration={1000}
+			/>
 			<Header
 				title="Groups"
 				endButtons={headerButtons}

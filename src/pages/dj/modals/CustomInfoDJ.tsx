@@ -26,14 +26,14 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Base_WG, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
-import { loadStateWG } from '../../../store/wgSlice';
+import { DJCustomInfo, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
-import { CustomStorageWG } from '../../../components/PersistentInfo';
+import { DeclenjugatorStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import { loadStateDJ } from '../../../store/declenjugatorSlice';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -46,27 +46,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const {
-		characterGroups,
-		multipleSyllableTypes,
-		singleWord,
-		wordInitial,
-		wordMiddle,
-		wordFinal,
-		syllableDropoffOverrides,
-		transforms,
-		monosyllablesRate,
-		maxSyllablesPerWord,
-		characterGroupDropoff,
-		syllableBoxDropoff,
-		capitalizeSentences,
-		declarativeSentencePre,
-		declarativeSentencePost,
-		interrogativeSentencePre,
-		interrogativeSentencePost,
-		exclamatorySentencePre,
-		exclamatorySentencePost,
-		customSort
-	} = useSelector((state: StateObject) => state.wg);
+		declensions,
+		conjugations,
+		other
+	} = useSelector((state: StateObject) => state.dj);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const customInfo: string[] = titles || [];
 	const doCleanClose = () => {
@@ -74,7 +57,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		const title = escape($i("currentInfoSaveName").value).trim();
+		const title = escape($i("currentDJInfoSaveName").value).trim();
 		if(title === "") {
 			return doAlert({
 				header: "Please enter a title before saving.",
@@ -88,29 +71,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			});
 		}
 		const doSave = (title: string, msg: string = "saved") => {
-			const save: Base_WG = {
-				characterGroups,
-				multipleSyllableTypes,
-				singleWord,
-				wordInitial,
-				wordMiddle,
-				wordFinal,
-				syllableDropoffOverrides,
-				transforms,
-				monosyllablesRate,
-				maxSyllablesPerWord,
-				characterGroupDropoff,
-				syllableBoxDropoff,
-				capitalizeSentences,
-				declarativeSentencePre,
-				declarativeSentencePost,
-				interrogativeSentencePre,
-				interrogativeSentencePost,
-				exclamatorySentencePre,
-				exclamatorySentencePost,
-				customSort
+			const save: DJCustomInfo = {
+				declensions,
+				conjugations,
+				other
 			};
-			CustomStorageWG.setItem(title, save).then(() => {
+			DeclenjugatorStorage.setItem(title, save).then(() => {
 				toaster({
 					message: `"${title}" ${msg}`,
 					duration: 2500,
@@ -121,7 +87,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			}).finally(() => doCleanClose());
 		};
 		// Check if overwriting
-		CustomStorageWG.getItem(title).then((value: any) => {
+		DeclenjugatorStorage.getItem(title).then((value: any) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
@@ -140,9 +106,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	};
 	const maybeLoadInfo = (title: string) => {
 		const handler = () => {
-			CustomStorageWG.getItem(title).then((value: any) => {
+			DeclenjugatorStorage.getItem(title).then((value: any) => {
 				if(value) {
-					dispatch(loadStateWG(value as Base_WG));
+					dispatch(loadStateDJ(value as DJCustomInfo));
 					toaster({
 						message: `Save "${title}" loaded.`,
 						duration: 2500,
@@ -171,7 +137,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		} else {
 			yesNoAlert({
 				header: `Load "${title}"?`,
-				message: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
+				message: "This will clear and overwrite all current groups.",
 				cssClass: "warning",
 				submit: "Yes, load it",
 				handler,
@@ -183,7 +149,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);
 			setTitles(newCustom.length > 0 ? newCustom : null);
-			CustomStorageWG.removeItem(title).then(() => {
+			DeclenjugatorStorage.removeItem(title).then(() => {
 				toaster({
 					message: `"${title}" deleted.`,
 					duration: 2500,
@@ -231,7 +197,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						<IonItem>
 							<IonInput
 								aria-label="Name of save"
-								id="currentInfoSaveName"
+								id="currentDJInfoSaveName"
 								inputmode="text"
 								placeholder="Name your custom info"
 								type="text"
