@@ -117,10 +117,13 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent className="ion-padding-start">
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.0</strong></h2>
 									<ul className="changelog">
+										<li>Overhauled main page.</li>
+										<li>Added an "Overview" to each tool.</li>
 										<li>Added Declenjugator for crafting declensions and conjugations.</li>
-										<li>Export All Data has a copy-to-clipboard button, and you can limit what you export.</li>
+										<li>Added ability to copy Character Groups between WordGen and WordEvolve.</li>
+										<li>Export All Data now has a copy-to-clipboard button, and you can limit what you export.</li>
 										<li>Bugfix: some tables were not displaying correctly in MorphoSyntax info modals.</li>
-										<li>Bugfix: fixed some bugs in WordGen where syllables weren't saving and where Transforms with %X references were crashing if no category "X" existed. </li>
+										<li>Bugfix: fixed some bugs in WordGen where syllables weren't saving and where Transforms with %X references were crashing if no category "X" existed.</li>
 									</ul>
 									<h2 className="ion-text-center"><strong>v.0.10.1</strong></h2>
 									<ul className="changelog">
