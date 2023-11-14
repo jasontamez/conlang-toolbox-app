@@ -15,6 +15,7 @@ import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 import debounce from '../components/Debounce';
 import maybeUpdateTheme from '../components/MaybeUpdateTheme';
+import { CustomStorageWE } from '../components/PersistentInfo';
 //import packageJson from '../package.json';
 import msSlice from './msSlice';
 import conceptsSlice from './conceptsSlice';
@@ -43,15 +44,19 @@ const migrations = {
 		// change state here and return it
 		const newState = {
 			...state,
+			// Add declenjugator
 			dj: {
 				input: [],
 				usingLexiconForInput: null,
 				identifiers: [],
 				declenjugationGroups: []
 			},
+			// Add logs
 			logs: []
 		};
+		// Add lastView to MorphoSyntax
 		newState.ms.lastView = "msSettings";
+		// Delete unused properties
 		delete newState.wg.storedCustomInfo;
 		delete newState.wg.storedCustomIDs;
 		delete newState.we.storedCustomInfo;
@@ -60,7 +65,23 @@ const migrations = {
 		delete newState.ms.storedCustomIDs;
 		delete newState.lexicon.storedCustomInfo;
 		delete newState.lexicon.storedCustomIDs;
+		// Remove viewState
 		delete newState.viewState;
+		// Change a property name in WE's custom storage
+		CustomStorageWE.keys().then((values: string[]) => {
+			values.forEach(key => {
+				CustomStorageWE.getItem(key).then((value: any) => {
+					if(value) {
+						const newValue = {...value};
+						if(newValue.soundchanges) {
+							newValue.soundChanges = newValue.soundchanges;
+							delete newValue.soundchanges;
+							CustomStorageWE.setItem(key, newValue);
+						}
+					}
+				});
+			});
+		});
 		return newState;
 	}
 }

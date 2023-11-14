@@ -103,15 +103,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		const handler = () => {
 			CustomStorageWE.getItem(title).then((value: any) => {
 				if(value) {
-					const newValue = {...value};
-					if(newValue.soundchanges) {
-						// converting old format to new expected format
-						// TO-DO: move this into a store migration when a migration is needed
-						newValue.soundChanges = newValue.soundchanges;
-						delete newValue.soundchanges;
-						CustomStorageWE.setItem(title, newValue);
-					}
-					dispatch(loadStateWE(newValue as WEPresetObject));
+					dispatch(loadStateWE(value as WEPresetObject));
 					toaster({
 						message: `Preset "${title}" loaded.`,
 						duration: 2500,
