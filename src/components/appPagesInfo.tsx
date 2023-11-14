@@ -9,7 +9,6 @@ import {
 	exitOutline,
 	logOutOutline,
 	logInOutline,
-	listOutline,
 	helpOutline
 } from 'ionicons/icons';
 
@@ -23,7 +22,8 @@ import {
 	DeclenjugatorIcon,
 	SyllablesIcon,
 	TransformationsIcon,
-	SoundChangesIcon
+	SoundChangesIcon,
+	DJGroupsIcon
 } from './icons';
 
 type Parents = 'ms' | 'dj' | 'wg' | 'we';
@@ -308,7 +308,7 @@ export const appMenuInfo: MenuSection[] = [
 				url: '/dj/groups',
 				tab: 'groups',
 				id: 'menuitemDJgroup',
-				icon: listOutline,
+				Icon: (props: IonIconProps) => <DJGroupsIcon {...props} />,
 				parent: 'dj'
 			},
 			{

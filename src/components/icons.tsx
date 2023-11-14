@@ -21,7 +21,8 @@ const map: Map = {
 	syllables: "table-row-material-design",
 	transformations: "transfer-right-material-design",
 	soundChanges: "transit-connection-variant-material-design",
-	declenjugator: "read-more-material-design"
+	declenjugator: "read-more-material-design",
+	djGroups: "arrow-split-material-design"
 };
 
 export interface IonIconProps {
@@ -65,3 +66,4 @@ export const TransformationsIcon = (props: IonIconProps) => <Icon flipRtl which=
 export const SoundChangesIcon = (props: IonIconProps) => <Icon flipRtl which="soundChanges" {...props}></Icon>;
 
 export const DeclenjugatorIcon = (props: IonIconProps) => <Icon flipRtl which="declenjugator" {...props}></Icon>;
+export const DJGroupsIcon = (props: IonIconProps) => <Icon flipRtl which="djGroups" {...props}></Icon>;

@@ -11,7 +11,6 @@ import {
 	IonPage
 } from '@ionic/react';
 import {
-	listOutline,
 	helpCircle,
 	logInOutline,
 	logOutOutline,
@@ -21,7 +20,7 @@ import {
 import { PageData } from '../../store/types';
 
 import Header from '../../components/Header';
-import { DeclenjugatorIcon } from '../../components/icons';
+import { DJGroupsIcon, DeclenjugatorIcon } from '../../components/icons';
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
 
 interface CardProps {
@@ -74,7 +73,7 @@ export const GroupCard = (props: CardProps) => {
 	return (
 		<IonCard>
 			<IonItem lines="full">
-				<IonIcon icon={listOutline} slot="start" color="primary" />
+				<DJGroupsIcon slot="start" color="primary" />
 				<IonLabel>Groups Tab</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>

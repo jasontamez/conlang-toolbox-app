@@ -33,10 +33,10 @@ const DJ = (props: PageData) => {
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
 				{appPagesObject.dj.filter(obj => !obj.hidden).map(obj => {
-					const { title, tabTitle, url, tab, icon } = obj;
+					const { title, tabTitle, url, tab, icon, Icon } = obj;
 					return (
 						<IonTabButton tab={tab!} href={url} key={"djTab-" + tab}>
-							{icon ? <IonIcon icon={icon} /> : <></>}
+							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
 							<IonLabel>{tabTitle || title}</IonLabel>
 						</IonTabButton>
 					);
