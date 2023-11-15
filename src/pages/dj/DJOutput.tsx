@@ -9,11 +9,18 @@ import {
 	IonToggle,
 	IonButton,
 	IonIcon,
-	useIonToast
+	useIonToast,
+	IonFab,
+	IonFabButton
 } from '@ionic/react';
 import { useSelector } from "react-redux";
-import { caretForwardCircleOutline, codeDownloadOutline, helpCircleOutline } from 'ionicons/icons';
-//import { Clipboard } from '@capacitor/clipboard';
+import {
+	caretForwardCircleOutline,
+	codeDownloadOutline,
+	helpCircleOutline,
+	copy
+} from 'ionicons/icons';
+import { Clipboard } from '@capacitor/clipboard';
 
 import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
@@ -35,11 +42,10 @@ import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
 import { OutputCard } from './DJinfo';
 
-/*
-
-async function copyText (copyString: string, doToast: Function, undoToast: Function) {
-	if(copyString) {
-		await Clipboard.write({string: copyString});
+async function copyText (copyStrings: string[], doToast: Function, undoToast: Function) {
+	const toCopy = copyStrings.filter(line => line).join("\n\n\n");
+	if(toCopy) {
+		await Clipboard.write({string: toCopy});
 		//navigator.clipboard.writeText(copyText);
 		return toaster({
 			message: "Copied to clipboard.",
@@ -59,8 +65,6 @@ async function copyText (copyString: string, doToast: Function, undoToast: Funct
 	});
 };
 
-*/
-
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
 //	const dispatch = useDispatch();
@@ -68,17 +72,22 @@ const DJOutput = (props: PageData) => {
 	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+
+	// Settings
 	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chartH");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
 	const [showGroupInfo, setShowGroupInfo] = useState<boolean>(true);
 	const [sortInput, setSortInput] = useState<boolean>(false);
 	const [showExamples, setShowExamples] = useState<boolean>(true);
-	const [oneMatchOnly, setOneMatchOnly] = useState<boolean>(false);
+	const [wordsMatchOneTimeOnly, setWordsMatchOneTimeOnly] = useState<boolean>(false);
+
+	// Display
 	const [type, setType] = useState<(keyof DJCustomInfo)[]>([]);
 	const [typeObj, setTypeObj] = useState<DJTypeObject>({});
 	const [displayOutput, setDisplayOutput] = useState<ReactElement[]>([]);
 	const [displayUnmatched, setDisplayUnmatched] = useState<ReactElement[]>([]);
+	const [copyStrings, setCopyStrings] = useState<string[]>([]);
 	const { declensions, conjugations, other, input } = useSelector((state: StateObject) => state.dj);
 	const numberOfTypes =
 		(declensions.length > 0 ? 1 : 0)
@@ -134,12 +143,12 @@ const DJOutput = (props: PageData) => {
 				input: newInput,
 				showGroupInfo,
 				showExamples,
-				oneMatchOnly
+				wordsMatchOneTimeOnly
 			};
 		}
 		// Not using input? Leave as null.
 		return null;
-	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, oneMatchOnly]);
+	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, wordsMatchOneTimeOnly]);
 
 	const doGenerate = (
 		displayType: DJDisplayTypes,
@@ -155,11 +164,12 @@ const DJOutput = (props: PageData) => {
 			});
 		}
 		const output: ReactElement[] = [];
+		const toCopy: string[] = [];
 		const unmatched: string[][] = [];
 		const {declensions: dec, conjugations: con, other: oth} = typeObj;
 		let newData: DJDisplayData = data && {...data};
 		function handleRemainder (data: DJDisplayData, remainder: string[]) {
-			if(data && data.oneMatchOnly) {
+			if(data && data.wordsMatchOneTimeOnly) {
 				newData = {
 					...data,
 					input: remainder
@@ -169,24 +179,28 @@ const DJOutput = (props: PageData) => {
 			unmatched.push(remainder);
 		}
 		if (dec) {
-			const [els, remainder] = display(declensions, newData, displayType, "declensions");
+			const [els, remainder, copy] = display(declensions, newData, displayType, "declensions");
 			output.push(...els);
+			toCopy.push(copy);
 			handleRemainder(newData, remainder);
 		}
 		if (con) {
-			const [els, remainder] = display(conjugations, newData, displayType, "conjugations");
+			const [els, remainder, copy] = display(conjugations, newData, displayType, "conjugations");
 			output.push(...els);
+			toCopy.push(copy);
 			handleRemainder(newData, remainder);
 		}
 		if (oth) {
-			const [els, remainder] = display(other, newData, displayType, "other");
+			const [els, remainder, copy] = display(other, newData, displayType, "other");
 			output.push(...els);
+			toCopy.push(copy);
 			handleRemainder(newData, remainder);
 		}
+		setCopyStrings(toCopy);
 		setDisplayOutput(output);
 		// Handle unmatched
 		if(showUnmatched) {
-			const unfound: string[] = (newData && newData.oneMatchOnly) ? newData.input : findCommons(unmatched);
+			const unfound: string[] = (newData && newData.wordsMatchOneTimeOnly) ? newData.input : findCommons(unmatched);
 			setDisplayUnmatched(unfound.length > 0 ? [
 				<div className="unmatchedWords" key="unmatched:all">
 					<div className="title">Unmatched Words</div>
@@ -213,7 +227,7 @@ const DJOutput = (props: PageData) => {
 					</IonButton>
 				]}
 			/>
-			<IonContent>
+			<IonContent className="hasFabButton">
 				<IonList lines="full" className="djOutput hasToggles">
 					<IonItem>
 						<IonSelect
@@ -343,8 +357,8 @@ const DJOutput = (props: PageData) => {
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
-							checked={oneMatchOnly}
-							onIonChange={e => setOneMatchOnly(!oneMatchOnly)}
+							checked={wordsMatchOneTimeOnly}
+							onIonChange={e => setWordsMatchOneTimeOnly(!wordsMatchOneTimeOnly)}
 						>
 							<h2>One Match</h2>
 							<p>Input words can only match one declension/conjugation/etc.</p>
@@ -386,12 +400,25 @@ const DJOutput = (props: PageData) => {
 					{displayOutput}
 					{displayUnmatched}
 				</div>
+				<IonFab
+					vertical="bottom"
+					horizontal="start"
+					slot="fixed"
+					className={(displayOutput.length + displayUnmatched.length) > 0 ? "" : "hide"}
+				>
+					<IonFabButton
+						color="primary"
+						title="Add new group"
+						onClick={() => copyText(copyStrings, doToast, undoToast)}
+					>
+						<IonIcon icon={copy} />
+					</IonFabButton>
+				</IonFab>
 			</IonContent>
 		</IonPage>
 	);
 };
 
 // TO-DO: Export as CSV, DOCx, and Text
-// TO-DO: Copy display to clipboard
 
 export default DJOutput;

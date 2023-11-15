@@ -1120,6 +1120,7 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 }
 #DJOutput {
 	display: block;
+	padding-block-end: 5em;
 }
 #DJOutput .djTypeTitle,
 #DJOutput .unmatchedWords .title {

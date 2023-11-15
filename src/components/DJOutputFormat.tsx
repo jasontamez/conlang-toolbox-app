@@ -10,7 +10,7 @@ export type DJDisplayData = null | {
 	input: string[]
 	showGroupInfo: boolean
 	showExamples: boolean
-	oneMatchOnly: boolean
+	wordsMatchOneTimeOnly: boolean
 };
 
 const findStem = (
@@ -117,13 +117,19 @@ export const display = (
 	data: DJDisplayData,
 	which: DJDisplayTypes,
 	type: string
-): [ReactElement[], string[]] => {
+): [ReactElement[], string[], string] => {
 	const output: ReactElement[] = [
 		<div className="djTypeTitle" key={`${type}-title`}>{type}</div>
 	];
-	const typeString = type === "other" ? "Forms" : type.charAt(0).toLocaleUpperCase() + type.slice(1);
+	const copyStrings: string[] = [type.charAt(0).toLocaleUpperCase() + type.slice(1)];
+	const typeString = type === "other" ? "Forms" : copyStrings[0];
 	const unfound: string[][] = [];
-	const {input: originalInput = [], showGroupInfo = true, showExamples = true, oneMatchOnly = false} = data || {};
+	const {
+		input: originalInput = [],
+		showGroupInfo = true,
+		showExamples = true,
+		wordsMatchOneTimeOnly = false
+	} = data || {};
 	let input = originalInput.slice();
 	// Gather group info
 	groups.forEach(group => {
@@ -184,7 +190,7 @@ export const display = (
 				// stripe every other row
 				rowClasses.push((i % 2) ? null : "striped");
 			});
-			if(oneMatchOnly) {
+			if(wordsMatchOneTimeOnly) {
 				input = missing;
 			}
 			unfound.push(missing);
@@ -238,18 +244,20 @@ export const display = (
 			// Add row of headers
 			rows.unshift(headers);
 			// Save missing words
-			if(oneMatchOnly) {
+			if(wordsMatchOneTimeOnly) {
 				input = missing;
 			}
 			unfound.push(missing);
 		}
 		// Output
-		const span = which === "text";
+		const textDisplayActive = which === "text";
 		const inner: ReactElement[] = [];
+		const copyRows: string[][] = [];
 		if(!data || (foundFlag || showExamples)) {
 			const maxRowClass = rowClasses.length - 1;
 			const maxColClass = columnClasses.length - 1;
 			rows.forEach((row, i) => {
+				copyRows.push([...row]);
 				const rowId = rowIds[i] || "error";
 				const rowClass = rowClasses[i > maxRowClass ? maxRowClass : i];
 				const cells: ReactElement[] = [];
@@ -258,7 +266,8 @@ export const display = (
 					const colId = columnIds[j] || "error";
 					const colClass = columnClasses[j > maxColClass ? maxColClass : j];
 					const period = (j === maxRow) ? "." : "";
-					if(span) {
+					if(textDisplayActive) {
+						// Text display
 						if(j > 0) {
 							cells.push(
 								<React.Fragment key={`${groupId}:cell:${rowId}:${colId}:${col}`}>
@@ -274,6 +283,7 @@ export const display = (
 							);
 						}
 					} else {
+						// Chart display
 						cells.push(
 							<div
 								className={colClass ? `${colClass} cell` : "cell"}
@@ -309,10 +319,42 @@ export const display = (
 				{(!data || foundFlag) ? <></> : <div className="unmatched">No words matched this group.</div>}
 			</div>
 		);
+		// Send copy strings
+		copyStrings.push("", title);
+		showGroupInfo && copyStrings.push(description);
+		if(textDisplayActive) {
+			// Text display
+			copyRows.forEach(row => {
+				const [title, first,  ...rest] = row;
+				rest.unshift(`${title}: ${first || ""}`);
+				copyStrings.push(rest.join(", "));
+			});
+		} else {
+			// Chart display
+			const maxes = (copyRows[0] || []).map(word => word.length);
+			// Find max lengths
+			copyRows.forEach(row => {
+				row.forEach((word, i) => (maxes[i] = Math.max(maxes[i], word.length)));
+			});
+			// Add to copyStrings
+			copyRows.forEach(row => {
+				const mapped = row.map((word, i) => {
+					const max = maxes[i] || 0;
+					let padded = word;
+					while(padded.length < max) {
+						padded = padded + " ";
+					}
+					return padded;
+				});
+				copyStrings.push(mapped.join(" "));
+			});
+		}
+		(data && !foundFlag) && copyStrings.push("No words matched this group.");
 	});
 	return [
 		output,
-		oneMatchOnly ? (unfound.pop() || []) : findCommons(unfound)
+		wordsMatchOneTimeOnly ? (unfound.pop() || []) : findCommons(unfound),
+		copyStrings.join("\n")
 	];
 };
 
