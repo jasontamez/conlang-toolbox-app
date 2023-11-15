@@ -12,6 +12,25 @@ export type DJDisplayData = null | {
 	showExamples: boolean
 	wordsMatchOneTimeOnly: boolean
 };
+interface RawInfo {
+	title: string
+	groupId: string
+	description: string
+	rows: string[][]
+	rowIds: string[]
+	rowClasses: (string | null)[]
+	columnIds: string[]
+	columnClasses: (string | null)[]
+	found: string[]
+	missing: string[]
+	className: string
+}
+interface ExportData {
+	declensions: null | RawInfo[]
+	conjugations: null | RawInfo[]
+	other: null | RawInfo[]
+	showGroupInfo: boolean
+}
 
 const findStem = (
 	word: string,
@@ -112,10 +131,139 @@ export const findCommons = (input: string[][]): string[] => {
 	return output;
 }
 
+const getRawInfo = (
+	group: DJGroup,
+	displayMethod: DJDisplayTypes,
+	typeString: string,
+	input: string[],
+	showExamples: boolean
+): RawInfo => {
+	const missing: string[] = [];
+	// Gather group info
+	const found: string[] = [];
+	const [title, groupId, description] = getGroupDescription(group);
+	const { declenjugations } = group;
+	const rows: string[][] = [];
+	const rowIds: string[] = [];
+	const rowClasses: (string | null)[] = [];
+	const columnIds: string[] = [];
+	const columnClasses: (string | null)[] = [];
+	let className: string = displayMethod === "text" ? "text" : "chart";
+	if(displayMethod === "chartV") {
+		// header example item1 item2
+		// header example item1 item2
+		className += " vertical";
+		const stems: string[] = [];
+		columnClasses.push("headers");
+		showExamples && columnClasses.push("examples");
+		columnClasses.push(null);
+		input.forEach(word => {
+			const stem = findStem(word, group);
+			if(stem) {
+				stems.push(stem);
+				found.push(word);
+				// col ids are the word + stem
+				columnIds.push(`${word}:${stem}`);
+			} else {
+				missing.push(word);
+			}
+		});
+		const headers: string[] = [...found];
+		rowClasses.push(null);
+		if(showExamples) {
+			headers.unshift("Example");
+		}
+		rows.push([typeString, ...headers]);
+		declenjugations.forEach((unit, i) => {
+			const { id, title, prefix, suffix, regex, useWholeWord } = unit;
+			const row: string[] = [title];
+			if (showExamples) {
+				row.push(changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex));
+			}
+			row.push(
+				...found.map((word, i) => changeWord(
+					useWholeWord ? word : stems[i]!,
+					prefix,
+					suffix,
+					regex
+				)
+			));
+			rows.push(row);
+			// row ids are the declenjugation ids
+			rowIds.push(id);
+			// stripe every other row
+			rowClasses.push((i % 2) ? null : "striped");
+		});
+	} else {
+		//////// chartH and text
+		// header  header
+		// example example
+		// item1   item1
+		// item2   item2
+		displayMethod !== "text" && (className += " horizontal");
+		const headers: string[] = [typeString];
+		const examples: string[] = ["Examples"];
+		rowClasses.push("headers");
+		rowIds.push("headerRow");
+		columnClasses.push("first");
+		if(showExamples) {
+			rowClasses.push("examples");
+			rowIds.push("exampleRow");
+		}
+		// Get header info, plus columnar info
+		declenjugations.forEach((unit, i) => {
+			const { title, id, useWholeWord, prefix, suffix, regex } = unit;
+			headers.push(title);
+			columnIds.push(id);
+			columnClasses.push((i % 2) ? "mid" : "mid striped");
+			showExamples && examples.push(
+				changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
+			);
+		});
+		// Go through each word and make a row out of each
+		input.forEach(word => {
+			const stem = findStem(word, group);
+			if(stem) {
+				found.push(word);
+				rowIds.push(`${word}:${stem}`);
+				const wordRow: string[] = [word];
+				// Make a column out of each declenjugation of this word
+				declenjugations.forEach(unit => {
+					const { prefix, suffix, regex, useWholeWord } = unit;
+					wordRow.push(changeWord(useWholeWord ? word : stem, prefix, suffix, regex));
+				});
+				rows.push(wordRow);
+				rowClasses.push(null);
+			} else {
+				missing.push(word);
+			}
+		});
+		// Add examples row (if needed)
+		showExamples && rows.unshift(examples);
+		// Add row of headers
+		rows.unshift(headers);
+	}
+	return {
+		title,
+		groupId,
+		description,
+		rows,
+		rowIds,
+		rowClasses,
+		columnIds,
+		columnClasses,
+		found,
+		missing,
+		className
+	};
+};
+
+// Display
+
 export const display = (
 	groups: DJGroup[],
 	data: DJDisplayData,
-	which: DJDisplayTypes,
+	displayMethod: DJDisplayTypes,
 	type: string
 ): [ReactElement[], string[], string] => {
 	const output: ReactElement[] = [
@@ -125,135 +273,38 @@ export const display = (
 	const typeString = type === "other" ? "Forms" : copyStrings[0];
 	const unfound: string[][] = [];
 	const {
-		input: originalInput = [],
+		input = [],
 		showGroupInfo = true,
 		showExamples = true,
 		wordsMatchOneTimeOnly = false
 	} = data || {};
-	let input = originalInput.slice();
+	let currentInput = [...input];
 	// Gather group info
 	groups.forEach(group => {
-		let foundFlag = false;
-		const [title, groupId, description] = getGroupDescription(group);
-		const { declenjugations } = group;
-		const rows: string[][] = [];
-		const rowIds: string[] = [];
-		const rowClasses: (string | null)[] = [];
-		const columnIds: string[] = [];
-		const columnClasses: (string | null)[] = [];
-		let className: string = which === "text" ? "text" : "chart";
-		if(which === "chartV") {
-			// header example item1 item2
-			// header example item1 item2
-			className += " vertical";
-			const stems: string[] = [];
-			const found: string[] = [];
-			const missing: string[] = [];
-			columnClasses.push("headers");
-			showExamples && columnClasses.push("examples");
-			columnClasses.push(null);
-			input.forEach(word => {
-				const stem = findStem(word, group);
-				if(stem) {
-					foundFlag = true;
-					stems.push(stem);
-					found.push(word);
-					// col ids are the word + stem
-					columnIds.push(`${word}:${stem}`);
-				} else {
-					missing.push(word);
-				}
-			});
-			const headers: string[] = [...found];
-			rowClasses.push(null);
-			if(showExamples) {
-				headers.unshift("Example");
-			}
-			rows.push([typeString, ...headers]);
-			declenjugations.forEach((unit, i) => {
-				const { id, title, prefix, suffix, regex, useWholeWord } = unit;
-				const row: string[] = [title];
-				if (showExamples) {
-					row.push(changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex));
-				}
-				row.push(
-					...found.map((word, i) => changeWord(
-						useWholeWord ? word : stems[i]!,
-						prefix,
-						suffix,
-						regex
-					)
-				));
-				rows.push(row);
-				// row ids are the declenjugation ids
-				rowIds.push(id);
-				// stripe every other row
-				rowClasses.push((i % 2) ? null : "striped");
-			});
-			if(wordsMatchOneTimeOnly) {
-				input = missing;
-			}
-			unfound.push(missing);
+		const {
+			title,
+			groupId,
+			description,
+			rows,
+			rowIds,
+			rowClasses,
+			columnIds,
+			columnClasses,
+			found,
+			missing,
+			className
+		} = getRawInfo(group, displayMethod, typeString, currentInput, showExamples);
+		// Update found/missing
+		if(wordsMatchOneTimeOnly) {
+			currentInput = [...missing];
 		} else {
-			//////// chartH and text
-			// header  header
-			// example example
-			// item1   item1
-			// item2   item2
-			which !== "text" && (className += " horizontal");
-			const headers: string[] = [typeString];
-			const examples: string[] = ["Examples"];
-			const missing: string[] = [];
-			rowClasses.push("headers");
-			rowIds.push("headerRow");
-			columnClasses.push("first");
-			if(showExamples) {
-				rowClasses.push("examples");
-				rowIds.push("exampleRow");
-			}
-			// Get header info, plus columnar info
-			declenjugations.forEach((unit, i) => {
-				const { title, id, useWholeWord, prefix, suffix, regex } = unit;
-				headers.push(title);
-				columnIds.push(id);
-				columnClasses.push((i % 2) ? "mid" : "mid striped");
-				showExamples && examples.push(
-					changeWord(useWholeWord ? "[word]" : "[stem]", prefix, suffix, regex)
-				);
-			});
-			// Go through each word and make a row out of each
-			input.forEach(word => {
-				const stem = findStem(word, group);
-				if(stem) {
-					foundFlag = true;
-					rowIds.push(`${word}:${stem}`);
-					const wordRow: string[] = [word];
-					// Make a column out of each declenjugation of this word
-					declenjugations.forEach(unit => {
-						const { prefix, suffix, regex, useWholeWord } = unit;
-						wordRow.push(changeWord(useWholeWord ? word : stem, prefix, suffix, regex));
-					});
-					rows.push(wordRow);
-					rowClasses.push(null);
-				} else {
-					missing.push(word);
-				}
-			});
-			// Add examples row (if needed)
-			showExamples && rows.unshift(examples);
-			// Add row of headers
-			rows.unshift(headers);
-			// Save missing words
-			if(wordsMatchOneTimeOnly) {
-				input = missing;
-			}
 			unfound.push(missing);
 		}
 		// Output
-		const textDisplayActive = which === "text";
+		const textDisplayActive = displayMethod === "text";
 		const inner: ReactElement[] = [];
 		const copyRows: string[][] = [];
-		if(!data || (foundFlag || showExamples)) {
+		if(!data || (found.length > 0 || showExamples)) {
 			const maxRowClass = rowClasses.length - 1;
 			const maxColClass = columnClasses.length - 1;
 			rows.forEach((row, i) => {
@@ -316,7 +367,7 @@ export const display = (
 					{ showGroupInfo ? <div className="description">{description}</div> : <></> }
 				</div>
 				{guts}
-				{(!data || foundFlag) ? <></> : <div className="unmatched">No words matched this group.</div>}
+				{(!data || found.length > 0) ? <></> : <div className="unmatched">No words matched this group.</div>}
 			</div>
 		);
 		// Send copy strings
@@ -349,12 +400,74 @@ export const display = (
 				copyStrings.push(mapped.join(" "));
 			});
 		}
-		(data && !foundFlag) && copyStrings.push("No words matched this group.");
+		(data && (found.length === 0)) && copyStrings.push("No words matched this group.");
 	});
 	return [
 		output,
-		wordsMatchOneTimeOnly ? (unfound.pop() || []) : findCommons(unfound),
+		wordsMatchOneTimeOnly ? currentInput : findCommons(unfound),
 		copyStrings.join("\n")
 	];
 };
+
+// Exports
+
+export const exporter = (
+	whatToExport: DJTypeObject,
+	declensions: DJGroup[],
+	conjugations: DJGroup[],
+	other: DJGroup[],
+	data: DJDisplayData,
+	displayMethod: DJDisplayTypes
+) => {
+	const {
+		input = [],
+		showGroupInfo = true,
+		showExamples = true,
+		wordsMatchOneTimeOnly = false
+	} = data || {};
+	const {declensions: dec, conjugations: con, other: oth} = whatToExport;
+	const unfound: string[][] = [];
+	let currentInput = [...input];
+	const exportData: ExportData = {
+		declensions: null,
+		conjugations: null,
+		other: null,
+		showGroupInfo
+	};
+	if(dec) {
+		exportData.declensions = declensions.map(declension => {
+			const info = getRawInfo(declension, displayMethod, "Declensions", currentInput, showExamples);
+			if(wordsMatchOneTimeOnly) {
+				currentInput = info.found.slice();
+			} else {
+				unfound.push(info.missing.slice());
+			}
+			return info;
+		});
+	}
+	if(con) {
+		exportData.conjugations = conjugations.map(conjugation => {
+			const info = getRawInfo(conjugation, displayMethod, "Declensions", currentInput, showExamples);
+			if(wordsMatchOneTimeOnly) {
+				currentInput = info.found.slice();
+			} else {
+				unfound.push(info.missing.slice());
+			}
+			return info;
+		});
+	}
+	if(oth) {
+		exportData.other = other.map(declenjugation => {
+			const info = getRawInfo(declenjugation, displayMethod, "Declensions", currentInput, showExamples);
+			if(wordsMatchOneTimeOnly) {
+				currentInput = info.found.slice();
+			} else {
+				unfound.push(info.missing.slice());
+			}
+			return info;
+		});
+	}
+	return exportData;
+};
+
 

@@ -172,9 +172,9 @@ export const OutputCard = (props: CardProps) => {
 					put in the <strong>Input</strong> tab, be sure to switch the toggle on. It will open
 					up a new set of options you can use to fine-tune the results.
 				</p><p>
-					Click on Generate to display your info, or click on Export to export your info to a file.
-					<strong>Note</strong>: when displaying a chart in the app, it may clip off the edge of
-					the screen. You should be able to scroll each chart left and right to view the entire
+					Click on Generate to display your info, or click on Export to export your info to a
+					file. <strong>Note</strong>: when displaying a chart in the app, it may clip off the edge
+					of the screen. You should be able to scroll each chart left and right to view the entire
 					thing.
 				</p>
 			</IonCardContent>

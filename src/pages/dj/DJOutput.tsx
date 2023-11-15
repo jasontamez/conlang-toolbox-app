@@ -11,7 +11,9 @@ import {
 	IonIcon,
 	useIonToast,
 	IonFab,
-	IonFabButton
+	IonFabButton,
+	useIonAlert,
+	AlertInput
 } from '@ionic/react';
 import { useSelector } from "react-redux";
 import {
@@ -34,6 +36,7 @@ import {
 	DJDisplayTypes,
 	DJTypeObject,
 	display,
+	exporter,
 	findCommons
 } from '../../components/DJOutputFormat';
 import makeSorter from '../../components/stringSorter';
@@ -68,7 +71,7 @@ async function copyText (copyStrings: string[], doToast: Function, undoToast: Fu
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
 //	const dispatch = useDispatch();
-//	const [doAlert] = useIonAlert();
+	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -150,12 +153,65 @@ const DJOutput = (props: PageData) => {
 		return null;
 	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, wordsMatchOneTimeOnly]);
 
-	const doGenerate = (
-		displayType: DJDisplayTypes,
-		types: (keyof DJCustomInfo)[],
-		data: DJDisplayData
-	) => {
-		if(types.length === 0) {
+	const doExport = (format: string = "") => {
+		if(!format) {
+			return toaster({
+				message: "You didn't select a format.",
+				color: "danger",
+				doToast,
+				undoToast
+			});
+		}
+		exporter(typeObj, declensions, conjugations, other, data, displayType);
+	};
+
+	const maybeDoExport = () => {
+		if(type.length === 0) {
+			doAlert("ok")
+			return toaster({
+				message: "Please choose at least one group to display.",
+				color: "danger",
+				doToast,
+				undoToast
+			});
+		}
+		const inputs: AlertInput[] = [
+			{
+				label: "Word Document (docx)",
+				type: "radio",
+				value: "docx"
+			},
+			{
+				label: "Text File",
+				type: "radio",
+				value: "text"
+			}
+		];
+		displayType !== "text" && inputs.unshift({
+			label: "Spreadsheet (csv)",
+			type: "radio",
+			value: "csv"
+		});
+		doAlert({
+			header: "Choose a Format",
+			inputs,
+			buttons: [
+				{
+					text: "Cancel",
+					role: "cancel",
+					cssClass: "cancel"
+				},
+				{
+					text: "Export",
+					cssClass: "submit",
+					handler: doExport
+				}
+			]	
+		});
+	};
+
+	const doGenerate = () => {
+		if(type.length === 0) {
 			return toaster({
 				message: "Please choose at least one group to display.",
 				color: "danger",
@@ -381,7 +437,7 @@ const DJOutput = (props: PageData) => {
 						strong={true}
 						size="small"
 						color="tertiary"
-						onClick={() => 44}
+						onClick={() => maybeDoExport()}
 					>
 						Export
 						<IonIcon icon={codeDownloadOutline} />
@@ -390,7 +446,7 @@ const DJOutput = (props: PageData) => {
 						strong={true}
 						size="small"
 						color="success"
-						onClick={() => doGenerate(displayType, type, data)}
+						onClick={() => doGenerate()}
 					>
 						Generate
 						<IonIcon icon={caretForwardCircleOutline} />
