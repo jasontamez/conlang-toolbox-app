@@ -1,12 +1,14 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
 import toaster from './toaster';
+import log from './Logging';
 
 const doExport = async (
 	output: string,
 	fileName: string,
 	doToast: Function | false = false,
 	undoToast: Function | false = false,
+	dispatch: Function | null,
 	encodeUTF: boolean = true
 ) => {
 	const Docs = Directory.Documents;
@@ -26,7 +28,7 @@ const doExport = async (
 			});
 //			console.log('Made dir', ret);
 		} catch(e) {
-			console.error('Unable to make directory', e);
+			log(dispatch, ['doExport: Unable to make directory', e]);
 			doToast && undoToast && toaster({
 				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
@@ -52,7 +54,7 @@ const doExport = async (
 				undoToast
 			});
 		} catch(e) {
-			console.error('Unable to write file', e);
+			log(dispatch, ['doExport: Unable to write file', e]);
 			doToast && undoToast && toaster({
 				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
 				color: "danger",

@@ -1,8 +1,12 @@
 import React, { ReactElement } from "react";
 import { DJCustomInfo, DJGroup, RegexPair } from "../store/types";
 import ltr from "./LTR";
+import log from "./Logging";
+import toaster from "./toaster";
+import doExport from "./ExportServices";
 
 export type DJDisplayTypes = "text" | "chartH" | "chartV";
+export type DJFormatTypes = "text" | "csv" | "docx";
 export type DJTypeObject = {[key in keyof DJCustomInfo]?: boolean};
 export type DJChartDirection = "h" | "v";
 type Triple = [string, string, string];
@@ -12,15 +16,17 @@ export type DJDisplayData = null | {
 	showExamples: boolean
 	wordsMatchOneTimeOnly: boolean
 };
+type RowClasses = "headers" | "examples" | "striped" | null;
+type ColumnClasses = "headers" | "examples" | "striped" | "first" | "mid" | "mid striped" | null;
 interface RawInfo {
 	title: string
 	groupId: string
 	description: string
 	rows: string[][]
 	rowIds: string[]
-	rowClasses: (string | null)[]
+	rowClasses: RowClasses[]
 	columnIds: string[]
-	columnClasses: (string | null)[]
+	columnClasses: ColumnClasses[]
 	found: string[]
 	missing: string[]
 	className: string
@@ -29,7 +35,9 @@ interface ExportData {
 	declensions: null | RawInfo[]
 	conjugations: null | RawInfo[]
 	other: null | RawInfo[]
+	unfound?: string[] | null
 	showGroupInfo: boolean
+	displayMethod: DJDisplayTypes
 }
 
 const findStem = (
@@ -145,9 +153,9 @@ const getRawInfo = (
 	const { declenjugations } = group;
 	const rows: string[][] = [];
 	const rowIds: string[] = [];
-	const rowClasses: (string | null)[] = [];
+	const rowClasses: RowClasses[] = [];
 	const columnIds: string[] = [];
-	const columnClasses: (string | null)[] = [];
+	const columnClasses: ColumnClasses[] = [];
 	let className: string = displayMethod === "text" ? "text" : "chart";
 	if(displayMethod === "chartV") {
 		// header example item1 item2
@@ -258,7 +266,57 @@ const getRawInfo = (
 	};
 };
 
+const getRawInfoLoop = (
+	groups: DJGroup[],
+	displayMethod: DJDisplayTypes,
+	title: string,
+	input: string[],
+	showExamples: boolean,
+	wordsMatchOneTimeOnly: boolean
+) => {
+	const groupsCopy = groups.slice();
+	let currentInput = input.slice();
+	const unfound: string[][] = [];
+	const infoOutput: RawInfo[] = [];
+	while(groupsCopy.length > 0) {
+		const info = getRawInfo(groupsCopy.shift()!, displayMethod, title, currentInput, showExamples);
+		if(wordsMatchOneTimeOnly) {
+			currentInput = info.missing.slice();
+		} else {
+			unfound.push(info.missing.slice());
+		}
+		infoOutput.push(info);
+	}
+	return {
+		rawInfo: infoOutput,
+		continuing: currentInput,
+		notContinuing: wordsMatchOneTimeOnly ? null : unfound
+	}
+};
+
 // Display
+
+const getTextFromChart = (rows: string[][]): string[] => {
+	const output: string[] = [];
+	const maxes = (rows[0] || []).map(word => word.length);
+	// Find max lengths
+	rows.forEach(row => {
+		row.forEach((word, i) => (maxes[i] = Math.max(maxes[i], word.length)));
+	});
+	// Add to output
+	rows.forEach(row => {
+		const mapped = row.map((word, i) => {
+			const max = maxes[i] || 0;
+			let padded = word;
+			while(padded.length < max) {
+				padded = padded + " ";
+			}
+			return padded;
+		});
+		output.push(mapped.join(" "));
+	});
+	return output;
+};
 
 export const display = (
 	groups: DJGroup[],
@@ -322,7 +380,9 @@ export const display = (
 						if(j > 0) {
 							cells.push(
 								<React.Fragment key={`${groupId}:cell:${rowId}:${colId}:${col}`}>
-									{(j === 1) ? ' ' :', '}<span className={colClass ? `${colClass} word` : "word"}>{col}{period}</span>
+									{(j === 1) ? ' ' : ', '}<span
+										className={colClass ? `${colClass} word` : "word"}
+									>{col}{period}</span>
 								</React.Fragment>
 							);
 						} else {
@@ -367,7 +427,11 @@ export const display = (
 					{ showGroupInfo ? <div className="description">{description}</div> : <></> }
 				</div>
 				{guts}
-				{(!data || found.length > 0) ? <></> : <div className="unmatched">No words matched this group.</div>}
+				{(!data || found.length > 0) ?
+					<></>
+				:
+					<div className="unmatched">No words matched this group.</div>
+				}
 			</div>
 		);
 		// Send copy strings
@@ -382,23 +446,7 @@ export const display = (
 			});
 		} else {
 			// Chart display
-			const maxes = (copyRows[0] || []).map(word => word.length);
-			// Find max lengths
-			copyRows.forEach(row => {
-				row.forEach((word, i) => (maxes[i] = Math.max(maxes[i], word.length)));
-			});
-			// Add to copyStrings
-			copyRows.forEach(row => {
-				const mapped = row.map((word, i) => {
-					const max = maxes[i] || 0;
-					let padded = word;
-					while(padded.length < max) {
-						padded = padded + " ";
-					}
-					return padded;
-				});
-				copyStrings.push(mapped.join(" "));
-			});
+			copyStrings.push(...getTextFromChart(copyRows));
 		}
 		(data && (found.length === 0)) && copyStrings.push("No words matched this group.");
 	});
@@ -411,13 +459,22 @@ export const display = (
 
 // Exports
 
+const decTitle = "Declensions";
+const conTitle = "Conjugations";
+const othTitle = "Forms";
+
 export const exporter = (
 	whatToExport: DJTypeObject,
 	declensions: DJGroup[],
 	conjugations: DJGroup[],
 	other: DJGroup[],
 	data: DJDisplayData,
-	displayMethod: DJDisplayTypes
+	displayMethod: DJDisplayTypes,
+	format: DJFormatTypes,
+	showUnmatched: boolean | null,
+	dispatch: Function,
+	doToast: Function,
+	undoToast: Function
 ) => {
 	const {
 		input = [],
@@ -432,42 +489,184 @@ export const exporter = (
 		declensions: null,
 		conjugations: null,
 		other: null,
-		showGroupInfo
+		showGroupInfo,
+		displayMethod
 	};
 	if(dec) {
-		exportData.declensions = declensions.map(declension => {
-			const info = getRawInfo(declension, displayMethod, "Declensions", currentInput, showExamples);
-			if(wordsMatchOneTimeOnly) {
-				currentInput = info.found.slice();
-			} else {
-				unfound.push(info.missing.slice());
-			}
-			return info;
-		});
+		const {
+			rawInfo,
+			continuing,
+			notContinuing
+		} = getRawInfoLoop(declensions, displayMethod, decTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		exportData.declensions = rawInfo;
+		currentInput = continuing;
+		if(notContinuing) {
+			unfound.push(...notContinuing);
+		}
 	}
 	if(con) {
-		exportData.conjugations = conjugations.map(conjugation => {
-			const info = getRawInfo(conjugation, displayMethod, "Declensions", currentInput, showExamples);
-			if(wordsMatchOneTimeOnly) {
-				currentInput = info.found.slice();
-			} else {
-				unfound.push(info.missing.slice());
-			}
-			return info;
-		});
+		const {
+			rawInfo,
+			continuing,
+			notContinuing
+		} = getRawInfoLoop(conjugations, displayMethod, conTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		exportData.conjugations = rawInfo;
+		currentInput = continuing;
+		if(notContinuing) {
+			unfound.push(...notContinuing);
+		}
 	}
 	if(oth) {
-		exportData.other = other.map(declenjugation => {
-			const info = getRawInfo(declenjugation, displayMethod, "Declensions", currentInput, showExamples);
-			if(wordsMatchOneTimeOnly) {
-				currentInput = info.found.slice();
-			} else {
-				unfound.push(info.missing.slice());
-			}
-			return info;
-		});
+		const {
+			rawInfo,
+			continuing,
+			notContinuing
+		} = getRawInfoLoop(other, displayMethod, othTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		exportData.other = rawInfo;
+		currentInput = continuing;
+		if(notContinuing) {
+			unfound.push(...notContinuing);
+		}
 	}
-	return exportData;
+	if(showUnmatched) {
+		exportData.unfound = wordsMatchOneTimeOnly ? currentInput : findCommons(unfound);
+	} else if (showUnmatched === null) {
+		exportData.unfound = null;
+	}
+	let formatted: string = "";
+	let extension: string = "";
+	switch(format) {
+		case "text":
+			extension = "txt";
+			formatted = exportText(exportData);
+			break;
+		case "csv":
+			extension = "csv";
+			formatted = exportCSV(exportData);
+			break;
+		case "docx":
+			break;
+		default:
+			log(dispatch, [`Error in DJOutputFormat: bad format "${format}"`]);
+	}
+	if(formatted && extension) {
+		console.log(formatted);
+		return doExport(formatted, `Declenjugator - ${(new Date()).toDateString()}.${extension}`, doToast, undoToast, dispatch);
+	}
+	return toaster({
+		message: "Error in exporting: bad format (internal)",
+		color: "danger",
+		doToast,
+		undoToast
+	});
 };
 
+// Export: Text
 
+const getExportText = (
+	info: RawInfo[],
+	showGroupInfo: boolean,
+	chart: boolean,
+	inputFlag: boolean
+): string[] => {
+	const output: string[] = [];
+	info.forEach(declenjugation => {
+		const {
+			title,
+			description,
+			rows,
+			found
+		} = declenjugation;
+		output.push("", title);
+		showGroupInfo && output.push(description);
+		if(inputFlag && found.length === 0) {
+			output.push("--No words matched this group.")
+		} else if(chart) {
+			output.push(...getTextFromChart(rows));
+		} else {
+			output.push(...rows.map(row => {
+				const [header, ...etc] = row;
+				return `${header}: ${etc.join(", ")}`;
+			}));
+		}
+	});
+	return output;
+};
+
+const exportText = (data: ExportData) => {
+	const {
+		declensions,
+		conjugations,
+		other,
+		showGroupInfo,
+		displayMethod,
+		unfound
+	} = data;
+	const output: string[] = [];
+	const chart = displayMethod !== "text";
+	const inputFlag = unfound !== null;
+	if(declensions) {
+		output.push(decTitle + "\n" + getExportText(declensions, showGroupInfo, chart, inputFlag).join("\n"));
+	}
+	if(conjugations) {
+		output.push(conTitle + "\n" + getExportText(conjugations, showGroupInfo, chart, inputFlag).join("\n"));
+	}
+	if(other) {
+		output.push(othTitle + "\n" + getExportText(other, showGroupInfo, chart, inputFlag).join("\n"));
+	}
+	if(unfound && unfound.length > 0) {
+		output.push("Unmatched Words\n\n" + unfound.join(", "));
+	}
+	return output.join("\n\n\n");
+};
+
+// Export: CSV (chart)
+
+const quote = (input: string): string => `"${input}"`;
+
+const getExportCSV = (info: RawInfo[], showGroupInfo: boolean, inputFlag: boolean): string[] => {
+	const output: string[] = [];
+	info.forEach(declension => {
+		const {
+			title,
+			description,
+			rows,
+			found
+		} = declension;
+		output.push("", quote(title));
+		showGroupInfo && output.push(quote(description));
+		if(inputFlag && found.length === 0) {
+			output.push(`"--No words matched this group"`);
+		} else {
+			output.push(...rows.map(row => {
+				return row.map(col => quote(col)).join(",");
+			}));
+		}
+	});
+	return output;
+};
+
+const exportCSV = (data: ExportData) => {
+	const {
+		declensions,
+		conjugations,
+		other,
+		showGroupInfo,
+		unfound
+	} = data;
+	const output: string[] = [];
+	const inputFlag = unfound !== null;
+	if(declensions) {
+		output.push(quote(decTitle) + "\n" + getExportCSV(declensions, showGroupInfo, inputFlag).join("\n"));
+	}
+	if(conjugations) {
+		output.push(quote(conTitle) + "\n" + getExportCSV(conjugations, showGroupInfo, inputFlag).join("\n"));
+	}
+	if(other) {
+		output.push(quote(othTitle) + "\n" + getExportCSV(other, showGroupInfo, inputFlag).join("\n"));
+	}
+	if(unfound && unfound.length > 0) {
+		output.push(`"Unmatched Words"\n` + unfound.map(word => quote(word)).join("\n"));
+	}
+	return output.join("\n\n\n");
+};

@@ -360,7 +360,7 @@ const doDocx = (
 
 
 	Packer.toBase64String(doc).then((output) => {
-		doExport(output, filename, doToast, undoToast, false)
+		doExport(output, filename, doToast, undoToast, null, false)
 			.catch((e = "Error doexport docx") => {
 				log(["Ex-Doc / Packer / doExport", e]);
 				doClose();

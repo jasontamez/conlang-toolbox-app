@@ -139,7 +139,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		e.preventDefault();
 		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
-		doExport(output, filename, doToast, undoToast)
+		doExport(output, filename, doToast, undoToast, dispatch)
 			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))
 			.then(() => doClose());
 	};

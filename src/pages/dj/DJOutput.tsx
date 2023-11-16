@@ -15,7 +15,7 @@ import {
 	useIonAlert,
 	AlertInput
 } from '@ionic/react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	caretForwardCircleOutline,
 	codeDownloadOutline,
@@ -34,6 +34,7 @@ import toaster from '../../components/toaster';
 import {
 	DJDisplayData,
 	DJDisplayTypes,
+	DJFormatTypes,
 	DJTypeObject,
 	display,
 	exporter,
@@ -70,7 +71,7 @@ async function copyText (copyStrings: string[], doToast: Function, undoToast: Fu
 
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
-//	const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 //	const navigator = useIonRouter();
@@ -153,7 +154,7 @@ const DJOutput = (props: PageData) => {
 		return null;
 	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, wordsMatchOneTimeOnly]);
 
-	const doExport = (format: string = "") => {
+	const doExport = (format: null | "" | undefined | DJFormatTypes) => {
 		if(!format) {
 			return toaster({
 				message: "You didn't select a format.",
@@ -162,7 +163,19 @@ const DJOutput = (props: PageData) => {
 				undoToast
 			});
 		}
-		exporter(typeObj, declensions, conjugations, other, data, displayType);
+		exporter(
+			typeObj,
+			declensions,
+			conjugations,
+			other,
+			data,
+			displayType,
+			format,
+			data ? showUnmatched : null,
+			dispatch,
+			doToast,
+			undoToast
+		);
 	};
 
 	const maybeDoExport = () => {
