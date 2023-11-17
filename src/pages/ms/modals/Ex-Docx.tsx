@@ -16,7 +16,6 @@ import {
 import { MSBool, MSNum, MSState, MSText } from "../../../store/types";
 
 import doExport from '../../../components/ExportServices';
-import logger from '../../../components/Logging';
 
 import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
 import msRawInfo from '../ms.json';
@@ -69,7 +68,7 @@ const doDocx = (
 					children.push(new Paragraph({
 						text: content,
 						heading: HeadingLevel[head],
-						spacing: spacing
+						spacing
 					}))
 					break;
 				case "Range":
@@ -119,13 +118,13 @@ const doDocx = (
 					}
 					children.push(new Paragraph({
 						children: paragraph,
-						spacing: spacing
+						spacing
 					}))
 					break;
 				case "Text":
 					children.push(new Paragraph({
 						text: (content || "[TEXT PROMPT]"),
-						spacing: spacing
+						spacing
 					}))
 					const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
 					tArr.forEach((t: string, i: number) => {
@@ -142,14 +141,14 @@ const doDocx = (
 						});
 						children.push(new Paragraph({
 							children: run,
-							spacing: spacing
+							spacing
 						}))
 					});
 					break;
 				case "Checkboxes":
 					if(!display) {
 						children.push(new Paragraph(
-							{ text: "CHECKBOX DISPLAY ERROR", spacing: spacing }
+							{ text: "CHECKBOX DISPLAY ERROR", spacing }
 						));
 					} else {
 						const expo: exportProp = display.export!;
@@ -333,14 +332,14 @@ const doDocx = (
 		});
 		sections.push({
 			properties: { type: SectionType.CONTINUOUS },
-			children: children
+			children
 		});
 	});
 	const doc = new Document({
 		creator: "Conlang Toolbox",
 		description: "A MorphoSyntax document exported from Conlang Toolbox.",
 		title: msInfo.title + " - MorphoSyntax Document",
-		sections: sections
+		sections
 	});
 	e.preventDefault();
 	const filename = msInfo.title + " - " + (new Date()).toDateString() + ".docx";
@@ -352,7 +351,7 @@ const doDocx = (
 		Packer.toBlob(doc).then((blob) => {
 			saveAs(blob, filename);
 		}).catch((e = "Error blob") => {
-			logger(null, e);
+			log(["Ex-Doc / Packer / toBlob", e]);
 		});
 		return;
 	}

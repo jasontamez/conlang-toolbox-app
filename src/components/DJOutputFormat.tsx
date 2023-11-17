@@ -4,8 +4,9 @@ import ltr from "./LTR";
 import log from "./Logging";
 import toaster from "./toaster";
 import doExport from "./ExportServices";
+import exportDocx from "../pages/dj/modals/ExportToDocx";
 
-export type DJDisplayTypes = "text" | "chartH" | "chartV";
+export type DJDisplayMethods = "text" | "chartTH" | "chartSH";
 export type DJFormatTypes = "text" | "csv" | "docx";
 export type DJTypeObject = {[key in keyof DJCustomInfo]?: boolean};
 export type DJChartDirection = "h" | "v";
@@ -18,7 +19,7 @@ export type DJDisplayData = null | {
 };
 type RowClasses = "headers" | "examples" | "striped" | null;
 type ColumnClasses = "headers" | "examples" | "striped" | "first" | "mid" | "mid striped" | null;
-interface RawInfo {
+export interface DJRawInfo {
 	title: string
 	groupId: string
 	description: string
@@ -31,13 +32,13 @@ interface RawInfo {
 	missing: string[]
 	className: string
 }
-interface ExportData {
-	declensions: null | RawInfo[]
-	conjugations: null | RawInfo[]
-	other: null | RawInfo[]
+export interface DJExportData {
+	declensions: null | DJRawInfo[]
+	conjugations: null | DJRawInfo[]
+	other: null | DJRawInfo[]
 	unfound?: string[] | null
 	showGroupInfo: boolean
-	displayMethod: DJDisplayTypes
+	displayMethod: DJDisplayMethods
 }
 
 const findStem = (
@@ -139,13 +140,13 @@ export const findCommons = (input: string[][]): string[] => {
 	return output;
 }
 
-const getRawInfo = (
+const getDJRawInfo = (
 	group: DJGroup,
-	displayMethod: DJDisplayTypes,
+	displayMethod: DJDisplayMethods,
 	typeString: string,
 	input: string[],
 	showExamples: boolean
-): RawInfo => {
+): DJRawInfo => {
 	const missing: string[] = [];
 	// Gather group info
 	const found: string[] = [];
@@ -157,10 +158,10 @@ const getRawInfo = (
 	const columnIds: string[] = [];
 	const columnClasses: ColumnClasses[] = [];
 	let className: string = displayMethod === "text" ? "text" : "chart";
-	if(displayMethod === "chartV") {
+	if(displayMethod === "chartSH") {
 		// header example item1 item2
 		// header example item1 item2
-		className += " vertical";
+		className += " sideHeaders";
 		const stems: string[] = [];
 		columnClasses.push("headers");
 		showExamples && columnClasses.push("examples");
@@ -203,12 +204,12 @@ const getRawInfo = (
 			rowClasses.push((i % 2) ? null : "striped");
 		});
 	} else {
-		//////// chartH and text
+		//////// chartTH and text
 		// header  header
 		// example example
 		// item1   item1
 		// item2   item2
-		displayMethod !== "text" && (className += " horizontal");
+		displayMethod !== "text" && (className += " topHeaders");
 		const headers: string[] = [typeString];
 		const examples: string[] = ["Examples"];
 		rowClasses.push("headers");
@@ -266,9 +267,9 @@ const getRawInfo = (
 	};
 };
 
-const getRawInfoLoop = (
+const getDJRawInfoLoop = (
 	groups: DJGroup[],
-	displayMethod: DJDisplayTypes,
+	displayMethod: DJDisplayMethods,
 	title: string,
 	input: string[],
 	showExamples: boolean,
@@ -277,9 +278,9 @@ const getRawInfoLoop = (
 	const groupsCopy = groups.slice();
 	let currentInput = input.slice();
 	const unfound: string[][] = [];
-	const infoOutput: RawInfo[] = [];
+	const infoOutput: DJRawInfo[] = [];
 	while(groupsCopy.length > 0) {
-		const info = getRawInfo(groupsCopy.shift()!, displayMethod, title, currentInput, showExamples);
+		const info = getDJRawInfo(groupsCopy.shift()!, displayMethod, title, currentInput, showExamples);
 		if(wordsMatchOneTimeOnly) {
 			currentInput = info.missing.slice();
 		} else {
@@ -321,7 +322,7 @@ const getTextFromChart = (rows: string[][]): string[] => {
 export const display = (
 	groups: DJGroup[],
 	data: DJDisplayData,
-	displayMethod: DJDisplayTypes,
+	displayMethod: DJDisplayMethods,
 	type: string
 ): [ReactElement[], string[], string] => {
 	const output: ReactElement[] = [
@@ -351,7 +352,7 @@ export const display = (
 			found,
 			missing,
 			className
-		} = getRawInfo(group, displayMethod, typeString, currentInput, showExamples);
+		} = getDJRawInfo(group, displayMethod, typeString, currentInput, showExamples);
 		// Update found/missing
 		if(wordsMatchOneTimeOnly) {
 			currentInput = [...missing];
@@ -469,7 +470,7 @@ export const exporter = (
 	conjugations: DJGroup[],
 	other: DJGroup[],
 	data: DJDisplayData,
-	displayMethod: DJDisplayTypes,
+	displayMethod: DJDisplayMethods,
 	format: DJFormatTypes,
 	showUnmatched: boolean | null,
 	dispatch: Function,
@@ -485,7 +486,7 @@ export const exporter = (
 	const {declensions: dec, conjugations: con, other: oth} = whatToExport;
 	const unfound: string[][] = [];
 	let currentInput = [...input];
-	const exportData: ExportData = {
+	const exportData: DJExportData = {
 		declensions: null,
 		conjugations: null,
 		other: null,
@@ -497,7 +498,7 @@ export const exporter = (
 			rawInfo,
 			continuing,
 			notContinuing
-		} = getRawInfoLoop(declensions, displayMethod, decTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		} = getDJRawInfoLoop(declensions, displayMethod, decTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
 		exportData.declensions = rawInfo;
 		currentInput = continuing;
 		if(notContinuing) {
@@ -509,7 +510,7 @@ export const exporter = (
 			rawInfo,
 			continuing,
 			notContinuing
-		} = getRawInfoLoop(conjugations, displayMethod, conTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		} = getDJRawInfoLoop(conjugations, displayMethod, conTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
 		exportData.conjugations = rawInfo;
 		currentInput = continuing;
 		if(notContinuing) {
@@ -521,7 +522,7 @@ export const exporter = (
 			rawInfo,
 			continuing,
 			notContinuing
-		} = getRawInfoLoop(other, displayMethod, othTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
+		} = getDJRawInfoLoop(other, displayMethod, othTitle, currentInput, showExamples, wordsMatchOneTimeOnly);
 		exportData.other = rawInfo;
 		currentInput = continuing;
 		if(notContinuing) {
@@ -545,7 +546,8 @@ export const exporter = (
 			formatted = exportCSV(exportData);
 			break;
 		case "docx":
-			break;
+			extension = "docx";
+			return exportDocx(exportData, doToast, undoToast, dispatch);
 		default:
 			log(dispatch, [`Error in DJOutputFormat: bad format "${format}"`]);
 	}
@@ -564,7 +566,7 @@ export const exporter = (
 // Export: Text
 
 const getExportText = (
-	info: RawInfo[],
+	info: DJRawInfo[],
 	showGroupInfo: boolean,
 	chart: boolean,
 	inputFlag: boolean
@@ -593,7 +595,7 @@ const getExportText = (
 	return output;
 };
 
-const exportText = (data: ExportData) => {
+const exportText = (data: DJExportData) => {
 	const {
 		declensions,
 		conjugations,
@@ -624,7 +626,7 @@ const exportText = (data: ExportData) => {
 
 const quote = (input: string): string => `"${input}"`;
 
-const getExportCSV = (info: RawInfo[], showGroupInfo: boolean, inputFlag: boolean): string[] => {
+const getExportCSV = (info: DJRawInfo[], showGroupInfo: boolean, inputFlag: boolean): string[] => {
 	const output: string[] = [];
 	info.forEach(declension => {
 		const {
@@ -646,7 +648,7 @@ const getExportCSV = (info: RawInfo[], showGroupInfo: boolean, inputFlag: boolea
 	return output;
 };
 
-const exportCSV = (data: ExportData) => {
+const exportCSV = (data: DJExportData) => {
 	const {
 		declensions,
 		conjugations,

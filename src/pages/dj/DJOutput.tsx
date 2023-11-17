@@ -33,7 +33,7 @@ import toaster from '../../components/toaster';
 //import PermanentInfo from '../../components/PermanentInfo';
 import {
 	DJDisplayData,
-	DJDisplayTypes,
+	DJDisplayMethods,
 	DJFormatTypes,
 	DJTypeObject,
 	display,
@@ -78,7 +78,7 @@ const DJOutput = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 
 	// Settings
-	const [displayType, setDisplayType] = useState<DJDisplayTypes>("chartH");
+	const [displayType, setDisplayType] = useState<DJDisplayMethods>("chartTH");
 	const [usingInput, setUsingInput] = useState<boolean>(false);
 	const [showUnmatched, setShowUnmatched] = useState<boolean>(false);
 	const [showGroupInfo, setShowGroupInfo] = useState<boolean>(true);
@@ -308,11 +308,11 @@ const DJOutput = (props: PageData) => {
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
-								value="chartH"
+								value="chartTH"
 							>Chart, Top Headers</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
-								value="chartV"
+								value="chartSH"
 							>Chart, Side Headers</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"

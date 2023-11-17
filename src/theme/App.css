@@ -1185,8 +1185,8 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 	overflow-wrap: break-word;
 }
 #DJOutput .djOutputGroup.chart .declenjugations .headers,
-#DJOutput .djOutputGroup.chart.horizontal .declenjugations .examples .cell:first-child,
-#DJOutput .djOutputGroup.chart.vertical .declenjugations .row:first-child .examples {
+#DJOutput .djOutputGroup.chart.topHeaders .declenjugations .examples .cell:first-child,
+#DJOutput .djOutputGroup.chart.sideHeaders .declenjugations .row:first-child .examples {
 	font-weight: bold;
 }
 #DJOutput .djOutputGroup.chart .declenjugations .row.headers .cell,
@@ -1206,7 +1206,7 @@ ion-list.hasToggles ion-item.toggleable.toggled {
 #DJOutput .djOutputGroup.chart .declenjugations .row .cell.mid {
 	text-align: start;
 }
-#DJOutput .djOutputGroup.chart.vertical .declenjugations span {
+#DJOutput .djOutputGroup.chart.sideHeaders .declenjugations span {
 	display: none;
 }
 #DJOutput .djOutputGroup .unmatched {
