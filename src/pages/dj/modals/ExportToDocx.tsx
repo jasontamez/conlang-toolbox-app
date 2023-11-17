@@ -15,11 +15,12 @@ import {
 
 import doExport from '../../../components/ExportServices';
 import { DJDisplayMethods, DJExportData, DJRawInfo } from "../../../components/DJOutputFormat";
+import log from "../../../components/Logging";
+import toaster from "../../../components/toaster";
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
 import { isPlatform } from "@ionic/react";
-import log from "../../../components/Logging";
 // FOR BROWSER TESTING ONLY
 
 type Child = (Paragraph | Table);
@@ -264,21 +265,21 @@ const text = (
 		} else {
 			const output = rows.map((row, i) => {
 				const [header, ...etc] = row;
+				const maybeBreak: { break?: number } = i > 0 ? (
+					{ break: 1 }
+				) : (
+					{}
+				);
 				const output = [
 					new TextRun({
-						text: header + ":",
-						bold: true
+						text: header + ": ",
+						bold: true,
+						...maybeBreak
 					}),
 					new TextRun({
 						text: etc.join(", ")
 					})
 				];
-				if(i > 0) {
-					output.unshift(new TextRun({
-						text: "break",
-						break: 1
-					}));
-				}
 				return output;
 			});
 			const first = output.shift()!;
@@ -360,6 +361,22 @@ const exportDocx = (
 			]
 		})
 	}
+	if(unfound && unfound.length > 0) {
+		sections.push({
+			properties: { type: SectionType.CONTINUOUS },
+			children: [
+				new Paragraph({
+					text: "Unmatched Words",
+					heading: HeadingLevel.HEADING_2,
+					spacing
+				}),
+				new Paragraph({
+					text: unfound.join(", "),
+					spacing
+				})
+			]
+		});
+	}
 	const doc = new Document({
 		creator: "Conlang Toolbox",
 		description: "A declension/conjugation document exported from Conlang Toolbox.",
@@ -372,8 +389,20 @@ const exportDocx = (
 	if(!isPlatform("android")) {
 		Packer.toBlob(doc).then((blob) => {
 			saveAs(blob, filename);
+			toaster({
+				message: "File saved as " + filename + " (browser)",
+				color: "success",
+				doToast,
+				undoToast
+			})
 		}).catch((e = "Error blob") => {
 			log(dispatch, ["DJExport / Packer / toBlob", e]);
+			toaster({
+				message: "Unable to save file (browser): " + e,
+				color: "success",
+				doToast,
+				undoToast
+			});
 		});
 		return;
 	}
@@ -384,10 +413,30 @@ const exportDocx = (
 		doExport(output, filename, doToast, undoToast, null, false)
 			.catch((e = "Error doexport docx") => {
 				log(dispatch, ["DJExport / Packer / doExport", e]);
+				toaster({
+					message: `Error saving file ${filename} (${e})`,
+					color: "success",
+					doToast,
+					undoToast
+				});
 			});
+		toaster({
+			message: "File saved as " + filename,
+			color: "success",
+			doToast,
+			undoToast
+		});
 	}).catch((e = "Error 64") => {
 		log(dispatch, ["DJExport / Packer", e]);
+		toaster({
+			message: `Error saving file ${filename} (64: ${e})`,
+			color: "success",
+			doToast,
+			undoToast
+		});
 	});
+
+	return 
 };
 
 export default exportDocx;
