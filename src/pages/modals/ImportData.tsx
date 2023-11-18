@@ -17,28 +17,21 @@ import {
 	IonItemDivider,
 	IonToggle
 } from '@ionic/react';
-import { closeCircleOutline } from "ionicons/icons";
-import { useSelector } from 'react-redux';
-import { Clipboard } from '@capacitor/clipboard';
+import { closeCircle, closeCircleOutline, sparkles } from "ionicons/icons";
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
-	Base_WG,
 	DJCustomInfo,
 	DJGroup,
 	ImportExportObject,
 	LexiconState,
 	ModalProperties,
 	MSState,
-	SaveableSortSettings,
-	StateObject,
-	storedDJ,
-	storedLex,
-	storedMS,
-	storedWE,
-	storedWG,
-	WEPresetObject
+	SortSettings,
+	StateObject
 } from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
+import { validateImport } from '../../store/validators';
 
 import {
 	CustomStorageWE,
@@ -49,25 +42,45 @@ import {
 } from '../../components/PersistentInfo';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
+import log from '../../components/Logging';
 
-const MExportAllData = (props: ModalProperties) => {
+type storedLex = [string, LexiconState][];
+type storedMS = [string, MSState][];
+type storedWG = [string, any][];
+type storedWE = [string, any][];
+type storedDJ = [string, DJCustomInfo][];
+
+type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
+
+type OutputObject = Omit<StateObject, "sortSettings" | "lastView" | "logs"> & {
+	currentVersion: string
+	sortSettings: SaveableSortSettings
+	lexStored: storedLex
+	msStored: storedMS
+	wgStored: storedWG
+	weStored: storedWE
+	djStored: storedDJ
+};
+
+const ImportData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const [doToast, undoToast] = useIonToast();
-	const [outputString, setOutputString] = useState<string>("...loading");
-	const [output, setOutput] = useState<ImportExportObject | null>(null);
-	const [export_wg, setExport_wg] = useState<boolean>(true);
-	const [export_we, setExport_we] = useState<boolean>(true);
-	const [export_ms, setExport_ms] = useState<boolean>(true);
-	const [export_dj, setExport_dj] = useState<boolean>(true);
-	const [export_lex, setExport_lex] = useState<boolean>(true);
-	const [export_con, setExport_con] = useState<boolean>(true);
-	const [export_ec, setExport_ec] = useState<boolean>(true);
-	const [export_set, setExport_set] = useState<boolean>(true); // This covers settings AND sort settings
-	const [export_wgStored, setExport_wgStored] = useState<boolean>(true);
-	const [export_weStored, setExport_weStored] = useState<boolean>(true);
-	const [export_msStored, setExport_msStored] = useState<boolean>(true);
-	const [export_djStored, setExport_djStored] = useState<boolean>(true);
-	const [export_lexStored, setExport_lexStored] = useState<boolean>(true);
+	const dispatch = useDispatch();
+	const [preparingForImport, setPreparingForImport] = useState<boolean>(false);
+	const [output, setOutput] = useState<OutputObject | null>(null);
+	const [import_wg, setImport_wg] = useState<boolean>(true);
+	const [import_we, setImport_we] = useState<boolean>(true);
+	const [import_ms, setImport_ms] = useState<boolean>(true);
+	const [import_dj, setImport_dj] = useState<boolean>(true);
+	const [import_lex, setImport_lex] = useState<boolean>(true);
+	const [import_con, setImport_con] = useState<boolean>(true);
+	const [import_ec, setImport_ec] = useState<boolean>(true);
+	const [import_set, setImport_set] = useState<boolean>(true); // This covers settings AND sort settings
+	const [import_wgStored, setImport_wgStored] = useState<boolean>(true);
+	const [import_weStored, setImport_weStored] = useState<boolean>(true);
+	const [import_msStored, setImport_msStored] = useState<boolean>(true);
+	const [import_djStored, setImport_djStored] = useState<boolean>(true);
+	const [import_lexStored, setImport_lexStored] = useState<boolean>(true);
 	const {
 		wg,
 		we,
@@ -118,8 +131,8 @@ const MExportAllData = (props: ModalProperties) => {
 		const wgS: storedWG = [];
 		const weS: storedWE = [];
 		const djS: storedDJ = [];
-		setOutputString("...loading");
-		const where = $i("exportedData");
+//		setOutputString("...loading");
+		const where = $i("importingData");
 		where && (where.value = "...loading");
 
 		const copyDJGroup = (input: DJGroup) => {
@@ -151,12 +164,12 @@ const MExportAllData = (props: ModalProperties) => {
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
-			return CustomStorageWE.iterate((value: WEPresetObject, title: string) => {
+			return CustomStorageWE.iterate((value: any, title: string) => {
 				weS.push([title, value]);
 				return; // Blank return keeps the loop going
 			});
 		}).then(() => {
-			return CustomStorageWG.iterate((value: Base_WG, title: string) => {
+			return CustomStorageWG.iterate((value: any, title: string) => {
 				wgS.push([title, value]);
 				return; // Blank return keeps the loop going
 			});
@@ -242,92 +255,118 @@ const MExportAllData = (props: ModalProperties) => {
 	]);
 
 	useEffect(() => {
-		if(!output) {
-			return;
-		}
-		const exportable: ImportExportObject = {...output};
-		if(!export_wg) {
+		const exportable: any = {...output};
+		if(!import_wg) {
 			delete exportable.wg;
 		}
-		if(!export_we) {
+		if(!import_we) {
 			delete exportable.we;
 		}
-		if(!export_ms) {
+		if(!import_ms) {
 			delete exportable.ms;
 		}
-		if(!export_dj) {
+		if(!import_dj) {
 			delete exportable.dj;
 		}
-		if(!export_lex) {
+		if(!import_lex) {
 			delete exportable.lexicon;
 		}
-		if(!export_con) {
+		if(!import_con) {
 			delete exportable.concepts;
 		}
-		if(!export_ec) {
+		if(!import_ec) {
 			delete exportable.ec;
 		}
-		if(!export_set) {
+		if(!import_set) {
 			delete exportable.appSettings;
 			delete exportable.sortSettings;
 		}
-		if(!export_wgStored) {
+		if(!import_wgStored) {
 			delete exportable.wgStored;
 		}
-		if(!export_weStored) {
+		if(!import_weStored) {
 			delete exportable.weStored;
 		}
-		if(!export_msStored) {
+		if(!import_msStored) {
 			delete exportable.msStored;
 		}
-		if(!export_djStored) {
+		if(!import_djStored) {
 			delete exportable.djStored;
 		}
-		if(!export_lexStored) {
+		if(!import_lexStored) {
 			delete exportable.lexStored;
 		}
 		const final = JSON.stringify(exportable);
-		setOutputString(final);
-		const where = $i("exportedData");
+//		setOutputString(final);
+		const where = $i("importingData");
 		where && (where.value = final);
 	}, [
 		output,
-		export_wg,
-		export_we,
-		export_ms,
-		export_dj,
-		export_lex,
-		export_con,
-		export_ec,
-		export_set,
-		export_wgStored,
-		export_weStored,
-		export_msStored,
-		export_djStored,
-		export_lexStored
+		import_wg,
+		import_we,
+		import_ms,
+		import_dj,
+		import_lex,
+		import_con,
+		import_ec,
+		import_set,
+		import_wgStored,
+		import_weStored,
+		import_msStored,
+		import_djStored,
+		import_lexStored
 	]);
 
 	function onLoad() {
-		setExport_wg(true);
-		setExport_we(true);
-		setExport_ms(true);
-		setExport_dj(true);
-		setExport_lex(true);
-		setExport_con(true);
-		setExport_ec(true);
-		setExport_set(true);
-		setExport_wgStored(true);
-		setExport_weStored(true);
-		setExport_msStored(true);
-		setExport_djStored(true);
-		setExport_lexStored(true);
+		setImport_wg(true);
+		setImport_we(true);
+		setImport_ms(true);
+		setImport_dj(true);
+		setImport_lex(true);
+		setImport_con(true);
+		setImport_ec(true);
+		setImport_set(true);
+		setImport_wgStored(true);
+		setImport_weStored(true);
+		setImport_msStored(true);
+		setImport_djStored(true);
+		setImport_lexStored(true);
+	};
+
+	function parseInput(object: ImportExportObject) {};
+	function analyze() {
+		const el = $i("importingData");
+		const incoming = (el && el.value) || "";
+		let error = "";
+		try {
+			const parsed: ImportExportObject = JSON.parse(incoming);
+			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+				validateImport(parsed);
+				return parseInput(parsed);
+			}
+			toaster({
+				message: `ERROR (102): input was not an object`,
+				color: "danger",
+				doToast,
+				undoToast
+			});
+		} catch (e) {
+			log(dispatch, ["Error parsing Import", incoming, error || e]);
+			return toaster({
+				message: error || `PARSE ERROR (101): [${e}]`,
+				color: "danger",
+				doToast,
+				undoToast
+			});
+		}
+		setPreparingForImport(true);
 	};
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export Info</IonTitle>
+					<IonTitle>Import Info</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -336,8 +375,8 @@ const MExportAllData = (props: ModalProperties) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full">
-					<IonItem>
+				<IonList lines="full" id="importData" className={preparingForImport ? "" : "waitingForInput"}>
+					<IonItem className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
 							<h2 className="ion-text-center ion-text-wrap">
 								Save this info to a note or file.
@@ -345,131 +384,138 @@ const MExportAllData = (props: ModalProperties) => {
 							</h2>
 						</IonLabel>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem lines="none" className="permanent">
 						<IonTextarea
-							aria-label="Exported Data"
+							aria-label="Data to Import"
 							wrap="soft"
 							rows={12}
-							id="exportedData"
-							value={outputString}
+							id="importingData"
+							disabled={preparingForImport}
 						></IonTextarea>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem lines="none" className="permanent">
+						<IonButton
+							id="cancelButton"
+							color="primary"
+							slot="start"
+							className={preparingForImport ? "showing" : "hiding"}
+						>
+							<IonLabel>Cancel</IonLabel>
+							<IonIcon icon={closeCircle} slot="end" />
+						</IonButton>
 						<IonButton
 							color="primary"
-							onClick={() => Clipboard.write({string: outputString}).then(() => toaster({
-								message: `Copied to clipboard`,
-								position: "middle",
-								duration: 1500,
-								doToast,
-								undoToast
-							}))}
+							disabled={preparingForImport}
 							slot="end"
-						>Copy to Clipboard</IonButton>
+							onClick={analyze}
+						>
+							<IonLabel>Analyze</IonLabel>
+							<IonIcon icon={sparkles} slot="start" />
+						</IonButton>
 					</IonItem>
-					<IonItemDivider>What to Export</IonItemDivider>
+					<IonItemDivider>What to Import</IonItemDivider>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current MorphoSyntax Settings"
-							checked={export_ms}
-							onIonChange={() => setExport_ms(!export_ms)}
+							checked={import_ms}
+							onIonChange={() => setImport_ms(!import_ms)}
 						>Current MorphoSyntax Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored MorphoSyntax Documents"
-							checked={export_msStored}
-							onIonChange={() => setExport_msStored(!export_msStored)}
+							checked={import_msStored}
+							onIonChange={() => setImport_msStored(!import_msStored)}
 						>Stored MorphoSyntax Documents</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current WordGen Settings"
-							checked={export_wg}
-							onIonChange={() => setExport_wg(!export_wg)}
+							checked={import_wg}
+							onIonChange={() => setImport_wg(!import_wg)}
 						>Current WordGen Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored WordGen Settings"
-							checked={export_wgStored}
-							onIonChange={() => setExport_wgStored(!export_wgStored)}
+							checked={import_wgStored}
+							onIonChange={() => setImport_wgStored(!import_wgStored)}
 						>Stored WordGen Settings</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current WordEvolve Settings"
-							checked={export_we}
-							onIonChange={() => setExport_we(!export_we)}
+							checked={import_we}
+							onIonChange={() => setImport_we(!import_we)}
 						>Current WordEvolve Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored WordEvolve Settings"
-							checked={export_weStored}
-							onIonChange={() => setExport_weStored(!export_weStored)}
+							checked={import_weStored}
+							onIonChange={() => setImport_weStored(!import_weStored)}
 						>Stored WordEvolve Settings</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current Declenjugator Settings"
-							checked={export_dj}
-							onIonChange={() => setExport_dj(!export_dj)}
+							checked={import_dj}
+							onIonChange={() => setImport_dj(!import_dj)}
 						>Current Declenjugator Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored Declenjugator Info"
-							checked={export_djStored}
-							onIonChange={() => setExport_djStored(!export_djStored)}
+							checked={import_djStored}
+							onIonChange={() => setImport_djStored(!import_djStored)}
 						>Stored Declenjugator Info</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current Lexicon Settings"
-							checked={export_lex}
-							onIonChange={() => setExport_lex(!export_lex)}
+							checked={import_lex}
+							onIonChange={() => setImport_lex(!import_lex)}
 						>Current Lexicon Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored Lexicons"
-							checked={export_lexStored}
-							onIonChange={() => setExport_lexStored(!export_lexStored)}
+							checked={import_lexStored}
+							onIonChange={() => setImport_lexStored(!import_lexStored)}
 						>Stored Lexicons</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Concepts Settings"
-							checked={export_con}
-							onIonChange={() => setExport_con(!export_con)}
+							checked={import_con}
+							onIonChange={() => setImport_con(!import_con)}
 						>Concepts Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Extra Characters Settings"
-							checked={export_ec}
-							onIonChange={() => setExport_ec(!export_ec)}
+							checked={import_ec}
+							onIonChange={() => setImport_ec(!import_ec)}
 						>Extra Characters Settings</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Other App Settings"
-							checked={export_set}
-							onIonChange={() => setExport_set(!export_set)}
+							checked={import_set}
+							onIonChange={() => setImport_set(!import_set)}
 						>Other App Settings</IonToggle>
 					</IonItem>
 				</IonList>
@@ -486,4 +532,4 @@ const MExportAllData = (props: ModalProperties) => {
 	);
 };
 
-export default MExportAllData;
+export default ImportData;

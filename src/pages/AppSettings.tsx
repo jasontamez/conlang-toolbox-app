@@ -15,20 +15,24 @@ import { setDisableConfirms } from '../store/settingsSlice';
 import Header from '../components/Header';
 import ChooseThemeModal from './modals/Theme';
 import ExportAllData from './modals/ExportAllData';
+import ImportData from './modals/ImportData';
 
 
 const AppSettings = (props: PageData) => {
+	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
+	const [isOpenImport, setIsOpenImport] = useState<boolean>(false);
 	const {
 		disableConfirms,
 		theme
 	} = useSelector((state: StateObject) => state.appSettings);
 	return (
 		<IonPage>
-			<ChooseThemeModal {...props.modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
-			<ExportAllData {...props.modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
+			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
+			<ExportAllData {...modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
+			<ImportData {...modalPropsMaker(isOpenImport, setIsOpenImport)} />
 			<Header title="App Settings" />
 			<IonContent fullscreen>
 				<IonList lines="full">
@@ -53,6 +57,11 @@ const AppSettings = (props: PageData) => {
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">
 							<h2>Export All App Info</h2>
+						</IonLabel>
+					</IonItem>
+					<IonItem button={true} onClick={() => setIsOpenImport(true)}>
+						<IonLabel className="possiblyLargeLabel">
+							<h2>Import</h2>
 						</IonLabel>
 					</IonItem>
 				</IonList>

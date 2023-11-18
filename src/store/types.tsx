@@ -543,3 +543,27 @@ export interface ExtraCharactersModalOpener {
 	setIsOpen: Function
 	openECM: Function
 }
+
+export type storedLex = [string, LexiconState][];
+export type storedMS = [string, MSState][];
+export type storedWG = [string, Base_WG][];
+export type storedWE = [string, WEPresetObject][];
+export type storedDJ = [string, DJCustomInfo][];
+export type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
+export interface ImportExportObject {
+	currentVersion: string
+	wg?: WGState
+	we?: WEState
+	ms?: MSState
+	dj?: DJState
+	lexicon?: LexiconState
+	concepts?: ConceptsState
+	ec?: ExtraCharactersState
+	appSettings?: AppSettings
+	sortSettings?: SaveableSortSettings
+	wgStored?: storedWG
+	weStored?: storedWE
+	msStored?: storedMS
+	djStored?: storedDJ
+	lexStored?: storedLex
+}

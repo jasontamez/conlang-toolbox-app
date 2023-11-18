@@ -341,6 +341,33 @@ ion-app .fullScreen .collapse div ion-button {
 	white-space: normal;
 }
 
+#importData ion-item,
+#importData ion-item-divider {
+	transition: all 0.2s ease-out;
+	max-height: 10vh;
+}
+#importData ion-item.permanent {
+	max-height: max-content;
+}
+#importData.waitingForInput ion-item:not(.permanent),
+#importData.waitingForInput ion-item-divider {
+	--border-width: 0;
+	--padding-top: 0;
+	--padding-bottom: 0;
+	transition: all 0.2s ease-in;
+	max-height: 0;
+}
+#importData ion-button.showing {
+	max-width: 25vw;
+	overflow: hidden;
+	transition: all 0.2s ease-out;
+}
+#importData ion-button.hiding {
+	max-width: 0;
+	overflow: hidden;
+	transition: all 0.2s ease-in;
+}
+
 #WGoutput {
 	display: flex;
 	align-items: flex-start;
