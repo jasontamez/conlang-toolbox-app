@@ -3,7 +3,7 @@ import {
 	Route
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import compareVersions from 'compare-versions';
+import { compare } from 'compare-versions';
 import {
 	IonApp,
 	IonRouterOutlet,
@@ -130,7 +130,7 @@ const App = memo(() => {
 		StateStorage.getItem("lastState").then((storedState: any) => {
 			if(storedState !== null) {
 				if(storedState && (typeof storedState) === "object") {
-					if (compareVersions.compare(storedState.currentVersion, "0.9.5", "<")) {
+					if (compare(storedState.currentVersion, "0.9.5", "<")) {
 						storedState = doUpdate095(storedState);
 					}
 					doUpdate0100(storedState, dispatch);
