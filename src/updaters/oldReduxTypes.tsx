@@ -241,7 +241,7 @@ export interface LexiconObject {
 	lexicon: Lexicon[]
 	sortDir: boolean
 	sortPattern: number[]
-	blankSort: LexiconBlankSorts
+	blankSort: LexiconBlankSorts // 0.9.5+
 	fontType?: string
 }
 
