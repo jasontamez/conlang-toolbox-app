@@ -550,6 +550,14 @@ export type storedWG = [string, Base_WG][];
 export type storedWE = [string, WEPresetObject][];
 export type storedDJ = [string, DJCustomInfo][];
 export type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
+interface ARCHIVE_WordListsState {
+	centerTheDisplayedWords: [ "center" ] | []
+	listsDisplayed: { [key in keyof Omit<Concept, "id" | "word">]: boolean }
+}
+interface ARCHIVE_AppSettings {
+	theme: ThemeNames
+	disableConfirms: boolean
+}
 export interface ImportExportObject {
 	currentVersion: string
 	wg?: WGState
@@ -558,8 +566,9 @@ export interface ImportExportObject {
 	dj?: DJState
 	lexicon?: LexiconState
 	concepts?: ConceptsState
+	wordLists?: ARCHIVE_WordListsState
 	ec?: ExtraCharactersState
-	appSettings?: AppSettings
+	appSettings?: AppSettings | ARCHIVE_AppSettings
 	sortSettings?: SaveableSortSettings
 	wgStored?: storedWG
 	weStored?: storedWE

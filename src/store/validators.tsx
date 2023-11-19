@@ -718,6 +718,109 @@ const invalidLexiconState = (object: any, v: string) => {
 	return error || false;
 };
 
+/**
+export interface Concept {
+	id: string
+	word: string
+	asjp?: boolean
+	lj?: boolean
+	d?: boolean
+	sy?: boolean
+	s100?: boolean
+	s207?: boolean
+	ssl?: boolean
+	l200?: boolean
+}
+export interface ConceptCombo {
+	id: string
+	parts: Concept[]
+}
+export interface ConceptsState {
+	display: (keyof Concept)[]
+	textCenter: boolean
+	showingCombos: boolean
+	combinations: ConceptCombo[]
+}
+ */
+const invalidWordListsState = (object: any) => {
+	let error = "";
+	if(notObject(object)) {
+		error = "801: Invalid Concepts State object";
+	} else {
+		const pairs = Object.entries(object);
+		if(pairs.length < 2) {
+			error = `802: Concepts State object seems to be missing ${2 - pairs.length} propert${pairs.length === 1 ? "y" : "ies"}`;
+		} else if (pairs.length > 2) {
+			error = `803: Concepts State object seems to have ${pairs.length - 2} extra propert${(pairs.length === 3) ? "y" : "ies"}`;
+		} else if (pairs.some(([key, value]) => {
+			switch(key) {
+				case "centerTheDisplayedWords":
+					return !Array.isArray(value)
+						|| (value.length === 1 && value[0] !== "center")
+						|| value.length > 0;
+				case "listsDisplayed":
+					if(notObject(value)) {
+						return true;
+					}
+					return value && Object.keys(value).some(key => {
+						return ![
+							"asjp",
+							"lj",
+							"sy",
+							"d",
+							"s100",
+							"s207",
+							"ssl"
+						].includes(key)
+					});
+			}
+			return true;
+		})) {
+			error = `804: Concepts State has at least one invalid property`;
+		}
+	}
+	return error || false;
+};
+
+const invalidConceptsState = (object: any) => {
+	let error = "";
+	if(notObject(object)) {
+		error = "801: Invalid Concepts State object";
+	} else {
+		let requiredProperties = 0;
+		const pairs = Object.entries(object);
+		while(!error && pairs.length > 0) {
+			const [key, value] = pairs.shift()!
+			let flag = false;
+			switch (key) {
+				case "id":
+				case "word":
+					requiredProperties++;
+					flag = notString(value);
+					break;
+				case "asjp":
+				case "lj":
+				case "d":
+				case "sy":
+				case "s100":
+				case "s201":
+				case "ssl":
+				case "l200":
+					flag = notBoolean(value);
+					break;
+				default:
+					flag = true;
+			}
+			if(flag) {
+				error = `804: Concepts State has invalid property "${key}"`;
+			}
+		}
+		if(!error && requiredProperties < 2) {
+			error = `802: Concepts State object is missing ${requiredProperties - 2} propert${requiredProperties === 1 ? "y" : "ies"}`;
+		}
+	}
+	return error || false;
+};
 
 export const validVersions = [
 	"0.9.1",
@@ -731,13 +834,17 @@ export const validVersions = [
 ];
 // Error codes:
 // 100 general
-// 200 appSettings
+// 200 appSettings, sortSettings, extraCharacters
 // 300 WG
 // 400 WE
 // 500 MS
 // 600 DJ
 // 700 Lexicon
-export function validateImport (object: ImportExportObject): asserts object is ImportExportObject {
+// 800 Concepts
+// 900 storages
+export function validateImport (
+	object: ImportExportObject
+): asserts object is ImportExportObject {
 	let error: string | false = false;
 	const v = object && object.currentVersion;
 	if(notString(v)) {
@@ -763,7 +870,9 @@ export function validateImport (object: ImportExportObject): asserts object is I
 			} else if (key === "lexicon") {
 				error = invalidLexiconState(value, v);
 			} else if (key === "concepts" && compare(v, "0.9.4", ">")) {
+				error = invalidConceptsState(value);
 			} else if (key === "wordLists" && compare(v, "0.9.5", "<")) {
+				error = invalidWordListsState(value);
 			} else if (key === "ec") {
 			} else if (key === "sortSettings") {
 			} else if (key === "weStored") {
