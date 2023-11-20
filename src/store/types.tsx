@@ -575,4 +575,10 @@ export interface ImportExportObject {
 	msStored?: storedMS
 	djStored?: storedDJ
 	lexStored?: storedLex
+	storages?: {
+		lex: storedLex
+		wg: storedWG
+		we: storedWE
+		mx: storedMS
+	}
 }

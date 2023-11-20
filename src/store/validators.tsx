@@ -7,6 +7,8 @@ const notObject = (input: any) => {
 const notString = (input: any) => typeof (input) !== "string";
 const notNumber = (input: any) => typeof (input) !== "number" || isNaN(input) || Math.round(input) !== input;
 const notBoolean = (input: any) => typeof (input) !== "boolean";
+const notArray = (input: any) => !Array.isArray(input);
+const notArrayOf = (input: any, func: Function) => notArray(input) || input.some((item: any) => func(item));
 
 const invalidCharGroupObject = (object: any, flag = false) => {
 	if(notObject(object)) {
@@ -76,16 +78,19 @@ const invalidTransformObject = (object: any, flag = false) => {
 	return test || requiredProperties !== (flag ? 5 : 4);
 };
 
-const invalidWGState = (object: any) => {
+const invalidWGState = (object: any, preset: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "301: Invalid WordGen State object";
 	} else {
 		const pairs = Object.entries(object);
-		if(pairs.length < 27) {
-			error = `302: WordGen State object seems to be missing ${pairs.length - 27} propert${(pairs.length - 27) === 1 ? "y" : "ies"}`;
-		} else if (pairs.length > 27) {
-			error = `303: WordGen State object seems to have ${27 - pairs.length} extra propert${(27 - pairs.length) === 1 ? "y" : "ies"}`;
+		const base = preset ? 20 : 27;
+		if(pairs.length < base) {
+			error = "302: WordGen State object seems to be missing"
+				+ ` ${base - pairs.length} propert${pairs.length === (base - 1) ? "y" : "ies"}`;
+		} else if (pairs.length > base) {
+			error = "303: WordGen State object seems to have"
+				+ ` ${pairs.length - base} extra propert${pairs.length === (base + 1) ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
@@ -98,10 +103,10 @@ const invalidWGState = (object: any) => {
 						flag = (notNumber(value) || (value as number) < 2 || (value as number) > 15);
 						break;
 					case "sentencesPerText":
-						flag = (notNumber(value) || (value as number) < 5 || (value as number) > 100);
+						flag = (preset || notNumber(value) || (value as number) < 5 || (value as number) > 100);
 						break;
 					case "wordsPerWordlist":
-						flag = (notNumber(value) || (value as number) < 50 || (value as number) > 1000);
+						flag = (preset || notNumber(value) || (value as number) < 50 || (value as number) > 1000);
 						break;
 					case "characterGroupDropoff":
 					case "syllableBoxDropoff":
@@ -127,32 +132,36 @@ const invalidWGState = (object: any) => {
 						}
 						break;
 					case "output":
-						if(notString(value) || (value !== "text" && value !== "wordlist" && value !== "syllables")) {
+						if(
+							preset
+							|| notString(value)
+							|| (
+								value !== "text"
+								&& value !== "wordlist"
+								&& value !== "syllables"
+							)
+						) {
 							flag = true;
 						}
 						break;
 					case "capitalizeSentences":
 					case "multipleSyllableTypes":
+						flag = notBoolean(value);
+						break;
 					case "showSyllableBreaks":
 					case "capitalizeWords":
 					case "sortWordlist":
 					case "wordlistMultiColumn":
-						if(notBoolean(value)) {
-							flag = true;
-						}
+						flag = preset || notBoolean(value);
 						break;
 					case "characterGroups":
-						if(!Array.isArray(value) || value.some(obj => invalidCharGroupObject(obj))) {
-							flag = true;
-						}
+						flag = notArrayOf(value, invalidCharGroupObject);
 						break;
 					case "syllableDropoffOverrides":
 						flag = invalidDropoffObject(value);
 						break;
 					case "transforms":
-						if(!Array.isArray(value) || value.some(obj => invalidTransformObject(obj))) {
-							flag = true;
-						}
+						flag = notArrayOf(value, invalidTransformObject);
 						break;
 					default:
 						flag = true;
@@ -186,31 +195,33 @@ const invalidSoundChangeObject = (object: any) => {
 	});
 	return test || requiredProperties !== 6;
 };
-
-const invalidWEState = (object: any) => {
+const invalidWEState = (object: any, preset: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "401: Invalid WordEvolve State object";
 	} else {
 		const pairs = Object.entries(object);
 		if(pairs.length < 8) {
-			error = `402: WordEvolve State object seems to be missing ${pairs.length - 8} propert${(pairs.length - 8) === 1 ? "y" : "ies"}`;
+			error = "402: WordEvolve State object seems to be missing"
+				+ ` ${8 - pairs.length - 8} propert${pairs.length === 7 ? "y" : "ies"}`;
 		} else if (pairs.length > 8) {
-			error = `403: WordEvolve State object seems to have ${8 - pairs.length} extra propert${(8 - pairs.length) === 1 ? "y" : "ies"}`;
+			error = "403: WordEvolve State object seems to have"
+				+ ` ${pairs.length - 8} extra propert${pairs.length === 9 ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
 				let flag = false;
 				switch (key) {
 					case "input":
-						flag = notString(value);
+						flag = preset || notString(value);
 						break;
 					case "customSort":
-						flag = (notString(value) && value !== null);
+						flag = preset || (notString(value) && value !== null);
 						break;
 					case "outputStyle":
 						flag = (
-							notString(value)
+							preset
+							|| notString(value)
 							|| (
 								value !== "outputOnly"
 								&& value !== "rulesApplied"
@@ -221,16 +232,16 @@ const invalidWEState = (object: any) => {
 						break;
 					case "inputLower":
 					case "inputAlpha":
-						flag = notBoolean(value);
+						flag = preset || notBoolean(value);
 						break;
 					case "characterGroups":
-						flag = !Array.isArray(value) || value.some(obj => invalidCharGroupObject(obj, true))
+						flag = notArray(value) || (value as any[]).some(obj => invalidCharGroupObject(obj, true))
 						break;
 					case "transforms":
-						flag = !Array.isArray(value) || value.some(obj => invalidTransformObject(obj, true));
+						flag = notArray(value) || (value as any[]).some(obj => invalidTransformObject(obj, true));
 						break;
 					case "soundChanges":
-						flag = !Array.isArray(value) || value.some(obj => invalidSoundChangeObject(obj));
+						flag = notArrayOf(value, invalidSoundChangeObject);
 						break;
 					default:
 						flag = true;
@@ -438,7 +449,8 @@ const invalidMSState = (object: any) => {
 			}
 		}
 		if(!error && requiredProperties < 5) {
-			error = `502: MorphoSyntax State object is missing ${requiredProperties - 5} propert${(requiredProperties - 5) === 1 ? "y" : "ies"}`;
+			error = "502: MorphoSyntax State object is missing"
+				+ ` ${5 - requiredProperties} propert${requiredProperties === 4 ? "y" : "ies"}`;
 		}
 	}
 	return error || false;
@@ -462,7 +474,7 @@ const invalidDeclenjugation = (object: any) => {
 				requiredProperties++;
 				return notBoolean(value);
 			case "regex":
-				return !Array.isArray(value) || value.length !== 2 || notString(value[0]) || notString(value[1]);
+				return notArrayOf(value, notString) || (value as any[]).length !== 2;
 		}
 		return true;
 	});
@@ -491,40 +503,42 @@ const invalidDJGroup = (object: any) => {
 			case "startsWith":
 			case "endsWith":
 				requiredProperties++;
-				return !Array.isArray(value) || value.some(str => notString(str));
+				return notArrayOf(value, notString);
 			case "declenjugations":
 				requiredProperties++;
-				return !Array.isArray(value) || value.some(obj => invalidDeclenjugation(obj));
+				return notArrayOf(value, invalidDeclenjugation);
 			case "regex":
-				return !Array.isArray(value) || value.length !== 2 || notString(value[0]) || notString(value[1]);
+				return notArrayOf(value, notString) || (value as any[]).length !== 2;
 		}
 		return true;
 	});
 	return test || requiredProperties !== 7;
 };
-
-const invalidDJState = (object: any) => {
+const invalidDJState = (object: any, preset: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "601: Invalid Declenjugator State object";
 	} else {
 		const pairs = Object.entries(object);
-		if(pairs.length < 4) {
-			error = `602: Declenjugator State object seems to be missing ${pairs.length - 4} propert${(pairs.length - 4) === 1 ? "y" : "ies"}`;
+		const target = preset ? 3 : 4;
+		if(pairs.length < target) {
+			error = "602: Declenjugator State object seems to be missing"
+				+ ` ${target - pairs.length} propert${(pairs.length) === (target - 1) ? "y" : "ies"}`;
 		} else if (pairs.length > 4) {
-			error = `603: Declenjugator State object seems to have ${4 - pairs.length} extra propert${(4 - pairs.length) === 1 ? "y" : "ies"}`;
+			error = "603: Declenjugator State object seems to have"
+				+ ` ${pairs.length - target} extra propert${pairs.length === (target + 1) ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
 				let flag = false;
 				switch (key) {
 					case "input":
-						flag = notString(value);
+						flag = preset || notString(value);
 						break;
 					case "declensions":
 					case "conjugations":
 					case "other":
-						flag = !Array.isArray(value) || value.some(obj => invalidDJGroup(obj));
+						flag = notArrayOf(value, invalidDJGroup);
 						break;
 					default:
 						flag = true;
@@ -546,9 +560,11 @@ const invalidSettings = (object: any, flag: boolean) => {
 		const max = (flag ? 2 : 3);
 		const pairs = Object.entries(object);
 		if(pairs.length < max) {
-			error = `202: Settings object seems to be missing ${pairs.length - max} propert${(pairs.length - max) === 1 ? "y" : "ies"}`;
+			error = "202: Settings object seems to be missing"
+				+ ` ${max - pairs.length} propert${(max - pairs.length) === 1 ? "y" : "ies"}`;
 		} else if (pairs.length > max) {
-			error = `203: Settings object seems to have ${max - pairs.length} extra propert${(max - pairs.length) === 1 ? "y" : "ies"}`;
+			error = "203: Settings object seems to have"
+				+ ` ${pairs.length - max} extra propert${(pairs.length - max) === 1 ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
@@ -608,15 +624,15 @@ const checkLexObjectInvalidity = (object: any, cols: number | null) => {
 	} else if (pairs.some(([key, value]) => {
 		if(key === "id") {
 			return notString(value);
-		} else if (key !== "columns" || !Array.isArray(value)) {
+		} else if (key !== "columns" || notArray(value)) {
 			return true;
 		}
 		if(columns === null) {
-			columns = value.length;
-		} else if (value.length !== columns) {
+			columns = (value as any[]).length;
+		} else if ((value as any[]).length !== columns) {
 			return true;
 		}
-		return value.some(str => notString(str));
+		return (value as any[]).some(str => notString(str));
 	})) {
 		return true;
 	}
@@ -679,23 +695,23 @@ const invalidLexiconState = (object: any, v: string) => {
 					break;
 				case "sortPattern":
 					requiredProperties++;
-					if(!Array.isArray(value) || value.some(n => notNumber(n))) {
+					if(notArrayOf(value, notNumber)) {
 						flag = true;
 					} else if (foundColumns === null) {
-						foundColumns = value.length;
-					} else if (foundColumns !== value.length) {
-						error = `Expected ${foundColumns} columns but encountered ${value.length} in "${key}"`;
+						foundColumns = (value as number[]).length;
+					} else if (foundColumns !== (value as number[]).length) {
+						error = `Expected ${foundColumns} columns but encountered ${(value as number[]).length} in "${key}"`;
 						continue;
 					}
 					break;
 				case "columns":
 					requiredProperties++;
-					if(!Array.isArray(value) || value.some(obj => invalidLexColumn(obj))) {
+					if(notArrayOf(value, invalidLexColumn)) {
 						flag = true;
 					} else if (foundColumns === null) {
-						foundColumns = value.length;
-					} else if (foundColumns !== value.length) {
-						error = `Expected ${foundColumns} columns but encountered ${value.length} in "${key}"`;
+						foundColumns = (value as any[]).length;
+					} else if (foundColumns !== (value as any[]).length) {
+						error = `Expected ${foundColumns} columns but encountered ${(value as any[]).length} in "${key}"`;
 						continue;
 					}
 					break;
@@ -712,36 +728,13 @@ const invalidLexiconState = (object: any, v: string) => {
 		}
 		tenFlag && requiredProperties--;
 		if(!error && requiredProperties < 10) {
-			error = `702: Lexicon State object is missing ${requiredProperties - 10} propert${(requiredProperties - 10) === 1 ? "y" : "ies"}`;
+			error = "702: Lexicon State object is missing"
+				+ ` ${10 - requiredProperties} propert${(requiredProperties - 10) === 1 ? "y" : "ies"}`;
 		}
 	}
 	return error || false;
 };
 
-/**
-export interface Concept {
-	id: string
-	word: string
-	asjp?: boolean
-	lj?: boolean
-	d?: boolean
-	sy?: boolean
-	s100?: boolean
-	s207?: boolean
-	ssl?: boolean
-	l200?: boolean
-}
-export interface ConceptCombo {
-	id: string
-	parts: Concept[]
-}
-export interface ConceptsState {
-	display: (keyof Concept)[]
-	textCenter: boolean
-	showingCombos: boolean
-	combinations: ConceptCombo[]
-}
- */
 const invalidWordListsState = (object: any) => {
 	let error = "";
 	if(notObject(object)) {
@@ -749,15 +742,17 @@ const invalidWordListsState = (object: any) => {
 	} else {
 		const pairs = Object.entries(object);
 		if(pairs.length < 2) {
-			error = `802: Concepts State object seems to be missing ${2 - pairs.length} propert${pairs.length === 1 ? "y" : "ies"}`;
+			error = "802: Concepts State object seems to be missing"
+				+ ` ${2 - pairs.length} propert${pairs.length === 1 ? "y" : "ies"}`;
 		} else if (pairs.length > 2) {
-			error = `803: Concepts State object seems to have ${pairs.length - 2} extra propert${(pairs.length === 3) ? "y" : "ies"}`;
+			error = "803: Concepts State object seems to have"
+				+ ` ${pairs.length - 2} extra propert${(pairs.length === 3) ? "y" : "ies"}`;
 		} else if (pairs.some(([key, value]) => {
 			switch(key) {
 				case "centerTheDisplayedWords":
-					return !Array.isArray(value)
-						|| (value.length === 1 && value[0] !== "center")
-						|| value.length > 0;
+					return notArray(value)
+						|| ((value as any[]).length === 1 && (value as any[])[0] !== "center")
+						|| (value as any[]).length > 0;
 				case "listsDisplayed":
 					if(notObject(value)) {
 						return true;
@@ -816,10 +811,284 @@ const invalidConceptsState = (object: any) => {
 			}
 		}
 		if(!error && requiredProperties < 2) {
-			error = `802: Concepts State object is missing ${requiredProperties - 2} propert${requiredProperties === 1 ? "y" : "ies"}`;
+			error = "802: Concepts State object is missing"
+				+ ` ${2 - requiredProperties} propert${requiredProperties === 1 ? "y" : "ies"}`;
 		}
 	}
 	return error || false;
+};
+
+const invalidECState = (object: any) => {
+	let error = "";
+	if(notObject(object)) {
+		error = "210: Invalid Extra Characters State object";
+	} else {
+		const pairs = Object.entries(object);
+		if(pairs.length < 5) {
+			error = "212: Extra Characters State object seems to be missing"
+				+ ` ${5 - pairs.length} propert${pairs.length === 4 ? "y" : "ies"}`;
+		} else if(pairs.length > 5) {
+			error = "213: Extra Characters State object seems to have"
+				+ ` ${pairs.length - 5} extra propert${pairs.length === 6 ? "y" : "ies"}`;
+		}
+		while(!error && pairs.length > 0) {
+			const [key, value] = pairs.shift()!
+			let flag = false;
+			switch (key) {
+				case "toCopy":
+					flag = notString(value);
+					break;
+				case "copyImmediately":
+				case "showNames":
+					flag = notBoolean(value);
+					break;
+				case "faves":
+					break;
+				case "nowShowing":
+					break;
+				default:
+					flag = true;
+			}
+			if(flag) {
+				error = `214: Extra Characters State has invalid property "${key}"`;
+			}
+		}
+	}
+	return error || false;
+};
+
+const invalidSortSubObject = (object: any) => {
+	let both = 0;
+	let rel = 0;
+	let eq = 0;
+	const test = Object.entries(object).some(([key, value]) => {
+		switch (key) {
+			case "id":
+			case "base":
+				both++;
+				return notString(value);
+			case "separator":
+				both++;
+				return value !== ""
+					&& value !== ","
+					&& value !== ";"
+					&& value !== " "
+					&& value !== ".";
+			case "pre":
+			case "post":
+				rel += 2;
+				eq--;
+			// eslint-disable-next-line no-fallthrough
+			case "equals":
+				eq++;
+				return notArrayOf(value, notString);
+		}
+		return true;
+	});
+	return test || both !== 3 || !((rel === 2 && eq === 0) || (eq === 1 && rel === 0));
+};
+const invalidSortObject = (object: any) => {
+	if(notObject(object)) {
+		return true;
+	}
+	const pairs = Object.entries(object);
+	let requiredProperties = 0;
+	const test = pairs.some(([key, value]) => {
+		switch(key) {
+			case "id":
+			case "title":
+				requiredProperties++;
+			// eslint-disable-next-line no-fallthrough
+			case "sortLanguage":
+				return notString(value);
+			case "sensitivity":
+				return value !== "base"
+					&& value !== "accent"
+					&& value !== "case"
+					&& value !== "variant";
+			case "customAlphabet":
+			case "multiples":
+				return notArrayOf(value, notString);
+			case "customizations":
+				return notObject(value) || invalidSortSubObject(value);
+		}
+		return true;
+	});
+	return test || requiredProperties !== 2;
+};
+const invalidSortingState = (object: any) => {
+	let error = "";
+	if(notObject(object)) {
+		error = "220: Invalid Sort Settings object";
+	} else {
+		let requiredProperties = 0;
+		const pairs = Object.entries(object);
+		while(!error && pairs.length > 0) {
+			const [key, value] = pairs.shift()!
+			let flag = false;
+			switch (key) {
+				case "defaultCustomSort":
+				case "sortLanguage":
+					flag = notString(value);
+					break;
+				case "sensitivity":
+					requiredProperties++;
+					flag = value !== "base"
+						&& value !== "accent"
+						&& value !== "case"
+						&& value !== "variant";
+					break;
+				case "customSorts":
+					flag = notArrayOf(value, invalidSortObject);
+					break;
+				default:
+					flag = true;
+			}
+			if(flag) {
+				error = `224: Sort Settings has invalid property "${key}"`;
+			}
+		}
+		if(!error && requiredProperties < 2) {
+			error = "222: Sort Settings object is missing"
+				+ ` ${2 - requiredProperties} propert${requiredProperties === 1 ? "y" : "ies"}`;
+		}
+	}
+	return error || false;
+};
+
+const invalidWGStorage = (object: any) => {
+	if(notArray(object)) {
+		return "901.1: invalid WordGen storage property"
+	}
+	const pairs = [...object as any[]];
+	let error: string | false = false;
+	while(!error && pairs.length > 0) {
+		const [label, obj] = pairs.shift()!;
+		if(notString(label)) {
+			error = "911.1: invalid WordGen storage object label"
+		} else if (notObject(obj)) {
+			error = "912.1: invalid WordGen storage object";
+		} else {
+			const result = invalidWGState(object, true);
+			error = result && result.replace(/^3([0-9][0-9]):(.+?)WordGen State/, "9$1.1$2WordGen storage");
+		}
+	}
+	return error || false;
+};
+
+const invalidWEStorage = (object: any) => {
+	if(notArray(object)) {
+		return "901.2: invalid WordEvolve storage property"
+	}
+	const pairs = [...object as any[]];
+	let error: string | false = false;
+	while(!error && pairs.length > 0) {
+		const [label, obj] = pairs.shift()!;
+		if(notString(label)) {
+			error = "911.2: invalid WordEvolve storage object label"
+		} else if (notObject(obj)) {
+			error = "912.2: invalid WordEvolve storage object";
+		} else {
+			const result = invalidWEState(object, true);
+			error = result && result.replace(/^4([0-9][0-9]):(.+?)WordEvolve State/, "9$1.2$2WordEvolve storage");
+		}
+	}
+	return error || false;
+};
+
+const invalidMSStorage = (object: any) => {
+	if(notArray(object)) {
+		return "901.3: invalid MorphoSyntax storage property"
+	}
+	const pairs = [...object as any[]];
+	let error: string | false = false;
+	while(!error && pairs.length > 0) {
+		const [label, obj] = pairs.shift()!;
+		if(notString(label)) {
+			error = "911.3: invalid MorphoSyntax storage object label"
+		} else if (notObject(obj)) {
+			error = "912.3: invalid MorphoSyntax storage object";
+		} else {
+			const result = invalidMSState(object);
+			error = result && result.replace(/^5([0-9][0-9]):(.+?)MorphoSyntax State/, "9$1.3$2MorphoSyntax storage");
+		}
+	}
+	return error || false;
+};
+
+const invalidDJStorage = (object: any) => {
+	if(notArray(object)) {
+		return "901.5: invalid Declenjugator storage property"
+	}
+	const pairs = [...object as any[]];
+	let error: string | false = false;
+	while(!error && pairs.length > 0) {
+		const [label, obj] = pairs.shift()!;
+		if(notString(label)) {
+			error = "911.5: invalid Declenjugator storage object label"
+		} else if (notObject(obj)) {
+			error = "912.5: invalid Declenjugator storage object";
+		} else {
+			const result = invalidDJState(object, true);
+			error = result && result.replace(/^6([0-9][0-9]):(.+?)Declenjugator State/, "9$1.5$2Declenjugator storage");
+		}
+	}
+	return error || false;
+};
+
+const invalidLexStorage = (object: any) => {
+	if(notArray(object)) {
+		return "901.4: invalid Lexicon storage property"
+	}
+	const pairs = [...object as any[]];
+	let error: string | false = false;
+	while(!error && pairs.length > 0) {
+		const [label, obj] = pairs.shift()!;
+		if(notString(label)) {
+			error = "911.4: invalid Lexicon storage object label"
+		} else if (notObject(obj)) {
+			error = "912.4: invalid Lexicon storage object";
+		} else {
+			const result = invalidWGState(object, true);
+			error = result && result.replace(/^7([0-9][0-9]):(.+?)Lexicon State/, "9$1.4$2Lexicon storage");
+		}
+	}
+	return error || false;
+};
+
+const invalidOldStorageObject = (object: any) => {
+	if(notObject(object)) {
+		return "901.0: invalid Storage property"
+	}
+	const pairs = Object.entries(object);
+	if(pairs.length < 5) {
+		return "912.0: Storage object seems to be missing"
+			+ ` ${5 - pairs.length} propert${pairs.length === 4 ? "y" : "ies"}`;
+	} else if(pairs.length > 5) {
+		return "913.0: Storage object seems to have"
+			+ ` ${pairs.length - 5} extra propert${pairs.length === 6 ? "y" : "ies"}`;
+	}
+	let error: string | false = false;
+	pairs.some(([key, value]) => {
+		switch(key) {
+			case "lex":
+				error = invalidLexStorage(value);
+				break;
+			case "wg":
+				error = invalidWGStorage(value);
+				break;
+			case "we":
+				error = invalidWEStorage(value);
+				break;
+			case "mx":
+				error = invalidMSStorage(value);
+				break;
+			default:
+				error = `902.0: Storage has invalid property "${key}"`;
+		}
+		return error;
+	});
+	return error;
 };
 
 export const validVersions = [
@@ -874,12 +1143,21 @@ export function validateImport (
 			} else if (key === "wordLists" && compare(v, "0.9.5", "<")) {
 				error = invalidWordListsState(value);
 			} else if (key === "ec") {
+				error = invalidECState(value);
 			} else if (key === "sortSettings") {
-			} else if (key === "weStored") {
-			} else if (key === "wgStored") {
-			} else if (key === "msStored") {
-			} else if (key === "djStored") {
-			} else if (key === "lexStored") {
+				error = invalidSortingState(value);
+			} else if (key === "storages" && compare(v, "0.11.0", "<")) {
+				error = invalidOldStorageObject(value);
+			} else if (key === "wgStored" && compare(v, "0.11.0", ">=")) {
+				error = invalidWGStorage(value);
+			} else if (key === "weStored" && compare(v, "0.11.0", ">=")) {
+				error = invalidWEStorage(value);
+			} else if (key === "msStored" && compare(v, "0.11.0", ">=")) {
+				error = invalidMSStorage(value);
+			} else if (key === "djStored" && compare(v, "0.11.0", ">=")) {
+				error = invalidDJStorage(value);
+			} else if (key === "lexStored" && compare(v, "0.11.0", ">=")) {
+				error = invalidLexStorage(value);
 			} else {
 				error = `105: invalid property "${key}"`;
 			}
