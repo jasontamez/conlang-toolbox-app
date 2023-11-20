@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -15,22 +15,28 @@ import {
 	IonTextarea,
 	useIonToast,
 	IonItemDivider,
-	IonToggle
+	IonToggle,
+	useIonAlert
 } from '@ionic/react';
-import { closeCircle, closeCircleOutline, sparkles } from "ionicons/icons";
+import { arrowUpCircle, closeCircle, closeCircleOutline, sparkles } from "ionicons/icons";
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+	AppSettings,
+	Concept,
+	ConceptsState,
 	DJCustomInfo,
-	DJGroup,
+	DJState,
+	ExtraCharactersState,
 	ImportExportObject,
 	LexiconState,
 	ModalProperties,
 	MSState,
-	SortSettings,
-	StateObject
+	SaveableSortSettings,
+	StateObject,
+	WEState,
+	WGState
 } from '../../store/types';
-import { currentVersion } from '../../store/blankAppState';
 import { validateImport } from '../../store/validators';
 
 import {
@@ -43,6 +49,16 @@ import {
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
+import { loadSortSettingsState } from '../../store/sortingSlice';
+import { loadStateSettings } from '../../store/settingsSlice';
+import { loadStateWG } from '../../store/wgSlice';
+import { loadStateWE } from '../../store/weSlice';
+import { loadStateMS } from '../../store/msSlice';
+import { loadStateDJ } from '../../store/declenjugatorSlice';
+import { loadStateLex } from '../../store/lexiconSlice';
+import { loadStateConcepts } from '../../store/conceptsSlice';
+import { loadStateEC } from '../../store/extraCharactersSlice';
+import yesNoAlert from '../../components/yesNoAlert';
 
 type storedLex = [string, LexiconState][];
 type storedMS = [string, MSState][];
@@ -50,24 +66,20 @@ type storedWG = [string, any][];
 type storedWE = [string, any][];
 type storedDJ = [string, DJCustomInfo][];
 
-type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
+type ImportSettings = [ AppSettings | null, SaveableSortSettings | null ];
 
-type OutputObject = Omit<StateObject, "sortSettings" | "lastView" | "logs"> & {
-	currentVersion: string
-	sortSettings: SaveableSortSettings
-	lexStored: storedLex
-	msStored: storedMS
-	wgStored: storedWG
-	weStored: storedWE
-	djStored: storedDJ
+function overwriteStorage (storage: LocalForage, data: [string, any][]) {
+	storage.clear().then(
+		() => data.forEach(([key, value]) => storage.setItem(key, value))
+	);	
 };
 
 const ImportData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const [doToast, undoToast] = useIonToast();
+	const [ doAlert ] = useIonAlert();
 	const dispatch = useDispatch();
-	const [preparingForImport, setPreparingForImport] = useState<boolean>(false);
-	const [output, setOutput] = useState<OutputObject | null>(null);
+	const [readyToImport, setReadyToImport] = useState<boolean>(false);
 	const [import_wg, setImport_wg] = useState<boolean>(true);
 	const [import_we, setImport_we] = useState<boolean>(true);
 	const [import_ms, setImport_ms] = useState<boolean>(true);
@@ -81,259 +93,111 @@ const ImportData = (props: ModalProperties) => {
 	const [import_msStored, setImport_msStored] = useState<boolean>(true);
 	const [import_djStored, setImport_djStored] = useState<boolean>(true);
 	const [import_lexStored, setImport_lexStored] = useState<boolean>(true);
-	const {
-		wg,
-		we,
-		ms,
-		dj,
-		lexicon,
-		concepts,
-		ec,
-		appSettings,
-		sortSettings
-	} = useSelector((state: StateObject) => state);
+	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
-	const exportedSortSettings = useMemo(() => {
-		const { defaultSortLanguage, customSorts, ...etc } = sortSettings;
-		const exportedSettings: SaveableSortSettings = {
-			...etc,
-			customSorts: customSorts.map(obj => {
-				return {
-					...obj,
-					customAlphabet: obj.customAlphabet && [...obj.customAlphabet],
-					multiples: obj.multiples && [...obj.multiples],
-					customizations: obj.customizations && obj.customizations.map(custom => {
-						if("equals" in custom) {
-							return {
-								...custom,
-								equals: [...custom.equals]
-							};
-						}
-						return {
-							...custom,
-							pre: [...custom.pre],
-							post: [...custom.post]
-						};
-					})
-				};
-			})
-		};
-		return exportedSettings;
-	}, [sortSettings]);
+	const [possible_wg, setPossible_wg] = useState<WGState | false>(false);
+	const [possible_we, setPossible_we] = useState<WEState | false>(false);
+	const [possible_ms, setPossible_ms] = useState<MSState | false>(false);
+	const [possible_dj, setPossible_dj] = useState<DJState | false>(false);
+	const [possible_lex, setPossible_lex] = useState<LexiconState | false>(false);
+	const [possible_con, setPossible_con] = useState<ConceptsState | false>(false);
+	const [possible_ec, setPossible_ec] = useState<ExtraCharactersState | false>(false);
+	const [possible_set, setPossible_set] = useState<ImportSettings | false>(false); // This covers settings AND sort settings
+	const [possible_wgStored, setPossible_wgStored] = useState<storedWG | false>(false);
+	const [possible_weStored, setPossible_weStored] = useState<storedWE | false>(false);
+	const [possible_msStored, setPossible_msStored] = useState<storedMS | false>(false);
+	const [possible_djStored, setPossible_djStored] = useState<storedDJ | false>(false);
+	const [possible_lexStored, setPossible_lexStored] = useState<storedLex | false>(false);
 
 	const doClose = () => {
+		doCancel();
 		setIsOpen(false);
 	};
 
-	useEffect(() => {
-		const lexS: storedLex = [];
-		const msS: storedMS = [];
-		const wgS: storedWG = [];
-		const weS: storedWE = [];
-		const djS: storedDJ = [];
-//		setOutputString("...loading");
-		const where = $i("importingData");
-		where && (where.value = "...loading");
-
-		const copyDJGroup = (input: DJGroup) => {
-			const {startsWith, endsWith, regex, declenjugations} = input;
-			const output: DJGroup = {
-				...input,
-				startsWith: [...startsWith],
-				endsWith: [...endsWith],
-				regex: regex ? [regex[0], regex[1]] : undefined,
-				declenjugations: declenjugations.map(obj => {
-					return obj.regex ?
-						{
-							...obj,
-							regex: [obj.regex[0], obj.regex[1]]
-						}
-					:
-						{...obj}
-				})
-			};
-			return output;
-		};
-
-		LexiconStorage.iterate((value: LexiconState, key: string) => {
-			lexS.push([key, value]);
-			return; // Blank return keeps the loop going
-		}).then(() => {
-			return MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
-				msS.push([key, value]);
-				return; // Blank return keeps the loop going
-			});
-		}).then(() => {
-			return CustomStorageWE.iterate((value: any, title: string) => {
-				weS.push([title, value]);
-				return; // Blank return keeps the loop going
-			});
-		}).then(() => {
-			return CustomStorageWG.iterate((value: any, title: string) => {
-				wgS.push([title, value]);
-				return; // Blank return keeps the loop going
-			});
-		}).then(() => {
-			return DeclenjugatorStorage.iterate((value: DJCustomInfo, title: string) => {
-				djS.push([title, value]);
-				return; // Blank return keeps the loop going
-			});
-		}).then(() => {
-			setOutput({
-				currentVersion,
-				wg: {
-					...wg,
-					characterGroups: wg.characterGroups.map((obj) => ({...obj})),
-					transforms: wg.transforms.map((obj) => ({...obj}))
-				},
-				we: {
-					...we,
-					characterGroups: we.characterGroups.map((obj) => ({...obj})),
-					transforms: we.transforms.map((obj) => ({...obj})),
-					soundChanges: we.soundChanges.map((obj) => ({...obj})),
-				},
-				ms: {
-					...ms,
-					lastView: "msSettings"
-				},
-				dj: { // versions >= 0.11.0
-					input: dj.input,
-					declensions: dj.declensions.map((obj) => ({...copyDJGroup(obj)})),
-					conjugations: dj.conjugations.map((obj) => ({...copyDJGroup(obj)})),
-					other: dj.other.map((obj) => ({...copyDJGroup(obj)}))
-				},
-				appSettings: {...appSettings},
-				lexicon: {
-					...lexicon,
-					sortPattern: [...lexicon.sortPattern],
-					columns: lexicon.columns.map((obj) => ({...obj})),
-					lexicon: lexicon.lexicon.map((obj) => ({
-						id: obj.id,
-						columns: [...obj.columns]
-					}))
-				},
-//				wordLists: { // versions <= 0.9.4
-//					centerTheDisplayedWords: wordListsState.textcenter ? [ "center" ] : [],
-//					listsDisplayed: convertedListsDisplayed
-//				},
-				concepts: { // versions >= 0.9.5
-					...concepts,
-					display: [...concepts.display],
-					combinations: concepts.combinations.map((obj) => ({
-						id: obj.id,
-						parts: obj.parts.map((obj) => ({...obj}))
-					}))
-				},
-				sortSettings: exportedSortSettings, // versions >= 0.10.0
-				ec: {
-					...ec,
-					faves: [...ec.faves]
-				},
-//				storages: { // versions <= 0.10.1
-//					lex: lexS,
-//					mx: msS, // Note the misspelling
-//					wg: wgS,
-//					we: weS
-//				}
-				lexStored: lexS, // versions >= 0.11.0
-				msStored: msS,   // versions >= 0.11.0
-				wgStored: wgS,   // versions >= 0.11.0
-				weStored: weS,   // versions >= 0.11.0
-				djStored: djS    // versions >= 0.11.0
-			});
-		});
-	}, [
-		wg,
-		we,
-		ms,
-		dj,
-		lexicon,
-		concepts,
-		ec,
-		appSettings,
-		exportedSortSettings
-	]);
-
-	useEffect(() => {
-		const exportable: any = {...output};
-		if(!import_wg) {
-			delete exportable.wg;
-		}
-		if(!import_we) {
-			delete exportable.we;
-		}
-		if(!import_ms) {
-			delete exportable.ms;
-		}
-		if(!import_dj) {
-			delete exportable.dj;
-		}
-		if(!import_lex) {
-			delete exportable.lexicon;
-		}
-		if(!import_con) {
-			delete exportable.concepts;
-		}
-		if(!import_ec) {
-			delete exportable.ec;
-		}
-		if(!import_set) {
-			delete exportable.appSettings;
-			delete exportable.sortSettings;
-		}
-		if(!import_wgStored) {
-			delete exportable.wgStored;
-		}
-		if(!import_weStored) {
-			delete exportable.weStored;
-		}
-		if(!import_msStored) {
-			delete exportable.msStored;
-		}
-		if(!import_djStored) {
-			delete exportable.djStored;
-		}
-		if(!import_lexStored) {
-			delete exportable.lexStored;
-		}
-		const final = JSON.stringify(exportable);
-//		setOutputString(final);
-		const where = $i("importingData");
-		where && (where.value = final);
-	}, [
-		output,
-		import_wg,
-		import_we,
-		import_ms,
-		import_dj,
-		import_lex,
-		import_con,
-		import_ec,
-		import_set,
-		import_wgStored,
-		import_weStored,
-		import_msStored,
-		import_djStored,
-		import_lexStored
-	]);
-
-	function onLoad() {
-		setImport_wg(true);
-		setImport_we(true);
-		setImport_ms(true);
-		setImport_dj(true);
-		setImport_lex(true);
-		setImport_con(true);
-		setImport_ec(true);
-		setImport_set(true);
-		setImport_wgStored(true);
-		setImport_weStored(true);
-		setImport_msStored(true);
-		setImport_djStored(true);
-		setImport_lexStored(true);
+	const doCancel = () => {
+		const el = $i("importingData");
+		el && (el.value = "");
+		setReadyToImport(false);
+		setPossible_wg(false);
+		setPossible_we(false);
+		setPossible_dj(false);
+		setPossible_ms(false);
+		setPossible_ec(false);
+		setPossible_lex(false);
+		setPossible_wgStored(false);
+		setPossible_weStored(false);
+		setPossible_djStored(false);
+		setPossible_msStored(false);
+		setPossible_lexStored(false);
 	};
 
-	function parseInput(object: ImportExportObject) {};
+	function onLoad() {
+		const el = $i("importingData");
+		el && (el.value = "");
+	};
+
+	// Scan input for data and set state appropriately
+	function parseInput(object: ImportExportObject) {
+		const {
+			wg,
+			we,
+			dj,
+			ms,
+			lexicon,
+			concepts,
+			wordLists,
+			ec,
+			appSettings,
+			sortSettings,
+			wgStored,
+			weStored,
+			msStored,
+			djStored,
+			lexStored
+		} = object;
+		setPossible_wg(wg || false);
+		setPossible_we(we || false);
+		setPossible_dj(dj || false);
+		setPossible_ms(ms || false);
+		setPossible_ec(ec || false);
+		setPossible_lex(lexicon || false);
+		setPossible_wgStored(wgStored || false);
+		setPossible_weStored(weStored || false);
+		setPossible_djStored(djStored || false);
+		setPossible_msStored(msStored || false);
+		setPossible_lexStored(lexStored || false);
+		if(concepts) {
+			setPossible_con(concepts);
+		} else if (wordLists) {
+			const display: (keyof Concept)[] = [];
+			Object.entries(wordLists.listsDisplayed).forEach(([key, value]) => {
+				value && display.push(key as keyof Concept);
+			});
+			const textCenter = wordLists.centerTheDisplayedWords.length > 0;
+			setPossible_con({
+				display,
+				textCenter,
+				showingCombos: false,
+				combinations: []
+			});
+		} else {
+			setPossible_con(false);
+		}
+		if(appSettings) {
+			const obj: AppSettings = {
+				currentSort: null,
+				...appSettings
+			}
+			setPossible_set([obj, sortSettings || null]);
+		} else if (sortSettings) {
+			setPossible_set([null, sortSettings]);
+		} else {
+			setPossible_set(false);
+		}
+		setReadyToImport(true);
+	};
+
+	// Look at the pasted import and try to make an object out of it
 	function analyze() {
 		const el = $i("importingData");
 		const incoming = (el && el.value) || "";
@@ -345,7 +209,7 @@ const ImportData = (props: ModalProperties) => {
 				return parseInput(parsed);
 			}
 			toaster({
-				message: `ERROR (102): input was not an object`,
+				message: `ERROR 102: input was not an object`,
 				color: "danger",
 				doToast,
 				undoToast
@@ -353,13 +217,101 @@ const ImportData = (props: ModalProperties) => {
 		} catch (e) {
 			log(dispatch, ["Error parsing Import", incoming, error || e]);
 			return toaster({
-				message: error || `PARSE ERROR (101): [${e}]`,
+				message: error || `PARSE ERROR 101: [${e}]`,
 				color: "danger",
 				doToast,
 				undoToast
 			});
 		}
-		setPreparingForImport(true);
+	};
+
+	// Actually import the given data
+	function doImport() {
+		// Get string list of data we're importing
+		const overwriting: string[] = [];
+		const storages: string[] = [];
+		import_wg && possible_wg && overwriting.push("WordGen");
+		import_we && possible_we && overwriting.push("WordEvolve");
+		import_ms && possible_ms && overwriting.push("MorphoSyntax");
+		import_dj && possible_dj && overwriting.push("Declenjugator");
+		import_lex && possible_lex && overwriting.push("Lexicon");
+		import_con && possible_con && overwriting.push("Concepts");
+		import_ec && possible_ec && overwriting.push("Extra Characters");
+		import_set && possible_set && overwriting.push("App Settings");
+		import_wgStored && possible_wgStored && storages.push("WordGen");
+		import_weStored && possible_weStored && storages.push("WordEvolve");
+		import_msStored && possible_msStored && storages.push("MorphoSyntax");
+		import_djStored && possible_djStored && storages.push("Declenjugator");
+		import_lexStored && possible_lexStored && storages.push("Lexicon");
+		// Create a handler that does the actual importing
+		const handler = () => {
+			// IMPORT!
+			import_wg && possible_wg && dispatch(loadStateWG(possible_wg));
+			import_we && possible_we && dispatch(loadStateWE(possible_we));
+			import_ms && possible_ms && dispatch(loadStateMS(possible_ms));
+			import_dj && possible_dj && dispatch(loadStateDJ(possible_dj));
+			import_lex && possible_lex && dispatch(loadStateLex(possible_lex));
+			import_con && possible_con && dispatch(loadStateConcepts(possible_con));
+			import_ec && possible_ec && dispatch(loadStateEC(possible_ec));
+			if(possible_set) {
+				const [settings, sorting] = possible_set;
+				settings && dispatch(loadStateSettings(settings));
+				sorting && dispatch(loadSortSettingsState(sorting));
+			}
+			import_wgStored && possible_wgStored && overwriteStorage(CustomStorageWG, possible_wgStored);
+			import_weStored && possible_weStored && overwriteStorage(CustomStorageWE, possible_weStored);
+			import_msStored && possible_msStored && overwriteStorage(MorphoSyntaxStorage, possible_msStored);
+			import_djStored && possible_djStored && overwriteStorage(DeclenjugatorStorage, possible_djStored);
+			import_lexStored && possible_lexStored && overwriteStorage(LexiconStorage, possible_lexStored);
+			// Create success message
+			let message = overwriting.length > 0 ? "Imported new info for " + overwriting.join(", ") : "";
+			if(storages.length > 0) {
+				if(message) {
+					message += "; also completely overwrote storage for " + storages.join(", ");
+				} else {
+					message = "Completely overwrote storage for " + storages.join(", ");
+				}
+			}
+			toaster({
+				message,
+				color: "success",
+				position: "middle",
+				duration: 10000,
+				doToast,
+				undoToast
+			});
+		};
+		// Sanity check
+		if(storages.length + overwriting.length === 0) {
+			return toaster({
+				message: "You did not choose anything to import.",
+				color: "danger",
+				position: "middle",
+				duration: 5000,
+				doToast,
+				undoToast
+			});
+		} else if(disableConfirms) {
+			// Go right ahead
+			return handler();
+		}
+		// Give them a chance to back out.
+		let message = overwriting.length > 0 ? "This will overwrite all current data in " + overwriting.join(", ") : "";
+		if(storages.length > 0) {
+			if(message) {
+				message += ". It will ALSO delete and replace stored data for " + storages.join(", ");
+			} else {
+				message = "This will delete and replace stored data for " + storages.join(", ");
+			}
+		}
+		message += ". Are you SURE you want to do this?";
+		yesNoAlert({
+			header: "WARNING!",
+			message,
+			handler,
+			submit: "Yes, I Want to Do This",
+			doAlert
+		});
 	};
 
 	return (
@@ -375,12 +327,11 @@ const ImportData = (props: ModalProperties) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="importData" className={preparingForImport ? "" : "waitingForInput"}>
+				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
 					<IonItem className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
 							<h2 className="ion-text-center ion-text-wrap">
-								Save this info to a note or file.
-								<br />You will be able to use it later to restore your data.
+								Paste your data below.
 							</h2>
 						</IonLabel>
 					</IonItem>
@@ -390,7 +341,7 @@ const ImportData = (props: ModalProperties) => {
 							wrap="soft"
 							rows={12}
 							id="importingData"
-							disabled={preparingForImport}
+							disabled={readyToImport}
 						></IonTextarea>
 					</IonItem>
 					<IonItem lines="none" className="permanent">
@@ -398,14 +349,15 @@ const ImportData = (props: ModalProperties) => {
 							id="cancelButton"
 							color="primary"
 							slot="start"
-							className={preparingForImport ? "showing" : "hiding"}
+							className={readyToImport ? "showing" : "hiding"}
+							onClick={doCancel}
 						>
 							<IonLabel>Cancel</IonLabel>
 							<IonIcon icon={closeCircle} slot="end" />
 						</IonButton>
 						<IonButton
 							color="primary"
-							disabled={preparingForImport}
+							disabled={readyToImport}
 							slot="end"
 							onClick={analyze}
 						>
@@ -414,7 +366,10 @@ const ImportData = (props: ModalProperties) => {
 						</IonButton>
 					</IonItem>
 					<IonItemDivider>What to Import</IonItemDivider>
-					<IonItem lines="none">
+					<IonItem
+						className={possible_ms ? "" : "notSelectable"}
+						lines={possible_msStored ? "none" : "full"}
+					>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current MorphoSyntax Settings"
@@ -422,7 +377,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_ms(!import_ms)}
 						>Current MorphoSyntax Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_msStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored MorphoSyntax Documents"
@@ -430,7 +385,10 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_msStored(!import_msStored)}
 						>Stored MorphoSyntax Documents</IonToggle>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem
+						className={possible_wg ? "" : "notSelectable"}
+						lines={possible_wgStored ? "none" : "full"}
+					>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current WordGen Settings"
@@ -438,7 +396,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_wg(!import_wg)}
 						>Current WordGen Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_wgStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored WordGen Settings"
@@ -446,7 +404,10 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_wgStored(!import_wgStored)}
 						>Stored WordGen Settings</IonToggle>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem
+						className={possible_we ? "" : "notSelectable"}
+						lines={possible_weStored ? "none" : "full"}
+					>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current WordEvolve Settings"
@@ -454,7 +415,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_we(!import_we)}
 						>Current WordEvolve Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_weStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored WordEvolve Settings"
@@ -462,7 +423,10 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_weStored(!import_weStored)}
 						>Stored WordEvolve Settings</IonToggle>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem
+						className={possible_dj ? "" : "notSelectable"}
+						lines={possible_djStored ? "none" : "full"}
+					>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current Declenjugator Settings"
@@ -470,7 +434,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_dj(!import_dj)}
 						>Current Declenjugator Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_djStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored Declenjugator Info"
@@ -478,7 +442,10 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_djStored(!import_djStored)}
 						>Stored Declenjugator Info</IonToggle>
 					</IonItem>
-					<IonItem lines="none">
+					<IonItem
+						className={possible_lex ? "" : "notSelectable"}
+						lines={possible_lexStored ? "none" : "full"}
+					>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Current Lexicon Settings"
@@ -486,7 +453,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_lex(!import_lex)}
 						>Current Lexicon Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_lexStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Stored Lexicons"
@@ -494,7 +461,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_lexStored(!import_lexStored)}
 						>Stored Lexicons</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_con ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Concepts Settings"
@@ -502,7 +469,7 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_con(!import_con)}
 						>Concepts Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_ec ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Extra Characters Settings"
@@ -510,13 +477,23 @@ const ImportData = (props: ModalProperties) => {
 							onIonChange={() => setImport_ec(!import_ec)}
 						>Extra Characters Settings</IonToggle>
 					</IonItem>
-					<IonItem>
+					<IonItem className={possible_set ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
 							aria-label="Other App Settings"
 							checked={import_set}
 							onIonChange={() => setImport_set(!import_set)}
 						>Other App Settings</IonToggle>
+					</IonItem>
+					<IonItem>
+						<IonButton
+							color="primary"
+							slot="end"
+							onClick={doImport}
+						>
+							<IonLabel>Import</IonLabel>
+							<IonIcon icon={arrowUpCircle} slot="start" />
+						</IonButton>
 					</IonItem>
 				</IonList>
 			</IonContent>

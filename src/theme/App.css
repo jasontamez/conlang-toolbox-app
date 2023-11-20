@@ -350,7 +350,8 @@ ion-app .fullScreen .collapse div ion-button {
 	max-height: max-content;
 }
 #importData.waitingForInput ion-item:not(.permanent),
-#importData.waitingForInput ion-item-divider {
+#importData.waitingForInput ion-item-divider,
+#importData ion-item.notSelectable {
 	--border-width: 0;
 	--padding-top: 0;
 	--padding-bottom: 0;
