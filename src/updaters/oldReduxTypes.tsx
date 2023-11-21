@@ -301,8 +301,9 @@ export interface ConceptCombo {
 	id: string
 	parts: Concept[]
 }
+type ConceptDisplay = keyof Omit<Concept, "id" | "word">;
 export interface ConceptsState {
-	display: (keyof Concept)[]
+	display: ConceptDisplay[]
 	textCenter: boolean
 	showingCombos: boolean
 	combinations: ConceptCombo[]

@@ -20,10 +20,18 @@ const setDisableConfirmsFunc = (state: AppSettings, action: PayloadAction<boolea
 };
 
 const loadStateSettingsFunc = (state: AppSettings, action: PayloadAction<AppSettings>) => {
-	const final = {
-		...state,
-		...action.payload
-	};
+	// Cleaning any stray properties away
+	const { payload } = action;
+	const disableConfirms = (
+			payload.disableConfirms === false || payload.disableConfirms === true
+		) ? payload.disableConfirms
+		: state.disableConfirms || false;
+	const currentSort = payload.currentSort === null ? null : payload.currentSort || null;
+	const final: AppSettings = {
+		theme: payload.theme || state.theme || initialState.theme,
+		disableConfirms,
+		currentSort
+	} ;
 	return final;
 };
 

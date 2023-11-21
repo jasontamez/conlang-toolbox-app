@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import blankAppState from './blankAppState';
-import { Concept, ConceptsState } from './types';
+import { Concept, ConceptsState, ConceptDisplay } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = blankAppState.concepts;
 
-const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<(keyof Concept)[]>) => {
+const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<ConceptDisplay[]>) => {
 	state.display = action.payload;
 	return state;
 };
@@ -29,6 +29,7 @@ const removeCustomHybridMeaningsFunc = (state: ConceptsState, action: PayloadAct
 };
 
 const loadStateConceptsFunc = (state: ConceptsState, action: PayloadAction<ConceptsState>) => {
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
 		...state,
 		...action.payload

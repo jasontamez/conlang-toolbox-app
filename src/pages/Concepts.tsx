@@ -29,7 +29,7 @@ import {
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
 import { addItemsToLexiconColumn } from '../store/lexiconSlice';
-import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject } from '../store/types';
+import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject, ConceptDisplay } from '../store/types';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import { ConceptsOutlineIcon, LexiconIcon, LexiconOutlineIcon } from '../components/icons';
@@ -83,13 +83,13 @@ const ConceptsPage = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
 	const navigator = useIonRouter();
-	const toggleChars = (what: keyof Concept) => {
-		if(display.some((p: keyof Concept) => p === what)) {
-			return dispatch(updateConceptsDisplay(display.filter((p: keyof Concept) => p !== what)));
+	const toggleChars = (what: ConceptDisplay) => {
+		if(display.some((p: ConceptDisplay) => p === what)) {
+			return dispatch(updateConceptsDisplay(display.filter((p: ConceptDisplay) => p !== what)));
 		}
 		dispatch(updateConceptsDisplay([...display, what]));
 	};
-	const shown = Concepts.filter((word: Concept) => display.some((p: keyof Concept) => word[p]));
+	const shown = Concepts.filter((word: Concept) => display.some((p: ConceptDisplay) => word[p]));
 	useEffect(() => {
 		if(unlinking && (!showingCombos || combinations.length === 0)) {
 			setUnlinking(false);
@@ -341,9 +341,9 @@ const ConceptsPage = (props: PageData) => {
 					<IonItem className="conceptsChips">
 						<div className="chips">
 							<span>Display:</span>
-							{ConceptsSources.map((pair: [string, keyof Concept], ind: number) => {
+							{ConceptsSources.map((pair: [string, ConceptDisplay], ind: number) => {
 								const [list, prop] = pair;
-								const current = display.some((p: keyof Concept) => p === prop);
+								const current = display.some((p: ConceptDisplay) => p === prop);
 								return (
 									<IonChip
 										key={prop}

@@ -1,6 +1,6 @@
-import { Concept } from "../store/types";
+import { Concept, ConceptDisplay } from "../store/types";
 
-export const ConceptsSources: [string, keyof Concept][] = [
+export const ConceptsSources: [string, ConceptDisplay][] = [
 	["Swadesh 100", "s100"],
 	["Swadesh 207", "s207"],
 	["Swadesh-Yakhontov", "sy"],

@@ -64,6 +64,7 @@ const loadStateFunc = (state: DJState, action: PayloadAction<DJCustomInfo | null
 		conjugations,
 		other
 	} = action.payload || initialState;
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	return {
 		...state,
 		declensions,

@@ -85,6 +85,7 @@ const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<str
 };
 
 const loadSortSettingsStateFunc = (state: SortSettings, action: PayloadAction<SaveableSortSettings>) => {
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const { payload } = action;
 	return {
 		...state,

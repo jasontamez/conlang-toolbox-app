@@ -82,6 +82,7 @@ const sortLexicon = (
 
 
 const loadStateFunc = (state: LexiconState, action: PayloadAction<LexiconState>) => {
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
 		...state,
 		...action.payload,

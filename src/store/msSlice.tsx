@@ -31,7 +31,8 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[MSText, string
 	return state;
 };
 
-const setMorphoSyntaxFunc = (state: MSState, action: PayloadAction<MSState>) => {
+const loadStateFunc = (state: MSState, action: PayloadAction<MSState>) => {
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
 		...state,
 		...action.payload
@@ -56,7 +57,7 @@ const morphoSyntaxSlice = createSlice({
 		setSyntaxBool: setSyntaxBoolFunc,
 		setSyntaxNum: setSyntaxNumFunc,
 		setSyntaxText: setSyntaxTextFunc,
-		loadStateMS: setMorphoSyntaxFunc,
+		loadStateMS: loadStateFunc,
 		saveView: saveViewFunc
 	}
 });

@@ -238,6 +238,7 @@ const loadStateFunc = (state: WGState, action: PayloadAction<Base_WG | null>) =>
 		exclamatorySentencePost,
 		customSort
 	} = action.payload || initialState;
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	return {
 		...state,
 		characterGroups: [...characterGroups],

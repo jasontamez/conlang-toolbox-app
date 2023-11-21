@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
 	AppSettings,
-	Concept,
+	ConceptDisplay,
 	ConceptsState,
 	DJCustomInfo,
 	DJState,
@@ -169,9 +169,9 @@ const ImportData = (props: ModalProperties) => {
 		if(concepts) {
 			setPossible_con(concepts);
 		} else if (wordLists) {
-			const display: (keyof Concept)[] = [];
+			const display: ConceptDisplay[] = [];
 			Object.entries(wordLists.listsDisplayed).forEach(([key, value]) => {
-				value && display.push(key as keyof Concept);
+				value && display.push(key as ConceptDisplay);
 			});
 			const textCenter = wordLists.centerTheDisplayedWords.length > 0;
 			setPossible_con({
@@ -201,12 +201,23 @@ const ImportData = (props: ModalProperties) => {
 	function analyze() {
 		const el = $i("importingData");
 		const incoming = (el && el.value) || "";
-		let error = "";
 		try {
 			const parsed: ImportExportObject = JSON.parse(incoming);
 			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-				validateImport(parsed);
-				return parseInput(parsed);
+				try {
+					validateImport(parsed);
+					parseInput(parsed);
+				} catch(e) {
+					let message = (e instanceof Error) ? e.message : `${e}`;
+					log(dispatch, ["Error validating Import", incoming, message]);
+					toaster({
+						message,
+						color: "danger",
+						doToast,
+						undoToast
+					});
+				}
+				return;
 			}
 			toaster({
 				message: `ERROR 102: input was not an object`,
@@ -215,9 +226,10 @@ const ImportData = (props: ModalProperties) => {
 				undoToast
 			});
 		} catch (e) {
-			log(dispatch, ["Error parsing Import", incoming, error || e]);
+			let message = (e instanceof Error) ? e.message : `${e}`;
+			log(dispatch, ["Error parsing Import", incoming, message]);
 			return toaster({
-				message: error || `PARSE ERROR 101: [${e}]`,
+				message: `PARSE ERROR 101: ${message}`,
 				color: "danger",
 				doToast,
 				undoToast
@@ -328,7 +340,7 @@ const ImportData = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
-					<IonItem className="permanent">
+					<IonItem lines="none" className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
 							<h2 className="ion-text-center ion-text-wrap">
 								Paste your data below.
@@ -344,10 +356,10 @@ const ImportData = (props: ModalProperties) => {
 							disabled={readyToImport}
 						></IonTextarea>
 					</IonItem>
-					<IonItem lines="none" className="permanent">
+					<IonItem className="permanent">
 						<IonButton
 							id="cancelButton"
-							color="primary"
+							color="warning"
 							slot="start"
 							className={readyToImport ? "showing" : "hiding"}
 							onClick={doCancel}
@@ -487,7 +499,7 @@ const ImportData = (props: ModalProperties) => {
 					</IonItem>
 					<IonItem>
 						<IonButton
-							color="primary"
+							color="secondary"
 							slot="end"
 							onClick={doImport}
 						>

@@ -25,6 +25,7 @@ const setNowShowingFunc = (state: ExtraCharactersState, action: PayloadAction<Ex
 	return state;
 };
 const loadStateFunc = (state: ExtraCharactersState, action: PayloadAction<ExtraCharactersState>) => {
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
 		...state,
 		...action.payload

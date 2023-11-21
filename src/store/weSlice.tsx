@@ -162,6 +162,7 @@ const loadStateFunc = (state: WEState, action: PayloadAction<WEPresetObject>) =>
 		transforms,
 		soundChanges
 	} = action.payload || initialState;
+	// TO-DO: Needs to prune state of any extra properties hanging around
 	const newState = {
 		...state,
 		characterGroups: [...characterGroups],
