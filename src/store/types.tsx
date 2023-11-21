@@ -170,176 +170,6 @@ export type WEPresets = [
 // MORPHOSYNTAX
 //
 
-export interface MSInfo {
-	BOOL_prefixMost?: boolean
-	BOOL_prefixLess?: boolean
-	BOOL_suffixMost?: boolean
-	BOOL_suffixLess?: boolean
-	BOOL_circumfixMost?: boolean
-	BOOL_circumfixLess?: boolean
-	BOOL_infixMost?: boolean
-	BOOL_infixLess?: boolean
-	BOOL_actions?: boolean
-	BOOL_actionProcesses?: boolean
-	BOOL_weather?: boolean
-	BOOL_states?: boolean
-	BOOL_involuntaryProcesses?: boolean
-	BOOL_bodyFunctions?: boolean
-	BOOL_motion?: boolean
-	BOOL_position?: boolean
-	BOOL_factive?: boolean
-	BOOL_cognition?: boolean
-	BOOL_sensation?: boolean
-	BOOL_emotion?: boolean
-	BOOL_utterance?: boolean
-	BOOL_manipulation?: boolean
-	BOOL_otherVerbClass?: boolean
-	BOOL_lexVerb?: boolean
-	BOOL_lexNoun?: boolean
-	BOOL_lexVN?: boolean
-	BOOL_lexVorN?: boolean
-	BOOL_adjectives?: boolean
-	BOOL_baseFive?: boolean
-	BOOL_baseTen?: boolean
-	BOOL_baseTwenty?: boolean
-	BOOL_baseOther?: boolean
-	BOOL_numGL?: boolean
-	BOOL_numLG?: boolean
-	BOOL_numNone?: boolean
-	BOOL_multiNumSets?: boolean
-	BOOL_inflectNum?: boolean
-	BOOL_APV?: boolean
-	BOOL_AVP?: boolean
-	BOOL_PAV?: boolean
-	BOOL_PVA?: boolean
-	BOOL_VAP?: boolean
-	BOOL_VPA?: boolean
-	BOOL_preP?: boolean
-	BOOL_postP?: boolean
-	BOOL_circumP?: boolean
-	BOOL_numSing?: boolean
-	BOOL_numDual?: boolean
-	BOOL_numTrial?: boolean
-	BOOL_numPaucal?: boolean
-	BOOL_numPlural?: boolean
-	BOOL_classGen?: boolean
-	BOOL_classAnim?: boolean
-	BOOL_classShape?: boolean
-	BOOL_classFunction?: boolean
-	BOOL_classOther?: boolean
-	BOOL_dimAugYes?: boolean
-	BOOL_dimAugObligatory?: boolean
-	BOOL_dimAugProductive?: boolean
-	BOOL_nomAcc?: boolean
-	BOOL_ergAbs?: boolean
-	BOOL_markInv?: boolean
-	BOOL_markDirInv?: boolean
-	BOOL_verbAgreeInv?: boolean
-	BOOL_wordOrderChange?: boolean
-	BOOL_tenseMorph?: boolean
-	BOOL_aspectMorph?: boolean
-	BOOL_modeMorph?: boolean
-	BOOL_otherMorph?: boolean
-	BOOL_chainFirst?: boolean
-	BOOL_chainLast?: boolean
-	BOOL_chainN?: boolean
-	BOOL_chainV?: boolean
-	BOOL_chainCj?: boolean
-	BOOL_chainT?: boolean
-	BOOL_chainA?: boolean
-	BOOL_chainPer?: boolean
-	BOOL_chainNum?: boolean
-	BOOL_chainOther?: boolean
-	BOOL_relPre?: boolean
-	BOOL_relPost?: boolean
-	BOOL_relInternal?: boolean
-	BOOL_relHeadless?: boolean
-	BOOL_coordMid?: boolean
-	BOOL_coordTwo?: boolean
-	BOOL_coordLast?: boolean
-	NUM_synthesis?: number
-	NUM_fusion?: number
-	NUM_stemMod?: number
-	NUM_suppletion?: number
-	NUM_redupe?: number
-	NUM_supraMod?: number
-	NUM_headDepMarked?: number
-	TEXT_tradTypol?: string
-	TEXT_morphProcess?: string
-	TEXT_headDepMark?: string
-	TEXT_propNames?: string
-	TEXT_possessable?: string
-	TEXT_countMass?: string
-	TEXT_pronounAnaphClitic?: string
-	TEXT_semanticRole?: string
-	TEXT_verbClass?: string
-	TEXT_verbStructure?: string
-	TEXT_propClass?: string
-	TEXT_quantifier?: string
-	TEXT_numeral?: string
-	TEXT_adverb?: string
-	TEXT_mainClause?: string
-	TEXT_verbPhrase?: string
-	TEXT_nounPhrase?: string
-	TEXT_adPhrase?: string
-	TEXT_compare?: string
-	TEXT_questions?: string
-	TEXT_COType?: string
-	TEXT_compounding?: string
-	TEXT_denoms?: string
-	TEXT_nNumberOpt?: string
-	TEXT_nNumberObl?: string
-	TEXT_nCase?: string
-	TEXT_articles?: string
-	TEXT_demonstratives?: string
-	TEXT_possessors?: string
-	TEXT_classGender?: string
-	TEXT_dimAug?: string
-	TEXT_predNom?: string
-	TEXT_predLoc?: string
-	TEXT_predEx?: string
-	TEXT_predPoss?: string
-	TEXT_ergative?: string
-	TEXT_causation?: string
-	TEXT_applicatives?: string
-	TEXT_dativeShifts?: string
-	TEXT_datOfInt?: string
-	TEXT_possessRaising?: string
-	TEXT_refls?: string
-	TEXT_recips?: string
-	TEXT_passives?: string
-	TEXT_inverses?: string
-	TEXT_middleCon?: string
-	TEXT_antiP?: string
-	TEXT_objDemOmInc?: string
-	TEXT_verbNoms?: string
-	TEXT_verbComp?: string
-	TEXT_tense?: string
-	TEXT_aspect?: string
-	TEXT_mode?: string
-	TEXT_locDirect?: string
-	TEXT_evidence?: string
-	TEXT_miscVerbFunc?: string
-	TEXT_pragFocusEtc?: string
-	TEXT_negation?: string
-	TEXT_declaratives?: string
-	TEXT_YNQs?: string
-	TEXT_QWQs?: string
-	TEXT_imperatives?: string
-	TEXT_serialVerbs?: string
-	TEXT_complClauses?: string
-	TEXT_advClauses?: string
-	TEXT_clauseChainEtc?: string
-	TEXT_relClauses?: string
-	TEXT_coords?: string
-}
-export interface MSState extends MSInfo {
-	id: string
-	lastSave: number
-	title: string
-	description: string
-	lastView: string
-}
 export type MSBool = "BOOL_prefixMost" | "BOOL_prefixLess" | "BOOL_suffixMost" | "BOOL_suffixLess"
 				| "BOOL_circumfixMost" | "BOOL_circumfixLess" | "BOOL_infixMost" | "BOOL_infixLess"
 				| "BOOL_actions" | "BOOL_actionProcesses" | "BOOL_weather" | "BOOL_states"
@@ -376,6 +206,23 @@ export type MSText = "TEXT_tradTypol" | "TEXT_morphProcess" | "TEXT_headDepMark"
 				| "TEXT_miscVerbFunc" | "TEXT_pragFocusEtc" | "TEXT_negation" | "TEXT_declaratives"
 				| "TEXT_YNQs" | "TEXT_QWQs" | "TEXT_imperatives" | "TEXT_serialVerbs" | "TEXT_complClauses"
 				| "TEXT_advClauses" | "TEXT_clauseChainEtc" | "TEXT_relClauses" | "TEXT_coords";
+export type MSBoolType = {
+	[key in MSBool]?: boolean
+}
+export type MSNumType = {
+	[key in MSNum]?: number
+}
+export type MSTextType = {
+	[key in MSText]?: string
+}
+export type MSInfo = MSBoolType & MSNumType & MSTextType
+export interface MSState extends MSInfo {
+	id: string
+	lastSave: number
+	title: string
+	description: string
+	lastView: string
+}
 
 //
 // LEXICON
