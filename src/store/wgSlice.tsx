@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import {
 	Fifty_OneThousand,
 	Five_OneHundred,
@@ -238,9 +238,8 @@ const loadStateFunc = (state: WGState, action: PayloadAction<Base_WG | null>) =>
 		exclamatorySentencePost,
 		customSort
 	} = action.payload || initialState;
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	return {
-		...state,
+		...cleanStateFunc(state, null),
 		characterGroups: [...characterGroups],
 		multipleSyllableTypes,
 		singleWord,
@@ -262,6 +261,15 @@ const loadStateFunc = (state: WGState, action: PayloadAction<Base_WG | null>) =>
 		exclamatorySentencePost,
 		customSort
 	};
+};
+
+const cleanStateFunc = (state: WGState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.wg.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: WGState = {...temp};
+	return final;
 };
 
 
@@ -299,7 +307,8 @@ const wgSlice = createSlice({
 		setSortWordlistWG: setSortWordlistFunc,
 		setWordlistMulticolumnWG: setWordlistMultiColumnFunc,
 		setWordsPerWordlistWG: setWordsPerWordlistFunc,
-		loadStateWG: loadStateFunc
+		loadStateWG: loadStateFunc,
+		cleanStateWG: cleanStateFunc
 	}
 });
 
@@ -334,7 +343,8 @@ export const {
 	setSortWordlistWG,
 	setWordlistMulticolumnWG,
 	setWordsPerWordlistWG,
-	loadStateWG
+	loadStateWG,
+	cleanStateWG
 } = wgSlice.actions;
 
 export default wgSlice.reducer;

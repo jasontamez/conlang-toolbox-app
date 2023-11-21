@@ -621,14 +621,13 @@ const invalidSettings = (object: any, flag: boolean) => {
 	if(notObject(object)) {
 		error = "201: Invalid Settings object";
 	} else {
-		const max = (flag ? 2 : 3);
 		const pairs = Object.entries(object);
-		if(pairs.length < max) {
+		if(pairs.length < 2) {
 			error = "202: Settings object seems to be missing"
-				+ ` ${max - pairs.length} propert${(max - pairs.length) === 1 ? "y" : "ies"}`;
-		} else if (pairs.length > max) {
+				+ ` ${2 - pairs.length} propert${pairs.length === 1 ? "y" : "ies"}`;
+		} else if (pairs.length > 2) {
 			error = "203: Settings object seems to have"
-				+ ` ${pairs.length - max} extra propert${(pairs.length - max) === 1 ? "y" : "ies"}`;
+				+ ` ${pairs.length - 2} extra propert${pairs.length === 3 ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
@@ -645,9 +644,6 @@ const invalidSettings = (object: any, flag: boolean) => {
 						break;
 					case "disableConfirms":
 						flag = notBoolean(value);
-						break;
-					case "currentSort":
-						flag = value === null ? false : notString(value);
 						break;
 					default:
 						flag = true;

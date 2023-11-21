@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { SaveableSortSettings, SortLanguage, SortObject, SortSensitivity, SortSettings } from './types';
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 
 const initialState = blankAppState.sortSettings;
 
@@ -85,12 +85,20 @@ const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<str
 };
 
 const loadSortSettingsStateFunc = (state: SortSettings, action: PayloadAction<SaveableSortSettings>) => {
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const { payload } = action;
 	return {
-		...state,
+		...cleanStateFunc(state, null),
 		...payload
 	};
+};
+
+const cleanStateFunc = (state: SortSettings, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.sortSettings.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: SortSettings = {...temp};
+	return final;
 };
 
 const sortSettingsSlice = createSlice({
@@ -104,7 +112,8 @@ const sortSettingsSlice = createSlice({
 		editCustomSort: editCustomSortFunc,
 		deleteCustomSort: deleteCustomSortFunc,
 		setDefaultCustomSort: setDefaultCustomSortFunc,
-		loadSortSettingsState: loadSortSettingsStateFunc
+		loadSortSettingsState: loadSortSettingsStateFunc,
+		cleanStateSortSettings: cleanStateFunc
 	}
 });
 
@@ -116,7 +125,8 @@ export const {
 	editCustomSort,
 	deleteCustomSort,
 	setDefaultCustomSort,
-	loadSortSettingsState
+	loadSortSettingsState,
+	cleanStateSortSettings
 } = sortSettingsSlice.actions;
 
 export default sortSettingsSlice.reducer;

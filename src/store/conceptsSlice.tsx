@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import { Concept, ConceptsState, ConceptDisplay } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -29,11 +29,19 @@ const removeCustomHybridMeaningsFunc = (state: ConceptsState, action: PayloadAct
 };
 
 const loadStateConceptsFunc = (state: ConceptsState, action: PayloadAction<ConceptsState>) => {
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
-		...state,
+		...cleanStateFunc(state, null),
 		...action.payload
 	};
+	return final;
+};
+
+const cleanStateFunc = (state: ConceptsState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.concepts.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: ConceptsState = {...temp};
 	return final;
 };
 
@@ -46,7 +54,8 @@ const conceptsSlice = createSlice({
 		toggleConceptsBoolean: toggleConceptsBooleanFunc,
 		addCustomHybridMeaning: addCustomHybridMeaningFunc,
 		deleteCustomHybridMeanings: removeCustomHybridMeaningsFunc,
-		loadStateConcepts: loadStateConceptsFunc
+		loadStateConcepts: loadStateConceptsFunc,
+		cleanStateConcepts: cleanStateFunc
 	}
 });
 
@@ -55,7 +64,8 @@ export const {
 	toggleConceptsBoolean,
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings,
-	loadStateConcepts
+	loadStateConcepts,
+	cleanStateConcepts
 } = conceptsSlice.actions;
 
 export default conceptsSlice.reducer;

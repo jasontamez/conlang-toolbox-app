@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppSettings, ThemeNames } from './types';
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 
 const initialState = blankAppState.appSettings;
@@ -20,18 +20,19 @@ const setDisableConfirmsFunc = (state: AppSettings, action: PayloadAction<boolea
 };
 
 const loadStateSettingsFunc = (state: AppSettings, action: PayloadAction<AppSettings>) => {
-	// Cleaning any stray properties away
-	const { payload } = action;
-	const disableConfirms = (
-			payload.disableConfirms === false || payload.disableConfirms === true
-		) ? payload.disableConfirms
-		: state.disableConfirms || false;
-	const currentSort = payload.currentSort === null ? null : payload.currentSort || null;
-	const final: AppSettings = {
-		theme: payload.theme || state.theme || initialState.theme,
-		disableConfirms,
-		currentSort
-	} ;
+	const final = {
+		...cleanStateFunc(state, null),
+		...action.payload
+	};
+	return final;
+};
+
+const cleanStateFunc = (state: AppSettings, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.appSettings.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: AppSettings = {...temp};
 	return final;
 };
 
@@ -42,14 +43,16 @@ const appSettingsSlice = createSlice({
 	reducers: {
 		setTheme: setThemeFunc,
 		setDisableConfirms: setDisableConfirmsFunc,
-		loadStateSettings: loadStateSettingsFunc
+		loadStateSettings: loadStateSettingsFunc,
+		cleanStateSettings: cleanStateFunc
 	}
 });
 
 export const {
 	setTheme,
 	setDisableConfirms,
-	loadStateSettings
+	loadStateSettings,
+	cleanStateSettings
 } = appSettingsSlice.actions;
 
 export default appSettingsSlice.reducer;

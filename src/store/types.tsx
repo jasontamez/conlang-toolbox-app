@@ -357,7 +357,6 @@ export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Sol
 export interface AppSettings {
 	theme: ThemeNames
 	disableConfirms: boolean
-	currentSort: string | null
 }
 
 //
@@ -429,4 +428,15 @@ export interface ImportExportObject {
 		we: storedWE
 		mx: storedMS
 	}
+}
+export interface StateCleanerObject {
+	wg: (keyof WGState)[]
+	we: (keyof WEState)[]
+	ms: (keyof MSState)[]
+	dj: (keyof DJState)[]
+	lexicon: (keyof LexiconState)[]
+	concepts: (keyof ConceptsState)[]
+	ec: (keyof ExtraCharactersState)[]
+	appSettings: (keyof AppSettings)[]
+	sortSettings: (keyof SortSettings)[]
 }

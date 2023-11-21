@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import { Lexicon, LexiconBlankSorts, LexiconColumn, LexiconState } from './types';
 import log from '../components/Logging';
 
@@ -81,10 +81,20 @@ const sortLexicon = (
 };
 
 
+const cleanStateFunc = (state: LexiconState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.lexicon.forEach(key => {
+		if((key === "customSort") || (state[key] !== undefined)) {
+			temp[key] = state[key];
+		}
+	});
+	const final: LexiconState = {...temp};
+	return final;
+};
+
 const loadStateFunc = (state: LexiconState, action: PayloadAction<LexiconState>) => {
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
-		...state,
+		...cleanStateFunc(state, null),
 		...action.payload,
 		truncateColumns: state.truncateColumns
 	};
@@ -233,7 +243,8 @@ const lexiconSlice = createSlice({
 	// TO-DO: custom info, font settings?
 	setFontType: setFontTypeFunc,
 		mergeLexiconItems: mergeLexiconItemsFunc,
-		updateLexiconColumarInfo: updateLexiconColumarInfoFunc
+		updateLexiconColumarInfo: updateLexiconColumarInfoFunc,
+		cleanStateLexicon: cleanStateFunc
 	}
 });
 
@@ -251,7 +262,8 @@ export const {
 	toggleLexiconWrap,
 setFontType,
 	mergeLexiconItems,
-	updateLexiconColumarInfo
+	updateLexiconColumarInfo,
+	cleanStateLexicon
 } = lexiconSlice.actions;
 
 export default lexiconSlice.reducer;

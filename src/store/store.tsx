@@ -65,9 +65,6 @@ const migrations = {
 		delete newState.ms.storedCustomIDs;
 		delete newState.lexicon.storedCustomInfo;
 		delete newState.lexicon.storedCustomIDs;
-		if(!newState.appSettings.currentSort) {
-			newState.appSettings.currentSort = null;
-		}
 		// Remove viewState
 		delete newState.viewState;
 		// Change a property name in WE's custom storage

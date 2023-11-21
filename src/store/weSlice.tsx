@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import {
 	WECharGroupObject,
 	WEOutputTypes,
@@ -162,14 +162,22 @@ const loadStateFunc = (state: WEState, action: PayloadAction<WEPresetObject>) =>
 		transforms,
 		soundChanges
 	} = action.payload || initialState;
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const newState = {
-		...state,
+		...cleanStateFunc(state, null),
 		characterGroups: [...characterGroups],
 		transforms: [...transforms],
 		soundChanges: [...soundChanges]
 	};
 	return newState;
+};
+
+const cleanStateFunc = (state: WEState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.we.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: WEState = {...temp};
+	return final;
 };
 
 const weSlice = createSlice({
@@ -192,7 +200,8 @@ const weSlice = createSlice({
 		setOutputWE: setOutputFunc,
 		setFlag: setFlagFunc,
 		setCustomSort: setCustomSortFunc,
-		loadStateWE: loadStateFunc
+		loadStateWE: loadStateFunc,
+		cleanStateWE: cleanStateFunc
 	}
 });
 
@@ -213,7 +222,8 @@ export const {
 	setOutputWE,
 	setFlag,
 	setCustomSort,
-	loadStateWE
+	loadStateWE,
+	cleanStateWE
 } = weSlice.actions;
 
 export default weSlice.reducer;

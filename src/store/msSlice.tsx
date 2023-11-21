@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import { MSBool, MSNum, MSText, MSState } from './types';
 
 const initialState: MSState = blankAppState.ms;
@@ -32,11 +32,19 @@ const setSyntaxTextFunc = (state: MSState, action: PayloadAction<[MSText, string
 };
 
 const loadStateFunc = (state: MSState, action: PayloadAction<MSState>) => {
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
-		...state,
+		...cleanStateFunc(state, null),
 		...action.payload
 	};
+	return final;
+};
+
+const cleanStateFunc = (state: MSState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.ms.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: MSState = {...temp};
 	return final;
 };
 
@@ -58,7 +66,8 @@ const morphoSyntaxSlice = createSlice({
 		setSyntaxNum: setSyntaxNumFunc,
 		setSyntaxText: setSyntaxTextFunc,
 		loadStateMS: loadStateFunc,
-		saveView: saveViewFunc
+		saveView: saveViewFunc,
+		cleanStateMS: cleanStateFunc
 	}
 });
 
@@ -69,7 +78,8 @@ export const {
 	setSyntaxNum,
 	setSyntaxText,
 	loadStateMS,
-	saveView
+	saveView,
+	cleanStateMS
 } = morphoSyntaxSlice.actions;
 
 export default morphoSyntaxSlice.reducer;

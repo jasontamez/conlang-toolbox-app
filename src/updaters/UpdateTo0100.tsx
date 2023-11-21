@@ -182,8 +182,7 @@ function updateSettings (incomingState: oldTypes.StateObject) {
 	} = incomingState.appSettings;
 	const settings: AppSettings = {
 		theme: theme as ThemeNames,
-		disableConfirms,
-		currentSort: null
+		disableConfirms
 	};
 	return settings;
 }

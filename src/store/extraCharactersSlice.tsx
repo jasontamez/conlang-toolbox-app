@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 import { ExtraCharactersDisplayName, ExtraCharactersList, ExtraCharactersState } from './types';
 
 const initialState = blankAppState.ec;
@@ -25,11 +25,19 @@ const setNowShowingFunc = (state: ExtraCharactersState, action: PayloadAction<Ex
 	return state;
 };
 const loadStateFunc = (state: ExtraCharactersState, action: PayloadAction<ExtraCharactersState>) => {
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	const final = {
-		...state,
+		...cleanStateFunc(state, null),
 		...action.payload
 	};
+	return final;
+};
+
+const cleanStateFunc = (state: ExtraCharactersState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.ec.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: ExtraCharactersState = {...temp};
 	return final;
 };
 
@@ -42,7 +50,8 @@ const extraCharactersSlice = createSlice({
 		setToCopy: setToCopyFunc,
 		setFaves: setFavesFunc,
 		setNowShowing: setNowShowingFunc,
-		loadStateEC: loadStateFunc
+		loadStateEC: loadStateFunc,
+		cleanStateEC: cleanStateFunc
 	}
 });
 
@@ -52,7 +61,8 @@ export const {
 	setToCopy,
 	setFaves,
 	setNowShowing,
-	loadStateEC
+	loadStateEC,
+	cleanStateEC
 } = extraCharactersSlice.actions;
 
 export default extraCharactersSlice.reducer;

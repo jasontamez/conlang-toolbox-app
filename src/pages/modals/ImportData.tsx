@@ -184,11 +184,7 @@ const ImportData = (props: ModalProperties) => {
 			setPossible_con(false);
 		}
 		if(appSettings) {
-			const obj: AppSettings = {
-				currentSort: null,
-				...appSettings
-			}
-			setPossible_set([obj, sortSettings || null]);
+			setPossible_set([appSettings, sortSettings || null]);
 		} else if (sortSettings) {
 			setPossible_set([null, sortSettings]);
 		} else {

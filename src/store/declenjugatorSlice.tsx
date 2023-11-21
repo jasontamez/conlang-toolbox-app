@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DJCustomInfo, DJGroup, DJState } from './types';
-import blankAppState from './blankAppState';
+import blankAppState, { cleanerObject } from './blankAppState';
 
 interface DJGroupPayload {
 	type: keyof DJCustomInfo
@@ -64,13 +64,21 @@ const loadStateFunc = (state: DJState, action: PayloadAction<DJCustomInfo | null
 		conjugations,
 		other
 	} = action.payload || initialState;
-	// TO-DO: Needs to prune state of any extra properties hanging around
 	return {
-		...state,
+		...cleanStateFunc(state, null),
 		declensions,
 		conjugations,
 		other
 	};
+};
+
+const cleanStateFunc = (state: DJState, action: PayloadAction | null) => {
+	const temp: any = {};
+	cleanerObject.dj.forEach(key => {
+		state[key] !== undefined && (temp[key] = state[key]);
+	});
+	const final: DJState = {...temp};
+	return final;
 };
 
 const declenjugatorSlice = createSlice({
@@ -82,7 +90,8 @@ const declenjugatorSlice = createSlice({
 		editGroup: editGroupFunc,
 		deleteGroup: deleteGroupFunc,
 		reorderGroups: reorderGroupsFunc,
-		loadStateDJ: loadStateFunc
+		loadStateDJ: loadStateFunc,
+		cleanStateDJ: cleanStateFunc
 	}
 });
 
@@ -92,7 +101,8 @@ export const {
 	editGroup,
 	deleteGroup,
 	reorderGroups,
-	loadStateDJ
+	loadStateDJ,
+	cleanStateDJ
 } = declenjugatorSlice.actions;
 
 export default declenjugatorSlice.reducer;

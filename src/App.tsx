@@ -16,6 +16,15 @@ import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
 
 import { setDefaultSortLanguage } from './store/sortingSlice';
+import { cleanStateWG } from './store/wgSlice';
+import { cleanStateWE } from './store/weSlice';
+import { cleanStateMS } from './store/msSlice';
+import { cleanStateDJ } from './store/declenjugatorSlice';
+import { cleanStateConcepts } from './store/conceptsSlice';
+import { cleanStateLexicon } from './store/lexiconSlice';
+import { cleanStateSettings } from './store/settingsSlice';
+import { cleanStateSortSettings } from './store/sortingSlice';
+import { cleanStateEC } from './store/extraCharactersSlice';
 
 import Menu from './components/Menu';
 
@@ -139,6 +148,20 @@ const App = memo(() => {
 				}
 			}
 		});
+	}, [dispatch]);
+	useEffect(() => {
+		dispatch(cleanStateWG());
+		dispatch(cleanStateWE());
+		dispatch(cleanStateMS());
+		dispatch(cleanStateDJ());
+		dispatch(cleanStateConcepts());
+		dispatch(cleanStateLexicon());
+		dispatch(cleanStateSettings());
+		dispatch(cleanStateSortSettings());
+		dispatch(cleanStateEC());
+		console.log("cleaning");
+		// TO-DO: set a state variable in StateStorage and use it to track if we need to clean
+		//    ALSO, clean up old storages if possible
 	}, [dispatch]);
 	return (
 		<IonApp>
