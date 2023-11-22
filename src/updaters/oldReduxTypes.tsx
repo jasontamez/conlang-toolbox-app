@@ -337,7 +337,6 @@ export interface StateObject {
 	viewState: ViewStateObject
 	extraCharactersState: ExtraCharactersState
 	conceptsState: ConceptsState
-//	logs: string[]
 }
 // Be sure to change stateObjectProps in ReducksDucks, too.
 // Be sure to change stateObjectProps in ReducksDucks, too.

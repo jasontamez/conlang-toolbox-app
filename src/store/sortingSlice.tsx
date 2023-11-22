@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SaveableSortSettings, SortLanguage, SortObject, SortSensitivity, SortSettings } from './types';
+import { SortSettings, SortLanguage, SortObject, SortSensitivity } from './types';
 import blankAppState, { cleanerObject } from './blankAppState';
 
 const initialState = blankAppState.sortSettings;
@@ -26,11 +26,6 @@ const checkForMultiples = (obj: SortObject) => {
 		})
 	).filter(char => char.length > 1);
 	return multiples;
-};
-
-const setDefaultSortLanguageFunc = (state: SortSettings, action: PayloadAction<SortLanguage>) => {
-	state.defaultSortLanguage = action.payload;
-	return state;
 };
 
 const setSortLanguageCustomFunc = (state: SortSettings, action: PayloadAction<SortLanguage | null>) => {
@@ -84,7 +79,7 @@ const setDefaultCustomSortFunc = (state: SortSettings, action: PayloadAction<str
 	return state;
 };
 
-const loadSortSettingsStateFunc = (state: SortSettings, action: PayloadAction<SaveableSortSettings>) => {
+const loadSortSettingsStateFunc = (state: SortSettings, action: PayloadAction<SortSettings>) => {
 	const { payload } = action;
 	return {
 		...cleanStateFunc(state, null),
@@ -105,7 +100,6 @@ const sortSettingsSlice = createSlice({
 	name: 'sortSettings',
 	initialState,
 	reducers: {
-		setDefaultSortLanguage: setDefaultSortLanguageFunc,
 		setSortLanguageCustom: setSortLanguageCustomFunc,
 		setSortSensitivity: setSortSensitivityFunc,
 		addNewCustomSort: addNewCustomSortFunc,
@@ -118,7 +112,6 @@ const sortSettingsSlice = createSlice({
 });
 
 export const {
-	setDefaultSortLanguage,
 	setSortLanguageCustom,
 	setSortSensitivity,
 	addNewCustomSort,

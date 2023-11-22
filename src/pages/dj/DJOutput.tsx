@@ -101,9 +101,9 @@ const DJOutput = (props: PageData) => {
 		sortLanguage,
 		sensitivity,
 		defaultCustomSort,
-		defaultSortLanguage,
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
+	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
 
 	useEffect(() => {
 		const types: (keyof DJCustomInfo)[] = [];

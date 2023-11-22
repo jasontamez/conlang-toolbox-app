@@ -53,8 +53,6 @@ export interface SortSettings {
 	sortLanguage?: SortLanguage
 	sensitivity: SortSensitivity
 	defaultCustomSort?: string
-	// set automatically, not by user:
-	defaultSortLanguage: SortLanguage
 }
 
 //
@@ -360,6 +358,16 @@ export interface AppSettings {
 }
 
 //
+// INTERNALS
+//
+
+export interface InternalState {
+	logs: string[]
+	defaultSortLanguage: SortLanguage
+	lastClean: number
+}
+
+//
 // MAIN
 //
 
@@ -373,7 +381,7 @@ export interface StateObject {
 	ec: ExtraCharactersState
 	appSettings: AppSettings
 	sortSettings: SortSettings
-	logs: string[]
+	internals: InternalState
 }
 
 export interface PageData {
@@ -396,7 +404,6 @@ export type storedMS = [string, MSState][];
 export type storedWG = [string, Base_WG][];
 export type storedWE = [string, WEPresetObject][];
 export type storedDJ = [string, DJCustomInfo][];
-export type SaveableSortSettings = Omit<SortSettings, "defaultSortLanguage">;
 interface ARCHIVE_WordListsState {
 	centerTheDisplayedWords: [ "center" ] | []
 	listsDisplayed: { [key in keyof Omit<Concept, "id" | "word">]: boolean }
@@ -416,7 +423,7 @@ export interface ImportExportObject {
 	wordLists?: ARCHIVE_WordListsState
 	ec?: ExtraCharactersState
 	appSettings?: AppSettings | ARCHIVE_AppSettings
-	sortSettings?: SaveableSortSettings
+	sortSettings?: SortSettings
 	wgStored?: storedWG
 	weStored?: storedWE
 	msStored?: storedMS

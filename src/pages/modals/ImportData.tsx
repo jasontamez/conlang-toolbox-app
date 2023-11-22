@@ -32,7 +32,7 @@ import {
 	LexiconState,
 	ModalProperties,
 	MSState,
-	SaveableSortSettings,
+	SortSettings,
 	StateObject,
 	WEState,
 	WGState
@@ -66,7 +66,7 @@ type storedWG = [string, any][];
 type storedWE = [string, any][];
 type storedDJ = [string, DJCustomInfo][];
 
-type ImportSettings = [ AppSettings | null, SaveableSortSettings | null ];
+type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
 function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 	storage.clear().then(

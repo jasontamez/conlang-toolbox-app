@@ -29,7 +29,7 @@ import {
 	LexiconState,
 	ModalProperties,
 	MSState,
-	SaveableSortSettings,
+	SortSettings,
 	StateObject,
 	storedDJ,
 	storedLex,
@@ -81,8 +81,8 @@ const MExportAllData = (props: ModalProperties) => {
 	} = useSelector((state: StateObject) => state);
 
 	const exportedSortSettings = useMemo(() => {
-		const { defaultSortLanguage, customSorts, ...etc } = sortSettings;
-		const exportedSettings: SaveableSortSettings = {
+		const { customSorts, ...etc } = sortSettings;
+		const exportedSettings: SortSettings = {
 			...etc,
 			customSorts: customSorts.map(obj => {
 				return {

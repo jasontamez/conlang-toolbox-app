@@ -79,12 +79,12 @@ const SortSettings = (props: PageData) => {
 	const [outgoingEquality, setOutgoingEquality] = useState<EqualityObject | null | string>(null);
 
 	const {
-		defaultSortLanguage,
 		sortLanguage,
 		sensitivity,
 		defaultCustomSort,
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
+	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
 	const setCustomLang = (value: LanguageCode | "unicode") => {
 		dispatch(setSortLanguageCustom(value));
 	};

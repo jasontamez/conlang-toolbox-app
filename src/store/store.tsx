@@ -27,7 +27,7 @@ import extraCharactersSlice from './extraCharactersSlice';
 import sortingSlice from './sortingSlice';
 import declenjugatorSlice from './declenjugatorSlice';
 import blankAppState from './blankAppState';
-import logsSlice from './logsSlice';
+import internalsSlice from './internalsSlice';
 
 //
 //
@@ -51,8 +51,12 @@ const migrations = {
 				identifiers: [],
 				declenjugationGroups: []
 			},
-			// Add logs
-			logs: []
+			// Add internals
+			internals: {
+				logs: [],
+				lastClean: 0,
+				defaultSortLanguage: (state.sortSettings && state.sortSettings.defaultSortLanguage) || "unicode"
+			}
 		};
 		// Add lastView to MorphoSyntax
 		newState.ms.lastView = "msSettings";
@@ -97,7 +101,7 @@ const reducerConfig = {
 	lexicon: lexiconSlice,
 	ec: extraCharactersSlice,
 	sortSettings: sortingSlice,
-	logs: logsSlice
+	internals: internalsSlice
 };
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
 	if(incomingState && originalState && (incomingState.appSettings.theme !== originalState.appSettings.theme)) {

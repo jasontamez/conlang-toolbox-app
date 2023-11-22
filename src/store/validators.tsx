@@ -256,14 +256,6 @@ const invalidWEState = (object: any, preset: boolean = false) => {
 };
 
 const invalidMSState = (object: any, preset: boolean = false) => {
-	// TO-DO: NOTE: TEXT_predPoss was **changed** from something else
-	// So were others...
-	/*
-		"postP": true,
-		"AVP": true,
-		"prefixMost": true,
-		"suffixLess": true
-	 */
 	let error = "";
 	if(notObject(object)) {
 		error = "501: Invalid MorphoSyntax State object";

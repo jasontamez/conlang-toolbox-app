@@ -240,9 +240,9 @@ const Lex = (props: PageData) => {
 		sortLanguage,
 		sensitivity,
 		defaultCustomSort,
-		defaultSortLanguage,
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
+	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
 	let customSortObj: SortObject | undefined;
 	let defaultCustomSortObj: SortObject | undefined;
 	customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {

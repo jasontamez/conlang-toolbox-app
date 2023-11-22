@@ -278,11 +278,14 @@ const blankAppState: StateObject = {
 		disableConfirms: false
 	},
 	sortSettings: {
-		defaultSortLanguage: "unicode",
 		sensitivity: "variant",
 		customSorts: []
 	},
-	logs: []
+	internals: {
+		defaultSortLanguage: "unicode",
+		logs: [],
+		lastClean: 0
+	}
 };
 
 export default blankAppState;
@@ -535,7 +538,6 @@ export const cleanerObject: StateCleanerObject = {
 		"customSorts",
 		"sortLanguage",
 		"sensitivity",
-		"defaultCustomSort",
-		"defaultSortLanguage"
+		"defaultCustomSort"
 	]
 };

@@ -1,4 +1,4 @@
-import { doLog } from "../store/logsSlice";
+import { doLog } from "../store/internalsSlice";
 
 const flag = "debugging";
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, memo, useMemo } from 'react';
 import {
 	Route
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { compare } from 'compare-versions';
 import {
 	IonApp,
@@ -15,16 +15,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
 
-import { setDefaultSortLanguage } from './store/sortingSlice';
-import { cleanStateWG } from './store/wgSlice';
-import { cleanStateWE } from './store/weSlice';
-import { cleanStateMS } from './store/msSlice';
-import { cleanStateDJ } from './store/declenjugatorSlice';
-import { cleanStateConcepts } from './store/conceptsSlice';
-import { cleanStateLexicon } from './store/lexiconSlice';
-import { cleanStateSettings } from './store/settingsSlice';
-import { cleanStateSortSettings } from './store/sortingSlice';
-import { cleanStateEC } from './store/extraCharactersSlice';
+import { setDefaultSortLanguage } from './store/internalsSlice';
 
 import Menu from './components/Menu';
 
@@ -67,6 +58,8 @@ import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
 import DJ from './pages/Declenjugator';
+import maybeCleanState from './store/cleaning';
+import { StateObject } from './store/types';
 
 const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
@@ -133,6 +126,7 @@ const MainOutlet = memo(() => {
 
 const App = memo(() => {
 	const dispatch = useDispatch();
+	const { lastClean } = useSelector((state: StateObject) => state.internals)
 	// useEffect should keep this from firing except once per session
 	useEffect(() => {
 		// 0.9.5 and older
@@ -150,19 +144,8 @@ const App = memo(() => {
 		});
 	}, [dispatch]);
 	useEffect(() => {
-		dispatch(cleanStateWG());
-		dispatch(cleanStateWE());
-		dispatch(cleanStateMS());
-		dispatch(cleanStateDJ());
-		dispatch(cleanStateConcepts());
-		dispatch(cleanStateLexicon());
-		dispatch(cleanStateSettings());
-		dispatch(cleanStateSortSettings());
-		dispatch(cleanStateEC());
-		console.log("cleaning");
-		// TO-DO: set a state variable in StateStorage and use it to track if we need to clean
-		//    ALSO, clean up old storages if possible
-	}, [dispatch]);
+		maybeCleanState(dispatch, lastClean);
+	}, [dispatch, lastClean]);
 	return (
 		<IonApp>
 			<IonReactRouter>

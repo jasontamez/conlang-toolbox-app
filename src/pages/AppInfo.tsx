@@ -42,7 +42,9 @@ function getBannerDimensions (windowWidth: number) {
 
 const AppInfo = (props: PageData) => {
 	const width = useWindowWidth();
-	const [originalTheme, logs]: [ThemeNames, string[]] = useSelector((state: StateObject) => [state.appSettings.theme, state.logs]);
+	const [originalTheme, logs]: [ThemeNames, string[]] = useSelector(
+		(state: StateObject) => [state.appSettings.theme, state.internals.logs]
+	);
 	const [debug, setDebug] = useState<number>(1);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
