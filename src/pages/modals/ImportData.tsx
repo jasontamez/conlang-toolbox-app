@@ -37,7 +37,7 @@ import {
 	WEState,
 	WGState
 } from '../../store/types';
-import { validateImport } from '../../store/validators';
+import { VALIDATE_import } from '../../store/validators';
 
 import {
 	CustomStorageWE,
@@ -201,7 +201,7 @@ const ImportData = (props: ModalProperties) => {
 			const parsed: ImportExportObject = JSON.parse(incoming);
 			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
 				try {
-					validateImport(parsed);
+					VALIDATE_import(parsed);
 					parseInput(parsed);
 				} catch(e) {
 					let message = (e instanceof Error) ? e.message : `${e}`;

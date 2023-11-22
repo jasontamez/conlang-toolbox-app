@@ -1,5 +1,5 @@
 import { compare } from "compare-versions";
-import { ImportExportObject } from "./types";
+import { DJState, ImportExportObject, LexiconState, MSState, WEState, WGState } from "./types";
 
 const notObject = (input: any) => {
 	return !input || typeof(input) !== "object" || Array.isArray(input);
@@ -201,12 +201,13 @@ const invalidWEState = (object: any, preset: boolean = false) => {
 		error = "401: Invalid WordEvolve State object";
 	} else {
 		const pairs = Object.entries(object);
-		if(pairs.length < 8) {
+		const max = preset ? 3 : 8;
+		if(pairs.length < max) {
 			error = "402: WordEvolve State object seems to be missing"
-				+ ` ${8 - pairs.length - 8} propert${pairs.length === 7 ? "y" : "ies"}`;
-		} else if (pairs.length > 8) {
+				+ ` ${max - pairs.length} propert${(max - pairs.length) === 1 ? "y" : "ies"}`;
+		} else if (pairs.length > max) {
 			error = "403: WordEvolve State object seems to have"
-				+ ` ${pairs.length - 8} extra propert${pairs.length === 9 ? "y" : "ies"}`;
+				+ ` ${pairs.length - max} extra propert${(pairs.length - max) === 1 ? "y" : "ies"}`;
 		} else {
 			while(!error && pairs.length > 0) {
 				const [key, value] = pairs.shift()!
@@ -263,60 +264,9 @@ const invalidMSState = (object: any, preset: boolean = false) => {
 		let requiredProperties = 0;
 		const pairs = Object.entries(object);
 		while(!error && pairs.length > 0) {
-			const [key, value] = pairs.shift()!
+			const [key, value] = pairs.shift()!;
 			let flag = false;
 			switch (key) {
-				case "bool":
-					flag = !preset;
-					break;
-				case "boolStrings":
-					// insert into pairs
-					if(preset) {
-						if(!notArrayOf(value, notString)) {
-							(value as string[]).forEach(str => {
-								pairs.push(["BOOL_" + str, true]);
-							});
-						}
-						break;
-					}
-					flag = true;
-					break;
-				case "num":
-					// insert into pairs
-					if(preset) {
-						if(!notObject(value)) {
-							flag = Object.entries(value as object).some(([key, value]) => {
-								if(notString(key) || notNumber(value)) {
-									return true;
-								}
-								pairs.push(["NUM_" + key, value]);
-								return false;
-							});
-							break;
-						}
-					}
-					flag = true;
-					break;
-				case "text":
-					// insert into pairs
-					if(preset) {
-						if(!notObject(value)) {
-							flag = Object.entries(value as object).some(([key, value]) => {
-								if(notString(key) || notString(value)) {
-									return true;
-								}
-								pairs.push(["TEXT_" + key, value]);
-								return false;
-							});
-							break;
-						}
-					}
-					flag = true;
-					break;
-				case "key":
-					requiredProperties++;
-					flag = !preset || notString(value);
-					break;
 				case "lastSave":
 					requiredProperties++;
 					flag = notNumber(value);
@@ -695,7 +645,7 @@ const checkLexObjectInvalidity = (object: any, cols: number | null) => {
 };
 const invalidLexiconState = (object: any, v: string, preset: boolean = false) => {
 	let error = "";
-	const tenFlag = compare(v, "0.10.0", "<");
+	const beforeVersionTen = compare(v, "0.10.0", "<");
 	if(notObject(object)) {
 		error = "701: Invalid Lexicon State object";
 	} else {
@@ -782,7 +732,7 @@ const invalidLexiconState = (object: any, v: string, preset: boolean = false) =>
 					break;
 				case "customSort":
 					requiredProperties++;
-					flag = tenFlag || (value !== undefined && notString(value));
+					flag = beforeVersionTen || (value !== undefined && notString(value));
 					break;
 				default:
 					flag = !preset;
@@ -791,7 +741,7 @@ const invalidLexiconState = (object: any, v: string, preset: boolean = false) =>
 				error = `704: Lexicon State has invalid property "${key}"`;
 			}
 		}
-		tenFlag && requiredProperties++;
+		beforeVersionTen && requiredProperties++;
 		if(!error && !preset && requiredProperties < 10) {
 			error = "702: Lexicon State object is missing"
 				+ ` ${10 - requiredProperties} propert${(requiredProperties - 10) === 1 ? "y" : "ies"}`;
@@ -1242,7 +1192,7 @@ export const validVersions = [
 // 700 Lexicon
 // 800 Concepts
 // 900 storages
-export function validateImport (
+export function VALIDATE_import (
 	object: ImportExportObject
 ): asserts object is ImportExportObject {
 	let error: string | false = false;
@@ -1297,5 +1247,50 @@ export function validateImport (
 	}
 	if(error) {
 		throw new TypeError(`ERROR ${error}`);
+	}
+};
+
+export function VALIDATE_wg (
+	object: WGState
+): asserts object is WGState {
+	const judgment = invalidWGState(object);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_wePreset (
+	object: WEState
+): asserts object is WEState {
+	const judgment = invalidWEState(object, true);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_ms (
+	object: MSState
+): asserts object is MSState {
+	const judgment = invalidMSState(object);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_dj (
+	object: DJState
+): asserts object is DJState {
+	const judgment = invalidDJState(object);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_Lex (
+	object: LexiconState
+): asserts object is LexiconState {
+	const judgment = invalidLexiconState(object, "0");
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
 	}
 };
