@@ -1,6 +1,15 @@
 //import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import {
+	CustomStorageWE,
+	CustomStorageWG,
+	DeclenjugatorStorage,
+	LexiconStorage,
+	MorphoSyntaxStorage
+} from '../components/PersistentInfo';
+import log from '../components/Logging';
+
 import { cleanStateWG } from './wgSlice';
 import { cleanStateWE } from './weSlice';
 import { cleanStateMS } from './msSlice';
@@ -11,17 +20,37 @@ import { cleanStateSettings } from './settingsSlice';
 import { cleanStateSortSettings } from './sortingSlice';
 import { cleanStateEC } from './extraCharactersSlice';
 import { setLastClean } from './internalsSlice';
-import {
-	CustomStorageWE,
-	CustomStorageWG,
-	DeclenjugatorStorage,
-	LexiconStorage,
-	MorphoSyntaxStorage
-} from '../components/PersistentInfo';
-import { VALIDATE_Lex, VALIDATE_dj, VALIDATE_ms, VALIDATE_wePreset, VALIDATE_wg } from './validators';
 import blankAppState, { cleanerObject } from './blankAppState';
-import { MSBool, MSNum, MSText, WECharGroupObject, WEPresetObject, WESoundChangeObject, WETransformDirection, WETransformObject } from './types';
-import log from '../components/Logging';
+import {
+	VALIDATE_Lex,
+	VALIDATE_djPreset,
+	VALIDATE_ms,
+	VALIDATE_wePreset,
+	VALIDATE_wgPreset
+} from './validators';
+import {
+	Base_WG,
+	Lexicon,
+	LexiconBlankSorts,
+	LexiconColumn,
+	LexiconState,
+	MSBool,
+	MSNum,
+	MSText,
+	SyllableDropoffs,
+	Two_Fifteen,
+	WECharGroupObject,
+	WEPresetObject,
+	WESoundChangeObject,
+	WETransformDirection,
+	WETransformObject,
+	WGCharGroupObject,
+	WGSettings,
+	WGSyllables,
+	WGTransformObject,
+	Zero_Fifty,
+	Zero_OneHundred
+} from './types';
 
 
 const ensureString = (input: any, alternate: any) => typeof (input) !== "string" ? alternate : input;
@@ -31,9 +60,18 @@ const ensureNumber = (input: any, alternate: any) => (
 	|| Math.round(input) !== input
 	? alternate : input
 );
+const ensureLimit = (input: any, alternate: number, min: number, max: number) => (
+	typeof (input) !== "number"
+	|| isNaN(input)
+	|| Math.round(input) !== input
+	|| input < min
+	|| input > max
+	? alternate : input
+);
 const ensureBoolean = (input: any, alternate: any) => typeof (input) !== "boolean" ? alternate : input;
 
 const isString = (input: any) => typeof input === "string";
+const isNumber = (input: any) => typeof input === "number" && !isNaN(input) && Math.round(input) === input;
 const isObject = (input: any) => input && (typeof input === "object");
 
 
@@ -43,12 +81,12 @@ const interval = (
 	* 60 // 60 minutes per hour
 	* 24 // 24 hours per day
 );
-const biggerInterval = interval * 7;
+const storeCleanIfAfter = 1;
 
 const maybeCleanState = (dispatch: Function, lastClean: number) => {
 	const now = Date.now();
 	// Clean Storages
-	if(now - biggerInterval > lastClean) {
+	if(now > storeCleanIfAfter) {
 		// Cleaning Storage should be less frequent.
 		cleanStorages(dispatch);
 	}
@@ -80,7 +118,7 @@ const cleanStorages = (dispatch: Function) => {
 	const wgS: StorageInfo = [];
 	const weS: StorageInfo = [];
 	const djS: StorageInfo = [];
-	const doLog = (...args: any[]) => log(dispatch, args);
+	const logger = (...args: any[]) => log(dispatch, args);
 	LexiconStorage.iterate((value: any, key: string) => {
 		lexS.push([key, value]);
 		return; // Blank return keeps the loop going
@@ -98,41 +136,272 @@ const cleanStorages = (dispatch: Function) => {
 		return; // Blank return keeps the loop going
 	})).then(() => {
 		// The meat of the operations
-		cleanLexiconStorage(lexS, doLog);
-		cleanWordGenStorage(wgS, doLog);
-		cleanMorphoSyntaxStorage(msS, doLog);
-		cleanWordEvolveStorage(weS, doLog);
-		cleanDeclenjugatorStorage(djS, doLog);
+		cleanLexiconStorage(lexS, logger);
+		cleanWordGenStorage(wgS, logger);
+		cleanMorphoSyntaxStorage(msS, logger);
+		cleanWordEvolveStorage(weS, logger);
+		cleanDeclenjugatorStorage(djS, logger);
 	}).catch((reason: any) => {
-		doLog("Error trying to clean storages", reason);
+		logger("Error trying to clean storages", reason);
 	});
 };
 
-const cleanLexiconStorage = (input: StorageInfo, doLog: Function) => {
+const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const [key, obj] = pair;
+		const [originalKey, obj] = pair;
 		try {
 			VALIDATE_Lex(obj);
 		} catch(e) {
 			// Invalid Lex
+			if(isObject(obj)) {
+				const {
+					id, key, lastSave, title, description, columns, columnOrder, columnTitles,
+					columnSizes, sortPattern, sort, sortDir, lexicon, truncateColumns, lexiconWrap,
+					blankSort, customSort
+				} = obj;
+				if(Array.isArray(lexicon)) {
+					let flag: false | number = false;
+					const newColumns: LexiconColumn[] = [];
+					const newPattern: number[] = [];
+					if(isNumber(columns) && [columnOrder, columnTitles, columnSizes, sort].every(arr => Array.isArray(arr))) {
+						// Old style
+						if(
+							columns === columnOrder.length
+							&& columns === columnSizes.length
+							&& columns === columnTitles.length
+							&& columns === sort.length
+						) {
+							for(let pos = 0; pos < columns; pos++) {
+								let newPos = -1;
+								for(let x = 0; x < columns && pos !== newPos; x++) {
+									newPos = columnOrder[x];
+								}
+								newColumns.push({
+									id: uuidv4(),
+									size: ["s", "m", "l"].includes(columnSizes[newPos]!) ? columnSizes[newPos]! : "m",
+									label: columnTitles[newPos]!
+								});
+								newPattern.push(sort[newPos]!);
+							}
+							flag = columns;
+						}
+					} else if (Array.isArray(columns) && Array.isArray(sortPattern)) {
+						// New style
+						newPattern.push(...sortPattern);
+						newColumns.push(...columns);
+						flag = columns.length;
+					}
+					if(flag !== false) {
+						const newLexicon: Lexicon[] = [];
+						if(lexicon.every(lex => {
+							if(isObject(lex)) {
+								const {id, key, columns} = lex;
+								if(columns.length !== flag || !columns.every((col: any) => isString(col))) {
+									return false;
+								}
+								newLexicon.push({
+									id: ensureString(id || key, uuidv4()),
+									columns: []
+								});
+								return true;
+							}
+							return false;
+						})) {
+							const lex = blankAppState.lexicon;
+							const newObj: LexiconState = {
+								id: ensureString(id || key, uuidv4()),
+								lastSave: ensureNumber(lastSave, 0),
+								title: ensureString(title, "[error]"),
+								description: ensureString(description, ""),
+								columns: newColumns,
+								truncateColumns: ensureBoolean(
+									lexiconWrap === undefined ? truncateColumns : !lexiconWrap,
+									lex.truncateColumns
+								),
+								lexicon: newLexicon,
+								sortDir: ensureBoolean(sortDir, lex.sortDir),
+								sortPattern: newPattern,
+								blankSort: ["alphaFirst", "alphaLast", "first", "last"].includes(blankSort)
+									? blankSort as LexiconBlankSorts
+									: lex.blankSort,
+								customSort: customSort || undefined
+							};
+							try {
+								VALIDATE_Lex(newObj);
+								LexiconStorage.setItem(originalKey, newObj);
+							} catch (e) {
+								logger("Constructed Lexicon object was invalid", e, newObj);
+							}
+							return;	
+						}
+					}
+				}
+			}
 		}
 	});
 };
 
-const cleanWordGenStorage = (input: StorageInfo, doLog: Function) => {
+const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
+	const parseGroups = (input: any): WGCharGroupObject[] | false => {
+		if(isObject(input)) {
+			if(input.map && Array.isArray(input.map)) {
+				const groups: WGCharGroupObject[] = [];
+				const ok = input.map.every((pair: any) => {
+					if(Array.isArray(pair) && pair.length === 2) {
+						const [label, obj] = pair;
+						if(isString(label) && isObject(obj)) {
+							const {title, run} = obj;
+							if(isString(title) && isString(run)) {
+								groups.push({
+									title,
+									label,
+									run
+								});
+								return true;
+							}
+						}
+					}
+					return false;
+				});
+				return ok ? groups : false;
+			}
+		}
+		return false;
+	};
+	const parseTransforms = (input: any): WGTransformObject[] | false => {
+		if(isObject(input)) {
+			if(input.list && Array.isArray(input.list)) {
+				const groups: WGTransformObject[] = [];
+				const ok = input.list.every((obj: any) => {
+					const {key, seek, replace, description} = obj;
+					if(
+						isString(key)
+						&& isString(seek)
+						&& isString(replace)
+						&& isString(description)
+					) {
+						groups.push({
+							id: key,
+							seek,
+							replace,
+							description
+						});
+						return true;
+					}
+					return false;
+				});
+				return ok ? groups : false;
+			}
+		}
+		return false;
+	};
+	const parseSyllables = (input: any): WGSyllables | false => {
+		if(isObject(input)) {
+			const { toggle, objects } = input;
+			if(isObject(objects)) {
+				const { singleWord, wordInitial, wordMiddle, wordFinal } = objects;
+				if([singleWord, wordInitial, wordMiddle, wordFinal].every(obj => {
+					if(isObject(obj)) {
+						const components = obj.components;
+						return Array.isArray(components) && components.every(str => isString(str));
+					}
+					return false;
+				})) {
+					const getOverride = (input: any): null | Zero_Fifty => {
+						if(input === 0) {
+							return input;
+						} else if (!input) {
+							return null;
+						}
+						return isNumber(input) ? Math.min(50, Math.max(0, input)) as Zero_Fifty : null;
+					};
+					let flag: boolean = false;
+					const sw = singleWord.components.join("\n");
+					const wi = wordInitial.components.join("\n");
+					const wm = wordMiddle.components.join("\n");
+					const wf = wordFinal.components.join("\n");
+					const multipleSyllableTypes = ensureBoolean(toggle, flag);
+					const syllableDropoffOverrides: SyllableDropoffs = {
+						singleWord: getOverride(singleWord.dropoffOverride),
+						wordInitial: getOverride(wordInitial.dropoffOverride),
+						wordMiddle: getOverride(wordMiddle.dropoffOverride),
+						wordFinal: getOverride(wordFinal.dropoffOverride)
+					};
+					const final: WGSyllables = {
+						multipleSyllableTypes,
+						syllableDropoffOverrides,
+						singleWord: sw,
+						wordInitial: wi,
+						wordMiddle: wm,
+						wordFinal: wf
+					};
+					return final;
+				}
+			}
+		}
+		return false;
+	};
+	const parseSettings = (input: any): WGSettings | false => {
+		if(isObject(input)) {
+			const base = blankAppState.wg;
+			const final: WGSettings = {
+				monosyllablesRate: ensureLimit(input.monosyllablesRate, base.monosyllablesRate, 0, 100) as Zero_OneHundred,
+				maxSyllablesPerWord: ensureLimit(input.maxSyllablesPerWord, base.maxSyllablesPerWord, 0, 100) as Two_Fifteen,
+				characterGroupDropoff: ensureLimit(input.characterGroupDropoff, base.characterGroupDropoff, 0, 100) as Zero_Fifty,
+				syllableBoxDropoff: ensureLimit(input.syllableBoxDropoff, base.syllableBoxDropoff, 0, 100) as Zero_Fifty,
+				capitalizeSentences: ensureBoolean(input.capitalizeSentences, base.capitalizeSentences),
+				declarativeSentencePre: ensureString(input.declarativeSentencePre, base.declarativeSentencePre),
+				declarativeSentencePost: ensureString(input.declarativeSentencePost, base.declarativeSentencePost),
+				interrogativeSentencePre: ensureString(input.interrogativeSentencePre, base.interrogativeSentencePre),
+				interrogativeSentencePost: ensureString(input.interrogativeSentencePost, base.interrogativeSentencePost),
+				exclamatorySentencePre: ensureString(input.exclamatorySentencePre, base.exclamatorySentencePre),
+				exclamatorySentencePost: ensureString(input.exclamatorySentencePost, base.exclamatorySentencePost),
+				customSort: null
+			};
+			return final;
+		}
+		return false;
+	};
 	input.forEach(pair => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const [key, obj] = pair;
 		try {
-			VALIDATE_wg(obj);
+			VALIDATE_wgPreset(obj);
 		} catch(e) {
 			// Invalid WG
+			if(Array.isArray(obj) && obj.length === 4) {
+				const [groups, sylls, transformers, setts] = obj;
+				const characterGroups = parseGroups(groups);
+				const transforms = parseTransforms(transformers);
+				const syllables = parseSyllables(sylls);
+				const settings = parseSettings(setts);
+				if(characterGroups && transforms && syllables && settings) {
+					const newObj: Base_WG = {
+						characterGroups,
+						transforms,
+						...syllables,
+						...settings
+					};
+					try {
+						VALIDATE_wgPreset(newObj);
+						CustomStorageWG.setItem(key, newObj);
+					} catch (e) {
+						logger("Constructed WG object was invalid", e, newObj);
+					}
+					return;
+				}
+			}
+			// If we get to this point, there's been an error
+			logger(
+				"Error trying to convert WordGen storage to new format",
+				e,
+				key,
+				obj
+			);
 		}
 	});
 };
 
-const cleanWordEvolveStorage = (input: StorageInfo, doLog: Function) => {
+const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 	const parseGroups = (input: any): WECharGroupObject[] | false => {
 		if(isObject(input)) {
 			if(input.map && Array.isArray(input.map)) {
@@ -234,16 +503,22 @@ const cleanWordEvolveStorage = (input: StorageInfo, doLog: Function) => {
 				const transforms = parseTransforms(transformers);
 				const soundChanges = parseChanges(soundchanges);
 				if(characterGroups && transforms && soundChanges) {
-					const final: WEPresetObject = {
+					const newObj: WEPresetObject = {
 						characterGroups,
 						transforms,
 						soundChanges
 					};
-					return CustomStorageWE.setItem(key, final);
+					try {
+						VALIDATE_wePreset(newObj);
+						CustomStorageWE.setItem(key, newObj);
+					} catch (e) {
+						logger("Constructed WE object was invalid", e, newObj);
+					}
+					return;
 				}
 			}
 			// If we get to this point, there's been an error
-			doLog(
+			logger(
 				"Error trying to convert WordEvolve storage to new format",
 				e,
 				key,
@@ -253,7 +528,7 @@ const cleanWordEvolveStorage = (input: StorageInfo, doLog: Function) => {
 	});
 };
 
-const cleanMorphoSyntaxStorage = (input: StorageInfo, doLog: Function) => {
+const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -474,22 +749,31 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, doLog: Function) => {
 							});
 						}
 						break;
-					case "":
 				}
 			});
-			MorphoSyntaxStorage.setItem(key, newObj);
+			try {
+				VALIDATE_ms(newObj);
+				MorphoSyntaxStorage.setItem(key, newObj);
+			} catch (e) {
+				logger("Constructed MS object was invalid", e, newObj);
+			}
 		}
 	});
 };
 
-const cleanDeclenjugatorStorage = (input: StorageInfo, doLog: Function) => {
+const cleanDeclenjugatorStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const [key, obj] = pair;
 		try {
-			VALIDATE_dj(obj);
+			VALIDATE_djPreset(obj);
 		} catch(e) {
 			// Invalid DJ - should not exist yet
+			logger(
+				"Error in Declenjugator storage",
+				e,
+				key,
+				obj
+			);
 		}
 	});
 };

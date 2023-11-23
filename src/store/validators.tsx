@@ -1,5 +1,5 @@
 import { compare } from "compare-versions";
-import { DJState, ImportExportObject, LexiconState, MSState, WEState, WGState } from "./types";
+import { Base_WG, DJState, ImportExportObject, LexiconState, MSState, WEPresetObject, WEState, WGState } from "./types";
 
 const notObject = (input: any) => {
 	return !input || typeof(input) !== "object" || Array.isArray(input);
@@ -1259,8 +1259,26 @@ export function VALIDATE_wg (
 	}
 };
 
-export function VALIDATE_wePreset (
+export function VALIDATE_wgPreset (
+	object: Base_WG
+): asserts object is Base_WG {
+	const judgment = invalidWGState(object, true);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_we (
 	object: WEState
+): asserts object is WEState {
+	const judgment = invalidWEState(object);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_wePreset (
+	object: WEPresetObject
 ): asserts object is WEState {
 	const judgment = invalidWEState(object, true);
 	if(judgment) {
@@ -1281,6 +1299,15 @@ export function VALIDATE_dj (
 	object: DJState
 ): asserts object is DJState {
 	const judgment = invalidDJState(object);
+	if(judgment) {
+		throw new TypeError(`ERROR ${judgment}`);
+	}
+};
+
+export function VALIDATE_djPreset (
+	object: DJState
+): asserts object is DJState {
+	const judgment = invalidDJState(object, true);
 	if(judgment) {
 		throw new TypeError(`ERROR ${judgment}`);
 	}

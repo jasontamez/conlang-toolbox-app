@@ -93,9 +93,7 @@ export interface WGSettings {
 	exclamatorySentencePost: string
 	customSort: string | null
 }
-export interface Base_WG extends WGSettings {
-	// GROUPS
-	characterGroups: WGCharGroupObject[]
+export interface WGSyllables {
 	// SYLLABLES
 	multipleSyllableTypes: boolean
 	singleWord: string
@@ -103,11 +101,14 @@ export interface Base_WG extends WGSettings {
 	wordMiddle: string
 	wordFinal: string
 	syllableDropoffOverrides: SyllableDropoffs
+}
+export type Base_WG = WGSyllables & WGSettings & {
+	// GROUPS
+	characterGroups: WGCharGroupObject[]
 	// TRANSFORMS
 	transforms: WGTransformObject[]
-}
-export interface WGState extends Base_WG {
-	// MORE SETTINGS
+};
+export interface WGMoreSettings {
 	output: WGOutputTypes
 	showSyllableBreaks: boolean
 	sentencesPerText: Five_OneHundred
@@ -116,6 +117,7 @@ export interface WGState extends Base_WG {
 	wordlistMultiColumn: boolean
 	wordsPerWordlist: Fifty_OneThousand
 }
+export type WGState = Base_WG & WGMoreSettings;
 export type WGPresetObject = [
 	string,
 	Base_WG

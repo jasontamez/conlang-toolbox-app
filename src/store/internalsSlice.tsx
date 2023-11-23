@@ -11,7 +11,7 @@ const logFunc = (state: InternalState, action: PayloadAction<any[]>) => {
 		),
 		"---"
 	);
-	while(logs.length > 75) {
+	while(logs.length > 250) {
 		logs.shift();
 	}
 	return {
@@ -35,14 +35,14 @@ const internalsSlice = createSlice({
 	name: 'internals',
 	initialState,
 	reducers: {
-		doLog: logFunc,
+		saveToLog: logFunc,
 		setDefaultSortLanguage: setDefaultSortLanguageFunc,
 		setLastClean: setLastCleanFunc
 	}
 });
 
 export const {
-	doLog,
+	saveToLog,
 	setDefaultSortLanguage,
 	setLastClean
 } = internalsSlice.actions;

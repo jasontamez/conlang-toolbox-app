@@ -150,8 +150,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		// Deep copy column info
 		lex.sortPattern = [...lex.sortPattern];
 		lex.columns = lex.columns.map(lx => ({...lx}));
-		LexiconStorage.setItem(saveKey, lex)
-			.then(() => {
+		LexiconStorage.setItem(saveKey, lex).then(
+			() => {
 				// If we're overwriting, and it's a new key, delete the old one
 				if(overwrite && saveKey !== firstKey) {
 					LexiconStorage.removeItem(firstKey);
@@ -164,7 +164,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 					doToast,
 					undoToast
 				});
-			});
+			}
+		);
 	};
 	const saveLexiconNew = () => {
 		if(!title) {

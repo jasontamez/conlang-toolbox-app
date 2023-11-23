@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { Clipboard } from '@capacitor/clipboard';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 
-import { PageData, StateObject, ThemeNames } from '../store/types';
+import { InternalState, PageData, StateObject, ThemeNames } from '../store/types';
 
 import toaster from '../components/toaster';
 import Header from '../components/Header';
@@ -42,9 +42,10 @@ function getBannerDimensions (windowWidth: number) {
 
 const AppInfo = (props: PageData) => {
 	const width = useWindowWidth();
-	const [originalTheme, logs]: [ThemeNames, string[]] = useSelector(
-		(state: StateObject) => [state.appSettings.theme, state.internals.logs]
+	const [originalTheme, internals]: [ThemeNames, InternalState] = useSelector(
+		(state: StateObject) => [state.appSettings.theme, state.internals]
 	);
+	const { logs, ...rest} = internals;
 	const [debug, setDebug] = useState<number>(1);
 	const [doAlert] = useIonAlert();
 	const [doToast, undoToast] = useIonToast();
@@ -56,7 +57,7 @@ const AppInfo = (props: PageData) => {
 			return;
 		}
 		setDebug(1);
-		const info = logs.join("\n");
+		const info = logs.join("\n") + "\n\n" + JSON.stringify(rest);
 		doAlert({
 			header: "Debug Info",
 			message: info,
