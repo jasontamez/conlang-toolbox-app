@@ -4,13 +4,8 @@ import blankAppState from './blankAppState';
 
 const initialState: InternalState = blankAppState.internals;
 
-const logFunc = (state: InternalState, action: PayloadAction<any[]>) => {
-	const logs: string[] = state.logs.concat(
-		action.payload.map(
-			line => typeof line === "string" ? line : JSON.stringify(line)
-		),
-		"---"
-	);
+const logFunc = (state: InternalState, action: PayloadAction<string[]>) => {
+	const logs = state.logs.concat(action.payload);
 	while(logs.length > 250) {
 		logs.shift();
 	}
