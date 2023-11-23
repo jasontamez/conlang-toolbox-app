@@ -23,10 +23,10 @@ import { setLastClean } from './internalsSlice';
 import blankAppState, { cleanerObject } from './blankAppState';
 import {
 	VALIDATE_Lex,
-	VALIDATE_djPreset,
+	VALIDATE_djStoredInfo,
 	VALIDATE_ms,
-	VALIDATE_wePreset,
-	VALIDATE_wgPreset
+	VALIDATE_weStoredInfo,
+	VALIDATE_wgStoredInfo
 } from './validators';
 import {
 	Base_WG,
@@ -81,18 +81,19 @@ const interval = (
 	* 60 // 60 minutes per hour
 	* 24 // 24 hours per day
 );
-const storeCleanIfAfter = 1;
+// Arbitrary date
+const cleanStoreIfLastCleanBefore = 1700726000000;
 
 const maybeCleanState = (dispatch: Function, lastClean: number) => {
 	const now = Date.now();
-	// Clean Storages
-	if(now > storeCleanIfAfter) {
-		// Cleaning Storage should be less frequent.
+	// Maybe Clean Storages
+	if(lastClean < cleanStoreIfLastCleanBefore || (Math.random() * 7) < 1) {
+		// Cleaning Storage should be assured at least once (when state changes) but otherwise can be less frequent.
 		cleanStorages(dispatch);
 	}
 	// Clean State
-	if(now - interval > lastClean) {
-		// We've cleaned today.
+	if(now - interval < lastClean) {
+		// We've cleaned recently.
 		return;
 	}
 	dispatch(cleanStateWG());
@@ -148,21 +149,22 @@ const cleanStorages = (dispatch: Function) => {
 
 const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
-		const [originalKey, obj] = pair;
+		const [originalKey, originalObj] = pair;
 		try {
-			VALIDATE_Lex(obj);
+			VALIDATE_Lex(originalObj);
 		} catch(e) {
 			// Invalid Lex
-			if(isObject(obj)) {
+			if(isObject(originalObj)) {
 				const {
 					id, key, lastSave, title, description, columns, columnOrder, columnTitles,
 					columnSizes, sortPattern, sort, sortDir, lexicon, truncateColumns, lexiconWrap,
 					blankSort, customSort
-				} = obj;
+				} = originalObj;
 				if(Array.isArray(lexicon)) {
 					let flag: false | number = false;
 					const newColumns: LexiconColumn[] = [];
 					const newPattern: number[] = [];
+					const savedOrder: number[] = [];
 					if(isNumber(columns) && [columnOrder, columnTitles, columnSizes, sort].every(arr => Array.isArray(arr))) {
 						// Old style
 						if(
@@ -182,6 +184,7 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 									label: columnTitles[newPos]!
 								});
 								newPattern.push(sort[newPos]!);
+								savedOrder.push(newPos);
 							}
 							flag = columns;
 						}
@@ -189,6 +192,7 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 						// New style
 						newPattern.push(...sortPattern);
 						newColumns.push(...columns);
+						savedOrder.push(...columns.map((col, i) => i));
 						flag = columns.length;
 					}
 					if(flag !== false) {
@@ -201,7 +205,7 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 								}
 								newLexicon.push({
 									id: ensureString(id || key, uuidv4()),
-									columns: []
+									columns: savedOrder.map(i => columns[i]!)
 								});
 								return true;
 							}
@@ -230,13 +234,20 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 								VALIDATE_Lex(newObj);
 								LexiconStorage.setItem(originalKey, newObj);
 							} catch (e) {
-								logger("Constructed Lexicon object was invalid", e, newObj);
+								logger("Constructed Lexicon object was invalid [error, constructed, old]", e, newObj, originalObj);
 							}
 							return;	
 						}
 					}
 				}
 			}
+			// If we get to this point, there's been an error
+			logger(
+				"Error trying to convert WordGen storage to new format",
+				e,
+				originalKey,
+				originalObj
+			);
 		}
 	});
 };
@@ -365,7 +376,7 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
-			VALIDATE_wgPreset(obj);
+			VALIDATE_wgStoredInfo(obj);
 		} catch(e) {
 			// Invalid WG
 			if(Array.isArray(obj) && obj.length === 4) {
@@ -382,7 +393,7 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 						...settings
 					};
 					try {
-						VALIDATE_wgPreset(newObj);
+						VALIDATE_wgStoredInfo(newObj);
 						CustomStorageWG.setItem(key, newObj);
 					} catch (e) {
 						logger("Constructed WG object was invalid", e, newObj);
@@ -494,7 +505,7 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
-			VALIDATE_wePreset(obj);
+			VALIDATE_weStoredInfo(obj);
 		} catch(e) {
 			// Invalid WE
 			if(Array.isArray(obj) && obj.length === 3) {
@@ -509,7 +520,7 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 						soundChanges
 					};
 					try {
-						VALIDATE_wePreset(newObj);
+						VALIDATE_weStoredInfo(newObj);
 						CustomStorageWE.setItem(key, newObj);
 					} catch (e) {
 						logger("Constructed WE object was invalid", e, newObj);
@@ -534,7 +545,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 		try {
 			VALIDATE_ms(obj);
 		} catch(e) {
-			const newObj = blankAppState.ms;
+			const newObj = {...blankAppState.ms};
 			Object.entries(obj).forEach(([key, value]) => {
 				switch(key) {
 					case "id":
@@ -717,35 +728,46 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 					case "boolStrings":
 						if(Array.isArray(value)) {
 							const props = cleanerObject.ms;
-							const prop = ("BOOL_" + value) as MSBool;
-							if(props.includes(prop)) {
-								newObj[prop] = true;
+							const prop = ("BOOL_" + value);
+							if(props.includes(prop as MSBool)) {
+								newObj[prop as MSBool] = true;
+							} else {
+								// Handle changed properties
+								switch(prop) {
+									case "BOOL_ergAcc":
+										newObj.BOOL_ergAbs = true;
+										break;
+									case "BOOL_chianLast":
+										newObj.BOOL_chainLast = true;
+										break;
+								}
+								// Ignore all other failed properties
 							}
-							// TO-DO
 						}
 						break;
 					case "num":
 						if(value && isObject(value)) {
 							const props = cleanerObject.ms;
-							Object.entries(value).forEach(([innerKey, innerValue]) => {
+							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("NUM_" + innerKey) as MSNum;
 								if(props.includes(prop)) {
 									newObj[prop] = ensureNumber(innerValue, newObj[prop]);
 								}
-								// TO-DO
+								// Ignore all failed properties
 							});
 						}
 						break;
 					case "text":
 						if(value && isObject(value)) {
 							const props = cleanerObject.ms;
-							Object.entries(value).forEach(([innerKey, innerValue]) => {
+							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("TEXT_" + innerKey) as MSText;
 								if(props.includes(prop)) {
 									newObj[prop] = ensureString(innerValue, newObj[prop]);
 								} else if(innerKey === "case") {
 									newObj.TEXT_nCase = ensureString(innerValue, newObj.TEXT_nCase);
 								}
+								// Ignore all other failed properties
 							});
 						}
 						break;
@@ -765,7 +787,7 @@ const cleanDeclenjugatorStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
-			VALIDATE_djPreset(obj);
+			VALIDATE_djStoredInfo(obj);
 		} catch(e) {
 			// Invalid DJ - should not exist yet
 			logger(

@@ -322,8 +322,11 @@ const ImportData = (props: ModalProperties) => {
 		});
 	};
 
+	// TO-DO: Scroll to import section when analyzed (and maybe shrink input box?)
+	// TO-DO: Add "Are you sure?" confirm when exiting without importing
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
+		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>Import Info</IonTitle>

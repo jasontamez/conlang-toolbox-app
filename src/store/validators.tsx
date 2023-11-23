@@ -78,13 +78,13 @@ const invalidTransformObject = (object: any, flag = false) => {
 	return test || requiredProperties !== (flag ? 5 : 4);
 };
 
-const invalidWGState = (object: any, preset: boolean = false) => {
+const invalidWGState = (object: any, storedInfoFlag: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "301: Invalid WordGen State object";
 	} else {
 		const pairs = Object.entries(object);
-		const base = preset ? 20 : 27;
+		const base = storedInfoFlag ? 20 : 27;
 		if(pairs.length < base) {
 			error = "302: WordGen State object seems to be missing"
 				+ ` ${base - pairs.length} propert${pairs.length === (base - 1) ? "y" : "ies"}`;
@@ -103,10 +103,10 @@ const invalidWGState = (object: any, preset: boolean = false) => {
 						flag = (notNumber(value) || (value as number) < 2 || (value as number) > 15);
 						break;
 					case "sentencesPerText":
-						flag = (preset || notNumber(value) || (value as number) < 5 || (value as number) > 100);
+						flag = (storedInfoFlag || notNumber(value) || (value as number) < 5 || (value as number) > 100);
 						break;
 					case "wordsPerWordlist":
-						flag = (preset || notNumber(value) || (value as number) < 50 || (value as number) > 1000);
+						flag = (storedInfoFlag || notNumber(value) || (value as number) < 50 || (value as number) > 1000);
 						break;
 					case "characterGroupDropoff":
 					case "syllableBoxDropoff":
@@ -133,7 +133,7 @@ const invalidWGState = (object: any, preset: boolean = false) => {
 						break;
 					case "output":
 						if(
-							preset
+							storedInfoFlag
 							|| notString(value)
 							|| (
 								value !== "text"
@@ -152,7 +152,7 @@ const invalidWGState = (object: any, preset: boolean = false) => {
 					case "capitalizeWords":
 					case "sortWordlist":
 					case "wordlistMultiColumn":
-						flag = preset || notBoolean(value);
+						flag = storedInfoFlag || notBoolean(value);
 						break;
 					case "characterGroups":
 						flag = notArrayOf(value, invalidCharGroupObject);
@@ -195,13 +195,13 @@ const invalidSoundChangeObject = (object: any) => {
 	});
 	return test || requiredProperties !== 6;
 };
-const invalidWEState = (object: any, preset: boolean = false) => {
+const invalidWEState = (object: any, storedInfoFlag: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "401: Invalid WordEvolve State object";
 	} else {
 		const pairs = Object.entries(object);
-		const max = preset ? 3 : 8;
+		const max = storedInfoFlag ? 3 : 8;
 		if(pairs.length < max) {
 			error = "402: WordEvolve State object seems to be missing"
 				+ ` ${max - pairs.length} propert${(max - pairs.length) === 1 ? "y" : "ies"}`;
@@ -214,14 +214,14 @@ const invalidWEState = (object: any, preset: boolean = false) => {
 				let flag = false;
 				switch (key) {
 					case "input":
-						flag = preset || notString(value);
+						flag = storedInfoFlag || notString(value);
 						break;
 					case "customSort":
-						flag = preset || (notString(value) && value !== null);
+						flag = storedInfoFlag || (notString(value) && value !== null);
 						break;
 					case "outputStyle":
 						flag = (
-							preset
+							storedInfoFlag
 							|| notString(value)
 							|| (
 								value !== "outputOnly"
@@ -233,7 +233,7 @@ const invalidWEState = (object: any, preset: boolean = false) => {
 						break;
 					case "inputLower":
 					case "inputAlpha":
-						flag = preset || notBoolean(value);
+						flag = storedInfoFlag || notBoolean(value);
 						break;
 					case "characterGroups":
 						flag = notArray(value) || (value as any[]).some(obj => invalidCharGroupObject(obj, true))
@@ -256,7 +256,7 @@ const invalidWEState = (object: any, preset: boolean = false) => {
 	return error || false;
 };
 
-const invalidMSState = (object: any, preset: boolean = false) => {
+const invalidMSState = (object: any, storedInfoFlag: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "501: Invalid MorphoSyntax State object";
@@ -453,7 +453,7 @@ const invalidMSState = (object: any, preset: boolean = false) => {
 				error = `504: MorphoSyntax State has invalid property "${key}"`;
 			}
 		}
-		preset && (!object.lastView) && requiredProperties++;
+		storedInfoFlag && (!object.lastView) && requiredProperties++;
 		if(!error && requiredProperties < 5) {
 			error = "502: MorphoSyntax State object is missing"
 				+ ` ${5 - requiredProperties} propert${requiredProperties === 4 ? "y" : "ies"}`;
@@ -520,13 +520,13 @@ const invalidDJGroup = (object: any) => {
 	});
 	return test || requiredProperties !== 7;
 };
-const invalidDJState = (object: any, preset: boolean = false) => {
+const invalidDJState = (object: any, storedInfoFlag: boolean = false) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "601: Invalid Declenjugator State object";
 	} else {
 		const pairs = Object.entries(object);
-		const target = preset ? 3 : 4;
+		const target = storedInfoFlag ? 3 : 4;
 		if(pairs.length < target) {
 			error = "602: Declenjugator State object seems to be missing"
 				+ ` ${target - pairs.length} propert${(pairs.length) === (target - 1) ? "y" : "ies"}`;
@@ -539,7 +539,7 @@ const invalidDJState = (object: any, preset: boolean = false) => {
 				let flag = false;
 				switch (key) {
 					case "input":
-						flag = preset || notString(value);
+						flag = storedInfoFlag || notString(value);
 						break;
 					case "declensions":
 					case "conjugations":
@@ -643,7 +643,7 @@ const checkLexObjectInvalidity = (object: any, cols: number | null) => {
 	}
 	return false;
 };
-const invalidLexiconState = (object: any, v: string, preset: boolean = false) => {
+const invalidLexiconState = (object: any, v: string, storedInfoFlag: boolean = false) => {
 	let error = "";
 	const beforeVersionTen = compare(v, "0.10.0", "<");
 	if(notObject(object)) {
@@ -735,14 +735,14 @@ const invalidLexiconState = (object: any, v: string, preset: boolean = false) =>
 					flag = beforeVersionTen || (value !== undefined && notString(value));
 					break;
 				default:
-					flag = !preset;
+					flag = !storedInfoFlag;
 			}
 			if(flag) {
 				error = `704: Lexicon State has invalid property "${key}"`;
 			}
 		}
 		beforeVersionTen && requiredProperties++;
-		if(!error && !preset && requiredProperties < 10) {
+		if(!error && !storedInfoFlag && requiredProperties < 10) {
 			error = "702: Lexicon State object is missing"
 				+ ` ${10 - requiredProperties} propert${(requiredProperties - 10) === 1 ? "y" : "ies"}`;
 		}
@@ -1049,7 +1049,7 @@ const invalidWGStorage = (object: any) => {
 		} else if (notObject(obj)) {
 			error = "912.1: invalid WordGen storage object";
 		} else {
-			const result = invalidWGState(object, true);
+			const result = invalidWGState(obj, true);
 			error = result && result.replace(/^3([0-9][0-9]):(.+?)WordGen State/, "9$1.1$2item in WordGen storage");
 		}
 	}
@@ -1069,7 +1069,7 @@ const invalidWEStorage = (object: any) => {
 		} else if (notObject(obj)) {
 			error = "912.2: invalid WordEvolve storage object";
 		} else {
-			const result = invalidWEState(object, true);
+			const result = invalidWEState(obj, true);
 			error = result && result.replace(/^4([0-9][0-9]):(.+?)WordEvolve State/, "9$1.2$2item in WordEvolve storage");
 		}
 	}
@@ -1130,7 +1130,6 @@ const invalidLexStorage = (object: any, v: string) => {
 			error = "912.4: invalid Lexicon storage object";
 		} else {
 			const result = invalidLexiconState(obj, v, true);
-			result && console.log({...obj});
 			error = result && result.replace(/^7([0-9][0-9]):(.+?)Lexicon State/, "9$1.4$2item in Lexicon storage");
 		}
 	}
@@ -1259,7 +1258,7 @@ export function VALIDATE_wg (
 	}
 };
 
-export function VALIDATE_wgPreset (
+export function VALIDATE_wgStoredInfo (
 	object: Base_WG
 ): asserts object is Base_WG {
 	const judgment = invalidWGState(object, true);
@@ -1277,7 +1276,7 @@ export function VALIDATE_we (
 	}
 };
 
-export function VALIDATE_wePreset (
+export function VALIDATE_weStoredInfo (
 	object: WEPresetObject
 ): asserts object is WEState {
 	const judgment = invalidWEState(object, true);
@@ -1304,7 +1303,7 @@ export function VALIDATE_dj (
 	}
 };
 
-export function VALIDATE_djPreset (
+export function VALIDATE_djStoredInfo (
 	object: DJState
 ): asserts object is DJState {
 	const judgment = invalidDJState(object, true);
@@ -1316,7 +1315,7 @@ export function VALIDATE_djPreset (
 export function VALIDATE_Lex (
 	object: LexiconState
 ): asserts object is LexiconState {
-	const judgment = invalidLexiconState(object, "0");
+	const judgment = invalidLexiconState(object, "0.11.0", true);
 	if(judgment) {
 		throw new TypeError(`ERROR ${judgment}`);
 	}
