@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -25,7 +25,6 @@ import {
 	AppSettings,
 	ConceptDisplay,
 	ConceptsState,
-	DJCustomInfo,
 	DJState,
 	ExtraCharactersState,
 	ImportExportObject,
@@ -34,6 +33,11 @@ import {
 	MSState,
 	SortSettings,
 	StateObject,
+	storedDJ,
+	storedLex,
+	storedMS,
+	storedWE,
+	storedWG,
 	WEState,
 	WGState
 } from '../../store/types';
@@ -47,7 +51,7 @@ import {
 	MorphoSyntaxStorage
 } from '../../components/PersistentInfo';
 import toaster from '../../components/toaster';
-import { $and, $i } from '../../components/DollarSignExports';
+import { $and, $delay, $i, $q } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
 import { loadSortSettingsState } from '../../store/sortingSlice';
 import { loadStateSettings } from '../../store/settingsSlice';
@@ -59,12 +63,6 @@ import { loadStateLex } from '../../store/lexiconSlice';
 import { loadStateConcepts } from '../../store/conceptsSlice';
 import { loadStateEC } from '../../store/extraCharactersSlice';
 import yesNoAlert from '../../components/yesNoAlert';
-
-type storedLex = [string, LexiconState][];
-type storedMS = [string, MSState][];
-type storedWG = [string, any][];
-type storedWE = [string, any][];
-type storedDJ = [string, DJCustomInfo][];
 
 type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
@@ -80,6 +78,8 @@ const ImportData = (props: ModalProperties) => {
 	const [ doAlert ] = useIonAlert();
 	const dispatch = useDispatch();
 	const [readyToImport, setReadyToImport] = useState<boolean>(false);
+	const [hasImported, setHasImported] = useState<boolean>(false);
+
 	const [import_wg, setImport_wg] = useState<boolean>(true);
 	const [import_we, setImport_we] = useState<boolean>(true);
 	const [import_ms, setImport_ms] = useState<boolean>(true);
@@ -110,14 +110,15 @@ const ImportData = (props: ModalProperties) => {
 	const [possible_lexStored, setPossible_lexStored] = useState<storedLex | false>(false);
 
 	const doClose = () => {
-		doCancel();
+		resetAnalysis();
 		setIsOpen(false);
 	};
 
-	const doCancel = () => {
+	const resetAnalysis = () => {
 		const el = $i("importingData");
 		el && (el.value = "");
 		setReadyToImport(false);
+		setHasImported(false);
 		setPossible_wg(false);
 		setPossible_we(false);
 		setPossible_dj(false);
@@ -129,6 +130,17 @@ const ImportData = (props: ModalProperties) => {
 		setPossible_djStored(false);
 		setPossible_msStored(false);
 		setPossible_lexStored(false);
+	};
+
+	const maybeClose = () => {
+		return readyToImport && !hasImported ? yesNoAlert({
+			header: "Are you sure?",
+			message: "You haven't imported anything yet.",
+			handler: doClose,
+			submit: "Yes, Close This",
+			cssClass: "warning",
+			doAlert
+		}) : doClose();
 	};
 
 	function onLoad() {
@@ -193,10 +205,24 @@ const ImportData = (props: ModalProperties) => {
 		setReadyToImport(true);
 	};
 
+	useEffect(() => {
+		$delay(500).then(() => {
+			const el = $i("importDataContent");
+			if(el && readyToImport) {
+				const inner = $q("ion-item-divider", el);
+				inner && el.scrollToPoint(0, (inner.offsetTop || 50) - 50, 1500);
+				el.scrollToPoint(0, (inner.offsetTop || 50) - 50, 1500);
+			} else if(el) {
+				el.scrollToTop(1500);
+			}
+		});
+	}, [readyToImport]);
+
 	// Look at the pasted import and try to make an object out of it
 	function analyze() {
 		const el = $i("importingData");
 		const incoming = (el && el.value) || "";
+		const moreRedableIncoming = incoming.replace(/[\n\t]+/g, " ");
 		try {
 			const parsed: ImportExportObject = JSON.parse(incoming);
 			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
@@ -205,7 +231,7 @@ const ImportData = (props: ModalProperties) => {
 					parseInput(parsed);
 				} catch(e) {
 					let message = (e instanceof Error) ? e.message : `${e}`;
-					log(dispatch, ["Error validating Import", incoming, message]);
+					log(dispatch, ["Error validating Import", moreRedableIncoming, parsed, message]);
 					toaster({
 						message,
 						color: "danger",
@@ -223,7 +249,7 @@ const ImportData = (props: ModalProperties) => {
 			});
 		} catch (e) {
 			let message = (e instanceof Error) ? e.message : `${e}`;
-			log(dispatch, ["Error parsing Import", incoming, message]);
+			log(dispatch, ["Error parsing Import", moreRedableIncoming, message]);
 			return toaster({
 				message: `PARSE ERROR 101: ${message}`,
 				color: "danger",
@@ -288,6 +314,7 @@ const ImportData = (props: ModalProperties) => {
 				doToast,
 				undoToast
 			});
+			setHasImported(true);
 		};
 		// Sanity check
 		if(storages.length + overwriting.length === 0) {
@@ -316,14 +343,12 @@ const ImportData = (props: ModalProperties) => {
 		yesNoAlert({
 			header: "WARNING!",
 			message,
+			cssClass: "danger",
 			handler,
 			submit: "Yes, I Want to Do This",
 			doAlert
 		});
 	};
-
-	// TO-DO: Scroll to import section when analyzed (and maybe shrink input box?)
-	// TO-DO: Add "Are you sure?" confirm when exiting without importing
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad} backdropDismiss={false}>
@@ -331,13 +356,13 @@ const ImportData = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>Import Info</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()}>
+						<IonButton onClick={maybeClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent>
+			<IonContent id="importDataContent">
 				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
 					<IonItem lines="none" className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
@@ -361,9 +386,9 @@ const ImportData = (props: ModalProperties) => {
 							color="warning"
 							slot="start"
 							className={readyToImport ? "showing" : "hiding"}
-							onClick={doCancel}
+							onClick={resetAnalysis}
 						>
-							<IonLabel>Cancel</IonLabel>
+							<IonLabel>Reset</IonLabel>
 							<IonIcon icon={closeCircle} slot="end" />
 						</IonButton>
 						<IonButton
@@ -510,9 +535,9 @@ const ImportData = (props: ModalProperties) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="success" slot="end" onClick={() => doClose()}>
+					<IonButton color="success" slot="end" onClick={maybeClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Done</IonLabel>
+						<IonLabel>Cancel</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

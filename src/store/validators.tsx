@@ -1,5 +1,18 @@
 import { compare } from "compare-versions";
-import { Base_WG, DJState, ImportExportObject, LexiconState, MSState, WEPresetObject, WEState, WGState } from "./types";
+import {
+	Base_WG,
+	DJState,
+	ImportExportObject,
+	LexiconState,
+	MSBool,
+	MSState,
+	MSText,
+	WEPresetObject,
+	WEState,
+	WGState
+} from "./types";
+import { cleanerObject } from "./blankAppState";
+import { createCleanWordEvolveStorageObject, createCleanWordGenStorageObject } from "./cleaning";
 
 const notObject = (input: any) => {
 	return !input || typeof(input) !== "object" || Array.isArray(input);
@@ -272,168 +285,12 @@ const invalidMSState = (object: any, storedInfoFlag: boolean = false) => {
 					flag = notNumber(value);
 					break;
 				case "id":
+				case "key":
 				case "title":
 				case "description":
 				case "lastView":
 					requiredProperties++;
-				// eslint-disable-next-line no-fallthrough
-				case "TEXT_tradTypol":
-				case "TEXT_morphProcess":
-				case "TEXT_headDepMark":
-				case "TEXT_propNames":
-				case "TEXT_possessable":
-				case "TEXT_countMass":
-				case "TEXT_pronounAnaphClitic":
-				case "TEXT_semanticRole":
-				case "TEXT_verbClass":
-				case "TEXT_verbStructure":
-				case "TEXT_propClass":
-				case "TEXT_quantifier":
-				case "TEXT_numeral":
-				case "TEXT_adverb":
-				case "TEXT_mainClause":
-				case "TEXT_verbPhrase":
-				case "TEXT_nounPhrase":
-				case "TEXT_adPhrase":
-				case "TEXT_compare":
-				case "TEXT_questions":
-				case "TEXT_COType":
-				case "TEXT_compounding":
-				case "TEXT_denoms":
-				case "TEXT_nNumberOpt":
-				case "TEXT_nNumberObl":
-				case "TEXT_nCase":
-				case "TEXT_articles":
-				case "TEXT_demonstratives":
-				case "TEXT_possessors":
-				case "TEXT_classGender":
-				case "TEXT_dimAug":
-				case "TEXT_predNom":
-				case "TEXT_predLoc":
-				case "TEXT_predEx":
-				case "TEXT_predPoss":
-				case "TEXT_ergative":
-				case "TEXT_causation":
-				case "TEXT_applicatives":
-				case "TEXT_dativeShifts":
-				case "TEXT_datOfInt":
-				case "TEXT_possessRaising":
-				case "TEXT_refls":
-				case "TEXT_recips":
-				case "TEXT_passives":
-				case "TEXT_inverses":
-				case "TEXT_middleCon":
-				case "TEXT_antiP":
-				case "TEXT_objDemOmInc":
-				case "TEXT_verbNoms":
-				case "TEXT_verbComp":
-				case "TEXT_tense":
-				case "TEXT_aspect":
-				case "TEXT_mode":
-				case "TEXT_locDirect":
-				case "TEXT_evidence":
-				case "TEXT_miscVerbFunc":
-				case "TEXT_pragFocusEtc":
-				case "TEXT_negation":
-				case "TEXT_declaratives":
-				case "TEXT_YNQs":
-				case "TEXT_QWQs":
-				case "TEXT_imperatives":
-				case "TEXT_serialVerbs":
-				case "TEXT_complClauses":
-				case "TEXT_advClauses":
-				case "TEXT_clauseChainEtc":
-				case "TEXT_relClauses":
-				case "TEXT_coords":
 					flag = notString(value);
-					break;
-				case "BOOL_prefixMost":
-				case "BOOL_prefixLess":
-				case "BOOL_suffixMost":
-				case "BOOL_suffixLess":
-				case "BOOL_circumfixMost":
-				case "BOOL_circumfixLess":
-				case "BOOL_infixMost":
-				case "BOOL_infixLess":
-				case "BOOL_actions":
-				case "BOOL_actionProcesses":
-				case "BOOL_weather":
-				case "BOOL_states":
-				case "BOOL_involuntaryProcesses":
-				case "BOOL_bodyFunctions":
-				case "BOOL_motion":
-				case "BOOL_position":
-				case "BOOL_factive":
-				case "BOOL_cognition":
-				case "BOOL_sensation":
-				case "BOOL_emotion":
-				case "BOOL_utterance":
-				case "BOOL_manipulation":
-				case "BOOL_otherVerbClass":
-				case "BOOL_lexVerb":
-				case "BOOL_lexNoun":
-				case "BOOL_lexVN":
-				case "BOOL_lexVorN":
-				case "BOOL_adjectives":
-				case "BOOL_baseFive":
-				case "BOOL_baseTen":
-				case "BOOL_baseTwenty":
-				case "BOOL_baseOther":
-				case "BOOL_numGL":
-				case "BOOL_numLG":
-				case "BOOL_numNone":
-				case "BOOL_multiNumSets":
-				case "BOOL_inflectNum":
-				case "BOOL_APV":
-				case "BOOL_AVP":
-				case "BOOL_PAV":
-				case "BOOL_PVA":
-				case "BOOL_VAP":
-				case "BOOL_VPA":
-				case "BOOL_preP":
-				case "BOOL_postP":
-				case "BOOL_circumP":
-				case "BOOL_numSing":
-				case "BOOL_numDual":
-				case "BOOL_numTrial":
-				case "BOOL_numPaucal":
-				case "BOOL_numPlural":
-				case "BOOL_classGen":
-				case "BOOL_classAnim":
-				case "BOOL_classShape":
-				case "BOOL_classFunction":
-				case "BOOL_classOther":
-				case "BOOL_dimAugYes":
-				case "BOOL_dimAugObligatory":
-				case "BOOL_dimAugProductive":
-				case "BOOL_nomAcc":
-				case "BOOL_ergAbs":
-				case "BOOL_markInv":
-				case "BOOL_markDirInv":
-				case "BOOL_verbAgreeInv":
-				case "BOOL_wordOrderChange":
-				case "BOOL_tenseMorph":
-				case "BOOL_aspectMorph":
-				case "BOOL_modeMorph":
-				case "BOOL_otherMorph":
-				case "BOOL_chainFirst":
-				case "BOOL_chainLast":
-				case "BOOL_chainN":
-				case "BOOL_chainV":
-				case "BOOL_chainCj":
-				case "BOOL_chainT":
-				case "BOOL_chainA":
-				case "BOOL_chainPer":
-				case "BOOL_chainNum":
-				case "BOOL_chainOther":
-				case "BOOL_relPre":
-				case "BOOL_relPost":
-				case "BOOL_relInternal":
-				case "BOOL_relHeadless":
-				case "BOOL_coordMid":
-				case "BOOL_coordTwo":
-				case "BOOL_coordLast":
-					flag = notBoolean(value);
 					break;
 				case "NUM_synthesis":
 				case "NUM_fusion":
@@ -446,8 +303,50 @@ const invalidMSState = (object: any, storedInfoFlag: boolean = false) => {
 				case "NUM_headDepMarked":
 					flag = notNumber(value) || (value as number) < 0 || (value as number) > 4;
 					break;
+				// OLD MS STYLE
+				case "bool":
+					// just ignore
+					break;
+				case "boolStrings":
+					flag = notArrayOf(value, (input: any) => {
+						return input !== "ergAcc"
+							&& input !== "chianLast"
+							&& !cleanerObject.msBool.includes("BOOL_" + input as MSBool);
+					});
+					break;
+				case "num":
+					flag = notObject(value) || Object.entries(value as object).some(([k, v]) => {
+						switch(k) {
+							case "synthesis":
+							case "fusion":
+								return notNumber(v) || (v as number) < 0 || (v as number) > 10;
+							case "stemMod":
+							case "suppletion":
+							case "redupe":
+							case "supraMod":
+							case "headDepMarked":
+								return notNumber(v) || (v as number) < 0 || (v as number) > 4;
+						}
+						return true;
+					});
+					break;
+				case "text":
+					flag = notObject(value) || Object.entries(value as object).some(([k, v]) => {
+						if(k === "case" || cleanerObject.msText.includes("TEXT_" + k as MSText)) {
+							return notString(v);
+						}
+						return true;
+					});
+					break;
 				default:
-					flag = true;
+					// HANDLE 'BOOL_' AND 'TEXT_' PROPS
+					if(cleanerObject.msBool.includes(key as MSBool)) {
+						flag = notBoolean(value);
+					} else if (cleanerObject.msText.includes(key as MSText)) {
+						flag = notString(value);
+					} else {
+						flag = true;
+					}
 			}
 			if(flag) {
 				error = `504: MorphoSyntax State has invalid property "${key}"`;
@@ -557,12 +456,15 @@ const invalidDJState = (object: any, storedInfoFlag: boolean = false) => {
 	return error || false;
 };
 
-const invalidSettings = (object: any, flag: boolean) => {
+const invalidSettings = (object: any) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "201: Invalid Settings object";
 	} else {
-		const pairs = Object.entries(object);
+		const copyObject = {...object};
+		// This property may or may not exist. It should be ignored.
+		delete copyObject.currentSort;
+		const pairs = Object.entries(copyObject);
 		if(pairs.length < 2) {
 			error = "202: Settings object seems to be missing"
 				+ ` ${2 - pairs.length} propert${pairs.length === 1 ? "y" : "ies"}`;
@@ -1045,11 +947,21 @@ const invalidWGStorage = (object: any) => {
 		const [label, obj] = pairs.shift()!;
 		if(notString(label)) {
 			error = "911.1: invalid WordGen storage object label"
-		} else if (notObject(obj)) {
-			error = "912.1: invalid WordGen storage object";
-		} else {
+		} else if (notArray(obj) && !notObject(obj)) {
 			const result = invalidWGState(obj, true);
-			error = result && result.replace(/^3([0-9][0-9]):(.+?)WordGen State/, "9$1.1$2item in WordGen storage");
+			error = result && result.replace(
+				/^3([0-9][0-9]):(.+?)WordGen State/,
+				`9$1.1$2item "${label}" in WordGen storage`
+			);
+		} else if (notArray(obj) || (obj as any[]).length !== 4) {
+			error = `912.1: invalid WordGen storage object "${label}"`;
+		} else {
+			const newObj = createCleanWordGenStorageObject(...obj as any[]);
+			const result = invalidWGState(newObj, true);
+			error = result && result.replace(
+				/^3([0-9][0-9]):(.+?)WordGen State/,
+				`9$1.1$2item "${label}" in WordGen storage`
+			);
 		}
 	}
 	return error || false;
@@ -1065,11 +977,21 @@ const invalidWEStorage = (object: any) => {
 		const [label, obj] = pairs.shift()!;
 		if(notString(label)) {
 			error = "911.2: invalid WordEvolve storage object label"
-		} else if (notObject(obj)) {
-			error = "912.2: invalid WordEvolve storage object";
-		} else {
+		} else if (notArray(obj) && !notObject(obj)) {
 			const result = invalidWEState(obj, true);
-			error = result && result.replace(/^4([0-9][0-9]):(.+?)WordEvolve State/, "9$1.2$2item in WordEvolve storage");
+			error = result && result.replace(
+				/^4([0-9][0-9]):(.+?)WordEvolve State/,
+				`9$1.1$2item "${label}" in WordEvolve storage`
+			);
+		} else if (notArray(obj) || (obj as any[]).length !== 3) {
+			error = `912.2: invalid WordGen storage object "${label}"`
+		} else {
+			const newObj = createCleanWordEvolveStorageObject(...obj as any[]);
+			const result = invalidWEState(newObj, true);
+			error = result && result.replace(
+				/^4([0-9][0-9]):(.+?)WordEvolve State/,
+				`9$1.2$2item "${label}" in WordEvolve storage`
+			);
 		}
 	}
 	return error || false;
@@ -1214,7 +1136,7 @@ export function VALIDATE_import (
 					error = invalidDJState(value);
 				}
 			} else if (key === "appSettings") {
-				error = invalidSettings(value, compare(v, "0.10.0", "<"));
+				error = invalidSettings(value);
 			} else if (key === "lexicon") {
 				error = invalidLexiconState(value, v);
 			} else if (key === "concepts" && compare(v, "0.9.4", ">")) {

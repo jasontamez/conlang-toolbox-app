@@ -6,10 +6,14 @@ import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 
 const initialState = blankAppState.appSettings;
 
-const setThemeFunc = (state: AppSettings, action: PayloadAction<ThemeNames>) => {
-	if(state.theme !== action.payload) {
-		maybeUpdateTheme(state.theme, action.payload);
+const checkTheme = (old: ThemeNames, incoming: ThemeNames) => {
+	if(old !== incoming) {
+		maybeUpdateTheme(old, incoming);
 	}
+};
+
+const setThemeFunc = (state: AppSettings, action: PayloadAction<ThemeNames>) => {
+	checkTheme(state.theme, action.payload);
 	state.theme = action.payload;
 	return state;
 };
@@ -24,6 +28,7 @@ const loadStateSettingsFunc = (state: AppSettings, action: PayloadAction<AppSett
 		...cleanStateFunc(state, null),
 		...action.payload
 	};
+	checkTheme(state.theme, final.theme);
 	return final;
 };
 
@@ -33,6 +38,7 @@ const cleanStateFunc = (state: AppSettings, action: PayloadAction | null) => {
 		state[key] !== undefined && (temp[key] = state[key]);
 	});
 	const final: AppSettings = {...temp};
+	checkTheme(state.theme, final.theme);
 	return final;
 };
 

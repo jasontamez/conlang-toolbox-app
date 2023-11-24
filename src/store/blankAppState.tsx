@@ -334,8 +334,9 @@ export const cleanerObject: StateCleanerObject = {
 		"id",
 		"lastSave",
 		"title",
-		"description",
-		"lastView",
+		"description"
+	],
+	msBool: [
 		"BOOL_prefixMost",
 		"BOOL_prefixLess",
 		"BOOL_suffixMost",
@@ -421,14 +422,18 @@ export const cleanerObject: StateCleanerObject = {
 		"BOOL_relHeadless",
 		"BOOL_coordMid",
 		"BOOL_coordTwo",
-		"BOOL_coordLast",
+		"BOOL_coordLast"
+	],
+	msNum: [
 		"NUM_synthesis",
 		"NUM_fusion",
 		"NUM_stemMod",
 		"NUM_suppletion",
 		"NUM_redupe",
 		"NUM_supraMod",
-		"NUM_headDepMarked",
+		"NUM_headDepMarked"
+	],
+	msText: [
 		"TEXT_tradTypol",
 		"TEXT_morphProcess",
 		"TEXT_headDepMark",
@@ -463,6 +468,7 @@ export const cleanerObject: StateCleanerObject = {
 		"TEXT_predNom",
 		"TEXT_predLoc",
 		"TEXT_predEx",
+		"TEXT_predPoss",
 		"TEXT_ergative",
 		"TEXT_causation",
 		"TEXT_applicatives",

@@ -252,7 +252,8 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 	});
 };
 
-const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
+export const createCleanWordGenStorageObject = (...objects: any[]) => {
+	const [groups, sylls, transformers, setts] = objects;
 	const parseGroups = (input: any): WGCharGroupObject[] | false => {
 		if(isObject(input)) {
 			if(input.map && Array.isArray(input.map)) {
@@ -373,6 +374,22 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 		}
 		return false;
 	};
+	const characterGroups = parseGroups(groups);
+	const transforms = parseTransforms(transformers);
+	const syllables = parseSyllables(sylls);
+	const settings = parseSettings(setts);
+	if(characterGroups && transforms && syllables && settings) {
+		const newObj: Base_WG = {
+			characterGroups,
+			transforms,
+			...syllables,
+			...settings
+		};
+		return newObj;
+	}
+	return false;
+};
+const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -380,26 +397,18 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 		} catch(e) {
 			// Invalid WG
 			if(Array.isArray(obj) && obj.length === 4) {
-				const [groups, sylls, transformers, setts] = obj;
-				const characterGroups = parseGroups(groups);
-				const transforms = parseTransforms(transformers);
-				const syllables = parseSyllables(sylls);
-				const settings = parseSettings(setts);
-				if(characterGroups && transforms && syllables && settings) {
-					const newObj: Base_WG = {
-						characterGroups,
-						transforms,
-						...syllables,
-						...settings
-					};
+				const newObj = createCleanWordGenStorageObject(...obj);
+				if(!newObj) {
+					logger("Unable to reconstruct WordGen object", e, newObj);
+				} else {
 					try {
 						VALIDATE_wgStoredInfo(newObj);
 						CustomStorageWG.setItem(key, newObj);
-					} catch (e) {
-						logger("Constructed WG object was invalid", e, newObj);
+					} catch (e2) {
+						logger("Constructed WordGen object was invalid", e2, newObj);
 					}
-					return;
 				}
+				return;
 			}
 			// If we get to this point, there's been an error
 			logger(
@@ -412,7 +421,7 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 	});
 };
 
-const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
+export const createCleanWordEvolveStorageObject = (...objects: any[]) => {
 	const parseGroups = (input: any): WECharGroupObject[] | false => {
 		if(isObject(input)) {
 			if(input.map && Array.isArray(input.map)) {
@@ -502,6 +511,21 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 		}
 		return false;
 	};
+	const [groups, transformers, soundchanges] = objects;
+	const characterGroups = parseGroups(groups);
+	const transforms = parseTransforms(transformers);
+	const soundChanges = parseChanges(soundchanges);
+	if(characterGroups && transforms && soundChanges) {
+		const newObj: WEPresetObject = {
+			characterGroups,
+			transforms,
+			soundChanges
+		};
+		return newObj;
+	}
+	return false;
+};
+const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -509,21 +533,15 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 		} catch(e) {
 			// Invalid WE
 			if(Array.isArray(obj) && obj.length === 3) {
-				const [groups, transformers, soundchanges] = obj;
-				const characterGroups = parseGroups(groups);
-				const transforms = parseTransforms(transformers);
-				const soundChanges = parseChanges(soundchanges);
-				if(characterGroups && transforms && soundChanges) {
-					const newObj: WEPresetObject = {
-						characterGroups,
-						transforms,
-						soundChanges
-					};
+				const newObj = createCleanWordEvolveStorageObject(...obj);
+				if(!newObj) {
+					logger("Unable to reconstruct WordEvolve object", e, newObj);
+				} else {
 					try {
 						VALIDATE_weStoredInfo(newObj);
 						CustomStorageWE.setItem(key, newObj);
 					} catch (e) {
-						logger("Constructed WE object was invalid", e, newObj);
+						logger("Constructed WordEvolve object was invalid", e, newObj);
 					}
 					return;
 				}
@@ -557,7 +575,6 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 						break;
 					case "title":
 					case "description":
-					case "lastView":
 					case "TEXT_tradTypol":
 					case "TEXT_morphProcess":
 					case "TEXT_headDepMark":
@@ -727,7 +744,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 						break;
 					case "boolStrings":
 						if(Array.isArray(value)) {
-							const props = cleanerObject.ms;
+							const props = cleanerObject.msBool;
 							const prop = ("BOOL_" + value);
 							if(props.includes(prop as MSBool)) {
 								newObj[prop as MSBool] = true;
@@ -747,7 +764,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 						break;
 					case "num":
 						if(value && isObject(value)) {
-							const props = cleanerObject.ms;
+							const props = cleanerObject.msNum;
 							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("NUM_" + innerKey) as MSNum;
 								if(props.includes(prop)) {
@@ -759,7 +776,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 						break;
 					case "text":
 						if(value && isObject(value)) {
-							const props = cleanerObject.ms;
+							const props = cleanerObject.msText;
 							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("TEXT_" + innerKey) as MSText;
 								if(props.includes(prop)) {

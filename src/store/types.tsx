@@ -216,12 +216,13 @@ export type MSTextType = {
 	[key in MSText]?: string
 }
 export type MSInfo = MSBoolType & MSNumType & MSTextType
-export interface MSState extends MSInfo {
+export interface MSBasics {
 	id: string
 	lastSave: number
 	title: string
 	description: string
 }
+export type MSState = MSBasics & MSInfo;
 
 //
 // LEXICON
@@ -401,8 +402,58 @@ export interface ExtraCharactersModalOpener {
 	openECM: Function
 }
 
+// Import / Export/ Archive / Cleaning
+
+export type ARCHIVE_MSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess"
+				| "circumfixMost" | "circumfixLess" | "infixMost" | "infixLess"
+				| "actions" | "actionProcesses" | "weather" | "states"
+				| "involuntaryProcesses" | "bodyFunctions" | "motion" | "position"
+				| "factive" | "cognition" | "sensation" | "emotion"
+				| "utterance" | "manipulation" | "otherVerbClass" | "lexVerb"
+				| "lexNoun" | "lexVN" | "lexVorN" | "adjectives" | "baseFive"
+				| "baseTen" | "baseTwenty" | "baseOther" | "numGL" | "numLG"
+				| "numNone" | "multiNumSets" | "inflectNum" | "APV" | "AVP"
+				| "PAV" | "PVA" | "VAP" | "VPA" | "preP" | "postP"
+				| "circumP" | "numSing" | "numDual" | "numTrial" | "numPaucal"
+				| "numPlural" | "classGen" | "classAnim" | "classShape" | "classFunction"
+				| "classOther" | "dimAugYes" | "dimAugObligatory" | "dimAugProductive"
+				| "nomAcc" | "ergAcc" | "markInv" | "markDirInv" | "verbAgreeInv"
+				| "wordOrderChange" | "tenseMorph" | "aspectMorph" | "modeMorph"
+				| "otherMorph" | "chainFirst" | "chainLast" | "chianLast" | "chainN" | "chainV"
+				| "chainCj" | "chainT" | "chainA" | "chainPer" | "chainNum"
+				| "chainOther" | "relPre" | "relPost" | "relInternal"
+				| "relHeadless" | "coordMid" | "coordTwo" | "coordLast";
+export type ARCHIVE_MSNum = "synthesis" | "fusion" | "stemMod" | "suppletion" | "redupe"
+				| "supraMod" | "headDepMarked";
+export type ARCHIVE_MSText = "tradTypol" | "morphProcess" | "headDepMark" | "propNames"
+				| "possessable" | "countMass" | "pronounAnaphClitic" | "semanticRole"
+				| "verbClass" | "verbStructure" | "propClass" | "quantifier"
+				| "numeral" | "adverb" | "mainClause" | "verbPhrase" | "nounPhrase"
+				| "adPhrase" | "compare" | "questions" | "COType" | "compounding"
+				| "denoms" | "nNumberOpt" | "nNumberObl" | "case" | "articles"
+				| "demonstratives" | "possessors" | "classGender" | "dimAug"
+				| "predNom" | "predLoc" | "predEx" | "predPoss" | "ergative"
+				| "causation" | "applicatives" | "dativeShifts" | "datOfInt"
+				| "possessRaising" | "refls" | "recips" | "passives" | "inverses"
+				| "middleCon" | "antiP" | "objDemOmInc" | "verbNoms" | "verbComp"
+				| "tense" | "aspect" | "mode" | "locDirect" | "evidence"
+				| "miscVerbFunc" | "pragFocusEtc" | "negation" | "declaratives"
+				| "YNQs" | "QWQs" | "imperatives" | "serialVerbs" | "complClauses"
+				| "advClauses" | "clauseChainEtc" | "relClauses" | "coords";
+
+interface ARCHIVE_MSState {
+	id?: string
+	key: string
+	lastSave: string
+	title: string
+	description: string
+	bool?: any
+	boolStrings: ARCHIVE_MSBool[]
+	num: { [key in ARCHIVE_MSNum]: number }
+	text: { [key in ARCHIVE_MSText]: string }
+}
 export type storedLex = [string, LexiconState][];
-export type storedMS = [string, MSState][];
+export type storedMS = [string, MSState | ARCHIVE_MSState][];
 export type storedWG = [string, Base_WG][];
 export type storedWE = [string, WEPresetObject][];
 export type storedDJ = [string, DJCustomInfo][];
@@ -441,7 +492,10 @@ export interface ImportExportObject {
 export interface StateCleanerObject {
 	wg: (keyof WGState)[]
 	we: (keyof WEState)[]
-	ms: (keyof MSState)[]
+	ms: (keyof MSBasics)[]
+	msBool: MSBool[]
+	msNum: MSNum[]
+	msText: MSText[]
 	dj: (keyof DJState)[]
 	lexicon: (keyof LexiconState)[]
 	concepts: (keyof ConceptsState)[]
