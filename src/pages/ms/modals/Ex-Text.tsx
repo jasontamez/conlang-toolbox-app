@@ -1,3 +1,4 @@
+import { $and } from '../../../components/DollarSignExports';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 
 import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
@@ -121,11 +122,11 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 									`${found[0]} and ${found[1]}`
 								);
 							}
-							const final = found.pop();
 							if(md) {
+								const final = found.pop();
 								return `*${found.join("*, *")}*, and *${final}*`;
 							}
-							return `${found.join(", ")}, and ${final}`;
+							return $and(found);
 						}).join(""));
 						lines.push(map.join("\n"));
 					} else {
@@ -146,13 +147,12 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 						} else if (found.length === 1) {
 							result = md ? "*" + found[0] + "*" : found[0];
 						} else if (found.length === 2) {
-							const final = found.pop();
-							result = (
-								md ?
-									`*${found.join("*, *")}*, and *${final}*`
-								:
-									`${found.join(", ")}, and ${final}`
-							);
+							if(md) {
+								const final = found.pop();
+								result = `*${found.join("*, *")}*, and *${final}*`;
+							} else {
+								result = $and(found);
+							}
 						}
 						lines.push(`${title} ${result}`);
 					}

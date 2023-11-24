@@ -47,7 +47,7 @@ import {
 	MorphoSyntaxStorage
 } from '../../components/PersistentInfo';
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
+import { $and, $i } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
 import { loadSortSettingsState } from '../../store/sortingSlice';
 import { loadStateSettings } from '../../store/settingsSlice';
@@ -272,12 +272,12 @@ const ImportData = (props: ModalProperties) => {
 			import_djStored && possible_djStored && overwriteStorage(DeclenjugatorStorage, possible_djStored);
 			import_lexStored && possible_lexStored && overwriteStorage(LexiconStorage, possible_lexStored);
 			// Create success message
-			let message = overwriting.length > 0 ? "Imported new info for " + overwriting.join(", ") : "";
+			let message = overwriting.length > 0 ? "Imported new info for " + $and(overwriting) : "";
 			if(storages.length > 0) {
 				if(message) {
-					message += "; also completely overwrote storage for " + storages.join(", ");
+					message += "; also completely overwrote storage for " + $and(storages);
 				} else {
-					message = "Completely overwrote storage for " + storages.join(", ");
+					message = "Completely overwrote storage for " + $and(storages);
 				}
 			}
 			toaster({
@@ -304,12 +304,12 @@ const ImportData = (props: ModalProperties) => {
 			return handler();
 		}
 		// Give them a chance to back out.
-		let message = overwriting.length > 0 ? "This will overwrite all current data in " + overwriting.join(", ") : "";
+		let message = overwriting.length > 0 ? "This will overwrite all current data in " + $and(overwriting) : "";
 		if(storages.length > 0) {
 			if(message) {
-				message += ". It will ALSO delete and replace stored data for " + storages.join(", ");
+				message += ". It will ALSO delete and replace stored data for " + $and(storages);
 			} else {
-				message = "This will delete and replace stored data for " + storages.join(", ");
+				message = "This will delete and replace stored data for " + $and(storages);
 			}
 		}
 		message += ". Are you SURE you want to do this?";
