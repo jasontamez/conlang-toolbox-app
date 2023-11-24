@@ -9,7 +9,6 @@ const blankAppState: StateObject = {
 		lastSave: 0,
 		title: "",
 		description: "",
-		lastView: "msSettings",
 
 		BOOL_prefixMost: false,
 		BOOL_prefixLess: false,
@@ -284,7 +283,8 @@ const blankAppState: StateObject = {
 	internals: {
 		defaultSortLanguage: "unicode",
 		logs: [],
-		lastClean: 0
+		lastClean: 0,
+		lastViewMS: "msSettings"
 	}
 };
 

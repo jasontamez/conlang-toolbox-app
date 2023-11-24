@@ -179,10 +179,7 @@ const MExportAllData = (props: ModalProperties) => {
 					transforms: we.transforms.map((obj) => ({...obj})),
 					soundChanges: we.soundChanges.map((obj) => ({...obj})),
 				},
-				ms: {
-					...ms,
-					lastView: "msSettings"
-				},
+				ms: {...ms},
 				dj: { // versions >= 0.11.0
 					input: dj.input,
 					declensions: dj.declensions.map((obj) => ({...copyDJGroup(obj)})),

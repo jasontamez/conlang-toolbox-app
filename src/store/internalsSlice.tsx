@@ -25,6 +25,11 @@ const setLastCleanFunc = (state: InternalState, action: PayloadAction<number>) =
 	return state;
 };
 
+const setLastViewMSFunc = (state: InternalState, action: PayloadAction<string>) => {
+	state.lastViewMS = action.payload;
+	return state;
+};
+
 
 const internalsSlice = createSlice({
 	name: 'internals',
@@ -32,14 +37,16 @@ const internalsSlice = createSlice({
 	reducers: {
 		saveToLog: logFunc,
 		setDefaultSortLanguage: setDefaultSortLanguageFunc,
-		setLastClean: setLastCleanFunc
+		setLastClean: setLastCleanFunc,
+		setLastViewMS: setLastViewMSFunc
 	}
 });
 
 export const {
 	saveToLog,
 	setDefaultSortLanguage,
-	setLastClean
+	setLastClean,
+	setLastViewMS
 } = internalsSlice.actions;
 
 export default internalsSlice.reducer;

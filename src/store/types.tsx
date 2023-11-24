@@ -221,7 +221,6 @@ export interface MSState extends MSInfo {
 	lastSave: number
 	title: string
 	description: string
-	lastView: string
 }
 
 //
@@ -367,6 +366,7 @@ export interface InternalState {
 	logs: string[]
 	defaultSortLanguage: SortLanguage
 	lastClean: number
+	lastViewMS: string
 }
 
 //

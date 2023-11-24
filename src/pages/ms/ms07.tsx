@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { PageData, StateObject } from '../../store/types';
-import { saveView } from '../../store/msSlice';
+import { setLastViewMS } from '../../store/internalsSlice';
 
 import {
 	CheckboxItem,
@@ -39,7 +39,7 @@ const Syntax = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.ms);
 	const dispatch = useDispatch();
 	useIonViewDidEnter(() => {
-		dispatch(saveView("ms07"));
+		dispatch(setLastViewMS("ms07"));
 	});
 	return (
 		<IonPage>

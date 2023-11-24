@@ -453,10 +453,9 @@ const invalidMSState = (object: any, storedInfoFlag: boolean = false) => {
 				error = `504: MorphoSyntax State has invalid property "${key}"`;
 			}
 		}
-		storedInfoFlag && (!object.lastView) && requiredProperties++;
-		if(!error && requiredProperties < 5) {
+		if(!error && requiredProperties < 4) {
 			error = "502: MorphoSyntax State object is missing"
-				+ ` ${5 - requiredProperties} propert${requiredProperties === 4 ? "y" : "ies"}`;
+				+ ` ${4 - requiredProperties} propert${requiredProperties === 3 ? "y" : "ies"}`;
 		}
 	}
 	return error || false;

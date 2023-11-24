@@ -139,7 +139,6 @@ function updateMS (incomingState: oldTypes.StateObject) {
 		lastSave,
 		title,
 		description,
-		lastView: "msSettings",
 		...BOOL,
 		...NUM,
 		...TEXT

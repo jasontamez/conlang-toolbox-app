@@ -48,14 +48,6 @@ const cleanStateFunc = (state: MSState, action: PayloadAction | null) => {
 	return final;
 };
 
-const saveViewFunc = (state: MSState, action: PayloadAction<string>) => {
-	const final = {
-		...state,
-		lastView: action.payload
-	};
-	return final;
-};
-
 const morphoSyntaxSlice = createSlice({
 	name: 'ms',
 	initialState,
@@ -66,7 +58,6 @@ const morphoSyntaxSlice = createSlice({
 		setSyntaxNum: setSyntaxNumFunc,
 		setSyntaxText: setSyntaxTextFunc,
 		loadStateMS: loadStateFunc,
-		saveView: saveViewFunc,
 		cleanStateMS: cleanStateFunc
 	}
 });
@@ -78,7 +69,6 @@ export const {
 	setSyntaxNum,
 	setSyntaxText,
 	loadStateMS,
-	saveView,
 	cleanStateMS
 } = morphoSyntaxSlice.actions;
 

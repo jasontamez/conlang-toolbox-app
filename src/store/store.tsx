@@ -55,11 +55,10 @@ const migrations = {
 			internals: {
 				logs: [],
 				lastClean: 0,
-				defaultSortLanguage: (state.sortSettings && state.sortSettings.defaultSortLanguage) || "unicode"
+				defaultSortLanguage: (state.sortSettings && state.sortSettings.defaultSortLanguage) || "unicode",
+				lastViewMS: "msSettings"
 			}
 		};
-		// Add lastView to MorphoSyntax
-		newState.ms.lastView = "msSettings";
 		// Delete unused properties
 		delete newState.wg.storedCustomInfo;
 		delete newState.wg.storedCustomIDs;
