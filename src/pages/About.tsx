@@ -40,6 +40,7 @@ const Home = (props: PageData) => {
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
 	const [isOpenLexicon, setIsOpenLexicon] = useState<boolean>(false);
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
+	const lastViewMS = useSelector((state: StateObject) => state.internals.lastViewMS);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	return (
@@ -53,7 +54,7 @@ const Home = (props: PageData) => {
 
 					<IonRow className="major">
 						<IonCol>
-							<IonButton size="large" routerLink="/ms/msSettings" routerDirection="forward">
+							<IonButton size="large" routerLink={"/ms/" + lastViewMS} routerDirection="forward">
 								<MorphoSyntaxIcon slot="start" />
 								<IonLabel>MorphoSyntax</IonLabel>
 							</IonButton>
@@ -125,7 +126,7 @@ const Home = (props: PageData) => {
 
 					<IonRow className="major">
 						<IonCol>
-							<IonButton size="large" routerLink="/dj/groups" routerDirection="forward">
+							<IonButton size="large" routerLink="/dj/overview" routerDirection="forward">
 								<DeclenjugatorIcon slot="start" />
 								<IonLabel>Declenjugator</IonLabel>
 							</IonButton>

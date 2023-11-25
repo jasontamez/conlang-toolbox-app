@@ -222,7 +222,6 @@ const ImportData = (props: ModalProperties) => {
 	function analyze() {
 		const el = $i("importingData");
 		const incoming = (el && el.value) || "";
-		const moreRedableIncoming = incoming.replace(/[\n\t]+/g, " ");
 		try {
 			const parsed: ImportExportObject = JSON.parse(incoming);
 			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
@@ -231,7 +230,7 @@ const ImportData = (props: ModalProperties) => {
 					parseInput(parsed);
 				} catch(e) {
 					let message = (e instanceof Error) ? e.message : `${e}`;
-					log(dispatch, ["Error validating Import", moreRedableIncoming, parsed, message]);
+					log(dispatch, ["Error validating Import", message], parsed);
 					toaster({
 						message,
 						color: "danger",
@@ -249,7 +248,7 @@ const ImportData = (props: ModalProperties) => {
 			});
 		} catch (e) {
 			let message = (e instanceof Error) ? e.message : `${e}`;
-			log(dispatch, ["Error parsing Import", moreRedableIncoming, message]);
+			log(dispatch, ["Error parsing Import", message]);
 			return toaster({
 				message: `PARSE ERROR 101: ${message}`,
 				color: "danger",
@@ -367,7 +366,8 @@ const ImportData = (props: ModalProperties) => {
 					<IonItem lines="none" className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
 							<h2 className="ion-text-center ion-text-wrap">
-								Paste your data below.
+								Paste your data below. This only accepts data exported through
+								"Export App Info".
 							</h2>
 						</IonLabel>
 					</IonItem>

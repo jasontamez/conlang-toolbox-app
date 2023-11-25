@@ -616,7 +616,7 @@ const invalidLexiconState = (object: any, v: string, storedInfoFlag: boolean = f
 					} else if (foundColumns === null) {
 						foundColumns = (value as number[]).length;
 					} else if (foundColumns !== (value as number[]).length) {
-						error = `Expected ${foundColumns} columns but encountered ${(value as number[]).length} in "${key}"`;
+						error = `707: Lexicon expected ${foundColumns} columns but encountered ${(value as number[]).length} in "${key}"`;
 						continue;
 					}
 					break;
@@ -627,7 +627,7 @@ const invalidLexiconState = (object: any, v: string, storedInfoFlag: boolean = f
 					} else if (foundColumns === null) {
 						foundColumns = (value as any[]).length;
 					} else if (foundColumns !== (value as any[]).length) {
-						error = `Expected ${foundColumns} columns but encountered ${(value as any[]).length} in "${key}"`;
+						error = `707: Lexicon expected ${foundColumns} columns but encountered ${(value as any[]).length} in "${key}"`;
 						continue;
 					}
 					break;
@@ -759,10 +759,11 @@ const invalidConceptsState = (object: any) => {
 		while(!error && pairs.length > 0) {
 			const [key, value] = pairs.shift()!
 			let flag = false;
+			let note: string = "";
 			switch (key) {
 				case "display":
 					flag = notArrayOf(value, (str: any) => {
-						return ![
+						const result = ![
 							"asjp",
 							"lj",
 							"d",
@@ -772,6 +773,8 @@ const invalidConceptsState = (object: any) => {
 							"ssl",
 							"l200",						
 						].includes(str);
+						result && (note = ` (${str})`);
+						return result;
 					});
 					break;
 				case "combinations":
@@ -785,7 +788,7 @@ const invalidConceptsState = (object: any) => {
 					flag = true;
 			}
 			if(flag) {
-				error = `804: Concepts State has invalid property "${key}"`;
+				error = `804: Concepts State has invalid property "${key}"${note}`;
 			}
 		}
 	}
@@ -1129,12 +1132,8 @@ export function VALIDATE_import (
 				error = invalidWEState(value);
 			} else if (key === "ms") {
 				error = invalidMSState(value);
-			} else if (key === "dj") {
-				if(compare(v, "0.11.0", "<")) {
-					error = `109: unexpected property "dj"`;
-				} else {
-					error = invalidDJState(value);
-				}
+			} else if (key === "dj" && compare(v, "0.11.0", ">=")) {
+				error = invalidDJState(value);
 			} else if (key === "appSettings") {
 				error = invalidSettings(value);
 			} else if (key === "lexicon") {
@@ -1159,6 +1158,18 @@ export function VALIDATE_import (
 				error = invalidDJStorage(value);
 			} else if (key === "lexStored" && compare(v, "0.11.0", ">=")) {
 				error = invalidLexStorage(value, v);
+			} else if ([
+				"dj",
+				"concepts",
+				"wordLists",
+				"storages",
+				"wgStored",
+				"weStored",
+				"msStored",
+				"djStored",
+				"lexStored",
+			].includes(key)) {
+				error = `109: unexpected property "${key}" in version ${v}`;
 			} else if (key !== "currentVersion") {
 				error = `105: invalid property "${key}"`;
 			}

@@ -119,7 +119,7 @@ const cleanStorages = (dispatch: Function) => {
 	const wgS: StorageInfo = [];
 	const weS: StorageInfo = [];
 	const djS: StorageInfo = [];
-	const logger = (...args: any[]) => log(dispatch, args);
+	const logger = (main: any[], ...args: any[]) => log(dispatch, main, ...args);
 	LexiconStorage.iterate((value: any, key: string) => {
 		lexS.push([key, value]);
 		return; // Blank return keeps the loop going
@@ -143,7 +143,7 @@ const cleanStorages = (dispatch: Function) => {
 		cleanWordEvolveStorage(weS, logger);
 		cleanDeclenjugatorStorage(djS, logger);
 	}).catch((reason: any) => {
-		logger("Error trying to clean storages", reason);
+		logger(["Error trying to clean storages", reason]);
 	});
 };
 
@@ -234,7 +234,11 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 								VALIDATE_Lex(newObj);
 								LexiconStorage.setItem(originalKey, newObj);
 							} catch (e) {
-								logger("Constructed Lexicon object was invalid [error, constructed, old]", e, newObj, originalObj);
+								logger(
+									["Constructed Lexicon object was invalid [error, constructed, old]", e],
+									newObj,
+									originalObj
+								);
 							}
 							return;	
 						}
@@ -243,8 +247,7 @@ const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
 			}
 			// If we get to this point, there's been an error
 			logger(
-				"Error trying to convert WordGen storage to new format",
-				e,
+				["Error trying to convert WordGen storage to new format", e],
 				originalKey,
 				originalObj
 			);
@@ -399,21 +402,20 @@ const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
 			if(Array.isArray(obj) && obj.length === 4) {
 				const newObj = createCleanWordGenStorageObject(...obj);
 				if(!newObj) {
-					logger("Unable to reconstruct WordGen object", e, newObj);
+					logger(["Unable to reconstruct WordGen object", e], newObj);
 				} else {
 					try {
 						VALIDATE_wgStoredInfo(newObj);
 						CustomStorageWG.setItem(key, newObj);
 					} catch (e2) {
-						logger("Constructed WordGen object was invalid", e2, newObj);
+						logger(["Constructed WordGen object was invalid", e2], newObj);
 					}
 				}
 				return;
 			}
 			// If we get to this point, there's been an error
 			logger(
-				"Error trying to convert WordGen storage to new format",
-				e,
+				["Error trying to convert WordGen storage to new format", e],
 				key,
 				obj
 			);
@@ -535,21 +537,20 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 			if(Array.isArray(obj) && obj.length === 3) {
 				const newObj = createCleanWordEvolveStorageObject(...obj);
 				if(!newObj) {
-					logger("Unable to reconstruct WordEvolve object", e, newObj);
+					logger(["Unable to reconstruct WordEvolve object", e], newObj);
 				} else {
 					try {
 						VALIDATE_weStoredInfo(newObj);
 						CustomStorageWE.setItem(key, newObj);
 					} catch (e) {
-						logger("Constructed WordEvolve object was invalid", e, newObj);
+						logger(["Constructed WordEvolve object was invalid", e], newObj);
 					}
 					return;
 				}
 			}
 			// If we get to this point, there's been an error
 			logger(
-				"Error trying to convert WordEvolve storage to new format",
-				e,
+				["Error trying to convert WordEvolve storage to new format", e],
 				key,
 				obj
 			);
@@ -794,7 +795,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 				VALIDATE_ms(newObj);
 				MorphoSyntaxStorage.setItem(key, newObj);
 			} catch (e) {
-				logger("Constructed MS object was invalid", e, newObj);
+				logger(["Constructed MS object was invalid", e], newObj);
 			}
 		}
 	});
@@ -808,8 +809,7 @@ const cleanDeclenjugatorStorage = (input: StorageInfo, logger: Function) => {
 		} catch(e) {
 			// Invalid DJ - should not exist yet
 			logger(
-				"Error in Declenjugator storage",
-				e,
+				["Error in Declenjugator storage", e],
 				key,
 				obj
 			);

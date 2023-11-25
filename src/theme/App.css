@@ -104,6 +104,23 @@ ion-card-content ul.changelog li {
 	padding-block-end: 1em;
 	padding-block-start: 10em;
 }
+#changelog #changelogButtonContainer {
+	margin-block-start: 3em;
+	margin-block-end: 1em;
+}
+#bugReport {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	padding-block: 1em;
+	padding-inline: 2em;
+	gap: 2em;
+}
+ion-card-title {
+	font-size: 1.25rem;
+    font-weight: bold;
+}
 ion-card {
 	--ion-border-color: var(--ion-color-step-150);
 	border-radius: 1.5rem;
@@ -964,6 +981,14 @@ ion-alert button.alert-button.cancel {
 ion-alert button.alert-button.submit {
 	background: var(--btn-background);
 	color: var(--btn-color);
+}
+ion-alert button.alert-button.danger {
+	background: var(--ion-color-danger);
+	color: var(--ion-color-danger-contrast);
+}
+ion-alert button.alert-button.warning {
+	background: var(--ion-color-warning);
+	color: var(--ion-color-warning-contrast);
 }
 ion-alert.danger {
 	--background: var(--ion-color-danger-shade);

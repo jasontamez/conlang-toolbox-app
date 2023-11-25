@@ -779,7 +779,7 @@ const WEOut = (props: PageData) => {
 							// Treat as cancel
 							return;
 						}
-						log(dispatch, ["WE Save to lex?", col]);
+						log(dispatch, ["WE Save to lex?"], col);
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info

@@ -615,7 +615,7 @@ const WGOut = (props: PageData) => {
 							// Treat as cancel
 							return;
 						}
-						log(dispatch, ["WG Send to Lexicon", col]);
+						log(dispatch, ["WG Send to Lexicon"], col);
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info

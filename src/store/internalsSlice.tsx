@@ -1,18 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InternalState, SortLanguage } from './types';
+import { InternalState,  SortLanguage } from './types';
 import blankAppState from './blankAppState';
 
 const initialState: InternalState = blankAppState.internals;
 
+const NinetyDays =
+	1000
+	* 60
+	* 60
+	* 24
+	* 90;
+
 const logFunc = (state: InternalState, action: PayloadAction<string[]>) => {
-	const logs = state.logs.concat(action.payload);
-	while(logs.length > 250) {
-		logs.shift();
-	}
+	const time = Date.now();
+	const then = time - NinetyDays;
+	const logs = state.logs.filter(log => log.time > then);
+	logs.push({
+		time,
+		log: action.payload
+	});
 	return {
 		...state,
 		logs
 	};
+};
+
+const clearLogsFunc = (state: InternalState) => {
+	return { ...state, logs: [] };
 };
 
 const setDefaultSortLanguageFunc = (state: InternalState, action: PayloadAction<SortLanguage>) => {
@@ -38,7 +52,8 @@ const internalsSlice = createSlice({
 		saveToLog: logFunc,
 		setDefaultSortLanguage: setDefaultSortLanguageFunc,
 		setLastClean: setLastCleanFunc,
-		setLastViewMS: setLastViewMSFunc
+		setLastViewMS: setLastViewMSFunc,
+		clearLogs: clearLogsFunc
 	}
 });
 
@@ -46,7 +61,8 @@ export const {
 	saveToLog,
 	setDefaultSortLanguage,
 	setLastClean,
-	setLastViewMS
+	setLastViewMS,
+	clearLogs
 } = internalsSlice.actions;
 
 export default internalsSlice.reducer;

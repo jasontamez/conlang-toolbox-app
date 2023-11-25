@@ -159,6 +159,7 @@ const DJOutput = (props: PageData) => {
 			return toaster({
 				message: "You didn't select a format.",
 				color: "danger",
+				duration: 3000,
 				doToast,
 				undoToast
 			});
@@ -487,7 +488,5 @@ const DJOutput = (props: PageData) => {
 		</IonPage>
 	);
 };
-
-// TO-DO: Export as CSV, DOCx, and Text
 
 export default DJOutput;

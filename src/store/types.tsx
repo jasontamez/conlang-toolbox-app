@@ -363,8 +363,13 @@ export interface AppSettings {
 // INTERNALS
 //
 
+export interface Log {
+	time: number,
+	log: string[]
+}
+
 export interface InternalState {
-	logs: string[]
+	logs: Log[]
 	defaultSortLanguage: SortLanguage
 	lastClean: number
 	lastViewMS: string

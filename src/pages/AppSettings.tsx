@@ -56,12 +56,12 @@ const AppSettings = (props: PageData) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>Export All App Info</h2>
+							<h2>Export App Info</h2>
 						</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenImport(true)}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>Import</h2>
+							<h2>Import App Info</h2>
 						</IonLabel>
 					</IonItem>
 				</IonList>
