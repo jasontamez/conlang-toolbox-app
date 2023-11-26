@@ -46,10 +46,10 @@ const migrations = {
 			...state,
 			// Add declenjugator
 			dj: {
-				input: [],
-				usingLexiconForInput: null,
-				identifiers: [],
-				declenjugationGroups: []
+				input: "",
+				declensions: [],
+				conjugations: [],
+				other: []
 			},
 			// Add internals
 			internals: {

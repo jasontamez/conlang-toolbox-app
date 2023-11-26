@@ -1065,12 +1065,12 @@ const invalidOldStorageObject = (object: any, v: string) => {
 		return "910.0: invalid Storage property"
 	}
 	const pairs = Object.entries(object);
-	if(pairs.length < 5) {
+	if(pairs.length < 4) {
 		return "912.0: Storage object seems to be missing"
-			+ ` ${5 - pairs.length} propert${pairs.length === 4 ? "y" : "ies"}`;
-	} else if(pairs.length > 5) {
+			+ ` ${4 - pairs.length} propert${pairs.length === 3 ? "y" : "ies"}`;
+	} else if(pairs.length > 4) {
 		return "913.0: Storage object seems to have"
-			+ ` ${pairs.length - 5} extra propert${pairs.length === 6 ? "y" : "ies"}`;
+			+ ` ${pairs.length - 4} extra propert${pairs.length === 5 ? "y" : "ies"}`;
 	}
 	let error: string | false = false;
 	pairs.some(([key, value]) => {

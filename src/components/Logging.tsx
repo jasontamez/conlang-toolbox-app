@@ -1,6 +1,6 @@
 import { saveToLog } from "../store/internalsSlice";
 
-const flag = "debugging";
+const flag = 0 && "debugging";
 
 const getType = (thing: any) => typeof thing;
 

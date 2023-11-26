@@ -65,17 +65,17 @@ const loadStateFunc = (state: DJState, action: PayloadAction<DJCustomInfo | null
 		other
 	} = action.payload || initialState;
 	return {
-		...cleanStateFunc(state, null),
+		...cleanStateFunc(state),
 		declensions,
 		conjugations,
 		other
 	};
 };
 
-const cleanStateFunc = (state: DJState, action: PayloadAction | null) => {
+const cleanStateFunc = (state: DJState) => {
 	const temp: any = {};
 	cleanerObject.dj.forEach(key => {
-		state[key] !== undefined && (temp[key] = state[key]);
+		(temp[key] = state[key] || initialState[key]);
 	});
 	const final: DJState = {...temp};
 	return final;

@@ -134,7 +134,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.dj.map((obj, i) => {
+							{appPagesObject.dj.filter(obj => !obj.hidden).map((obj, i) => {
 								const { url, tab, icon, Icon } = obj;
 								return (
 									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
