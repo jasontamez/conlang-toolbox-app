@@ -160,7 +160,29 @@ const AppInfo = (props: PageData) => {
 												WordGen and WordEvolve heavily inspired by <a href="http://www.zompist.com/gen.html">Gen</a> and <a href="https://www.zompist.com/sca2.html">SCA²</a> by Mark Rosenfelder
 											</IonLabel>
 										</IonItem>
+										<IonItem>
+											<IonLabel className="ion-text-center ion-text-wrap">
+												MorphoSyntax is based on an outline presented throughout <i>Describing Morphosyntax: A Guide for Field Linguists</i> by Thomas E. Paine, and it also uses some foreign-language examples presented therein
+											</IonLabel>
+										</IonItem>
 									</IonList>
+								</IonCardContent>
+							</IonCard>
+						</IonCol>
+					</IonRow>
+					<IonRow>
+						<IonCol>
+							<IonCard>
+								<IonCardHeader className="ion-text-center">
+									<IonCardTitle>Bug Reports</IonCardTitle>
+								</IonCardHeader>
+								<IonCardContent id="bugReport">
+									<div className="ion-text-center">
+										Please report bugs and errors to <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a> and incude an error log.
+									</div>
+									<div className="ion-text-center">
+										<IonButton size="small" onClick={showLogs} color="warning" fill="outline">Get Error Log</IonButton>
+									</div>
 								</IonCardContent>
 							</IonCard>
 						</IonCol>
@@ -246,23 +268,6 @@ const AppInfo = (props: PageData) => {
 											<li>Fixed some MorphoSyntax information modals that had unreachable info off the side of the screen.</li>
 											<li>Added "Landau 200" to Concepts.</li>
 										</ul>
-									</div>
-								</IonCardContent>
-							</IonCard>
-						</IonCol>
-					</IonRow>
-					<IonRow>
-						<IonCol>
-							<IonCard>
-								<IonCardHeader className="ion-text-center">
-									<IonCardTitle>Bug Reports</IonCardTitle>
-								</IonCardHeader>
-								<IonCardContent id="bugReport">
-									<div className="ion-text-center">
-										Please report bugs and errors to <a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a> and incude an error log.
-									</div>
-									<div className="ion-text-center">
-										<IonButton size="small" onClick={showLogs} color="warning" fill="outline">Get Error Log</IonButton>
 									</div>
 								</IonCardContent>
 							</IonCard>

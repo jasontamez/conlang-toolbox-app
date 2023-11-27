@@ -349,7 +349,7 @@ export const appMenuInfo: MenuSection[] = [
 				id: 'menuitemSettings'
 			},
 			{
-				title: 'About',
+				title: 'Main',
 				url: '/',
 				menuIcon: chatboxEllipsesSharp,
 				id: 'menuitemAbout'

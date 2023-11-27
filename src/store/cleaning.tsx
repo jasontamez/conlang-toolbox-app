@@ -87,8 +87,15 @@ const cleanStoreIfLastCleanBefore = 1700726000000;
 const maybeCleanState = (dispatch: Function, lastClean: number) => {
 	const now = Date.now();
 	// Maybe Clean Storages
-	if(lastClean < cleanStoreIfLastCleanBefore || (Math.random() * 7) < 1) {
-		// Cleaning Storage should be assured at least once (when state changes) but otherwise can be less frequent.
+	if(
+		// Cleaning Storage should be assured at least once (when state changes)...
+		lastClean < cleanStoreIfLastCleanBefore
+		|| (
+			// ...but otherwise can be less frequent.
+			(now - interval < lastClean)
+			&& (Math.random() * 7) < 1
+		)
+	) {
 		cleanStorages(dispatch);
 	}
 	// Clean State

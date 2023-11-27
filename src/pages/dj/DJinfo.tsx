@@ -90,7 +90,7 @@ export const GroupCard = (props: CardProps) => {
 					Click the (+) button to add a new group. When you make a group, you must
 					give it a title or description. You can choose to label this as
 					a <em>declension</em>, a <em>conjugation</em>, or under <em>other</em> if
-					you don't want to use the other labels. Optionally, you can note what types of
+					you don't want to use those labels. Optionally, you can note what types of
 					words this group will apply to.
 				</p><p>
 					Next, you will provide instructions on how to find the "root" of the word.
@@ -197,8 +197,8 @@ const DJinfo = (props: PageData) => {
 					</IonItem>
 					<IonCardContent>
 						<p>
-							This tool is for creating <strong>declensions</strong> and
-							<strong>conjugations</strong>.
+							This tool is for
+							creating <strong>declensions</strong> and <strong>conjugations</strong>.
 						</p><p>
 							A declension is, at its most basic, modifying a word to show its role in
 							a sentence. Declensions may apply to nouns, pronouns, adjectives, adverbs,

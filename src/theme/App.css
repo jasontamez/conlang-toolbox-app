@@ -1374,7 +1374,7 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	width: 100%;
 }
 #makingTitle #titleOutput div,
-#makingTitle .titleOptions .options div {
+#makingTitle .titleOptions .options .option {
 	display: inline-block;
 	padding: 0.1rem 0.5rem 0.25rem;
 	margin: 0.5rem 0.5rem;
@@ -1405,11 +1405,42 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	justify-content: center;
 	align-items: center;
 }
-#makingTitle ion-item .titleOptions .options div {
+#makingTitle ion-item .titleOptions .options .option {
+	border-color: var(--ion-color-secondary-tint);
+	border-radius: 0.25em;
+	padding-inline: 0.25em;
+	padding-block: 0;
 	background: var(--ion-color-secondary);
 	color: var(--ion-color-secondary-contrast);
+	white-space: nowrap;
 }
-#makingTitle ion-item:nth-child(even) .titleOptions .options div {
+#makingTitle ion-item:nth-child(even) .titleOptions .options .option {
+	border-color: var(--ion-color-tertiary-tint);
 	background: var(--ion-color-tertiary);
 	color: var(--ion-color-tertiary-contrast);
+}
+#makingTitle ion-item .titleOptions .options .option.toggleButton {
+	background: transparent;
+	border-width: 1px;
+	border-style: solid;
+	color: inherit;
+	font-style: italic;
+}
+#makingTitle ion-item .titleOptions .toggleGroup {
+	display: contents;
+	padding: 0;
+	margin: 0;
+}
+#makingTitle ion-item .titleOptions .options .toggleGroup.active .option {
+	max-width: 90vw;
+	overflow: hidden;
+	transition: all 0.5s linear;
+}
+#makingTitle ion-item .titleOptions .options .toggleGroup.inactive .option {
+	max-width: 0;
+	padding-inline: 0;
+	border-width: 0;
+	margin: 0;
+	overflow: hidden;
+	transition: all 0.2s linear;
 }

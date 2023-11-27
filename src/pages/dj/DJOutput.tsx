@@ -181,7 +181,6 @@ const DJOutput = (props: PageData) => {
 
 	const maybeDoExport = () => {
 		if(type.length === 0) {
-			doAlert("ok")
 			return toaster({
 				message: "Please choose at least one group to display.",
 				color: "danger",
@@ -322,7 +321,7 @@ const DJOutput = (props: PageData) => {
 						</IonSelect>
 					</IonItem>
 					{
-						numberOfTypes > 2 ?
+						numberOfTypes > 1 ?
 							(
 								<IonItem>
 									<IonSelect
