@@ -123,6 +123,11 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			err.push(temp);
 			$q(".anticontextLabel").classList.add("invalidValue");
 		}
+		try {
+			new RegExp(seek);
+		} catch(e) {
+			err.push(`${e}`);
+		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({

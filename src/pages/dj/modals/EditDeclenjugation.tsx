@@ -156,21 +156,38 @@ const EditDeclenjugation = (props: EditDJModal) => {
 			title,
 			useWholeWord
 		};
-		if(useAdvancedMethod && !regex1) {
-			doAlert({
-				message: "You did not enter a match expression.",
-				cssClass: "danger",
-				buttons: [
-					{
-						text: "Ok",
-						role: "cancel",
-						cssClass: "submit"
-					}
-				]
-			});
-			return;
-		}
 		if(useAdvancedMethod) {
+			if(!regex1) {
+				doAlert({
+					message: "You did not enter a match expression.",
+					cssClass: "danger",
+					buttons: [
+						{
+							text: "Ok",
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				});
+				return;
+			}
+			try {
+				new RegExp(regex1);
+			} catch(e) {
+				doAlert({
+					header: `Error trying to parse "${regex1}"`,
+					message: `${e}`,
+					cssClass: "danger",
+					buttons: [
+						{
+							text: "Ok",
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				});
+				return;
+			}
 			editedDJ.regex = [regex1, regex2];
 		} else {
 			editedDJ.prefix = prefix;

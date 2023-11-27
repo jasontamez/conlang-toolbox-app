@@ -198,20 +198,39 @@ const AddGroup = (props: AddGroupProps) => {
 				]
 			})
 			return;
-		} else if (useAdvancedMethod && (!regex1 || !regex2)) {
-			doAlert({
-				message: "If using regular expressions, you must provide both match and replacement expressions.",
-				cssClass: "danger",
-				buttons: [
-					{
-						text: "Ok",
-						role: "cancel",
-						cssClass: "submit"
-					}
-				]
-			})
-			return;
-		} else if(!useAdvancedMethod && (startsWith.length + endsWith.length === 0)) {
+		} else if (useAdvancedMethod) {
+			if(!regex1 || !regex2) {
+				doAlert({
+					message: "If using regular expressions, you must provide both match and replacement expressions.",
+					cssClass: "danger",
+					buttons: [
+						{
+							text: "Ok",
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				});
+				return;
+			}
+			try {
+				new RegExp(regex1);
+			} catch(e) {
+				doAlert({
+					header: `Error trying to parse "${regex1}"`,
+					message: `${e}`,
+					cssClass: "danger",
+					buttons: [
+						{
+							text: "Ok",
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				});
+				return;
+			}
+		} else if((startsWith.length + endsWith.length) === 0) {
 			doAlert({
 				message: "You must provide at least one condition (start or end) before saving.",
 				cssClass: "danger",

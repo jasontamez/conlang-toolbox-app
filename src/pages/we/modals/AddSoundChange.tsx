@@ -78,6 +78,11 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			$q(".anticontextLabel").classList.add("invalidValue");
 			err.push(temp);
 		}
+		try {
+			new RegExp(seek);
+		} catch(e) {
+			err.push(`${e}`);
+		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({

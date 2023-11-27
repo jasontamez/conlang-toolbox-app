@@ -53,6 +53,11 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			$q(".seekLabel").classList.add("invalidValue");
 			err.push("No search expression present");
 		}
+		try {
+			new RegExp(seek);
+		} catch(e) {
+			err.push(`${e}`);
+		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
