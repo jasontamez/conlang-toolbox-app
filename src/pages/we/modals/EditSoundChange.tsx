@@ -132,6 +132,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			// Errors found.
 			doAlert({
 				header: "Error",
+				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{

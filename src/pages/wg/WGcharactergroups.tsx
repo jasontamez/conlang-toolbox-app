@@ -25,8 +25,7 @@ import {
 	addOutline,
 	helpCircleOutline,
 	trash,
-	trashBinOutline,
-	copyOutline
+	trashBinOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -46,6 +45,7 @@ import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import { CopyFromOtherIcon } from '../../components/icons';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -126,7 +126,7 @@ const WGCharGroup = (props: PageData) => {
 			toaster({
 				message: `${weCharatcterGroups.length} Character Groups imported.`,
 				duration: 2500,
-				color: "danger",
+				color: "success",
 				position: "top",
 				doToast,
 				undoToast
@@ -177,7 +177,7 @@ const WGCharGroup = (props: PageData) => {
 						}
 						{weCharatcterGroups.length > 0 ?
 							<IonButton onClick={() => maybeCopyFromWE()}>
-								<IonIcon icon={copyOutline} />
+								<CopyFromOtherIcon />
 							</IonButton>
 						:
 							<></>

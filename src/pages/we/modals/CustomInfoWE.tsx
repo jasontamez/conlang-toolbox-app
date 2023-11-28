@@ -56,6 +56,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		if(title === "") {
 			return doAlert({
 				header: "Please enter a title",
+				cssClass: "warning",
 				buttons: [
 					{
 						text: "Cancel",
@@ -115,6 +116,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				} else {
 					doAlert({
 						header: "Unknown Error",
+						cssClass: "danger",
 						message: `Save "${title}" not found.`,
 						buttons: [
 							{

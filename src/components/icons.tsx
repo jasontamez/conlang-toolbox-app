@@ -22,7 +22,8 @@ const map: Map = {
 	transformations: "transfer-right-material-design",
 	soundChanges: "transit-connection-variant-material-design",
 	declenjugator: "read-more-material-design",
-	djGroups: "arrow-split-material-design"
+	djGroups: "arrow-split-material-design",
+	import: "import-2-svgrepo-com"
 };
 
 export interface IonIconProps {
@@ -64,6 +65,7 @@ export const WordGenIcon = (props: IonIconProps) => <IonIcon flipRtl {...props} 
 export const SyllablesIcon = (props: IonIconProps) => <Icon flipRtl which="syllables" {...props}></Icon>;
 export const TransformationsIcon = (props: IonIconProps) => <Icon flipRtl which="transformations" {...props}></Icon>;
 export const SoundChangesIcon = (props: IonIconProps) => <Icon flipRtl which="soundChanges" {...props}></Icon>;
+export const CopyFromOtherIcon = (props: IonIconProps) => <Icon flipRtl which="import" {...props}></Icon>
 
 export const DeclenjugatorIcon = (props: IonIconProps) => <Icon flipRtl which="declenjugator" {...props}></Icon>;
 export const DJGroupsIcon = (props: IonIconProps) => <Icon flipRtl which="djGroups" {...props}></Icon>;

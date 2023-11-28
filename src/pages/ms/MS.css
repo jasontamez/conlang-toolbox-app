@@ -150,7 +150,8 @@
 .morphoSyntaxModal table td,
 #morphoSyntaxPage table th,
 .morphoSyntaxModal table th {
-	padding: 0.5rem 1rem;
+	padding-block: 0.5rem;
+	padding-inline: 1rem;
 	vertical-align: top;
 	text-align: start;
 	border: 0;
@@ -158,7 +159,7 @@
 .morphoSyntaxModal table.informational th,
 .morphoSyntaxModal table.informational td + td {
 	text-align: center;
-	padding-inline: 0;
+	padding-inline: 0.25rem;
 }
 .morphoSyntaxModal table.translation {
 	border-width: 0.1rem;

@@ -114,6 +114,15 @@ const ConceptsPage = (props: PageData) => {
 			}),
 			buttons: [
 				{
+					text: "Stop",
+					handler: () => {
+						setSavedWords([]);
+						setSavedWordsObject({});
+						setPickAndSave(false);
+					},
+					cssClass: "danger"
+				},
+				{
 					text: "Cancel",
 					role: 'cancel'
 				},

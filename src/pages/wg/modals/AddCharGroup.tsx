@@ -118,6 +118,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			// Errors found.
 			doAlert({
 				header: "Error",
+				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{

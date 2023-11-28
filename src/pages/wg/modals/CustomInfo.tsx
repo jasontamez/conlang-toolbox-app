@@ -156,6 +156,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					doAlert({
 						header: "Unknown Error",
 						message: `Save :${title}" not found.`,
+						cssClass: "danger",
 						buttons: [
 							{
 								text: "Ok",

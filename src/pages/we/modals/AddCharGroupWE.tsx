@@ -111,6 +111,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			doAlert({
 				header: "Error",
 				message: err.join("; "),
+				cssClass: "danger",
 				buttons: [
 					{
 						text: "Cancel",
