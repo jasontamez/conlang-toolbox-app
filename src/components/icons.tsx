@@ -23,7 +23,7 @@ const map: Map = {
 	soundChanges: "transit-connection-variant-material-design",
 	declenjugator: "read-more-material-design",
 	djGroups: "arrow-split-material-design",
-	import: "import-2-svgrepo-com"
+	import: "open-in-new-material-altered"
 };
 
 export interface IonIconProps {
