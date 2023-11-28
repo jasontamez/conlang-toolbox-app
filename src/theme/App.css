@@ -963,33 +963,6 @@ ion-alert {
 	--btn-background-cancel: transparent;
 	--btn-color-cancel: var(--ion-color-primary-shade);
 }
-ion-alert .alert-wrapper {
-	border: 1px solid var(--color);
-	border-radius: 2em;
-	color: var(--color);
-}
-ion-alert .alert-head .alert-title {
-	color: var(--color);
-}
-ion-alert .alert-wrapper .alert-message {
-	color: var(--dim-color);
-}
-ion-alert button.alert-button.cancel {
-	background: var(--btn-background-cancel);
-	color: var(--btn-color-cancel);
-}
-ion-alert button.alert-button.submit {
-	background: var(--btn-background);
-	color: var(--btn-color);
-}
-ion-alert button.alert-button.danger {
-	background: var(--ion-color-danger);
-	color: var(--ion-color-danger-contrast);
-}
-ion-alert button.alert-button.warning {
-	background: var(--ion-color-warning);
-	color: var(--ion-color-warning-contrast);
-}
 ion-alert.danger {
 	--background: var(--ion-color-danger-shade);
 	--color: var(--ion-color-danger-contrast);
@@ -1007,6 +980,33 @@ ion-alert.warning {
 	--btn-background-cancel: #00000033;
 	--btn-color: var(--ion-color-warning-contrast);
 	--btn-background: #ffffff33;
+}
+ion-alert .alert-wrapper {
+	border: 1px solid var(--color);
+	border-radius: 2em;
+	color: var(--color);
+}
+ion-alert .alert-head .alert-title {
+	color: var(--color);
+}
+ion-alert .alert-wrapper .alert-message {
+	color: var(--dim-color);
+}
+ion-alert button.alert-button {
+	background: var(--btn-background);
+	color: var(--btn-color);
+}
+ion-alert button.alert-button.cancel {
+	background: var(--btn-background-cancel);
+	color: var(--btn-color-cancel);
+}
+ion-alert button.alert-button.danger {
+	background: var(--ion-color-danger);
+	color: var(--ion-color-danger-contrast);
+}
+ion-alert button.alert-button.warning {
+	background: var(--ion-color-warning);
+	color: var(--ion-color-warning-contrast);
 }
 
 ion-toast {

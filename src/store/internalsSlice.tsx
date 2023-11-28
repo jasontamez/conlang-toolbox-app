@@ -11,13 +11,15 @@ const NinetyDays =
 	* 24
 	* 90;
 
-const logFunc = (state: InternalState, action: PayloadAction<string[]>) => {
+const logFunc = (state: InternalState, action: PayloadAction<string[] | null>) => {
+	// Call with null to clean logs
+	const { payload } = action;
 	const time = Date.now();
 	const then = time - NinetyDays;
 	const logs = state.logs.filter(log => log.time > then);
-	logs.push({
+	payload && logs.push({
 		time,
-		log: action.payload
+		log: payload
 	});
 	return {
 		...state,

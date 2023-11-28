@@ -64,7 +64,8 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 				buttons: [
 					{
 						text: "Cancel",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});

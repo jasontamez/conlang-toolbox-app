@@ -380,7 +380,8 @@ const Lex = (props: PageData) => {
 				buttons: [
 					{
 						text: "Ok",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});

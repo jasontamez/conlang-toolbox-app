@@ -398,7 +398,7 @@ const Syntax = (props: PageData) => {
 										</ul>
 									</li>
 									<li>Often, the QP can be omitted, letting context and intonation do the job instead.</li>
-									<li className="newSection">Some varieties of English has developed a QP as an alternative to word order inversion
+									<li className="newSection">Some varieties of English have developed a QP as an alternative to word order inversion
 										<ul><li>"You want to go for a ride, <em>eh</em>?"</li></ul>
 									</li>
 								</ul>

@@ -124,7 +124,8 @@ const ConceptsPage = (props: PageData) => {
 				},
 				{
 					text: "Cancel",
-					role: 'cancel'
+					role: 'cancel',
+					cssClass: "cancel"
 				},
 				{
 					text: "Save",

@@ -606,7 +606,8 @@ const WGOut = (props: PageData) => {
 			buttons: [
 				{
 					text: "Cancel",
-					role: 'cancel'
+					role: 'cancel',
+					cssClass: "cancel"
 				},
 				{
 					text: "Save",

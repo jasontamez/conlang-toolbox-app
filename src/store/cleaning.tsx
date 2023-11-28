@@ -19,7 +19,7 @@ import { cleanStateLexicon } from './lexiconSlice';
 import { cleanStateSettings } from './settingsSlice';
 import { cleanStateSortSettings } from './sortingSlice';
 import { cleanStateEC } from './extraCharactersSlice';
-import { setLastClean } from './internalsSlice';
+import { saveToLog, setLastClean } from './internalsSlice';
 import blankAppState, { cleanerObject } from './blankAppState';
 import {
 	VALIDATE_Lex,
@@ -112,6 +112,8 @@ const maybeCleanState = (dispatch: Function, lastClean: number) => {
 	dispatch(cleanStateSettings());
 	dispatch(cleanStateSortSettings());
 	dispatch(cleanStateEC());
+	// Call with null to clean logs
+	dispatch(saveToLog(null));
 	// Mark that we've cleaned.
 	dispatch(setLastClean(now));
 };
