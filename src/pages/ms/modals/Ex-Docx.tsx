@@ -76,7 +76,7 @@ const doDocx = (
 							// Remove and discard the header
 							children.pop();
 						} else {
-							info.push(HEADER);
+							info.push(pop!);
 						}
 					}
 					const head = ("HEADING_" + String(level)) as heads;
@@ -363,14 +363,17 @@ const doDocx = (
 					}
 			}
 		});
-		if(!showUnused) {
+		if(!showUnused && info.length > 0) {
 			// Remove trailing header if needed.
 			const pop = info.pop();
 			if(pop === HEADER) {
 				children.pop();
+			} else {
+				info.push(pop!);
 			}
 		}
-		sections.push({
+		// Only save section if there's something to save.
+		children.length > 0 && sections.push({
 			properties: { type: SectionType.CONTINUOUS },
 			children
 		});

@@ -14,6 +14,15 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
 		const info: number[] = [];
 		section.forEach((item: specificPageInfo) => {
+			if(!showUnused && info.length > 0) {
+				const pop = info.pop();
+				if(pop === HEADER) {
+					// Remove last header
+					lines.pop();
+				} else {
+					info.push(pop!);
+				}
+			}
 			let {
 				content = "",
 				level = 4,
@@ -37,7 +46,7 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 							// Remove and discard the header
 							lines.pop();
 						} else {
-							info.push(HEADER);
+							info.push(pop!);
 						}
 					}
 					if(md) {
