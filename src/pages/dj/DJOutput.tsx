@@ -10,8 +10,6 @@ import {
 	IonButton,
 	IonIcon,
 	useIonToast,
-	IonFab,
-	IonFabButton,
 	useIonAlert,
 	AlertInput
 } from '@ionic/react';
@@ -20,7 +18,7 @@ import {
 	caretForwardCircleOutline,
 	codeDownloadOutline,
 	helpCircleOutline,
-	copy
+	copyOutline
 } from 'ionicons/icons';
 import { Clipboard } from '@capacitor/clipboard';
 
@@ -469,20 +467,15 @@ const DJOutput = (props: PageData) => {
 					{displayOutput}
 					{displayUnmatched}
 				</div>
-				<IonFab
-					vertical="bottom"
-					horizontal="start"
-					slot="fixed"
-					className={(displayOutput.length + displayUnmatched.length) > 0 ? "" : "hide"}
-				>
-					<IonFabButton
+				<div className={(displayOutput.length + displayUnmatched.length) > 0 ? "ion-padding-start ion-padding-bottom" : "hide"}>
+					<IonButton
 						color="primary"
-						title="Add new group"
 						onClick={() => copyText(copyStrings, doToast, undoToast)}
 					>
-						<IonIcon icon={copy} />
-					</IonFabButton>
-				</IonFab>
+						Copy to Clipboard
+						<IonIcon icon={copyOutline} slot="start" />
+					</IonButton>
+				</div>
 			</IonContent>
 		</IonPage>
 	);

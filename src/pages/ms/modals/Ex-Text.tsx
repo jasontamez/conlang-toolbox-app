@@ -4,11 +4,15 @@ import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
 
-const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => {
+const HEADER = 1;
+const INFO = 2;
+
+const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boolean, md = false) => {
 	const lines: string[] = [];
 	const sections: string[] = ms.sections;
 	sections.forEach((sec: string) => {
 		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
+		const info: number[] = [];
 		section.forEach((item: specificPageInfo) => {
 			let {
 				content = "",
@@ -26,6 +30,16 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 			} = item;
 			switch(tag) {
 				case "Header":
+					if(!showUnused && info.length > 0) {
+						// Check if previous was just a header
+						const pop = info.pop();
+						if(pop === HEADER) {
+							// Remove and discard the header
+							lines.pop();
+						} else {
+							info.push(HEADER);
+						}
+					}
 					if(md) {
 						content = " " + content;
 						while(level > 0) {
@@ -34,8 +48,10 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 						}
 					}
 					lines.push(content);
+					info.push(HEADER);
 					break;
 				case "Range":
+					// Range is always saved, as it always has some sort of info
 					const min = 0;
 					const value = msInfo[prop as MSNum] || min;
 					if(spectrum) {
@@ -72,33 +88,40 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 						}
 						lines.push(range + " " + ender);
 					}
+					info.push(INFO);
 					break;
 				case "Text":
-					if(md) {
-						let txt = "";
-						const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
-						tArr.forEach((t: string, i: number) => {
-							if(i > 0) {
-								txt += "\n\n"; // inserts paragraph break
-							}
-							t.split(/\n/).forEach((x: string, j: number) => {
-								if(j > 0) {
-									txt += "  \n"; // inserts line break
+					const textInfo = msInfo[prop as MSText];
+					if(showUnused || textInfo) {
+						// Save
+						if(md) {
+							let txt = "";
+							const tArr: string[] = (textInfo || "[NO TEXT ENTERED]").split(/\n\n+/);
+							tArr.forEach((t: string, i: number) => {
+								if(i > 0) {
+									txt += "\n\n"; // inserts paragraph break
 								}
-								txt += x.trim();
+								t.split(/\n/).forEach((x: string, j: number) => {
+									if(j > 0) {
+										txt += "  \n"; // inserts line break
+									}
+									txt += x.trim();
+								});
 							});
-						});
-						lines.push(content || "[TEXT PROMPT]", txt);
-					} else {
-						lines.push(
-							content || "[TEXT PROMPT]",
-							msInfo[prop as MSText] || "[NO TEXT ENTERED]"
-						);
+							lines.push(content || "[TEXT PROMPT]", txt);
+						} else {
+							lines.push(
+								content || "[TEXT PROMPT]",
+								textInfo || "[NO TEXT ENTERED]"
+							);
+						}
+						info.push(INFO);
 					}
 					break;
 				case "Checkboxes":
 					const expo: exportProp = display!.export!;
 					const output = expo.output;
+					let foundInfo = showUnused;
 					if(output) {
 						const map = output.map((bit) => bit.map((b) => {
 							if(typeof b === "string") {
@@ -106,7 +129,9 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 							}
 							const found: string[] = [];
 							b.forEach((pair) => {
-								if(msInfo[pair[0] as MSBool]) {
+								const bool = msInfo[pair[0] as MSBool] || false;
+								foundInfo = foundInfo || bool;
+								if(bool) {
 									found.push(pair[1]);
 								}
 							});
@@ -128,7 +153,11 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 							}
 							return $and(found);
 						}).join(""));
-						lines.push(map.join("\n"));
+						if(foundInfo) {
+							// Show if we're showing unused stuff OR we found something toggled true
+							lines.push(map.join("\n"));
+							info.push(INFO);
+						}
 					} else {
 						const title = expo.title || "";
 						const boxesCopy = boxes!.slice();
@@ -138,23 +167,29 @@ const doText = (e: Error, msInfo: MSState, doDownload: Function, md = false) => 
 						while(boxesCopy.length > 0) {
 							const box = boxesCopy.shift();
 							const label = labels.shift();
-							if(msInfo[box as MSBool]) {
+							const bool = msInfo[box as MSBool] || false;
+							foundInfo = foundInfo || bool;
+							if(bool) {
 								found.push(label || "[ERROR]");
 							}
 						}
-						if (found.length === 0) {
-							result = md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
-						} else if (found.length === 1) {
-							result = md ? "*" + found[0] + "*" : found[0];
-						} else if (found.length === 2) {
-							if(md) {
-								const final = found.pop();
-								result = `*${found.join("*, *")}*, and *${final}*`;
-							} else {
-								result = $and(found);
+						if(foundInfo) {
+							// Show if we're showing unused stuff OR we found something toggled true
+							if (found.length === 0) {
+								result = md ? "*[NONE SELECTED]*" : "[NONE SELECTED]";
+							} else if (found.length === 1) {
+								result = md ? "*" + found[0] + "*" : found[0];
+							} else if (found.length === 2) {
+								if(md) {
+									const final = found.pop();
+									result = `*${found.join("*, *")}*, and *${final}*`;
+								} else {
+									result = $and(found);
+								}
 							}
+							lines.push(`${title} ${result}`);
+							info.push(INFO);
 						}
-						lines.push(`${title} ${result}`);
 					}
 			}
 		});

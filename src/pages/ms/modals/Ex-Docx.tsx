@@ -25,15 +25,20 @@ import { saveAs } from 'file-saver';
 import { isPlatform } from "@ionic/react";
 // FOR BROWSER TESTING ONLY
 
+type heads = "HEADING_1" | "HEADING_2" | "HEADING_3" | "HEADING_4" | "HEADING_5" | "HEADING_6";
 type Child = (Paragraph | Table);
 interface Section {
 	properties: { type: SectionType }
 	children: Child[]
 }
 
+const HEADER = 1;
+const INFO = 2;
+
 const doDocx = (
 	e: Event,
 	msInfo: MSState,
+	showUnused: boolean,
 	doClose: Function,
 	setLoading: Function,
 	doToast: Function,
@@ -44,10 +49,11 @@ const doDocx = (
 	const sections: Section[] = [];
 	const spacing = {
 		before: 200
-	}
+	};
 	msSections.forEach((sec: string) => {
 		const msSection = (msRawInfo[sec as keyof typeof msRawInfo] as specificPageInfo[]);
 		const children: Child[] = [];
+		const info: number[] = [];
 		msSection.forEach((item: specificPageInfo) => {
 			const {
 				tag,
@@ -63,15 +69,28 @@ const doDocx = (
 			} = item;
 			switch(tag) {
 				case "Header":
-					type heads = "HEADING_1" | "HEADING_2" | "HEADING_3" | "HEADING_4" | "HEADING_5" | "HEADING_6"
+					if(!showUnused && info.length > 0) {
+						// Check if previous was just a header
+						const pop = info.pop();
+						if(pop === HEADER) {
+							// Remove and discard the header
+							children.pop();
+						} else {
+							info.push(HEADER);
+						}
+					}
 					const head = ("HEADING_" + String(level)) as heads;
-					children.push(new Paragraph({
-						text: content,
-						heading: HeadingLevel[head],
-						spacing
-					}))
+					children.push(
+						new Paragraph({
+							text: content,
+							heading: HeadingLevel[head],
+							spacing
+						})
+					);
+					info.push(HEADER);
 					break;
 				case "Range":
+					// Range is always saved, as it always has some sort of info
 					const min = 0;
 					const value = msInfo[prop as MSNum] || min;
 					const paragraph: TextRun[] = [];
@@ -119,37 +138,44 @@ const doDocx = (
 					children.push(new Paragraph({
 						children: paragraph,
 						spacing
-					}))
+					}));
+					info.push(INFO);
 					break;
 				case "Text":
-					children.push(new Paragraph({
-						text: (content || "[TEXT PROMPT]"),
-						spacing
-					}))
-					const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
-					tArr.forEach((t: string, i: number) => {
-						const run: TextRun[] = [];
-						t.split(/\n/).forEach((x: string, j: number) => {
-							run.push(new TextRun(
-								(j > 0) ? {
-									text: x,
-									break: 1
-								} : {
-									text: x
-								}
-							));
-						});
+					if(showUnused || msInfo[prop as MSText]) {
+						// Save
 						children.push(new Paragraph({
-							children: run,
+							text: (content || "[ERROR, NO TEXT PROMPT]"),
 							spacing
-						}))
-					});
+						}));
+						info.push(INFO);
+						const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
+						tArr.forEach((t: string, i: number) => {
+							const run: TextRun[] = [];
+							t.split(/\n/).forEach((x: string, j: number) => {
+								run.push(new TextRun(
+									(j > 0) ? {
+										text: x,
+										break: 1
+									} : {
+										text: x
+									}
+								));
+							});
+							children.push(new Paragraph({
+								children: run,
+								spacing
+							}));
+							info.push(INFO);
+						});
+					}
 					break;
 				case "Checkboxes":
 					if(!display) {
 						children.push(new Paragraph(
 							{ text: "CHECKBOX DISPLAY ERROR", spacing }
 						));
+						info.push(INFO);
 					} else {
 						const expo: exportProp = display.export!;
 						const {
@@ -170,6 +196,7 @@ const doDocx = (
 						let colCount = 0;
 						let temp: string[] = [];
 						let count = 0;
+						let foundInfo = showUnused;
 						const output: TableRow[] = [];
 						const colWidths: number[] = [];
 						let allColumns = 6;
@@ -219,6 +246,8 @@ const doDocx = (
 							const cells: TableCell[] = [];
 							let leftover = 100;
 							row.forEach((cell) => {
+								const bool = msInfo[cell as MSBool] || false;
+								foundInfo = foundInfo || bool;
 								const percent = Math.floor(cols.shift()! * portion);
 								leftover -= percent;
 								cells.push(new TableCell({
@@ -228,7 +257,7 @@ const doDocx = (
 										type: WidthType.PERCENTAGE
 									},
 									children: [new Paragraph({
-										text: msInfo[cell as MSBool] ? "X" : " "
+										text: bool ? "X" : " "
 									})]
 								}));
 							});
@@ -266,70 +295,81 @@ const doDocx = (
 								cantSplit: true
 							}));
 						});
-						if(inlineHeaders) {
-							const cells: TableCell[] = [];
-							let leftover = 100;
-							const cols = colWidths.slice();
-							inlineHeaders.forEach((cell: string) => {
-								const percent = (
-									cols.length > 0 ?
-										Math.floor(cols.shift()! * portion)
-									:
-										leftover
-								);
-								leftover -= percent;
-								cells.push(new TableCell({
-									borders: border,
-									width: {
-										size: percent,
-										type: WidthType.PERCENTAGE
-									},
-									children: [new Paragraph({
-										text: cell
+						if(foundInfo) {
+							// Show if we're showing unused stuff OR we found something toggled true
+							if(inlineHeaders) {
+								const cells: TableCell[] = [];
+								let leftover = 100;
+								const cols = colWidths.slice();
+								inlineHeaders.forEach((cell: string) => {
+									const percent = (
+										cols.length > 0 ?
+											Math.floor(cols.shift()! * portion)
+										:
+											leftover
+									);
+									leftover -= percent;
+									cells.push(new TableCell({
+										borders: border,
+										width: {
+											size: percent,
+											type: WidthType.PERCENTAGE
+										},
+										children: [new Paragraph({
+											text: cell
+										})]
+									}));
+									colCount = Math.max(colCount, cells.length);
+								});
+								output.unshift(new TableRow({
+									children: cells,
+									cantSplit: true,
+									tableHeader: true
+								}));
+							}
+							if(header) {
+								// prepend one header using colCount
+								output.unshift(new TableRow({
+									tableHeader: true,
+									cantSplit: true,
+									children: [new TableCell({
+										children: [new Paragraph({
+											text: header
+										})],
+										width: {
+											size: 100,
+											type: WidthType.PERCENTAGE
+										},
+										borders: border,
+										columnSpan: colCount
 									})]
 								}));
-								colCount = Math.max(colCount, cells.length);
-							});
-							output.unshift(new TableRow({
-								children: cells,
-								cantSplit: true,
-								tableHeader: true
-							}));
-						}
-						if(header) {
-							// prepend one header using colCount
-							output.unshift(new TableRow({
-								tableHeader: true,
-								cantSplit: true,
-								children: [new TableCell({
-									children: [new Paragraph({
-										text: header
-									})],
-									width: {
-										size: 100,
-										type: WidthType.PERCENTAGE
-									},
-									borders: border,
-									columnSpan: colCount
-								})]
-							}));
-						}
-						children.push(new Table({
-							rows: output,
-							margins: {
-								left: 75,
-								right: 75,
-								top: 50,
-								bottom: 25
-							},
-							width: {
-								size: 100,
-								type: WidthType.PERCENTAGE
 							}
-						}));
+							children.push(new Table({
+								rows: output,
+								margins: {
+									left: 75,
+									right: 75,
+									top: 50,
+									bottom: 25
+								},
+								width: {
+									size: 100,
+									type: WidthType.PERCENTAGE
+								}
+							}));
+							info.push(INFO);
+						}
 					}
 			}
 		});
+		if(!showUnused) {
+			// Remove trailing header if needed.
+			const pop = info.pop();
+			if(pop === HEADER) {
+				children.pop();
+			}
+		}
 		sections.push({
 			properties: { type: SectionType.CONTINUOUS },
 			children

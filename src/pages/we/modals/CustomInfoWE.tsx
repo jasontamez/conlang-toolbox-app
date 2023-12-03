@@ -122,7 +122,8 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 						buttons: [
 							{
 								text: "Ok",
-								role: "cancel"
+								role: "cancel",
+								cssClass: "cancel"
 							}
 						]
 					});

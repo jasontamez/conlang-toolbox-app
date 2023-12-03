@@ -183,7 +183,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			buttons: [
 				{
 					text: "Ok",
-					role: "cancel"
+					role: "cancel",
+					cssClass: "cancel"
 				}
 			]
 		});
@@ -197,7 +198,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				buttons: [
 					{
 						text: "Ok",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});
@@ -209,7 +211,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				buttons: [
 					{
 						text: "Ok",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});

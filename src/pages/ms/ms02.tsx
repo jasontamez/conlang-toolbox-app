@@ -393,7 +393,7 @@ const Syntax = (props: PageData) => {
 						prop="TEXT_propClass"
 						value={TEXT_propClass}
 						rows={undefined}
-					>How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
+					>How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.</TextItem>
 					<HeaderItem level={3}>2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)</HeaderItem>
 					<TextItem
 						prop="TEXT_quantifier"

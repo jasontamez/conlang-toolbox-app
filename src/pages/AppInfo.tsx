@@ -197,6 +197,7 @@ const AppInfo = (props: PageData) => {
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.0</strong></h2>
 									<ul className="changelog">
 										<li>Overhauled main page.</li>
+										<li>MorphoSyntax wasn't exporting. This has been fixed.</li>
 										<li>Added an "Overview" to each tool.</li>
 										<li>Added Declenjugator for crafting declensions and conjugations.</li>
 										<li>Added ability to copy Character Groups between WordGen and WordEvolve.</li>
@@ -249,9 +250,7 @@ const AppInfo = (props: PageData) => {
 													<li>You can tap on an overflowing field to see a pop-up with the full text.</li>
 													<li>Made sorting options easier to find and use.</li>
 													<li>Added an option to handle blank columns while sorting. The default is that they are always sorted to the end, no matter if you sort alphabetically or in reverse alphabetic order.</li>
-													<li>Created a way to merge Lexicon items together. To begin, swipe right on an item and tap the button underneath. Once you have at least two marked, the merge button will appear in the lower left.
-														<ul><li>This lets you import new words from WordGen, new meanings from Concepts, and merge them together without having to copy and paste.</li></ul>
-													</li>
+													<li>Added a way to merge Lexicon items together by swiping right on them.</li>
 												</ul>
 											</li>
 											<li><em>Concepts</em>

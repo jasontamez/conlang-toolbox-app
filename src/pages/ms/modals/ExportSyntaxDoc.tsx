@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -12,10 +12,11 @@ import {
 	IonTitle,
 	IonModal,
 	IonFooter,
-	useIonToast
+	useIonToast,
+	IonToggle
 } from '@ionic/react';
 import {
-	closeCircleOutline
+	closeCircleOutline, codeOutline, documentOutline, documentTextOutline
 } from 'ionicons/icons';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,6 +36,7 @@ interface ExportModalProps extends ModalProperties {
 
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
+	const [showUnused, setShowUnused] = useState<boolean>(true);
 	const [doToast, undoToast] = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
 	const { title = "[Untitled]" } = msInfo;
@@ -59,7 +61,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export MorphoSyntax Document: {title}</IonTitle>
+					<IonTitle>Export: {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -67,38 +69,71 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
-			<IonContent>
+			<IonContent id="exportSyntaxModal">
 				<IonList lines="none" className="buttonFilled multiLinePossible">
+					<IonItem lines="full" className="wrappableInnards">
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={showUnused}
+							onIonChange={() => setShowUnused(!showUnused)}
+						>
+							<h2>Show Unused Sections</h2>
+							<p>
+								Include sections that you did not fill out, leaving blank spaces for you to fill
+								later. <strong>NOTE:</strong> this option has no effect on JSON and XML exports.
+							</p>
+						</IonToggle>
+					</IonItem>
 					<IonItem>Choose a format:</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doText(e, msInfo, doDownload)}
-					>Text Outline (plain)</IonItem>
+						onClick={(e: any) => doText(e, msInfo, doDownload, showUnused)}
+						className="striped"
+					>
+						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
+						<IonLabel className="ion-text-wrap">Text Outline (plain)</IonLabel>
+					</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doText(e, msInfo, doDownload, true)}
-					>Text Outline (markdown)</IonItem>
+						onClick={(e: any) => doText(e, msInfo, doDownload, showUnused, true)}
+					>
+						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
+						<IonLabel className="ion-text-wrap">Text Outline (markdown)</IonLabel>
+					</IonItem>
 					<IonItem
 						button={true}
 						onClick={
 							(e: any) => doDocx(
 								e,
 								msInfo,
+								showUnused,
 								doClose,
 								setLoading,
 								doToast,
 								undoToast,
 								log
 							)}
-					>Word Document (docx)</IonItem>
+						className="striped"
+					>
+						<IonIcon icon={documentOutline} className="ion-padding-start" slot="start" />
+						<IonLabel className="ion-text-wrap">Word Document (docx)</IonLabel>
+					</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: any) => doJSON(e, msInfo, doDownload)}
-					>JSON File</IonItem>
+					>
+						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />
+						<IonLabel className="ion-text-wrap">JSON File</IonLabel>
+					</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: any) => doXML(e, msInfo, doDownload)}
-					>XML File</IonItem>
+						className="striped"
+					>
+						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />
+						<IonLabel className="ion-text-wrap">XML File</IonLabel>
+					</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>

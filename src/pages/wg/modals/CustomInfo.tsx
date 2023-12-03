@@ -82,7 +82,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				buttons: [
 					{
 						text: "Ok",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});
@@ -160,7 +161,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						buttons: [
 							{
 								text: "Ok",
-								role: "cancel"
+								role: "cancel",
+								cssClass: "cancel"
 							}
 						]
 					});

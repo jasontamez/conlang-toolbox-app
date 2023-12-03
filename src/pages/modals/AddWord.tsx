@@ -60,7 +60,8 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 				buttons: [
 					{
 						text: "Ok",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});

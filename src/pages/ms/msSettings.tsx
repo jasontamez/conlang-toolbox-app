@@ -107,7 +107,8 @@ const Syntax = (props: PageData) => {
 				buttons: [
 					{
 						text: "Cancel",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});
@@ -119,7 +120,8 @@ const Syntax = (props: PageData) => {
 				buttons: [
 					{
 						text: "Cancel",
-						role: "cancel"
+						role: "cancel",
+						cssClass: "cancel"
 					}
 				]
 			});
@@ -187,7 +189,8 @@ const Syntax = (props: PageData) => {
 			buttons: [
 				{
 					text: "Ok",
-					role: "cancel"
+					role: "cancel",
+					cssClass: "cancel"
 				}
 			]
 		});
@@ -218,7 +221,10 @@ const Syntax = (props: PageData) => {
 				storedInfo={storedInfo}
 				setStoredInfo={setStoredInfo}
 			/>
-			<ExportMS {...props.modalPropsMaker(isOpenExportMS, setIsOpenExportMS)} />
+			<ExportMS
+				{...props.modalPropsMaker(isOpenExportMS, setIsOpenExportMS)}
+				setLoading={setIsLoading}
+			/>
 			<DeleteMS
 				{...props.modalPropsMaker(isOpenDelMS, setIsOpenDelMS)}
 				storedInfo={storedInfo}

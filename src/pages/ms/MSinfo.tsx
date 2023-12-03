@@ -39,17 +39,18 @@ const MSinfo = (props: PageData) => {
 							tool is optional!</strong> Don't look at it as a checklist that you must
 							fill out. Instead, look at it as a buffet where you can pick and choose
 							what interests you and ignore the rest.
+						</p><p className="center pad-top-rem">
+							<IonIcon icon={settings} size="large" color="tertiary" />
 						</p><p>
-							The settings <IonIcon icon={settings} size="small" color="tertiary" /> page
-							has a place for you to title and describe your morphosyntax document. There
-							are also buttons where you can save, store, export, and delete your saved
-							documents.
+							The settings page has a place for you to title and describe your morphosyntax
+							document. There are also buttons where you can save, store, export, and delete
+							your saved documents.
 						</p><p className="center pad-top-rem">
 							<IonIcon icon={informationCircle} size="large" color="tertiary" />
 						</p><p>
 							As you go through the pages, you will see buttons with the (i) symbol. They
 							will provide you with more detailed information about the associated topic.
-						</p><p>
+						</p><hr /><p>
 							The pages are arranged according to these topics:
 						</p><div>
 							<ol>

@@ -200,3 +200,7 @@
 #morphoSyntaxPage ion-list.aside ion-item:nth-child(even)::part(native) {
 	background: var(--ion-background-shader);
 }
+
+#exportSyntaxModal ion-item.striped::part(native) {
+	background: var(--ion-background-shader);
+}
