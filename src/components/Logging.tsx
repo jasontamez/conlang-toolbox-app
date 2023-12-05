@@ -36,11 +36,13 @@ const log = (dispatch: Function | null, info: any[], ...sensitiveInfo: any[]) =>
 	if(flag) {
 		[...info, ...sensitiveInfo].forEach(line => console.log(line));
 	}
-	const logs: string[] = info.map(line => typeof line === "string" ? line : JSON.stringify(line));
-	while(sensitiveInfo.length > 0) {
-		logs.push(maskSensitiveInfo(sensitiveInfo.shift()!));
+	if(dispatch) {
+		const logs: string[] = info.map(line => getType(line) === "string" ? line : JSON.stringify(line));
+		while(sensitiveInfo.length > 0) {
+			logs.push(maskSensitiveInfo(sensitiveInfo.shift()!));
+		}
+		dispatch(saveToLog(logs));
 	}
-	dispatch && dispatch(saveToLog(logs));
 };
 
 export default log;
