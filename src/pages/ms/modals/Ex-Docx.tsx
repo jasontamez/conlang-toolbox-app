@@ -23,7 +23,7 @@ import { MSBool, MSNum, MSState, MSText } from "../../../store/types";
 import doExport from '../../../components/ExportServices';
 import toaster from "../../../components/toaster";
 
-import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
+import { specificPageInfo } from '../MorphoSyntaxElements';
 import msRawInfo from '../ms.json';
 
 type heads = "HEADING_1" | "HEADING_2" | "HEADING_3" | "HEADING_4" | "HEADING_5" | "HEADING_6";
@@ -175,21 +175,22 @@ const doDocx = (
 							{ text: "CHECKBOX DISPLAY ERROR", spacing }
 						));
 					} else {
-						const expo: exportProp = display.export!;
 						const {
 							header,
 							inlineHeaders,
 							labels,
-							rowLabels
+							rowLabels,
+							export: expo
 						} = display;
+						const {labelOverrideDocx, labels: exLabels} = expo || {};
 						const perRow = display.boxesPerRow || 1;
 						const labelsCopy = labels ? labels.slice() : [];
 						const labelsForTheRow = (
-							expo.labelOverrideDocx ?
-								(expo.labels || labelsCopy).slice()
+							labelOverrideDocx ?
+								(exLabels || labelsCopy).slice()
 							:
 								rowLabels.slice()
-						) || [];
+						);
 						const rows: string[][] = [];
 						let colCount = 0;
 						let temp: string[] = [];
@@ -323,38 +324,38 @@ const doDocx = (
 								cantSplit: true,
 								tableHeader: true
 							}));
-							if(header) {
-								// prepend one header using colCount
-								output.unshift(new TableRow({
-									tableHeader: true,
-									cantSplit: true,
-									children: [new TableCell({
-										children: [new Paragraph({
-											text: header
-										})],
-										width: {
-											size: 100,
-											type: WidthType.PERCENTAGE
-										},
-										borders: border,
-										columnSpan: colCount
-									})]
-								}));
-							}
-							children.push(new Table({
-								rows: output,
-								margins: {
-									left: 75,
-									right: 75,
-									top: 50,
-									bottom: 25
-								},
-								width: {
-									size: 100,
-									type: WidthType.PERCENTAGE
-								}
+						}
+						if(header) {
+							// prepend one header using colCount
+							output.unshift(new TableRow({
+								tableHeader: true,
+								cantSplit: true,
+								children: [new TableCell({
+									children: [new Paragraph({
+										text: header
+									})],
+									width: {
+										size: 100,
+										type: WidthType.PERCENTAGE
+									},
+									borders: border,
+									columnSpan: colCount
+								})]
 							}));
 						}
+						children.push(new Table({
+							rows: output,
+							margins: {
+								left: 75,
+								right: 75,
+								top: 50,
+								bottom: 25
+							},
+							width: {
+								size: 100,
+								type: WidthType.PERCENTAGE
+							}
+						}));
 					}
 			}
 		});

@@ -1,7 +1,7 @@
 import { $and } from '../../../components/DollarSignExports';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 
-import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
+import { specificPageInfo } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
 
 const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boolean, usingMarkDown = false) => {
@@ -44,7 +44,7 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						if(usingMarkDown) {
-							lines.push(`**${lesser}%** ${start}  \n** ${100 - lesser}%** ${end}`);
+							lines.push(`**${lesser}%** ${start}  \n**${100 - lesser}%** ${end}`);
 						} else {
 							lines.push(`${lesser}% ${start}\n${100 - lesser}% ${end}`);
 						}
@@ -68,7 +68,7 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 					}
 					break;
 				case "Text":
-					const textInfo = msInfo[prop as MSText] || "[TEXT PROMPT]";
+					const textInfo = msInfo[prop as MSText] || "[NO TEXT ENTERED]";
 					// Save
 					if(usingMarkDown) {
 						let txt = "";
@@ -84,17 +84,17 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 								txt += x.trim();
 							});
 						});
-						lines.push(content || "[TEXT PROMPT]", txt);
+						lines.push(content || "[MISSING TEXT PROMPT]", txt);
 					} else {
 						lines.push(
-							content || "[TEXT PROMPT]",
-							textInfo || "[NO TEXT ENTERED]"
+							content || "[MISSING TEXT PROMPT]",
+							textInfo
 						);
 					}
 					break;
 				case "Checkboxes":
-					const expo: exportProp = display!.export!;
-					const output = expo.output;
+					const {export: expo, labels: displayLabels, rowLabels } = display!;
+					const output = expo!.output;
 					if(output) {
 						const map = output.map((bit) => bit.map((b) => {
 							if(typeof b === "string") {
@@ -127,9 +127,9 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 						}).join(""));
 						lines.push(map.join("\n"));
 					} else {
-						const title = expo.title || "";
-						const boxesCopy = boxes!.slice();
-						const labels = (expo.labels || display!.labels || display!.rowLabels || boxesCopy).slice();
+						const {title = "", labels: expoLabels} = expo || {};
+						const boxesCopy = (boxes || []).slice();
+						const labels = (expoLabels || displayLabels || rowLabels || boxesCopy).slice();
 						let result = "";
 						const found: string[] = [];
 						while(boxesCopy.length > 0) {
