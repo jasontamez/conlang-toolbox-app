@@ -2,7 +2,7 @@ import { $and } from '../../../components/DollarSignExports';
 import log from '../../../components/Logging';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 
-import { exportProp, specificPageInfo } from '../MorphoSyntaxElements';
+import { specificPageInfo } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
 
 const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boolean, usingMarkDown = false) => {
@@ -106,8 +106,8 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 					}
 					break;
 				case "Checkboxes":
-					const expo: exportProp = display!.export!;
-					const output = expo.output;
+					const { labels: displayLabels, rowLabels, export: expo} = display!;
+					const { output, title, labels: expoLabels } = expo!;
 					const boxMap: {[key in MSBool]?: boolean} = {};
 					const boxesCopy: [MSBool, boolean][] = [];
 					let found = false;
@@ -151,8 +151,7 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 						lines.push(map.join("\n"));
 					} else {
 						// Use general output format
-						const title = expo.title || "";
-						const labels = (expo.labels || display!.labels || display!.rowLabels || []).slice();
+						const labels = (expoLabels || displayLabels || rowLabels || []).slice();
 						let result = "";
 						const found: string[] = [];
 						while(boxesCopy.length > 0) {

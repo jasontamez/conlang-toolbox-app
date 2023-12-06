@@ -204,9 +204,10 @@ const doDocx = (
 						boxesCopy.push([prop, value]);
 					});
 					if (!showUnused && !found) {
-						// Nothing to save
+						// Nothing to show, so skip.
 						break;
 					}
+					// Use general output format
 					const {
 						header,
 						inlineHeaders,
@@ -214,7 +215,7 @@ const doDocx = (
 						rowLabels,
 						export: expo
 					} = display;
-					const { labelOverrideDocx, labels: expoLabels} = expo || {};
+					const { labelOverrideDocx, labels: expoLabels } = expo || {};
 					const perRow = display.boxesPerRow || 1;
 					const labelsCopy = labels ? labels.slice() : [];
 					const labelsForTheRow = (

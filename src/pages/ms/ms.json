@@ -469,7 +469,6 @@
 				],
 				"export": {
 					"title": "Verb Types that are handled in a special way:",
-					"labelOverrideDocx": true,
 					"labels": [
 						"Actions (Agent affects Patient)",
 						"Action-Processes (Agent only)",
