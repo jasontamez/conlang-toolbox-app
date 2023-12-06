@@ -173,9 +173,6 @@ const EditGroup = (props: EditGroupProps) => {
 			editRegex1 && (editRegex1.value = regex[0]);
 			const editRegex2 = $i("editRegex2");
 			editRegex2 && (editRegex2.value = regex[1]);
-			console.log(editRegex1);
-			console.log(editRegex2);
-			console.log(regex);
 		} else {
 			setUseAdvancedMethod(false);
 		}

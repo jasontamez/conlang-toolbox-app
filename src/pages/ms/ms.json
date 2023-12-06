@@ -15,12 +15,14 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "1. Morphological Typology"
+			"content": "1. Morphological Typology",
+			"heads": [true]
 		},
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "1.1. Traditional Typology"
+			"content": "1.1. Traditional Typology",
+			"heads": [true]
 		},
 		{
 			"tag": "Modal",
@@ -31,7 +33,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Synthesis"
+			"content": "Synthesis",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -44,7 +47,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Fusion"
+			"content": "Fusion",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -62,7 +66,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "1.2 Morphological Processes"
+			"content": "1.2 Morphological Processes",
+			"heads": [true]
 		},
 		{
 			"tag": "Modal",
@@ -73,7 +78,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Affixes"
+			"content": "Affixes",
+			"heads": [true]
 		},
 		{
 			"tag": "Checkboxes",
@@ -85,7 +91,7 @@
 				"BOOL_circumfixMost",
 				"BOOL_circumfixLess",
 				"BOOL_infixMost",
-				"BOOL_BOOL_infixLess"
+				"BOOL_infixLess"
 			],
 			"display": {
 				"class": "cols3",
@@ -123,7 +129,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Stem Modification"
+			"content": "Stem Modification",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -134,7 +141,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Suppletion"
+			"content": "Suppletion",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -145,7 +153,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Reduplication"
+			"content": "Reduplication",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -156,7 +165,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "Suprasegmental Modification"
+			"content": "Suprasegmental Modification",
+			"heads": [true]
 		},
 		{
 			"tag": "Range",
@@ -173,7 +183,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "1.3. Head/Dependant Marking"
+			"content": "1.3. Head/Dependant Marking",
+			"heads": [true]
 		},
 			{
 			"tag": "Range",
@@ -198,22 +209,72 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "2. Grammatical Categories"
+			"content": "2. Grammatical Categories",
+			"heads": [
+				"TEXT_propNames",
+				"TEXT_possessable",
+				"TEXT_countMass",
+				"TEXT_pronounAnaphClitic",
+				"TEXT_semanticRole",
+				"BOOL_actions",
+				"BOOL_actionProcesses",
+				"BOOL_weather",
+				"BOOL_states",
+				"BOOL_involuntaryProcesses",
+				"BOOL_bodyFunctions",
+				"BOOL_motion",
+				"BOOL_position",
+				"BOOL_factive",
+				"BOOL_cognition",
+				"BOOL_sensation",
+				"BOOL_emotion",
+				"BOOL_utterance",
+				"BOOL_manipulation",
+				"BOOL_otherVerbClass",
+				"TEXT_verbClass",
+				"TEXT_verbStructure",
+				"BOOL_lexVerb",
+				"BOOL_lexNoun",
+				"BOOL_lexVN",
+				"BOOL_lexVorN",
+				"BOOL_adjectives",
+				"TEXT_propClass",
+				"TEXT_quantifier",
+				"BOOL_baseFive",
+				"BOOL_baseTen",
+				"BOOL_baseTwenty",
+				"BOOL_baseOther",
+				"BOOL_numGL",
+				"BOOL_numLG",
+				"BOOL_numNone",
+				"BOOL_multiNumSets",
+				"BOOL_inflectNum",
+				"TEXT_numeral",
+				"TEXT_adverb"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "2.1. Nouns (the most time-stable concepts)"
+			"content": "2.1. Nouns (the most time-stable concepts)",
+			"heads": [
+				"TEXT_propNames",
+				"TEXT_possessable",
+				"TEXT_countMass",
+				"TEXT_pronounAnaphClitic"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.1.1. Types of Nouns"
+			"content": "2.1.1. Types of Nouns",
+			"heads": ["TEXT_propNames", "TEXT_possessable", "TEXT_countMass"]
 		},
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "2.1.1.1. Proper Names"
+			"content": "2.1.1.1. Proper Names",
+			"heads": ["TEXT_propNames"]
 		},
 		{
 			"tag": "Modal",
@@ -229,7 +290,8 @@
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "2.1.1.2. Possessability"
+			"content": "2.1.1.2. Possessability",
+			"heads": ["TEXT_possessable"]
 		},
 		{
 			"tag": "Modal",
@@ -246,7 +308,8 @@
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "2.1.1.3. Count vs Mass"
+			"content": "2.1.1.3. Count vs Mass",
+			"heads": ["TEXT_countMass"]
 		},
 		{
 			"tag": "Modal",
@@ -262,7 +325,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.1.2. Pronouns and Anaphoric Clitics"
+			"content": "2.1.2. Pronouns and Anaphoric Clitics",
+			"heads": ["TEXT_pronounAnaphClitic"]
 		},
 		{
 			"tag": "Modal",
@@ -279,12 +343,33 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "2.2. Verbs (the least time-stable concepts)"
+			"content": "2.2. Verbs (the least time-stable concepts)",
+			"heads": [
+				"TEXT_semanticRole",
+				"BOOL_actions",
+				"BOOL_actionProcesses",
+				"BOOL_weather",
+				"BOOL_states",
+				"BOOL_involuntaryProcesses",
+				"BOOL_bodyFunctions",
+				"BOOL_motion",
+				"BOOL_position",
+				"BOOL_factive",
+				"BOOL_cognition",
+				"BOOL_sensation",
+				"BOOL_emotion",
+				"BOOL_utterance",
+				"BOOL_manipulation",
+				"BOOL_otherVerbClass",
+				"TEXT_verbClass",
+				"TEXT_verbStructure"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.2.1. Semantic Roles"
+			"content": "2.2.1. Semantic Roles",
+			"heads": ["TEXT_semanticRole"]
 		},
 		{
 			"tag": "Modal",
@@ -301,7 +386,25 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.2.2. Verb Classes"
+			"content": "2.2.2. Verb Classes",
+			"heads": [
+				"BOOL_actions",
+				"BOOL_actionProcesses",
+				"BOOL_weather",
+				"BOOL_states",
+				"BOOL_involuntaryProcesses",
+				"BOOL_bodyFunctions",
+				"BOOL_motion",
+				"BOOL_position",
+				"BOOL_factive",
+				"BOOL_cognition",
+				"BOOL_sensation",
+				"BOOL_emotion",
+				"BOOL_utterance",
+				"BOOL_manipulation",
+				"BOOL_otherVerbClass",
+				"TEXT_verbClass"
+			]
 		},
 		{
 			"tag": "Checkboxes",
@@ -396,7 +499,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.2.3. Verb Structure"
+			"content": "2.2.3. Verb Structure",
+			"heads": ["TEXT_verbStructure"]
 		},
 		{
 			"tag": "Modal",
@@ -413,12 +517,39 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "2.3. Modifiers"
+			"content": "2.3. Modifiers",
+			"heads": [
+				"BOOL_lexVerb",
+				"BOOL_lexNoun",
+				"BOOL_lexVN",
+				"BOOL_lexVorN",
+				"BOOL_adjectives",
+				"TEXT_propClass",
+				"TEXT_quantifier",
+				"BOOL_baseFive",
+				"BOOL_baseTen",
+				"BOOL_baseTwenty",
+				"BOOL_baseOther",
+				"BOOL_numGL",
+				"BOOL_numLG",
+				"BOOL_numNone",
+				"BOOL_multiNumSets",
+				"BOOL_inflectNum",
+				"TEXT_numeral"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.3.1. Property Concepts (Descriptive Adjectives)"
+			"content": "2.3.1. Property Concepts (Descriptive Adjectives)",
+			"heads": [
+				"BOOL_lexVerb",
+				"BOOL_lexNoun",
+				"BOOL_lexVN",
+				"BOOL_lexVorN",
+				"BOOL_adjectives",
+				"TEXT_propClass"
+			]
 		},
 		{
 			"tag": "Checkboxes",
@@ -466,7 +597,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)"
+			"content": "2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)",
+			"heads": ["TEXT_quantifier"]
 		},
 		{
 			"tag": "Text",
@@ -476,7 +608,19 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "2.3.3. Numerals"
+			"content": "2.3.3. Numerals",
+			"heads": [
+				"BOOL_baseFive",
+				"BOOL_baseTen",
+				"BOOL_baseTwenty",
+				"BOOL_baseOther",
+				"BOOL_numGL",
+				"BOOL_numLG",
+				"BOOL_numNone",
+				"BOOL_multiNumSets",
+				"BOOL_inflectNum",
+				"TEXT_numeral"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -567,7 +711,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "2.4. Adverbs"
+			"content": "2.4. Adverbs",
+			"heads": ["TEXT_adverb"]
 		},
 		{
 			"tag": "Modal",
@@ -586,12 +731,39 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "3. Constituent Order Typology"
+			"content": "3. Constituent Order Typology",
+			"heads": [
+				"BOOL_APV",
+				"BOOL_AVP",
+				"BOOL_VAP",
+				"BOOL_VPA",
+				"BOOL_PAV",
+				"BOOL_PVA",
+				"TEXT_mainClause",
+				"TEXT_verbPhrase",
+				"TEXT_nounPhrase",
+				"BOOL_preP",
+				"BOOL_postP",
+				"BOOL_circumP",
+				"TEXT_adPhrase",
+				"TEXT_compare",
+				"TEXT_questions",
+				"TEXT_COType"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.1. In Main Clauses"
+			"content": "3.1. In Main Clauses",
+			"heads": [
+				"BOOL_APV",
+				"BOOL_AVP",
+				"BOOL_VAP",
+				"BOOL_VPA",
+				"BOOL_PAV",
+				"BOOL_PVA",
+				"TEXT_mainClause"
+			]
 		},
 		{
 			"tag": "Checkboxes",
@@ -647,7 +819,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.2. Verb Phrases"
+			"content": "3.2. Verb Phrases",
+			"heads": ["TEXT_verbPhrase"]
 		},
 		{
 			"tag": "Text",
@@ -658,7 +831,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.3. Noun Phrases"
+			"content": "3.3. Noun Phrases",
+			"heads": ["TEXT_nounPhrase"]
 		},
 		{
 			"tag": "Text",
@@ -669,7 +843,13 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.4. Adpositional Phrases"
+			"content": "3.4. Adpositional Phrases",
+			"heads": [
+				"BOOL_preP",
+				"BOOL_postP",
+				"BOOL_circumP",
+				"TEXT_adPhrase"
+			]
 		},
 		{
 			"tag": "Checkboxes",
@@ -712,7 +892,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.5 Comparatives"
+			"content": "3.5 Comparatives",
+			"heads": ["TEXT_compare"]
 		},
 		{
 			"tag": "Modal",
@@ -728,7 +909,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.6 Question Particles and Words"
+			"content": "3.6 Question Particles and Words",
+			"heads": ["TEXT_questions"]
 		},
 		{
 			"tag": "Modal",
@@ -743,7 +925,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "3.7 Summary"
+			"content": "3.7 Summary",
+			"heads": ["TEXT_COType"]
 		},
 		{
 			"tag": "Text",
@@ -755,12 +938,38 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "4. Noun and Noun Phrase Operations"
+			"content": "4. Noun and Noun Phrase Operations",
+			"heads": [
+				"TEXT_compounding",
+				"TEXT_denoms",
+				"BOOL_numSing",
+				"BOOL_numDual",
+				"BOOL_numTrial",
+				"BOOL_numPaucal",
+				"BOOL_numPlural",
+				"TEXT_nNumberOpt",
+				"TEXT_nNumberObl",
+				"TEXT_nCase",
+				"TEXT_articles",
+				"TEXT_demonstratives",
+				"TEXT_possessors",
+				"BOOL_classGen",
+				"BOOL_classAnim",
+				"BOOL_classShape",
+				"BOOL_classFunction",
+				"BOOL_classOther",
+				"TEXT_classGender",
+				"BOOL_dimAugYes",
+				"BOOL_dimAugObligatory",
+				"BOOL_dimAugProductive",
+				"TEXT_dimAug"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.1. Compounding"
+			"content": "4.1. Compounding",
+			"heads": ["TEXT_compounding"]
 		},
 		{
 			"tag": "Modal",
@@ -777,7 +986,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.2. Denominalization"
+			"content": "4.2. Denominalization",
+			"heads": ["TEXT_denoms"]
 		},
 		{
 			"tag": "Modal",
@@ -794,7 +1004,16 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.3. Number Marking"
+			"content": "4.3. Number Marking",
+			"heads": [
+				"BOOL_numSing",
+				"BOOL_numDual",
+				"BOOL_numTrial",
+				"BOOL_numPaucal",
+				"BOOL_numPlural",
+				"TEXT_nNumberOpt",
+				"TEXT_nNumberObl"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -842,7 +1061,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.4. Case Marking"
+			"content": "4.4. Case Marking",
+			"heads": ["TEXT_nCase"]
 		},
 		{
 			"tag": "Modal",
@@ -859,7 +1079,11 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.5. Articles and Demonstratives"
+			"content": "4.5. Articles and Demonstratives",
+			"heads": [
+				"TEXT_articles",
+				"TEXT_demonstratives"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -882,7 +1106,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.6. Possessors"
+			"content": "4.6. Possessors",
+			"heads": ["TEXT_possessors"]
 		},
 		{
 			"tag": "Modal",
@@ -899,7 +1124,15 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.7. Class (Gender)"
+			"content": "4.7. Class (Gender)",
+			"heads": [
+				"BOOL_classGen",
+				"BOOL_classAnim",
+				"BOOL_classShape",
+				"BOOL_classFunction",
+				"BOOL_classOther",
+				"TEXT_classGender"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -941,7 +1174,13 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "4.8. Diminution/Augmentation"
+			"content": "4.8. Diminution/Augmentation",
+			"heads": [
+				"BOOL_dimAugYes",
+				"BOOL_dimAugObligatory",
+				"BOOL_dimAugProductive",
+				"TEXT_dimAug"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -985,7 +1224,13 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "5. Predicate Nominals and Related Constructions"
+			"content": "5. Predicate Nominals and Related Constructions",
+			"heads": [
+				"TEXT_predNom",
+				"TEXT_predLoc",
+				"TEXT_predEx",
+				"TEXT_predPoss"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -996,7 +1241,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "5.1. Predicate Nominals and Adjectives"
+			"content": "5.1. Predicate Nominals and Adjectives",
+			"heads": ["TEXT_predNom"]
 		},
 		{
 			"tag": "Modal",
@@ -1013,7 +1259,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "5.2. Predicate Locatives"
+			"content": "5.2. Predicate Locatives",
+			"heads": ["TEXT_predLoc"]
 		},
 		{
 			"tag": "Modal",
@@ -1030,7 +1277,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "5.3. Existentials"
+			"content": "5.3. Existentials",
+			"heads": ["TEXT_predEx"]
 		},
 		{
 			"tag": "Modal",
@@ -1047,7 +1295,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "5.4. Possessive Clauses"
+			"content": "5.4. Possessive Clauses",
+			"heads": ["TEXT_predPoss"]
 		},
 		{
 			"tag": "Modal",
@@ -1065,7 +1314,12 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "6. Grammatical Relations"
+			"content": "6. Grammatical Relations",
+			"heads": [
+				"BOOL_nomAcc",
+				"BOOL_ergAbs",
+				"TEXT_ergative"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1103,7 +1357,25 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "7. Voice and Valence Adjusting Operations"
+			"content": "7. Voice and Valence Adjusting Operations",
+			"heads": [
+				"TEXT_causation",
+				"TEXT_applicatives",
+				"TEXT_dativeShifts",
+				"TEXT_datOfInt",
+				"TEXT_possessRaising",
+				"TEXT_refls",
+				"TEXT_recips",
+				"TEXT_passives",
+				"BOOL_markInv",
+				"BOOL_markDirInv",
+				"BOOL_verbAgreeInv",
+				"BOOL_wordOrderChange",
+				"TEXT_inverses",
+				"TEXT_middleCon",
+				"TEXT_antiP",
+				"TEXT_objDemOmInc"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1114,12 +1386,20 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "7.1. Valence-Increasing Operations"
+			"content": "7.1. Valence-Increasing Operations",
+			"heads": [
+				"TEXT_causation",
+				"TEXT_applicatives",
+				"TEXT_dativeShifts",
+				"TEXT_datOfInt",
+				"TEXT_possessRaising"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.1.1. Causatives"
+			"content": "7.1.1. Causatives",
+			"heads": ["TEXT_causation"]
 		},
 		{
 			"tag": "Modal",
@@ -1136,7 +1416,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.1.2. Applicatives"
+			"content": "7.1.2. Applicatives",
+			"heads": []
 		},
 		{
 			"tag": "Modal",
@@ -1153,7 +1434,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.1.3. Dative Shift"
+			"content": "7.1.3. Dative Shift",
+			"heads": ["TEXT_dativeShifts"]
 		},
 		{
 			"tag": "Modal",
@@ -1170,7 +1452,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.1.4. Dative of Interest"
+			"content": "7.1.4. Dative of Interest",
+			"heads": ["TEXT_datOfInt"]
 		},
 		{
 			"tag": "Modal",
@@ -1187,7 +1470,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.1.5. Possessor Raising (a.k.a. External Possession)"
+			"content": "7.1.5. Possessor Raising (a.k.a. External Possession)",
+			"heads": ["TEXT_possessRaising"]
 		},
 		{
 			"tag": "Modal",
@@ -1204,12 +1488,26 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "7.2. Valence-Decreasing Operations"
+			"content": "7.2. Valence-Decreasing Operations",
+			"heads": [
+				"TEXT_refls",
+				"TEXT_recips",
+				"TEXT_passives",
+				"BOOL_markInv",
+				"BOOL_markDirInv",
+				"BOOL_verbAgreeInv",
+				"BOOL_wordOrderChange",
+				"TEXT_inverses",
+				"TEXT_middleCon",
+				"TEXT_antiP",
+				"TEXT_objDemOmInc"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.1. Reflexives"
+			"content": "7.2.1. Reflexives",
+			"heads": ["TEXT_refls"]
 		},
 		{
 			"tag": "Modal",
@@ -1226,7 +1524,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.2. Reciprocals"
+			"content": "7.2.2. Reciprocals",
+			"heads": ["TEXT_recips"]
 		},
 		{
 			"tag": "Modal",
@@ -1243,7 +1542,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.3. Passives"
+			"content": "7.2.3. Passives",
+			"heads": ["TEXT_passives"]
 		},
 		{
 			"tag": "Modal",
@@ -1260,7 +1560,14 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.4. Inverses"
+			"content": "7.2.4. Inverses",
+			"heads": [
+				"BOOL_markInv",
+				"BOOL_markDirInv",
+				"BOOL_verbAgreeInv",
+				"BOOL_wordOrderChange",
+				"TEXT_inverses"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1299,7 +1606,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.5. Middle Constructions"
+			"content": "7.2.5. Middle Constructions",
+			"heads": ["TEXT_middleCon"]
 		},
 		{
 			"tag": "Modal",
@@ -1316,7 +1624,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.6. Antipassives"
+			"content": "7.2.6. Antipassives",
+			"heads": ["TEXT_antiP"]
 		},
 		{
 			"tag": "Modal",
@@ -1333,7 +1642,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "7.2.7. Object Demotion/Omission/Incorporation"
+			"content": "7.2.7. Object Demotion/Omission/Incorporation",
+			"heads": ["TEXT_objDemOmInc"]
 		},
 		{
 			"tag": "Modal",
@@ -1352,12 +1662,31 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "8. Other Verb and Verb Phrase Operations"
+			"content": "8. Other Verb and Verb Phrase Operations",
+			"heads": [
+				"TEXT_verbNoms",
+				"TEXT_verbComp",
+				"BOOL_tenseMorph",
+				"BOOL_aspectMorph",
+				"BOOL_modeMorph",
+				"BOOL_otherMorph",
+				"BOOL_tenseMorph",
+				"BOOL_aspectMorph",
+				"BOOL_modeMorph",
+				"BOOL_otherMorph",
+				"TEXT_tense",
+				"TEXT_aspect",
+				"TEXT_mode",
+				"TEXT_locDirect",
+				"TEXT_evidence",
+				"TEXT_miscVerbFunc"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.1. Nominalization"
+			"content": "8.1. Nominalization",
+			"heads": ["TEXT_verbNoms"]
 		},
 		{
 			"tag": "Modal",
@@ -1365,7 +1694,6 @@
 			"label": "Making Nouns",
 			"content": "<ul><li>Every language has strategies of adjusting the grammatical category of a root. Turning a word into a noun is <em>nominalization</em>.</li><li class=\"newSection\">English has multiple methods, with differing levels of productivity.</li><li>Typically, a language will use differing methods to create nominalizations according to the result.</li><li class=\"newSection\">Some methods:<ul><li><strong>Zero Operator</strong>: walk → a walk, look → a look</li><li><strong>Affix</strong>: walk → walking, employ → employment, grow → growth, construct → construction</li><li><strong>Merge with Adposition</strong>: hang + up → hangup, make + over → makeover, talk + to → talking to</li><li><strong>Analytical</strong>: Mandarin uses a particle <em>de</em> to indicate some nominalizations<ul><li><em>hézuò</em> (cooperate) + <em>de</em> → cooperation</li></ul></li></ul></li><li class=\"newSection\">Types of nominalization:<li><strong>Action</strong>:<ul><li>Usually refers to the action in the abstract.<ul><li>walk → walking</li><li>think → thinking</li></ul></li></ul></li><li><strong>Agent</strong>:<ul><li>Typically refers to an Agent who is characteristic of the root verb (teach → a teacher), but some languages instead refer to someone engaged in the activity at the moment (teach → one who is presently teaching).</li></ul></li><li><strong>Patient</strong>:<ul><li>In English, this mostly happens with the modifiers \"good\" and \"bad\".<ul><li>buy → a good buy</li><li>fall → a bad fall</li></ul></li><li>This can also form the \"past participle\" in a language.<ul><li>employ → employee : this form comes from the French past participle!</li></ul></li></ul></li><li><strong>Instrument</strong>:<ul><li>Refers to the object used in the action.</li><li>In English, this usually follows the same format as an Agent nominalization.</li><li>In Spanish, compounding a verb with a plural object makes an instrument.<ul><li>e.g. <em>abre</em> (open) + <em>latas</em> (cans) → <em>el abrelatas</em> (can-opener)</li></ul></li></ul></li><li><strong>Location</strong>:<ul><li>Many languages use this to refer generally to a place where the action tends to occur, e.g. work → workshop, burn → fireplace.</li></ul></li><li><strong>Product</strong>:<ul><li>This refers to something that exists because of an action.</li><li>English tends to do this with zero operators (scratch → a scratch) or by changing the stress pattern (permit → a permit, reject → a reject, convert → a convert).</li></ul></li><li><strong>Manner</strong>:<ul><li>This is uncommon among languages, but English has a couple, generally confined to sports terminology.<ul><li>curve → a curve (That pitcher's curve is unhittable.)</li><li>serve → a serve (Serena's serve is imposing.)</li></ul></li></ul></li></li></ul>"
 		},
-
 		{
 			"tag": "Text",
 			"prop": "TEXT_verbNoms",
@@ -1375,7 +1703,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.2. Compounding"
+			"content": "8.2. Compounding",
+			"heads": ["TEXT_verbComp"]
 		},
 		{
 			"tag": "Modal",
@@ -1383,7 +1712,6 @@
 			"label": "Word-Making",
 			"content": "<ul><li><strong>Noun Incorporation</strong>: noun becomes attached to a verb (see 7.2.7).<ul><li>The most common form is Patient incorporation (sell pigs → to pig-sell).</li></ul></li><li class=\"newSection\"><strong>Verb Incorporation</strong>: two verbs merge, one modifying the other.<ul><li>Often, verbs of motion enter into these pairings (shout-rise → he shouts rising).</li><li>Verbs that freely compound like this typically lose their verbal character and become derivational affixes.</li></ul></li></ul>"
 		},
-
 		{
 			"tag": "Text",
 			"prop": "TEXT_verbComp",
@@ -1393,7 +1721,16 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.3. Tense/Aspect/Mode"
+			"content": "8.3. Tense/Aspect/Mode",
+			"heads": [
+				"BOOL_tenseMorph",
+				"BOOL_aspectMorph",
+				"BOOL_modeMorph",
+				"BOOL_otherMorph",
+				"TEXT_tense",
+				"TEXT_aspect",
+				"TEXT_mode"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1433,7 +1770,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "8.3.1 Tense"
+			"content": "8.3.1 Tense",
+			"heads": ["TEXT_tense"]
 		},
 		{
 			"tag": "Modal",
@@ -1450,7 +1788,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "8.3.2 Aspect"
+			"content": "8.3.2 Aspect",
+			"heads": ["TEXT_aspect"]
 		},
 		{
 			"tag": "Modal",
@@ -1467,7 +1806,8 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "8.3.3 Mode"
+			"content": "8.3.3 Mode",
+			"heads": ["TEXT_mode"]
 		},
 		{
 			"tag": "Modal",
@@ -1484,7 +1824,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.4. Location/Direction"
+			"content": "8.4. Location/Direction",
+			"heads": ["TEXT_locDirect"]
 		},
 		{
 			"tag": "Modal",
@@ -1501,7 +1842,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.5. Evidentiality, Validationality and Mirativity"
+			"content": "8.5. Evidentiality, Validationality and Mirativity",
+			"heads": ["TEXT_evidence"]
 		},
 		{
 			"tag": "Modal",
@@ -1518,7 +1860,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "8.6. Miscellaneous"
+			"content": "8.6. Miscellaneous",
+			"heads": ["TEXT_miscVerbFunc"]
 		},
 		{
 			"tag": "Modal",
@@ -1537,7 +1880,15 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "9. Pragmatically Marked Structures"
+			"content": "9. Pragmatically Marked Structures",
+			"heads": [
+				"TEXT_pragFocusEtc",
+				"TEXT_negation",
+				"TEXT_declaratives",
+				"TEXT_YNQs",
+				"TEXT_QWQs",
+				"TEXT_imperatives"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1548,7 +1899,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "9.1 Focus, Contrast and Topicalization"
+			"content": "9.1 Focus, Contrast and Topicalization",
+			"heads": ["TEXT_pragFocusEtc"]
 		},
 		{
 			"tag": "Modal",
@@ -1565,7 +1917,8 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "9.2 Negation"
+			"content": "9.2 Negation",
+			"heads": ["TEXT_negation"]
 		},
 		{
 			"tag": "Modal",
@@ -1582,7 +1935,13 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "9.3 Non-Declarative Speech"
+			"content": "9.3 Non-Declarative Speech",
+			"heads": [
+				"TEXT_declaratives",
+				"TEXT_YNQs",
+				"TEXT_QWQs",
+				"TEXT_imperatives"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1599,12 +1958,17 @@
 		{
 			"tag": "Header",
 			"level": 3,
-			"content": "9.3.1 Interrogatives"
+			"content": "9.3.1 Interrogatives",
+			"heads": [
+				"TEXT_YNQs",
+				"TEXT_QWQs"
+			]
 		},
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "9.3.1.1. Yes/No Questions"
+			"content": "9.3.1.1. Yes/No Questions",
+			"heads": ["TEXT_YNQs"]
 		},
 		{
 			"tag": "Modal",
@@ -1621,7 +1985,8 @@
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "9.3.1.2. Questions-Word Questions"
+			"content": "9.3.1.2. Questions-Word Questions",
+			"heads": ["TEXT_QWQs"]
 		},
 		{
 			"tag": "Modal",
@@ -1638,7 +2003,8 @@
 		{
 			"tag": "Header",
 			"level": 4,
-			"content": "9.3.2. Imperatives"
+			"content": "9.3.2. Imperatives",
+			"heads": ["TEXT_imperatives"]
 		},
 		{
 			"tag": "Modal",
@@ -1657,7 +2023,32 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10. Clause Combinations"
+			"content": "10. Clause Combinations",
+			"heads": [
+				"TEXT_serialVerbs",
+				"TEXT_complClauses",
+				"TEXT_advClauses",
+				"BOOL_chainFirst",
+				"BOOL_chainLast",
+				"BOOL_chainN",
+				"BOOL_chainV",
+				"BOOL_chainCj",
+				"BOOL_chainT",
+				"BOOL_chainA",
+				"BOOL_chainPer",
+				"BOOL_chainNum",
+				"BOOL_chainOther",
+				"TEXT_clauseChainEtc",
+				"BOOL_relPre",
+				"BOOL_relPost",
+				"BOOL_relInternal",
+				"BOOL_relHeadless",
+				"TEXT_relClauses",
+				"BOOL_coordMid",
+				"BOOL_coordTwo",
+				"BOOL_coordLast",
+				"TEXT_coords"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1668,7 +2059,8 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.1. Serial Verbs"
+			"content": "10.1. Serial Verbs",
+			"heads": ["TEXT_serialVerbs"]
 		},
 		{
 			"tag": "Modal",
@@ -1685,7 +2077,8 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.2. Complement Clauses"
+			"content": "10.2. Complement Clauses",
+			"heads": ["TEXT_complClauses"]
 		},
 		{
 			"tag": "Modal",
@@ -1702,7 +2095,8 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.3. Adverbial Clauses"
+			"content": "10.3. Adverbial Clauses",
+			"heads": ["TEXT_advClauses"]
 		},
 		{
 			"tag": "Modal",
@@ -1719,7 +2113,20 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.4. Clause Chaining, Medial Clauses, and Switch References"
+			"content": "10.4. Clause Chaining, Medial Clauses, and Switch References",
+			"heads": [
+				"BOOL_chainFirst",
+				"BOOL_chainLast",
+				"BOOL_chainN",
+				"BOOL_chainV",
+				"BOOL_chainCj",
+				"BOOL_chainT",
+				"BOOL_chainA",
+				"BOOL_chainPer",
+				"BOOL_chainNum",
+				"BOOL_chainOther",
+				"TEXT_clauseChainEtc"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1801,7 +2208,14 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.5. Relative Clauses"
+			"content": "10.5. Relative Clauses",
+			"heads": [
+				"BOOL_relPre",
+				"BOOL_relPost",
+				"BOOL_relInternal",
+				"BOOL_relHeadless",
+				"TEXT_relClauses"
+			]
 		},
 		{
 			"tag": "Modal",
@@ -1841,7 +2255,13 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.6. Coordinating Clauses"
+			"content": "10.6. Coordinating Clauses",
+			"heads": [
+				"BOOL_coordMid",
+				"BOOL_coordTwo",
+				"BOOL_coordLast",
+				"TEXT_coords"
+			]
 		},
 		{
 			"tag": "Modal",

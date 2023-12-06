@@ -1,5 +1,4 @@
-//import React, { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -14,7 +13,7 @@ import {
 	IonModal,
 	IonFooter,
 	useIonToast,
-//	IonToggle
+	IonToggle
 } from '@ionic/react';
 import {
 	closeCircleOutline, codeOutline, documentOutline, documentTextOutline
@@ -37,8 +36,7 @@ interface ExportModalProps extends ModalProperties {
 
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
-	//const [showUnused, setShowUnused] = useState<boolean>(true);
-	const showUnused = true;
+	const [showUnused, setShowUnused] = useState<boolean>(true);
 	const [doToast, undoToast] = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
 	const { title = "[Untitled]" } = msInfo;
@@ -73,7 +71,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 			</IonHeader>
 			<IonContent id="exportSyntaxModal">
 				<IonList lines="none" className="buttonFilled multiLinePossible">
-					{/*<IonItem lines="full" className="wrappableInnards">
+					<IonItem lines="full" className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
@@ -86,7 +84,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 								later. <strong>NOTE:</strong> this option has no effect on JSON and XML exports.
 							</p>
 						</IonToggle>
-					</IonItem>*/}
+					</IonItem>
 					<IonItem>Choose a format:</IonItem>
 					<IonItem
 						button={true}

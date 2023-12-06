@@ -552,7 +552,6 @@ export const exporter = (
 			log(dispatch, [`Error in DJOutputFormat: bad format "${format}"`]);
 	}
 	if(formatted && extension) {
-		console.log(formatted);
 		return doExport(formatted, `Declenjugator - ${(new Date()).toDateString()}.${extension}`, doToast, undoToast, dispatch);
 	}
 	return toaster({

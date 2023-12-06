@@ -173,24 +173,7 @@ const Syntax = (props: PageData) => {
 								inlineHeaders: [
 									"Used Most", "Used Less", "Affix"
 								],
-								rowLabels: ["Prefix", "Suffix", "Circumfix", "Infix"],
-								export: {
-									title: "Affixes",
-									output: [
-										["Used Most: ", [
-											["prefixMost", "Prefixes"],
-											["suffixMost", "Suffixes"],
-											["circumfixMost", "Circumfixes"],
-											["infixMost", "Infixes"]
-										], "."],
-										["Used Less: ", [
-											["prefixLess", "Prefixes"],
-											["suffixLess", "Suffixes"],
-											["circumfixLess", "Circumfixes"],
-											["infixLess", "Infixes"]
-										], "."]
-									]
-								}
+								rowLabels: ["Prefix", "Suffix", "Circumfix", "Infix"]
 							}
 						}
 						boxes={["BOOL_prefixMost", "BOOL_prefixLess", "BOOL_suffixMost", "BOOL_suffixLess", "BOOL_circumfixMost", "BOOL_circumfixLess", "BOOL_infixMost", "BOOL_infixLess"]}

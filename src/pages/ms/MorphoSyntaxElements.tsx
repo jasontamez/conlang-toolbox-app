@@ -217,7 +217,7 @@ export const InfoModal = (props: InfoModalProps) => {
 };
 export interface exportProp {
 	title: string
-	output?: ( (string | [string, string][])[] )[]
+	output?: ( (string | [MSBool, string][])[] )[]
 	labels?: string[]
 	labelOverrideDocx?: boolean
 }
@@ -394,6 +394,7 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 export interface specificPageInfo {
 	tag: string
 	level?: number
+	heads?: (MSBool | MSText | true)[]
 	content?: string
 	title?: string
 	label?: string
