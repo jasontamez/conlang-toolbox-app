@@ -16,7 +16,10 @@ import {
 	IonToggle
 } from '@ionic/react';
 import {
-	closeCircleOutline, codeOutline, documentOutline, documentTextOutline
+	closeCircleOutline,
+	codeOutline,
+	documentOutline,
+	documentTextOutline
 } from 'ionicons/icons';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -80,7 +83,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 						>
 							<h2>Show Unused Sections</h2>
 							<p>
-								Include sections that you did not fill out, leaving blank spaces for you to fill
+								Include sections that you did not fill out, leaving space for you to write in
 								later. <strong>NOTE:</strong> this option has no effect on JSON and XML exports.
 							</p>
 						</IonToggle>

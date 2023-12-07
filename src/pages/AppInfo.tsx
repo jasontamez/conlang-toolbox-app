@@ -194,18 +194,19 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.0</strong></h2>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.1</strong></h2>
 									<ul className="changelog">
 										<li>Overhauled main page.</li>
-										<li>MorphoSyntax wasn't exporting. This has been fixed.</li>
 										<li>Added an "Overview" to each tool.</li>
-										<li>Added Declenjugator for crafting declensions and conjugations.</li>
+										<li>New tool <strong>Declenjugator</strong> for crafting declensions and conjugations.</li>
+										<li>MorphoSyntax exports now have the option of omitting sections you did not fill out.</li>
 										<li>Added ability to copy Character Groups between WordGen and WordEvolve.</li>
 										<li>Export All Data now has a copy-to-clipboard button, and you can limit what you export.</li>
 										<li>Added ability to import data through Settings.</li>
 										<li><em>Bugs fixed</em>
 											<ul>
 												<li>Older WordGen/WordEvolve/etc saves were sometimes unable to be loaded.</li>
+												<li>MorphoSyntax wasn't exporting. This has been fixed.</li>
 												<li>Some tables were not displaying correctly in MorphoSyntax info modals.</li>
 												<li>Some WordGen syllables weren't saving correctly.</li>
 												<li>WordGen/WordEvolve Transforms with %X references were silently crashing if no category "X" existed.</li>
