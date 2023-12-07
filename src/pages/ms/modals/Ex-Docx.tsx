@@ -79,8 +79,8 @@ const doDocx = (
 				max = 4,
 				prop,
 				spectrum,
-				start = "[MISSING]",
-				end = "[MISSING]",
+				start = "[MISSING START LABEL]",
+				end = "[MISSING END LABEL]",
 				display,
 				boxes = [],
 				content = ""
@@ -162,7 +162,12 @@ const doDocx = (
 					if(showUnused || msInfo[prop as MSText]) {
 						// Save
 						children.push(new Paragraph({
-							text: (content || "[ERROR, NO TEXT PROMPT]"),
+							children: [
+								new TextRun({
+									text: content || "[ERROR, MISSING TEXT PROMPT]",
+									italics: true
+								})
+							],
 							spacing
 						}));
 						const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
@@ -189,7 +194,7 @@ const doDocx = (
 				case "Checkboxes":
 					if(!display) {
 						children.push(new Paragraph(
-							{ text: "CHECKBOX DISPLAY ERROR", spacing }
+							{ text: "[ERROR, CHECKBOX MISSING DISPLAY INFO]", spacing }
 						));
 						checksum.push("CHECKBOX error");
 						break;

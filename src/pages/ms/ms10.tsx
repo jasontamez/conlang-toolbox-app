@@ -65,18 +65,18 @@ const Syntax = (props: PageData) => {
 						modalPropsMaker={modalPropsMaker}
 					>
 						<ul>
-							<li>An <strong>Independant Clause</strong> is one that is fully inflected and can stand on its own.</li>
-							<li>A <strong>Dependant Clause</strong> depends on some other clause for at least a part of its inflectional information.</li>
+							<li>An <strong>Independent Clause</strong> is one that is fully inflected and can stand on its own.</li>
+							<li>A <strong>Dependent Clause</strong> depends on some other clause for at least a part of its inflectional information.</li>
 							<li className="newSection">"The gull beat its wings, achieving liftoff easily."
 								<ul>
-									<li><em>The gull beat its wings</em> is Independant.</li>
-									<li><em>Achieving liftoff easily</em> is Dependant.</li>
+									<li><em>The gull beat its wings</em> is Independent.</li>
+									<li><em>Achieving liftoff easily</em> is Dependent.</li>
 								</ul>
 							</li>
 							<li className="newSection">"Breathing heavily, the runner crossed the finish line."
 								<ul>
-									<li><em>The runner crossed the finish line</em> is Independant.</li>
-									<li><em>Breathing heavily</em> is Dependant.</li>
+									<li><em>The runner crossed the finish line</em> is Independent.</li>
+									<li><em>Breathing heavily</em> is Dependent.</li>
 								</ul>
 							</li>
 						</ul>

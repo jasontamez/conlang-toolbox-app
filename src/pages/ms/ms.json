@@ -183,26 +183,26 @@
 		{
 			"tag": "Header",
 			"level": 2,
-			"content": "1.3. Head/Dependant Marking",
+			"content": "1.3. Head/Dependent Marking",
 			"heads": [true]
 		},
 			{
 			"tag": "Range",
 			"prop": "NUM_headDepMarked",
 			"start": "Head Marked",
-			"end": "Dependant Marked",
+			"end": "Dependent Marked",
 			"spectrum": true,
 			"max": 4
 		},
 		{
 			"tag": "Modal",
-			"title": "Head/Dependant Marking",
-			"content": "<ul><li>The <strong>Head</strong> of a phrase is the element that determines the syntactic function of the whole phrase.<ul><li>Example sentence: <em>\"The smallest dog ate a porkchop with Mark's approval.\"</em><ul><li>\"dog\" is Head of \"the smallest dog\" (noun phrase)</li><li>\"porkchop\" is Head of \"a porkchop\" (noun phrase)</li><li>\"with\" is Head of \"with Mark's approval\" (prepositional phrase)</li><li>\"approval\" is Head of \"Mark's approval\" (noun phrase)</li></ul></li></ul></li><li>English is predominantly dependant-marked (\"the queen's crown\").</li><li>Most languages are head-marked (\"the queen crown's\").</li><li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependant-marked for verb and adpositional phrases).</li></ul>"
+			"title": "Head/Dependent Marking",
+			"content": "<ul><li>The <strong>Head</strong> of a phrase is the element that determines the syntactic function of the whole phrase.<ul><li>Example sentence: <em>\"The smallest dog ate a porkchop with Mark's approval.\"</em><ul><li>\"dog\" is Head of \"the smallest dog\" (noun phrase)</li><li>\"porkchop\" is Head of \"a porkchop\" (noun phrase)</li><li>\"with\" is Head of \"with Mark's approval\" (prepositional phrase)</li><li>\"approval\" is Head of \"Mark's approval\" (noun phrase)</li></ul></li></ul></li><li>English is predominantly dependent-marked (\"the queen's crown\").</li><li>Most languages are head-marked (\"the queen crown's\").</li><li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependent-marked for verb and adpositional phrases).</li></ul>"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_headDepMark",
-			"content": "Describe when the head/dependant marking system changes, if needed."
+			"content": "Describe when the head/dependent marking system changes, if needed."
 		}
 	],
 	"s2": [
@@ -808,7 +808,7 @@
 			"tag": "Modal",
 			"title": "Basic Typology",
 			"label": "What is This?",
-			"content": "<ul><li>Human languages tend towards one of six different basic forms.<ul><li><strong>S</strong> is the Subject of an intransitive clause.<ul><li><em>Steve</em> pitches.</li></ul></li><li><strong>V</strong> is the verb in a clause.<ul><li>Steve <em>pitches</em>.</li></ul></li><li><strong>A</strong> is the Agent of a transitive clause.<ul><li><em>Steve</em> pitches softballs.</li></ul></li><li><strong>P</strong> is the Patient of a transitive clause.<ul><li>Steve pitches <em>softballs</em>.</li></ul></li></ul></li><li class=\"newSection\">Languages may use one typology most of the time, but switch to another for certain clauses:<ul><li>Dependant clauses</li><li>Paragraph-initial clauses</li><li>Clauses that introduce participants</li><li>Questions</li><li>Negative clauses</li><li>Clearly contrastive clauses</li></ul></li><li class=\"newSection\">\"Rigid\" systems may put other constituents into the <strong>P</strong> slot on a regular basis.<ul><li>The softball was <em>filthy</em>: predicate adjective.</li><li>Steve was <em>an awful pitcher</em>: predicate nominative.</li><li>Steve went <em>to the dugouts</em>: oblique.</li></ul></li><li class=\"newSection\">\"Flexible\" or \"free\" systems use something other than grammatical relations to determine order:<ul><li>Biblical Hebrew puts new, indefinite info pre-verb, definite info post-verb.</li><li>Some will fix PV or AV relations in almost all cases, leaving the other \"free\".<ul><li>Fixed PV → may allow APV and PVA.</li><li>Fixed AV → may allow PAV and AVP.</li><li>Fixed VP → may allow AVP and VPA.</li><li>Fixed VA → may allow VAP and PVA.</li></ul></li></ul></li></ul>"
+			"content": "<ul><li>Human languages tend towards one of six different basic forms.<ul><li><strong>S</strong> is the Subject of an intransitive clause.<ul><li><em>Steve</em> pitches.</li></ul></li><li><strong>V</strong> is the verb in a clause.<ul><li>Steve <em>pitches</em>.</li></ul></li><li><strong>A</strong> is the Agent of a transitive clause.<ul><li><em>Steve</em> pitches softballs.</li></ul></li><li><strong>P</strong> is the Patient of a transitive clause.<ul><li>Steve pitches <em>softballs</em>.</li></ul></li></ul></li><li class=\"newSection\">Languages may use one typology most of the time, but switch to another for certain clauses:<ul><li>Dependent clauses</li><li>Paragraph-initial clauses</li><li>Clauses that introduce participants</li><li>Questions</li><li>Negative clauses</li><li>Clearly contrastive clauses</li></ul></li><li class=\"newSection\">\"Rigid\" systems may put other constituents into the <strong>P</strong> slot on a regular basis.<ul><li>The softball was <em>filthy</em>: predicate adjective.</li><li>Steve was <em>an awful pitcher</em>: predicate nominative.</li><li>Steve went <em>to the dugouts</em>: oblique.</li></ul></li><li class=\"newSection\">\"Flexible\" or \"free\" systems use something other than grammatical relations to determine order:<ul><li>Biblical Hebrew puts new, indefinite info pre-verb, definite info post-verb.</li><li>Some will fix PV or AV relations in almost all cases, leaving the other \"free\".<ul><li>Fixed PV → may allow APV and PVA.</li><li>Fixed AV → may allow PAV and AVP.</li><li>Fixed VP → may allow AVP and VPA.</li><li>Fixed VA → may allow VAP and PVA.</li></ul></li></ul></li></ul>"
 		},
 		{
 			"tag": "Text",
@@ -2053,7 +2053,7 @@
 			"tag": "Modal",
 			"title": "Terms",
 			"label": "Quick Primer on Clauses",
-			"content": "<ul><li>An <strong>Independant Clause</strong> is one that is fully inflected and can stand on its own.</li><li>A <strong>Dependant Clause</strong> depends on some other clause for at least a part of its inflectional information.</li><li class=\"newSection\">\"The gull beat its wings, achieving liftoff easily.\"<ul><li><em>The gull beat its wings</em> is Independant.</li><li><em>Achieving liftoff easily</em> is Dependant.</li></ul></li><li class=\"newSection\">\"Breathing heavily, the runner crossed the finish line.\"<ul><li><em>The runner crossed the finish line</em> is Independant.</li><li><em>Breathing heavily</em> is Dependant.</li></ul></li></ul>"
+			"content": "<ul><li>An <strong>Independent Clause</strong> is one that is fully inflected and can stand on its own.</li><li>A <strong>Dependent Clause</strong> depends on some other clause for at least a part of its inflectional information.</li><li class=\"newSection\">\"The gull beat its wings, achieving liftoff easily.\"<ul><li><em>The gull beat its wings</em> is Independent.</li><li><em>Achieving liftoff easily</em> is Dependent.</li></ul></li><li class=\"newSection\">\"Breathing heavily, the runner crossed the finish line.\"<ul><li><em>The runner crossed the finish line</em> is Independent.</li><li><em>Breathing heavily</em> is Dependent.</li></ul></li></ul>"
 		},
 		{
 			"tag": "Header",

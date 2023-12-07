@@ -252,10 +252,10 @@ const Syntax = (props: PageData) => {
 						value={TEXT_morphProcess}
 						rows={6}
 					>What sort of morphological processes are used? Which are primary and which are used less?</TextItem>
-					<HeaderItem level={2}>1.3. Head/Dependant Marking</HeaderItem>
+					<HeaderItem level={2}>1.3. Head/Dependent Marking</HeaderItem>
 					<IonItem className="content">
 						<IonRange
-							aria-label="Range from Head Marked to Dependant Marked"
+							aria-label="Range from Head Marked to Dependent Marked"
 							onIonChange={(e) => dispatch(setSyntaxNum(["NUM_headDepMarked", e.target.value as number]))}
 							value={NUM_headDepMarked}
 							className="spectrum"
@@ -267,11 +267,11 @@ const Syntax = (props: PageData) => {
 							max={4}
 						>
 							<div slot="start">Head Marked</div>
-							<div slot="end">Dependant Marked</div>
+							<div slot="end">Dependent Marked</div>
 						</IonRange>
 					</IonItem>
 					<InfoModal
-						title="Head/Dependant Marking"
+						title="Head/Dependent Marking"
 						modalPropsMaker={modalPropsMaker}
 					>
 						<ul>
@@ -287,16 +287,16 @@ const Syntax = (props: PageData) => {
 									</li>
 								</ul>
 							</li>
-							<li>English is predominantly dependant-marked ("the queen's crown").</li>
+							<li>English is predominantly dependent-marked ("the queen's crown").</li>
 							<li>Most languages are head-marked ("the queen crown's").</li>
-							<li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependant-marked for verb and adpositional phrases).</li>
+							<li>Some are mixed, but use only one pattern for certain types of phrases (e.g. head-marked for noun phrases, but dependent-marked for verb and adpositional phrases).</li>
 						</ul>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_headDepMark"
 						value={TEXT_headDepMark}
 						rows={undefined}
-					>Describe when the head/dependant marking system changes, if needed.</TextItem>
+					>Describe when the head/dependent marking system changes, if needed.</TextItem>
 				</IonList>
 			</IonContent>
 		</IonPage>

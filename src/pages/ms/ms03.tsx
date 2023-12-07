@@ -101,7 +101,7 @@ const Syntax = (props: PageData) => {
 							</li>
 							<li className="newSection">Languages may use one typology most of the time, but switch to another for certain clauses:
 								<ul>
-									<li>Dependant clauses</li>
+									<li>Dependent clauses</li>
 									<li>Paragraph-initial clauses</li>
 									<li>Clauses that introduce participants</li>
 									<li>Questions</li>
