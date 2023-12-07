@@ -115,10 +115,10 @@ const doDocx = (
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						paragraph.push(
 							new TextRun({
-								text: String(lesser) + "% " + start
+								text: String(100 - lesser) + "% " + start
 							}),
 							new TextRun({
-								text: String(100 - lesser) + "% " + end,
+								text: String(lesser) + "% " + end,
 								break: 1
 							})
 						);

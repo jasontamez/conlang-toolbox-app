@@ -53,7 +53,7 @@ import {
 } from './types';
 
 
-const ensureString = (input: any, alternate: any) => typeof (input) !== "string" ? alternate : input;
+const ensureString = (input: any, alternate: any) => (typeof input) !== "string" ? alternate : input;
 const ensureNumber = (input: any, alternate: any) => (
 	typeof (input) !== "number"
 	|| isNaN(input)

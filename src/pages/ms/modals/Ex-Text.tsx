@@ -55,9 +55,9 @@ const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boo
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						if(usingMarkDown) {
 							// extra spaces before newline are needed to make MarkDown behave
-							lines.push(`**${lesser}%** ${start}  \n**${100 - lesser}%** ${end}`);
+							lines.push(`**${100 - lesser}%** ${start}  \n**${lesser}%** ${end}`);
 						} else {
-							lines.push(`${lesser}% ${start}\n${100 - lesser}% ${end}`);
+							lines.push(`${100 - lesser}% ${start}\n${lesser}% ${end}`);
 						}
 					} else {
 						let counter = min;
