@@ -44,6 +44,15 @@ const cleanStateFunc = (state: MSState, action: PayloadAction | null) => {
 	cleanerObject.ms.forEach(key => {
 		state[key] !== undefined && (temp[key] = state[key]);
 	});
+	cleanerObject.msBool.forEach(key => {
+		state[key] = temp[key] || initialState[key];
+	});
+	cleanerObject.msNum.forEach(key => {
+		state[key] = temp[key] || initialState[key];
+	});
+	cleanerObject.msText.forEach(key => {
+		state[key] = temp[key] || initialState[key];
+	});
 	const final: MSState = {...temp};
 	return final;
 };
