@@ -194,7 +194,7 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.1</strong></h2>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.2</strong></h2>
 									<ul className="changelog">
 										<li>Overhauled main page.</li>
 										<li>Added an "Overview" to each tool.</li>
