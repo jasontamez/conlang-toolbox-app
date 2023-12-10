@@ -11,7 +11,7 @@ import {
 	WEState,
 	WGState
 } from "./types";
-import { cleanerObject } from "./blankAppState";
+import { cleanerObject, currentVersion } from "./blankAppState";
 import { createCleanWordEvolveStorageObject, createCleanWordGenStorageObject } from "./cleaning";
 
 const notObject = (input: any) => {
@@ -1095,15 +1095,10 @@ const invalidOldStorageObject = (object: any, v: string) => {
 	return error;
 };
 
-export const validVersions = [
-	"0.9.1",
-	"0.9.2",
-	"0.9.3",
-	"0.9.4",
-	"0.9.5",
-	"0.10.0",
-	"0.10.1",
-	"0.11.0"
+export const validVersionRanges = [
+	["0.11.0", currentVersion],
+	["0.10.0", "0.10.1"],
+	["0.9.1", "0.9.5"]
 ];
 // Error codes:
 // 100 general
@@ -1122,7 +1117,10 @@ export function VALIDATE_import (
 	const v = object && object.currentVersion;
 	if(notString(v)) {
 		error = "110: currentVersion is missing or invalid";
-	} else if (!validVersions.includes(v)) {
+	} else if (
+		compare(v, currentVersion, ">")
+		|| !validVersionRanges.some(([begin, end]) => compare(begin, v, "<=") && compare(end, v, ">="))
+	) {
 		error = `111: currentVersion "${v}" is not supported`;
 	} else {
 		Object.entries(object).some(([key, value]) => {
