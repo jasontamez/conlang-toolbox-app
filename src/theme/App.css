@@ -1446,3 +1446,27 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	overflow: hidden;
 	transition: all 0.2s linear;
 }
+
+#loadingPage {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+}
+#loadingPage div {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+}
+#loadingPage ion-spinner {
+	height: 2.5em;
+	width: 2.5em;
+}
+#loadingPage h1 {
+	padding-inline-end: 1em;
+}

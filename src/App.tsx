@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useMemo } from 'react';
+import React, { useEffect, useState, memo, useMemo, lazy, Suspense } from 'react';
 import {
 	Route
 } from 'react-router-dom';
@@ -20,14 +20,10 @@ import { setDefaultSortLanguage } from './store/internalsSlice';
 import Menu from './components/Menu';
 
 import About from "./pages/About";
-import ConceptsPage from "./pages/Concepts";
-import WG from "./pages/WG";
-import WE from "./pages/WE";
-import MS from "./pages/MS";
-import Lexicon from "./pages/Lex";
 import Settings from "./pages/AppSettings";
 import SortSettings from './pages/SortSettings';
 import Info from './pages/AppInfo';
+import Loading from './pages/Loading';
 
 import doUpdate095 from './updaters/UpdateTo095';
 import doUpdate0100 from './updaters/UpdateTo0100';
@@ -57,11 +53,10 @@ import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
-import DJ from './pages/Declenjugator';
 import maybeCleanState from './store/cleaning';
 import { StateObject } from './store/types';
 
-const MainOutlet = memo(() => {
+export const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<Function[]>([]);
 	const [doAlert] = useIonAlert();
 	const dispatch = useDispatch();
@@ -110,19 +105,26 @@ const MainOutlet = memo(() => {
 	}, [modals, navigator, dispatch, doAlert]);
 	return (
 		<IonRouterOutlet>
-			<Route path="/wg" render={() => <WG {...defaultProps} />} />
-			<Route path="/we" render={() => <WE {...defaultProps} />} />
-			<Route path="/dj" render={() => <DJ {...defaultProps} />} />
-			<Route path="/lex" render={() => <Lexicon {...defaultProps} />} />
-			<Route path="/ms" render={() => <MS {...defaultProps} />} />
-			<Route path="/appinfo" render={() => <Info {...defaultProps} />} />
-			<Route path="/settings" render={() => <Settings {...defaultProps} />} />
-			<Route path="/sortSettings" render={() => <SortSettings {...defaultProps} />} />
-			<Route path="/wordlists" render={() => <ConceptsPage {...defaultProps} />} />
-			<Route exact={true} path="/" render={() => <About {...defaultProps} />} />
+			<Route path="/wg" component={() => <WG {...defaultProps} />} />
+			<Route path="/we" component={() => <WE {...defaultProps} />} />
+			<Route path="/dj" component={() => <DJ {...defaultProps} />} />
+			<Route path="/lex" component={() => <Lexicon {...defaultProps} />} />
+			<Route path="/ms" component={() => <MS {...defaultProps} />} />
+			<Route path="/appinfo" exact component={() => <Info {...defaultProps} />} />
+			<Route path="/settings" component={() => <Settings {...defaultProps} />} />
+			<Route path="/sortSettings" component={() => <SortSettings {...defaultProps} />} />
+			<Route path="/wordlists" component={() => <ConceptsPage {...defaultProps} />} />
+			<Route path="/" exact component={() => <About {...defaultProps} />} />
 		</IonRouterOutlet>
 	);
 });
+
+const MS = lazy(() => import("./pages/MS"));
+const WG = lazy(() => import("./pages/WG"));
+const WE = lazy(() => import("./pages/WE"));
+const DJ = lazy(() => import("./pages/Declenjugator"));
+const Lexicon = lazy(() => import("./pages/Lex"));
+const ConceptsPage = lazy(() => import("./pages/Concepts"));
 
 const App = memo(() => {
 	const dispatch = useDispatch();
@@ -143,21 +145,77 @@ const App = memo(() => {
 			}
 		});
 	}, [dispatch]);
+	// Clean state if needed
 	useEffect(() => {
 		maybeCleanState(dispatch, lastClean);
 	}, [dispatch, lastClean]);
+	const [modals, setModals] = useState<Function[]>([]);
+	const [doAlert] = useIonAlert();
+	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
+	const defaultProps = {
+		modalPropsMaker
+	};
+	// Check for default sort language
+	useEffect(() => {
+		getLanguage().then(result => {
+			if(result) {
+				dispatch(setDefaultSortLanguage(result.slice(0, 2) as LanguageCode));
+			}
+		});
+	}, [dispatch]);
+	const navigator = useIonRouter();
+	// Listen for back button
+	useEffect((): (() => void) => {
+		// NOTE: Back Button will automatically go back in history for us.
+		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
+			if(modals.length) {
+				// Close an open modal
+//				dispatch(addToLog("Attempting to close modal."));
+				// Get last modal
+				const [last, ...rest] = modals;
+				// Save remaining modals
+				setModals(rest);
+				// Close last modal
+				last(false);
+/*			} else if (pages.length > 0) {
+				dispatch(addToLog("Navigating backward?"));
+				// go back
+				history.go(-1);
+				console.log("!back");
+			} else {*/
+			} else if (!navigator.canGoBack()) {
+				// Are we trying to exit the app?
+				yesNoAlert({
+					header: "Exit App?",
+					message: "Do you want to exit the app?",
+					cssClass: "warning",
+					submit: "Yes, exit!",
+					handler: Capacitor.exitApp,
+					doAlert
+				});
+			}
+		}).remove;
+	}, [modals, navigator, dispatch, doAlert]);
 	return (
 		<IonApp>
 			<IonReactRouter>
 				<IonSplitPane contentId="main" when="xl">
 					<Menu />
-					{/*
-						Using the render method prop cuts down the number of renders your components
-						will have due to route changes. Use the component prop when your component
-						depends on the RouterComponentProps passed in automatically.
-					*/}
 					<IonRouterOutlet id="main">
-						<Route path="/" render={() => <MainOutlet />} />
+						<Route path="/wg" render={() => <Suspense fallback={<Loading />}><WG {...defaultProps} /></Suspense>} />
+						<Route path="/we" render={() => <Suspense fallback={<Loading />}><WE {...defaultProps} /></Suspense>} />
+						<Route path="/dj" render={() => <Suspense fallback={<Loading />}><DJ {...defaultProps} /></Suspense>} />
+						<Route path="/lex" render={
+							() => <Suspense fallback={<Loading />}><Lexicon {...defaultProps} /></Suspense>
+						} />
+						<Route path="/ms" render={() => <Suspense fallback={<Loading />}><MS {...defaultProps} /></Suspense>} />
+						<Route path="/appinfo" exact render={() => <Info {...defaultProps} />} />
+						<Route path="/settings" exact render={() => <Settings {...defaultProps} />} />
+						<Route path="/sortSettings" exact render={() => <SortSettings {...defaultProps} />} />
+						<Route path="/wordlists" exact render={
+							() => <Suspense fallback={<Loading />}><ConceptsPage {...defaultProps} /></Suspense>
+						} />
+						<Route path="/" exact render={() => <About {...defaultProps} />} />
 					</IonRouterOutlet>
 				</IonSplitPane>
 			</IonReactRouter>

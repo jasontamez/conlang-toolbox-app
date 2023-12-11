@@ -199,10 +199,15 @@ const AppInfo = (props: PageData) => {
 										<li>Overhauled main page.</li>
 										<li>Added an "Overview" to each tool.</li>
 										<li>New tool <strong>Declenjugator</strong> for crafting declensions and conjugations.</li>
-										<li>MorphoSyntax exports now have the option of omitting sections you did not fill out.</li>
 										<li>Added ability to copy Character Groups between WordGen and WordEvolve.</li>
 										<li>Export All Data now has a copy-to-clipboard button, and you can limit what you export.</li>
 										<li>Added ability to import data through Settings.</li>
+										<li><em>MorphoSyntax</em>
+											<ul>
+												<li>Text and DOCX exports now have the option of omitting sections you did not fill out.</li>
+												<li>DOCX exports now italicize the text prompts, to make them visually distinct from your responses.</li>
+											</ul>
+										</li>
 										<li><em>Bugs fixed</em>
 											<ul>
 												<li>Older WordGen/WordEvolve/etc saves were sometimes unable to be loaded.</li>
