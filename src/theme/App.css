@@ -570,11 +570,17 @@ ion-app .hasMaxTextArea textarea {
 	padding: 0;
 	margin: 0;
 }
-.hasSpecialLabels ion-item.labelled {
+.hasSpecialLabels ion-item.labelled,
+.hasSpecialLabels ion-item.sublabelled {
 	padding: 0;
 	margin: 0;
 	margin-block-start: 1rem;
 	--border-color: transparent;
+}
+.hasSpecialLabels ion-item.sublabel,
+.hasSpecialLabels ion-item.sublabel::part(native) {
+	padding: 0;
+	margin: 0;
 }
 .hasSpecialLabels ion-item.labelled::part(native) {
 	min-height: 0;
@@ -838,6 +844,7 @@ ion-item.wrappableInnards p {
 	padding: 0;
 	text-indent: 0;
 	color: var(--ion-color-step-500);
+	width: 100%;
 }
 ion-item.wrappableInnards h2 {
 	font-size: 1.1rem;
@@ -1342,13 +1349,13 @@ ion-item.groupedDeclenjugation div.title {
 	text-align: start;
 }
 ion-item-sliding.djGroupMain ion-item.toggleable div.description,
-ion-item.groupedDeclenjugation div.root {
+ion-item.groupedDeclenjugation div.stem {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: end;
 }
 ion-item-sliding.djGroupMain ion-item.toggleable div.description,
-ion-item.groupedDeclenjugation div.root em.mini {
+ion-item.groupedDeclenjugation div.stem em.mini {
 	font-size: 0.5rem;
 }
 ion-item.groupedDeclenjugation div.icon,

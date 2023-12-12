@@ -232,23 +232,23 @@ const DJGroups = (props: PageData) => {
 	const DeclenjugationInstance = memo((props: DeclenjugationInfo) => {
 		const { dj, toggled } = props;
 		const { title, prefix, suffix, regex, useWholeWord } = dj;
-		let root = <></>;
+		let stem = <></>;
 		if(regex) {
 			const arrow = (ltr() ? "⟶" : "⟵");
 			const [match, replace] = regex;
-			root = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
+			stem = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
 		} else {
 			let rootling = "-";
 			prefix && (rootling = prefix + rootling);
 			suffix && (rootling = rootling + suffix);
-			root = <em>{rootling}</em>;
+			stem = <em>{rootling}</em>;
 		}
 		return (
 			<IonItem
 				className={`toggleable${toggled ? " toggled": ""}`}
 			>
 				<div className="title"><strong>{title}</strong></div>
-				<div className="description"><em>{root}</em></div>
+				<div className="description"><em>{stem}</em></div>
 				{
 					useWholeWord ?
 						<div className="ww">[W]</div>

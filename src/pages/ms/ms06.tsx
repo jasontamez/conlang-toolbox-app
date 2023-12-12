@@ -78,20 +78,22 @@ const Syntax = (props: PageData) => {
 									</li>
 									<li className="newSection"><strong>Split Ergativity</strong>:
 										<ul>
-											<li>In natural languages, ergativity tends to coexist in a hierarchy, with the nominative/accusative system used for the higher level. Typical hierarchies:
+											<li>In natural languages, ergativity tends to coexist with the nominative/accusative system in a hierarchy, with the latter system used for the higher level. Typical hierarchies:
 												<ul>
-													<li>1st person &gt; 2nd person &gt; 3rd person &gt; humans &gt; animates &gt; inanimates</li>
+													<li>1st person &gt; 2nd person &gt; human 3rd-persons &gt; 3rd-person animates &gt; 3rd-person inanimates</li>
 													<li>agreement &gt; pronouns/case marking</li>
 													<li>definite &gt; indefinite</li>
 													<li>non-past tense &gt; past tense</li>
 													<li>imperfect aspect &gt; perfect aspect</li>
 												</ul>
 											</li>
-											<li className="splitErgativity hide">The split in the hierarchy can happen at any point. e.g.
+											<li>Below are some examples of real-world hierarchies. N/A is nominative/accusative, E/A is egrgative/absolutive.
 												<ul>
-													<li>Dyirbal uses n/a for 1st/2nd person, e/a for everything else (this is a very common split point)</li>
-													<li>Cashinawa uses n/a for 1/2, separate marking for A and P in 3rd person, and e/a for everything else</li>
-													<li>Managalasi uses e/a for pronouns, n/a for person marking on verbs</li>
+													<li>Dyirbal uses N/A for 1st and 2nd person pronouns, E/A for everything else <em>(this is a very common split point)</em></li>
+													<li>Cashinahua uses N/A for 1st and 2nd person, separate markings for Agent and Patient in 3rd person, and E/A for everything else</li>
+													<li>Managalasi uses N/A for person marking on verbs and E/A for pronouns</li>
+													<li>Hindi-Urdu uses N/A markings in the imperfective aspect, but E/A for the arguments of transitive, perfective verbs</li>
+													<li>Sinaugoro uses N/A for agreement marking, but E/A for case marking</li>
 												</ul>
 											</li>
 										</ul>

@@ -14,7 +14,7 @@ import {
 	helpCircle,
 	logInOutline,
 	logOutOutline,
-	reorderTwo
+	reorderThree
 } from 'ionicons/icons';
 
 import { PageData } from '../../store/types';
@@ -93,28 +93,28 @@ export const GroupCard = (props: CardProps) => {
 					you don't want to use those labels. Optionally, you can note what types of
 					words this group will apply to.
 				</p><p>
-					Next, you will provide instructions on how to find the "root" of the word.
+					Next, you will provide instructions on how to find the "stem" of the word.
 					For example, if you were creating a conjugation for words ending in -ar, you
 					would put "ar" in the box labelled "Remove from End of Word to Find Root".
 				</p><p>
 					Note: You can provide multiple conditions. For instance, putting "ar" in both
 					boxes will match words that begin with ar- <em>and</em> end with -ar. You can
 					also hit the "Use advanced method" toggle switch to use <strong>regular
-					expressions</strong> to find a root. (See the end of this section for more info
+					expressions</strong> to find a stem. (See the end of this section for more info
 					on regular expressions.)
 				</p>
 				<hr />
 				<p>
 					At the bottom of the form, you will see an "Add New" button. Use this to create the
-					actual declensions or conjugations. For simplicity, we will use the term "method"
-					to mean either.
+					group's individual declensions or conjugations. For simplicity, we will use the
+					term "method" to mean either.
 				</p><p>
 					First, you give the method a title. There is a small (+) button next to the input
 					that will open a pop-up with numerous common declension and conjugation types, if
 					you wish to use it.
 				</p><p>
 					Below that is a toggle "Use entire word". If checked, the method will operate on
-					the entire word instead of just the root.
+					the entire word instead of just the stem.
 				</p><p>
 					At the bottom, there are two input boxes around the word "stem". (This becomes
 					"word" if you check the toggle above.) If this method would add a prefix, put the
@@ -125,8 +125,8 @@ export const GroupCard = (props: CardProps) => {
 				</p>
 				<hr />
 				<p>
-					Once your groups are made, they will show up on the screen. Swipe left on them to
-					find Edit and Delete buttons. You can also use the <IonIcon icon={reorderTwo} /> drag
+					Once your groups are made, they will show up on the screen. Swipe left on them to find Edit
+					and Delete buttons. You can also use the <IonIcon icon={reorderThree} color="secondary" /> drag
 					handles to rearrange their order. (Note: you can't rearrange across types, dragging a
 					"conjugation" into the "other" or "declension" areas, for example. If you want to
 					change its type, swipe left and choose the Edit button.)
@@ -174,8 +174,8 @@ export const OutputCard = (props: CardProps) => {
 				</p><p>
 					Click on Generate to display your info, or click on Export to export your info to a
 					file. <strong>Note</strong>: when displaying a chart in the app, it may clip off the edge
-					of the screen. You should be able to scroll each chart left and right to view the entire
-					thing.
+					of the screen. If this happens, you can drag the chart left and right to scroll the
+					hidden areas into view.
 				</p>
 			</IonCardContent>
 		</IonCard>

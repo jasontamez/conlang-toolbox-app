@@ -505,7 +505,7 @@ const EditGroup = (props: EditGroupProps) => {
 							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
 							<h2>Use advanced method</h2>
-							<p>Use regular expressions to identify the root.</p>
+							<p>Use regular expressions to identify the stem.</p>
 						</IonToggle>
 					</IonItem>
 					<IonItemDivider>{useAdvancedMethod ? "Regular Expression" : "Simple Root Finder"}</IonItemDivider>
@@ -534,7 +534,7 @@ const EditGroup = (props: EditGroupProps) => {
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label="Remove from start of word to find root:"
+							aria-label="Remove from start of word to find stem:"
 							id="editStarts"
 						/>
 					</IonItem>
@@ -598,15 +598,15 @@ const EditGroup = (props: EditGroupProps) => {
 								regex,
 								useWholeWord
 							} = dj;
-							let root = "";
+							let stem = "";
 							if(regex) {
 								const arrow = (ltr() ? "⟶" : "⟵");
 								const [match, replace] = regex;
-								root = `/${match}/ ${arrow} ${replace}`;
+								stem = `/${match}/ ${arrow} ${replace}`;
 							} else {
-								root = "-";
-								prefix && (root = prefix + root);
-								suffix && (root = root + suffix);
+								stem = "-";
+								prefix && (stem = prefix + stem);
+								suffix && (stem = stem + suffix);
 							}
 							return (
 								<IonItemSliding
@@ -638,8 +638,8 @@ const EditGroup = (props: EditGroupProps) => {
 									<IonItem className="groupedDeclenjugation">
 										<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
 										<div className="title"><strong>{title}</strong></div>
-										<div className="root">
-											<em>{root}</em>
+										<div className="stem">
+											<em>{stem}</em>
 											{
 												useWholeWord ?
 													<em className="mini">[W]</em>

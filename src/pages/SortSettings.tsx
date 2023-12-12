@@ -18,7 +18,8 @@ import {
 	IonItemSliding,
 	IonItemOptions,
 	IonItemOption,
-	useIonAlert
+	useIonAlert,
+	IonToggle
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -85,11 +86,16 @@ const SortSettings = (props: PageData) => {
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
 	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
-	const setCustomLang = (value: LanguageCode | "unicode") => {
+	const [useLanguageSort, setUseLanguageSort] = useState<boolean>(sortLanguage === "unicode");
+	const setCustomLang = (value: LanguageCode) => {
 		dispatch(setSortLanguageCustom(value));
 	};
 	const setSensitivity = (value: SortSensitivity) => {
 		dispatch(setSortSensitivity(value));
+	};
+	const toggleUsingLanguage = (newValue: boolean) => {
+		setUseLanguageSort(newValue);
+		dispatch(setSortLanguageCustom(newValue ? defaultSortLanguage : "unicode"));
 	};
 	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
@@ -211,8 +217,20 @@ const SortSettings = (props: PageData) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings">
+				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings hasSpecialLabels">
 					<IonItemDivider>Basic Sort</IonItemDivider>
+					<IonItem className="wrappableInnards">
+						<IonToggle
+							labelPlacement="start"
+							enableOnOffLabels
+							checked={useLanguageSort}
+							onIonChange={e => toggleUsingLanguage(!useLanguageSort)}
+							disabled={defaultCustomSort === "unicode"}
+						>
+							<h2>Use Language-Based Sort</h2>
+							<p>Use a language's rules for sorting instead of using Unicode points. (If this option is disabled, your device does not support language-based sorting.)</p>
+						</IonToggle>
+					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
@@ -220,6 +238,7 @@ const SortSettings = (props: PageData) => {
 							label="Sort Language:"
 							value={sortLanguage || defaultSortLanguage || "unicode"}
 							onIonChange={(e) => setCustomLang(e.detail.value)}
+							disabled={!useLanguageSort}
 						>
 							{languages.map((language) => (
 								<IonSelectOption
@@ -228,21 +247,16 @@ const SortSettings = (props: PageData) => {
 									value={language}
 								>{langObj[language] || language}</IonSelectOption>
 							))}
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="unicode"
-							>
-								Unicode sort (language-independent)
-							</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItem className="wrappableInnards">
+					<IonItem className="wrappableInnards sublabelled">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Sensitivity:"
 							value={sensitivity || "variant"}
 							onIonChange={(e) => setSensitivity(e.detail.value)}
+							label="Sort Sensitivity:"
+							labelPlacement="start"
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
@@ -269,6 +283,9 @@ const SortSettings = (props: PageData) => {
 								[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase
 							</IonSelectOption>
 						</IonSelect>
+					</IonItem>
+					<IonItem className="sublabel wrappableInnards">
+						<p className="ion-text-end">Note: This can be overriden by a language's sorting rules.</p>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
@@ -319,8 +336,8 @@ const SortSettings = (props: PageData) => {
 									r++;
 								}
 							});
-							r > 0 && desc.push(`${r} relations`);
-							e > 0 && desc.push(`${e} equalities`);
+							r > 0 && desc.push(`${r} relation${r === 1 ? "" : "s"}`);
+							e > 0 && desc.push(`${e} equalit${e === 1 ? "y" : "ies"}`);
 						}
 						return (
 							<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
