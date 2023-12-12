@@ -86,7 +86,7 @@ const SortSettings = (props: PageData) => {
 		customSorts
 	} = useSelector((state: StateObject) => state.sortSettings);
 	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
-	const [useLanguageSort, setUseLanguageSort] = useState<boolean>(sortLanguage === "unicode");
+	const [useLanguageSort, setUseLanguageSort] = useState<boolean>(sortLanguage !== "unicode");
 	const setCustomLang = (value: LanguageCode) => {
 		dispatch(setSortLanguageCustom(value));
 	};

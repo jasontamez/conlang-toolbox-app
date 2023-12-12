@@ -194,7 +194,7 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>Changelog</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start">
-									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.2</strong></h2>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.3</strong></h2>
 									<ul className="changelog">
 										<li>Overhauled main page.</li>
 										<li>Added an "Overview" to each tool.</li>
@@ -211,7 +211,7 @@ const AppInfo = (props: PageData) => {
 										<li><em>Bugs fixed</em>
 											<ul>
 												<li>Older WordGen/WordEvolve/etc saves were sometimes unable to be loaded.</li>
-												<li>MorphoSyntax wasn't exporting. This has been fixed.</li>
+												<li>MorphoSyntax export wasn't working.</li>
 												<li>Some tables were not displaying correctly in MorphoSyntax info modals.</li>
 												<li>Some WordGen syllables weren't saving correctly.</li>
 												<li>WordGen/WordEvolve Transforms with %X references were silently crashing if no category "X" existed.</li>
