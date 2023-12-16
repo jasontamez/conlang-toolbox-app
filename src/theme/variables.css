@@ -708,10 +708,10 @@ div.LightTheme ion-menu ion-content {
 
 
 ion-app {
-	--font-sans: 'Noto Sans', 'Noto Sans JP', sans-serif;
-	--font-serif: 'Noto Serif', 'Noto Serif JP', serif;
+	--font-sans: 'Noto Sans', 'Noto Sans JP';
+	--font-serif: 'Noto Serif', 'Noto Serif JP';
 	--font-international: 'Arimo', 'ArTarumianKamar', 'Scheherazade', 'Sriracha', 'Leelawadee';
-	--ion-font-family: var(--font-sans), var(--font-international);
+	--ion-font-family: var(--font-sans), var(--font-international), sans-serif;
 	--ion-default-font: var(--ion-font-family);
 	--font-mono: 'DM Mono', 'Consolas', 'Courier New', 'Courier', monospace;
 }

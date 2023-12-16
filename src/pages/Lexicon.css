@@ -217,7 +217,7 @@ ion-fab {
 	background: var(--ion-color-input-bg) !important;
 	letter-spacing: 0.025rem !important;
 	font-size: 0.95rem !important;
-	font-family: var(--font-serif), var(--font-international) !important;
+	font-family: var(--font-serif), var(--font-international), serif !important;
 	text-align: center !important;
 	text-transform: none;
 	margin: 0 !important;

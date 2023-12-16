@@ -185,7 +185,7 @@ ion-card-content hr {
 }
 ion-app .serifChars {
 	letter-spacing: 0.025rem;
-	font-family: var(--font-serif), var(--font-international);
+	font-family: var(--font-serif), var(--font-international), serif;
 }
 ion-app .importantElement {
 	font-weight: bold;
@@ -762,7 +762,7 @@ ion-item div.multiColumnEC div.char {
 }
 ion-item div.multiColumnEC div.char,
 ion-item div.twoColumnsEC div.char {
-	font-family: var(--font-serif), var(--font-international), var(--font-sans);
+	font-family: var(--font-serif), var(--font-international), var(--font-sans), serif;
 	font-size: 1.1rem;
 	margin: 0.5rem;
 	padding: calc(0.5rem - 2px);
