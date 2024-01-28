@@ -119,7 +119,7 @@ const MExportAllData = (props: ModalProperties) => {
 		const weS: storedWE = [];
 		const djS: storedDJ = [];
 		setOutputString("...loading");
-		const where = $i("exportedData");
+		const where = $i<HTMLInputElement>("exportedData");
 		where && (where.value = "...loading");
 
 		const copyDJGroup = (input: DJGroup) => {
@@ -285,7 +285,7 @@ const MExportAllData = (props: ModalProperties) => {
 		}
 		const final = JSON.stringify(exportable);
 		setOutputString(final);
-		const where = $i("exportedData");
+		const where = $i<HTMLInputElement>("exportedData");
 		where && (where.value = final);
 	}, [
 		output,

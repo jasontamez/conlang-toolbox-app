@@ -44,10 +44,11 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q(`.${prop}Label`);
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
-		const words = ($i("newWECharGroupTitle").value as string) // Get the title/description
+		const el = $i<HTMLInputElement>("newWECharGroupTitle");
+		const words = (el ? el.value as string : "") // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -74,35 +75,44 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			});
 		} else {
 			// Suitable label found
-			$i("newWEShortLabel").value = label;
+			const el = $i<HTMLInputElement>("newWEShortLabel");
+			el && (el.value = label);
 			resetError("label");
 		}
 	};
 	const maybeSaveNewCharGroup = (close: boolean = true) => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the info
-		const title = $i("newWECharGroupTitle").value.trim(),
-			label = $i("newWEShortLabel").value.trim(),
-			run = $i("newWECharGroupRun").value.trim();
+		const titleEl = $i<HTMLInputElement>("newWECharGroupTitle");
+		const title = titleEl ? titleEl.value.trim() : "";;
+		const labelEl = $i<HTMLInputElement>("newWEShortLabel");
+		const label = labelEl ? labelEl.value.trim() : "";;
+		const runEl = $i<HTMLInputElement>("newWECharGroupRun");
+		const run = runEl ? runEl.value.trim() : "";;
 		if(title === "") {
-			$q(".titleLabel").classList.add("invalidValue");
+			const el = $q(".titleLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No title present");
 		}
 		if(label === "") {
-			$q(".labelLabel").classList.add("invalidValue");
+			const el = $q(".labelLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No label present");
 		} else if (charGroupMap[label]) {
-			$q(".labelLabel").classList.add("invalidValue");
+			const el = $q(".labelLabel");
+			el && el.classList.add("invalidValue");
 			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label as string) !== -1) {
-				$q(".labelLabel").classList.add("invalidValue");
+				const el = $q(".labelLabel");
+				el && el.classList.add("invalidValue");
 				err.push("You cannot use \"" + label + "\" as a label");
 			}
 		}
 		if(run === "") {
-			$q(".runLabel").classList.add("invalidValue");
+			const el = $q(".runLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No run present");
 		}
 		if(err.length > 0) {
@@ -124,8 +134,8 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		// Everything ok!
 		close && setIsOpen(false);
 		dispatch(addCharacterGroupWE({title, label, run}));
-		$a("ion-list.addWECharGroup ion-input").forEach(
-			(input: HTMLInputElement) => input.value = ""
+		$a<HTMLInputElement>("ion-list.addWECharGroup ion-input").forEach(
+			(input) => input.value = ""
 		);
 		toaster({
 			message: "Character Group added!",

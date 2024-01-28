@@ -78,15 +78,15 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		setUseAdvancedMethod((regex1 || regex2) ? true : false);
 		setUseWholeWord(uww);
 		setId(id);
-		const editDJTitle = $i("editDJTitle");
+		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
 		editDJTitle && (editDJTitle.value = title);
-		const editDJPrefix = $i("editDJPrefix");
+		const editDJPrefix = $i<HTMLInputElement>("editDJPrefix");
 		editDJPrefix && (editDJPrefix.value = prefix);
-		const editDJSuffix = $i("editDJSuffix");
+		const editDJSuffix = $i<HTMLInputElement>("editDJSuffix");
 		editDJSuffix && (editDJSuffix.value = suffix);
-		const editDJRegex1 = $i("editDJRegex1");
+		const editDJRegex1 = $i<HTMLInputElement>("editDJRegex1");
 		editDJRegex1 && (editDJRegex1.value = regex1);
-		const editDJRegex2 = $i("editDJRegex2");
+		const editDJRegex2 = $i<HTMLInputElement>("editDJRegex2");
 		editDJRegex2 && (editDJRegex2.value = regex2);
 	}, [incomingDeclenjugation]);
 	useEffect(() => {
@@ -96,15 +96,15 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = () => {
-		const editDJTitle = $i("editDJTitle");
+		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
 		const title = editDJTitle ? editDJTitle.value.trim() : "";
-		const editDJPrefix = $i("editDJPrefix");
+		const editDJPrefix = $i<HTMLInputElement>("editDJPrefix");
 		const prefix = editDJPrefix && editDJPrefix.value ? editDJPrefix.value : "";
-		const editDJSuffix = $i("editDJSuffix");
+		const editDJSuffix = $i<HTMLInputElement>("editDJSuffix");
 		const suffix = editDJSuffix && editDJSuffix.value ? editDJSuffix.value : "";
-		const editDJRegex1 = $i("editDJRegex1");
+		const editDJRegex1 = $i<HTMLInputElement>("editDJRegex1");
 		const regex1 = editDJRegex1 && editDJRegex1.value ? editDJRegex1.value : "";
-		const editDJRegex2 = $i("editDJRegex2");
+		const editDJRegex2 = $i<HTMLInputElement>("editDJRegex2");
 		const regex2 = editDJRegex2 && editDJRegex2.value ? editDJRegex2.value : "";
 		return {
 			title,
@@ -117,7 +117,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 
 	// Accept new title from other modal
 	useEffect(() => {
-		const editDJTitle = $i("editDJTitle");
+		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
 		if(isOpen && savedTitle && editDJTitle) {
 			const title = editDJTitle ? editDJTitle.value.trim() : "";
 			if(!title) {

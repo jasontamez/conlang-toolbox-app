@@ -96,7 +96,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		newCols[i].size = value;
 		// save any changes to labels that may have been entered
 		newCols.forEach((col, i: number) => {
-			const el = $i(`input_colOrder_${col.id}`);
+			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
 			if(el) {
 				newCols[i].label = el.value || "";
 			}
@@ -111,7 +111,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		}).join(" : ") + ` : ${truncateColumns} : ${blankSort} : ${customSort}`;
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
-			const el = $i(`input_colOrder_${id}`);
+			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
 			return `${el ? el.value : "ERROR"}/${size}/${originalPosition}`;
 		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort} : ${shadowCustomSort}`;
 		if(testing === original) {
@@ -130,7 +130,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		const newColumns: LexiconColumn[] = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			guide.push(originalPosition);
-			const el = $i(`input_colOrder_${id}`);
+			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
 			return {
 				id,
 				label: el ? el.value : "ERROR",
@@ -216,7 +216,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		];
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
-			const el = $i(`input_colOrder_${col.id}`);
+			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
 			if(el) {
 				final[i].label = el.value || "";
 			}
@@ -237,7 +237,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			const newColumns = shadowColumns.slice(0, i).concat(shadowColumns.slice(i+1));
 			// save any changes to labels that may have been entered
 			newColumns.forEach((col, i: number) => {
-				const el = $i(`input_colOrder_${col.id}`);
+				const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
 				if(el) {
 					newColumns[i].label = el.value || "";
 				}
@@ -267,7 +267,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		const final = remains.slice(0, to).concat(moved, remains.slice(to));
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
-			const el = $i(`input_colOrder_${col.id}`);
+			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
 			if(el) {
 				final[i].label = el.value || "";
 			}

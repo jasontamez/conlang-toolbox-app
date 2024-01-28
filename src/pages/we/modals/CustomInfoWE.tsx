@@ -52,7 +52,8 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		const title = escape($i("currentInfoSaveName").value).trim();
+		const el = $i<HTMLInputElement>("currentInfoSaveName");
+		const title = el ? escape(el.value).trim() : "";
 		if(title === "") {
 			return doAlert({
 				header: "Please enter a title",

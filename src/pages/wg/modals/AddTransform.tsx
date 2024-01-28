@@ -39,15 +39,16 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewTransform = (close: boolean = true) => {
-		const searchEl = $i("searchEx");
+		const searchEl = $i<HTMLInputElement>("searchEx");
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
 		const seek = (searchEl && searchEl.value) || "";
 		if(seek === "") {
-			$q(".seekLabel").classList.add("invalidValue");
+			const el = $q(".seekLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No search expression present");
 		}
 		try {
@@ -72,8 +73,8 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		const descEl = $i("optDesc");
-		const replaceEl = $i("replaceEx");
+		const descEl = $i<HTMLInputElement>("optDesc");
+		const replaceEl = $i<HTMLInputElement>("replaceEx");
 		const replace = repairRegexErrors((replaceEl && replaceEl.value) || "");
 		const description = (descEl && descEl.value) || "";
 		close && setIsOpen(false);
@@ -83,7 +84,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			replace,
 			description
 		}));
-		$a("ion-list.wgAddTransform ion-input").forEach((input: HTMLInputElement) => input.value = "");
+		$a<HTMLInputElement>("ion-list.wgAddTransform ion-input").forEach((input) => input.value = "");
 		toaster({
 			message: "Transformation added!",
 			duration: 2500,

@@ -259,7 +259,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 
 	// Add various tests
 	const addWordTest = () => {
-		const el = $i("word");
+		const el = $i<HTMLInputElement>("word");
 		if(!el || !el.value) {
 			return toaster({
 				message: "Nothing to save.",
@@ -282,7 +282,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		});
 	};
 	const addWordMatch = () => {
-		const el = $i("wordMatch");
+		const el = $i<HTMLInputElement>("wordMatch");
 		if(!el || !el.value) {
 			return toaster({
 				message: "Nothing to save.",
@@ -305,7 +305,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		});
 	};
 	const addColumnTest = () => {
-		const el = $i("colTest");
+		const el = $i<HTMLInputElement>("colTest");
 		if(!el || !el.value) {
 			return toaster({
 				message: "Nothing to save.",
@@ -335,7 +335,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		});
 	};
 	const addColumnMatch = () => {
-		const el = $i("colMatch");
+		const el = $i<HTMLInputElement>("colMatch");
 		if(!el || !el.value) {
 			return toaster({
 				message: "Nothing to save.",

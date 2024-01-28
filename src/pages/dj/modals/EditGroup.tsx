@@ -159,19 +159,19 @@ const EditGroup = (props: EditGroupProps) => {
 		setSeparator(separator);
 		editingType && setType(editingType);
 		setDeclenjugations(declenjugations);
-		const editTitle = $i("editTitle");
+		const editTitle = $i<HTMLInputElement>("editTitle");
 		editTitle && (editTitle.value = title);
-		const editAppliesTo = $i("editAppliesTo");
+		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
 		editAppliesTo && (editAppliesTo.value = appliesTo);
-		const editStarts = $i("editStarts");
+		const editStarts = $i<HTMLInputElement>("editStarts");
 		editStarts && (editStarts.value = startsWith.join(separator));
-		const editEnds = $i("editEnds");
+		const editEnds = $i<HTMLInputElement>("editEnds");
 		editEnds && (editEnds.value = endsWith.join(separator));
 		if(regex) {
 			setUseAdvancedMethod(true);
-			const editRegex1 = $i("editRegex1");
+			const editRegex1 = $i<HTMLInputElement>("editRegex1");
 			editRegex1 && (editRegex1.value = regex[0]);
-			const editRegex2 = $i("editRegex2");
+			const editRegex2 = $i<HTMLInputElement>("editRegex2");
 			editRegex2 && (editRegex2.value = regex[1]);
 		} else {
 			setUseAdvancedMethod(false);
@@ -181,34 +181,34 @@ const EditGroup = (props: EditGroupProps) => {
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setId("");
-		const editSortTitle = $i("editSortTitle");
+		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
 		editSortTitle && (editSortTitle.value = "");
-		const editAppliesTo = $i("editAppliesTo");
+		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
 		editAppliesTo && (editAppliesTo.value = "");
 		setSeparator(" ");
 		setDeclenjugations([]);
-		const editStarts = $i("editStarts");
+		const editStarts = $i<HTMLInputElement>("editStarts");
 		editStarts && (editStarts.value = "");
-		const editEnds = $i("editEnds");
+		const editEnds = $i<HTMLInputElement>("editEnds");
 		editEnds && (editEnds.value = "");
-		const editRegex1 = $i("editRegex1");
+		const editRegex1 = $i<HTMLInputElement>("editRegex1");
 		editRegex1 && (editRegex1.value = "");
-		const editRegex2 = $i("editRegex2");
+		const editRegex2 = $i<HTMLInputElement>("editRegex2");
 		editRegex2 && (editRegex2.value = "");
 	}, [setIsOpen]);
 
 	const grabInfo = () => {
-		const editTitle = $i("editTitle");
+		const editTitle = $i<HTMLInputElement>("editTitle");
 		const title = editTitle ? editTitle.value.trim() : "";
-		const editAppliesTo = $i("editAppliesTo");
+		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
 		const appliesTo = editAppliesTo ? editAppliesTo.value.trim() : "";
-		const editStarts = $i("editStarts");
+		const editStarts = $i<HTMLInputElement>("editStarts");
 		const startsWith: string[] = editStarts && editStarts.value ? clearBlanks(editStarts.value.split(separator)) : [];
-		const editEnds = $i("editEnds");
+		const editEnds = $i<HTMLInputElement>("editEnds");
 		const endsWith: string[] = editEnds && editEnds.value ? clearBlanks(editEnds.value.split(separator)) : [];
-		const editRegex1 = $i("editRegex1");
+		const editRegex1 = $i<HTMLInputElement>("editRegex1");
 		const regex1: string = (editRegex1 && editRegex1.value) || "";
-		const editRegex2 = $i("editRegex2");
+		const editRegex2 = $i<HTMLInputElement>("editRegex2");
 		const regex2: string = (editRegex2 && editRegex2.value) || "";
 		return {
 			title,
@@ -397,12 +397,14 @@ const EditGroup = (props: EditGroupProps) => {
 		addDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const editDeclenjugation = (declenjugation: Declenjugation) => {
-		$i("editingDJGroup").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("editingDJGroup");
+		el && el.closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteDeclenjugation = (id: string) => {
-		$i("editingDJGroup").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("editingDJGroup");
+		el && el.closeSlidingItems();
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({

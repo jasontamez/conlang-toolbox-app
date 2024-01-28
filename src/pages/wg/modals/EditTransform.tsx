@@ -49,9 +49,9 @@ const EditTransformModal = (props: ModalProps) => {
 	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
 
 	const onLoad = () => {
-		const _searchEl = $i("editSearchExWG");
-		const _replaceEl = $i("editReplaceExWG");
-		const _descEl = $i("editOptDescWG");
+		const _searchEl = $i<HTMLInputElement>("editSearchExWG");
+		const _replaceEl = $i<HTMLInputElement>("editReplaceExWG");
+		const _descEl = $i<HTMLInputElement>("editOptDescWG");
 		if(editing) {
 			const { seek, replace, description } = editing;
 			_searchEl && (_searchEl.value = seek);
@@ -75,14 +75,15 @@ const EditTransformModal = (props: ModalProps) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewTransformInfo = () => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
 		const seek = (searchEl && searchEl.value) || "";
 		if(seek === "") {
-			$q(".seekLabel").classList.add("invalidValue");
+			const el = $q(".seekLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No search expression present");
 		}
 		try {
@@ -125,7 +126,8 @@ const EditTransformModal = (props: ModalProps) => {
 		});
 	};
 	const maybeDeleteTransform = () => {
-		$q(".transforms").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".transforms"));
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteTransformWG(editing!.id));

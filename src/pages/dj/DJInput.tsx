@@ -50,17 +50,20 @@ const DJInput = (props: PageData) => {
 		if(e.target && e.target.value !== undefined) {
 			value = (e.target.value);
 		} else {
-			value = ($i("djInput").value);
+			const el = $i<HTMLInputElement>("djInput");
+			value = el ? el.value : "";
 		}
 		debounce(updateInput, [value], 500, "DJInput");
 	}, [updateInput]);
 	const acceptImport = useCallback((value: string) => {
-		$i("djInput").value = value;
+		const el = $i<HTMLInputElement>("djInput");
+		el && (el.value = value);
 		updateInput(value);
 	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
-			$i("djInput").value = "";
+			const el = $i<HTMLInputElement>("djInput");
+			el && (el.value = "");
 			updateInput("");
 		};
 		if(disableConfirms) {

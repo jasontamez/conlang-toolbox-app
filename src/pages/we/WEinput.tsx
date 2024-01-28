@@ -49,17 +49,20 @@ const WEInput = (props: PageData) => {
 		if(e.target && e.target.value !== undefined) {
 			value = (e.target.value);
 		} else {
-			value = ($i("weInput").value);
+			const el = $i<HTMLInputElement>("weInput");
+			value = el ? el.value : "";
 		}
 		debounce(updateInput, [value], 500, "WEinput");
 	}, [updateInput]);
 	const acceptImport = useCallback((value: string) => {
-		$i("weInput").value = value;
+		const el = $i<HTMLInputElement>("weInput");
+		el && (el.value = value);
 		updateInput(value);
 	}, [updateInput]);
 	const clearInput = () => {
 		const handler = () => {
-			$i("weInput").value = "";
+			const el = $i<HTMLInputElement>("weInput");
+			el && (el.value = "");
 			updateInput("");
 		};
 		if(disableConfirms) {

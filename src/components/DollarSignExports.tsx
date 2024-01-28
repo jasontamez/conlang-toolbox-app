@@ -1,6 +1,12 @@
-export const $q: any = (query: string, doc = window.document) => doc.querySelector(query);
-export const $a: any = (query: string, doc = window.document) => Array.from(doc.querySelectorAll(query));
-export const $i: any = (query: string, doc = window.document) => doc.getElementById(query);
+export const $q =
+	<T extends HTMLElement>(query: string, doc: Document | HTMLElement = window.document): T | null =>
+		doc.querySelector(query) as T | null;
+export const $a =
+	<T extends HTMLElement>(query: string, doc: Document | HTMLElement = window.document): T[] =>
+		Array.from(doc.querySelectorAll(query)) as T[];
+export const $i =
+	<T extends HTMLElement>(query: string, doc = window.document): T | null =>
+		doc.getElementById(query) as T | null;
 // Wrap setTimeout in a Promise
 type WrappedPromise = (ms: number) => Promise<ReturnType<typeof setTimeout>>
 export const $delay: WrappedPromise = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -13,5 +19,3 @@ export const $and = (array: string[], glue: string = ", "): string => {
 	const last = input.pop()!;
 	return input.join(glue) + `${glue}and ${last}`;
 };
-
-

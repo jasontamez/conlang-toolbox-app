@@ -51,11 +51,11 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const [antiEl, setAntiEl] = useState<HTMLInputElement | null>(null);
 	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
 	const onLoad = () => {
-		const _seekEl = $i("editSeekExWESC");
-		const _replaceEl = $i("editReplaceExWESC");
-		const _contextEl = $i("editContextExWESC");
-		const _antiEl = $i("editAnticontextExWESC");
-		const _descEl = $i("editOptDescWESC");
+		const _seekEl = $i<HTMLInputElement>("editSeekExWESC");
+		const _replaceEl = $i<HTMLInputElement>("editReplaceExWESC");
+		const _contextEl = $i<HTMLInputElement>("editContextExWESC");
+		const _antiEl = $i<HTMLInputElement>("editAnticontextExWESC");
+		const _descEl = $i<HTMLInputElement>("editOptDescWESC");
 		if(editing) {
 			const { seek, replace, context, anticontext, description } = editing;
 			_seekEl && (_seekEl.value = seek);
@@ -85,7 +85,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewSoundChangeInfo = () => {
 		const err: string[] = [];
@@ -112,16 +112,19 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		const anti = (antiEl && antiEl.value) || "";
 		let temp: boolean | string;
 		if(seek === "") {
-			$q(".seekLabel").classList.add("invalidValue");
+			const el = $q(".seekLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No search expression present");
 		}
 		if((temp = contextTest(context))) {
 			err.push(temp);
-			$q(".contextLabel").classList.add("invalidValue");
+			const el = $q(".contextLabel");
+			el && el.classList.add("invalidValue");
 		}
 		if(anti && (temp = contextTest(anti, "Anticontext"))) {
 			err.push(temp);
-			$q(".anticontextLabel").classList.add("invalidValue");
+			const el = $q(".anticontextLabel");
+			el && el.classList.add("invalidValue");
 		}
 		try {
 			new RegExp(seek);
@@ -165,7 +168,8 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		});
 	};
 	const maybeDeleteSoundChange = () => {
-		$q(".soundChanges").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".soundChanges"));
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteSoundChangeWE(editing!.id));

@@ -60,7 +60,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		const id = (itemToEdit ? itemToEdit.id : "");
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		cols.forEach((col: string, i: number) => {
-			const el = $i(`edit_lex_input_${id}_${i}`);
+			const el = $i<HTMLInputElement>(`edit_lex_input_${id}_${i}`);
 			el && (el.value = col);
 		});
 		setOriginalString(cols.join(nonsense));
@@ -70,7 +70,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const currentInfo = () => {
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		return cols.map((col: string, i: number) => {
-			const el = $i(`edit_lex_input_${id}_${i}`);
+			const el = $i<HTMLInputElement>(`edit_lex_input_${id}_${i}`);
 			return el ? el.value.trim() : "";
 		});
 	};

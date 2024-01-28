@@ -57,7 +57,8 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		const title = escape($i("currentDJInfoSaveName").value).trim();
+		const el = $i<HTMLInputElement>("currentDJInfoSaveName");
+		const title = (el && escape(el.value).trim()) || "";
 		if(title === "") {
 			return doAlert({
 				header: "Please enter a title before saving.",

@@ -118,12 +118,14 @@ const DJGroups = (props: PageData) => {
 	const caseMakerModalInfo = modalPropsMaker(caseMakerOpen, setCaseMakerOpen);
 
 	const editGroup = (type: keyof DJCustomInfo, group: DJGroup) => {
-		$q(".djGroups").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".djGroups");
+		groups && groups.closeSlidingItems();
 		setEditingGroup([type, group]);
 		setIsOpenEditGroup(true);
 	};
 	const maybeDeleteGroup = (type: keyof DJCustomInfo, group: DJGroup) => {
-		$q(".djGroups").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".djGroups");
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteGroup([type, group.id]));
 			toaster({

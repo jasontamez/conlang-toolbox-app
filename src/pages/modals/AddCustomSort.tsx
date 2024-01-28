@@ -116,9 +116,9 @@ const AddCustomSort = (props: CustomSortModal) => {
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
-		const addSortTitle = $i("addSortTitle");
+		const addSortTitle = $i<HTMLInputElement>("addSortTitle");
 		addSortTitle && (addSortTitle.value = "");
-		const addCustomAlphabet = $i("addCustomAlphabet");
+		const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
 		addCustomAlphabet && (addCustomAlphabet.value = "");
 	}, [setIsOpen]);
 	// Accept new relation from other modal
@@ -190,7 +190,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		}
 	}, [isOpen, outgoingEquality, setOutgoingEquality, customizations]);
 	const maybeSaveNewSort = () => {
-		const addSortTitle = $i("addSortTitle");
+		const addSortTitle = $i<HTMLInputElement>("addSortTitle");
 		const title = addSortTitle ? addSortTitle.value.trim() : "";
 		if(!title) {
 			doAlert({
@@ -212,8 +212,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 			title
 		};
 		if(usingAlpha) {
-			const addCustomAlphabet = $i("addCustomAlphabet");
-			const alpha: string[] = addCustomAlphabet.value
+			const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
+			const alpha: string[] = (addCustomAlphabet ? addCustomAlphabet.value : "")
 				.split(separator)
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
@@ -271,7 +271,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		});
 	};
 	const maybeCancel = () => {
-		const addCustomAlphabet = $i("addCustomAlphabet");
+		const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
 		if(
 			sortLang !== "default" || sortSensitivity !== "default"
 			|| (usingAlpha && addCustomAlphabet && addCustomAlphabet.value.trim())
@@ -297,12 +297,14 @@ const AddCustomSort = (props: CustomSortModal) => {
 		addEqualityModalInfo.setIsOpen(true);
 	};
 	const editRelation = (relation: RelationObject) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingCustomSortList");
+		el && el.closeSlidingItems();
 		setIncomingRelation(relation);
 		editRelationModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteRelation = (id: string) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingCustomSortList");
+		el && el.closeSlidingItems();
 		yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",
@@ -313,12 +315,14 @@ const AddCustomSort = (props: CustomSortModal) => {
 		});
 	};
 	const editEquality = (relation: EqualityObject) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingCustomSortList");
+		el && el.closeSlidingItems();
 		setIncomingEquality(relation);
 		editEqualityModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteEquality = (id: string) => {
-		$i("addingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingCustomSortList");
+		el && el.closeSlidingItems();
 		yesNoAlert({
 			header: "Delete This",
 			message: "Are you sure?",

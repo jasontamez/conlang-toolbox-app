@@ -172,11 +172,13 @@ const WGOut = (props: PageData) => {
 				if(savedWordsObject[text]) {
 					setSavedWords(savedWords.filter(word => word !== text));
 					delete newObj[text];
-					id && $i(id).classList.remove("saved");
+					const el = id && $i(id);
+					el && el.classList.remove("saved");
 				} else {
 					setSavedWords([...savedWords, text]);
 					newObj[text] = true;
-					id && $i(id).classList.add("saved");
+					const el = id && $i(id);
+					el && el.classList.add("saved");
 				}
 				setSavedWordsObject(newObj);
 			}
@@ -620,7 +622,7 @@ const WGOut = (props: PageData) => {
 						setSavedWords([]);
 						setSavedWordsObject({});
 						setIsPickingSaving(false);
-						$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
+						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
 							message: `Selected words saved to Lexicon under "${col.label}"`,

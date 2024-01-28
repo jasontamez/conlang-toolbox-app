@@ -55,12 +55,14 @@ const WECharGroup = (props: PageData) => {
 	const { characterGroups: wgCharatcterGroups } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = (group: WECharGroupObject) => {
-		$q(".charGroups").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".charGroups");
+		groups && groups.closeSlidingItems();
 		setEditing(group);
 		setIsOpenEditCharGroupWE(true);
 	};
 	const maybeDeleteCharGroup = (label: string, charGroup: WECharGroupObject) => {
-		$q(".charGroups").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".charGroups");
+		groups && groups.closeSlidingItems();
 		const { run } = charGroup;
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));

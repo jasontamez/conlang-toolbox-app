@@ -60,12 +60,14 @@ const WGRew = (props: PageData) => {
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const editTransform = (transform: WGTransformObject) => {
-		$q(".transforms").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".transforms"));
+		groups && groups.closeSlidingItems();
 		setEditing(transform);
 		setIsOpenEditTransform(true);
 	};
 	const maybeDeleteTransform = (transform: WGTransformObject) => {
-		$q(".transforms").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".transforms"));
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({

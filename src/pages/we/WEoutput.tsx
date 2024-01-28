@@ -438,7 +438,7 @@ const WEOut = (props: PageData) => {
 		const arrowLR = "⟶";
 		const arrowRL = "⟵";
 		const reverse = (outputStyle === "outputFirst");
-		const arrow = (ltr($i("outputPaneWE") || document) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
+		const arrow = (ltr($i("outputPaneWE") || document.body) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
 		let setter: Function = setDisplayOutputInput;
 		switch(outputStyle) {
 			case "outputOnly":
@@ -784,7 +784,7 @@ const WEOut = (props: PageData) => {
 						setSavedWords([]);
 						setSavedWordsObject({});
 						setIsPickingSaving(false);
-						$a(".word.saved").forEach((obj: HTMLElement) => obj.classList.remove("saved"));
+						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
 							message: `Selected words saved to Lexicon under "${col.label}"`,
@@ -821,11 +821,13 @@ const WEOut = (props: PageData) => {
 				if(savedWordsObject[text]) {
 					setSavedWords(savedWords.filter(word => word !== text));
 					delete newObj[text];
-					id && $i(id).classList.remove("saved");
+					const el = id && $i(id);
+					el && el.classList.remove("saved");
 				} else {
 					setSavedWords([...savedWords, text]);
 					newObj[text] = true;
-					id && $i(id).classList.add("saved");
+					const el = id && $i(id);
+					el && el.classList.add("saved");
 				}
 				setSavedWordsObject(newObj);
 			}

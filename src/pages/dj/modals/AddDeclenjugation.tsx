@@ -62,30 +62,30 @@ const AddDeclenjugation = (props: AddDJModal) => {
 	const onLoad = useCallback(() => {
 		setUseAdvancedMethod(false);
 		setUseWholeWord(false);
-		const addDJTitle = $i("addDJTitle");
+		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
 		addDJTitle && (addDJTitle.value = "");
-		const addDJPrefix = $i("addDJPrefix");
+		const addDJPrefix = $i<HTMLInputElement>("addDJPrefix");
 		addDJPrefix && (addDJPrefix.value = "");
-		const addDJSuffix = $i("addDJSuffix");
+		const addDJSuffix = $i<HTMLInputElement>("addDJSuffix");
 		addDJSuffix && (addDJSuffix.value = "");
-		const addDJRegex1 = $i("addDJRegex1");
+		const addDJRegex1 = $i<HTMLInputElement>("addDJRegex1");
 		addDJRegex1 && (addDJRegex1.value = "");
-		const addDJRegex2 = $i("addDJRegex2");
+		const addDJRegex2 = $i<HTMLInputElement>("addDJRegex2");
 		addDJRegex2 && (addDJRegex2.value = "");
 	}, []);
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = () => {
-		const addDJTitle = $i("addDJTitle");
+		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
 		const title = addDJTitle ? addDJTitle.value.trim() : "";
-		const addDJPrefix = $i("addDJPrefix");
+		const addDJPrefix = $i<HTMLInputElement>("addDJPrefix");
 		const prefix = addDJPrefix && addDJPrefix.value ? addDJPrefix.value : "";
-		const addDJSuffix = $i("addDJSuffix");
+		const addDJSuffix = $i<HTMLInputElement>("addDJSuffix");
 		const suffix = addDJSuffix && addDJSuffix.value ? addDJSuffix.value : "";
-		const addDJRegex1 = $i("addDJRegex1");
+		const addDJRegex1 = $i<HTMLInputElement>("addDJRegex1");
 		const regex1 = addDJRegex1 && addDJRegex1.value ? addDJRegex1.value : "";
-		const addDJRegex2 = $i("addDJRegex2");
+		const addDJRegex2 = $i<HTMLInputElement>("addDJRegex2");
 		const regex2 = addDJRegex2 && addDJRegex2.value ? addDJRegex2.value : "";
 		return {
 			title,
@@ -98,7 +98,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 
 	// Accept new title from other modal
 	useEffect(() => {
-		const addDJTitle = $i("addDJTitle");
+		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
 		if(isOpen && savedTitle && addDJTitle) {
 			const title = addDJTitle ? addDJTitle.value.trim() : "";
 			if(!title) {

@@ -43,14 +43,16 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewTransform = (close: boolean = true) => {
 		const err: string[] = [];
-		const seek = $i("searchExWE").value || "";
+		const seekEl = $i<HTMLInputElement>("searchExWE");
+		const seek = seekEl ? seekEl.value : "";;
 		// Test info for validness, then save if needed and reset the newTransform
 		if(seek === "") {
-			$q(".seekLabel").classList.add("invalidValue");
+			const el = $q(".seekLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No search expression present");
 		}
 		try {
@@ -75,8 +77,10 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		const replace = $i("replaceExWE").value || "";
-		const description = $i("optDescWE").value || "";
+		const replaceEl = $i<HTMLInputElement>("replaceExWE");
+		const replace = replaceEl ? replaceEl.value : "";
+		const descriptionEl = $i<HTMLInputElement>("optDescWE");
+		const description = descriptionEl ? descriptionEl.value : "";
 		close && setIsOpen(false);
 		dispatch(addTransformWE({
 			id: uuidv4(),
@@ -85,8 +89,9 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			direction,
 			description
 		}));
-		$a("ion-list.weAddTransform ion-input").forEach((input: HTMLInputElement) => input.value = "");
-		$q("ion-list.weAddTransform ion-radio-group").value = "both";
+		$a<HTMLInputElement>("ion-list.weAddTransform ion-input").forEach((input) => input.value = "");
+		const el = $q<HTMLInputElement>("ion-list.weAddTransform ion-radio-group");
+		el && (el.value = "both");
 		toaster({
 			message: "Transform added!",
 			duration: 2500,

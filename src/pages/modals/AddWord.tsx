@@ -47,7 +47,8 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		let foundFlag = false;
 		columnInfo.forEach((col: LexiconColumn) => {
 			const id = col.id;
-			const info = $i(`input_lexicon_modal_${id}`).value || "";
+			const el = $i<HTMLInputElement>(`input_lexicon_modal_${id}`);
+			const info = (el && el.value) || "";
 			newInfo.push(info);
 			info && (foundFlag = true);
 			newBlank[id] = "";

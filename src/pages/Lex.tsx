@@ -222,6 +222,10 @@ const otherItemData = memoizeOne((columns, lexicon, toggleDeleting, deletingObj)
 	columns, lexicon, toggleDeleting, deletingObj
 }));
 
+const closeSliders = () => {
+	const mainLexList = $i<HTMLIonListElement>("mainLexList");
+	mainLexList && mainLexList.closeSlidingItems();
+};
 
 const Lex = (props: PageData) => {
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
@@ -326,9 +330,6 @@ const Lex = (props: PageData) => {
 		})
 	};
 
-	// Sliding container
-	const mainLexList = $i("mainLexList");
-
 	// Height variables
 	const height = useWindowHeight();
 	const [lexHeadersHidden, setLexHeadersHidden] = useState<boolean>(false);
@@ -360,7 +361,7 @@ const Lex = (props: PageData) => {
 
 	// Update Lexicon description or title
 	const setNewInfo = (id: string, prop: "description" | "title") => {
-		const el = $i(id);
+		const el = $i<HTMLInputElement>(id);
 		el && dispatch(updateLexiconText([prop, el.value.trim()]));
 	};
 
@@ -373,7 +374,8 @@ const Lex = (props: PageData) => {
 		columns.forEach((col: LexiconColumn) => {
 			const id = col.id;
 			const i_id = `input_lex_${id}`;
-			const info: string = $i(i_id).value || "";
+			const el = $i<HTMLIonInputElement>(i_id);
+			const info: string = (el && (el.value as string)) || "";
 			newInfo.push(info);
 			info && (foundFlag = true);
 			newBlank[id] = "";
@@ -401,7 +403,7 @@ const Lex = (props: PageData) => {
 		}, sorter]));
 		// clear all inputs
 		ids.forEach((id: string) => {
-			const el = $i(id);
+			const el = $i<HTMLIonInputElement>(id);
 			el && el.getInputElement().then((el: any) => (el.value = ""));
 		});
 	}, [columns, dispatch, doAlert, sorter]);
@@ -409,7 +411,7 @@ const Lex = (props: PageData) => {
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
 		let title: string = item.columns.join(" / ");
-		mainLexList.closeSlidingItems();
+		closeSliders();
 		if(disableConfirms) {
 			dispatch(deleteLexiconItem(item.id));
 		} else {
@@ -422,14 +424,14 @@ const Lex = (props: PageData) => {
 				doAlert
 			});
 		}
-	}, [dispatch, disableConfirms, mainLexList, doAlert]);
+	}, [dispatch, disableConfirms, doAlert]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
 		setEditingItem(item);
 		setIsOpenEditLexItem(true);
-		mainLexList.closeSlidingItems();
-	}, [mainLexList]);
+		closeSliders();
+	}, []);
 
 	// Set up item for merging
 	const maybeSetForMerge = useCallback((item: Lexicon) => {
@@ -445,8 +447,8 @@ const Lex = (props: PageData) => {
 			setMerging([...merging, id]);
 		}
 		setMergingObject(newObj);
-		mainLexList.closeSlidingItems();
-	}, [merging, mergingObject, mainLexList]);
+		closeSliders();
+	}, [merging, mergingObject]);
 	const mergeButton = useMemo(() => merging.length > 1 ? (
 		<IonFab vertical="bottom" horizontal="start" slot="fixed">
 			<IonFabButton color="tertiary" title="Merge selected items" onClick={() => setIsOpenMergeItems(true)}>

@@ -117,7 +117,7 @@ const ImportData = (props: ModalProperties) => {
 	};
 
 	const resetAnalysis = () => {
-		const el = $i("importingData");
+		const el = $i<HTMLInputElement>("importingData");
 		el && (el.value = "");
 		setReadyToImport(false);
 		setHasImported(false);
@@ -146,7 +146,7 @@ const ImportData = (props: ModalProperties) => {
 	};
 
 	function onLoad() {
-		const el = $i("importingData");
+		const el = $i<HTMLInputElement>("importingData");
 		el && (el.value = "");
 		setDo_import_wg(true);
 		setDo_import_we(true);
@@ -220,11 +220,10 @@ const ImportData = (props: ModalProperties) => {
 
 	useEffect(() => {
 		$delay(500).then(() => {
-			const el = $i("importDataContent");
+			const el = $i<HTMLIonContentElement>("importDataContent");
 			if(el && readyToImport) {
 				const inner = $q("ion-item-divider", el);
 				inner && el.scrollToPoint(0, (inner.offsetTop || 50) - 50, 1500);
-				el.scrollToPoint(0, (inner.offsetTop || 50) - 50, 1500);
 			} else if(el) {
 				el.scrollToTop(1500);
 			}
@@ -233,7 +232,7 @@ const ImportData = (props: ModalProperties) => {
 
 	// Look at the pasted import and try to make an object out of it
 	function analyze() {
-		const el = $i("importingData");
+		const el = $i<HTMLInputElement>("importingData");
 		const incoming = (el && el.value) || "";
 		try {
 			const parsed: ImportExportObject = JSON.parse(incoming);

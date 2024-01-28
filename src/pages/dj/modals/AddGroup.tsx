@@ -141,31 +141,31 @@ const AddGroup = (props: AddGroupProps) => {
 	const onLoad = useCallback(() => {
 		setSeparator(" ");
 		setDeclenjugations([]);
-		const addTitle = $i("addTitle");
+		const addTitle = $i<HTMLInputElement>("addTitle");
 		addTitle && (addTitle.value = "");
-		const addAppliesTo = $i("addAppliesTo");
+		const addAppliesTo = $i<HTMLInputElement>("addAppliesTo");
 		addAppliesTo && (addAppliesTo.value = "");
-		const addStarts = $i("addStarts");
+		const addStarts = $i<HTMLInputElement>("addStarts");
 		addStarts && (addStarts.value = "");
-		const addEnds = $i("addEnds");
+		const addEnds = $i<HTMLInputElement>("addEnds");
 		addEnds && (addEnds.value = "");
-		const addRegex1 = $i("addRegex1");
+		const addRegex1 = $i<HTMLInputElement>("addRegex1");
 		addRegex1 && (addRegex1.value = "");
-		const addRegex2 = $i("addRegex2");
+		const addRegex2 = $i<HTMLInputElement>("addRegex2");
 		addRegex2 && (addRegex2.value = "");
 	}, []);
 	const grabInfo = () => {
-		const addTitle = $i("addTitle");
+		const addTitle = $i<HTMLInputElement>("addTitle");
 		const title = addTitle ? addTitle.value.trim() : "";
-		const addAppliesTo = $i("addAppliesTo");
+		const addAppliesTo = $i<HTMLInputElement>("addAppliesTo");
 		const appliesTo = addAppliesTo ? addAppliesTo.value.trim() : "";
-		const addStarts = $i("addStarts");
+		const addStarts = $i<HTMLInputElement>("addStarts");
 		const startsWith: string[] = addStarts && addStarts.value ? clearBlanks(addStarts.value.split(separator)) : [];
-		const addEnds = $i("addEnds");
+		const addEnds = $i<HTMLInputElement>("addEnds");
 		const endsWith: string[] = addEnds && addEnds.value ? clearBlanks(addEnds.value.split(separator)) : [];
-		const addRegex1 = $i("addRegex1");
+		const addRegex1 = $i<HTMLInputElement>("addRegex1");
 		const regex1: string = (addRegex1 && addRegex1.value) || "";
-		const addRegex2 = $i("addRegex2");
+		const addRegex2 = $i<HTMLInputElement>("addRegex2");
 		const regex2: string = (addRegex2 && addRegex2.value) || "";
 		return {
 			title,
@@ -292,12 +292,14 @@ const AddGroup = (props: AddGroupProps) => {
 		addDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const editDeclenjugation = (declenjugation: Declenjugation) => {
-		$i("addingDJGroup").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingDJGroup");
+		el && el.closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
 	};
 	const maybeDeleteDeclenjugation = (id: string) => {
-		$i("addingDJGroup").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("addingDJGroup");
+		el && el.closeSlidingItems();
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({

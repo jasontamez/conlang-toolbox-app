@@ -49,13 +49,13 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 	const [labelEl, setLabelEl] = useState<HTMLInputElement | null>(null);
 	const [runEl, setRunEl] = useState<HTMLInputElement | null>(null);
 	const onLoad = () => {
-		const _titleEl = $i("editingWECharGroupTitle");
-		const _labelEl = $i("editingWEShortLabel");
-		const _runEl = $i("editingWECharGroupRun");
+		const _titleEl = $i<HTMLInputElement>("editingWECharGroupTitle");
+		const _labelEl = $i<HTMLInputElement>("editingWEShortLabel");
+		const _runEl = $i<HTMLInputElement>("editingWECharGroupRun");
 			if(editing) {
 			const { label, title, run } = editing;
 			_titleEl && (_titleEl.value = title);
-			_labelEl && (_labelEl.value = label);
+			_labelEl && (_labelEl.value = label || "");
 			_runEl && (_runEl.value = run);
 			const cgm: { [key: string]: WECharGroupObject } = {};
 			characterGroups.forEach((chg: WECharGroupObject) => {
@@ -76,7 +76,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q(`.${prop}LabelEdit`);
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
@@ -123,24 +123,29 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		const run = runEl!.value.trim();
 		// Test info for validness, then save if needed and reset the editingCharGroup
 		if(title === "") {
-			$q(".titleLabelEdit").classList.add("invalidValue");
+			const el = $q(".titleLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No title present");
 		}
 		if(label === "") {
-			$q(".labelLabelEdit").classList.add("invalidValue");
+			const el = $q(".labelLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No label present");
 		} else if (editing!.label !== label && charGroupMap[label!]) {
-			$q(".labelLabelEdit").classList.add("invalidValue");
+			const el = $q(".labelLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label as string) !== -1) {
-				$q(".labelLabelEdit").classList.add("invalidValue");
+				const el = $q(".labelLabelEdit");
+				el && el.classList.add("invalidValue");
 				err.push("You cannot use \"" + label + "\" as a label.");
 			}
 		}
 		if(run === "") {
-			$q(".runLabelEdit").classList.add("invalidValue");
+			const el = $q(".runLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No run present");
 		}
 		if(err.length > 0) {

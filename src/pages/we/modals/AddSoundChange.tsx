@@ -40,7 +40,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "Label");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const maybeSaveNewSoundChange = (close: boolean = true) => {
 		const err: string[] = [];
@@ -63,19 +63,25 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		};
 		// Test info for validness, then save if needed and reset the newSoundChange
 		let temp: boolean | string;
-		const seek = $i("searchExWESC").value || "";
-		const context = $i("contextExWESC").value || "_";
-		const anticontext = $i("antiExWESC").value || "";
+		const seekEl = $i<HTMLInputElement>("searchExWESC");
+		const seek = seekEl ? seekEl.value : "";
+		const contextEl = $i<HTMLInputElement>("contextExWESC");
+		const context = contextEl ? contextEl.value : "_";
+		const anticontextEl = $i<HTMLInputElement>("antiExWESC");
+		const anticontext = anticontextEl ? anticontextEl.value : "";
 		if(seek === "") {
-			$q(".seekLabel").classList.add("invalidValue");
+			const el = $q(".seekLabel");
+			el && el.classList.add("invalidValue");
 			err.push("No search expression present");
 		}
 		if((temp = contextTest(context))) {
-			$q(".contextLabel").classList.add("invalidValue");
+			const el = $q(".contextLabel");
+			el && el.classList.add("invalidValue");
 			err.push(temp);
 		}
 		if(anticontext && (temp = contextTest(anticontext, "Anticontext"))) {
-			$q(".anticontextLabel").classList.add("invalidValue");
+			const el = $q(".anticontextLabel");
+			el && el.classList.add("invalidValue");
 			err.push(temp);
 		}
 		try {
@@ -100,9 +106,11 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			return;
 		}
 		// Everything ok!
-		// Fix any possible regex problems
-		const replace = repairRegexErrors($i("replaceExWESC").value || "");
-		const description = $i("optDescWESC").value.trim() || "";
+		// Fix any possible regex problems<HTMLInputElement>
+		const replaceEl = $i<HTMLInputElement>("replaceExWESC");
+		const descEl = $i<HTMLInputElement>("optDescWESC");
+		const replace = repairRegexErrors(replaceEl ? replaceEl.value : "");
+		const description = descEl ? descEl.value.trim() : "";
 		close && setIsOpen(false);
 		dispatch(addSoundChangeWE({
 			id: uuidv4(),
@@ -112,8 +120,8 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			anticontext: repairRegexErrors(anticontext),
 			description
 		}));
-		$a("ion-list.addSoundChangeWE ion-input").forEach(
-			(input: HTMLInputElement) => input.value = ""
+		$a<HTMLInputElement>("ion-list.addSoundChangeWE ion-input").forEach(
+			(input) => input.value = ""
 		);
 		toaster({
 			message: "Sound Change added!",

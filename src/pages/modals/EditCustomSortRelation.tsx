@@ -52,15 +52,15 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			post = ["ERROR"]
 		} = incomingRelation || {};
 		setSeparator(separator);
-		const _base = $i("editBaseRelation");
-		const _pre = $i("editPreRelation");
-		const _post = $i("editPostRelation");
+		const _base = $i<HTMLInputElement>("editBaseRelation");
+		const _pre = $i<HTMLInputElement>("editPreRelation");
+		const _post = $i<HTMLInputElement>("editPostRelation");
 		setBase(_base);
 		setPre(_pre);
 		setPost(_post);
-		_base.value = base;
-		_pre.value = pre.join(separator);
-		_post.value = post.join(separator);
+		_base && (_base.value = base);
+		_pre && (_pre.value = pre.join(separator));
+		_post && (_post.value = post.join(separator));
 	};
 	const close = () => {
 		_base && (_base.value = "");

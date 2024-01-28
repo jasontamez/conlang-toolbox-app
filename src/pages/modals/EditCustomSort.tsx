@@ -127,14 +127,14 @@ const EditCustomSort = (props: CustomSortModal) => {
 			customizations = []
 		} = editingCustomSort || {};
 		setId(id);
-		const editSortTitle = $i("editSortTitle");
+		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
 		editSortTitle && (editSortTitle.value = title);
 		setSortLang(sortLanguage);
 		setSortSensitivity(sensitivity);
 		if(customAlphabet.length > 0) {
 			setUsingAlpha(true);
 		}
-		const editCustomAlphabet = $i("editCustomAlphabet");
+		const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
 		editCustomAlphabet && (editCustomAlphabet.value = customAlphabet.join(separator));
 		setSeparator(separator);
 		setCustomizations(customizations);
@@ -142,12 +142,12 @@ const EditCustomSort = (props: CustomSortModal) => {
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setId("");
-		const editSortTitle = $i("editSortTitle");
+		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
 		editSortTitle && (editSortTitle.value = "");
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
-		const editCustomAlphabet = $i("editCustomAlphabet");
+		const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
 		editCustomAlphabet && (editCustomAlphabet.value = "");
 		setSeparator(",");
 		setCustomizations([]);
@@ -234,7 +234,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 				]
 			});
 		}
-		const editSortTitle = $i("editSortTitle");
+		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
 		const title = editSortTitle ? editSortTitle.value.trim() : "";
 		if(!title) {
 			doAlert({
@@ -256,8 +256,8 @@ const EditCustomSort = (props: CustomSortModal) => {
 			title
 		};
 		if(usingAlpha) {
-			const editCustomAlphabet = $i("editCustomAlphabet");
-			const alpha: string[] = editCustomAlphabet.value
+			const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
+			const alpha: string[] = (editCustomAlphabet ? editCustomAlphabet.value : "")
 				.split(separator)
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
@@ -359,7 +359,8 @@ const EditCustomSort = (props: CustomSortModal) => {
 		addEqualityModalInfo.setIsOpen(true);
 	};
 	const editRelation = (relation: RelationObject) => {
-		$i("editingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("editingCustomSortList");
+		el && el.closeSlidingItems();
 		setIncomingRelation(relation);
 		editRelationModalInfo.setIsOpen(true);
 	};
@@ -374,7 +375,8 @@ const EditCustomSort = (props: CustomSortModal) => {
 		});
 	};
 	const editEquality = (relation: EqualityObject) => {
-		$i("editingCustomSortList").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("editingCustomSortList");
+		el && el.closeSlidingItems();
 		setIncomingEquality(relation);
 		editEqualityModalInfo.setIsOpen(true);
 	};

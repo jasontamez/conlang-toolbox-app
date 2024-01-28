@@ -102,12 +102,14 @@ const SortSettings = (props: PageData) => {
 	const editRelationModalInfo = modalPropsMaker(editRelationOpen, setEditRelationOpen);
 	const editEqualityModalInfo = modalPropsMaker(editEqualityOpen, setEditEqualityOpen);
 	const openEditor = (sorter: SortObject) => {
-		$i("listOfCustomSorts").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("listOfCustomSorts");
+		el && el.closeSlidingItems();
 		setEditingCustomSort(sorter);
 		setEditModalOpen(true);
 	};
 	const maybeDeleteSort = (id: string, title: string) => {
-		$i("listOfCustomSorts").closeSlidingItems();
+		const el = $i<HTMLIonListElement>("listOfCustomSorts");
+		el && el.closeSlidingItems();
 		let message = permanents[id];
 		if(message) {
 			return doAlert({

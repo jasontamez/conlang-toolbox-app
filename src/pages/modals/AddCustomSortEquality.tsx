@@ -41,14 +41,14 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const close = () => {
-		const _base = $i("addBaseEquality");
-		const _equals = $i("addEquality");
+		const _base = $i<HTMLInputElement>("addBaseEquality");
+		const _equals = $i<HTMLInputElement>("addEquality");
 		_base && (_base.value = "");
 		_equals && (_equals.value = "");
 		setIsOpen(false);
 	};
 	const maybeSaveEquality = () => {
-		const _base = $i("addBaseEquality");
+		const _base = $i<HTMLInputElement>("addBaseEquality");
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
@@ -64,7 +64,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const _equals = $i("addEquality");
+		const _equals = $i<HTMLInputElement>("addEquality");
 		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
 		if(!equals.length) {
 			doAlert({
@@ -92,8 +92,8 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		});
 	};
 	const maybeCancel = () => {
-		const _base = $i("addBaseEquality");
-		const _equals = $i("addEquality");
+		const _base = $i<HTMLInputElement>("addBaseEquality");
+		const _equals = $i<HTMLInputElement>("addEquality");
 		if(_base && _equals && (_base.value + _equals.value)) {
 			return yesNoAlert({
 				header: "Unsaved Info",

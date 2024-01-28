@@ -194,8 +194,8 @@ const Syntax = (props: PageData) => {
 		});
 };
 	const setNewInfo = (id: string, prop: "description" | "title") => {
-		const el = $i(id);
-		const value = el.value.trim();
+		const el = $i<HTMLInputElement>(id);
+		const value = el ? el.value.trim() : "";
 		debounce(
 			dispatch,
 			[setMorphoSyntaxText([prop, value])],

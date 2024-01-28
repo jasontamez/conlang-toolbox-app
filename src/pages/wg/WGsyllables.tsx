@@ -99,8 +99,8 @@ const WGSyl = (props: PageData) => {
 					color="success"
 					fill="solid"
 					onClick={e => {
-						const el = $i("Syl-" + prop);
-						const value = el.value;
+						const el = $i<HTMLInputElement>("Syl-" + prop);
+						const value = (el && el.value) || "";
 						dispatch(setSyllables({syllables: prop, value, override: dropoff }));
 						setIsEditing(null);
 					}}

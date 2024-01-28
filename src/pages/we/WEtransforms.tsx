@@ -58,7 +58,8 @@ const WERew = (props: PageData) => {
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { transforms } = useSelector((state: StateObject) => state.we);
 	const editTransform = (transform: WETransformObject) => {
-		$q(".transforms").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".transforms"));
+		groups && groups.closeSlidingItems();
 		setEditing(transform);
 		setIsOpenEditTransform(true);
 	};
@@ -84,7 +85,8 @@ const WERew = (props: PageData) => {
 		return "Error";
 	}
 	const maybeDeleteTransform = (trans: WETransformObject) => {
-		$q(".transforms").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>((".transforms"));
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWE(trans.id));
 			toaster({

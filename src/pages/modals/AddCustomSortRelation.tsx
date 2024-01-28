@@ -41,16 +41,16 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const close = () => {
-		const _base = $i("addBaseRelation");
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
+		const _base = $i<HTMLInputElement>("addBaseRelation");
+		const _pre = $i<HTMLInputElement>("addPreRelation");
+		const _post = $i<HTMLInputElement>("addPostRelation");
 		_base && (_base.value = "");
 		_pre && (_pre.value = "");
 		_post && (_post.value = "");
 		setIsOpen(false);
 	};
 	const maybeSaveRelation = () => {
-		const _base = $i("addBaseRelation");
+		const _base = $i<HTMLInputElement>("addBaseRelation");
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
@@ -66,8 +66,8 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			})
 			return;
 		}
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
+		const _pre = $i<HTMLInputElement>("addPreRelation");
+		const _post = $i<HTMLInputElement>("addPostRelation");
 		const pre = _pre && _pre.value ? _pre.value.split(separator) : [];
 		const post = _post && _post.value ? _post.value.split(separator) : [];
 		if(!(pre.length + post.length)) {
@@ -96,9 +96,9 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 		});
 	};
 	const maybeCancel = () => {
-		const _base = $i("addBaseRelation");
-		const _pre = $i("addPreRelation");
-		const _post = $i("addPostRelation");
+		const _base = $i<HTMLInputElement>("addBaseRelation");
+		const _pre = $i<HTMLInputElement>("addPreRelation");
+		const _post = $i<HTMLInputElement>("addPostRelation");
 		if(_base && _pre && _post && (_base.value + _pre.value + _post.value)) {
 			return yesNoAlert({
 				header: "Unsaved Info",

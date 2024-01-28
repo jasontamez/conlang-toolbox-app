@@ -53,9 +53,9 @@ const EditCharGroupModal = (props: ModalProps) => {
 	const [labelEl, setLabelEl] = useState<HTMLInputElement | null>(null);
 	const [runEl, setRunEl] = useState<HTMLInputElement | null>(null);
 	const onLoad = () => {
-		const _titleEl = $i("editingWGCharGroupTitle");
-		const _labelEl = $i("editingWGShortLabel");
-		const _runEl = $i("editingWGCharGroupRun");
+		const _titleEl = $i<HTMLInputElement>("editingWGCharGroupTitle");
+		const _labelEl = $i<HTMLInputElement>("editingWGShortLabel");
+		const _runEl = $i<HTMLInputElement>("editingWGCharGroupRun");
 		if(editing) {
 			const { title, run, dropoffOverride, label } = editing;
 			_titleEl && (_titleEl.value = title);
@@ -87,7 +87,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
 		const where = $q("." + prop + "LabelEdit");
-		(where !== null) && where.classList.remove("invalidValue");
+		where && where.classList.remove("invalidValue");
 	}
 	const generateLabel = () => {
 		//let invalid = "^$\\[]{}.*+()?|";
@@ -134,24 +134,29 @@ const EditCharGroupModal = (props: ModalProps) => {
 			label = labelEl!.value.trim(),
 			run = runEl!.value.trim();
 		if(title === "") {
-			$q(".titleLabelEdit").classList.add("invalidValue");
+			const el = $q(".titleLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No title present");
 		}
 		if(!label) {
-			$q(".labelLabelEdit").classList.add("invalidValue");
+			const el = $q(".labelLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No label present");
 		} else if (editing!.label !== label && charGroupMap[label]) {
-			$q(".labelLabelEdit").classList.add("invalidValue");
+			const el = $q(".labelLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("There is already a label \"" + label + "\"");
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label as string) !== -1) {
-				$q(".labelLabelEdit").classList.add("invalidValue");
+				const el = $q(".labelLabelEdit");
+				el && el.classList.add("invalidValue");
 				err.push("You cannot use \"" + label + "\" as a label.");
 			}
 		}
 		if(run === "") {
-			$q(".runLabelEdit").classList.add("invalidValue");
+			const el = $q(".runLabelEdit");
+			el && el.classList.add("invalidValue");
 			err.push("No run present");
 		}
 		if(err.length > 0) {

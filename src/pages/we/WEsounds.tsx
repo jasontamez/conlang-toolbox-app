@@ -58,13 +58,15 @@ const WERew = (props: PageData) => {
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const { soundChanges } = useSelector((state: StateObject) => state.we);
 	const editSoundChange = (change: WESoundChangeObject) => {
-		$q(".soundChanges").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".soundChanges");
+		groups && groups.closeSlidingItems();
 		setEditing(change)
 		setIsOpenEditSoundChange(true);
 	};
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
-		$q(".soundChanges").closeSlidingItems();
+		const groups = $q<HTMLIonListElement>(".soundChanges");
+		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(change.id));
 			toaster({

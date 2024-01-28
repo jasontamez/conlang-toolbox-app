@@ -50,12 +50,12 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 			equals = ["ERROR"]
 		} = incomingEquality || {};
 		setSeparator(separator);
-		const _base = $i("editBaseEquality");
-		const _equals = $i("editEqualsEquality");
+		const _base = $i<HTMLInputElement>("editBaseEquality");
+		const _equals = $i<HTMLInputElement>("editEqualsEquality");
 		setBase(_base);
 		setEquals(_equals);
-		_base.value = base;
-		_equals.value = equals.join(separator);
+		_base && (_base.value = base);
+		_equals && (_equals.value = equals.join(separator));
 	};
 	const close = () => {
 		_base && (_base.value = "");
