@@ -85,7 +85,10 @@
     "@types/file-saver": "^2.0.3",
     "@types/react-redux": "^7.1.16",
     "@types/react-window": "^1.8.5",
-    "@types/uuid": "^8.3.0"
+    "@types/uuid": "^8.3.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
   },
   "description": "Tools for conlangers."
 }
