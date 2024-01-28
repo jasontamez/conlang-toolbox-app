@@ -74,7 +74,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 		setSavedTitle
 	} = props;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [titleParts, setTitleParts] = useState<string[]>([]);
 	const [titleGroup, setTitleGroup] = useState<{[key: string]: boolean}>({});
 	const onLoad = useCallback(() => {
@@ -101,8 +101,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 				position: "middle",
 				color: "warning",
 				duration: 2000,
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		setSavedTitle(titleParts.join("").trim());
@@ -112,8 +111,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 			position: "middle",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 

@@ -33,7 +33,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const maybeLoadPreset = (preset: string, object: WEPresetObject) => {
 		const handler = () => {
 			dispatch(loadStateWE(object));
@@ -41,8 +41,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				message: `Preset "${preset}" loaded.`,
 				duration: 2500,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 			setIsOpen(false);
 		};

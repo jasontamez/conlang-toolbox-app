@@ -54,7 +54,7 @@ const WERew = (props: PageData) => {
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [ editing, setEditing ] = useState<WETransformObject | null>(null);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { transforms } = useSelector((state: StateObject) => state.we);
 	const editTransform = (transform: WETransformObject) => {
@@ -92,8 +92,7 @@ const WERew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -129,8 +128,7 @@ const WERew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

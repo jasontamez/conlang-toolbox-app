@@ -39,7 +39,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 	const { isOpen, setIsOpen, openECM, setSavedEquality } = props;
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const close = () => {
 		const _base = $i("addBaseEquality");
 		const _equals = $i("addEquality");
@@ -88,8 +88,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 			position: "top",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {

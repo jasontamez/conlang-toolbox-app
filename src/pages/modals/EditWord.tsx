@@ -55,7 +55,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 	const [ cols, setCols ] = useState<string[]>([]);
 	const [ originalString, setOriginalString ] = useState<string>("");
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const onLoad = () => {
 		const id = (itemToEdit ? itemToEdit.id : "");
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
@@ -117,8 +117,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			message: "Item updated!",
 			color: "success",
 			duration: 2500,
-			doToast,
-			undoToast
+			toast
 		})
 	};
 	const delFromLex = () => {
@@ -129,8 +128,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 				message: "Item deleted.",
 				duration: 2500,
 				color: "danger",
-				doToast,
-				undoToast
+				toast
 			})
 		};
 		if(disableConfirms) {

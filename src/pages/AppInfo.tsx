@@ -52,7 +52,7 @@ const AppInfo = (props: PageData) => {
 	const [debug, setDebug] = useState<number>(1);
 	const [showOlder, setShowOlder] = useState<boolean>(false);
 	const [doAlert, undoAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
 
 	const maybeDebug = () => {
@@ -74,8 +74,7 @@ const AppInfo = (props: PageData) => {
 						message: `Copied to clipboard`,
 						position: "middle",
 						duration: 1500,
-						doToast,
-						undoToast
+						toast
 					}))
 				},
 				{
@@ -101,8 +100,7 @@ const AppInfo = (props: PageData) => {
 						message: `Copied to clipboard`,
 						position: "middle",
 						duration: 1500,
-						doToast,
-						undoToast
+						toast
 					}))
 				},
 				{
@@ -120,8 +118,7 @@ const AppInfo = (props: PageData) => {
 									message: "Logs have been cleared.",
 									duration: 3500,
 									color: "danger",
-									doToast,
-									undoToast
+									toast
 								});
 							},
 							doAlert

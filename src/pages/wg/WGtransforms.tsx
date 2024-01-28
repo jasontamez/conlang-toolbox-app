@@ -55,7 +55,7 @@ const WGRew = (props: PageData) => {
 	const [isOpenEditTransform, setIsOpenEditTransform] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WGTransformObject | null>(null);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { transforms } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
@@ -73,8 +73,7 @@ const WGRew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -110,8 +109,7 @@ const WGRew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

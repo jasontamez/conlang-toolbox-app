@@ -54,7 +54,7 @@ const WERew = (props: PageData) => {
 	const [isOpenEditSoundChange, setIsOpenEditSoundChange] = useState<boolean>(false);
 	const [editing, setEditing] = useState<null | WESoundChangeObject>(null);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const { soundChanges } = useSelector((state: StateObject) => state.we);
 	const editSoundChange = (change: WESoundChangeObject) => {
@@ -72,8 +72,7 @@ const WERew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -112,8 +111,7 @@ const WERew = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

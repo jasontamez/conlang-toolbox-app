@@ -12,6 +12,7 @@ import {
 	TextRun,
 	WidthType
 } from "docx";
+import { UseIonToastResult } from "@ionic/react";
 
 import { MSBool, MSNum, MSState, MSText } from "../../../store/types";
 
@@ -40,8 +41,7 @@ const doDocx = (
 	showUnused: boolean,
 	doClose: Function,
 	setLoading: Function,
-	doToast: Function,
-	undoToast: Function,
+	toast: UseIonToastResult,
 	log: Function
 ) => {
 	const { title, description } = msInfo;
@@ -427,21 +427,19 @@ const doDocx = (
 	if(!isPlatform("android")) {
 		Packer.toBlob(doc).then((blob) => {
 			saveAs(blob, filename);
-			doToast && undoToast && toaster({
+			toast && toaster({
 				message: `${filename} exported`,
 				color: "success",
 				duration: 5000,
-				doToast,
-				undoToast
+				toast
 			});
 		}).catch((e = "Error blob") => {
 			log(["Ex-Doc / Packer / toBlob", e]);
-			doToast && undoToast && toaster({
+			toast && toaster({
 				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
 				duration: 10000,
-				doToast,
-				undoToast
+				toast
 			});
 		});
 		doClose();
@@ -451,7 +449,7 @@ const doDocx = (
 
 
 	Packer.toBase64String(doc).then((output) => {
-		doExport(output, filename, doToast, undoToast, null, false)
+		doExport(output, filename, toast, null, false)
 			.catch((e = "Error doexport docx") => {
 				log(["Ex-Doc / Packer / doExport", e]);
 				doClose();

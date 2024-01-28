@@ -111,7 +111,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 	const { columns, lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const maxCols = columns.length - 1;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [importing, setImporting] = useState<boolean[]>([]);
 	const [addingWordTest, setAddingWordTest] = useState<boolean>(false);
 	const [addingWordMatch, setAddingWordMatch] = useState<boolean>(false);
@@ -179,8 +179,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 2500,
 				position: "middle",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		// We have column(s) to import from.
@@ -236,8 +235,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 4500,
 				position: "middle",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const final = possibles.join("\n");
@@ -249,8 +247,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 			color: "success",
 			duration: 3500,
 			position: "middle",
-			doToast,
-			undoToast
+			toast
 		});
 		doClose();
 	};
@@ -269,8 +266,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 1500,
 				position: "bottom",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const input = el.value;
@@ -282,8 +278,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 			color: "success",
 			duration: 2000,
 			position: "bottom",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const addWordMatch = () => {
@@ -294,8 +289,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 1500,
 				position: "bottom",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const input = el.value;
@@ -307,8 +301,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 			color: "success",
 			duration: 2000,
 			position: "bottom",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const addColumnTest = () => {
@@ -319,8 +312,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 1500,
 				position: "bottom",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const input = el.value;
@@ -339,8 +331,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 			color: "success",
 			duration: 2000,
 			position: "bottom",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const addColumnMatch = () => {
@@ -351,8 +342,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				color: "danger",
 				duration: 1500,
 				position: "bottom",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const input = el.value;
@@ -371,8 +361,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 			color: "success",
 			duration: 2000,
 			position: "bottom",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 

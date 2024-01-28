@@ -81,7 +81,7 @@ const ConceptsPage = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.concepts);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const navigator = useIonRouter();
 	const toggleChars = (what: ConceptDisplay) => {
 		if(display.some((p: ConceptDisplay) => p === what)) {
@@ -152,8 +152,7 @@ const ConceptsPage = (props: PageData) => {
 								}
 							],
 							color: "success",
-							doToast,
-							undoToast
+							toast
 						});
 					}
 				}
@@ -170,8 +169,7 @@ const ConceptsPage = (props: PageData) => {
 				color: "danger",
 				duration: 4000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		setPickAndSave(true);
@@ -179,8 +177,7 @@ const ConceptsPage = (props: PageData) => {
 			message: "Tap words you want to save to Lexicon",
 			duration: 2500,
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const donePickingAndSaving = () => {
@@ -275,8 +272,7 @@ const ConceptsPage = (props: PageData) => {
 			message: "Tap meanings you want to link, in the order you wish to link them.",
 			duration: 5000,
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		})
 	};
 	const saveNewMeaning = (makeToast: boolean = true) => {
@@ -286,8 +282,7 @@ const ConceptsPage = (props: PageData) => {
 			duration: 2500,
 			position: "top",
 			color: "success",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const doneLinking = () => {
@@ -302,8 +297,7 @@ const ConceptsPage = (props: PageData) => {
 				duration: 3000,
 				position: "top",
 				color: "warning",
-				doToast,
-				undoToast
+				toast
 			});
 		} else if (savedWords.length > 0) {
 			const handler = () => {

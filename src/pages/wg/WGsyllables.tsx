@@ -61,7 +61,7 @@ const WGSyl = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	useEffect(() => {
 		setSwDropoff(syllableDropoffOverrides.singleWord);
 	}, [syllableDropoffOverrides.singleWord]);
@@ -128,8 +128,7 @@ const WGSyl = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

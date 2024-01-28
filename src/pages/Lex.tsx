@@ -24,7 +24,8 @@ import {
 	useIonToast,
 	IonFabList,
 	IonCard,
-	IonCardContent
+	IonCardContent,
+	UseIonToastResult
 } from '@ionic/react';
 import {
 	add,
@@ -71,9 +72,9 @@ import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
-import './Lexicon.css';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
+import './Lexicon.css';
 
 interface LexItem {
 	index: number
@@ -103,7 +104,7 @@ interface LexItemDeleting {
 	}
 }
 
-function maybeExpand (e: any, doToast: Function, undoToast: Function) {
+function maybeExpand (e: any, toast: UseIonToastResult) {
 	// Expand an overflowing field into a toast
 	const span = e.target;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
@@ -113,8 +114,7 @@ function maybeExpand (e: any, doToast: Function, undoToast: Function) {
 			duration: 10000,
 			position: "top",
 			color: "primary",
-			doToast,
-			undoToast
+			toast
 		});
 	}
 };
@@ -214,6 +214,15 @@ const RenderLexiconDeleting = memo(({index, style, data}: LexItemDeleting) => {
 	);
 }, areEqual);
 
+// memoize stuff for Lexicon display
+const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging) => ({
+	delFromLex, beginEdit, maybeSetForMerge, maybeExpand: expander, columns, lexicon, merging
+}));
+const otherItemData = memoizeOne((columns, lexicon, toggleDeleting, deletingObj) => ({
+	columns, lexicon, toggleDeleting, deletingObj
+}));
+
+
 const Lex = (props: PageData) => {
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -231,7 +240,7 @@ const Lex = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.lexicon);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
 
@@ -291,8 +300,7 @@ const Lex = (props: PageData) => {
 				message: `Deleted ${deleting.length} items.`,
 				color: "danger",
 				position: "middle",
-				doToast,
-				undoToast
+				toast
 			});
 			setDeleting([]);
 			return setIsDeleting(false);
@@ -314,8 +322,7 @@ const Lex = (props: PageData) => {
 			duration: 8000,
 			position: "bottom",
 			color: "danger",
-			doToast,
-			undoToast
+			toast
 		})
 	};
 
@@ -453,10 +460,7 @@ const Lex = (props: PageData) => {
 	}, []);
 
 	// memoize stuff for Lexicon display
-	const expander = useCallback((e: any) => maybeExpand(e, doToast, undoToast), [doToast, undoToast]);
-	const createItemData = memoizeOne((delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging) => ({
-		delFromLex, beginEdit, maybeSetForMerge, maybeExpand: expander, columns, lexicon, merging
-	}));
+	const expander = useCallback((e: any) => maybeExpand(e, toast), [toast]);
 	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging);
 	const toggleDeleting = useCallback((item: Lexicon) => {
 		const {id} = item;
@@ -471,9 +475,6 @@ const Lex = (props: PageData) => {
 		}
 		setDeletingObj(newObj);
 	}, [deleting, deletingObj]);
-	const otherItemData = memoizeOne((columns, lexicon, toggleDeleting, deletingObj) => ({
-		columns, lexicon, toggleDeleting, deletingObj
-	}));
 	const otherData = otherItemData(columns, lexicon, toggleDeleting, deletingObj);
 
 	// JSX

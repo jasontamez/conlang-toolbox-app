@@ -60,7 +60,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		typeString
 	} = props;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [id, setId] = useState<string>("");
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
@@ -200,8 +200,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 			position: "middle",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {
@@ -244,8 +243,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 				position: "middle",
 				color: "danger",
 				duration: 2000,
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(!disableConfirms) {

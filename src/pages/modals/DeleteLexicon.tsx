@@ -37,7 +37,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
 	const doClose = () => {
 		setLexInfo([]);
@@ -53,8 +53,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				toaster({
 					message: "Lexicon deleted.",
 					duration: 2500,
-					doToast,
-					undoToast
+					toast
 				});
 			});
 		};

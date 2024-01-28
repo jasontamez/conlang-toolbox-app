@@ -55,7 +55,7 @@ const WGCharGroup = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
@@ -78,8 +78,7 @@ const WGCharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -103,8 +102,7 @@ const WGCharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -128,8 +126,7 @@ const WGCharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "success",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

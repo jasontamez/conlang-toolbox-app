@@ -40,7 +40,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const maybeSaveNewInfo = useCallback(() => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
@@ -79,10 +79,9 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			message: "Item added!",
 			duration: 2500,
 			color: "success",
-			doToast,
-			undoToast
+			toast
 		});
-	}, [columnInfo, dispatch, setIsOpen, doAlert, doToast, undoToast, sorter]);
+	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter]);
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);

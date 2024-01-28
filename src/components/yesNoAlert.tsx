@@ -1,10 +1,17 @@
+import { AlertButton, AlertInput, AlertOptions } from "@ionic/react"
+import { HookOverlayOptions } from "@ionic/react/dist/types/hooks/HookOverlayOptions"
+
 interface Alert {
 	header?: string
 	cssClass?: string
 	message: string
 	submit: string
-	handler: Function
-	doAlert: Function
+	handler: (input: AlertInput) => void
+	notDestructive?: boolean
+	doAlert: {
+		(message: string, buttons?: AlertButton[] | undefined): Promise<void>;
+		(options: AlertOptions & HookOverlayOptions): Promise<void>;
+	}
 }
 
 const yesNoAlert = (props: Alert) => {
@@ -14,6 +21,7 @@ const yesNoAlert = (props: Alert) => {
 		message,
 		submit,
 		handler,
+		notDestructive,
 		doAlert
 	} = props;
 	doAlert({
@@ -29,7 +37,8 @@ const yesNoAlert = (props: Alert) => {
 			{
 				text: submit,
 				cssClass: "submit",
-				handler
+				handler,
+				role: notDestructive ? undefined : "destructive"
 			}
 		]
 	});

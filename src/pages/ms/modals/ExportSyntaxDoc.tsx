@@ -40,7 +40,7 @@ interface ExportModalProps extends ModalProperties {
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
 	const [showUnused, setShowUnused] = useState<boolean>(true);
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
 	const { title = "[Untitled]" } = msInfo;
 	const doClose = () => {
@@ -53,7 +53,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		e.preventDefault();
 		const filename = `${title} - ${(new Date()).toDateString()}.${extension}`;
 		setLoading(true);
-		doExport(output, filename, doToast, undoToast, dispatch)
+		doExport(output, filename, toast, dispatch)
 			.catch((e = "Error doexport") => {
 				log(["ExportModal / doDownload", e]);
 				doClose();
@@ -113,8 +113,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 								showUnused,
 								doClose,
 								setLoading,
-								doToast,
-								undoToast,
+								toast,
 								log
 							)}
 						className="striped"

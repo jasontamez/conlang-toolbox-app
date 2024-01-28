@@ -44,7 +44,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const {
 		characterGroups,
 		multipleSyllableTypes,
@@ -116,8 +116,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					message: `"${title}" ${msg}`,
 					duration: 2500,
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -149,8 +148,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						duration: 2500,
 						color: "success",
 						position: "top",
-						doToast,
-						undoToast
+						toast
 					});
 					doCleanClose();
 				} else {
@@ -192,8 +190,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					duration: 2500,
 					color: "danger",
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			});
 		};

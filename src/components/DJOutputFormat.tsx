@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { UseIonToastResult } from "@ionic/react";
 import { DJCustomInfo, DJGroup, RegexPair } from "../store/types";
 import ltr from "./LTR";
 import log from "./Logging";
@@ -474,8 +475,7 @@ export const exporter = (
 	format: DJFormatTypes,
 	showUnmatched: boolean | null,
 	dispatch: Function,
-	doToast: Function,
-	undoToast: Function
+	toast: UseIonToastResult
 ) => {
 	const {
 		input = [],
@@ -547,18 +547,17 @@ export const exporter = (
 			break;
 		case "docx":
 			extension = "docx";
-			return exportDocx(exportData, doToast, undoToast, dispatch);
+			return exportDocx(exportData, toast, dispatch);
 		default:
 			log(dispatch, [`Error in DJOutputFormat: bad format "${format}"`]);
 	}
 	if(formatted && extension) {
-		return doExport(formatted, `Declenjugator - ${(new Date()).toDateString()}.${extension}`, doToast, undoToast, dispatch);
+		return doExport(formatted, `Declenjugator - ${(new Date()).toDateString()}.${extension}`, toast, dispatch);
 	}
 	return toaster({
 		message: "Error in exporting: bad format (internal)",
 		color: "danger",
-		doToast,
-		undoToast
+		toast
 	});
 };
 

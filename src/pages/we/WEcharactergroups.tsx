@@ -50,7 +50,7 @@ const WECharGroup = (props: PageData) => {
 	const [isOpenEditCharGroupWE, setIsOpenEditCharGroupWE] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WECharGroupObject | null>(null);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	const { characterGroups: wgCharatcterGroups } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
@@ -69,8 +69,7 @@ const WECharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -94,8 +93,7 @@ const WECharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -119,8 +117,7 @@ const WECharGroup = (props: PageData) => {
 				duration: 2500,
 				color: "success",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

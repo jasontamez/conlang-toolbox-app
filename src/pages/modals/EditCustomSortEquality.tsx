@@ -39,7 +39,7 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 const EditCustomSortEquality = (props: CustomSortModal) => {
 	const { isOpen, setIsOpen, openECM, incomingEquality, setOutgoingEquality } = props;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [_base, setBase] = useState<HTMLInputElement | null>(null);
 	const [_equals, setEquals] = useState<HTMLInputElement | null>(null);
@@ -101,8 +101,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 			position: "top",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeDelete = () => {

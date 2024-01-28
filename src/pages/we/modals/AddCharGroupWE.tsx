@@ -34,7 +34,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const charGroupMap: { [key: string]: boolean } = {};
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	characterGroups.forEach((cg: WECharGroupObject) => {
@@ -70,8 +70,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 				color: "warning",
 				duration: 4000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		} else {
 			// Suitable label found
@@ -133,8 +132,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	return (

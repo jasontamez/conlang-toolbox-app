@@ -64,7 +64,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		lexicon
 	} = stateLexicon;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const clearLexicon = () => {
 		const handler = () => {
 			const newLex: LexiconState = {
@@ -75,8 +75,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			toaster({
 				message: "Lexicon cleared",
 				duration: 4000,
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(!(title || id || description || lexicon.length > 0)) {
@@ -85,8 +84,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				color: "danger",
 				duration: 3000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		} else if(disableConfirms) {
 			handler();
@@ -161,8 +159,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				toaster({
 					message: announce,
 					duration: 2500,
-					doToast,
-					undoToast
+					toast
 				});
 			}
 		);

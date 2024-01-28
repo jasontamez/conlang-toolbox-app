@@ -63,7 +63,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
 	const [showHelp, setShowHelp] = useState<boolean>(false);
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};
@@ -93,10 +93,9 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			message: `Copied ${char} to clipboard`,
 			position: "middle",
 			duration: 1500,
-			doToast,
-			undoToast
+			toast
 		}));
-	}, [doToast, undoToast]);
+	}, [toast]);
 	const saveToBeCopied = useCallback((char) => {
 		dispatch(setToCopy(toCopy + char));
 	}, [dispatch, toCopy]);
@@ -116,11 +115,10 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
 			duration: 2500,
 			position: "middle",
-			doToast,
-			undoToast
+			toast
 		});
 		dispatch(toggleCopyImmediately());
-	}, [dispatch, copyImmediately, doToast, undoToast]);
+	}, [dispatch, copyImmediately, toast]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
@@ -130,10 +128,9 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			message: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
 			duration: 2500,
 			position: "middle",
-			doToast,
-			undoToast
+			toast
 		});
-	}, [doToast, undoToast]);
+	}, [toast]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>

@@ -12,6 +12,7 @@ import {
 	TextRun,
 	WidthType
 } from "docx";
+import { UseIonToastResult } from "@ionic/react";
 
 import doExport from '../../../components/ExportServices';
 import { DJDisplayMethods, DJExportData, DJRawInfo } from "../../../components/DJOutputFormat";
@@ -308,8 +309,7 @@ const sendToCorrectMethod = (
 };
 const exportDocx = (
 	data: DJExportData,
-	doToast: Function,
-	undoToast: Function,
+	toast: UseIonToastResult,
 	dispatch: Function,
 ) => {
 	const sections: Section[] = [];
@@ -392,16 +392,14 @@ const exportDocx = (
 			toaster({
 				message: "File saved as " + filename + " (browser)",
 				color: "success",
-				doToast,
-				undoToast
+				toast
 			})
 		}).catch((e = "Error blob") => {
 			log(dispatch, ["DJExport / Packer / toBlob", e]);
 			toaster({
 				message: "Unable to save file (browser): " + e,
 				color: "success",
-				doToast,
-				undoToast
+				toast
 			});
 		});
 		return;
@@ -410,29 +408,26 @@ const exportDocx = (
 
 
 	Packer.toBase64String(doc).then((output) => {
-		doExport(output, filename, doToast, undoToast, null, false)
+		doExport(output, filename, toast, null, false)
 			.catch((e = "Error doexport docx") => {
 				log(dispatch, ["DJExport / Packer / doExport", e]);
 				toaster({
 					message: `Error saving file ${filename} (${e})`,
 					color: "success",
-					doToast,
-					undoToast
+					toast
 				});
 			});
 		toaster({
 			message: "File saved as " + filename,
 			color: "success",
-			doToast,
-			undoToast
+			toast
 		});
 	}).catch((e = "Error 64") => {
 		log(dispatch, ["DJExport / Packer", e]);
 		toaster({
 			message: `Error saving file ${filename} (64: ${e})`,
 			color: "success",
-			doToast,
-			undoToast
+			toast
 		});
 	});
 

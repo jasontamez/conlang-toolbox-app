@@ -46,7 +46,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const doCleanClose = () => {
 		setTitles([]);
 		setIsOpen(false);
@@ -78,8 +78,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					duration: 2500,
 					color: "success",
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			}).finally(() => doCleanClose());
 		};
@@ -110,8 +109,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 						message: `Save "${title}" loaded.`,
 						duration: 2500,
 						position: "top",
-						doToast,
-						undoToast
+						toast
 					});
 					doCleanClose();
 				} else {
@@ -152,8 +150,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					duration: 2500,
 					color: "danger",
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			});
 		};

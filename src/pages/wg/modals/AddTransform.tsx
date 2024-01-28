@@ -34,7 +34,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	function resetError(prop: string) {
 		// Remove danger color if present
 		// Debounce means this sometimes doesn't exist by the time this is called.
@@ -89,8 +89,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	return (

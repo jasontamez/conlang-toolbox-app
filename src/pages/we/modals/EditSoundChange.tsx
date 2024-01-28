@@ -42,7 +42,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
@@ -161,8 +161,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeDeleteSoundChange = () => {
@@ -175,8 +174,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

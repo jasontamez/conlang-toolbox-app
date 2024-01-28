@@ -83,7 +83,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const [shadowColumns, setShadowColumns] = useState<ShadowColumn[]>([]);
 	const [shadowCustomSort, setShadowCustomSort] = useState<string | null>(customSort || null);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 
 	const onLoad = () => {
 		setShadowColumns(columns.slice().map(
@@ -120,8 +120,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 				color: "warning",
 				duration: 2500,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 			closeModal();
 			return;
@@ -206,8 +205,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "middle",
-			doToast,
-			undoToast
+			toast
 		});
 		closeModal();
 	};
@@ -230,8 +228,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const deleteField = (i: number) => {

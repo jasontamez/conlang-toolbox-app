@@ -47,7 +47,7 @@ const Syntax = (props: PageData) => {
 	const [storedInfo, setStoredInfo] = useState<[string, MSState][]>([]);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		title,
@@ -70,8 +70,7 @@ const Syntax = (props: PageData) => {
 				duration: 2500,
 				color: "warning",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		} else if(!disableConfirms) {
 			yesNoAlert({
@@ -168,8 +167,7 @@ const Syntax = (props: PageData) => {
 					message: announce,
 					duration: 2500,
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			});
 	};

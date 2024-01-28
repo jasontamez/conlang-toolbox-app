@@ -41,7 +41,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: WECharGroupObject }>({});
@@ -104,8 +104,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 				color: "warning",
 				duration: 4000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		} else {
 			// Suitable label found
@@ -175,8 +174,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeDeleteCharGroup = () => {
@@ -189,8 +187,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

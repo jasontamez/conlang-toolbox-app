@@ -32,7 +32,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const maybeLoadPreset = (preset: string, object: Base_WG) => {
 		const handler = () => {
@@ -42,8 +42,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				duration: 2500,
 				color: "success",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 			setIsOpen(false);
 		};

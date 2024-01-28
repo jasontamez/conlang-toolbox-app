@@ -39,7 +39,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 	const { isOpen, setIsOpen, openECM, setSavedRelation } = props;
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const close = () => {
 		const _base = $i("addBaseRelation");
 		const _pre = $i("addPreRelation");
@@ -92,8 +92,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			position: "top",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {

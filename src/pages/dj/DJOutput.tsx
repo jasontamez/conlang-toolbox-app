@@ -11,7 +11,8 @@ import {
 	IonIcon,
 	useIonToast,
 	useIonAlert,
-	AlertInput
+	AlertInput,
+	UseIonToastResult
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -44,7 +45,7 @@ import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
 import { OutputCard } from './DJinfo';
 
-async function copyText (copyStrings: string[], doToast: Function, undoToast: Function) {
+async function copyText (copyStrings: string[], toast: UseIonToastResult) {
 	const toCopy = copyStrings.filter(line => line).join("\n\n\n");
 	if(toCopy) {
 		await Clipboard.write({string: toCopy});
@@ -53,8 +54,7 @@ async function copyText (copyStrings: string[], doToast: Function, undoToast: Fu
 			message: "Copied to clipboard.",
 			duration: 1500,
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	}
 	toaster({
@@ -62,8 +62,7 @@ async function copyText (copyStrings: string[], doToast: Function, undoToast: Fu
 		color: "danger",
 		duration: 1500,
 		position: "top",
-		doToast,
-		undoToast
+		toast
 	});
 };
 
@@ -71,7 +70,7 @@ const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 //	const navigator = useIonRouter();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 
@@ -158,8 +157,7 @@ const DJOutput = (props: PageData) => {
 				message: "You didn't select a format.",
 				color: "danger",
 				duration: 3000,
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		exporter(
@@ -172,8 +170,7 @@ const DJOutput = (props: PageData) => {
 			format,
 			data ? showUnmatched : null,
 			dispatch,
-			doToast,
-			undoToast
+			toast
 		);
 	};
 
@@ -182,8 +179,7 @@ const DJOutput = (props: PageData) => {
 			return toaster({
 				message: "Please choose at least one group to display.",
 				color: "danger",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const inputs: AlertInput[] = [
@@ -226,8 +222,7 @@ const DJOutput = (props: PageData) => {
 			return toaster({
 				message: "Please choose at least one group to display.",
 				color: "danger",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		const output: ReactElement[] = [];
@@ -470,7 +465,7 @@ const DJOutput = (props: PageData) => {
 				<div className={(displayOutput.length + displayUnmatched.length) > 0 ? "ion-padding-start ion-padding-bottom" : "hide"}>
 					<IonButton
 						color="primary"
-						onClick={() => copyText(copyStrings, doToast, undoToast)}
+						onClick={() => copyText(copyStrings, toast)}
 					>
 						Copy to Clipboard
 						<IonIcon icon={copyOutline} slot="start" />

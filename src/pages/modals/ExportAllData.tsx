@@ -52,7 +52,7 @@ import { $i } from '../../components/DollarSignExports';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [outputString, setOutputString] = useState<string>("...loading");
 	const [output, setOutput] = useState<ImportExportObject | null>(null);
 	const [export_wg, setExport_wg] = useState<boolean>(true);
@@ -358,8 +358,7 @@ const MExportAllData = (props: ModalProperties) => {
 								message: `Copied to clipboard`,
 								position: "middle",
 								duration: 1500,
-								doToast,
-								undoToast
+								toast
 							}))}
 							slot="end"
 						>Copy to Clipboard</IonButton>

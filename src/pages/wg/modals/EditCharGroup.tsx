@@ -45,7 +45,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
 	const [charGroupMap, setCharGroupMap] = useState<{ [ key: string]: boolean }>({});
@@ -115,8 +115,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 				color: "warning",
 				duration: 4000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		} else {
 			// Suitable label found
@@ -187,8 +186,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeDeleteCharGroup = () => {
@@ -208,8 +206,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

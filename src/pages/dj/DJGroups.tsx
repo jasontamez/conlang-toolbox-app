@@ -108,7 +108,7 @@ const DJGroups = (props: PageData) => {
 	const [declenjugationTypeString, setDeclenjugationTypeString] = useState<string>("");
 
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { declensions, conjugations, other } = useSelector((state: StateObject) => state.dj);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const canTrash = (declensions.length + conjugations.length + other.length) > 0;
@@ -131,8 +131,7 @@ const DJGroups = (props: PageData) => {
 				position: "middle",
 				color: "danger",
 				duration: 2000,
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(!disableConfirms) {
@@ -155,8 +154,7 @@ const DJGroups = (props: PageData) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {
@@ -171,7 +169,7 @@ const DJGroups = (props: PageData) => {
 				doAlert
 			});
 		}
-	}, [dispatch, doToast, undoToast, doAlert, disableConfirms]);
+	}, [dispatch, toast, doAlert, disableConfirms]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];

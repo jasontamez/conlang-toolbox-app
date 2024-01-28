@@ -90,7 +90,7 @@ const EditGroup = (props: EditGroupProps) => {
 	} = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [id, setId] = useState<string>("");
 	const [separator, setSeparator] = useState<DJSeparator>(" ");
 	const [declenjugations, setDeclenjugations] = useState<Declenjugation[]>([]);
@@ -312,8 +312,7 @@ const EditGroup = (props: EditGroupProps) => {
 			position: "middle",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {
@@ -377,8 +376,7 @@ const EditGroup = (props: EditGroupProps) => {
 				position: "middle",
 				color: "danger",
 				duration: 2000,
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(!disableConfirms) {
@@ -412,8 +410,7 @@ const EditGroup = (props: EditGroupProps) => {
 				position: "middle",
 				color: "danger",
 				duration: 2000,
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({

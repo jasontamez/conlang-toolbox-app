@@ -42,7 +42,7 @@ const EditTransformModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings)
 	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
 	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
@@ -121,8 +121,7 @@ const EditTransformModal = (props: ModalProps) => {
 			duration: 2500,
 			color: "success",
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeDeleteTransform = () => {
@@ -135,8 +134,7 @@ const EditTransformModal = (props: ModalProps) => {
 				duration: 2500,
 				color: "danger",
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		};
 		if(disableConfirms) {

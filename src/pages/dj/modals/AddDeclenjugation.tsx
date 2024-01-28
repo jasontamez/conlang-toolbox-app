@@ -56,7 +56,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		typeString
 	} = props;
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const onLoad = useCallback(() => {
@@ -181,8 +181,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			position: "middle",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {

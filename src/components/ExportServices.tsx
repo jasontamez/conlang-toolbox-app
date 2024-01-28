@@ -2,12 +2,12 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import sanitize from 'sanitize-filename';
 import toaster from './toaster';
 import log from './Logging';
+import { UseIonToastResult } from '@ionic/react';
 
 const doExport = async (
 	output: string,
 	fileName: string,
-	doToast: Function | false = false,
-	undoToast: Function | false = false,
+	toast: UseIonToastResult,
 	dispatch: Function | null,
 	encodeUTF: boolean = true
 ) => {
@@ -29,12 +29,11 @@ const doExport = async (
 //			console.log('Made dir', ret);
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to make directory', e]);
-			doToast && undoToast && toaster({
+			toast && toaster({
 				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
 				duration: 10000,
-				doToast,
-				undoToast
+				toast
 			});
 		}
 	} finally {
@@ -46,21 +45,19 @@ const doExport = async (
 				encoding: encodeUTF ? Encoding.UTF8 : undefined
 			});
 //			console.log('Wrote file', result);
-			doToast && undoToast && toaster({
+			toast && toaster({
 				message: `${filename} exported`,
 				color: "success",
 				duration: 5000,
-				doToast,
-				undoToast
+				toast
 			});
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to write file', e]);
-			doToast && undoToast && toaster({
+			toast && toaster({
 				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
 				color: "danger",
 				duration: 10000,
-				doToast,
-				undoToast
+				toast
 			});
 		}
 	}

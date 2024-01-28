@@ -13,7 +13,8 @@ import {
 	useIonAlert,
 	useIonToast,
 	useIonRouter,
-	AlertInput
+	AlertInput,
+	UseIonToastResult
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -66,7 +67,7 @@ interface soundChangeModified {
 	flagged: boolean
 }
 
-async function copyText (copyString: string, doToast: Function, undoToast: Function) {
+async function copyText (copyString: string, toast: UseIonToastResult) {
 	if(copyString) {
 		await Clipboard.write({string: copyString});
 		//navigator.clipboard.writeText(copyText);
@@ -74,8 +75,7 @@ async function copyText (copyString: string, doToast: Function, undoToast: Funct
 			message: "Copied to clipboard.",
 			duration: 1500,
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	}
 	toaster({
@@ -83,8 +83,7 @@ async function copyText (copyString: string, doToast: Function, undoToast: Funct
 		color: "danger",
 		duration: 1500,
 		position: "top",
-		doToast,
-		undoToast
+		toast
 	});
 };
 
@@ -109,7 +108,7 @@ const WEOut = (props: PageData) => {
 	const [needToGenerate, setNeedToGenerate] = useState<boolean>(true);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const navigator = useIonRouter();
 	const {
 		input,
@@ -741,8 +740,7 @@ const WEOut = (props: PageData) => {
 				color: "danger",
 				duration: 4000,
 				position: "top",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 		setIsPickingSaving(true);
@@ -750,8 +748,7 @@ const WEOut = (props: PageData) => {
 			message: "Tap words you want to save to Lexicon.",
 			duration: 2500,
 			position: "top",
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const saveToLexicon = (words: string[]) => {
@@ -800,8 +797,7 @@ const WEOut = (props: PageData) => {
 									handler: () => navigator.push("/lex")
 								}
 							],
-							doToast,
-							undoToast
+							toast
 						});
 					}
 				}
@@ -1046,7 +1042,7 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText(copyString, doToast, undoToast)}
+							onClick={() => copyText(copyString, toast)}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton

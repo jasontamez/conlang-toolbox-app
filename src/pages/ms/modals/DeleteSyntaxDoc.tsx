@@ -40,7 +40,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
 	const doClose = () => {
 		setStoredInfo([]);
@@ -57,8 +57,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 					message: "MorphoSyntax document deleted.",
 					duration: 2500,
 					position: "top",
-					doToast,
-					undoToast
+					toast
 				});
 			});
 		};

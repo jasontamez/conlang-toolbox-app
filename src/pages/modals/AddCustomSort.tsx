@@ -104,7 +104,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 	} = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [sortLang, setSortLang] = useState<SortLanguage | "unicode" | "default">("default");
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
@@ -267,8 +267,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 			position: "middle",
 			color: "success",
 			duration: 2000,
-			doToast,
-			undoToast
+			toast
 		});
 	};
 	const maybeCancel = () => {

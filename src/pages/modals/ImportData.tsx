@@ -74,7 +74,7 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 
 const ImportData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const [ doAlert ] = useIonAlert();
 	const dispatch = useDispatch();
 	const [readyToImport, setReadyToImport] = useState<boolean>(false);
@@ -247,8 +247,7 @@ const ImportData = (props: ModalProperties) => {
 					toaster({
 						message,
 						color: "danger",
-						doToast,
-						undoToast
+						toast
 					});
 				}
 				return;
@@ -256,8 +255,7 @@ const ImportData = (props: ModalProperties) => {
 			toaster({
 				message: `ERROR 102: input was not an object`,
 				color: "danger",
-				doToast,
-				undoToast
+				toast
 			});
 		} catch (e) {
 			let message = (e instanceof Error) ? e.message : `${e}`;
@@ -265,8 +263,7 @@ const ImportData = (props: ModalProperties) => {
 			return toaster({
 				message: `PARSE ERROR 101: ${message}`,
 				color: "danger",
-				doToast,
-				undoToast
+				toast
 			});
 		}
 	};
@@ -328,8 +325,7 @@ const ImportData = (props: ModalProperties) => {
 				color: "success",
 				position: "middle",
 				duration: 10000,
-				doToast,
-				undoToast
+				toast
 			});
 			setHasImported(true);
 		};
@@ -340,8 +336,7 @@ const ImportData = (props: ModalProperties) => {
 				color: "danger",
 				position: "middle",
 				duration: 5000,
-				doToast,
-				undoToast
+				toast
 			});
 		} else if(disableConfirms) {
 			// Go right ahead

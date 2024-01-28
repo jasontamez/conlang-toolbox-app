@@ -43,7 +43,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	const dispatch = useDispatch();
 	const columnTitles = columns.map((obj) => obj.label);
 	const length = columns.length;
-	const [doToast, undoToast] = useIonToast();
+	const toast = useIonToast();
 	const doTabbed = (e: Event) => doText(e, "\t");
 	const doSemicolons = (e: Event) => doText(e, "; ");
 	const doNewlines = (e: Event) => doText(e, "\n", "\n\n");
@@ -139,7 +139,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		e.preventDefault();
 		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
-		doExport(output, filename, doToast, undoToast, dispatch)
+		doExport(output, filename, toast, dispatch)
 			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))
 			.then(() => doClose());
 	};

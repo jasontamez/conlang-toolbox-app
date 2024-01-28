@@ -1,4 +1,4 @@
-import { ToastButton } from "@ionic/react"
+import { ToastButton, UseIonToastResult } from "@ionic/react"
 
 interface Toast {
 	color?: string
@@ -6,8 +6,7 @@ interface Toast {
 	buttons?: ToastButton[]
 	duration?: number
 	position?: "top" | "middle" | "bottom"
-	doToast: Function
-	undoToast: Function
+	toast: UseIonToastResult
 }
 
 const toaster = (props: Toast) => {
@@ -15,8 +14,7 @@ const toaster = (props: Toast) => {
 		color = "primary",
 		message,
 		duration = 5000,
-		doToast,
-		undoToast,
+		toast,
 		position,
 		buttons = [
 			{
@@ -25,6 +23,7 @@ const toaster = (props: Toast) => {
 			}
 		]
 	} = props;
+	const [ doToast, undoToast ] = toast;
 	undoToast().then(() => doToast({
 		message,
 		duration,
