@@ -34,6 +34,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
+import reorganize from '../../components/reorganizer';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -95,13 +96,8 @@ const WERew = (props: PageData) => {
 		}
 	};
 	const doReorder = (event: CustomEvent) => {
-		const reorganize = (what: any[], from: number, to: number) => {
-			const moved = what[from];
-			const remains = what.slice(0, from).concat(what.slice(from + 1));
-			return remains.slice(0, to).concat(moved, remains.slice(to));
-		};
 		const ed = event.detail;
-		const reorganized = reorganize(soundChanges, ed.from, ed.to);
+		const reorganized = reorganize<WESoundChangeObject>(soundChanges, ed.from, ed.to);
 		dispatch(rearrangeSoundChangesWE(reorganized));
 		ed.complete();
 	};

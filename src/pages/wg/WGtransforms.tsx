@@ -40,6 +40,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import reorganize from '../../components/reorganizer';
 
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
@@ -93,13 +94,8 @@ const WGRew = (props: PageData) => {
 		}
 	};
 	const doReorder = (event: CustomEvent) => {
-		const reorganize = (what: any[], from: number, to: number) => {
-			const moved = what[from];
-			const remains = what.slice(0, from).concat(what.slice(from + 1));
-			return remains.slice(0, to).concat(moved, remains.slice(to));
-		};
 		const ed = event.detail;
-		const reorganized = reorganize(transforms, ed.from, ed.to);
+		const reorganized = reorganize<WGTransformObject>(transforms, ed.from, ed.to);
 		dispatch(rearrangeTransformsWG(reorganized));
 		ed.complete();
 	};

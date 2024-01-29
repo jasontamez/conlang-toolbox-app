@@ -26,12 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { ModalProperties, StateObject } from '../../store/types';
 import { updateLexiconSort } from '../../store/lexiconSlice';
-
-function reorganize (what: any[], from: number, to: number) {
-	const moved = what[from];
-	const remains = what.slice(0, from).concat(what.slice(from + 1));
-	return remains.slice(0, to).concat(moved, remains.slice(to));
-};
+import reorganize from '../../components/reorganizer';
 
 interface EditSortModal extends ModalProperties {
 	sorter: Function
@@ -55,7 +50,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 	};
 	const doReorder = (event: CustomEvent) => {
 		const ed = event.detail;
-		const sortOrder = reorganize(sorting, ed.from, ed.to);
+		const sortOrder = reorganize<number>(sorting, ed.from, ed.to);
 		setSorting(sortOrder);
 		ed.complete();
 	};
