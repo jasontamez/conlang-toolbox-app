@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import {
 	IonIcon,
 	IonContent,
@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
 
-const ModalWrap = (props: {isOpen: boolean, setIsOpen: Function, children: React.ReactNode}) => {
+const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: Function}>) => {
 	const {
 		isOpen,
 		setIsOpen,

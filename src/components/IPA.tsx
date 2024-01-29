@@ -1,5 +1,5 @@
-import React from "react";
+import React, { FC, PropsWithChildren } from "react";
 
-const IPA = (text: any) => (<i className="ipa">/{text.children}/</i>);
+const IPA: FC<PropsWithChildren<{}>> = (text) => (<i className="ipa">/{text.children}/</i>);
 
 export default IPA;

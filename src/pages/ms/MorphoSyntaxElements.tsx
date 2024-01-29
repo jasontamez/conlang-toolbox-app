@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import {
 	IonHeader,
 	IonToolbar,
@@ -74,15 +74,14 @@ const RadioBox = (props: {
 		/>
 	);
 };
-export const TextItem = (props: {
+export const TextItem = (props: PropsWithChildren<{
 	placeholder?: string,
 	prop: MSText,
 	rows?: number,
 	className?: string,
 	label?: string,
-	value?: string,
-	children: any
-}) => {
+	value?: string
+}>) => {
 	const {
 		placeholder = "",
 		prop,
@@ -117,7 +116,7 @@ export const TextItem = (props: {
 		</>
 	);
 };
-export const HeaderItem = (props: { level?: number, children: any }) => (
+export const HeaderItem = (props: PropsWithChildren<{ level?: number }>) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>
@@ -125,9 +124,8 @@ export const HeaderItem = (props: { level?: number, children: any }) => (
 interface TransProps {
 	rows?: string
 	className?: string
-	children?: any
 }
-export const TransTable = (props: TransProps) => {
+export const TransTable = (props: PropsWithChildren<TransProps>) => {
 	const {
 		rows,
 		className,
@@ -137,7 +135,7 @@ export const TransTable = (props: TransProps) => {
 	let length = 1;
 	const cName = "translation" + (className ? " " + className : "");
 	const finalRow = children ? tableRows.length : -1;
-	children && tableRows.push(children);
+	children && tableRows.push(children as string);
 	const mainRows = tableRows.filter((row: string) => row).map((row: string, i: number) => {
 		if(i === finalRow) {
 			return <tr key={"ROW-" + String(i)}><td colSpan={length}>{row}</td></tr>;
@@ -155,11 +153,10 @@ export const TransTable = (props: TransProps) => {
 	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
 interface InfoModalProps extends ModalProperties {
-	label?: string,
-	className?: string,
-	children: any,
+	label?: string
+	className?: string
 }
-export const InfoModal = (props: InfoModalProps) => {
+export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const dispatch = useDispatch();
 	const {
