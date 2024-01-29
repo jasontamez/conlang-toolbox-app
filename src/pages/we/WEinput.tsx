@@ -52,7 +52,7 @@ const WEInput = (props: PageData) => {
 			const el = $i<HTMLInputElement>("weInput");
 			value = el ? el.value : "";
 		}
-		debounce(updateInput, [value], 500, "WEinput");
+		debounce<string>(updateInput, [value], 500, "WEinput");
 	}, [updateInput]);
 	const acceptImport = useCallback((value: string) => {
 		const el = $i<HTMLInputElement>("weInput");

@@ -1,10 +1,10 @@
-const bouncing: { [key: string]: any } = {};
+const bouncing: { [key: string]: number } = {};
 
-function debounce (func: Function, args: any[], amount: number, namespace: string = "default") {
+function debounce <T extends unknown>(func: Function, args: T[], amount: number, namespace: string = "default") {
 	if(bouncing[namespace]) {
 		clearTimeout(bouncing[namespace]);
 	}
-	bouncing[namespace] = setTimeout(
+	bouncing[namespace] = window.setTimeout(
 		() => {
 //			console.log(namespace, ...(args ? args : []));
 			delete bouncing[namespace];

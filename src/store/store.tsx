@@ -103,8 +103,21 @@ const reducerConfig = {
 	internals: internalsSlice
 };
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
-	if(incomingState && originalState && (incomingState.appSettings.theme !== originalState.appSettings.theme)) {
-		debounce(maybeUpdateTheme, [originalState.appSettings.theme, incomingState.appSettings.theme], 100, "rehydrateTheme");
+	if(
+		incomingState
+		&& originalState
+		&& incomingState.appSettings
+		&& originalState.appSettings
+		&& (incomingState.appSettings.theme !== originalState.appSettings.theme)) {
+		debounce<string>(
+			maybeUpdateTheme,
+			[
+				originalState.appSettings.theme as string || "Default",
+				incomingState.appSettings.theme as string || "Default"
+			],
+			100,
+			"rehydrateTheme"
+		);
 	}
 	return autoMergeLevel1(incomingState, originalState, reducedState, config);
 };

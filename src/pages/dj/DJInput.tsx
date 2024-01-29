@@ -53,7 +53,7 @@ const DJInput = (props: PageData) => {
 			const el = $i<HTMLInputElement>("djInput");
 			value = el ? el.value : "";
 		}
-		debounce(updateInput, [value], 500, "DJInput");
+		debounce<string>(updateInput, [value], 500, "DJInput");
 	}, [updateInput]);
 	const acceptImport = useCallback((value: string) => {
 		const el = $i<HTMLInputElement>("djInput");

@@ -79,7 +79,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			dispatch(setNowShowing(what));
 		}
 	}, [dispatch, nowShowing]);
-	const toggleFave = useCallback((char) => {
+	const toggleFave = useCallback((char: string) => {
 		if(!currentFaves[char]) {
 			// New fave
 			dispatch(setFaves([...faves, char]));
@@ -88,7 +88,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		// Deleting fave
 		dispatch(setFaves(faves.filter((fave: string) => fave !== char)));
 	}, [currentFaves, faves, dispatch]);
-	const copyNow = useCallback((char) => {
+	const copyNow = useCallback((char: string) => {
 		Clipboard.write({string: char}).then(() => toaster({
 			message: `Copied ${char} to clipboard`,
 			position: "middle",
@@ -96,7 +96,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			toast
 		}));
 	}, [toast]);
-	const saveToBeCopied = useCallback((char) => {
+	const saveToBeCopied = useCallback((char: string) => {
 		dispatch(setToCopy(toCopy + char));
 	}, [dispatch, toCopy]);
 	const characterClicked = useCallback(async (char: string) => {
@@ -122,7 +122,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
-	const toggleFavoriting = useCallback((newValue) => {
+	const toggleFavoriting = useCallback((newValue: boolean) => {
 		setIsFavoriting(newValue);
 		toaster({
 			message: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
