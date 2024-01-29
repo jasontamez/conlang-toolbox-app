@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -36,6 +36,8 @@ import doJSON from './Ex-JSON';
 interface ExportModalProps extends ModalProperties {
 	setLoading: Function
 }
+
+type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const ExportSyntaxModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
@@ -91,7 +93,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doText(e, msInfo, doDownload, showUnused)}
+						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused)}
 						className="striped"
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
@@ -99,7 +101,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doText(e, msInfo, doDownload, showUnused, true)}
+						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused, true)}
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
 						<IonLabel className="ion-text-wrap">Text Outline (markdown)</IonLabel>
@@ -107,7 +109,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					<IonItem
 						button={true}
 						onClick={
-							(e: any) => doDocx(
+							(e: IonItemEvent) => doDocx(
 								e,
 								msInfo,
 								showUnused,
@@ -123,14 +125,14 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 					</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doJSON(e, msInfo, doDownload)}
+						onClick={(e: IonItemEvent) => doJSON(e, msInfo, doDownload)}
 					>
 						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />
 						<IonLabel className="ion-text-wrap">JSON File</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doXML(e, msInfo, doDownload)}
+						onClick={(e: IonItemEvent) => doXML(e, msInfo, doDownload)}
 						className="striped"
 					>
 						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />

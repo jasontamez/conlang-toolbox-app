@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -28,6 +28,8 @@ interface ExportModalProps extends ModalProperties {
 	setLoading: Function
 }
 
+type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
+
 const ExportLexiconModal = (props: ExportModalProps) => {
 	const { isOpen, setIsOpen, setLoading } = props;
 	const {
@@ -44,16 +46,16 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	const columnTitles = columns.map((obj) => obj.label);
 	const length = columns.length;
 	const toast = useIonToast();
-	const doTabbed = (e: Event) => doText(e, "\t");
-	const doSemicolons = (e: Event) => doText(e, "; ");
-	const doNewlines = (e: Event) => doText(e, "\n", "\n\n");
-	const doText = (e: Event, separator: string, unitSplit: string = "\n") => {
+	const doTabbed = (e: IonItemEvent) => doText(e, "\t");
+	const doSemicolons = (e: IonItemEvent) => doText(e, "; ");
+	const doNewlines = (e: IonItemEvent) => doText(e, "\n", "\n\n");
+	const doText = (e: IonItemEvent, separator: string, unitSplit: string = "\n") => {
 		const lines: string[] = [columnTitles.join(separator)];
 		lexicon.forEach((lex: Lexicon) => lines.push(lex.columns.join(separator)));
 		const output = title + "\n" + description + "\n\n" + lines.join(unitSplit) + "\n";
 		doDownload(e, output, "txt");
 	};
-	const doCSVall = (e: Event) => {
+	const doCSVall = (e: IonItemEvent) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
 		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
@@ -72,7 +74,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			+ lines.join(length < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
-	const doCSV = (e: Event) => {
+	const doCSV = (e: IonItemEvent) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
 		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
@@ -81,7 +83,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		const output = lines.join("\n") + "\n";
 		doDownload(e, output, "csv");
 	};
-	const doJSON = (e: Event) => {
+	const doJSON = (e: IonItemEvent) => {
 		const counter: {[key: string]: number} = {};
 		const colTitles: string[] = [];
 		columnTitles.forEach((columnTitle: string) => {
@@ -115,7 +117,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		const output = JSON.stringify(base);
 		doDownload(e, output, "json");
 	};
-	const doXML = (e: Event) => {
+	const doXML = (e: IonItemEvent) => {
 		let XML: string =
 			'<?xml version="1.0" encoding="UTF-8"?>'
 			+ `\n<Lexicon>\n\t<Title>${title}</Title>\n\t<Description>${description}</Description>\n\t<Headers>\n`;
@@ -135,7 +137,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		const output = XML + "\t</Content>\n</Lexicon>";
 		doDownload(e, output, "xml");
 	};
-	const doDownload = (e: Event, output: string, extension: string) => {
+	const doDownload = (e: IonItemEvent, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
 		setLoading(true);
@@ -160,31 +162,31 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 					<IonItem>Choose a format:</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doTabbed(e)}
+						onClick={(e: IonItemEvent) => doTabbed(e)}
 					>Text, Tabbed</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doSemicolons(e)}
+						onClick={(e: IonItemEvent) => doSemicolons(e)}
 					>Text, Semicolons</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doNewlines(e)}
+						onClick={(e: IonItemEvent) => doNewlines(e)}
 					>Text, Newlines</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doCSVall(e)}
+						onClick={(e: IonItemEvent) => doCSVall(e)}
 					>CSV File</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doCSV(e)}
+						onClick={(e: IonItemEvent) => doCSV(e)}
 					>CSV File, no title/description</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doJSON(e)}
+						onClick={(e: IonItemEvent) => doJSON(e)}
 					>JSON File</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: any) => doXML(e)}
+						onClick={(e: IonItemEvent) => doXML(e)}
 					>XML File</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, ChangeEventHandler } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -45,10 +45,10 @@ const DJInput = (props: PageData) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
 		dispatch(setInput(trimmed));
 	}, [dispatch]);
-	const inputUpdated = useCallback((e: any) => {
+	const inputUpdated: ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
 		let value: string;
-		if(e.target && e.target.value !== undefined) {
-			value = (e.target.value);
+		if(e.target && e.target.value) {
+			value = String(e.target.value);
 		} else {
 			const el = $i<HTMLInputElement>("djInput");
 			value = el ? el.value : "";

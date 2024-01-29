@@ -53,14 +53,14 @@ import {
 } from './types';
 
 
-const ensureString = (input: any, alternate: any) => (typeof input) !== "string" ? alternate : input;
-const ensureNumber = (input: any, alternate: any) => (
+const ensureString = (input: unknown, alternate: string): string => (typeof input) === "string" ? alternate : (input as string);
+const ensureNumber = (input: unknown, alternate: number): number => (
 	typeof (input) !== "number"
 	|| isNaN(input)
 	|| Math.round(input) !== input
 	? alternate : input
 );
-const ensureLimit = (input: any, alternate: number, min: number, max: number) => (
+const ensureLimit = (input: unknown, alternate: number, min: number, max: number): number => (
 	typeof (input) !== "number"
 	|| isNaN(input)
 	|| Math.round(input) !== input
@@ -68,11 +68,11 @@ const ensureLimit = (input: any, alternate: number, min: number, max: number) =>
 	|| input > max
 	? alternate : input
 );
-const ensureBoolean = (input: any, alternate: any) => typeof (input) !== "boolean" ? alternate : input;
+const ensureBoolean = (input: unknown, alternate: boolean): boolean => typeof (input) !== "boolean" ? alternate : input;
 
-const isString = (input: any) => typeof input === "string";
-const isNumber = (input: any) => typeof input === "number" && !isNaN(input) && Math.round(input) === input;
-const isObject = (input: any) => input && (typeof input === "object");
+const isString = (input: unknown) => typeof input === "string";
+const isNumber = (input: unknown) => typeof input === "number" && !isNaN(input) && Math.round(input) === input;
+const isObject = (input: unknown) => input && (typeof input === "object");
 
 
 const interval = (
@@ -653,7 +653,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 					case "TEXT_clauseChainEtc":
 					case "TEXT_relClauses":
 					case "TEXT_coords":
-						newObj[key] = ensureString(value, newObj[key]);
+						newObj[key] = ensureString(value, newObj[key]!);
 						break;
 					case "BOOL_prefixMost":
 					case "BOOL_prefixLess":
@@ -741,7 +741,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 					case "BOOL_coordMid":
 					case "BOOL_coordTwo":
 					case "BOOL_coordLast":
-						newObj[key] = ensureBoolean(value, newObj[key]);
+						newObj[key] = ensureBoolean(value, newObj[key]!);
 						break;
 					case "NUM_synthesis":
 					case "NUM_fusion":
@@ -750,7 +750,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 					case "NUM_redupe":
 					case "NUM_supraMod":
 					case "NUM_headDepMarked":
-						newObj[key] = ensureNumber(value, newObj[key]);
+						newObj[key] = ensureNumber(value, newObj[key]!);
 						break;
 					case "boolStrings":
 						if(Array.isArray(value)) {
@@ -778,7 +778,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("NUM_" + innerKey) as MSNum;
 								if(props.includes(prop)) {
-									newObj[prop] = ensureNumber(innerValue, newObj[prop]);
+									newObj[prop] = ensureNumber(innerValue, newObj[prop]!);
 								}
 								// Ignore all failed properties
 							});
@@ -790,9 +790,9 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 							Object.entries(value as object).forEach(([innerKey, innerValue]) => {
 								const prop = ("TEXT_" + innerKey) as MSText;
 								if(props.includes(prop)) {
-									newObj[prop] = ensureString(innerValue, newObj[prop]);
+									newObj[prop] = ensureString(innerValue, newObj[prop]!);
 								} else if(innerKey === "case") {
-									newObj.TEXT_nCase = ensureString(innerValue, newObj.TEXT_nCase);
+									newObj.TEXT_nCase = ensureString(innerValue, newObj.TEXT_nCase!);
 								}
 								// Ignore all other failed properties
 							});

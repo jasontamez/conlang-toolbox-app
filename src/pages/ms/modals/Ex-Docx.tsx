@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import {
 	BorderStyle,
 	Document,
@@ -36,7 +37,7 @@ interface Section {
 }
 
 const doDocx = (
-	e: Event,
+	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
 	msInfo: MSState,
 	showUnused: boolean,
 	doClose: Function,

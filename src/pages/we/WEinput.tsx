@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, ChangeEventHandler } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -44,7 +44,7 @@ const WEInput = (props: PageData) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
 		dispatch(setInputWE(trimmed));
 	}, [dispatch]);
-	const inputUpdated = useCallback((e: any) => {
+	const inputUpdated: ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
 		let value: string;
 		if(e.target && e.target.value !== undefined) {
 			value = (e.target.value);

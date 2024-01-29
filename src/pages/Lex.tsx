@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo, memo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -84,7 +84,7 @@ interface LexItem {
 	data: {
 		delFromLex: Function
 		beginEdit: Function
-		maybeExpand: Function
+		maybeExpand: MouseEventHandler<HTMLDivElement>
 		maybeSetForMerge: Function
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
@@ -104,9 +104,9 @@ interface LexItemDeleting {
 	}
 }
 
-function maybeExpand (e: any, toast: UseIonToastResult) {
+function maybeExpand (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, toast: UseIonToastResult) {
 	// Expand an overflowing field into a toast
-	const span = e.target;
+	const span = e.target as HTMLSpanElement;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
 		const message = (span && (span.textContent as string)) || "<error>";
 		toaster({
@@ -161,7 +161,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				{maybeMerging}
 				{cols.map((item: string, i: number) => (
 					<div
-						onClick={(e) => maybeExpand(e)}
+						onClick={maybeExpand}
 						key={`${id}:col${i}`}
 						className={
 							"lexItem selectable "
@@ -404,7 +404,7 @@ const Lex = (props: PageData) => {
 		// clear all inputs
 		ids.forEach((id: string) => {
 			const el = $i<HTMLIonInputElement>(id);
-			el && el.getInputElement().then((el: any) => (el.value = ""));
+			el && el.getInputElement().then((el) => (el.value = ""));
 		});
 	}, [columns, dispatch, doAlert, sorter]);
 
@@ -462,7 +462,7 @@ const Lex = (props: PageData) => {
 	}, []);
 
 	// memoize stuff for Lexicon display
-	const expander = useCallback((e: any) => maybeExpand(e, toast), [toast]);
+	const expander: MouseEventHandler<HTMLDivElement> = useCallback((e) => maybeExpand(e, toast), [toast]);
 	const fixedSizeListData = createItemData(delFromLex, beginEdit, maybeSetForMerge, expander, columns, lexicon, merging);
 	const toggleDeleting = useCallback((item: Lexicon) => {
 		const {id} = item;

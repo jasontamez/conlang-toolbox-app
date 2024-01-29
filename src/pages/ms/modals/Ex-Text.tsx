@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import { $and } from '../../../components/DollarSignExports';
 import log from '../../../components/Logging';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
@@ -5,7 +6,7 @@ import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 import { specificPageInfo } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
 
-const doText = (e: Event, msInfo: MSState, doDownload: Function, showUnused: boolean, usingMarkDown = false) => {
+const doText = (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, msInfo: MSState, doDownload: Function, showUnused: boolean, usingMarkDown = false) => {
 	const { title, description = "[NO DESCRIPTION PROVIDED]" } = msInfo;
 	const lines: string[] = [];
 	const sections: string[] = ms.sections;
