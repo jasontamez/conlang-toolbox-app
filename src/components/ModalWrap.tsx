@@ -10,8 +10,9 @@ import {
 	IonModal
 } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
+import { SetBooleanState } from '../store/types';
 
-const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: Function}>) => {
+const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBooleanState}>) => {
 	const {
 		isOpen,
 		setIsOpen,

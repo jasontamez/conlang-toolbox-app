@@ -15,7 +15,7 @@ import {
 } from "docx";
 import { UseIonToastResult } from "@ionic/react";
 
-import { MSBool, MSNum, MSState, MSText } from "../../../store/types";
+import { MSBool, MSNum, MSState, MSText, SetBooleanState } from "../../../store/types";
 
 import doExport from '../../../components/ExportServices';
 import log_original from '../../../components/Logging';
@@ -40,10 +40,10 @@ const doDocx = (
 	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
 	msInfo: MSState,
 	showUnused: boolean,
-	doClose: Function,
-	setLoading: Function,
+	doClose: () => void,
+	setLoading: SetBooleanState,
 	toast: UseIonToastResult,
-	log: Function
+	log: (x: string[]) => void
 ) => {
 	const { title, description } = msInfo;
 	const msSections: string[] = msRawInfo.sections;

@@ -25,7 +25,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { deleteLexiconItem, doEditLexiconItem } from '../../store/lexiconSlice';
-import { ExtraCharactersModalOpener, Lexicon, LexiconColumn, StateObject } from '../../store/types';
+import { ExtraCharactersModalOpener, Lexicon, LexiconColumn, SorterFunc, StateObject } from '../../store/types';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -34,7 +34,7 @@ import { $i } from '../../components/DollarSignExports';
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
 	columnInfo: LexiconColumn[]
-	sorter: Function
+	sorter: SorterFunc
 }
 
 function garble () {

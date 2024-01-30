@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WESoundChangeObject, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
+import { WESoundChangeObject, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
 import { deleteSoundChangeWE, editSoundChangeWE } from '../../../store/weSlice';
 
 import repairRegexErrors from '../../../components/RepairRegex';
@@ -35,7 +35,7 @@ import toaster from '../../../components/toaster';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WESoundChangeObject
-	setEditing: Function
+	setEditing: SetState<null | WESoundChangeObject>
 }
 
 const EditSoundChangeModal = (props: ModalProps) => {

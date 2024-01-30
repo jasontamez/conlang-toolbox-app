@@ -17,7 +17,7 @@ import {
 	reorderThree
 } from 'ionicons/icons';
 
-import { PageData } from '../../store/types';
+import { PageData, SetBooleanState } from '../../store/types';
 
 import Header from '../../components/Header';
 import { DJGroupsIcon, DeclenjugatorIcon } from '../../components/icons';
@@ -25,7 +25,7 @@ import { RegularExpressions } from '../../components/regularExpressionsInfo';
 
 interface CardProps {
 	hideOverview?: boolean
-	setIsOpenInfo?: Function
+	setIsOpenInfo?: SetBooleanState
 }
 const OverviewButton = (props: CardProps) => {
 	const { hideOverview, setIsOpenInfo } = props;

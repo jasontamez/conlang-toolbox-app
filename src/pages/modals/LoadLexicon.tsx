@@ -21,13 +21,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { loadStateLex } from '../../store/lexiconSlice';
-import { LexiconState, ModalProperties, StateObject } from '../../store/types';
+import { LexiconState, ModalProperties, SetState, StateObject } from '../../store/types';
 
 import yesNoAlert from '../../components/yesNoAlert';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconState][]
-	setLexInfo: Function
+	setLexInfo: SetState<[string, LexiconState][]>
 }
 
 const LoadLexiconModal = (props: SavedLexProperties) => {

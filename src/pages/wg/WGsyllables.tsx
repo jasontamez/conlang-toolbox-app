@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
+import { PageData, SetState, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
 import { setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes, clearSyllables } from '../../store/wgSlice';
 
 import toaster from '../../components/toaster';
@@ -87,7 +87,7 @@ const WGSyl = (props: PageData) => {
 		setWf(wordFinal);
 	}, [wordFinal]);
 	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
-	const toggleSeparateDropoff = (value: Zero_Fifty | null, func: Function) => {
+	const toggleSeparateDropoff = (value: Zero_Fifty | null, func: SetState<Zero_Fifty | null>) => {
 		func(value === null ? syllableBoxDropoff : null);
 	};
 	const firstBox = multipleSyllableTypes ? "Single-Syllable\nWords" : "Syllables";

@@ -82,10 +82,10 @@ interface LexItem {
 		[key: string]: any
 	}
 	data: {
-		delFromLex: Function
-		beginEdit: Function
+		delFromLex: (i: Lexicon) => void
+		beginEdit: (i: Lexicon) => void
 		maybeExpand: MouseEventHandler<HTMLDivElement>
-		maybeSetForMerge: Function
+		maybeSetForMerge: (i: Lexicon) => void
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
 		merging: string[]
@@ -99,7 +99,7 @@ interface LexItemDeleting {
 	data: {
 		columns: LexiconColumn[]
 		lexicon: Lexicon[]
-		toggleDeleting: Function,
+		toggleDeleting: (i: Lexicon) => void,
 		deletingObj: { [ key: string ]: boolean }
 	}
 }

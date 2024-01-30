@@ -1,11 +1,12 @@
 import React, { ReactElement } from "react";
+import { Dispatch } from "redux";
 import { UseIonToastResult } from "@ionic/react";
 import { DJCustomInfo, DJGroup, RegexPair } from "../store/types";
+import exportDocx from "../pages/dj/modals/ExportToDocx";
 import ltr from "./LTR";
 import log from "./Logging";
 import toaster from "./toaster";
 import doExport from "./ExportServices";
-import exportDocx from "../pages/dj/modals/ExportToDocx";
 
 export type DJDisplayMethods = "text" | "chartTH" | "chartSH";
 export type DJFormatTypes = "text" | "csv" | "docx";
@@ -474,7 +475,7 @@ export const exporter = (
 	displayMethod: DJDisplayMethods,
 	format: DJFormatTypes,
 	showUnmatched: boolean | null,
-	dispatch: Function,
+	dispatch: Dispatch,
 	toast: UseIonToastResult
 ) => {
 	const {

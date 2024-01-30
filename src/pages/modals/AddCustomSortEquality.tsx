@@ -25,14 +25,14 @@ import {
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EqualityObject, ExtraCharactersModalOpener, SortSeparator } from '../../store/types';
+import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
-	setSavedEquality: Function
+	setSavedEquality: SetState<EqualityObject | null>
 }
 
 const AddCustomSortEquality = (props: CustomSortModal) => {

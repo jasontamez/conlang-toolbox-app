@@ -1,5 +1,6 @@
 //import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Dispatch } from 'redux';
 
 import {
 	CustomStorageWE,
@@ -84,7 +85,7 @@ const interval = (
 // Arbitrary date
 const cleanStoreIfLastCleanBefore = 1700726000000;
 
-const maybeCleanState = (dispatch: Function, lastClean: number) => {
+const maybeCleanState = (dispatch: Dispatch, lastClean: number) => {
 	const now = Date.now();
 	// Maybe Clean Storages
 	if(
@@ -122,13 +123,15 @@ export default maybeCleanState;
 
 type StorageInfo = [string, any][];
 
-const cleanStorages = (dispatch: Function) => {
+type EasyLogger = (x: any[], ...y: any[]) => void;
+
+const cleanStorages = (dispatch: Dispatch) => {
 	const lexS: StorageInfo = [];
 	const msS: StorageInfo = [];
 	const wgS: StorageInfo = [];
 	const weS: StorageInfo = [];
 	const djS: StorageInfo = [];
-	const logger = (main: any[], ...args: any[]) => log(dispatch, main, ...args);
+	const logger: EasyLogger = (main, ...args) => log(dispatch, main, ...args);
 	LexiconStorage.iterate((value: any, key: string) => {
 		lexS.push([key, value]);
 		return; // Blank return keeps the loop going
@@ -156,7 +159,7 @@ const cleanStorages = (dispatch: Function) => {
 	});
 };
 
-const cleanLexiconStorage = (input: StorageInfo, logger: Function) => {
+const cleanLexiconStorage = (input: StorageInfo, logger: EasyLogger) => {
 	input.forEach(pair => {
 		const [originalKey, originalObj] = pair;
 		try {
@@ -401,7 +404,7 @@ export const createCleanWordGenStorageObject = (...objects: any[]) => {
 	}
 	return false;
 };
-const cleanWordGenStorage = (input: StorageInfo, logger: Function) => {
+const cleanWordGenStorage = (input: StorageInfo, logger: EasyLogger) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -536,7 +539,7 @@ export const createCleanWordEvolveStorageObject = (...objects: any[]) => {
 	}
 	return false;
 };
-const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
+const cleanWordEvolveStorage = (input: StorageInfo, logger: EasyLogger) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -567,7 +570,7 @@ const cleanWordEvolveStorage = (input: StorageInfo, logger: Function) => {
 	});
 };
 
-const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
+const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: EasyLogger) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {
@@ -810,7 +813,7 @@ const cleanMorphoSyntaxStorage = (input: StorageInfo, logger: Function) => {
 	});
 };
 
-const cleanDeclenjugatorStorage = (input: StorageInfo, logger: Function) => {
+const cleanDeclenjugatorStorage = (input: StorageInfo, logger: EasyLogger) => {
 	input.forEach(pair => {
 		const [key, obj] = pair;
 		try {

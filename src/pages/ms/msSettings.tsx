@@ -21,9 +21,10 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
+import { Action, Dispatch } from 'redux';
 import { useDispatch, useSelector } from "react-redux";
 
-import { PageData, MSState, StateObject } from '../../store/types';
+import { PageData, MSState, StateObject, SetBooleanState } from '../../store/types';
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import { setLastViewMS } from '../../store/internalsSlice';
 import blankAppState from '../../store/blankAppState';
@@ -85,7 +86,7 @@ const Syntax = (props: PageData) => {
 			handler();
 		}
 	};
-	const openMSModal = (modalOpener: Function) => {
+	const openMSModal = (modalOpener: SetBooleanState) => {
 		const info: [string, MSState][] = [];
 		setIsLoading(true);
 		MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
@@ -196,7 +197,7 @@ const Syntax = (props: PageData) => {
 	const setNewInfo = (id: string, prop: "description" | "title") => {
 		const el = $i<HTMLInputElement>(id);
 		const value = el ? el.value.trim() : "";
-		debounce(
+		debounce<Dispatch, Action>(
 			dispatch,
 			[setMorphoSyntaxText([prop, value])],
 			(prop === "description" ? 2000 : 1000),

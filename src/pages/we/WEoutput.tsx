@@ -32,6 +32,7 @@ import { Clipboard } from '@capacitor/clipboard';
 import {
 	LexiconColumn,
 	PageData,
+	SetState,
 	SortObject,
 	StateObject,
 	WECharGroupObject,
@@ -439,7 +440,7 @@ const WEOut = (props: PageData) => {
 		const arrowRL = "⟵";
 		const reverse = (outputStyle === "outputFirst");
 		const arrow = (ltr($i("outputPaneWE") || document.body) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
-		let setter: Function = setDisplayOutputInput;
+		let setter: SetState<string[][]> = setDisplayOutputInput;
 		switch(outputStyle) {
 			case "outputOnly":
 				// [word...]

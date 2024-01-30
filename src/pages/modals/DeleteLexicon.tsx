@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
-import { LexiconState, ModalProperties, StateObject } from '../../store/types';
+import { LexiconState, ModalProperties, SetBooleanState, SetState, StateObject } from '../../store/types';
 
 import { LexiconStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -29,8 +29,8 @@ import toaster from '../../components/toaster';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconState][]
-	setLexInfo: Function
-	setLoadingScreen: Function
+	setLexInfo: SetState<[string, LexiconState][]>
+	setLoadingScreen: SetBooleanState
 }
 
 const DeleteLexiconModal = (props: SavedLexProperties) => {

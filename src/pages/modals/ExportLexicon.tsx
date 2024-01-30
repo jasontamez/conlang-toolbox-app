@@ -19,13 +19,13 @@ import {
 } from 'ionicons/icons';
 import { useDispatch, useSelector } from "react-redux";
 
-import { Lexicon, ModalProperties, StateObject } from '../../store/types';
+import { Lexicon, ModalProperties, SetBooleanState, StateObject } from '../../store/types';
 
 import doExport from '../../components/ExportServices';
 import log from '../../components/Logging';
 
 interface ExportModalProps extends ModalProperties {
-	setLoading: Function
+	setLoading: SetBooleanState
 }
 
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	IonContent,
@@ -43,7 +43,7 @@ import { $i } from '../../components/DollarSignExports';
 
 interface ImporterProps extends ExtraCharactersModalOpener {
 	currentInput: string
-	importFunc: Function
+	importFunc: (a: string) => void
 }
 
 interface ColumnTest {
@@ -84,11 +84,11 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 };
 
 // Printing out matching tests
-const displayTest = (text: string, deleter: Function, finalFlag: boolean) => {
+const displayTest = (text: string, deleter: MouseEventHandler<HTMLIonItemOptionElement>) => {
 	return (
 		<IonItemSliding className="importFromLexiconSlider" key={`displayingTest:${text}`}>
 			<IonItemOptions>
-				<IonItemOption color="danger" onClick={() => deleter()}>
+				<IonItemOption color="danger" onClick={deleter}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
@@ -542,8 +542,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									{wordTests.map((test, i) => {
 										return displayTest(
 											test,
-											() => deleteWordTest(test),
-											(i + 1) === wordTests.length
+											() => deleteWordTest(test)
 										)
 									})}
 								</>
@@ -554,8 +553,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									{wordMatches.map((test, i) => {
 										return displayTest(
 											`/${test}/`,
-											() => deleteWordMatch(test),
-											(i + 1) === wordMatches.length
+											() => deleteWordMatch(test)
 										)
 									})}
 								</>
@@ -567,8 +565,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 										const {col, test} = obj;
 										return displayTest(
 											`[${columns[col].label}] contains "${test}"`,
-											() => deleteColumnTest(col, test),
-											(i + 1) === columnTests.length
+											() => deleteColumnTest(col, test)
 										)
 									})}
 								</>
@@ -580,8 +577,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 										const {col, test} = obj;
 										return displayTest(
 											`[${columns[col].label}] matches /${test}/`,
-											() => deleteColumnMatch(col, test),
-											(i + 1) === columnMatches.length
+											() => deleteColumnMatch(col, test)
 										)
 									})}
 								</>

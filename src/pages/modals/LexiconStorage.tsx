@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { loadStateLex, updateLexiconNumber, updateLexiconText } from '../../store/lexiconSlice';
-import { Lexicon, LexiconState, ModalProperties, StateObject } from '../../store/types';
+import { Lexicon, LexiconState, ModalProperties, SetBooleanState, SetState, StateObject } from '../../store/types';
 import blankAppState from '../../store/blankAppState';
 
 import { LexiconStorage } from '../../components/PersistentInfo';
@@ -36,11 +36,11 @@ import toaster from '../../components/toaster';
 
 // load, delete, export
 interface StorageModalProps extends ModalProperties {
-	openLoad: Function,
-	openDelete: Function,
-	openExport: Function,
-	setLoading: Function,
-	setLexInfo: Function
+	openLoad: SetBooleanState,
+	openDelete: SetBooleanState,
+	openExport: SetBooleanState,
+	setLoading: SetBooleanState,
+	setLexInfo: SetState<[string, LexiconState][]>
 }
 
 const LexiconStorageModal = (props: StorageModalProps) => {
@@ -99,7 +99,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			});
 		}
 	};
-	const openLexiconModal = (whichToOpen: Function) => {
+	const openLexiconModal = (whichToOpen: SetBooleanState) => {
 		const info: [string, LexiconState][] = [];
 		setLoading(true);
 		LexiconStorage.iterate((value: LexiconState, key: string) => {

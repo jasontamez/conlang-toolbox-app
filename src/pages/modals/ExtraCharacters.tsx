@@ -23,6 +23,7 @@ import {
 	readerOutline,
 	heartOutline
 } from 'ionicons/icons';
+import { Action, Dispatch } from 'redux';
 import { useSelector, useDispatch } from "react-redux";
 import capitalize from 'capitalize';
 import { Clipboard } from '@capacitor/clipboard';
@@ -120,7 +121,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		dispatch(toggleCopyImmediately());
 	}, [dispatch, copyImmediately, toast]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
-		debounce(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
+		debounce<Dispatch, Action>(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue: boolean) => {
 		setIsFavoriting(newValue);

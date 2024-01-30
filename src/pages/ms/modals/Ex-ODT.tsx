@@ -1,4 +1,5 @@
 export {};
+//import { MouseEvent } from "react";
 //import {
 //	TextDocument,
 //	Paragraph as P,
@@ -15,7 +16,11 @@ export {};
 //import ms from './ms.json';
 //
 //
-//const doODT = (e: Event, msInfo: MorphoSyntaxObject, doDownload: Function) => {
+//const doODT = (
+//	e: Event,
+//	msInfo: MorphoSyntaxObject,
+//	doDownload: (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, x: string, y: string) => void
+//) => {
 //	const bool = msInfo.bool;
 //	const num = msInfo.num;
 //	const text = msInfo.text;

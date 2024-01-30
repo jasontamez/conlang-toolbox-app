@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 
 import blankAppState, { cleanerObject } from './blankAppState';
-import { Lexicon, LexiconBlankSorts, LexiconColumn, LexiconState } from './types';
+import { Lexicon, LexiconBlankSorts, LexiconColumn, LexiconState, SorterFunc } from './types';
 import log from '../components/Logging';
 
 const initialState = blankAppState.lexicon;
@@ -29,7 +29,7 @@ const sortLexicon = (
 	sortPattern: number[],
 	sortDir: boolean,
 	blankSort: LexiconBlankSorts,
-	stringSorter: Function
+	stringSorter: SorterFunc
 ) => {
 	const maxCol = sortPattern.length;
 	const [xIsBlank, yIsBlank] = sortBlank(sortDir, blankSort);
@@ -110,12 +110,12 @@ const updateLexiconNumberFunc = (state: LexiconState, action: PayloadAction<["la
 	state[prop] = value;
 	return state;
 };
-const addLexiconItemFunc = (state: LexiconState, action: PayloadAction<[Lexicon, Function]>) => {
+const addLexiconItemFunc = (state: LexiconState, action: PayloadAction<[Lexicon, SorterFunc]>) => {
 	const [lexObj, sorter] = action.payload;
 	state.lexicon = sortLexicon([lexObj, ...state.lexicon], state.sortPattern, state.sortDir, state.blankSort, sorter);
 	return state;
 };
-const addItemsToLexiconColumnFunc = (state: LexiconState, action: PayloadAction<[ string[], string, Function ]>) => {
+const addItemsToLexiconColumnFunc = (state: LexiconState, action: PayloadAction<[ string[], string, SorterFunc ]>) => {
 	const totalNumberOfColumns = state.columns.length;
 	const [items, columnId, sorter] = action.payload;
 	let columnNumber = 0;
@@ -140,7 +140,7 @@ const addItemsToLexiconColumnFunc = (state: LexiconState, action: PayloadAction<
 	state.lexicon = sortLexicon(state.lexicon, state.sortPattern, state.sortDir, state.blankSort, sorter);
 	return state;
 };
-const editLexiconItemFunc = (state: LexiconState, action: PayloadAction<[Lexicon, Function]>) => {
+const editLexiconItemFunc = (state: LexiconState, action: PayloadAction<[Lexicon, SorterFunc]>) => {
 	//editLexiconItem({item})
 	const [editedItem, sorter] = action.payload;
 	const editedID = editedItem.id;
@@ -163,13 +163,13 @@ const deleteMultipleLexiconItemsFunc = (state: LexiconState, action: PayloadActi
 	});
 	return state;
 };
-const updateLexiconSortFunc = (state: LexiconState, action: PayloadAction<[number[], Function]>) => {
+const updateLexiconSortFunc = (state: LexiconState, action: PayloadAction<[number[], SorterFunc]>) => {
 	const [sortPattern, sorter] = action.payload;
 	state.sortPattern = sortPattern;
 	state.lexicon = sortLexicon([...state.lexicon], sortPattern, state.sortDir, state.blankSort, sorter);
 	return state;
 };
-const updateLexiconSortDirFunc = (state: LexiconState, action: PayloadAction<[boolean, Function]>) => {
+const updateLexiconSortDirFunc = (state: LexiconState, action: PayloadAction<[boolean, SorterFunc]>) => {
 	const [sortDir, sorter] = action.payload;
 	state.sortDir = sortDir;
 	state.lexicon = sortLexicon([...state.lexicon], state.sortPattern, sortDir, state.blankSort, sorter);
@@ -186,7 +186,7 @@ const setFontTypeFunc = (state: LexiconState, action: PayloadAction<string>) => 
 	state.fontType = action.payload;
 	return state;
 };
-const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexicon[], Lexicon, Function]>) => {
+const mergeLexiconItemsFunc = ( state: LexiconState, action: PayloadAction<[Lexicon[], Lexicon, SorterFunc]>) => {
 	const [lexiconItemsBeingMerged, merged, sorter] = action.payload;
 	merged.id = uuidv4();
 	const newLexicon = [merged, ...state.lexicon.filter((lex) => lexiconItemsBeingMerged.every((lx) => lx.id !== lex.id))];
@@ -202,7 +202,7 @@ const updateLexiconColumarInfoFunc = (
 		boolean,
 		LexiconBlankSorts,
 		string | undefined,
-		Function]>
+		SorterFunc]>
 ) => {
 	const [
 		lex,

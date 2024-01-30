@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WEPresetObject, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
+import { WEPresetObject, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
 import { loadStateWE } from '../../../store/weSlice';
 
 import escape from '../../../components/EscapeForHTML';
@@ -37,7 +37,7 @@ import toaster from '../../../components/toaster';
 
 interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 	titles: string[]
-	setTitles: Function
+	setTitles: SetState<string[]>
 }
 
 const ManageCustomInfoWE = (props: CustomInfoModalProps) => {

@@ -24,7 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, StateObject, WGTransformObject } from '../../../store/types';
+import { ExtraCharactersModalOpener, SetState, StateObject, WGTransformObject } from '../../../store/types';
 import { editTransformWG, deleteTransformWG } from '../../../store/wgSlice';
 
 import repairRegexErrors from '../../../components/RepairRegex';
@@ -35,7 +35,7 @@ import toaster from '../../../components/toaster';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WGTransformObject
-	setEditing: Function
+	setEditing: SetState<null | WGTransformObject>
 }
 
 const EditTransformModal = (props: ModalProps) => {

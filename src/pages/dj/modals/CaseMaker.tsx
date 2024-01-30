@@ -23,14 +23,15 @@ import {
 } from 'ionicons/icons';
 
 import {
-	ExtraCharactersModalOpener
+	ExtraCharactersModalOpener,
+	SetState
 } from '../../../store/types';
 
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 
 interface CaseMakerModal extends ExtraCharactersModalOpener {
-	setSavedTitle: Function
+	setSavedTitle: SetState<string>
 }
 
 const titleOptions: [string, ...(string | string[])[]][] = [

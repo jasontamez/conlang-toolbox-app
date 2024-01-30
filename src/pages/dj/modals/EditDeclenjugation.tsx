@@ -30,6 +30,7 @@ import {
 	Declenjugation,
 	ExtraCharactersModalOpener,
 	ModalProperties,
+	SetState,
 	StateObject
 } from '../../../store/types';
 
@@ -40,10 +41,10 @@ import { useSelector } from 'react-redux';
 
 interface EditDJModal extends ExtraCharactersModalOpener {
 	incomingDeclenjugation: Declenjugation | null
-	setOutgoingDeclenjugation: Function
+	setOutgoingDeclenjugation: SetState<Declenjugation | null | string>
 	caseMakerModalInfo: ModalProperties
 	savedTitle: string
-	setSavedTitle: Function
+	setSavedTitle: SetState<string>
 	typeString: string
 }
 

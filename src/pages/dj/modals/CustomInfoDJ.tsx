@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { DJCustomInfo, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
+import { DJCustomInfo, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
@@ -37,7 +37,7 @@ import { loadStateDJ } from '../../../store/declenjugatorSlice';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
-	setTitles: Function
+	setTitles: SetState<string[] | null>
 }
 
 const ManageCustomInfo = (props: ExtraInfo) => {

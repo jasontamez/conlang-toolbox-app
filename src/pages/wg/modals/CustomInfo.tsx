@@ -26,7 +26,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Base_WG, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
+import { Base_WG, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
 
 import escape from '../../../components/EscapeForHTML';
@@ -37,7 +37,7 @@ import toaster from '../../../components/toaster';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
-	setTitles: Function
+	setTitles: SetState<string[] | null>
 }
 
 const ManageCustomInfo = (props: ExtraInfo) => {

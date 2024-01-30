@@ -40,6 +40,7 @@ import {
 	ExtraCharactersModalOpener,
 	ModalProperties,
 	RelationObject,
+	SetState,
 	SortLanguage,
 	SortObject,
 	SortSensitivity,
@@ -60,21 +61,21 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 
 	addRelationModalInfo: ModalProperties
 	savedRelation: RelationObject | null
-	setSavedRelation: Function
+	setSavedRelation: SetState<RelationObject | null>
 
 	editRelationModalInfo: ModalProperties
-	setIncomingRelation: Function
+	setIncomingRelation: SetState<RelationObject | null>
 	outgoingRelation: RelationObject | null | string
-	setOutgoingRelation: Function
+	setOutgoingRelation: SetState<RelationObject | null | string>
 
 	addEqualityModalInfo: ModalProperties
 	savedEquality: EqualityObject | null
-	setSavedEquality: Function
+	setSavedEquality: SetState<EqualityObject | null>
 
 	editEqualityModalInfo: ModalProperties
-	setIncomingEquality: Function
+	setIncomingEquality: SetState<EqualityObject | null>
 	outgoingEquality: EqualityObject | null | string
-	setOutgoingEquality: Function
+	setOutgoingEquality: SetState<EqualityObject | null | string>
 }
 
 const permanents = PermanentInfo.sort.permanentCustomSorts;

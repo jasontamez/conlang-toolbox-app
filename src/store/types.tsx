@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { LanguageCode } from "iso-639-1";
 import NumericRange from "../components/NumericRange";
 
@@ -46,6 +47,8 @@ export interface SortObject {
 	customizations?: (RelationObject | EqualityObject)[]
 	multiples?: string[]
 }
+
+export type SorterFunc = (x: string, y: string) => number
 
 export interface SortInformation {
 	sortLanguage: SortLanguage
@@ -397,19 +400,23 @@ export interface StateObject {
 	internals: InternalState
 }
 
+export type SetState<T extends unknown> = Dispatch<SetStateAction<T>>;
+export type SetBooleanState = SetState<boolean>;
+export type ModalPropsMaker = (x: boolean, y: SetBooleanState) => ({isOpen: boolean, setIsOpen: SetBooleanState})
+
 export interface PageData {
-	modalPropsMaker: Function
+	modalPropsMaker: ModalPropsMaker
 }
 
 export interface ModalProperties {
 	isOpen: boolean
-	setIsOpen: Function
+	setIsOpen: SetBooleanState
 }
 
 export interface ExtraCharactersModalOpener {
 	isOpen: boolean
-	setIsOpen: Function
-	openECM: Function
+	setIsOpen: SetBooleanState
+	openECM: SetBooleanState
 }
 
 // Import / Export/ Archive / Cleaning

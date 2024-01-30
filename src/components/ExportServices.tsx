@@ -3,12 +3,13 @@ import sanitize from 'sanitize-filename';
 import toaster from './toaster';
 import log from './Logging';
 import { UseIonToastResult } from '@ionic/react';
+import { Dispatch } from 'redux';
 
 const doExport = async (
 	output: string,
 	fileName: string,
 	toast: UseIonToastResult,
-	dispatch: Function | null,
+	dispatch: Dispatch | null,
 	encodeUTF: boolean = true
 ) => {
 	const Docs = Directory.Documents;

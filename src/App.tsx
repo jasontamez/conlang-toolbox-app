@@ -16,6 +16,8 @@ import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
 
 import { setDefaultSortLanguage } from './store/internalsSlice';
+import { SetBooleanState, StateObject } from './store/types';
+import maybeCleanState from './store/cleaning';
 
 import Menu from './components/Menu';
 
@@ -53,11 +55,9 @@ import { StateStorage } from './components/PersistentInfo';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
-import maybeCleanState from './store/cleaning';
-import { StateObject } from './store/types';
 
 export const MainOutlet = memo(() => {
-	const [modals, setModals] = useState<Function[]>([]);
+	const [modals, setModals] = useState<SetBooleanState[]>([]);
 	const [doAlert] = useIonAlert();
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
@@ -104,7 +104,7 @@ export const MainOutlet = memo(() => {
 		}).remove;
 	}, [modals, navigator, dispatch, doAlert]);
 	return (
-		<IonRouterOutlet>
+		<IonRouterOutlet placeholder>
 			<Route path="/wg" component={() => <WG {...defaultProps} />} />
 			<Route path="/we" component={() => <WE {...defaultProps} />} />
 			<Route path="/dj" component={() => <DJ {...defaultProps} />} />
@@ -149,7 +149,7 @@ const App = memo(() => {
 	useEffect(() => {
 		maybeCleanState(dispatch, lastClean);
 	}, [dispatch, lastClean]);
-	const [modals, setModals] = useState<Function[]>([]);
+	const [modals, setModals] = useState<SetBooleanState[]>([]);
 	const [doAlert] = useIonAlert();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
 	const defaultProps = {
@@ -201,7 +201,7 @@ const App = memo(() => {
 			<IonReactRouter>
 				<IonSplitPane contentId="main" when="xl">
 					<Menu />
-					<IonRouterOutlet id="main">
+					<IonRouterOutlet id="main" placeholder>
 						<Route path="/wg" render={() => <Suspense fallback={<Loading />}><WG {...defaultProps} /></Suspense>} />
 						<Route path="/we" render={() => <Suspense fallback={<Loading />}><WE {...defaultProps} /></Suspense>} />
 						<Route path="/dj" render={() => <Suspense fallback={<Loading />}><DJ {...defaultProps} /></Suspense>} />

@@ -350,9 +350,6 @@ const DJGroups = (props: PageData) => {
 				{...modalPropsMaker(isOpenAddGroup, setIsOpenAddGroup)}
 				openECM={setIsOpenECM}
 
-				caseMakerModalInfo={caseMakerModalInfo}
-				savedTitle={savedTitle}
-
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}
 				setSavedDeclenjugation={setSavedDeclenjugation}
@@ -368,9 +365,6 @@ const DJGroups = (props: PageData) => {
 				openECM={setIsOpenECM}
 
 				editingGroupInfo={editingGroup}
-
-				caseMakerModalInfo={caseMakerModalInfo}
-				savedTitle={savedTitle}
 
 				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
 				savedDeclenjugation={savedDeclenjugation}

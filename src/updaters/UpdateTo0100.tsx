@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { loadStateConcepts } from "../store/conceptsSlice";
 import { loadStateEC } from "../store/extraCharactersSlice";
 import { loadStateLex } from "../store/lexiconSlice";
@@ -23,7 +24,7 @@ import { loadStateWG } from "../store/wgSlice";
 import * as oldTypes from "./oldReduxTypes";
 
 // Updating to 0.10.0
-function doUpdate (incomingState: oldTypes.StateObject, dispatch: Function) {
+function doUpdate (incomingState: oldTypes.StateObject, dispatch: Dispatch) {
 	dispatch(loadStateWG(updateWG(incomingState)));
 	dispatch(loadStateWE(updateWE(incomingState)));
 	dispatch(loadStateMS(updateMS(incomingState)));

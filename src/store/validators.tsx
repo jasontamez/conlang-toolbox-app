@@ -21,7 +21,10 @@ const notString = (input: unknown) => typeof (input) !== "string";
 const notNumber = (input: unknown) => typeof (input) !== "number" || isNaN(input) || Math.round(input) !== input;
 const notBoolean = (input: unknown) => typeof (input) !== "boolean";
 const notArray = (input: unknown) => !Array.isArray(input);
-const notArrayOf = (input: unknown, func: Function) => notArray(input) || (input as unknown[]).some((item: unknown) => func(item));
+const notArrayOf = <T extends unknown>(
+	input: unknown,
+	func: ((x: T, flag?: boolean) => boolean)
+) => notArray(input) || (input as T[]).some((item: T) => func(item));
 
 const invalidCharGroupObject = (object: unknown, flag = false) => {
 	if(notObject(object)) {

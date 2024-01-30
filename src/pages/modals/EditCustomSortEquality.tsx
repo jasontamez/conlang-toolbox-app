@@ -25,7 +25,7 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, EqualityObject, SortSeparator } from '../../store/types';
+import { ExtraCharactersModalOpener, EqualityObject, SortSeparator, SetState } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -33,7 +33,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	incomingEquality: EqualityObject | null
-	setOutgoingEquality: Function
+	setOutgoingEquality: SetState<EqualityObject | null | string>
 }
 
 const EditCustomSortEquality = (props: CustomSortModal) => {

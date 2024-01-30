@@ -109,7 +109,7 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 		&& incomingState.appSettings
 		&& originalState.appSettings
 		&& (incomingState.appSettings.theme !== originalState.appSettings.theme)) {
-		debounce<string>(
+		debounce<(x: string, y: string) => void, string>(
 			maybeUpdateTheme,
 			[
 				originalState.appSettings.theme as string || "Default",

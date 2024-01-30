@@ -46,7 +46,7 @@ import PermanentInfo from '../components/PermanentInfo';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
-const languages = Intl.Collator.supportedLocalesOf(codes);
+const languages = Intl.Collator.supportedLocalesOf(codes) as LanguageCode[];
 const langObj: {[key: string]: string} = {
 	unicode: "language-independent"
 };
@@ -168,6 +168,7 @@ const SortSettings = (props: PageData) => {
 			/>
 			<EditCustomSortRelation
 				{...editRelationModalInfo}
+				openECM={setIsOpenECM}
 				incomingRelation={incomingRelation}
 				setOutgoingRelation={setOutgoingRelation}
 			/>
@@ -178,6 +179,7 @@ const SortSettings = (props: PageData) => {
 			/>
 			<EditCustomSortEquality
 				{...editEqualityModalInfo}
+				openECM={setIsOpenECM}
 				incomingEquality={incomingEquality}
 				setOutgoingEquality={setOutgoingEquality}
 			/>

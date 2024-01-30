@@ -43,6 +43,7 @@ import {
 	Declenjugation,
 	ExtraCharactersModalOpener,
 	ModalProperties,
+	SetState,
 	StateObject
 } from '../../../store/types';
 import { addGroup, deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
@@ -61,13 +62,13 @@ interface EditGroupProps extends ExtraCharactersModalOpener {
 
 	addDeclenjugationModalInfo: ModalProperties
 	savedDeclenjugation: Declenjugation | null
-	setSavedDeclenjugation: Function
-	setDeclenjugationType: Function
+	setSavedDeclenjugation: SetState<Declenjugation | null>
+	setDeclenjugationType: SetState<string>
 
 	editDeclenjugationModalInfo: ModalProperties
-	setIncomingDeclenjugation: Function
+	setIncomingDeclenjugation: SetState<Declenjugation | null>
 	outgoingDeclenjugation: Declenjugation | null | string
-	setOutgoingDeclenjugation: Function
+	setOutgoingDeclenjugation: SetState<Declenjugation | null | string>
 }
 
 const EditGroup = (props: EditGroupProps) => {

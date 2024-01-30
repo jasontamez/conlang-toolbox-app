@@ -13,6 +13,7 @@ import {
 	WidthType
 } from "docx";
 import { UseIonToastResult } from "@ionic/react";
+import { Dispatch } from "redux";
 
 import doExport from '../../../components/ExportServices';
 import { DJDisplayMethods, DJExportData, DJRawInfo } from "../../../components/DJOutputFormat";
@@ -310,7 +311,7 @@ const sendToCorrectMethod = (
 const exportDocx = (
 	data: DJExportData,
 	toast: UseIonToastResult,
-	dispatch: Function,
+	dispatch: Dispatch,
 ) => {
 	const sections: Section[] = [];
 	const {

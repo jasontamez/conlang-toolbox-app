@@ -25,7 +25,7 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, RelationObject, SortSeparator } from '../../store/types';
+import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -33,7 +33,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	incomingRelation: RelationObject | null
-	setOutgoingRelation: Function
+	setOutgoingRelation: SetState<RelationObject | null | string>
 }
 
 const EditCustomSortRelation = (props: CustomSortModal) => {

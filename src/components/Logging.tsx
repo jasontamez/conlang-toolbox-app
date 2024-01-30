@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { saveToLog } from "../store/internalsSlice";
 
 const flag = 0 && "debugging";
@@ -32,7 +33,7 @@ const maskSensitiveInfo = (thing: any, prefix: string = "MASKED: "): string => {
 	return final;
 };
 
-const log = (dispatch: Function | null, info: any[], ...sensitiveInfo: any[]) => {
+const log = (dispatch: Dispatch | null, info: any[], ...sensitiveInfo: any[]) => {
 	if(flag) {
 		[...info, ...sensitiveInfo].forEach(line => console.log(line));
 	}

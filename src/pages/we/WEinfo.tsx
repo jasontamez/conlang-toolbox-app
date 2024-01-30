@@ -20,7 +20,7 @@ import {
 	helpCircle
 } from 'ionicons/icons';
 
-import { PageData } from '../../store/types';
+import { PageData, SetBooleanState } from '../../store/types';
 
 import ltr from '../../components/LTR';
 import Header from '../../components/Header';
@@ -29,7 +29,7 @@ import { RegularExpressions } from '../../components/regularExpressionsInfo';
 
 interface CardProps {
 	hideOverview?: boolean
-	setIsOpenInfo?: Function
+	setIsOpenInfo?: SetBooleanState
 }
 const OverviewButton = (props: CardProps) => {
 	const { hideOverview, setIsOpenInfo } = props;

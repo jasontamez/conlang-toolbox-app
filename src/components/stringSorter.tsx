@@ -83,7 +83,7 @@ function makeSorter (
 		(input: string) => input.split('')
 	;
 	// Create any needed comparison functions
-	const functions: Function[] = [];
+	const functions: ((a: string, b: string) => number)[] = [];
 	if(customAlphabet) {
 		// Create a comparison function for a custom alphabet
 		const logic: OrderLogic = {};

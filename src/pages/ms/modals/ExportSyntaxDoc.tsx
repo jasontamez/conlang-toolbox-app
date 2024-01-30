@@ -23,7 +23,7 @@ import {
 } from 'ionicons/icons';
 import { useDispatch, useSelector } from "react-redux";
 
-import { ModalProperties, StateObject } from '../../../store/types';
+import { ModalProperties, SetBooleanState, StateObject } from '../../../store/types';
 
 import logger from '../../../components/Logging';
 import doExport from '../../../components/ExportServices';
@@ -34,7 +34,7 @@ import doJSON from './Ex-JSON';
 //import doODT from './Ex-ODT';
 
 interface ExportModalProps extends ModalProperties {
-	setLoading: Function
+	setLoading: SetBooleanState
 }
 
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
@@ -51,7 +51,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 	};
 	const dispatch = useDispatch();
 	const log = (info: string[]) => logger(dispatch, info);
-	const doDownload = (e: Event, output: string, extension: string) => {
+	const doDownload = (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, output: string, extension: string) => {
 		e.preventDefault();
 		const filename = `${title} - ${(new Date()).toDateString()}.${extension}`;
 		setLoading(true);

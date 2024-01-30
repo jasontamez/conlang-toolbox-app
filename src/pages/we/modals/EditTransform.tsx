@@ -27,7 +27,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, StateObject, WETransformDirection, WETransformObject } from '../../../store/types';
+import { ExtraCharactersModalOpener, SetState, StateObject, WETransformDirection, WETransformObject } from '../../../store/types';
 import { editTransformWE, deleteTransformWE } from '../../../store/weSlice';
 
 import { $i, $q } from '../../../components/DollarSignExports';
@@ -37,7 +37,7 @@ import toaster from '../../../components/toaster';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WETransformObject
-	setEditing: Function
+	setEditing: SetState<null | WETransformObject>
 }
 
 const EditTransformModal = (props: ModalProps) => {

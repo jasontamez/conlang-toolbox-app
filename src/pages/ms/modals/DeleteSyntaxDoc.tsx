@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector } from "react-redux";
 
-import { MSState, MSBool, ModalProperties, StateObject } from '../../../store/types';
+import { MSState, MSBool, ModalProperties, StateObject, SetBooleanState, SetState } from '../../../store/types';
 
 import { MorphoSyntaxStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
@@ -31,9 +31,9 @@ interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
 }
 interface MSmodalProps extends ModalProperties {
-	setLoadingScreen: Function
+	setLoadingScreen: SetBooleanState
 	storedInfo: [string, OldStyleSave][]
-	setStoredInfo: Function
+	setStoredInfo: SetState<[string, OldStyleSave][]>
 }
 
 const DeleteSyntaxDocModal = (props: MSmodalProps) => {

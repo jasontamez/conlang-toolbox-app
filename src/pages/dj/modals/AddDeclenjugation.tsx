@@ -29,7 +29,8 @@ import { v4 as uuidv4 } from 'uuid';
 import {
 	Declenjugation,
 	ExtraCharactersModalOpener,
-	ModalProperties
+	ModalProperties,
+	SetState
 } from '../../../store/types';
 
 import { $i } from '../../../components/DollarSignExports';
@@ -37,10 +38,10 @@ import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 
 interface AddDJModal extends ExtraCharactersModalOpener {
-	setSavedDeclenjugation: Function
+	setSavedDeclenjugation: SetState<Declenjugation | null>
 	caseMakerModalInfo: ModalProperties
 	savedTitle: string
-	setSavedTitle: Function
+	setSavedTitle: SetState<string>
 	typeString: string
 }
 

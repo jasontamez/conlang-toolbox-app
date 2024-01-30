@@ -25,14 +25,14 @@ import {
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ExtraCharactersModalOpener, RelationObject, SortSeparator } from '../../store/types';
+import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
-	setSavedRelation: Function
+	setSavedRelation: SetState<RelationObject | null>
 }
 
 const AddCustomSortRelation = (props: CustomSortModal) => {

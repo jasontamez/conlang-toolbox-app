@@ -26,13 +26,13 @@ import {
 	setSyntaxBool,
 	setSyntaxText
 } from '../../store/msSlice';
-import { MSBool, MSNum, MSText } from '../../store/types';
+import { MSBool, MSNum, MSText, ModalPropsMaker } from '../../store/types';
 
 import Header from '../../components/Header';
 
 interface ModalProperties {
 	title?: string
-	modalPropsMaker: Function
+	modalPropsMaker: ModalPropsMaker
 }
 
 function stripHtml (input: string) {
@@ -158,7 +158,6 @@ interface InfoModalProps extends ModalProperties {
 }
 export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
-	const dispatch = useDispatch();
 	const {
 		title = "MISSING TITLE",
 		label = "Read About It",
@@ -166,7 +165,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 		children,
 		modalPropsMaker
 	} = props;
-	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen, dispatch);
+	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
 	return (
 		<IonItem className={className ? className + " infoModal" : "infoModal"}>
 			<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>

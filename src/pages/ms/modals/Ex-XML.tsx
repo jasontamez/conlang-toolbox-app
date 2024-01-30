@@ -1,7 +1,11 @@
 import { MouseEvent } from "react";
 import { MSInfo, MSState } from "../../../store/types";
 
-const doXML = (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, msInfo: MSState, doDownload: Function) => {
+const doXML = (
+	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
+	msInfo: MSState,
+	doDownload: (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, x: string, y: string) => void
+) => {
 	const {
 		id,
 		lastSave,

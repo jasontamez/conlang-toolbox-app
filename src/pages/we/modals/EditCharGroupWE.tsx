@@ -26,15 +26,15 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { deleteCharacterGroupWE, editCharacterGroupWE } from '../../../store/weSlice';
-import { ExtraCharactersModalOpener, StateObject, WECharGroupObject } from '../../../store/types';
+import { ExtraCharactersModalOpener, SetState, StateObject, WECharGroupObject } from '../../../store/types';
 
 import { $q, $i } from '../../../components/DollarSignExports';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 
 interface ModalProps extends ExtraCharactersModalOpener {
-	editing: null | WECharGroupObject,
-	setEditing: Function
+	editing: null | WECharGroupObject
+	setEditing: SetState<null | WECharGroupObject>
 }
 
 const EditCharGroupWEModal = (props: ModalProps) => {

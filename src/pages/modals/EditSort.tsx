@@ -24,12 +24,12 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ModalProperties, StateObject } from '../../store/types';
+import { ModalProperties, SorterFunc, StateObject } from '../../store/types';
 import { updateLexiconSort } from '../../store/lexiconSlice';
 import reorganize from '../../components/reorganizer';
 
 interface EditSortModal extends ModalProperties {
-	sorter: Function
+	sorter: SorterFunc
 }
 
 const EditLexiconSortModal = (props: EditSortModal) => {

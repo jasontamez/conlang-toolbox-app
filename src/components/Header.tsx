@@ -11,10 +11,11 @@ import {
 import { globeOutline } from "ionicons/icons";
 
 import ExtraCharactersModal from "../pages/modals/ExtraCharacters";
+import { ModalPropsMaker } from "../store/types";
 
 interface ModalProperties {
 	title: string
-	extraChars?: Function // modalPropsMaker
+	extraChars?: ModalPropsMaker
 	startButtons?: ReactElement[]
 	preEndButtons?: ReactElement[]
 	endButtons?: ReactElement[]

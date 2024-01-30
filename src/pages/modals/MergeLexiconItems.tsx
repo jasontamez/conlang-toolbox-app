@@ -25,18 +25,18 @@ import {
 	useDispatch
 } from "react-redux";
 
-import { Lexicon, LexiconColumn, ModalProperties, StateObject } from '../../store/types';
+import { Lexicon, LexiconColumn, ModalProperties, SorterFunc, StateObject } from '../../store/types';
 import { mergeLexiconItems } from '../../store/lexiconSlice';
 
 interface MergeProps extends ModalProperties {
 	merging: string[]
 	mergingObject: { [key: string]: Lexicon }
-	clearInfo: Function
-	sorter: Function
+	clearInfo: () => void
+	sorter: SorterFunc
 }
 
 interface Method {
-    [key: string]: Function
+    [key: string]: (x: string[]) => string
 }
 
 type Methods = (keyof Method)[];

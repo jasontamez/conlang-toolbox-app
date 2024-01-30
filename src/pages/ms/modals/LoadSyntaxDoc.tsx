@@ -20,7 +20,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { MSState, MSBool, ModalProperties, StateObject } from '../../../store/types';
+import { MSState, MSBool, ModalProperties, StateObject, SetState } from '../../../store/types';
 import { loadStateMS } from '../../../store/msSlice';
 
 import yesNoAlert from '../../../components/yesNoAlert';
@@ -28,7 +28,7 @@ import yesNoAlert from '../../../components/yesNoAlert';
 
 interface MSmodalProps extends ModalProperties {
 	storedInfo: [string, MSState][]
-	setStoredInfo: Function
+	setStoredInfo: SetState<[string, MSState][]>
 }
 interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
