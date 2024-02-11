@@ -1,12 +1,15 @@
 import React from 'react';
 import { Provider } from "react-redux";
+import { createRoot } from 'react-dom/client';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import { SplashScreen } from '@capacitor/splash-screen';
 import { setupIonicReact } from '@ionic/react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
 import storeInfo from "./store/store";
-import { PersistGate } from 'redux-persist/integration/react';
+import * as serviceWorker from './serviceWorker';
+import App from './App';
+import './i18n';
 
 const {store, persistor} = storeInfo;
 

@@ -15,6 +15,9 @@ import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
 
+// Polyfill for Intl.PluralRules
+import 'intl-pluralrules';
+
 import { setDefaultSortLanguage } from './store/internalsSlice';
 import { SetBooleanState, StateObject } from './store/types';
 import maybeCleanState from './store/cleaning';
