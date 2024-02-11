@@ -1,4 +1,5 @@
 import { ToastButton, UseIonToastResult } from "@ionic/react"
+import i18n from "../i18n"
 
 interface Toast {
 	color?: string
@@ -18,7 +19,7 @@ const toaster = (props: Toast) => {
 		position,
 		buttons = [
 			{
-				text: "Ok",
+				text: i18n.t("Ok"),
 				role: 'cancel'
 			}
 		]

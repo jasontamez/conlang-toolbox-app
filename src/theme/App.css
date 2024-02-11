@@ -509,6 +509,12 @@ ion-app .fullScreen .collapse div ion-button {
 	color: var(--ion-color-success-contrast);
 	border-color: 1px solid var(--ion-color-success-shade);
 }
+#outputPaneWL .word {
+	text-align: start;
+}
+#outputPaneWL.centering .word {
+	text-align: center;
+}
 #outputPaneWL.removingCombos div.word {
 	border: 1px solid transparent;
 }

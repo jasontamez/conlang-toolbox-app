@@ -1,5 +1,6 @@
 import { AlertButton, AlertInput, AlertOptions } from "@ionic/react"
 import { HookOverlayOptions } from "@ionic/react/dist/types/hooks/HookOverlayOptions"
+import i18n from "../i18n"
 
 interface Alert {
 	header?: string
@@ -30,7 +31,7 @@ const yesNoAlert = (props: Alert) => {
 		message,
 		buttons: [
 			{
-				text: "Cancel",
+				text: i18n.t("Cancel"),
 				role: "cancel",
 				cssClass: "cancel"
 			},

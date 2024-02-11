@@ -1,3 +1,4 @@
+import i18n from "../i18n";
 import { SortObject } from "../store/types";
 
 interface Perms {
@@ -10,12 +11,12 @@ interface Perms {
 const PermanentInfo: Perms = {
 	sort: {
 		permanentCustomSorts: {
-			"wg-preset-sort": "This is used by WordGen presets. It cannot be modified or deleted."
+			"wg-preset-sort": i18n.t("This is used by WordGen presets. It cannot be modified or deleted.")
 		},
 		permanentCustomSortObjs: [
 			{
 				id: "wg-preset-sort",
-				title: "WG Presets Sorter",
+				title: i18n.t("WG Presets Sorter"),
 				customAlphabet: [
 					"a",
 					"ā",
