@@ -202,7 +202,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 				header: `${label}=${run}`,
 				message: "Are you sure you want to delete this Character Group? This cannot be undone.",
 				cssClass: "warning",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

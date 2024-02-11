@@ -98,7 +98,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					header: `"${title}" already exists`,
 					message: "This will clear and overwrite the previous save.",
 					cssClass: "warning",
-					submit: "Yes, overwrite it",
+					submit: "Yes, Overwrite It",
 					handler: () => doSave(title, "overwritten"),
 					doAlert
 				});
@@ -141,7 +141,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				header: `Load "${title}"?`,
 				message: "This will clear and overwrite all current groups.",
 				cssClass: "warning",
-				submit: "Yes, load it",
+				submit: "Yes, Load It",
 				handler,
 				doAlert
 			});
@@ -168,7 +168,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				header: `Delete "${title}"?`,
 				message: "Are you sure? This cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});
@@ -230,9 +230,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 										className="ion-no-margin"
 										slot="end"
 										color="danger"
-										onClick={() => maybeDeleteInfo(title)}><IonIcon
-										icon={trashOutline}
-									/></IonButton>
+										onClick={() => maybeDeleteInfo(title)}
+									>
+										<IonIcon icon={trashOutline} />
+									</IonButton>
 								</IonItem>
 							);
 						})}

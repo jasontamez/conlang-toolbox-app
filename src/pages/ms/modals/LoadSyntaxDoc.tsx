@@ -62,7 +62,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 				yesNoAlert({
 					message: "Are you sure you want to load this? It will overwrite your current MorphoSyntax information and cannot be reversed.",
 					cssClass: "warning",
-					submit: "Yes, load it",
+					submit: "Yes, Load It",
 					handler,
 					doAlert
 				});

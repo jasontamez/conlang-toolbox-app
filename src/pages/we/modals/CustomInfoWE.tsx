@@ -91,10 +91,10 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				doSave(title, "overwritten");
 			} else {
 				yesNoAlert({
-					header: `"${title}" already exists`,
+					header: `"${title}" Already Exists`,
 					message: "This will clear and overwrite the previous save.",
 					cssClass: "warning",
-					submit: "Yes, overwrite it",
+					submit: "Yes, Overwrite It",
 					handler: () => doSave(title, "overwritten"),
 					doAlert
 				});
@@ -136,7 +136,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				header: `Load "${title}"?`,
 				message: "This will clear and overwrite all current character groups, transformations and sound changes.",
 				cssClass: "warning",
-				submit: "Yes, load it",
+				submit: "Yes, Load It",
 				handler,
 				doAlert
 			});
@@ -162,7 +162,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				header: `Delete "${title}"?`,
 				message: "This cannot be undone.",
 				cssClass: "warning",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

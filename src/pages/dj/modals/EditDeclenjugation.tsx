@@ -228,7 +228,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 				header: "Unsaved Info",
 				message: "Are you sure you want to discard this?",
 				cssClass: "warning",
-				submit: "Yes, Close",
+				submit: "Yes, Discard",
 				handler: closeModal,
 				doAlert
 			});
@@ -252,7 +252,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 				header: "Delete " + typeString,
 				message: "Are you sure you want to delete this? It cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, Delete",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

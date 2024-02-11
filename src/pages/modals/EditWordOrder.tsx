@@ -252,7 +252,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 				header: shadowColumns[i].label,
 				cssClass: "danger",
 				message: "Are you sure you want to delete this column? This cannot be undone.",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

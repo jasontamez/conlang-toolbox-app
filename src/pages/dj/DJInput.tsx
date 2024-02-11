@@ -73,7 +73,7 @@ const DJInput = (props: PageData) => {
 				header: "Clear Input",
 				message: "Are you sure? This will clear the entire input, and cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, clear it",
+				submit: "Yes, Clear It",
 				handler,
 				doAlert
 			});

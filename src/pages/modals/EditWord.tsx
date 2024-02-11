@@ -85,10 +85,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 		// Otherwise, doublecheck
 		yesNoAlert({
-			header: "Delete everything?",
+			header: "Exit Without Saving?",
 			cssClass: "warning",
 			message: "You have unsaved changed. Are you sure you want to exit?",
-			submit: "Yes, exit",
+			submit: "Yes, Exit",
 			handler: () => setIsOpen(false),
 			doAlert
 		});
@@ -138,7 +138,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 				header: "Are you sure?",
 				cssClass: "danger",
 				message: "Deleting this cannot be undone.",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

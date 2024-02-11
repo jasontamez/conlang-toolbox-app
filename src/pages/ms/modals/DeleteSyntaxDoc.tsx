@@ -68,7 +68,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				header: "Are you sure?",
 				message: `This will delete "${title}", and cannot be undone.`,
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

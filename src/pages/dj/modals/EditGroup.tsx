@@ -361,7 +361,7 @@ const EditGroup = (props: EditGroupProps) => {
 				header: "Unsaved Changes",
 				message: "Are you sure you want to discard your edits?",
 				cssClass: "warning",
-				submit: "Yes, Close",
+				submit: "Yes, Discard",
 				handler: closeModal,
 				doAlert
 			});

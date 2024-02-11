@@ -75,10 +75,10 @@ const Syntax = (props: PageData) => {
 			});
 		} else if(!disableConfirms) {
 			yesNoAlert({
-				header: "Delete everything?",
+				header: "Delete Everything?",
 				message: "This will erase everything currently in MorphoSyntax (but not anything previously saved). Are you sure you want to do this?",
 				cssClass: "danger",
-				submit: "Yes, erase it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

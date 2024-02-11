@@ -87,7 +87,7 @@ const WGRew = (props: PageData) => {
 				header: `${seek}${arrow}${replace}`,
 				message: "Are you sure you want to delete this? It cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

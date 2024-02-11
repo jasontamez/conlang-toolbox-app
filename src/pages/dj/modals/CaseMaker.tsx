@@ -122,7 +122,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 				header: "Unsaved Info",
 				message: "Are you sure you want to discard this?",
 				cssClass: "warning",
-				submit: "Yes, Close",
+				submit: "Yes, Discard",
 				handler: closeModal,
 				doAlert
 			});

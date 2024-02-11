@@ -90,7 +90,7 @@ const WGCharGroup = (props: PageData) => {
 				header: `${charGroup.label}=${charGroup.run}`,
 				message: "Are you sure you want to delete this Character Group? This cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});

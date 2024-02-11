@@ -103,7 +103,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 			return yesNoAlert({
 				header: "Unsaved Info",
 				message: "Are you sure you want to discard this?",
-				submit: "Yes, Close",
+				submit: "Yes, Discard",
 				cssClass: "warning",
 				handler: close,
 				doAlert

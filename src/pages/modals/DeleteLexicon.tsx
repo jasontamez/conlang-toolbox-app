@@ -63,8 +63,8 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 			yesNoAlert({
 				header: `Delete "${title}"?`,
 				cssClass: "danger",
-				message: "Are you sure you want to do this? It cannot be undone.",
-				submit: "Yes, delete it",
+				message: "Are you sure you want to delete this? It cannot be undone.",
+				submit: "Yes, Delete Iit",
 				handler,
 				doAlert
 			});

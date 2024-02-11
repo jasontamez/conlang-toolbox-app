@@ -52,7 +52,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				header: `Load "${preset}" preset?`,
 				message: "This will clear and overwrite all current character groups, transformations and sound changes.",
 				cssClass: "danger",
-				submit: "Yes, load it",
+				submit: "Yes, Load It",
 				handler,
 				doAlert
 			});

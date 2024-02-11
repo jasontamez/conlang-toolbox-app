@@ -56,7 +56,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				yesNoAlert({
 					message: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
 					cssClass: "warning",
-					submit: "Yes, load it",
+					submit: "Yes, Load Iit",
 					handler,
 					doAlert
 				});

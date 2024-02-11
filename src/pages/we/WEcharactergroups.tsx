@@ -81,7 +81,7 @@ const WECharGroup = (props: PageData) => {
 				header: `${label}=${run}`,
 				message: "Are you sure? This cannot be undone.",
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler,
 				doAlert
 			});
