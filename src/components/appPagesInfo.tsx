@@ -31,9 +31,9 @@ type Parents = 'ms' | 'dj' | 'wg' | 'we';
 export interface AppPage {
 	url: string
 	title: string
-	MenuIcon?: React.FC
+	MenuIcon?: React.FC<IonIconProps>
 	menuIcon?: string
-	Icon?: React.FC
+	Icon?: React.FC<IonIconProps>
 	icon?: string
 	noIcon?: string
 	id: string

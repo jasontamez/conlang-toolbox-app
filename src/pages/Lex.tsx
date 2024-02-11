@@ -419,7 +419,7 @@ const Lex = (props: PageData) => {
 				header: title,
 				cssClass: "danger",
 				message: "Are you sure you want to delete this? This cannot be undone.",
-				submit: "Yes, delete it",
+				submit: "Yes, Delete It",
 				handler: () => dispatch(deleteLexiconItem(item.id)),
 				doAlert
 			});

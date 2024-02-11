@@ -23,7 +23,7 @@ import WGinfo from './wg/WGinfo';
 const WG = (props: PageData) => {
 	return (
 		<IonTabs>
-			<IonRouterOutlet>
+			<IonRouterOutlet placeholder>
 				{/*
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
