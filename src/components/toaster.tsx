@@ -19,7 +19,7 @@ const toaster = (props: Toast) => {
 		position,
 		buttons = [
 			{
-				text: i18n.t("Ok"),
+				text: i18n.t("Ok", { ns: 'common' }),
 				role: 'cancel'
 			}
 		]

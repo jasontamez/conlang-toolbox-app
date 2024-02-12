@@ -11,12 +11,12 @@ interface Perms {
 const PermanentInfo: Perms = {
 	sort: {
 		permanentCustomSorts: {
-			"wg-preset-sort": i18n.t("This is used by WordGen presets. It cannot be modified or deleted.")
+			"wg-preset-sort": i18n.t("This is used by WordGen presets. It cannot be modified or deleted.", { ns: 'common' })
 		},
 		permanentCustomSortObjs: [
 			{
 				id: "wg-preset-sort",
-				title: i18n.t("WG Presets Sorter"),
+				title: i18n.t("WG Presets Sorter", { ns: 'common' }),
 				customAlphabet: [
 					"a",
 					"ā",

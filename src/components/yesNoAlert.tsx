@@ -31,7 +31,7 @@ const yesNoAlert = (props: Alert) => {
 		message,
 		buttons: [
 			{
-				text: i18n.t("Cancel"),
+				text: i18n.t("Cancel", { ns: 'common' }),
 				role: "cancel",
 				cssClass: "cancel"
 			},

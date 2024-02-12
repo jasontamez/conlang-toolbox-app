@@ -13,12 +13,7 @@ import en from './translations/en';
 // (tip move them in a JSON file and import them,
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
-	en,
-	fr: {
-		translation: {
-			"Welcome to React": "Bienvenue à React et react-i18next"
-		}
-	}
+	en
 };
 
 i18n
@@ -37,6 +32,10 @@ i18n
 	// for all options read: https://www.i18next.com/overview/configuration-options
 	.init({
 		resources,
+		ns: [
+			"common",
+			"concepts",
+		],
 		fallbackLng: 'en',
 		debug: true,
 

@@ -41,6 +41,7 @@ import {
 	ModalPropsMaker
 } from '../store/types';
 import { addItemsToLexiconColumn } from '../store/lexiconSlice';
+import useTranslator from '../store/translationHooks';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import { ConceptsOutlineIcon, LexiconIcon, LexiconOutlineIcon } from '../components/icons';
@@ -51,7 +52,7 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import PermanentInfo from '../components/PermanentInfo';
 
-interface SavedWord { id: string, word: string }
+interface SavedWord { id: string, word: string, parts?: Concept[] }
 
 interface InnerHeaderProps {
 	textCenter: boolean
@@ -60,7 +61,7 @@ interface InnerHeaderProps {
 }
 const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	const { textCenter, pickAndSave, modalPropsMaker } = props;
-	const { t } = useTranslation();
+	const { t } = useTranslation(['common']);
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const title = useMemo(() => t("Concepts"), [ t ]);
@@ -88,10 +89,10 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 interface WordItemProps {
 	wordObj: Partial<Concept> & Partial<ConceptCombo> & Pick<Concept | ConceptCombo, "id">
 	isSaved: boolean | undefined
-	maybeSaveThisWord: (x: string, y: string, z?: boolean) => (() => void)
+	maybeSaveThisWord: (x: string, y: string, z?: Concept[] | undefined) => (() => void)
 }
 const WordItem: FC<WordItemProps> = (props) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation(['concepts']);
 	const { wordObj, isSaved, maybeSaveThisWord } = props;
 	const { id } = wordObj;
 	const word = useMemo(() => {
@@ -105,7 +106,7 @@ const WordItem: FC<WordItemProps> = (props) => {
 		}
 		return word;
 	}, [t, wordObj]);
-	const isCombo = !!wordObj.parts;
+	const isCombo = wordObj.parts;
 	const classes =
 		(isSaved ? "saved " : "")
 		+ "word"
@@ -122,9 +123,10 @@ const WordItem: FC<WordItemProps> = (props) => {
 const getItems = (
 	input: Concept[] | ConceptCombo[],
 	savedWordsObject: { [key: string]: boolean },
-	maybeSaveThisWord: (x: string, y: string, z?: boolean) => (() => void)
+	maybeSaveThisWord: (x: string, y: string, z?: Concept[] | undefined) => (() => void)
 ) => input.map(wordObj =>
 	<WordItem
+		key={"word-item-" + wordObj.id}
 		wordObj={wordObj}
 		isSaved={savedWordsObject[wordObj.id]}
 		maybeSaveThisWord={maybeSaveThisWord}
@@ -138,7 +140,7 @@ interface GroupChipProps {
 	toggleFunc: () => void
 }
 const GroupChip: FC<GroupChipProps> = (props) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation(['concepts']);
 	const { title, isDisplayed, index, toggleFunc } = props;
 	const chipTitle = useMemo(() => t(title), [ t, title ]);
 	return (
@@ -168,7 +170,8 @@ const getChips = (
 });
 
 const ConceptsPage: FC<PageData> = (props) => {
-	const { t } = useTranslation();
+	const [ t ] = useTranslator('concepts');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const [pickAndSave, setPickAndSave] = useState<boolean>(false);
 	const [linking, setLinking] = useState<boolean>(false);
@@ -236,7 +239,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 
 	const saveToLexicon = (words: SavedWord[]) => {
 		doAlert({
-			header: t("Select a column"),
+			header: tc("Select a column"),
 			message: t("Your selected meanings will be added to the Lexicon under that column."),
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
 				const obj: AlertInput = {
@@ -249,7 +252,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			}),
 			buttons: [
 				{
-					text: t("Stop"),
+					text: tc("Stop"),
 					handler: () => {
 						setSavedWords([]);
 						setSavedWordsObject({});
@@ -258,12 +261,12 @@ const ConceptsPage: FC<PageData> = (props) => {
 					cssClass: "danger"
 				},
 				{
-					text: t("Cancel"),
+					text: tc("Cancel"),
 					role: 'cancel',
 					cssClass: "cancel"
 				},
 				{
-					text: t("Save"),
+					text: tc("Save"),
 					handler: (col: LexiconColumn | undefined) => {
 						if(!col) {
 							// Treat as cancel
@@ -289,7 +292,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							position: "top",
 							buttons: [
 								{
-									text: t("Go to Lexicon"),
+									text: tc("Go to Lexicon"),
 									handler: () => navigator.push("/lex")
 								}
 							],
@@ -307,7 +310,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
 			return toaster({
-				message: t("You need to add columns to the Lexicon before you can add anything to it."),
+				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
 				color: "danger",
 				duration: 4000,
 				position: "top",
@@ -345,7 +348,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		setSavedWords(words);
 		saveToLexicon(words);
 	};
-	const maybeSaveThisWord = useCallback((id: string, text: string, isCombo: boolean = false) => {
+	const maybeSaveThisWord = useCallback((id: string, text: string, isCombo?: Concept[]) => {
 		// Returns a function that can be slotted into an onClick or whatever.
 		return () => {
 			if(unlinking && !isCombo) {
@@ -356,7 +359,9 @@ const ConceptsPage: FC<PageData> = (props) => {
 					setSavedWords(savedWords.filter(word => word.id !== id));
 					delete newObject[id];
 				} else {
-					setSavedWords([...savedWords, { id, word: text }]);
+					const inserting: SavedWord = { id, word: text };
+					isCombo && (inserting.parts = isCombo);
+					setSavedWords([...savedWords, inserting]);
 					newObject[id] = true;
 				}
 				setSavedWordsObject(newObject);
@@ -387,7 +392,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 						),
 						buttons: [
 							{
-								text: t("Cancel"),
+								text: tc("Cancel"),
 								role: "cancel",
 								cssClass: "cancel"
 							},
@@ -424,7 +429,15 @@ const ConceptsPage: FC<PageData> = (props) => {
 		})
 	};
 	const saveNewMeaning = (makeToast: boolean = true) => {
-		dispatch(addCustomHybridMeaning(savedWords));
+		const final: Concept[] = [];
+		savedWords.forEach(obj => {
+			if(obj.parts) {
+				final.push(...obj.parts);
+			} else {
+				final.push(obj);
+			}
+		});
+		dispatch(addCustomHybridMeaning(final));
 		makeToast && toaster({
 			message: t("Combination saved"),
 			duration: 2500,
@@ -459,7 +472,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 					header: t('delMeanings', { count: savedWords.length }),
 					cssClass: "danger",
 					message: t('delMeaningsMessage', { count: savedWords.length }),
-					submit: t("confirmDel", { count: savedWords.length }),
+					submit: tc("confirmDel", { count: savedWords.length }),
 					handler,
 					doAlert
 				});
@@ -497,13 +510,13 @@ const ConceptsPage: FC<PageData> = (props) => {
 		currentCombo,
 		save
 	] = useMemo(() => [
-		t('Display:'),
+		tc('Display[colon]'),
 		t('My Combinations'),
 		t('Save All Meanings'),
 		t('Save Selected Meanings'),
-		t('Current Combination:'),
-		t('Save')
-	], [ t ]);
+		t('Current Combination[colon]'),
+		tc('Save')
+	], [ t, tc ]);
 
 	return (
 		<IonPage>
@@ -571,7 +584,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
 						<IonLabel className="ion-text-wrap">
-							{currentCombo} {savedWords.map(word => t(word.word)).join("; ")}
+							{currentCombo} {savedWords.map(word => word.word).join("; ")}
 						</IonLabel>
 						<IonButton
 							disabled={savedWords.length <= 1}
@@ -604,18 +617,19 @@ const ConceptsPage: FC<PageData> = (props) => {
 export default ConceptsPage;
 
 export const ConceptCard = () => {
-	const { t } = useTranslation();
+	const [ t ] = useTranslator('concepts');
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<ConceptsOutlineIcon slot="start" color="primary" />
-				<IonLabel>{t('Concepts')}</IonLabel>
+				<IonLabel>{tc('Concepts')}</IonLabel>
 			</IonItem>
 			<IonCardContent>
 				<p>{t('conceptsInfo.basic1')}</p>
 				<p>{t('conceptsInfo.basic2')}</p>
 				<hr />
-				<h2>{t('Controls')}</h2>
+				<h2>{tc('Controls')}</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
 				<p>{t('conceptsInfo.controlLexicon')}</p>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
