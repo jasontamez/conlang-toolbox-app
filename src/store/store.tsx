@@ -28,6 +28,7 @@ import sortingSlice from './sortingSlice';
 import declenjugatorSlice from './declenjugatorSlice';
 import blankAppState from './blankAppState';
 import internalsSlice from './internalsSlice';
+import { ConceptDisplay, ConceptDisplayObject } from './types';
 
 //
 //
@@ -86,6 +87,17 @@ const migrations = {
 			});
 		});
 		return newState;
+	},
+	2: (state: any) => {
+		// Updates Concepts for 0.12.0
+		const newState = {...state};
+		const display: ConceptDisplayObject = {};
+		((state.concepts.display || []) as ConceptDisplay[]).forEach(prop => display[prop] = true);
+		newState.concepts.display = display;
+		console.log({...state});
+		console.log({...display});
+		console.log({...newState});
+		return newState;
 	}
 }
 
@@ -108,7 +120,8 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 		&& originalState
 		&& incomingState.appSettings
 		&& originalState.appSettings
-		&& (incomingState.appSettings.theme !== originalState.appSettings.theme)) {
+		&& (incomingState.appSettings.theme !== originalState.appSettings.theme)
+	) {
 		debounce<(x: string, y: string) => void, string>(
 			maybeUpdateTheme,
 			[
@@ -123,7 +136,7 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 };
 const persistConfig = {
 	key: 'root',
-	version: 1,
+	version: 2,
 	storage,
 	stateReconciler,
 	migrate: createMigrate(migrations, { debug: false })
@@ -147,7 +160,7 @@ const store = configureStore({
 					'lexicon/updateLexiconColumarInfo'
 				],
 			},
-	})
+		})
 });
 const persistor = persistStore(store);
 const storeInfo = { store, persistor };

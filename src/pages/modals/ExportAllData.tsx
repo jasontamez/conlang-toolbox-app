@@ -202,7 +202,7 @@ const MExportAllData = (props: ModalProperties) => {
 //				},
 				concepts: { // versions >= 0.9.5
 					...concepts,
-					display: [...concepts.display],
+					display: {...concepts.display},
 					combinations: concepts.combinations.map((obj) => ({
 						id: obj.id,
 						parts: obj.parts.map((obj) => ({...obj}))

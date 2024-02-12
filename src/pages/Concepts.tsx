@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, FC } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -29,8 +29,18 @@ import {
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
+import {
+	LexiconColumn,
+	PageData,
+	Concept,
+	ConceptCombo,
+	StateObject,
+	SortObject,
+	ConceptDisplay,
+	ConceptDisplayObject,
+	ModalPropsMaker
+} from '../store/types';
 import { addItemsToLexiconColumn } from '../store/lexiconSlice';
-import { LexiconColumn, PageData, Concept, ConceptCombo, StateObject, SortObject, ConceptDisplay } from '../store/types';
 
 import { Concepts, ConceptsSources } from '../components/Concepts';
 import { ConceptsOutlineIcon, LexiconIcon, LexiconOutlineIcon } from '../components/icons';
@@ -41,14 +51,46 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import PermanentInfo from '../components/PermanentInfo';
 
-interface SavedWord { id: string, word: string };
+interface SavedWord { id: string, word: string }
+
+interface InnerHeaderProps {
+	textCenter: boolean
+	pickAndSave: boolean
+	modalPropsMaker: ModalPropsMaker
+}
+const InnerHeader: FC<InnerHeaderProps> = (props) => {
+	const { textCenter, pickAndSave, modalPropsMaker } = props;
+	const { t } = useTranslation();
+	const dispatch = useDispatch();
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const title = useMemo(() => t("Concepts"), [ t ]);
+	return (<>
+		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
+		<Header
+			title={title}
+			endButtons={[
+				<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
+					<IonIcon
+						flipRtl
+						size="small"
+						slot="end"
+						src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
+					/>
+				</IonButton>,
+				<IonButton key="conceptsHelpButton" disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+					<IonIcon icon={helpCircleOutline} />
+				</IonButton>
+			]}
+		/>
+	</>);
+};
 
 interface WordItemProps {
 	wordObj: Partial<Concept> & Partial<ConceptCombo> & Pick<Concept | ConceptCombo, "id">
 	isSaved: boolean | undefined
 	maybeSaveThisWord: (x: string, y: string, z?: boolean) => (() => void)
 }
-const WordItem = (props: WordItemProps) => {
+const WordItem: FC<WordItemProps> = (props) => {
 	const { t } = useTranslation();
 	const { wordObj, isSaved, maybeSaveThisWord } = props;
 	const { id } = wordObj;
@@ -89,10 +131,45 @@ const getItems = (
 	/>
 );
 
-const ConceptsPage = (props: PageData) => {
+interface GroupChipProps {
+	title: string
+	isDisplayed: boolean | undefined
+	index: number
+	toggleFunc: () => void
+}
+const GroupChip: FC<GroupChipProps> = (props) => {
+	const { t } = useTranslation();
+	const { title, isDisplayed, index, toggleFunc } = props;
+	const chipTitle = useMemo(() => t(title), [ t, title ]);
+	return (
+		<IonChip
+			outline={!isDisplayed}
+			onClick={toggleFunc}
+			className={
+				(index === 0 ?
+					("ion-margin-start" + (isDisplayed ? " active" : ""))
+				:
+					(isDisplayed ? "active" : "")
+				)
+			}
+		>
+			<IonLabel>{chipTitle}</IonLabel>
+		</IonChip>
+	);
+};
+const getChips = (
+	input: [string, ConceptDisplay][],
+	display: ConceptDisplayObject,
+	toggleChars: (x: ConceptDisplay) => (() => void)
+) => input.map((pair, i) => {
+	const [title, prop] = pair;
+	const toggleFunc = toggleChars(prop);
+	return <GroupChip key={prop} title={title} isDisplayed={display[prop]} index={i} toggleFunc={toggleFunc} />;
+});
+
+const ConceptsPage: FC<PageData> = (props) => {
 	const { t } = useTranslation();
 	const { modalPropsMaker } = props;
-	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [pickAndSave, setPickAndSave] = useState<boolean>(false);
 	const [linking, setLinking] = useState<boolean>(false);
 	const [unlinking, setUnlinking] = useState<boolean>(false);
@@ -131,13 +208,22 @@ const ConceptsPage = (props: PageData) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const navigator = useIonRouter();
-	const toggleChars = (what: ConceptDisplay) => {
-		if(display.some((p: ConceptDisplay) => p === what)) {
-			return dispatch(updateConceptsDisplay(display.filter((p: ConceptDisplay) => p !== what)));
+	const toggleChars = useCallback((what: ConceptDisplay) => {
+		// Returns a function that can be slotted into an onClick or whatever.
+		return () => {
+			const newDisplay = {...display};
+			if(display[what]) {
+				delete newDisplay[what];
+			} else {
+				newDisplay[what] = true;
+			}
+			dispatch(updateConceptsDisplay(newDisplay));
 		}
-		dispatch(updateConceptsDisplay([...display, what]));
-	};
-	const shown = Concepts.filter((word: Concept) => display.some((p: ConceptDisplay) => word[p]));
+	}, [dispatch, display]);
+	const shown = useMemo(() => {
+		const displaying = Object.keys(display) as ConceptDisplay[];
+		return Concepts.filter((word: Concept) => displaying.some(p => word[p]));
+	}, [display]);
 	useEffect(() => {
 		if(unlinking && (!showingCombos || combinations.length === 0)) {
 			setUnlinking(false);
@@ -275,7 +361,7 @@ const ConceptsPage = (props: PageData) => {
 				}
 				setSavedWordsObject(newObject);
 			}
-		}
+		};
 	}, [savedWords, savedWordsObject, pickAndSave, linking, unlinking]);
 
 	// // //
@@ -387,6 +473,10 @@ const ConceptsPage = (props: PageData) => {
 	// Memoize display
 	// // //
 
+	const header = useMemo(
+		() => <InnerHeader textCenter={textCenter} pickAndSave={pickAndSave} modalPropsMaker={modalPropsMaker} />,
+		[ textCenter, pickAndSave, modalPropsMaker ]
+	);
 	const wordsShowing = useMemo(
 		() => getItems(shown, savedWordsObject, maybeSaveThisWord),
 		[ shown, savedWordsObject, maybeSaveThisWord ]
@@ -395,62 +485,43 @@ const ConceptsPage = (props: PageData) => {
 		() => getItems(combinations, savedWordsObject, maybeSaveThisWord),
 		[ combinations, savedWordsObject, maybeSaveThisWord ]
 	);
+	const chips = useMemo(
+		() => getChips(ConceptsSources, display, toggleChars),
+		[ display, toggleChars ]
+	);
+	const [
+		displayColon,
+		myCombinations,
+		saveAllMeanings,
+		saveSelectedMeanings,
+		currentCombo,
+		save
+	] = useMemo(() => [
+		t('Display:'),
+		t('My Combinations'),
+		t('Save All Meanings'),
+		t('Save Selected Meanings'),
+		t('Current Combination:'),
+		t('Save')
+	], [ t ]);
 
 	return (
 		<IonPage>
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
-			<Header
-				title={t("Concepts")}
-				endButtons={[
-					<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
-						<IonIcon
-							flipRtl
-							size="small"
-							slot="end"
-							src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
-						/>
-					</IonButton>,
-					<IonButton key="conceptsHelpButton" disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
-						<IonIcon icon={helpCircleOutline} />
-					</IonButton>
-				]}
-			/>
+			{header}
 			<IonContent>
 				<IonList lines="none">
 					<IonItem className="conceptsChips">
 						<div className="chips">
-							<span>{t('Display:')}</span>
-							{ConceptsSources.map((pair: [string, ConceptDisplay], ind: number) => {
-								const [list, prop] = pair;
-								const current = display.some((p: ConceptDisplay) => p === prop);
-								// TO-DO: Fix this so it doesn't rerender constantly!
-								return (
-									<IonChip
-										key={prop}
-										outline={!current}
-										onClick={() => toggleChars(prop)}
-										className={
-											(ind === 0 ?
-												("ion-margin-start" + (current ? " active" : ""))
-											:
-												(current ? "active" : "")
-											)
-										}
-									>
-										<IonLabel>{t(list)}</IonLabel>
-									</IonChip>
-								);
-							})}
-							{(
-								<IonChip
-									key="combinations"
-									outline={!showingCombos}
-									onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))}
-									className={showingCombos ? "active" : undefined}
-								>
-									<IonLabel>{t('My Combinations')}</IonLabel>
-								</IonChip>
-							)}
+							<span>{displayColon}</span>
+							{chips}
+							<IonChip
+								key="combinations"
+								outline={!showingCombos}
+								onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))}
+								className={showingCombos ? "active" : undefined}
+							>
+								<IonLabel>{myCombinations}</IonLabel>
+							</IonChip>
 						</div>
 						<div className="controls">
 							<IonButton
@@ -486,7 +557,7 @@ const ConceptsPage = (props: PageData) => {
 							color="tertiary"
 							onClick={saveEverything}
 						>
-							<IonIcon icon={saveOutline} className="conceptIcons" /> {t('Save All Meanings')}
+							<IonIcon icon={saveOutline} className="conceptIcons" /> {saveAllMeanings}
 						</IonButton>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
@@ -495,12 +566,12 @@ const ConceptsPage = (props: PageData) => {
 							color="secondary"
 							onClick={donePickingAndSaving}
 						>
-							<IonIcon icon={checkmarkDoneOutline} className="conceptIcons" /> {t('Save Selected Meanings')}
+							<IonIcon icon={checkmarkDoneOutline} className="conceptIcons" /> {saveSelectedMeanings}
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
 						<IonLabel className="ion-text-wrap">
-							{t('Current Combination:')} {savedWords.map(word => t(word.word)).join("; ")}
+							{currentCombo} {savedWords.map(word => t(word.word)).join("; ")}
 						</IonLabel>
 						<IonButton
 							disabled={savedWords.length <= 1}
@@ -509,11 +580,11 @@ const ConceptsPage = (props: PageData) => {
 							color="success"
 							onClick={doneLinking}
 						>
-							<IonIcon icon={saveOutline} className="conceptIcons" /> {t('Save')}
+							<IonIcon icon={saveOutline} className="conceptIcons" /> {save}
 						</IonButton>
 					</IonItem>
 					<div
-						id="outputPaneWL"
+						id="outputPaneConcepts"
 						className={
 							"concepts"
 							+ (pickAndSave || linking ? " pickAndSave" : "")
@@ -571,8 +642,8 @@ export const ConceptCard = () => {
 				</p>
 				<h2>{t('Landau 200')}</h2>
 				<p>
-					{t('conceptsInfo.landau1')}<strong>Basic 200 List</strong>
-					{t('conceptsInfo.landau2')}<strong>Landau Core Vocabulary (LCV)</strong>
+					{t('conceptsInfo.landau1')}<strong>{t('Basic 200 List')}</strong>
+					{t('conceptsInfo.landau2')}<strong>{t('Landau Core Vocabulary (LCV)')}</strong>
 					{t('conceptsInfo.landau3')}
 				</p>
 			</IonCardContent>

@@ -265,9 +265,7 @@ export interface LexiconState {
 // CONCEPTS
 //
 
-export interface Concept {
-	id: string
-	word: string
+export interface ConceptDisplayObject {
 	asjp?: boolean
 	lj?: boolean
 	d?: boolean
@@ -277,13 +275,17 @@ export interface Concept {
 	ssl?: boolean
 	l200?: boolean
 }
+export interface Concept extends ConceptDisplayObject {
+	id: string
+	word: string
+}
 export interface ConceptCombo {
 	id: string
 	parts: Concept[]
 }
 export type ConceptDisplay = keyof Omit<Concept, "id" | "word">;
 export interface ConceptsState {
-	display: ConceptDisplay[]
+	display: ConceptDisplayObject
 	textCenter: boolean
 	showingCombos: boolean
 	combinations: ConceptCombo[]

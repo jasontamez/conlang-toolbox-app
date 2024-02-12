@@ -489,41 +489,41 @@ ion-app .fullScreen .collapse div ion-button {
 	margin: 1rem 0.5rem;
 }
 #outputPane.pickAndSave .word,
-#outputPaneWL.pickAndSave .word,
+#outputPaneConcepts.pickAndSave .word,
 #outputPaneWE.pickAndSave .word {
 	background: var(--ion-color-primary);
 	color: var(--ion-color-primary-contrast);
 	cursor: copy;
 }
 #outputPane.pickAndSave div.word,
-#outputPaneWL.pickAndSave div.word,
+#outputPaneConcepts.pickAndSave div.word,
 #outputPaneWE.pickAndSave div.word,
-#outputPaneWL.removingCombos div.word {
+#outputPaneConcepts.removingCombos div.word {
 	padding: 0.25em 0.5em;
 	border: 1px solid var(--ion-color-primary-shade);
 }
 #outputPane.pickAndSave .word.saved,
-#outputPaneWL.pickAndSave .word.saved,
+#outputPaneConcepts.pickAndSave .word.saved,
 #outputPaneWE.pickAndSave .word.saved {
 	background: var(--ion-color-success);
 	color: var(--ion-color-success-contrast);
 	border-color: 1px solid var(--ion-color-success-shade);
 }
-#outputPaneWL .word {
+#outputPaneConcepts .word {
 	text-align: start;
 }
-#outputPaneWL.centering .word {
+#outputPaneConcepts.centering .word {
 	text-align: center;
 }
-#outputPaneWL.removingCombos div.word {
+#outputPaneConcepts.removingCombos div.word {
 	border: 1px solid transparent;
 }
-#outputPaneWL.removingCombos .word.combo {
+#outputPaneConcepts.removingCombos .word.combo {
 	background: var(--ion-color-warning);
 	color: var(--ion-color-warning-contrast);
 	border: 1px solid var(--ion-color-warning-shade);
 }
-#outputPaneWL.removingCombos .word.combo.saved {
+#outputPaneConcepts.removingCombos .word.combo.saved {
 	background: var(--ion-color-danger);
 	color: var(--ion-color-danger-contrast);
 	border: 1px solid var(--ion-color-danger-shade);

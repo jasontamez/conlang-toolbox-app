@@ -6,6 +6,8 @@ import { loadStateMS } from "../store/msSlice";
 import { loadStateSettings } from "../store/settingsSlice";
 import {
 	AppSettings,
+	ConceptDisplay,
+	ConceptDisplayObject,
 	ExtraCharactersState,
 	Fifty_OneThousand,
 	Five_OneHundred,
@@ -29,7 +31,7 @@ function doUpdate (incomingState: oldTypes.StateObject, dispatch: Dispatch) {
 	dispatch(loadStateWE(updateWE(incomingState)));
 	dispatch(loadStateMS(updateMS(incomingState)));
 	dispatch(loadStateLex(updateLex(incomingState)));
-	dispatch(loadStateConcepts({...incomingState.conceptsState}));
+	dispatch(loadStateConcepts(updateConcepts(incomingState)));
 	dispatch(loadStateEC(updateEC(incomingState)));
 	dispatch(loadStateSettings(updateSettings(incomingState)));
 }
@@ -155,7 +157,14 @@ function updateLex (incomingState: oldTypes.StateObject) {
 	return lex;
 }
 
-// Updating Concepts is unneeded
+function updateConcepts (incomingState: oldTypes.StateObject) {
+	const { display: oldDisplay, ...etc } = incomingState.conceptsState;
+	const display: ConceptDisplayObject = {};
+	(Object.keys(oldDisplay) as ConceptDisplay[]).forEach((prop) => {
+		display[prop] = true;
+	});
+	return {display, ...etc};
+}
 
 function updateEC (incomingState: oldTypes.StateObject) {
 	const {

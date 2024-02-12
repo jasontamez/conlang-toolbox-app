@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import blankAppState, { cleanerObject } from './blankAppState';
-import { Concept, ConceptsState, ConceptDisplay } from './types';
+import { Concept, ConceptsState,  ConceptDisplayObject } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = blankAppState.concepts;
 
-const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<ConceptDisplay[]>) => {
+const updateConceptsDisplayFunc = (state: ConceptsState, action: PayloadAction<ConceptDisplayObject>) => {
 	state.display = action.payload;
 	return state;
 };

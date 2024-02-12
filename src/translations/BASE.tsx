@@ -167,9 +167,6 @@ const lang = {
 		// The key below is used when someone tries to edit or delete the permanent sort method in sort settings.
 		"This is used by WordGen presets. It cannot be modified or deleted.":
 			"This is used by $t(WordGen) presets. It cannot be modified or deleted.",
-/*
-
-*/
 	}
 };
 
@@ -198,7 +195,7 @@ export default lang;
   "keyPluralMultipleEgArabic_few": "the plural form 3",
   "keyPluralMultipleEgArabic_many": "the plural form 4",
   "keyPluralMultipleEgArabic_other": "the plural form 5",
-  "keyWithArrayValue": ["multipe", "things"],
+  "keyWithArrayValue": ["multiple", "things"],
   "keyWithObjectValue": { "valueA": "return this with valueB", "valueB": "more text" }
 }
 

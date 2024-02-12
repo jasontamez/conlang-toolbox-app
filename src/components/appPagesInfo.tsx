@@ -335,7 +335,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: 'Concepts',
 				url: '/wordlists',
 				MenuIcon: (props: IonIconProps) => <ConceptsIcon {...props} />,
-				id: 'menuitemWL'
+				id: 'menuitemConcepts'
 			}
 		],
 		id: 'menuMain'

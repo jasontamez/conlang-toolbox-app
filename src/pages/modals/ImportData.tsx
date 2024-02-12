@@ -20,10 +20,12 @@ import {
 } from '@ionic/react';
 import { arrowUpCircle, closeCircle, closeCircleOutline, sparkles } from "ionicons/icons";
 import { useDispatch, useSelector } from 'react-redux';
+import { compare } from "compare-versions";
 
 import {
 	AppSettings,
 	ConceptDisplay,
+	ConceptDisplayObject,
 	ConceptsState,
 	DJState,
 	ExtraCharactersState,
@@ -164,6 +166,7 @@ const ImportData = (props: ModalProperties) => {
 	// Scan input for data and set state appropriately
 	function parseInput(object: ImportExportObject) {
 		const {
+			currentVersion,
 			wg,
 			we,
 			dj,
@@ -192,11 +195,20 @@ const ImportData = (props: ModalProperties) => {
 		setPotential_import_msStored(msStored || false);
 		setPotential_import_lexStored(lexStored || false);
 		if(concepts) {
-			setPotential_import_con(concepts);
+			if(compare(currentVersion, "0.12.0", "<")) {
+				const { display: oldDisplay, ...etc } = concepts;
+				const display: ConceptDisplayObject = {};
+				(Object.keys(oldDisplay) as ConceptDisplay[]).forEach((prop) => {
+					display[prop] = true;
+				});
+				setPotential_import_con({display, ...etc});
+			} else {
+				setPotential_import_con(concepts);
+			}
 		} else if (wordLists) {
-			const display: ConceptDisplay[] = [];
-			Object.entries(wordLists.listsDisplayed).forEach(([key, value]) => {
-				value && display.push(key as ConceptDisplay);
+			const display: ConceptDisplayObject = {};
+			(Object.keys(wordLists.listsDisplayed) as ConceptDisplay[]).forEach((prop) => {
+				display[prop] = true;
 			});
 			const textCenter = wordLists.centerTheDisplayedWords.length > 0;
 			setPotential_import_con({

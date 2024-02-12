@@ -261,7 +261,7 @@ const blankAppState: StateObject = {
 	},
 	concepts: {
 		textCenter: true,
-		display: [],
+		display: {},
 		showingCombos: false,
 		combinations: []
 	},

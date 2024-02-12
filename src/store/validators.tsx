@@ -746,7 +746,7 @@ const invalidConceptCombinations = (object: unknown) => {
 		return true;
 	});
 };
-const invalidConceptsState = (object: unknown) => {
+const invalidConceptsState = (object: unknown, v: string) => {
 	let error = "";
 	if(notObject(object)) {
 		error = "801: Invalid Concepts State object";
@@ -765,20 +765,34 @@ const invalidConceptsState = (object: unknown) => {
 			let note: string = "";
 			switch (key) {
 				case "display":
-					flag = notArrayOf(value, (str: unknown) => {
-						const result = !([
-							"asjp",
-							"lj",
-							"d",
-							"sy",
-							"s100",
-							"s207",
-							"ssl",
-							"l200",						
-						] as unknown[]).includes(str);
-						result && (note = ` (${str})`);
-						return result;
-					});
+					if(compare(v, "0.12.0", "<")) {
+						flag = notArrayOf(value, (str: unknown) => {
+							const result = !([
+								"asjp",
+								"lj",
+								"d",
+								"sy",
+								"s100",
+								"s207",
+								"ssl",
+								"l200",
+							] as unknown[]).includes(str);
+							result && (note = ` (${str})`);
+							return result;
+						});
+					} else {
+						flag = notObject(value)
+							|| Object.keys(value).some(prop => !([
+								"asjp",
+								"lj",
+								"d",
+								"sy",
+								"s100",
+								"s207",
+								"ssl",
+								"l200",
+							] as unknown[]).includes(prop));
+					}
 					break;
 				case "combinations":
 					flag = notArrayOf(value, invalidConceptCombinations);
@@ -1117,7 +1131,7 @@ export function VALIDATE_import (
 	object: ImportExportObject
 ): asserts object is ImportExportObject {
 	let error: string | false = false;
-	const v = object && object.currentVersion;
+	const { currentVersion: v } = object;
 	if(notString(v)) {
 		error = "110: currentVersion is missing or invalid";
 	} else if (
@@ -1140,7 +1154,7 @@ export function VALIDATE_import (
 			} else if (key === "lexicon") {
 				error = invalidLexiconState(value, v);
 			} else if (key === "concepts" && compare(v, "0.9.4", ">")) {
-				error = invalidConceptsState(value);
+				error = invalidConceptsState(value, v);
 			} else if (key === "wordLists" && compare(v, "0.9.5", "<")) {
 				error = invalidWordListsState(value);
 			} else if (key === "ec") {
