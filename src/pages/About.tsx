@@ -16,6 +16,7 @@ import {
 //import { globeOutline } from 'ionicons/icons';
 import { helpCircle } from 'ionicons/icons';
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 import { PageData, StateObject } from '../store/types';
 import { currentVersion } from '../store/blankAppState';
@@ -36,6 +37,7 @@ import { ConceptCard } from './Concepts';
 import { LexCard } from './Lex';
 
 const Home = (props: PageData) => {
+	const { t } = useTranslation(['common']);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
 	const [isOpenLexicon, setIsOpenLexicon] = useState<boolean>(false);
@@ -48,7 +50,7 @@ const Home = (props: PageData) => {
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...props.modalPropsMaker(isOpenConcepts, setIsOpenConcepts)}><ConceptCard /></ModalWrap>
 			<ModalWrap {...props.modalPropsMaker(isOpenLexicon, setIsOpenLexicon)}><LexCard /></ModalWrap>
-			<Header title="Conlang Toolbox" />
+			<Header title={t("Conlang Toolbox")} />
 			<IonContent className="containedCards" id="about">
 				<IonGrid>
 
@@ -56,7 +58,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink={"/ms/" + lastViewMS} routerDirection="forward">
 								<MorphoSyntaxIcon slot="start" />
-								<IonLabel>MorphoSyntax</IonLabel>
+								<IonLabel>{t("MorphoSyntax")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -80,7 +82,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/wg/overview" routerDirection="forward">
 								<WordGenIcon slot="start" />
-								<IonLabel>WordGen</IonLabel>
+								<IonLabel>{t("WordGen")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -104,7 +106,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/we/overview" routerDirection="forward">
 								<WordEvolveIcon slot="start" />
-								<IonLabel>WordEvolve</IonLabel>
+								<IonLabel>{t("WordEvolve")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -128,7 +130,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/dj/overview" routerDirection="forward">
 								<DeclenjugatorIcon slot="start" />
-								<IonLabel>Declenjugator</IonLabel>
+								<IonLabel>{t("Declenjugator")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -152,7 +154,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/lex" routerDirection="forward">
 								<LexiconIcon slot="start" />
-								<IonLabel>Lexicon</IonLabel>
+								<IonLabel>{t("Lexicon")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -168,7 +170,7 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/wordlists" routerDirection="forward">
 								<ConceptsIcon slot="start" />
-								<IonLabel>Concepts</IonLabel>
+								<IonLabel>{t("Concepts")}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
@@ -190,7 +192,7 @@ const Home = (props: PageData) => {
 								<IonCardHeader className="ion-text-center">
 									<IonCardTitle
 										className="ion-align-self-start"
-									>App Info</IonCardTitle>
+									>{t("App Info")}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{currentVersion}</div>

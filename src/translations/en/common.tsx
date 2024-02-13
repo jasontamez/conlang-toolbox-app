@@ -2,12 +2,15 @@ const common = {
 
 	"Conlang Toolbox": "Conlang Toolbox", // name of the App
 	Controls: "Controls", // the buttons used in the app
-	WordGen: "WordGen", // name of tool
+	MorphoSyntax: "MorphoSyntax", // name of tool
+	WordGen: "WordGen", // name of tool - word + generator
 	WG: "WG", // shorthand for WordGen
-	WordEvolve: "WordEvolve", // name of tool
+	WordEvolve: "WordEvolve", // name of tool - word + evolve
 	WE: "WG", // shorthand for WordEvolve
+	Declenjugator: "Declenjugator", // name of tool - declension + conjugation
 	Lexicon: "Lexicon", // name of tool
 	Concepts: "Concepts", // name of tool
+	"App Info": "App Info",
 	Stop: "Stop",
 	Cancel: "Cancel",
 	Save: "Save",
