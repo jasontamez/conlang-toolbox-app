@@ -22,6 +22,7 @@ import {
 import { useSelector } from "react-redux";
 
 import { LexiconState, ModalProperties, SetBooleanState, SetState, StateObject } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import { LexiconStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -36,6 +37,8 @@ interface SavedLexProperties extends ModalProperties {
 const DeleteLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
+	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
@@ -51,7 +54,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				setLexInfo([]);
 				setIsOpen(false);
 				toaster({
-					message: "Lexicon deleted.",
+					message: t("Lexicon deleted."),
 					duration: 2500,
 					toast
 				});
@@ -61,10 +64,10 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${title}"?`,
+				header: tc("delItem", { what: title }),
 				cssClass: "danger",
-				message: "Are you sure you want to delete this? It cannot be undone.",
-				submit: "Yes, Delete Iit",
+				message: tc("Are you sure you want to delete this? It cannot be undone."),
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -74,7 +77,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Delete Lexicon</IonTitle>
+					<IonTitle>{t("Delete Lexicon")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -98,16 +101,16 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 									className="ion-text-wrap"
 								>
 									{lex.title}
-									[{lex.lexicon.length.toString()}&nbsp;words]
+									[{t('lexitems', { count: lex.lexicon.length })}]
 								</IonLabel>
 								<IonNote
 									className="ion-text-wrap ital"
 									slot="end"
-								>Saved: {time.toLocaleString()}</IonNote>
+								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1>No Saved Lexicons</h1>
+						<h1>{t('No Saved Lexicons')}</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -115,7 +118,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc('Cancel')}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

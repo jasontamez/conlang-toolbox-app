@@ -27,6 +27,8 @@ import {
 
 import { Lexicon, LexiconColumn, ModalProperties, SorterFunc, StateObject } from '../../store/types';
 import { mergeLexiconItems } from '../../store/lexiconSlice';
+import useTranslator from '../../store/translationHooks';
+import i18n from '../../i18n';
 
 interface MergeProps extends ModalProperties {
 	merging: string[]
@@ -111,13 +113,13 @@ const method: Method = {
 const methods: Methods = ["first", "last", "merge", "firstAll", "lastAll", "mergeAll", "blank"];
 
 const methodDescriptions: MethodDescriptions = {
-	first: "Use first non-blank value",
-	last: "Use last non-blank value",
-	merge: "Merge all non-blank values together",
-	firstAll: "Use first value, even if it's blank",
-	lastAll: "Use last value, even if it's blank",
-	mergeAll: "Merge all values together, including any that are blank",
-	blank: "Save nothing, leave blank"
+	first: i18n.t("merge.first", { ns: "lexicon" }),
+	last: i18n.t("merge.last", { ns: "lexicon" }),
+	merge: i18n.t("merge.merge", { ns: "lexicon" }),
+	firstAll: i18n.t("merge.firstAll", { ns: "lexicon" }),
+	lastAll: i18n.t("merge.lastAll", { ns: "lexicon" }),
+	mergeAll: i18n.t("merge.mergeAll", { ns: "lexicon" }),
+	blank: i18n.t("merge.blank", { ns: "lexicon" })
 };
 
 const MergeLexiconItemsModal = (props: MergeProps) => {
@@ -128,6 +130,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 	const [mergedResult, setMergedResult] = useState<Lexicon | null>(null);
 	const dispatch = useDispatch();
 	const { columns } = useSelector((state: StateObject) => state.lexicon);
+	const [ t ] = useTranslator('lexicon');
 
 	const makeMergedItem = useCallback((itsByCols: string[][], mMeths: (keyof Method)[]) => {
 		const result: Lexicon = {
@@ -191,7 +194,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Merge Items</IonTitle>
+					<IonTitle>{t("Merge Items")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
@@ -203,12 +206,10 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 				<IonList lines="full">
 					<IonItem>
 						<IonLabel className="ion-text-wrap">
-							The Lexicon will be sorted alphabetically in the order you choose. It sorts
-							by the first column you choose. If two items are identical in that column,
-							it will sort them by the next column in the sort list, and so on.
+							{t("lexiconMergeInstructions")}
 						</IonLabel>
 					</IonItem>
-					<IonItemDivider>How to Merge</IonItemDivider>
+					<IonItemDivider>{t("How to Merge")}</IonItemDivider>
 					{
 						columns.map((col: LexiconColumn, i: number) => {
 							const { id, label } = col;
@@ -234,7 +235,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 							);
 						})
 					}
-					<IonItemDivider>Current merged result:</IonItemDivider>
+					<IonItemDivider>{t("Current merged result[colon]")}</IonItemDivider>
 					{
 						columns.map((col: LexiconColumn, i: number) => {
 							const { id, label } = col;
@@ -257,11 +258,11 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 				<IonToolbar color="darker">
 					<IonButton color="warning" slot="end" onClick={() => cancelMerge()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel Merging</IonLabel>
+						<IonLabel>{t("Cancel Merging")}</IonLabel>
 					</IonButton>
 					<IonButton color="tertiary" slot="end" onClick={() => saveMerge()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save and Merge</IonLabel>
+						<IonLabel>{t("Save and Merge")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

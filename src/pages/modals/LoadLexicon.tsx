@@ -20,8 +20,9 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { loadStateLex } from '../../store/lexiconSlice';
 import { LexiconState, ModalProperties, SetState, StateObject } from '../../store/types';
+import { loadStateLex } from '../../store/lexiconSlice';
+import useTranslator from '../../store/translationHooks';
 
 import yesNoAlert from '../../components/yesNoAlert';
 
@@ -33,6 +34,8 @@ interface SavedLexProperties extends ModalProperties {
 const LoadLexiconModal = (props: SavedLexProperties) => {
 	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
@@ -54,9 +57,9 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				handler();
 			} else {
 				yesNoAlert({
-					message: "Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed.",
+					message: t('loadLexiconConfirm'),
 					cssClass: "warning",
-					submit: "Yes, Load Iit",
+					submit: tc('confirmLoad'),
 					handler,
 					doAlert
 				});
@@ -69,7 +72,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Load Lexicon</IonTitle>
+					<IonTitle>{t('Load Lexicon')}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -87,15 +90,15 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
 								<IonLabel
 									className="ion-text-wrap"
-								>{lex.title} [{lex.lexicon.length.toString()}&nbsp;words]</IonLabel>
+								>{lex.title} [{t('lexitems', { count: lex.lexicon.length })}]</IonLabel>
 								<IonNote
 									className="ion-text-wrap ital"
 									slot="end"
-								>Saved: {time.toLocaleString()}</IonNote>
+								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1>No Saved Lexicons</h1>
+						<h1>{t("No Saved Lexicons")}</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -103,7 +106,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				<IonToolbar className={data ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc('Cancel')}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

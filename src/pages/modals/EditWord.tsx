@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { deleteLexiconItem, doEditLexiconItem } from '../../store/lexiconSlice';
 import { ExtraCharactersModalOpener, Lexicon, LexiconColumn, SorterFunc, StateObject } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -50,6 +51,8 @@ const nonsense = garble();
 const EditLexiconItemModal = (props: LexItemProps) => {
 	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [ id, setId ] = useState<string>("");
 	const [ cols, setCols ] = useState<string[]>([]);
@@ -85,10 +88,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 		// Otherwise, doublecheck
 		yesNoAlert({
-			header: "Exit Without Saving?",
+			header: t("Exit Without Saving?"),
 			cssClass: "warning",
-			message: "You have unsaved changed. Are you sure you want to exit?",
-			submit: "Yes, Exit",
+			message: t("You have unsaved changes. Are you sure you want to exit?"),
+			submit: tc("Yes, Exit"),
 			handler: () => setIsOpen(false),
 			doAlert
 		});
@@ -97,12 +100,12 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		const cols = currentInfo();
 		if(cols.join("") === "") {
 			doAlert({
-				header: "Error",
-				message: "You must put some text in at least one box.",
+				header: tc('Error'),
+				message: tc("You did not type any information into any text field."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -114,7 +117,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		dispatch(doEditLexiconItem([{id, columns: cols}, sorter]));
 		toaster({
-			message: "Item updated!",
+			message: t("Item updated!"),
 			color: "success",
 			duration: 2500,
 			toast
@@ -125,7 +128,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			setIsOpen(false);
 			dispatch(deleteLexiconItem(id));
 			toaster({
-				message: "Item deleted.",
+				message: t("Item deleted."),
 				duration: 2500,
 				color: "danger",
 				toast
@@ -135,10 +138,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Are you sure?",
+				header: tc('areYouSure'),
 				cssClass: "danger",
-				message: "Deleting this cannot be undone.",
-				submit: "Yes, Delete It",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				submit: tc('confirmDelIt'),
 				handler,
 				doAlert
 			});
@@ -148,7 +151,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Lexicon Item</IonTitle>
+					<IonTitle>{t('Edit Lexicon Item')}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -184,11 +187,11 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 				<IonToolbar>
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Item</IonLabel>
+						<IonLabel>{t("Save Item")}</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={() => delFromLex()}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Item</IonLabel>
+						<IonLabel>{t("Delete Item")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -1,7 +1,12 @@
 import packageJson from '../../package.json';
+import i18n from '../i18n';
 import { StateCleanerObject, StateObject } from "./types";
 
 export const currentVersion = packageJson.version;
+
+const word = i18n.t("Word", { ns: "lexicon" });
+const partOfSpeech = i18n.t("Part of Speech", { ns: "lexicon" });
+const definition = i18n.t("Definition", { ns: "lexicon" });
 
 const blankAppState: StateObject = {
 	ms: {
@@ -240,17 +245,17 @@ const blankAppState: StateObject = {
 		columns: [
 			{
 				id: "00",
-				label: "Word",
+				label: word,
 				size: "m"
 			},
 			{
 				id: "11",
-				label: "Part of Speech",
+				label: partOfSpeech,
 				size: "s"
 			},
 			{
 				id: "22",
-				label: "Definition",
+				label: definition,
 				size: "l"
 			}
 		],

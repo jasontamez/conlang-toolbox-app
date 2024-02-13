@@ -1,6 +1,6 @@
 const concepts = {
 	// Concepts
-	conceptsInfo: {
+	info: {
 		basic1:
 			`Presented here are a number of lists of basic concepts,
 			which were originaly created for the purposes of

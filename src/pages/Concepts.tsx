@@ -626,39 +626,39 @@ export const ConceptCard = () => {
 				<IonLabel>{tc('Concepts')}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>{t('conceptsInfo.basic1')}</p>
-				<p>{t('conceptsInfo.basic2')}</p>
+				<p>{t('info.basic1')}</p>
+				<p>{t('info.basic2')}</p>
 				<hr />
 				<h2>{tc('Controls')}</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
-				<p>{t('conceptsInfo.controlLexicon')}</p>
+				<p>{t('info.controlLexicon')}</p>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
-				<p>{t('conceptsInfo.controlJoin')}</p>
+				<p>{t('info.controlJoin')}</p>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/unlink.svg" /></div>
-				<p>{t('conceptsInfo.controlUnjoin')}</p>
+				<p>{t('info.controlUnjoin')}</p>
 				<hr />
 				<h2>{t('Swadesh Lists')}</h2>
 				<p>
-					{t('conceptsInfo.swadesh1')}<strong>{t('Swadesh 100')}</strong>
-					{t('conceptsInfo.swadesh2')}<strong>{t('Swadesh 207')}</strong>
-					{t('conceptsInfo.swadesh3')}<strong>{t('Swadesh-Yakhontov')}</strong>
-					{t('conceptsInfo.swadesh4')}<strong>{t('Swadesh-Woodward Sign List')}</strong>
-					{t('conceptsInfo.swadesh5')}
+					{t('info.swadesh1')}<strong>{t('Swadesh 100')}</strong>
+					{t('info.swadesh2')}<strong>{t('Swadesh 207')}</strong>
+					{t('info.swadesh3')}<strong>{t('Swadesh-Yakhontov')}</strong>
+					{t('info.swadesh4')}<strong>{t('Swadesh-Woodward Sign List')}</strong>
+					{t('info.swadesh5')}
 				</p>
 				<h2>{t('Dolgopolsky List')}</h2>
-				<p>{t('conceptsInfo.dolgopolsky')}</p>
+				<p>{t('info.dolgopolsky')}</p>
 				<h2>{t('Leipzig-Jakarta List')}</h2>
-				<p>{t('conceptsInfo.leipzigJakarta')}</p>
+				<p>{t('info.leipzigJakarta')}</p>
 				<h2>{t('ASJP List')}</h2>
 				<p>
-					{t('conceptsInfo.asjp1')}<strong>{t('Automated Similarity Judgment Program')}</strong>
-					{t('conceptsInfo.asjp2')}
+					{t('info.asjp1')}<strong>{t('Automated Similarity Judgment Program')}</strong>
+					{t('info.asjp2')}
 				</p>
 				<h2>{t('Landau 200')}</h2>
 				<p>
-					{t('conceptsInfo.landau1')}<strong>{t('Basic 200 List')}</strong>
-					{t('conceptsInfo.landau2')}<strong>{t('Landau Core Vocabulary (LCV)')}</strong>
-					{t('conceptsInfo.landau3')}
+					{t('info.landau1')}<strong>{t('Basic 200 List')}</strong>
+					{t('info.landau2')}<strong>{t('Landau Core Vocabulary (LCV)')}</strong>
+					{t('info.landau3')}
 				</p>
 			</IonCardContent>
 		</IonCard>

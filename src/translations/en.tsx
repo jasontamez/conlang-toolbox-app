@@ -1,9 +1,11 @@
 import common from "./en/common";
 import concepts from "./en/concepts";
+import lexicon from "./en/lexicon";
 
 const en = {
 	common: common,
-	concepts: concepts
+	concepts: concepts,
+  lexicon: lexicon
 };
 
 export default en;

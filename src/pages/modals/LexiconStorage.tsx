@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { loadStateLex, updateLexiconNumber, updateLexiconText } from '../../store/lexiconSlice';
 import { Lexicon, LexiconState, ModalProperties, SetBooleanState, SetState, StateObject } from '../../store/types';
 import blankAppState from '../../store/blankAppState';
+import useTranslator from '../../store/translationHooks';
 
 import { LexiconStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -54,6 +55,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		setLexInfo
 	} = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	const [disableConfirms, stateLexicon]: [boolean, LexiconState] = useSelector(
 		(state: StateObject) => [state.appSettings.disableConfirms, state.lexicon]
 	);
@@ -73,14 +76,14 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			dispatch(loadStateLex(newLex));
 			setIsOpen(false);
 			toaster({
-				message: "Lexicon cleared",
+				message: t("Lexicon cleared"),
 				duration: 4000,
 				toast
 			});
 		};
 		if(!(title || id || description || lexicon.length > 0)) {
 			toaster({
-				message: "Nothing to clear",
+				message: t("Nothing to clear"),
 				color: "danger",
 				duration: 3000,
 				position: "top",
@@ -90,10 +93,10 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Delete Everything?",
+				header: tc("Delete Everything?"),
 				cssClass: "danger",
-				message: "This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this?",
-				submit: "Yes, Delete It",
+				message: t('deleteEverythingMessage'),
+				submit: tc('confirmDelIt'),
 				handler,
 				doAlert
 			});
@@ -113,7 +116,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		});
 	};
 	const saveLexicon = (
-		announce: string = "Lexicon saved.",
+		announce: string = t("Lexicon saved."),
 		saveKey: string = id,
 		overwrite: boolean = true
 	) => {
@@ -170,16 +173,16 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		}
 		const newKey = uuidv4();
 		dispatch(updateLexiconText(["id", newKey]));
-		saveLexicon("Lexicon saved as new lexicon!", newKey, false);
+		saveLexicon(t("Lexicon saved as new lexicon!"), newKey, false);
 	};
 	const lexiconSaveError = () => {
 		doAlert({
-			header: "Error",
-			message: "You must input a title before saving.",
+			header: tc("error"),
+			message: t("You must input a title before saving."),
 			cssClass: "danger",
 			buttons: [
 				{
-					text: "Ok",
+					text: tc("Ok"),
 					role: "cancel",
 					cssClass: "cancel"
 				}
@@ -189,12 +192,12 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 	const maybeExportLexicon = () => {
 		if(!title) {
 			return doAlert({
-				header: "Error",
-				message: "Please give your lexicon a title before exporting it.",
+				header: tc("error"),
+				message: t("Please give your lexicon a title before exporting it."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -202,12 +205,12 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			});
 		} else if (lexicon.length < 1) {
 			return doAlert({
-				header: "Error",
-				message: "Please add words to your lexicon before exporting it.",
+				header: tc("error"),
+				message: t("Please add words to your lexicon before exporting it."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -221,34 +224,34 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Lexicon Storage</IonTitle>
+					<IonTitle>{t("Lexicon Storage")}</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none">
 					<IonItem button={true} onClick={() => clearLexicon()}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>Clear Lexicon</IonLabel>
+						<IonLabel>{t("Clear Lexicon")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-						<IonLabel>Load Lexicon</IonLabel>
+						<IonLabel>{t("Load Lexicon")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexicon()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>Save Lexicon</IonLabel>
+						<IonLabel>{t("Save Lexicon")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexiconNew()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>Save As New</IonLabel>
+						<IonLabel>{t("Save as New")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => maybeExportLexicon()}>
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
-						<IonLabel>Export Lexicon</IonLabel>
+						<IonLabel>{t("Export Lexicon")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openDelete)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
-						<IonLabel>Delete Saved Lexicon</IonLabel>
+						<IonLabel>{t("Delete Saved Lexicon")}</IonLabel>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -262,7 +265,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 							color="success"
 						>
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
-							<IonLabel>Done</IonLabel>
+							<IonLabel>{tc('Done')}</IonLabel>
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>

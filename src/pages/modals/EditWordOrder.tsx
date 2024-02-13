@@ -48,6 +48,7 @@ import {
 	StateObject
 } from '../../store/types';
 import { updateLexiconColumarInfo } from '../../store/lexiconSlice';
+import useTranslator from '../../store/translationHooks';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -67,6 +68,8 @@ interface OrderModalProps extends ExtraCharactersModalOpener {
 const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		lexicon,
@@ -112,11 +115,11 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
-			return `${el ? el.value : "ERROR"}/${size}/${originalPosition}`;
+			return `${el ? el.value : tc("emphasizedError")}/${size}/${originalPosition}`;
 		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort} : ${shadowCustomSort}`;
 		if(testing === original) {
 			toaster({
-				message: "Nothing to save.",
+				message: tc("Nothing to save."),
 				color: "warning",
 				duration: 2500,
 				position: "top",
@@ -133,7 +136,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
 			return {
 				id,
-				label: el ? el.value : "ERROR",
+				label: el ? el.value : tc("emphasizedError"),
 				size
 			};
 		});
@@ -212,7 +215,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const addNewColumn = () => {
 		const final: ShadowColumn[] = [
 			...shadowColumns,
-			{ id: uuidv4(), size: "m", label: "New", originalPosition: -1 }
+			{ id: uuidv4(), size: "m", label: t("New"), originalPosition: -1 }
 		];
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
@@ -224,7 +227,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		// save result
 		setShadowColumns(final);
 		toaster({
-			message: "Added new column.",
+			message: t("Added new column."),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -251,8 +254,8 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			yesNoAlert({
 				header: shadowColumns[i].label,
 				cssClass: "danger",
-				message: "Are you sure you want to delete this column? This cannot be undone.",
-				submit: "Yes, Delete It",
+				message: t("Are you sure you want to delete this column? This cannot be undone."),
+				submit: tc('confirmDelIt'),
 				handler,
 				doAlert
 			});
@@ -291,7 +294,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Columns</IonTitle>
+					<IonTitle>{t("Edit Columns")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -304,26 +307,26 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			</IonHeader>
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
-					<IonItemDivider>Lexicon Options</IonItemDivider>
+					<IonItemDivider>{t("Lexicon Options")}</IonItemDivider>
 					<IonItem>
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={!shadowTruncate}
 							onIonChange={() => setShadowTruncate(!shadowTruncate)}
-						>Show Full Column Titles</IonToggle>
+						>{t("Show Full Column Titles")}</IonToggle>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label="Sort method:"
+							label={t("Sort method[colon]")}
 							value={shadowCustomSort}
 							onIonChange={(e) => setShadowCustomSort(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
-							>Default sort</IonSelectOption>
+							>{tc("Default sort")}</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(
 								sorter => (
 									<IonSelectOption
@@ -338,29 +341,29 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label="Sort blank columns:"
+							label={t("Sort blank columns[colon]")}
 							value={shadowBlankSort}
 							onIonChange={(e) => setShadowBlankSort(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="first"
-							>To Beginning, Always</IonSelectOption>
+							>{t("To Beginning, Always")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="last"
-							>To End, Always</IonSelectOption>
+							>{t("To End, Always")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="alphaFirst"
-							>As Alphabetically First</IonSelectOption>
+							>{t("As Alphabetically First")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="alphaLast"
-							>As Alphabetically Last</IonSelectOption>
+							>{t("As Alphabetically Last")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider>Rearrange Lexicon Columns</IonItemDivider>
+					<IonItemDivider>{t("Rearrange Lexicon Columns")}</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{shadowColumns.map((column: LexiconColumn, i: number) => {
 							const { id, size, label } = column;
@@ -374,8 +377,8 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 											<IonCol>
 												<IonInput
 													id={`input_colOrder_${id}`}
-													aria-label="Field Name"
-													placeholder="Field Name"
+													aria-label={t("Field Name")}
+													placeholder={t("Field Name")}
 													value={label}
 												/>
 											</IonCol>
@@ -393,30 +396,30 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 													labelPlacement="start"
 													id={`${id}:${i}:s`}
 													justify="start"
-													aria-label="Small size"
+													aria-label={t("Small size")}
 													checked={size === "s"}
 													onIonChange={() => handleCheckboxes(i, "s")}
-												>Small</IonCheckbox>
+												>{t("Small")}</IonCheckbox>
 											</IonCol>
 											<IonCol>
 												<IonCheckbox
 													labelPlacement="start"
 													id={`${id}:${i}:m`}
 													justify="start"
-													aria-label="Medium size"
+													aria-label={t("Medium size")}
 													checked={size === "m"}
 													onIonChange={() => handleCheckboxes(i, "m")}
-												>Med</IonCheckbox>
+												>{t("Med")}</IonCheckbox>
 											</IonCol>
 											<IonCol>
 												<IonCheckbox
 													labelPlacement="start"
 													id={`${id}:${i}:l`}
 													justify="start"
-													aria-label="Large size"
+													aria-label={t("Large size")}
 													checked={size === "l"}
 													onIonChange={() => handleCheckboxes(i, "l")}
-												>Large</IonCheckbox>
+												>{t("Large")}</IonCheckbox>
 											</IonCol>
 										</IonRow>
 									</IonGrid>
@@ -434,7 +437,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						onClick={() => addNewColumn()}
 					>
 						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>Add Column</IonLabel>
+						<IonLabel>{t("Add Column")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="tertiary"
@@ -442,7 +445,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						onClick={() => doneEditingOrder()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Changes</IonLabel>
+						<IonLabel>{t("Save Changes")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -20,6 +20,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { Lexicon, ModalProperties, SetBooleanState, StateObject } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import doExport from '../../components/ExportServices';
 import log from '../../components/Logging';
@@ -43,6 +44,8 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		setLoading(false);
 	};
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 	const columnTitles = columns.map((obj) => obj.label);
 	const length = columns.length;
 	const toast = useIonToast();
@@ -69,8 +72,8 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 				filler = filler + ",";
 			}
 		}
-		const output = `"TITLE",${quotify(title)}${filler}\n`
-			+ `"Description",${description}${filler}\n`
+		const output = `"${tc('TITLE')}",${quotify(title)}${filler}\n`
+			+ `"${tc('Description')}",${description}${filler}\n`
 			+ lines.join(length < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
@@ -149,7 +152,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export Lexicon: {title}</IonTitle>
+					<IonTitle>{t('Export Lexicon[colon]')} {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -159,35 +162,35 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
-					<IonItem>Choose a format:</IonItem>
+					<IonItem>{tc('Choose a format[colon]')}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doTabbed(e)}
-					>Text, Tabbed</IonItem>
+					>{t("Text, Tabbed")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doSemicolons(e)}
-					>Text, Semicolons</IonItem>
+					>{t("Text, Semicolons")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doNewlines(e)}
-					>Text, Newlines</IonItem>
+					>{t("Text, Newlines")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doCSVall(e)}
-					>CSV File</IonItem>
+					>{t("CSV File")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doCSV(e)}
-					>CSV File, no title/description</IonItem>
+					>{t("CSV File, no title/description")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doJSON(e)}
-					>JSON File</IonItem>
+					>{t("JSON File")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doXML(e)}
-					>XML File</IonItem>
+					>{t("XML File")}</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>
@@ -195,7 +198,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 				<IonToolbar>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc('Cancel')}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -27,6 +27,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { addLexiconItem } from '../../store/lexiconSlice';
 import { ExtraCharactersModalOpener, LexiconColumn, SorterFunc } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -41,6 +42,8 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 	const maybeSaveNewInfo = useCallback(() => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
@@ -55,12 +58,12 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		});
 		if(!foundFlag) {
 			doAlert({
-				header: "Error",
-				message: "You did not type any information into any text field.",
+				header: tc("error"),
+				message: tc("You did not type any information into any text field."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -77,12 +80,12 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		// toast
 		toaster({
-			message: "Item added!",
+			message: t("Item added!"),
 			duration: 2500,
 			color: "success",
 			toast
 		});
-	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter]);
+	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter, t, tc]);
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
@@ -110,7 +113,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Lexicon Item</IonTitle>
+					<IonTitle>{t("Add Lexicon Item")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -146,7 +149,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 						onClick={() => maybeSaveNewInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Add Item</IonLabel>
+						<IonLabel>{t("Add Item")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

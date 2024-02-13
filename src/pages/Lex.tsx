@@ -46,6 +46,7 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 import { v4 as uuidv4 } from 'uuid';
 import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
+import { useTranslation } from 'react-i18next';
 
 import {
 	addLexiconItem,
@@ -54,7 +55,17 @@ import {
 	updateLexiconSortDir,
 	updateLexiconText
 } from '../store/lexiconSlice';
-import { Lexicon, LexiconColumn, LexiconState, PageData, SortObject, StateObject } from '../store/types';
+import {
+	Lexicon,
+	LexiconColumn,
+	LexiconState,
+	ModalPropsMaker,
+	PageData,
+	SetBooleanState,
+	SortObject,
+	StateObject
+} from '../store/types';
+import useTranslator from '../store/translationHooks';
 
 import AddLexiconItemModal from './modals/AddWord';
 import EditLexiconItemModal from './modals/EditWord';
@@ -74,6 +85,7 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
+import i18n from '../i18n';
 import './Lexicon.css';
 
 interface LexItem {
@@ -104,11 +116,147 @@ interface LexItemDeleting {
 	}
 }
 
+interface InnerHeaderProps {
+	setIsOpenECM: SetBooleanState
+	modalPropsMaker: ModalPropsMaker
+	lexHeadersHidden: boolean
+	setLexHeadersHidden: SetBooleanState
+	isDeleting: boolean
+}
+
+const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
+	const {
+		setIsOpenECM,
+		modalPropsMaker,
+		lexHeadersHidden,
+		setLexHeadersHidden,
+		isDeleting
+	} = props;
+	const { t } = useTranslation('common');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isWorking, setIsWorking] = useState<boolean>(false);
+	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
+	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
+	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
+	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
+	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
+	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
+
+	const hideButton = useMemo(() => (
+		<IonButton
+			color={lexHeadersHidden ? "secondary" : undefined}
+			onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
+			key="hideLexiconTopButton"
+		>
+			<IonIcon
+				icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
+				slot="icon-only"
+			/>
+		</IonButton>
+	), [ lexHeadersHidden, setLexHeadersHidden ]);
+	const exCharsbutton = useMemo(() => (
+		<IonButton
+			disabled={isDeleting}
+			onClick={() => setIsOpenECM(true)}
+			slot="icon-only"
+			key="openExtraCharsLexButton"
+		>
+			<IonIcon icon={globeOutline} />
+		</IonButton>
+	), [ isDeleting, setIsOpenECM ]);
+	const lexStoragebutton = useMemo(() => (
+		<IonButton
+			disabled={isDeleting}
+			onClick={() => setIsOpenLexStorage(true)}
+			slot="icon-only"
+			key="openLexStorageButton"
+		>
+			<IonIcon icon={saveOutline} />
+		</IonButton>
+	), [ isDeleting ]);
+	const infobutton = useMemo(() => (
+		<IonButton
+			disabled={isDeleting}
+			onClick={() => setIsOpenInfo(true)}
+			slot="icon-only"
+			key="openLexHelpButton"
+		>
+			<IonIcon icon={helpCircleOutline} />
+		</IonButton>
+	), [ isDeleting ]);
+
+	const endButtons = useMemo(() => [
+		hideButton,
+		exCharsbutton,
+		lexStoragebutton,
+		infobutton
+	], [
+		hideButton,
+		exCharsbutton,
+		lexStoragebutton,
+		infobutton
+	]);
+
+	const loadOff = useCallback(() => setIsLoading(false), []);
+	const workOff = useCallback(() => setIsWorking(false), []);
+	const loadMsg = useMemo(() => t("Please wait..."), [t]);
+	const workMsg = useMemo(() => t("Working..."), [t]);
+	const title = useMemo(() => t('Lexicon'), [t]);
+
+	return (<>
+		<LoadLexiconModal
+			{...modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
+			lexInfo={storedLexInfo}
+			setLexInfo={setStoredLexInfo}
+		/>
+		<ExportLexiconModal
+			{...modalPropsMaker(isOpenExportLex, setIsOpenExportLex)}
+			setLoading={setIsLoading}
+		/>
+		<DeleteLexiconModal
+			{...modalPropsMaker(isOpenDelLex, setIsOpenDelLex)}
+			setLoadingScreen={setIsWorking}
+			lexInfo={storedLexInfo}
+			setLexInfo={setStoredLexInfo}
+		/>
+		<LexiconStorageModal
+			{...modalPropsMaker(isOpenLexStorage, setIsOpenLexStorage)}
+			openLoad={setIsOpenLoadLex}
+			openDelete={setIsOpenDelLex}
+			openExport={setIsOpenExportLex}
+			setLoading={setIsLoading}
+			setLexInfo={setStoredLexInfo}
+		/>
+		<IonLoading
+			cssClass='loadingPage'
+			isOpen={isLoading}
+			onDidDismiss={loadOff}
+			message={loadMsg}
+			spinner="bubbles"
+			duration={1000}
+		/>
+		<IonLoading
+			cssClass='loadingPage'
+			isOpen={isWorking}
+			onDidDismiss={workOff}
+			message={workMsg}
+			spinner="bubbles"
+			duration={1000}
+		/>
+		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><LexCard /></ModalWrap>
+		<Header
+			id="lexiconTopBar"
+			title={title}
+			endButtons={endButtons}
+		/>
+	</>);
+};
+
 function maybeExpand (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, toast: UseIonToastResult) {
 	// Expand an overflowing field into a toast
 	const span = e.target as HTMLSpanElement;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
-		const message = (span && (span.textContent as string)) || "<error>";
+		const message = (span && (span.textContent as string)) || i18n.t('emphasizedError', { ns: "common" });
 		toaster({
 			message,
 			duration: 10000,
@@ -242,11 +390,11 @@ const Lex = (props: PageData) => {
 		customSort,
 		/*fontType*/
 	} = useSelector((state: StateObject) => state.lexicon);
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [isWorking, setIsWorking] = useState<boolean>(false);
 
 	// lexicon sorting
 	const {
@@ -279,29 +427,24 @@ const Lex = (props: PageData) => {
 
 	// other modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
-	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddLexItem, setIsOpenAddLexItem] = useState<boolean>(false);
 	const [isOpenLexOrder, setIsOpenLexOrder] = useState<boolean>(false);
 	const [isOpenLexSorter, setIsOpenLexSorter] = useState<boolean>(false);
-	const [isOpenLoadLex, setIsOpenLoadLex] = useState<boolean>(false);
-	const [isOpenExportLex, setIsOpenExportLex] = useState<boolean>(false);
-	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
-	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
-	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
 
 	// deleting multiple lex items
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [deleting, setDeleting] = useState<Lexicon[]>([]);
 	const [deletingObj, setDeletingObj] = useState<{[key: string]: boolean}>({});
 	function maybeFinishDeleting (cancel: boolean = false) {
-		if(cancel || deleting.length === 0) {
+		const length = deleting.length;
+		if(cancel || length === 0) {
 			setDeleting([]);
 			return setIsDeleting(false);
 		}
 		const handler = () => {
 			dispatch(deleteMultipleLexiconItems(deleting.map(obj => obj.id)));
 			toaster({
-				message: `Deleted ${deleting.length} items.`,
+				message: t('delItemsSuccess'),
 				color: "danger",
 				position: "middle",
 				toast
@@ -310,9 +453,9 @@ const Lex = (props: PageData) => {
 			return setIsDeleting(false);
 		};
 		yesNoAlert({
-			header: `Delete ${deleting.length} Items?`,
-			message: "This action cannot be undone. Are you sure?",
-			submit: "Yes, Delete Them",
+			header: t('delItems', { count: length }),
+			message: tc('cannotUndo') + " " + tc('areYouSure'),
+			submit: tc('confirmDel', { count: length }),
 			cssClass: "danger",
 			handler,
 			doAlert
@@ -322,7 +465,7 @@ const Lex = (props: PageData) => {
 		clearMergedInfo();
 		setIsDeleting(true);
 		toaster({
-			message: "Tap on items to mark them for deletion. Finish deleting by tapping the top floating button. Cancel by tapping the bottom floating button.",
+			message: t('beginDeleteMode'),
 			duration: 8000,
 			position: "bottom",
 			color: "danger",
@@ -383,12 +526,12 @@ const Lex = (props: PageData) => {
 		});
 		if(!foundFlag) {
 			doAlert({
-				header: "Error",
-				message: "You did not type any information into any text field.",
+				header: tc('error'),
+				message: tc("You did not type any information into any text field."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -406,7 +549,7 @@ const Lex = (props: PageData) => {
 			const el = $i<HTMLIonInputElement>(id);
 			el && el.getInputElement().then((el) => (el.value = ""));
 		});
-	}, [columns, dispatch, doAlert, sorter]);
+	}, [columns, dispatch, doAlert, sorter, tc]);
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
@@ -418,13 +561,13 @@ const Lex = (props: PageData) => {
 			yesNoAlert({
 				header: title,
 				cssClass: "danger",
-				message: "Are you sure you want to delete this? This cannot be undone.",
-				submit: "Yes, Delete It",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				submit: tc('confirmDelIt'),
 				handler: () => dispatch(deleteLexiconItem(item.id)),
 				doAlert
 			});
 		}
-	}, [dispatch, disableConfirms, doAlert]);
+	}, [dispatch, disableConfirms, doAlert, tc]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
@@ -451,11 +594,11 @@ const Lex = (props: PageData) => {
 	}, [merging, mergingObject]);
 	const mergeButton = useMemo(() => merging.length > 1 ? (
 		<IonFab vertical="bottom" horizontal="start" slot="fixed">
-			<IonFabButton color="tertiary" title="Merge selected items" onClick={() => setIsOpenMergeItems(true)}>
+			<IonFabButton color="tertiary" title={t("Merge selected items")} onClick={() => setIsOpenMergeItems(true)}>
 				<IonIcon src="svg/link.svg" />
 			</IonFabButton>
 		</IonFab>
-	) : <></>, [merging.length]);
+	) : <></>, [merging.length, t]);
 	const clearMergedInfo = useCallback(() => {
 		setMerging([]);
 		setMergingObject({});
@@ -512,86 +655,13 @@ const Lex = (props: PageData) => {
 				clearInfo={clearMergedInfo}
 				sorter={sorter}
 			/>
-			<LoadLexiconModal
-				{...props.modalPropsMaker(isOpenLoadLex, setIsOpenLoadLex)}
-				lexInfo={storedLexInfo}
-				setLexInfo={setStoredLexInfo}
-			/>
-			<ExportLexiconModal
-				{...props.modalPropsMaker(isOpenExportLex, setIsOpenExportLex)}
-				setLoading={setIsLoading}
-			/>
-			<DeleteLexiconModal
-				{...props.modalPropsMaker(isOpenDelLex, setIsOpenDelLex)}
-				setLoadingScreen={setIsWorking}
-				lexInfo={storedLexInfo}
-				setLexInfo={setStoredLexInfo}
-			/>
-			<LexiconStorageModal
-				{...props.modalPropsMaker(isOpenLexStorage, setIsOpenLexStorage)}
-				openLoad={setIsOpenLoadLex}
-				openDelete={setIsOpenDelLex}
-				openExport={setIsOpenExportLex}
-				setLoading={setIsLoading}
-				setLexInfo={setStoredLexInfo}
-			/>
-			<IonLoading
-				cssClass='loadingPage'
-				isOpen={isLoading}
-				onDidDismiss={() => setIsLoading(false)}
-				message={'Please wait...'}
-				spinner="bubbles"
-				duration={1000}
-			/>
-			<IonLoading
-				cssClass='loadingPage'
-				isOpen={isWorking}
-				onDidDismiss={() => setIsWorking(false)}
-				message={'Working...'}
-				spinner="bubbles"
-				duration={1000}
-			/>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}><LexCard /></ModalWrap>
-			<Header
-				id="lexiconTopBar"
-				title="Lexicon"
-				endButtons={[
-					<IonButton
-						color={lexHeadersHidden ? "secondary" : undefined}
-						onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
-						key="hideLexiconTopButton"
-					>
-						<IonIcon
-							icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
-							slot="icon-only"
-						/>
-					</IonButton>,
-					<IonButton
-						disabled={isDeleting}
-						onClick={() => setIsOpenECM(true)}
-						slot="icon-only"
-						key="openExtraCharsLexButton"
-					>
-						<IonIcon icon={globeOutline} />
-					</IonButton>,
-					<IonButton
-						disabled={isDeleting}
-						onClick={() => setIsOpenLexStorage(true)}
-						slot="icon-only"
-						key="openLexStorageButton"
-					>
-						<IonIcon icon={saveOutline} />
-					</IonButton>,
-					<IonButton
-						disabled={isDeleting}
-						onClick={() => setIsOpenInfo(true)}
-						slot="icon-only"
-						key="openLexHelpButton"
-					>
-						<IonIcon icon={helpCircleOutline} />
-					</IonButton>
-				]}
+			<InnerHeader
+				setIsOpenECM={setIsOpenECM}
+				modalPropsMaker={props.modalPropsMaker}
+				lexHeadersHidden={lexHeadersHidden}
+				setLexHeadersHidden={setLexHeadersHidden}
+				isDeleting={isDeleting}
 			/>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
 				<IonList
@@ -599,25 +669,25 @@ const Lex = (props: PageData) => {
 					id="lexiconTitleAndDescription"
 					className={lexHeadersHidden ? "hide" : undefined}
 				>
-					<IonItem className="labelled"><IonLabel>Lexicon Title:</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{t("Lexicon Title[colon]")}</IonLabel></IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Lexicon title"
+							aria-label={t("Lexicon Title")}
 							value={title}
 							id="lexTitle"
 							className="ion-margin-top"
-							placeholder="Usually the language name."
+							helperText={t('lexTitleHelperText')}
 							onIonChange={() => setNewInfo("lexTitle", "title")}
 						></IonInput>
 					</IonItem>
-					<IonItem className="labelled"><IonLabel>Description:</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{tc("Description[colon]")}</IonLabel></IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label="Description"
+							aria-label={tc("Description")}
 							value={description}
 							id="lexDesc"
 							className="ion-margin-top"
-							placeholder="A short description of this lexicon."
+							helperText={t('lexDescriptionHelperText')}
 							rows={3}
 							onIonChange={() => setNewInfo("lexDesc", "description")}
 						/>
@@ -626,10 +696,10 @@ const Lex = (props: PageData) => {
 				<IonList lines="none" id="mainLexList">
 					<div id="theLexiconHeader">
 						<div className="flex-basic">
-							<h1>{lexicon.length === 1 ? "1 Item" : `${lexicon.length} Items`}</h1>
+							<h1>{t('lexItems', { count: lexicon.length })}</h1>
 						</div>
 						<div className="flex-shrinker">
-							<h2>Sort:</h2>
+							<h2>{t("Sort[colon]")}</h2>
 							<div
 								className="fakeButton"
 								onClick={() => setIsOpenLexSorter(true)}
@@ -733,14 +803,14 @@ const Lex = (props: PageData) => {
 					<IonFabList side="top">
 						<IonFabButton
 							color="danger"
-							title="Delete multiple lexicon items"
+							title={t("Delete multiple lexicon items")}
 							onClick={() => beginMassDeleteMode()}
 						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
 						<IonFabButton
 							color="success"
-							title="Add new lexicon item"
+							title={t("Add new lexicon item")}
 							onClick={() => setIsOpenAddLexItem(true)}
 						>
 							<IonIcon icon={addCircle} />
@@ -752,7 +822,7 @@ const Lex = (props: PageData) => {
 						<IonFab vertical="top" horizontal="start" edge={true} slot="fixed">
 							<IonFabButton
 								color="danger"
-								title="Delete selected lexicon items"
+								title={t("Delete selected lexicon items")}
 								onClick={() => maybeFinishDeleting()}
 							>
 								<IonIcon icon={trash} />
@@ -761,7 +831,7 @@ const Lex = (props: PageData) => {
 						<IonFab vertical="bottom" horizontal="start" slot="fixed">
 							<IonFabButton
 								color="warning"
-								title="Cancel deleting"
+								title={t("Cancel deleting")}
 								onClick={() => maybeFinishDeleting(true)}
 							>
 								<IonIcon icon={closeCircle} />
@@ -780,79 +850,47 @@ const Lex = (props: PageData) => {
 export default Lex;
 
 export const LexCard = () => {
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<LexiconIcon slot="start" color="primary" />
-				<IonLabel>Lexicon</IonLabel>
+				<IonLabel>{tc('Lexicon')}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>
-					This tool is for storing the raw info of your language, whether that be words or
-					something else. The default setup includes dictionary-style columns such as
-					"word", "part of speec" and "definition", but you can add, remove, or rename
-					columns as you see fit.
-				</p><p className="center pad-top-rem">
+				<p>{t('info.basic')}</p>
+				<p className="center pad-top-rem">
 					<IonIcon icon={chevronUpCircle} color="tertiary" size="large" />
-				</p><p>
-					At the top of the page is a place where you can title your collection and give it
-					a short description. You can toggle this entire section by using the (^) button at
-					the top of the page.
-				</p><p className="center pad-top-rem">
-					<IonIcon icon={saveOutline} color="tertiary" size="large" />
-				</p><p>
-					The save button at the top can be used to store, delete, and export entire Lexicons.
-				</p><p>
-					At the top of the Lexicon you'll find a counter displaying how many words you have
-					stored. Next to it is are two sort buttons, where you can choose which columns will
-					be used to sort your collection.
-				</p><p className="center pad-top-rem">
-					<IonIcon icon={settings} color="tertiary" size="large" />
-				</p><p>
-					The gear icon opens the "Edit Columns" settings. You can choose whether or not to
-					show the columns' full names, the method you wish to use to sort the Lexicon, and
-					how blank columns will be handled. Below that you'll find a list of all current
-					columns. You can edit them, delete them, add more, or use
-					the <IonIcon icon={reorderTwo} color="tertiary" /> drag handles to rearrange their
-					order.
-				</p><p>
-					The second row contains the titles of the columns. Beneath them are input boxes
-					for quickly adding info to the Lexicon. Use the small (+) button to save what you've
-					typed.
-				</p><p>
-					Under those boxes you'll find the meat of Lexicon: all the items you've stored.
-					They will appear as striped rows. You can swipe left on each one to find Edit
-					and Delete buttons.
-				</p><p className="center pad-top-rem">
-					<IonIcon icon={construct} color="tertiary" size="large" />
-				</p><p>
-					At the bottom of the page, you'll find a large tool button. You can tap on it to
-					pull up a small menu. Tap on the (+) button to pop up a large form for adding
-					to the Lexicon. Tap on the trash can to enter mass-delete mode, where you can
-					select multiple entries and delete them all at once.
 				</p>
+				<p>{t('info.description')}</p>
+				<p className="center pad-top-rem">
+					<IonIcon icon={saveOutline} color="tertiary" size="large" />
+				</p>
+				<p>{t('info.saveButton')}</p>
+				<p>{t('info.counterAndSort')}</p>
+				<p className="center pad-top-rem">
+					<IonIcon icon={settings} color="tertiary" size="large" />
+				</p>
+				<p>{t('info.editColumns1')}<IonIcon icon={reorderTwo} color="tertiary" />{t('info.editColumns2')}</p>
+				<p>{t('info.secondRow')}</p>
+				<p>{t('info.mainLexicon')}</p>
+				<p className="center pad-top-rem">
+					<IonIcon icon={construct} color="tertiary" size="large" />
+				</p>
+				<p>{t('info.toolButton')}</p>
 				<hr />
 				<p className="center">
 					<IonIcon color="tertiary" size="large" src="svg/link.svg" />
-				</p><p>
-					You can swipe right on a lexicon item to find the <strong>Merge</strong> button. You
-					can use this to mark multiple entries. Once you've selected at least two, a large
-					paperclip button will appear at the bottom of the page. Tapping on it will prompt you
-					to merge the selected items into one entry.
-				</p><p>
-					Several tools in <strong>Conlang Toolbox</strong> can export info into the Lexicon.
-					The merge function can be used to merge all this different info. Here's an example:
 				</p>
+				<p>{t('info.mergeButton1')}<strong>{t('info.mergeButtonTitle')}</strong>{t('info.mergeButton2')}</p>
+				<p>{t('info.exportExample1')}<strong>{tc('Conlang Toolbox')}</strong>{t('info.exportExample2')}</p>
 				<ol>
-					<li>You begin by naming columns in the Lexicon "original", "changed", and
-					"definition".</li>
-					<li>Then, you use <strong>WordGen</strong> to create a bunch of new words, which you
-					export to Lexicon under the "original" column.</li>
-					<li>Next, you change those words with <strong>WordEvolve</strong> and export
-					the changed words to "changed".</li>
-					<li>Then, you visit <strong>Concepts</strong> and export meanings to "definition".</li>
-					<li>Finally, you swipe link each "original", "changed" and "definition" column with
-					each other and merge them into single entries.</li>
+					<li>{t('info.exampleList1')}</li>
+					<li>{t('info.exampleList2p1')}<strong>{tc('WordGen')}</strong>{t('info.exampleList2p2')}</li>
+					<li>{t('info.exampleList3p1')}<strong>{tc('WordEvolve')}</strong>{t('info.exampleList3p2')}</li>
+					<li>{t('info.exampleList4p1')}<strong>{tc('Concepts')}</strong>{t('info.exampleList4p2')}</li>
+					<li>{t('info.exampleList5')}</li>
 				</ol>
 			</IonCardContent>
 		</IonCard>
