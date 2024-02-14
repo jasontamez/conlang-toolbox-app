@@ -8,6 +8,7 @@ import {
 	IonToggle
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 import { PageData, StateObject } from '../store/types';
 import { setDisableConfirms } from '../store/settingsSlice';
@@ -21,6 +22,7 @@ import ImportData from './modals/ImportData';
 const AppSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const { t } = useTranslation(['common']);
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const [isOpenImport, setIsOpenImport] = useState<boolean>(false);
@@ -33,7 +35,7 @@ const AppSettings = (props: PageData) => {
 			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
 			<ExportAllData {...modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<ImportData {...modalPropsMaker(isOpenImport, setIsOpenImport)} />
-			<Header title="App Settings" />
+			<Header title={t("App Settings")} />
 			<IonContent fullscreen>
 				<IonList lines="full">
 					<IonItem className="wrappableInnards">
@@ -43,25 +45,25 @@ const AppSettings = (props: PageData) => {
 							checked={disableConfirms}
 							onIonChange={e => dispatch(setDisableConfirms(e.detail.checked))}
 						>
-							<h2>Disable Confirmation Prompts</h2>
-							<p>Eliminates yes/no prompts when deleting or overwriting data.</p>
+							<h2>{t("Disable Confirmation Prompts")}</h2>
+							<p>{t("Eliminates yes/no prompts when deleting or overwriting data.")}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenTheme(true)}>
-						<IonLabel>Change Theme</IonLabel>
-						<IonLabel slot="end" color="primary">{theme || "Default"}</IonLabel>
+						<IonLabel>{t("Change Theme")}</IonLabel>
+						<IonLabel slot="end" color="primary">{t(theme || "Default")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} routerLink="/sortSettings" routerDirection="forward">
-						<IonLabel>Sort Settings</IonLabel>
+						<IonLabel>{t("Sort Settings")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>Export App Info</h2>
+							<h2>{t("Export App Info")}</h2>
 						</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => setIsOpenImport(true)}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>Import App Info</h2>
+							<h2>{t("Import App Info")}</h2>
 						</IonLabel>
 					</IonItem>
 				</IonList>

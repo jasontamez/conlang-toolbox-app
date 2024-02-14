@@ -12,6 +12,7 @@ const common = {
 	Concepts: "Concepts", // name of tool
 	"App Info": "App Info",
 	Settings: "Settings",
+	"App Settings": "App Settings",
 	Overview: "Overview",
 	Stop: "Stop",
 	Cancel: "Cancel",
@@ -66,6 +67,19 @@ const common = {
 	// SETTINGS
 
 	"Export All Data": "Export All Data",
+	"Disable Confirmation Prompts": "Disable Confirmation Prompts",
+	"Eliminates yes/no prompts when deleting or overwriting data.":
+		"Eliminates yes/no prompts when deleting or overwriting data.",
+	"Change Theme": "Change Theme",
+	"Sort Settings": "Sort Settings",
+	"Export App Info": "Export $t(App Info)",
+	"Import App Info": "Import $t(App Info)",
+	// Theme names
+	"Default": "Default",
+	Light: "Light",
+	Dark: "Dark",
+	"Solarized Light": "Solarized $t(Light)", // Solarized is the name of a popular color palette
+	"Solarized Dark": "Solarized $t(Dark)", // Solarized is the name of a popular color palette
 
 	// PERMANENT INTO
 	"WG Presets Sorter": "$t(WG) Presets Sorter", // Title of the permanent sort method in sort settings.
