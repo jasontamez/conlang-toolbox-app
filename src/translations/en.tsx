@@ -1,11 +1,15 @@
+import appinfo from "./en/appinfo";
 import common from "./en/common";
 import concepts from "./en/concepts";
 import lexicon from "./en/lexicon";
+import wgwe from "./en/wgwe";
 
 const en = {
 	common: common,
 	concepts: concepts,
-  lexicon: lexicon
+  lexicon: lexicon,
+  appinfo: appinfo,
+  wgwe: wgwe
 };
 
 export default en;

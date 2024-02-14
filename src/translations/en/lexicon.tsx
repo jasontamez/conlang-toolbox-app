@@ -12,7 +12,7 @@ const lexicon = {
 
 	"Merge selected items": "Merge selected items",
 
-	"Lexicon Title": "$t(common:Lexicon) Title",
+	"Lexicon Title": "$t(common:Lexicon) $t(common:Title)",
 	"Lexicon Title[colon]": "$t(Lexicon Title):",
 	lexTitleHelperText: "Usually the language name.",
 	lexDescriptionHelperText: "A short description of this lexicon.",

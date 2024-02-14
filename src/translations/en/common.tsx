@@ -11,13 +11,18 @@ const common = {
 	Lexicon: "Lexicon", // name of tool
 	Concepts: "Concepts", // name of tool
 	"App Info": "App Info",
+	Settings: "Settings",
+	Overview: "Overview",
 	Stop: "Stop",
 	Cancel: "Cancel",
 	Save: "Save",
 	Ok: "Ok",
 	Done: "Done", // finished, completed, etc.
+	Close: "Close", // close the open modal/dialog/whatever
 	"Display[colon]": "Display:", // short label indicating the user can select an option to display
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
+	Copy: "Copy", // button that will copy something to the clipboard
+	"Copied to clipboard": "Copied to clipboard",
 
 	// saveToLexColumn also takes a {{count}} in case a plural version is needed
 	saveToLexColumn: "{{what}} saved to $t(Lexicon) under \"{{column}}\"",
@@ -54,8 +59,13 @@ const common = {
 	"Choose a format[colon]": "Choose a format:",
 
 	TITLE: "TITLE",
+	Title: "Title",
 	Description: "Description",
 	"Description[colon]": "$t(Description):",
+
+	// SETTINGS
+
+	"Export All Data": "Export All Data",
 
 	// PERMANENT INTO
 	"WG Presets Sorter": "$t(WG) Presets Sorter", // Title of the permanent sort method in sort settings.
