@@ -8,10 +8,10 @@ import {
 	IonToggle
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
-import { useTranslation } from 'react-i18next';
 
 import { PageData, StateObject } from '../store/types';
 import { setDisableConfirms } from '../store/settingsSlice';
+import useTranslator from '../store/translationHooks';
 
 import Header from '../components/Header';
 import ChooseThemeModal from './modals/Theme';
@@ -22,7 +22,8 @@ import ImportData from './modals/ImportData';
 const AppSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const { t } = useTranslation(['common']);
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const [isOpenImport, setIsOpenImport] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const AppSettings = (props: PageData) => {
 			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
 			<ExportAllData {...modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<ImportData {...modalPropsMaker(isOpenImport, setIsOpenImport)} />
-			<Header title={t("App Settings")} />
+			<Header title={tc("App Settings")} />
 			<IonContent fullscreen>
 				<IonList lines="full">
 					<IonItem className="wrappableInnards">

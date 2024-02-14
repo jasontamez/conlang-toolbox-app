@@ -29,6 +29,12 @@ const lexicon = {
 	"Save as New": "Save as New",
 	"Export Lexicon": "Export $t(common:Lexicon)",
 	"Delete Saved Lexicon": "Delete Saved $t(common:Lexicon)",
+	"Lexicon Sorting": "$t(common:Lexicon) Sorting",
+	sortLexDescription:
+		`The Lexicon will be sorted alphabetically in the order you choose.
+		It sorts by the first column you choose. If two items are identical
+		in that column, it will sort them by the next column in the
+		sort list, and so on.`,
 
 	"Sort[colon]": "Sort:",
 	"Export Lexicon[colon]": "$t(Export Lexicon):",

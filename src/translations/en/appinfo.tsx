@@ -8,10 +8,10 @@ const appinfo = {
 		toolbox2: "Toolbox by Maxicons", // 'Toolbox' is the name of the icon, 'Maxicons' is the creator of the icon
 		toolbox3: " from the Noun Project", // the Noun Project is a proper name
 		wgwe1: "$t(common:WordGen) and $t(common:WordEvolve) heavily inspired by ",
-		wgwe2: "Gen", // proper name
-		wgwe3: " and ",
-		wgwe4: "SCA²", // proper name
-		wgwe5: " by Mark Rosenfelder",
+			// Gen
+		wgwe2: " and ",
+			// SCA²
+		wgwe3: " by Mark Rosenfelder",
 		ms1: "$t(common:MorphoSyntax) is based on an outline presented throughout ",
 		ms2: "Describing Morphosyntax: A Guide for Field Linguists", // title of book
 		ms3: " by Thomas E. Paine, and it also uses some foreign-language examples presented therein"
@@ -47,7 +47,7 @@ const appinfo = {
 			// "Declenjugator"
 		v0113p3p2: " for crafting declensions and conjugations.",
 		v0113p4: "Added ability to copy $t(wgwe:Character Groups) between $t(common:WordGen) and $t(common:WordEvolve).",
-		v0113p5: "$t(common:Export All Data) now has a copy-to-clipboard button, and you can limit what you export.",
+		v0113p5: "$t(settings:Export All Data) now has a copy-to-clipboard button, and you can limit what you export.",
 		v0113p6: "Added ability to import data through $t(common:Settings).",
 		v0113p7: "Text and DOCX exports now have the option of omitting sections you did not fill out.",
 		v0113p8: "DOCX exports now italicize the text prompts, to make them visually distinct from your responses.",

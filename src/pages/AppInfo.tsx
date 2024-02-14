@@ -139,7 +139,7 @@ const AppInfo = (props: PageData) => {
 
 	return (
 		<IonPage className={theme}>
-			<Header title={t("App Info")} />
+			<Header title={tc("App Info")} />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>
@@ -157,7 +157,7 @@ const AppInfo = (props: PageData) => {
 										</IonItem>
 										<IonItem>
 											<IonLabel className="ion-text-center ion-text-wrap">
-												{t("credits.wgwe1")}<a href="http://www.zompist.com/gen.html">{t("credits.wgwe2")}</a>{t("credits.wgwe3")}<a href="https://www.zompist.com/sca2.html">{t("credits.wgwe4")}</a>{t("credits.wgwe5")}
+												{t("credits.wgwe1")}<a href="http://www.zompist.com/gen.html">Gen</a>{t("credits.wgwe2")}<a href="https://www.zompist.com/sca2.html">SCA²</a>{t("credits.wgwe3")}
 											</IonLabel>
 										</IonItem>
 										<IonItem>

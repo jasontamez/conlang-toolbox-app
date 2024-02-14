@@ -32,6 +32,7 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 
 import { EqualityObject, PageData, RelationObject, SortObject, SortSensitivity, StateObject } from '../store/types';
 import { deleteCustomSort, setDefaultCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
+import useTranslator from '../store/translationHooks';
 
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import AddCustomSort from './modals/AddCustomSort';
@@ -58,6 +59,8 @@ const permanents = PermanentInfo.sort.permanentCustomSorts;
 const SortSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	// main modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -118,7 +121,7 @@ const SortSettings = (props: PageData) => {
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -126,9 +129,9 @@ const SortSettings = (props: PageData) => {
 			});
 		}
 		yesNoAlert({
-			header: `Delete "${title}"?`,
-			message: "Are you sure? This cannot be undone.",
-			submit: "Yes, Delete It",
+			header: tc("delItem", { what: title }),
+			message: t("Are you sure you want to delete this? This cannot be undone."),
+			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler: () => dispatch(deleteCustomSort(id)),
 			doAlert
@@ -212,7 +215,7 @@ const SortSettings = (props: PageData) => {
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Manage Sort Methods</IonTitle>
+					<IonTitle>{t("Manage Sort Methods")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton routerLink='/settings' routerDirection='back'>
 							<IonIcon icon={closeCircleOutline} />
@@ -222,7 +225,7 @@ const SortSettings = (props: PageData) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings hasSpecialLabels">
-					<IonItemDivider>Basic Sort</IonItemDivider>
+					<IonItemDivider>{t("Basic Sort")}</IonItemDivider>
 					<IonItem className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
@@ -231,15 +234,15 @@ const SortSettings = (props: PageData) => {
 							onIonChange={e => toggleUsingLanguage(!useLanguageSort)}
 							disabled={defaultCustomSort === "unicode"}
 						>
-							<h2>Use Language-Based Sort</h2>
-							<p>Use a language's rules for sorting instead of using Unicode points. (If this option is disabled, your device does not support language-based sorting.)</p>
+							<h2>{t("Use Language-Based Sort")}</h2>
+							<p>{t("langSortExplanation")}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Language:"
+							label={t("Sort Language[colon]")}
 							value={sortLanguage || defaultSortLanguage || "unicode"}
 							onIonChange={(e) => setCustomLang(e.detail.value)}
 							disabled={!useLanguageSort}
@@ -259,43 +262,43 @@ const SortSettings = (props: PageData) => {
 							className="ion-text-wrap settings"
 							value={sensitivity || "variant"}
 							onIonChange={(e) => setSensitivity(e.detail.value)}
-							label="Sort Sensitivity:"
+							label={t("Sort Sensitivity[colon]")}
 							labelPlacement="start"
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="base"
 							>
-								[ȁ = Ȁ, a = ȁ]: Base letters only
+								{t("Base letters only")}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="accent"
 							>
-								[ȁ = Ȁ, a ≠ ȁ]: Diacritics
+								{t("Diacritics")}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="case"
 							>
-								[ȁ ≠ Ȁ, a = ȁ]: Upper/lowercase
+								{t("Upper/lowercase")}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="variant"
 							>
-								[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase
+								{t("Diacritics and upper/lowercase")}
 							</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="sublabel wrappableInnards">
-						<p className="ion-text-end">Note: This can be overriden by a language's sorting rules.</p>
+						<p className="ion-text-end">{t("Note[colon] This can be overriden by a language's sorting rules.")}</p>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Using Custom Sort:"
+							label={t("Using Custom Sort[colon]")}
 							value={defaultCustomSort || null}
 							onIonChange={(e) => setDefaultCustomSort(e.detail.value)}
 						>
@@ -303,7 +306,7 @@ const SortSettings = (props: PageData) => {
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
 							>
-								(none)
+								{t("(none)")}
 							</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
@@ -316,7 +319,7 @@ const SortSettings = (props: PageData) => {
 							))}
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider>All Custom Sort Methods</IonItemDivider>
+					<IonItemDivider>{t("All Custom Sort Methods")}</IonItemDivider>
 					{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => {
 						const {
 							id,
@@ -329,7 +332,7 @@ const SortSettings = (props: PageData) => {
 						const desc: string[] = [];
 						sortLanguage && desc.push(langObj[sortLanguage]);
 						sensitivity && desc.push(sensitivity);
-						customAlphabet && desc.push("custom alphabet");
+						customAlphabet && desc.push(t("custom alphabet"));
 						if(customizations && customizations.length) {
 							let r: number = 0;
 							let e: number = 0;
@@ -340,22 +343,22 @@ const SortSettings = (props: PageData) => {
 									r++;
 								}
 							});
-							r > 0 && desc.push(`${r} relation${r === 1 ? "" : "s"}`);
-							e > 0 && desc.push(`${e} equalit${e === 1 ? "y" : "ies"}`);
+							r > 0 && desc.push(t("relation", { count: r }));
+							e > 0 && desc.push(t("equality", { count: e }));
 						}
 						return (
 							<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
 								<IonItemOptions side="end" className="serifChars">
 									<IonItemOption
 										color="primary"
-										aria-label="Edit"
+										aria-label={tc("Edit")}
 										onClick={() => openEditor(sorter)}
 									>
 										<IonIcon slot="icon-only" src="svg/edit.svg" />
 									</IonItemOption>
 									<IonItemOption
 										color="danger"
-										aria-label="Delete"
+										aria-label={tc("Delete")}
 										onClick={() => maybeDeleteSort(id, title)}
 									>
 										<IonIcon slot="icon-only" icon={trash} />

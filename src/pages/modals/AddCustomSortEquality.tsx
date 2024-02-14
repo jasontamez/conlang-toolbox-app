@@ -26,6 +26,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -40,6 +41,8 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const close = () => {
 		const _base = $i<HTMLInputElement>("addBaseEquality");
 		const _equals = $i<HTMLInputElement>("addEquality");
@@ -52,11 +55,11 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
-				message: `You must provide a "base" character.`,
+				message: t("You must provide a base character."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -68,11 +71,11 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
 		if(!equals.length) {
 			doAlert({
-				message: `You must provide some "equal" characters.`,
+				message: t("You must provide some equal characters."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -84,7 +87,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		setSavedEquality(equality);
 		close();
 		toaster({
-			message: "Equality added.",
+			message: t("Equality added."),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -96,9 +99,9 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		const _equals = $i<HTMLInputElement>("addEquality");
 		if(_base && _equals && (_base.value + _equals.value)) {
 			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
-				submit: "Yes, Discard",
+				header: tc("Unsaved Info"),
+				message: tc("Are you sure you want to discard this?"),
+				submit: tc("Yes, Discard"),
 				cssClass: "warning",
 				handler: close,
 				doAlert
@@ -110,7 +113,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Equality</IonTitle>
+					<IonTitle>{t("Add Equality")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -127,51 +130,51 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 						<div
 							slot="start"
 							className="ion-margin-end"
-						>Base Character:</div>
+						>{t("Base Character[colon]")}</div>
 						<IonInput
-							aria-label="Base character"
+							aria-label={t("Base character")}
 							id="addBaseEquality"
-							placeholder="The base character"
+							placeholder={t("The base character")}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
-						<IonLabel>Equal to the Base:</IonLabel>
+						<IonLabel>{t("Equal to the Base[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Characters equal to the base"
+							aria-label={t("Characters equal to the base")}
 							id="addEquality"
-							placeholder="Characters to be equal to the Base."
+							placeholder={t("Characters to be equal to the Base.")}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Characters Separator:"
+							label={t("Characters Separator[colon]")}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=""
-							>[abcde]: No separator</IonSelectOption>
+							>{t("No separator")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>[a b c d e]: Space</IonSelectOption>
+							>{t("Space")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>[a,b,c,d,e]: Comma</IonSelectOption>
+							>{t("Comma")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="."
-							>[a.b.c.d.e]: Period</IonSelectOption>
+							>{t("Period")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>[a;b;c;d;e]: Semicolon</IonSelectOption>
+							>{t("Semicolon")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
@@ -184,7 +187,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -192,7 +195,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 						onClick={maybeSaveEquality}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

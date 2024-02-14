@@ -24,6 +24,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
+import useTranslator from '../../store/translationHooks';
 import { ModalProperties, SorterFunc, StateObject } from '../../store/types';
 import { updateLexiconSort } from '../../store/lexiconSlice';
 import reorganize from '../../components/reorganizer';
@@ -35,6 +36,7 @@ interface EditSortModal extends ModalProperties {
 const EditLexiconSortModal = (props: EditSortModal) => {
 	const { isOpen, setIsOpen, sorter } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('lexicon');
 	const {
 		columns,
 		sortPattern,
@@ -58,7 +60,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Sort Lexicon</IonTitle>
+					<IonTitle>{t("Lexicon Sorting")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
@@ -69,14 +71,9 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
 					<IonItem>
-						<IonLabel className="ion-text-wrap">
-							The Lexicon will be sorted alphabetically in the order you choose.
-							It sorts by the first column you choose. If two items are identical
-							in that column, it will sort them by the next column in the
-							sort list, and so on.
-						</IonLabel>
+						<IonLabel className="ion-text-wrap">{t("sortLexDescription")}</IonLabel>
 					</IonItem>
-					<IonItemDivider>Lexicon Sort</IonItemDivider>
+					<IonItemDivider>{t("Lexicon Sorting")}</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{sorting.map((cNum: number, i: number) => {
 							if(!columns[cNum]) {
@@ -101,7 +98,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 				<IonToolbar color="darker">
 					<IonButton color="tertiary" slot="end" onClick={() => doneSorting()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Changes</IonLabel>
+						<IonLabel>{t("Save Changes")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

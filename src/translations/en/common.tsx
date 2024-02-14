@@ -24,6 +24,7 @@ const common = {
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
 	Copy: "Copy", // button that will copy something to the clipboard
 	"Copied to clipboard": "Copied to clipboard",
+	"Add New": "Add New",
 
 	// saveToLexColumn also takes a {{count}} in case a plural version is needed
 	saveToLexColumn: "{{what}} saved to $t(Lexicon) under \"{{column}}\"",
@@ -42,6 +43,12 @@ const common = {
 	confirmLoad: "Yes, Load It", // "It" may refer to many things
 	"Yes, Exit": "Yes, Exit",
 	"Nothing to save.": "Nothing to save.",
+	"Delete This": "Delete This",
+	Delete: "Delete",
+	Edit: "Edit",
+	"Unsaved Info": "Unsaved Info",
+	"Are you sure you want to discard this?": "Are you sure you want to discard this?",
+	"Yes, Discard": "Yes, Discard",
 
 	"Default sort": "Default sort", // Refers to the default sort method, whatever it may be
 
@@ -54,6 +61,7 @@ const common = {
 	"You did not type any information into any text field.":
 		"You did not type any information into any text field.",
 
+	Loading: "Loading",
 	"Working...": "Working...",
 	"Please wait...": "Please wait...",
 
@@ -61,25 +69,9 @@ const common = {
 
 	TITLE: "TITLE",
 	Title: "Title",
+	"Title[colon]": "Title:",
 	Description: "Description",
 	"Description[colon]": "$t(Description):",
-
-	// SETTINGS
-
-	"Export All Data": "Export All Data",
-	"Disable Confirmation Prompts": "Disable Confirmation Prompts",
-	"Eliminates yes/no prompts when deleting or overwriting data.":
-		"Eliminates yes/no prompts when deleting or overwriting data.",
-	"Change Theme": "Change Theme",
-	"Sort Settings": "Sort Settings",
-	"Export App Info": "Export $t(App Info)",
-	"Import App Info": "Import $t(App Info)",
-	// Theme names
-	"Default": "Default",
-	Light: "Light",
-	Dark: "Dark",
-	"Solarized Light": "Solarized $t(Light)", // Solarized is the name of a popular color palette
-	"Solarized Dark": "Solarized $t(Dark)", // Solarized is the name of a popular color palette
 
 	// PERMANENT INTO
 	"WG Presets Sorter": "$t(WG) Presets Sorter", // Title of the permanent sort method in sort settings.

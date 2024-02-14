@@ -2,6 +2,7 @@ import appinfo from "./en/appinfo";
 import common from "./en/common";
 import concepts from "./en/concepts";
 import lexicon from "./en/lexicon";
+import settings from "./en/settings";
 import wgwe from "./en/wgwe";
 
 const en = {
@@ -9,6 +10,7 @@ const en = {
 	concepts: concepts,
   lexicon: lexicon,
   appinfo: appinfo,
+  settings: settings,
   wgwe: wgwe
 };
 

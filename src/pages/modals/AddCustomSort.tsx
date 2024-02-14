@@ -48,6 +48,7 @@ import {
 	SortSeparator
 } from '../../store/types';
 import { addNewCustomSort } from '../../store/sortingSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
@@ -105,6 +106,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 	} = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const toast = useIonToast();
 	const [sortLang, setSortLang] = useState<SortLanguage | "unicode" | "default">("default");
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
@@ -195,11 +198,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 		const title = addSortTitle ? addSortTitle.value.trim() : "";
 		if(!title) {
 			doAlert({
-				message: "You must provide a title before saving.",
+				message: t("You must provide a title before saving."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -219,11 +222,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
 				doAlert({
-					message: "Blank alphabet provided.",
+					message: t("Blank alphabet provided."),
 					cssClass: "danger",
 					buttons: [
 						{
-							text: "Ok",
+							text: tc("Ok"),
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -249,11 +252,11 @@ const AddCustomSort = (props: CustomSortModal) => {
 		}
 		if(!test) {
 			doAlert({
-				message: "You did not enter any information.",
+				message: t("You did not enter any information."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -264,7 +267,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		dispatch(addNewCustomSort(customSort));
 		closeModal();
 		toaster({
-			message: "Custom sort saved.",
+			message: t("Custom sort saved."),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -279,10 +282,10 @@ const AddCustomSort = (props: CustomSortModal) => {
 			|| (customizations.length > 0)
 		) {
 			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
+				header: tc("Unsaved Info"),
+				message: tc("Are you sure you want to discard this?"),
 				cssClass: "warning",
-				submit: "Yes, Discard",
+				submit: tc("Yes, Discard"),
 				handler: closeModal,
 				doAlert
 			});
@@ -307,9 +310,9 @@ const AddCustomSort = (props: CustomSortModal) => {
 		const el = $i<HTMLIonListElement>("addingCustomSortList");
 		el && el.closeSlidingItems();
 		yesNoAlert({
-			header: "Delete This",
-			message: "Are you sure?",
-			submit: "Yes, Delete It",
+			header: tc("Delete This"),
+			message: tc("areYouSure"),
+			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
@@ -325,9 +328,9 @@ const AddCustomSort = (props: CustomSortModal) => {
 		const el = $i<HTMLIonListElement>("addingCustomSortList");
 		el && el.closeSlidingItems();
 		yesNoAlert({
-			header: "Delete This",
-			message: "Are you sure?",
-			submit: "Yes, Delete It",
+			header: tc("Delete This"),
+			message: tc("Are you sure you want to delete this? This cannot be undone."),
+			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
@@ -348,7 +351,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Custom Sort</IonTitle>
+					<IonTitle>{t("Add Custom Sort")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -362,25 +365,25 @@ const AddCustomSort = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" id="addingCustomSortList">
 					<IonItem>
-						<div slot="start" className="ion-margin-end">Title:</div>
+						<div slot="start" className="ion-margin-end">{tc("Title[colon]")}</div>
 						<IonInput
-							aria-label="Title"
+							aria-label={tc("Title")}
 							id="addSortTitle"
-							placeholder="Title for this sort"
+							helperText={t("Title for this sort")}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Language:"
+							label={t("Sort Language[colon]")}
 							value={sortLang}
 							onIonChange={(e) => setSortLang(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="default"
-							>Default sort</IonSelectOption>
+							>{tc("Default sort")}</IonSelectOption>
 							{languages.map((language) => (
 								<IonSelectOption
 									key={`knownLang:${language}`}
@@ -391,37 +394,37 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="unicode"
-							>Unicode sort (language-independent)</IonSelectOption>
+							>{t("Unicode sort (language-independent)")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Sensitivity:"
+							label={t("Sort Sensitivity[colon]")}
 							value={sortSensitivity}
 							onIonChange={(e) => setSortSensitivity(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="default"
-							>Default sensitivity</IonSelectOption>
+							>{t("Default sensitivity")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="base"
-							>[ȁ = Ȁ, a = ȁ]: Base letters only</IonSelectOption>
+							>{t("Base letters only")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="accent"
-							>[ȁ = Ȁ, a ≠ ȁ]: Diacritics</IonSelectOption>
+							>{t("Diacritics")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="case"
-							>[ȁ ≠ Ȁ, a = ȁ]: Upper/lowercase</IonSelectOption>
+							>{t("Upper/lowercase")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="variant"
-							>[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase</IonSelectOption>
+							>{t("Diacritics and upper/lowercase")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem
@@ -434,50 +437,47 @@ const AddCustomSort = (props: CustomSortModal) => {
 							checked={usingAlpha}
 							onIonChange={e => setUsingAlpha(!usingAlpha)}
 						>
-							<h2>Use alternate alphabet</h2>
-							<p>
-								Items will be sorted according to the order you provide. Characters
-								not in your alphabet will be sorted according to the rules above.
-							</p>
+							<h2>{t("Use alternate alphabet")}</h2>
+							<p>{t("alternateAlphabetExplanation")}</p>
 						</IonToggle>
 					</IonItem>
 					{ usingAlpha ?
 						<>
 							<IonItem lines="none">
 								<IonInput
-									aria-label="Custom Alphabet"
+									aria-label={t("Custom Alphabet")}
 									id="addCustomAlphabet"
-									placeholder="Write your alphabet here."
+									helperText={t("Write your alphabet here.")}
 								/>
 							</IonItem>
 							<IonItem className="wrappableInnards">
 								<IonSelect
 									color="primary"
 									className="ion-text-wrap settings"
-									label="Alphabet separator:"
+									label={t("Alphabet separator[colon]")}
 									value={separator}
 									onIonChange={(e) => setSeparator(e.detail.value)}
 								>
 									<IonSelectOption
 										className="ion-text-wrap ion-text-align-end"
 										value=""
-									>[abcde]: No separator</IonSelectOption>
+									>{t("No separator")}</IonSelectOption>
 									<IonSelectOption
 										className="ion-text-wrap ion-text-align-end"
 										value=" "
-									>[a b c d e]: Space</IonSelectOption>
+									>{t("Space")}</IonSelectOption>
 									<IonSelectOption
 										className="ion-text-wrap ion-text-align-end"
 										value=","
-									>[a,b,c,d,e]: Comma</IonSelectOption>
+									>{t("Comma")}</IonSelectOption>
 									<IonSelectOption
 										className="ion-text-wrap ion-text-align-end"
 										value="."
-									>[a.b.c.d.e]: Period</IonSelectOption>
+									>{t("Period")}</IonSelectOption>
 									<IonSelectOption
 										className="ion-text-wrap ion-text-align-end"
 										value=";"
-									>[a;b;c;d;e]: Semicolon</IonSelectOption>
+									>{t("Semicolon")}</IonSelectOption>
 								</IonSelect>
 							</IonItem>
 						</>
@@ -486,8 +486,8 @@ const AddCustomSort = (props: CustomSortModal) => {
 					}
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
-							<h2>Relations</h2>
-							<p>Similar characters that should be sorted separately.</p>
+							<h2>{t("Relations")}</h2>
+							<p>{t("Similar characters that should be sorted separately.")}</p>
 						</IonLabel>
 						<IonButton
 							color="secondary"
@@ -495,13 +495,13 @@ const AddCustomSort = (props: CustomSortModal) => {
 							onClick={maybeAddNewRelation}
 						>
 							<IonIcon icon={addOutline} slot="end" />
-							<IonLabel>Add New</IonLabel>
+							<IonLabel>{tc("Add New")}</IonLabel>
 						</IonButton>
 					</IonItem>
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
-							<h2>Equalities</h2>
-							<p>Characters that should be sorted together as if they were strictly equal.</p>
+							<h2>{t("Equalities")}</h2>
+							<p>{t("Characters that should be sorted together as if they were strictly equal.")}</p>
 						</IonLabel>
 						<IonButton
 							color="secondary"
@@ -509,7 +509,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 							onClick={maybeAddNewEquality}
 						>
 							<IonIcon icon={addOutline} slot="end" />
-							<IonLabel>Add New</IonLabel>
+							<IonLabel>{tc("Add New")}</IonLabel>
 						</IonButton>
 					</IonItem>
 					<IonReorderGroup
@@ -535,7 +535,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 											<IonItemOptions side="end" className="serifChars">
 												<IonItemOption
 													color="primary"
-													aria-label="Edit"
+													aria-label={tc("Edit")}
 													onClick={() => editEquality(obj)}
 												>
 													<IonIcon
@@ -545,7 +545,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 												<IonItemOption
 													color="danger"
-													aria-label="Delete"
+													aria-label={tc("Delete")}
 													onClick={() => maybeDeleteEquality(id)}
 												>
 													<IonIcon
@@ -602,7 +602,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 											>
 												<IonItemOption
 													color="primary"
-													aria-label="Edit"
+													aria-label={tc("Edit")}
 													onClick={() => editRelation(obj)}
 												>
 													<IonIcon
@@ -612,7 +612,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 												</IonItemOption>
 												<IonItemOption
 													color="danger"
-													aria-label="Delete"
+													aria-label={tc("Delete")}
 													onClick={() => maybeDeleteRelation(id)}
 												>
 													<IonIcon slot="icon-only" icon={trash} />
@@ -674,7 +674,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 							<IonItem>
 								<IonLabel
 									className="ion-text-align-end"
-								><em>(none)</em></IonLabel>
+								><em>{t("(none)")}</em></IonLabel>
 							</IonItem>
 						}
 					</IonReorderGroup>
@@ -688,7 +688,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -696,7 +696,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 						onClick={maybeSaveNewSort}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

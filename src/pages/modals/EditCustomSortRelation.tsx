@@ -26,6 +26,7 @@ import {
 } from 'ionicons/icons';
 
 import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -40,16 +41,19 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [_base, setBase] = useState<HTMLInputElement | null>(null);
 	const [_pre, setPre] = useState<HTMLInputElement | null>(null);
 	const [_post, setPost] = useState<HTMLInputElement | null>(null);
 	const onLoad = () => {
+		const error = tc("errorEmphasized");
 		const {
 			separator = ",",
-			base = "ERROR",
-			pre = ["ERROR"],
-			post = ["ERROR"]
+			base = error,
+			pre = [error],
+			post = [error]
 		} = incomingRelation || {};
 		setSeparator(separator);
 		const _base = $i<HTMLInputElement>("editBaseRelation");
@@ -72,11 +76,11 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
-				message: `You must provide a "base" character.`,
+				message: t("You must provide a base character."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -88,11 +92,11 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		const post = _post && _post.value ? _post.value.split(separator) : [];
 		if(!(pre.length + post.length)) {
 			doAlert({
-				message: `You must provide some "pre" or "post" characters.`,
+				message: t("You must provide some pre or post characters."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -104,7 +108,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		setOutgoingRelation(relation);
 		close();
 		toaster({
-			message: "Relation edited.",
+			message: t("Relation edited."),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -117,9 +121,9 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			close();
 		};
 		yesNoAlert({
-			header: "Delete This",
-			message: "Are you sure?",
-			submit: "Yes, Delete It",
+			header: tc("Delete This"),
+			message: tc("areYouSure"),
+			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler,
 			doAlert
@@ -129,7 +133,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Relation</IonTitle>
+					<IonTitle>{t("Edit Relation")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -143,63 +147,64 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
-						<div slot="start" className="ion-margin-end">Base Character:</div>
+						<div
+							slot="start"
+							className="ion-margin-end"
+						>{t("Base Character[colon]")}</div>
 						<IonInput
-							aria-label="Base character"
+							aria-label={t("Base character")}
 							id="editBaseRelation"
-							placeholder="The base character"
+							placeholder={t("The base character")}
 						/>
 					</IonItem>
-					<IonItem
-						className="labelled"
-						lines="none"
-					><IonLabel>Sorted Before the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none">
+						<IonLabel>{t("Sorted Before the Base[colon]")}</IonLabel>
+					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Characters sorted before the base"
+							aria-label={t("Characters sorted before the base")}
 							id="editPreRelation"
-							placeholder="End with the one just before the Base."
+							helperText={t("End with the one just before the Base.")}
 						/>
 					</IonItem>
-					<IonItem
-						className="labelled"
-						lines="none"
-					><IonLabel>Sorted After the Base:</IonLabel></IonItem>
+					<IonItem className="labelled" lines="none">
+					<IonLabel>{t("Sorted After the Base[colon]")}</IonLabel>
+					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Characters sorted after the base"
+							aria-label={t("Characters sorted after the base")}
 							id="editPostRelation"
-							placeholder="Start with the one just after the Base."
+							helperText={t("Start with the one just after the Base.")}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Pre/Post Separator:"
+							label={t("Pre/Post Separator[colon]")}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=""
-							>[abcde]: No separator</IonSelectOption>
+							>{t("No separator")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>[a b c d e]: Space</IonSelectOption>
+							>{t("Space")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>[a,b,c,d,e]: Comma</IonSelectOption>
+							>{t("Comma")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="."
-							>[a.b.c.d.e]: Period</IonSelectOption>
+							>{t("Period")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>[a;b;c;d;e]: Semicolon</IonSelectOption>
+							>{t("Semicolon")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
@@ -212,7 +217,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 						onClick={maybeDelete}
 					>
 						<IonIcon icon={trashOutline} slot="end" />
-						<IonLabel>Delete</IonLabel>
+						<IonLabel>{tc("Delete")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -220,7 +225,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 						onClick={maybeSaveRelation}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
