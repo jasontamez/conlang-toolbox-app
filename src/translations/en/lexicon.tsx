@@ -1,6 +1,6 @@
 const lexicon = {
 	// Lexicon
-	beginDeleteMode: 
+	beginDeleteMode:
 		`Tap on items to mark them for deletion. Finish deleting by tapping
 		the top floating button. Cancel by tapping the bottom floating button.`,
 	delItems_one: "Delete {{count}} Item?",

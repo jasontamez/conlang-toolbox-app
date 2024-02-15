@@ -34,12 +34,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { DJCustomInfo, DJGroup, Declenjugation, PageData, StateObject } from '../../store/types';
 import { deleteGroup, reorderGroups } from '../../store/declenjugatorSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import log from '../../components/Logging';
+import Header from '../../components/Header';
+import ModalWrap from '../../components/ModalWrap';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 
 import ManageCustomInfo from './modals/CustomInfoDJ';
@@ -49,8 +52,6 @@ import AddDeclenjugation from './modals/AddDeclenjugation';
 import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
 import CaseMaker from './modals/CaseMaker';
-import Header from '../../components/Header';
-import ModalWrap from '../../components/ModalWrap';
 import { GroupCard } from './DJinfo';
 
 interface GroupingInfo {
@@ -83,6 +84,8 @@ function makeDJGroupDescription (group: DJGroup) {
 const DJGroups = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
@@ -129,7 +132,7 @@ const DJGroups = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteGroup([type, group.id]));
 			toaster({
-				message: "Group deleted.",
+				message: t("Group deleted."),
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -138,10 +141,10 @@ const DJGroups = (props: PageData) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: "Delete Entire Group",
-				message: "Are you sure you want to delete this entire Group? It cannot be undone.",
+				header: t("Delete Entire Group"),
+				message: t("Are you sure you want to delete this entire Group? It cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -152,7 +155,7 @@ const DJGroups = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
 			toaster({
-				message: "Groups deleted.",
+				message: t("All groups deleted."),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -163,15 +166,15 @@ const DJGroups = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear All Groups?",
-				message: "This will delete all current groups, and it cannot be undone.",
+				header: t("Clear All Groups?"),
+				message: t("This will delete all current groups, and it cannot be undone."),
 				cssClass: "warning",
-				submit: "Yes, Delete Them",
+				submit: t("Yes, Delete Them"),
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, toast, doAlert, disableConfirms]);
+	}, [dispatch, t, toast, doAlert, disableConfirms]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];
@@ -299,7 +302,7 @@ const DJGroups = (props: PageData) => {
 								<div><strong>{title}</strong></div>
 								<div className="description">
 									<em>
-										{makeDJGroupDescription(group)}{appliesTo && `; applies to ${appliesTo}`}
+										{makeDJGroupDescription(group)}{appliesTo && t('groupAppliesTo', { appliesTo })}
 									</em>
 								</div>
 							</IonLabel>
@@ -416,25 +419,25 @@ const DJGroups = (props: PageData) => {
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
 				onDidDismiss={() => setLoadingOpen(false)}
-				message={'Please wait...'}
+				message={tc('Please wait...')}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
 			/>
 			<Header
-				title="Groups"
+				title={t("Groups")}
 				endButtons={headerButtons}
 			/>
 			<IonContent className="hasFabButton">
 				<IonList className="djGroups units dragArea" lines="full">
-					<Grouping groups={declensions} label="Declensions" type="declensions" />
-					<Grouping groups={conjugations} label="Conjugations" type="conjugations" />
-					<Grouping groups={other} label="Other" type="other" />
+					<Grouping groups={declensions} label={t("Declensions")} type="declensions" />
+					<Grouping groups={conjugations} label={t("Conjugations")} type="conjugations" />
+					<Grouping groups={other} label={t("Other")} type="other" />
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="primary"
-						title="Add new group"
+						title={t("Add new group")}
 						onClick={() => setIsOpenAddGroup(true)}
 					>
 						<IonIcon icon={addOutline} />

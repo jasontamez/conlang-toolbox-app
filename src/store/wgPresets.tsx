@@ -1276,7 +1276,7 @@ const WGPresets: WGPresetObject = [
 		monosyllablesRate: 5,
 		maxSyllablesPerWord: 8,
 		characterGroupDropoff: 10,
-		syllableBoxDropoff: 40	
+		syllableBoxDropoff: 40
 	}]
 ];
 

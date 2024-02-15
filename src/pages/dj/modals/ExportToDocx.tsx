@@ -305,7 +305,7 @@ const sendToCorrectMethod = (
 		case "chartSH":
 			return sideChart(groups, showGroupInfo, inputFlag);
 		case "chartTH":
-			return topChart(groups, showGroupInfo, inputFlag);	
+			return topChart(groups, showGroupInfo, inputFlag);
 	}
 };
 const exportDocx = (
@@ -432,7 +432,7 @@ const exportDocx = (
 		});
 	});
 
-	return 
+	return
 };
 
 export default exportDocx;

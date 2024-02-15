@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject } from '../../store/types';
 import { setInput } from '../../store/declenjugatorSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
@@ -31,6 +32,8 @@ import ModalWrap from '../../components/ModalWrap';
 import { InputCard } from './DJinfo';
 
 const DJInput = (props: PageData) => {
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -70,10 +73,10 @@ const DJInput = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear Input",
-				message: "Are you sure? This will clear the entire input, and cannot be undone.",
+				header: t("Clear Input"),
+				message: t("Are you sure? This will clear the entire input, and cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Clear It",
+				submit: t("Yes, Clear It"),
 				handler,
 				doAlert
 			});
@@ -96,7 +99,7 @@ const DJInput = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Input</IonTitle>
+					<IonTitle>{tc("Input")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -111,9 +114,9 @@ const DJInput = (props: PageData) => {
 				<div className="hasMaxTextArea">
 					<textarea
 						spellCheck={false}
-						aria-label="Words to Send through Declenjugator"
+						aria-label={t("Words to send through Declenjugator")}
 						id="djInput"
-						placeholder="Enter words here, one per line"
+						placeholder={t("Enter words here, one per line")}
 						defaultValue={input}
 						onChange={inputUpdated}
 					/>
@@ -126,7 +129,7 @@ const DJInput = (props: PageData) => {
 							color="warning"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
+						><IonIcon icon={trashBinOutline} slot="start" /> {tc("Clear")}</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
@@ -135,7 +138,7 @@ const DJInput = (props: PageData) => {
 							color="primary"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
+						><IonIcon icon={enterOutline} slot="start" /> {tc("Import from Lexicon")}</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

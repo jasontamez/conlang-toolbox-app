@@ -6,7 +6,7 @@ import en from './translations/en';
 
 //import Backend from 'i18next-http-backend';
 // don't want to use this?
-// have a look at the Quick start guide 
+// have a look at the Quick start guide
 // for passing in lng and translations on init
 
 // the translations
@@ -32,10 +32,7 @@ i18n
 	// for all options read: https://www.i18next.com/overview/configuration-options
 	.init({
 		resources,
-		ns: [
-			"common",
-			"concepts",
-		],
+		ns: [ "common" ],
 		fallbackLng: 'en',
 		debug: true,
 		nsSeparator: ":",

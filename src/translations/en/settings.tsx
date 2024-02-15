@@ -113,8 +113,7 @@ const settings = {
 	"Delete This Sort": "Delete This Sort",
 	"Edit Custom Sort": "Edit Custom Sort",
 	"Delete Sort": "Delete Sort",
-	
-	
+
 };
 
 export default settings;

@@ -1,6 +1,7 @@
 const common = {
 
 	"Conlang Toolbox": "Conlang Toolbox", // name of the App
+	"tools for language invention": "tools for language invention",
 	Controls: "Controls", // the buttons used in the app
 	MorphoSyntax: "MorphoSyntax", // name of tool
 	WordGen: "WordGen", // name of tool - word + generator
@@ -14,8 +15,11 @@ const common = {
 	Settings: "Settings",
 	"App Settings": "App Settings",
 	Overview: "Overview",
+	Input: "Input",
+	Output: "Output",
 	Stop: "Stop",
 	Cancel: "Cancel",
+	Clear: "Clear",
 	Save: "Save",
 	Ok: "Ok",
 	Done: "Done", // finished, completed, etc.
@@ -23,13 +27,25 @@ const common = {
 	"Display[colon]": "Display:", // short label indicating the user can select an option to display
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
 	Copy: "Copy", // button that will copy something to the clipboard
+	"Copy to Clipboard": "Copy to Clipboard",
 	"Copied to clipboard": "Copied to clipboard",
 	"Add New": "Add New",
+	"Nothing to copy": "Nothing to copy",
+	Export: "Export",
+	Generate: "Generate",
+
+	"regular expressions": "regular expressions",
 
 	// saveToLexColumn also takes a {{count}} in case a plural version is needed
 	saveToLexColumn: "{{what}} saved to $t(Lexicon) under \"{{column}}\"",
 	"Select a column": "Select a column",
 	"Go to Lexicon": "Go to $t(Lexicon)",
+	"Import from Lexicon": "Import from $(Lexicon)",
+
+	"Word Document (docx)": "Word Document (docx)",
+	"Text File": "Text File",
+	"Spreadsheet (csv)": "Spreadsheet (csv)",
+	"Choose a Format": "Choose a Format",
 
 	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // Do you want to do this action?
@@ -49,6 +65,10 @@ const common = {
 	"Unsaved Info": "Unsaved Info",
 	"Are you sure you want to discard this?": "Are you sure you want to discard this?",
 	"Yes, Discard": "Yes, Discard",
+	"Clear Input": "Clear Input",
+	"Are you sure? This will clear the entire input, and cannot be undone.":
+		"$t(areYouSure) This will clear the entire input, and cannot be undone.",
+	"Yes, Clear It": "Yes, Clear It",
 
 	"Default sort": "Default sort", // Refers to the default sort method, whatever it may be
 

@@ -71,7 +71,7 @@ type ImportSettings = [ AppSettings | null, SortSettings | null ];
 function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 	storage.clear().then(
 		() => data.forEach(([key, value]) => storage.setItem(key, value))
-	);	
+	);
 };
 
 const ImportData = (props: ModalProperties) => {

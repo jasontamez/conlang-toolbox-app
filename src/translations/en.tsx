@@ -1,7 +1,9 @@
 import appinfo from "./en/appinfo";
 import common from "./en/common";
 import concepts from "./en/concepts";
+import dj from "./en/dj";
 import lexicon from "./en/lexicon";
+import ms from "./en/ms";
 import settings from "./en/settings";
 import wgwe from "./en/wgwe";
 
@@ -11,7 +13,9 @@ const en = {
   lexicon: lexicon,
   appinfo: appinfo,
   settings: settings,
-  wgwe: wgwe
+  wgwe: wgwe,
+  dj: dj,
+  ms: ms
 };
 
 export default en;

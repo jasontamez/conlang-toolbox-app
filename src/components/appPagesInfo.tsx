@@ -25,6 +25,7 @@ import {
 	SoundChangesIcon,
 	DJGroupsIcon
 } from './icons';
+import i18n from '../i18n';
 
 type Parents = 'ms' | 'dj' | 'wg' | 'we';
 
@@ -56,18 +57,18 @@ export interface AppPageObject {
 
 export const appMenuInfo: MenuSection[] = [
 	{
-		header: "Conlang Toolbox",
-		note: "tools for language invention",
+		header: i18n.t("Conlang Toolbox"),
+		note: i18n.t("tools for language invention"),
 		pages: [
 			{
-				title: 'MorphoSyntax',
+				title: i18n.t("MorphoSyntax"),
 				url: '/ms',
 				MenuIcon: (props: IonIconProps) => <MorphoSyntaxIcon {...props} />,
 				id: 'menuitemSyntax',
 				parentOf: 'ms'
 			},
 			{
-				title: 'Overview',
+				title: i18n.t("Overview"),
 				url: '/ms/overview',
 				id: 'menuitemMSOverview',
 				icon: helpOutline,
@@ -76,7 +77,7 @@ export const appMenuInfo: MenuSection[] = [
 				hidden: true
 			},
 			{
-				title: 'Settings',
+				title: i18n.t("Settings"),
 				url: '/ms/msSettings',
 				id: 'menuitemMSSettings',
 				icon: settingsSharp,
@@ -84,7 +85,7 @@ export const appMenuInfo: MenuSection[] = [
 				tab: 'Section-Settings'
 			},
 			{
-				title: '1. Morphological Typology',
+				title: i18n.t("1. Morphological Typology", { ns: "ms" }),
 				noIcon: '1',
 				tab: 'Section-01',
 				url: '/ms/ms01',
@@ -92,7 +93,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '2. Grammatical Categories',
+				title: i18n.t("2. Grammatical Categories", { ns: "ms" }),
 				noIcon: '2',
 				tab: 'Section-02',
 				url: '/ms/ms02',
@@ -100,7 +101,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '3. Constituent Order Typology',
+				title: i18n.t("3. Constituent Order Typology", { ns: "ms" }),
 				noIcon: '3',
 				tab: 'Section-03',
 				url: '/ms/ms03',
@@ -108,7 +109,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '4. Noun Operations',
+				title: i18n.t("4. Noun Operations", { ns: "ms" }),
 				noIcon: '4',
 				tab: 'Section-04',
 				url: '/ms/ms04',
@@ -116,7 +117,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '5. Predicate Nominals etc.',
+				title: i18n.t("5. Predicate Nominals etc.", { ns: "ms" }),
 				noIcon: '5',
 				tab: 'Section-05',
 				url: '/ms/ms05',
@@ -124,7 +125,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '6. Grammatical Relations',
+				title: i18n.t("6. Grammatical Relations", { ns: "ms" }),
 				noIcon: '6',
 				tab: 'Section-06',
 				url: '/ms/ms06',
@@ -132,7 +133,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '7. Voice/Valence Operations',
+				title: i18n.t("7. Voice/Valence Operations", { ns: "ms" }),
 				noIcon: '7',
 				tab: 'Section-07',
 				url: '/ms/ms07',
@@ -140,7 +141,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '8. Other Verb Operations',
+				title: i18n.t("8. Other Verb Operations", { ns: "ms" }),
 				noIcon: '8',
 				tab: 'Section-08',
 				url: '/ms/ms08',
@@ -148,7 +149,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '9. Pragmatic Marking',
+				title: i18n.t("9. Pragmatic Marking", { ns: "ms" }),
 				noIcon: '9',
 				tab: 'Section-09',
 				url: '/ms/ms09',
@@ -156,7 +157,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: '10. Clause Combinations',
+				title: i18n.t("10. Clause Combinations", { ns: "ms" }),
 				noIcon: '10',
 				tab: 'Section-10',
 				url: '/ms/ms10',
@@ -164,14 +165,14 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: 'WordGen',
+				title: i18n.t("WordGen"),
 				url: '/wg',
 				MenuIcon: (props: IonIconProps) => <WordGenIcon {...props} />,
 				id: 'menuitemWG',
 				parentOf: 'wg'
 			},
 			{
-				title: 'Overview',
+				title: i18n.t("Overview"),
 				url: '/wg/overview',
 				tab: 'overview',
 				id: 'menuitemWGoverview',
@@ -180,7 +181,7 @@ export const appMenuInfo: MenuSection[] = [
 				hidden: true
 			},
 			{
-				title: 'Character Groups',
+				title: i18n.t("Character Groups", { ns: "wgwe" }),
 				url: '/wg/charGroups',
 				tab: 'charGroups',
 				tabTitle: 'Char Groups',
@@ -189,7 +190,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'Syllables',
+				title: i18n.t("Syllables", { ns: "wgwe" }),
 				url: '/wg/syllables',
 				tab: 'syllables',
 				id: 'menuitemWGsyl',
@@ -197,7 +198,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'Transformations',
+				title: i18n.t("Transformations", { ns: "wgwe" }),
 				url: '/wg/transforms',
 				tab: 'transforms',
 				tabTitle: 'Transforms',
@@ -206,7 +207,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'Output',
+				title: i18n.t("Output"),
 				url: '/wg/output',
 				tab: 'output',
 				id: 'menuitemWGout',
@@ -214,7 +215,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'Settings',
+				title: i18n.t("Settings"),
 				url: '/wg/settings',
 				tab: 'settings',
 				id: 'menuitemWGset',
@@ -222,14 +223,14 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: 'WordEvolve',
+				title: i18n.t("WordEvolve"),
 				url: '/we',
 				MenuIcon: (props: IonIconProps) => <WordEvolveIcon {...props} />,
 				id: 'menuitemWE',
 				parentOf: 'we'
 			},
 			{
-				title: 'Overview',
+				title: i18n.t("Overview"),
 				url: '/we/overview',
 				tab: 'overview',
 				id: 'menuitemWEoverview',
@@ -238,7 +239,7 @@ export const appMenuInfo: MenuSection[] = [
 				hidden: true
 			},
 			{
-				title: 'Input',
+				title: i18n.t("Input"),
 				url: '/we/input',
 				tab: 'input',
 				id: 'menuitemWEinp',
@@ -246,7 +247,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Character Groups',
+				title: i18n.t("Character Groups", { ns: "wgwe" }),
 				url: '/we/charGroups',
 				tab: 'charGroups',
 				tabTitle: 'Char Groups',
@@ -255,7 +256,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Transformations',
+				title: i18n.t("Transformations", { ns: "wgwe" }),
 				url: '/we/transformations',
 				tab: 'transformations',
 				tabTitle: 'Transforms',
@@ -264,7 +265,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Sound Changes',
+				title: i18n.t("Sound Changes", { ns: "wgwe" }),
 				url: '/we/soundchanges',
 				tab: 'soundchanges',
 				tabTitle: 'Changes',
@@ -273,7 +274,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Output',
+				title: i18n.t("Output"),
 				url: '/we/output',
 				tab: 'output',
 				id: 'menuitemWEout',
@@ -281,14 +282,14 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: 'Declenjugator',
+				title: i18n.t("Declenjugator"),
 				url: '/dj',
 				MenuIcon: (props: IonIconProps) => <DeclenjugatorIcon {...props} />,
 				id: 'menuitemDJ',
 				parentOf: 'dj'
 			},
 			{
-				title: 'Overview',
+				title: i18n.t("Overview"),
 				url: '/dj/overview',
 				tab: 'overview',
 				id: 'menuitemDJoverview',
@@ -296,7 +297,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'dj'
 			},
 			{
-				title: 'Input',
+				title: i18n.t("Input"),
 				url: '/dj/input',
 				tab: 'input',
 				id: 'menuitemDJinp',
@@ -304,7 +305,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'dj'
 			},
 			{
-				title: 'Groups',
+				title: i18n.t("Groups", { ns: "dj" }),
 				url: '/dj/groups',
 				tab: 'groups',
 				id: 'menuitemDJgroup',
@@ -312,7 +313,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'dj'
 			},
 			{
-				title: 'Output',
+				title: i18n.t("Output"),
 				url: '/dj/output',
 				tab: 'output',
 				id: 'menuitemDJout',
@@ -320,19 +321,19 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'dj'
 			},
 			/*{ // https://github.com/apache/cordova-plugin-media
-				title: 'PhonoGraph',
+				title: i18n.t("PhonoGraph"),
 				url: '/ph',
 				menuIcon: volumeHighSharp,
 				id: 'menuitemPG'
 			},*/
 			{
-				title: 'Lexicon',
+				title: i18n.t("Lexicon"),
 				url: '/lex',
 				MenuIcon: (props: IonIconProps) => <LexiconIcon {...props} />,
 				id: 'menuitemLX'
 			},
 			{
-				title: 'Concepts',
+				title: i18n.t("Concepts"),
 				url: '/wordlists',
 				MenuIcon: (props: IonIconProps) => <ConceptsIcon {...props} />,
 				id: 'menuitemConcepts'
@@ -343,13 +344,13 @@ export const appMenuInfo: MenuSection[] = [
 	{
 		pages: [
 			{
-				title: 'Settings',
+				title: i18n.t("Settings"),
 				url: '/settings',
 				menuIcon: settingsSharp,
 				id: 'menuitemSettings'
 			},
 			{
-				title: 'Main',
+				title: i18n.t("Main"),
 				url: '/',
 				menuIcon: chatboxEllipsesSharp,
 				id: 'menuitemAbout'
@@ -360,7 +361,7 @@ export const appMenuInfo: MenuSection[] = [
 	{
 		pages: [
 			{
-				title: 'App Info',
+				title: i18n.t("App Info"),
 				url: '/appinfo',
 				id: 'menuitemAppInfo'
 			}

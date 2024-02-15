@@ -73,14 +73,14 @@ async function copyText (copyString: string, toast: UseIonToastResult) {
 		await Clipboard.write({string: copyString});
 		//navigator.clipboard.writeText(copyText);
 		return toaster({
-			message: "Copied to clipboard.",
+			message: "Copied to clipboard",
 			duration: 1500,
 			position: "top",
 			toast
 		});
 	}
 	toaster({
-		message: "Nothing to copy.",
+		message: "Nothing to copy",
 		color: "danger",
 		duration: 1500,
 		position: "top",

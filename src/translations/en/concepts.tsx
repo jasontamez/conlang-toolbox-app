@@ -11,7 +11,7 @@ const concepts = {
 			Remember: you can combine multiple meanings into a single
 			word!`,
 
-		controlLexicon: 
+		controlLexicon:
 			`Use the "lexicon" button to quickly save meanings
 			to the $t(common:Lexicon).`,
 
@@ -19,7 +19,7 @@ const concepts = {
 
 		controlUnjoin: "Use the \"unjoin\" button to delete compound meanings.",
 
-		swadesh1: 
+		swadesh1:
 			`Originally assembled by Morris Swadesh, this list of
 			concepts was chosen for their universal, culturally
 			independent availability in as many languages as possible.
@@ -32,7 +32,7 @@ const concepts = {
 		// "Swadesh-Yakhontov"
 		swadesh4: " is a subset of the 207 assembled by Sergei Yakhontov. And the ",
 		// "Swadesh-Woodward Sign List"
-		swadesh5: 
+		swadesh5:
 			` was assembled by James Woodward to take into account the
 			ways sign languages behave.`,
 

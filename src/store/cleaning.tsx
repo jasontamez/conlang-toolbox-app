@@ -252,7 +252,7 @@ const cleanLexiconStorage = (input: StorageInfo, logger: EasyLogger) => {
 									originalObj
 								);
 							}
-							return;	
+							return;
 						}
 					}
 				}
