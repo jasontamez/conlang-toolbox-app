@@ -19,6 +19,8 @@ const dj = {
 	Declensions: "Declensions", // group of declensions on-screen
 	Conjugations: "Conjugations", // group of conjugations on-screen
 	Other: "Other", // group of 'other' type on-screen
+	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
+	"Error in exporting: bad format (internal)": "Error in exporting: bad format (internal)",
 	declension: "declension",
 	conjugation: "conjugation",
 	other: "other",
@@ -27,6 +29,8 @@ const dj = {
 	"Please choose at least one group to display.":
 		"Please choose at least one group to display.",
 	"Unmatched Words": "Unmatched Words",
+	declenjugatorDocumentTitle: "$t(Declensions)/$t(Conjugations)",
+	declenjugatorDocumentDescription: "A $t(declension)/$t(conjugation) document exported from $t(common:Conlang Toolbox).",
 
 	"Display as[colon]": "Display as:",
 	"Chart, Top Headers": "Chart, Top Headers",
@@ -53,8 +57,13 @@ const dj = {
 	"Output Tab": "Output Tab",
 	"Overview: Declenjugator": "$t(common:Overview): $t(common:Declenjugator)",
 
+	Example: "Example",
+	Examples: "Examples",
 	stem: "stem",
 	word: "word",
+	"[word]": "[word]",
+	"[stem]": "[stem]",
+	"No words matched this group.": "No words matched this group.",
 	"Remove from End of Word": "Remove from End of Word",
 	"Remove from End of Word to Find Root": "Remove from End of Word to Find Root",
 	"Remove from Start of Word": "Remove from Start of Word",
@@ -64,6 +73,13 @@ const dj = {
 	"Use entire word": "Use entire word",
 	"Add New": "Add New",
 
+	// Short description describing how a declension or conjugation is found
+	// Examples:
+	//   matches -ar, -or
+	//   matches en-oof
+	//   matches /[a-z]d[aeiou]$/
+	matchesParameters: "matches {{params}}",
+
 	"1st-person": "1st-person",
 	"2nd-person": "2nd-person",
 	"3rd-person": "3rd-person",
@@ -71,6 +87,7 @@ const dj = {
 	plural: "plural",
 	present: "present",
 	"(blank)": "(blank)",
+
 
 	info: {
 		input1:

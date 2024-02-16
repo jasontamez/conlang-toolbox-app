@@ -22,6 +22,7 @@ import log_original from '../../../components/Logging';
 
 import { specificPageInfo } from '../MorphoSyntaxElements';
 import msRawInfo from '../ms.json';
+import i18n from "../../../i18n";
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
@@ -420,7 +421,7 @@ const doDocx = (
 		sections
 	});
 	e.preventDefault();
-	const filename = `${title} - ${(new Date()).toDateString()}.docx`;
+	const filename =  i18n.t("fileFormat", { title, date: (new Date()).toDateString(), extension: "docx" });
 	setLoading(true);
 
 

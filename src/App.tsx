@@ -14,6 +14,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
+import { useTranslation } from 'react-i18next';
 
 // Polyfill for Intl.PluralRules
 import 'intl-pluralrules';
@@ -62,6 +63,7 @@ import getLanguage from './components/getLanguage';
 export const MainOutlet = memo(() => {
 	const [modals, setModals] = useState<SetBooleanState[]>([]);
 	const [doAlert] = useIonAlert();
+	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
 	const defaultProps = {
@@ -96,16 +98,16 @@ export const MainOutlet = memo(() => {
 			} else if (!navigator.canGoBack()) {
 				// Are we trying to exit the app?
 				yesNoAlert({
-					header: "Exit App?",
-					message: "Do you want to exit the app?",
+					header: t("Exit App?"),
+					message: t("Do you want to exit the app?"),
 					cssClass: "warning",
-					submit: "Yes, Exit!",
+					submit: t("Yes, Exit!"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});
 			}
 		}).remove;
-	}, [modals, navigator, dispatch, doAlert]);
+	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
 		<IonRouterOutlet placeholder>
 			<Route path="/wg" component={() => <WG {...defaultProps} />} />
@@ -131,6 +133,7 @@ const ConceptsPage = lazy(() => import("./pages/Concepts"));
 
 const App = memo(() => {
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 	const { lastClean } = useSelector((state: StateObject) => state.internals)
 	// useEffect should keep this from firing except once per session
 	useEffect(() => {
@@ -189,16 +192,16 @@ const App = memo(() => {
 			} else if (!navigator.canGoBack()) {
 				// Are we trying to exit the app?
 				yesNoAlert({
-					header: "Exit App?",
-					message: "Do you want to exit the app?",
+					header: t("Exit App?"),
+					message: t("Do you want to exit the app?"),
 					cssClass: "warning",
-					submit: "Yes, Exit!",
+					submit: t("Yes, Exit!"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});
 			}
 		}).remove;
-	}, [modals, navigator, dispatch, doAlert]);
+	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
 		<IonApp>
 			<IonReactRouter>

@@ -22,9 +22,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { setTheme } from '../../store/settingsSlice';
 import { ThemeNames, ModalProperties, StateObject } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 const ThemeModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const {
 		theme = "Default"
@@ -47,7 +50,7 @@ const ThemeModal = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Choose a Theme</IonTitle>
+					<IonTitle>{t("Choose a Theme")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => cancel()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -59,7 +62,7 @@ const ThemeModal = (props: ModalProperties) => {
 				<IonList lines="none" className="buttonFilled">
 					{themes.map((themeName) => (
 						<IonItem key={themeName} button={true} onClick={() => changeAppTheme(themeName)}>
-							<IonLabel>{themeName}</IonLabel>
+							<IonLabel>{t(themeName)}</IonLabel>
 							{theme === themeName ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
 						</IonItem>
 					))}
@@ -69,7 +72,7 @@ const ThemeModal = (props: ModalProperties) => {
 				<IonToolbar>
 					<IonButton color="danger" slot="end" onClick={() => setIsOpen(false)}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

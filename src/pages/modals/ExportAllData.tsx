@@ -39,6 +39,7 @@ import {
 	WEPresetObject
 } from '../../store/types';
 import { currentVersion } from '../../store/blankAppState';
+import useTranslator from '../../store/translationHooks';
 
 import {
 	CustomStorageWE,
@@ -52,8 +53,11 @@ import { $i } from '../../components/DollarSignExports';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
+	const [ t ] = useTranslator('common');
+	const [ ts ] = useTranslator('settings');
+	const loadingText = useMemo(() => t("Loading"), [t]);
 	const toast = useIonToast();
-	const [outputString, setOutputString] = useState<string>("...loading");
+	const [outputString, setOutputString] = useState<string>(loadingText);
 	const [output, setOutput] = useState<ImportExportObject | null>(null);
 	const [export_wg, setExport_wg] = useState<boolean>(true);
 	const [export_we, setExport_we] = useState<boolean>(true);
@@ -118,9 +122,9 @@ const MExportAllData = (props: ModalProperties) => {
 		const wgS: storedWG = [];
 		const weS: storedWE = [];
 		const djS: storedDJ = [];
-		setOutputString("...loading");
+		setOutputString(loadingText);
 		const where = $i<HTMLInputElement>("exportedData");
-		where && (where.value = "...loading");
+		where && (where.value = loadingText);
 
 		const copyDJGroup = (input: DJGroup) => {
 			const {startsWith, endsWith, regex, declenjugations} = input;
@@ -235,7 +239,8 @@ const MExportAllData = (props: ModalProperties) => {
 		concepts,
 		ec,
 		appSettings,
-		exportedSortSettings
+		exportedSortSettings,
+		loadingText
 	]);
 
 	useEffect(() => {
@@ -324,7 +329,7 @@ const MExportAllData = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export Info</IonTitle>
+					<IonTitle>{t("Export Info")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -337,14 +342,14 @@ const MExportAllData = (props: ModalProperties) => {
 					<IonItem>
 						<IonLabel className="ion-text-center ion-text-wrap">
 							<h2 className="ion-text-center ion-text-wrap">
-								Save this info to a note or file.
-								<br />You will be able to use it later to restore your data.
+								{ts("exportAllMsg1")}
+								<br />{ts("exportAllMsg2")}
 							</h2>
 						</IonLabel>
 					</IonItem>
 					<IonItem lines="none">
 						<IonTextarea
-							aria-label="Exported Data"
+							aria-label={ts("Exported Data")}
 							wrap="soft"
 							rows={12}
 							id="exportedData"
@@ -355,118 +360,118 @@ const MExportAllData = (props: ModalProperties) => {
 						<IonButton
 							color="primary"
 							onClick={() => Clipboard.write({string: outputString}).then(() => toaster({
-								message: `Copied to clipboard`,
+								message: t("Copied to clipboard"),
 								position: "middle",
 								duration: 1500,
 								toast
 							}))}
 							slot="end"
-						>Copy to Clipboard</IonButton>
+						>{t("Copy to Clipboard")}</IonButton>
 					</IonItem>
-					<IonItemDivider>What to Export</IonItemDivider>
+					<IonItemDivider>{ts("What to Export")}</IonItemDivider>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Current MorphoSyntax Settings"
+							aria-label={ts("Current MorphoSyntax Settings")}
 							checked={export_ms}
 							onIonChange={() => setExport_ms(!export_ms)}
-						>Current MorphoSyntax Settings</IonToggle>
+						>{ts("Current MorphoSyntax Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Stored MorphoSyntax Documents"
+							aria-label={ts("Stored MorphoSyntax Documents")}
 							checked={export_msStored}
 							onIonChange={() => setExport_msStored(!export_msStored)}
-						>Stored MorphoSyntax Documents</IonToggle>
+						>{ts("Stored MorphoSyntax Documents")}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Current WordGen Settings"
+							aria-label={ts("Current WordGen Settings")}
 							checked={export_wg}
 							onIonChange={() => setExport_wg(!export_wg)}
-						>Current WordGen Settings</IonToggle>
+						>{ts("Current WordGen Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Stored WordGen Settings"
+							aria-label={ts("Stored WordGen Settings")}
 							checked={export_wgStored}
 							onIonChange={() => setExport_wgStored(!export_wgStored)}
-						>Stored WordGen Settings</IonToggle>
+						>{ts("Stored WordGen Settings")}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Current WordEvolve Settings"
+							aria-label={ts("Current WordEvolve Settings")}
 							checked={export_we}
 							onIonChange={() => setExport_we(!export_we)}
-						>Current WordEvolve Settings</IonToggle>
+						>{ts("Current WordEvolve Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Stored WordEvolve Settings"
+							aria-label={ts("Stored WordEvolve Settings")}
 							checked={export_weStored}
 							onIonChange={() => setExport_weStored(!export_weStored)}
-						>Stored WordEvolve Settings</IonToggle>
+						>{ts("Stored WordEvolve Settings")}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Current Declenjugator Settings"
+							aria-label={ts("Current Declenjugator Settings")}
 							checked={export_dj}
 							onIonChange={() => setExport_dj(!export_dj)}
-						>Current Declenjugator Settings</IonToggle>
+						>{ts("Current Declenjugator Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Stored Declenjugator Info"
+							aria-label={ts("Stored Declenjugator Info")}
 							checked={export_djStored}
 							onIonChange={() => setExport_djStored(!export_djStored)}
-						>Stored Declenjugator Info</IonToggle>
+						>{ts("Stored Declenjugator Info")}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Current Lexicon Settings"
+							aria-label={ts("Current Lexicon Settings")}
 							checked={export_lex}
 							onIonChange={() => setExport_lex(!export_lex)}
-						>Current Lexicon Settings</IonToggle>
+						>{ts("Current Lexicon Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Stored Lexicons"
+							aria-label={ts("Stored Lexicons")}
 							checked={export_lexStored}
 							onIonChange={() => setExport_lexStored(!export_lexStored)}
-						>Stored Lexicons</IonToggle>
+						>{ts("Stored Lexicons")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Concepts Settings"
+							aria-label={ts("Concepts Settings")}
 							checked={export_con}
 							onIonChange={() => setExport_con(!export_con)}
-						>Concepts Settings</IonToggle>
+						>{ts("Concepts Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Extra Characters Settings"
+							aria-label={ts("Extra Characters Settings")}
 							checked={export_ec}
 							onIonChange={() => setExport_ec(!export_ec)}
-						>Extra Characters Settings</IonToggle>
+						>{ts("Extra Characters Settings")}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Other App Settings"
+							aria-label={ts("Other App Settings")}
 							checked={export_set}
 							onIonChange={() => setExport_set(!export_set)}
-						>Other App Settings</IonToggle>
+						>{ts("Other App Settings")}</IonToggle>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -474,7 +479,7 @@ const MExportAllData = (props: ModalProperties) => {
 				<IonToolbar>
 					<IonButton color="success" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Done</IonLabel>
+						<IonLabel>{t("Done")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

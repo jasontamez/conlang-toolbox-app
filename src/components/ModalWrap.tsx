@@ -10,6 +10,7 @@ import {
 	IonModal
 } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
+import i18n from '../i18n';
 import { SetBooleanState } from '../store/types';
 
 const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBooleanState}>) => {
@@ -25,7 +26,7 @@ const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBool
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Info</IonTitle>
+					<IonTitle>{i18n.t("Info")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />

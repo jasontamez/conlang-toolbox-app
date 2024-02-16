@@ -11,6 +11,12 @@ const ms = {
 	"9. Pragmatic Marking": "9. Pragmatic Marking",
 	"10. Clause Combinations": "10. Clause Combinations",
 
+	"Show Unused Sections": "Show Unused Sections",
+	showUnusedDesc1:
+		`Include sections that you did not fill out, leaving space for you
+		to write in later.`,
+	showUnusedDesc2: "NOTE: this option has no effect on JSON and XML exports.",
+
 };
 
 export default ms;

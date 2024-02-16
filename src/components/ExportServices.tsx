@@ -1,9 +1,11 @@
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
-import sanitize from 'sanitize-filename';
-import toaster from './toaster';
-import log from './Logging';
 import { UseIonToastResult } from '@ionic/react';
 import { Dispatch } from 'redux';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
+import sanitize from 'sanitize-filename';
+
+import toaster from './toaster';
+import log from './Logging';
+import i18n from '../i18n';
 
 const doExport = async (
 	output: string,
@@ -14,16 +16,17 @@ const doExport = async (
 ) => {
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
+	const path = sanitize(i18n.t("Conlang Toolbox", { context: "filename" }));
 	try {
 		/*const ret =*/ await Filesystem.readdir({
-			path: 'ConlangToolbox',
+			path,
 			directory: Docs
 		});
 //		console.log('Read dir', ret);
 	} catch(e) {
 		try {
 			/*const ret =*/ await Filesystem.mkdir({
-				path: 'ConlangToolbox',
+				path,
 				directory: Docs,
 				recursive: false // like mkdir -p
 			});
@@ -31,7 +34,7 @@ const doExport = async (
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to make directory', e]);
 			toast && toaster({
-				message: "UNABLE TO EXPORT: " + String(e).replace(/\n+/g, " "),
+				message: i18n.t("Unable to export", { error: String(e).replace(/\n+/g, " ") }),
 				color: "danger",
 				duration: 10000,
 				toast
@@ -40,14 +43,14 @@ const doExport = async (
 	} finally {
 		try {
 			/*const result =*/ await Filesystem.writeFile({
-				path: 'ConlangToolbox/' + filename,
+				path: path + '/' + filename,
 				data: output,
 				directory: Docs,
 				encoding: encodeUTF ? Encoding.UTF8 : undefined
 			});
 //			console.log('Wrote file', result);
 			toast && toaster({
-				message: `${filename} exported`,
+				message: i18n.t("File exported", { filename }),
 				color: "success",
 				duration: 5000,
 				toast
@@ -55,7 +58,7 @@ const doExport = async (
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to write file', e]);
 			toast && toaster({
-				message: "UNABLE TO WRITE FILE: " + String(e).replace(/\n+/g, " "),
+				message: i18n.t("Unable to write file", { error: String(e).replace(/\n+/g, " ") }),
 				color: "danger",
 				duration: 10000,
 				toast

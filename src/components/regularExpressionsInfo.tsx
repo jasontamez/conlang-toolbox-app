@@ -1,30 +1,32 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-export const RegularExpressions = () => (
-	<>
-		<hr />
-		<h2>Regular Expressions</h2>
-		<p>
-			To put it as simply as possible, a <em>regular expression</em> is a sequence of
-			characters that specifies a match pattern in text. <em>Regexes</em> are found in
-			many programming languages and text editors. <strong>Conlang Toolbox</strong> uses
-			JavaScript-style regexes without the surrounding slash characters.
-		</p><p>
-			Fully explaining regular expressions is a topic that's too complicated for this
-			app to cover, but they are very useful. Here are some resources where you can
-			learn more about them:
-		</p>
-		<ul>
-			<li><a href="https://en.wikipedia.org/wiki/Regular_expression"
-			>Wikipedia: Regular Expression</a></li>
-			<li><a href={
-				"https://developer.mozilla.org/en-US/docs/Web/JavaScript/"
-				+ "Guide/Regular_expressions#writing_a_regular_expression_pattern"}
-			>MDN: Writing a regular expression</a></li>
-			<li><a href="https://www.regular-expressions.info"
-			>Regular-Expressions.info</a>, a tutorial site.</li>
-			<li><a href="https://www.geeksforgeeks.org/write-regular-expressions/"
-			>Geeks for Geeks: Write Reguar Expressions</a></li>
-		</ul>
-	</>
-);
+export const RegularExpressions: React.FC = () => {
+	const { t } = useTranslation();
+	const url1 = t("regex3url");
+	const url2 = t("regex4url");
+	const url3 = t("regex5url");
+	const url4 = t("regex6url");
+	return (
+		<>
+			<hr />
+			<h2>{t("Regular Expressions")}</h2>
+			<p>
+				{t("regex1p1")}
+				<em>{t("regular expression")}</em>
+				{t("regex1p2")}
+				<em>{t("Regexes")}</em>
+				{t("regex1p3")}
+				<strong>{t("Conlang Toolbox")}</strong>
+				{t("regex1p4")}
+			</p>
+			<p>{t("regex2")}</p>
+			<ul>
+				{url1 ? <li><a href={url1}>{t("regex3text")}</a></li> : <></>}
+				{url2 ? <li><a href={url2}>{t("regex4text")}</a></li> : <></>}
+				{url3 ? <li><a href={url3}>{t("regex5text")}</a></li> : <></>}
+				{url4 ? <li><a href={url4}>{t("regex6text")}</a></li> : <></>}
+			</ul>
+		</>
+	);
+};

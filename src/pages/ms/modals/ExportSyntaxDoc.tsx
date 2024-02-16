@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { ModalProperties, SetBooleanState, StateObject } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import logger from '../../../components/Logging';
 import doExport from '../../../components/ExportServices';
@@ -40,11 +41,13 @@ interface ExportModalProps extends ModalProperties {
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const ExportSyntaxModal = (props: ExportModalProps) => {
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const { isOpen, setIsOpen, setLoading } = props;
 	const [showUnused, setShowUnused] = useState<boolean>(true);
 	const toast = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
-	const { title = "[Untitled]" } = msInfo;
+	const { title = tc("[Untitled]") } = msInfo;
 	const doClose = () => {
 		setIsOpen(false);
 		setLoading(false);
@@ -53,7 +56,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 	const log = (info: string[]) => logger(dispatch, info);
 	const doDownload = (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, output: string, extension: string) => {
 		e.preventDefault();
-		const filename = `${title} - ${(new Date()).toDateString()}.${extension}`;
+		const filename =  tc("fileFormat", { title, date: (new Date()).toDateString(), extension });
 		setLoading(true);
 		doExport(output, filename, toast, dispatch)
 			.catch((e = "Error doexport") => {
@@ -66,7 +69,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Export: {title}</IonTitle>
+					<IonTitle>{tc("exportTitle", {title})}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -83,28 +86,28 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 							checked={showUnused}
 							onIonChange={() => setShowUnused(!showUnused)}
 						>
-							<h2>Show Unused Sections</h2>
+							<h2>{t("Show Unused Sections")}</h2>
 							<p>
-								Include sections that you did not fill out, leaving space for you to write in
-								later. <strong>NOTE:</strong> this option has no effect on JSON and XML exports.
+								{t("showUnusedDesc1")}
+								<strong>{t("showUnusedDesc2")}</strong>
 							</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem>Choose a format:</IonItem>
+					<IonItem>{tc("Choose a format[colon]")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused)}
 						className="striped"
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">Text Outline (plain)</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("Text Outline (plain)")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused, true)}
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">Text Outline (markdown)</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("Text Outline (markdown)")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
@@ -121,14 +124,14 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 						className="striped"
 					>
 						<IonIcon icon={documentOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">Word Document (docx)</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("Word Document (docx)")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doJSON(e, msInfo, doDownload)}
 					>
 						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">JSON File</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("JSON File")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
@@ -136,7 +139,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 						className="striped"
 					>
 						<IonIcon icon={codeOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">XML File</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("XML File")}</IonLabel>
 					</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
@@ -145,7 +148,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 				<IonToolbar>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

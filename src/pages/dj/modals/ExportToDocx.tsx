@@ -23,6 +23,7 @@ import toaster from "../../../components/toaster";
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
 import { isPlatform } from "@ionic/react";
+import i18n from "../../../i18n";
 // FOR BROWSER TESTING ONLY
 
 type Child = (Paragraph | Table);
@@ -67,6 +68,7 @@ const topChart = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
+	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -93,7 +95,7 @@ const topChart = (
 			children.push(new Paragraph({
 				children: [
 					new TextRun({
-						text: "--No words matched this group."
+						text: noMatchesFound
 					})
 				],
 				spacing
@@ -152,6 +154,7 @@ const sideChart = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
+	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -178,7 +181,7 @@ const sideChart = (
 			children.push(new Paragraph({
 				children: [
 					new TextRun({
-						text: "--No words matched this group."
+						text: noMatchesFound
 					})
 				],
 				spacing
@@ -233,6 +236,7 @@ const text = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
+	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -259,7 +263,7 @@ const text = (
 			children.push(new Paragraph({
 				children: [
 					new TextRun({
-						text: "--No words matched this group."
+						text: noMatchesFound
 					})
 				],
 				spacing
@@ -328,7 +332,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: "Declensions",
+					text: i18n.t("Declensions", { ns: "dj" }),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -341,7 +345,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: "Conjugations",
+					text: i18n.t("Conjugations", { ns: "dj" }),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -354,7 +358,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: "Other",
+					text: i18n.t("Other", { ns: "dj" }),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -367,7 +371,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: "Unmatched Words",
+					text: i18n.t("Unmatched Words", { ns: "dj" }),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -379,12 +383,19 @@ const exportDocx = (
 		});
 	}
 	const doc = new Document({
-		creator: "Conlang Toolbox",
-		description: "A declension/conjugation document exported from Conlang Toolbox.",
-		title: "Declensions/Conjugations",
+		creator: i18n.t("Conlang Toolbox", { ns: "dj" }),
+		description: i18n.t("declenjugatorDocumentDescription", { ns: "dj" }),
+		title: i18n.t("declenjugatorDocumentTitle", { ns: "dj" }),
 		sections: sections
 	});
-	const filename = "Declenjugator - " + (new Date()).toDateString() + ".docx";
+	const filename = i18n.t(
+		"fileFormat",
+		{
+			title: i18n.t("Declenjugator"),
+			date: (new Date()).toDateString(),
+			extension: "docx"
+		}
+	);
 
 	// FOR BROWSER TESTING ONLY
 	if(!isPlatform("android")) {
@@ -411,22 +422,22 @@ const exportDocx = (
 	Packer.toBase64String(doc).then((output) => {
 		doExport(output, filename, toast, null, false)
 			.catch((e = "Error doexport docx") => {
-				log(dispatch, ["DJExport / Packer / doExport", e]);
+				log(dispatch, ["DJExport / Packer / doExport", e]);//
 				toaster({
-					message: `Error saving file ${filename} (${e})`,
+					message: i18n.t("generalError", { filename, error: `${e}` }),
 					color: "success",
 					toast
 				});
 			});
 		toaster({
-			message: "File saved as " + filename,
+			message: i18n.t("fileSaved", { filename }),
 			color: "success",
 			toast
 		});
 	}).catch((e = "Error 64") => {
 		log(dispatch, ["DJExport / Packer", e]);
 		toaster({
-			message: `Error saving file ${filename} (64: ${e})`,
+			message: i18n.t("generalError", { filename, error: `64 ${e}` }),
 			color: "success",
 			toast
 		});

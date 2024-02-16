@@ -24,6 +24,7 @@ import useTranslator from '../../store/translationHooks';
 
 import doExport from '../../components/ExportServices';
 import log from '../../components/Logging';
+import i18n from '../../i18n';
 
 interface ExportModalProps extends ModalProperties {
 	setLoading: SetBooleanState
@@ -142,7 +143,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	};
 	const doDownload = (e: IonItemEvent, output: string, extension: string) => {
 		e.preventDefault();
-		const filename = title + " - " + (new Date()).toDateString() + "." + extension;
+		const filename = i18n.t("fileFormat", { title, date: (new Date()).toDateString(), extension });
 		setLoading(true);
 		doExport(output, filename, toast, dispatch)
 			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))

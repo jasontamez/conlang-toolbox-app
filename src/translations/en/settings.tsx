@@ -10,12 +10,48 @@ const settings = {
 	"Sort Settings": "Sort Settings",
 	"Export App Info": "Export App Info",
 	"Import App Info": "Import App Info",
+	"Choose a Theme": "Choose a Theme",
 	// Theme names
 	"Default": "Default",
 	Light: "Light",
 	Dark: "Dark",
 	"Solarized Light": "Solarized $t(Light)", // Solarized is the name of a popular color palette
 	"Solarized Dark": "Solarized $t(Dark)", // Solarized is the name of a popular color palette
+
+	exportAllMsg1: "Save this info to a note or file.",
+	exportAllMsg2: "You will be able to use it later to restore your data.",
+	"Exported Data": "Exported Data",
+
+	"What to Export": "What to Export",
+	"You haven't imported anything yet.": "You haven't imported anything yet.",
+	"Yes, Close This": "Yes, Close This",
+	"Error validating Import": "Error validating Import",
+	successImport: "Imported new info for {{listing}}",
+	alsoOverwrote: "; also completely overwrote storage for {{listing}}",
+	successOverwrote: "Completely overwrote storage for {{listing}}",
+
+	Import: "Import",
+	"Import Info": "Import Info",
+	importDescription:
+		`Paste your data below. This only accepts data exported through
+		"$(Export All Info)".`,
+	"Data to Import": "Data to Import",
+	Reset: "Reset",
+	Analyze: "Analyze",
+	"What to Import": "What to Import",
+	currentSettings: "Current {{tool}} Settings",
+	storedSettings: "Stored {{tool}} Settings",
+	storedDocuments: "Stored {{tool}} Documents",
+	appSettings: "{{tool}} Settings",
+	"Other App Settings": "Other App Settings",
+	
+	"You did not choose anything to import.": "You did not choose anything to import.",
+	"WARNING!": "WARNING!",
+	willOverwriteCurrent: "This will overwrite all current data in {{listing}}.",
+	alsoOverwriteStorage: "It will ALSO delete and replace stored data for {{listing}}.",
+	willOverwriteStorage: "This will delete and replace stored data for {{listing}}.",
+	areYouVerySure: "Are you SURE you want to do this?",
+	"Yes, I Want to Do This": "Yes, I Want to Do This",
 
 	// SORT SETTINGS
 
