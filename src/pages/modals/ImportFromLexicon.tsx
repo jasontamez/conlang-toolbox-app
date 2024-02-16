@@ -516,7 +516,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="primary"
 									className="ion-text-wrap settings"
 									justify="start"
-									label={t("Test column:")}
+									label={t("Test column[colon]")}
 									value={addingColumn}
 									onIonChange={(e) => setAddingColumn(e.detail.value)}
 								>

@@ -60,7 +60,7 @@ export const InputCard = (props: CardProps) => {
 				<p>{t("info.input1")}</p>
 				<p>
 					{t("info.input2p1")}
-					<strong>{tc("Import From Lexicon")}</strong>
+					<strong>{tc("Import from Lexicon")}</strong>
 					{t("info.input2p2")}
 					<strong>{tc("Lexicon")}</strong>
 					{t("info.input2p3")}
@@ -118,8 +118,8 @@ export const GroupCard = (props: CardProps) => {
 					<ul className="simple">
 						<li><strong>{tc("Title")}</strong>{t("info.colon")} {t("Conjugations")} (A)</li>
 						<li><strong>{t("Type")}</strong>{t("info.colon")} <em>{t("conjugation")}</em></li>
-						<li><strong>{t("Remove From Start of Word")}</strong>{t("info.colon")} {t("(blank)")}</li>
-						<li><strong>{t("Remove From End of Word")}</strong>{t("info.colon")} ar</li>
+						<li><strong>{t("Remove from Start of Word")}</strong>{t("info.colon")} {t("(blank)")}</li>
+						<li><strong>{t("Remove from End of Word")}</strong>{t("info.colon")} ar</li>
 					</ul>
 					<div className="title">{t("Conjugations")}</div>
 					<ul className="simple">
@@ -167,7 +167,7 @@ const DJinfo = (props: PageData) => {
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={t("Overview: Declenjugator")} />
+				<Header title={t("Overview[colon] Declenjugator")} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>

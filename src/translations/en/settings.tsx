@@ -34,7 +34,7 @@ const settings = {
 	"Import Info": "Import Info",
 	importDescription:
 		`Paste your data below. This only accepts data exported through
-		"$(Export All Info)".`,
+		"$t(Export App Info)".`,
 	"Data to Import": "Data to Import",
 	Reset: "Reset",
 	Analyze: "Analyze",

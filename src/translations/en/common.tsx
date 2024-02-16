@@ -33,6 +33,7 @@ const common = {
 	"App Info": "App Info",
 	Settings: "Settings",
 	"App Settings": "App Settings",
+	Main: "Main",
 	Overview: "Overview",
 	Input: "Input",
 	Output: "Output",
@@ -130,7 +131,7 @@ const common = {
 
 	// Import from Lexicon
 	Import: "Import",
-	"Import from Lexicon": "Import from $(Lexicon)",
+	"Import from Lexicon": "Import from $t(Lexicon)",
 	"Import from which column(s)?": "Import from which column(s)?",
 	"Lexicon Has No Columns": "Lexicon Has No Columns",
 	"Add Conditions (optional)": "Add Conditions (optional)",
@@ -151,8 +152,8 @@ const common = {
 	"Exit Without Importing?": "Exit Without Importing?",
 	"Please select at least one column to import from.": "Please select at least one column to import from.",
 	"Did not find anything to import.": "Did not find anything to import.",
-	importSuccess_one: "Imported {{count}} word from $(Lexicon).",
-	importSuccess_other: "Imported {{count}} words from $(Lexicon).",
+	importSuccess_one: "Imported {{count}} word from $t(Lexicon).",
+	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
 
 	// REGULAR EXPRESSIONS
 	"Regular Expressions": "Regular Expressions", // title of section

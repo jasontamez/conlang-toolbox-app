@@ -1113,7 +1113,8 @@ const invalidOldStorageObject = (object: unknown, v: string) => {
 };
 
 export const validVersionRanges = [
-	["0.11.0", currentVersion],
+	["0.12.0", currentVersion],
+	["0.11.0", "0.11.3"],
 	["0.10.0", "0.10.1"],
 	["0.9.1", "0.9.5"]
 ];

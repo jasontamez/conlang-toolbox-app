@@ -1,7 +1,9 @@
 const dj = {
 
-	"Groups": "Groups",
-	"Words to send through Declenjugator": "Words to send through $(common:Declenjugator)",
+	Groups: "Groups",
+	Group: "Group",
+	Type: "Type",
+	"Words to send through Declenjugator": "Words to send through $t(common:Declenjugator)",
 	"Enter words here, one per line": "Enter words here, one per line",
 	"Group deleted.": "Group deleted.",
 	"Delete Entire Group": "Delete Entire Group",
@@ -22,7 +24,9 @@ const dj = {
 	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
 	"Error in exporting: bad format (internal)": "Error in exporting: bad format (internal)",
 	declension: "declension",
+	declensions: "declensions",
 	conjugation: "conjugation",
+	conjugations: "conjugation",
 	other: "other",
 
 	"You didn't select a format.": "You didn't select a format.",
@@ -55,7 +59,7 @@ const dj = {
 	"Input Tab": "Input Tab",
 	"Groups Tab": "Groups Tab",
 	"Output Tab": "Output Tab",
-	"Overview: Declenjugator": "$t(common:Overview): $t(common:Declenjugator)",
+	"Overview[colon] Declenjugator": "$t(common:Overview): $t(common:Declenjugator)",
 
 	Example: "Example",
 	Examples: "Examples",

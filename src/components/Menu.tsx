@@ -61,13 +61,13 @@ const ParentOf: FC<MenuItemProps> = (props) => {
 	);
 };
 
-const Parent: FC<SubMenuItemProps> = (props)  => {
+const HasParent: FC<SubMenuItemProps> = (props)  => {
 	const { appPage, isToggled } = props;
 	const { url, title } = appPage;
 	const location = useLocation();
 	const {pathname = "/"} = location;
 	const maybeSelected = (url.endsWith("/") ? url === pathname : pathname.startsWith(url)) ? " selected" : "";
-	const maybeToggled = (isToggled ? " toggled" : "");
+	const maybeToggled = (isToggled ? "" : " hidden");
 	const className = `subHeading${maybeSelected}${maybeToggled}`;
 	return (
 		<IonMenuToggle autoHide={false}>
@@ -120,7 +120,7 @@ const sectionPageMap: pageMap = (appPage, menuInfo, setMenuInfo) => {
 	if(parentOf) {
 		return <ParentOf key={id} appPage={appPage} isToggled={menuInfo === parentOf} setMenuInfo={setMenuInfo} />;
 	} else if(parent) {
-		return <Parent key={id} appPage={appPage} isToggled={menuInfo === parent} />;
+		return <HasParent key={id} appPage={appPage} isToggled={menuInfo === parent} />;
 	}
 	return <PlainMenuItem key={id} appPage={appPage} />;
 };

@@ -325,6 +325,21 @@ const MExportAllData = (props: ModalProperties) => {
 		setExport_lexStored(true);
 	};
 
+	const whatToExport = ts("What to Export");
+	const currentMorphoSyntaxSettings = ts("currentSettings", { tool: t("MorphoSyntax") });
+	const storedMorphoSyntaxDocuments = ts("storedDocuments", { tool: t("MorphoSyntax") });
+	const currentWordGenSettings = ts("currentSettings", { tool: t("WordGen") });
+	const storedWordGenSettings = ts("storedSettings", { tool: t("WordGen") });
+	const currentWordEvolveSettings = ts("currentSettings", { tool: t("WordEvolve") });
+	const storedWordEvolveSettings = ts("storedSettings", { tool: t("WordEvolve") });
+	const currentDeclenjugatorSettings = ts("currentSettings", { tool: t("Declenjugator") });
+	const storedDeclenjugatorSettings = ts("storedSettings", { tool: t("Declenjugator") });
+	const currentLexiconSettings = ts("currentSettings", { tool: t("Lexicon") });
+	const storedLexiconDocuments = ts("storedDocuments", { tool: t("Lexicon") });
+	const conceptsSettings = ts("appSettings", { tool: t("Extra Characters") });
+	const extraCharactersSettings = ts("appSettings", { tool: t("Extra Characters") });
+	const otherAppSettings = ts("Other App Settings");
+
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
@@ -368,110 +383,110 @@ const MExportAllData = (props: ModalProperties) => {
 							slot="end"
 						>{t("Copy to Clipboard")}</IonButton>
 					</IonItem>
-					<IonItemDivider>{ts("What to Export")}</IonItemDivider>
+					<IonItemDivider>{whatToExport}</IonItemDivider>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Current MorphoSyntax Settings")}
+							aria-label={currentMorphoSyntaxSettings}
 							checked={export_ms}
 							onIonChange={() => setExport_ms(!export_ms)}
-						>{ts("Current MorphoSyntax Settings")}</IonToggle>
+						>{currentMorphoSyntaxSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Stored MorphoSyntax Documents")}
+							aria-label={storedMorphoSyntaxDocuments}
 							checked={export_msStored}
 							onIonChange={() => setExport_msStored(!export_msStored)}
-						>{ts("Stored MorphoSyntax Documents")}</IonToggle>
+						>{storedMorphoSyntaxDocuments}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Current WordGen Settings")}
+							aria-label={currentWordGenSettings}
 							checked={export_wg}
 							onIonChange={() => setExport_wg(!export_wg)}
-						>{ts("Current WordGen Settings")}</IonToggle>
+						>{currentWordGenSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Stored WordGen Settings")}
+							aria-label={storedWordGenSettings}
 							checked={export_wgStored}
 							onIonChange={() => setExport_wgStored(!export_wgStored)}
-						>{ts("Stored WordGen Settings")}</IonToggle>
+						>{storedWordGenSettings}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Current WordEvolve Settings")}
+							aria-label={currentWordEvolveSettings}
 							checked={export_we}
 							onIonChange={() => setExport_we(!export_we)}
-						>{ts("Current WordEvolve Settings")}</IonToggle>
+						>{currentWordEvolveSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Stored WordEvolve Settings")}
+							aria-label={storedWordEvolveSettings}
 							checked={export_weStored}
 							onIonChange={() => setExport_weStored(!export_weStored)}
-						>{ts("Stored WordEvolve Settings")}</IonToggle>
+						>{storedWordEvolveSettings}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Current Declenjugator Settings")}
+							aria-label={currentDeclenjugatorSettings}
 							checked={export_dj}
 							onIonChange={() => setExport_dj(!export_dj)}
-						>{ts("Current Declenjugator Settings")}</IonToggle>
+						>{currentDeclenjugatorSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Stored Declenjugator Info")}
+							aria-label={storedDeclenjugatorSettings}
 							checked={export_djStored}
 							onIonChange={() => setExport_djStored(!export_djStored)}
-						>{ts("Stored Declenjugator Info")}</IonToggle>
+						>{storedDeclenjugatorSettings}</IonToggle>
 					</IonItem>
 					<IonItem lines="none">
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Current Lexicon Settings")}
+							aria-label={currentLexiconSettings}
 							checked={export_lex}
 							onIonChange={() => setExport_lex(!export_lex)}
-						>{ts("Current Lexicon Settings")}</IonToggle>
+						>{currentLexiconSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Stored Lexicons")}
+							aria-label={storedLexiconDocuments}
 							checked={export_lexStored}
 							onIonChange={() => setExport_lexStored(!export_lexStored)}
-						>{ts("Stored Lexicons")}</IonToggle>
+						>{storedLexiconDocuments}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Concepts Settings")}
+							aria-label={conceptsSettings}
 							checked={export_con}
 							onIonChange={() => setExport_con(!export_con)}
-						>{ts("Concepts Settings")}</IonToggle>
+						>{conceptsSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Extra Characters Settings")}
+							aria-label={extraCharactersSettings}
 							checked={export_ec}
 							onIonChange={() => setExport_ec(!export_ec)}
-						>{ts("Extra Characters Settings")}</IonToggle>
+						>{extraCharactersSettings}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Other App Settings")}
+							aria-label={otherAppSettings}
 							checked={export_set}
 							onIonChange={() => setExport_set(!export_set)}
-						>{ts("Other App Settings")}</IonToggle>
+						>{otherAppSettings}</IonToggle>
 					</IonItem>
 				</IonList>
 			</IonContent>
