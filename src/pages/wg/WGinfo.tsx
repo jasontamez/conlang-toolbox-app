@@ -246,13 +246,13 @@ export const TransCard = (props: CardProps) => {
 			<IonCardContent>
 				<p>
 					There may be cases when you need to fine-tune the words that get generated
-					on the <strong>Output</strong> tab. A common reason would be to turn a
+					on the <strong>{tc("Output")}</strong> tab. A common reason would be to turn a
 					specific character into two or three letters. You may create a group such
 					as <strong>C=pbkClrS</strong>, using capital letters in place of sounds
 					like <em>"ch"</em> or <em>"sh"</em>. This could generate syllables
 					like <em>Cu</em> or <em>pliS</em>.
 				</p><p>
-					When you make a new <em>transformation</em>, you provide
+					When you make a new <em>{t("trans")}</em>, you provide
 					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
 					a <em>transformation description</em> for your own benefit.
 				</p><p>
@@ -337,65 +337,69 @@ export const TransCard = (props: CardProps) => {
 	);
 }
 export const OutCard = (props: CardProps) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={documentTextOutline} slot="start" color="primary" />
-				<IonLabel>Output Tab</IonLabel>
+				<IonLabel>{t("Output Tab")}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This is where the magic happens. Click the <strong>Generate</strong> button and your
+					This is where the magic happens. Click the <strong>{t("Generate")}</strong> button and your
 					output will appear. Press the button again and a new set of output will replace it.
 				</p><p className="center pad-top-rem">
 					<IonIcon icon={settingsOutline} color="tertiary" size="large" />
 				</p><p>
 					Click on the gear icon to open a list of options. The first is a drop-down menu where
 					you can select what to output. The choices
-					are <strong>Pseudo-text</strong>, <strong>Wordlist</strong> and <strong>All
-					possible syllables</strong>.
+					are <strong>{t("Pseudo-text")}</strong>, <strong>{t("Wordlist")}</strong> and <strong>{t("All possible syllables")}</strong>.
 				</p><p>
-					The <strong>pseudo-text</strong> will create words and put them into sentences, making a
+					The <strong>{t("Pseudo-text")}</strong> will create words and put them into sentences, making a
 					block of text you might find in a book. You can determine how many sentences are made by
-					adjusting the <strong>numer of sentences</strong> slider.
+					adjusting the <strong>{t("Number of sentences")}</strong> slider.
 				</p><p>
-					The <strong>wordlist</strong> outputs a list of words devoid of context. You can choose
-					a number of options to modify this list. <strong>Capitalize words</strong> will capitalize
-					every word. <strong>Sort output</strong> will alphabetize the list, and <strong>multi-column
-					layout</strong> will arrange the list in multiple columns instead of one long column. At
-					the bottom, there is a <strong>wordlist size</strong> slider that controls how many words
+					The <strong>{t("Wordlist")}</strong> outputs a list of words devoid of context. You can choose
+					a number of options to modify this list. <strong>{t("Capitalize words")}</strong> will capitalize
+					every word. <strong>{t("Sort output")}</strong> will alphabetize the list,
+					and <strong>{t("Multi-column layout")}</strong> will arrange the list in multiple
+					columns instead of one long column. At
+					the bottom, there is a <strong>{t("Wordlist size")}</strong> slider that controls how many words
 					are generated.
 				</p><p>
-					<strong>All possible syllables</strong>, as you might guess, outputs a list of every
+					<strong>{t("All possible syllables")}</strong>, as you might guess, outputs a list of every
 					possible syllable your character groups, syllables and transformations allow.
-					The <em>capitalize</em>, <em>sort</em> and <em>multi-column</em> options above will
-					also work on this syllable list.
+					The <em>{t("Capitalize words")}</em>, <em>{t("Sort output")}</em> and <em>{t("Multi-column layout")}</em> options
+					above will also work on this syllable list.
 				</p><p>
-					At the top of the settings, you can choose to <strong>show syllable breaks</strong>, which
+					At the top of the settings, you can choose to <strong>{t("Show syllable breaks")}</strong>, which
 					will in·sert a dot be·tween eve·ry syl·la·ble in each word. While this option can be useful,
-					please note that it will break any <em>transformations</em> that try to work across syllable
+					please note that it will break any <em>{t("trans_other")}</em> that try to work across syllable
 					boundaries.
 				</p><p className="center pad-top-rem">
 					<IonIcon icon={bookOutline} color="tertiary" size="large" />
 				</p><p>
-					Once you've generated words, you can save them to the <strong>Lexicon</strong>. Click
-					the book button and you're presented with two options. <em>Save everything</em> will
-					store every single generated word for the Lexicon. <em>Choose what to save</em> will
+					Once you've generated words, you can save them to the <strong>{tc("Lexicon")}</strong>. Click
+					the book button and you're presented with two options. <em>{t("Save everything")}</em> will
+					store every single generated word for the Lexicon. <em>{t("Choose what to save")}</em> will
 					highlight every word, and you can tap on a word to store it; when you're done choosing,
 					hit the save button that appears and you will be able to choose how they are imported
-					into the <strong>Lexicon</strong>.
+					into the <strong>{tc("Lexicon")}</strong>.
 				</p>
 			</IonCardContent>
 		</IonCard>
 	);
 }
 export const OptCard = (props: CardProps) => {
+	const [ t ] = useTranslator('wg');
+//	const [ tc ] = useTranslator('common');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={optionsOutline} slot="start" color="primary" />
-				<IonLabel>Settings Tab</IonLabel>
+				<IonLabel>{t("Settings Tab")}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -405,31 +409,32 @@ export const OptCard = (props: CardProps) => {
 				</p>
 				<h2>The Buttons</h2>
 				<p>
-					<strong>Load Presets</strong> brings up a menu where you can choose from several
+					<strong>{t("Load Presets")}</strong> brings up a menu where you can choose from several
 					pre-loaded options. The initial settings when you first start the app are
-					the <em>Simple</em> preset. The others are offered to give you ideas of what's
-					possible with the app. They will load <em>character
-					groups</em>, <em>syllables</em>, <em>transformations</em> and possibly change the
+					the <em>{t("Simple")}</em> preset. The others are offered to give you ideas of what's
+					possible with the app. They will
+					load <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em>, <em>{t("trans_other")}</em> and
+					possibly change the
 					remaining settings on this page, too.
 				</p><p>
-					<strong>Clear All Fields</strong> clears all <em>character
-					groups</em>, <em>syllables</em> and <em>transformations</em>, but does not
+					<strong>{t("Clear All Fields")}</strong> clears
+					all <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em> and <em>{t("trans_other")}</em>, but does not
 					affect any other settings.
 				</p><p>
-					<strong>Save/Load Custom Info</strong> opens a dialog where you can save your
-					own <em>character groups</em>, <em>syllables</em>, <em>transformations</em> and the
+					<strong>{t("Save/Load Custom Info")}</strong> opens a dialog where you can save your
+					own <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em>, <em>{t("trans_other")}</em> and the
 					settings on this page. This allows you to switch between your own personal
 					language settings.
 				</p>
 				<h2>The Settings</h2>
 				<p>
-					<strong>Rate of monosyllable words</strong> determines how often a one-syllable
+					<strong>{t("Rate of monosyllable words")}</strong> determines how often a one-syllable
 					word is created. It's a percentage from 0 (never) to 100 (always).
 				</p><p>
-					<strong>Maximum number of syllables per word</strong> sets an upper limit on how long
+					<strong>{t("Maximum number of syllables per word")}</strong> sets an upper limit on how long
 					your words can grow.
 				</p><p>
-					<strong>Character Group run dropoff</strong> and <strong>syllable box dropoff</strong> range
+					<strong>{t("Character Group run dropoff")}</strong> and <strong>{t("Syllable box dropoff")}</strong> range
 					from 0 to 50. At zero (flat), group and syllable choices are all equiprobable.
 					Otherwise, the number becomes a percentage. The higher the number, the more likely it
 					is that the first syllables or group characters are used. (This mimics natural
@@ -442,15 +447,15 @@ export const OptCard = (props: CardProps) => {
 					<li>This cycle continues until a number is generated that is equal to or greater
 						than the dropoff percentage.</li>
 				</ol><p>
-					The remaining options only apply to <em>pseudo-texts</em>.
+					The remaining options only apply to <em>{t("Pseudo-texts")}</em>.
 				</p><p>
-					<strong>Capitalize sentences</strong> determines if each sentence starts with a capital
+					<strong>{t("Capitalize sentences")}</strong> determines if each sentence starts with a capital
 					letter.
 				</p><p>
 					The other options determine what your sentences look like. Three-fourths of
-					all sentences will be <em>declarative</em> (simple statements), one-sixth will
-					be <em>interrogative</em> (questions), and the remaining one-twelfth will
-					be <em>exclamatory</em> (excited utterances). You can put special punctuation
+					all sentences will be <em>{t("declarative")}</em> (simple statements), one-sixth will
+					be <em>{t("interrogative")}</em> (questions), and the remaining one-twelfth will
+					be <em>{t("exclamatory")}</em> (excited utterances). You can put special punctuation
 					before and after these sentences if you wish.
 				</p>
 			</IonCardContent>
@@ -459,17 +464,18 @@ export const OptCard = (props: CardProps) => {
 }
 
 const WGinfo = (props: PageData) => {
-
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title="Overview: WordGen" />
+				<Header title={t("Overview[colon] WordGen")} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>
 					<IonItem lines="full">
 						<WordGenIcon slot="start" color="primary" />
-						<IonLabel>What is WordGen?</IonLabel>
+						<IonLabel>{t("What is WordGen?")}</IonLabel>
 					</IonItem>
 					<IonCardContent>
 						<p>
@@ -515,14 +521,14 @@ const WGinfo = (props: PageData) => {
 						</div><p>
 							With that information, you can proceed into the rest of this tool:
 						</p><p>
-							The <strong>Character Groups</strong> tab is for holding groups of sounds, and
-							the <strong>Syllables</strong> tab describes how they fit together. For more
-							complex words, the <strong>Transformations</strong> tab provides a way to tweak
-							the generated output with search/replace expressions. The <strong>Output</strong> tab
-							is where the new words can be found, and the <strong>Settings</strong> tab has
+							The <strong>{t("Character Groups")}</strong> tab is for holding groups of sounds, and
+							the <strong>{t("Syllables")}</strong> tab describes how they fit together. For more
+							complex words, the <strong>{t("Transformations")}</strong> tab provides a way to tweak
+							the generated output with search/replace expressions. The <strong>{t("Output")}</strong> tab
+							is where the new words can be found, and the <strong>{tc("Settings")}</strong> tab has
 							other options you can tweak if needed.
 						</p><p>
-							Be sure to check out the <em>Presets</em> over on the Settings tab. The
+							Be sure to check out the <em>{t("Presets")}</em> over on the Settings tab. The
 							"Pseudo-Japanese" preset shows one way to put the above info to use.
 						</p>
 					</IonCardContent>
