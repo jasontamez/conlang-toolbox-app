@@ -31,6 +31,7 @@ import {
 	WordGenIcon
 } from '../../components/icons';
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
+import useTranslator from '../../store/translationHooks';
 
 interface CardProps {
 	hideOverview?: boolean
@@ -55,56 +56,72 @@ const OverviewButton = (props: CardProps) => {
 };
 
 export const CharGroupCard = (props: CardProps) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
-				<IonLabel>Character Groups Tab</IonLabel>
+				<IonLabel>{t("Character Groups Tab")}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This is where you define groups of sounds. The two simplest groupings
-					are <em>consonants</em> and <em>vowels</em>, but you may want to create multiple
-					character groups depending on how you want your language's syllables formed. For
-					example, the consonants <IPA>pbk</IPA> in English may be followed by the
-					consonants <IPA>lr</IPA> at the beginning of syllables. So you might choose them as
-					groups, while also putting <IPA>pbklr</IPA> in a third group for general consonants.
+					{t("info.charGroup1p1")}
+					<em>{t("consonants")}</em>
+					{t("info.charGroup1p2")}
+					<em>{t("vowels")}</em>
+					{t("info.charGroup1p3")}
+					<IPA>{t("info.pbk")}</IPA>
+					{t("info.charGroup1p4")}
+					<IPA>{t("info.lr")}</IPA>
+					{t("info.charGroup1p5")}
+					<IPA>{t("info.pbklr")}</IPA>
+					{t("info.charGroup1p6")}
 				</p><p>
-					Click the (+) button to add a new character group. When you make a group, you must
-					give it a <em>description</em> and a one-character <em>label</em>. The label can be
-					any single character except for these: <strong>{"^$\\()[]{}.*+?|"}</strong>. The
-					description is for your own benefit, while the label will be used to refer to this
-					group in the <strong>Syllables</strong> tab. So you may end up with groups that look
-					like the following:
+					{t("info.charGroup2p1")}
+					<em>{t("description")}</em>
+					{t("info.charGroup2p2")}
+					<em>{t("label")}</em>.
+					{t("info.charGroup2p3")}
+					<strong>{t("invalidCharacters")}</strong>
+					{t("info.charGroup2p4")}
+					<strong>{t("Syllables")}</strong>
+					{t("info.charGroup2p5")}
 				</p>
 				<div className="emphasizedSection">
-					<strong>I=pbk</strong>
+					<strong>{t("info.charGroup3p1")}</strong>
 					<br />
-					<strong>L=lr</strong>
+					<strong>{t("info.charGroup3p2")}</strong>
 					<br />
-					<strong>C=pbklr</strong>
+					<strong>{t("info.charGroup3p3")}</strong>
 					<br />
-					<strong>V=eioau</strong>
+					<strong>{t("info.charGroup3p4")}</strong>
 				</div>
 				<p>
-					The letters/characters in your group are called a <em>run</em>. The run should be
-					put in a specific order. The first letter is more likely to be used than the second,
-					the second more likely than the third, and so on. This mimics natural languages, which
-					tend to use certain sounds more than others. You can adjust this <em>dropoff
-					rate</em>, or eliminate it entirely, on the <strong>Settings</strong> tab.
+					{t("info.charGroup3p1")}
+					<em>{t("run")}</em>.
+					{t("info.charGroup3p2")}
+					<em>{t("dropoff rate")}</em>
+					{t("info.charGroup3p3")}
+					<strong>{tc("Settings")}</strong>
+					{t("info.charGroup3p4")}
 				</p>
 				{props.hideOverview ?
 					<p>
-						<strong>Character Group run dropoff</strong> is explained in
-						the <strong>Settings</strong> section below.
+						{t("info.charGroup5v1p1")}
+						<strong>{t("Character Group run dropoff")}</strong>
+						{t("info.charGroup5v1p2")}
+						<strong>{tc("Settings")}</strong>
+						{t("info.charGroup5v1p3")}
 					</p>
 				:
 					<p>
-						<strong>Character Group run dropoff</strong> ranges from 0 to 50. At zero (flat),
-						group choices are all equiprobable. Otherwise, the higher the number, the more
-						likely it is that the first characters in the group are used. See the help section
-						on the <strong>Settings</strong> page for more information.
+						{t("info.charGroup5v2p1")}
+						<strong>{t("Character Group run dropoff")}</strong>
+						{t("info.charGroup5v2p2")}
+						<strong>{tc("Settings")}</strong>
+						{t("info.charGroup5v2p3")}
 					</p>
 				}
 			</IonCardContent>
@@ -112,79 +129,103 @@ export const CharGroupCard = (props: CardProps) => {
 	);
 }
 export const SylCard = (props: CardProps) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	const { hideOverview } = props;
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<SyllablesIcon slot="start" color="primary" />
-				<IonLabel>Syllables Tab</IonLabel>
+				<IonLabel>{t("Syllables Tab")}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<p>
-					This is where you determine how your syllables are formed. You use the <em>labels</em> to
-					describe the elements that make up a syllable.
-						{ hideOverview ? "" :
-						" For example, using the groups in the previous section, you could decide"
-						+ " to make a list of syllables such as the following:"}
+					{t("info.syll1p1")}
+					<em>{t("label_other")}</em>
+					{t("info.syll1p2")}
+					{ hideOverview ? "" : t("info.syll1maybe3") }
 				</p>
 				{hideOverview ? (
 					<>
-						<p>For example, if you have these <strong>character groups</strong>...</p>
+						<p>
+							{t("info.syllMaybe1")}
+							<strong>{t("charGroup_other")}</strong>
+							{t("info.syllMaybe2")}
+						</p>
 						<div className="emphasizedSection">
-							<strong>I=pbk</strong>
+							<strong>{t("charGroup3p1")}</strong>
 							<br />
-							<strong>L=lr</strong>
+							<strong>{t("charGroup3p2")}</strong>
 							<br />
-							<strong>C=pbklr</strong>
+							<strong>{t("charGroup3p3")}</strong>
 							<br />
-							<strong>V=eioau</strong>
+							<strong>{t("charGroup3p4")}</strong>
 						</div>
-						<p>...you could decide to make a list of syllables such as the following:</p>
+						<p>{t("info.syllMaybe3")}</p>
 					</>
 				) : <></>}
 				<div className="emphasizedSection">
 					<strong>
-						ILV
+						{t("info.ILV")}
 						<br />
-						CV
+						{t("info.CV")}
 						<br />
-						ILVC
+						{t("info.ILVC")}
 					</strong>
 				</div>
 				<p>
-					The above can generate syllables such as <em>pla</em>, <em>ku</em>,
-					or <em>brep</em>, which could then be combined into words such
-					as <em>plabrep</em> or <em>kupla</em>. You can also put characters in a
-					syllable that don't correspond to a group: <strong>sILV</strong> could
-					generate syllables such as <em>sbra</em> or <em>spli</em>.
+					{t("info.syll2p1")}
+					<em>{t("info.pla")}</em>
+					{t("info.syll2p2")}
+					<em>{t("info.ku")}</em>
+					{t("info.syll2p3")}
+					<em>{t("info.brep")}</em>
+					{t("info.syll2p4")}
+					<em>{t("info.plabrep")}</em>
+					{t("info.syll2p5")}
+					<em>{t("info.kupla")}</em>
+					{t("info.syll2p6")}
+					<strong>{t("info.sILV")}</strong>
+					{t("info.syll2p7")}
+					<em>{t("info.sbra")}</em>
+					{t("info.syll2p8")}
+					<em>{t("info.spli")}</em>
+					{t("info.syll2p9")}
 				</p><p>
-					If you desire a greater amount of control over your words, you can turn on
-					the <strong>Use multiple syllable types</strong> toggle. This will show you four
-					separate boxes, each with a different role in a word: <strong>single-word
-					syllables</strong> are used exclusively for one-syllable words, <strong>word-initial
-					syllables</strong> are only used at the start of a word, <strong>word-final
-					syllables</strong> are only used at the end of a word, and <strong>mid-word
-					syllables</strong> fill out the middle of words when needed.
+					{t("info.syll3p1")}
+					<strong>{t("Use multiple syllable types")}</strong>
+					{t("info.syll3p2")}
+					<strong>{t("swSyll")}</strong>
+					{t("info.syll3p3")}
+					<strong>{t("wiSyll")}</strong>
+					{t("info.syll3p4")}
+					<strong>{t("wfSyll")}</strong>
+					{t("info.syll3p5")}
+					<strong>{t("mwSyll")}</strong>
+					{t("info.syll3p6")}
 				</p><p>
-					The order of syllables in each box makes a difference. The first syllable listed is
-					more likely to be used than the second, the second more likely than the third, and
-					so on. You can adjust this <em>dropoff rate</em>, or eliminate it entirely, on
-					the <strong>Settings</strong> tab. You'll also find options there to determine how
-					often one-syllable words are generated, and put an upper limit on the number of
-					syllables any one word can have.
+					{t("info.syll4p1")}
+					<em>{t("dropoff rate")}</em>
+					{t("info.syll4p2")}
+					<strong>{tc("Settings")}</strong>
+					{t("info.syll4p3")}
 				</p>
 				{props.hideOverview ?
 					<p>
-						<strong>Syllable box dropoff</strong> is explained in
-						the <strong>Settings</strong> section below.
+						{t("info.syll5v1p1")}
+						<strong>Syllable box dropoff</strong>
+						{t("info.syll5v1p2")}
+						<strong>Settings</strong>
+						{t("info.syll5v1p3")}
 					</p>
 				:
 					<p>
-						<strong>Syllable box dropoff</strong> ranges from 0 to 50. At zero (flat),
-						syllable choices are all equiprobable. Otherwise, the higher the number, the
-						more likely it is that the first lines in the box are used. See the
-						help section on the <strong>Settings</strong> page for more information.
+						{t("info.syll5v2p1")}
+						<strong>Syllable box dropoff</strong>
+						{t("info.syll5v2p2")}
+						<strong>Settings</strong>
+						{t("info.syll5v3p3")}
 					</p>
 				}
 			</IonCardContent>
@@ -193,11 +234,13 @@ export const SylCard = (props: CardProps) => {
 }
 export const TransCard = (props: CardProps) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
-				<IonLabel>Transformations Tab</IonLabel>
+				<IonLabel>{t("Transformations Tab")}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -213,7 +256,7 @@ export const TransCard = (props: CardProps) => {
 					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
 					a <em>transformation description</em> for your own benefit.
 				</p><p>
-					Both expressions can use <strong>regular expressions</strong> (an explanation
+					Both expressions can use <strong>{tc("regular expressions")}</strong> (an explanation
 					can be found at the end of this section). You can also use the special
 					expression %X to indicate any character in group X's run, or !%X to indicate
 					any character <em>not</em> in that run. (e.g, If <em>X=abc</em>, then %X will

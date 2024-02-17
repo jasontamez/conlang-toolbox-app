@@ -333,22 +333,17 @@ export interface DJState extends DJCustomInfo {
 // EXTRA CHARACTERS
 //
 
-export interface ExtraCharactersInfo {
-	[key: string]: string
-}
-
 export type ExtraCharactersList = string[];
 
-export type ExtraCharactersGroup = {
-	[key: string]: ExtraCharactersList
-}
+export type ExtraCharactersGroups =
+	"Latin" | "IPA" | "Greek" | "Coptic" | "Cyrillic" | "Armenian" | "Hebrew"
+	| "Arabic" | "Thai" | "Lao" | "Hiragana" | "Katakana" | "Bopomofo";
 
-export type ExtraCharactersDisplayName = keyof ExtraCharactersGroup | "Favorites";
+export type ExtraCharactersDisplayName = ExtraCharactersGroups | "Favorites";
 
 export interface ExtraCharactersObject {
-	objects: ExtraCharactersGroup
+	objects: { [key in ExtraCharactersGroups]: ExtraCharactersList  }
 	contents: (ExtraCharactersDisplayName)[]
-	charactersInfo: ExtraCharactersInfo
 }
 export interface ExtraCharactersState {
 	faves: ExtraCharactersList

@@ -25,7 +25,7 @@ import {
 } from 'ionicons/icons';
 import { Action, Dispatch } from 'redux';
 import { useSelector, useDispatch } from "react-redux";
-import capitalize from 'capitalize';
+import { useTranslation } from 'react-i18next';
 import { Clipboard } from '@capacitor/clipboard';
 
 import { ExtraCharactersDisplayName, ModalProperties, StateObject } from '../../store/types';
@@ -40,8 +40,7 @@ interface CurrentFavorites {
 }
 const {
 	objects,
-	contents,
-	charactersInfo
+	contents
 } = charData;
 
 const ExtraCharactersModal = (props: ModalProperties) => {
@@ -60,6 +59,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		toCopy,
 		showNames
 	} = useSelector((state: StateObject) => state.ec);
+	const { t } = useTranslation();
 	const data: string[] = nowShowing === "Favorites" ? faves : objects[nowShowing] || [];
 	const [currentFaves, setCurrentFaves] = useState<CurrentFavorites>({});
 	const [isFavoriting, setIsFavoriting] = useState<boolean>(false);
@@ -91,12 +91,12 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	}, [currentFaves, faves, dispatch]);
 	const copyNow = useCallback((char: string) => {
 		Clipboard.write({string: char}).then(() => toaster({
-			message: `Copied ${char} to clipboard`,
+			message: t("copiedCharToClipboard", { char }),
 			position: "middle",
 			duration: 1500,
 			toast
 		}));
-	}, [toast]);
+	}, [toast, t]);
 	const saveToBeCopied = useCallback((char: string) => {
 		dispatch(setToCopy(toCopy + char));
 	}, [dispatch, toCopy]);
@@ -113,30 +113,30 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	}, [toggleFave, copyImmediately, isFavoriting, copyNow, saveToBeCopied]);
 	const toggleCopy = useCallback(() => {
 		toaster({
-			message: copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard.",
+			message: t(copyImmediately ? "No longer copying directly to clipboard." : "Now copying immediately to clipboard."),
 			duration: 2500,
 			position: "middle",
 			toast
 		});
 		dispatch(toggleCopyImmediately());
-	}, [dispatch, copyImmediately, toast]);
+	}, [dispatch, copyImmediately, toast, t]);
 	const modifySavedToBeCopied = useCallback((toCopy: string) => {
 		debounce<Dispatch, Action>(dispatch, [setToCopy(toCopy)], 250, "copyExtraChars");
 	}, [dispatch]);
 	const toggleFavoriting = useCallback((newValue: boolean) => {
 		setIsFavoriting(newValue);
 		toaster({
-			message: newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites",
+			message: t(newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites"),
 			duration: 2500,
 			position: "middle",
 			toast
 		});
-	}, [toast]);
+	}, [toast, t]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Extra Characters</IonTitle>
+					<IonTitle>{t("Extra Characters")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton
 							onClick={() => setShowHelp(!showHelp)}
@@ -156,28 +156,13 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 				>
 					<IonItem className="extraHelp">
 						<div>
-							<div>
-								This is a place to find and copy characters that may not be
-								easily accessible to you on your device's keyboard. The other
-								buttons can be toggled for additional effects:
-							</div>
+							<div>{t("extraHelp.help1p1")}</div>
 							<div className="central"><IonIcon icon={copyOutline} /></div>
-							<div>
-								When active, copies any character you tap directly to the
-								clipboard. When inactive, copies tapped characters to the
-								copy-bar below, where you can copy them at your leisure.
-							</div>
+							<div>{t("extraHelp.help1p2")}</div>
 							<div className="central"><IonIcon icon={heartOutline} /></div>
-							<div>
-								When active, tapping on a character adds or removes it from your
-								Favorites list. Characters will not be copied to the clipboard or
-								the copy-bar.
-							</div>
+							<div>{t("extraHelp.help1p3")}</div>
 							<div className="central"><IonIcon icon={readerOutline} /></div>
-							<div>
-								When active, shows the standard Unicode name of every character.
-								When inactive, the characters are presented by themselves.
-							</div>
+							<div>{t("extraHelp.help1p4")}</div>
 						</div>
 					</IonItem>
 					<IonItem className={"inputItem" + (copyImmediately ? "" : " sticky")}>
@@ -206,7 +191,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 							id="toBeCopied"
 							value={toCopy}
 							onIonChange={(e) => modifySavedToBeCopied(e.detail.value as string)}
-							placeholder="Tap characters to add them here"
+							placeholder={t("Tap characters to add them here")}
 						/>
 						<IonButton
 							size="default"
@@ -219,17 +204,17 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						</IonButton>
 					</IonItem>
 					<IonItem className="extraHelp">
-						<div>Tap a character set below to see the characters in that set.</div>
+						<div>{t("extraHelp.help2")}</div>
 					</IonItem>
 					<IonItem>
 						<div className="ion-flex-row-wrap ion-align-items-center ion-justify-content-center displayChips">
-							<span>Display:</span>
+							<span>{("Display[colon]")}</span>
 							<IonChip
 								outline={nowShowing !== "Favorites"}
 								onClick={() => toggleChars("Favorites")}
 								className={"ion-margin-start" + (nowShowing === "Favorites" ? " active" : "")}
 							>
-								<IonLabel>Favorites</IonLabel>
+								<IonLabel>{t("Favorites")}</IonLabel>
 							</IonChip>
 							{contents.map((title) => {
 								const current = nowShowing === title;
@@ -240,20 +225,20 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 										onClick={() => toggleChars(title)}
 										className={current ? "active" : ""}
 									>
-										<IonLabel>{title}</IonLabel>
+										<IonLabel>{t("characterInfo." + title)}</IonLabel>
 									</IonChip>
 								);
 							})}
 						</div>
 					</IonItem>
 					<IonItem className="extraHelp">
-						<div>Characters will display below. Tap them to copy them to the copy-bar above.</div>
+						<div>{t("extraHelp.help3")}</div>
 					</IonItem>
 					{data ? (
 						<IonItem key={`${nowShowing}-Group`}>
 							{showNames ? (
 								<div className="twoColumnsEC centralized">
-									<h2>{nowShowing}</h2>
+									<h2>{t(nowShowing)}</h2>
 									{data.map((character: string) =>
 										<div key={"mNamed" + nowShowing + character}>
 											<div
@@ -262,20 +247,20 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 											>{character}</div>
 											<div
 												className="label"
-											>{capitalize.words(charactersInfo[character])}</div>
+											>{t("characterInfo." + character)}</div>
 										</div>
 									)}
 								</div>
 							) : (
 								<div className="multiColumnEC centralized">
-									<h2>{nowShowing}</h2>
+									<h2>{t(nowShowing)}</h2>
 									<div>
 										{data.map((character: string) =>
 											<div
 												key={"mUnnamed" + nowShowing + character}
 												className={currentFaves[character] ? "char favorite" : "char"}
 												onClick={() => characterClicked(character)}
-											>{character}</div>
+											>{t("characterInfo." + character)}</div>
 										)}
 									</div>
 								</div>
@@ -289,7 +274,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 					<IonButtons slot="end">
 						<IonButton onClick={() => cancel()} slot="end" fill="solid" color="success">
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
-							<IonLabel>Done</IonLabel>
+							<IonLabel>{t("Done")}</IonLabel>
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>

@@ -1,3 +1,5 @@
+import characters from "./characters";
+
 const common = {
 
 	"Conlang Toolbox": "Conlang Toolbox", // name of the App
@@ -186,6 +188,35 @@ const common = {
 	regex5text: "Regular-Expressions.info (a tutorial site)",
 	regex6url: "https://www.geeksforgeeks.org/write-regular-expressions/",
 	regex6text: "Geeks for Geeks: Write Reguar Expressions",
+
+	// EXTRA CHARACTERS
+	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.",
+	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.",
+	copiedCharToClipboard: "Copied {{char}} to clipboard",
+	Favorites: "Favorites",
+	"Now saving characters to Favorites.": "Now saving characters to $t(Favorites).",
+	"No longer saving to Favorites": "No longer saving to $t(Favorites)",
+	"Tap characters to add them here": "Tap characters to add them here",
+	extraHelp: {
+		help1p1:
+			`This is a place to find and copy characters that may not be
+			easily accessible to you on your device's keyboard. The other
+			buttons can be toggled for additional effects:`,
+		help1p2:
+			`When active, copies any character you tap directly to the
+			clipboard. When inactive, copies tapped characters to the
+			copy-bar below, where you can copy them at your leisure.`,
+		help1p3:
+			`When active, tapping on a character adds or removes it from your
+			Favorites list. Characters will not be copied to the clipboard or
+			the copy-bar.`,
+		help1p4:
+			`When active, shows the standard Unicode name of every character.
+			When inactive, the characters are presented by themselves.`,
+		help2: "Tap a character set below to see the characters in that set.",
+		help3: "Characters will display below. Tap them to copy them to the copy-bar above.",
+	},
+	characterInfo: characters,
 
 	// PERMANENT INTO
 	"WG Presets Sorter": "$t(WG) Presets Sorter", // Title of the permanent sort method in sort settings.
