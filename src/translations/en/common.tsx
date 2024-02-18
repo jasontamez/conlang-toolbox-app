@@ -130,6 +130,7 @@ const common = {
 	"Title[colon]": "Title:",
 	Description: "Description",
 	"Description[colon]": "$t(Description):",
+	description: "description",
 
 	// Import from Lexicon
 	Import: "Import",

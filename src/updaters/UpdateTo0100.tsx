@@ -8,6 +8,7 @@ import {
 	AppSettings,
 	ConceptDisplay,
 	ConceptDisplayObject,
+	ExtraCharactersDisplayName,
 	ExtraCharactersState,
 	Fifty_OneThousand,
 	Five_OneHundred,
@@ -175,7 +176,7 @@ function updateEC (incomingState: oldTypes.StateObject) {
 		copyLater
 	} = incomingState.extraCharactersState;
 	const ec: ExtraCharactersState = {
-		nowShowing: display,
+		nowShowing: display as ExtraCharactersDisplayName,
 		toCopy: copyLater,
 		showNames,
 		copyImmediately,

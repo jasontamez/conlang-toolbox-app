@@ -6,6 +6,7 @@ import lexicon from "./en/lexicon";
 import ms from "./en/ms";
 import settings from "./en/settings";
 import wgwe from "./en/wgwe";
+import wg from "./en/wg";
 
 const en = {
 	common: common,
@@ -15,7 +16,8 @@ const en = {
   settings: settings,
   wgwe: wgwe,
   dj: dj,
-  ms: ms
+  ms: ms,
+  wg: wg
 };
 
 export default en;

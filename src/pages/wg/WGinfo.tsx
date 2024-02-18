@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import {
 	IonButton,
 	IonCard,
@@ -19,6 +19,7 @@ import {
 	reorderTwo,
 	helpCircle
 } from 'ionicons/icons';
+import Markdown from 'react-markdown';
 
 import { PageData, SetBooleanState } from '../../store/types';
 
@@ -37,7 +38,7 @@ interface CardProps {
 	hideOverview?: boolean
 	setIsOpenInfo?: SetBooleanState
 }
-const OverviewButton = (props: CardProps) => {
+const OverviewButton: FC<CardProps> = (props) => {
 	const { hideOverview, setIsOpenInfo } = props;
 	if(hideOverview) {
 		return <></>;
@@ -55,7 +56,7 @@ const OverviewButton = (props: CardProps) => {
 	);
 };
 
-export const CharGroupCard = (props: CardProps) => {
+export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	return (
@@ -99,13 +100,13 @@ export const CharGroupCard = (props: CardProps) => {
 					<strong>{t("info.charGroup3p4")}</strong>
 				</div>
 				<p>
-					{t("info.charGroup3p1")}
+					{t("info.charGroup4p1")}
 					<em>{t("run")}</em>.
-					{t("info.charGroup3p2")}
+					{t("info.charGroup4p2")}
 					<em>{t("dropoff rate")}</em>
-					{t("info.charGroup3p3")}
+					{t("info.charGroup4p3")}
 					<strong>{tc("Settings")}</strong>
-					{t("info.charGroup3p4")}
+					{t("info.charGroup4p4")}
 				</p>
 				{props.hideOverview ?
 					<p>
@@ -128,7 +129,7 @@ export const CharGroupCard = (props: CardProps) => {
 		</IonCard>
 	);
 }
-export const SylCard = (props: CardProps) => {
+export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const { hideOverview } = props;
@@ -144,9 +145,9 @@ export const SylCard = (props: CardProps) => {
 					{t("info.syll1p1")}
 					<em>{t("label_other")}</em>
 					{t("info.syll1p2")}
-					{ hideOverview ? "" : t("info.syll1maybe3") }
+					{ hideOverview ? t("info.syll1maybe3") : "" }
 				</p>
-				{hideOverview ? (
+				{hideOverview ? <></> : (
 					<>
 						<p>
 							{t("info.syllMaybe1")}
@@ -154,17 +155,17 @@ export const SylCard = (props: CardProps) => {
 							{t("info.syllMaybe2")}
 						</p>
 						<div className="emphasizedSection">
-							<strong>{t("charGroup3p1")}</strong>
+							<strong>{t("info.charGroup3p1")}</strong>
 							<br />
-							<strong>{t("charGroup3p2")}</strong>
+							<strong>{t("info.charGroup3p2")}</strong>
 							<br />
-							<strong>{t("charGroup3p3")}</strong>
+							<strong>{t("info.charGroup3p3")}</strong>
 							<br />
-							<strong>{t("charGroup3p4")}</strong>
+							<strong>{t("info.charGroup3p4")}</strong>
 						</div>
 						<p>{t("info.syllMaybe3")}</p>
 					</>
-				) : <></>}
+				)}
 				<div className="emphasizedSection">
 					<strong>
 						{t("info.ILV")}
@@ -232,10 +233,95 @@ export const SylCard = (props: CardProps) => {
 		</IonCard>
 	);
 }
-export const TransCard = (props: CardProps) => {
+
+interface Block {
+	arrow?: string
+	emphasized?: boolean
+	serif?: boolean
+	simple?: string[]
+	reverse?: string[]
+	complex?: string[]
+	important?: string
+	unimportant?: string
+}
+const Spanner: FC<PropsWithChildren<{className: string}>> = (props) => {
+	return <span className={props.className}>{props.children}</span>;
+};
+const parseBlock = (input: Block, arrow: string) => {
+	const {
+		emphasized,
+		serif,
+		simple,
+		reverse,
+		complex,
+		arrow: subArrow = "->",
+		important = "!",
+		unimportant = "$"
+	} = input;
+
+	const emph = emphasized ? "emphasizedSection" : "";
+	const className = serif ? ( emph ? emph + " serifChars" : "serifChars" ) : emph;
+	const arrowReplace = new RegExp(subArrow, "g");
+	let counter = 0;
+	if(simple) {
+		const classes = [ "importantUnit", "unimportantUnit" ];
+		const output: ReactElement[] = simple.map((line, i) => {
+			return <Spanner key={`spanner/simple/${i}/${line}`} className={classes[i % 2]}>{line.replace(arrowReplace, arrow)}</Spanner>;
+		});
+		return <span className={className}>{output}</span>;
+	} else if (reverse) {
+		const classes = [ "unimportantUnit", "importantUnit" ];
+		const output: ReactElement[] = reverse.map((line, i) => {
+			return <Spanner key={`spanner/reverse/${i}/${line}`} className={classes[i % 2]}>{line.replace(arrowReplace, arrow)}</Spanner>;
+		});
+		return <span className={className}>{output}</span>;
+	} else if (complex) {
+		const output: ReactElement[] = [];
+		const max = complex.length - 1;
+		complex.forEach((line, i) => {
+			const separateImportant = (line.replace(arrowReplace, arrow)).split(important);
+			separateImportant.forEach((bit, i) => {
+				if(!bit) {
+					return;
+				} else if (i % 2) {
+					// important bits are on the odd numbers
+					output.push(<Spanner key={`spanner/complex/imp/${i}/${line}/${counter++}`} className="importantUnit">{bit}</Spanner>);
+					return;
+				}
+				// Check for unimportant bits
+				const separateUnimportant = bit.split(unimportant);
+				separateUnimportant.forEach((bit, i) => {
+					if(!bit) {
+						return;
+					} else if (i % 2) {
+						// unimportant bits are on the odd numbers
+						output.push(<Spanner key={`spanner/complex/unimp/${i}/${line}/${counter++}`} className="unimportantUnit">{bit}</Spanner>);
+						return;
+					}
+					// Plain text
+					output.push(<React.Fragment key={`spanner/complex/plain/${i}/${line}/${counter++}`}>{bit}</React.Fragment>)
+				});
+			});
+			if(i !== max) {
+				output.push(<br key={`br/complex/${i}/${line}`} />);
+			}
+		});
+		return <span className={className}>{output}</span>;
+	}
+	// error... ignore
+	return <></>;
+};
+type BlockStorage = { [key: string]: ReactElement };
+
+export const TransCard: FC<CardProps> = (props) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
+	const blocks = t('info.transBlocks', { returnObjects: true });
+	const blockStorage: BlockStorage = {};
+	Object.entries(blocks).forEach(([label, info]: [string, Block]) => {
+		blockStorage[label] = parseBlock(info, arrow);
+	});
+	const plainText = t("info.trans", { arrow, joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -244,101 +330,27 @@ export const TransCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					There may be cases when you need to fine-tune the words that get generated
-					on the <strong>{tc("Output")}</strong> tab. A common reason would be to turn a
-					specific character into two or three letters. You may create a group such
-					as <strong>C=pbkClrS</strong>, using capital letters in place of sounds
-					like <em>"ch"</em> or <em>"sh"</em>. This could generate syllables
-					like <em>Cu</em> or <em>pliS</em>.
-				</p><p>
-					When you make a new <em>{t("trans")}</em>, you provide
-					a <em>search expression</em>, a <em>replacement expression</em>, and, optionally,
-					a <em>transformation description</em> for your own benefit.
-				</p><p>
-					Both expressions can use <strong>{tc("regular expressions")}</strong> (an explanation
-					can be found at the end of this section). You can also use the special
-					expression %X to indicate any character in group X's run, or !%X to indicate
-					any character <em>not</em> in that run. (e.g, If <em>X=abc</em>, then %X will
-					be treated as if it was the regular expression <em>[abc]</em>.)
-				</p><p>
-					So, you could make a search expression <strong>C</strong> with a replacement
-					expression <strong>ch</strong>, which will result in <em>Cu</em> above
-					becoming <em>chu</em>. This will result in a transformation that looks like
-					the following:
-				</p>
-				<div className="emphasizedSection serifChars">
-					<span
-						className="importantUnit"
-					>C</span><span
-						className="unimportantUnit"
-					>{arrow}</span><span
-						className="importantUnit"
-					>ch</span>
-				</div>
-				<p>
-					Click the (+) button to add a new transformation. The first transformation in the
-					list will be run first, the second trandformation second, and so on down the list.
-					This may cause unintended effects, so you can reorganize your transformations to
-					avoid any such effects by using
-					the <IonIcon icon={reorderTwo} color="tertiary" size="small" /> drag handles.
-				</p>
-				<hr />
-				<p>
-					Here are some sample transformations for some linguistic phenomina:
-				</p>
-				<ul>
-					<li>Consonant harmony:
-						<div className="emphasizedSection serifChars">
-							RtL: <span className="importantUnit"
-							>s(?=.*ʃ)</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>ʃ</span>
-							<br />
-							LtR: <span className="importantUnit"
-							>(ʃ.+)s</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>$1ʃ</span>
-						</div>
-					</li>
-					<li>Liquid dissimilation:
-						<div className="emphasizedSection serifChars">
-							<span className="importantUnit"
-							>r(.+)r</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>r$1l</span>
-							<br />
-							<span className="importantUnit"
-							>l(.+)l</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>l$1r</span>
-						</div>
-					</li>
-					<li>Synchronic epenthesis:
-						<div className="emphasizedSection serifChars">
-							<span className="importantUnit"
-							>r([aeiou]r)$</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>rd$1</span>
-						</div>
-					</li>
-					<li>Anticipatory assimilation:
-						<div className="emphasizedSection serifChars">
-							<span className="importantUnit"
-							>[kp]t+</span><span className="unimportantUnit"
-							>{arrow}</span><span className="importantUnit"
-							>tt</span>
-						</div>
-					</li>
-				</ul>
+				<Markdown
+					components={{
+						code(props) {
+							const { children } = props;
+							return (
+								typeof(children) === "string"
+								&& blockStorage[children]
+							) || <IonIcon icon={reorderTwo} color="tertiary" size="small" />;
+						}
+					}}
+				>{plainText}</Markdown>
 				<RegularExpressions />
 			</IonCardContent>
 		</IonCard>
 	);
 }
-export const OutCard = (props: CardProps) => {
+export const OutCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
+	const main = t("info.outputMain", { joinArrays: "\n"});
+	const settings = t("info.outputSettings", { joinArrays: "\n"});
+	const lexicon = t("info.outputLexicon", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -347,54 +359,22 @@ export const OutCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					This is where the magic happens. Click the <strong>{t("Generate")}</strong> button and your
-					output will appear. Press the button again and a new set of output will replace it.
-				</p><p className="center pad-top-rem">
+				<Markdown>{main}</Markdown>
+				<p className="center pad-top-rem">
 					<IonIcon icon={settingsOutline} color="tertiary" size="large" />
-				</p><p>
-					Click on the gear icon to open a list of options. The first is a drop-down menu where
-					you can select what to output. The choices
-					are <strong>{t("Pseudo-text")}</strong>, <strong>{t("Wordlist")}</strong> and <strong>{t("All possible syllables")}</strong>.
-				</p><p>
-					The <strong>{t("Pseudo-text")}</strong> will create words and put them into sentences, making a
-					block of text you might find in a book. You can determine how many sentences are made by
-					adjusting the <strong>{t("Number of sentences")}</strong> slider.
-				</p><p>
-					The <strong>{t("Wordlist")}</strong> outputs a list of words devoid of context. You can choose
-					a number of options to modify this list. <strong>{t("Capitalize words")}</strong> will capitalize
-					every word. <strong>{t("Sort output")}</strong> will alphabetize the list,
-					and <strong>{t("Multi-column layout")}</strong> will arrange the list in multiple
-					columns instead of one long column. At
-					the bottom, there is a <strong>{t("Wordlist size")}</strong> slider that controls how many words
-					are generated.
-				</p><p>
-					<strong>{t("All possible syllables")}</strong>, as you might guess, outputs a list of every
-					possible syllable your character groups, syllables and transformations allow.
-					The <em>{t("Capitalize words")}</em>, <em>{t("Sort output")}</em> and <em>{t("Multi-column layout")}</em> options
-					above will also work on this syllable list.
-				</p><p>
-					At the top of the settings, you can choose to <strong>{t("Show syllable breaks")}</strong>, which
-					will in·sert a dot be·tween eve·ry syl·la·ble in each word. While this option can be useful,
-					please note that it will break any <em>{t("trans_other")}</em> that try to work across syllable
-					boundaries.
-				</p><p className="center pad-top-rem">
-					<IonIcon icon={bookOutline} color="tertiary" size="large" />
-				</p><p>
-					Once you've generated words, you can save them to the <strong>{tc("Lexicon")}</strong>. Click
-					the book button and you're presented with two options. <em>{t("Save everything")}</em> will
-					store every single generated word for the Lexicon. <em>{t("Choose what to save")}</em> will
-					highlight every word, and you can tap on a word to store it; when you're done choosing,
-					hit the save button that appears and you will be able to choose how they are imported
-					into the <strong>{tc("Lexicon")}</strong>.
 				</p>
+				<Markdown>{settings}</Markdown>
+				<p className="center pad-top-rem">
+					<IonIcon icon={bookOutline} color="tertiary" size="large" />
+				</p>
+				<Markdown>{lexicon}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
 }
-export const OptCard = (props: CardProps) => {
+export const OptCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-//	const [ tc ] = useTranslator('common');
+	const main = t("info.settings", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -403,69 +383,15 @@ export const OptCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					This final tab fine-tunes the output. These can make a huge difference in
-					how your conlang appears.
-				</p>
-				<h2>The Buttons</h2>
-				<p>
-					<strong>{t("Load Presets")}</strong> brings up a menu where you can choose from several
-					pre-loaded options. The initial settings when you first start the app are
-					the <em>{t("Simple")}</em> preset. The others are offered to give you ideas of what's
-					possible with the app. They will
-					load <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em>, <em>{t("trans_other")}</em> and
-					possibly change the
-					remaining settings on this page, too.
-				</p><p>
-					<strong>{t("Clear All Fields")}</strong> clears
-					all <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em> and <em>{t("trans_other")}</em>, but does not
-					affect any other settings.
-				</p><p>
-					<strong>{t("Save/Load Custom Info")}</strong> opens a dialog where you can save your
-					own <em>{t("charGroup_other")}</em>, <em>{t("syll_other")}</em>, <em>{t("trans_other")}</em> and the
-					settings on this page. This allows you to switch between your own personal
-					language settings.
-				</p>
-				<h2>The Settings</h2>
-				<p>
-					<strong>{t("Rate of monosyllable words")}</strong> determines how often a one-syllable
-					word is created. It's a percentage from 0 (never) to 100 (always).
-				</p><p>
-					<strong>{t("Maximum number of syllables per word")}</strong> sets an upper limit on how long
-					your words can grow.
-				</p><p>
-					<strong>{t("Character Group run dropoff")}</strong> and <strong>{t("Syllable box dropoff")}</strong> range
-					from 0 to 50. At zero (flat), group and syllable choices are all equiprobable.
-					Otherwise, the number becomes a percentage. The higher the number, the more likely it
-					is that the first syllables or group characters are used. (This mimics natural
-					languages, which tend to prefer certain sounds and patterns.) This is how it works:
-				</p><ol>
-					<li>A random number is generated from 1 to 100.</li>
-					<li>If the number is lower than the dropoff percentage, the first choice is picked.</li>
-					<li>If not, the generator moves the first choice to the end of the line, then returns
-						to step 1, generating a new number.</li>
-					<li>This cycle continues until a number is generated that is equal to or greater
-						than the dropoff percentage.</li>
-				</ol><p>
-					The remaining options only apply to <em>{t("Pseudo-texts")}</em>.
-				</p><p>
-					<strong>{t("Capitalize sentences")}</strong> determines if each sentence starts with a capital
-					letter.
-				</p><p>
-					The other options determine what your sentences look like. Three-fourths of
-					all sentences will be <em>{t("declarative")}</em> (simple statements), one-sixth will
-					be <em>{t("interrogative")}</em> (questions), and the remaining one-twelfth will
-					be <em>{t("exclamatory")}</em> (excited utterances). You can put special punctuation
-					before and after these sentences if you wish.
-				</p>
+				<Markdown>{main}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
 }
 
-const WGinfo = (props: PageData) => {
+const WGinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
+	const main = t("info.overview", { joinArrays: "\n"});
 	return (
 		<IonPage>
 			<IonHeader>
@@ -478,59 +404,7 @@ const WGinfo = (props: PageData) => {
 						<IonLabel>{t("What is WordGen?")}</IonLabel>
 					</IonItem>
 					<IonCardContent>
-						<p>
-							This tool is for attempting to generate new words based on rules you set up.
-						</p><p>
-							WordGen makes a few assumptions: 1) the basic unit of a "word" is a syllable, and
-							2) a "syllable" can be described as a combination of sounds that are spoken together.
-						</p><p>
-							This is the most basic use case:
-						</p><div>
-							<ol>
-								<li>
-									Choose what sounds your language will have, and the characters (letters)
-									that will represent these sounds.
-								</li>
-								<li>Separate these characters into groups, such as vowels and consonants.</li>
-								<li>Decide the structure(s) of the syllables these sounds form.</li>
-							</ol>
-						</div><p>
-							For example, a (very rough) approximation of Japanese might be:
-						</p><div>
-							<ol>
-								<li>
-									Uses the sounds k, g, s, z, t, d, n, h, b, p, m, y, r,
-									w, a, i, u, e, and o.
-								</li>
-								<li>Sounds can be grouped like this:
-									<ol>
-										<li>k, g, s, z, t, d, n, h, b, p, m, r</li>
-										<li>a, i, u, e, o</li>
-										<li>y</li>
-										<li>a, u, o</li>
-										<li>w</li>
-										<li>a, o</li>
-										<li>n</li>
-									</ol>
-								</li>
-								<li>
-									Syllables can be made from (i)+(ii), (iii)+(iv), (v)+(vi),
-									(ii) by itself, and (vii) by itself.
-								</li>
-							</ol>
-						</div><p>
-							With that information, you can proceed into the rest of this tool:
-						</p><p>
-							The <strong>{t("Character Groups")}</strong> tab is for holding groups of sounds, and
-							the <strong>{t("Syllables")}</strong> tab describes how they fit together. For more
-							complex words, the <strong>{t("Transformations")}</strong> tab provides a way to tweak
-							the generated output with search/replace expressions. The <strong>{t("Output")}</strong> tab
-							is where the new words can be found, and the <strong>{tc("Settings")}</strong> tab has
-							other options you can tweak if needed.
-						</p><p>
-							Be sure to check out the <em>{t("Presets")}</em> over on the Settings tab. The
-							"Pseudo-Japanese" preset shows one way to put the above info to use.
-						</p>
+						<Markdown>{main}</Markdown>
 					</IonCardContent>
 				</IonCard>
 				<CharGroupCard hideOverview />

@@ -67,6 +67,9 @@ const wgwe = {
 	"Rate of monosyllable words": "Rate of monosyllable words",
 	"Maximum number of syllables per word": "Maximum number of syllables per word",
 	"Capitalize sentences": "Capitalize sentences",
+	declarative: "declarative",
+	interrogative: "interrogative",
+	exclamatory: "exclamatory",
 
 	info: {
 		charGroup1p1:
@@ -96,7 +99,7 @@ const wgwe = {
 		// label
 		charGroup2p3: " The $t(label) can be any single character except for these: ",
 		// invalidCharacters
-		charGroups2p4:
+		charGroup2p4:
 			`. The $t(description) is for your own benefit, while the
 			$t(label) will be used to refer to this $t(charGroup) in the `,
 		// Syllables
@@ -125,7 +128,7 @@ const wgwe = {
 		// Character Group run dropoff
 		charGroup5v1p2: " is explained in the ",
 		// Settings
-		charGroup5p3: " section below.",
+		charGroup5v1p3: " section below.",
 
 		charGroup5v2p1: "",
 		// Character Group run dropoff
@@ -224,338 +227,240 @@ const wgwe = {
 		// Settings
 		syll5v2p3: " page for more information.",
 
-		trans1p1:
-			`There may be cases when you need to fine-tune the words that get
-			generated on the `,
-		// "Output",
-		trans1p2:
-			` tab. A common reason would be to turn a specific character into
-			two or three letters. You may create a group such as `,
-		trans1p3: "C=pbkClrS",
-		trans1p4: ", using capital letters in place of sounds like ",
-		trans1p5: "\"ch\"",
-		trans1p6: " or ",
-		trans1p7: "\"sh\"",
-		trans1p8: ". This could generate $t(syll_other) like ",
-		trans1p9: "Cu",
-		trans1p10: " or ",
-		trans1p11: "pliS",
-		trans1p12: ".",
+		transBlocks: {
+			block1: {
+				emphasized: true,
+				serif: true,
+				arrow: "->",
+				simple: ["C", "->", "ch"] // important, unimportant, ...
+				// reversed: unimportant, important...
+				// important: "!"
+				// unimportant: "."
+				// complex: [ "Some !important! and .unimportant. stuff together with regular stuff." ]
+			},
+			block2: {
+				emphasized: true,
+				serif: true,
+				important: "!",
+				unimportant: "$",
+				complex: [
+					"RtL: !s(?=.*ʃ)!$->$!ʃ!  ",
+					"LtR: !(ʃ.+)s!$->$!$1ʃ!"
+				]
+			},
+			block3: {
+				emphasized: true,
+				serif: true,
+				important: "!",
+				unimportant: "$",
+				complex: [
+					"!r(.+)r!$->$!r$1l!  ",
+					"!l(.+)l!$->$!l$1!"
+				]
+			},
+			block4: {
+				emphasized: true,
+				serif: true,
+				simple: ["r([aeiou]r)", "->", "rd$1"]
+			},
+			block5: {
+				emphasized: true,
+				serif: true,
+				simple: ["[kp]t+", "->", "tt"]
+			}
+		},
+		trans: [
+			"There may be cases when you need to fine-tune the words that",
+			"get generated on the **$t(common:Output)** tab. A common",
+			"reason would be to turn a specific character into two or",
+			"three letters. You may create a group such as **C=pbkClrS**,",
+			"using capital letters in place of sounds like _\"ch\"_ or",
+			"_\"sh\"_. This could generate syllables like _Cu_ or _pliS_.",
+			"",
+			"When you make a new _$t(trans)_, you provide a",
+			"_$t(search expression)_, a _$t(replacement expression)_, and,",
+			"optionally, a _$(trans) $t(common:description)_ for your own",
+			"benefit.",
+			"",
+			"Both expressions can use **$t(common:regular expressions)**",
+			"(an explanation can be found at the end of this section).",
+			"You can also use the special expression %X to indicate any",
+			"character in group X's run, or !%X to indicate any character",
+			"_not_ in that run. (e.g, If _X=abc_, then %X will be treated",
+			"as if it was the $t(common:regular expression) _[abc]_.)",
+			"",
+			"So, you could make a $t(search expression) **C** with a",
+			"$t(replacement expression) **ch**, which will result in _Cu_",
+			"above becoming _chu_. This will result in a $t(trans) that",
+			"looks like the following:",
+			"",
+			"`block1`",
+			"",
+			"Click the (+) button to add a new $t(trans). The first",
+			"$t(trans) in the list will be run first, the second",
+			"$t(trans) second, and so on down the list. This may cause",
+			"unintended effects, so you can reorganize your",
+			"$t(trans_other) to avoid any such effects by using",
+			"the `DRAG HANDLE` drag handles.",
+			"***",
+			"Here are some sample transformations for some linguistic",
+			"phenomina:",
+			"- Consonant harmony: `block2`",
+			"- Liquid dissimilation: `block3`",
+			"- Synchronic epenthesis: `block4`",
+			"- Anticipatory assimilation: `block5`",
+		],
 
-		trans2p1: "When you make a new ",
-		// "transformation",
-		trans2p2: ", you provide a ",
-		// "search expression",
-		trans2p3: ", a ",
-		// "replacement expression",
-		trans2p4: ", and, optionally, a ",
-		// "transformation description",
-		trans2p5: " for your own benefit.",
+		outputMain: [
+			"This is where the magic happens. Click the **$t(Generate)**",
+			"button and your output will appear. Press the button again",
+			"and a new set of output will replace it."
+		],
+		outputSettings: [
+			"Click on the gear icon to open a list of options. The first",
+			"is a drop-down menu where you can select what to output. The",
+			"choices are **$t(Pseudo-text)**, **$t(Wordlist)** and",
+			"**$t(All possible syllables)**.",
+			"",
+			"The **$t(Pseudo-text)** will create words and put them into",
+			"sentences, making a block of text you might find in a book.",
+			"You can determine how many sentences are made by adjusting",
+			"the **$t(Number of sentences)** slider.",
+			"",
+			"The **$t(Wordlist)** outputs a list of words devoid of context.",
+			"You can choose a number of options to modify this list.",
+			"**$t(Capitalize words)** will capitalize every word.",
+			"**$t(Sort output)** will alphabetize the list, and",
+			"**$t(Multi-column layout)** will arrange the list in multiple",
+			"columns instead of one long column. At the bottom, there is a",
+			"**$t(Wordlist size)** slider that controls how many words",
+			"are generated.",
+			"",
+			"**$t(All possible syllables)**, as you might guess, outputs a",
+			"list of every possible $t(syll) your $t(charGroup_other),",
+			"$t(syll_other) and $t(trans_other) allow.",
+			"The _$t(Capitalize words)_, _$t(Sort output)_ and",
+			"_$t(Multi-column layout)_ options above will also work on this",
+			"$t(syll) list.",
+			"",
+			"At the top of the settings, you can choose to",
+			"**$t(Show syllable breaks)**, which will in·sert a dot be·tween",
+			"eve·ry syl·la·ble in each word. While this option can be useful,",
+			"please note that it will break any _$t(trans_other)_ that",
+			"try to work across syllable boundaries."
+		],
+		outputLexicon: [
+			"Once you've generated words, you can save them to the",
+			"**$t(common:Lexicon)**. Click the book button and you're",
+			"presented with two options. _$t(Save everything)_ will store",
+			"every single generated word for the Lexicon.",
+			"_$t(Choose what to save)_ will highlight every word, and you",
+			"can tap on a word to store it; when you're done choosing, hit",
+			"the save button that appears and you will be able to choose",
+			"how they are imported into the **$t(common:Lexicon)**."
+		],
+		
+		settings: [
+			"This final tab fine-tunes the output. These can make a huge",
+			"difference in how your conlang appears.",
+			"",
+			"## The Buttons",
+			"",
+			"**$t(Load Presets)** brings up a menu where you can choose from",
+			"several pre-loaded options. The initial settings when you first",
+			"start the app are the _$t(Simple)_ preset. The others are offered",
+			"to give you ideas of what's possible with the app. They will",
+			"load _$t(charGroup_other)_, _$t(syll_other)_, _$t(trans_other)_",
+			"and possibly change the remaining settings on this page, too.",
+			"",
+			"**$t(Clear All Fields)** clears all _$t(charGroup_other)_,",
+			"_$t(syll_other)_ and _$t(trans_other)_, but does not affect any",
+			"other settings.",
+			"",
+			"**$t(Save/Load Custom Info)** opens a dialog where you can save",
+			"your own _$t(charGroup_other)_, _$t(syll_other)_,",
+			"_$t(trans_other)_ and the settings on this page. This allows you",
+			"to switch between your own personal language settings.",
+			"",
+			"## The Settings",
+			"",
+			"**$t(Rate of monosyllable words)** determines how often a",
+			"one-syllable word is created. It's a percentage from 0 (never)",
+			"to 100 (always).",
+			"",
+			"**$t(Maximum number of syllables per word)** sets an upper limit",
+			"on how long your words can grow.",
+			"",
+			"**$t(Character Group run dropoff)** and",
+			"**$t(Syllable box dropoff)** range from 0 to 50. At zero (flat),",
+			"group and syllable choices are all equiprobable. Otherwise, the",
+			"number becomes a percentage. The higher the number, the more",
+			"likely it is that the first syllables or group characters are",
+			"used. (This mimics natural languages, which tend to prefer",
+			"certain sounds and patterns.) This is how it works:",
+			"",
+			"1. A random number is generated from 1 to 100.",
+			"2. If the number is lower than the dropoff percentage, the first choice is picked.",
+			"3. If not, the generator moves the first choice to the end of the line, then returns to step 1, generating a new number.",
+			"4. This cycle continues until a number is generated that is equal to or greater than the dropoff percentage.",
+			"",
+			"The remaining options only apply to _$t(Pseudo-texts)_.",
+			"",
+			"**$t(Capitalize sentences)** determines if each sentence starts",
+			"with a capital letter.",
+			"",
+			"The other options determine what your sentences look like.",
+			"Three-fourths of all sentences will be _$t(declarative)_",
+			"(simple statements), one-sixth will be _$t(interrogative)_",
+			"(questions), and the remaining one-twelfth will be",
+			"_$t(exclamatory)_ (excited utterances). You can put special",
+			"punctuation before and after these sentences if you wish."
+		],
 
-		trans3p1: "Both expressions can use ",
-		// "regular expressions",
-		trans3p2:
-			` (an explanation can be found at the end of this section). You
-			can also use the special expression %X to indicate any character
-			in group X's run, or !%X to indicate any character `,
-		trans3p3: "not",
-		trans3p4: " in that run. (e.g, If ",
-		trans3p5: "X=abc",
-		trans3p6: ", then %X will be treated as if it was the $t(common:regular expression) ",
-		trans3p7: "[abc]",
-		trans3p8: ".)",
+		overview: [
+			"This tool is for attempting to generate new words based on",
+			"rules you set up.",
+			"",
+			"WordGen makes two assumptions. First, that he basic unit of a",
+			"\"word\" is a $t(syll), and second, that a \"$t(syll)\" can be",
+			"described as a combination of sounds that are spoken together.",
+			"",
+			"This is the most basic use case:",
+			"",
+			"1. Choose what sounds your language will have, and the characters (letters) that will represent these sounds.",
+			"2. Separate these characters into groups, such as vowels and consonants.",
+			"3. Decide the structure(s) of the $t(syll_other) these sounds form.",
+			"",
+			"For example, a (very rough) approximation of Japanese might be:",
+			"",
+			"1. Uses the sounds k, g, s, z, t, d, n, h, b, p, m, y, r, w, a, i, u, e, and o.",
+			"2. Sounds can be grouped like this:",
+			"   1. k, g, s, z, t, d, n, h, b, p, m, r",
+			"   2. a, i, u, e, o",
+			"   3. y",
+			"   4. a, u, o",
+			"   5. w",
+			"   6. a, o",
+			"   7. n",
+			"3. Syllables can be made from (i)+(ii), (iii)+(iv), (v)+(vi), (ii) by itself, and (vii) by itself.",
+			"",
+			"With that information, you can proceed into the rest of this",
+			"tool:",
+			"",
+			"The **$t(Character Groups)** tab is for holding groups of",
+			"sounds, and the **$t(Syllables)** tab describes how they fit",
+			"together. For more complex words, the **$t(Transformations)**",
+			"tab provides a way to tweak the generated output with",
+			"$t(search expressions) and $t(replace expressions). The",
+			"**$t(Output)** tab is where the new words can be found, and the",
+			"**$t(common:Settings)** tab has other options you can tweak if",
+			"needed.",
+			"",
+			"Be sure to check out the _$t(Presets)_ over on the Settings tab.",
+			"The \"Pseudo-Japanese\" preset shows one way to put the above",
+			"info to use.",
+		]
 
-		trans4p1: "So, you could make a $t(search expression) ",
-		trans4p2: "C",
-		trans4p3: " with a $t(replacement expression) ",
-		trans4p4: "ch",
-		trans4p5: ", which will result in ",
-		trans4p6: "Cu",
-		trans4p7: " above becoming ",
-		trans4p8: "chu",
-		trans4p9:
-			`. This will result in a $t(trans) that looks like the
-			following:`,
-		//C->ch
-		trans5p1:
-			`Click the (+) button to add a new $t(trans). The first
-			$t(trans) in the list will be run first, the second
-			$t(trans) second, and so on down the list. This may cause
-			unintended effects, so you can reorganize your $t(trans_other)
-			to avoid any such effects by using the `,
-		// drag handles
-		trans5p2: " drag handles.",
-
-		trans6p1:
-			`Here are some sample $t(trans_other) for some linguistic
-			phenomina:`,
-		trans6p2: "",
-		trans6p3: "Consonant harmony:",
-		trans6p4: "RtL: ",
-		trans6p5: "s(?=.*ʃ)",
-		// "{arrow}",
-		trans6p6: "ʃ",
-		trans6p7: "LtR: ",
-		trans6p8: "(ʃ.+)s",
-		// "{arrow}",
-		trans6p9: "$1ʃ",
-		trans6p10: "Liquid dissimilation:",
-		trans6p11: "r(.+)r",
-		// "{arrow}",
-		trans6p12: "r$1l",
-		trans6p13: "l(.+)l",
-		// "{arrow}",
-		trans6p14: "l$1r",
-		trans6p15: "Synchronic epenthesis:",
-		trans6p16: "r([aeiou]r)$",
-		// "{arrow}",
-		trans6p17: "rd$1",
-		trans6p18: "Anticipatory assimilation:",
-		trans6p19: "[kp]t+",
-		// "{arrow}",
-		trans6p20: "tt",
-
-		output1p1: "This is where the magic happens. Click the ",
-		// "Generate",
-		output1p2:
-			` button and your output will appear. Press the button again
-			and a new set of output will replace it.`,
-
-		output2p1:
-			`Click on the gear icon to open a list of options. The first
-			is a drop-down menu where you can select what to output. The
-			choices are `,
-		// "Pseudo-text",
-		output2p2: ", ",
-		// "Wordlist",
-		output2p3: " and ",
-		// "All possible syllables",
-		output2p4: ".",
-
-		output3p1: "The ",
-		// "pseudo-text",
-		output3p2:
-			` will create words and put them into sentences, making a block
-			of text you might find in a book. You can determine how many
-			sentences are made by adjusting the `,
-		// "numer of sentences",
-		output3p3: " slider.",
-
-		output4p1: "The ",
-		// "wordlist",
-		output4p2:
-			` outputs a list of words devoid of context. You can choose a
-			number of options to modify this list. `,
-		// "Capitalize words",
-		output4p3: " will capitalize every word. ",
-		// "Sort output",
-		output4p4: " will alphabetize the list, and ",
-		// "multi-column layout",
-		output4p5:
-			` will arrange the list in multiple columns instead of one long
-			column. At the bottom, there is a `,
-		// "wordlist size",
-		output4p6: " slider that controls how many words are generated.",
-
-		output5p1: "",
-		// "All possible syllables",
-		output5p2:
-			`, as you might guess, outputs a list of every possible $t(syll)
-			your $t(charGroup_other), $t(syll_other) and $t(trans_other) allow. The `,
-		// "capitalize",
-		output5p3: ", ",
-		// "sort",
-		output5p4: " and ",
-		// "multi-column",
-		output5p5: " options above will also work on this $t(syll) list.",
-
-		output6p1: "At the top of the settings, you can choose to ",
-		// "show syllable breaks",
-		output6p2:
-			`, which will in·sert a dot be·tween eve·ry syl·la·ble in each
-			word. While this option can be useful, please note that it will
-			break any `,
-		// "transformations",
-		output6p3: " that try to work across $t(syll) boundaries.",
-
-		output7p1: "Once you've generated words, you can save them to the ",
-		// "Lexicon",
-		output7p2:
-			`. Click the book button and you're presented with two options. `,
-		// "Save everything",
-		output7p3: " will store every single generated word for the Lexicon. ",
-		// "Choose what to save",
-		output7p4:
-			` will highlight every word, and you can tap on a word to store
-			it; when you're done choosing, hit the save button that appears
-			and you will be able to choose how they are imported into the `,
-		// "Lexicon",
-		output7p5: ".",
-
-		options1:
-			`This final tab fine-tunes the output. These can make a huge
-			difference in how your conlang appears.`,
-
-		options2: "The Buttons",
-
-		options3p1: "",
-		// "Load Presets",
-		options3p2:
-			` brings up a menu where you can choose from several pre-loaded
-			options. The initial settings when you first start the app
-			are the `,
-		// "Simple",
-		options3p3:
-			` preset. The others are offered to give you ideas of what's
-			possible with the app. They will load `,
-		// "character groups",
-		options3p4: ", ",
-		// "syllables",
-		options3p5: ", ",
-		// "transformations",
-		options3p6:
-			` and possibly change the remaining settings on this page, too.`,
-
-		options4p1: "",
-		// "Clear All Fields",
-		options4p2: " clears all ",
-		// "character groups",
-		options4p3: ", ",
-		// "syllables",
-		options4p4: " and ",
-		// "transformations",
-		options4p5: ", but does not affect any other settings.",
-
-		options5p1: "",
-		// "Save/Load Custom Info",
-		options5p2: " opens a dialog where you can save your own ",
-		// "character groups",
-		options5p3: ", ",
-		// "syllables",
-		options5p4: ", ",
-		// "transformations",
-		options5p5:
-			` and the settings on this page. This allows you to switch between
-			your own personal language settings.`,
-
-		options6: "The Settings",
-
-		options7p1: "",
-		// "Rate of monosyllable words",
-		options7p2:
-			` determines how often a one-syllable word is created. It's a
-			percentage from 0 (never) to 100 (always).`,
-
-		options8p1: "",
-		// "Maximum number of syllables per word",
-		options8p2: " sets an upper limit on how long your words can grow.",
-
-		options9p1: "",
-		// "Character Group run dropoff",
-		options9p2: " and ",
-		// "syllable box dropoff",
-		options9p3:
-			` range from 0 to 50. At zero (flat), $t(charGroup) and $t(syll) choices
-			are all equiprobable. Otherwise, the number becomes a percentage.
-			The higher the number, the more likely it is that the first
-			$t(syll_other) or $t(charGroup) characters are used. (This mimics natural
-			languages, which tend to prefer certain sounds and patterns.) This
-			is how it works:`,
-
-		options10p1: "A random number is generated from 1 to 100.",
-		options10p2:
-			`If the number is lower than the dropoff percentage, the first
-			choice is picked.`,
-		options10p3:
-			`If not, the generator moves the first choice to the end of the
-			line, then returns to step 1, generating a new number.`,
-		options10p4:
-			`This cycle continues until a number is generated that is equal
-			to or greater than the dropoff percentage.`,
-
-		options11p1: "The remaining options only apply to ",
-		// "pseudo-texts",
-		options11p2: ".",
-
-		options12p1: "",
-		// "Capitalize sentences",
-		options12p2: " determines if each sentence starts with a capital letter.",
-
-		options13p1:
-			`The other options determine what your sentences look like.
-			Three-fourths of all sentences will be `,
-		// "declarative",
-		options13p2: " (simple statements), one-sixth will be ",
-		// "interrogative",
-		options13p3: " (questions), and the remaining one-twelfth will be ",
-		// "exclamatory",
-		options13p4:
-			` (excited utterances). You can put special punctuation before
-			and after these sentences if you wish.`,
-
-		info1:
-			`This tool is for attempting to generate new words based on
-			rules you set up.`,
-
-		info2:
-			`$t(common:WordGen) makes a few assumptions: 1) the basic unit
-			of a "word" is a $t(syll), and 2) a "$t(syll)" can be described
-			as a combination of sounds that are spoken together.`,
-
-		info3p1: "This is the most basic use case:",
-
-		info3p2:
-			`Choose what sounds your language will have, and the characters
-			(letters) that will represent these sounds.`,
-		info3p3:
-			`Separate these characters into groups, such as vowels and
-			consonants.`,
-		info3p4: "Decide the structure(s) of the $t(syll_other) these sounds form.",
-
-		info4p1:
-			`For example, a (very rough) approximation of Japanese
-			might be:`,
-
-		info4p2:
-			`Uses the sounds k, g, s, z, t, d, n, h, b, p, m, y, r, w,
-			a, i, u, e, and o.`,
-		info4p3: "Sounds can be grouped like this:",
-		info4p4: "k, g, s, z, t, d, n, h, b, p, m, r",
-		info4p5: "a, i, u, e, o",
-		info4p6: "y",
-		info4p7: "a, u, o",
-		info4p8: "w",
-		info4p9: "a, o",
-		info4p10: "n",
-		info4p11:
-			`$t(Syllables) can be made from (i)+(ii), (iii)+(iv), (v)+(vi),
-			(ii) by itself, and (vii) by itself.`,
-
-		info5p1:
-			`With that information, you can proceed into the rest of
-			this tool:`,
-
-		info5p2: "The ",
-		// "Character Groups",
-		info5p3: " tab is for holding groups of sounds, and the ",
-		// "Syllables",
-		info5p4:
-			` tab describes how they fit together. For more complex
-			words, the `,
-		// "Transformations",
-		info5p5:
-			` tab provides a way to tweak the generated output with
-			search/replace expressions. The `,
-		// "Output",
-		info5p6: " tab is where the new words can be found, and the ",
-		// "Settings",
-		info5p7: " tab has other options you can tweak if needed.",
-
-		info6p1: "Be sure to check out the ",
-		// "Presets",
-		info6p2:
-			` over on the $t(common:Settings) tab. The "Pseudo-Japanese" preset
-			shows one way to put the above info to use.`,
 	}
 
 };

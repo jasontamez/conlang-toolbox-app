@@ -84,9 +84,11 @@ ion-app .hide {
 
 
 .emphasizedSection {
+	display: block;
 	text-align: center;
 	margin-inline-start: auto;
 	margin-inline-end: auto;
+	text-indent: 0;
 }
 .emphasizedSection br {
 	display: block;

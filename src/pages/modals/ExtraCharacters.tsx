@@ -238,7 +238,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 						<IonItem key={`${nowShowing}-Group`}>
 							{showNames ? (
 								<div className="twoColumnsEC centralized">
-									<h2>{t(nowShowing)}</h2>
+									<h2>{t("characterInfo." + nowShowing)}</h2>
 									{data.map((character: string) =>
 										<div key={"mNamed" + nowShowing + character}>
 											<div
