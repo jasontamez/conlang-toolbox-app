@@ -2,6 +2,7 @@ const wgwe = {
 
 	"Character Group": "$t(wgwe:Character Group)",
 	"Character Groups": "$t(wgwe:Character Groups)",
+	charGroup: "character group",
 	charGroup_one: "character group",
 	charGroup_other: "character groups",
 	Transform: "$t(wgwe:Transform)",
@@ -18,6 +19,12 @@ const wgwe = {
 	syll: "syllable",
 	syll_one: "syllable",
 	syll_other: "syllables",
+	"single-word syllables": "single-word syllables",
+	"word-initial syllables": "word-initial syllables",
+	"mid-word syllables": "mid-word syllables",
+	"word-final syllables": "word-final syllables",
+	Preset: "Preset",
+	Presets: "Presets",
 
 	"Character Groups Tab": "$t(Character Groups) Tab",
 	"Syllables Tab": "$t(Syllables) Tab",
@@ -33,6 +40,7 @@ const wgwe = {
 	label: "label",
 	label_one: "label",
 	label_other: "labels",
+	labels: "$t(label_other)",
 	run: "run",
 	dropoff: "dropoff",
 	"dropoff rate": "$t(dropoff) rate",
@@ -45,7 +53,9 @@ const wgwe = {
 	wfSyll: "word-final $t(syll_other)",
 	mwSyll: "mid-word $t(syll_other)",
 	"search expression": "search expression",
+	"search expressions": "search expressions",
 	"replacement expression": "replacement expression",
+	"replacement expressions": "replacement expressions",
 	"transformation description": "$t(trans) $t(description)",
 	Generate: "Generate",
 	"Pseudo-text": "Pseudo-text",
@@ -72,174 +82,152 @@ const wgwe = {
 	exclamatory: "exclamatory",
 
 	info: {
-		charGroup1p1:
-			`This is where you define groups of sounds. The two simplest
-			groupings are `,
-		// consonants
-		charGroup1p2: " and ",
-		// vowels
-		charGroup1p3:
-			`, but you may want to create multiple $t(charGroup_other)
-			depending on how you want your language's $t(syll_other) formed.
-			For example, the $t(consonants) `,
-		pbk: 'pbk',
-		charGroup1p4: " in English may be followed by the $t(consonants) ",
-		lr: 'lr',
-		charGroup1p5:
-			` at the beginning of $t(syll_other). So you might choose them as
-			$t(charGroup_other), while also putting `,
-		pbklr: 'pbklr',
-		charGroup1p6: " in a third $t(charGroup) for general $t(consonants).",
+		charGroupExample: [ // strong, emphasized
+			"I=pbk",
+			"L=lr",
+			"C=pbklr",
+			"V=eioau"
+		],
+		charGroups:[
+			// `example` will insert the charGroupExample as a block
+			// `anything else` will treat "anything else" as highlighted IPA text
+			"This is where you define groups of sounds. The two simplest",
+			"groupings are _consonants_ and _vowels_, but you may want to",
+			"create multiple $t(charGroup_other) depending on how you want",
+			"your language's $t(syll_other) formed. For example, the",
+			"consonants `pbk` in English may be followed by the consonants",
+			"`lr` at the beginning of $t(syll_other). So you might choose them",
+			"as $t(charGroup_other), while also putting `pbklr` in a third",
+			"$t(charGroup) for general consonants.",
+			"",
+			"Click the (+) button to add a new $t(charGroup). When you make",
+			"a $t(charGroup), you must give it a _$t(labels)_ and a",
+			"one-character _$t(labels)_. The $t(labels) can be any single",
+			"character except for these: **^$\\()[]{}.*+?|**. The $t(labels)",
+			"is for your own benefit, while the $t(labels) will be used to",
+			"refer to this $t(charGroup) in the **Syllables** tab. So you may",
+			"end up with $t(charGroup_other) that look like the following:",
+			"",
+			"`example`",
+			"",
+			"The letters/characters in your $t(charGroup) are called a",
+			"_$t(run)_. The $t(run) should be put in a specific order. The",
+			"first letter is more likely to be used than the second, the",
+			"second more likely than the third, and so on. This mimics natural",
+			"languages, which tend to use certain sounds more than others.",
+			"You can adjust this _$t(dropoff rate)_, or eliminate it entirely,",
+			"on the **$t(common:Settings)** tab.",
+		],
+		charGroupsHiddenOverview: [
+			"**$t(Character Group run dropoff)** is explained in the",
+			"**$t(common:Settings)** section below.",
+		],
+		charGroupsOverview: [
+			"**$t(Character Group run dropoff)** ranges from 0 to 50. At zero",
+			"(flat), $t(charGroup) choices are all equiprobable. Otherwise,",
+			"the higher the number, the more likely it is that the first",
+			"characters in the $t(charGroup) are used. See the help section on",
+			"the **$t(common:Settings)** page for more information.",
+		],
 
-		charGroup2p1:
-			`Click the (+) button to add a new $t(charGroup). When you make
-			one, you must give it a `,
-		// description
-		charGroup2p2: " and a one-character ",
-		// label
-		charGroup2p3: " The $t(label) can be any single character except for these: ",
-		// invalidCharacters
-		charGroup2p4:
-			`. The $t(description) is for your own benefit, while the
-			$t(label) will be used to refer to this $t(charGroup) in the `,
-		// Syllables
-		charGroup2p5:
-			` tab. So you may end up with $t(charGroup_other) that look like
-			the following:`,
 
-		charGroup3p1: "I=$t(info.pbk)",
-		charGroup3p2: "L=$t(info.lr)",
-		charGroup3p3: "C=$t(info.pbklr)",
-		charGroup3p4: "V=eioau",
+		syllablesStartHideOverview: [
+			// This section is used if we're only showing the Syllables card
+			// `charGroup example` will insert the charGroupExample as a block
+			// `anything else` will be ignored
+			"This is where you determine how your $t(syll_other) are formed.",
+			"You use the _$t(labels)_ to describe the elements that make up a",
+			"$t(syll).",
+			"",
+			"For example, using the $t(charGroup_other) in the previous",
+			"section, you could decide to make a list of $t(syll_other) that",
+			"looks like this:",
+			"",
+			"`charGroup example`",
+			"",
+			"...you could decide to make a list of $t(syll_other) such as the",
+			"following:",
+		],
+		syllablesStartOverview: [
+			// This section is used if we're showing all cards at once
+			"This is where you determine how your $t(syll_other) are formed.",
+			"You use the _$t(labels)_ to describe the elements that make up a",
+			"$t(syll). For example, using the $t(charGroup_other) in the",
+			"previous section, you could decide to make a list of",
+			"$t(syll_other) such as the following:",
+		],
+		// syllablesExample is shown as a block in between syllablesStart* and syllables
+		syllablesExample: [ //strong, emphasized
+			"ILV",
+			"CV",
+			"ILVC"
+		],
+		syllables: [
+			"The above can generate $t(syll_other) such as _pla_, _ku_, or",
+			"_brep_, which could then be combined into words such as",
+			"_plabrep_ or _kupla_. You can also put characters in a $t(syll)",
+			"that don't correspond to a $t(charGroup): **sILV** could",
+			"generate $t(syll_other) such as _sbra_ or _spli_.",
+			"",
+			"If you desire a greater amount of control over your words, you",
+			"can turn on the **$t(Use multiple syllable types)** toggle. This",
+			"will show you four separate boxes, each with a different role in",
+			"a word: **$t(single-word syllables)** are used exclusively for",
+			"one-syllable words, **$t(word-initial syllables)** are only used",
+			"at the start of a word, **$t(word-final syllables)** are only",
+			"used at the end of a word, and **$t(mid-word syllables)** fill",
+			"out the middle of words when needed.",
+			"",
+			"The order of $t(syll_other) in each box makes a difference. The",
+			"first $t(syll) listed is more likely to be used than the second,",
+			"the second more likely than the third, and so on. You can adjust",
+			"this _$t(dropoff rate)_, or eliminate it entirely, on the",
+			"**$t(common:Settings)** tab. You'll also find options there to",
+			"determine how often one-syllable words are generated, and put an",
+			"upper limit on the number of $t(syll_other) any one word can have.",
+		],
+		syllablesEndOverview: [
+			// This section is used if we're showing all cards at once
+			"The **$t(Syllable box dropoff)** is explained in the",
+			"**$t(common:Settings)** section below.",
+		],
+		syllablesEndHideOverview: [
+			// This section is used if we're only showing the Syllables card
+			"The **$t(Syllable box dropoff)** ranges from 0 to 50. At zero",
+			"(flat), $t(syll) choices are all equiprobable. Otherwise, the",
+			"higher the number, the more likely it is that the first lines in",
+			"the box are used. See the help section on the",
+			"**$t(common:Settings)** page for more information.",
+		],
 
-		charGroup4p1: "The letters/characters in your $t(charGroup) are called a ",
-		// run
-		charGroup4p2:
-			` The $t(run) should be put in a specific order. The first letter
-			is more likely to be used than the second, the second more likely
-			than the third, and so on. This mimics natural languages, which
-			tend to use certain sounds more than others. You can adjust this `,
-		// dropoff rate
-		charGroup4p3: ", or eliminate it entirely, on the ",
-		// Settings
-		charGroup4p4: " tab.",
-
-		charGroup5v1p1: "",
-		// Character Group run dropoff
-		charGroup5v1p2: " is explained in the ",
-		// Settings
-		charGroup5v1p3: " section below.",
-
-		charGroup5v2p1: "",
-		// Character Group run dropoff
-		charGroup5v2p2:
-			` ranges from 0 to 50. At zero (flat), $t(charGroup) choices are
-			all equiprobable. Otherwise, the higher the number, the more
-			likely it is that the first characters in the $t(charGroup) are
-			used. See the help section on the `,
-		// Settings
-		charGroup5v2p3: " page for more information.",
-
-		syll1p1:
-			`This is where you determine how your $t(syll_other) are formed.
-			You use the `,
-		// labels
-		syll1p2: " to describe the elements that make up a $t(syll).",
-		syll1maybe3:
-			` For example, using the $t(charGroup_other) in the previous
-			section, you could decide to make a list of $t(syll_other) such
-			as the following:`,
-
-		syllMaybe1: "For example, if you have these ",
-		// character groups
-		syllMaybe2: "...",
-		// charGroup3p1 through charGroup3p4 will be repeated here
-		syllMaybe3:
-			`...you could decide to make a list of $t(syll_other) such as
-			the following:`,
-
-		ILV: "ILV",
-		CV: "CV",
-		ILVC: "ILVC",
-
-		syll2p1: "The above can generate $t(syll_other) such as ",
-		pla: "pla",
-		syll2p2: ", ",
-		ku: "ku",
-		syll2p3: ", or ",
-		brep: "brep",
-		syll2p4: ", which could then be combined into words such as ",
-		plabrep: "plabrep",
-		syll2p5: " or ",
-		kupla: "kupla",
-		syll2p6:
-			`. You can also put characters in a $t(syll) that don't correspond
-			to a $t(charGroup): `,
-		sILV: "sILV",
-		syll2p7: " could generate syllables such as ",
-		sbra: "sbra",
-		syll2p8: " or ",
-		spli: "spli",
-		syll2p9: ".",
-
-		syll3p1:
-			`If you desire a greater amount of control over your words, you
-			can turn on the `,
-		// Use multile syllable types
-		syll3p2:
-			` toggle. This will show you four separate boxes, each with a
-			different role in a word: `,
-		// single-word syllables
-		syll3p3: " are used exclusively for one-syllable words, ",
-		// word-initial syllables
-		syll3p4: " are only used at the start of a word, ",
-		// word-final syllables
-		syll3p5: " are only used at the end of a word, and ",
-		// mid-word syllables
-		syll3p6: " fill out the middle of words when needed.",
-
-		syll4p1:
-			`The order of $t(syll_other) in each box makes a difference. The
-			first $t(syll) listed is more likely to be used than the second,
-			the second more likely than the third, and so on. You can adjust
-			this `,
-		// dropoff rate
-		syll4p2: ", or eliminate it entirely, on the ",
-		// Settings
-		syll4p3:
-			` tab. You'll also find options there to determine how often
-			one-syllable words are generated, and put an upper limit on the
-			number of $t(syll_other) any one word can have.`,
-
-		syll5v1p1: "",
-		// Syllable box dropoff
-		syll5v1p2: " is explained in the ",
-		// Settings
-		syll5v1p3: " section below.",
-
-		syll5v2p1: "",
-		// Syllable box dropoff
-		syll5v2p2:
-			` ranges from 0 to 50. At zero (flat), $t(syll) choices are all
-			equiprobable. Otherwise, the higher the number, the more likely
-			it is that the first lines in the box are used. See the help
-			section on the `,
-		// Settings
-		syll5v2p3: " page for more information.",
 
 		transBlocks: {
+			//    "important" info is put in a box.
+			//    "unimportant" info is put on its own in a way that meshes
+			//                   well with important info
+			//     use only ONE of the following:
+			//        simple
+			//        reversed
+			//        important + unimportant + complex
+			//BlockFormat: {
+			//	serif: true, // Makes the content use a serif font (default false)
+			//	arrow: "->", // This text here will be replaced with an arrow character
+			//                   pointing in the correct direction (default "->")
+			//	simple: [array of strings] in the format important, unimportant, important, ...
+			//	reversed: [array of strings] in the format unimportant, important, unimportant...
+			//	important: "!" string, marks the boundaries of "important" info (default "!")
+			//	unimportant: "$" string, marks the boundaries of "unimportant" info (default "$")
+			//	complex: [array of strings] in the format "Some !important! and
+			//              $unimportant$ stuff with regular stuff."
+			//}
+			//
+			// insert a formatted block into the text with `nameOfBlock`
 			block1: {
-				emphasized: true,
 				serif: true,
 				arrow: "->",
-				simple: ["C", "->", "ch"] // important, unimportant, ...
-				// reversed: unimportant, important...
-				// important: "!"
-				// unimportant: "."
-				// complex: [ "Some !important! and .unimportant. stuff together with regular stuff." ]
+				simple: ["C", "->", "ch"]
 			},
 			block2: {
-				emphasized: true,
 				serif: true,
 				important: "!",
 				unimportant: "$",
@@ -249,7 +237,6 @@ const wgwe = {
 				]
 			},
 			block3: {
-				emphasized: true,
 				serif: true,
 				important: "!",
 				unimportant: "$",
@@ -259,19 +246,18 @@ const wgwe = {
 				]
 			},
 			block4: {
-				emphasized: true,
 				serif: true,
 				simple: ["r([aeiou]r)", "->", "rd$1"]
 			},
 			block5: {
-				emphasized: true,
 				serif: true,
 				simple: ["[kp]t+", "->", "tt"]
 			}
 		},
 		trans: [
+			// Use `DRAG HANDLE` to insert the drag handle icon into the text.
 			"There may be cases when you need to fine-tune the words that",
-			"get generated on the **$t(common:Output)** tab. A common",
+			"get generated on the **$t(Output Tab)**. A common",
 			"reason would be to turn a specific character into two or",
 			"three letters. You may create a group such as **C=pbkClrS**,",
 			"using capital letters in place of sounds like _\"ch\"_ or",
@@ -279,7 +265,7 @@ const wgwe = {
 			"",
 			"When you make a new _$t(trans)_, you provide a",
 			"_$t(search expression)_, a _$t(replacement expression)_, and,",
-			"optionally, a _$(trans) $t(common:description)_ for your own",
+			"optionally, a _$t(trans) $t(common:description)_ for your own",
 			"benefit.",
 			"",
 			"Both expressions can use **$t(common:regular expressions)**",
@@ -442,6 +428,7 @@ const wgwe = {
 			"   5. w",
 			"   6. a, o",
 			"   7. n",
+			// second-level ordered lists like the one above will use lowercase roman numerals
 			"3. Syllables can be made from (i)+(ii), (iii)+(iv), (v)+(vi), (ii) by itself, and (vii) by itself.",
 			"",
 			"With that information, you can proceed into the rest of this",
@@ -451,8 +438,8 @@ const wgwe = {
 			"sounds, and the **$t(Syllables)** tab describes how they fit",
 			"together. For more complex words, the **$t(Transformations)**",
 			"tab provides a way to tweak the generated output with",
-			"$t(search expressions) and $t(replace expressions). The",
-			"**$t(Output)** tab is where the new words can be found, and the",
+			"$t(search expressions) and $t(replacement expressions). The",
+			"**$t(Output Tab)** is where the new words can be found, and the",
 			"**$t(common:Settings)** tab has other options you can tweak if",
 			"needed.",
 			"",

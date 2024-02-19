@@ -58,7 +58,10 @@ const OverviewButton: FC<CardProps> = (props) => {
 
 export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
+	const example = t('info.charGroupExample', { returnObjects: true });
+	const plainText = t("info.charGroups", { joinArrays: "\n"});
+	const endHiddenOverview = t("info.charGroupsHiddenOverview", { joinArrays: "\n"});
+	const endOverview = t("info.charGroupsOverview", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -67,72 +70,39 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					{t("info.charGroup1p1")}
-					<em>{t("consonants")}</em>
-					{t("info.charGroup1p2")}
-					<em>{t("vowels")}</em>
-					{t("info.charGroup1p3")}
-					<IPA>{t("info.pbk")}</IPA>
-					{t("info.charGroup1p4")}
-					<IPA>{t("info.lr")}</IPA>
-					{t("info.charGroup1p5")}
-					<IPA>{t("info.pbklr")}</IPA>
-					{t("info.charGroup1p6")}
-				</p><p>
-					{t("info.charGroup2p1")}
-					<em>{t("description")}</em>
-					{t("info.charGroup2p2")}
-					<em>{t("label")}</em>.
-					{t("info.charGroup2p3")}
-					<strong>{t("invalidCharacters")}</strong>
-					{t("info.charGroup2p4")}
-					<strong>{t("Syllables")}</strong>
-					{t("info.charGroup2p5")}
-				</p>
-				<div className="emphasizedSection">
-					<strong>{t("info.charGroup3p1")}</strong>
-					<br />
-					<strong>{t("info.charGroup3p2")}</strong>
-					<br />
-					<strong>{t("info.charGroup3p3")}</strong>
-					<br />
-					<strong>{t("info.charGroup3p4")}</strong>
-				</div>
-				<p>
-					{t("info.charGroup4p1")}
-					<em>{t("run")}</em>.
-					{t("info.charGroup4p2")}
-					<em>{t("dropoff rate")}</em>
-					{t("info.charGroup4p3")}
-					<strong>{tc("Settings")}</strong>
-					{t("info.charGroup4p4")}
-				</p>
-				{props.hideOverview ?
-					<p>
-						{t("info.charGroup5v1p1")}
-						<strong>{t("Character Group run dropoff")}</strong>
-						{t("info.charGroup5v1p2")}
-						<strong>{tc("Settings")}</strong>
-						{t("info.charGroup5v1p3")}
-					</p>
-				:
-					<p>
-						{t("info.charGroup5v2p1")}
-						<strong>{t("Character Group run dropoff")}</strong>
-						{t("info.charGroup5v2p2")}
-						<strong>{tc("Settings")}</strong>
-						{t("info.charGroup5v2p3")}
-					</p>
-				}
+				<Markdown
+					components={{
+						code(props) {
+							const { children } = props;
+							if(children === "example") {
+								const inner: ReactElement[] = [];
+								(example as string[]).forEach((bit, i) => {
+									inner.push(
+										<strong key={`charGroupExample/${bit}/${i}`}>{bit}</strong>,
+										<br key={`charGroupExample/linebreak-${i}`} />
+									)
+								});
+								return <span className="emphasizedSection">{inner}</span>;
+							}
+							return <IPA>{children}</IPA>;
+						}
+					}}
+				>{plainText}</Markdown>
+				<Markdown>{props.hideOverview ? endHiddenOverview : endOverview}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
 }
 export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
 	const { hideOverview } = props;
+	const charGroupExample = t('info.charGroupExample', { returnObjects: true });
+	const startHiddenOverview = t("info.syllablesStartHideOverview", { joinArrays: "\n"});
+	const startOverview = t("info.syllablesStartOverview", { joinArrays: "\n"});
+	const example = t('info.syllablesExample', { returnObjects: true });
+	const plainText = t("info.syllables", { joinArrays: "\n"});
+	const endHiddenOverview = t("info.syllablesEndHideOverview", { joinArrays: "\n"});
+	const endOverview = t("info.syllablesEndOverview", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -141,94 +111,42 @@ export const SylCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					{t("info.syll1p1")}
-					<em>{t("label_other")}</em>
-					{t("info.syll1p2")}
-					{ hideOverview ? t("info.syll1maybe3") : "" }
-				</p>
-				{hideOverview ? <></> : (
-					<>
-						<p>
-							{t("info.syllMaybe1")}
-							<strong>{t("charGroup_other")}</strong>
-							{t("info.syllMaybe2")}
-						</p>
-						<div className="emphasizedSection">
-							<strong>{t("info.charGroup3p1")}</strong>
-							<br />
-							<strong>{t("info.charGroup3p2")}</strong>
-							<br />
-							<strong>{t("info.charGroup3p3")}</strong>
-							<br />
-							<strong>{t("info.charGroup3p4")}</strong>
-						</div>
-						<p>{t("info.syllMaybe3")}</p>
-					</>
-				)}
+				<Markdown
+					components={{
+						code(props) {
+							const { children } = props;
+							if(children === "charGroup example") {
+								const inner: ReactElement[] = [];
+								(charGroupExample as string[]).forEach((bit, i) => {
+									inner.push(
+										<strong key={`syllCharGroupExample/${bit}/${i}`}>{bit}</strong>
+									);
+									(i + 1 !== (charGroupExample as string[]).length)
+										&& inner.push(<br key={`syllCharGroupExample/linebreak-${i}`} />);
+								});
+								return <span className="emphasizedSection">{inner}</span>;
+							}
+							return <></>;
+						}
+					}}
+				>{hideOverview ? startHiddenOverview : startOverview}</Markdown>
+				
 				<div className="emphasizedSection">
-					<strong>
-						{t("info.ILV")}
-						<br />
-						{t("info.CV")}
-						<br />
-						{t("info.ILVC")}
-					</strong>
+					{(example as string[]).map((bit, i) => {
+						const inner: ReactElement[] = [];
+						inner.push(
+							<strong key={`syllExample/${bit}/${i}`}>{bit}</strong>
+						);
+						(i + 1 !== (example as string[]).length)
+							&& inner.push(<br key={`syllExample/linebreak-${i}`} />);
+						return <React.Fragment key={`syllExampleGroup/${bit}/${i}`}>{inner}</React.Fragment>
+					})}
 				</div>
-				<p>
-					{t("info.syll2p1")}
-					<em>{t("info.pla")}</em>
-					{t("info.syll2p2")}
-					<em>{t("info.ku")}</em>
-					{t("info.syll2p3")}
-					<em>{t("info.brep")}</em>
-					{t("info.syll2p4")}
-					<em>{t("info.plabrep")}</em>
-					{t("info.syll2p5")}
-					<em>{t("info.kupla")}</em>
-					{t("info.syll2p6")}
-					<strong>{t("info.sILV")}</strong>
-					{t("info.syll2p7")}
-					<em>{t("info.sbra")}</em>
-					{t("info.syll2p8")}
-					<em>{t("info.spli")}</em>
-					{t("info.syll2p9")}
-				</p><p>
-					{t("info.syll3p1")}
-					<strong>{t("Use multiple syllable types")}</strong>
-					{t("info.syll3p2")}
-					<strong>{t("swSyll")}</strong>
-					{t("info.syll3p3")}
-					<strong>{t("wiSyll")}</strong>
-					{t("info.syll3p4")}
-					<strong>{t("wfSyll")}</strong>
-					{t("info.syll3p5")}
-					<strong>{t("mwSyll")}</strong>
-					{t("info.syll3p6")}
-				</p><p>
-					{t("info.syll4p1")}
-					<em>{t("dropoff rate")}</em>
-					{t("info.syll4p2")}
-					<strong>{tc("Settings")}</strong>
-					{t("info.syll4p3")}
-				</p>
-				{props.hideOverview ?
-					<p>
-						{t("info.syll5v1p1")}
-						<strong>Syllable box dropoff</strong>
-						{t("info.syll5v1p2")}
-						<strong>Settings</strong>
-						{t("info.syll5v1p3")}
-					</p>
-				:
-					<p>
-						{t("info.syll5v2p1")}
-						<strong>Syllable box dropoff</strong>
-						{t("info.syll5v2p2")}
-						<strong>Settings</strong>
-						{t("info.syll5v3p3")}
-					</p>
-				}
+
+				<Markdown>{plainText}</Markdown>
+
+				<Markdown>{hideOverview ? endHiddenOverview : endOverview}</Markdown>
+
 			</IonCardContent>
 		</IonCard>
 	);
@@ -236,7 +154,6 @@ export const SylCard: FC<CardProps> = (props) => {
 
 interface Block {
 	arrow?: string
-	emphasized?: boolean
 	serif?: boolean
 	simple?: string[]
 	reverse?: string[]
@@ -249,7 +166,6 @@ const Spanner: FC<PropsWithChildren<{className: string}>> = (props) => {
 };
 const parseBlock = (input: Block, arrow: string) => {
 	const {
-		emphasized,
 		serif,
 		simple,
 		reverse,
@@ -259,8 +175,7 @@ const parseBlock = (input: Block, arrow: string) => {
 		unimportant = "$"
 	} = input;
 
-	const emph = emphasized ? "emphasizedSection" : "";
-	const className = serif ? ( emph ? emph + " serifChars" : "serifChars" ) : emph;
+	const className = serif ? "emphasizedSection serifChars" : "emphasizedSection";
 	const arrowReplace = new RegExp(subArrow, "g");
 	let counter = 0;
 	if(simple) {
