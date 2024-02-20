@@ -16,6 +16,7 @@ import {
 	logOutOutline,
 	reorderThree
 } from 'ionicons/icons';
+import Markdown from 'react-markdown';
 
 import { PageData, SetBooleanState } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
@@ -47,8 +48,8 @@ const OverviewButton = (props: CardProps) => {
 };
 
 export const InputCard = (props: CardProps) => {
-	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('we');
+	const main = t("info.input", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -57,15 +58,7 @@ export const InputCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>{t("info.input1")}</p>
-				<p>
-					{t("info.input2p1")}
-					<strong>{tc("Import from Lexicon")}</strong>
-					{t("info.input2p2")}
-					<strong>{tc("Lexicon")}</strong>
-					{t("info.input2p3")}
-				</p>
-				<p>{t("info.input3p1")}<strong>{tc("Clear")}</strong>{t("info.input3p2")}</p>
+				<Markdown>{main}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
@@ -73,7 +66,8 @@ export const InputCard = (props: CardProps) => {
 
 export const GroupCard = (props: CardProps) => {
 	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
+	const main = t("info.groups", { joinArrays: "\n"});
+	const example = t("info.groupsExample", { returnObjects: true});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -82,53 +76,23 @@ export const GroupCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>{t("info.groups1")}</p>
-				<hr />
-				<p>
-					{t("info.groups2p1")}
-					<em>{t("declension")}</em>
-					{t("info.groups2p2")}
-					<em>{t("conjugation")}</em>
-					{t("info.groups2p3")}
-					<em>{t("other")}</em>
-					{t("info.groups2p4")}
-				</p>
-				<p>{t("info.groups3")}</p>
-				<p>
-					{t("info.groups4p1")}
-					<em>{t("info.groups4p2")}</em>
-					{t("info.groups4p3")}
-					<strong>{tc("regular expressions")}</strong>
-					{t("info.groups4p4")}
-				</p>
-				<hr />
-				<p>{t("info.groups5")}</p>
-				<p>{t("info.groups6")}</p>
-				<p>{t("info.groups7")}</p>
-				<p>{t("info.groups8")}</p>
-				<hr />
-				<p>
-					{t("info.groups9p1")}
-					<IonIcon icon={reorderThree} color="secondary" />
-					{t("info.groups9p2")}
-				</p>
-				<p>{t("info.groups10")}</p>
+				<Markdown
+					components={{
+						code(props) {
+							return <IonIcon icon={reorderThree} color="tertiary" size="small" />;
+						}
+					}}
+				>{main}</Markdown>
 				<div className="example">
-					<div className="title">{t("Group")}</div>
-					<ul className="simple">
-						<li><strong>{tc("Title")}</strong>{t("info.colon")} {t("Conjugations")} (A)</li>
-						<li><strong>{t("Type")}</strong>{t("info.colon")} <em>{t("conjugation")}</em></li>
-						<li><strong>{t("Remove from Start of Word")}</strong>{t("info.colon")} {t("(blank)")}</li>
-						<li><strong>{t("Remove from End of Word")}</strong>{t("info.colon")} ar</li>
-					</ul>
-					<div className="title">{t("Conjugations")}</div>
-					<ul className="simple">
-						<li><strong>{t("1st-person")} {t("singular")} {t("present")}</strong>{t("info.colon")} {t("stem")}[o]</li>
-						<li><strong>{t("2nd-person")} {t("singular")} {t("present")}</strong>{t("info.colon")} {t("stem")}[as]</li>
-						<li><strong>{t("3rd-person")} {t("singular")} {t("present")}</strong>{t("info.colon")} {t("stem")}[a]</li>
-						<li><strong>{t("1st-person")} {t("plural")} {t("present")}</strong>{t("info.colon")} {t("stem")}[amos]</li>
-						<li><strong>{t("1st-person")} {t("plural")} {t("present")}</strong>{t("info.colon")} {t("stem")}[an]</li>
-					</ul>
+					{(example as {title: string, content: string[]}[]).map((obj, i) => {
+						const {title, content} = obj;
+						return (
+							<React.Fragment key={`DJexample/${title}/${i}`}>
+								<div className="title">{t(title)}</div>
+								<Markdown>{content.join("\n")}</Markdown>
+							</React.Fragment>
+						);
+					})}
 				</div>
 				<RegularExpressions />
 			</IonCardContent>
@@ -138,7 +102,7 @@ export const GroupCard = (props: CardProps) => {
 
 export const OutputCard = (props: CardProps) => {
 	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
+	const main = t("info.output", { joinArrays: "\n"});
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -147,15 +111,7 @@ export const OutputCard = (props: CardProps) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<p>
-					{t("info.output1p1")}
-					<strong>{tc("Input")}</strong>
-					{t("info.output1p2")}
-				</p><p>
-					{t("info.output2p1")}
-					<strong>{t("info.output2p2")}</strong>
-					{t("info.output2p3")}
-				</p>
+				<Markdown>{main}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
@@ -163,6 +119,7 @@ export const OutputCard = (props: CardProps) => {
 
 const DJinfo = (props: PageData) => {
 	const [ t ] = useTranslator('dj');
+	const main = t("info.overview", { joinArrays: "\n"});
 
 	return (
 		<IonPage>
@@ -173,18 +130,10 @@ const DJinfo = (props: PageData) => {
 				<IonCard>
 					<IonItem lines="full">
 						<DeclenjugatorIcon slot="start" color="primary" />
-						<IonLabel>{t("info.overview0")}</IonLabel>
+						<IonLabel>{t("What is Declenjugator?")}</IonLabel>
 					</IonItem>
 					<IonCardContent>
-						<p>
-							{t("info.overview1p1")}
-							<strong>{t("declensions")}</strong>
-							{t("info.overview1p2")}
-							<strong>{t("conjugations")}</strong>
-							{t("info.overview1p3")}
-						</p>
-						<p>{t("info.overview2")}</p>
-						<p>{t("info.overview3")}</p>
+						<Markdown>{main}</Markdown>
 					</IonCardContent>
 				</IonCard>
 				<InputCard hideOverview />

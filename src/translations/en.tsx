@@ -7,6 +7,7 @@ import ms from "./en/ms";
 import settings from "./en/settings";
 import wgwe from "./en/wgwe";
 import wg from "./en/wg";
+import we from "./en/we";
 
 const en = {
 	common: common,
@@ -17,7 +18,8 @@ const en = {
   wgwe: wgwe,
   dj: dj,
   ms: ms,
-  wg: wg
+  wg: wg,
+  we: we
 };
 
 export default en;

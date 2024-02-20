@@ -134,7 +134,7 @@ const common = {
 
 	// Import from Lexicon
 	Import: "Import",
-	"Import from Lexicon": "Import from $t(Lexicon)",
+	"Import from Lexicon": "Import from $t(common:Lexicon)",
 	"Import from which column(s)?": "Import from which column(s)?",
 	"Lexicon Has No Columns": "Lexicon Has No Columns",
 	"Add Conditions (optional)": "Add Conditions (optional)",
@@ -160,6 +160,7 @@ const common = {
 
 	// REGULAR EXPRESSIONS
 	"Regular Expressions": "Regular Expressions", // title of section
+	"Regular expressions": "Regular expressions", // start of sentence
 	"regular expressions": "regular expressions", // plural, generic
 	"Regexes": "Regexes", // plural, generic, starts a sentence, shorter version of Regular Expressions
 	"regular expression": "regular expression", // single instance

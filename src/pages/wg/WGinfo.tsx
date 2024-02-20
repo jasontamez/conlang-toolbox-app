@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import {
 	IonButton,
 	IonCard,
@@ -22,6 +22,7 @@ import {
 import Markdown from 'react-markdown';
 
 import { PageData, SetBooleanState } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import ltr from '../../components/LTR';
 import IPA from '../../components/IPA';
@@ -32,7 +33,7 @@ import {
 	WordGenIcon
 } from '../../components/icons';
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
-import useTranslator from '../../store/translationHooks';
+import { Block, BlockStorage, parseBlock } from '../../components/infoBlocks';
 
 interface CardProps {
 	hideOverview?: boolean
@@ -151,82 +152,6 @@ export const SylCard: FC<CardProps> = (props) => {
 		</IonCard>
 	);
 }
-
-interface Block {
-	arrow?: string
-	serif?: boolean
-	simple?: string[]
-	reverse?: string[]
-	complex?: string[]
-	important?: string
-	unimportant?: string
-}
-const Spanner: FC<PropsWithChildren<{className: string}>> = (props) => {
-	return <span className={props.className}>{props.children}</span>;
-};
-const parseBlock = (input: Block, arrow: string) => {
-	const {
-		serif,
-		simple,
-		reverse,
-		complex,
-		arrow: subArrow = "->",
-		important = "!",
-		unimportant = "$"
-	} = input;
-
-	const className = serif ? "emphasizedSection serifChars" : "emphasizedSection";
-	const arrowReplace = new RegExp(subArrow, "g");
-	let counter = 0;
-	if(simple) {
-		const classes = [ "importantUnit", "unimportantUnit" ];
-		const output: ReactElement[] = simple.map((line, i) => {
-			return <Spanner key={`spanner/simple/${i}/${line}`} className={classes[i % 2]}>{line.replace(arrowReplace, arrow)}</Spanner>;
-		});
-		return <span className={className}>{output}</span>;
-	} else if (reverse) {
-		const classes = [ "unimportantUnit", "importantUnit" ];
-		const output: ReactElement[] = reverse.map((line, i) => {
-			return <Spanner key={`spanner/reverse/${i}/${line}`} className={classes[i % 2]}>{line.replace(arrowReplace, arrow)}</Spanner>;
-		});
-		return <span className={className}>{output}</span>;
-	} else if (complex) {
-		const output: ReactElement[] = [];
-		const max = complex.length - 1;
-		complex.forEach((line, i) => {
-			const separateImportant = (line.replace(arrowReplace, arrow)).split(important);
-			separateImportant.forEach((bit, i) => {
-				if(!bit) {
-					return;
-				} else if (i % 2) {
-					// important bits are on the odd numbers
-					output.push(<Spanner key={`spanner/complex/imp/${i}/${line}/${counter++}`} className="importantUnit">{bit}</Spanner>);
-					return;
-				}
-				// Check for unimportant bits
-				const separateUnimportant = bit.split(unimportant);
-				separateUnimportant.forEach((bit, i) => {
-					if(!bit) {
-						return;
-					} else if (i % 2) {
-						// unimportant bits are on the odd numbers
-						output.push(<Spanner key={`spanner/complex/unimp/${i}/${line}/${counter++}`} className="unimportantUnit">{bit}</Spanner>);
-						return;
-					}
-					// Plain text
-					output.push(<React.Fragment key={`spanner/complex/plain/${i}/${line}/${counter++}`}>{bit}</React.Fragment>)
-				});
-			});
-			if(i !== max) {
-				output.push(<br key={`br/complex/${i}/${line}`} />);
-			}
-		});
-		return <span className={className}>{output}</span>;
-	}
-	// error... ignore
-	return <></>;
-};
-type BlockStorage = { [key: string]: ReactElement };
 
 export const TransCard: FC<CardProps> = (props) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
