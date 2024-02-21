@@ -427,7 +427,7 @@ const DJOutput = (props: PageData) => {
 							onIonChange={e => setWordsMatchOneTimeOnly(!wordsMatchOneTimeOnly)}
 						>
 							<h2>{t("One Match")}</h2>
-							<p>{t("Input words can only match one declension/conjugation/etc.")}</p>
+							<p>{t("Input words can only match one <method>")}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}>

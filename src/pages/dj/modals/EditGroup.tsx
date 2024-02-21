@@ -47,6 +47,7 @@ import {
 	StateObject
 } from '../../../store/types';
 import { addGroup, deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
@@ -89,6 +90,8 @@ const EditGroup = (props: EditGroupProps) => {
 		outgoingDeclenjugation,
 		setOutgoingDeclenjugation
 	} = props;
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -134,24 +137,20 @@ const EditGroup = (props: EditGroupProps) => {
 	}, [isOpen, outgoingDeclenjugation, setOutgoingDeclenjugation, declenjugations]);
 	// Set typeString
 	useEffect(() => {
-		let typingString: string;
-		if(type === "other") {
-			typingString = "Declensions/Conjugations/Etc.";
-		} else {
-			typingString = type.charAt(0).toLocaleUpperCase() + type.slice(1);
-		}
+		const typingString = type.charAt(0).toLocaleUpperCase() + type.slice(1);
 		setDeclenjugationType(typingString);
 		setTypeString(typingString);
-	}, [type, setDeclenjugationType]);
+	}, [t, type, setDeclenjugationType]);
 
 	const onLoad = () => {
 		const [editingType, editingGroup] = editingGroupInfo || [type, null];
+		const error = t("emphasizedError");
 		const {
-			id = "ERROR",
-			title = "ERROR",
+			id = error,
+			title = error,
 			appliesTo = "",
-			startsWith = ["ERROR"],
-			endsWith = ["ERROR"],
+			startsWith = [error],
+			endsWith = [error],
 			regex,
 			separator = " ",
 			declenjugations = []
@@ -231,11 +230,11 @@ const EditGroup = (props: EditGroupProps) => {
 		} = grabInfo();
 		if(!title) {
 			doAlert({
-				message: "You must provide a title or description before saving.",
+				message: t("You must provide a title or description before saving."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -245,11 +244,11 @@ const EditGroup = (props: EditGroupProps) => {
 		} else if (useAdvancedMethod) {
 			if(!regex1 || !regex2) {
 				doAlert({
-					message: "If using regular expressions, you must provide both match and replacement expressions.",
+					message: t("If using regular expressions you must provide both match and replacement expressions."),
 					cssClass: "danger",
 					buttons: [
 						{
-							text: "Ok",
+							text: tc("Ok"),
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -261,12 +260,12 @@ const EditGroup = (props: EditGroupProps) => {
 				new RegExp(regex1);
 			} catch(e) {
 				doAlert({
-					header: `Error trying to parse "${regex1}"`,
+					header: tc("regexpError", { regex: regex1 }),
 					message: `${e}`,
 					cssClass: "danger",
 					buttons: [
 						{
-							text: "Ok",
+							text: tc("Ok"),
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -276,11 +275,11 @@ const EditGroup = (props: EditGroupProps) => {
 			}
 		} else if((startsWith.length + endsWith.length) === 0) {
 			doAlert({
-				message: "You must provide at least one condition (start or end) before saving.",
+				message: t("You must provide at least one condition (start or end) before saving."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -309,7 +308,7 @@ const EditGroup = (props: EditGroupProps) => {
 		}
 		closeModal();
 		toaster({
-			message: "Group saved.",
+			message: t("Group saved."),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -358,10 +357,10 @@ const EditGroup = (props: EditGroupProps) => {
 		);
 		if(changed) {
 			return yesNoAlert({
-				header: "Unsaved Changes",
-				message: "Are you sure you want to discard your edits?",
+				header: tc("Unsaved Info"),
+				message: tc("Are you sure you want to discard your edits?"),
 				cssClass: "warning",
-				submit: "Yes, Discard",
+				submit: tc("Yes, Discard"),
 				handler: closeModal,
 				doAlert
 			});
@@ -373,7 +372,7 @@ const EditGroup = (props: EditGroupProps) => {
 			dispatch(deleteGroup([editingGroupInfo![0], id]));
 			closeModal();
 			toaster({
-				message: "Group deleted.",
+				message: t("Group deleted."),
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -382,10 +381,10 @@ const EditGroup = (props: EditGroupProps) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: "Delete Entire Group",
-				message: "Are you sure you want to delete this entire Group? It cannot be undone.",
+				header: t("Delete Entire Group"),
+				message: t("Are you sure you want to delete this entire Group? It cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -409,7 +408,7 @@ const EditGroup = (props: EditGroupProps) => {
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({
-				message: "Deleted.",
+				message: tc("Deleted."),
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -417,9 +416,9 @@ const EditGroup = (props: EditGroupProps) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: "Delete This",
-			message: "Are you sure?",
-			submit: "Yes, Delete It",
+			header: tc("Delete This"),
+			message: tc("Are you sure?"),
+			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler,
 			doAlert
@@ -442,7 +441,7 @@ const EditGroup = (props: EditGroupProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit {typeString} Group</IonTitle>
+					<IonTitle>{t("Edit Group", { type: typeString })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -456,11 +455,13 @@ const EditGroup = (props: EditGroupProps) => {
 			<IonContent>
 				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this {typeString.toLocaleLowerCase().slice(0, -1)} grouping:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">
+							{t("Title Input", { type: typeString })}
+						</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={`Title or Description of this ${typeString.toLocaleLowerCase().slice(0, -1)} grouping:`}
+							aria-label={t("Title Input", { type: typeString })}
 							id="editTitle"
 						/>
 					</IonItem>
@@ -468,33 +469,35 @@ const EditGroup = (props: EditGroupProps) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Type:"
+							label={t("Type[colon]")}
 							value={type}
 							onIonChange={(e) => setType(e.detail.value)}
-							interfaceOptions={{header: "Type"}}
+							interfaceOptions={{header: t("Type")}}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="declensions"
-							>Declension</IonSelectOption>
+							>{t("Declension_one")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="conjugations"
-							>Conjugation</IonSelectOption>
+							>{t("Conjugation_one")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="other"
-							>Other</IonSelectOption>
+							>{t("Other_one")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Type(s) of word this group affects:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">
+							{t("Type(s) of word this group affects[colon]")}
+						</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Type(s) of word this group affects:"
+							aria-label={t("Type(s) of word this group affects[colon]")}
 							id="editAppliesTo"
-							placeholder="nouns? verbs? adjectives?"
+							placeholder={t("exampleAppliesTo")}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -504,58 +507,58 @@ const EditGroup = (props: EditGroupProps) => {
 							checked={useAdvancedMethod}
 							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
-							<h2>Use advanced method</h2>
-							<p>Use regular expressions to identify the stem.</p>
+							<h2>{t("Use advanced method")}</h2>
+							<p>{t("Use regular expressions to identify the stem.")}</p>
 						</IonToggle>
 					</IonItem>
-					<IonItemDivider>{useAdvancedMethod ? "Regular Expression" : "Simple Root Finder"}</IonItemDivider>
+					<IonItemDivider>{useAdvancedMethod ? tc("Regular Expression") : t("Simple Root Finder")}</IonItemDivider>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Matching Expression:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label="Matching Expression:"
+							aria-label={t("Matching Expression[colon]")}
 							id="editRegex1"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label="Replacement Expression:"
+							aria-label={t("Replacement Expression[colon]")}
 							id="editRegex2"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from Start of Word to Find Root:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from Start of Word to Find Root[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label="Remove from start of word to find stem:"
+							aria-label={t("Remove from Start of Word to Find Root[colon]")}
 							id="editStarts"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Remove from End of Word to Find Root:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root:")}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label="Remove From End:"
+							aria-label={t("Remove from End of Word to Find Root[colon]")}
 							id="editEnds"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Separate Multiple Conditions With:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Separate Multiple Conditions With[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							aria-label="Choose Separator"
+							aria-label={t("Choose Separator")}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 							interfaceOptions={{header: "Separator"}}
@@ -563,26 +566,26 @@ const EditGroup = (props: EditGroupProps) => {
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>[ ] Space</IonSelectOption>
+							>{t("Space")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>[,] Comma</IonSelectOption>
+							>{t("Comma")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>[;] Semicolon</IonSelectOption>
+							>{t("Semicolon")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="/"
-								>[/] Slash</IonSelectOption>
+							>{t("Slash")}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItemDivider color="secondary">{typeString}</IonItemDivider>
 					<IonItem>
 						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
 							<IonIcon slot="start" icon={addCircleOutline} />
-							Add New
+							{tc("Add New")}
 						</IonButton>
 					</IonItem>
 					<IonReorderGroup
@@ -616,7 +619,7 @@ const EditGroup = (props: EditGroupProps) => {
 									<IonItemOptions side="end" className="serifChars">
 										<IonItemOption
 											color="primary"
-											aria-label="Edit"
+											aria-label={tc("Edit")}
 											onClick={() => editDeclenjugation(dj)}
 										>
 											<IonIcon
@@ -626,7 +629,7 @@ const EditGroup = (props: EditGroupProps) => {
 										</IonItemOption>
 										<IonItemOption
 											color="danger"
-											aria-label="Delete"
+											aria-label={tc("Delete")}
 											onClick={() => maybeDeleteDeclenjugation(id)}
 										>
 											<IonIcon
@@ -642,7 +645,7 @@ const EditGroup = (props: EditGroupProps) => {
 											<em>{stem}</em>
 											{
 												useWholeWord ?
-													<em className="mini">[W]</em>
+													<em className="mini">{t("wordMarker")}</em>
 												:
 													<></>
 											}
@@ -663,7 +666,7 @@ const EditGroup = (props: EditGroupProps) => {
 						onClick={maybeDeleteGroup}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete</IonLabel>
+						<IonLabel>{tc("Delete")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -671,7 +674,7 @@ const EditGroup = (props: EditGroupProps) => {
 						onClick={maybeSaveGroup}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

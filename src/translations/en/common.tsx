@@ -87,6 +87,25 @@ const common = {
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
+	savedToStorage: "\"{{title}}\" saved.",
+	overwriteStorage: "\"{{title}}\" overwritten.",
+	"This will clear and overwrite the previous save.":
+		"This will clear and overwrite the previous save.",
+	"Yes, Overwrite It": "Yes, Overwrite It",
+	alreadyExists: "\"{{title}}\" already exists",
+	saveLoaded: "Save \"{{title}}\" loaded.",
+	"Load Error": "Load Error",
+	saveNotFound: "Save \"{{title}}\" not found.",
+	saveDeleted: "\"{{title}}\" deleted.",
+	deleteTitle: "Delete \"{{title}}\"?",
+	"Manage Custom Info": "Manage Custom Info",
+	"Save Current Info": "Save Current Info",
+	"Name of save": "Name of save",
+	"Name your custom info": "Name your custom info",
+	"Load Saved Info": "Load Saved Info",
+	Load: "Load",
+	"No saved info": "No saved info",
+
 	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // Do you want to do this action?
 	"Are you sure you want to delete this? This cannot be undone.":
@@ -102,8 +121,12 @@ const common = {
 	"Delete This": "Delete This",
 	Delete: "Delete",
 	Edit: "Edit",
+	"Deleted.": "Deleted",
 	"Unsaved Info": "Unsaved Info",
-	"Are you sure you want to discard this?": "Are you sure you want to discard this?",
+	"Are you sure you want to discard this?":
+		"Are you sure you want to discard this?",
+	"Are you sure you want to discard your edits?":
+		"Are you sure you want to discard your edits?",
 	"Yes, Discard": "Yes, Discard",
 	"Clear Input": "Clear Input",
 	"Are you sure? This will clear the entire input, and cannot be undone.":
@@ -117,6 +140,8 @@ const common = {
 
 	error: "Error",
 	emphasizedError: "<$t(error)>",
+
+	regexpError: "Error trying to parse \"{{regex}}\"",
 
 	"You did not type any information into any text field.":
 		"You did not type any information into any text field.",

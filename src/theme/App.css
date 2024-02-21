@@ -14,6 +14,14 @@ ion-app p {
 ion-app p + p {
 	padding-block-start: 0;
 }
+ion-app .overrideMarkdown.ion-text-center p {
+	text-indent: 0;
+	text-align: center;
+	padding: 0;
+}
+ion-app .overrideMarkdown.ion-text-wrap p {
+	white-space: normal;
+}
 ion-app .clickToExpand {
 	overflow: hidden;
 	max-height: 0;
@@ -99,7 +107,7 @@ ion-app .hide {
 ion-card-content ul li {
 	margin: 1rem 0;
 }
-ion-card-content ul.changelog li {
+ion-card-content .changelog li {
 	margin: 0.25em 1em 0.75em 0;
 }
 #coffee {

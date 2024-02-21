@@ -17,6 +17,7 @@ import {
 	IonButton
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
+import Markdown from 'react-markdown';
 import { Clipboard } from '@capacitor/clipboard';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 
@@ -151,18 +152,18 @@ const AppInfo = (props: PageData) => {
 								<IonCardContent>
 									<IonList className="ion-text-center" lines="full">
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">
-												{t("credits.toolbox1")}<a href="https://thenounproject.com/term/toolbox/2586725/">{t("credits.toolbox2")}</a>{t("credits.toolbox3")}
+											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
+												<Markdown>{t("credit1")}</Markdown>
 											</IonLabel>
 										</IonItem>
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">
-												{t("credits.wgwe1")}<a href="http://www.zompist.com/gen.html">Gen</a>{t("credits.wgwe2")}<a href="https://www.zompist.com/sca2.html">SCA²</a>{t("credits.wgwe3")}
+											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
+												<Markdown>{t("credit2")}</Markdown>
 											</IonLabel>
 										</IonItem>
 										<IonItem>
-											<IonLabel className="ion-text-center ion-text-wrap">
-												{t("credits.ms1")}<i>{t("credits.ms2")}</i>{t("credits.ms3")}
+											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
+												<Markdown>{t("credit3")}</Markdown>
 											</IonLabel>
 										</IonItem>
 									</IonList>
@@ -177,8 +178,8 @@ const AppInfo = (props: PageData) => {
 									<IonCardTitle>{t("Bug Reports")}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent id="bugReport">
-									<div className="ion-text-center">
-										{t("bugReport1")}<a href="mailto:jasontankapps@gmail.com">jasontankapps@gmail.com</a>{t("bugReport2")}
+									<div className="ion-text-center overrideCenter">
+										<Markdown>{t("bugReportMsg")}</Markdown>
 									</div>
 									<div className="ion-text-center">
 										<IonButton size="small" onClick={showLogs} color="warning" fill="outline">{t("Get Error Log")}</IonButton>
@@ -193,86 +194,25 @@ const AppInfo = (props: PageData) => {
 								<IonCardHeader className="ion-text-center">
 									<IonCardTitle>{t("Changelog")}</IonCardTitle>
 								</IonCardHeader>
-								<IonCardContent className="ion-padding-start">
+								<IonCardContent className="ion-padding-start changelog">
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.3</strong></h2>
-									<ul className="changelog">
-										<li>{t("changelog.v0113p1")}</li>
-										<li>{t("changelog.v0113p2")}</li>
-										<li>{t("changelog.v0113p3p1")}<strong>{tc("Declenjugator")}</strong>{t("changelog.v0113p3p1")}</li>
-										<li>{t("changelog.v0113p4")}</li>
-										<li>{t("changelog.v0113p5")}</li>
-										<li>{t("changelog.v0113p6")}</li>
-										<li><em>{tc("MorphoSyntax")}</em>
-											<ul>
-												<li>{t("changelog.v0113p7")}</li>
-												<li>{t("changelog.v0113p8")}</li>
-											</ul>
-										</li>
-										<li><em>{t("Bugs fixed")}</em>
-											<ul>
-												<li>{t("changelog.v0113p9")}</li>
-												<li>{t("changelog.v0113p10")}</li>
-												<li>{t("changelog.v0113p11")}</li>
-												<li>{t("changelog.v0113p12")}</li>
-												<li>{t("changelog.v0113p13")}</li>
-											</ul>
-										</li>
-									</ul>
+									<Markdown>{t("changelog.v0113", { joinArrays: "\n"})}</Markdown>
 									<div id="changelogButtonContainer" className="ion-text-center">
 										<IonButton
 											onClick={() => {setShowOlder(!showOlder)}}
 											fill="outline"
 											color={showOlder ? "secondary" : "tertiary"}
 										>
-											<IonLabel>{showOlder ? t("Hide Older Changes") : t("Show Older Changes")}</IonLabel>
+											<IonLabel>{t(showOlder ? "Hide Older Changes" : "Show Older Changes")}</IonLabel>
 										</IonButton>
 									</div>
 									<div className={showOlder ? "" : "hide"}>
 										<h2 className="ion-text-center"><strong>v.0.10.1</strong></h2>
-										<ul className="changelog">
-											<li>{t("changelog.v0101p1")}</li>
-											<li>{t("changelog.v0101p2")}</li>
-											<li>{t("changelog.v0101p3")}</li>
-											<li>{t("changelog.v0101p4")}</li>
-											<li>{t("changelog.v0101p5")}</li>
-											<li>{t("changelog.v0101p6")}</li>
-											<li>{t("changelog.v0101p7")}</li>
-										</ul>
+										<Markdown>{t("changelog.v0101", { joinArrays: "\n"})}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
-										<ul className="changelog">
-											<li>{t("changelog.v095p1")}</li>
-											<li>{t("changelog.v095p2")}</li>
-											<li>{t("changelog.v095p3")}</li>
-											<li><em>{tc("MorphoSyntax")}</em>
-												<ul><li>{t("changelog.v095p4")}</li></ul>
-											</li>
-											<li><em>{tc("WordGen")}</em>
-												<ul><li>{t("changelog.v095p5")}</li></ul>
-											</li>
-											<li><em>{tc("Lexicon")}</em>
-												<ul>
-													<li>{t("changelog.v095p6")}</li>
-													<li>{t("changelog.v095p7")}</li>
-													<li>{t("changelog.v095p8")}</li>
-													<li>{t("changelog.v095p9")}</li>
-													<li>{t("changelog.v095p10")}</li>
-													<li>{t("changelog.v095p11")}</li>
-												</ul>
-											</li>
-											<li><em>{tc("Concepts")}</em>
-												<ul>
-													<li>{t("changelog.v095p12")}</li>
-													<li>{t("changelog.v095p13")}</li>
-												</ul>
-											</li>
-											<li>{t("changelog.v095p14")}</li>
-										</ul>
+										<Markdown>{t("changelog.v095", { joinArrays: "\n"})}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>
-										<ul className="changelog">
-											<li>{t("changelog.v094p1")}</li>
-											<li>{t("changelog.v094p2")}</li>
-											<li>{t("changelog.v094p3")}</li>
-										</ul>
+										<Markdown>{t("changelog.v094", { joinArrays: "\n"})}</Markdown>
 									</div>
 								</IonCardContent>
 							</IonCard>

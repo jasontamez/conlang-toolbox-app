@@ -169,12 +169,12 @@ const DJGroups = (props: PageData) => {
 				header: t("Clear All Groups?"),
 				message: t("This will delete all current groups, and it cannot be undone."),
 				cssClass: "warning",
-				submit: t("Yes, Delete Them"),
+				submit: tc("confirmDel_other"),
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, t, toast, doAlert, disableConfirms]);
+	}, [dispatch, t, tc, toast, doAlert, disableConfirms]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];

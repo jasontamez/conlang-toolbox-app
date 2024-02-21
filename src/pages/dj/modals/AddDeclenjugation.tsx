@@ -32,6 +32,7 @@ import {
 	ModalProperties,
 	SetState
 } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
@@ -54,10 +55,13 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		caseMakerModalInfo,
 		savedTitle,
 		setSavedTitle,
-		typeString
+		typeString: pluralType
 	} = props;
+	const typeString = pluralType.slice(0, -1);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const onLoad = useCallback(() => {
@@ -121,11 +125,11 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		} = grabInfo();
 		if(!title) {
 			doAlert({
-				message: "You must provide a title or description before saving.",
+				message: t("You must provide a title or description before saving."),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -141,11 +145,11 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		if(useAdvancedMethod) {
 			if(!regex1) {
 				doAlert({
-					message: "You did not enter a match expression.",
+					message: t("You did not enter a match expression."),
 					cssClass: "danger",
 					buttons: [
 						{
-							text: "Ok",
+							text: tc("Ok"),
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -157,12 +161,12 @@ const AddDeclenjugation = (props: AddDJModal) => {
 				new RegExp(regex1);
 			} catch(e) {
 				doAlert({
-					header: `Error trying to parse "${regex1}"`,
+					header: t("regexpError", { regex: regex1 }),
 					message: `${e}`,
 					cssClass: "danger",
 					buttons: [
 						{
-							text: "Ok",
+							text: tc("Ok"),
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -178,7 +182,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		setSavedDeclenjugation(newDJ);
 		closeModal();
 		toaster({
-			message: typeString + " saved.",
+			message: t("methodSaved", { method: typeString }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -202,10 +206,10 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			)
 		) {
 			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
+				header: tc("Unsaved Info"),
+				message: tc("Are you sure you want to discard this?"),
 				cssClass: "warning",
-				submit: "Yes, Discard",
+				submit: tc("Yes, Discard"),
 				handler: closeModal,
 				doAlert
 			});
@@ -216,7 +220,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add {typeString.slice(0, -1)}</IonTitle>
+					<IonTitle>{t("addMethod", { method: typeString })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -230,11 +234,11 @@ const AddDeclenjugation = (props: AddDJModal) => {
 			<IonContent>
 				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Title or Description of this {typeString.slice(0, -1)}:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Title Method", { method: typeString.toLocaleLowerCase() })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={`Title or description of this ${typeString.slice(0, -1)}:`}
+							aria-label={t("Title Method", { method: typeString.toLocaleLowerCase() })}
 							id="addDJTitle"
 						/>
 						<IonButton color="primary" onClick={() => caseMakerModalInfo.setIsOpen(true)} slot="end">
@@ -248,8 +252,8 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							checked={useWholeWord}
 							onIonChange={e => setUseWholeWord(!useWholeWord)}
 						>
-							<h2>Use entire word</h2>
-							<p>This applies your modifications to the base word instead of the stem.</p>
+							<h2>{t("Use entire word")}</h2>
+							<p>{t("This applies your modifications to the base word instead of the stem.")}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -259,37 +263,37 @@ const AddDeclenjugation = (props: AddDJModal) => {
 							checked={useAdvancedMethod}
 							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
 						>
-							<h2>Use advanced method</h2>
-							<p>Use regular expressions to craft a {typeString.toLocaleLowerCase()}.</p>
+							<h2>{t("Use advanced method")}</h2>
+							<p>{t("advancedExplanation", { method: typeString.toLocaleLowerCase() })}</p>
 						</IonToggle>
 					</IonItem>
-					<IonItemDivider>Modification</IonItemDivider>
+					<IonItemDivider>{t("Modification")}</IonItemDivider>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Match Expression:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex1"
-							aria-label="Match Expression:"
+							aria-label={t("Matching Expression[colon]")}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">Replacement Expression:</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex2"
-							aria-label="Replacement Expression:"
+							aria-label={t("Replacement Expression[colon]")}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<div slot="start">Prefix</div>
-						<div slot="end">Suffix</div>
+						<div slot="start">{t("Prefix")}</div>
+						<div slot="end">{t("Suffix")}</div>
 					</IonItem>
 					<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
 							id="addDJPrefix"
-							aria-label="Prefix"
+							aria-label={t("Prefix")}
 							className="ion-text-end"
 						/>
 						<div className="ion-text-center stem pad-horizontal-rem">
@@ -297,7 +301,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						</div>
 						<IonInput
 							id="addDJSuffix"
-							aria-label="Suffix"
+							aria-label={t("Suffix")}
 							className="ion-text-start"
 						/>
 					</IonItem>
@@ -311,7 +315,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={closeCircleOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -319,7 +323,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 						onClick={maybeSaveNewDeclenjugation}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

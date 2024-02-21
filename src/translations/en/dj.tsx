@@ -3,31 +3,68 @@ const dj = {
 	Groups: "Groups",
 	Group: "Group",
 	Type: "Type",
-	"Words to send through Declenjugator": "Words to send through $t(common:Declenjugator)",
-	"Enter words here, one per line": "Enter words here, one per line",
-	"Group deleted.": "$t(Group) deleted.",
-	"Delete Entire Group": "Delete Entire $t(Group)",
-	"Are you sure you want to delete this entire Group? It cannot be undone.":
-		"Are you sure you want to delete this entire $t(Group)? It cannot be undone.",
-	"All groups deleted.": "All $(Groups) Deleted.",
-	"Clear All Groups?": "Clear All $t(Groups)?",
-	"This will delete all current groups, and it cannot be undone.":
-		"This will delete all current $(Groups), and it cannot be undone.",
-	"Yes, Delete Them": "Yes, Delete Them",
-
-	groupAppliesTo: "; applies to $t(appliesTo)",
-	"Add new group": "Add new $t(Group)",
-
+	"Type[colon]": "$t(Type):",
 	Declensions: "Declensions", // group of declensions on-screen
+	Declensions_one: "Declension", // single declension on-screen
+	Declensions_other: "Declensions", // multiple declensions on-screen
 	Conjugations: "Conjugations", // group of conjugations on-screen
+	Conjugations_one: "Conjugation", // single conjugation on-screen
+	Conjugations_other: "Conjugations", // multiple conjugations on-screen
 	Other: "Other", // group of 'other' type on-screen
+	Other_one: "Other", // single 'other' type on-screen
+	Other_other: "Other", // multiple 'other' types on-screen
 	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
-	"Error in exporting: bad format (internal)": "Error in exporting: bad format (internal)",
+	"Error in exporting: bad format (internal)":
+		"Error in exporting: bad format (internal)",
 	declension: "declension",
 	declensions: "declensions",
 	conjugation: "conjugation",
 	conjugations: "conjugation",
 	other: "other",
+	method: "declension/conjugation/etc.",
+	method_one: "$t(method)",
+	method_other: "declensions/conjugations/etc.",
+
+	"Words to send through Declenjugator":
+		"Words to send through $t(common:Declenjugator)",
+	"Enter words here, one per line": "Enter words here, one per line",
+	"Group deleted.": "$t(Group) deleted.",
+	"Delete Entire Group": "Delete Entire $t(Group)",
+	"Are you sure you want to delete this entire Group? It cannot be undone.":
+		"Are you sure you want to delete this entire $t(Group)? It cannot be undone.",
+	"All groups deleted.": "All $t(Groups) Deleted.",
+	"Clear All Groups?": "Clear All $t(Groups)?",
+	"This will delete all current groups, and it cannot be undone.":
+		"This will delete all current $t(Groups), and it cannot be undone.",
+	"Yes, Delete Them": "Yes, Delete Them",
+	"You must provide a title or description before saving.":
+		"You must provide a title or description before saving.",
+	"If using regular expressions you must provide both match and replacement expressions.":
+		"If using $t(common:regular expressions), you must provide both match and replacement expressions.",
+	"You must provide at least one condition (start or end) before saving.":
+		"You must provide at least one condition (start or end) before saving.",
+	"You did not enter a match expression.":
+		"You did not enter a match expression.",
+	"Group saved.": "$t(Group) saved.",
+	"Add Group": "Add $t({{type}}) Group",
+	"Edit Group": "Edit $t({{type}}) Group",
+	"Title Input": "Title or Description of this $t({{type}}) grouping:",
+	"Type(s) of word this group affects[colon]": "Type(s) of word this group affects:",
+	exampleAppliesTo: "nouns? verbs? adjectives?",
+	"Use regular expressions to identify the stem.": "Use regular expressions to identify the stem.",
+	"Simple Root Finder": "Simple Root Finder",
+	Modification: "Modification",
+	"Matching Expression[colon]": "Matching Expression:",
+	"Replacement Expression[colon]": "Replacement Expression:",
+	methodSaved: "$t({{method}}) saved.",
+	deleteMethod: "Delete $t({{method}})",
+	editMethod: "Edit $t({{method}})",
+	addMethod: "Add $t({{method}})",
+	"Title Method": "Title or Description of this $t({{method}}):",
+
+
+	groupAppliesTo: "; applies to $t(appliesTo)",
+	"Add new group": "Add new $t(Group)",
 
 	"What is Declenjugator?": "What is $t(common:Declenjugator)?",
 
@@ -36,7 +73,8 @@ const dj = {
 		"Please choose at least one $t(Group) to display.",
 	"Unmatched Words": "Unmatched Words",
 	declenjugatorDocumentTitle: "$t(Declensions)/$t(Conjugations)",
-	declenjugatorDocumentDescription: "A $t(declension)/$t(conjugation) document exported from $t(common:Conlang Toolbox).",
+	declenjugatorDocumentDescription:
+		"A $t(declension)/$t(conjugation) document exported from $t(common:Conlang Toolbox).",
 
 	"Display as[colon]": "Display as:",
 	"Chart, Top Headers": "Chart, Top Headers",
@@ -52,8 +90,8 @@ const dj = {
 	"Include generic example.": "Include generic example.",
 	"Sort Input": "Sort $t(common:Input)",
 	"One Match": "One Match",
-	"Input words can only match one $t(declension)/$t(conjugation)/etc.":
-		"$t(common:Input) words can only match one $t(declension)/$t(conjugation)/etc.",
+	"Input words can only match one <method>":
+		"$t(common:Input) words can only match one $t(method)",
 	"Show Unmatched Words": "Show Unmatched Words",
 	"Display any words that were not matched by any group.":
 		"Display any words that were not matched by any $t(Group).",
@@ -65,6 +103,8 @@ const dj = {
 
 	Example: "Example",
 	Examples: "Examples",
+	Prefix: "Prefix",
+	Suffix: "Suffix",
 	stem: "stem",
 	word: "word",
 	"[word]": "[word]",
@@ -72,12 +112,24 @@ const dj = {
 	"No words matched this group.": "No words matched this $t(Group).",
 	"Remove from End of Word": "Remove from End of Word",
 	"Remove from End of Word to Find Root": "Remove from End of Word to Find Root",
+	"Remove from End of Word to Find Root[colon]": "Remove from End of Word to Find Root:",
 	"Remove from Start of Word": "Remove from Start of Word",
 	"Remove from Start of Word to Find Root": "Remove from Start of Word to Find Root",
+	"Remove from Start of Word to Find Root[colon]": "Remove from Start of Word to Find Root:",
 	"advanced method": "advanced method",
 	"Use advanced method": "Use advanced method",
+	advancedExplanation: "Use regular expressions to craft a $t({{method}}).",
 	"Use entire word": "Use entire word",
+	"This applies your modifications to the base word instead of the stem.":
+		"This applies your modifications to the base word instead of the stem.",
 	"Add New": "Add New",
+	"Separate Multiple Conditions With[colon]": "Separate Multiple Conditions With:",
+	"Choose Separator": "Choose Separator",
+	Space: "[ ] Space",
+	Comma: "[,] Comma",
+	Semicolon: "[;] Semicolon",
+	Slash: "[/] Slash",
+	wordMarker: "[W]", // small notation that this declension/etc uses the "entire word" option instead of the stem/root
 
 	// Short description describing how a declension or conjugation is found
 	// Examples:

@@ -27,6 +27,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { DJCustomInfo, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
@@ -41,6 +42,8 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 }
 
 const ManageCustomInfo = (props: ExtraInfo) => {
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
@@ -61,18 +64,18 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		const title = (el && escape(el.value).trim()) || "";
 		if(title === "") {
 			return doAlert({
-				header: "Please enter a title before saving.",
+				message: t("You must provide a title or description before saving."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
 				]
 			});
 		}
-		const doSave = (title: string, msg: string = "saved") => {
+		const doSave = (title: string, msg: string = "savedToStorage") => {
 			const save: DJCustomInfo = {
 				declensions,
 				conjugations,
@@ -80,7 +83,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			};
 			DeclenjugatorStorage.setItem(title, save).then(() => {
 				toaster({
-					message: `"${title}" ${msg}`,
+					message: tc(msg, { title }),
 					duration: 2500,
 					position: "top",
 					toast
@@ -92,14 +95,14 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
-				doSave(title, "overwritten");
+				doSave(title, "overwriteStorage");
 			} else {
 				yesNoAlert({
-					header: `"${title}" already exists`,
-					message: "This will clear and overwrite the previous save.",
+					header: tc("alreadyExists", { title }),
+					message: tc("This will clear and overwrite the previous save."),
 					cssClass: "warning",
-					submit: "Yes, Overwrite It",
-					handler: () => doSave(title, "overwritten"),
+					submit: tc("Yes, Overwrite It"),
+					handler: () => doSave(title, "overwriteStorage"),
 					doAlert
 				});
 			}
@@ -111,7 +114,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				if(value) {
 					dispatch(loadStateDJ(value));
 					toaster({
-						message: `Save "${title}" loaded.`,
+						message: tc("saveLoaded", { title }),
 						duration: 2500,
 						color: "success",
 						position: "top",
@@ -120,12 +123,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					doCleanClose();
 				} else {
 					doAlert({
-						header: "Unknown Error",
+						header: tc("Load Error"),
 						cssClass: "danger",
-						message: `Save :${title}" not found.`,
+						message: tc("saveNotFound", { title }),
 						buttons: [
 							{
-								text: "Ok",
+								text: tc("Ok"),
 								role: "cancel",
 								cssClass: "cancel"
 							}
@@ -153,7 +156,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			DeclenjugatorStorage.removeItem(title).then(() => {
 				toaster({
-					message: `"${title}" deleted.`,
+					message: tc("saveDeleted", { title }),
 					duration: 2500,
 					color: "danger",
 					position: "top",
@@ -165,10 +168,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${title}"?`,
-				message: "Are you sure? This cannot be undone.",
+				header: tc("deleteTitle", { title }),
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -178,7 +181,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Manage Custom Info</IonTitle>
+					<IonTitle>{tc("Manage Custom Info")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -193,14 +196,14 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>Save Current Info</IonLabel>
+							<IonLabel>{tc("Save Current Info")}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput
-								aria-label="Name of save"
+								aria-label={tc("Name of save")}
 								id="currentDJInfoSaveName"
 								inputmode="text"
-								placeholder="Name your custom info"
+								placeholder={tc("Name your custom info")}
 								type="text"
 							/>
 							<IonButton
@@ -208,12 +211,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 								onClick={() => maybeSaveInfo()}
 								strong={true}
 								color="success"
-							>Save</IonButton>
+							>{tc("Save")}</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
-							<IonLabel>Load Saved Info</IonLabel>
+							<IonLabel>{tc("Load Saved Info")}</IonLabel>
 						</IonItemDivider>
 						{customInfo.map((title: string) => {
 							return (
@@ -225,7 +228,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 										color="warning"
 										onClick={() => maybeLoadInfo(title)}
 										strong={true}
-									>Load</IonButton>
+									>{tc("Load")}</IonButton>
 									<IonButton
 										className="ion-no-margin"
 										slot="end"
@@ -239,7 +242,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						})}
 						{
 							(customInfo.length === 0) ?
-								<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>
+								<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
 							:
 								<></>
 						}
@@ -250,7 +253,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				<IonToolbar>
 					<IonButton color="danger" slot="end" onClick={() => doCleanClose()}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
