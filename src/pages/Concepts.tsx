@@ -397,7 +397,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 								cssClass: "cancel"
 							},
 							{
-								text: t("Yes, Save Them"),
+								text: t("Yes Save Them"),
 								cssClass: "submit",
 								handler: () => {
 									saveNewMeaning();
@@ -405,7 +405,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 								}
 							},
 							{
-								text: t("No, Discard Them"),
+								text: t("No Discard Them"),
 								cssClass: "cancel",
 								handler
 							}

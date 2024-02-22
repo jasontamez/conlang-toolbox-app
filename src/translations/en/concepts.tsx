@@ -111,8 +111,8 @@ const concepts = {
 
 	"Stop Linking?": "Stop Linking?",
 
-	"Yes, Save Them": "Yes, Save Them", // "Them" refers to the meanings being linked together
-	"No, Discard Them": "No, Discard Them", // See above
+	"Yes Save Them": "Yes, Save Them", // "Them" refers to the meanings being linked together
+	"No Discard Them": "No, Discard Them", // See above
 	"Combination saved": "Combination saved", // The combination of meanings
 
 	"Tap meanings you want to save to Lexicon":

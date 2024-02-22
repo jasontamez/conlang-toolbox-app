@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, FC, Fragment } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -26,6 +26,7 @@ import {
 	ExtraCharactersModalOpener,
 	SetState
 } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
@@ -34,38 +35,71 @@ interface CaseMakerModal extends ExtraCharactersModalOpener {
 	setSavedTitle: SetState<string>
 }
 
-const titleOptions: [string, ...(string | string[])[]][] = [
-	["Modifiers", "non-", "high-", "low-", "formal ", "diminutive ", "augmentative ", "emphatic "],
-	["Number", "singular ", "plural ", "dual ", "trial ", "paucal ", "definite ", "indefinite "],
-	["Noun Case", "male ", "female ", "neuter ", "animate ", "inanimate "],
-	["Grammatical Case", "nominative ", "accusative ", "genitive ", "dative ", "ablative ",
-		"instrumental ", "locative ",
-		[
-			"vocative ", "ergative ", "absolutive ", "partitive ", "abessive ", "adessive ",
-			"allative ", "benefactive ", "causal ", "comitative ", "delative ", "distributive ",
-			"elative ", "essive ", "illative ", "inessive ", "instructive ", "interrogative ",
-			"semblative ", "sociative ", "sublative ", "superessive ", "temporal ", "terminative ",
-			"translative ", "proximal ", "relative ", "adverbial ", "oblique ", "prepositional "
-		]
-	],
-	["Person", "1st-person ", "2nd-person ", "3rd-person ", "1s ", "1pl ", "2s ", "2pl ",
-		"3s ", "3pl "],
-	["Tense", "past ", "present ", "future "],
-	["Aspect", "perfective ", "imperfective ", "perfect ", "continuative ", "progressive ",
-		[
-			"pluperfect ", "habitual ", "punctual ", "iterative ", "completive ",
-			"inceptive ", "atelic ", "telic ", "static "
-		]
-	],
-	["Mode", "realis ", "irrealis ", "conditional", "subjunctive ", "interrogative",
-		[
-			"optative ", "deontic ", "hypothetical ", "imaginary ", "potential ", "evidentiality ",
-			"validationality ", "mirativity "
-		]
-	],
-	["Valence", "causative ", "applicative ", "reflexive ", "reciprocal ", "passive ", "inverse ",
-		"anticausative ", "antipassive "]
-];
+type caseBit = string | [string, string];
+
+interface CaseObject {
+	header: string
+	content: caseBit[],
+	extended?: caseBit[]
+}
+interface CaseItemProps {
+	caseObject: CaseObject
+	add: (x: caseBit) => void
+	toggleTitleGroup: (c: string) => void
+	titleGroup: {[key: string]: boolean}
+}
+
+const CaseItem: FC<CaseItemProps> = (props) => {
+	const { caseObject, add, toggleTitleGroup, titleGroup } = props;
+	const { header, content, extended } = caseObject;
+	const [ t ] = useTranslator('dj');
+	return (
+		<IonItem className="wrappableInnards">
+			<div className="caseObjects">
+				<div className="title">{header}</div>
+				<div className="options">
+					{content.map((option) => {
+						const title = Array.isArray(option) ? option[0] : option;
+						return (
+							<div
+								key={`opt:${header}:${title}`}
+								onClick={() => add(option)}
+								className="option"
+							>{title}</div>
+						)
+					})}
+					{extended ? (
+						<Fragment key={`opt-extra:${header}`}>
+							<div
+								className="toggleButton option"
+								onClick={() => toggleTitleGroup(header)}
+							>{t(titleGroup[header] ? "Hide" : "Show More")}</div>
+							<div
+								className={
+									"toggleGroup " +
+									(titleGroup[header]
+										? "active"
+										: "inactive")
+								}
+							>
+								{extended.map((option) => {
+									const title = Array.isArray(option) ? option[0] : option;
+									return (
+										<div
+											key={`opt:${header}:${title}`}
+											onClick={() => add(option)}
+											className="option"
+										>{title}</div>
+									);
+								})}
+							</div>
+						</Fragment>
+					) : <></>}
+				</div>
+			</div>
+		</IonItem>
+	);
+};
 
 const CaseMaker = (props: CaseMakerModal) => {
 	const {
@@ -76,7 +110,9 @@ const CaseMaker = (props: CaseMakerModal) => {
 	} = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [titleParts, setTitleParts] = useState<string[]>([]);
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
+	const [titleParts, setTitleParts] = useState<caseBit[]>([]);
 	const [titleGroup, setTitleGroup] = useState<{[key: string]: boolean}>({});
 	const onLoad = useCallback(() => {
 		setTitleParts([]);
@@ -87,28 +123,29 @@ const CaseMaker = (props: CaseMakerModal) => {
 		setTitleParts([]);
 		setTitleGroup({});
 	}, [setIsOpen]);
+	const caseObjects = t("cases", { returnObjects: true }) as CaseObject[];
 
-	const toggleTitleGroup = (group: string) => {
+	const toggleTitleGroup = useCallback((group: string) => {
 		setTitleGroup({
 			...titleGroup,
 			[group]: !titleGroup[group]
 		});
-	};
+	}, [titleGroup]);
 	const maybeSaveTitle = () => {
 		if(titleParts.length === 0) {
 			closeModal();
 			return toaster({
-				message: "Nothing to save.",
+				message: tc("Nothing to save."),
 				position: "middle",
 				color: "warning",
 				duration: 2000,
 				toast
 			});
 		}
-		setSavedTitle(titleParts.join("").trim());
+		setSavedTitle(titleParts.map(part => Array.isArray(part) ? part.join("") : part + " ").join("").trim());
 		closeModal();
 		toaster({
-			message: "Title saved.",
+			message: tc("Title saved."),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -119,10 +156,10 @@ const CaseMaker = (props: CaseMakerModal) => {
 	const maybeCancel = () => {
 		if(titleParts.length > 0) {
 			return yesNoAlert({
-				header: "Unsaved Info",
-				message: "Are you sure you want to discard this?",
+				header: tc("Unsaved Info"),
+				message: tc("Are you sure you want to discard this?"),
 				cssClass: "warning",
-				submit: "Yes, Discard",
+				submit: tc("Yes Discard"),
 				handler: closeModal,
 				doAlert
 			});
@@ -130,19 +167,19 @@ const CaseMaker = (props: CaseMakerModal) => {
 		closeModal();
 	};
 
-	const add = (what: string) => {
+	const add = useCallback((what: caseBit) => {
 		setTitleParts([...titleParts, what]);
-	};
+	}, [titleParts]);
 
-	const remove = (what: number) => {
+	const remove = useCallback((what: number) => {
 		setTitleParts(titleParts.filter((str, i) => i !== what));
-	};
+	}, [titleParts]);
 
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Declension/Conjugation Title</IonTitle>
+					<IonTitle>{t("declenjugatorTitle")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -156,61 +193,26 @@ const CaseMaker = (props: CaseMakerModal) => {
 			<IonContent>
 				<IonList lines="full" id="makingTitle" className="hasSpecialLabels">
 					<IonItem>
-						<IonLabel className="ion-text-wrap ion-text-center">Tap on terms to add them. Tap them again to remove them. Tap save button when you're finished.</IonLabel>
+						<IonLabel className="ion-text-wrap ion-text-center">{t("caseMakerInstructions")}</IonLabel>
 					</IonItem>
 					<IonItemDivider sticky>
 						<div id="titleOutput">
-							{titleParts.map((part: string, i: number) => {
-								return <div onClick={() => remove(i)} key={`title-output:${part}:${i}`}>{part}</div>
+							{titleParts.map((part: caseBit, i: number) => {
+								const title = Array.isArray(part) ? part[0] : part;
+								return <div onClick={() => remove(i)} key={`title-output:${title}:${i}`}>{title}</div>
 							})}
 						</div>
 					</IonItemDivider>
 					{
-						titleOptions.map((group) => {
-							const [header, ...rest] = group;
+						caseObjects.map((group) => {
 							return (
-								<IonItem key={`grouping:${header}`} className="wrappableInnards">
-									<div className="titleOptions">
-										<div className="title">{header}</div>
-										<div className="options">
-											{rest.map((option: string| string[]) => {
-												if (Array.isArray(option)) {
-													return (<React.Fragment key={`opt-extra:${header}`}>
-														<div
-															className="toggleButton option"
-															onClick={() => toggleTitleGroup(header)}
-														>{titleGroup[header] ? "Hide" : "Show More"}</div>
-														<div
-															className={
-																"toggleGroup " +
-																(titleGroup[header]
-																	? "active"
-																	: "inactive")
-															}
-														>
-															{option.map((innerOption: string) => {
-																return (
-																	<div
-																		key={`opt:${header}:${innerOption}`}
-																		onClick={() => add(innerOption)}
-																		className="option"
-																	>{innerOption}</div>
-																);
-															})}
-														</div>
-													</React.Fragment>);
-												}
-												return (
-													<div
-														key={`opt:${header}:${option}`}
-														onClick={() => add(option)}
-														className="option"
-													>{option}</div>
-												)
-											})}
-										</div>
-									</div>
-								</IonItem>
+								<CaseItem
+									key={`grouping:${group.header}`} 
+									caseObject={group}
+									add={add}
+									toggleTitleGroup={toggleTitleGroup}
+									titleGroup={titleGroup}
+								/>
 							);
 						})
 					}
@@ -224,7 +226,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={closeCircleOutline} slot="end" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -232,7 +234,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 						onClick={maybeSaveTitle}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>Save</IonLabel>
+						<IonLabel>{tc("Save")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -57,6 +57,8 @@ import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WEinfo";
+import i18n from '../../i18n';
+import useTranslator from '../../store/translationHooks';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -73,14 +75,14 @@ async function copyText (copyString: string, toast: UseIonToastResult) {
 		await Clipboard.write({string: copyString});
 		//navigator.clipboard.writeText(copyText);
 		return toaster({
-			message: "Copied to clipboard",
+			message: i18n.t("Copied to clipboard"),
 			duration: 1500,
 			position: "top",
 			toast
 		});
 	}
 	toaster({
-		message: "Nothing to copy",
+		message: i18n.t("Nothing to copy"),
 		color: "danger",
 		duration: 1500,
 		position: "top",
@@ -90,6 +92,8 @@ async function copyText (copyString: string, toast: UseIonToastResult) {
 
 const WEOut = (props: PageData) => {
 	const { modalPropsMaker } = props;
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const [copyString, setCopyString] = useState<string>("");
@@ -426,10 +430,10 @@ const WEOut = (props: PageData) => {
 		setErrorString("");
 		// Sanity check
 		if(soundChanges.length < 1) {
-			errors.push("You have no sound changes defined.");
+			errors.push(t("You have no sound changes defined."));
 		}
 		if (rawInput.length < 1) {
-			errors.push("You have no input words to evolve.");
+			errors.push(t("You have no input words to evolve."));
 		}
 		if(errors.length > 0) {
 			setErrorString(errors.join(" "));
@@ -489,7 +493,7 @@ const WEOut = (props: PageData) => {
 				*/
 				break;
 			default:
-				setErrorString("Unknown error occurred.");
+				setErrorString(tc("Unknown error occurred."));
 		}
 		setNeedToGenerate(false);
 	};
@@ -737,7 +741,7 @@ const WEOut = (props: PageData) => {
 			return donePickingAndSaving();
 		} else if(columns.length === 0) {
 			return toaster({
-				message: "You need to add columns to the Lexicon before you can add anything to it.",
+				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
 				color: "danger",
 				duration: 4000,
 				position: "top",
@@ -746,7 +750,7 @@ const WEOut = (props: PageData) => {
 		}
 		setIsPickingSaving(true);
 		return toaster({
-			message: "Tap words you want to save to Lexicon.",
+			message: tc("Tap words you want to save to Lexicon."),
 			duration: 2500,
 			position: "top",
 			toast
@@ -754,8 +758,8 @@ const WEOut = (props: PageData) => {
 	};
 	const saveToLexicon = (words: string[]) => {
 		doAlert({
-			header: "Select a column",
-			message: "Your selected words will be added to the Lexicon under that column.",
+			header: tc("Select a column"),
+			message: tc("Your selected words will be added to the Lexicon under that column."),
 			inputs: columns.map((col: LexiconColumn, i: number) => {
 				const input: AlertInput = {
 					type: 'radio',
@@ -767,12 +771,12 @@ const WEOut = (props: PageData) => {
 			}),
 			buttons: [
 				{
-					text: "Cancel",
+					text: tc("Cancel"),
 					role: 'cancel',
 					cssClass: "cancel"
 				},
 				{
-					text: "Save",
+					text: tc("Save"),
 					handler: (col: LexiconColumn | undefined) => {
 						if(!col) {
 							// Treat as cancel
@@ -788,13 +792,13 @@ const WEOut = (props: PageData) => {
 						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
-							message: `Selected words saved to Lexicon under "${col.label}"`,
+							message: tc("saveToLexColumn", { what: "Selected words", column: col.label }),
 							duration: 3500,
 							position: "top",
 							color: "success",
 							buttons: [
 								{
-									text: "Go to Lexicon",
+									text: tc("Go to Lexicon"),
 									handler: () => navigator.push("/lex")
 								}
 							],
@@ -969,7 +973,7 @@ const WEOut = (props: PageData) => {
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
 				onDidDismiss={() => setLoadingOpen(false)}
-				message={'Please wait...'}
+				message={tc('Please wait...')}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -991,7 +995,7 @@ const WEOut = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton disabled={isPickingSaving} />
 					</IonButtons>
-					<IonTitle>Output</IonTitle>
+					<IonTitle>{tc("Output")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton
 							onClick={() => openCustomInfoModal()}
@@ -1016,7 +1020,7 @@ const WEOut = (props: PageData) => {
 							color="tertiary"
 							strong={true}
 							disabled={isPickingSaving}
-						><IonIcon icon={duplicateOutline} slot="start" /> Load Preset</IonButton>
+						><IonIcon icon={duplicateOutline} slot="start" /> {tc("Load Preset")}</IonButton>
 						<div className="evolving">
 							<IonButton
 								strong={true}
@@ -1024,7 +1028,7 @@ const WEOut = (props: PageData) => {
 								color="success"
 								onClick={() => evolveOutput()}
 								disabled={isPickingSaving}
-							>Evolve <IonIcon icon={caretForwardCircleOutline} /></IonButton>
+							>{t("Evolve")} <IonIcon icon={caretForwardCircleOutline} /></IonButton>
 							<div
 								id="outputPaneWE"
 								className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}

@@ -24,7 +24,7 @@ const settings = {
 
 	"What to Export": "What to Export",
 	"You haven't imported anything yet.": "You haven't imported anything yet.",
-	"Yes, Close This": "Yes, Close This",
+	"Yes Close This": "Yes, Close This",
 	"Error validating Import": "Error validating Import",
 	successImport: "Imported new info for {{listing}}",
 	alsoOverwrote: "; also completely overwrote storage for {{listing}}",
@@ -51,7 +51,7 @@ const settings = {
 	alsoOverwriteStorage: "It will ALSO delete and replace stored data for {{listing}}.",
 	willOverwriteStorage: "This will delete and replace stored data for {{listing}}.",
 	areYouVerySure: "Are you SURE you want to do this?",
-	"Yes, I Want to Do This": "Yes, I Want to Do This",
+	"Yes I Want to Do This": "Yes, I Want to Do This",
 
 	// SORT SETTINGS
 

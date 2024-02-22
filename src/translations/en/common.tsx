@@ -54,6 +54,7 @@ const common = {
 	"Copied to clipboard": "Copied to clipboard",
 	"Add New": "Add New",
 	"Nothing to copy": "Nothing to copy",
+	"Title saved.": "Title saved.",
 	Export: "Export",
 	"Export Info": "Export Info",
 	Generate: "Generate",
@@ -70,12 +71,15 @@ const common = {
 
 	"Exit App?": "Exit App?",
 	"Do you want to exit the app?": "Do you want to exit the app?",
-	"Yes, Exit!": "Yes, Exit!",
+	"Yes Exit!": "Yes, Exit!",
 
 	// saveToLexColumn also takes a {{count}} in case a plural version is needed
 	saveToLexColumn: "{{what}} saved to $t(Lexicon) under \"{{column}}\"",
 	"Select a column": "Select a column",
 	"Go to Lexicon": "Go to $t(Lexicon)",
+	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).",
+	"Your selected words will be added to the Lexicon under that column.":
+		"Your selected words will be added to the $t(Lexicon) under that column.",
 
 	"Word Document (docx)": "Word Document (docx)",
 	"Text File": "Text File",
@@ -89,9 +93,8 @@ const common = {
 
 	savedToStorage: "\"{{title}}\" saved.",
 	overwriteStorage: "\"{{title}}\" overwritten.",
-	"This will clear and overwrite the previous save.":
-		"This will clear and overwrite the previous save.",
-	"Yes, Overwrite It": "Yes, Overwrite It",
+	clearOverrideThings: "This will clear and overwrite {{things}}.",
+	"Yes Overwrite It": "Yes, Overwrite It",
 	alreadyExists: "\"{{title}}\" already exists",
 	saveLoaded: "Save \"{{title}}\" loaded.",
 	"Load Error": "Load Error",
@@ -105,6 +108,9 @@ const common = {
 	"Load Saved Info": "Load Saved Info",
 	Load: "Load",
 	"No saved info": "No saved info",
+	loadTitle: "Load \"{{title}}\"?",
+
+	"Unknown error occurred.": "Unknown error occurred.",
 
 	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // Do you want to do this action?
@@ -116,7 +122,7 @@ const common = {
 	confirmDel_one: "$t(confirmDelIt)",  // "It" might refer to many things
 	confirmDel_other: "Yes, Delete Them", // "Them" might refer to many things
 	confirmLoad: "Yes, Load It", // "It" may refer to many things
-	"Yes, Exit": "Yes, Exit",
+	"Yes Exit": "Yes, Exit",
 	"Nothing to save.": "Nothing to save.",
 	"Delete This": "Delete This",
 	Delete: "Delete",
@@ -127,11 +133,11 @@ const common = {
 		"Are you sure you want to discard this?",
 	"Are you sure you want to discard your edits?":
 		"Are you sure you want to discard your edits?",
-	"Yes, Discard": "Yes, Discard",
+	"Yes Discard": "Yes, Discard",
 	"Clear Input": "Clear Input",
-	"Are you sure? This will clear the entire input, and cannot be undone.":
+	"Are you sure? This will clear the entire input and cannot be undone.":
 		"$t(areYouSure) This will clear the entire input, and cannot be undone.",
-	"Yes, Clear It": "Yes, Clear It",
+	"Yes Clear It": "Yes, Clear It",
 
 	"Default sort": "Default sort", // Refers to the default sort method, whatever it may be
 
@@ -156,6 +162,10 @@ const common = {
 	Description: "Description",
 	"Description[colon]": "$t(Description):",
 	description: "description",
+
+	ImportFrom: "Import from {{source}}",
+	"Load Presets": "Load Presets",
+	"Load Preset": "Load Preset",
 
 	// Import from Lexicon
 	Import: "Import",
@@ -190,38 +200,28 @@ const common = {
 	"Regexes": "Regexes", // plural, generic, starts a sentence, shorter version of Regular Expressions
 	"regular expression": "regular expression", // single instance
 
-	regex1p1: "To put it as simply as possible, a ",
-		// regular expressions
-	regex1p2: " is a sequence of characters that specifies a match pattern in text. ",
-		// Regexes
-	regex1p3: " are found in many programming languages and text editors. ",
-		// Conlang Toolbox
-	regex1p4: " uses JavaScript-style regexes without the surrounding slash characters.",
-
-	regex2:
-		`Fully explaining regular expressions is a topic that's too complicated for this
-		app to cover, but they are very useful. Here are some resources where you can
-		learn more about them:`,
-
-	// The following are link/name pairs. You may update them to point to a
-	//  resource in the translated language. If no such resource exists, you
-	//  can either note that the link is in English, or you can leave the URL
-	//  blank, which will cause it not to appear in the app.
-	regex3url: "https://en.wikipedia.org/wiki/Regular_expression",
-	regex3text: "Wikipedia: Regular Expression",
-	regex4url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern",
-	regex4text: "MDN: Writing a regular expression",
-	regex5url: "https://www.regular-expressions.info",
-	regex5text: "Regular-Expressions.info (a tutorial site)",
-	regex6url: "https://www.geeksforgeeks.org/write-regular-expressions/",
-	regex6text: "Geeks for Geeks: Write Reguar Expressions",
+	regexpInfo: [
+		"To put it as simply as possible, a $t(regular expression) is a",
+		"sequence of characters that specifies a match pattern in text.",
+		"$t(Conlang Toolbox) uses JavaScript-style regexes without the",
+		"surrounding slash characters.",
+		"",
+		"Fully explaining regular expressions is a topic that's too",
+		"complicated for this app to cover, but they are very useful. Here",
+		"are some resources where you can learn more about them:",
+		"",
+		"- [Wikipedia: Regular Expression](https://en.wikipedia.org/wiki/Regular_expression)",
+		"- [MDN: Writing a regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern)",
+		"- [Regular-Expressions.info](https://www.regular-expressions.info) (a tutorial site)",
+		"- [Geeks for Geeks: Write Reguar Expressions](https://www.geeksforgeeks.org/write-regular-expressions/)"
+	],
 
 	// EXTRA CHARACTERS
 	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.",
 	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.",
 	copiedCharToClipboard: "Copied {{char}} to clipboard",
 	Favorites: "Favorites",
-	"Now saving characters to Favorites.": "Now saving characters to $t(Favorites).",
+	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)",
 	"No longer saving to Favorites": "No longer saving to $t(Favorites)",
 	"Tap characters to add them here": "Tap characters to add them here",
 	extraHelp: {

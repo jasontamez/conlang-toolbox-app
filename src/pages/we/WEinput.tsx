@@ -29,6 +29,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
 import { InpCard } from "./WEinfo";
+import useTranslator from '../../store/translationHooks';
 
 const WEInput = (props: PageData) => {
 	const { modalPropsMaker } = props;
@@ -37,6 +38,9 @@ const WEInput = (props: PageData) => {
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
 	const [doAlert] = useIonAlert();
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
+	const [ t ] = useTranslator('we');
 	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { input } = useSelector((state: StateObject) => state.we);
@@ -69,10 +73,10 @@ const WEInput = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear Input",
-				message: "Are you sure? This will clear the entire input, and cannot be undone.",
+				header: tc("Clear Input"),
+				message: tc("Are you sure? This will clear the entire input and cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Clear It",
+				submit: tc("Yes Clear It"),
 				handler,
 				doAlert
 			});
@@ -95,7 +99,7 @@ const WEInput = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Input</IonTitle>
+					<IonTitle>{tc("Input")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -110,9 +114,9 @@ const WEInput = (props: PageData) => {
 				<div className="hasMaxTextArea">
 					<textarea
 						spellCheck={false}
-						aria-label="Words to Evolve"
+						aria-label={t("Words to Evolve")}
 						id="weInput"
-						placeholder="Enter words here, one per line"
+						placeholder={tw("Enter words here one per line")}
 						defaultValue={input}
 						onChange={inputUpdated}
 					/>
@@ -125,7 +129,7 @@ const WEInput = (props: PageData) => {
 							color="warning"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={trashBinOutline} slot="start" /> Clear</IonButton>
+						><IonIcon icon={trashBinOutline} slot="start" /> {tc("Clear")}</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
@@ -134,7 +138,7 @@ const WEInput = (props: PageData) => {
 							color="primary"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={enterOutline} slot="start" /> Import from Lexicon</IonButton>
+						><IonIcon icon={enterOutline} slot="start" /> {tc("ImportFrom", { source: tc("Lexicon") })}</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

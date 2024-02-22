@@ -152,7 +152,7 @@ const ImportData = (props: ModalProperties) => {
 			header: t("areYouSure"),
 			message: ts("You haven't imported anything yet."),
 			handler: doClose,
-			submit: ts("Yes, Close This"),
+			submit: ts("Yes Close This"),
 			cssClass: "warning",
 			doAlert
 		}) : doClose();
@@ -384,7 +384,7 @@ const ImportData = (props: ModalProperties) => {
 			message,
 			cssClass: "danger",
 			handler,
-			submit: ts("Yes, I Want to Do This"),
+			submit: ts("Yes I Want to Do This"),
 			doAlert
 		});
 	};

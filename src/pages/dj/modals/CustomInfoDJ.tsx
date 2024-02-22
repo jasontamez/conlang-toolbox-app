@@ -28,13 +28,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { DJCustomInfo, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
 import useTranslator from '../../../store/translationHooks';
+import { loadStateDJ } from '../../../store/declenjugatorSlice';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
 import { DeclenjugatorStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
-import { loadStateDJ } from '../../../store/declenjugatorSlice';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -99,9 +99,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			} else {
 				yesNoAlert({
 					header: tc("alreadyExists", { title }),
-					message: tc("This will clear and overwrite the previous save."),
+					message: tc("clearOverride", { things: "the previous save." }),
 					cssClass: "warning",
-					submit: tc("Yes, Overwrite It"),
+					submit: tc("Yes Overwrite It"),
 					handler: () => doSave(title, "overwriteStorage"),
 					doAlert
 				});
@@ -141,10 +141,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Load "${title}"?`,
-				message: "This will clear and overwrite all current groups.",
+				header:  tc("loadTitle", { title }),
+				message: tc("clearOverwrite", { things: "all current groups" }),
 				cssClass: "warning",
-				submit: "Yes, Load It",
+				submit: tc("confirmLoad"),
 				handler,
 				doAlert
 			});

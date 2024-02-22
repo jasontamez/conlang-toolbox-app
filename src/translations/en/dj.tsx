@@ -5,9 +5,11 @@ const dj = {
 	Type: "Type",
 	"Type[colon]": "$t(Type):",
 	Declensions: "Declensions", // group of declensions on-screen
+	Declension: "Declension", // single declension on-screen
 	Declensions_one: "Declension", // single declension on-screen
 	Declensions_other: "Declensions", // multiple declensions on-screen
 	Conjugations: "Conjugations", // group of conjugations on-screen
+	Conjugation: "Conjugation", // single conjugation on-screen
 	Conjugations_one: "Conjugation", // single conjugation on-screen
 	Conjugations_other: "Conjugations", // multiple conjugations on-screen
 	Other: "Other", // group of 'other' type on-screen
@@ -36,7 +38,7 @@ const dj = {
 	"Clear All Groups?": "Clear All $t(Groups)?",
 	"This will delete all current groups, and it cannot be undone.":
 		"This will delete all current $t(Groups), and it cannot be undone.",
-	"Yes, Delete Them": "Yes, Delete Them",
+	"Yes Delete Them": "Yes, Delete Them",
 	"You must provide a title or description before saving.":
 		"You must provide a title or description before saving.",
 	"If using regular expressions you must provide both match and replacement expressions.":
@@ -72,9 +74,14 @@ const dj = {
 	"Please choose at least one group to display.":
 		"Please choose at least one $t(Group) to display.",
 	"Unmatched Words": "Unmatched Words",
+	declenjugatorTitle: "$t(Declensions_one)/$t(Conjugations_one) Title",
 	declenjugatorDocumentTitle: "$t(Declensions)/$t(Conjugations)",
 	declenjugatorDocumentDescription:
 		"A $t(declension)/$t(conjugation) document exported from $t(common:Conlang Toolbox).",
+	caseMakerInstructions:
+		"Tap on terms to add them. Tap them again to remove them. Tap save button when you're finished.",
+	Hide: "Hide",
+	"Show More": "Show More",
 
 	"Display as[colon]": "Display as:",
 	"Chart, Top Headers": "Chart, Top Headers",
@@ -82,7 +89,7 @@ const dj = {
 	Text: "Text",
 
 	"Use Input": "Use $t(common:Input)",
-	"Display the $t(declensions)/$t(conjugations) of words in the input.":
+	"Display the declensions/conjugations of words in the input.":
 		"Display the $t(declensions)/$t(conjugations) of words in the input.",
 	"Show Group Info": "Show $t(Group) Info",
 	"Include general group information.": "Include general $t(Group) information.",
@@ -146,6 +153,166 @@ const dj = {
 	present: "present",
 	"(blank)": "(blank)",
 
+	// By default, cases will be added with a space in between them.
+	// To override this, supply an array [ "case", "separator" ] instead of a string
+	// .extended cases will be hidden; the user can toggle to see them
+	cases: [
+		{
+			header: "Modifiers",
+			content: [
+				[ "non-", "" ],
+				[ "high-", "" ],
+				[ "low-", "" ],
+				"formal",
+				"diminutive",
+				"augmentative",
+				"emphatic"
+			]
+		},
+		{
+			header: "Number",
+			content: [
+				"singular",
+				"plural",
+				"dual",
+				"trial",
+				"paucal",
+				"definite",
+				"indefinite"
+			]
+		},
+		{
+			header: "Noun Case",
+			content: [
+				"male",
+				"female",
+				"neuter",
+				"animate",
+				"inanimate"
+			]
+		},
+		{
+			header: "Grammatical Case",
+			content: [
+				"nominative",
+				"accusative",
+				"genitive",
+				"dative",
+				"ablative",
+				"instrumental",
+				"locative"
+			],
+			extended: [
+				"vocative",
+				"ergative",
+				"absolutive",
+				"partitive",
+				"abessive",
+				"adessive",
+				"allative",
+				"benefactive",
+				"causal",
+				"comitative",
+				"delative",
+				"distributive",
+				"elative",
+				"essive",
+				"illative",
+				"inessive",
+				"instructive",
+				"interrogative",
+				"semblative",
+				"sociative",
+				"sublative",
+				"superessive",
+				"temporal",
+				"terminative",
+				"translative",
+				"proximal",
+				"relative",
+				"adverbial",
+				"oblique",
+				"prepositional"
+			]
+		},
+		{
+			header: "Person",
+			content: [
+				"1st-person",
+				"2nd-person",
+				"3rd-person",
+				"1s",
+				"1pl",
+				"2s",
+				"2pl",
+				"3s",
+				"3pl"
+			]
+		},
+		{
+			header: "Tense",
+			content: [
+				"past",
+				"present",
+				"future"
+			]
+		},
+		{
+			header: "Aspect",
+			content: [
+				"perfective",
+				"imperfective",
+				"perfect",
+				"continuative",
+				"progressive"
+			],
+			extended: [
+				"pluperfect",
+				"habitual",
+				"punctual",
+				"iterative",
+				"completive",
+				"inceptive",
+				"atelic",
+				"telic",
+				"static"
+			]
+		},
+		{
+			header: "Mode",
+			content: [
+				"realis",
+				"irrealis",
+				"conditional",
+				"subjunctive",
+				"interrogative"
+			],
+			extended: [
+				"optative",
+				"deontic",
+				"hypothetical",
+				"imaginary",
+				"potential",
+				"evidentiality",
+				"validationality",
+				"mirativity"
+			]
+		},
+		{
+			header: "Valence",
+			content: [
+				"causative",
+				"applicative",
+				"reflexive",
+				"reciprocal",
+				"passive",
+				"inverse",
+				"anticausative",
+				"antipassive"
+			]
+		}
+
+	],
 
 	info: {
 		input: [
@@ -213,7 +380,7 @@ const dj = {
 			"",
 			"---",
 			"",
-			// `DRAG HANDLE` (or any other text inside backtiks) will be
+			// `DRAG HANDLE` (or any other text inside backticks) will be
 			//    replaced with the drag handle icon
 			"Once your $t(Groups) are made, they will show up on the screen.",
 			"Swipe left on them to find $t(common:Edit) and $t(common:Delete)",

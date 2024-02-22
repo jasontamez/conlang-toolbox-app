@@ -41,6 +41,7 @@ import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import { $i } from '../../components/DollarSignExports';
 import { useTranslation } from 'react-i18next';
+import useTranslator from '../../store/translationHooks';
 
 interface ImporterProps extends ExtraCharactersModalOpener {
 	currentInput: string
@@ -114,6 +115,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const { t } = useTranslation();
+	const [ tc ] = useTranslator('common');
 	const [importing, setImporting] = useState<boolean[]>([]);
 	const [addingWordTest, setAddingWordTest] = useState<boolean>(false);
 	const [addingWordMatch, setAddingWordMatch] = useState<boolean>(false);
@@ -139,7 +141,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		) {
 			return yesNoAlert({
 				message: t("Exit Without Importing?"),
-				submit: t("Yes, Exit"),
+				submit: t("Yes Exit"),
 				cssClass: "warning",
 				handler: doClose,
 				doAlert
@@ -387,7 +389,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Import from Lexicon")}</IonTitle>
+					<IonTitle>{tc("ImportFrom", { source: tc("Lexicon") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

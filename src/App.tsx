@@ -101,7 +101,7 @@ export const MainOutlet = memo(() => {
 					header: t("Exit App?"),
 					message: t("Do you want to exit the app?"),
 					cssClass: "warning",
-					submit: t("Yes, Exit!"),
+					submit: t("Yes Exit!"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});
@@ -195,7 +195,7 @@ const App = memo(() => {
 					header: t("Exit App?"),
 					message: t("Do you want to exit the app?"),
 					cssClass: "warning",
-					submit: t("Yes, Exit!"),
+					submit: t("Yes Exit!"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});

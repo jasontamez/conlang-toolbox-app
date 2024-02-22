@@ -232,7 +232,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 				header: tc("Unsaved Info"),
 				message: tc("Are you sure you want to discard this?"),
 				cssClass: "warning",
-				submit: tc("Yes, Discard"),
+				submit: tc("Yes Discard"),
 				handler: closeModal,
 				doAlert
 			});

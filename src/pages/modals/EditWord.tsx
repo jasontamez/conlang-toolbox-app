@@ -91,7 +91,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			header: t("Exit Without Saving?"),
 			cssClass: "warning",
 			message: t("You have unsaved changes. Are you sure you want to exit?"),
-			submit: tc("Yes, Exit"),
+			submit: tc("Yes Exit"),
 			handler: () => setIsOpen(false),
 			doAlert
 		});

@@ -278,7 +278,7 @@ const AddGroup = (props: AddGroupProps) => {
 				header: tc("Unsaved Info"),
 				message: tc("Are you sure you want to discard your edits?"),
 				cssClass: "warning",
-				submit: tc("Yes, Discard"),
+				submit: tc("Yes Discard"),
 				handler: () => setIsOpen(false),
 				doAlert
 			});
@@ -368,11 +368,11 @@ const AddGroup = (props: AddGroupProps) => {
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="declensions"
-							>{t("Declension_one")}</IonSelectOption>
+							>{t("Declensions_one")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="conjugations"
-							>{t("Conjugation_one")}</IonSelectOption>
+							>{t("Conjugations_one")}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="other"
@@ -431,7 +431,7 @@ const AddGroup = (props: AddGroupProps) => {
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root:")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput

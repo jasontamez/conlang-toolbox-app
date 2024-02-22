@@ -126,7 +126,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 	const toggleFavoriting = useCallback((newValue: boolean) => {
 		setIsFavoriting(newValue);
 		toaster({
-			message: t(newValue ? "Now saving characters to Favorites." : "No longer saving to Favorites"),
+			message: t(newValue ? "Now saving characters to Favorites" : "No longer saving to Favorites"),
 			duration: 2500,
 			position: "middle",
 			toast
@@ -253,14 +253,14 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 								</div>
 							) : (
 								<div className="multiColumnEC centralized">
-									<h2>{t(nowShowing)}</h2>
+									<h2>{t("characterInfo." + nowShowing)}</h2>
 									<div>
 										{data.map((character: string) =>
 											<div
 												key={"mUnnamed" + nowShowing + character}
 												className={currentFaves[character] ? "char favorite" : "char"}
 												onClick={() => characterClicked(character)}
-											>{t("characterInfo." + character)}</div>
+											>{character}</div>
 										)}
 									</div>
 								</div>

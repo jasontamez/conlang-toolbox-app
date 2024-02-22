@@ -24,6 +24,7 @@ const we = {
 	"transformation description": "$t(wgwe:transformation description)",
 	"Save everything": "$t(wgwe:Save everything)",
 	"Choose what to save": "$t(wgwe:Choose what to save)",
+	Evolve: "Evolve",
 
 	"Sound Change": "Sound Change",
 	"Sound Changes": "Sound Changes",
@@ -37,10 +38,14 @@ const we = {
 
 	Overview: "Overview: $t(common:WordEvolve)",
 	"What is WordEvolve?": "What is WordEvolve?",
-
+	
+	"Words to Evolve": "Words to Evolve",
 
 	"Input Tab": "$t(common:Input) Tab",
 	runs: "runs",
+
+	"You have no sound changes defined.": "You have no sound changes defined.",
+	"You have no input words to evolve.": "You have no input words to evolve.",
 
 	"input expression": "input expression",
 	"output expression": "output expression",

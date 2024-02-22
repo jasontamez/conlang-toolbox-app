@@ -73,10 +73,10 @@ const DJInput = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: t("Clear Input"),
-				message: t("Are you sure? This will clear the entire input, and cannot be undone."),
+				header: tc("Clear Input"),
+				message: tc("Are you sure? This will clear the entire input and cannot be undone."),
 				cssClass: "danger",
-				submit: t("Yes, Clear It"),
+				submit: tc("Yes Clear It"),
 				handler,
 				doAlert
 			});
@@ -138,7 +138,7 @@ const DJInput = (props: PageData) => {
 							color="primary"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={enterOutline} slot="start" /> {tc("Import from Lexicon")}</IonButton>
+						><IonIcon icon={enterOutline} slot="start" /> {tc("ImportFrom", { source: tc("Lexicon") })}</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

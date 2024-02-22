@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC, useCallback } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -30,6 +30,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject, WECharGroupObject } from '../../store/types';
 import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../store/weSlice';
+import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -41,7 +42,58 @@ import EditCharGroupWEModal from './modals/EditCharGroupWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { CharGroupCard } from "./WEinfo";
 
-const WECharGroup = (props: PageData) => {
+interface CharGroupProps {
+	charGroup: WECharGroupObject
+	editCharGroup: (x: WECharGroupObject) => void
+	maybeDeleteCharGroup: (x: string, y: WECharGroupObject) => void
+}
+
+const CharGroup: FC<CharGroupProps> = (props) => {
+	const { charGroup, editCharGroup, maybeDeleteCharGroup } = props;
+	const { label = "", title, run } = charGroup;
+	return (
+		<IonItemSliding key={label}>
+			<IonItemOptions>
+				<IonItemOption
+					color="primary"
+					onClick={() => editCharGroup(charGroup)}
+				>
+					<IonIcon slot="icon-only" src="svg/edit.svg" />
+				</IonItemOption>
+				<IonItemOption
+					color="danger"
+					onClick={() => maybeDeleteCharGroup(label, charGroup)}
+				>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem>
+				<IonLabel className="wrappableInnards">
+					<div className="charGroupRun serifChars">
+						<span
+							className="label importantElement"
+						>{label}</span>
+						<span
+							className="run"
+						>{run}</span>
+					</div>
+					<div
+						className="charGroupLongName"
+					>{title}</div>
+				</IonLabel>
+				<IonIcon
+					size="small"
+					slot="end"
+					src="svg/slide-indicator.svg"
+				/>
+			</IonItem>
+		</IonItemSliding>
+	);
+};
+
+const WECharGroup: FC<PageData> = (props) => {
+	const [ tw ] = useTranslator('wgwe');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -54,20 +106,20 @@ const WECharGroup = (props: PageData) => {
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	const { characterGroups: wgCharatcterGroups } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
-	const editCharGroup = (group: WECharGroupObject) => {
+	const editCharGroup = useCallback((group: WECharGroupObject) => {
 		const groups = $q<HTMLIonListElement>(".charGroups");
 		groups && groups.closeSlidingItems();
 		setEditing(group);
 		setIsOpenEditCharGroupWE(true);
-	};
-	const maybeDeleteCharGroup = (label: string, charGroup: WECharGroupObject) => {
+	}, []);
+	const maybeDeleteCharGroup = useCallback((label: string, charGroup: WECharGroupObject) => {
 		const groups = $q<HTMLIonListElement>(".charGroups");
 		groups && groups.closeSlidingItems();
 		const { run } = charGroup;
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
-				message: "Character Group deleted.",
+				message: tw("Character Group deleted."),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -79,19 +131,20 @@ const WECharGroup = (props: PageData) => {
 		} else {
 			yesNoAlert({
 				header: `${label}=${run}`,
-				message: "Are you sure? This cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, dispatch, doAlert, tc, toast, tw]);
 	const maybeClearEverything = () => {
+		const count = characterGroups.length;
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
 			toaster({
-				message: "Character Groups have been deleted.",
+				message: tc("charGroupsDel", { count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -102,10 +155,10 @@ const WECharGroup = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear Character Groups?",
-				message: "This will delete all current character groups, and cannot be undone.",
+				header: tw("clearCharGroups?", { count }),
+				message: tw("delAllCharGroups", { count }),
 				cssClass: "warning",
-				submit: "Yes, Delete Them",
+				submit: tc("confirmDel", { count }),
 				handler,
 				doAlert
 			});
@@ -115,7 +168,7 @@ const WECharGroup = (props: PageData) => {
 		const handler = () => {
 			dispatch(copyCharacterGroupsFromElsewhere(wgCharatcterGroups));
 			toaster({
-				message: `${wgCharatcterGroups.length} Character Groups imported.`,
+				message: tw("importCharGroups", { count: wgCharatcterGroups.length }),
 				duration: 2500,
 				color: "success",
 				position: "top",
@@ -126,16 +179,24 @@ const WECharGroup = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Import from WordGen?",
-				message: "If any current Group has the same label as an incoming Group, "
-					+ "the current Group will be overwritten. Do you want to continue?",
+				header: tc("ImportFrom", { source: tc("WordGen") }),
+				message: tc("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
 				cssClass: "warning",
-				submit: "Yes, Import",
+				submit: tc("yesImport"),
 				handler,
 				doAlert
 			});
 		}
 	};
+	const map = useCallback(
+		(charGroup: WECharGroupObject) =>
+			<CharGroup
+				charGroup={charGroup}
+				editCharGroup={editCharGroup}
+				maybeDeleteCharGroup={maybeDeleteCharGroup}
+			/>,
+		[editCharGroup, maybeDeleteCharGroup]
+	);
 	return (
 		<IonPage>
 			<AddCharGroupWEModal
@@ -157,7 +218,7 @@ const WECharGroup = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Character Groups</IonTitle>
+					<IonTitle>{tw("Character Groups")}</IonTitle>
 					<IonButtons slot="end">
 						{characterGroups.length > 0 ?
 							<IonButton onClick={() => maybeClearEverything()}>
@@ -181,52 +242,12 @@ const WECharGroup = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="charGroups units" lines="none">
-					{characterGroups.map((charGroup: WECharGroupObject) => {
-						const { label = "", title, run } = charGroup;
-						return (
-							<IonItemSliding key={label}>
-								<IonItemOptions>
-									<IonItemOption
-										color="primary"
-										onClick={() => editCharGroup(charGroup)}
-									>
-										<IonIcon slot="icon-only" src="svg/edit.svg" />
-									</IonItemOption>
-									<IonItemOption
-										color="danger"
-										onClick={() => maybeDeleteCharGroup(label, charGroup)}
-									>
-										<IonIcon slot="icon-only" icon={trash} />
-									</IonItemOption>
-								</IonItemOptions>
-								<IonItem>
-									<IonLabel className="wrappableInnards">
-										<div className="charGroupRun serifChars">
-											<span
-												className="label importantElement"
-											>{label}</span>
-											<span
-												className="run"
-											>{run}</span>
-										</div>
-										<div
-											className="charGroupLongName"
-										>{title}</div>
-									</IonLabel>
-									<IonIcon
-										size="small"
-										slot="end"
-										src="svg/slide-indicator.svg"
-									/>
-								</IonItem>
-							</IonItemSliding>
-						);
-					})}
+					{characterGroups.map(map)}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="secondary"
-						title="Add new group"
+						title={tc("Add New")}
 						onClick={() => setIsOpenAddCharGroupWE(true)}
 					>
 						<IonIcon icon={addOutline} />
