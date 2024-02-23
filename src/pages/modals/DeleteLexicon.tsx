@@ -64,7 +64,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("delItem", { what: title }),
+				header: tc("deleteTitle", { title }),
 				cssClass: "danger",
 				message: tc("Are you sure you want to delete this? It cannot be undone."),
 				submit: tc("confirmDelIt"),

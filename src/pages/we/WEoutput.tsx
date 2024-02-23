@@ -40,6 +40,7 @@ import {
 	WETransformObject
 } from '../../store/types';
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
@@ -58,7 +59,6 @@ import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WEinfo";
 import i18n from '../../i18n';
-import useTranslator from '../../store/translationHooks';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 

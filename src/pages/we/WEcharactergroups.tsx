@@ -139,7 +139,7 @@ const WECharGroup: FC<PageData> = (props) => {
 			});
 		}
 	}, [disableConfirms, dispatch, doAlert, tc, toast, tw]);
-	const maybeClearEverything = () => {
+	const maybeClearEverything = useCallback(() => {
 		const count = characterGroups.length;
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
@@ -163,8 +163,8 @@ const WECharGroup: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	};
-	const maybeCopyFromWG = () => {
+	}, [characterGroups.length, tw, tc, dispatch, toast, doAlert, disableConfirms]);
+	const maybeCopyFromWG = useCallback(() => {
 		const handler = () => {
 			dispatch(copyCharacterGroupsFromElsewhere(wgCharatcterGroups));
 			toaster({
@@ -187,7 +187,7 @@ const WECharGroup: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	};
+	}, [dispatch, tw, tc, doAlert, toast, disableConfirms, wgCharatcterGroups]);
 	const map = useCallback(
 		(charGroup: WECharGroupObject) =>
 			<CharGroup
@@ -221,14 +221,14 @@ const WECharGroup: FC<PageData> = (props) => {
 					<IonTitle>{tw("Character Groups")}</IonTitle>
 					<IonButtons slot="end">
 						{characterGroups.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()}>
+							<IonButton onClick={maybeClearEverything}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
 						{wgCharatcterGroups.length > 0 ?
-							<IonButton onClick={() => maybeCopyFromWG()}>
+							<IonButton onClick={maybeCopyFromWG}>
 								<CopyFromOtherIcon />
 							</IonButton>
 						:

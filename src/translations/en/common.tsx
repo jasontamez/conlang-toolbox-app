@@ -91,16 +91,28 @@ const common = {
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
-	savedToStorage: "\"{{title}}\" saved.",
-	overwriteStorage: "\"{{title}}\" overwritten.",
+	// Things will take `count` properties for plurality
 	clearOverrideThings: "This will clear and overwrite {{things}}.",
-	"Yes Overwrite It": "Yes, Overwrite It",
-	alreadyExists: "\"{{title}}\" already exists",
-	saveLoaded: "Save \"{{title}}\" loaded.",
-	"Load Error": "Load Error",
-	saveNotFound: "Save \"{{title}}\" not found.",
-	saveDeleted: "\"{{title}}\" deleted.",
+	deleteThings: "This will delete {{things}}.",
+	deleteThingsCannotUndo: "This will delete {{things}}, and cannot be undone.",
+	thingsDeleted: "{{things}} deleted.",
+
+	// General Things are unknown, may be 0, 1, or any number
+	clearOverrideGeneralThings: "This will clear and overwrite {{things}}.",
+
 	deleteTitle: "Delete \"{{title}}\"?",
+	loadTitle: "Load \"{{title}}\"?",
+
+	titleSaved: "\"{{title}}\" saved.",
+	titleAlreadyExists: "\"{{title}}\" already exists",
+	titleLoaded: "\"{{title}}\" loaded.",
+	titleNotFound: "\"{{title}}\" not found.",
+	titleDeleted: "\"{{title}}\" deleted.",
+	titleOverwritten: "\"{{title}}\" overwritten.",
+
+	"the previous save": "the previous save",
+	"Yes Overwrite It": "Yes, Overwrite It",
+	"Load Error": "Load Error",
 	"Manage Custom Info": "Manage Custom Info",
 	"Save Current Info": "Save Current Info",
 	"Name of save": "Name of save",
@@ -108,7 +120,6 @@ const common = {
 	"Load Saved Info": "Load Saved Info",
 	Load: "Load",
 	"No saved info": "No saved info",
-	loadTitle: "Load \"{{title}}\"?",
 
 	"Unknown error occurred.": "Unknown error occurred.",
 
@@ -116,7 +127,7 @@ const common = {
 	areYouSure: "Are you sure?", // Do you want to do this action?
 	"Are you sure you want to delete this? This cannot be undone.":
 		"Are you sure you want to delete this? $t(cannotUndo)",
-	delItem: "Delete \"{{what}}\"?",
+	"Clear Everything?": "Clear Everything?",
 	"Delete Everything?": "Delete Everything?",
 	confirmDelIt: "Yes, Delete It",  // "It" might refer to many things
 	confirmDel_one: "$t(confirmDelIt)",  // "It" might refer to many things

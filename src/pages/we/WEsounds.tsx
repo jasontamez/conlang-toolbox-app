@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC, useCallback } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -34,8 +34,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
-import reorganize from '../../components/reorganizer';
+import useTranslator from '../../store/translationHooks';
 
+import reorganize from '../../components/reorganizer';
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
@@ -46,9 +47,84 @@ import AddSoundChangeModal from './modals/AddSoundChange';
 import EditSoundChangeModal from './modals/EditSoundChange';
 import { SChCard } from "./WEinfo";
 
-const WERew = (props: PageData) => {
+interface SoundChangeItemProps {
+	change: WESoundChangeObject
+	editSoundChange: (x: WESoundChangeObject) => void
+	maybeDeleteSoundChange: (x: WESoundChangeObject) => void
+	arrow: string
+}
+
+const SoundChange: FC<SoundChangeItemProps> = (props) => {
+	const { change, editSoundChange, maybeDeleteSoundChange, arrow } = props;
+	const { seek, replace, context, anticontext, description } = change;
+	const changer = useCallback(() => editSoundChange(change), [change, editSoundChange]);
+	const deleter = useCallback(() => maybeDeleteSoundChange(change), [change, maybeDeleteSoundChange]);
+	return (
+		<IonItemSliding>
+			<IonItemOptions>
+				<IonItemOption
+					color="primary"
+					onClick={changer}
+				>
+					<IonIcon slot="icon-only" src="svg/edit.svg" />
+				</IonItemOption>
+				<IonItemOption
+					color="danger"
+					onClick={deleter}
+				>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem>
+				<IonReorder
+					className="dragHandle ion-margin-end"
+				><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
+				<IonLabel className="wrappableInnards">
+					<div className="importantElement serifChars">
+						<span
+							className="seek importantUnit"
+						>{seek}</span>
+						<span
+						className="arrow unimportantUnit"
+						>{arrow}</span>
+						<span
+							className="replace importantUnit"
+						>{replace || String.fromCharCode(160)}</span>
+						<span
+							className="arrow unimportantUnit"
+						>/</span>
+						<span
+							className="replace importantUnit"
+						>{context}</span>
+						{anticontext ? (
+							<span>
+								<span
+									className="unimportantUnit"
+								>!</span>
+								<span
+									className="replace importantUnit"
+								>{anticontext}</span>
+							</span>
+						) : <></>}
+					</div>
+					<div className="description">{description}</div>
+				</IonLabel>
+				<IonIcon
+					size="small"
+					slot="end"
+					src="svg/slide-indicator.svg"
+				/>
+			</IonItem>
+		</IonItemSliding>
+	);
+};
+
+
+const WESChange: FC<PageData> = (props) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
@@ -58,20 +134,20 @@ const WERew = (props: PageData) => {
 	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const { soundChanges } = useSelector((state: StateObject) => state.we);
-	const editSoundChange = (change: WESoundChangeObject) => {
+	const editSoundChange = useCallback((change: WESoundChangeObject) => {
 		const groups = $q<HTMLIonListElement>(".soundChanges");
 		groups && groups.closeSlidingItems();
 		setEditing(change)
 		setIsOpenEditSoundChange(true);
-	};
+	}, []);
 	const arrow = (ltr() ? "⟶" : "⟵");
-	const maybeDeleteSoundChange = (change: WESoundChangeObject) => {
+	const maybeDeleteSoundChange = useCallback((change: WESoundChangeObject) => {
 		const groups = $q<HTMLIonListElement>(".soundChanges");
 		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(change.id));
 			toaster({
-				message: "Sound Change deleted.",
+				message: t("Sound Change deleted."),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -87,25 +163,26 @@ const WERew = (props: PageData) => {
 			}
 			yesNoAlert({
 				header: rule,
-				message: "Are you sure you want to delete this sound change? This cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, delete it",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
 		}
-	};
-	const doReorder = (event: CustomEvent) => {
+	}, [arrow, disableConfirms, dispatch, doAlert, toast, t, tc]);
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WESoundChangeObject>(soundChanges, ed.from, ed.to);
 		dispatch(rearrangeSoundChangesWE(reorganized));
 		ed.complete();
-	};
-	const maybeClearEverything = () => {
+	}, [dispatch, soundChanges]);
+	const maybeClearEverything = useCallback(() => {
+		const count = soundChanges.length;
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(null));
 			toaster({
-				message: "Sound Changes have been deleted.",
+				message: tc("thingsDeleted", { things: t("SChange", { count }), count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -116,15 +193,26 @@ const WERew = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear Everything?",
-				message: "This will delete all current sound changes, and cannot be undone.",
+				header: tc("Clear Everything?"),
+				message: tc("deleteThingsCannotUndo", { things: t("all current sound changes"), count }),
 				cssClass: "warning",
-				submit: "Yes, Delete Them",
+				submit: tc("confirmDel", { count }),
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [soundChanges.length, t, tc, doAlert, toast, disableConfirms, dispatch]);
+	const map = useCallback(
+		(input: WESoundChangeObject) =>
+			<SoundChange
+				key={input.id}
+				change={input}
+				editSoundChange={editSoundChange}
+				maybeDeleteSoundChange={maybeDeleteSoundChange}
+				arrow={arrow}
+			/>,
+		[arrow, editSoundChange, maybeDeleteSoundChange]
+	);
 	return (
 		<IonPage>
 			<AddSoundChangeModal
@@ -146,7 +234,7 @@ const WERew = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Sound Changes</IonTitle>
+					<IonTitle>{t("Sound Changes")}</IonTitle>
 					<IonButtons slot="end">
 						{soundChanges.length > 0 ?
 							<IonButton onClick={() => maybeClearEverything()}>
@@ -171,73 +259,13 @@ const WERew = (props: PageData) => {
 						className="hideWhileAdding"
 						onIonItemReorder={doReorder}
 					>
-						{soundChanges.map((change: WESoundChangeObject) => {
-							const { id, seek, replace, context, anticontext, description } = change;
-							return (
-								<IonItemSliding key={id}>
-									<IonItemOptions>
-										<IonItemOption
-											color="primary"
-											onClick={() => editSoundChange(change)}
-										>
-											<IonIcon slot="icon-only" src="svg/edit.svg" />
-										</IonItemOption>
-										<IonItemOption
-											color="danger"
-											onClick={() => maybeDeleteSoundChange(change)}
-										>
-											<IonIcon slot="icon-only" icon={trash} />
-										</IonItemOption>
-									</IonItemOptions>
-									<IonItem>
-										<IonReorder
-											className="dragHandle ion-margin-end"
-										><IonIcon icon={reorderTwo} className="dragHandle" /></IonReorder>
-										<IonLabel className="wrappableInnards">
-											<div className="importantElement serifChars">
-												<span
-													className="seek importantUnit"
-												>{seek}</span>
-												<span
-													className="arrow unimportantUnit"
-												>{arrow}</span>
-												<span
-													className="replace importantUnit"
-												>{replace || String.fromCharCode(160)}</span>
-												<span
-													className="arrow unimportantUnit"
-												>/</span>
-												<span
-													className="replace importantUnit"
-												>{context}</span>
-												{anticontext ? (
-													<span>
-														<span
-															className="unimportantUnit"
-														>!</span>
-														<span
-															className="replace importantUnit"
-														>{anticontext}</span>
-													</span>
-												) : <></>}
-											</div>
-											<div className="description">{description}</div>
-										</IonLabel>
-										<IonIcon
-											size="small"
-											slot="end"
-											src="svg/slide-indicator.svg"
-										/>
-									</IonItem>
-								</IonItemSliding>
-							);
-						})}
+						{soundChanges.map(map)}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="secondary"
-						title="Add new sound change"
+						title={tc("Add New")}
 						onClick={() => setIsOpenAddSoundChange(true)}
 					>
 						<IonIcon icon={addOutline} />
@@ -248,4 +276,4 @@ const WERew = (props: PageData) => {
 	);
 };
 
-export default WERew;
+export default WESChange;

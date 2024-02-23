@@ -63,6 +63,7 @@ const dj = {
 	editMethod: "Edit $t({{method}})",
 	addMethod: "Add $t({{method}})",
 	"Title Method": "Title or Description of this $t({{method}}):",
+	"all current groups": "all current groups",
 
 
 	groupAppliesTo: "; applies to $t(appliesTo)",

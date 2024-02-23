@@ -129,7 +129,7 @@ const SortSettings = (props: PageData) => {
 			});
 		}
 		yesNoAlert({
-			header: tc("delItem", { what: title }),
+			header: tc("deleteTitle", { title }),
 			message: t("Are you sure you want to delete this? This cannot be undone."),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",

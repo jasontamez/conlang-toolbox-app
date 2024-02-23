@@ -75,7 +75,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				]
 			});
 		}
-		const doSave = (title: string, msg: string = "savedToStorage") => {
+		const doSave = (title: string, msg: string = "titleSaved") => {
 			const save: DJCustomInfo = {
 				declensions,
 				conjugations,
@@ -95,14 +95,14 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			if(!value) {
 				doSave(title);
 			} else if (disableConfirms) {
-				doSave(title, "overwriteStorage");
+				doSave(title, "titleOverwritten");
 			} else {
 				yesNoAlert({
-					header: tc("alreadyExists", { title }),
-					message: tc("clearOverride", { things: "the previous save." }),
+					header: tc("titleAlreadyExists", { title }),
+					message: tc("clearOverwriteThings", { things: tc("the previous save"), count: 1 }),
 					cssClass: "warning",
 					submit: tc("Yes Overwrite It"),
-					handler: () => doSave(title, "overwriteStorage"),
+					handler: () => doSave(title, "titleOverwritten"),
 					doAlert
 				});
 			}
@@ -114,7 +114,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				if(value) {
 					dispatch(loadStateDJ(value));
 					toaster({
-						message: tc("saveLoaded", { title }),
+						message: tc("titleLoaded", { title }),
 						duration: 2500,
 						color: "success",
 						position: "top",
@@ -125,7 +125,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					doAlert({
 						header: tc("Load Error"),
 						cssClass: "danger",
-						message: tc("saveNotFound", { title }),
+						message: tc("titleNotFound", { title }),
 						buttons: [
 							{
 								text: tc("Ok"),
@@ -142,7 +142,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		} else {
 			yesNoAlert({
 				header:  tc("loadTitle", { title }),
-				message: tc("clearOverwrite", { things: "all current groups" }),
+				message: tc("clearOverwriteGeneralThings", { things: t("all current groups") }),
 				cssClass: "warning",
 				submit: tc("confirmLoad"),
 				handler,
@@ -156,7 +156,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			DeclenjugatorStorage.removeItem(title).then(() => {
 				toaster({
-					message: tc("saveDeleted", { title }),
+					message: tc("titleDeleted", { title }),
 					duration: 2500,
 					color: "danger",
 					position: "top",

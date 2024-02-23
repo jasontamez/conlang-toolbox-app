@@ -13,10 +13,14 @@ const wgwe = {
 	charGroupsDel: "{{count}} $t(CharGroup, { \"count\": {{count}} }) deleted.",
 	"clearCharGroups?_one": "Clear $t(CharGroup)?",
 	"clearCharGroups?_other": "Clear $t(CharGroup_other)?",
-	"delAllCharGroups_one":
+	delAllCharGroups_one:
 		"This will delete the current $t(charGroup, { \"count\": {{count}} }), and cannot be undone.",
-	"delAllCharGroups_other":
+	delAllCharGroups_other:
 		"This will delete all {{count}} current $t(charGroup, { \"count\": {{count}} }), and cannot be undone.",
+	delAllTransforms_one:
+		"This will delete the current $t(trans, { \"count\": {{count}} }), and cannot be undone.",
+	delAllTransforms_other:
+		"This will delete all {{count}} current $t(trans, { \"count\": {{count}} }), and cannot be undone.",
 	importCharGroups: "{{count}} $t(CharGroup, { \"count\": {{count}} }) imported.",
 	importOverwriteWarning:
 		"If any current {{thing}} has the same {{label}} as an incoming {{thing}}, "
@@ -27,6 +31,8 @@ const wgwe = {
 
 	Transform: "Transform",
 	Transforms: "Transforms",
+	Transforms_one: "Transforms",
+	Transforms_other: "Transforms",
 	Transformation: "Transformation",
 	Transformations: "Transformations",
 	trans: "transformation",

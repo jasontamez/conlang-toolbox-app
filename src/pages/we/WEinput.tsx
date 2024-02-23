@@ -63,7 +63,7 @@ const WEInput = (props: PageData) => {
 		el && (el.value = value);
 		updateInput(value);
 	}, [updateInput]);
-	const clearInput = () => {
+	const clearInput = useCallback(() => {
 		const handler = () => {
 			const el = $i<HTMLInputElement>("weInput");
 			el && (el.value = "");
@@ -81,7 +81,7 @@ const WEInput = (props: PageData) => {
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, doAlert, tc, updateInput]);
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />

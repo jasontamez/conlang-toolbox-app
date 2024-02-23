@@ -30,8 +30,20 @@ const we = {
 	"Sound Changes": "Sound Changes",
 	"Sound Changes Tab": "$t(Sound Changes) Tab",
 	"sChange": "sound change",
+	"Sound Change deleted.": "$t(Sound Change) deleted.",
+
+	// takes a `count` for plurality
 	"sChange_one": "sound change",
 	"sChange_other": "sound changes",
+	"SChange_one": "Sound Change",
+	"SChange_other": "Sound Changes",
+	"all current sound changes": "all current $t(sChange, { \"count\": {{count}} })",
+
+	"at input then undo at output": "at input, then undo at output",
+	"at input and output": "at input and output",
+	"at input": "at input",
+	"at output": "at output",
+
 	"GR": "%Group reference",
 	"GR_one": "%Group reference",
 	"GR_other": "%Group references",
