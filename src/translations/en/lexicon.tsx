@@ -24,11 +24,9 @@ const lexicon = {
 
 	"Lexicon Storage": "$t(common:Lexicon) Storage",
 	"Clear Lexicon": "Clear $t(common:Lexicon)",
-	"Load Lexicon": "Load $t(common:Lexicon)",
-	"Save Lexicon": "Save $t(common:Lexicon)",
 	"Save as New": "Save as New",
 	"Export Lexicon": "Export $t(common:Lexicon)",
-	"Delete Saved Lexicon": "Delete Saved $t(common:Lexicon)",
+	"Saved Lexicon": "Saved $t(common:Lexicon)",
 	"Lexicon Sorting": "$t(common:Lexicon) Sorting",
 	sortLexDescription:
 		`The Lexicon will be sorted alphabetically in the order you choose.
@@ -39,12 +37,9 @@ const lexicon = {
 	"Sort[colon]": "Sort:",
 	"Export Lexicon[colon]": "$t(Export Lexicon):",
 
-	"Delete multiple lexicon items": "Delete multiple lexicon items",
-	"Add new lexicon item": "Add new lexicon item",
+	"multiple lexicon items": "multiple lexicon items",
 	"Delete selected lexicon items": "Delete selected lexicon items",
 	"Cancel deleting": "Cancel deleting",
-	"Delete Lexicon": "Delete $t(common:Lexicon)",
-	"Lexicon deleted.": "$t(common:Lexicon) deleted.",
 	"Lexicon cleared": "Lexicon cleared",
 	"Nothing to clear": "Nothing to clear",
 	deleteEverythingMessage:
@@ -56,7 +51,6 @@ const lexicon = {
 		lexicon and cannot be reversed.`,
 	"No Saved Lexicons": "No Saved Lexicons",
 
-	"Lexicon saved.": "Lexicon saved.",
 	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!",
 	"You must input a title before saving.": "You must input a title before saving.",
 	"Please give your lexicon a title before exporting it.":
@@ -64,23 +58,17 @@ const lexicon = {
 	"Please add words to your lexicon before exporting it.":
 		"Please add words to your lexicon before exporting it.",
 
-	"Add Lexicon Item": "Add Lexicon Item",
-	"Add Item": "Add Item",
-	"Item added!": "Item added!",
+	Item: "Item",
+	Column: "Column",
+	Columns: "Columns",
+	"Lexicon Item": "$t(common:Lexicon) $t(Item)",
 	"Exit Without Saving?": "Exit Without Saving?",
 	"You have unsaved changes. Are you sure you want to exit?":
 		"You have unsaved changes. Are you sure you want to exit?",
-	"Item updated!": "Item updated!",
-	"Item deleted.": "Item deleted.",
 
-	"Edit Lexicon Item": "Edit Lexicon Item",
-	"Save Item": "Save Item",
-	"Delete Item": "Delete Item",
 	"New": "New", // Default label for a new column
-	"Added new column.": "Added new column.",
 	"Are you sure you want to delete this column? This cannot be undone.":
 		"Are you sure you want to delete this column? $t(common:cannotUndo)",
-	"Edit Columns": "Edit Columns",
 	"Lexicon Options": "$t(common:Lexicon) Options",
 	"Show Full Column Titles": "Show Full Column Titles",
 
@@ -103,8 +91,7 @@ const lexicon = {
 	"Medium size": "Medium size",
 	"Large size": "Large size",
 
-	"Add Column": "Add Column",
-	"Save Changes": "Save Changes",
+	Changes: "Changes",
 
 	"Text, Tabbed": "Text, Tabbed",
 	"Text, Semicolons": "Text, Semicolons",

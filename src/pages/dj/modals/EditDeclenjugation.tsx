@@ -201,7 +201,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		setOutgoingDeclenjugation(editedDJ);
 		closeModal();
 		toaster({
-			message: t("methodSaved", { method: typeString }),
+			message: t("titleSaved", { method: t(typeString) }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -253,7 +253,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: t("deleteMethod", { method: typeString }),
+				header: tc("deleteThing", { thing: t(typeString) }),
 				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
 				submit: tc("confirmDelIt"),
@@ -267,7 +267,7 @@ const EditDeclenjugation = (props: EditDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("editMethod", { method: typeString })}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t(typeString) })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

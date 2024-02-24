@@ -54,7 +54,6 @@ const common = {
 	"Copied to clipboard": "Copied to clipboard",
 	"Add New": "Add New",
 	"Nothing to copy": "Nothing to copy",
-	"Title saved.": "Title saved.",
 	Export: "Export",
 	"Export Info": "Export Info",
 	Generate: "Generate",
@@ -99,13 +98,29 @@ const common = {
 
 	// General Things are unknown, may be 0, 1, or any number
 	clearOverrideGeneralThings: "This will clear and overwrite {{things}}.",
+	deleteGeneralThings: "Delete {{things}}",
+	editGeneralThings: "Edit {{things}}",
+	saveGeneralThings: "Save {{things}}",
 
+	// Singular Things
+	thingAdded: "{{thing}} added.",
+	thingSaved: "{{thing}} saved.",
+	thingDeleted: "{{thing}} deleted.",
+	thingEdited: "{{thing}} edited.",
+	deleteThing: "Delete {{thing}}",
+	editThing: "Edit {{thing}}",
+	addThing: "Add {{thing}}",
+	saveThing: "Save {{thing}}",
+	loadThing: "Load {{thing}}",
+
+	// Titled things
 	deleteTitle: "Delete \"{{title}}\"?",
 	loadTitle: "Load \"{{title}}\"?",
 
 	titleSaved: "\"{{title}}\" saved.",
 	titleAlreadyExists: "\"{{title}}\" already exists",
 	titleLoaded: "\"{{title}}\" loaded.",
+	prefixTitleLoaded: "{{prefix}} \"{{title}}\" loaded.",
 	titleNotFound: "\"{{title}}\" not found.",
 	titleDeleted: "\"{{title}}\" deleted.",
 	titleOverwritten: "\"{{title}}\" overwritten.",
@@ -114,7 +129,7 @@ const common = {
 	"Yes Overwrite It": "Yes, Overwrite It",
 	"Load Error": "Load Error",
 	"Manage Custom Info": "Manage Custom Info",
-	"Save Current Info": "Save Current Info",
+	"Current Info": "Current Info",
 	"Name of save": "Name of save",
 	"Name your custom info": "Name your custom info",
 	"Load Saved Info": "Load Saved Info",
@@ -135,7 +150,7 @@ const common = {
 	confirmLoad: "Yes, Load It", // "It" may refer to many things
 	"Yes Exit": "Yes, Exit",
 	"Nothing to save.": "Nothing to save.",
-	"Delete This": "Delete This",
+	This: "This",
 	Delete: "Delete",
 	Edit: "Edit",
 	"Deleted.": "Deleted",

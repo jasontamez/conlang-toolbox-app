@@ -119,7 +119,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
-				message: tw("Character Group deleted."),
+				message: tc("thingDeleted", { thing: tw("Character Group") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -144,7 +144,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
 			toaster({
-				message: tc("charGroupsDel", { count }),
+				message: tc("thingsDeleted", { count, things: tw("CharGroup", { count }) }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

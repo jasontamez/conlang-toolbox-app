@@ -87,7 +87,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		setSavedEquality(equality);
 		close();
 		toaster({
-			message: t("Equality added."),
+			message: tc("thingAdded", { thing: t("Equality") }),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -113,7 +113,7 @@ const AddCustomSortEquality = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Add Equality")}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Equality") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

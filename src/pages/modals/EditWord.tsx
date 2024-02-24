@@ -100,7 +100,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		const cols = currentInfo();
 		if(cols.join("") === "") {
 			doAlert({
-				header: tc('Error'),
+				header: tc("Error"),
 				message: tc("You did not type any information into any text field."),
 				cssClass: "danger",
 				buttons: [
@@ -117,7 +117,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		dispatch(doEditLexiconItem([{id, columns: cols}, sorter]));
 		toaster({
-			message: t("Item updated!"),
+			message: tc("thingEdited", { thing: t("Item") }),
 			color: "success",
 			duration: 2500,
 			toast
@@ -128,7 +128,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			setIsOpen(false);
 			dispatch(deleteLexiconItem(id));
 			toaster({
-				message: t("Item deleted."),
+				message: tc("thingDeleted", { thing: t("Item") }),
 				duration: 2500,
 				color: "danger",
 				toast
@@ -138,10 +138,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc('areYouSure'),
+				header: tc("areYouSure"),
 				cssClass: "danger",
 				message: tc("Are you sure you want to delete this? This cannot be undone."),
-				submit: tc('confirmDelIt'),
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -151,7 +151,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t('Edit Lexicon Item')}</IonTitle>
+					<IonTitle>{t("Edit Lexicon Item")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -187,11 +187,11 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 				<IonToolbar>
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{t("Save Item")}</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: t("Item") })}</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={() => delFromLex()}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{t("Delete Item")}</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("Item") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

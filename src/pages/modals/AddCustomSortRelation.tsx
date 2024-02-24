@@ -91,7 +91,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 		setSavedRelation(relation);
 		close();
 		toaster({
-			message: t("Relation added."),
+			message: tc("thingAdded", { thing: t("Relation") }),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -118,7 +118,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Add Relation")}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Relation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

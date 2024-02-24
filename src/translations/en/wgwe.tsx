@@ -9,8 +9,6 @@ const wgwe = {
 	charGroup_other: "character groups",
 	CharGroup_one: "Character Group",
 	CharGroup_other: "Character Groups",
-	"Character Group deleted.": "$t(Character Group) deleted.",
-	charGroupsDel: "{{count}} $t(CharGroup, { \"count\": {{count}} }) deleted.",
 	"clearCharGroups?_one": "Clear $t(CharGroup)?",
 	"clearCharGroups?_other": "Clear $t(CharGroup_other)?",
 	delAllCharGroups_one:
@@ -35,6 +33,8 @@ const wgwe = {
 	Transforms_other: "Transforms",
 	Transformation: "Transformation",
 	Transformations: "Transformations",
+	Transformations_one: "Transformation",
+	Transformations_other: "Transformations",
 	trans: "transformation",
 	trans_one: "transformation",
 	trans_other: "transformations",
@@ -63,7 +63,6 @@ const wgwe = {
 
 	"transformation description": "$t(trans) $t(description)",
 
-	"Save everything": "Save everything",
 	"Choose what to save": "Choose what to save",
 
 	

@@ -2,6 +2,8 @@ const dj = {
 
 	Groups: "Groups",
 	Group: "Group",
+	Group_one: "Group",
+	Group_other: "Groups",
 	Type: "Type",
 	"Type[colon]": "$t(Type):",
 	Declensions: "Declensions", // group of declensions on-screen
@@ -26,15 +28,14 @@ const dj = {
 	method: "declension/conjugation/etc.",
 	method_one: "$t(method)",
 	method_other: "declensions/conjugations/etc.",
+	Equality: "Equality",
+	Relation: "Relation",
 
 	"Words to send through Declenjugator":
 		"Words to send through $t(common:Declenjugator)",
 	"Enter words here, one per line": "Enter words here, one per line",
-	"Group deleted.": "$t(Group) deleted.",
-	"Delete Entire Group": "Delete Entire $t(Group)",
-	"Are you sure you want to delete this entire Group? It cannot be undone.":
-		"Are you sure you want to delete this entire $t(Group)? It cannot be undone.",
-	"All groups deleted.": "All $t(Groups) Deleted.",
+	"this entire Group": "this entire $t(Group)",
+	"all current groups": "all current $t(Groups)",
 	"Clear All Groups?": "Clear All $t(Groups)?",
 	"This will delete all current groups, and it cannot be undone.":
 		"This will delete all current $t(Groups), and it cannot be undone.",
@@ -47,7 +48,6 @@ const dj = {
 		"You must provide at least one condition (start or end) before saving.",
 	"You did not enter a match expression.":
 		"You did not enter a match expression.",
-	"Group saved.": "$t(Group) saved.",
 	"Add Group": "Add $t({{type}}) Group",
 	"Edit Group": "Edit $t({{type}}) Group",
 	"Title Input": "Title or Description of this $t({{type}}) grouping:",
@@ -58,16 +58,9 @@ const dj = {
 	Modification: "Modification",
 	"Matching Expression[colon]": "Matching Expression:",
 	"Replacement Expression[colon]": "Replacement Expression:",
-	methodSaved: "$t({{method}}) saved.",
-	deleteMethod: "Delete $t({{method}})",
-	editMethod: "Edit $t({{method}})",
-	addMethod: "Add $t({{method}})",
 	"Title Method": "Title or Description of this $t({{method}}):",
-	"all current groups": "all current groups",
-
 
 	groupAppliesTo: "; applies to $t(appliesTo)",
-	"Add new group": "Add new $t(Group)",
 
 	"What is Declenjugator?": "What is $t(common:Declenjugator)?",
 

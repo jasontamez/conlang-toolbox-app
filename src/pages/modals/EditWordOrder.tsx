@@ -255,7 +255,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 				header: shadowColumns[i].label,
 				cssClass: "danger",
 				message: t("Are you sure you want to delete this column? This cannot be undone."),
-				submit: tc('confirmDelIt'),
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -294,7 +294,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Edit Columns")}</IonTitle>
+					<IonTitle>{tc("editGeneralThings", { things: t("Columns") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -437,7 +437,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						onClick={() => addNewColumn()}
 					>
 						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>{t("Add Column")}</IonLabel>
+						<IonLabel>{tc("addThing", { thing: t("Column") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="tertiary"
@@ -445,7 +445,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 						onClick={() => doneEditingOrder()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{t("Save Changes")}</IonLabel>
+						<IonLabel>{tc("saveGeneralThings", { things: t("Changes") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -182,7 +182,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		setSavedDeclenjugation(newDJ);
 		closeModal();
 		toaster({
-			message: t("methodSaved", { method: typeString }),
+			message: tc("thingSaved", { thing: t(typeString) }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -220,7 +220,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("addMethod", { method: typeString })}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t(typeString) })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

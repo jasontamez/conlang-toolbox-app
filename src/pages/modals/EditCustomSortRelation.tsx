@@ -108,7 +108,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		setOutgoingRelation(relation);
 		close();
 		toaster({
-			message: t("Relation edited."),
+			message: tc("thingEdited", { thing: t("Relation") }),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -121,7 +121,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 			close();
 		};
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -133,7 +133,7 @@ const EditCustomSortRelation = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Edit Relation")}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Relation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

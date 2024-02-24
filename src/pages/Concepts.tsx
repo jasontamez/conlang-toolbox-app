@@ -283,7 +283,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							message: t(
 								'saveToLexColumn',
 								{
-									what: t('Selected meanings', { count: words.length }),
+									what: t("Selected meanings", { count: words.length }),
 									column: col.label,
 									count: words.length
 								}
@@ -439,7 +439,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		});
 		dispatch(addCustomHybridMeaning(final));
 		makeToast && toaster({
-			message: t("Combination saved"),
+			message: tc("thingSaved", { thing: t("Combination") }),
 			duration: 2500,
 			position: "top",
 			color: "success",
@@ -469,9 +469,9 @@ const ConceptsPage: FC<PageData> = (props) => {
 			};
 			if(!disableConfirms) {
 				return yesNoAlert({
-					header: t('delMeanings', { count: savedWords.length }),
+					header: t("delMeanings", { count: savedWords.length }),
 					cssClass: "danger",
-					message: t('delMeaningsMessage', { count: savedWords.length }),
+					message: t("delMeaningsMessage", { count: savedWords.length }),
 					submit: tc("confirmDel", { count: savedWords.length }),
 					handler,
 					doAlert
@@ -510,12 +510,12 @@ const ConceptsPage: FC<PageData> = (props) => {
 		currentCombo,
 		save
 	] = useMemo(() => [
-		tc('Display[colon]'),
-		t('My Combinations'),
-		t('Save All Meanings'),
-		t('Save Selected Meanings'),
-		t('Current Combination[colon]'),
-		tc('Save')
+		tc("Display[colon]"),
+		t("My Combinations"),
+		tc("saveGeneralThings", {things: t("All Meanings")}),
+		tc("saveGeneralThings", {things: t("Selected Meanings")}),
+		t("Current Combination[colon]"),
+		tc("Save")
 	], [ t, tc ]);
 
 	return (
@@ -623,42 +623,42 @@ export const ConceptCard = () => {
 		<IonCard>
 			<IonItem lines="full">
 				<ConceptsOutlineIcon slot="start" color="primary" />
-				<IonLabel>{tc('Concepts')}</IonLabel>
+				<IonLabel>{tc("Concepts")}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>{t('info.basic1')}</p>
-				<p>{t('info.basic2')}</p>
+				<p>{t("info.basic1")}</p>
+				<p>{t("info.basic2")}</p>
 				<hr />
-				<h2>{tc('Controls')}</h2>
+				<h2>{tc("Controls")}</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
-				<p>{t('info.controlLexicon')}</p>
+				<p>{t("info.controlLexicon")}</p>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
-				<p>{t('info.controlJoin')}</p>
+				<p>{t("info.controlJoin")}</p>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/unlink.svg" /></div>
-				<p>{t('info.controlUnjoin')}</p>
+				<p>{t("info.controlUnjoin")}</p>
 				<hr />
-				<h2>{t('Swadesh Lists')}</h2>
+				<h2>{t("Swadesh Lists")}</h2>
 				<p>
-					{t('info.swadesh1')}<strong>{t('Swadesh 100')}</strong>
-					{t('info.swadesh2')}<strong>{t('Swadesh 207')}</strong>
-					{t('info.swadesh3')}<strong>{t('Swadesh-Yakhontov')}</strong>
-					{t('info.swadesh4')}<strong>{t('Swadesh-Woodward Sign List')}</strong>
-					{t('info.swadesh5')}
+					{t("info.swadesh1")}<strong>{t("Swadesh 100")}</strong>
+					{t("info.swadesh2")}<strong>{t("Swadesh 207")}</strong>
+					{t("info.swadesh3")}<strong>{t("Swadesh-Yakhontov")}</strong>
+					{t("info.swadesh4")}<strong>{t("Swadesh-Woodward Sign List")}</strong>
+					{t("info.swadesh5")}
 				</p>
-				<h2>{t('Dolgopolsky List')}</h2>
-				<p>{t('info.dolgopolsky')}</p>
-				<h2>{t('Leipzig-Jakarta List')}</h2>
-				<p>{t('info.leipzigJakarta')}</p>
-				<h2>{t('ASJP List')}</h2>
+				<h2>{t("Dolgopolsky List")}</h2>
+				<p>{t("info.dolgopolsky")}</p>
+				<h2>{t("Leipzig-Jakarta List")}</h2>
+				<p>{t("info.leipzigJakarta")}</p>
+				<h2>{t("ASJP List")}</h2>
 				<p>
-					{t('info.asjp1')}<strong>{t('Automated Similarity Judgment Program')}</strong>
-					{t('info.asjp2')}
+					{t("info.asjp1")}<strong>{t("Automated Similarity Judgment Program")}</strong>
+					{t("info.asjp2")}
 				</p>
-				<h2>{t('Landau 200')}</h2>
+				<h2>{t("Landau 200")}</h2>
 				<p>
-					{t('info.landau1')}<strong>{t('Basic 200 List')}</strong>
-					{t('info.landau2')}<strong>{t('Landau Core Vocabulary (LCV)')}</strong>
-					{t('info.landau3')}
+					{t("info.landau1")}<strong>{t("Basic 200 List")}</strong>
+					{t("info.landau2")}<strong>{t("Landau Core Vocabulary (LCV)")}</strong>
+					{t("info.landau3")}
 				</p>
 			</IonCardContent>
 		</IonCard>

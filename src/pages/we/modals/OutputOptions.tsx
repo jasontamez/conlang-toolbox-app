@@ -23,11 +23,14 @@ import {
 	closeCircleOutline
 } from 'ionicons/icons';
 
+import useTranslator from '../../../store/translationHooks';
 import { WEOutputTypes, ModalProperties, StateObject } from '../../../store/types';
 import { setCustomSort, setFlag, setOutputWE } from '../../../store/weSlice';
 import PermanentInfo from '../../../components/PermanentInfo';
 
 const OutputOptionsModal = (props: ModalProperties) => {
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const {
@@ -41,7 +44,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Output Options</IonTitle>
+					<IonTitle>{t("Output Options")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
@@ -57,7 +60,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={inputLower}
 							onIonChange={e => dispatch(setFlag(["inputLower", e.detail.checked]))}
-						>Convert input to lowercase before evolving</IonToggle>
+						>{t("Convert input to lowercase before evolving")}</IonToggle>
 					</IonItem>
 					<IonItem lines={inputAlpha ? "none" : undefined}>
 						<IonToggle
@@ -65,7 +68,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={inputAlpha}
 							onIonChange={e => dispatch(setFlag(["inputAlpha", e.detail.checked]))}
-						>Sort input before evolving</IonToggle>
+						>{t("Sort input before evolving")}</IonToggle>
 					</IonItem>
 					<IonItem className={inputAlpha ? "" : "hide"} lines="full">
 						<IonSelect
@@ -78,7 +81,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
-							>Default</IonSelectOption>
+							>{tc("Default sort")}</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
@@ -97,28 +100,28 @@ const OutputOptionsModal = (props: ModalProperties) => {
 								value="outputOnly"
 								labelPlacement="end"
 								justify="start"
-							>Output Only</IonRadio>
+							>{t("Output Only")}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
 							<IonRadio
 								value="rulesApplied"
 								labelPlacement="end"
 								justify="start"
-							>Output and Sound-Change Rules</IonRadio>
+							>{t("Output and Sound-Change Rules")}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
 							<IonRadio
 								value="inputFirst"
 								labelPlacement="end"
 								justify="start"
-							>Input, then Output</IonRadio>
+							>{t("Input then Output")}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap" lines="full">
 							<IonRadio
 								value="outputFirst"
 								labelPlacement="end"
 								justify="start"
-							>Output, then Input</IonRadio>
+							>{t("Output then Input")}</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
@@ -130,7 +133,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 						slot="end"
 						onClick={() => setIsOpen(false)}
 					>
-						<IonLabel>Done</IonLabel>
+						<IonLabel>{tc("Done")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

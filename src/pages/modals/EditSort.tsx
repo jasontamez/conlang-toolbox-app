@@ -37,6 +37,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 	const { isOpen, setIsOpen, sorter } = props;
 	const dispatch = useDispatch();
 	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 	const {
 		columns,
 		sortPattern,
@@ -98,7 +99,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 				<IonToolbar color="darker">
 					<IonButton color="tertiary" slot="end" onClick={() => doneSorting()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{t("Save Changes")}</IonLabel>
+						<IonLabel>{tc("saveGeneralThings", { things: t("Changes") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

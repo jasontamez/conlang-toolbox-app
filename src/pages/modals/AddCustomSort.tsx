@@ -267,7 +267,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		dispatch(addNewCustomSort(customSort));
 		closeModal();
 		toaster({
-			message: t("Custom sort saved."),
+			message: tc("thingSaved", { thing: t("Custom Sort") }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -310,7 +310,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		const el = $i<HTMLIonListElement>("addingCustomSortList");
 		el && el.closeSlidingItems();
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -328,7 +328,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		const el = $i<HTMLIonListElement>("addingCustomSortList");
 		el && el.closeSlidingItems();
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("Are you sure you want to delete this? This cannot be undone."),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -351,7 +351,7 @@ const AddCustomSort = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Add Custom Sort")}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Custom Sort") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

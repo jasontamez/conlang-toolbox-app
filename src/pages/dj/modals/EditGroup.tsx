@@ -308,7 +308,7 @@ const EditGroup = (props: EditGroupProps) => {
 		}
 		closeModal();
 		toaster({
-			message: t("Group saved."),
+			message: tc("thingSaved", { thing: t("Group") }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -372,7 +372,7 @@ const EditGroup = (props: EditGroupProps) => {
 			dispatch(deleteGroup([editingGroupInfo![0], id]));
 			closeModal();
 			toaster({
-				message: t("Group deleted."),
+				message: tc("thingDeleted", { thing: t("Group") }),
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -381,8 +381,8 @@ const EditGroup = (props: EditGroupProps) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: t("Delete Entire Group"),
-				message: t("Are you sure you want to delete this entire Group? It cannot be undone."),
+				header: tc("deleteThing", { thing: "Entire Group" }),
+				message: tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}),
 				cssClass: "danger",
 				submit: tc("confirmDelIt"),
 				handler,
@@ -416,7 +416,7 @@ const EditGroup = (props: EditGroupProps) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("Are you sure?"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",

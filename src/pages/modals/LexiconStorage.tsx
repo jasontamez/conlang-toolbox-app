@@ -95,8 +95,8 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 			yesNoAlert({
 				header: tc("Delete Everything?"),
 				cssClass: "danger",
-				message: t('deleteEverythingMessage'),
-				submit: tc('confirmDelIt'),
+				message: t("deleteEverythingMessage"),
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -116,7 +116,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 		});
 	};
 	const saveLexicon = (
-		announce: string = t("Lexicon saved."),
+		announce: string = tc("thingSaved", { thing: tc("Lexicon") }),
 		saveKey: string = id,
 		overwrite: boolean = true
 	) => {
@@ -235,11 +235,11 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-						<IonLabel>{t("Load Lexicon")}</IonLabel>
+						<IonLabel>{tc("loadThing", { thing: t("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexicon()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>{t("Save Lexicon")}</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: t("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexiconNew()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
@@ -251,7 +251,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openDelete)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
-						<IonLabel>{t("Delete Saved Lexicon")}</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("Saved Lexicon") })}</IonLabel>
 					</IonItem>
 				</IonList>
 			</IonContent>
@@ -265,7 +265,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 							color="success"
 						>
 							<IonIcon icon={checkmarkCircleOutline} slot="start" />
-							<IonLabel>{tc('Done')}</IonLabel>
+							<IonLabel>{tc("Done")}</IonLabel>
 						</IonButton>
 					</IonButtons>
 				</IonToolbar>

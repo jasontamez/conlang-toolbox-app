@@ -54,7 +54,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				setLexInfo([]);
 				setIsOpen(false);
 				toaster({
-					message: t("Lexicon deleted."),
+					message: tc("thingDeleted", { thing: tc("Lexicon") }),
 					duration: 2500,
 					toast
 				});
@@ -77,7 +77,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Delete Lexicon")}</IonTitle>
+					<IonTitle>{tc("deleteThing", { thing: tc("Lexicon") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -101,7 +101,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 									className="ion-text-wrap"
 								>
 									{lex.title}
-									[{t('lexitems', { count: lex.lexicon.length })}]
+									[{t("lexitems", { count: lex.lexicon.length })}]
 								</IonLabel>
 								<IonNote
 									className="ion-text-wrap ital"
@@ -110,7 +110,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 							</IonItem>
 						);
 					}) : (
-						<h1>{t('No Saved Lexicons')}</h1>
+						<h1>{t("No Saved Lexicons")}</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -118,7 +118,7 @@ const DeleteLexiconModal = (props: SavedLexProperties) => {
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc('Cancel')}</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

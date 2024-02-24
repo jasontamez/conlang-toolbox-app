@@ -29,6 +29,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { ExtraCharactersModalOpener, SetState, StateObject, WETransformDirection, WETransformObject } from '../../../store/types';
 import { editTransformWE, deleteTransformWE } from '../../../store/weSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import { $i, $q } from '../../../components/DollarSignExports';
 import ltr from '../../../components/LTR';
@@ -43,6 +44,8 @@ interface ModalProps extends ExtraCharactersModalOpener {
 const EditTransformModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 
@@ -89,7 +92,7 @@ const EditTransformModal = (props: ModalProps) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No search expression present");
+			err.push(t("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -99,12 +102,12 @@ const EditTransformModal = (props: ModalProps) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				message: err.join("; "),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -124,7 +127,7 @@ const EditTransformModal = (props: ModalProps) => {
 		}));
 		cancelEditing();
 		toaster({
-			message: "Transform saved!",
+			message: tc("thingSaved", { thing: t("Transformation")}),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -144,7 +147,7 @@ const EditTransformModal = (props: ModalProps) => {
 			dispatch(deleteTransformWE(editing!.id));
 			cancelEditing();
 			toaster({
-				message: "Transform deleted.",
+				message: tc("thingDeleted", { thing: t("Transformation") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -157,9 +160,9 @@ const EditTransformModal = (props: ModalProps) => {
 			const { seek, direction, replace } = editing!;
 			yesNoAlert({
 				header: `${seek} ${makeArrow(direction)} ${replace}`,
-				message: "Are you sure you want to delete this? This cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -173,7 +176,7 @@ const EditTransformModal = (props: ModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Transform</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Transformation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -187,39 +190,39 @@ const EditTransformModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">Input Expression:</IonLabel>
+						<IonLabel className="seekLabel">{t("Input Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Input expression"
+							aria-label={t("Input Expression[colon]")}
 							id="editSearchExWE"
 							className="ion-margin-top serifChars"
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
+						<IonLabel className="replaceLabel">{t("Output Expression[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Output expression"
+							aria-label={t("Output Expression[colon]")}
 							id="editReplaceExWE"
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Transform Description:</IonLabel>
+						<IonLabel>{t("Transform Description[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Description of the transform"
+							aria-label={t("Description of the transformation")}
 							id="editOptDescWE"
 							className="ion-margin-top"
 							placeholder="(optional)"
 						></IonInput>
 					</IonItem>
 					<IonItemDivider>
-						<IonLabel>Transform Direction:</IonLabel>
+						<IonLabel>{t("Transformation Direction[colon]")}</IonLabel>
 					</IonItemDivider>
 					<IonRadioGroup
 						value={direction}
@@ -230,28 +233,28 @@ const EditTransformModal = (props: ModalProps) => {
 								value="both"
 								labelPlacement="end"
 								justify="start"
-							>At Input, Then Undo At Output</IonRadio>
+							>{t("At input then undo at output", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="double"
 								labelPlacement="end"
 								justify="start"
-							>At Input and At Output</IonRadio>
+							>{t("At input and at output", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="in"
 								labelPlacement="end"
 								justify="start"
-							>At Input Only</IonRadio>
+							>{t("At input only", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="out"
 								labelPlacement="end"
 								justify="start"
-							>At Output Only</IonRadio>
+							>{t("At output only", { context: "formal" })}</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
@@ -264,7 +267,7 @@ const EditTransformModal = (props: ModalProps) => {
 						onClick={() => maybeSaveNewTransformInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Transform</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: t("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="danger"
@@ -272,7 +275,7 @@ const EditTransformModal = (props: ModalProps) => {
 						onClick={() => maybeDeleteTransform()}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Item</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("Transformation") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -22,7 +22,6 @@ const we = {
 	labels: "$t(label_other)",
 	run: "$t(wgwe:run)",
 	"transformation description": "$t(wgwe:transformation description)",
-	"Save everything": "$t(wgwe:Save everything)",
 	"Choose what to save": "$t(wgwe:Choose what to save)",
 	Evolve: "Evolve",
 
@@ -30,7 +29,6 @@ const we = {
 	"Sound Changes": "Sound Changes",
 	"Sound Changes Tab": "$t(Sound Changes) Tab",
 	"sChange": "sound change",
-	"Sound Change deleted.": "$t(Sound Change) deleted.",
 
 	// takes a `count` for plurality
 	"sChange_one": "sound change",
@@ -39,10 +37,11 @@ const we = {
 	"SChange_other": "Sound Changes",
 	"all current sound changes": "all current $t(sChange, { \"count\": {{count}} })",
 
-	"at input then undo at output": "at input, then undo at output",
-	"at input and output": "at input and output",
-	"at input": "at input",
-	"at output": "at output",
+	"Output Options": "Output Options",
+	"Convert input to lowercase before evolving": "Convert input to lowercase before evolving",
+	"Sort input before evolving": "Sort input before evolving",
+
+	"No search expression present": "No search expression present",
 
 	"GR": "%Group reference",
 	"GR_one": "%Group reference",
@@ -60,21 +59,36 @@ const we = {
 	"You have no input words to evolve.": "You have no input words to evolve.",
 
 	"input expression": "input expression",
+	"Input Expression[colon]": "Input Expression:",
 	"output expression": "output expression",
+	"Output Expression[colon]": "Output Expression:",
+	"Transformation Description[colon]":
+		"$t(Transformation) $t(common:Description)[colon]",
+	"Description of the transformation": "$t(common:Description) of the $(trans)",
+	"Transformation Direction[colon]": "Transformation Direction:",
 	"transformation direction": "$t(trans) direction",
 	"At input then undo at output": "At input, then undo at output",
 	"At input and at output": "At input and at output",
 	"At input only": "At input only",
 	"At output only": "At output only",
+	"at input then undo at output": "at input, then undo at output",
+	"at input and output": "at input and output",
+	"at input": "at input",
+	"at output": "at output",
+	"At input then undo at output_formal": "At Input, Then Undo At Output",
+	"At input and at output_formal": "At Input and At Output",
+	"At input only_formal": "At Input Only",
+	"At output only_formal": "At Output Only",
 	"beginning expression": "beginning expression",
 	"ending expression": "ending expression",
 	"context expression": "context expression",
 	"exception expression": "exception expression",
-	"Output only": "$t(common:Output) only",
+	"Output Only": "$t(common:Output) only",
 	"Output and Sound-Change Rules": "$t(common:Output) and Sound-Change Rules",
 	"Input then Output": "$t(common:Input), then $t(common:Output)",
 	"Output then Input": "$t(common:Output), then $t(common:Input)",
 
+	allThings: "all current $t(charGroup_other), $t(trans_other) and $t(sChange_other)",
 
 	info: {
 		input: [
@@ -285,11 +299,11 @@ const we = {
 		outputSettings: [
 			"Click on the gear icon to open a list of options. The first is",
 			"a drop-down menu where you can select what to output. The",
-			"choices are **$t(Output only)**,",
+			"choices are **$t(Output Only)**,",
 			"**$t(Output and Sound-Change Rules)**,",
 			"**$t(Input then Output)** and **$t(Output then Input)**.",
 			"",
-			"Choosing **$t(Output only)** will display a simple list of",
+			"Choosing **$t(Output Only)** will display a simple list of",
 			"evolved words.",
 			"",
 			"**$t(Output and Sound-Change Rules)** displays the most complex",

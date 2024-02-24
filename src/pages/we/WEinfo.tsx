@@ -110,7 +110,7 @@ export const TraCard: FC<CardProps> = (props) => {
 export const SChCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const main = t("info.soundChanges", { joinArrays: "\n"});
-	const blocks = t('info.soundChangesBlocks', { returnObjects: true });
+	const blocks = t("info.soundChangesBlocks", { returnObjects: true });
 	const blockStorage: BlockStorage = {};
 	const arrow = (ltr() ? "⟶" : "⟵");
 	Object.entries(blocks).forEach(([label, info]: [string, Block]) => {

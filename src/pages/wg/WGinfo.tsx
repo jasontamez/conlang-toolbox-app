@@ -59,7 +59,7 @@ const OverviewButton: FC<CardProps> = (props) => {
 
 export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const example = t('info.charGroupExample', { returnObjects: true });
+	const example = t("info.charGroupExample", { returnObjects: true });
 	const plainText = t("info.charGroups", { joinArrays: "\n"});
 	const endHiddenOverview = t("info.charGroupsHiddenOverview", { joinArrays: "\n"});
 	const endOverview = t("info.charGroupsOverview", { joinArrays: "\n"});
@@ -97,10 +97,10 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const { hideOverview } = props;
-	const charGroupExample = t('info.charGroupExample', { returnObjects: true });
+	const charGroupExample = t("info.charGroupExample", { returnObjects: true });
 	const startHiddenOverview = t("info.syllablesStartHideOverview", { joinArrays: "\n"});
 	const startOverview = t("info.syllablesStartOverview", { joinArrays: "\n"});
-	const example = t('info.syllablesExample', { returnObjects: true });
+	const example = t("info.syllablesExample", { returnObjects: true });
 	const plainText = t("info.syllables", { joinArrays: "\n"});
 	const endHiddenOverview = t("info.syllablesEndHideOverview", { joinArrays: "\n"});
 	const endOverview = t("info.syllablesEndOverview", { joinArrays: "\n"});
@@ -156,7 +156,7 @@ export const SylCard: FC<CardProps> = (props) => {
 export const TransCard: FC<CardProps> = (props) => {
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const [ t ] = useTranslator('wg');
-	const blocks = t('info.transBlocks', { returnObjects: true });
+	const blocks = t("info.transBlocks", { returnObjects: true });
 	const blockStorage: BlockStorage = {};
 	Object.entries(blocks).forEach(([label, info]: [string, Block]) => {
 		blockStorage[label] = parseBlock(info, arrow);

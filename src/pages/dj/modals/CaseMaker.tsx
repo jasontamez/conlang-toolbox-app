@@ -145,7 +145,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 		setSavedTitle(titleParts.map(part => Array.isArray(part) ? part.join("") : part + " ").join("").trim());
 		closeModal();
 		toaster({
-			message: tc("Title saved."),
+			message: tc("thingSaved", { thing: tc("Title") }),
 			position: "middle",
 			color: "success",
 			duration: 2000,

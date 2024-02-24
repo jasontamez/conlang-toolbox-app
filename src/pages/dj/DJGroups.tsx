@@ -114,7 +114,8 @@ const DJGroups = (props: PageData) => {
 	const toast = useIonToast();
 	const { declensions, conjugations, other } = useSelector((state: StateObject) => state.dj);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
-	const canTrash = (declensions.length + conjugations.length + other.length) > 0;
+	const allGroups = (declensions.length + conjugations.length + other.length);
+	const canTrash = allGroups > 0;
 
 	const addDeclenjugationModalInfo = modalPropsMaker(addDeclenjugationOpen, setAddDeclenjugationOpen);
 	const editDeclenjugationModalInfo = modalPropsMaker(editDeclenjugationOpen, setEditDeclenjugationOpen);
@@ -132,7 +133,7 @@ const DJGroups = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteGroup([type, group.id]));
 			toaster({
-				message: t("Group deleted."),
+				message: tc("thingDeleted", { thing: t("Group") }),
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -141,8 +142,8 @@ const DJGroups = (props: PageData) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: t("Delete Entire Group"),
-				message: t("Are you sure you want to delete this entire Group? It cannot be undone."),
+				header: tc("deleteThing", { thing: "Entire Group" }),
+				message: tc("deleteThingsCannotUndo", { things: t("this entire $t(Group)"), count: 1}),
 				cssClass: "danger",
 				submit: tc("confirmDelIt"),
 				handler,
@@ -155,7 +156,7 @@ const DJGroups = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
 			toaster({
-				message: t("All groups deleted."),
+				message: tc("thingsDeleted", { things: t("Group", { count: allGroups }), count: allGroups }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -167,14 +168,14 @@ const DJGroups = (props: PageData) => {
 		} else {
 			yesNoAlert({
 				header: t("Clear All Groups?"),
-				message: t("This will delete all current groups, and it cannot be undone."),
+				message: tc("deleteThingsCannotUndo", { things: t("all current groups"), count: allGroups}),
 				cssClass: "warning",
 				submit: tc("confirmDel_other"),
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, t, tc, toast, doAlert, disableConfirms]);
+	}, [dispatch, t, tc, toast, doAlert, disableConfirms, allGroups]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];
@@ -302,7 +303,7 @@ const DJGroups = (props: PageData) => {
 								<div><strong>{title}</strong></div>
 								<div className="description">
 									<em>
-										{makeDJGroupDescription(group)}{appliesTo && t('groupAppliesTo', { appliesTo })}
+										{makeDJGroupDescription(group)}{appliesTo && t("groupAppliesTo", { appliesTo })}
 									</em>
 								</div>
 							</IonLabel>
@@ -419,7 +420,7 @@ const DJGroups = (props: PageData) => {
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
 				onDidDismiss={() => setLoadingOpen(false)}
-				message={tc('Please wait...')}
+				message={tc("Please wait...")}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -437,7 +438,7 @@ const DJGroups = (props: PageData) => {
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="primary"
-						title={t("Add new group")}
+						title={tc("Add New")}
 						onClick={() => setIsOpenAddGroup(true)}
 					>
 						<IonIcon icon={addOutline} />

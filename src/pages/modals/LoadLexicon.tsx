@@ -57,9 +57,9 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				handler();
 			} else {
 				yesNoAlert({
-					message: t('loadLexiconConfirm'),
+					message: t("loadLexiconConfirm"),
 					cssClass: "warning",
-					submit: tc('confirmLoad'),
+					submit: tc("confirmLoad"),
 					handler,
 					doAlert
 				});
@@ -72,7 +72,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t('Load Lexicon')}</IonTitle>
+					<IonTitle>{t("Load Lexicon")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -90,7 +90,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
 								<IonLabel
 									className="ion-text-wrap"
-								>{lex.title} [{t('lexitems', { count: lex.lexicon.length })}]</IonLabel>
+								>{lex.title} [{t("lexitems", { count: lex.lexicon.length })}]</IonLabel>
 								<IonNote
 									className="ion-text-wrap ital"
 									slot="end"
@@ -106,7 +106,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				<IonToolbar className={data ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc('Cancel')}</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

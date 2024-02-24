@@ -22,7 +22,6 @@ const wg = {
 	labels: "$t(label_other)",
 	run: "$t(wgwe:run)",
 	"transformation description": "$t(wgwe:transformation description)",
-	"Save everything": "$t(wgwe:Save everything)",
 	"Choose what to save": "$t(wgwe:Choose what to save)",
 
 	Syllable: "Syllable",

@@ -258,7 +258,7 @@ const AddGroup = (props: AddGroupProps) => {
 		dispatch(addGroup({type, group: newGroup}));
 		setIsOpen(false);
 		toaster({
-			message: t("Group saved."),
+			message: tc("thingSaved", { thing: t("Group") }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -310,7 +310,7 @@ const AddGroup = (props: AddGroupProps) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("Are you sure?"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",

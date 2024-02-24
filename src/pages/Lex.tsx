@@ -201,7 +201,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const workOff = useCallback(() => setIsWorking(false), []);
 	const loadMsg = useMemo(() => t("Please wait..."), [t]);
 	const workMsg = useMemo(() => t("Working..."), [t]);
-	const title = useMemo(() => t('Lexicon'), [t]);
+	const title = useMemo(() => t("Lexicon"), [t]);
 
 	return (<>
 		<LoadLexiconModal
@@ -256,7 +256,7 @@ function maybeExpand (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, toas
 	// Expand an overflowing field into a toast
 	const span = e.target as HTMLSpanElement;
 	if(span.matches('.lexItem') && span.clientWidth < span.scrollWidth) {
-		const message = (span && (span.textContent as string)) || i18n.t('emphasizedError', { ns: "common" });
+		const message = (span && (span.textContent as string)) || i18n.t("emphasizedError", { ns: "common" });
 		toaster({
 			message,
 			duration: 10000,
@@ -444,7 +444,7 @@ const Lex = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteMultipleLexiconItems(deleting.map(obj => obj.id)));
 			toaster({
-				message: t('delItemsSuccess'),
+				message: t("delItemsSuccess"),
 				color: "danger",
 				position: "middle",
 				toast
@@ -453,9 +453,9 @@ const Lex = (props: PageData) => {
 			return setIsDeleting(false);
 		};
 		yesNoAlert({
-			header: t('delItems', { count: length }),
-			message: tc('cannotUndo') + " " + tc('areYouSure'),
-			submit: tc('confirmDel', { count: length }),
+			header: t("delItems", { count: length }),
+			message: tc("cannotUndo") + " " + tc("areYouSure"),
+			submit: tc("confirmDel", { count: length }),
 			cssClass: "danger",
 			handler,
 			doAlert
@@ -465,7 +465,7 @@ const Lex = (props: PageData) => {
 		clearMergedInfo();
 		setIsDeleting(true);
 		toaster({
-			message: t('beginDeleteMode'),
+			message: t("beginDeleteMode"),
 			duration: 8000,
 			position: "bottom",
 			color: "danger",
@@ -526,7 +526,7 @@ const Lex = (props: PageData) => {
 		});
 		if(!foundFlag) {
 			doAlert({
-				header: tc('error'),
+				header: tc("error"),
 				message: tc("You did not type any information into any text field."),
 				cssClass: "warning",
 				buttons: [
@@ -562,7 +562,7 @@ const Lex = (props: PageData) => {
 				header: title,
 				cssClass: "danger",
 				message: tc("Are you sure you want to delete this? This cannot be undone."),
-				submit: tc('confirmDelIt'),
+				submit: tc("confirmDelIt"),
 				handler: () => dispatch(deleteLexiconItem(item.id)),
 				doAlert
 			});
@@ -676,7 +676,7 @@ const Lex = (props: PageData) => {
 							value={title}
 							id="lexTitle"
 							className="ion-margin-top"
-							helperText={t('lexTitleHelperText')}
+							helperText={t("lexTitleHelperText")}
 							onIonChange={() => setNewInfo("lexTitle", "title")}
 						></IonInput>
 					</IonItem>
@@ -687,7 +687,7 @@ const Lex = (props: PageData) => {
 							value={description}
 							id="lexDesc"
 							className="ion-margin-top"
-							helperText={t('lexDescriptionHelperText')}
+							helperText={t("lexDescriptionHelperText")}
 							rows={3}
 							onIonChange={() => setNewInfo("lexDesc", "description")}
 						/>
@@ -696,7 +696,7 @@ const Lex = (props: PageData) => {
 				<IonList lines="none" id="mainLexList">
 					<div id="theLexiconHeader">
 						<div className="flex-basic">
-							<h1>{t('lexItems', { count: lexicon.length })}</h1>
+							<h1>{t("lexItems", { count: lexicon.length })}</h1>
 						</div>
 						<div className="flex-shrinker">
 							<h2>{t("Sort[colon]")}</h2>
@@ -803,14 +803,14 @@ const Lex = (props: PageData) => {
 					<IonFabList side="top">
 						<IonFabButton
 							color="danger"
-							title={t("Delete multiple lexicon items")}
+							title={tc("deleteGeneralThings", {things: t("multiple lexicon items")})}
 							onClick={() => beginMassDeleteMode()}
 						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
 						<IonFabButton
 							color="success"
-							title={t("Add new lexicon item")}
+							title={tc("Add New")}
 							onClick={() => setIsOpenAddLexItem(true)}
 						>
 							<IonIcon icon={addCircle} />
@@ -856,41 +856,41 @@ export const LexCard = () => {
 		<IonCard>
 			<IonItem lines="full">
 				<LexiconIcon slot="start" color="primary" />
-				<IonLabel>{tc('Lexicon')}</IonLabel>
+				<IonLabel>{tc("Lexicon")}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>{t('info.basic')}</p>
+				<p>{t("info.basic")}</p>
 				<p className="center pad-top-rem">
 					<IonIcon icon={chevronUpCircle} color="tertiary" size="large" />
 				</p>
-				<p>{t('info.description')}</p>
+				<p>{t("info.description")}</p>
 				<p className="center pad-top-rem">
 					<IonIcon icon={saveOutline} color="tertiary" size="large" />
 				</p>
-				<p>{t('info.saveButton')}</p>
-				<p>{t('info.counterAndSort')}</p>
+				<p>{t("info.saveButton")}</p>
+				<p>{t("info.counterAndSort")}</p>
 				<p className="center pad-top-rem">
 					<IonIcon icon={settings} color="tertiary" size="large" />
 				</p>
-				<p>{t('info.editColumns1')}<IonIcon icon={reorderTwo} color="tertiary" />{t('info.editColumns2')}</p>
-				<p>{t('info.secondRow')}</p>
-				<p>{t('info.mainLexicon')}</p>
+				<p>{t("info.editColumns1")}<IonIcon icon={reorderTwo} color="tertiary" />{t("info.editColumns2")}</p>
+				<p>{t("info.secondRow")}</p>
+				<p>{t("info.mainLexicon")}</p>
 				<p className="center pad-top-rem">
 					<IonIcon icon={construct} color="tertiary" size="large" />
 				</p>
-				<p>{t('info.toolButton')}</p>
+				<p>{t("info.toolButton")}</p>
 				<hr />
 				<p className="center">
 					<IonIcon color="tertiary" size="large" src="svg/link.svg" />
 				</p>
-				<p>{t('info.mergeButton1')}<strong>{t('info.mergeButtonTitle')}</strong>{t('info.mergeButton2')}</p>
-				<p>{t('info.exportExample1')}<strong>{tc('Conlang Toolbox')}</strong>{t('info.exportExample2')}</p>
+				<p>{t("info.mergeButton1")}<strong>{t("info.mergeButtonTitle")}</strong>{t("info.mergeButton2")}</p>
+				<p>{t("info.exportExample1")}<strong>{tc("Conlang Toolbox")}</strong>{t("info.exportExample2")}</p>
 				<ol>
-					<li>{t('info.exampleList1')}</li>
-					<li>{t('info.exampleList2p1')}<strong>{tc('WordGen')}</strong>{t('info.exampleList2p2')}</li>
-					<li>{t('info.exampleList3p1')}<strong>{tc('WordEvolve')}</strong>{t('info.exampleList3p2')}</li>
-					<li>{t('info.exampleList4p1')}<strong>{tc('Concepts')}</strong>{t('info.exampleList4p2')}</li>
-					<li>{t('info.exampleList5')}</li>
+					<li>{t("info.exampleList1")}</li>
+					<li>{t("info.exampleList2p1")}<strong>{tc("WordGen")}</strong>{t("info.exampleList2p2")}</li>
+					<li>{t("info.exampleList3p1")}<strong>{tc("WordEvolve")}</strong>{t("info.exampleList3p2")}</li>
+					<li>{t("info.exampleList4p1")}<strong>{tc("Concepts")}</strong>{t("info.exampleList4p2")}</li>
+					<li>{t("info.exampleList5")}</li>
 				</ol>
 			</IonCardContent>
 		</IonCard>

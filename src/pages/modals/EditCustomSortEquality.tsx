@@ -101,7 +101,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 		setOutgoingEquality(equality);
 		close();
 		toaster({
-			message: t("Equality edited."),
+			message: tc("thingEdited", { thing: t("Equality") }),
 			position: "top",
 			color: "success",
 			duration: 2000,
@@ -114,7 +114,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 			close();
 		};
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -126,7 +126,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Add Equality")}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Equality") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

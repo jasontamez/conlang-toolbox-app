@@ -80,7 +80,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		// toast
 		toaster({
-			message: t("Item added!"),
+			message: tc("thingAdded", { thing: t("Item") }),
 			duration: 2500,
 			color: "success",
 			toast
@@ -113,7 +113,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Add Lexicon Item")}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Lexicon Item") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -149,7 +149,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 						onClick={() => maybeSaveNewInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{t("Add Item")}</IonLabel>
+						<IonLabel>{tc("addThing", { thing: t("Item") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

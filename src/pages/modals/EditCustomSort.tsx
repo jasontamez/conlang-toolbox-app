@@ -311,7 +311,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 		dispatch(editCustomSort(customSort));
 		closeModal();
 		toaster({
-			message: t("Custom sort saved."),
+			message: tc("thingSaved", { thing: t("Custom Sort") }),
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -338,7 +338,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			dispatch(deleteCustomSort(id));
 			setIsOpen(false);
 			toaster({
-				message: t("Custom sort deleted."),
+				message: tc("thingDeleted", { thing: t("Custom Sort") }),
 				color: "danger",
 				duration: 2000,
 				position: "top",
@@ -346,7 +346,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			});
 		};
 		yesNoAlert({
-			header: t("Delete This Sort"),
+			header: tc("deleteThing", { thing: t("This Sort") }),
 			message: t("Are you sure you want to delete this? This cannot be undone."),
 			submit: t("confirmDelIt"),
 			cssClass: "danger",
@@ -370,7 +370,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 	};
 	const maybeDeleteRelation = (id: string) => {
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -386,7 +386,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 	};
 	const maybeDeleteEquality = (id: string) => {
 		yesNoAlert({
-			header: tc("Delete This"),
+			header: tc("deleteThing", { thing: tc("This") }),
 			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
@@ -414,7 +414,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Edit Custom Sort")}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Custom Sort") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -730,7 +730,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						onClick={maybeDeleteSort}
 					>
 						<IonIcon icon={trash} slot="end" />
-						<IonLabel>{t("Delete Sort")}</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("Sort") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

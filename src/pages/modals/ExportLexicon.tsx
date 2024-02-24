@@ -73,8 +73,8 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 				filler = filler + ",";
 			}
 		}
-		const output = `"${tc('TITLE')}",${quotify(title)}${filler}\n`
-			+ `"${tc('Description')}",${description}${filler}\n`
+		const output = `"${tc("TITLE")}",${quotify(title)}${filler}\n`
+			+ `"${tc("Description")}",${description}${filler}\n`
 			+ lines.join(length < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
 	};
@@ -153,7 +153,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t('Export Lexicon[colon]')} {title}</IonTitle>
+					<IonTitle>{t("Export Lexicon[colon]")} {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -163,7 +163,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
-					<IonItem>{tc('Choose a format[colon]')}</IonItem>
+					<IonItem>{tc("Choose a format[colon]")}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doTabbed(e)}
@@ -199,7 +199,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 				<IonToolbar>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc('Cancel')}</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

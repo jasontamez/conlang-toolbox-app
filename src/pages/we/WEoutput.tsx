@@ -973,7 +973,7 @@ const WEOut = (props: PageData) => {
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
 				onDidDismiss={() => setLoadingOpen(false)}
-				message={tc('Please wait...')}
+				message={tc("Please wait...")}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}

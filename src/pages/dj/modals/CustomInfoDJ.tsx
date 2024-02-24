@@ -196,7 +196,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>{tc("Save Current Info")}</IonLabel>
+							<IonLabel>{tc("saveGeneralThings", { things: tc("Current Info") })}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput

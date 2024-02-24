@@ -91,8 +91,7 @@ const settings = {
 	"You did not enter any information.": "You did not enter any information.",
 	"You must provide a base character.": "You must provide a \"base\" character.",
 	"You must provide some equal characters.": "You must provide some \"equal\" characters.",
-	"Add Custom Sort": "Add Custom Sort",
-	"Custom sort saved.": "Custom sort saved.",
+	"Custom Sort": "Custom Sort",
 	"Title for this sort": "Title for this sort",
 	"Unicode sort (language-independent)": "Unicode sort (language-independent)",
 	"Sort Sensitivity[colon]": "Sort Sensitivity:",
@@ -117,12 +116,9 @@ const settings = {
 	Relations: "Relations",
 	"Similar characters that should be sorted separately.":
 		"Similar characters that should be sorted separately.",
-	"Add New": "Add New",
 	Equalities: "Equalities",
 	"Characters that should be sorted together as if they were strictly equal.":
 		"Characters that should be sorted together as if they were strictly equal.",
-	"Equality added.": "Equality added.",
-	"Add Equality": "Add Equality",
 	"Base Character[colon]": "Base Character:",
 	"Base character": "Base character",
 	"The base character": "The base character",
@@ -132,8 +128,6 @@ const settings = {
 	"Characters Separator[colon]": "Characters Separator:",
 	"You must provide some pre or post characters.":
 		"You must provide some \"pre\" or \"post\" characters.",
-	"Relation added.": "Relation added.",
-	"Add Relation": "Add Relation",
 	"Sorted Before the Base[colon]": "Sorted Before the Base:",
 	"Characters sorted before the base": "Characters sorted before the base",
 	"End with the one just before the Base.": "End with the one just before the Base.",
@@ -141,14 +135,7 @@ const settings = {
 	"Characters sorted after the base": "Characters sorted after the base",
 	"Start with the one just after the Base.": "Start with the one just after the Base.",
 	"Pre/Post Separator[colon]": "Pre/Post Separator:",
-	"Relation edited.": "Relation edited.",
-	"Edit Relation": "Edit Relation",
-	"Equality edited.": "Equality edited.",
 	"Equalities Separator[colon]": "Equalities Separator:",
-	"Custom sort deleted.": "Custom sort deleted.",
-	"Delete This Sort": "Delete This Sort",
-	"Edit Custom Sort": "Edit Custom Sort",
-	"Delete Sort": "Delete Sort",
 
 };
 

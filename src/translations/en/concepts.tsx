@@ -114,6 +114,7 @@ const concepts = {
 	"Yes Save Them": "Yes, Save Them", // "Them" refers to the meanings being linked together
 	"No Discard Them": "No, Discard Them", // See above
 	"Combination saved": "Combination saved", // The combination of meanings
+	Combination: "Combination",
 
 	"Tap meanings you want to save to Lexicon":
 		"Tap meanings you want to save to $t(common:Lexicon)",
@@ -132,6 +133,8 @@ const concepts = {
 	"My Combinations": "My Combinations",
 	"Save All Meanings": "Save All Meanings",
 	"Save Selected Meanings": "Save Selected Meanings",
+	"All Meanings": "All Meanings",
+	"Selected Meanings": "the Selected Meanings",
 	"Current Combination[colon]": "Current Combination:",
 
 	//
