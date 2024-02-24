@@ -52,7 +52,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 	const { charGroup, editCharGroup, maybeDeleteCharGroup } = props;
 	const { label = "", title, run } = charGroup;
 	return (
-		<IonItemSliding key={label}>
+		<IonItemSliding>
 			<IonItemOptions>
 				<IonItemOption
 					color="primary"
@@ -191,6 +191,7 @@ const WECharGroup: FC<PageData> = (props) => {
 	const map = useCallback(
 		(charGroup: WECharGroupObject) =>
 			<CharGroup
+				key={`WE-CharGroup-${charGroup.label}`}
 				charGroup={charGroup}
 				editCharGroup={editCharGroup}
 				maybeDeleteCharGroup={maybeDeleteCharGroup}

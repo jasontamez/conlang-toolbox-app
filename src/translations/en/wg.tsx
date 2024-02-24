@@ -22,7 +22,6 @@ const wg = {
 	labels: "$t(label_other)",
 	run: "$t(wgwe:run)",
 	"transformation description": "$t(wgwe:transformation description)",
-	"Choose what to save": "$t(wgwe:Choose what to save)",
 
 	Syllable: "Syllable",
 	Syllables: "Syllables",
@@ -335,11 +334,11 @@ const wg = {
 		outputLexicon: [
 			"Once you've generated words, you can save them to the",
 			"**$t(common:Lexicon)**. Click the book button and you're",
-			"presented with two options. _$t(Save everything)_ will store",
-			"every single generated word for the Lexicon.",
-			"_$t(Choose what to save)_ will highlight every word, and you",
-			"can tap on a word to store it; when you're done choosing, hit",
-			"the save button that appears and you will be able to choose",
+			"presented with two options. _$t(wgwe:Save everything)_ will",
+			"store every single generated word for the Lexicon.",
+			"_$t(wgwe:Choose what to save)_ will highlight every word, and",
+			"you can tap on a word to store it; when you're done choosing,",
+			"hit the save button that appears and you will be able to choose",
 			"how they are imported into the **$t(common:Lexicon)**."
 		],
 		

@@ -220,6 +220,7 @@ const common = {
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
 
 	// REGULAR EXPRESSIONS
+	"Regular Expression": "Regular Expression", // title of section
 	"Regular Expressions": "Regular Expressions", // title of section
 	"Regular expressions": "Regular expressions", // start of sentence
 	"regular expressions": "regular expressions", // plural, generic

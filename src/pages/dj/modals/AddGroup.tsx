@@ -311,7 +311,7 @@ const AddGroup = (props: AddGroupProps) => {
 		};
 		disableConfirms ? handler() : yesNoAlert({
 			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("Are you sure?"),
+			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler,

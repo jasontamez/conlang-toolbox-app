@@ -72,7 +72,7 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Load Lexicon")}</IonTitle>
+					<IonTitle>{tc("loadThing", { thing: tc("Lexicon")} )}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />

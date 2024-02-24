@@ -143,7 +143,7 @@ const DJGroups = (props: PageData) => {
 		if(!disableConfirms) {
 			return yesNoAlert({
 				header: tc("deleteThing", { thing: "Entire Group" }),
-				message: tc("deleteThingsCannotUndo", { things: t("this entire $t(Group)"), count: 1}),
+				message: tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}),
 				cssClass: "danger",
 				submit: tc("confirmDelIt"),
 				handler,

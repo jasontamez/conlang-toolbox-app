@@ -235,11 +235,11 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-						<IonLabel>{tc("loadThing", { thing: t("Lexicon") })}</IonLabel>
+						<IonLabel>{tc("loadThing", { thing: tc("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexicon()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>{tc("saveThing", { thing: t("Lexicon") })}</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: tc("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexiconNew()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />

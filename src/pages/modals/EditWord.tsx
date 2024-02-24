@@ -151,7 +151,7 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Edit Lexicon Item")}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Lexicon Item")} )}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />

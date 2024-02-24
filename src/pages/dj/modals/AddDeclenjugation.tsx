@@ -182,7 +182,7 @@ const AddDeclenjugation = (props: AddDJModal) => {
 		setSavedDeclenjugation(newDJ);
 		closeModal();
 		toaster({
-			message: tc("thingSaved", { thing: t(typeString) }),
+			message: tc("thingSaved", { thing: typeString && t(typeString) }),
 			position: "middle",
 			color: "success",
 			duration: 2000,

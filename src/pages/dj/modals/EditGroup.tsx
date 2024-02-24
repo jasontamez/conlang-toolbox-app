@@ -144,7 +144,7 @@ const EditGroup = (props: EditGroupProps) => {
 
 	const onLoad = () => {
 		const [editingType, editingGroup] = editingGroupInfo || [type, null];
-		const error = t("emphasizedError");
+		const error = tc("emphasizedError");
 		const {
 			id = error,
 			title = error,
@@ -417,7 +417,7 @@ const EditGroup = (props: EditGroupProps) => {
 		};
 		disableConfirms ? handler() : yesNoAlert({
 			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("Are you sure?"),
+			message: tc("areYouSure"),
 			submit: tc("confirmDelIt"),
 			cssClass: "danger",
 			handler,

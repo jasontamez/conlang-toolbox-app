@@ -211,7 +211,7 @@ const EditTransformModal = (props: ModalProps) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{t("Transform Description[colon]")}</IonLabel>
+						<IonLabel>{t("Transformation Description[colon]")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput

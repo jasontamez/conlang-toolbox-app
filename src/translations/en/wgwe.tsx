@@ -63,6 +63,7 @@ const wgwe = {
 
 	"transformation description": "$t(trans) $t(description)",
 
+	"Save everything": "Save everything",
 	"Choose what to save": "Choose what to save",
 
 	

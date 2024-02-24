@@ -227,7 +227,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		// save result
 		setShadowColumns(final);
 		toaster({
-			message: t("Added new column."),
+			message: tc("thingAdded", { thing: t("Column") }),
 			duration: 2500,
 			color: "success",
 			position: "top",
