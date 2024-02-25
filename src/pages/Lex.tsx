@@ -669,7 +669,7 @@ const Lex = (props: PageData) => {
 					id="lexiconTitleAndDescription"
 					className={lexHeadersHidden ? "hide" : undefined}
 				>
-					<IonItem className="labelled"><IonLabel>{t("Lexicon Title[colon]")}</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{t("Lexicon Title", { context: "presentation" })}</IonLabel></IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={t("Lexicon Title")}
@@ -680,7 +680,7 @@ const Lex = (props: PageData) => {
 							onIonChange={() => setNewInfo("lexTitle", "title")}
 						></IonInput>
 					</IonItem>
-					<IonItem className="labelled"><IonLabel>{tc("Description[colon]")}</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{tc("Description", { context: "presentation" })}</IonLabel></IonItem>
 					<IonItem>
 						<IonTextarea
 							aria-label={tc("Description")}
@@ -699,7 +699,7 @@ const Lex = (props: PageData) => {
 							<h1>{t("lexItems", { count: lexicon.length })}</h1>
 						</div>
 						<div className="flex-shrinker">
-							<h2>{t("Sort[colon]")}</h2>
+							<h2>{t("Sort", { context: "presentation" })}</h2>
 							<div
 								className="fakeButton"
 								onClick={() => setIsOpenLexSorter(true)}

@@ -119,12 +119,13 @@ export const OutputCard = (props: CardProps) => {
 
 const DJinfo = (props: PageData) => {
 	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
 	const main = t("info.overview", { joinArrays: "\n"});
 
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={t("Overview[colon] Declenjugator")} />
+				<Header title={tc("overviewOf", { what: tc("Declenjugator") })} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>

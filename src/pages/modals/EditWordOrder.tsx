@@ -319,7 +319,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label={t("Sort method[colon]")}
+							label={t("Sort method", { context: "presentation" })}
 							value={shadowCustomSort}
 							onIonChange={(e) => setShadowCustomSort(e.detail.value)}
 						>
@@ -341,7 +341,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label={t("Sort blank columns[colon]")}
+							label={t("Sort blank columns", { context: "presentation" })}
 							value={shadowBlankSort}
 							onIonChange={(e) => setShadowBlankSort(e.detail.value)}
 						>

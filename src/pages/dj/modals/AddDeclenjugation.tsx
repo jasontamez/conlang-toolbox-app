@@ -269,21 +269,21 @@ const AddDeclenjugation = (props: AddDJModal) => {
 					</IonItem>
 					<IonItemDivider>{t("Modification")}</IonItemDivider>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex1"
-							aria-label={t("Matching Expression[colon]")}
+							aria-label={t("Matching Expression", { context: "presentation" })}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex2"
-							aria-label={t("Replacement Expression[colon]")}
+							aria-label={t("Replacement Expression", { context: "presentation" })}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>

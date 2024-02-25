@@ -153,7 +153,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Export Lexicon[colon]")} {title}</IonTitle>
+					<IonTitle>{t("Export Lexicon", { context: "presentation" })} {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -163,7 +163,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
-					<IonItem>{tc("Choose a format[colon]")}</IonItem>
+					<IonItem>{tc("Choose a format", { context: "presentation" })}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doTabbed(e)}

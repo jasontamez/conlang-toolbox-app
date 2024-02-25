@@ -51,13 +51,13 @@ import { TraCard } from "./WEinfo";
 const makeDescriptionOfDirection = (dir: string) => {
 	switch(dir) {
 		case "both":
-			return i18n.t("at input then undo at output", { ns: ["we"] });
+			return i18n.t("At input then undo at output", { ns: ["we"] });
 		case "double":
-			return i18n.t("at input and output", { ns: ["we"] });
+			return i18n.t("At input and output", { ns: ["we"] });
 		case "in":
-			return i18n.t("at input", { ns: ["we"] });
+			return i18n.t("At input", { ns: ["we"] });
 		case "out":
-			return i18n.t("at output", { ns: ["we"] });
+			return i18n.t("At output", { ns: ["we"] });
 	}
 	return "Error";
 }

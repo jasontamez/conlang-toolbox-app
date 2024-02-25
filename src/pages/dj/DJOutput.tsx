@@ -299,7 +299,7 @@ const DJOutput = (props: PageData) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Display as[colon]")}
+							label={t("Display as", { context: "presentation" })}
 							value={displayType}
 							onIonChange={(e) => setDisplayType(e.detail.value)}
 						>

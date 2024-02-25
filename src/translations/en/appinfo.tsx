@@ -108,7 +108,7 @@ const appinfo = {
 			"with an error message.",
 			"- _$(common:Lexicon)_",
 			"   - Added a button to the header that will toggle the",
-			"$t(common:Title) and $t(common:Description), giving you more",
+			"$t(common:Title) and $t(common:description_formal), giving you more",
 			"room to look at your $(common:Lexicon) items when needed.",
 			"   - If you need more space than the inline input boxes provide,",
 			"tap the button at the lower right side of the screen. You'll",

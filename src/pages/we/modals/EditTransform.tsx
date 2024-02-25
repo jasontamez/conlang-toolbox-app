@@ -190,39 +190,41 @@ const EditTransformModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{t("Input Expression[colon]")}</IonLabel>
+						<IonLabel className="seekLabel">{t("Input Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Input Expression[colon]")}
+							aria-label={t("Input Expression", { context: "presentation" })}
+							helperText={t("what to change")}
 							id="editSearchExWE"
 							className="ion-margin-top serifChars"
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{t("Output Expression[colon]")}</IonLabel>
+						<IonLabel className="replaceLabel">{t("Output Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Output Expression[colon]")}
+							aria-label={t("Output Expression", { context: "presentation" })}
+							helperText={t("what it changes into")}
 							id="editReplaceExWE"
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{t("Transformation Description[colon]")}</IonLabel>
+						<IonLabel>{t("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={t("Description of the transformation")}
 							id="editOptDescWE"
 							className="ion-margin-top"
-							placeholder="(optional)"
+							placeholder={tc("optional")}
 						></IonInput>
 					</IonItem>
 					<IonItemDivider>
-						<IonLabel>{t("Transformation Direction[colon]")}</IonLabel>
+						<IonLabel>{t("Transformation Direction", { context: "presentation" })}</IonLabel>
 					</IonItemDivider>
 					<IonRadioGroup
 						value={direction}

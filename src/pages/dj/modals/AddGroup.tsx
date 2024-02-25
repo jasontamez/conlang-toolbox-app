@@ -360,7 +360,7 @@ const AddGroup = (props: AddGroupProps) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Type[colon]")}
+							label={t("Type", { context: "presentation" })}
 							value={type}
 							onIonChange={(e) => setType(e.detail.value)}
 							interfaceOptions={{header: t("Type")}}
@@ -380,11 +380,11 @@ const AddGroup = (props: AddGroupProps) => {
 							</IonSelect>
 					</IonItem>
 					<IonLabel className="ion-text-wrap ion-padding-bottom">
-						{t("Type(s) of word this group affects[colon]")}
+						{t("Type(s) of word this group affects", { context: "presentation" })}
 					</IonLabel>
 					<IonItem>
 						<IonInput
-							aria-label={t("Type(s) of word this group affects[colon]")}
+							aria-label={t("Type(s) of word this group affects", { context: "presentation" })}
 							id="addAppliesTo"
 							placeholder={t("exampleAppliesTo")}
 						/>
@@ -402,46 +402,46 @@ const AddGroup = (props: AddGroupProps) => {
 					</IonItem>
 					<IonItemDivider>{useAdvancedMethod ? tc("Regular Expression") : t("Simple Root Finder")}</IonItemDivider>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label={t("Matching Expression[colon]")}
+							aria-label={t("Matching Expression", { context: "presentation" })}
 							id="addRegex1"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label={t("Replacement Expression[colon]")}
+							aria-label={t("Replacement Expression", { context: "presentation" })}
 							id="addRegex2"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from Start of Word to Find Root[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from Start of Word to Find Root", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label={t("Remove from Start of Word to Find Root[colon]")}
+							aria-label={t("Remove from Start of Word to Find Root", { context: "presentation" })}
 							id="addStarts"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label={t("Remove from End of Word to Find Root[colon]")}
+							aria-label={t("Remove from End of Word to Find Root", { context: "presentation" })}
 							id="addEnds"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Separate Multiple Conditions With[colon]")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Separate Multiple Conditions With", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonSelect

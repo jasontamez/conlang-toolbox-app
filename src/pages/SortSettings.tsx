@@ -242,7 +242,7 @@ const SortSettings = (props: PageData) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Language[colon]")}
+							label={t("Sort Language", { context: "presentation" })}
 							value={sortLanguage || defaultSortLanguage || "unicode"}
 							onIonChange={(e) => setCustomLang(e.detail.value)}
 							disabled={!useLanguageSort}
@@ -262,7 +262,7 @@ const SortSettings = (props: PageData) => {
 							className="ion-text-wrap settings"
 							value={sensitivity || "variant"}
 							onIonChange={(e) => setSensitivity(e.detail.value)}
-							label={t("Sort Sensitivity[colon]")}
+							label={t("Sort Sensitivity", { context: "presentation" })}
 							labelPlacement="start"
 						>
 							<IonSelectOption
@@ -298,7 +298,7 @@ const SortSettings = (props: PageData) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Using Custom Sort[colon]")}
+							label={t("Using Custom Sort", { context: "presentation" })}
 							value={defaultCustomSort || null}
 							onIonChange={(e) => setDefaultCustomSort(e.detail.value)}
 						>

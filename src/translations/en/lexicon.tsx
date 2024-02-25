@@ -13,7 +13,7 @@ const lexicon = {
 	"Merge selected items": "Merge selected items",
 
 	"Lexicon Title": "$t(common:Lexicon) $t(common:Title)",
-	"Lexicon Title[colon]": "$t(Lexicon Title):",
+	"Lexicon Title_presentation": "$t(common:Lexicon) $t(common:Title):",
 	lexTitleHelperText: "Usually the language name.",
 	lexDescriptionHelperText: "A short description of this lexicon.",
 
@@ -26,6 +26,7 @@ const lexicon = {
 	"Clear Lexicon": "Clear $t(common:Lexicon)",
 	"Save as New": "Save as New",
 	"Export Lexicon": "Export $t(common:Lexicon)",
+	"Export Lexicon_presentation": "Export $t(common:Lexicon):",
 	"Saved Lexicon": "Saved $t(common:Lexicon)",
 	"Lexicon Sorting": "$t(common:Lexicon) Sorting",
 	sortLexDescription:
@@ -34,8 +35,8 @@ const lexicon = {
 		in that column, it will sort them by the next column in the
 		sort list, and so on.`,
 
-	"Sort[colon]": "Sort:",
-	"Export Lexicon[colon]": "$t(Export Lexicon):",
+	"Sort": "Sort",
+	"Sort_presentation": "Sort:",
 
 	"multiple lexicon items": "multiple lexicon items",
 	"Delete selected lexicon items": "Delete selected lexicon items",
@@ -72,8 +73,10 @@ const lexicon = {
 	"Lexicon Options": "$t(common:Lexicon) Options",
 	"Show Full Column Titles": "Show Full Column Titles",
 
-	"Sort method[colon]": "Sort method:",
-	"Sort blank columns[colon]": "Sort blank columns:",
+	"Sort method": "Sort method",
+	"Sort method_presentation": "Sort method:",
+	"Sort blank columns": "Sort blank columns",
+	"Sort blank columns_presentation": "Sort blank columns:",
 	"Rearrange Lexicon Columns": "Rearrange Lexicon Columns",
 	// The below describe how blank columns will be sorted in the Lexicon
 	"To Beginning, Always": "To Beginning, Always",
@@ -112,7 +115,8 @@ const lexicon = {
 		that column, it will sort them by the next column in the sort list,
 		and so on.`,
 	"How to Merge": "How to Merge",
-	"Current merged result[colon]": "Current merged result:",
+	"Current merged result": "Current merged result",
+	"Current merged result_presentation": "Current merged result:",
 	"Cancel Merging": "Cancel Merging",
 	"Save and Merge": "Save and Merge",
 	"Merge Items": "Merge Items",

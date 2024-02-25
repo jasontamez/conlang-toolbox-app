@@ -208,7 +208,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 					</IonItem>
 					<IonItem>
 						<div className="ion-flex-row-wrap ion-align-items-center ion-justify-content-center displayChips">
-							<span>{("Display[colon]")}</span>
+							<span>{("Display", { context: "presentation" })}</span>
 							<IonChip
 								outline={nowShowing !== "Favorites"}
 								onClick={() => toggleChars("Favorites")}

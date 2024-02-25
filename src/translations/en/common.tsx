@@ -46,7 +46,8 @@ const common = {
 	Ok: "Ok",
 	Done: "Done", // finished, completed, etc.
 	Close: "Close", // close the open modal/dialog/whatever
-	"Display[colon]": "Display:", // short label indicating the user can select an option to display
+	"Display": "Display",
+	"Display_presentation": "Display:", // short label indicating the user can select an option to display
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
 	Saved: "Saved", // message indicating something was saved to the device or to app state
 	Copy: "Copy", // button that will copy something to the clipboard
@@ -86,7 +87,8 @@ const common = {
 	"Text File (markdown)": "$t(Text File) (markdown)",
 	"Spreadsheet (csv)": "Spreadsheet (csv)",
 	"Choose a Format": "Choose a Format",
-	"Choose a format[colon]": "Choose a format:",
+	"Choose a format": "Choose a format",
+	"Choose a format_presentation": "Choose a format:",
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
@@ -183,11 +185,15 @@ const common = {
 	"Please wait...": "Please wait...",
 
 	TITLE: "TITLE",
+	title: "title",
 	Title: "Title",
-	"Title[colon]": "Title:",
+	"Title_presentation": "Title:",
 	Description: "Description",
-	"Description[colon]": "$t(Description):",
 	description: "description",
+	description_formal: "Description",
+	description_presentation: "Description:",
+
+	overviewOf: "Overview: {{what}}",
 
 	ImportFrom: "Import from {{source}}",
 	"Load Presets": "Load Presets",
@@ -204,9 +210,11 @@ const common = {
 	"Word must match expression [x]": "Word must match expression [x]",
 	"Type regular expression here.": "Type regular expression here.",
 	"Column [x] must contain [y]": "Column [x] must contain [y]",
-	"Test column[colon]": "Test column:",
+	"Test column": "Test column",
+	"Test column_presentation": "Test column:",
 	"Column [x] must match expression [y]": "Column [x] must match expression [y]",
-	"Words that contain[colon]": "Words that contain:",
+	"Words that contain": "Words that contain",
+	"Words that contain_presentation": "Words that contain:",
 	"Words that match:": "Words that match:",
 	"Words where the column:": "Words where the column:",
 	columnContains: "[{{column}}] contains \"{{test}}\"",

@@ -93,7 +93,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 							</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem>{tc("Choose a format[colon]")}</IonItem>
+					<IonItem>{tc("Choose a format", { context: "presentation" })}</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused)}

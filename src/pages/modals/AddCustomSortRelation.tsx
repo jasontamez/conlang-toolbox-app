@@ -135,7 +135,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						<div
 							slot="start"
 							className="ion-margin-end"
-						>{t("Base Character[colon]")}</div>
+						>{t("Base Character", { context: "presentation" })}</div>
 						<IonInput
 							aria-label={t("Base character")}
 							id="addBaseRelation"
@@ -143,7 +143,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
-						<IonLabel>{t("Sorted Before the Base[colon]")}</IonLabel>
+						<IonLabel>{t("Sorted Before the Base", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -153,7 +153,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
-						<IonLabel>{t("Sorted After the Base[colon]")}</IonLabel>
+						<IonLabel>{t("Sorted After the Base", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -166,7 +166,7 @@ const AddCustomSortRelation = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Pre/Post Separator[colon]")}
+							label={t("Pre/Post Separator", { context: "presentation" })}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>

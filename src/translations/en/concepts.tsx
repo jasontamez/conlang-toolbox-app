@@ -135,7 +135,8 @@ const concepts = {
 	"Save Selected Meanings": "Save Selected Meanings",
 	"All Meanings": "All Meanings",
 	"Selected Meanings": "the Selected Meanings",
-	"Current Combination[colon]": "Current Combination:",
+	"Current Combination": "Current Combination",
+	"Current Combination_presentation": "Current Combination:",
 
 	//
 	//

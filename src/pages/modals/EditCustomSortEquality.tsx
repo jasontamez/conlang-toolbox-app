@@ -143,7 +143,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						<div
 							slot="start"
 							className="ion-margin-end"
-						>{t("Base Character[colon]")}</div>
+						>{t("Base Character", { context: "presentation" })}</div>
 						<IonInput
 							aria-label={t("Base character")}
 							id="editBaseEquality"
@@ -154,7 +154,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						className="labelled"
 						lines="none"
 					>
-						<IonLabel>{t("Equal to the Base[colon]")}</IonLabel>
+						<IonLabel>{t("Equal to the Base", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -167,7 +167,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Equalities Separator[colon]")}
+							label={t("Equalities Separator", { context: "presentation" })}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>

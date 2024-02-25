@@ -510,11 +510,11 @@ const ConceptsPage: FC<PageData> = (props) => {
 		currentCombo,
 		save
 	] = useMemo(() => [
-		tc("Display[colon]"),
+		tc("Display", { context: "presentation" }),
 		t("My Combinations"),
 		tc("saveGeneralThings", {things: t("All Meanings")}),
 		tc("saveGeneralThings", {things: t("Selected Meanings")}),
-		t("Current Combination[colon]"),
+		t("Current Combination", { context: "presentation" }),
 		tc("Save")
 	], [ t, tc ]);
 

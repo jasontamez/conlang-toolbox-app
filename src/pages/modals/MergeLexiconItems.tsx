@@ -235,7 +235,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 							);
 						})
 					}
-					<IonItemDivider>{t("Current merged result[colon]")}</IonItemDivider>
+					<IonItemDivider>{t("Current merged result", { context: "presentation" })}</IonItemDivider>
 					{
 						columns.map((col: LexiconColumn, i: number) => {
 							const { id, label } = col;

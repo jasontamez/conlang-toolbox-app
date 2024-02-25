@@ -63,7 +63,8 @@ const settings = {
 		`Use a language's rules for sorting instead of using Unicode points.
 		(If this option is disabled, your device does not support
 		language-based sorting.)`,
-	"Sort Language[colon]": "Sort Language:",
+	"Sort Language": "Sort Language",
+	"Sort Language_presentation": "Sort Language:",
 	"Base letters only":
 		"[ȁ = Ȁ, a = ȁ]: Base letters only",
 	Diacritics:
@@ -74,7 +75,8 @@ const settings = {
 		"[ȁ ≠ Ȁ, a ≠ ȁ]: Diacritics and upper/lowercase",
 	"Note[colon] This can be overriden by a language's sorting rules.":
 		"Note: This can be overriden by a language's sorting rules.",
-	"Using Custom Sort[colon]": "Using Custom Sort:",
+	"Using Custom Sort": "Using Custom Sort",
+	"Using Custom Sort_presentation": "Using Custom Sort:",
 	"All Custom Sort Methods": "All Custom Sort Methods",
 	"custom alphabet": "custom alphabet",
 	"Custom Alphabet": "Custom Alphabet",
@@ -94,7 +96,8 @@ const settings = {
 	"Custom Sort": "Custom Sort",
 	"Title for this sort": "Title for this sort",
 	"Unicode sort (language-independent)": "Unicode sort (language-independent)",
-	"Sort Sensitivity[colon]": "Sort Sensitivity:",
+	"Sort Sensitivity": "Sort Sensitivity",
+	"Sort Sensitivity_presentation": "Sort Sensitivity:",
 	"Default sensitivity": "Default sensitivity",
 	"Use alternate alphabet": "Use alternate alphabet",
 	alternateAlphabetExplanation:
@@ -102,7 +105,8 @@ const settings = {
 			Characters not in your alphabet will be sorted according to the
 			rules above.`,
 	"Write your alphabet here.": "Write your alphabet here.",
-	"Alphabet separator[colon]": "Alphabet separator:",
+	"Alphabet separator": "Alphabet separator",
+	"Alphabet separator_presentation": "Alphabet separator:",
 	"No separator":
 		"[abcde]: No separator",
 	Space:
@@ -119,23 +123,30 @@ const settings = {
 	Equalities: "Equalities",
 	"Characters that should be sorted together as if they were strictly equal.":
 		"Characters that should be sorted together as if they were strictly equal.",
-	"Base Character[colon]": "Base Character:",
+	"Base Character": "Base Character",
+	"Base Character_presentation": "Base Character:",
 	"Base character": "Base character",
 	"The base character": "The base character",
-	"Equal to the Base[colon]": "Equal to the Base:",
+	"Equal to the Base": "Equal to the Base",
+	"Equal to the Base_presentation": "Equal to the Base:",
 	"Characters equal to the base": "Characters equal to the base",
 	"Characters to be equal to the Base.": "Characters to be equal to the Base.",
-	"Characters Separator[colon]": "Characters Separator:",
+	"Characters Separator": "Characters Separator",
+	"Characters Separator_presentation": "Characters Separator:",
 	"You must provide some pre or post characters.":
 		"You must provide some \"pre\" or \"post\" characters.",
-	"Sorted Before the Base[colon]": "Sorted Before the Base:",
+	"Sorted Before the Base": "Sorted Before the Base",
+	"Sorted Before the Base_presentation": "Sorted Before the Base:",
 	"Characters sorted before the base": "Characters sorted before the base",
 	"End with the one just before the Base.": "End with the one just before the Base.",
-	"Sorted After the Base[colon]": "Sorted After the Base:",
+	"Sorted After the Base": "Sorted After the Base",
+	"Sorted After the Base_presentation": "Sorted After the Base:",
 	"Characters sorted after the base": "Characters sorted after the base",
 	"Start with the one just after the Base.": "Start with the one just after the Base.",
-	"Pre/Post Separator[colon]": "Pre/Post Separator:",
-	"Equalities Separator[colon]": "Equalities Separator:",
+	"Pre/Post Separator": "Pre/Post Separator",
+	"Pre/Post Separator_presentation": "Pre/Post Separator:",
+	"Equalities Separator": "Equalities Separator",
+	"Equalities Separator_presentation": "Equalities Separator:",
 
 };
 

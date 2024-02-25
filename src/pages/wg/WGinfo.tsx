@@ -231,11 +231,12 @@ export const OptCard: FC<CardProps> = (props) => {
 
 const WGinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	const main = t("info.overview", { joinArrays: "\n"});
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={t("Overview[colon] WordGen")} />
+				<Header title={tc("overviewOf", { what: tc("WordGen") })} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>

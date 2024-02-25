@@ -37,7 +37,6 @@ const wg = {
 
 	"Syllables Tab": "$t(Syllables) Tab",
 	"Settings Tab": "$t(common:Settings) Tab",
-	"Overview[colon] WordGen": "Overview: $t(common:WordGen)",
 	"What is WordGen?": "What is $t(common:WordGen)?",
 
 	consonants: "consonants",

@@ -477,7 +477,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="primary"
 									className="ion-text-wrap settings"
 									justify="start"
-									label={t("Test column[colon]")}
+									label={t("Test column", { context: "presentation" })}
 									value={addingColumn}
 									onIonChange={(e) => setAddingColumn(e.detail.value)}
 								>
@@ -518,7 +518,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="primary"
 									className="ion-text-wrap settings"
 									justify="start"
-									label={t("Test column[colon]")}
+									label={t("Test column", { context: "presentation" })}
 									value={addingColumn}
 									onIonChange={(e) => setAddingColumn(e.detail.value)}
 								>
@@ -544,7 +544,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 
 							{ wordTests.length > 0 ?
 								<>
-									<IonItemDivider>{t("Words that contain[colon]")}</IonItemDivider>
+									<IonItemDivider>{t("Words that contain", { context: "presentation" })}</IonItemDivider>
 									{wordTests.map((test, i) => {
 										return displayTest(
 											test,
@@ -555,7 +555,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 							: <></> }
 							{ wordMatches.length > 0 ?
 								<>
-									<IonItemDivider>{t("Words that match[colon]")}</IonItemDivider>
+									<IonItemDivider>{t("Words that match", { context: "presentation" })}</IonItemDivider>
 									{wordMatches.map((test, i) => {
 										return displayTest(
 											`/${test}/`,
@@ -566,7 +566,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 							: <></> }
 							{ columnTests.length > 0 ?
 								<>
-									<IonItemDivider>{t("Words where the column[colon]")}</IonItemDivider>
+									<IonItemDivider>{t("Words where the column", { context: "presentation" })}</IonItemDivider>
 									{columnTests.map((obj, i) => {
 										const {col, test} = obj;
 										return displayTest(
@@ -578,7 +578,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 							: <></> }
 							{ columnMatches.length > 0 ?
 								<>
-									<IonItemDivider>{t("Words that match[colon]")}</IonItemDivider>
+									<IonItemDivider>{t("Words that match", { context: "presentation" })}</IonItemDivider>
 									{columnMatches.map((obj, i) => {
 										const {col, test} = obj;
 										return displayTest(

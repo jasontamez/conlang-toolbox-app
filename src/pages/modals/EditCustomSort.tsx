@@ -428,7 +428,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" id="editingCustomSortList">
 					<IonItem>
-					<div slot="start" className="ion-margin-end">{tc("Title[colon]")}</div>
+					<div slot="start" className="ion-margin-end">{tc("Title", { context: "presentation" })}</div>
 						<IonInput
 							aria-label={tc("Title")}
 							id="editSortTitle"
@@ -439,7 +439,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Language[colon]")}
+							label={t("Sort Language", { context: "presentation" })}
 							value={sortLang}
 							onIonChange={(e) => setSortLang(e.detail.value)}
 						>
@@ -464,7 +464,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Sensitivity[colon]")}
+							label={t("Sort Sensitivity", { context: "presentation" })}
 							value={sortSensitivity}
 							onIonChange={(e) => setSortSensitivity(e.detail.value)}
 						>
@@ -521,7 +521,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Alphabet separator[colon]")}
+							label={t("Alphabet separator", { context: "presentation" })}
 							value={separator}
 							onIonChange={(e) => setSeparator(e.detail.value)}
 						>
