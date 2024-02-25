@@ -28,6 +28,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { WEPresetObject, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
 import { loadStateWE } from '../../../store/weSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
@@ -43,6 +44,8 @@ interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
 	const [doAlert] = useIonAlert();
@@ -56,18 +59,18 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		const title = el ? escape(el.value).trim() : "";
 		if(title === "") {
 			return doAlert({
-				header: "Please enter a title",
+				header: tc("missingThing", { what: tc("title") }),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
 				]
 			});
 		}
-		const doSave = (title: string, msg: string = "saved") => {
+		const doSave = (title: string, msg: string) => {
 			const save: WEPresetObject = {
 				characterGroups,
 				transforms,
@@ -75,7 +78,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			}
 			CustomStorageWE.setItem(title, save).then(() => {
 				toaster({
-					message: `"${title}" ${msg}`,
+					message: tc(msg, { title }),
 					duration: 2500,
 					color: "success",
 					position: "top",
@@ -86,16 +89,16 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		// Check if overwriting
 		CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
 			if(!value) {
-				doSave(title);
+				doSave(title, "titleSaved");
 			} else if (disableConfirms) {
-				doSave(title, "overwritten");
+				doSave(title, "titleOverwritten");
 			} else {
 				yesNoAlert({
-					header: `"${title}" Already Exists`,
-					message: "This will clear and overwrite the previous save.",
+					header: tc("titleAlreadyExists", { title }),
+					message: tc("clearOverrideGeneralThings", { things: tc("the previous save") }),
 					cssClass: "warning",
-					submit: "Yes, Overwrite It",
-					handler: () => doSave(title, "overwritten"),
+					submit: tc("Yes Overwrite It"),
+					handler: () => doSave(title, "titleOverwritten"),
 					doAlert
 				});
 			}
@@ -107,7 +110,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				if(value) {
 					dispatch(loadStateWE(value));
 					toaster({
-						message: `Save "${title}" loaded.`,
+						message: tc("titleLoaded", { title }),
 						duration: 2500,
 						position: "top",
 						toast
@@ -115,12 +118,12 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 					doCleanClose();
 				} else {
 					doAlert({
-						header: "Unknown Error",
+						header: tc("Load Error"),
 						cssClass: "danger",
-						message: `Save "${title}" not found.`,
+						message: tc("titleNotFound", { title }),
 						buttons: [
 							{
-								text: "Ok",
+								text: tc("Ok"),
 								role: "cancel",
 								cssClass: "cancel"
 							}
@@ -133,10 +136,10 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Load "${title}"?`,
-				message: "This will clear and overwrite all current character groups, transformations and sound changes.",
+				header: tc("loadTitle", { title }),
+				message: tc("clearOverrideGeneralThings", { title: t("allThings") }),
 				cssClass: "warning",
-				submit: "Yes, Load It",
+				submit: tc("confirmLoad"),
 				handler,
 				doAlert
 			});
@@ -147,7 +150,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			setTitles(titles.filter(ci => ci !== title));
 			CustomStorageWE.removeItem(title).then(() => {
 				toaster({
-					message: `"${title}" deleted.`,
+					message: tc("titleDeleted", { title }),
 					duration: 2500,
 					color: "danger",
 					position: "top",
@@ -159,10 +162,10 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${title}"?`,
-				message: "This cannot be undone.",
+				header: tc("deleteTitle", { title }),
+				message: tc("cannotUndo"),
 				cssClass: "warning",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -172,7 +175,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Manage Custom Info</IonTitle>
+					<IonTitle>{tc("Manage Custom Info")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -187,14 +190,14 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>Save Current Info</IonLabel>
+							<IonLabel>{tc("saveThing", { thing: tc("Current Info") })}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput
-								aria-label="Custom Info Name"
+								aria-label={tc("Name of save")}
 								id="currentInfoSaveName"
 								inputmode="text"
-								placeholder="Name your custom info"
+								placeholder={tc("Name your custom info")}
 								type="text"
 							/>
 							<IonButton
@@ -202,15 +205,15 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 								onClick={() => maybeSaveInfo()}
 								strong={true}
 								color="success"
-							>Save</IonButton>
+							>{tc("Save")}</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
-							<IonLabel>Load Saved Info</IonLabel>
+							<IonLabel>{tc("loadThing", { thing: tc("Current Info") })}</IonLabel>
 						</IonItemDivider>
 						{(titles.length === 0) ?
-							<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>
+							<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
 						:
 							titles.map((title: string) => {
 								return (
@@ -222,7 +225,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 											onClick={() => maybeLoadInfo(title)}
 											strong={true}
 											className="weCustomButon"
-										>Load</IonButton>
+										>{tc("Load")}</IonButton>
 										<IonButton
 											className="ion-no-margin"
 											slot="end"
@@ -240,7 +243,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				<IonToolbar>
 					<IonButton color="danger" slot="end" onClick={() => doCleanClose()}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

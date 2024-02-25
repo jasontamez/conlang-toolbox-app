@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { WESoundChangeObject, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
 import { deleteSoundChangeWE, editSoundChangeWE } from '../../../store/weSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import repairRegexErrors from '../../../components/RepairRegex';
 import { $i, $q } from '../../../components/DollarSignExports';
@@ -43,6 +44,8 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
@@ -89,18 +92,19 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	}
 	const maybeSaveNewSoundChangeInfo = () => {
 		const err: string[] = [];
-		const contextTest = (context: string, what: string = "Context") => {
+		const contextTest = (context: string, element: string) => {
 			let ind = context.indexOf("_");
+			const what = t(element);
 			if(ind === -1) {
-				return what + " must contain one underscore (_)";
+				return t("noUnderscore", { what });
 			} else if (context.indexOf("_", ind+1) !== -1) {
-				return what + " can only have one underscore (_)";
+				return t("multiUnderscore", { what });
 			}
 			const max = context.length - 1;
 			ind = context.indexOf("#");
 			while(ind !== -1) {
 				if(ind > 0 && ind !== max) {
-					return what + " can only have word-boundaries (#) at beginning and/or end";
+					return t("wordBoundaryError", { what });
 				}
 				ind = context.indexOf("#", (ind + 1));
 			}
@@ -114,9 +118,9 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No search expression present");
+			err.push(t("No search expression present"));
 		}
-		if((temp = contextTest(context))) {
+		if((temp = contextTest(context, "Context"))) {
 			err.push(temp);
 			const el = $q(".contextLabel");
 			el && el.classList.add("invalidValue");
@@ -134,12 +138,12 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -160,7 +164,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			description
 		}));
 		toaster({
-			message: "Sound Change saved!",
+			message: tc("thingSaved", { thing: t("Sound Change") }),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -174,7 +178,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			setIsOpen(false);
 			dispatch(deleteSoundChangeWE(editing!.id));
 			toaster({
-				message: "Sound Change deleted.",
+				message: tc("thingDeleted", { thing: t("Sound Change") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -195,9 +199,9 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			}
 			yesNoAlert({
 				header: soundChange,
-				message: "Are you sure you want to delete this sound change? This cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -211,7 +215,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Sound Change</IonTitle>
+					<IonTitle>{t("editThing", { thing: t("Sound Change") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -225,57 +229,61 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">Beginning Expression:</IonLabel>
+						<IonLabel className="seekLabel">{t("search expression", { context: "presentation"})}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Beginning expression"
+							aria-label={t("search expression", { context: "formal" })}
 							id="editSeekExWESC"
 							className="ion-margin-top serifChars"
+							helperText={t("sound to change")}
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">Ending Expression:</IonLabel>
+						<IonLabel className="replaceLabel">{t("replacement expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Ending expression"
+							aria-label={t("replacement expression", { context: "formal" })}
 							id="editReplaceExWESC"
+							helperText={t("sound changes into this")}
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="contextLabel">Context Expression:</IonLabel>
+						<IonLabel className="contextLabel">{t("context expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Context expression"
+							aria-label={t("context expression", { context: "formal" })}
 							id="editContextExWESC"
 							className="ion-margin-top serifChars"
+							helperText={t("where the change happens")}
 							onIonChange={e => resetError("context")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="anticontextLabel">Anticontext Expression:</IonLabel>
+						<IonLabel className="anticontextLabel">{t("anticontext expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Anticontext expression"
+							aria-label={t("anticontext expression", { context: "formal" })}
 							id="editAnticontextExWESC"
 							className="ion-margin-top serifChars"
+							helperText={t("where the change cannot happen")}
 							onIonChange={e => resetError("anticontext")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Sound Change Description:</IonLabel>
+						<IonLabel>{t("sound change description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Description of the sound change"
+							aria-label={t("sound change description")}
 							id="editOptDescWESC"
 							className="ion-margin-top"
-							placeholder="(optional)"
+							placeholder={tc("optional")}
 						></IonInput>
 					</IonItem>
 				</IonList>
@@ -288,7 +296,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						onClick={() => maybeSaveNewSoundChangeInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Sound Change</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: t("SChange") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="danger"
@@ -296,7 +304,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						onClick={() => maybeDeleteSoundChange()}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Item</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("SChange") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { WETransformDirection, ExtraCharactersModalOpener } from '../../../store/types';
 import { addTransformWE } from '../../../store/weSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import { $q, $a, $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
@@ -36,6 +37,8 @@ import toaster from '../../../components/toaster';
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
@@ -48,12 +51,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const maybeSaveNewTransform = (close: boolean = true) => {
 		const err: string[] = [];
 		const seekEl = $i<HTMLInputElement>("searchExWE");
-		const seek = seekEl ? seekEl.value : "";;
+		const seek = seekEl ? seekEl.value : "";
 		// Test info for validness, then save if needed and reset the newTransform
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No search expression present");
+			err.push(t("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -63,12 +66,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -93,7 +96,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		const el = $q<HTMLInputElement>("ion-list.weAddTransform ion-radio-group");
 		el && (el.value = "both");
 		toaster({
-			message: "Transform added!",
+			message: tc("thingAdded", { thing: t("Transformation")}),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -104,7 +107,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Transform</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Transformation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -118,41 +121,41 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels weAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">Input Expression:</IonLabel>
+						<IonLabel className="seekLabel">{t("Input Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Input expression"
+							aria-label={t("Input Expression", { context: "presentation" })}
 							id="searchExWE"
 							className="ion-margin-top serifChars"
-							placeholder="..."
+							helperText={t("what to change")}
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">Output Expression:</IonLabel>
+						<IonLabel className="replaceLabel">{t("Output Expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Output expression"
+							aria-label={t("Output Expression", { context: "presentation" })}
 							id="replaceExWE"
 							className="ion-margin-top serifChars"
-							placeholder="..."
+							helperText={t("what it changes into")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Transform Description:</IonLabel>
+						<IonLabel>{t("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Description of the transform"
+							aria-label={t("Description of the transformation")}
 							id="optDescWE"
 							className="ion-margin-top"
-							placeholder="(optional)"
+							placeholder={tc("optional")}
 						></IonInput>
 					</IonItem>
 					<IonItemDivider>
-						<IonLabel>Transform Direction:</IonLabel>
+						<IonLabel>{t("Transformation Direction", { context: "presentation" })}</IonLabel>
 					</IonItemDivider>
 					<IonRadioGroup
 						value={direction}
@@ -163,41 +166,41 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 								value="both"
 								labelPlacement="end"
 								justify="start"
-							>At Input, Then Undo At Output</IonRadio>
+							>{t("At input then undo at output", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="double"
 								labelPlacement="end"
 								justify="start"
-							>At Input and At Output</IonRadio>
+							>{t("At input and at output", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="in"
 								labelPlacement="end"
 								justify="start"
-							>At Input Only</IonRadio>
+							>{t("At input only", { context: "formal" })}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="out"
 								labelPlacement="end"
 								justify="start"
-							>At Output Only</IonRadio>
+							>{t("At output only", { context: "formal" })}</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-				<IonButton
-					color="tertiary"
-					slot="end"
-					onClick={() => maybeSaveNewTransform(false)}
-				>
+					<IonButton
+						color="tertiary"
+						slot="end"
+						onClick={() => maybeSaveNewTransform(false)}
+					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Transform</IonLabel>
+						<IonLabel>{tc("addThing", { thing: t("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -205,7 +208,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewTransform()}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add and Close</IonLabel>
+						<IonLabel>{tc("Add and Close")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

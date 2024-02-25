@@ -27,7 +27,7 @@ const we = {
 	"Sound Change": "Sound Change",
 	"Sound Changes": "Sound Changes",
 	"Sound Changes Tab": "$t(Sound Changes) Tab",
-	"sChange": "sound change",
+	sChange: "sound change",
 
 	// takes a `count` for plurality
 	"sChange_one": "sound change",
@@ -40,11 +40,19 @@ const we = {
 	"Convert input to lowercase before evolving": "Convert input to lowercase before evolving",
 	"Sort input before evolving": "Sort input before evolving",
 
-	"No search expression present": "No search expression present",
-
 	"GR": "%Group reference",
 	"GR_one": "%Group reference",
 	"GR_other": "%Group references",
+
+	Context: "Context",
+	Anticontext: "Anticontext",
+	noUnderscore: "{{what}} must contain one underscore (_)",
+	multiUnderscore: "{{what}} can only have one underscore (_)",
+	wordBoundaryError: "{{what}} can only have word-boundaries (#) at the beginning and/or end",
+	"No search expression present": "No search expression present",
+
+	"sound change description": "Description of the $t(sChange)",
+	"sound change description_presentation": "$t(SChange) $t(common:description_formal):",
 
 	Overview: "Overview: $t(common:WordEvolve)",
 	"What is WordEvolve?": "What is WordEvolve?",
@@ -56,6 +64,11 @@ const we = {
 
 	"You have no sound changes defined.": "You have no sound changes defined.",
 	"You have no input words to evolve.": "You have no input words to evolve.",
+
+	"sound to change": "sound to change",
+	"sound changes into this": "sound changes into this",
+	"where the change happens": "where the change happens",
+	"where the change cannot happen": "where the change cannot happen",
 
 	"input expression": "input expression",
 	"Input Expression": "Input Expression",

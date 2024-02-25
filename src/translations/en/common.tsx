@@ -54,6 +54,7 @@ const common = {
 	"Copy to Clipboard": "Copy to Clipboard",
 	"Copied to clipboard": "Copied to clipboard",
 	"Add New": "Add New",
+	"Add and Close": "Add and Close",
 	"Nothing to copy": "Nothing to copy",
 	Export: "Export",
 	"Export Info": "Export Info",
@@ -114,6 +115,7 @@ const common = {
 	addThing: "Add {{thing}}",
 	saveThing: "Save {{thing}}",
 	loadThing: "Load {{thing}}",
+	missingThing: "Missing {{thing}}",
 
 	// Titled things
 	deleteTitle: "Delete \"{{title}}\"?",
@@ -204,7 +206,8 @@ const common = {
 	"Import from Lexicon": "Import from $t(common:Lexicon)",
 	"Import from which column(s)?": "Import from which column(s)?",
 	"Lexicon Has No Columns": "Lexicon Has No Columns",
-	"Add Conditions (optional)": "Add Conditions (optional)",
+	"optional": "(optional)",
+	"Add Conditions (optional)": "Add Conditions $t(optional)",
 	"Word must contain [x]": "Word must contain [x]",
 	"Type part of word here.": "Type part of word here.",
 	"Word must match expression [x]": "Word must match expression [x]",

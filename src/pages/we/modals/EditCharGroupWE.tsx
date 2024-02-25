@@ -27,6 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { deleteCharacterGroupWE, editCharacterGroupWE } from '../../../store/weSlice';
 import { ExtraCharactersModalOpener, SetState, StateObject, WECharGroupObject } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import { $q, $i } from '../../../components/DollarSignExports';
 import yesNoAlert from '../../../components/yesNoAlert';
@@ -40,6 +41,8 @@ interface ModalProps extends ExtraCharactersModalOpener {
 const EditCharGroupWEModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
@@ -83,7 +86,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		const words = (titleEl!.value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
-			.toUpperCase() // uppercase everything
+			.toLocaleUpperCase() // uppercase everything
 			.split(/[-\s_/]+/) // split along word and word-ish boundaries
 		// Create an array of single character strings starting with the first characters
 		//   of every word, followed by the remaining characters of every word
@@ -100,7 +103,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		if(!label) {
 			// No suitable label found
 			toaster({
-				message: "Unable to suggest a unique label from the given descrption.",
+				message: tw("Unable to suggest a unique label from the given descrption."),
 				color: "warning",
 				duration: 4000,
 				position: "top",
@@ -125,38 +128,38 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		if(title === "") {
 			const el = $q(".titleLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push("No title present");
+			err.push(tw("No title present"));
 		}
 		if(label === "") {
 			const el = $q(".labelLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push("No label present");
+			err.push(tw("No label present"));
 		} else if (editing!.label !== label && charGroupMap[label!]) {
 			const el = $q(".labelLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push("There is already a label \"" + label + "\"");
+			err.push(tw("duplicateLabel", { label }));
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label as string) !== -1) {
 				const el = $q(".labelLabelEdit");
 				el && el.classList.add("invalidValue");
-				err.push("You cannot use \"" + label + "\" as a label.");
+				err.push(tw("invalidLabel", { label }));
 			}
 		}
 		if(run === "") {
 			const el = $q(".runLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push("No run present");
+			err.push(tw("No run present"));
 		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -175,7 +178,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		}));
 		cancelEditing();
 		toaster({
-			message: "Character Group saved!",
+			message: tc("thingSaved", { thing: tw("CharGroup") }),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -188,7 +191,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 			dispatch(deleteCharacterGroupWE(editing!));
 			cancelEditing();
 			toaster({
-				message: "Character Group deleted.",
+				message: tc("thingDeleted", { thing: tw("CharGroup") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -200,9 +203,9 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		} else {
 			yesNoAlert({
 				header: `${label}=${run}`,
-				message: "Are you sure you want to delete this Character Group? This cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "warning",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -212,7 +215,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Character Group</IonTitle>
+					<IonTitle>{tc("editThing", { thing: tw("CharGroup") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -226,41 +229,43 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabelEdit">Title/Description:</IonLabel>
+						<IonLabel className="titleLabelEdit">{tw("Title or description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title or description"
+							aria-label={tw("Title or description")}
 							id="editingWECharGroupTitle"
 							className="ion-margin-top"
-							placeholder="Type description here"
 							onIonChange={e => resetError("title")}
 							autocomplete="on"
 						></IonInput>
 					</IonItem>
 					<IonItem className="margin-top-quarter">
-						<div slot="start" className="ion-margin-end labelLabelEdit">Short Label:</div>
+						<div
+							slot="start"
+							className="ion-margin-end labelLabelEdit"
+						>{tw("Short Label", { context: "presentation" })}</div>
 						<IonInput
-							aria-label="Short Label"
+							aria-label={tw("Short Label")}
 							id="editingWEShortLabel"
 							className="serifChars"
-							placeholder="1 character only"
+							helperText={tw("1 character only")}
 							onIonChange={e => resetError("label")}
 							maxlength={1}
 						></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
-							<IonIcon icon={chevronBackOutline} />Suggest
+							<IonIcon icon={chevronBackOutline} />{tw("Suggest")}
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabelEdit">Letters/Characters:</IonLabel>
+						<IonLabel className="runLabelEdit">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							id="editingWECharGroupRun"
-							aria-label="Letters, Characters"
+							aria-label={tw("Letters Characters")}
 							className="ion-margin-top serifChars"
-							placeholder="Enter characters in group here"
+							helperText={tw("Enter characters in group here")}
 							onIonChange={e => resetError("run")}
 						></IonInput>
 					</IonItem>
@@ -274,7 +279,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 						onClick={() => maybeSaveNewInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Group</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: tw("CharGroup") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="danger"
@@ -282,7 +287,7 @@ const EditCharGroupWEModal = (props: ModalProps) => {
 						onClick={() => maybeDeleteCharGroup()}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Group</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: tw("CharGroup") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

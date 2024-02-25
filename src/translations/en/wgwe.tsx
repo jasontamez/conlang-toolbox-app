@@ -7,6 +7,7 @@ const wgwe = {
 	charGroup: "character group",
 	charGroup_one: "character group",
 	charGroup_other: "character groups",
+	CharGroup: "Character Group",
 	CharGroup_one: "Character Group",
 	CharGroup_other: "Character Groups",
 	"clearCharGroups?_one": "Clear $t(CharGroup)?",
@@ -66,7 +67,26 @@ const wgwe = {
 	"Save everything": "Save everything",
 	"Choose what to save": "Choose what to save",
 
-	
+	"Unable to suggest a unique label from the given descrption.":
+		"Unable to suggest a unique label from the given descrption.",
+	"No title present": "No title present",
+	"No label present": "No label present",
+	duplicateLabel: "There is already a label \"{{label}}\"",
+	invalidLabel: "You cannot use \"{{label}}\" as a label",
+	"No run present": "No run present",
+
+	"Title or description": "Title or description",
+	"Title or description_presentation": "Title/Description:",
+	"Short Label": "Short Label",
+	"Short Label_presentation": "Short Label:",
+	"1 character only": "1 character only",
+	Suggest: "Suggest", // suggest a 1-character label for this character group
+	"Letters Characters": "Letters, Characters",
+	"Letters Characters_presentation": "Letters/Characters:",
+	"Enter characters in group here": "Enter characters in $t(CharGroup) here",
+	"what to change": "what to change",
+	"what it changes into": "what it changes into",
+
 };
 
 export default wgwe;

@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { WECharGroupObject, ExtraCharactersModalOpener, StateObject } from '../../../store/types';
 import { addCharacterGroupWE } from '../../../store/weSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import { $q, $a, $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
@@ -33,6 +34,8 @@ import toaster from '../../../components/toaster';
 const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const charGroupMap: { [key: string]: boolean } = {};
@@ -67,7 +70,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		if(!label) {
 			// No suitable label found
 			toaster({
-				message: "Unable to suggest a unique label from the given descrption.",
+				message: tw("Unable to suggest a unique label from the given descrption."),
 				color: "warning",
 				duration: 4000,
 				position: "top",
@@ -92,38 +95,38 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		if(title === "") {
 			const el = $q(".titleLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No title present");
+			err.push(tw("No title present"));
 		}
 		if(label === "") {
 			const el = $q(".labelLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No label present");
+			err.push(tw("No label present"));
 		} else if (charGroupMap[label]) {
 			const el = $q(".labelLabel");
 			el && el.classList.add("invalidValue");
-			err.push("There is already a label \"" + label + "\"");
+			err.push(tw("duplicateLabel", { label }));
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label as string) !== -1) {
 				const el = $q(".labelLabel");
 				el && el.classList.add("invalidValue");
-				err.push("You cannot use \"" + label + "\" as a label");
+				err.push(tw("invalidLabel", { label }));
 			}
 		}
 		if(run === "") {
 			const el = $q(".runLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No run present");
+			err.push(tw("No run present"));
 		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				message: err.join("; "),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -138,7 +141,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			(input) => input.value = ""
 		);
 		toaster({
-			message: "Character Group added!",
+			message: tc("thingAdded", { thing: tw("CharGroup") }),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -149,7 +152,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Character Group</IonTitle>
+					<IonTitle>{tc("addThing", { thing: tw("CharGroup") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -163,14 +166,13 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addWECharGroup">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabel">Title/Description:</IonLabel>
+						<IonLabel className="titleLabelEdit">{tw("Title or description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title/Description"
+							aria-label={tw("Title or description")}
 							id="newWECharGroupTitle"
 							className="ion-margin-top"
-							placeholder="Type description here"
 							autocomplete="on"
 							onIonChange={() => resetError("title")}
 						></IonInput>
@@ -179,29 +181,29 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						<div
 							slot="start"
 							className="ion-margin-end labelLabelEdit"
-						>Short Label:</div>
+						>{tw("Short Label", { context: "presentation" })}</div>
 						<IonInput
 							id="newWEShortLabel"
-							aria-label="Short Label"
+							aria-label={tw("Short Label")}
 							labelPlacement="start"
 							className="serifChars labelLabel"
-							placeholder="1 character only"
+							helperText={tw("1 character only")}
 							maxlength={1}
 							onIonChange={() => resetError("title")}
 						></IonInput>
 						<IonButton slot="end" onClick={() => generateLabel()}>
-							<IonIcon icon={chevronBackOutline} />Suggest
+							<IonIcon icon={chevronBackOutline} />{tw("Suggest")}
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabel">Letters/Characters:</IonLabel>
+						<IonLabel className="runLabelEdit">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							id="newWECharGroupRun"
-							aria-label="Letters/Characters"
+							aria-label={tw("Letters Characters")}
 							className="importantElement ion-margin-top serifChars"
-							placeholder="Enter characters in group here"
+							helperText={tw("Enter characters in group here")}
 							onIonChange={() => resetError("run")}
 						></IonInput>
 					</IonItem>
@@ -215,7 +217,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewCharGroup(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Character Group</IonLabel>
+						<IonLabel>{tc("addThing", { thing: tw("CharGroup") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -223,7 +225,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewCharGroup()}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add and Close</IonLabel>
+						<IonLabel>{tc("Add and Close")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
