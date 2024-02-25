@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, ReactElement, Fragment } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -28,15 +28,31 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, SetState, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
 import { setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes, clearSyllables } from '../../store/wgSlice';
+import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
+import { $i } from '../../components/DollarSignExports';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
-import { $i } from '../../components/DollarSignExports';
+
+const addLinebreaks = (input: string) => {
+	const output: ReactElement[] = [];
+	const split = input.split(/\s+/);
+	output.push(<Fragment key={`${input}/-1`}>{split.shift()!}</Fragment>)
+	split.forEach((bit, i) => {
+		output.push(
+			<br key={`${input}/br/${i}`} />,
+			<Fragment key={`${input}/br/${i}`}>{bit}</Fragment>
+		);
+	});
+	return output;
+};
 
 const WGSyl = (props: PageData) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -90,7 +106,7 @@ const WGSyl = (props: PageData) => {
 	const toggleSeparateDropoff = (value: Zero_Fifty | null, func: SetState<Zero_Fifty | null>) => {
 		func(value === null ? syllableBoxDropoff : null);
 	};
-	const firstBox = multipleSyllableTypes ? "Single-Syllable\nWords" : "Syllables";
+	const firstBox = multipleSyllableTypes ? t("single-word syllables", { context: "formal" }) : t("Syllables");
 	const SyllableButton = memo((props: { prop: SyllableTypes, dropoff: Zero_Fifty | null }) => {
 		const { prop, dropoff } = props;
 		if (isEditing === prop) {
@@ -121,10 +137,11 @@ const WGSyl = (props: PageData) => {
 		);
 	});
 	const maybeClearEverything = () => {
+		const count = wi.length + wm.length + wf.length + sw.length;
 		const handler = () => {
 			dispatch(clearSyllables());
 			toaster({
-				message: "Syllables cleared.",
+				message: tc("thingsDeleted", { count, things: t("Syllable", { count }) }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -135,10 +152,10 @@ const WGSyl = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear All Syllables?",
-				message: "This will delete all current syllables, and cannot be undone.",
+				header: tc("clearThings?", { count, things: t("Syllable", { count }) }),
+				message: t("delAllSyllables", { count }),
 				cssClass: "warning",
-				submit: "Yes, Delete Them",
+				submit: tc("confirmDel", { count }),
 				handler,
 				doAlert
 			});
@@ -155,7 +172,7 @@ const WGSyl = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Syllables</IonTitle>
+					<IonTitle>{t("Syllables")}</IonTitle>
 					<IonButtons slot="end">
 						{(singleWord || wordInitial || wordMiddle || wordFinal) ?
 							<IonButton onClick={() => maybeClearEverything()}>
@@ -177,13 +194,13 @@ const WGSyl = (props: PageData) => {
 				<IonList lines="none">
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
-							<div><strong>Dropoff Rate</strong></div>
-							<div className="minor ion-text-wrap">Syllables at the top of a box tend to be picked more often than syllables at the bottom of the box. This slider controls this tendency. A rate of zero is flat, making all syllables equiprobable.</div>
+							<div><strong>{t("dropoff rate", { context: "formal" })}</strong></div>
+							<div className="minor ion-text-wrap">{t("syllableDropoffExplanation")}</div>
 						</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonRange
-							aria-label="From 0 to 50"
+							aria-label={t("From 0 to 50")}
 							min={0} max={50}
 							value={syllableBoxDropoff}
 							pin={true}
@@ -201,13 +218,13 @@ const WGSyl = (props: PageData) => {
 							disabled={!!isEditing}
 							checked={multipleSyllableTypes}
 							onClick={() => dispatch(setMultipleSyllableTypes(!multipleSyllableTypes))}
-						>Use multiple syllable types</IonToggle>
+						>{t("Use multiple syllable types")}</IonToggle>
 					</IonItem>
 				</IonList>
 				<IonList className="syllables units" lines="none">
 					<IonItem className="nonUnit">
 						<div className="header">
-							<div className="title">{firstBox}</div>
+							<div className="title">{addLinebreaks(firstBox)}</div>
 							{swDropoff !== null ?
 								<div className="percentage">{swDropoff}%</div>
 							:
@@ -215,7 +232,7 @@ const WGSyl = (props: PageData) => {
 							}
 						</div>
 						<IonTextarea
-							aria-label={firstBox.replace("\n", " ")}
+							aria-label={firstBox}
 							disabled={isEditing !== "singleWord"}
 							className="serifChars"
 							id="Syl-singleWord"
@@ -223,7 +240,7 @@ const WGSyl = (props: PageData) => {
 							rows={calculateRows(singleWord)}
 							onIonChange={(e) => setSw(e.target.value as string)}
 							inputmode="text"
-							placeholder="Use character group labels to construct syllables"
+							placeholder={t("Use character group labels to construct syllables")}
 						/>
 						<div className="button">
 							<SyllableButton prop="singleWord" dropoff={swDropoff} />
@@ -239,14 +256,14 @@ const WGSyl = (props: PageData) => {
 									onClick={() => toggleSeparateDropoff(swDropoff, setSwDropoff)}
 									labelPlacement="start"
 									checked={swDropoff !== null}
-								>Use separate dropoff rate</IonToggle>
+								>{t("Use separate dropoff rate")}</IonToggle>
 							</IonItem>
 							<IonItem
 								id="singleWordDropoff"
 								className={swDropoff === null ? "hide" : "nonUnit"}
 							>
 								<IonRange
-									aria-label="From 0 to 50"
+									aria-label={t("From 0 to 50")}
 									min={0} max={50}
 									pin={true}
 									value={(swDropoff || 0)}
@@ -260,7 +277,7 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">Word-Initial<br />Syllables</div>
+							<div className="title">{addLinebreaks(t("word-initial syllables", { context: "formal" }))}</div>
 							{wiDropoff !== null ?
 								<div className="percentage">{wiDropoff}%</div>
 							:
@@ -268,7 +285,7 @@ const WGSyl = (props: PageData) => {
 							}
 						</div>
 						<IonTextarea
-							aria-label="Word-Initial Syllables"
+							aria-label={t("word-initial syllables")}
 							disabled={isEditing !== "wordInitial"}
 							className="serifChars"
 							id="Syl-wordInitial"
@@ -276,7 +293,7 @@ const WGSyl = (props: PageData) => {
 							rows={calculateRows(wordInitial)}
 							onIonChange={(e) => setWi(e.target.value as string)}
 							inputmode="text"
-							placeholder="These syllables are used to begin words"
+							placeholder={t("These syllables are used to begin words")}
 						/>
 						<div className="button">
 							<SyllableButton prop="wordInitial" dropoff={wiDropoff} />
@@ -290,14 +307,14 @@ const WGSyl = (props: PageData) => {
 									onClick={() => toggleSeparateDropoff(wiDropoff, setWiDropoff)}
 									labelPlacement="start"
 									checked={wiDropoff !== null}
-								>Use separate dropoff rate</IonToggle>
+								>{t("Use separate dropoff rate")}</IonToggle>
 							</IonItem>
 							<IonItem
 								id="wordInitialDropoff"
 								className={wiDropoff === null ? "hide" : "nonUnit"}
 							>
 								<IonRange
-									aria-label="From 0 to 50"
+									aria-label={t("From 0 to 50")}
 									min={0} max={50}
 									pin={true}
 									value={(wiDropoff || 0)}
@@ -311,7 +328,7 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">Mid-Word<br />Syllables</div>
+							<div className="title">{addLinebreaks(t("mid-word syllables", { context: "formal" }))}</div>
 							{wmDropoff !== null ?
 								<div className="percentage">{wmDropoff}%</div>
 							:
@@ -319,7 +336,7 @@ const WGSyl = (props: PageData) => {
 							}
 						</div>
 						<IonTextarea
-							aria-label="Mid-Word Syllables"
+							aria-label={t("mid-word syllables")}
 							disabled={isEditing !== "wordMiddle"}
 							className="serifChars"
 							id="Syl-wordMiddle"
@@ -327,7 +344,7 @@ const WGSyl = (props: PageData) => {
 							rows={calculateRows(wordMiddle)}
 							onIonChange={(e) => setWm(e.target.value as string)}
 							inputmode="text"
-							placeholder="These syllables are used between the first and last syllable of a word"
+							placeholder={t("These syllables are used between the first and last syllable of a word")}
 						/>
 						<div className="button">
 							<SyllableButton prop="wordMiddle" dropoff={wmDropoff} />
@@ -341,14 +358,14 @@ const WGSyl = (props: PageData) => {
 									onClick={() => toggleSeparateDropoff(wmDropoff, setWmDropoff)}
 									labelPlacement="start"
 									checked={wmDropoff !== null}
-								>Use separate dropoff rate</IonToggle>
+								>{t("Use separate dropoff rate")}</IonToggle>
 							</IonItem>
 							<IonItem
 								id="wordMiddleDropoff"
 								className={wmDropoff === null ? "hide" : "nonUnit"}
 							>
 								<IonRange
-									aria-label="From 0 to 50"
+									aria-label={t("From 0 to 50")}
 									min={0} max={50}
 									pin={true}
 									value={(wmDropoff || 0)}
@@ -362,7 +379,7 @@ const WGSyl = (props: PageData) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">Word-Final<br />Syllables</div>
+							<div className="title">{addLinebreaks(t("word-final syllables", { context: "formal" }))}</div>
 							{wfDropoff !== null ?
 								<div className="percentage">{wfDropoff}%</div>
 							:
@@ -370,7 +387,7 @@ const WGSyl = (props: PageData) => {
 							}
 						</div>
 						<IonTextarea
-							aria-label="Word-Final Syllables"
+							aria-label={t("word-final syllables")}
 							disabled={isEditing !== "wordFinal"}
 							className="serifChars"
 							id="Syl-wordFinal"
@@ -378,7 +395,7 @@ const WGSyl = (props: PageData) => {
 							rows={calculateRows(wordFinal)}
 							onIonChange={(e) => setWf(e.target.value as string)}
 							inputmode="text"
-							placeholder="These syllables are used to end words"
+							placeholder={t("These syllables are used to end words")}
 						/>
 						<div className="button">
 							<SyllableButton prop="wordFinal" dropoff={wfDropoff} />
@@ -392,14 +409,14 @@ const WGSyl = (props: PageData) => {
 									onClick={() => toggleSeparateDropoff(wfDropoff, setWfDropoff)}
 									labelPlacement="start"
 									checked={wfDropoff !== null}
-								>Use separate dropoff rate</IonToggle>
+								>{t("Use separate dropoff rate")}</IonToggle>
 							</IonItem>
 							<IonItem
 								id="wordFinalDropoff"
 								className={wfDropoff === null ? "hide" : "nonUnit"}
 							>
 								<IonRange
-									aria-label="From 0 to 50"
+									aria-label={t("From 0 to 50")}
 									min={0} max={50}
 									pin={true}
 									value={(wfDropoff || 0)}

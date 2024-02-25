@@ -12,8 +12,7 @@ import {
 	useIonAlert,
 	useIonToast,
 	useIonRouter,
-	AlertInput,
-	UseIonToastResult
+	AlertInput
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -23,7 +22,6 @@ import {
 	helpCircleOutline,
 	copyOutline
 } from 'ionicons/icons';
-import { Clipboard } from '@capacitor/clipboard';
 
 import {
 	WGTransformObject,
@@ -34,6 +32,7 @@ import {
 	SortObject
 } from '../../store/types';
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { $a, $i } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
@@ -43,31 +42,14 @@ import { LexiconOutlineIcon } from '../../components/icons';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
+import copyText from '../../components/copyText';
 
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGinfo";
 
-async function copyText (copyString: string, toast: UseIonToastResult) {
-	if(copyString) {
-		await Clipboard.write({string: copyString});
-		//navigator.clipboard.writeText(copyText);
-		return toaster({
-			message: "Copied to clipboard",
-			duration: 1500,
-			position: "top",
-			toast
-		});
-	}
-	toaster({
-		message: "Nothing to copy",
-		color: "danger",
-		duration: 1500,
-		position: "top",
-		toast
-	});
-};
-
 const WGOut = (props: PageData) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -230,10 +212,10 @@ const WGOut = (props: PageData) => {
 		setErrorString("");
 		// Sanity check
 		if(characterGroups.length === 0) {
-			errors.push("You have no character groups defined.");
+			errors.push(t("You have no character groups defined."));
 		}
 		if (!multipleSyllableTypes && singleWord.length === 0) {
-			errors.push("You have no syllables defined.");
+			errors.push(t("You have no syllables defined."));
 		}
 		if (multipleSyllableTypes &&
 			(
@@ -243,7 +225,7 @@ const WGOut = (props: PageData) => {
 				|| wordFinal.length === 0
 			)
 		) {
-			errors.push("You are missing one or more types of syllables.");
+			errors.push(t("You are missing one or more types of syllables."));
 		}
 		if(errors.length > 0) {
 			setErrorString(errors.join(" "));
@@ -437,7 +419,7 @@ const WGOut = (props: PageData) => {
 		result = doTransform(result);
 		// Capitalize if needed
 		if(capitalize) {
-			result = result.charAt(0).toUpperCase() + result.slice(1);
+			result = result.charAt(0).toLocaleUpperCase() + result.slice(1);
 		}
 		return result;
 	};
@@ -545,7 +527,7 @@ const WGOut = (props: PageData) => {
 			}
 		}
 		if(counter <= 0) {
-			setErrorString(`Unable to create ${wordsPerWordlist} unique words (maxed out at ${words.length})`);
+			setErrorString(t("unableToCreateXWords", { amount: wordsPerWordlist, max: words.length }));
 			return [];
 		}
 		// Sort if needed
@@ -564,7 +546,7 @@ const WGOut = (props: PageData) => {
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
 			return toaster({
-				message: "You need to add columns to the Lexicon before you can add anything to it.",
+				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
 				color: "danger",
 				duration: 4000,
 				position: "top",
@@ -573,7 +555,7 @@ const WGOut = (props: PageData) => {
 		}
 		setIsPickingSaving(true);
 		return toaster({
-			message: "Tap words you want to save to Lexicon.",
+			message: tc("Tap words you want to save to Lexicon."),
 			duration: 2500,
 			position: "top",
 			toast
@@ -591,8 +573,8 @@ const WGOut = (props: PageData) => {
 	};
 	const saveToLexicon = (words: string[]) => {
 		doAlert({
-			header: "Select a column",
-			message: "Your selected words will be added to the Lexicon under that column.",
+			header: tc("Select a column"),
+			message: tc("Your selected words will be added to the Lexicon under that column."),
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
 				const obj: AlertInput = {
 					type: 'radio',
@@ -604,12 +586,12 @@ const WGOut = (props: PageData) => {
 			}),
 			buttons: [
 				{
-					text: "Cancel",
+					text: tc("Cancel"),
 					role: 'cancel',
 					cssClass: "cancel"
 				},
 				{
-					text: "Save",
+					text: tc("Save"),
 					handler: (col: LexiconColumn | undefined) => {
 						if(!col) {
 							// Treat as cancel
@@ -625,12 +607,19 @@ const WGOut = (props: PageData) => {
 						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
-							message: `Selected words saved to Lexicon under "${col.label}"`,
+							message: tc(
+								"saveToLexColumn",
+								{
+									count: words.length,
+									what: tc("word", { count: words.length }),
+									column: col.label
+								}
+							),
 							duration: 3500,
 							position: "top",
 							buttons: [
 								{
-									text: "Go to Lexicon",
+									text: tc("Go to Lexicon"),
 									handler: () => navigator.push("/lex")
 								}
 							],
@@ -697,7 +686,7 @@ const WGOut = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton disabled={isPickingSaving} />
 					</IonButtons>
-					<IonTitle>Output</IonTitle>
+					<IonTitle>{tc("Output")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
@@ -717,8 +706,8 @@ const WGOut = (props: PageData) => {
 						>
 							{
 								isGenerating ? (
-									<span className="ital">Loading...</span>
-								) : "Generate"
+									<span className="ital">{tc("Loading")}</span>
+								) : t("Generate")
 							}<IonIcon icon={caretForwardCircleOutline} />
 						</IonButton>
 						<div

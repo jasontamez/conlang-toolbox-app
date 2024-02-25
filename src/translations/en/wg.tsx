@@ -25,13 +25,19 @@ const wg = {
 
 	Syllable: "Syllable",
 	Syllables: "Syllables",
+	Syllable_one: "Syllable",
+	Syllable_other: "Syllables",
 	syll: "syllable",
 	syll_one: "syllable",
 	syll_other: "syllables",
 	"single-word syllables": "single-word syllables",
+	"single-word syllables_formal": "Single-Syllable Words",
 	"word-initial syllables": "word-initial syllables",
+	"word-initial syllables_formal": "Word-Initial Syllables",
 	"mid-word syllables": "mid-word syllables",
+	"mid-word syllables_formal": "Mid-Word Syllables",
 	"word-final syllables": "word-final syllables",
+	"word-final syllables_formal": "Word-Final Syllables",
 	Preset: "Preset",
 	Presets: "Presets",
 
@@ -39,10 +45,43 @@ const wg = {
 	"Settings Tab": "$t(common:Settings) Tab",
 	"What is WordGen?": "What is $t(common:WordGen)?",
 
+	delAllSyllables_one:
+		"This will delete the current $t(syll, { \"count\": {{count}} }), and cannot be undone.",
+	delAllSyllables_other:
+		"This will delete all {{count}} current $t(syll, { \"count\": {{count}} }), and cannot be undone.",
+
+	syllableDropoffExplanation:
+		"Syllables at the top of a box tend to be picked more often than"
+		+ " syllables at the bottom of the box. This slider controls this"
+		+ " tendency. A rate of zero is flat, making all syllables"
+		+ " equiprobable.",
+
+	"Use character group labels to construct syllables":
+		"Use character group labels to construct syllables",
+	"Use separate dropoff rate": "Use separate dropoff rate",
+	"These syllables are used to begin words": "These syllables are used to begin words",
+	"These syllables are used between the first and last syllable of a word":
+		"These syllables are used between the first and last syllable of a word",
+	"These syllables are used to end words": "These syllables are used to end words",
+	"From 0 to 50": "From 0 to 50",
+	"From 0% to 100%": "From 0% to 100%",
+	"From 2 to 15": "From 2 to 15",
+
+	"You have no character groups defined.": "You have no character groups defined.",
+	"You have no syllables defined.": "You have no syllables defined.",
+	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.",
+	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})",
+
 	consonants: "consonants",
 	vowels: "vowels",
 	dropoff: "dropoff",
 	"dropoff rate": "$t(dropoff) rate",
+	"dropoff rate_formal": "Dropoff Rate",
+	"characterDropoffExplanation":
+		"Characters at the beginning of a group tend to be picked more often"
+		+ " than characters at the end of the group. This slider controls this"
+		+ " tendency. A rate of zero is flat, making all characters"
+		+ " equiprobable.",
 	"Character Group run dropoff": "$t(Character Group) $t(run) $t(dropoff)",
 	"Syllable box dropoff": "$t(syll) box $t(dropoff)",
 	"Use multiple syllable types" : "Use multiple $t(syll) types",
@@ -65,7 +104,6 @@ const wg = {
 	"Multi-column layout": "Multi-column layout",
 	"Wordlist size": "$t(Wordlist) size",
 	"Show syllable breaks": "Show syllable breaks",
-	"Load Presets": "Load Presets",
 	Simple: "Simple",
 	"Clear All Fields": "Clear All Fields",
 	"Save/Load Custom Info": "Save/Load Custom Info",
@@ -73,8 +111,19 @@ const wg = {
 	"Maximum number of syllables per word": "Maximum number of syllables per word",
 	"Capitalize sentences": "Capitalize sentences",
 	declarative: "declarative",
+	declarative_formal: "Declarative",
 	interrogative: "interrogative",
+	interrogative_formal: "Interrogative",
 	exclamatory: "exclamatory",
+	exclamatory_formal: "Exclamatory",
+	sentenceBeginning: "$t({{type}}, { \"context\": \"formal\" }) sentence beginning",
+	sentenceEnding: "$t({{type}}, { \"context\": \"formal\" }) sentence ending",
+
+	"Presets and Stored Info": "Presets and Stored Info",
+	"Word Generation Controls": "Word Generation Controls",
+	Never: "Never",
+	Always: "Always",
+	"Pseudo-text Controls": "Pseudo-text Controls",
 
 	info: {
 		charGroupExample: [ // strong, emphasized
@@ -347,7 +396,7 @@ const wg = {
 			"",
 			"## The Buttons",
 			"",
-			"**$t(Load Presets)** brings up a menu where you can choose from",
+			"**$t(common:Load Preset)** brings up a menu where you can choose from",
 			"several pre-loaded options. The initial settings when you first",
 			"start the app are the _$t(Simple)_ preset. The others are offered",
 			"to give you ideas of what's possible with the app. They will",

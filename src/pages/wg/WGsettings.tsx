@@ -44,6 +44,7 @@ import {
 	setExclamatorySentencePre,
 	setExclamatorySentencePost
 } from '../../store/wgSlice';
+import useTranslator from '../../store/translationHooks';
 
 import { CustomStorageWG } from '../../components/PersistentInfo';
 import ModalWrap from "../../components/ModalWrap";
@@ -61,6 +62,8 @@ import { OptCard } from "./WGinfo";
 //   []  exclamatory     [!]   weight: [1]
 
 const WGSet = (props: PageData) => {
+	const [ t ] = useTranslator('wg');
+	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -113,7 +116,7 @@ const WGSet = (props: PageData) => {
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
 				onDidDismiss={() => setLoadingOpen(false)}
-				message={'Please wait...'}
+				message={tc("Please wait...")}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -123,7 +126,7 @@ const WGSet = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Settings</IonTitle>
+					<IonTitle>{tc("Settings")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -136,7 +139,7 @@ const WGSet = (props: PageData) => {
 			</IonHeader>
 			<IonContent fullscreen>
 				<IonList className="hasSpecialLabels" lines="full">
-					<IonItemDivider>Presets and Stored Info</IonItemDivider>
+					<IonItemDivider>{t("Presets and Stored Info")}</IonItemDivider>
 					<IonItem lines="none" id="presetsSection">
 						<div>
 							<IonButton
@@ -144,22 +147,22 @@ const WGSet = (props: PageData) => {
 								strong={true}
 								color="secondary"
 								shape="round"
-							>Load Preset</IonButton>
+							>{tc("Load Preset")}</IonButton>
 							<IonButton
 								onClick={() => openCustomInfoModal()}
 								strong={true}
 								color="tertiary"
 								shape="round"
-							>Save/Load Custom Info</IonButton>
+							>{t("Save/Load Custom Info")}</IonButton>
 						</div>
 					</IonItem>
-					<IonItemDivider>Word Generation Controls</IonItemDivider>
+					<IonItemDivider>{t("Word Generation Controls")}</IonItemDivider>
 					<IonItem className="labelled">
-						<IonLabel>Rate of monosyllable words</IonLabel>
+						<IonLabel>{t("Rate of monosyllable words")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonRange
-							aria-label="From 0% to 100%"
+							aria-label={t("From 0% to 100%")}
 							debounce={250}
 							min={0}
 							max={100}
@@ -167,16 +170,16 @@ const WGSet = (props: PageData) => {
 							pin={true}
 							onIonChange={(e) => dispatch(setMonosyllablesRate(e.target.value as Zero_OneHundred))}
 						>
-							<div slot="start">Never</div>
-							<div slot="end">Always</div>
+							<div slot="start">{t("Never")}</div>
+							<div slot="end">{t("Always")}</div>
 						</IonRange>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Maximum number of syllables per word</IonLabel>
+						<IonLabel>{t("Maximum number of syllables per word")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonRange
-							aria-label="From 2 to 15"
+							aria-label={t("From 2 to 15")}
 							debounce={250}
 							min={2}
 							max={15}
@@ -192,11 +195,11 @@ const WGSet = (props: PageData) => {
 						</IonRange>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Character Group run dropoff</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("Character Group run dropoff")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonRange
-							aria-label="From 0 to 50"
+							aria-label={t("From 0 to 50")}
 							debounce={250}
 							min={0}
 							max={50}
@@ -209,11 +212,11 @@ const WGSet = (props: PageData) => {
 						</IonRange>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Syllable box dropoff</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("Syllable box dropoff")}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonRange
-							aria-label="From 0 to 50"
+							aria-label={t("From 0 to 50")}
 							debounce={250}
 							min={0}
 							max={50}
@@ -225,21 +228,21 @@ const WGSet = (props: PageData) => {
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					<IonItemDivider>Pseudo-text Controls</IonItemDivider>
+					<IonItemDivider>{t("Pseudo-text Controls")}</IonItemDivider>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
-							aria-label="Capitalize sentences"
+							aria-label={t("Capitalize sentences")}
 							checked={capitalizeSentences}
 							onIonChange={e => dispatch(setCapitalizeSentences(e.detail.checked))}
-						>Capitalize sentences</IonToggle>
+						>{t("Capitalize sentences")}</IonToggle>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Declarative sentence beginning</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceBeginning", { type: "declarative" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Declarative sentence beginning"
+							aria-label={t("sentenceBeginning", { type: "declarative" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}
@@ -249,11 +252,11 @@ const WGSet = (props: PageData) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Declarative sentence ending</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceEnding", { type: "declarative" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Declarative sentence ending"
+							aria-label={t("sentenceEnding", { type: "declarative" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}
@@ -263,11 +266,11 @@ const WGSet = (props: PageData) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Interrogative sentence beginning</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceBeginning", { type: "interrogative" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Interrogative sentence beginning"
+							aria-label={t("sentenceBeginning", { type: "interrogative" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}
@@ -277,11 +280,11 @@ const WGSet = (props: PageData) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Interrogative sentence ending</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceEnding", { type: "interrogative" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Interrogative sentence ending"
+							aria-label={t("sentenceEnding", { type: "interrogative" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}
@@ -291,11 +294,11 @@ const WGSet = (props: PageData) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Exclamatory sentence beginning</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceBeginning", { type: "exclamatory" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Exclamatory sentence beginning"
+							aria-label={t("sentenceBeginning", { type: "exclamatory" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}
@@ -305,11 +308,11 @@ const WGSet = (props: PageData) => {
 						/>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="ion-padding-bottom">Exclamatory sentence ending</IonLabel>
+						<IonLabel className="ion-padding-bottom">{t("sentenceEnding", { type: "exclamatory" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Exclamatory sentence ending"
+							aria-label={t("sentenceEnding", { type: "exclamatory" })}
 							inputmode="text"
 							maxlength={5}
 							minlength={0}

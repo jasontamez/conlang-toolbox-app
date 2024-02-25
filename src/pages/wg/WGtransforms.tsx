@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -34,6 +34,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject, WGTransformObject } from '../../store/types';
 import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
+import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
 import { $q } from '../../components/DollarSignExports';
@@ -47,7 +48,57 @@ import EditTransformModal from './modals/EditTransform';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { TransCard } from "./WGinfo";
 
+interface TransformProps {
+	trans: WGTransformObject
+	editTransform: (x: WGTransformObject) => void
+	maybeDeleteTransform: (x: WGTransformObject) => void
+	arrow: string
+}
+
+const TransformItem: FC<TransformProps> = (props) => {
+	const { trans, editTransform, maybeDeleteTransform, arrow } = props;
+	const { id, seek, replace, description } = trans;
+	const changer = useCallback(() => editTransform(trans), [trans, editTransform]);
+	const deleter = useCallback(() => maybeDeleteTransform(trans), [trans, maybeDeleteTransform]);
+	return (
+		<IonItemSliding key={id}>
+			<IonItemOptions>
+				<IonItemOption
+					color="primary"
+					onClick={changer}
+				>
+					<IonIcon slot="icon-only" src="svg/edit.svg" />
+				</IonItemOption>
+				<IonItemOption
+					color="danger"
+					onClick={deleter}
+				>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem>
+				<IonReorder className="dragHandle ion-margin-end">
+					<IonIcon icon={reorderTwo} className="dragHandle" />
+				</IonReorder>
+				<IonLabel className="wrappableInnards">
+					<div className="importantElement serifChars">
+						<span className="seek importantUnit">{seek}</span>
+						<span className="arrow unimportantUnit">{arrow}</span>
+						<span className="replace importantUnit">
+							{replace || String.fromCharCode(160)}
+						</span>
+					</div>
+					<div className="description">{description}</div>
+				</IonLabel>
+				<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+			</IonItem>
+		</IonItemSliding>
+	);
+};
+
 const WGRew = (props: PageData) => {
+	const [ tw ] = useTranslator('wgwe');
+	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -60,19 +111,19 @@ const WGRew = (props: PageData) => {
 	const { transforms } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
-	const editTransform = (transform: WGTransformObject) => {
+	const editTransform = useCallback((transform: WGTransformObject) => {
 		const groups = $q<HTMLIonListElement>((".transforms"));
 		groups && groups.closeSlidingItems();
 		setEditing(transform);
 		setIsOpenEditTransform(true);
-	};
-	const maybeDeleteTransform = (transform: WGTransformObject) => {
+	}, []);
+	const maybeDeleteTransform = useCallback((transform: WGTransformObject) => {
 		const groups = $q<HTMLIonListElement>((".transforms"));
 		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({
-				message: "Transformation deleted.",
+				message: tc("thingsDeleted", { count: 1, things: tw("Transform") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -85,25 +136,26 @@ const WGRew = (props: PageData) => {
 			const { seek, replace } = transform;
 			yesNoAlert({
 				header: `${seek}${arrow}${replace}`,
-				message: "Are you sure you want to delete this? It cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
 		}
-	};
-	const doReorder = (event: CustomEvent) => {
+	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, arrow]);
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WGTransformObject>(transforms, ed.from, ed.to);
 		dispatch(rearrangeTransformsWG(reorganized));
 		ed.complete();
-	};
-	const maybeClearEverything = () => {
+	}, [transforms, dispatch]);
+	const maybeClearEverything = useCallback(() => {
+		const count = transforms.length;
 		const handler = () => {
 			dispatch(deleteTransformWG(null));
 			toaster({
-				message: "Transformations deleted.",
+				message: tc("thingsDeleted", { count, things: tw("Transforms", { count }) }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -114,15 +166,26 @@ const WGRew = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Clear All Transformations?",
-				message: "This will delete all current transformations, and cannot be undone.",
+				header: tc("Clear Everything?"),
+				message: tw("delAllTransforms", { count }),
 				cssClass: "warning",
-				submit: "Yes, Delete Them",
+				submit: tc("confirmDel", { count }),
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [tc, tw, dispatch, disableConfirms, doAlert, toast, transforms.length]);
+	const map = useCallback(
+		(input: WGTransformObject) =>
+			<TransformItem
+				key={input.id}
+				trans={input}
+				editTransform={editTransform}
+				maybeDeleteTransform={maybeDeleteTransform}
+				arrow={arrow}
+			/>,
+		[editTransform, maybeDeleteTransform, arrow]
+	);
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
@@ -143,7 +206,7 @@ const WGRew = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Transformations</IonTitle>
+					<IonTitle>{tw("Transformations")}</IonTitle>
 					<IonButtons slot="end">
 						{transforms.length > 0 ?
 							<IonButton onClick={() => maybeClearEverything()}>
@@ -168,49 +231,13 @@ const WGRew = (props: PageData) => {
 						className="hideWhileAdding"
 						onIonItemReorder={doReorder}
 					>
-						{transforms.map((transform: WGTransformObject) => {
-							const { id, seek, replace, description } = transform;
-							return (
-								<IonItemSliding key={id}>
-									<IonItemOptions>
-										<IonItemOption
-											color="primary"
-											onClick={() => editTransform(transform)}
-										>
-											<IonIcon slot="icon-only" src="svg/edit.svg" />
-										</IonItemOption>
-										<IonItemOption
-											color="danger"
-											onClick={() => maybeDeleteTransform(transform)}
-										>
-											<IonIcon slot="icon-only" icon={trash} />
-										</IonItemOption>
-									</IonItemOptions>
-									<IonItem>
-										<IonReorder className="dragHandle ion-margin-end">
-											<IonIcon icon={reorderTwo} className="dragHandle" />
-										</IonReorder>
-										<IonLabel className="wrappableInnards">
-											<div className="importantElement serifChars">
-												<span className="seek importantUnit">{seek}</span>
-												<span className="arrow unimportantUnit">{arrow}</span>
-												<span className="replace importantUnit">
-													{replace || String.fromCharCode(160)}
-												</span>
-											</div>
-											<div className="description">{description}</div>
-										</IonLabel>
-										<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
-									</IonItem>
-								</IonItemSliding>
-							);
-						})}
+						{transforms.map(map)}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="tertiary"
-						title="Add new transformation"
+						title={tc("Add New")}
 						onClick={() => setIsOpenAddTransform(true)}
 					>
 						<IonIcon icon={addOutline} />

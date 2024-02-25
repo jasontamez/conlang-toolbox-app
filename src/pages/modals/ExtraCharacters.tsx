@@ -26,7 +26,6 @@ import {
 import { Action, Dispatch } from 'redux';
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
-import { Clipboard } from '@capacitor/clipboard';
 
 import { ExtraCharactersDisplayName, ModalProperties, StateObject } from '../../store/types';
 import { setFaves, setNowShowing, setToCopy, toggleCopyImmediately, toggleShowNames } from '../../store/extraCharactersSlice';
@@ -34,6 +33,7 @@ import { setFaves, setNowShowing, setToCopy, toggleCopyImmediately, toggleShowNa
 import charData from '../../components/ExtraCharactersData';
 import debounce from '../../components/Debounce';
 import toaster from '../../components/toaster';
+import copyText from '../../components/copyText';
 
 interface CurrentFavorites {
 	[key: string]: boolean
@@ -89,14 +89,10 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 		// Deleting fave
 		dispatch(setFaves(faves.filter((fave: string) => fave !== char)));
 	}, [currentFaves, faves, dispatch]);
-	const copyNow = useCallback((char: string) => {
-		Clipboard.write({string: char}).then(() => toaster({
-			message: t("copiedCharToClipboard", { char }),
-			position: "middle",
-			duration: 1500,
-			toast
-		}));
-	}, [toast, t]);
+	const copyNow = useCallback(
+		(char: string) => copyText(char, toast, t("copiedCharToClipboard", { char })),
+		[toast, t]
+	);
 	const saveToBeCopied = useCallback((char: string) => {
 		dispatch(setToCopy(toCopy + char));
 	}, [dispatch, toCopy]);
@@ -208,7 +204,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 					</IonItem>
 					<IonItem>
 						<div className="ion-flex-row-wrap ion-align-items-center ion-justify-content-center displayChips">
-							<span>{("Display", { context: "presentation" })}</span>
+							<span>{t("Display", { context: "presentation" })}</span>
 							<IonChip
 								outline={nowShowing !== "Favorites"}
 								onClick={() => toggleChars("Favorites")}

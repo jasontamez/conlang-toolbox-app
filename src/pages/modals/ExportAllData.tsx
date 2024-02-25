@@ -19,7 +19,6 @@ import {
 } from '@ionic/react';
 import { closeCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
-import { Clipboard } from '@capacitor/clipboard';
 
 import {
 	Base_WG,
@@ -48,8 +47,8 @@ import {
 	LexiconStorage,
 	MorphoSyntaxStorage
 } from '../../components/PersistentInfo';
-import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
+import copyText from '../../components/copyText';
 
 const MExportAllData = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
@@ -374,12 +373,7 @@ const MExportAllData = (props: ModalProperties) => {
 					<IonItem lines="none">
 						<IonButton
 							color="primary"
-							onClick={() => Clipboard.write({string: outputString}).then(() => toaster({
-								message: t("Copied to clipboard"),
-								position: "middle",
-								duration: 1500,
-								toast
-							}))}
+							onClick={() => copyText(outputString, toast)}
 							slot="end"
 						>{t("Copy to Clipboard")}</IonButton>
 					</IonItem>

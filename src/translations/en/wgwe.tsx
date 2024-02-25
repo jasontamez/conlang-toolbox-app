@@ -28,10 +28,10 @@ const wgwe = {
 
 	"Enter words here one per line": "Enter words here, one per line",
 
-	Transform: "Transform",
-	Transforms: "Transforms",
-	Transforms_one: "Transforms",
-	Transforms_other: "Transforms",
+	Transform: "Transformation",
+	Transforms: "Transformations",
+	Transforms_one: "Transformations",
+	Transforms_other: "Transformations",
 	Transformation: "Transformation",
 	Transformations: "Transformations",
 	Transformations_one: "Transformation",

@@ -11,8 +11,7 @@ import {
 	IonIcon,
 	useIonToast,
 	useIonAlert,
-	AlertInput,
-	UseIonToastResult
+	AlertInput
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +20,6 @@ import {
 	helpCircleOutline,
 	copyOutline
 } from 'ionicons/icons';
-import { Clipboard } from '@capacitor/clipboard';
 
 import useTranslator from '../../store/translationHooks';
 import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
@@ -40,33 +38,12 @@ import {
 	exporter,
 	findCommons
 } from '../../components/DJOutputFormat';
+import copyText from '../../components/copyText';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
-import i18n from '../../i18n';
 import { OutputCard } from './DJinfo';
-
-async function copyText (copyStrings: string[], toast: UseIonToastResult) {
-	const toCopy = copyStrings.filter(line => line).join("\n\n\n");
-	if(toCopy) {
-		await Clipboard.write({string: toCopy});
-		//navigator.clipboard.writeText(copyText);
-		return toaster({
-			message: i18n.t("Copied to clipboard"),
-			duration: 1500,
-			position: "top",
-			toast
-		});
-	}
-	toaster({
-		message: i18n.t("Nothing to copy"),
-		color: "danger",
-		duration: 1500,
-		position: "top",
-		toast
-	});
-};
 
 const DJOutput = (props: PageData) => {
 //	const { modalPropsMaker } = props;
@@ -469,7 +446,7 @@ const DJOutput = (props: PageData) => {
 				<div className={(displayOutput.length + displayUnmatched.length) > 0 ? "ion-padding-start ion-padding-bottom" : "hide"}>
 					<IonButton
 						color="primary"
-						onClick={() => copyText(copyStrings, toast)}
+						onClick={() => copyText(copyStrings.filter(line => line).join("\n\n\n"), toast)}
 					>
 						{tc("Copy to Clipboard")}
 						<IonIcon icon={copyOutline} slot="start" />

@@ -18,7 +18,6 @@ import {
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 import Markdown from 'react-markdown';
-import { Clipboard } from '@capacitor/clipboard';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 
 import { InternalState, PageData, StateObject, ThemeNames } from '../store/types';
@@ -28,6 +27,7 @@ import useTranslator from '../store/translationHooks';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import Header from '../components/Header';
+import copyText from '../components/copyText';
 
 function getBannerDimensions (windowWidth: number) {
 	// original banner size: 545x153
@@ -74,12 +74,7 @@ const AppInfo = (props: PageData) => {
 				{
 					text: tc("Copy"),
 					cssClass: "submit",
-					handler: () => Clipboard.write({string: info}).then(() => toaster({
-						message: tc("Copied to clipboard"),
-						position: "middle",
-						duration: 1500,
-						toast
-					}))
+					handler: () => copyText(info, toast)
 				},
 				{
 					text: tc("Ok"),
@@ -100,12 +95,7 @@ const AppInfo = (props: PageData) => {
 				{
 					text: t("Copy Logs"),
 					cssClass: "submit",
-					handler: () => Clipboard.write({string: info}).then(() => toaster({
-						message: tc("Copied to clipboard"),
-						position: "middle",
-						duration: 1500,
-						toast
-					}))
+					handler: () => copyText(info, toast)
 				},
 				{
 					text: t("Clear Logs"),

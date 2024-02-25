@@ -13,8 +13,7 @@ import {
 	useIonAlert,
 	useIonToast,
 	useIonRouter,
-	AlertInput,
-	UseIonToastResult
+	AlertInput
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -27,7 +26,6 @@ import {
 } from 'ionicons/icons';
 import escapeRegexp from 'escape-string-regexp';
 import { v4 as uuidv4 } from 'uuid';
-import { Clipboard } from '@capacitor/clipboard';
 
 import {
 	LexiconColumn,
@@ -52,13 +50,13 @@ import { CustomStorageWE } from '../../components/PersistentInfo';
 import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
+import copyText from '../../components/copyText';
 
 import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
 import { OutCard } from "./WEinfo";
-import i18n from '../../i18n';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -69,26 +67,6 @@ interface soundChangeModified {
 	anticontext: (RegExp | null)[]
 	flagged: boolean
 }
-
-async function copyText (copyString: string, toast: UseIonToastResult) {
-	if(copyString) {
-		await Clipboard.write({string: copyString});
-		//navigator.clipboard.writeText(copyText);
-		return toaster({
-			message: i18n.t("Copied to clipboard"),
-			duration: 1500,
-			position: "top",
-			toast
-		});
-	}
-	toaster({
-		message: i18n.t("Nothing to copy"),
-		color: "danger",
-		duration: 1500,
-		position: "top",
-		toast
-	});
-};
 
 const WEOut = (props: PageData) => {
 	const { modalPropsMaker } = props;

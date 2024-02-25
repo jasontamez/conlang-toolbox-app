@@ -81,6 +81,8 @@ const common = {
 	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).",
 	"Your selected words will be added to the Lexicon under that column.":
 		"Your selected words will be added to the $t(Lexicon) under that column.",
+	word_one: "{{count}} word",
+	word_other: "{{count}} words",
 
 	"Word Document (docx)": "Word Document (docx)",
 	"Text File": "Text File",
@@ -95,6 +97,7 @@ const common = {
 
 	// Things will take `count` properties for plurality
 	clearOverrideThings: "This will clear and overwrite {{things}}.",
+	"clearThings?": "Clear {{things}}?",
 	deleteThings: "This will delete {{things}}.",
 	deleteThingsCannotUndo: "This will delete {{things}}, and cannot be undone.",
 	thingsDeleted: "{{things}} deleted.",
@@ -198,7 +201,6 @@ const common = {
 	overviewOf: "Overview: {{what}}",
 
 	ImportFrom: "Import from {{source}}",
-	"Load Presets": "Load Presets",
 	"Load Preset": "Load Preset",
 
 	// Import from Lexicon
