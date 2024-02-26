@@ -26,6 +26,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { addTransformWG } from '../../../store/wgSlice';
 import { ExtraCharactersModalOpener } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
+
 import { $q, $a, $i } from '../../../components/DollarSignExports';
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
@@ -33,6 +35,9 @@ import toaster from '../../../components/toaster';
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	function resetError(prop: string) {
@@ -49,7 +54,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No search expression present");
+			err.push(tw("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -59,12 +64,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				message: err.join("; "),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -86,7 +91,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		}));
 		$a<HTMLInputElement>("ion-list.wgAddTransform ion-input").forEach((input) => input.value = "");
 		toaster({
-			message: "Transformation added!",
+			message: tc("thingAdded", { thing: t("Transformation")}),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -97,7 +102,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Add Transformation</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Transformation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -111,37 +116,35 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">Search Expression:</IonLabel>
+						<IonLabel className="seekLabel">{tw("search expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Search expression"
+							aria-label={tw("search expression")}
 							id="searchEx"
 							className="ion-margin-top serifChars"
-							placeholder="..."
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">Replacement Expression:</IonLabel>
+						<IonLabel className="replaceLabel">{tw("replacement expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Replacement expression"
+							aria-label={tw("replacement expression")}
 							id="replaceEx"
 							className="ion-margin-top serifChars"
-							placeholder="..."
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Transformation Description:</IonLabel>
+						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Transformation description"
+							aria-label={tw("Description of the transformation")}
 							id="optDesc"
 							className="ion-margin-top"
-							placeholder="(optional)"
+							placeholder={tc("optional")}
 						></IonInput>
 					</IonItem>
 				</IonList>
@@ -154,7 +157,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewTransform(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add Transformation</IonLabel>
+						<IonLabel>{tc("addThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -162,7 +165,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewTransform()}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>Add and Close</IonLabel>
+						<IonLabel>{tc("Add and Close")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

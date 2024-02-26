@@ -46,6 +46,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 	const toast = useIonToast();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
 	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
@@ -229,7 +230,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{t("search expression", { context: "presentation"})}</IonLabel>
+						<IonLabel className="seekLabel">{tw("search expression", { context: "presentation"})}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -241,11 +242,11 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{t("replacement expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="replaceLabel">{tw("replacement expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("replacement expression", { context: "formal" })}
+							aria-label={tw("replacement expression", { context: "formal" })}
 							id="editReplaceExWESC"
 							helperText={t("sound changes into this")}
 							className="ion-margin-top serifChars"

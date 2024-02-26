@@ -73,8 +73,6 @@ const lexicon = {
 	"Lexicon Options": "$t(common:Lexicon) Options",
 	"Show Full Column Titles": "Show Full Column Titles",
 
-	"Sort method": "Sort method",
-	"Sort method_presentation": "Sort method:",
 	"Sort blank columns": "Sort blank columns",
 	"Sort blank columns_presentation": "Sort blank columns:",
 	"Rearrange Lexicon Columns": "Rearrange Lexicon Columns",

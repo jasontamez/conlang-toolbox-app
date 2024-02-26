@@ -31,6 +31,7 @@ import PermanentInfo from '../../../components/PermanentInfo';
 const OutputOptionsModal = (props: ModalProperties) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const {
@@ -44,7 +45,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Output Options")}</IonTitle>
+					<IonTitle>{tw("Output Options")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
@@ -74,7 +75,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label="Sort Method:"
+							label={tc("Sort method", { context: "presentation" })}
 							value={customSort || null}
 							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
 						>

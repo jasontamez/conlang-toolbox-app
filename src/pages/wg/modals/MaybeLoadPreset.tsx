@@ -24,6 +24,7 @@ import { useSelector, useDispatch } from "react-redux";
 import WGPresets from '../../../store/wgPresets';
 import { Base_WG, ModalProperties, StateObject } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
@@ -31,6 +32,8 @@ import toaster from '../../../components/toaster';
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
@@ -38,7 +41,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 		const handler = () => {
 			dispatch(loadStateWG(object));
 			toaster({
-				message: `Preset "${preset}" loaded.`,
+				message: tc("titleLoaded", { title: preset }),
 				duration: 2500,
 				color: "success",
 				position: "top",
@@ -50,10 +53,10 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Load "${preset}"?`,
-				message: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
+				header: tc("loadTitle", { title: preset }),
+				message: tc("clearOverrideGeneralThings", { things: t("allThings") }),
 				cssClass: "warning",
-				submit: "Yes, Load It",
+				submit: tc("confirmLoad"),
 				handler,
 				doAlert
 			});
@@ -63,7 +66,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Load Preset</IonTitle>
+					<IonTitle>{tc("Load Preset")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => setIsOpen(false)}>
 							<IonIcon icon={closeCircleOutline} />
@@ -84,7 +87,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				<IonToolbar>
 					<IonButton color="danger" slot="end" onClick={() => setIsOpen(false)}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

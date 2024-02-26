@@ -28,6 +28,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Base_WG, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import escape from '../../../components/EscapeForHTML';
 import { $i } from '../../../components/DollarSignExports';
@@ -43,6 +44,8 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 const ManageCustomInfo = (props: ExtraInfo) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const {
@@ -74,22 +77,22 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		setIsOpen(false);
 	};
 	const maybeSaveInfo = () => {
-		const el = $i<HTMLInputElement>("currentInfoSaveName");
+		const el = $i<HTMLInputElement>("currentInfoSaveNameWG");
 		const title = el ? escape(el.value).trim() : "";
 		if(title === "") {
 			return doAlert({
-				header: "Please enter a title before saving.",
+				header: tc("missingThing", { thing: tc("title") }),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Ok",
+						text: tc("Ok"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
 				]
 			});
 		}
-		const doSave = (title: string, msg: string = "saved") => {
+		const doSave = (title: string, msg: string) => {
 			const save: Base_WG = {
 				characterGroups,
 				multipleSyllableTypes,
@@ -114,8 +117,9 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			};
 			CustomStorageWG.setItem(title, save).then(() => {
 				toaster({
-					message: `"${title}" ${msg}`,
+					message: tc(msg, { title }),
 					duration: 2500,
+					color: "success",
 					position: "top",
 					toast
 				});
@@ -124,16 +128,16 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		// Check if overwriting
 		CustomStorageWG.getItem<Base_WG>(title).then((value) => {
 			if(!value) {
-				doSave(title);
+				doSave(title, "titleSaved");
 			} else if (disableConfirms) {
-				doSave(title, "overwritten");
+				doSave(title, "titleOverwritten");
 			} else {
 				yesNoAlert({
-					header: `"${title}" Already Exists`,
-					message: "This will clear and overwrite the previous save.",
+					header: tc("titleAlreadyExists", { title }),
+					message: tc("clearOverrideGeneralThings", { things: tc("the previous save") }),
 					cssClass: "warning",
-					submit: "Yes, Overwrite It",
-					handler: () => doSave(title, "overwritten"),
+					submit: tc("Yes Overwrite It"),
+					handler: () => doSave(title, "titleOverwritten"),
 					doAlert
 				});
 			}
@@ -145,7 +149,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				if(value) {
 					dispatch(loadStateWG(value));
 					toaster({
-						message: `Save "${title}" loaded.`,
+						message: tc("titleLoaded", { title }),
 						duration: 2500,
 						color: "success",
 						position: "top",
@@ -154,12 +158,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 					doCleanClose();
 				} else {
 					doAlert({
-						header: "Unknown Error",
-						message: `Save :${title}" not found.`,
+						header: tc("Load Error"),
 						cssClass: "danger",
+						message: tc("titleNotFound", { title }),
 						buttons: [
 							{
-								text: "Ok",
+								text: tc("Ok"),
 								role: "cancel",
 								cssClass: "cancel"
 							}
@@ -172,10 +176,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Load "${title}"?`,
-				message: "This will clear and overwrite all current character groups, syllables, transformations and settings.",
+				header: tc("loadTitle", { title }),
+				message: tc("clearOverrideGeneralThings", { title: t("allThings") }),
 				cssClass: "warning",
-				submit: "Yes, Load It",
+				submit: tc("confirmLoad"),
 				handler,
 				doAlert
 			});
@@ -187,7 +191,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			setTitles(newCustom.length > 0 ? newCustom : null);
 			CustomStorageWG.removeItem(title).then(() => {
 				toaster({
-					message: `"${title}" deleted.`,
+					message: tc("titleDeleted", { title }),
 					duration: 2500,
 					color: "danger",
 					position: "top",
@@ -199,10 +203,10 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: `Delete "${title}"?`,
-				message: "Are you sure? This cannot be undone.",
-				cssClass: "danger",
-				submit: "Yes, Delete It",
+				header: tc("deleteTitle", { title }),
+				message: tc("cannotUndo"),
+				cssClass: "warning",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -212,7 +216,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Manage Custom Info</IonTitle>
+				<IonTitle>{tc("Manage Custom Info")}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -227,14 +231,14 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>Save Current Info</IonLabel>
+							<IonLabel>{tc("saveThing", { thing: tc("Current Info") })}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput
-								aria-label="Name of save"
-								id="currentInfoSaveName"
+								aria-label={tc("Name of save")}
+								id="currentInfoSaveNameWG"
 								inputmode="text"
-								placeholder="Name your custom info"
+								placeholder={tc("Name your custom info")}
 								type="text"
 							/>
 							<IonButton
@@ -242,12 +246,12 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 								onClick={() => maybeSaveInfo()}
 								strong={true}
 								color="success"
-							>Save</IonButton>
+							>{tc("Save")}</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
-							<IonLabel>Load Saved Info</IonLabel>
+							<IonLabel>{tc("loadThing", { thing: tc("Current Info") })}</IonLabel>
 						</IonItemDivider>
 						{customInfo.map((title: string) => {
 							return (
@@ -259,7 +263,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 										color="warning"
 										onClick={() => maybeLoadInfo(title)}
 										strong={true}
-									>Load</IonButton>
+									>{tc("Load")}</IonButton>
 									<IonButton
 										className="ion-no-margin"
 										slot="end"
@@ -272,7 +276,7 @@ const ManageCustomInfo = (props: ExtraInfo) => {
 						})}
 						{
 							(customInfo.length === 0) ?
-								<IonItem color="warning"><IonLabel>No saved info</IonLabel></IonItem>
+								<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
 							:
 								<></>
 						}

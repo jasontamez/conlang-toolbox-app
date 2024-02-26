@@ -39,6 +39,8 @@ const wgwe = {
 	trans: "transformation",
 	trans_one: "transformation",
 	trans_other: "transformations",
+	"Description of the transformation": "$t(common:description_formal) of the $(trans)",
+	"Description of the transformation_presentation": "$t(Transformation) $t(common:description_formal):",
 
 	"Sound Change": "Sound Change",
 	"Sound Changes": "Sound Changes",
@@ -49,11 +51,19 @@ const wgwe = {
 	Syllable: "Syllable",
 	Syllables: "Syllables",
 
+	"No search expression present": "No search expression present",
+	"search expression": "search expression",
+	"search expression_formal": "Search Expression",
+	"search expression_presentation": "Search Expression:",
+	"replacement expression": "replacement expression",
+	"replacement expression_formal": "Replacement Expression",
+	"replacement expression_presentation": "Replacement Expression:",
 
 	"Character Groups Tab": "$t(Character Groups) Tab",
 
 	"Transformations Tab": "$t(Transformations) Tab",
 	"Output Tab": "$t(common:Output) Tab",
+	"Output Options": "Output Options",
 
 	description: "description",
 	label: "label",

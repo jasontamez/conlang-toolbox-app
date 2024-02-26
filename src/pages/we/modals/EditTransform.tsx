@@ -46,6 +46,7 @@ const EditTransformModal = (props: ModalProps) => {
 	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 
@@ -92,7 +93,7 @@ const EditTransformModal = (props: ModalProps) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push(t("No search expression present"));
+			err.push(tw("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -213,11 +214,11 @@ const EditTransformModal = (props: ModalProps) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{t("Description of the transformation", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Description of the transformation")}
+							aria-label={tw("Description of the transformation")}
 							id="editOptDescWE"
 							className="ion-margin-top"
 							placeholder={tc("optional")}
@@ -269,7 +270,7 @@ const EditTransformModal = (props: ModalProps) => {
 						onClick={() => maybeSaveNewTransformInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveThing", { thing: t("Transformation") })}</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="danger"
@@ -277,7 +278,7 @@ const EditTransformModal = (props: ModalProps) => {
 						onClick={() => maybeDeleteTransform()}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tc("deleteThing", { thing: t("Transformation") })}</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

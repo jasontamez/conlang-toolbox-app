@@ -144,6 +144,8 @@ const common = {
 	"No saved info": "No saved info",
 
 	"Unknown error occurred.": "Unknown error occurred.",
+	"Sort method": "Sort method",
+	"Sort method_presentation": "Sort method:",
 
 	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // Do you want to do this action?

@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { ExtraCharactersModalOpener, SetState, StateObject, WGTransformObject } from '../../../store/types';
 import { editTransformWG, deleteTransformWG } from '../../../store/wgSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import repairRegexErrors from '../../../components/RepairRegex';
 import { $i, $q } from '../../../components/DollarSignExports';
@@ -41,6 +42,9 @@ interface ModalProps extends ExtraCharactersModalOpener {
 const EditTransformModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
+	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings)
@@ -84,7 +88,7 @@ const EditTransformModal = (props: ModalProps) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No search expression present");
+			err.push(tw("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -94,12 +98,12 @@ const EditTransformModal = (props: ModalProps) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: "Error",
+				header: tc("error"),
 				message: err.join("; "),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -118,7 +122,7 @@ const EditTransformModal = (props: ModalProps) => {
 			description
 		}));
 		toaster({
-			message: "Transformation saved!",
+			message: tc("thingSaved", { thing: t("Transformation")}),
 			duration: 2500,
 			color: "success",
 			position: "top",
@@ -132,7 +136,7 @@ const EditTransformModal = (props: ModalProps) => {
 			setIsOpen(false);
 			dispatch(deleteTransformWG(editing!.id));
 			toaster({
-				message: "Transformation deleted.",
+				message: tc("thingDeleted", { thing: t("Transformation") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -145,9 +149,9 @@ const EditTransformModal = (props: ModalProps) => {
 			const { seek, replace } = editing;
 			yesNoAlert({
 				header: `${seek}${ltr() ? "⟶" : "⟵"}${replace}`,
-				message: "Are you sure you want to delete this? It cannot be undone.",
+				message: tc("Are you sure you want to delete this? This cannot be undone."),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -161,7 +165,7 @@ const EditTransformModal = (props: ModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Edit Transformation</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Transformation") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)}>
 							<IonIcon icon={globeOutline} />
@@ -175,35 +179,35 @@ const EditTransformModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">Search Expression:</IonLabel>
+						<IonLabel className="seekLabel">{tw("search expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Search expression"
+							aria-label={tw("search expression")}
 							id="editSearchExWG"
 							className="ion-margin-top serifChars"
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">Replacement Expression:</IonLabel>
+						<IonLabel className="replaceLabel">{tw("replacement expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Replacement expression"
+							aria-label={tw("replacement expression")}
 							id="editReplaceExWG"
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Transformation Description:</IonLabel>
+						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Description of transformation"
+							aria-label={tw("Description of the transformation")}
 							id="editOptDescWG"
 							className="ion-margin-top"
-							placeholder="(optional)"
+							placeholder={tc("optional")}
 						></IonInput>
 					</IonItem>
 				</IonList>
@@ -212,11 +216,11 @@ const EditTransformModal = (props: ModalProps) => {
 				<IonToolbar>
 					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransformInfo()}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>Save Transformation</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={() => maybeDeleteTransform()}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>Delete Item</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

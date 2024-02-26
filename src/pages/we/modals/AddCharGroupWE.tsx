@@ -166,7 +166,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addWECharGroup">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabelEdit">{tw("Title or description", { context: "presentation" })}</IonLabel>
+						<IonLabel className="titleLabel">{tw("Title or description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -180,7 +180,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 					<IonItem className="margin-top-quarter">
 						<div
 							slot="start"
-							className="ion-margin-end labelLabelEdit"
+							className="ion-margin-end labelLabel"
 						>{tw("Short Label", { context: "presentation" })}</div>
 						<IonInput
 							id="newWEShortLabel"
@@ -196,7 +196,7 @@ const AddCharGroupWEModal = (props: ExtraCharactersModalOpener) => {
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabelEdit">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
+						<IonLabel className="runLabel">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput

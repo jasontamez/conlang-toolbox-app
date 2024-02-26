@@ -36,6 +36,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -153,7 +154,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addSoundChangeWE">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{t("search expression", { context: "presentation"})}</IonLabel>
+						<IonLabel className="seekLabel">{tw("search expression", { context: "presentation"})}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
@@ -165,11 +166,11 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{t("replacement expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="replaceLabel">{tw("replacement expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("replacement expression", { context: "formal" })}
+							aria-label={tw("replacement expression", { context: "formal" })}
 							id="replaceExWESC"
 							className="ion-margin-top serifChars"
 							helperText={t("sound changes into this")}

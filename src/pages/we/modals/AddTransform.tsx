@@ -39,6 +39,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
@@ -56,7 +57,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push(t("No search expression present"));
+			err.push(tw("No search expression present"));
 		}
 		try {
 			new RegExp(seek);
@@ -144,11 +145,11 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{t("Description of the transformation", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Description of the transformation")}
+							aria-label={tw("Description of the transformation")}
 							id="optDescWE"
 							className="ion-margin-top"
 							placeholder={tc("optional")}
@@ -200,7 +201,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewTransform(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: t("Transformation") })}</IonLabel>
+						<IonLabel>{tc("addThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

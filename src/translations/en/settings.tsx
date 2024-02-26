@@ -12,7 +12,7 @@ const settings = {
 	"Import App Info": "Import App Info",
 	"Choose a Theme": "Choose a Theme",
 	// Theme names
-	"Default": "Default",
+	Default: "Default",
 	Light: "Light",
 	Dark: "Dark",
 	"Solarized Light": "Solarized $t(Light)", // Solarized is the name of a popular color palette
