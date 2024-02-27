@@ -85,7 +85,7 @@ export const appMenuInfo: MenuSection[] = [
 				tab: 'Section-Settings'
 			},
 			{
-				title: i18n.t("1. Morphological Typology", { ns: "ms" }),
+				title: i18n.t("1-Morphological Typology", { ns: "ms" }),
 				noIcon: '1',
 				tab: 'Section-01',
 				url: '/ms/ms01',
@@ -93,7 +93,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("2. Grammatical Categories", { ns: "ms" }),
+				title: i18n.t("2-Grammatical Categories", { ns: "ms" }),
 				noIcon: '2',
 				tab: 'Section-02',
 				url: '/ms/ms02',
@@ -101,7 +101,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("3. Constituent Order Typology", { ns: "ms" }),
+				title: i18n.t("3-Constituent Order Typology", { ns: "ms" }),
 				noIcon: '3',
 				tab: 'Section-03',
 				url: '/ms/ms03',
@@ -109,7 +109,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("4. Noun Operations", { ns: "ms" }),
+				title: i18n.t("4-Noun Operations", { ns: "ms" }),
 				noIcon: '4',
 				tab: 'Section-04',
 				url: '/ms/ms04',
@@ -117,7 +117,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("5. Predicate Nominals etc.", { ns: "ms" }),
+				title: i18n.t("5-Predicate Nominals etc.", { ns: "ms" }),
 				noIcon: '5',
 				tab: 'Section-05',
 				url: '/ms/ms05',
@@ -125,7 +125,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("6. Grammatical Relations", { ns: "ms" }),
+				title: i18n.t("6-Grammatical Relations", { ns: "ms" }),
 				noIcon: '6',
 				tab: 'Section-06',
 				url: '/ms/ms06',
@@ -133,7 +133,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("7. Voice/Valence Operations", { ns: "ms" }),
+				title: i18n.t("7-Voice/Valence Operations", { ns: "ms" }),
 				noIcon: '7',
 				tab: 'Section-07',
 				url: '/ms/ms07',
@@ -141,7 +141,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("8. Other Verb Operations", { ns: "ms" }),
+				title: i18n.t("8-Other Verb Operations", { ns: "ms" }),
 				noIcon: '8',
 				tab: 'Section-08',
 				url: '/ms/ms08',
@@ -149,7 +149,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("9. Pragmatic Marking", { ns: "ms" }),
+				title: i18n.t("9-Pragmatic Marking", { ns: "ms" }),
 				noIcon: '9',
 				tab: 'Section-09',
 				url: '/ms/ms09',
@@ -157,7 +157,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'ms'
 			},
 			{
-				title: i18n.t("10. Clause Combinations", { ns: "ms" }),
+				title: i18n.t("10-Clause Combinations", { ns: "ms" }),
 				noIcon: '10',
 				tab: 'Section-10',
 				url: '/ms/ms10',

@@ -21,12 +21,15 @@ import {
 import { checkmarkCircleOutline, helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import doParse from 'html-react-parser';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
 
 import {
 	setSyntaxBool,
 	setSyntaxText
 } from '../../store/msSlice';
 import { MSBool, MSNum, MSText, ModalPropsMaker } from '../../store/types';
+import useTranslator from '../../store/translationHooks';
 
 import Header from '../../components/Header';
 
@@ -40,14 +43,15 @@ function stripHtml (input: string) {
 };
 
 export const SyntaxHeader = (props: ModalProperties) => {
+	const [ tc ] = useTranslator('common');
 	const {
-		title = "MorphoSyntax",
+		title,
 		modalPropsMaker
 	} = props;
 	return (
 		<Header
 			extraChars={modalPropsMaker}
-			title={title}
+			title={title || tc("MorphoSyntax")}
 			endButtons={[
 				<IonButton key="msHelpButton" routerLink="/ms/overview" routerDirection="forward">
 					<IonIcon icon={helpCircleOutline} />
@@ -124,14 +128,16 @@ export const HeaderItem = (props: PropsWithChildren<{ level?: number }>) => (
 interface TransProps {
 	rows?: string
 	className?: string
+	convertedRows?: string[]
 }
 export const TransTable = (props: PropsWithChildren<TransProps>) => {
 	const {
 		rows,
 		className,
+		convertedRows,
 		children
 	} = props;
-	const tableRows = (rows || "").trim().split(/\s+\/\s+/);
+	const tableRows = convertedRows || (rows || "").trim().split(/\s+\/\s+/);
 	let length = 1;
 	const cName = "translation" + (className ? " " + className : "");
 	const finalRow = children ? tableRows.length : -1;
@@ -157,10 +163,12 @@ interface InfoModalProps extends ModalProperties {
 	className?: string
 }
 export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const {
-		title = "MISSING TITLE",
-		label = "Read About It",
+		title,
+		label,
 		className,
 		children,
 		modalPropsMaker
@@ -171,7 +179,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 			<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 				<IonHeader>
 					<IonToolbar color="primary">
-						<IonTitle>{title}</IonTitle>
+						<IonTitle>{title || t("MISSING TITLE")}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
 				<IonContent className="morphoSyntaxModal">
@@ -194,7 +202,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 									icon={checkmarkCircleOutline}
 									slot="start"
 								/>
-								<IonLabel>Done</IonLabel>
+								<IonLabel>{tc("Done")}</IonLabel>
 							</IonButton>
 						</IonButtons>
 					</IonToolbar>
@@ -206,7 +214,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 					className="msModalHelpIcon"
 					slot="start"
 				/>
-				{label}
+				{label || t("Read About It")}
 			</IonButton>
 		</IonItem>
 	);
@@ -228,12 +236,23 @@ export interface displayProp {
 	singleHeader?: string
 	export?: exportProp
 }
+export interface CheckboxTransProps {
+	header?: string
+	inlineHeaders?: string[]
+	labels?: string[]
+	rowLabels: string[]
+}
+export interface CheckboxTransExportProps {
+	title: string
+	labels?: string[]
+}
 interface checkboxItemProps {
 	boxes: MSBool[],
 	values: (boolean | undefined)[]
 	display: displayProp
 }
 export const CheckboxItem = (props: checkboxItemProps) => {
+	const [ tc ] = useTranslator('common');
 	const {
 		display,
 		boxes = [],
@@ -254,9 +273,10 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 	let temp: MSBool[] = [];
 	let temp2: (boolean | undefined)[] = [];
 	const rowValues: (boolean | undefined)[][] = [];
+	const error = tc("error");
 	boxes.forEach((box, i) => {
 		count++;
-		temp.push(box || "Error");
+		temp.push(box || error);
 		temp2.push(values[i]);
 		if(count >= boxesPerRow) {
 			count = 0;
@@ -369,7 +389,7 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 						printRowWithLabel(
 							row.slice(),
 							rowValues[i].slice(),
-							_rowLabels.shift() || "Error",
+							_rowLabels.shift() || error,
 							count++,
 							inlineHeaders && inlineHeaders.slice()
 						)
@@ -377,13 +397,62 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 						printRow(
 							row.slice(),
 							rowValues[i].slice(),
-							_rowLabels.shift() || "Error",
+							_rowLabels.shift() || error,
 							count++,
 							inlineHeaders && inlineHeaders.slice()
 						)
 				))}
 			</IonGrid>
 		</IonItem>
+	);
+};
+
+export const MSMarkdown: React.FC<{children: string}> = (props) => {
+	return (
+		<Markdown
+			remarkPlugins={[remarkGfm]}
+			components={{
+				code: (codeprops) => {
+					const { children } = codeprops;
+					if(typeof(children) === "string") {
+						let breaker = "/";
+						let rows: string;
+						let m: RegExpMatchArray | null;
+						if(children.indexOf("[translation table]") === 0) {
+							// slash linebreak
+							rows = children.slice(19);
+						} else if ((m = children.match(/^\[translation table (.)](.+)$/))) {
+							// non-slash linebreak
+							breaker = m[1];
+							rows = m[2];
+						} else {
+							// return the plain string
+							return children as string;
+						}
+						// Look for a plain text section
+						const [info, text] = rows.trim().split(` ${breaker}${breaker} `);
+						// Split into rows
+						const rowsInfo = info.split(` ${breaker} `);
+						return <TransTable convertedRows={rowsInfo}>{text || ""}</TransTable>;
+					}
+					return "";
+				},
+				table: (tableprops) => {
+					const { node, ...rest } = tableprops;
+					return <table {...rest} className="informational" />;
+				},
+				li: (liprops) => {
+					const { node, children, ...rest } = liprops;
+					if(typeof(children) === "string" && children.indexOf("[newSection]") === 0) {
+						return <li {...rest} className="newSection">{children.slice(12)}</li>
+					}
+					console.log("NON-STRING CHILDREN");
+					console.log(children);
+					console.log({...liprops});
+					return <li {...rest}>{children}</li>;
+				}
+			}}
+		>{props.children}</Markdown>
 	);
 };
 

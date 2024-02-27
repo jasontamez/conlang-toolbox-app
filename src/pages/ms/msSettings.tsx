@@ -28,6 +28,7 @@ import { PageData, MSState, StateObject, SetBooleanState } from '../../store/typ
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import { setLastViewMS } from '../../store/internalsSlice';
 import blankAppState from '../../store/blankAppState';
+import useTranslator from '../../store/translationHooks';
 
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import debounce from '../../components/Debounce';
@@ -41,6 +42,8 @@ import DeleteMS from './modals/DeleteSyntaxDoc';
 import ExportMS from './modals/ExportSyntaxDoc';
 
 const Syntax = (props: PageData) => {
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
 	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
@@ -67,7 +70,7 @@ const Syntax = (props: PageData) => {
 		};
 		if(!(title || id || description || (allProps > 0))) {
 			toaster({
-				message: "You have no information to clear.",
+				message: t("You have no information to clear."),
 				duration: 2500,
 				color: "warning",
 				position: "top",
@@ -75,10 +78,10 @@ const Syntax = (props: PageData) => {
 			});
 		} else if(!disableConfirms) {
 			yesNoAlert({
-				header: "Delete Everything?",
-				message: "This will erase everything currently in MorphoSyntax (but not anything previously saved). Are you sure you want to do this?",
+				header: tc("Delete Everything?"),
+				message: tc("clearOverrideGeneralThings", { things: t("morphoSyntaxInfo") }),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -101,12 +104,12 @@ const Syntax = (props: PageData) => {
 	const maybeExportMS = () => {
 		if(!title) {
 			return doAlert({
-				header: "Error",
-				message: "Please give your MorphoSyntax document a title before exporting it.",
+				header: tc("error"),
+				message: tc("missingThing", tc("title")),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -114,12 +117,12 @@ const Syntax = (props: PageData) => {
 			});
 		} else if (allProps < 1) {
 			return doAlert({
-				header: "Error",
-				message: "Please add information to your MorphoSyntax document in at least one section before exporting it.",
+				header: tc("error"),
+				message: t("Please add information to your MorphoSyntax document in at least one section before exporting it."),
 				cssClass: "warning",
 				buttons: [
 					{
-						text: "Cancel",
+						text: tc("Cancel"),
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -129,7 +132,7 @@ const Syntax = (props: PageData) => {
 		setIsOpenExportMS(true);
 	};
 	const saveMSDoc = (
-		announce: string = "MorphoSyntax document saved.",
+		announce: string = "msDocument",
 		key: string = id,
 		overwrite: boolean = true
 	) => {
@@ -165,7 +168,7 @@ const Syntax = (props: PageData) => {
 				}
 				setIsLoading(false);
 				toaster({
-					message: announce,
+					message: tc("thingSaved", { thing: t(announce) }),
 					duration: 2500,
 					position: "top",
 					toast
@@ -178,16 +181,16 @@ const Syntax = (props: PageData) => {
 		}
 		const key = uuidv4();
 		dispatch(setMorphoSyntaxText(["id", key]));
-		saveMSDoc("Information saved as new MorphoSyntax document!", key, false);
+		saveMSDoc("newMsDocument", key, false);
 	};
 	const MSSaveError = () => {
 		doAlert({
-			header: "Error",
-			message: "You must input a title before saving.",
+			header: tc("Error"),
+			message: tc("missingThing", { thing: tc("title") }),
 			cssClass: "danger",
 			buttons: [
 				{
-					text: "Ok",
+					text: tc("Ok"),
 					role: "cancel",
 					cssClass: "cancel"
 				}
@@ -204,13 +207,14 @@ const Syntax = (props: PageData) => {
 			"saveMS"
 		);
 	};
+	const info = t("MorphoSyntax Info");
 	return (
 		<IonPage>
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={isLoading}
 				onDidDismiss={() => setIsLoading(false)}
-				message={'Please wait...'}
+				message={tc("Please wait...")}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -230,35 +234,35 @@ const Syntax = (props: PageData) => {
 				setStoredInfo={setStoredInfo}
 				setLoadingScreen={setIsLoading}
 			/>
-			<SyntaxHeader title="MorphoSyntax Settings" {...props} />
+			<SyntaxHeader title={t("MorphoSyntax Settings")} {...props} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel>MorphoSyntax Title:</IonLabel>
+						<IonLabel>{t("msTitle", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label="Title"
+							aria-label={t("msTitle")}
 							value={title}
 							id="msTitle"
 							className="ion-margin-top"
-							placeholder="Usually the language name."
+							placeholder={t("Usually the language name.")}
 							onIonChange={() => setNewInfo("msTitle", "title")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>Description:</IonLabel>
+						<IonLabel>{t("description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label="Description"
+							aria-label={t("description", { context: "formal" })}
 							value={description}
 							id="msDesc"
 							className="ion-margin-top"
-							placeholder="A short description of this document."
+							placeholder={t("A short description of this document.")}
 							rows={3}
 							onIonChange={() => setNewInfo("msDesc", "description")}
 						/>
@@ -267,27 +271,27 @@ const Syntax = (props: PageData) => {
 				<IonList lines="none" className="ion-float-end aside">
 					<IonItem button={true} onClick={() => clearMS()}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>Clear MorphoSyntax Info</IonLabel>
+						<IonLabel>{tc("clearGeneralThings", { things: info })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openMSModal(setIsOpenLoadMS)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-						<IonLabel>Load MorphoSyntax Info</IonLabel>
+						<IonLabel>{tc("loadThing", { thing: info })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveMSDoc()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>Save MorphoSyntax Info</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: info })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => saveMSNew()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>Save As New</IonLabel>
+						<IonLabel>{tc("Save as New")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => maybeExportMS()}>
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
-						<IonLabel>Export MorphoSyntax Info</IonLabel>
+						<IonLabel>{tc("exportThing", { thing: info })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openMSModal(setIsOpenDelMS)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
-						<IonLabel>Delete Saved MorphoSyntax Info</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("Saved MorphoSyntax Info") })}</IonLabel>
 					</IonItem>
 				</IonList>
 			</IonContent>

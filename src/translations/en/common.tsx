@@ -57,13 +57,12 @@ const common = {
 	"Add and Close": "Add and Close",
 	"Nothing to copy": "Nothing to copy",
 	Export: "Export",
-	"Export Info": "Export Info",
 	Generate: "Generate",
 	Info: "Info", // short for "Information"
 
 	fileFormat: "{{title}} - {{date}}.{{extension}}",
 	"[Untitled]": "[Untitled]",
-	"exportTitle": "Export: {{title}}",
+	exportTitle: "Export: {{title}}",
 	"Unable to export": "UNABLE TO EXPORT: {{error}}",
 	"File exported": "{{filename}} exported.",
 	"Unable to write file": "UNABLE TO WRITE FILE: {{error}}",
@@ -95,6 +94,8 @@ const common = {
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
+	"Save as New": "Save as New",
+
 	// Things will take `count` properties for plurality
 	clearOverrideThings: "This will clear and overwrite {{things}}.",
 	"clearThings?": "Clear {{things}}?",
@@ -104,6 +105,7 @@ const common = {
 
 	// General Things are unknown, may be 0, 1, or any number
 	clearOverrideGeneralThings: "This will clear and overwrite {{things}}.",
+	clearGeneralThings: "Clear {{things}}",
 	deleteGeneralThings: "Delete {{things}}",
 	editGeneralThings: "Edit {{things}}",
 	saveGeneralThings: "Save {{things}}",
@@ -119,6 +121,8 @@ const common = {
 	saveThing: "Save {{thing}}",
 	loadThing: "Load {{thing}}",
 	missingThing: "Missing {{thing}}",
+	exportThing: "Export {{thing}}",
+	exportThing_presentation: "Export {{thing}}:",
 
 	// Titled things
 	deleteTitle: "Delete \"{{title}}\"?",

@@ -153,7 +153,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Export Lexicon", { context: "presentation" })} {title}</IonTitle>
+					<IonTitle>{t("exportThing", { context: "presentation", thing: tc("Lexicon") })} {title}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />

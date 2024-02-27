@@ -343,7 +343,7 @@ const MExportAllData = (props: ModalProperties) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Export Info")}</IonTitle>
+					<IonTitle>{t("exportThing", { thing: t("Info") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />

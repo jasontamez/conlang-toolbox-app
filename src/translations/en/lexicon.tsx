@@ -24,9 +24,6 @@ const lexicon = {
 
 	"Lexicon Storage": "$t(common:Lexicon) Storage",
 	"Clear Lexicon": "Clear $t(common:Lexicon)",
-	"Save as New": "Save as New",
-	"Export Lexicon": "Export $t(common:Lexicon)",
-	"Export Lexicon_presentation": "Export $t(common:Lexicon):",
 	"Saved Lexicon": "Saved $t(common:Lexicon)",
 	"Lexicon Sorting": "$t(common:Lexicon) Sorting",
 	sortLexDescription:

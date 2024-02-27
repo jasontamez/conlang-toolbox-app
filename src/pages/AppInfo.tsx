@@ -130,7 +130,7 @@ const AppInfo = (props: PageData) => {
 
 	return (
 		<IonPage className={theme}>
-			<Header title={tc("App Info")} />
+			<Header title={tc("exportThing", { thing: tc("App Info") })} />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>

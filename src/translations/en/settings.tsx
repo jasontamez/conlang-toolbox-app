@@ -8,7 +8,6 @@ const settings = {
 		"Eliminates yes/no prompts when deleting or overwriting data.",
 	"Change Theme": "Change Theme",
 	"Sort Settings": "Sort Settings",
-	"Export App Info": "Export App Info",
 	"Import App Info": "Import App Info",
 	"Choose a Theme": "Choose a Theme",
 	// Theme names
@@ -33,8 +32,8 @@ const settings = {
 	Import: "Import",
 	"Import Info": "Import Info",
 	importDescription:
-		`Paste your data below. This only accepts data exported through
-		"$t(Export App Info)".`,
+		"Paste your data below. This only accepts data exported through"
+		+ " \"$t(common:exportThing, { thing: $t(\"common:App Info\") })\".",
 	"Data to Import": "Data to Import",
 	Reset: "Reset",
 	Analyze: "Analyze",

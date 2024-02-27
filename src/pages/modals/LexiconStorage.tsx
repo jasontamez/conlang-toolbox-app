@@ -231,7 +231,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				<IonList lines="none">
 					<IonItem button={true} onClick={() => clearLexicon()}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>{t("Clear Lexicon")}</IonLabel>
+						<IonLabel>{t("clearGeneralThings", { things: tc("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
@@ -243,11 +243,11 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 					</IonItem>
 					<IonItem button={true} onClick={() => saveLexiconNew()}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>{t("Save as New")}</IonLabel>
+						<IonLabel>{tc("Save as New")}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => maybeExportLexicon()}>
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
-						<IonLabel>{t("Export Lexicon")}</IonLabel>
+						<IonLabel>{tc("exportThing", { thing: tc("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openDelete)}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
