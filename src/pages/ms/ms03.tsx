@@ -50,7 +50,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("3. Constituent Order Typology")}
+				title={t("3-Constituent Order Typology")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -76,7 +76,7 @@ const Syntax = (props: PageData) => {
 						label={t("What is This?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info31", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info31", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_mainClause"
@@ -104,7 +104,7 @@ const Syntax = (props: PageData) => {
 								labelOverrideDocx: true,
 								...t("checkboxAdpositionalPhrasesExport", { returnObjects: true }) as CheckboxTransExportProps
 							},
-							...(t("checkboxAdpositionalPhrasesProps", { returnObjects: true }) as CheckboxTransProps),
+							...(t("checkboxAdpositionalPhrases", { returnObjects: true }) as CheckboxTransProps),
 							
 
 						}}
@@ -116,7 +116,7 @@ const Syntax = (props: PageData) => {
 						label={t("More Info")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info34", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info34", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_adPhrase"
@@ -129,7 +129,7 @@ const Syntax = (props: PageData) => {
 						label={t("Comparing Things")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info35", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info35", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_compare"
@@ -141,7 +141,7 @@ const Syntax = (props: PageData) => {
 						title={t("Questions")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info36", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info36", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_questions"

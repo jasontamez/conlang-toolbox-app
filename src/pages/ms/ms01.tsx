@@ -69,7 +69,7 @@ const Syntax = (props: PageData) => {
 						label={t("The Basic Building Blocks of Words")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info11", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info11", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<HeaderItem level={3}>{t("Synthesis")}</HeaderItem>
 					<IonItem className="content">
@@ -118,7 +118,7 @@ const Syntax = (props: PageData) => {
 						label={t("Read About Them")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info12", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info12", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<HeaderItem level={3}>{t("Affixes")}</HeaderItem>
 					<CheckboxItem
@@ -227,7 +227,7 @@ const Syntax = (props: PageData) => {
 						title={t("Head/Dependent Marking")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info13", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info13", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_headDepMark"

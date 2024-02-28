@@ -176,7 +176,8 @@
 	padding-inline-start: 0;
 }
 #morphoSyntaxPage table tr:nth-child(even),
-.morphoSyntaxModal table tr:nth-child(even) {
+.morphoSyntaxModal table tr:nth-child(even),
+.morphoSyntaxModal table.informational thead tr {
 	background: var(--ion-background-shader);
 }
 #morphoSyntaxPage table ul,

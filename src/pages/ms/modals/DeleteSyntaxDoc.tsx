@@ -22,6 +22,7 @@ import {
 import { useSelector } from "react-redux";
 
 import { MSState, MSBool, ModalProperties, StateObject, SetBooleanState, SetState } from '../../../store/types';
+import useTranslator from '../../../store/translationHooks';
 
 import { MorphoSyntaxStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
@@ -38,6 +39,8 @@ interface MSmodalProps extends ModalProperties {
 
 const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -54,7 +57,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				setStoredInfo([]);
 				setIsOpen(false);
 				toaster({
-					message: "MorphoSyntax document deleted.",
+					message: tc("thingDeleted", { thing: t("msDocument") }),
 					duration: 2500,
 					position: "top",
 					toast
@@ -65,10 +68,10 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: "Are you sure?",
-				message: `This will delete "${title}", and cannot be undone.`,
+				header: tc("deleteTitle", { title }),
+				message: tc("cannotUndo"),
 				cssClass: "danger",
-				submit: "Yes, Delete It",
+				submit: tc("confirmDelIt"),
 				handler,
 				doAlert
 			});
@@ -78,7 +81,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Delete MorphoSyntax Document</IonTitle>
+					<IonTitle>{tc("deleteThing", { thing: t("msDocument", { context: "formal" }) })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -102,11 +105,11 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 								<IonNote
 									className="ion-text-wrap ital"
 									slot="end"
-								>Saved: {time.toLocaleString()}</IonNote>
+								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1>No Saved MorphoSyntax Documents</h1>
+						<h1>{t("No Saved MorphoSyntax Documents")}</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -114,7 +117,7 @@ const DeleteSyntaxDocModal = (props: MSmodalProps) => {
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

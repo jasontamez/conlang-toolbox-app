@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 export const $q =
 	<T extends HTMLElement>(query: string, doc: Document | HTMLElement = window.document): T | null =>
 		doc.querySelector(query) as T | null;
@@ -11,11 +13,13 @@ export const $i =
 type WrappedPromise = (ms: number) => Promise<ReturnType<typeof setTimeout>>
 export const $delay: WrappedPromise = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Oxford comma
-export const $and = (array: string[], glue: string = ", "): string => {
+export const $and = (array: string[], glue_: string = "", and_: string = ""): string => {
 	const input = array.slice();
 	if(input.length < 2) {
 		return input.join(" ");
 	}
 	const last = input.pop()!;
-	return input.join(glue) + `${glue}and ${last}`;
+	const glue = glue_ || i18n.t("andGlue");
+	const and = and_ || i18n.t("andFinal");
+	return input.join(glue) + `${and}${last}`;
 };

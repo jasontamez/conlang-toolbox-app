@@ -69,6 +69,10 @@ const common = {
 	generalError: "Error saving file {{filename}} ({{error}})",
 	fileSaved: "File saved as {{filename}}",
 
+	joinTwo: "{{one}} and {{two}}",
+	andGlue: ", ", // put between items in a list
+	andFinal: ", and ", // put between the penultimate and the last item in a list
+
 	"Exit App?": "Exit App?",
 	"Do you want to exit the app?": "Do you want to exit the app?",
 	"Yes Exit!": "Yes, Exit!",

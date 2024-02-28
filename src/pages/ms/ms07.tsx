@@ -50,7 +50,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("7. Voice and Valence Adjusting Operations")}
+				title={t("7-Voice and Valence Adjusting Operations")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -64,7 +64,7 @@ const Syntax = (props: PageData) => {
 						label={t("What is Valence?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info7", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info7", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<HeaderItem level={2}>{t("7-1-Valence-Increasing Operations")}</HeaderItem>
 					<HeaderItem level={3}>{t("7-1-1-Causatives")}</HeaderItem>
@@ -73,7 +73,7 @@ const Syntax = (props: PageData) => {
 						label={t("Forcing You to Read This")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info711", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info711", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_causation"
@@ -86,7 +86,7 @@ const Syntax = (props: PageData) => {
 						label={t("Adding a Third Participant")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info712", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info712", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_applicatives"
@@ -99,7 +99,7 @@ const Syntax = (props: PageData) => {
 						label={t("Looking Shifty")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info713", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info713", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_dativeShifts"
@@ -112,7 +112,7 @@ const Syntax = (props: PageData) => {
 						label={t("Pique Your Interest")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info714", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info714", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_datOfInt"
@@ -125,7 +125,7 @@ const Syntax = (props: PageData) => {
 						label={t("What is This?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info715", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info715", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_possessRaising"
@@ -139,7 +139,7 @@ const Syntax = (props: PageData) => {
 						label={t("You Are Me?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info721", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info721", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_refls"
@@ -152,7 +152,7 @@ const Syntax = (props: PageData) => {
 						label={t("Working Together")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info722", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info722", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_recips"
@@ -165,7 +165,7 @@ const Syntax = (props: PageData) => {
 						label={t("Moving Focus From the Agent")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info723", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info723", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_passives"
@@ -178,7 +178,7 @@ const Syntax = (props: PageData) => {
 						label={t("Playing The Reverse Card")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info724", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info724", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{
@@ -201,7 +201,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are These?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info725", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info725", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_middleCon"
@@ -214,7 +214,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are These?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info726", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info726", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_antiP"
@@ -227,7 +227,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are These?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info727", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info727", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_objDemOmInc"

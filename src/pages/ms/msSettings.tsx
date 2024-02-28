@@ -254,11 +254,11 @@ const Syntax = (props: PageData) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{t("description", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tc("description", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label={t("description", { context: "formal" })}
+							aria-label={tc("description", { context: "formal" })}
 							value={description}
 							id="msDesc"
 							className="ion-margin-top"

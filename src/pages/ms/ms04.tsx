@@ -57,7 +57,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("4. Noun and Noun Phrase Operations")}
+				title={t("4-Noun and Noun Phrase Operations")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -72,7 +72,7 @@ const Syntax = (props: PageData) => {
 						label={t("Noun-Piles")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info41", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info41", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_compounding"
@@ -85,7 +85,7 @@ const Syntax = (props: PageData) => {
 						label={t("Verbing a Noun")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info42", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info42", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_denoms"
@@ -98,7 +98,7 @@ const Syntax = (props: PageData) => {
 						label={t("Plurality, etc.")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info43", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info43", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{
@@ -126,7 +126,7 @@ const Syntax = (props: PageData) => {
 						label={t("How it works")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info44", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info44", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_nCase"
@@ -139,7 +139,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are They?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info45", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info45", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_articles"
@@ -157,7 +157,7 @@ const Syntax = (props: PageData) => {
 						label={t("Possessor Expressions")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info46", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info46", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_possessors"
@@ -170,7 +170,7 @@ const Syntax = (props: PageData) => {
 						label={t("What They Are")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info47", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info47", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{
@@ -193,7 +193,7 @@ const Syntax = (props: PageData) => {
 						label={t("Bigger and Smaller")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info48", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info48", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{

@@ -36,7 +36,7 @@ const Syntax = (props: PageData) => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title={t("6. Grammatical Relations")} {...props} />
+			<SyntaxHeader title={t("6-Grammatical Relations")} {...props} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
@@ -48,7 +48,7 @@ const Syntax = (props: PageData) => {
 						label={t("Show the Alignments")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info6", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info6", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{

@@ -74,7 +74,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("2. Grammatical Categories")}
+				title={t("2-Grammatical Categories")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -91,7 +91,7 @@ const Syntax = (props: PageData) => {
 						label={t("Read About Them")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info2111", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info2111", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_propNames"
@@ -104,7 +104,7 @@ const Syntax = (props: PageData) => {
 						label={t("Systems of Possession")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info2112", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info2112", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_possessable"
@@ -117,7 +117,7 @@ const Syntax = (props: PageData) => {
 						label={t("A Piece of Information")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info2113", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info2113", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_countMass"
@@ -130,7 +130,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are They?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info212", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info212", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_pronounAnaphClitic"
@@ -144,7 +144,7 @@ const Syntax = (props: PageData) => {
 						label={t("A Quick Primer")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info221", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info221", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_semanticRole"
@@ -178,7 +178,7 @@ const Syntax = (props: PageData) => {
 						label={t("Structure and Operations Info")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info223", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info223", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_verbStructure"
@@ -204,7 +204,7 @@ const Syntax = (props: PageData) => {
 						label={t("More Info")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info231", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info231", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_propClass"
@@ -223,7 +223,7 @@ const Syntax = (props: PageData) => {
 						label={t("Things to Consider")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info232", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info233", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={
@@ -270,7 +270,7 @@ const Syntax = (props: PageData) => {
 						label={'A "Catch-All" Category'}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info24", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info24", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_adverb"

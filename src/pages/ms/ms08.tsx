@@ -46,7 +46,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("8. Other Verb and Verb Phrase Operations")}
+				title={t("8-Other Verb and Verb Phrase Operations")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -61,7 +61,7 @@ const Syntax = (props: PageData) => {
 						label={t("Making Nouns")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info81", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info81", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_verbNoms"
@@ -74,7 +74,7 @@ const Syntax = (props: PageData) => {
 						label={t("Word-Making")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info82", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info82", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_verbComp"
@@ -87,7 +87,7 @@ const Syntax = (props: PageData) => {
 						label={t("What Are They?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info83", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info83", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<CheckboxItem
 						display={{
@@ -105,7 +105,7 @@ const Syntax = (props: PageData) => {
 						label={t("Info on Tense")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info831", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info831", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_tense"
@@ -118,7 +118,7 @@ const Syntax = (props: PageData) => {
 						label={t("Info on Aspect")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info832", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info832", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_aspect"
@@ -131,7 +131,7 @@ const Syntax = (props: PageData) => {
 						label={t("Info on Mode")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info833", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info833", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_mode"
@@ -144,7 +144,7 @@ const Syntax = (props: PageData) => {
 						label={t("Where?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info84", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info84", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_locDirect"
@@ -157,7 +157,7 @@ const Syntax = (props: PageData) => {
 						label={t("Truth and Certainty")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info85", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info85", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_evidence"
@@ -170,7 +170,7 @@ const Syntax = (props: PageData) => {
 						label={t("Leftovers")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info86", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info86", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_miscVerbFunc"

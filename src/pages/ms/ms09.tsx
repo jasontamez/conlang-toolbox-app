@@ -36,7 +36,7 @@ const Syntax = (props: PageData) => {
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title={t("9. Pragmatically Marked Structures")} {...props} />
+			<SyntaxHeader title={t("9-Pragmatically Marked Structures")} {...props} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
@@ -48,7 +48,7 @@ const Syntax = (props: PageData) => {
 						label={t("What are Pragmatics?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info9", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info9", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<HeaderItem level={2}>{t("9-1-Focus, Contrast and Topicalization")}</HeaderItem>
 					<InfoModal
@@ -56,7 +56,7 @@ const Syntax = (props: PageData) => {
 						label={t("Focus is What This is About")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info91", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info91", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_pragFocusEtc"
@@ -69,7 +69,7 @@ const Syntax = (props: PageData) => {
 						label={t("Don't not read this.")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info92", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info92", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_negation"
@@ -82,7 +82,7 @@ const Syntax = (props: PageData) => {
 						label={t("Minor Note on Declaratives")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info93", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info93", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_declaratives"
@@ -96,7 +96,7 @@ const Syntax = (props: PageData) => {
 						label={t("Yes? No?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info9311", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info9311", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_YNQs"
@@ -109,7 +109,7 @@ const Syntax = (props: PageData) => {
 						label={t("Who? What? Why?")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info9312", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info9312", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_QWQs"
@@ -122,7 +122,7 @@ const Syntax = (props: PageData) => {
 						label={t("Command Sentences")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info932", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info932", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_imperatives"

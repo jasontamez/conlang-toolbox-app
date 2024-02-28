@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { MSState, MSBool, ModalProperties, StateObject, SetState } from '../../../store/types';
 import { loadStateMS } from '../../../store/msSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 
@@ -36,6 +37,8 @@ interface OldStyleSave extends MSState {
 
 const LoadMSModal = (props: MSmodalProps) => {
 	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
@@ -60,9 +63,10 @@ const LoadMSModal = (props: MSmodalProps) => {
 				handler();
 			} else {
 				yesNoAlert({
-					message: "Are you sure you want to load this? It will overwrite your current MorphoSyntax information and cannot be reversed.",
+					header: tc("areYouSure"),
+					message: tc("clearOverrideGeneralThings", { things: t("your current MorphoSyntax information") }),
 					cssClass: "warning",
-					submit: "Yes, Load It",
+					submit: tc("confirmLoad"),
 					handler,
 					doAlert
 				});
@@ -75,7 +79,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>Load MorphoSyntax Document</IonTitle>
+					<IonTitle>{tc("loadThing", { thing: t("msDocument") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => doClose()}>
 							<IonIcon icon={closeCircleOutline} />
@@ -95,11 +99,11 @@ const LoadMSModal = (props: MSmodalProps) => {
 								<IonNote
 									className="ion-text-wrap ital"
 									slot="end"
-								>Saved: {time.toLocaleString()}</IonNote>
+								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
 							</IonItem>
 						);
 					}) : (
-						<h1>No Saved MorphoSyntax Documents</h1>
+						<h1>{t("No Saved MorphoSyntax Documents")}</h1>
 					)}
 				</IonList>
 			</IonContent>
@@ -107,7 +111,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
 					<IonButton color="warning" slot="end" onClick={() => doClose()}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>Cancel</IonLabel>
+						<IonLabel>{tc("Cancel")}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

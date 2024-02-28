@@ -19,10 +19,10 @@ import { MSBool, MSNum, MSState, MSText, SetBooleanState } from "../../../store/
 
 import doExport from '../../../components/ExportServices';
 import log_original from '../../../components/Logging';
+import i18n from "../../../i18n";
 
 import { specificPageInfo } from '../MorphoSyntaxElements';
 import msRawInfo from '../ms.json';
-import i18n from "../../../i18n";
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
@@ -172,7 +172,7 @@ const doDocx = (
 							],
 							spacing
 						}));
-						const tArr: string[] = (msInfo[prop as MSText] || "[NO TEXT ENTERED]").split(/\n\n+/);
+						const tArr: string[] = (msInfo[prop as MSText] || i18n.t("[NO TEXT ENTERED]", { ns: "ms" })).split(/\n\n+/);
 						tArr.forEach((t: string, i: number) => {
 							const run: TextRun[] = [];
 							t.split(/\n/).forEach((x: string, j: number) => {
@@ -415,9 +415,9 @@ const doDocx = (
 	});
 	log_original(null, checksum);
 	const doc = new Document({
-		creator: "Conlang Toolbox",
-		description: "A MorphoSyntax document exported from Conlang Toolbox.",
-		title: `${title} - MorphoSyntax Document`,
+		creator: i18n.t("Conlang Toolbox"),
+		description: i18n.t("msDocumentDescription"),
+		title: `${title} - ${i18n.t("msDocument", { context: "formal" })}`,
 		sections
 	});
 	e.preventDefault();
@@ -426,6 +426,7 @@ const doDocx = (
 
 
 	// FOR BROWSER TESTING ONLY
+	//i18n not needed here
 	if(!isPlatform("android")) {
 		Packer.toBlob(doc).then((blob) => {
 			saveAs(blob, filename);

@@ -100,14 +100,14 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 						className="striped"
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">{tc("Text Outline (plain)")}</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("Text File (plain)")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}
 						onClick={(e: IonItemEvent) => doText(e, msInfo, doDownload, showUnused, true)}
 					>
 						<IonIcon icon={documentTextOutline} className="ion-padding-start" slot="start" />
-						<IonLabel className="ion-text-wrap">{tc("Text Outline (markdown)")}</IonLabel>
+						<IonLabel className="ion-text-wrap">{tc("Text File (markdown)")}</IonLabel>
 					</IonItem>
 					<IonItem
 						button={true}

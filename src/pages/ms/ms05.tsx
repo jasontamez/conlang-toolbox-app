@@ -35,7 +35,7 @@ const Syntax = (props: PageData) => {
 	return (
 		<IonPage>
 			<SyntaxHeader
-				title={t("5. Predicate Nominals and Related Constructions")}
+				title={t("5-Predicate Nominals and Related Constructions")}
 				{...props}
 			/>
 			<IonContent fullscreen
@@ -49,7 +49,7 @@ const Syntax = (props: PageData) => {
 						label={t("General Information to Consider")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info5", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info5", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<HeaderItem level={2}>{t("5-1-Predicate Nominals and Adjectives")}</HeaderItem>
 					<InfoModal
@@ -57,7 +57,7 @@ const Syntax = (props: PageData) => {
 						label={t("What It Is and What It Seems Like")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info51", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info51", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_predNom"
@@ -70,7 +70,7 @@ const Syntax = (props: PageData) => {
 						label={t("Where It Is")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info52", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info52", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_predLoc"
@@ -83,7 +83,7 @@ const Syntax = (props: PageData) => {
 						label={t("These Exist")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info53", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info53", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_predEx"
@@ -95,7 +95,7 @@ const Syntax = (props: PageData) => {
 						title={t("Possessive Clauses")}
 						modalPropsMaker={modalPropsMaker}
 					>
-						<MSMarkdown>{t("info54", { joinArray: "\n" })}</MSMarkdown>
+						<MSMarkdown>{t("info54", { joinArrays: "\n" })}</MSMarkdown>
 					</InfoModal>
 					<TextItem
 						prop="TEXT_predPoss"

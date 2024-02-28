@@ -407,6 +407,18 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 	);
 };
 
+const TDMarkdown: React.FC<{children: string, length?: number}> = (props) => {
+	const { children, length } = props;
+	return (
+		<Markdown
+			remarkPlugins={[remarkGfm]}
+			components={{
+				p: (pprops) => <td {...(length ? { colSpan: length } : {})}>{pprops.children}</td>
+			}}
+		>{children}</Markdown>
+	);
+};
+
 export const MSMarkdown: React.FC<{children: string}> = (props) => {
 	return (
 		<Markdown
@@ -415,27 +427,30 @@ export const MSMarkdown: React.FC<{children: string}> = (props) => {
 				code: (codeprops) => {
 					const { children } = codeprops;
 					if(typeof(children) === "string") {
-						let breaker = "/";
-						let rows: string;
-						let m: RegExpMatchArray | null;
-						if(children.indexOf("[translation table]") === 0) {
-							// slash linebreak
-							rows = children.slice(19);
-						} else if ((m = children.match(/^\[translation table (.)](.+)$/))) {
-							// non-slash linebreak
-							breaker = m[1];
-							rows = m[2];
-						} else {
+						if(children.indexOf("[translationTable]") !== 0) {
 							// return the plain string
 							return children as string;
 						}
 						// Look for a plain text section
-						const [info, text] = rows.trim().split(` ${breaker}${breaker} `);
+						const [info, text] =
+							children.slice(18).trim()
+//								.replace(/\[-\]/g, String.fromCodePoint(0x00ad)) // turn [-] into &shy;
+								.split(" ||| ");
 						// Split into rows
-						const rowsInfo = info.split(` ${breaker} `);
-						return <TransTable convertedRows={rowsInfo}>{text || ""}</TransTable>;
+						let length = 1;
+						const rows = info.split(" || ").map((row, i) => {
+							const cells = row.split(" | ").map((cell, j) => {
+								return <TDMarkdown key={`TD-${i}-${j}-${cell}`}>{cell}</TDMarkdown>;
+							});
+							length = Math.max(length, cells.length);
+							return <tr key={`ROW-${i}-${row}`}>{cells}</tr>;
+						});
+						if(text) {
+							rows.push(<tr key={`ROW-FINAL-${text}`}><TDMarkdown length={length}>{text}</TDMarkdown></tr>);
+						}
+						return <div className="scrollable"><table className="translation"><tbody>{rows}</tbody></table></div>;
 					}
-					return "";
+					return `${children}`;
 				},
 				table: (tableprops) => {
 					const { node, ...rest } = tableprops;
@@ -443,12 +458,23 @@ export const MSMarkdown: React.FC<{children: string}> = (props) => {
 				},
 				li: (liprops) => {
 					const { node, children, ...rest } = liprops;
-					if(typeof(children) === "string" && children.indexOf("[newSection]") === 0) {
-						return <li {...rest} className="newSection">{children.slice(12)}</li>
+					if(typeof children === "string") {
+						if(children.indexOf("[newSection]") === 0) {
+							return <li {...rest} className="newSection">{children.slice(12)}</li>;
+						}
+					} else if (Array.isArray(children)) {
+						const [tester, ...kids] = children;
+						if(typeof tester === "string" && tester.indexOf("[newSection]") === 0) {
+							if(tester.length > 12) {
+								kids.unshift(tester.slice(12));
+							}
+							return <li {...rest} className="newSection">{kids}</li>;
+						}
+					} else {
+						console.log("NON-STRING, NON-ARRAY CHILDREN");
+						console.log(children);
+						console.log({...liprops});
 					}
-					console.log("NON-STRING CHILDREN");
-					console.log(children);
-					console.log({...liprops});
 					return <li {...rest}>{children}</li>;
 				}
 			}}
