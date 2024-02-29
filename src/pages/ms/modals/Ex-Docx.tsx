@@ -19,9 +19,10 @@ import { MSBool, MSNum, MSState, MSText, SetBooleanState } from "../../../store/
 
 import doExport from '../../../components/ExportServices';
 import log_original from '../../../components/Logging';
-import i18n from "../../../i18n";
+import { tMaker, tc } from "../../../components/translators";
 
-import { specificPageInfo } from '../MorphoSyntaxElements';
+import { CheckboxTransExportProps, CheckboxTransProps, specificPageInfo } from '../MorphoSyntaxElements';
+import i18n from "../../../i18n";
 import msRawInfo from '../ms.json';
 
 // FOR BROWSER TESTING ONLY
@@ -36,6 +37,8 @@ interface Section {
 	properties: { type: SectionType }
 	children: Child[]
 }
+
+const t = tMaker({ns: "ms"});
 
 const doDocx = (
 	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
@@ -172,10 +175,10 @@ const doDocx = (
 							],
 							spacing
 						}));
-						const tArr: string[] = (msInfo[prop as MSText] || i18n.t("[NO TEXT ENTERED]", { ns: "ms" })).split(/\n\n+/);
-						tArr.forEach((t: string, i: number) => {
+						const tArr: string[] = (msInfo[prop as MSText] || t("[NO TEXT ENTERED]")).split(/\n\n+/);
+						tArr.forEach((txt: string, i: number) => {
 							const run: TextRun[] = [];
-							t.split(/\n/).forEach((x: string, j: number) => {
+							txt.split(/\n/).forEach((x: string, j: number) => {
 								run.push(new TextRun(
 									(j > 0) ? {
 										text: x,
@@ -201,13 +204,11 @@ const doDocx = (
 						checksum.push("CHECKBOX error");
 						break;
 					}
-					const boxMap: {[key in MSBool]?: boolean} = {};
 					const boxesCopy: [MSBool, boolean][] = [];
 					let found = false;
 					boxes!.forEach(prop => {
 						const value = msInfo[prop] || false;
 						found = found || value;
-						boxMap[prop] = value;
 						boxesCopy.push([prop, value]);
 					});
 					if (!showUnused && !found) {
@@ -216,38 +217,52 @@ const doDocx = (
 					}
 					// Use general output format
 					const {
-						header,
-						inlineHeaders,
-						labels,
-						rowLabels,
+						i18,
+						boxesPerRow,
 						export: expo
 					} = display;
-					const { labelOverrideDocx, labels: expoLabels } = expo || {};
-					const perRow = display.boxesPerRow || 1;
-					const labelsCopy = labels ? labels.slice() : [];
-					const labelsForTheRow = (
-						labelOverrideDocx ?
-							(expoLabels || labelsCopy).slice()
+					const {
+						header,
+						columnHeaders,
+						labels
+					} = i18n.t(i18, { returnObjects: true }) as CheckboxTransProps;
+					// Get special info for exports
+					const expoLabels = (i18n.t(expo ? expo.i18 : "", { returnObjects: true }) as CheckboxTransExportProps || {}).labels;
+					// determine labels we're using
+					const labelsToUse = (
+						expo && expo.labelOverrideDocx ?
+							(expoLabels || labels || []).slice()
 						:
-							rowLabels.slice()
+							(labels || [])
 					) || [];
+
+					const perRow = boxesPerRow || 1;
 					const rows: [MSBool, boolean][][] = [];
 					let colCount = 0;
-					let temp: [MSBool, boolean][] = [];
-					let count = 0;
 					const output: TableRow[] = [];
+					// colWidths is a flex-like number
 					const colWidths: number[] = [];
 					const checkingOutput: string[] = [];
-					let allColumns = 6;
+					let totalColumnWidths = 0;
+					// Make the checkboxes consume 1 flex unit
 					for(let x = 0; x < perRow; x++) {
 						colWidths.push(1);
-						allColumns++;
+						totalColumnWidths++;
 					}
-					if(labelsCopy.length > 0) {
-						colWidths.push(4);
-						allColumns = allColumns + 4;
+					// Make the labels consume 6 flex units
+					if(labelsToUse.length > 0) {
+						// Are there multiple labels?
+						if(Array.isArray(labelsToUse[0])) {
+							// First one will be smaller: 4 flex units
+							colWidths.push(4);
+							totalColumnWidths += 4;
+						}
+						colWidths.push(6);
+						totalColumnWidths += 6;
 					}
-					const portion = 100 / allColumns;
+					const portion = 100 / totalColumnWidths;
+					let temp: [MSBool, boolean][] = [];
+					let count = 0;
 					boxesCopy.forEach((pair) => {
 						count++;
 						temp.push(pair);
@@ -280,12 +295,12 @@ const doDocx = (
 						},
 					}
 					rows.forEach(row => {
-						// cell[s] [label] rowLabel
+						// cell[s] [label] [?label]
 						const cols = colWidths.slice();
 						const cells: TableCell[] = [];
 						const checkingCells: string[] = [];
 						let leftover = 100;
-						row.forEach(([cell, bool]) => {
+						row.forEach(([propertyName, bool]) => {
 							const percent = Math.floor(cols.shift()! * portion);
 							leftover -= percent;
 							cells.push(new TableCell({
@@ -300,15 +315,35 @@ const doDocx = (
 							}));
 							checkingCells.push(bool ? "X" : ".");
 						});
-						if(labelsCopy.length > 0) {
-							const percent = Math.floor(cols.shift()! * portion);
-							leftover -= percent;
-							const text = labelsCopy.shift() || "";
+						if(labelsToUse.length > 0) {
+							const shift = labelsToUse.shift();
+							const texts = Array.isArray(shift) ? shift : [ shift ];
+							texts.forEach(text => {
+								const percent = Math.floor(cols.shift()! * portion);
+								leftover -= percent;
+								cells.push(
+									new TableCell({
+										borders: border,
+										width: {
+											size: percent,
+											type: WidthType.PERCENTAGE
+										},
+										children: [new Paragraph({
+											text
+										})]
+									})
+								);
+								checkingCells.push(text!);
+							});
+						}
+						const possibleTexts = labelsToUse.shift() || "";
+						const texts = Array.isArray(possibleTexts) ? possibleTexts.slice() : [ possibleTexts ];
+						texts.forEach(text => {
 							cells.push(
 								new TableCell({
 									borders: border,
 									width: {
-										size: percent,
+										size: leftover,
 										type: WidthType.PERCENTAGE
 									},
 									children: [new Paragraph({
@@ -317,21 +352,7 @@ const doDocx = (
 								})
 							);
 							checkingCells.push(text);
-						}
-						const text = labelsForTheRow.shift() || "";
-						cells.push(
-							new TableCell({
-								borders: border,
-								width: {
-									size: leftover,
-									type: WidthType.PERCENTAGE
-								},
-								children: [new Paragraph({
-									text
-								})]
-							})
-						);
-						checkingCells.push(text);
+						});
 						colCount = Math.max(colCount, cells.length);
 						output.push(new TableRow({
 							children: cells,
@@ -339,12 +360,12 @@ const doDocx = (
 						}));
 						checkingOutput.push(`[${checkingCells.join("] [")}]`);
 					});
-					if(inlineHeaders) {
+					if(columnHeaders) {
 						const cells: TableCell[] = [];
 						const checkingCells: string[] = [];
 						let leftover = 100;
 						const cols = colWidths.slice();
-						inlineHeaders.forEach((cell: string) => {
+						columnHeaders.forEach((columnHeader: string) => {
 							const percent = (
 								cols.length > 0 ?
 									Math.floor(cols.shift()! * portion)
@@ -359,10 +380,10 @@ const doDocx = (
 									type: WidthType.PERCENTAGE
 								},
 								children: [new Paragraph({
-									text: cell
+									text: columnHeader
 								})]
 							}));
-							checkingCells.push(cell);
+							checkingCells.push(columnHeader);
 							colCount = Math.max(colCount, cells.length);
 						});
 						output.unshift(new TableRow({
@@ -415,13 +436,13 @@ const doDocx = (
 	});
 	log_original(null, checksum);
 	const doc = new Document({
-		creator: i18n.t("Conlang Toolbox"),
-		description: i18n.t("msDocumentDescription"),
-		title: `${title} - ${i18n.t("msDocument", { context: "formal" })}`,
+		creator: tc("Conlang Toolbox"),
+		description: t("msDocumentDescription"),
+		title: `${title} - ${t("msDocument", { context: "formal" })}`,
 		sections
 	});
 	e.preventDefault();
-	const filename =  i18n.t("fileFormat", { title, date: (new Date()).toDateString(), extension: "docx" });
+	const filename =  tc("fileFormat", { title, date: (new Date()).toDateString(), extension: "docx" });
 	setLoading(true);
 
 

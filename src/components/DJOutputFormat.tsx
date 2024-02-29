@@ -1,13 +1,16 @@
 import React, { ReactElement } from "react";
 import { Dispatch } from "redux";
 import { UseIonToastResult } from "@ionic/react";
+
+import { tMaker, tc } from "../components/translators";
 import { DJCustomInfo, DJGroup, RegexPair } from "../store/types";
 import exportDocx from "../pages/dj/modals/ExportToDocx";
 import ltr from "./LTR";
 import log from "./Logging";
 import toaster from "./toaster";
 import doExport from "./ExportServices";
-import i18n from "../i18n";
+
+const t = tMaker({ns: "dj"});
 
 export type DJDisplayMethods = "text" | "chartTH" | "chartSH";
 export type DJFormatTypes = "text" | "csv" | "docx";
@@ -107,7 +110,7 @@ const getGroupDescription = (group: DJGroup): Triple => {
 		endsWith.forEach(line => temp.push("-" + line));
 		parameters = temp.join(separator);
 	}
-	const matches = i18n.t("matchesParameters", { params: parameters, ns: "dj" });
+	const matches = t("matchesParameters", { params: parameters });
 	if(appliesTo) {
 		return [title, id, `${appliesTo}; ${matches}`];
 	}
@@ -162,10 +165,10 @@ const getDJRawInfo = (
 	const columnIds: string[] = [];
 	const columnClasses: ColumnClasses[] = [];
 	let className: string = displayMethod === "text" ? "text" : "chart";
-	const WORD = i18n.t("[word]", { ns: "dj" });
-	const STEM = i18n.t("[stem]", { ns: "dj" });
-	const EXAMPLE = i18n.t("Example", { ns: "dj" });
-	const EXAMPLES = i18n.t("Examples", { ns: "dj" });
+	const WORD = t("[word]");
+	const STEM = t("[stem]");
+	const EXAMPLE = t("Example");
+	const EXAMPLES = t("Examples");
 	if(displayMethod === "chartSH") {
 		// header example item1 item2
 		// header example item1 item2
@@ -337,7 +340,7 @@ export const display = (
 		<div className="djTypeTitle" key={`${type}-title`}>{type}</div>
 	];
 	const copyStrings: string[] = [type.charAt(0).toLocaleUpperCase() + type.slice(1)];
-	const typeString = type === "other" ? i18n.t("Forms", { ns: 'dj' }) : copyStrings[0];
+	const typeString = type === "other" ? t("Forms") : copyStrings[0];
 	const unfound: string[][] = [];
 	const {
 		input = [],
@@ -346,7 +349,7 @@ export const display = (
 		wordsMatchOneTimeOnly = false
 	} = data || {};
 	let currentInput = [...input];
-	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
+	const noMatchesFound = t("No words matched this group.");
 	// Gather group info
 	groups.forEach(group => {
 		const {
@@ -503,7 +506,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			declensions,
 			displayMethod,
-			i18n.t("Declensions", { ns: "dj" }),
+			t("Declensions"),
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -522,7 +525,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			conjugations,
 			displayMethod,
-			i18n.t("Conjugations", { ns: "dj" }),
+			t("Conjugations"),
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -541,7 +544,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			other,
 			displayMethod,
-			i18n.t("Forms", { ns: "dj" }),
+			t("Forms"),
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -577,10 +580,10 @@ export const exporter = (
 	if(formatted && extension) {
 		return doExport(
 			formatted,
-			i18n.t(
+			tc(
 				"fileFormat",
 				{
-					title: i18n.t("Declenjugator", { context: "filename" }),
+					title: tc("Declenjugator", { context: "filename" }),
 					date: (new Date()).toDateString(),
 					extension
 				}
@@ -605,7 +608,7 @@ const getExportText = (
 	inputFlag: boolean
 ): string[] => {
 	const output: string[] = [];
-	const noMatches = "--" + i18n.t("No words matched this group.", { ns: 'dj' });
+	const noMatches = "--" + t("No words matched this group.");
 	info.forEach(declenjugation => {
 		const {
 			title,
@@ -643,28 +646,28 @@ const exportText = (data: DJExportData) => {
 	const inputFlag = unfound !== null;
 	if(declensions) {
 		output.push(
-			i18n.t("Declensions", { ns: "dj" })
+			t("Declensions")
 			+ "\n"
 			+ getExportText(declensions, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(conjugations) {
 		output.push(
-			i18n.t("Conjugations", { ns: "dj" })
+			t("Conjugations")
 			+ "\n"
 			+ getExportText(conjugations, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(other) {
 		output.push(
-			i18n.t("Forms", { ns: "dj" })
+			t("Forms")
 			+ "\n"
 			+ getExportText(other, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(unfound && unfound.length > 0) {
 		output.push(
-			i18n.t("Unmatched Words", { ns: 'dj' })
+			t("Unmatched Words")
 			+ "\n\n"
 			+ unfound.join(", ")
 		);
@@ -678,7 +681,7 @@ const quote = (input: string): string => `"${input}"`;
 
 const getExportCSV = (info: DJRawInfo[], showGroupInfo: boolean, inputFlag: boolean): string[] => {
 	const output: string[] = [];
-	const noMatches = quote("--" + i18n.t("No words matched this group.", { ns: 'dj' }));
+	const noMatches = quote("--" + t("No words matched this group."));
 	info.forEach(declension => {
 		const {
 			title,
@@ -711,28 +714,28 @@ const exportCSV = (data: DJExportData) => {
 	const inputFlag = unfound !== null;
 	if(declensions) {
 		output.push(
-			quote(i18n.t("Declensions", { ns: "dj" }))
+			quote(t("Declensions"))
 			+ "\n"
 			+ getExportCSV(declensions, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(conjugations) {
 		output.push(
-			quote(i18n.t("Conjugations", { ns: "dj" }))
+			quote(t("Conjugations"))
 			+ "\n"
 			+ getExportCSV(conjugations, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(other) {
 		output.push(
-			quote(i18n.t("Forms", { ns: "dj" }))
+			quote(t("Forms"))
 			+ "\n"
 			+ getExportCSV(other, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(unfound && unfound.length > 0) {
 		output.push(
-			quote(i18n.t("Unmatched Words", { ns: 'dj' }))
+			quote(t("Unmatched Words"))
 			+ `\n`
 			+ unfound.map(word => quote(word)).join("\n")
 		);

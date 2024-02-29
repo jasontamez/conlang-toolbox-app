@@ -112,8 +112,18 @@ const ms = {
 
 	Affixes: "Affixes",
 	checkboxAffixes: {
-		inlineHeaders: [ "Used Most", "Used Less", "Affix" ],
-		rowLabels: [ "Prefix", "Suffix", "Circumfix", "Infix" ]
+		columnHeaders: [ "Used Most", "Used Less", "Affix" ],
+		labels: [ "Prefix", "Suffix", "Circumfix", "Infix" ]
+	},
+	checkboxAffixesExport: {
+		header: "Affixes",
+		textFormat: {
+			chosenHeaders: [
+				"Used Most:",
+				"Used Less:"
+			],
+			chosenLabelsInOrder: ["Prefixes", "Suffixes", "Circumfixes", "Infixes"]
+		}
 	},
 	"Stem Modification": "Stem Modification",
 	"Not Used": "Not Used",
@@ -256,60 +266,43 @@ const ms = {
 	"Describe which semantic roles are important.": "Describe which semantic roles are important.",
 	"2-2-2-Verb Classes": "2.2.2. Verb Classes",
 	checkboxVerbClasses: {
-		inlineHeaders: ["Special?", "Type", "Description"],
+		columnHeaders: ["Special?", "Type", "Description"],
 		labels: [
-			"Actions",
-			"Action-Processes",
-			"Weather Verbs",
-			"States",
-			"Involuntary Processes",
-			"Bodily Functions",
-			"Motion",
-			"Position",
-			"Factive",
-			"Cognition",
-			"Sensation",
-			"Emotion",
-			"Utterance",
-			"Manipulation",
-			"Other Verb Class(es)"
-		],
-		rowLabels: [
-			"Agent affects Patient.",
-			"Agent only.",
-			"In English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!",
-			"be hot, be broken, be frozen, etc; may be predicate-bound",
-			"He grew; It broke; They died; etc.",
-			"cough, sweat, bleed, cry, etc.",
-			"go, float, proceed, etc.",
-			"sit, stand, hang, etc.",
-			"Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions",
-			"know, suspect, forget etc.",
-			"hear, see, taste, etc.",
-			"be happy, be afraid, be mellow, etc.",
-			"say, yell, murmur, declare, chat, etc.",
-			"force, urge, cause, let, permit, allow, compel, etc.",
-			"(you might have a distinction different from those already listed)"
+			[ "Actions", "Agent affects Patient." ],
+			[ "Action-Processes", "Agent only." ],
+			[ "Weather Verbs", "in English, these require a dummy Agent (\"<em>It</em> is raining\"); this is not the case in many other languages!" ],
+			[ "States", "be hot, be broken, be frozen, etc; may be predicate-bound" ],
+			[ "Involuntary Processes", "he grew; it broke; they died; etc." ],
+			[ "Bodily Functions", "cough, sweat, bleed, cry, etc." ],
+			[ "Motion", "go, float, proceed, etc." ],
+			[ "Position", "sit, stand, hang, etc." ],
+			[ "Factive", "something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions" ],
+			[ "Cognition", "know, suspect, forget etc." ],
+			[ "Sensation", "hear, see, taste, etc." ],
+			[ "Emotion", "be happy, be afraid, be mellow, etc." ],
+			[ "Utterance", "say, yell, murmur, declare, chat, etc." ],
+			[ "Manipulation", "force, urge, cause, let, permit, allow, compel, etc." ],
+			[ "Other Verb Class(es)", "(you might have a distinction different from those already listed)" ]
 		]
 	},
 	checkboxVerbClassesExport: {
-		title: "Verb Types that are handled in a special way:",
+		header: "Verb Types that are handled in a special way:",
 		labels: [
-			"Agent affects Patient.",
-			"Agent only.",
-			"In English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!",
-			"be hot, be broken, be frozen, etc; may be predicate-bound",
-			"He grew; It broke; They died; etc.",
-			"cough, sweat, bleed, cry, etc.",
-			"go, float, proceed, etc.",
-			"sit, stand, hang, etc.",
-			"Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions",
-			"know, suspect, forget etc.",
-			"hear, see, taste, etc.",
-			"be happy, be afraid, be mellow, etc.",
-			"say, yell, murmur, declare, chat, etc.",
-			"force, urge, cause, let, permit, allow, compel, etc.",
-			"(you might have a distinction different from those already listed)"
+			"Actions: Agent affects Patient.",
+			"Action-Processes: Agent only.",
+			"Weather Verbs: in English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!",
+			"States: be hot, be broken, be frozen, etc; may be predicate-bound",
+			"Involuntary Processes: He grew; It broke; They died; etc.",
+			"Bodily Functions: cough, sweat, bleed, cry, etc.",
+			"Motion: go, float, proceed, etc.",
+			"Position: sit, stand, hang, etc.",
+			"Factive: something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions",
+			"Cognition: know, suspect, forget etc.",
+			"Sensation: hear, see, taste, etc.",
+			"Emotion: be happy, be afraid, be mellow, etc.",
+			"Utterance: say, yell, murmur, declare, chat, etc.",
+			"Manipulation: force, urge, cause, let, permit, allow, compel, etc.",
+			"Other Verb Class(es): you might have a distinction different from those already listed"
 		]
 	},
 	"If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.":
@@ -359,7 +352,7 @@ const ms = {
 	"2-3-1-Property Concepts (Descriptive Adjectives)": "2.3.1. Property Concepts (Descriptive Adjectives)",
 	checkboxVerbPropConcepts: {
 		header: "Different Ways Property Concepts Are Handled in Human Language",
-		rowLabels: [
+		labels: [
 			"Lexicalized as verbs (Acehnese)",
 			"Lexicalized as nouns (Finnish)",
 			"Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)",
@@ -368,7 +361,7 @@ const ms = {
 		]
 	},
 	checkboxVerbPropConceptsExport: {
-		title: "Property Concepts:",
+		header: "Property Concepts:",
 		labels: [
 			"Lexicalized as verbs",
 			"Lexicalized as nouns",
@@ -455,7 +448,7 @@ const ms = {
 
 	checkboxNumberBase: {
 		header: "Number Base",
-		rowLabels: [
+		labels: [
 			"Base Five",
 			"Base Ten",
 			"Base Twenty",
@@ -463,8 +456,8 @@ const ms = {
 		],
 	},
 	checkboxNumberBaseExport: {
-		title: "Number Base:",
-		rowLabels: [
+		header: "Number Base:",
+		labels: [
 			"Base Five",
 			"Base Ten",
 			"Base Twenty",
@@ -473,15 +466,15 @@ const ms = {
 	},
 	checkboxNumberFormat: {
 		header: "Number Format",
-		rowLabels: [
+		labels: [
 			"Greatest-to-Least (twenty-two)",
 			"Least-to-Greatest (two-twenty)",
 			"Single Digits Only (two-two)"
 		]
 	},
 	checkboxNumberFormatExport: {
-		title: "Number Format:",
-		rowLabels: [
+		header: "Number Format:",
+		labels: [
 			"Greatest-to-Least",
 			"Least-to-Greatest",
 			"Single Digits Only"
@@ -489,13 +482,13 @@ const ms = {
 	},
 	checkboxNumberOtherProps: {
 		header: "Other Properties",
-		rowLabels: [
+		labels: [
 			"Multiple Sets of Numerals",
 			"Numerals Agree With Head"
 		]
 	},
 	checkboxNumberOtherPropsExport: {
-		title: "Other Number Properties:"
+		header: "Other Number Properties:"
 	},
 	"Describe the language's numeral system.": "Describe the language's numeral system.",
 	"2-4-Adverbs": "2.4. Adverbs",
@@ -521,19 +514,18 @@ const ms = {
 	"3-Constituent Order Typology": "3. Constituent Order Typology",
 	"3-1-In Main Clauses": "3.1. In Main Clauses",
 	checkboxMainClauses: {
-		inlineHeaders: ["Primary?", "Order", "Example"],
-		labels: ["APV/SV", "AVP/SV", "VAP/VS", "VPA/VS", "PAV/SV", "PVA/VS"],
-		rowLabels: [
-			"\"Steve softballs pitches; Steve pitches.\"",
-			"\"Steve pitches softballs; Steve pitches.\"",
-			"\"Pitches Steve softballs; Pitches Steve.\"",
-			"\"Pitches softballs Steve; Pitches Steve.\"",
-			"\"Softballs Steve pitches; Steve pitches.\"",
-			"\"Softballs pitches Steve; Pitches Steve.\""
+		columnHeaders: ["Primary?", "Order", "Example"],
+		labels: [
+			[ "APV/SV", "\"Steve softballs pitches; Steve pitches.\"" ],
+			[ "AVP/SV", "\"Steve pitches softballs; Steve pitches.\"" ],
+			[ "VAP/VS", "\"Pitches Steve softballs; Pitches Steve.\"" ],
+			[ "VPA/VS", "\"Pitches softballs Steve; Pitches Steve.\"" ],
+			[ "PAV/SV", "\"Softballs Steve pitches; Steve pitches.\"" ],
+			[ "PVA/VS", "\"Softballs pitches Steve; Pitches Steve.\"" ]
 		]
 	},
 	checkboxMainClausesExport: {
-		title: "Constituent Order Typology:"
+		header: "Constituent Order Typology:"
 	},
 	"Basic Typology": "Basic Typology",
 	"What is This?": "What is This?",
@@ -582,14 +574,14 @@ const ms = {
 		"What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?",
 	"3-4-Adpositional Phrases": "3.4. Adpositional Phrases",
 	checkboxAdpositionalPhrases: {
-		rowLabels: [
+		labels: [
 			"Preposition (_with_ an apple)",
 			"Postpostition (an apple _with_)",
 			"Circumposition (rare; _with_ an apple _with_)"
 		]
 	},
 	checkboxAdpositionalPhrasesExport: {
-		title: "Adpositions Used:",
+		header: "Adpositions Used:",
 		labels: [
 			"Preposition",
 			"Postposition",
@@ -701,10 +693,10 @@ const ms = {
 
 	checkboxNumberMarking: {
 		header: "Which Distinctions Are Marked in the Noun Phrase?",
-		rowLabels: ["Singular", "Dual", "Trial", "Paucal", "Plural"]
+		labels: ["Singular", "Dual", "Trial", "Paucal", "Plural"]
 	},
 	checkboxNumberMarkingExport: {
-		title: "Number Marking:"
+		header: "Number Marking:"
 	},
 	"Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?":
 		"Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?",
@@ -789,10 +781,10 @@ const ms = {
 
 	checkboxNounClasses: {
 		header: "Which Class Distinctions Exist?",
-		rowLabels: ["Gender", "Animacy", "Shape", "Function", "Other"]
+		labels: ["Gender", "Animacy", "Shape", "Function", "Other"]
 	},
 	checkboxNounClassesExport: {
-		title: "Class Distinctions:"
+		header: "Class Distinctions:"
 	},
 	"Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?":
 		"Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?",
@@ -813,10 +805,10 @@ const ms = {
 	],
 
 	checkboxDimAugSystem: {
-		rowLabels: ["Dim/Aug System Exists", "...and is Obligatory", "...and is Productive"]
+		labels: ["Dim/Aug System Exists", "...and is Obligatory", "...and is Productive"]
 	},
 	checkboxDimAugSystemExport: {
-		title: "Diminution/Augmentation System:",
+		header: "Diminution/Augmentation System:",
 		labels: ["Exists", "Is Obligatory", "Is Productive"]
 	},
 	"Describe the language's relation to diminution and augmentation.":
@@ -994,10 +986,10 @@ const ms = {
 
 	checkboxAlignmentSystem: {
 		header: "Primary Alignment System",
-		rowLabels: ["Nominative / Accusative", "Ergative / Absolutive"]
+		labels: ["Nominative / Accusative", "Ergative / Absolutive"]
 	},
 	checkboxAlignmentSystemExport: {
-		title: "Primary Alignment System:"
+		header: "Primary Alignment System:"
 	},
 	"Are there any exceptions to the primary alignment? Do they exist in a hierarchy?":
 		"Are there any exceptions to the primary alignment? Do they exist in a hierarchy?",
@@ -1224,7 +1216,7 @@ const ms = {
 	],
 
 	checkboxInverses: {
-		rowLabels: [
+		labels: [
 			"Marked inverse only",
 			"Both direct and inverse explicitly marked",
 			"Special verb agreement markers for inverse",
@@ -1232,7 +1224,7 @@ const ms = {
 		]
 	},
 	checkboxInversesExport: {
-		title: "Inverse Constructions:"
+		header: "Inverse Constructions:"
 	},
 	"Describe any peculiarities of inverse constructions.": "Describe any peculiarities of inverse constructions.",
 	"7-2-5-Middle Constructions": "7.2.5. Middle Constructions",
@@ -1396,11 +1388,11 @@ const ms = {
 
 	checkboxTAM: {
 		header: "Morphology Exists For:",
-		rowLabels: ["Tense", "Aspect", "Mode", "Other (see below)"],
-		labels: ["Tense", "Aspect", "Mode", "Other"]
+		labels: ["Tense", "Aspect", "Mode", "Other (see below)"]
 	},
 	checkboxTAMExport: {
-		title: "Morphology Exists For:"
+		header: "Morphology Exists For:",
+		labels: ["Tense", "Aspect", "Mode", "Other"]
 	},
 	"8-3-1-Tense": "8.3.1. Tense",
 	Tense: "Tense",
@@ -2212,24 +2204,24 @@ const ms = {
 
 	checkboxInflectedClauses: {
 		header: "Which Clause is Inflected?",
-		rowLabels: ["First", "Last"]
+		labels: ["First", "Last"]
 	},
 	checkboxInflectedClausesExport: {
-		title: "Inflected Clause:"
+		header: "Inflected Clause:"
 	},
 	checkboxMarkedElement: {
 		header: "Which Element is Marked?",
-		rowLabels: ["Noun", "Verb", "Conjunction"]
+		labels: ["Noun", "Verb", "Conjunction"]
 	},
 	checkboxMarkedElementExport: {
-		title: "Element Marked:"
+		header: "Element Marked:"
 	},
 	checkboxMarkerInfo: {
 		header: "What Other Information Does the Marker Encode?",
-		rowLabels: ["Tense", "Aspect", "Person", "Number", "Other"]
+		labels: ["Tense", "Aspect", "Person", "Number", "Other"]
 	},
 	checkboxMarkerInfoExport: {
-		title: "Marker Encodes:"
+		header: "Marker Encodes:"
 	},
 	"Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?":
 		"Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?",
@@ -2331,10 +2323,10 @@ const ms = {
 
 	checkboxRelative: {
 		header: "Types of Relative Clauses",
-		rowLabels: ["Prenomial", "Postnomial", "Internally Headed", "Headless"]
+		labels: ["Prenomial", "Postnomial", "Internally Headed", "Headless"]
 	},
 	checkboxRelativeExport: {
-		title: "Type of Relative Clauses:"
+		header: "Type of Relative Clauses:"
 	},
 	"Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).":
 		"Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).",
@@ -2380,14 +2372,14 @@ const ms = {
 
 	checkboxCoord: {
 		header: "Coordinating Conjunction Positions",
-		rowLabels: [
+		labels: [
 			"Between the clauses",
 			"After the first element of the second clause",
 			"After the last element"
 		]
 	},
 	checkboxCoordExport: {
-		title: "Coordinating Conjunction Positions:"
+		header: "Coordinating Conjunction Positions:"
 	},
 	"Describe how Conjunction, Disjunction and Exclusion are expressed in the language.":
 		"Describe how Conjunction, Disjunction and Exclusion are expressed in the language.",

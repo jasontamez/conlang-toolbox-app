@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
 import {
 	IonHeader,
 	IonToolbar,
@@ -16,7 +16,8 @@ import {
 	IonFooter,
 	IonGrid,
 	IonRow,
-	IonCol
+	IonCol,
+	CheckboxChangeEventDetail
 } from '@ionic/react';
 import { checkmarkCircleOutline, helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
@@ -31,6 +32,7 @@ import {
 import { MSBool, MSNum, MSText, ModalPropsMaker } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
+import { tMaker, tc } from '../../components/translators';
 import Header from '../../components/Header';
 
 interface ModalProperties {
@@ -38,9 +40,7 @@ interface ModalProperties {
 	modalPropsMaker: ModalPropsMaker
 }
 
-function stripHtml (input: string) {
-	return input.replace(/<[^>]*>/g, "");
-};
+const t = tMaker({ ns: "ms"});
 
 export const SyntaxHeader = (props: ModalProperties) => {
 	const [ tc ] = useTranslator('common');
@@ -67,13 +67,15 @@ const RadioBox = (props: {
 }) => {
 	const dispatch = useDispatch();
 	const {prop, label, checked} = props;
-	const setBool = (what: MSBool, value: boolean) => {
-		dispatch(setSyntaxBool([what, value]));
-	};
+	const onChange = useCallback(
+		(e: CustomEvent<CheckboxChangeEventDetail<any>>) =>
+			dispatch(setSyntaxBool([prop, e.detail.checked])),
+		[dispatch, prop]
+	);
 	return (
 		<IonCheckbox
 			aria-label={label}
-			onIonChange={(e) => setBool(prop, e.detail.checked)}
+			onIonChange={onChange}
 			checked={checked}
 		/>
 	);
@@ -163,8 +165,6 @@ interface InfoModalProps extends ModalProperties {
 	className?: string
 }
 export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
-	const [ t ] = useTranslator('ms');
-	const [ tc ] = useTranslator('common');
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const {
 		title,
@@ -220,54 +220,122 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	);
 };
 export interface exportProp {
-	title: string
 	output?: ( (string | [MSBool, string][])[] )[]
-	labels?: string[]
 	labelOverrideDocx?: boolean
+	i18: string
+	header?: string
+	labels?: string[]
+	textOutputBooleans: MSBool[][]
 }
 export interface displayProp {
 	boxesPerRow: number
-	rowLabels: string[]
 	class?: string
-	labels?: string[]
 	labelClass?: string
-	header?: string
-	inlineHeaders?: string[]
 	singleHeader?: string
 	export?: exportProp
+	i18: string
 }
 export interface CheckboxTransProps {
 	header?: string
-	inlineHeaders?: string[]
-	labels?: string[]
-	rowLabels: string[]
+	columnHeaders?: string[]
+	labels: string[] | [string, string][]
 }
 export interface CheckboxTransExportProps {
-	title: string
+	header: string
 	labels?: string[]
+	textFormat?: {
+		chosenHeaders: string[]
+		chosenLabelsInOrder: string[]
+	}
 }
 interface checkboxItemProps {
 	boxes: MSBool[],
 	values: (boolean | undefined)[]
 	display: displayProp
 }
+interface CheckboxRowProps {
+	row: MSBool[],
+	values: (boolean | undefined)[],
+	label: string | [string, string],
+	id: string,
+	headers: undefined | string[]
+}
+const CheckboxRow: FC<CheckboxRowProps> = (props) => {
+	const {
+		row,
+		values,
+		label,
+		id,
+		headers
+	} = props;
+	const labels = Array.isArray(label) ? label : [ label ];
+	return (
+		<IonRow key={`ROW-${id}`}>
+			{row.map((prop, i) => (
+				<IonCol className="cbox" key={`COL-${id}-${i}`}>
+					<RadioBox
+						label={headers ? `${t(headers[i])}, ${t(labels.join(", "))}` : t(labels.join(", "))}
+						prop={prop}
+						checked={values[i]}
+					/>
+				</IonCol>
+			))}
+			{labels.map((label, i) => (
+				<IonCol key={`LABEL-${id}-${i}`}><div>{t(label)}</div></IonCol>
+			))}
+		</IonRow>
+	);
+};
+interface HeaderRowProps {
+	row: string[]
+	id: string
+	hasLabel: boolean
+	labelClass: string
+}
+const HeaderRow: FC<HeaderRowProps> = (props) => {
+	const {
+		row,
+		id,
+		hasLabel,
+		labelClass
+	} = props;
+	const final = row.pop() || "";
+	const label = hasLabel ? row.pop() : undefined;
+	return (
+		<IonRow className="header">
+			{row.map(
+				(c, i) => <IonCol className="cbox" key={`B-${id}-${i}`}>{c}</IonCol>
+			)}
+			{
+				label ?
+					<IonCol
+						className={labelClass}
+						key={`L-${id}`}
+					><div>{doParse(label)}</div></IonCol>
+				:
+					<></>
+			}
+			<IonCol key={`F-${id}`}><div>{doParse(final)}</div></IonCol>
+		</IonRow>
+	);
+};
 export const CheckboxItem = (props: checkboxItemProps) => {
-	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator();
 	const {
 		display,
 		boxes = [],
 		values = []
 	} = props;
 	const {
-		rowLabels,
+		i18,
 		boxesPerRow,
-		labels = [],
-		header,
-		inlineHeaders,
 		labelClass = "label"
 	} = display;
-	const _rowLabels = rowLabels.slice();
-	const _labels = labels.slice();
+	const {
+		labels,
+		header,
+		columnHeaders
+	} = t(i18, { returnObjects: true }) as CheckboxTransProps;
 	let count = 0;
 	const rows: MSBool[][] = [];
 	let temp: MSBool[] = [];
@@ -286,128 +354,45 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 			temp2 = [];
 		}
 	});
-	const printRow = (
-		row: MSBool[],
-		values: (boolean | undefined)[],
-		label: string,
-		key: number,
-		headers: undefined | string[]
-	) => {
-		const textLabel = stripHtml(label);
-		let cc = 0;
-		return (
-			<IonRow key={"ROW-" + String(key)}>
-				{row.map((prop, i) => (
-					<IonCol className="cbox" key={"X-" + String(cc++)}>
-						<RadioBox
-							label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel}
-							prop={prop}
-							checked={values[i]}
-						/>
-					</IonCol>
-				))}
-				<IonCol key={"LX-" + String(cc++)}><div>{doParse(label)}</div></IonCol>
-			</IonRow>
-		);
-	};
-	const printRowWithLabel = (
-		row: MSBool[],
-		values: (boolean | undefined)[],
-		final: string,
-		key: number,
-		headers: undefined | string[]
-	) => {
-		const label = _labels.shift() || "";
-		const textLabel = stripHtml(label) + (final ? ", " + stripHtml(final) : "") ;
-		let cc = 0;
-		return (
-			<IonRow key={"ROW-" + String(key)}>
-				{row.map((prop, i) => (
-					<IonCol className="cbox" key={"C-" + String(cc++)}>
-						<RadioBox
-							label={headers ? `${stripHtml(headers[i])}, ${textLabel}` : textLabel}
-							prop={prop}
-							checked={values[i]}
-						/>
-					</IonCol>
-				))}
-				{label ?
-					<IonCol className={labelClass} key={"LC-" + String(cc++)}>
-						<div>{doParse(label)}</div>
-					</IonCol>
-				:
-					<></>
-				}
-				<IonCol key={"FC-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
-			</IonRow>
-		);
-	};
-	const printHeaderRow = (
-		row: string[],
-		key: number,
-		hasLabel = false
-	) => {
-		const final = row.pop() || "";
-		const label = hasLabel ? row.pop() : undefined;
-		let cc = 0;
-		return (
-			<IonRow className="header" key={"ROW-" + String(key)}>
-				{row.map(
-					(c) => <IonCol className="cbox" key={"B-" + String(cc++)}>{c}</IonCol>
-				)}
-				{
-					label ?
-						<IonCol
-							className={labelClass}
-							key={"L-" + String(cc++)}
-						><div>{doParse(label)}</div></IonCol>
-					:
-						<></>
-				}
-				<IonCol key={"F-" + String(cc++)}><div>{doParse(final)}</div></IonCol>
-			</IonRow>
-		);
-	};
 	count = 1;
+	const key = boxes.join(",");
 	return (
 		<IonItem className="content">
 			<IonGrid className={display.class}>
 				{ header ?
-					<IonRow key="headerRow-0" className="header">
+					<IonRow key={`HEADER-ROW-${key}-0`} className="header">
 						<IonCol><div>{doParse(header)}</div></IonCol>
 					</IonRow>
 				:
 					<></>
 				}
-				{ inlineHeaders ?
-					printHeaderRow(inlineHeaders.slice(), count++, !!labels)
+				{ columnHeaders ?
+					<HeaderRow
+						key={`HEADER-ROW-${key}`}
+						row={columnHeaders.slice()}
+						id={key}
+						hasLabel={!!labels}
+						labelClass={labelClass}
+					/>
 				:
 					<></>
 				}
 				{ rows.map((row, i) => (
-					labels ?
-						printRowWithLabel(
-							row.slice(),
-							rowValues[i].slice(),
-							_rowLabels.shift() || error,
-							count++,
-							inlineHeaders && inlineHeaders.slice()
-						)
-					:
-						printRow(
-							row.slice(),
-							rowValues[i].slice(),
-							_rowLabels.shift() || error,
-							count++,
-							inlineHeaders && inlineHeaders.slice()
-						)
+					<CheckboxRow
+						row={row.slice()}
+						key={key}
+						values={rowValues[i].slice()}
+						label={labels[i] || error }
+						id={key}
+						headers={columnHeaders && columnHeaders.slice()}
+					/>
 				))}
 			</IonGrid>
 		</IonItem>
 	);
 };
 
-const TDMarkdown: React.FC<{children: string, length?: number}> = (props) => {
+const TDMarkdown: FC<{children: string, length?: number}> = (props) => {
 	const { children, length } = props;
 	return (
 		<Markdown
@@ -419,7 +404,7 @@ const TDMarkdown: React.FC<{children: string, length?: number}> = (props) => {
 	);
 };
 
-export const MSMarkdown: React.FC<{children: string}> = (props) => {
+export const MSMarkdown: FC<{children: string}> = (props) => {
 	return (
 		<Markdown
 			remarkPlugins={[remarkGfm]}

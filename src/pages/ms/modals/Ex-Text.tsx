@@ -1,11 +1,14 @@
 import { MouseEvent } from 'react';
 import { $and } from '../../../components/DollarSignExports';
 import log from '../../../components/Logging';
+import { tMaker, tc } from '../../../components/translators';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
-import i18n from "../../../i18n";
 
-import { specificPageInfo } from '../MorphoSyntaxElements';
+import i18n from "../../../i18n";
+import { CheckboxTransExportProps, CheckboxTransProps, specificPageInfo } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
+
+const t = tMaker({ns: "ms"});
 
 const doText = (
 	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
@@ -56,8 +59,8 @@ const doText = (
 					break;
 				case "Range":
 					// Range is always saved, as it always has some sort of info
-					const start = i18n.t(START, { ns: "ms" });
-					const end = i18n.t(END, { ns: "ms" });
+					const start = t(START);
+					const end = t(END);
 					const min = 0;
 					const value = msInfo[prop as MSNum] || min;
 					if(spectrum) {
@@ -94,30 +97,41 @@ const doText = (
 					if(showUnused || textInfo) {
 						if(usingMarkDown) {
 							let txt = "";
-							const tArr: string[] = (textInfo || i18n.t("[NO TEXT ENTERED]", { ns: "ms" })).split(/\n\n+/);
-							tArr.forEach((t: string, i: number) => {
+							const tArr: string[] = (textInfo || t("[NO TEXT ENTERED]")).split(/\n\n+/);
+							tArr.forEach((tbit: string, i: number) => {
 								if(i > 0) {
 									txt += "\n\n"; // inserts paragraph break
 								}
-								t.split(/\n/).forEach((x: string, j: number) => {
+								tbit.split(/\n/).forEach((x: string, j: number) => {
 									if(j > 0) {
 										txt += "  \n"; // inserts line break
 									}
 									txt += x.trim();
 								});
 							});
-							lines.push(i18n.t(content || "[MISSING TEXT PROMPT]", { ns: "ms" }), txt);
+							lines.push(t(content || "[MISSING TEXT PROMPT]"), txt);
 						} else {
 							lines.push(
-								i18n.t(content || "[MISSING TEXT PROMPT]", { ns: "ms" }),
-								textInfo || i18n.t("[NO TEXT ENTERED]", { ns: "ms" })
+								t(content || "[MISSING TEXT PROMPT]"),
+								textInfo || t("[NO TEXT ENTERED]")
 							);
 						}
 					}
 					break;
 				case "Checkboxes":
-					const { labels: displayLabels, rowLabels, export: expo} = display!;
-					const { output, title, labels: expoLabels } = expo!;
+					const { i18, export: expo} = display!;
+					const { textOutputBooleans, i18: expoI18 } = expo!;
+					//const { labels, export: expo} = display!;
+					//const { output, header, labels: expoLabels } = expo!;
+					const {
+						header,
+						labels: expoLabels
+					} = i18n.t(i18, { ns: "ms", returnObjects: true }) as CheckboxTransProps;
+					const {
+						labels,
+						header: expoHeader,
+						textFormat
+					} = i18n.t(expoI18, { ns: "ms", returnObjects: true }) as CheckboxTransExportProps;
 					const boxMap: {[key in MSBool]?: boolean} = {};
 					const boxesCopy: [MSBool, boolean][] = [];
 					let found = false;
@@ -129,70 +143,74 @@ const doText = (
 					});
 					if(!showUnused && !found) {
 						// Nothing to show, so skip.
-					} else if(output) {
+					} else if(textOutputBooleans) {
 						// Use explicit output format
-						const map = output.map((bit) => bit.map((b) => {
-							if(typeof b === "string") {
-								return b;
-							}
+						const {
+							chosenHeaders = [],
+							chosenLabelsInOrder = []
+						} = (textFormat || {});
+						const map = chosenHeaders.map((rowHeader, i) => {
 							const found: string[] = [];
-							b.forEach(([prop, label]) => {
+							textOutputBooleans[i].forEach((prop, j) => {
 								if(boxMap[prop]) {
-									found.push(i18n.t(label, { ns: "ms" }));
+									found.push(chosenLabelsInOrder[j]);
 								}
 							});
+							let foundText: string;
 							if (found.length === 0) {
-								const none = i18n.t("[NONE SELECTED]", { ns: "ms" });
-								return usingMarkDown ? `_${none}_` : none;
+								const none = t("[NONE SELECTED]");
+								foundText = usingMarkDown ? `_${none}_` : none;
 							} else if (found.length === 1) {
-								return usingMarkDown ? `_${found[0]}_` : found[0];
+								foundText = usingMarkDown ? `_${found[0]}_` : found[0];
 							} else if (found.length === 2) {
-								return (
+								foundText = (
 									usingMarkDown ?
-										i18n.t("joinTwo", { one: `_${found[0]}_`, two: `_${found[1]}_`})
+										tc("joinTwo", { one: `_${found[0]}_`, two: `_${found[1]}_`})
 									:
-										i18n.t("joinTwo", { one: found[0], two: found[1] })
+										tc("joinTwo", { one: found[0], two: found[1] })
 								);
 							} else if(usingMarkDown) {
-								const inner = $and(found, `_${i18n.t("andGlue")}_`, `_${i18n.t("andFinal")}_`);
-								return `_${inner}_`;
+								const inner = $and(found, `_${tc("andGlue")}_`, `_${tc("andFinal")}_`);
+								foundText = `_${inner}_`;
+							} else {
+								foundText = $and(found);
 							}
-							return $and(found);
-						}).join(""));
+							return `${rowHeader} ${foundText}`;
+						});
 						lines.push(map.join("\n"));
 					} else {
 						// Use general output format
-						const labels = (expoLabels || displayLabels || rowLabels || []).slice();
+						const outLabels = (expoLabels || labels || []).slice();
 						let result = "";
 						const found: string[] = [];
 						while(boxesCopy.length > 0) {
 							const [box, value] = boxesCopy.shift()!;
-							const label = i18n.t(labels.shift() || "[LABEL NOT FOUND]", { ns: "ms", box });
+							const label = outLabels.shift();
 							if(value) {
-								found.push(label);
+								found.push(label ? (Array.isArray(label) ? label.join(" ") : label) : t("[LABEL NOT FOUND]", { box }));
 							}
 						}
 						if (found.length === 0) {
-							const none = i18n.t("[NONE SELECTED]", { ns: "ms" });
+							const none = t("[NONE SELECTED]");
 							result = usingMarkDown ? `_${none}_` : none;
 						} else if (found.length === 1) {
 							result = usingMarkDown ? "_" + found[0] + "_" : found[0];
 						} else if (found.length === 2) {
 							if(usingMarkDown) {
-								const inner = $and(found, `_${i18n.t("andGlue")}_`, `_${i18n.t("andFinal")}_`);
+								const inner = $and(found, `_${tc("andGlue")}_`, `_${tc("andFinal")}_`);
 								result = `_${inner}_`;
 							} else {
 								result = $and(found);
 							}
 						}
-						lines.push(`${title} ${result}`);
+						lines.push(`${expoHeader || header} ${result}`);
 					}
 			}
 		});
 	});
 	log(null, lines);
 	const ital = usingMarkDown ? "_" : "";
-	const output = `${usingMarkDown ? "# " : ""}${title}\n\n${ital}${description || i18n.t("[NO DESCRIPTION PROVIDED]", { ns: "ms" })}${ital}\n\n${lines.join("\n\n")}\n`;
+	const output = `${usingMarkDown ? "# " : ""}${title}\n\n${ital}${description || t("[NO DESCRIPTION PROVIDED]")}${ital}\n\n${lines.join("\n\n")}\n`;
 	doDownload(e, output, usingMarkDown ? "md" : "txt");
 };
 

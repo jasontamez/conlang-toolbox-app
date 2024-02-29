@@ -19,11 +19,11 @@ import doExport from '../../../components/ExportServices';
 import { DJDisplayMethods, DJExportData, DJRawInfo } from "../../../components/DJOutputFormat";
 import log from "../../../components/Logging";
 import toaster from "../../../components/toaster";
+import { tMaker, tc } from "../../../components/translators";
 
 // FOR BROWSER TESTING ONLY
 import { saveAs } from 'file-saver';
 import { isPlatform } from "@ionic/react";
-import i18n from "../../../i18n";
 // FOR BROWSER TESTING ONLY
 
 type Child = (Paragraph | Table);
@@ -63,12 +63,14 @@ const borders: ITableBordersOptions = {
 	},
 }
 
+const t = tMaker({ns: "dj"});
+
 const topChart = (
 	data: DJRawInfo[],
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
+	const noMatchesFound = t("No words matched this group.");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -154,7 +156,7 @@ const sideChart = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
+	const noMatchesFound = t("No words matched this group.");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -236,7 +238,7 @@ const text = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = i18n.t("No words matched this group.", { ns: 'dj' });
+	const noMatchesFound = t("No words matched this group.");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -332,7 +334,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: i18n.t("Declensions", { ns: "dj" }),
+					text: t("Declensions"),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -345,7 +347,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: i18n.t("Conjugations", { ns: "dj" }),
+					text: t("Conjugations"),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -358,7 +360,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: i18n.t("Other", { ns: "dj" }),
+					text: t("Other"),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -371,7 +373,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: i18n.t("Unmatched Words", { ns: "dj" }),
+					text: t("Unmatched Words"),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),
@@ -383,15 +385,15 @@ const exportDocx = (
 		});
 	}
 	const doc = new Document({
-		creator: i18n.t("Conlang Toolbox", { ns: "dj" }),
-		description: i18n.t("declenjugatorDocumentDescription", { ns: "dj" }),
-		title: i18n.t("declenjugatorDocumentTitle", { ns: "dj" }),
+		creator: t("Conlang Toolbox"),
+		description: t("declenjugatorDocumentDescription"),
+		title: t("declenjugatorDocumentTitle"),
 		sections: sections
 	});
-	const filename = i18n.t(
+	const filename = tc(
 		"fileFormat",
 		{
-			title: i18n.t("Declenjugator"),
+			title: tc("Declenjugator", { context: "filename" }),
 			date: (new Date()).toDateString(),
 			extension: "docx"
 		}
@@ -424,20 +426,20 @@ const exportDocx = (
 			.catch((e = "Error doexport docx") => {
 				log(dispatch, ["DJExport / Packer / doExport", e]);//
 				toaster({
-					message: i18n.t("generalError", { filename, error: `${e}` }),
+					message: tc("generalError", { filename, error: `${e}` }),
 					color: "success",
 					toast
 				});
 			});
 		toaster({
-			message: i18n.t("fileSaved", { filename }),
+			message: tc("fileSaved", { filename }),
 			color: "success",
 			toast
 		});
 	}).catch((e = "Error 64") => {
 		log(dispatch, ["DJExport / Packer", e]);
 		toaster({
-			message: i18n.t("generalError", { filename, error: `64 ${e}` }),
+			message: tc("generalError", { filename, error: `64 ${e}` }),
 			color: "success",
 			toast
 		});
