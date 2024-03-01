@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useCallback, useState } from 'react';
+import React, { FC, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import {
 	IonHeader,
 	IonToolbar,
@@ -17,23 +17,26 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	CheckboxChangeEventDetail
+	CheckboxChangeEventDetail,
+	TextareaChangeEventDetail,
+	TextareaCustomEvent
 } from '@ionic/react';
 import { checkmarkCircleOutline, helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
-import { useDispatch } from "react-redux";
-import doParse from 'html-react-parser';
-import Markdown from 'react-markdown';
+import { useDispatch, useSelector } from "react-redux";
+//import doParse from 'html-react-parser';
+import Markdown, { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 
 import {
 	setSyntaxBool,
 	setSyntaxText
 } from '../../store/msSlice';
-import { MSBool, MSNum, MSText, ModalPropsMaker } from '../../store/types';
+import { MSBool, MSNum, MSState, MSText, ModalPropsMaker, StateObject } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
 import { tMaker, tc } from '../../components/translators';
 import Header from '../../components/Header';
+import NumericRange from '../../components/NumericRange';
 
 interface ModalProperties {
 	title?: string
@@ -99,9 +102,9 @@ export const TextItem = (props: PropsWithChildren<{
 	} = props;
 	const dispatch = useDispatch();
 	const classes = className ? className + " " : "";
-	const setText = (what: MSText, value: string) => {
-		dispatch(setSyntaxText([what, value]));
-	};
+	const onChange = useCallback((e: TextareaCustomEvent<TextareaChangeEventDetail>) => {
+		dispatch(setSyntaxText([prop, e.target.value || ""]));
+	}, [dispatch, prop]);
 	const expandedRows = Math.min(Math.max(rows, value.split(/\n/).length), 12);
 	return (
 		<>
@@ -111,7 +114,7 @@ export const TextItem = (props: PropsWithChildren<{
 			<IonItem className={`${classes}morphoSyntaxTextItem content`}>
 				<IonTextarea
 					aria-label={label}
-					onIonChange={(e) => setText(prop, e.target.value || "")}
+					onIonChange={onChange}
 					value={value}
 					placeholder={placeholder}
 					rows={expandedRows}
@@ -122,11 +125,12 @@ export const TextItem = (props: PropsWithChildren<{
 		</>
 	);
 };
-export const HeaderItem = (props: PropsWithChildren<{ level?: number }>) => (
+export const HeaderItem = (props: PropsWithChildren<{ level?: NumericRange<1, 5> }>) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>
 );
+/*
 interface TransProps {
 	rows?: string
 	className?: string
@@ -160,6 +164,7 @@ export const TransTable = (props: PropsWithChildren<TransProps>) => {
 	});
 	return <div className="scrollable"><table className={cName}><tbody>{mainRows}</tbody></table></div>;
 };
+*/
 interface InfoModalProps extends ModalProperties {
 	label?: string
 	className?: string
@@ -174,9 +179,11 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 		modalPropsMaker
 	} = props;
 	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
+	const setOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
+	const setClosed = useCallback(() => setIsOpen(false), [setIsOpen]);
 	return (
 		<IonItem className={className ? className + " infoModal" : "infoModal"}>
-			<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+			<IonModal isOpen={isOpen} onDidDismiss={setClosed}>
 				<IonHeader>
 					<IonToolbar color="primary">
 						<IonTitle>{title || t("MISSING TITLE")}</IonTitle>
@@ -193,7 +200,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 					<IonToolbar className="ion-text-wrap">
 						<IonButtons slot="end">
 							<IonButton
-								onClick={() => setIsOpen(false)}
+								onClick={setOpen}
 								slot="end"
 								fill="solid"
 								color="success"
@@ -214,25 +221,24 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 					className="msModalHelpIcon"
 					slot="start"
 				/>
-				{label || t("Read About It")}
+				{label || t("genericInfoButtonText")}
 			</IonButton>
 		</IonItem>
 	);
 };
-export interface exportProp {
-	output?: ( (string | [MSBool, string][])[] )[]
+export interface CheckboxExportProp {
 	labelOverrideDocx?: boolean
 	i18: string
 	header?: string
 	labels?: string[]
-	textOutputBooleans: MSBool[][]
+	textOutputBooleans?: MSBool[][]
 }
-export interface displayProp {
+export interface CheckboxDisplayProp {
 	boxesPerRow: number
 	class?: string
 	labelClass?: string
 	singleHeader?: string
-	export?: exportProp
+	export?: CheckboxExportProp
 	i18: string
 }
 export interface CheckboxTransProps {
@@ -248,42 +254,63 @@ export interface CheckboxTransExportProps {
 		chosenLabelsInOrder: string[]
 	}
 }
-interface checkboxItemProps {
+interface CheckboxProps {
 	boxes: MSBool[],
-	values: (boolean | undefined)[]
-	display: displayProp
+	display: CheckboxDisplayProp
 }
 interface CheckboxRowProps {
 	row: MSBool[],
-	values: (boolean | undefined)[],
+	state: MSState,
 	label: string | [string, string],
 	id: string,
 	headers: undefined | string[]
+	labelClass: string
 }
 const CheckboxRow: FC<CheckboxRowProps> = (props) => {
 	const {
 		row,
-		values,
+		state,
 		label,
 		id,
-		headers
+		headers,
+		labelClass
 	} = props;
-	const labels = Array.isArray(label) ? label : [ label ];
+	const labels = useMemo(() => Array.isArray(label) ? label : [ label ], [label]);
+	const mappedLabels = useMemo(() => {
+		const max = labels.length - 1;
+		return labels.map((label: string, i: number) => (
+			<IonCol className={i === max ? undefined : labelClass} key={`LABEL-${id}-${i}`}><div>{label}</div></IonCol>
+		));
+	}, [id, labels, labelClass]);
+	const mappedRow = useMemo(() => {
+		const joinedLabels = labels.join(", ");
+		return row.map((prop: MSBool, i: number) => (
+			<IonCol className="cbox" key={`COL-${id}-${i}`}>
+				<RadioBox
+					label={headers ? `${headers[i]}, ${joinedLabels}` : joinedLabels}
+					prop={prop}
+					checked={state[prop]}
+				/>
+			</IonCol>
+		))
+	}, [headers, id, labels, state, row]);
 	return (
 		<IonRow key={`ROW-${id}`}>
-			{row.map((prop, i) => (
-				<IonCol className="cbox" key={`COL-${id}-${i}`}>
-					<RadioBox
-						label={headers ? `${t(headers[i])}, ${t(labels.join(", "))}` : t(labels.join(", "))}
-						prop={prop}
-						checked={values[i]}
-					/>
-				</IonCol>
-			))}
-			{labels.map((label, i) => (
-				<IonCol key={`LABEL-${id}-${i}`}><div>{t(label)}</div></IonCol>
-			))}
+			{mappedRow}
+			{mappedLabels}
 		</IonRow>
+	);
+};
+const doParse = (input: string) => {
+	// This needs to parse Markdown, maybe?
+	// Turn it into a <div>?
+	return (
+		<Markdown
+			remarkPlugins={[remarkGfm]}
+			components={{
+				p: "div"
+			}}
+		>{input}</Markdown>
 	);
 };
 interface HeaderRowProps {
@@ -301,30 +328,34 @@ const HeaderRow: FC<HeaderRowProps> = (props) => {
 	} = props;
 	const final = row.pop() || "";
 	const label = hasLabel ? row.pop() : undefined;
+	const mappedCols = useMemo(() => {
+		return row.map(
+			(c: string, i: number) =>
+				<IonCol className="cbox" key={`B-${id}-${i}`}>{c}</IonCol>
+		);
+	}, [id, row]);
 	return (
 		<IonRow className="header">
-			{row.map(
-				(c, i) => <IonCol className="cbox" key={`B-${id}-${i}`}>{c}</IonCol>
-			)}
+			{mappedCols}
 			{
 				label ?
 					<IonCol
 						className={labelClass}
 						key={`L-${id}`}
-					><div>{doParse(label)}</div></IonCol>
+					>{doParse(label)}</IonCol>
 				:
 					<></>
 			}
-			<IonCol key={`F-${id}`}><div>{doParse(final)}</div></IonCol>
+			<IonCol key={`F-${id}`}>{doParse(final)}</IonCol>
 		</IonRow>
 	);
 };
-export const CheckboxItem = (props: checkboxItemProps) => {
-	const [ t ] = useTranslator();
+export const CheckboxItem = (props: CheckboxProps) => {
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const {
 		display,
-		boxes = [],
-		values = []
+		boxes = []
 	} = props;
 	const {
 		i18,
@@ -336,32 +367,43 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 		header,
 		columnHeaders
 	} = t(i18, { returnObjects: true }) as CheckboxTransProps;
-	let count = 0;
-	const rows: MSBool[][] = [];
-	let temp: MSBool[] = [];
-	let temp2: (boolean | undefined)[] = [];
-	const rowValues: (boolean | undefined)[][] = [];
+	const stateInfo = useSelector((state: StateObject) => state.ms);
 	const error = tc("error");
-	boxes.forEach((box, i) => {
-		count++;
-		temp.push(box || error);
-		temp2.push(values[i]);
-		if(count >= boxesPerRow) {
-			count = 0;
-			rows.push(temp);
-			rowValues.push(temp2);
-			temp = [];
-			temp2 = [];
-		}
-	});
-	count = 1;
+	const rows: MSBool[][] = useMemo(() => {
+		const final: MSBool[][] = [];
+		let temp: MSBool[] = [];
+		let count = 0;
+		boxes.forEach((box, i) => {
+			count++;
+			temp.push(box || error);
+			if(count >= boxesPerRow) {
+				count = 0;
+				final.push(temp);
+				temp = [];
+			}
+		});
+		return final;
+	}, [boxes, boxesPerRow, error]);
 	const key = boxes.join(",");
+	const mappedRows = useMemo(() => {
+		return rows.map((row: MSBool[], i: number) => (
+			<CheckboxRow
+				row={row.slice()}
+				key={`${key}-${i}`}
+				state={stateInfo}
+				label={labels[i] || error }
+				id={key}
+				headers={columnHeaders && columnHeaders.slice()}
+				labelClass={labelClass}
+			/>
+		));
+	}, [rows, error, key, columnHeaders, labels, stateInfo, labelClass]);
 	return (
 		<IonItem className="content">
 			<IonGrid className={display.class}>
 				{ header ?
-					<IonRow key={`HEADER-ROW-${key}-0`} className="header">
-						<IonCol><div>{doParse(header)}</div></IonCol>
+					<IonRow key={`HEADER-ROW-SOLO-${key}`} className="header">
+						<IonCol>{doParse(header)}</IonCol>
 					</IonRow>
 				:
 					<></>
@@ -377,16 +419,7 @@ export const CheckboxItem = (props: checkboxItemProps) => {
 				:
 					<></>
 				}
-				{ rows.map((row, i) => (
-					<CheckboxRow
-						row={row.slice()}
-						key={key}
-						values={rowValues[i].slice()}
-						label={labels[i] || error }
-						id={key}
-						headers={columnHeaders && columnHeaders.slice()}
-					/>
-				))}
+				{mappedRows}
 			</IonGrid>
 		</IonItem>
 	);
@@ -404,72 +437,73 @@ const TDMarkdown: FC<{children: string, length?: number}> = (props) => {
 	);
 };
 
+const msMarkdownComponents: Partial<Components> = {
+	code: (codeprops) => {
+		const lengths: number[] = [];
+		const { children } = codeprops;
+		if(typeof(children) === "string") {
+			if(children.indexOf("[translationTable]") !== 0) {
+				// return the plain string
+				return children as string;
+			}
+			// Look for a plain text section
+			const [info, text] =
+				children.slice(18).trim()
+//								.replace(/\[-\]/g, String.fromCodePoint(0x00ad)) // turn [-] into &shy;
+					.split(" ||| ");
+			// Split into rows
+			const rows = info.split(" || ").map((row: string, i: number) => {
+				const cells = row.split(" | ").map((cell, j) => {
+					return <TDMarkdown key={`TD-${i}-${j}-${cell}`}>{cell}</TDMarkdown>;
+				});
+				lengths.push(cells.length);
+				return <tr key={`ROW-${i}-${row}`}>{cells}</tr>;
+			});
+			if(text) {
+				rows.push(<tr key={`ROW-FINAL-${text}`}><TDMarkdown length={Math.max(...lengths)}>{text}</TDMarkdown></tr>);
+			}
+			return <div className="scrollable"><table className="translation"><tbody>{rows}</tbody></table></div>;
+		}
+		return `${children}`;
+	},
+	table: (tableprops) => {
+		const { node, ...rest } = tableprops;
+		return <table {...rest} className="informational" />;
+	},
+	li: (liprops) => {
+		const { node, children, ...rest } = liprops;
+		if(typeof children === "string") {
+			if(children.indexOf("[newSection]") === 0) {
+				return <li {...rest} className="newSection">{children.slice(12)}</li>;
+			}
+		} else if (Array.isArray(children)) {
+			const [tester, ...kids] = children;
+			if(typeof tester === "string" && tester.indexOf("[newSection]") === 0) {
+				if(tester.length > 12) {
+					kids.unshift(tester.slice(12));
+				}
+				return <li {...rest} className="newSection">{kids}</li>;
+			}
+		} else {
+			console.log("NON-STRING, NON-ARRAY CHILDREN");
+			console.log(children);
+			console.log({...liprops});
+		}
+		return <li {...rest}>{children}</li>;
+	}
+};
 export const MSMarkdown: FC<{children: string}> = (props) => {
 	return (
 		<Markdown
 			remarkPlugins={[remarkGfm]}
-			components={{
-				code: (codeprops) => {
-					const { children } = codeprops;
-					if(typeof(children) === "string") {
-						if(children.indexOf("[translationTable]") !== 0) {
-							// return the plain string
-							return children as string;
-						}
-						// Look for a plain text section
-						const [info, text] =
-							children.slice(18).trim()
-//								.replace(/\[-\]/g, String.fromCodePoint(0x00ad)) // turn [-] into &shy;
-								.split(" ||| ");
-						// Split into rows
-						let length = 1;
-						const rows = info.split(" || ").map((row, i) => {
-							const cells = row.split(" | ").map((cell, j) => {
-								return <TDMarkdown key={`TD-${i}-${j}-${cell}`}>{cell}</TDMarkdown>;
-							});
-							length = Math.max(length, cells.length);
-							return <tr key={`ROW-${i}-${row}`}>{cells}</tr>;
-						});
-						if(text) {
-							rows.push(<tr key={`ROW-FINAL-${text}`}><TDMarkdown length={length}>{text}</TDMarkdown></tr>);
-						}
-						return <div className="scrollable"><table className="translation"><tbody>{rows}</tbody></table></div>;
-					}
-					return `${children}`;
-				},
-				table: (tableprops) => {
-					const { node, ...rest } = tableprops;
-					return <table {...rest} className="informational" />;
-				},
-				li: (liprops) => {
-					const { node, children, ...rest } = liprops;
-					if(typeof children === "string") {
-						if(children.indexOf("[newSection]") === 0) {
-							return <li {...rest} className="newSection">{children.slice(12)}</li>;
-						}
-					} else if (Array.isArray(children)) {
-						const [tester, ...kids] = children;
-						if(typeof tester === "string" && tester.indexOf("[newSection]") === 0) {
-							if(tester.length > 12) {
-								kids.unshift(tester.slice(12));
-							}
-							return <li {...rest} className="newSection">{kids}</li>;
-						}
-					} else {
-						console.log("NON-STRING, NON-ARRAY CHILDREN");
-						console.log(children);
-						console.log({...liprops});
-					}
-					return <li {...rest}>{children}</li>;
-				}
-			}}
+			components={msMarkdownComponents}
 		>{props.children}</Markdown>
 	);
 };
 
-export interface specificPageInfo {
+export interface SpecificMSPageData {
 	tag: string
-	level?: number
+	level?: NumericRange<1, 5>
 	heads?: (MSBool | MSText | true)[]
 	content?: string
 	title?: string
@@ -481,5 +515,36 @@ export interface specificPageInfo {
 	spectrum?: boolean
 	max?: number
 	boxes?: MSBool[]
-	display?: displayProp
+	display?: CheckboxDisplayProp
 }
+
+export type BasicHeader = Required<Pick<SpecificMSPageData, "level" | "heads" | "content">>;
+export interface MSHeader extends BasicHeader {
+	tag: "Header"
+}
+
+export type BasicRange = Required<Pick<SpecificMSPageData, "prop" | "start" | "end">> & Pick<SpecificMSPageData, "max" | "spectrum">;
+export interface MSRange extends BasicRange {
+	tag: "Range"
+	prop: MSNum
+}
+
+export type BasicModal = Required<Pick<SpecificMSPageData, "title" | "content">> & Pick<SpecificMSPageData, "label">;
+export interface MSModal extends BasicModal {
+	tag: "Modal"
+}
+
+export type BasicCheckbox = Required<Pick<SpecificMSPageData,  "boxes" | "display">>;
+export interface MSCheckboxes extends BasicCheckbox {
+	tag: "Checkboxes"
+}
+
+export type BasicText = Required<Pick<SpecificMSPageData, "content" | "prop">> & Pick<SpecificMSPageData, "rows">;
+export interface MSTextbox extends BasicText {
+	tag: "Text"
+	prop: MSText
+}
+
+export const MSSections = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
+
+export type AnyMSItem = (MSHeader | MSRange | MSModal | MSTextbox | MSCheckboxes);

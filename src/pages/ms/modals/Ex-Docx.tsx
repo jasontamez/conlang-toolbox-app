@@ -21,7 +21,7 @@ import doExport from '../../../components/ExportServices';
 import log_original from '../../../components/Logging';
 import { tMaker, tc } from "../../../components/translators";
 
-import { CheckboxTransExportProps, CheckboxTransProps, specificPageInfo } from '../MorphoSyntaxElements';
+import { CheckboxTransExportProps, CheckboxTransProps, SpecificMSPageData } from '../MorphoSyntaxElements';
 import i18n from "../../../i18n";
 import msRawInfo from '../ms.json';
 
@@ -74,9 +74,9 @@ const doDocx = (
 	});
 	const checksum: string[] = [title, description];
 	msSections.forEach((sec: string) => {
-		const msSection = (msRawInfo[sec as keyof typeof msRawInfo] as specificPageInfo[]);
+		const msSection = (msRawInfo[sec as keyof typeof msRawInfo] as SpecificMSPageData[]);
 		const children: Child[] = [];
-		msSection.forEach((item: specificPageInfo) => {
+		msSection.forEach((item: SpecificMSPageData) => {
 			const {
 				tag,
 				heads = [],

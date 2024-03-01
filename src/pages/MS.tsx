@@ -14,17 +14,8 @@ import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons
 import { PageData, StateObject } from '../store/types';
 
 import MSinfo from './ms/MSinfo';
+import MSPage from './ms/msPage';
 import MSSettings from "./ms/msSettings";
-import MS01 from "./ms/ms01";
-import MS02 from "./ms/ms02";
-import MS03 from "./ms/ms03";
-import MS04 from "./ms/ms04";
-import MS05 from "./ms/ms05";
-import MS06 from "./ms/ms06";
-import MS07 from "./ms/ms07";
-import MS08 from "./ms/ms08";
-import MS09 from "./ms/ms09";
-import MS10 from "./ms/ms10";
 import './ms/MS.css';
 
 const range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -89,16 +80,16 @@ const MS = (props: PageData) => {
 				*/}
 				<Route path="/ms/overview" render={() => <MSinfo {...props} />} exact={true} />
 				<Route path="/ms/msSettings" render={() => <MSSettings {...props} />} exact={true} />
-				<Route path="/ms/ms01" render={() => <MS01 {...props} />} exact={true} />
-				<Route path="/ms/ms02" render={() => <MS02 {...props} />} exact={true} />
-				<Route path="/ms/ms03" render={() => <MS03 {...props} />} exact={true} />
-				<Route path="/ms/ms04" render={() => <MS04 {...props} />} exact={true} />
-				<Route path="/ms/ms05" render={() => <MS05 {...props} />} exact={true} />
-				<Route path="/ms/ms06" render={() => <MS06 {...props} />} exact={true} />
-				<Route path="/ms/ms07" render={() => <MS07 {...props} />} exact={true} />
-				<Route path="/ms/ms08" render={() => <MS08 {...props} />} exact={true} />
-				<Route path="/ms/ms09" render={() => <MS09 {...props} />} exact={true} />
-				<Route path="/ms/ms10" render={() => <MS10 {...props} />} exact={true} />
+				<Route path="/ms/ms01" render={() => <MSPage {...props} page="01" />} exact={true} />
+				<Route path="/ms/ms02" render={() => <MSPage {...props} page="02" />} exact={true} />
+				<Route path="/ms/ms03" render={() => <MSPage {...props} page="03" />} exact={true} />
+				<Route path="/ms/ms04" render={() => <MSPage {...props} page="04" />} exact={true} />
+				<Route path="/ms/ms05" render={() => <MSPage {...props} page="05" />} exact={true} />
+				<Route path="/ms/ms06" render={() => <MSPage {...props} page="06" />} exact={true} />
+				<Route path="/ms/ms07" render={() => <MSPage {...props} page="07" />} exact={true} />
+				<Route path="/ms/ms08" render={() => <MSPage {...props} page="08" />} exact={true} />
+				<Route path="/ms/ms09" render={() => <MSPage {...props} page="09" />} exact={true} />
+				<Route path="/ms/ms10" render={() => <MSPage {...props} page="10" />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar className="iconsOnly" slot="bottom">
 				<IonTabButton

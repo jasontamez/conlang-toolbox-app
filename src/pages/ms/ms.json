@@ -1,17 +1,17 @@
 {
 	"sections": [
-		"s1",
-		"s2",
-		"s3",
-		"s4",
-		"s5",
-		"s6",
-		"s7",
-		"s8",
-		"s9",
-		"s10"
+		"01",
+		"02",
+		"03",
+		"04",
+		"05",
+		"06",
+		"07",
+		"08",
+		"09",
+		"10"
 	],
-	"s1": [
+	"01": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -185,7 +185,7 @@
 			"content": "Describe when the head/dependent marking system changes, if needed."
 		}
 	],
-	"s2": [
+	"02": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -520,7 +520,7 @@
 		{
 			"tag": "Text",
 			"prop": "TEXT_propClass",
-			"content": "How does the language handle PCs? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences."
+			"content": "How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences."
 		},
 		{
 			"tag": "Header",
@@ -629,7 +629,7 @@
 			"content": "How are adverbs (or adverb-like phrases) handled?"
 		}
 	],
-	"s3": [
+	"03": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -807,7 +807,7 @@
 			"content": "When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered."
 		}
 	],
-	"s4": [
+	"04": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1070,7 +1070,7 @@
 			"content": "Describe the language's relation to diminution and augmentation."
 		}
 	],
-	"s5": [
+	"05": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1160,7 +1160,7 @@
 			"content": "Does the language use a verb or copula strategy?"
 		}
 	],
-	"s6": [
+	"06": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1199,7 +1199,7 @@
 			"content": "Are there any exceptions to the primary alignment? Do they exist in a hierarchy?"
 		}
 	],
-	"s7": [
+	"07": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1499,7 +1499,7 @@
 			"content": "Is object demotion/omission allowed? How about incorporation?"
 		}
 	],
-	"s8": [
+	"08": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1705,7 +1705,7 @@
 			"content": "Does the language have any other notable verb phrase operations?"
 		}
 	],
-	"s9": [
+	"09": [
 		{
 			"tag": "Header",
 			"level": 1,
@@ -1801,7 +1801,7 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Yes/NoQuestions",
+			"title": "Yes/No Questions",
 			"label": "Yes? No?",
 			"content": "info9311"
 		},
@@ -1848,11 +1848,11 @@
 			"content": "How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?"
 		}
 	],
-	"s10": [
+	"10": [
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10. Clause Combinations",
+			"content": "10-Clause Combinations",
 			"heads": [
 				"TEXT_serialVerbs",
 				"TEXT_complClauses",
@@ -1888,7 +1888,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.1-Serial Verbs",
+			"content": "10-1-Serial Verbs",
 			"heads": ["TEXT_serialVerbs"]
 		},
 		{
@@ -1906,7 +1906,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.2-Complement Clauses",
+			"content": "10-2-Complement Clauses",
 			"heads": ["TEXT_complClauses"]
 		},
 		{
@@ -1924,7 +1924,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.3-Adverbial Clauses",
+			"content": "10-3-Adverbial Clauses",
 			"heads": ["TEXT_advClauses"]
 		},
 		{
@@ -1942,7 +1942,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.4-Clause Chaining, Medial Clauses, and Switch References",
+			"content": "10-4-Clause Chaining, Medial Clauses, and Switch References",
 			"heads": [
 				"BOOL_chainFirst",
 				"BOOL_chainLast",
@@ -1974,7 +1974,7 @@
 				"class": "cols2",
 				"boxesPerRow": 1,
 				"export": {
-					"i18": "checkboxInflectedClauses"
+					"i18": "checkboxInflectedClausesExport"
 				}
 			}
 		},
@@ -2021,7 +2021,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.5-Relative Clauses",
+			"content": "10-5-Relative Clauses",
 			"heads": [
 				"BOOL_relPre",
 				"BOOL_relPost",
@@ -2062,7 +2062,7 @@
 		{
 			"tag": "Header",
 			"level": 1,
-			"content": "10.6-Coordinating Clauses",
+			"content": "10-6-Coordinating Clauses",
 			"heads": [
 				"BOOL_coordMid",
 				"BOOL_coordTwo",

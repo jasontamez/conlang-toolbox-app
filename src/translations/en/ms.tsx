@@ -29,7 +29,7 @@ const ms = {
 	"MorphoSyntax Info": "$t(common:MorphoSyntax) Info",
 	"Saved MorphoSyntax Info": "Saved $t(MorphoSyntax Info)",
 	"MISSING TITLE": "MISSING TITLE",
-	"Read About It": "Read About It",
+	genericInfoButtonText: "Read About It",
 	"[NO TEXT ENTERED]": "[NO TEXT ENTERED]",
 	"[NO DESCRIPTION PROVIDED]": "[NO DESCRIPTION PROVIDED]",
 	"[MISSING]": "[MISSING]",
@@ -270,7 +270,7 @@ const ms = {
 		labels: [
 			[ "Actions", "Agent affects Patient." ],
 			[ "Action-Processes", "Agent only." ],
-			[ "Weather Verbs", "in English, these require a dummy Agent (\"<em>It</em> is raining\"); this is not the case in many other languages!" ],
+			[ "Weather Verbs", "in English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!" ],
 			[ "States", "be hot, be broken, be frozen, etc; may be predicate-bound" ],
 			[ "Involuntary Processes", "he grew; it broke; they died; etc." ],
 			[ "Bodily Functions", "cough, sweat, bleed, cry, etc." ],
@@ -290,7 +290,7 @@ const ms = {
 		labels: [
 			"Actions: Agent affects Patient.",
 			"Action-Processes: Agent only.",
-			"Weather Verbs: in English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!",
+			"Weather Verbs: in English, these require a dummy Agent (the \"It\" in \"It is raining\"); this is not the case in many other languages!",
 			"States: be hot, be broken, be frozen, etc; may be predicate-bound",
 			"Involuntary Processes: He grew; It broke; They died; etc.",
 			"Bodily Functions: cough, sweat, bleed, cry, etc.",

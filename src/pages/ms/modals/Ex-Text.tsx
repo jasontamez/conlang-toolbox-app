@@ -5,7 +5,7 @@ import { tMaker, tc } from '../../../components/translators';
 import { MSBool, MSNum, MSState, MSText } from '../../../store/types';
 
 import i18n from "../../../i18n";
-import { CheckboxTransExportProps, CheckboxTransProps, specificPageInfo } from '../MorphoSyntaxElements';
+import { CheckboxTransExportProps, CheckboxTransProps, SpecificMSPageData } from '../MorphoSyntaxElements';
 import ms from '../ms.json';
 
 const t = tMaker({ns: "ms"});
@@ -21,8 +21,8 @@ const doText = (
 	const lines: string[] = [];
 	const sections: string[] = ms.sections;
 	sections.forEach((sec: string) => {
-		const section = (ms[sec as keyof typeof ms] as specificPageInfo[]);
-		section.forEach((item: specificPageInfo) => {
+		const section = (ms[sec as keyof typeof ms] as SpecificMSPageData[]);
+		section.forEach((item: SpecificMSPageData) => {
 			let {
 				content = "",
 				level = 4,
