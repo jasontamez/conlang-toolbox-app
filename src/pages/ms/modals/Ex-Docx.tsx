@@ -103,7 +103,7 @@ const doDocx = (
 					const head = ("HEADING_" + String(level)) as heads;
 					children.push(
 						new Paragraph({
-							text: content,
+							text: t(content),
 							heading: HeadingLevel[head],
 							spacing
 						})
@@ -120,10 +120,10 @@ const doDocx = (
 						const lesser = Math.floor(((value - min) * div) + 0.5);
 						paragraph.push(
 							new TextRun({
-								text: String(100 - lesser) + "% " + start
+								text: t(start, { context: "percentage", percent: 100 - lesser})
 							}),
 							new TextRun({
-								text: String(lesser) + "% " + end,
+								text: t(end, { context: "percentage", percent: lesser}),
 								break: 1
 							})
 						);
@@ -131,7 +131,7 @@ const doDocx = (
 					} else {
 						let counter = min;
 						paragraph.push(new TextRun({
-							text: start,
+							text: t(start),
 							bold: true
 						}));
 						while(counter <= max) {
@@ -141,7 +141,7 @@ const doDocx = (
 										text: " "
 									}),
 									new TextRun({
-										text: `(${counter})`,
+										text: t("textSelectedRange", { number: counter }),
 										bold: true
 									})
 								);
@@ -153,7 +153,7 @@ const doDocx = (
 							counter++;
 						}
 						paragraph.push(new TextRun({
-							text: " " + end,
+							text: " " + t(end),
 							bold: true
 						}));
 						checksum.push(`RANGE ${start} <${value}> ${end}`);
@@ -169,7 +169,7 @@ const doDocx = (
 						children.push(new Paragraph({
 							children: [
 								new TextRun({
-									text: content || "[ERROR, MISSING TEXT PROMPT]",
+									text: t(content) || "[ERROR, MISSING TEXT PROMPT]",
 									italics: true
 								})
 							],
@@ -294,6 +294,7 @@ const doDocx = (
 							color: "000000"
 						},
 					}
+					const checkedBox = t("textCheckedBox");;
 					rows.forEach(row => {
 						// cell[s] [label] [?label]
 						const cols = colWidths.slice();
@@ -310,10 +311,10 @@ const doDocx = (
 									type: WidthType.PERCENTAGE
 								},
 								children: [new Paragraph({
-									text: bool ? "X" : " "
+									text: bool ? checkedBox : " "
 								})]
 							}));
-							checkingCells.push(bool ? "X" : ".");
+							checkingCells.push(bool ? checkedBox : ".");
 						});
 						if(labelsToUse.length > 0) {
 							const shift = labelsToUse.shift();

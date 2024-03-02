@@ -80,11 +80,11 @@ const MSPage = (props: MSData) => {
 					</IonItem>
 				);
 			case "Modal":
-				const { title, content: mContent, label = "genericInfoButtonText" } = etc as BasicModal;
+				const { title, content: mContent, label } = etc as BasicModal;
 				const modalProps = {
 					modalPropsMaker,
 					title: t(title),
-					label: t(label)
+					label: label ? t([label, "genericInfoButtonText"]) : t("genericInfoButtonText")
 				};
 				const info = t(mContent, { joinArrays: "\n" });
 				return (

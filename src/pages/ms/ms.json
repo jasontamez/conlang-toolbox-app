@@ -26,8 +26,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Synthesis and Fusion",
-			"label": "The Basic Building Blocks of Words",
+			"title": "title11",
+			"label": "label11",
 			"content": "info11"
 		},
 		{
@@ -61,7 +61,7 @@
 		{
 			"tag": "Text",
 			"prop": "TEXT_tradTypol",
-			"content": "Give examples of the dominant pattern and any secondary patterns."
+			"content": "text11"
 		},
 		{
 			"tag": "Header",
@@ -71,8 +71,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Affixes and Other Modifications",
-			"label": "Read About Them",
+			"title": "title12",
+			"label": "label12",
 			"content": "info12"
 		},
 		{
@@ -158,7 +158,7 @@
 			"tag": "Text",
 			"prop": "TEXT_morphProcess",
 			"rows": 6,
-			"content": "What sort of morphological processes are used? Which are primary and which are used less?"
+			"content": "text12"
 		},
 		{
 			"tag": "Header",
@@ -176,13 +176,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Head/Dependent Marking",
+			"title": "title13",
+			"label": "label13",
 			"content": "info13"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_headDepMark",
-			"content": "Describe when the head/dependent marking system changes, if needed."
+			"content": "text13"
 		}
 	],
 	"02": [
@@ -258,14 +259,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Proper Names",
-			"label": "Read About Them",
+			"title": "title2111",
+			"label": "label2111",
 			"content": "info2111"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_propNames",
-			"content": "Are there any special rules involving proper names?"
+			"content": "text2111"
 		},
 		{
 			"tag": "Header",
@@ -275,15 +276,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Possessability",
-			"label": "Systems of Possession",
+			"title": "title2112",
+			"label": "label2112",
 			"content": "info2112"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_possessable",
 			"rows": 4,
-			"content": "Describe how the language handles possession."
+			"content": "text2112"
 		},
 		{
 			"tag": "Header",
@@ -293,14 +294,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Count Nouns and Mass Nouns",
-			"label": "A Piece of Information",
+			"title": "title2113",
+			"label": "label2113",
 			"content": "info2113"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_countMass",
-			"content": "Write any specific notes about count/mass noun distinctions here."
+			"content": "text2113"
 		},
 		{
 			"tag": "Header",
@@ -310,15 +311,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Pronouns and Anaphoric Clitics",
-			"label": "What Are They?",
+			"title": "title212",
+			"label": "label212",
 			"content": "info212"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_pronounAnaphClitic",
 			"rows": 4,
-			"content": "Which system(s) are used by the language?"
+			"content": "text212"
 		},
 		{
 			"tag": "Header",
@@ -353,15 +354,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Semantic Roles",
-			"label": "A Quick Primer",
+			"title": "title221",
+			"label": "label221",
 			"content": "info221"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_semanticRole",
 			"rows": 6,
-			"content": "Describe which semantic roles are important."
+			"content": "text221"
 		},
 		{
 			"tag": "Header",
@@ -436,7 +437,7 @@
 			"tag": "Text",
 			"prop": "TEXT_verbClass",
 			"rows": 8,
-			"content": "If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs."
+			"content": "text222"
 		},
 		{
 			"tag": "Header",
@@ -446,15 +447,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Verb Structure",
-			"label": "Structure and Operations Info",
+			"title": "title223",
+			"label": "label223",
 			"content": "info223"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_verbStructure",
 			"rows": 6,
-			"content": "Describe the verb structure here."
+			"content": "text223"
 		},
 		{
 			"tag": "Header",
@@ -513,14 +514,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Property Concepts",
-			"label": "More Info",
+			"title": "title231",
+			"label": "label231",
 			"content": "info231"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_propClass",
-			"content": "How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences."
+			"content": "text231"
 		},
 		{
 			"tag": "Header",
@@ -531,7 +532,7 @@
 		{
 			"tag": "Text",
 			"prop": "TEXT_quantifier",
-			"content": "Which quantifiers exist?"
+			"content": "text232"
 		},
 		{
 			"tag": "Header",
@@ -552,8 +553,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Numerals",
-			"label": "Things to Consider",
+			"title": "title233",
+			"label": "label233",
 			"content": "info233"
 		},
 		{
@@ -608,7 +609,7 @@
 			"tag": "Text",
 			"prop": "TEXT_numeral",
 			"rows": 6,
-			"content": "Describe the language's numeral system."
+			"content": "text233"
 		},
 		{
 			"tag": "Header",
@@ -618,15 +619,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Adverbs",
-			"label": "A \"Catch-All\" Category",
+			"title": "title24",
+			"label": "label24",
 			"content": "info24"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_adverb",
 			"rows": 4,
-			"content": "How are adverbs (or adverb-like phrases) handled?"
+			"content": "text24"
 		}
 	],
 	"03": [
@@ -689,14 +690,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Basic Typology",
-			"label": "What is This?",
+			"title": "title31",
+			"label": "label31",
 			"content": "info31"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_mainClause",
-			"content": "Write any more specific notes here."
+			"content": "text31"
 		},
 		{
 			"tag": "Header",
@@ -708,7 +709,7 @@
 			"tag": "Text",
 			"prop": "TEXT_verbPhrase",
 			"rows": 4,
-			"content": "Where do auxiliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxiliaries?"
+			"content": "text32"
 		},
 		{
 			"tag": "Header",
@@ -720,7 +721,7 @@
 			"tag": "Text",
 			"prop": "TEXT_nounPhrase",
 			"rows": 4,
-			"content": "What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?"
+			"content": "text33"
 		},
 		{
 			"tag": "Header",
@@ -752,15 +753,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Adpositions",
-			"label": "More Info",
+			"title": "title34",
+			"label": "label34",
 			"content": "info34"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_adPhrase",
 			"rows": 4,
-			"content": "Which adposition dominates? Do many adpositions come from nouns or verbs?"
+			"content": "text34"
 		},
 		{
 			"tag": "Header",
@@ -770,14 +771,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Comparatives",
-			"label": "Comparing Things",
+			"title": "title35",
+			"label": "label35",
 			"content": "info35"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_compare",
-			"content": "Does the language have one or more comparative constructions? If so, what is the order of the standard, the marker, and the quality being compared?"
+			"content": "text35"
 		},
 		{
 			"tag": "Header",
@@ -787,13 +788,14 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Questions",
+			"title": "title36",
+			"label": "label36",
 			"content": "info36"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_questions",
-			"content": "How are questions handled in the language? In informational questions, where does the question word occur?"
+			"content": "text36"
 		},
 		{
 			"tag": "Header",
@@ -804,7 +806,7 @@
 		{
 			"tag": "Text",
 			"prop": "TEXT_COType",
-			"content": "When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered."
+			"content": "text37"
 		}
 	],
 	"04": [
@@ -846,15 +848,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Compounding",
-			"label": "Noun-Piles",
+			"title": "title41",
+			"label": "label41",
 			"content": "info41"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_compounding",
 			"rows": 4,
-			"content": "Describe the sorts of compounding that happen in the language (if any)."
+			"content": "text41"
 		},
 		{
 			"tag": "Header",
@@ -864,15 +866,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Denominalization",
-			"label": "Verbing a Noun",
+			"title": "title42",
+			"label": "label42",
 			"content": "info42"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_denoms",
 			"rows": 4,
-			"content": "Are there any processes to make a verb from a noun? An adjective? An adverb?"
+			"content": "text42"
 		},
 		{
 			"tag": "Header",
@@ -890,8 +892,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Number Marking",
-			"label": "Plurality, etc.",
+			"title": "title43",
+			"label": "label43",
 			"content": "info43"
 		},
 		{
@@ -916,13 +918,13 @@
 			"tag": "Text",
 			"prop": "TEXT_nNumberOpt",
 			"rows": 3,
-			"content": "Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?"
+			"content": "text43a"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_nNumberObl",
 			"rows": 6,
-			"content": "If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?"
+			"content": "text43b"
 		},
 		{
 			"tag": "Header",
@@ -932,15 +934,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Case Marking",
-			"label": "How it works",
+			"title": "title44",
+			"label": "label44",
 			"content": "info44"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_nCase",
 			"rows": 4,
-			"content": "Do nouns exhibit morphological case? If so, what cases exist?"
+			"content": "text44"
 		},
 		{
 			"tag": "Header",
@@ -953,21 +955,21 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Articles",
-			"label": "What Are They?",
+			"title": "title45",
+			"label": "label45",
 			"content": "info45"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_articles",
 			"rows": 6,
-			"content": "If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?"
+			"content": "text45a"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_demonstratives",
 			"rows": 6,
-			"content": "How many levels of distance do demonstratives encode? Are there other distinctions besides distance?"
+			"content": "text45b"
 		},
 		{
 			"tag": "Header",
@@ -977,15 +979,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Possessors",
-			"label": "Possessor Expressions",
+			"title": "title46",
+			"label": "label46",
 			"content": "info46"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_possessors",
 			"rows": 3,
-			"content": "Describe how possession works in a noun phrase."
+			"content": "text46"
 		},
 		{
 			"tag": "Header",
@@ -1002,8 +1004,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Class and Gender",
-			"label": "What They Are",
+			"title": "title47",
+			"label": "label47",
 			"content": "info47"
 		},
 		{
@@ -1028,7 +1030,7 @@
 			"tag": "Text",
 			"prop": "TEXT_classGender",
 			"rows": 8,
-			"content": "Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?"
+			"content": "text47"
 		},
 		{
 			"tag": "Header",
@@ -1043,8 +1045,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Diminution and Augmentation",
-			"label": "Bigger and Smaller",
+			"title": "title48",
+			"label": "label48",
 			"content": "info48"
 		},
 		{
@@ -1067,7 +1069,7 @@
 			"tag": "Text",
 			"prop": "TEXT_dimAug",
 			"rows": 8,
-			"content": "Describe the language's relation to diminution and augmentation."
+			"content": "text48"
 		}
 	],
 	"05": [
@@ -1084,8 +1086,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Predicate Nominals",
-			"label": "General Information to Consider",
+			"title": "title5",
+			"label": "label5",
 			"content": "info5"
 		},
 		{
@@ -1096,15 +1098,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Predicate Nominals and Adjectives",
-			"label": "What It Is and What It Seems Like",
+			"title": "title51",
+			"label": "label51",
 			"content": "info51"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_predNom",
 			"rows": 6,
-			"content": "Describe the language's strategy for predicate nominals and adjectives."
+			"content": "text51"
 		},
 		{
 			"tag": "Header",
@@ -1114,15 +1116,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Predicate Locatives",
-			"label": "Where It Is",
+			"title": "title52",
+			"label": "label52",
 			"content": "info52"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_predLoc",
 			"rows": 6,
-			"content": "How does the language handle predicate locatives?"
+			"content": "text52"
 		},
 		{
 			"tag": "Header",
@@ -1132,15 +1134,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Existentials",
-			"label": "These Exist",
+			"title": "title53",
+			"label": "label53",
 			"content": "info53"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_predEx",
 			"rows": 6,
-			"content": "How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?"
+			"content": "text53"
 		},
 		{
 			"tag": "Header",
@@ -1150,14 +1152,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Possessive Clauses",
+			"title": "title54",
+			"label": "label54",
 			"content": "info54"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_predPoss",
 			"rows": 3,
-			"content": "Does the language use a verb or copula strategy?"
+			"content": "text54"
 		}
 	],
 	"06": [
@@ -1173,8 +1176,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Alignments",
-			"label": "Show the Alignments",
+			"title": "title6",
+			"label": "label6",
 			"content": "info6"
 		},
 		{
@@ -1196,7 +1199,7 @@
 			"tag": "Text",
 			"prop": "TEXT_ergative",
 			"rows": 8,
-			"content": "Are there any exceptions to the primary alignment? Do they exist in a hierarchy?"
+			"content": "text6"
 		}
 	],
 	"07": [
@@ -1225,8 +1228,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Valence",
-			"label": "What is Valence?",
+			"title": "title7",
+			"label": "label7",
 			"content": "info7"
 		},
 		{
@@ -1249,15 +1252,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Causatives",
-			"label": "Forcing You to Read This",
+			"title": "title711",
+			"label": "label711",
 			"content": "info711"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_causation",
 			"rows": 4,
-			"content": "Describe which method(s) the language uses to create causatives."
+			"content": "text711"
 		},
 		{
 			"tag": "Header",
@@ -1267,15 +1270,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Applicatives",
-			"label": "Adding a Third Participant",
+			"title": "title712",
+			"label": "label712",
 			"content": "info712"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_applicatives",
 			"rows": 4,
-			"content": "Describe which method(s) the language uses for applicatives, if any."
+			"content": "text712"
 		},
 		{
 			"tag": "Header",
@@ -1285,15 +1288,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Dative Shift",
-			"label": "Looking Shifty",
+			"title": "title713",
+			"label": "label713",
 			"content": "info713"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_dativeShifts",
 			"rows": 4,
-			"content": "Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?"
+			"content": "text713"
 		},
 		{
 			"tag": "Header",
@@ -1303,15 +1306,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Dative of Interest",
-			"label": "Pique Your Interest",
+			"title": "title714",
+			"label": "label714",
 			"content": "info714"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_datOfInt",
 			"rows": 4,
-			"content": "Is there a dative-of-interest operation?"
+			"content": "text714"
 		},
 		{
 			"tag": "Header",
@@ -1321,15 +1324,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Possessor Raising",
-			"label": "What is This?",
+			"title": "title715",
+			"label": "label715",
 			"content": "info715"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_possessRaising",
 			"rows": 4,
-			"content": "Does possessor raising occur?"
+			"content": "text715"
 		},
 		{
 			"tag": "Header",
@@ -1357,15 +1360,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Reflexives",
-			"label": "You Are Me?",
+			"title": "title721",
+			"label": "label721",
 			"content": "info721"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_refls",
 			"rows": 4,
-			"content": "How are reflexives handled?"
+			"content": "text721"
 		},
 		{
 			"tag": "Header",
@@ -1375,15 +1378,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Reciprocals",
-			"label": "Working Together",
+			"title": "title722",
+			"label": "label722",
 			"content": "info722"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_recips",
 			"rows": 3,
-			"content": "How are reciprocals handled?"
+			"content": "text722"
 		},
 		{
 			"tag": "Header",
@@ -1393,15 +1396,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Passives",
-			"label": "Moving Focus From the Agent",
+			"title": "title723",
+			"label": "label723",
 			"content": "info723"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_passives",
 			"rows": 4,
-			"content": "How are passives handled?"
+			"content": "text723"
 		},
 		{
 			"tag": "Header",
@@ -1417,8 +1420,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Inverses",
-			"label": "Playing The Reverse Card",
+			"title": "title724",
+			"label": "label724",
 			"content": "info724"
 		},
 		{
@@ -1442,7 +1445,7 @@
 			"tag": "Text",
 			"prop": "TEXT_inverses",
 			"rows": 4,
-			"content": "Describe any peculiarities of inverse constructions."
+			"content": "text724"
 		},
 		{
 			"tag": "Header",
@@ -1452,15 +1455,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Middle Constructions",
-			"label": "What Are These?",
+			"title": "title725",
+			"label": "label725",
 			"content": "info725"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_middleCon",
 			"rows": 3,
-			"content": "How are middle constructions handled?"
+			"content": "text725"
 		},
 		{
 			"tag": "Header",
@@ -1470,15 +1473,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Antipassives",
-			"label": "What Are These?",
+			"title": "title726",
+			"label": "label726",
 			"content": "info726"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_antiP",
 			"rows": 3,
-			"content": "Describe antipassive strategies in the language, if they exist."
+			"content": "text726"
 		},
 		{
 			"tag": "Header",
@@ -1488,15 +1491,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Object Demotion and Related Functions",
-			"label": "What Are These?",
+			"title": "title727",
+			"label": "label727",
 			"content": "info727"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_objDemOmInc",
 			"rows": 5,
-			"content": "Is object demotion/omission allowed? How about incorporation?"
+			"content": "text727"
 		}
 	],
 	"08": [
@@ -1531,15 +1534,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Nominalization",
-			"label": "Making Nouns",
+			"title": "title81",
+			"label": "label81",
 			"content": "info81"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_verbNoms",
 			"rows": 8,
-			"content": "Describe the nominalizations that exist in the language, and explain how productive they are."
+			"content": "text81"
 		},
 		{
 			"tag": "Header",
@@ -1549,15 +1552,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Compounding",
-			"label": "Word-Making",
+			"title": "title82",
+			"label": "label82",
 			"content": "info82"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_verbComp",
 			"rows": 6,
-			"content": "Describe any compounding strategies that exist in the language."
+			"content": "text82"
 		},
 		{
 			"tag": "Header",
@@ -1575,8 +1578,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Tense, Aspect and Mode",
-			"label": "What Are They?",
+			"title": "title83",
+			"label": "label83",
 			"content": "info83"
 		},
 		{
@@ -1604,15 +1607,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Tense",
-			"label": "Info on Tense",
+			"title": "title831",
+			"label": "label831",
 			"content": "info831"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_tense",
 			"rows": 6,
-			"content": "Is there a Tense system? How does it operate? How does it divide time?"
+			"content": "text831"
 		},
 		{
 			"tag": "Header",
@@ -1622,15 +1625,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Aspect",
-			"label": "Info on Aspect",
+			"title": "title832",
+			"label": "label832",
 			"content": "info832"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_aspect",
 			"rows": 8,
-			"content": "Describe the way the language handles Aspect."
+			"content": "text832"
 		},
 		{
 			"tag": "Header",
@@ -1640,15 +1643,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Mode",
-			"label": "Info on Mode",
+			"title": "title833",
+			"label": "label833",
 			"content": "info833"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_mode",
 			"rows": 6,
-			"content": "Describe how the language deals with Mode."
+			"content": "text833"
 		},
 		{
 			"tag": "Header",
@@ -1658,15 +1661,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Location and Direction",
-			"label": "Where?",
+			"title": "title84",
+			"label": "label84",
 			"content": "info84"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_locDirect",
 			"rows": 8,
-			"content": "Does the language have affixes or other functions that represent spatial grounding?"
+			"content": "text84"
 		},
 		{
 			"tag": "Header",
@@ -1676,15 +1679,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Evidentiality",
-			"label": "Truth and Certainty",
+			"title": "title85",
+			"label": "label85",
 			"content": "info85"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_evidence",
 			"rows": 6,
-			"content": "Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?"
+			"content": "text85"
 		},
 		{
 			"tag": "Header",
@@ -1694,15 +1697,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Miscelaneous",
-			"label": "Leftovers",
+			"title": "title86",
+			"label": "label86",
 			"content": "info86"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_miscVerbFunc",
 			"rows": 4,
-			"content": "Does the language have any other notable verb phrase operations?"
+			"content": "text86"
 		}
 	],
 	"09": [
@@ -1721,8 +1724,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Pragmatics",
-			"label": "What are Pragmatics?",
+			"title": "title9",
+			"label": "label9",
 			"content": "info9"
 		},
 		{
@@ -1733,15 +1736,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Focus, Contrast, etc.",
-			"label": "Focus is What This is About",
+			"title": "title91",
+			"label": "label91",
 			"content": "info91"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_pragFocusEtc",
 			"rows": 8,
-			"content": "Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any."
+			"content": "text91"
 		},
 		{
 			"tag": "Header",
@@ -1751,15 +1754,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Negation",
-			"label": "Don't not read this.",
+			"title": "title92",
+			"label": "label92",
 			"content": "info92"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_negation",
 			"rows": 8,
-			"content": "Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?"
+			"content": "text92"
 		},
 		{
 			"tag": "Header",
@@ -1774,15 +1777,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Declarative Statements",
-			"label": "Minor Note on Declaratives",
+			"title": "title93",
+			"label": "label93",
 			"content": "info93"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_declaratives",
 			"rows": 3,
-			"content": "If declaratives are marked, describe how."
+			"content": "text93"
 		},
 		{
 			"tag": "Header",
@@ -1801,15 +1804,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Yes/No Questions",
-			"label": "Yes? No?",
+			"title": "title9311",
+			"label": "label9311",
 			"content": "info9311"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_YNQs",
 			"rows": 4,
-			"content": "How are yes/no questions formed? Do they serve other discourse functions other than the obvious?"
+			"content": "text9311"
 		},
 		{
 			"tag": "Header",
@@ -1819,15 +1822,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Question-Word Questions",
-			"label": "Who? What? Why?",
+			"title": "title9312",
+			"label": "label9312",
 			"content": "info9312"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_QWQs",
 			"rows": 4,
-			"content": "How are information questions formed?"
+			"content": "text9312"
 		},
 		{
 			"tag": "Header",
@@ -1837,15 +1840,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Imperatives",
-			"label": "Command Sentences",
+			"title": "title932",
+			"label": "label932",
 			"content": "info932"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_imperatives",
 			"rows": 4,
-			"content": "How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?"
+			"content": "text932"
 		}
 	],
 	"10": [
@@ -1881,8 +1884,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Terms",
-			"label": "Quick Primer on Clauses",
+			"title": "title10",
+			"label": "label10",
 			"content": "info10"
 		},
 		{
@@ -1893,15 +1896,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Serial Verbs",
-			"label": "Go Tap on This",
+			"title": "title101",
+			"label": "label101",
 			"content": "info101"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_serialVerbs",
 			"rows": 4,
-			"content": "Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?"
+			"content": "text101"
 		},
 		{
 			"tag": "Header",
@@ -1911,15 +1914,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Complement Clauses",
-			"label": "Enter The Matrix",
+			"title": "title102",
+			"label": "label102",
 			"content": "info102"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_complClauses",
 			"rows": 6,
-			"content": "What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?"
+			"content": "text102"
 		},
 		{
 			"tag": "Header",
@@ -1929,15 +1932,15 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Adverbial Clauses",
-			"label": "Tap This When You're Ready",
+			"title": "title103",
+			"label": "label103",
 			"content": "info103"
 		},
 		{
 			"tag": "Text",
 			"prop": "TEXT_advClauses",
 			"rows": 6,
-			"content": "How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?"
+			"content": "text103"
 		},
 		{
 			"tag": "Header",
@@ -1959,8 +1962,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Clause Chaining, Medial Clauses, and Switch References",
-			"label": "Chain Chain Chain...",
+			"title": "title104",
+			"label": "label104",
 			"content": "info104"
 		},
 		{
@@ -2016,7 +2019,7 @@
 			"tag": "Text",
 			"prop": "TEXT_clauseChainEtc",
 			"rows": 6,
-			"content": "Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?"
+			"content": "text104"
 		},
 		{
 			"tag": "Header",
@@ -2032,8 +2035,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Relative Clauses",
-			"label": "Clauses as Adjectives",
+			"title": "title105",
+			"label": "label105",
 			"content": "info105"
 		},
 		{
@@ -2057,7 +2060,7 @@
 			"tag": "Text",
 			"prop": "TEXT_relClauses",
 			"rows": 6,
-			"content": "Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies)."
+			"content": "text105"
 		},
 		{
 			"tag": "Header",
@@ -2072,8 +2075,8 @@
 		},
 		{
 			"tag": "Modal",
-			"title": "Coordinating Clauses",
-			"label": "This And That",
+			"title": "title106",
+			"label": "label106",
 			"content": "info106"
 		},
 		{
@@ -2096,7 +2099,7 @@
 			"tag": "Text",
 			"prop": "TEXT_coords",
 			"rows": 6,
-			"content": "Describe how Conjunction, Disjunction and Exclusion are expressed in the language."
+			"content": "text106"
 		}
 	]
 }

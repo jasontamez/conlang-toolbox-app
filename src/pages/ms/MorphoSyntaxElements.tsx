@@ -166,7 +166,7 @@ export const TransTable = (props: PropsWithChildren<TransProps>) => {
 };
 */
 interface InfoModalProps extends ModalProperties {
-	label?: string
+	label: string // this will always be called with a label prop
 	className?: string
 }
 export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
@@ -221,7 +221,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 					className="msModalHelpIcon"
 					slot="start"
 				/>
-				{label || t("genericInfoButtonText")}
+				{label}
 			</IonButton>
 		</IonItem>
 	);

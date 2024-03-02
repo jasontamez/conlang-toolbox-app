@@ -49,13 +49,13 @@ const doText = (
 						}
 					}
 					if(usingMarkDown) {
-						content = " " + content;
+						content = " " + t(content);
 						while(level > 0) {
 							content = "#" + content;
 							level--;
 						}
 					}
-					lines.push(content);
+					lines.push(t(content));
 					break;
 				case "Range":
 					// Range is always saved, as it always has some sort of info
@@ -66,29 +66,26 @@ const doText = (
 					if(spectrum) {
 						const div = 100 / (max - min);
 						const lesser = Math.floor(((value - min) * div) + 0.5);
-						if(usingMarkDown) {
-							// extra spaces before newline are needed to make MarkDown behave
-							lines.push(`**${100 - lesser}%** ${start}  \n**${lesser}%** ${end}`);
-						} else {
-							lines.push(`${100 - lesser}% ${start}\n${lesser}% ${end}`);
-						}
+						const context = usingMarkDown ? "percentageMarkdown" : "percentage";
+						lines.push(
+							t(start, { context, percent: 100 - lesser })
+							+ "   \n" // extra spaces before newline are needed to make MarkDown insert a linebreak
+							+ t(end, { context, percent: lesser })
+						);
 					} else {
 						let counter = min;
-						let range = start;
-						let ender = end;
-						if(usingMarkDown) {
-							range = "**" + range + "**";
-							ender = "**" + ender + "**";
-						}
+						let range = "";
+						const maybeMarkDown = usingMarkDown ? "**" : "";
+						const text = t("textSelectedRange", { number: value });
 						while(counter <= max) {
 							if(counter === value) {
-								range += usingMarkDown ? ` **(${counter})**` : ` (${counter})`;
+								range = range + ` ${maybeMarkDown}${text}${maybeMarkDown}`;
 							} else {
-								range += ` ${counter}`;
+								range = range + ` ${counter}`;
 							}
 							counter++;
 						}
-						lines.push(range + " " + ender);
+						lines.push(`${maybeMarkDown}${start}${maybeMarkDown}${range} ${maybeMarkDown}${end}${maybeMarkDown}`);
 					}
 					break;
 				case "Text":
@@ -121,8 +118,6 @@ const doText = (
 				case "Checkboxes":
 					const { i18, export: expo} = display!;
 					const { textOutputBooleans, i18: expoI18 } = expo!;
-					//const { labels, export: expo} = display!;
-					//const { output, header, labels: expoLabels } = expo!;
 					const {
 						header,
 						labels: expoLabels

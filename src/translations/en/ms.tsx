@@ -2,7 +2,7 @@ const ms = {
 
 	"Show Unused Sections": "Show Unused Sections",
 	showUnusedDesc1:
-		 "Include sections that you did not fill out, leaving space for you"
+		"Include sections that you did not fill out, leaving space for you"
 		+ " to write in later.",
 	showUnusedDesc2: "NOTE: this option has no effect on JSON and XML exports.",
 
@@ -29,21 +29,23 @@ const ms = {
 	"MorphoSyntax Info": "$t(common:MorphoSyntax) Info",
 	"Saved MorphoSyntax Info": "Saved $t(MorphoSyntax Info)",
 	"MISSING TITLE": "MISSING TITLE",
-	genericInfoButtonText: "Read About It",
+	genericInfoButtonText: "Information",
 	"[NO TEXT ENTERED]": "[NO TEXT ENTERED]",
 	"[NO DESCRIPTION PROVIDED]": "[NO DESCRIPTION PROVIDED]",
 	"[MISSING]": "[MISSING]",
 	"[MISSING TEXT PROMPT]": "[MISSING TEXT PROMPT]",
 	"[NONE SELECTED]": "[NONE SELECTED]",
 	"[LABEL NOT FOUND]": "[LABEL NOT FOUND FOR \"{{box}}\"]",
+	rangeFromTo: "Range from {{start}} to {{end}}",
+	textSelectedRange: "({{number}})",
+	textCheckedBox: "X",
 
-// PAGE ONE
+	// PAGE ONE
 
 	"1-Morphological Typology": "1. Morphological Typology",
 	"1-1-Traditional Typology": "1.1. Traditional Typology",
-	"Synthesis and Fusion": "Synthesis and Fusion",
-	"The Basic Building Blocks of Words": "The Basic Building Blocks of Words",
-
+	title11: "Synthesis and Fusion",
+	label11: "The Basic Building Blocks of Words",
 	info11: [
 		"- Languages can be broadly classified on two continuums based on",
 		"their **morphemes**.",
@@ -74,19 +76,28 @@ const ms = {
 		"belief system of opposing the people who want to remove the",
 		"government patronage of the Church of England.\")"
 	],
-	rangeFromTo: "Range from {{start}} to {{end}}",
 	Synthesis: "Synthesis",
+	"Synthesis_percentage": "{{percent}}% Synthesis",
+	"Synthesis_percentageMarkdown": "**{{percent}}%** Synthesis",
 	Isolating: "Isolating",
+	"Isolating_percentage": "{{percent}}% Isolating",
+	"Isolating_percentageMarkdown": "**{{percent}}%** Isolating",
 	Polysynthetic: "Polysynthetic",
+	"Polysynthetic_percentage": "{{percent}}% Polysynthetic",
+	"Polysynthetic_percentageMarkdown": "**{{percent}}%** Polysynthetic",
 	Fusion: "Fusion",
+	"Fusion_percentage": "{{percent}}% Fusion",
+	"Fusion_percentageMarkdown": "**{{percent}}%** Fusion",
 	Agglutinative: "Agglutinative",
+	"Agglutinative_percentage": "{{percent}}% Agglutinative",
+	"Agglutinative_percentageMarkdown": "**{{percent}}%** Agglutinative",
 	Fusional: "Fusional",
-	"Give examples of the dominant pattern and any secondary patterns.":
-		"Give examples of the dominant pattern and any secondary patterns.",
+	"Fusional_percentage": "{{percent}}% Fusional",
+	"Fusional_percentageMarkdown": "**{{percent}}%** Fusional",
+	text11: "Give examples of the dominant pattern and any secondary patterns.",
 	"1-2-Morphological Processes": "1.2. Morphological Processes",
-	"Affixes and Other Modifications": "Affixes and Other Modifications",
-	"Read About Them": "Read About Them",
-
+	title12: "Affixes and Other Modifications",
+//	label12: "",
 	info12: [
 		"- **Affixes**:",
 		"   - Completely fusional languages will usually lack affixes.",
@@ -131,13 +142,11 @@ const ms = {
 	Suppletion: "Suppletion",
 	Reduplication: "Reduplication",
 	"Suprasegmental Modification": "Suprasegmental Modification",
-	"What sort of morphological processes are used? Which are primary and which are used less?":
-		"What sort of morphological processes are used? Which are primary and which are used less?",
+	text12: "What sort of morphological processes are used? Which are primary and which are used less?",
 	"1-3-Head/Dependent Marking": "1.3. Head/Dependent Marking",
 	"Head Marked": "Head Marked",
-	"Dependent Marked": "Dependent Marked",
-	"Head/Dependent Marking": "Head/Dependent Marking",
-
+	title13: "Dependent Marked",
+	label13: "Head/Dependent Marking",
 	info13: [
 		"- The **Head** of a phrase is the element that determines the",
 		"syntactic function of the whole phrase.",
@@ -155,30 +164,25 @@ const ms = {
 		"phrases (e.g. head-marked for noun phrases, but dependent-marked",
 		"for verb and adpositional phrases)."
 	],
+	text13: "Describe when the head/dependent marking system changes, if needed.",
 
-	"Describe when the head/dependent marking system changes, if needed.":
-		"Describe when the head/dependent marking system changes, if needed.",
-
-// PAGE TWO
+	// PAGE TWO
 
 	"2-Grammatical Categories": "2. Grammatical Categories",
 	"2-1-Nouns (the most time-stable concepts)": "2.1. Nouns (the most time-stable concepts)",
 	"2-1-1-Types of Nouns": "2.1.1. Types of Nouns",
 	"2-1-1-1-Proper Names": "2.1.1.1. Proper Names",
-	"Proper Names": "Proper Names",
-
+	title2111: "Proper Names",
+//	label2111: "",
 	info2111: [
 		"- In English, they do not easily take articles, quantifiers and",
 		"other modifiers.",
 		"- Other languages may have special case markers (4.4) for them."
 	],
-
-	"Are there any special rules involving proper names?":
-		"Are there any special rules involving proper names?",
+	text2111: "Are there any special rules involving proper names?",
 	"2-1-1-2-Possessability": "2.1.1.2. Possessability",
-	Possessability: "Possessability",
-	"Systems of Possession": "Systems of Possession",
-
+	title2112: "Possessability",
+	label2112: "Systems of Possession",
 	info2112: [
 		"- Languages may have one of the following systems to",
 		"differentiate nouns.",
@@ -192,26 +196,20 @@ const ms = {
 		"      - Inalienable possession cannot be ended (my brother is",
 		"      always my brother)."
 	],
-
-	"Describe how the language handles possession.":
-		"Describe how the language handles possession.",
+	text2112: "Describe how the language handles possession.",
 	"2-1-1-3-Count vs Mass": "2.1.1.3. Count vs Mass",
-	"Count Nouns and Mass Nouns": "Count Nouns and Mass Nouns",
-	"A Piece of Information": "A Piece of Information",
-
+	title2113: "Count Nouns and Mass Nouns",
+	label2113: "A Piece of Information",
 	info2113: [
 		"- Typically, most nouns are countable, while fewer are considered",
 		"as a mass.",
 		"- e.g. \"sand\" requires \"a grain of sand\" to be countable, and",
 		"\"confetti\" requires \"a piece of confetti\"."
 	],
-
-	"Write any specific notes about count/mass noun distinctions here.":
-		"Write any specific notes about count/mass noun distinctions here.",
+	text2113: "Write any specific notes about count/mass noun distinctions here.",
 	"2-1-2-Pronouns and Anaphoric Clitics": "2.1.2. Pronouns and Anaphoric Clitics",
-	"Pronouns and Anaphoric Clitics": "Pronouns and Anaphoric Clitics",
-	"What Are They?": "What Are They?",
-
+	title212: "Pronouns and Anaphoric Clitics",
+	label212: "What Are They?",
 	info212: [
 		"- **Pronouns**:",
 		"   - Free forms that are used to refer to or replace a word used",
@@ -234,13 +232,11 @@ const ms = {
 		"- Spanish has anaphoric forms attached to the verb, but will use",
 		"pronouns for emphasis or contrast."
 	],
-
-	"Which system(s) are used by the language?": "Which system(s) are used by the language?",
+	text212: "Which system(s) are used by the language?",
 	"2-2-Verbs (the least time-stable concepts)": "2.2. Verbs (the least time-stable concepts)",
 	"2-2-1-Semantic Roles": "2.2.1. Semantic Roles",
-	"Semantic Roles": "Semantic Roles",
-	"A Quick Primer": "A Quick Primer",
-
+	title221: "Semantic Roles",
+	label221: "A Quick Primer",
 	info221: [
 		"- Verbs can be divided into groups depending on which roles they",
 		"require.",
@@ -262,8 +258,7 @@ const ms = {
 		"   - The hammer hit Steve.",
 		"   - Steve was hit."
 	],
-
-	"Describe which semantic roles are important.": "Describe which semantic roles are important.",
+	text221: "Describe which semantic roles are important.",
 	"2-2-2-Verb Classes": "2.2.2. Verb Classes",
 	checkboxVerbClasses: {
 		columnHeaders: ["Special?", "Type", "Description"],
@@ -305,12 +300,10 @@ const ms = {
 			"Other Verb Class(es): you might have a distinction different from those already listed"
 		]
 	},
-	"If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.":
-		"If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.",
+	text222: "If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.",
 	"2-2-3-Verb Structure": "2.2.3. Verb Structure",
-	"Verb Structure": "Verb Structure",
-	"Structure and Operations Info": "Structure and Operations Info",
-
+	title223: "Verb Structure",
+	label223: "Structure and Operations Info",
 	info223: [
 		"- In polysynthetic languages, verbs tend to be the most complex.",
 		"   - English is very simple:",
@@ -346,8 +339,7 @@ const ms = {
 		"   - Are particular operations obligatory? Productive (for",
 		"all/most roots)?"
 	],
-
-	"Describe the verb structure here.": "Describe the verb structure here.",
+	text223: "Describe the verb structure here.",
 	"2-3-Modifiers": "2.3. Modifiers",
 	"2-3-1-Property Concepts (Descriptive Adjectives)": "2.3.1. Property Concepts (Descriptive Adjectives)",
 	checkboxVerbPropConcepts: {
@@ -370,8 +362,8 @@ const ms = {
 			"Distinct class of \"adjectives\""
 		]
 	},
-	"Property Concepts": "Property Concepts",
-	"More Info": "More Info",
+	title231: "Property Concepts",
+	label231: "More Info",
 
 	info231: [
 		"- If Property Concepts (adjectives) exist as a separate category,",
@@ -406,15 +398,12 @@ const ms = {
 		"      gray_ or _the red_?\"), but these are actually",
 		"      _zero derivations_ (8.1)."
 	],
-
-	"How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.":
-		"How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.",
+	text231: "How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.",
 	"2-3-2-Non-Numeral Quantifiers (e.g. few, many, some)": "2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)",
-	"Which quantifiers exist?": "Which quantifiers exist?",
+	text232: "Which quantifiers exist?",
 	"2-3-3-Numerals": "2.3.3. Numerals",
-	Numerals: "Numerals",
-	"Things to Consider": "Things to Consider",
-
+	title233: "Numerals",
+	label233: "Things to Consider",
 	info233: [
 		"- **Extent**:",
 		"   - Some languages have restricted numerals: e.g. 1, 2, 3, many.",
@@ -490,11 +479,10 @@ const ms = {
 	checkboxNumberOtherPropsExport: {
 		header: "Other Number Properties:"
 	},
-	"Describe the language's numeral system.": "Describe the language's numeral system.",
+	text233: "Describe the language's numeral system.",
 	"2-4-Adverbs": "2.4. Adverbs",
-	Adverbs: "Adverbs",
-	"A \"Catch-All\" Category": "A \"Catch-All\" Category",
-
+	title24: "Adverbs",
+	label24: "A \"Catch-All\" Category",
 	info24: [
 		"- These may or may not exist as a separate category of words.",
 		"- Languages may use adjectives in special phrases to fulfill",
@@ -508,9 +496,10 @@ const ms = {
 		"   conjecture, from direct observation, from second-hand",
 		"   information."
 	],
-	"How are adverbs (or adverb-like phrases) handled?": "How are adverbs (or adverb-like phrases) handled?",
+	text24: "How are adverbs (or adverb-like phrases) handled?",
 
 	// PAGE THREE
+
 	"3-Constituent Order Typology": "3. Constituent Order Typology",
 	"3-1-In Main Clauses": "3.1. In Main Clauses",
 	checkboxMainClauses: {
@@ -527,8 +516,8 @@ const ms = {
 	checkboxMainClausesExport: {
 		header: "Constituent Order Typology:"
 	},
-	"Basic Typology": "Basic Typology",
-	"What is This?": "What is This?",
+	title31: "Basic Typology",
+	label31: "What is This?",
 
 	info31: [
 		"- Human languages tend towards one of six different basic forms.",
@@ -564,14 +553,11 @@ const ms = {
 		"      - Fixed VP → may allow AVP and VPA.",
 		"      - Fixed VA → may allow VAP and PVA."
 	],
-
-	"Write any more specific notes here.": "Write any more specific notes here.",
+	text31: "Write any more specific notes here.",
 	"3-2-Verb Phrases": "3.2. Verb Phrases",
-	"Where do auxiliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxiliaries?":
-		"Where do auxiliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxiliaries?",
+	text32: "Where do auxiliary verbs (semantically empty, e.g. to be/to have) appear in relation to the main verb? Where do adverbs fit in relation to the verb and auxiliaries?",
 	"3-3-Noun Phrases": "3.3. Noun Phrases",
-	"What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?":
-		"What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?",
+	text33: "What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?",
 	"3-4-Adpositional Phrases": "3.4. Adpositional Phrases",
 	checkboxAdpositionalPhrases: {
 		labels: [
@@ -588,8 +574,8 @@ const ms = {
 			"Circumposition"
 		]
 	},
-	Adpositions: "Adpositions",
-
+	title34: "Adpositions",
+	label34: "More Info",
 	info34: [
 		"- Many **Adpositions** derive from verbs, especially serial",
 		"verbs (see 10.1).",
@@ -599,12 +585,10 @@ const ms = {
 		"phrases (in front of vs. on his face) or regular nouns (top vs.",
 		"on top of)."
 	],
-
-	"Which adposition dominates? Do many adpositions come from nouns or verbs?": "Which adposition dominates? Do many adpositions come from nouns or verbs?",
+	text34: "Which adposition dominates? Do many adpositions come from nouns or verbs?",
 	"3-5-Comparatives": "3.5. Comparatives",
-	Comparatives: "Comparatives",
-	"Comparing Things": "Comparing Things",
-
+	title35: "Comparatives",
+	label35: "Comparing Things",
 	info35: [
 		"- Does the language even have a form? Some languages get by with",
 		"strategies like \"X is big, Y is very big.\"",
@@ -616,12 +600,10 @@ const ms = {
 		"- PV languages generally use a Standard-Quality-Marker order.",
 		"- VP languages tend towards Quality-Marker-Standard."
 	],
-
-	"Does the language have one or more comparative constructions? If so, what is the order of the standard, the marker, and the quality being compared?":
-		"Does the language have one or more comparative constructions? If so, what is the order of the standard, the marker, and the quality being compared?",
+	text35: "Does the language have one or more comparative constructions? If so, what is the order of the standard, the marker, and the quality being compared?",
 	"3-6-Question Particles and Words": "3.6. Question Particles and Words",
-	Questions: "Questions",
-
+	title36: "Questions",
+//	label36: "",
 	info36: [
 		"- In many languages, yes/no questions are indicated by a change",
 		"in intonation. In others, a question particle is used; e.g. _do_",
@@ -629,21 +611,17 @@ const ms = {
 		"- Informal questions may require a specific question word.",
 		"- [newSection]This subject is handled in depth in 9.3.1."
 	],
-
-	"How are questions handled in the language? In informational questions, where does the question word occur?":
-		"How are questions handled in the language? In informational questions, where does the question word occur?",
+	text36: "How are questions handled in the language? In informational questions, where does the question word occur?",
 	"3-7-Summary": "3.7. Summary",
-	"When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.":
-		"When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.",
+	text37: "When it comes to Agent/Patient/Verb order, is the language very consistent, fairly consistent, or very inconsistent? Note consistency and any deviations not already covered.",
 
 	// PAGE FOUR
 
 	"4-Noun Operations": "4. Noun Operations",
 	"4-Noun and Noun Phrase Operations": "4. Noun and Noun Phrase Operations",
 	"4-1-Compounding": "4.1. Compounding",
-	Compounding: "Compounding",
-	"Noun-Piles": "Noun-Piles",
-
+	title41: "Compounding",
+	label41: "Noun-Piles",
 	info41: [
 		"- When two nouns are combined into one, several changes may occur.",
 		"   - Stress pattern change, e.g. \"_black_bird\" vs",
@@ -657,26 +635,20 @@ const ms = {
 		"   altogether different (e.g. \"heaven-breath\" means \"weather\"",
 		"   in Mandarin)."
 	],
-
-	"Describe the sorts of compounding that happen in the language (if any).":
-		"Describe the sorts of compounding that happen in the language (if any).",
+	text41: "Describe the sorts of compounding that happen in the language (if any).",
 	"4-2-Denominalization": "4.2. Denominalization",
-	Denominalization: "Denominalization",
-	"Verbing a Noun": "Verbing a Noun",
-
+	title42: "Denominalization",
+	label42: "Verbing a Noun",
 	info42: [
 		"- Some languages have many ways of changing a noun into a non-noun.",
 		"   - English can append _-like_ to make an adjective.",
 		"   - Eskimo has many verbalizing forms, e.g. to be X, to go towards",
 		"   X, to play with X, to hunt X."
 	],
-
-	"Are there any processes to make a verb from a noun? An adjective? An adverb?":
-	"Are there any processes to make a verb from a noun? An adjective? An adverb?",
+	text42: "Are there any processes to make a verb from a noun? An adjective? An adverb?",
 	"4-3-Number Marking": "4.3. Number Marking",
-	"Number Marking": "Number Marking",
-	"Plurality, etc.": "Plurality, etc.",
-
+	title43: "Number Marking",
+	label43: "Plurality, etc.",
 	info43: [
 		"- Some languages only mark number occassionally or optionally",
 		"depending on the type of noun.",
@@ -698,13 +670,11 @@ const ms = {
 	checkboxNumberMarkingExport: {
 		header: "Number Marking:"
 	},
-	"Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?":
-		"Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?",
-	"If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?":
-		"If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?",
+	text43a: "Is the distinction between singular and non-singular obligatory, optional or absent? If number-marking is optional, when does it tend to occur? When does it not tend to occur?",
+	text43b: "If number-marking is obligatory, is number marking overtly expressed for all noun phrases, or only some subclasses (e.g. animates)?",
 	"4-4-Case Marking": "4.4. Case Marking",
-	"Case Marking": "Case Marking",
-	"How it works": "How it works",
+	title44: "Case Marking",
+	label44: "How it works",
 
 	info44: [
 		"- Case markings can describe the role a noun plays in a sentence.",
@@ -730,11 +700,10 @@ const ms = {
 		"   - He saw the alligator:",
 		"   `[translationTable] sa-dííy | nurutí-íva || he-see | alligator-DAT`"
 	],
-
-	"Do nouns exhibit morphological case? If so, what cases exist?": "Do nouns exhibit morphological case? If so, what cases exist?",
+	text44: "Do nouns exhibit morphological case? If so, what cases exist?",
 	"4-5-Articles and Demonstratives": "4.5. Articles and Demonstratives",
-	Articles: "Articles",
-
+	title45: "Articles",
+	label45: "What Are They?",
 	info45: [
 		"- English is relatively rare in having **Articles**: a, an, the.",
 		"More often, languages have a broader class of demonstratives.",
@@ -744,27 +713,21 @@ const ms = {
 		"- They tend to encode distance (\"this\" is closer to you than",
 		"\"that\"; Spanish has a third level of distance, too)."
 	],
-
-	"If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?":
-		"If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?",
-	"How many levels of distance do demonstratives encode? Are there other distinctions besides distance?":
-		"How many levels of distance do demonstratives encode? Are there other distinctions besides distance?",
+	text45a: "If articles exist, are they obligatory or optional? When do they occur? Are they separate words or bound morphemes?",
+	text45b: "How many levels of distance do demonstratives encode? Are there other distinctions besides distance?",
 	"4-6-Possessors": "4.6. Possessors",
-	Possessors: "Possessors",
-	"Possessor Expressions": "Possessor Expressions",
-
+	title46: "Possessors",
+	label46: "Possessor Expressions",
 	info46: [
 		"- Refer back to 2.1.1.2 to note your system of possession. This",
 		"does **not** refer to possessive clauses! (5.4)",
 		"- [newSection]How are possessors expressed in the noun phrase?",
 		"- Do nouns agree with their possessors? Vice versa?"
 	],
-
-	"Describe how possession works in a noun phrase.": "Describe how possession works in a noun phrase.",
+	text46: "Describe how possession works in a noun phrase.",
 	"4-7-Class (Gender)": "4.7. Class (Gender)",
-	"Class and Gender": "Class and Gender",
-	"What They Are": "What They Are",
-
+	title47: "Class and Gender",
+	label47: "What They Are",
 	info47: [
 		"- Class system often require classifiers (special operators) to",
 		"declare class.",
@@ -786,12 +749,10 @@ const ms = {
 	checkboxNounClassesExport: {
 		header: "Class Distinctions:"
 	},
-	"Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?":
-		"Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?",
+	text47: "Describe the language's class/gender system, if it has one. What classes/genders exist and how do they manifest? What dimension(s) of reality is central to the class system? How do they interact with numerals, verbs and adjectives?",
 	"4-8-Diminution/Augmentation": "4.8. Diminution/Augmentation",
-	"Diminution and Augmentation": "Diminution and Augmentation",
-	"Bigger and Smaller": "Bigger and Smaller",
-
+	title48: "Diminution and Augmentation",
+	label48: "Bigger and Smaller",
 	info48: [
 		"- If diminution (making smaller) and/or augmentation (making",
 		"bigger) is used in the language, answer the following questions:",
@@ -811,16 +772,14 @@ const ms = {
 		header: "Diminution/Augmentation System:",
 		labels: ["Exists", "Is Obligatory", "Is Productive"]
 	},
-	"Describe the language's relation to diminution and augmentation.":
-		"Describe the language's relation to diminution and augmentation.",
+	text48: "Describe the language's relation to diminution and augmentation.",
 
 	// PAGE FIVE
 
 	"5-Predicate Nominals etc.": "5. Predicate Nominals etc.",
 	"5-Predicate Nominals and Related Constructions": "5. Predicate Nominals and Related Constructions",
-	"Predicate Nominals": "Predicate Nominals",
-	"General Information to Consider": "General Information to Consider",
-
+	title5: "Predicate Nominals",
+	label5: "General Information to Consider",
 	info5: [
 		"- These forms generally encode the following information:",
 		"   - **Equation**: X is Y",
@@ -833,11 +792,9 @@ const ms = {
 		"semantically rich verb, while those at the bottom are less",
 		"likely to."
 	],
-
 	"5-1-Predicate Nominals and Adjectives": "5.1. Predicate Nominals and Adjectives",
-	"Predicate Nominals and Adjectives": "Predicate Nominals and Adjectives",
-	"What It Is and What It Seems Like": "What It Is and What It Seems Like",
-
+	title51: "Predicate Nominals and Adjectives",
+	label51: "What It Is and What It Seems Like",
 	info51: [
 		"- May encode _proper inclusion_ (X is a Y) and _equation_ (X is Y)",
 		"- Predicate adjectives are usually handled the same as predicate",
@@ -875,13 +832,10 @@ const ms = {
 		"            - Predicate noun becomes a verb.",
 		"            - Ex: Steve doctor-being."
 	],
-
-	"Describe the language's strategy for predicate nominals and adjectives.":
-		"Describe the language's strategy for predicate nominals and adjectives.",
+	text51: "Describe the language's strategy for predicate nominals and adjectives.",
 	"5-2-Predicate Locatives": "5.2. Predicate Locatives",
-	"Predicate Locatives": "Predicate Locatives",
-	"Where It Is": "Where It Is",
-
+	title52: "Predicate Locatives",
+	label52: "Where It Is",
 	info52: [
 		"- Many languages use a word that gets translated as \"be at\".",
 		"- The locative word is often the same as a locative adposition.",
@@ -894,11 +848,10 @@ const ms = {
 		"- Russian bases possessive clauses on locatives, but with",
 		"an animate possessor."
 	],
-	"How does the language handle predicate locatives?": "How does the language handle predicate locatives?",
+	text52: "How does the language handle predicate locatives?",
 	"5-3-Existentials": "5.3. Existentials",
-	Existentials: "Existentials",
-	"These Exist": "These Exist",
-
+	title53: "Existentials",
+	label53: "These Exist",
 	info53: [
 		"- These constructions usually serve a presentative function,",
 		"introducing new participants.",
@@ -917,26 +870,22 @@ const ms = {
 		"   downplay the significance of an actor.",
 		"      - e.g. Someone is crying."
 	],
-
-	"How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?":
-		"How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?",
+	text53: "How are existential clauses formed? Does this vary according to tense, aspect or mood? Is there a special negation strategy? Is this form used to impart other information (such as possessives) as well?",
 	"5-4-Possessive Clauses": "5.4. Possessive Clauses",
-	"Possessive Clauses": "Possessive Clauses",
-
+	title54: "Possessive Clauses",
+//	label54: "",
 	info54: [
 		"- These follow two main strategies:",
 		"   - Verb strategy: \"I have a book.\"",
 		"   - Copula strategy: \"The book is at me.\""
 	],
-
-	"Does the language use a verb or copula strategy?": "Does the language use a verb or copula strategy?",
+	text54: "Does the language use a verb or copula strategy?",
 
 	// PAGE SIX
 
 	"6-Grammatical Relations": "6. Grammatical Relations",
-	Alignments: "Alignments",
-	"Show the Alignments": "Show the Alignments",
-
+	title6: "Alignments",
+	label6: "Show the Alignments",
 	info6: [
 		"- **Nominative/Accusative Alignment**:",
 		"   - (S)ubjects and (A)gents are treated the same in the",
@@ -991,16 +940,14 @@ const ms = {
 	checkboxAlignmentSystemExport: {
 		header: "Primary Alignment System:"
 	},
-	"Are there any exceptions to the primary alignment? Do they exist in a hierarchy?":
-		"Are there any exceptions to the primary alignment? Do they exist in a hierarchy?",
+	text6: "Are there any exceptions to the primary alignment? Do they exist in a hierarchy?",
 
 	// PAGE SEVEN
 
 	"7-Voice/Valence Operations": "7. Voice/Valence Operations",
 	"7-Voice and Valence Adjusting Operations": "7. Voice and Valence Adjusting Operations",
-	Valence: "Valence",
-	"What is Valence?": "What is Valence?",
-
+	title7: "Valence",
+	label7: "What is Valence?",
 	info7: [
 		"- **Valence** refers to the amount of arguments in a clause.",
 		"   - \"I fell\" has a valence of 1.",
@@ -1013,9 +960,8 @@ const ms = {
 
 	"7-1-Valence-Increasing Operations": "7.1. Valence-Increasing Operations",
 	"7-1-1-Causatives": "7.1.1. Causatives",
-	Causatives: "Causatives",
-	"Forcing You to Read This": "Forcing You to Read This",
-
+	title711: "Causatives",
+	label711: "Forcing You to Read This",
 	info711: [
 		"- **Lexical**:",
 		"   - Most languages have at least some form of this. There are three",
@@ -1070,13 +1016,10 @@ const ms = {
 		"         control over the situation than \"Steve asked _him_ to",
 		"         leave\"."
 	],
-
-	"Describe which method(s) the language uses to create causatives.":
-		"Describe which method(s) the language uses to create causatives.",
+	text711: "Describe which method(s) the language uses to create causatives.",
 	"7-1-2-Applicatives": "7.1.2. Applicatives",
-	Applicatives: "Applicatives",
-	"Adding a Third Participant": "Adding a Third Participant",
-
+	title712: "Applicatives",
+	label712: "Adding a Third Participant",
 	info712: [
 		"- The verb is marked for the role of a direct object, bringing a",
 		"peripheral participant (the applied object) on stage in a more",
@@ -1087,13 +1030,10 @@ const ms = {
 		"      - \"I arrived at Shionti's\" in Nomatsiguenga.",
 		"      `[translationTable] n-areeka | Sionti-ke||I-arrive | Shionti-LOC (valence: 1) || n-areeka-re | Sionti || I-arrive-him | Shionti (valence: 2)`"
 	],
-
-	"Describe which method(s) the language uses for applicatives, if any.":
-		"Describe which method(s) the language uses for applicatives, if any.",
+	text712: "Describe which method(s) the language uses for applicatives, if any.",
 	"7-1-3-Dative Shift": "7.1.3. Dative Shift",
-	"Dative Shift": "Dative Shift",
-	"Looking Shifty": "Looking Shifty",
-
+	title713: "Dative Shift",
+	label713: "Looking Shifty",
 	info713: [
 		"- This only applies to verbs that take an Agent, a Patient and a",
 		"Recipient or Experiencer. This latter argument is usually put in",
@@ -1105,13 +1045,10 @@ const ms = {
 		"   - \"Steve gave the ball to Linda.\" Valence: 2",
 		"   - \"Steve gave Linda the ball.\" Valence: 3, recipient promoted."
 	],
-
-	"Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?":
-		"Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?",
+	text713: "Is there a dative shift construction in the language? What is it? What semantic roles can be shifted? Is it obligatory?",
 	"7-1-4-Dative of Interest": "7.1.4. Dative of Interest",
-	"Dative of Interest": "Dative of Interest",
-	"Pique Your Interest": "Pique Your Interest",
-
+	title714: "Dative of Interest",
+	label714: "Pique Your Interest",
 	info714: [
 		"- This is adding a participant that is associated in some way.",
 		"   - \"Dinner is burned [for me]\" in Spanish",
@@ -1119,25 +1056,21 @@ const ms = {
 		"   - \"She cut the hair [on him]\" in Spanish.",
 		"   `[translationTable] Le | cortó | el | pelo. || 3.DAT | cut.3s.PST | DEF.M.s | hair`"
 	],
-
-	"Is there a dative-of-interest operation?": "Is there a dative-of-interest operation?",
-	"7-1-5-Possessor Raising (a.k.a. External Possession)":
-		"7.1.5. Possessor Raising (a.k.a. External Possession)",
-	"Possessor Raising": "Possessor Raising",
-
+	text714: "Is there a dative-of-interest operation?",
+	"7-1-5-Possessor Raising (a.k.a. External Possession)": "7.1.5. Possessor Raising (a.k.a. External Possession)",
+	title715: "Possessor Raising",
+	label715: "What Is This?",
 	info715: [
 		"- In many languages, this exists separate from a dative",
 		"of interest.",
 		"   - \"I fixed the railroad track\" in Choctaw.",
 		"   `[translationTable] Tali | i-hina-ya | ayska-li-tok||rock | AGR(III)-road-NS | fix-1s-PST (nor&shy;mal con&shy;struc&shy;tion) || Tali-ya | hina | im-ayska-li-tok || rock-NS | road | AGR(III)-fix-1s-PST (pos&shy;ses&shy;sor raised)`"
 	],
-
-	"Does possessor raising occur?": "Does possessor raising occur?",
+	text715: "Does possessor raising occur?",
 	"7-2-Valence-Decreasing Operations": "7.2. Valence-Decreasing Operations",
 	"7-2-1-Reflexives": "7.2.1. Reflexives",
-	Reflexives: "Reflexives",
-	"You Are Me?": "You Are Me?",
-
+	title721: "Reflexives",
+	label721: "You Are Me?",
 	info721: [
 		"- The Agent and Patient are the same, so one is omitted.",
 		"- [newSection]Lexical reflexives:",
@@ -1154,12 +1087,10 @@ const ms = {
 		"   - These are often based on body parts.",
 		"      - e.g.: Another face in the crowd; Move your butt!"
 	],
-
-	"How are reflexives handled?": "How are reflexives handled?",
+	text721: "How are reflexives handled?",
 	"7-2-2-Reciprocals": "7.2.2. Reciprocals",
-	Reciprocals: "Reciprocals",
-	"Working Together": "Working Together",
-
+	title722: "Reciprocals",
+	label722: "Working Together",
 	info722: [
 		"- The Agent and Patient are performing the same action, or",
 		"performing an action together. These are often expressed the",
@@ -1170,12 +1101,10 @@ const ms = {
 		"- Morpholigical and lexical reciprocals follow the same patterns",
 		"as those for reflexives."
 	],
-
-	"How are reciprocals handled?": "How are reciprocals handled?",
+	text722: "How are reciprocals handled?",
 	"7-2-3-Passives": "7.2.3. Passives",
-	Passives: "Passives",
-	"Moving Focus From the Agent": "Moving Focus From the Agent",
-
+	title723: "Passives",
+	label723: "Moving Focus From the Agent",
 	info723: [
 		"- A semantically transitive verb with omitted Agent, the Patient",
 		"treated as Subject, and the verb behaves as if it is intransitive.",
@@ -1202,12 +1131,10 @@ const ms = {
 		"- [newSection]Passive construction may be obligatory in a",
 		"particular environment, e.g. when the Patient outranks the Agent."
 	],
-
-	"How are passives handled?": "How are passives handled?",
+	text723: "How are passives handled?",
 	"7-2-4-Inverses": "7.2.4. Inverses",
-	Inverses: "Inverses",
-	"Playing The Reverse Card": "Playing The Reverse Card",
-
+	title724: "Inverses",
+	label724: "Playing The Reverse Card",
 	info724: [
 		"- This is a valence \"rearranging\" device, e.g. \"Steve taught",
 		"him\" becomes \"Him, Steve taught.\"",
@@ -1226,11 +1153,10 @@ const ms = {
 	checkboxInversesExport: {
 		header: "Inverse Constructions:"
 	},
-	"Describe any peculiarities of inverse constructions.": "Describe any peculiarities of inverse constructions.",
+	text724: "Describe any peculiarities of inverse constructions.",
 	"7-2-5-Middle Constructions": "7.2.5. Middle Constructions",
-	"Middle Constructions": "Middle Constructions",
-	"What Are These?": "What Are These?",
-
+	title725: "Middle Constructions",
+	label725: "What Are These?",
 	info725: [
 		"- Also known as anticausatives or detransitivation: a semantically",
 		"transitive situation expressed as a process undergone by a",
@@ -1242,11 +1168,10 @@ const ms = {
 		"   - e.g. \"Steve broke the car\" becomes \"The car broke\" (and",
 		"it was no fault of Steve's)."
 	],
-
-	"How are middle constructions handled?": "How are middle constructions handled?",
+	text725: "How are middle constructions handled?",
 	"7-2-6-Antipassives": "7.2.6. Antipassives",
-	Antipassives: "Antipassives",
-
+	title726: "Antipassives",
+	label726: "What Are These?",
 	info726: [
 		"- Similar to passives, but the Patient is downgraded instead",
 		"of the Agent.",
@@ -1255,13 +1180,10 @@ const ms = {
 		"- Often, the Patient is omitted or oblique, the verb is marked",
 		"intrasitive, and the Agent is placed in absolutive case."
 	],
-
-	"Describe antipassive strategies in the language, if they exist.":
-		"Describe antipassive strategies in the language, if they exist.",
-	"7-2-7-Object Demotion/Omission/Incorporation":
-		"7.2.7. Object Demotion/Omission/Incorporation",
-	"Object Demotion and Related Functions": "Object Demotion and Related Functions",
-
+	text726: "Describe antipassive strategies in the language, if they exist.",
+	"7-2-7-Object Demotion/Omission/Incorporation": "7.2.7. Object Demotion/Omission/Incorporation",
+	title727: "Object Demotion and Related Functions",
+	label727: "What Are These?",
 	info727: [
 		"- **Demotion**: \"Steve shot Bob\" becomes \"Steve shot at Bob\".",
 		"- [newSection]**Omission**: \"Steve shot Bob\" becomes",
@@ -1276,16 +1198,15 @@ const ms = {
 		"      hand-cut\"), whereas leaving it unincorporated means it",
 		"      was merely injured (\"Darth Vader cut hand\")."
 	],
-
-	"Is object demotion/omission allowed? How about incorporation?": "Is object demotion/omission allowed? How about incorporation?",
+	text727: "Is object demotion/omission allowed? How about incorporation?",
 
 	// PAGE EIGHT
+
 	"8-Other Verb Operations": "8. Other Verb Operations",
 	"8-Other Verb and Verb Phrase Operations": "8. Other Verb and Verb Phrase Operations",
 	"8-1-Nominalization": "8.1. Nominalization",
-	Nominalization: "Nominalization",
-	"Making Nouns": "Making Nouns",
-
+	title81: "Nominalization",
+	label81: "Making Nouns",
 	info81: [
 		"- Every language has strategies of adjusting the grammatical",
 		"category of a root. Turning a word into a noun is _nominalization_.",
@@ -1343,12 +1264,10 @@ const ms = {
 		"         - curve → a curve (That pitcher's curve is unhittable.)",
 		"         - serve → a serve (Serena's serve is imposing.)"
 	],
-
-	"Describe the nominalizations that exist in the language, and explain how productive they are.":
-		"Describe the nominalizations that exist in the language, and explain how productive they are.",
+	text81: "Describe the nominalizations that exist in the language, and explain how productive they are.",
 	"8-2-Compounding": "8.2. Compounding",
-	"Word-Making": "Word-Making",
-
+	title82: "Compounding",
+	label82: "Word-Making",
 	info82: [
 		"- **Noun Incorporation**: noun becomes attached to a verb",
 		"(see 7.2.7).",
@@ -1361,12 +1280,10 @@ const ms = {
 		"   - Verbs that freely compound like this typically lose their",
 		"   verbal character and become derivational affixes."
 	],
-
-	"Describe any compounding strategies that exist in the language.":
-		"Describe any compounding strategies that exist in the language.",
+	text82: "Describe any compounding strategies that exist in the language.",
 	"8-3-Tense/Aspect/Mode": "8.3. Tense/Aspect/Mode",
-	"Tense, Aspect and Mode": "Tense, Aspect and Mode",
-
+	title83: "Tense, Aspect and Mode",
+	label83: "What Are They?",
 	info83: [
 		"- **TAM** (Tense, Aspect, Mode) are sometimes hard to tease apart,",
 		"and may only be considered separate because of how they are in",
@@ -1395,9 +1312,8 @@ const ms = {
 		labels: ["Tense", "Aspect", "Mode", "Other"]
 	},
 	"8-3-1-Tense": "8.3.1. Tense",
-	Tense: "Tense",
-	"Info on Tense": "Info on Tense",
-
+	title831: "Tense",
+	label831: "Info on Tense",
 	info831: [
 		"- **Tense** sets an action in time in relation to \"now\".",
 		"- Languages can divide time up into different sets of tenses:",
@@ -1417,13 +1333,10 @@ const ms = {
 		"      - He come go (will go)",
 		"      - He come come (will come)"
 	],
-
-	"Is there a Tense system? How does it operate? How does it divide time?":
-		"Is there a Tense system? How does it operate? How does it divide time?",
+	text831: "Is there a Tense system? How does it operate? How does it divide time?",
 	"8-3-2-Aspect": "8.3.2. Aspect",
-	Aspect: "Aspect",
-	"Info on Aspect": "Info on Aspect",
-
+	title832: "Aspect",
+	label832: "Info on Aspect",
 	info832: [
 		"- **Aspect** describes the internal structure of an event or",
 		"state. Here are some typical aspects:",
@@ -1490,12 +1403,10 @@ const ms = {
 		"   - I cut _away_ at the handcuffs (imperfective)",
 		"   - I drank your milkshake _up_ (perfective)"
 	],
-
-	"Describe the way the language handles Aspect.": "Describe the way the language handles Aspect.",
+	text832: "Describe the way the language handles Aspect.",
 	"8-3-3-Mode": "8.3.3. Mode",
-	Mode: "Mode",
-	"Info on Mode": "Info on Mode",
-
+	title833: "Mode",
+	label833: "Info on Mode",
 	info833: [
 		"- **Mode** describes a speaker's attitude toward a situation,",
 		"including how likely or truthful it is, or how relevant the",
@@ -1532,12 +1443,10 @@ const ms = {
 		"      - Steve always eats the candy. (Technically grammatical, but",
 		"      sounds \"wrong\")"
 	],
-
-	"Describe how the language deals with Mode.": "Describe how the language deals with Mode.",
+	text833: "Describe how the language deals with Mode.",
 	"8-4-Location/Direction": "8.4. Location/Direction",
-	"Location and Direction": "Location and Direction",
-	"Where?": "Where?",
-
+	title84: "Location and Direction",
+	label84: "Where?",
 	info84: [
 		"- While Tense grounds statements in time, some languages",
 		"grammaticize location and/or direction markers to ground statements",
@@ -1565,14 +1474,10 @@ const ms = {
 		"(centric) or away from (exocentric) a designated center (usually",
 		"where the speaker is)."
 	],
-
-	"Does the language have affixes or other functions that represent spatial grounding?":
-		"Does the language have affixes or other functions that represent spatial grounding?",
-	"8-5-Evidentiality, Validationality and Mirativity":
-		"8.5. Evidentiality, Validationality and Mirativity",
-	Evidentiality: "Evidentiality",
-	"Truth and Certainty": "Truth and Certainty",
-
+	text84: "Does the language have affixes or other functions that represent spatial grounding?",
+	"8-5-Evidentiality, Validationality and Mirativity": "8.5. Evidentiality, Validationality and Mirativity",
+	title85: "Evidentiality",
+	label85: "Truth and Certainty",
 	info85: [
 		"- **Evidentiality** expresses how much evidence the speaker has",
 		"to make this assertion. For instance, first-hand knowledge is more",
@@ -1601,13 +1506,10 @@ const ms = {
 		"   - Inferred from evidence",
 		"   - Hearsay"
 	],
-
-	"Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?":
-		"Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?",
+	text85: "Are there any grammaticized indicators of Evidentiality, Validationality, or Mirativity?",
 	"8-6-Miscellaneous": "8.6. Miscellaneous",
-	Miscelaneous: "Miscelaneous",
-	Leftovers: "Leftovers",
-
+	title86: "Miscelaneous",
+	label86: "Leftovers",
 	info86: [
 		"- There are miscellaneous verb-phrase operations that might",
 		"or might not exist.",
@@ -1621,16 +1523,14 @@ const ms = {
 		"   \"over water\"",
 		"   - Speaker attitude, i.e. \"disgusted\" or \"complaining\""
 	],
-	"Does the language have any other notable verb phrase operations?":
-		"Does the language have any other notable verb phrase operations?",
+	text86: "Does the language have any other notable verb phrase operations?",
 
 	// PAGE NINE
 
 	"9-Pragmatic Marking": "9. Pragmatic Marking",
 	"9-Pragmatically Marked Structures": "9. Pragmatically Marked Structures",
-	Pragmatics: "Pragmatics",
-	"What are Pragmatics?": "What are Pragmatics?",
-
+	title9: "Pragmatics",
+	label9: "What are Pragmatics?",
 	info9: [
 		"- Pragmatics is the interpretation of utterances, and Pragmatic",
 		"Statuses relate the _content_ of an utterance to its _context_.",
@@ -1683,9 +1583,8 @@ const ms = {
 		"      as a topic of further discourse."
 	],
 	"9-1-Focus, Contrast and Topicalization": "9.1. Focus, Contrast and Topicalization",
-	"Focus, Contrast, etc.": "Focus, Contrast, etc.",
-	"Focus is What This is About": "Focus is What This is About",
-
+	title91: "Focus, Contrast, etc.",
+	label91: "Focus is What This is About",
 	info91: [
 		"- **Intonation and Vocalization**, such as tempo changes (\"Do.",
 		"Not. Do. That.\"), volume changes (screaming, whispering), and",
@@ -1742,12 +1641,10 @@ const ms = {
 		"            - \"hon _wa_ taroo ga katta.\" - As for the book,",
 		"            Taro bought it."
 	],
-	"Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.":
-		"Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.",
+	text91: "Are there special devices for indicating Pragmatic Statuses in basic clauses? Describe cleft constructions, if there are any.",
 	"9-2-Negation": "9.2. Negation",
-	Negation: "Negation",
-	"Don't not read this.": "Don't not read this.",
-
+	title92: "Negation",
+	label92: "Don't not read this.",
 	info92: [
 		"- Common negation strategies:",
 		"   - **Clausal negation** - negates an entire proposition",
@@ -1853,13 +1750,10 @@ const ms = {
 		"         | \"He won't force you to volunteer.\" | Entire clause |",
 		"         | \"He will force you not to volunteer.\" | Com&shy;ple&shy;ment clause |"
 	],
-
-	"Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?":
-		"Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?",
+	text92: "Describe the standard way of creating a negative clause, plus any secondary strategies that may exist. Is there constituent or derivational negation?",
 	"9-3-Non-Declarative Speech": "9.3. Non-Declarative Speech",
-	"Declarative Statements": "Declarative Statements",
-	"Minor Note on Declaratives": "Minor Note on Declaratives",
-
+	title93: "Declarative Statements",
+	label93: "Minor Note on Declaratives",
 	info93: [
 		"- A declarative statement is an assertion. Most speech is",
 		"declarative.",
@@ -1870,13 +1764,11 @@ const ms = {
 		"statements unmarked and only mark the others. But some (e.g.",
 		"Tibetan) will mark declaratives, too."
 	],
-
-	"If declaratives are marked, describe how.": "If declaratives are marked, describe how.",
+	text93: "If declaratives are marked, describe how.",
 	"9-3-1-Interrogatives": "9.3.1. Interrogatives",
 	"9-3-1-1-Yes/No Questions": "9.3.1.1. Yes/No Questions",
-	"Yes/No Questions": "Yes/No Questions",
-	"Yes? No?": "Yes? No?",
-
+	title9311: "Yes/No Questions",
+	label9311: "Yes? No?",
 	info9311: [
 		"- **Yes/No Questions**, hereafter referred to as _YNQs_, are",
 		"interrogative clauses where the expected answer is either \"yes\"",
@@ -1941,13 +1833,10 @@ const ms = {
 		"   - _Confirmation_: \"Aren't you going?\"",
 		"   - _Intensification_: \"Did he ever yell!\""
 	],
-
-	"How are yes/no questions formed? Do they serve other discourse functions other than the obvious?":
-		"How are yes/no questions formed? Do they serve other discourse functions other than the obvious?",
+	text9311: "How are yes/no questions formed? Do they serve other discourse functions other than the obvious?",
 	"9-3-1-2-Questions-Word Questions": "9.3.1.2. Questions-Word Questions",
-	"Question-Word Questions": "Question-Word Questions",
-	"Who? What? Why?": "Who? What? Why?",
-
+	title9312: "Question-Word Questions",
+	label9312: "Who? What? Why?",
 	info9312: [
 		"- Also known as **Content Questions** or **Information Questions**,",
 		"Question-Word Questions (QWs) are best exemplified by the English",
@@ -1975,12 +1864,10 @@ const ms = {
 		"   - _What_ did you travel _with_?",
 		"   - _With what_ did you travel?"
 	],
-
-	"How are information questions formed?": "How are information questions formed?",
+	text9312: "How are information questions formed?",
 	"9-3-2-Imperatives": "9.3.2. Imperatives",
-	Imperatives: "Imperatives",
-	"Command Sentences": "Command Sentences",
-
+	title932: "Imperatives",
+	label932: "Command Sentences",
 	info932: [
 		"- Imperatives are direct commands to an addressee.",
 		"- It is often not necessary to indicate the Agent (addressee),",
@@ -2001,16 +1888,13 @@ const ms = {
 		"- [newSection]First-person imperatives are rare. (e.g. \"Let's",
 		"eat.\" vs \"Come eat with me.\")"
 	],
-
-	"How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?":
-		"How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?",
+	text932: "How are imperatives formed? Are there \"polite\" imperatives that contrast with more direct imperatives?",
 
 	// PAGE TEN
 
 	"10-Clause Combinations": "10. Clause Combinations",
-	Terms: "Terms",
-	"Quick Primer on Clauses": "Quick Primer on Clauses",
-
+	title10: "Terms",
+	label10: "Quick Primer on Clauses",
 	info10: [
 		"- An **Independent Clause** is one that is fully inflected",
 		"and can stand on its own.",
@@ -2024,11 +1908,9 @@ const ms = {
 		"   - _The runner crossed the finish line_ is Independent.",
 		"   - _Breathing heavily_ is Dependent."
 	],
-
 	"10-1-Serial Verbs": "10.1. Serial Verbs",
-	"Serial Verbs": "Serial Verbs",
-	"Go Tap on This": "Go Tap on This",
-
+	title101: "Serial Verbs",
+	label101: "Go Tap on This",
 	info101: [
 		"- **Serial Verbs** are two or more verb roots that aren't",
 		"compounded (8.2) or members of different clauses.",
@@ -2072,13 +1954,10 @@ const ms = {
 		"   - Sùpyìré: \"use\" has become a postpositional marker for an",
 		"   Instrumental role."
 	],
-
-	"Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?":
-		"Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?",
+	text101: "Does the language have serial verbs? What verbs are more likely to appear in serial constructions? Are any on the way to becoming auxiliaries or adpositions?",
 	"10-2-Complement Clauses": "10.2. Complement Clauses",
-	"Complement Clauses": "Complement Clauses",
-	"Enter The Matrix": "Enter The Matrix",
-
+	title102: "Complement Clauses",
+	label102: "Enter The Matrix",
 	info102: [
 		"- A **Complement Clause** (or Embedded Clause) functions as an",
 		"argument to another clause.",
@@ -2114,12 +1993,10 @@ const ms = {
 		"   - They may share formal properties with interrogative clauses",
 		"   and relative clauses."
 	],
-	"What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?":
-		"What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?",
+	text102: "What kinds of complement clauses does the language have? Are certain complement types more common for certain classes of verbs? Does the language allow Agent complements, or just Patient complements?",
 	"10-3-Adverbial Clauses": "10.3. Adverbial Clauses",
-	"Adverbial Clauses": "Adverbial Clauses",
-	"Tap This When You're Ready": "Tap This When You're Ready",
-
+	title103: "Adverbial Clauses",
+	label103: "Tap This When You're Ready",
 	info103: [
 		"- Also called _Adjuncts_, **Adverbial Clauses** behave as adverbs.",
 		"- They can convey certain kinds of information:",
@@ -2154,15 +2031,10 @@ const ms = {
 		"   - _Absolutive_:",
 		"      - \"[Seeing a bully], Billy hid behind a curtain.\""
 	],
-
-	"How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?":
-		"How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?",
-	"10-4-Clause Chaining, Medial Clauses, and Switch References":
-		"10.4. Clause Chaining, Medial Clauses, and Switch References",
-	"Clause Chaining, Medial Clauses, and Switch References":
-		"Clause Chaining, Medial Clauses, and Switch References",
-	"Chain Chain Chain...": "Chain Chain Chain...",
-
+	text103: "How are adverbial clauses formed? What kinds are there? Can they occur in more than one place in a clause?",
+	"10-4-Clause Chaining, Medial Clauses, and Switch References": "10.4. Clause Chaining, Medial Clauses, and Switch References",
+	title104: "Clause Chaining, Medial Clauses, and Switch References",
+	label104: "Chain Chain Chain...",
 	info104: [
 		"- **Clause Chains** are clauses presented in series. They can form",
 		"a large part of discourse in many languages, such as the ones of",
@@ -2223,12 +2095,10 @@ const ms = {
 	checkboxMarkerInfoExport: {
 		header: "Marker Encodes:"
 	},
-	"Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?":
-		"Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?",
+	text104: "Is the coreference always the Subject, or can the Agent, Patient, or other nominals be referred to? Do the markers convey other information, like person, number, tense, aspect, and/or semantics? Can a clause be inflected for the person/number of another clause?",
 	"10-5-Relative Clauses": "10.5. Relative Clauses",
-	"Relative Clauses": "Relative Clauses",
-	"Clauses as Adjectives": "Clauses as Adjectives",
-
+	title105: "Relative Clauses",
+	label105: "Clauses as Adjectives",
 	info105: [
 		"- A **Relative Clause** is a clause that functions as a nominal",
 		"modifier. They can be identified by four points.",
@@ -2328,12 +2198,10 @@ const ms = {
 	checkboxRelativeExport: {
 		header: "Type of Relative Clauses:"
 	},
-	"Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).":
-		"Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).",
+	text105: "Note what strategies are used in Relativizing Clauses, and where they fit on the hierarchy (if it applies).",
 	"10-6-Coordinating Clauses": "10.6. Coordinating Clauses",
-	"Coordinating Clauses": "Coordinating Clauses",
-	"This And That": "This And That",
-
+	title106: "Coordinating Clauses",
+	label106: "This And That",
 	info106: [
 		"- **Coordinating Clauses** are linked together, equal in grammatical",
 		"status. They may be difficult to distinguish from juxtaposition.",
@@ -2381,8 +2249,7 @@ const ms = {
 	checkboxCoordExport: {
 		header: "Coordinating Conjunction Positions:"
 	},
-	"Describe how Conjunction, Disjunction and Exclusion are expressed in the language.":
-		"Describe how Conjunction, Disjunction and Exclusion are expressed in the language.",
+	text106: "Describe how Conjunction, Disjunction and Exclusion are expressed in the language.",
 
 	// OVERVIEW
 
