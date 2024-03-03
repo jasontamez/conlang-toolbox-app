@@ -1,5 +1,6 @@
 import { MouseEvent } from "react";
 import {
+	AlignmentType,
 	BorderStyle,
 	Document,
 	HeadingLevel,
@@ -11,6 +12,7 @@ import {
 	TableCell,
 	TableRow,
 	TextRun,
+	VerticalAlign,
 	WidthType
 } from "docx";
 import { UseIonToastResult } from "@ionic/react";
@@ -38,7 +40,58 @@ interface Section {
 	children: Child[]
 }
 
+const border: ITableBordersOptions = {
+	top: {
+		style: BorderStyle.SINGLE,
+		size: 1,
+		color: "000000"
+	},
+	bottom: {
+		style: BorderStyle.SINGLE,
+		size: 1,
+		color: "000000"
+	},
+	left: {
+		style: BorderStyle.SINGLE,
+		size: 1,
+		color: "000000"
+	},
+	right: {
+		style: BorderStyle.SINGLE,
+		size: 1,
+		color: "000000"
+	},
+};
+const spacing = {
+	before: 200
+};
+
 const t = tMaker({ns: "ms"});
+
+const makeParagraphFromMD = (input: string, centerThisText = false) => {
+	const output: TextRun[] = [];
+	input.split(/\*{2,}/).forEach((bit, i) => {
+		const options = {
+			text: "",
+			bold: !!(i % 2), // Even is bold
+			italics: true
+		};
+		bit.split(/_+/).forEach((line, i) => {
+			if(!line) {
+				return;
+			}
+			options.italics = !!(i % 2); // Even is italics
+			options.text = line;
+			output.push(new TextRun(options))
+		});
+	});
+	const alignment = centerThisText ? { alignment: AlignmentType.CENTER } : {};
+	return new Paragraph({
+		children: output,
+		spacing,
+		...alignment
+	});
+};
 
 const doDocx = (
 	e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>,
@@ -52,9 +105,6 @@ const doDocx = (
 	const { title, description } = msInfo;
 	const msSections: string[] = msRawInfo.sections;
 	const sections: Section[] = [];
-	const spacing = {
-		before: 200
-	};
 	sections.push({
 		properties: { type: SectionType.CONTINUOUS },
 		children: [
@@ -225,9 +275,14 @@ const doDocx = (
 						header,
 						columnHeaders,
 						labels
-					} = i18n.t(i18, { returnObjects: true }) as CheckboxTransProps;
+					} = i18n.t(i18, { ns: "ms", returnObjects: true }) as CheckboxTransProps;
 					// Get special info for exports
-					const expoLabels = (i18n.t(expo ? expo.i18 : "", { returnObjects: true }) as CheckboxTransExportProps || {}).labels;
+					const expoLabels = (
+						i18n.t(
+							expo ? expo.i18 : "",
+							{ ns: "ms", returnObjects: true }
+						) as CheckboxTransExportProps || {}
+					).labels;
 					// determine labels we're using
 					const labelsToUse = (
 						expo && expo.labelOverrideDocx ?
@@ -272,38 +327,14 @@ const doDocx = (
 							temp = [];
 						}
 					});
-					const border: ITableBordersOptions = {
-						top: {
-							style: BorderStyle.SINGLE,
-							size: 1,
-							color: "000000"
-						},
-						bottom: {
-							style: BorderStyle.SINGLE,
-							size: 1,
-							color: "000000"
-						},
-						left: {
-							style: BorderStyle.SINGLE,
-							size: 1,
-							color: "000000"
-						},
-						right: {
-							style: BorderStyle.SINGLE,
-							size: 1,
-							color: "000000"
-						},
-					}
-					const checkedBox = t("textCheckedBox");;
+					const checkedBox = t("textCheckedBox");
 					rows.forEach(row => {
 						// cell[s] [label] [?label]
 						const cols = colWidths.slice();
 						const cells: TableCell[] = [];
 						const checkingCells: string[] = [];
-						let leftover = 100;
 						row.forEach(([propertyName, bool]) => {
 							const percent = Math.floor(cols.shift()! * portion);
-							leftover -= percent;
 							cells.push(new TableCell({
 								borders: border,
 								width: {
@@ -311,17 +342,18 @@ const doDocx = (
 									type: WidthType.PERCENTAGE
 								},
 								children: [new Paragraph({
-									text: bool ? checkedBox : " "
-								})]
+									text: bool ? checkedBox : " ",
+									alignment: AlignmentType.CENTER
+								})],
+								verticalAlign: VerticalAlign.CENTER
 							}));
 							checkingCells.push(bool ? checkedBox : ".");
 						});
 						if(labelsToUse.length > 0) {
-							const shift = labelsToUse.shift();
+							const shift = labelsToUse.shift()!;
 							const texts = Array.isArray(shift) ? shift : [ shift ];
 							texts.forEach(text => {
 								const percent = Math.floor(cols.shift()! * portion);
-								leftover -= percent;
 								cells.push(
 									new TableCell({
 										borders: border,
@@ -329,31 +361,13 @@ const doDocx = (
 											size: percent,
 											type: WidthType.PERCENTAGE
 										},
-										children: [new Paragraph({
-											text
-										})]
+										children: [makeParagraphFromMD(text)],
+										verticalAlign: VerticalAlign.CENTER
 									})
 								);
 								checkingCells.push(text!);
 							});
 						}
-						const possibleTexts = labelsToUse.shift() || "";
-						const texts = Array.isArray(possibleTexts) ? possibleTexts.slice() : [ possibleTexts ];
-						texts.forEach(text => {
-							cells.push(
-								new TableCell({
-									borders: border,
-									width: {
-										size: leftover,
-										type: WidthType.PERCENTAGE
-									},
-									children: [new Paragraph({
-										text
-									})]
-								})
-							);
-							checkingCells.push(text);
-						});
 						colCount = Math.max(colCount, cells.length);
 						output.push(new TableRow({
 							children: cells,
@@ -366,7 +380,7 @@ const doDocx = (
 						const checkingCells: string[] = [];
 						let leftover = 100;
 						const cols = colWidths.slice();
-						columnHeaders.forEach((columnHeader: string) => {
+						columnHeaders.forEach((columnHeader: string, i) => {
 							const percent = (
 								cols.length > 0 ?
 									Math.floor(cols.shift()! * portion)
@@ -380,9 +394,8 @@ const doDocx = (
 									size: percent,
 									type: WidthType.PERCENTAGE
 								},
-								children: [new Paragraph({
-									text: columnHeader
-								})]
+								children: [makeParagraphFromMD(columnHeader, i < perRow)],
+								verticalAlign: VerticalAlign.CENTER
 							}));
 							checkingCells.push(columnHeader);
 							colCount = Math.max(colCount, cells.length);
@@ -400,15 +413,14 @@ const doDocx = (
 							tableHeader: true,
 							cantSplit: true,
 							children: [new TableCell({
-								children: [new Paragraph({
-									text: header
-								})],
+								children: [makeParagraphFromMD(header)],
 								width: {
 									size: 100,
 									type: WidthType.PERCENTAGE
 								},
 								borders: border,
-								columnSpan: colCount
+								columnSpan: colCount,
+								verticalAlign: VerticalAlign.CENTER
 							})]
 						}));
 						checkingOutput.unshift(`[header]`);
@@ -439,7 +451,7 @@ const doDocx = (
 	const doc = new Document({
 		creator: tc("Conlang Toolbox"),
 		description: t("msDocumentDescription"),
-		title: `${title} - ${t("msDocument", { context: "formal" })}`,
+		title: `${title} - ${t("msDocument_formal")}`,
 		sections
 	});
 	e.preventDefault();

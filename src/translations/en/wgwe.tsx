@@ -42,15 +42,6 @@ const wgwe = {
 	"Description of the transformation": "$t(common:description_formal) of the $(trans)",
 	"Description of the transformation_presentation": "$t(Transformation) $t(common:description_formal):",
 
-	"Sound Change": "Sound Change",
-	"Sound Changes": "Sound Changes",
-	"sChange": "sound change",
-	"sChange_one": "sound change",
-	"sChange_other": "sound changes",
-
-	Syllable: "Syllable",
-	Syllables: "Syllables",
-
 	"No search expression present": "No search expression present",
 	"search expression": "search expression",
 	"search expression_formal": "Search Expression",

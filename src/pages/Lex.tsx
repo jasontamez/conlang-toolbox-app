@@ -87,6 +87,7 @@ import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
 import i18n from '../i18n';
 import './Lexicon.css';
+import Markdown from 'react-markdown';
 
 interface LexItem {
 	index: number
@@ -859,39 +860,35 @@ export const LexCard = () => {
 				<IonLabel>{tc("Lexicon")}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>{t("info.basic")}</p>
+				<Markdown>{t("info.basic", { joinArrays: "\n" })}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={chevronUpCircle} color="tertiary" size="large" />
 				</p>
-				<p>{t("info.description")}</p>
+				<Markdown>{t("info.description", { joinArrays: "\n" })}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={saveOutline} color="tertiary" size="large" />
 				</p>
-				<p>{t("info.saveButton")}</p>
-				<p>{t("info.counterAndSort")}</p>
+				<Markdown>{t("info.saveCounterAndSort", { joinArrays: "\n" })}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={settings} color="tertiary" size="large" />
 				</p>
-				<p>{t("info.editColumns1")}<IonIcon icon={reorderTwo} color="tertiary" />{t("info.editColumns2")}</p>
-				<p>{t("info.secondRow")}</p>
-				<p>{t("info.mainLexicon")}</p>
-				<p className="center pad-top-rem">
-					<IonIcon icon={construct} color="tertiary" size="large" />
-				</p>
-				<p>{t("info.toolButton")}</p>
-				<hr />
+				<Markdown
+					components={{
+						code(props) {
+							return <IonIcon icon={reorderTwo} color="tertiary" size="small" />;
+						}
+					}}
+				>{t("info.editColumnsEtc", { joinArrays: "\n" })}</Markdown>
 				<p className="center">
 					<IonIcon color="tertiary" size="large" src="svg/link.svg" />
 				</p>
-				<p>{t("info.mergeButton1")}<strong>{t("info.mergeButtonTitle")}</strong>{t("info.mergeButton2")}</p>
-				<p>{t("info.exportExample1")}<strong>{tc("Conlang Toolbox")}</strong>{t("info.exportExample2")}</p>
-				<ol>
-					<li>{t("info.exampleList1")}</li>
-					<li>{t("info.exampleList2p1")}<strong>{tc("WordGen")}</strong>{t("info.exampleList2p2")}</li>
-					<li>{t("info.exampleList3p1")}<strong>{tc("WordEvolve")}</strong>{t("info.exampleList3p2")}</li>
-					<li>{t("info.exampleList4p1")}<strong>{tc("Concepts")}</strong>{t("info.exampleList4p2")}</li>
-					<li>{t("info.exampleList5")}</li>
-				</ol>
+				<Markdown>{t("info.mergeButton", { joinArrays: "\n" })}</Markdown>
+				<p className="center pad-top-rem">
+					<IonIcon icon={construct} color="tertiary" size="large" />
+				</p>
+				<Markdown>{t("info.toolButton", { joinArrays: "\n" })}</Markdown>
+				<hr />
+				<Markdown>{t("info.exampleUse", { joinArrays: "\n" })}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);

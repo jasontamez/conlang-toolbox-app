@@ -24,9 +24,11 @@ import './Menu.css';
 
 interface PlainMenuItemProps {
 	appPage: AppPage
-}interface SubMenuItemProps extends PlainMenuItemProps {
+}
+interface SubMenuItemProps extends PlainMenuItemProps {
 	isToggled : boolean
-}interface MenuItemProps extends SubMenuItemProps {
+}
+interface MenuItemProps extends SubMenuItemProps {
 	setMenuInfo: SetState<string | false>
 }
 

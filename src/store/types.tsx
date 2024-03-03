@@ -126,7 +126,7 @@ export interface WGMoreSettings {
 	wordsPerWordlist: Fifty_OneThousand
 }
 export type WGState = Base_WG & WGMoreSettings;
-export type WGPresetObject = [
+export type WGPresetArray = [
 	string,
 	Base_WG
 ][];

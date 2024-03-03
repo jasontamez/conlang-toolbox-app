@@ -9,7 +9,7 @@ import {
 } from "../store/types";
 
 // helper functions and such
-export type WGPresetObject = Map<string, WGPreset>;
+export type WGPresetArray = Map<string, WGPreset>;
 
 export type WGPreset = {
 	wordgenCharGroups: WGCharGroupStateObject

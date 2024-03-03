@@ -1,4 +1,4 @@
-import { WGPresetObject, WGSettings } from './types';
+import { WGPresetArray, WGSettings } from './types';
 
 const basicSettings: WGSettings = {
 	monosyllablesRate: 20,
@@ -28,7 +28,7 @@ const simpleSyllables = {
 	}
 };
 
-const WGPresets: WGPresetObject = [
+const WGPresets: WGPresetArray = [
 	["Simple", {
 		characterGroups: [
 			{

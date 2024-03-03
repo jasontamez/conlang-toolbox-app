@@ -34,6 +34,12 @@ import doXML from './Ex-XML';
 import doJSON from './Ex-JSON';
 //import doODT from './Ex-ODT';
 
+// FOR BROWSER TESTING ONLY
+import { saveAs } from 'file-saver';
+import { isPlatform } from "@ionic/react";
+import toaster from "../../../components/toaster";
+// FOR BROWSER TESTING ONLY
+
 interface ExportModalProps extends ModalProperties {
 	setLoading: SetBooleanState
 }
@@ -57,6 +63,23 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 	const doDownload = (e: MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>, output: string, extension: string) => {
 		e.preventDefault();
 		const filename =  tc("fileFormat", { title, date: (new Date()).toDateString(), extension });
+
+		// FOR BROWSER TESTING ONLY
+		//i18n not needed here
+		if(!isPlatform("android")) {
+			var blob = new Blob([output], {type: "text/plain;charset=utf-8"});
+			saveAs(blob, filename);
+			toast && toaster({
+				message: `${filename} exported`,
+				color: "success",
+				duration: 5000,
+				toast
+			});
+			doClose();
+			return;
+		}
+		// FOR BROWSER TESTING ONLY
+
 		setLoading(true);
 		doExport(output, filename, toast, dispatch)
 			.catch((e = "Error doexport") => {

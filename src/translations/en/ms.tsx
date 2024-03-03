@@ -15,14 +15,14 @@ const ms = {
 	msDocument_formal: "$t(common:MorphoSyntax) Document",
 	newMsDocument: "New $t(common:MorphoSyntax) document",
 	msDocumentDescription:
-		"A $t(msDocument, {context: \"formal\"}) exported from $t(common:Conlang Toolbox).",
+		"A $t(msDocument_formal) exported from $t(common:Conlang Toolbox).",
 	"MorphoSyntax Settings": "$t(common:MorphoSyntax) $t(common:Settings)",
 	"No Saved MorphoSyntax Documents":
 		"No Saved $t(common:MorphoSyntax) Documents.",
 	"your current MorphoSyntax information":
 		"your current $t(common:MorphoSyntax) information",
 	msTitle: "$t(common:MorphoSyntax) $t(common:Title)",
-	msTitle_presentation: "$t(common:MorphoSyntax) $t(common:Title):",
+	msTitle_presentation: "$t(common:MorphoSyntax) $t(common:Title)", // presentation context will pull Title_presentation by default
 	"Usually the language name.": "Usually the language name.",
 	"A short description of this document.":
 		"A short description of this document.",
@@ -145,8 +145,9 @@ const ms = {
 	text12: "What sort of morphological processes are used? Which are primary and which are used less?",
 	"1-3-Head/Dependent Marking": "1.3. Head/Dependent Marking",
 	"Head Marked": "Head Marked",
-	title13: "Dependent Marked",
-	label13: "Head/Dependent Marking",
+	"Dependent Marked": "Dependent Marked",
+	title13: "Head/Dependent Marking",
+//	label13: ""
 	info13: [
 		"- The **Head** of a phrase is the element that determines the",
 		"syntactic function of the whole phrase.",
@@ -300,7 +301,7 @@ const ms = {
 			"Other Verb Class(es): you might have a distinction different from those already listed"
 		]
 	},
-	text222: "If you've marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.",
+	text222: "If you have marked a verb class as \"Special\", describe how the language treats it differently than the \"regular\" verbs.",
 	"2-2-3-Verb Structure": "2.2.3. Verb Structure",
 	title223: "Verb Structure",
 	label223: "Structure and Operations Info",
@@ -398,7 +399,7 @@ const ms = {
 		"      gray_ or _the red_?\"), but these are actually",
 		"      _zero derivations_ (8.1)."
 	],
-	text231: "How does the language handle Property Concepts (descriptive adjectives)? If they're not all treated the same way (as in Dutch or Yoruba), explain the differences.",
+	text231: "How does the language handle Property Concepts (descriptive adjectives)? If they are not all treated the same way (as in Dutch or Yoruba), explain the differences.",
 	"2-3-2-Non-Numeral Quantifiers (e.g. few, many, some)": "2.3.2. Non-Numeral Quantifiers (e.g. few, many, some)",
 	text232: "Which quantifiers exist?",
 	"2-3-3-Numerals": "2.3.3. Numerals",
@@ -1841,7 +1842,7 @@ const ms = {
 		"- Also known as **Content Questions** or **Information Questions**,",
 		"Question-Word Questions (QWs) are best exemplified by the English",
 		"words who, whom, what, where, when, why, which, and how.",
-		"- All languages have a set of special QWQs. Often, they're similar",
+		"- All languages have a set of special QWQs. Often, they are similar",
 		"or identical to a set of pronouns used elsewhere in the language.",
 		"(e.g. English's who, where, when.)",
 		"- QWs accomplish two things:",

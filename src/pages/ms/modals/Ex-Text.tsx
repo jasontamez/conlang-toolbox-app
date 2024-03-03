@@ -54,8 +54,10 @@ const doText = (
 							content = "#" + content;
 							level--;
 						}
+						lines.push(content);
+					} else {
+						lines.push(t(content));
 					}
-					lines.push(t(content));
 					break;
 				case "Range":
 					// Range is always saved, as it always has some sort of info

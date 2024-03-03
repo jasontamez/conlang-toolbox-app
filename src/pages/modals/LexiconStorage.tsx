@@ -231,7 +231,7 @@ const LexiconStorageModal = (props: StorageModalProps) => {
 				<IonList lines="none">
 					<IonItem button={true} onClick={() => clearLexicon()}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>{t("clearGeneralThings", { things: tc("Lexicon") })}</IonLabel>
+						<IonLabel>{tc("clearGeneralThings", { things: tc("Lexicon") })}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={() => openLexiconModal(openLoad)}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />

@@ -30,11 +30,20 @@ import {
 	DeclenjugatorIcon
 } from '../components/icons';
 import Header from '../components/Header';
-import { appPagesObject } from '../components/appPagesInfo';
+import { AppPage, appPagesObject } from '../components/appPagesInfo';
 import ModalWrap from '../components/ModalWrap';
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import { ConceptCard } from './Concepts';
 import { LexCard } from './Lex';
+
+const subPages = (objs: AppPage[], prefix: string) => objs.filter(obj => !obj.hidden).map((obj, i) => {
+	const { url, tab, icon, Icon, noIcon } = obj;
+	return (
+		<IonButton routerLink={url} routerDirection="forward" key={`${prefix}Btn-${tab}`}>
+			{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>p.{noIcon || i}</IonLabel>)}
+		</IonButton>
+	);
+});
 
 const Home = (props: PageData) => {
 	const { t } = useTranslation(['common']);
@@ -64,14 +73,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.ms.filter(obj => !obj.hidden).map(obj => {
-								const { url, tab, icon, Icon, noIcon } = obj;
-								return (
-									<IonButton routerLink={url} routerDirection="forward" key={"msBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>p.{noIcon}</IonLabel>)}
-									</IonButton>
-								);
-							})}
+							{subPages(appPagesObject.ms, "ms")}
 							<IonButton routerLink="/ms/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -88,14 +90,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.wg.filter(obj => !obj.hidden).map((obj, i) => {
-								const { url, tab, icon, Icon } = obj;
-								return (
-									<IonButton routerLink={url} routerDirection="forward" key={"wgBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
-									</IonButton>
-								);
-							})}
+							{subPages(appPagesObject.wg, "wg")}
 							<IonButton routerLink="/wg/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -112,14 +107,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.we.filter(obj => !obj.hidden).map((obj, i) => {
-								const { url, tab, icon, Icon } = obj;
-								return (
-									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
-									</IonButton>
-								);
-							})}
+							{subPages(appPagesObject.we, "we")}
 							<IonButton routerLink="/we/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -136,14 +124,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{appPagesObject.dj.filter(obj => !obj.hidden).map((obj, i) => {
-								const { url, tab, icon, Icon } = obj;
-								return (
-									<IonButton routerLink={url} routerDirection="forward" key={"weBtn-" + tab}>
-										{Icon ? <Icon /> : (icon ? <IonIcon icon={icon} /> : <IonLabel>{i}</IonLabel>)}
-									</IonButton>
-								);
-							})}
+							{subPages(appPagesObject.dj, "dj")}
 							<IonButton routerLink="/dj/overview" className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>

@@ -42,6 +42,7 @@ const rangeChangeFunc = (dispatch: Dispatch, nProp: MSNum) => {
 
 const MSPage = (props: MSData) => {
 	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const ms = useSelector((state: StateObject) => state.ms);
 	const { modalPropsMaker, page } = props;
@@ -104,8 +105,8 @@ const MSPage = (props: MSData) => {
 				);
 		}
 		// THIS SHOULDN'T HAPPEN
-		return <React.Fragment key={key}>ERROR</React.Fragment>;
-	}, [ms, dispatch, page, t, modalPropsMaker]);
+		return <React.Fragment key={key}>{tc("emphasizedError")}</React.Fragment>;
+	}, [ms, dispatch, page, t, modalPropsMaker, tc]);
 	useIonViewDidEnter(() => {
 		dispatch(setLastViewMS("ms" + page));
 	});

@@ -190,7 +190,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: tc("Syllables", { ns: "wgwe" }),
+				title: tc("Syllables", { ns: "wg" }),
 				url: '/wg/syllables',
 				tab: 'syllables',
 				id: 'menuitemWGsyl',
@@ -265,7 +265,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: tc("Sound Changes", { ns: "wgwe" }),
+				title: tc("Sound Changes", { ns: "we" }),
 				url: '/we/soundchanges',
 				tab: 'soundchanges',
 				tabTitle: 'Changes',
