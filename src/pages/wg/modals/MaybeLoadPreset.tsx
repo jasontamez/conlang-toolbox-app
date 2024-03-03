@@ -29,16 +29,57 @@ import useTranslator from '../../../store/translationHooks';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 
+const getSpecialValue: (x: string) => [string, ...[string, string][]] | [string] = (input) => {
+	let m = input.match(/^(.+)((?:\[[^=]+=[^\]]+\])+)$/);
+	if(m) {
+		const key = m[1];
+		let remains = m[2];
+		const options: [string, string][] = [];
+		while((m = remains.match(/^\[([^=]+)=([^\]]+)\](.*)/))) {
+			options.push([m[1], m[2]]);
+			remains = m[3];
+		}
+		return [key, ...options];
+	}
+	return [input];
+};
+
 const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
-	const [ t ] = useTranslator('we');
+	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
-	const maybeLoadPreset = (preset: string, object: Base_WG) => {
+	const maybeLoadPreset = (presetTitle: string, object: Base_WG) => {
+		const preset = t(presetTitle);
 		const handler = () => {
+			const copy = {...object};
+			copy.characterGroups = object.characterGroups.map(group => {
+				const { title, ...etc } = group;
+				const [value, ...pairs] = getSpecialValue(title);
+				const options: {[key: string]: string} = {};
+				pairs.forEach(([prop, value]) => {
+					options[prop] = value;
+				});
+				return {
+					...etc,
+					title: t(value, options)
+				};
+			});
+			copy.transforms = object.transforms.map(group => {
+				const { description, ...etc } = group;
+				const [value, ...pairs] = getSpecialValue(description);
+				const options: {[key: string]: string} = {};
+				pairs.forEach(([prop, value]) => {
+					options[prop] = value;
+				});
+				return {
+					...etc,
+					description: t(value, options)
+				};
+			});
 			dispatch(loadStateWG(object));
 			toaster({
 				message: tc("titleLoaded", { title: preset }),
@@ -76,11 +117,11 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{WGPresets.map((([title, object]) => (
+					{isOpen ? WGPresets.map((([title, object]) => (
 						<IonItem key={title} button={true} onClick={() => maybeLoadPreset(title, object)}>
-							<IonLabel>{title}</IonLabel>
+							<IonLabel>{t(title)}</IonLabel>
 						</IonItem>
-					)))}
+					))) : <></>}
 				</IonList>
 			</IonContent>
 			<IonFooter>

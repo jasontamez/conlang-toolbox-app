@@ -126,6 +126,182 @@ const wg = {
 
 	allThings: "all current $t(charGroup_other), $t(syll_other), $t(trans_other), and settings",
 
+
+	// PRESETS
+
+	Medium: "Medium",
+	Complex: "Complex",
+	"Pseudo-Latin": "Pseudo-Latin",
+	"Pseudo-Chinese": "Pseudo-Chinese",
+	"Pseudo-Greek": "Pseudo-Greek",
+	"Pseudo-English": "Pseudo-English",
+	"Pseudo-Japanese": "Pseudo-Japanese",
+
+	Consonants: "Consonants",
+	"Initial consonants": "Initial consonants",
+	"Word-ending consonants": "Word-ending consonants",
+	"Pre-liquid consonants": "Pre-liquid consonants",
+	"Syllable-final consonants": "Syllable-final consonants",
+	"Post-nasal or -liquid Final Consonants": "Post-nasal or -liquid Final Consonants",
+	Liquids: "Liquids",
+	Nasals: "Nasals",
+	Plosives: "Plosives",
+	"Aspirated consonants": "Aspirated consonants",
+
+	Vowels: "Vowels",
+	"Mid-word vowels": "Mid-word vowels",
+	"Vowels 1": "Vowels 1",
+	"Vowels 2": "Vowels 2",
+	Dipthongs: "Dipthongs",
+
+	"Word-final conjugation": "Word-final conjugation",
+
+	CONJ: "conjugation: {{type}}",
+	// keys here have ! instead of . because it can mess up translation-finding
+	"1s": "1s",
+	"2s/3s!AN": "2s/3s.AN",
+	"2s": "2s",
+	"3s!AN": "3s.AN",
+	"2s!FORM": "2s.FORM",
+	"3s!INAN": "3s.INAN",
+	"1!DU!IN": "1.DU.IN",
+	"1!DU!EX": "1.DU.EX",
+	"1!PAU!IN/1p!IN": "1.PAU.IN/1p.IN",
+	"1!PAU!IN": "1.PAU.IN",
+	"1!PAU!IN/1!PAU!EX/1p!IN": "1.PAU.IN/1.PAU.EX/1p.IN",
+	"1!PAU!EX": "1.PAU.EX",
+	"1!PAU!EX/1p!IN": "1.PAU.EX/1p.IN",
+	"1!PAU!EX/1p!EX": "1.PAU.EX/1p.EX",
+	"1p!IN": "1p.IN",
+	"1p!EX": "1p.EX",
+	"2!PAU": "2.PAU",
+	"2!PAU!FORM": "2.PAU.FORM",
+	"2p": "2p",
+	"2p!FORM": "2p.FORM",
+	"3!PAU!AN": "3.PAU.AN",
+	"3p!AN": "3p.AN",
+	"3!PAU!INAN": "3.PAU.INAN",
+	"3p!INAN": "3p.INAN",
+	"GER": "GER",
+
+	changeTo: "change {{from}} to {{to}}",
+	// FROM
+	"triple vowels": "triple vowels",
+	"double-dipthongs": "double-dipthongs",
+	"certain non-word-initial vowel-i pairs": "certain non-word-initial vowel-i pairs",
+	"n-plosive": "n-plosive", // n followed by a plosive consonant
+	"m-plosive": "m-plosive",
+	"retroflex n-plosive": "retroflex n-plosive", // retroflex n followed by a plosive consonant
+	"p-nasal": "p-nasal", // p followed by a nasal consonant
+	"t-nasal": "t-nasal", 
+	"nasal after retoflex t": "nasal after retoflex t",
+	"p-fricative": "p-fricative", // p followed by a fricative consonant
+	"t-fricative": "t-fricative",
+	"post-retroflex t fricative": "post-retroflex t fricative",
+	"k-fricative": "k-fricative",
+	"f-fricative": "f-fricative",
+	"s-fricative": "s-fricative",
+	"post-retroflex s fricative": "post-retroflex s fricative",
+	"h-fricative": "h-fricative",
+	ft: "ft",
+	"retroflex s-t": "retroflex s-t", // retroflex s followed by a t
+	"non-initial h not preceded by a g": "non-initial h not preceded by a g",
+	"W-vowel": "W-vowel", // W followed by a vowel
+	"remaining Ws": "remaining Ws",
+	"vowel-ch": "vowel-ch", // vowel followed by ch
+	"B after a vowel and at word-end or before a non-vowel":
+		"B after a vowel and at word-end or before a non-vowel",
+	"vowel-B": "vowel-B",
+	"word-final o or au": "word-final o or au",
+	"word-final ou or ei": "word-final ou or ei",
+	"qu at word-end": "qu at word-end",
+	"word-final c": "word-final c",
+	"double a/i/u": "double a/i/u", // aa, ii, or uu
+	"word-final mk or mt": "word-final mk or mt",
+	"word-final nk or np": "word-final nk or np",
+	"ngk and ngt": "ngk and ngt",
+
+	//TO
+	"double vowels": "double vowels",
+	"single dipthongs": "single dipthongs",
+	dipthongs: "dipthongs",
+	nt: "nt",
+	mp: "mp",
+	"retroflex n-retroflex plosive": "retroflex n-retroflex plosive", // retroflex n followed by retroflex plosive consonant
+	pm: "pm",
+	tn: "tn",
+	"retroflex n": "retroflex n",
+	pf: "pf",
+	ts: "ts",
+	"retroflex s": "retroflex s",
+	kh: "kh",
+	fp: "fp",
+	st: "st",
+	"retroflex t": "retroflex t",
+	hk: "hk",
+	// fp
+	"retroflex s-retroflex t": "retroflex s-retroflex t", // retroflex s followed by a retroflex t
+	k: "k",
+	"wh-vowel": "wh-vowel", // wh followed by a vowel
+	w: "w",
+	"vowel-tch": "vowel-tch", // vowel followed by tch
+	"vowel-ble": "vowel-ble",
+	"vowel-bl": "vowel-bl",
+	ow: "ow",
+	"ough or eigh": "ough or eigh",
+	que: "que",
+	ck: "ck",
+	"single a/i/u": "single a/i/u", // a single a, i, or u (started as aa, ii or uu)
+	// mp
+	// nt
+	nk: "nk",
+
+	deRetro: "de-retroflex {{char}} after {{what}}",
+	deRetroBefore: "de-retroflex {{one}} before retroflex {{two}}",
+	markRetro: "mark retroflex {{char}}",
+	"a dipthong": "a dipthong",
+	s: "s",
+	t: "t",
+	n: "n",
+	l: "l",
+
+	nix: "eliminate {{what}}",
+	// things being eliminated
+	"third vowel in a row": "third vowel in a row",
+	"dipthong before i": "dipthong before i",
+	"plosive before an r": "plosive before an r",
+	"nasal after k": "nasal after k",
+	"non-retroflex consonant after retroflex consonants": "non-retroflex consonant after retroflex consonants",
+	"retroflex consonant after non-retroflex consonant": "retroflex consonant after non-retroflex consonant",
+	"all other h": "all other h",
+	"remaining Bs": "remaining Bs",
+	"duplicate ys": "duplicate ys",
+	"triple+ vowels after q": "triple+ vowels after q",
+
+
+	// Complex
+	"reduce multiple h to single": "reduce multiple h to single",
+	"reduce double consonants to one": "reduce double consonants to one",
+	"reduce kh to k": "reduce kh to k",
+
+	"save h before stressed syllable": "save h before stressed syllable",
+	"save word-initial h": "save word-initial h",
+	"save word-final h": "save word-final h",
+	"restore saved h": "restore saved h",
+
+	// Pseudo-English
+	"i before e except after c": "i before e except after c",
+	"reduce tl cluster to t after non-vowel": "reduce tl cluster to t after non-vowel",
+	"reduce tl cluster to t before consonant or word-end": "reduce tl cluster to t before consonant or word-end",
+	"reduce triple-letter clusters to two": "reduce triple-letter clusters to two",
+	"reduce multiple vowels in a row, where any two vowels match, to the matching vowels": "reduce multiple vowels in a row, where any two vowels match, to the matching vowels",
+	"q is always followed by u": "q is always followed by u",
+
+	// Pseudo-Japanese
+	"replace forbidden syllable": "replace forbidden syllable",
+	"remove duplicate characters": "remove duplicate characters",
+	"reduce 3+ vowels in a row down to just 2": "reduce 3+ vowels in a row down to just 2",
+
 	info: {
 		charGroupExample: [ // strong, emphasized
 			"I=pbk",
