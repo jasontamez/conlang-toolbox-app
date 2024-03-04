@@ -354,8 +354,8 @@ const wg = {
 
 		syllablesStartHideOverview: [
 			// This section is used if we're only showing the Syllables card
-			// `charGroup example` will insert the charGroupExample as a block
-			// `anything else` will be ignored
+				// `charGroup example` will insert the charGroupExample as a block
+				// `anything else` will be ignored
 			"This is where you determine how your $t(syll_other) are formed.",
 			"You use the _$t(labels)_ to describe the elements that make up a",
 			"$t(syll).",

@@ -1,80 +1,81 @@
 const concepts = {
 	// Concepts
 	info: {
-		basic1:
-			`Presented here are a number of lists of basic concepts,
-			which were originaly created for the purposes of
-			historical-comparative linguistics.`,
-		basic2:
-			`They are included in this app because they may serve you as
-			a useful source of meanings to start a conlang with.
-			Remember: you can combine multiple meanings into a single
-			word!`,
-
-		controlLexicon:
-			`Use the "lexicon" button to quickly save meanings
-			to the $t(common:Lexicon).`,
-
-		controlJoin: "Use the \"join\" button to create compound meanings.",
-
-		controlUnjoin: "Use the \"unjoin\" button to delete compound meanings.",
-
-		swadesh1:
-			`Originally assembled by Morris Swadesh, this list of
-			concepts was chosen for their universal, culturally
-			independent availability in as many languages as possible.
-			However, he relied more on his intuition than on a
-			rigorous set of criteria. `,
-		// "Swadesh 100"
-		swadesh2: " is his final list from 1971. The ",
-		// "Swadesh 207"
-		swadesh3: " is adapted from his original list from 1952. ",
-		// "Swadesh-Yakhontov"
-		swadesh4: " is a subset of the 207 assembled by Sergei Yakhontov. And the ",
-		// "Swadesh-Woodward Sign List"
-		swadesh5:
-			` was assembled by James Woodward to take into account the
-			ways sign languages behave.`,
-
-		dolgopolsky:
-			`Compiled by Aharon Dolgopolsky in 1964, this lists the 15
-			lexical items that are the least likely to be replaced by
-			other words as a language evolves. It was based on a study of
-			140 languages from across Eurasia, only.`,
-
-		leipzigJakarta:
-			`Similar to the Dolgopolsky list, this is a list of words
-			judged to be the most resistant to borrowing. Experts on 41
-			languages from across the world were given a uniform
-			vocabulary list and asked to provide the words for each item
-			in the language on which they were an expert, as well as
-			information on how strong the evidence that each word was
-			borrowed was. The 100 concepts that were found in most
-			languages and were most resistant to borrowing formed
-			the Leipzig-Jakarta list.`,
-
-		asjp1:
-			`The `,
-		// "Automated Similarity Judgment Program"
-		asjp2:
-			` is a collaborative project applying computational approaches
-			to comparative linguistics using a database of word lists. It
-			uses a 40-word list to evaluate the similarity of words with
-			the same meaning from different languages.`,
-
-		landau1: "The ",
-		// "Basic 200 List"
-		landau2: " is a subset of the ",
-		// "Landau Core Vocabulary (LCV)"
-		landau3:
-			` developed by James Landau. It is Part I of the entire
-			$t(LCV)). This list consists of 200 basic concepts that
-			basically all anthropic cultures will have and have words for.
-			This list makes many semantic distinctions that are not made
-			in English (e.g "leaf (on plant)" vs. "leaf (fallen off)"),
-			and some that are not made in any "Standard Average European"
-			language (e.g. "river (flowing into the sea)" vs. "river
-			(flowing into another river)").`,
+		basic: [
+			"Presented here are a number of lists of basic concepts,",
+			"which were originaly created for the purposes of",
+			"historical-comparative linguistics.",
+			"",
+			"They are included in this app because they may serve you as",
+			"a useful source of meanings to start a conlang with.",
+			"Remember: you can combine multiple meanings into a single",
+			"word!",
+		],
+		controlLexicon: [
+			"Use the \"lexicon\" button to quickly save meanings",
+			"to the $t(common:Lexicon)."
+		],
+		controlJoin:
+			"Use the \"join\" button to create compound meanings.",
+		controlUnjoin:
+			"Use the \"unjoin\" button to delete compound meanings.",
+		swadesh: [
+			"## $t(Swadesh Lists)",
+			"",
+			"Originally assembled by Morris Swadesh, this list of",
+			"concepts was chosen for their universal, culturally",
+			"independent availability in as many languages as possible.",
+			"However, he relied more on his intuition than on a",
+			"rigorous set of criteria. **$t(Swadesh 100)** is his final list",
+			"from 1971. The **$t(Swadesh 207)** is adapted from his original",
+			"list from 1952. **$t(Swadesh-Yakhontov)** is a subset of the 207",
+			"assembled by Sergei Yakhontov. And the",
+			"**$t(Swadesh-Woodward Sign List)** was assembled by James",
+			"Woodward to take into account the ways sign languages behave.",
+		],
+		dolgopolsky: [
+			"## $t(Dolgopolsky List)",
+			"",
+			"Compiled by Aharon Dolgopolsky in 1964, this lists the 15",
+			"lexical items that are the least likely to be replaced by",
+			"other words as a language evolves. It was based on a study of",
+			"140 languages from across Eurasia, only.",
+		],
+		leipzigJakarta: [
+			"## $t(Leipzig-Jakarta List)",
+			"",
+			"Similar to the Dolgopolsky list, this is a list of words",
+			"judged to be the most resistant to borrowing. Experts on 41",
+			"languages from across the world were given a uniform",
+			"vocabulary list and asked to provide the words for each item",
+			"in the language on which they were an expert, as well as",
+			"information on how strong the evidence that each word was",
+			"borrowed was. The 100 concepts that were found in most",
+			"languages and were most resistant to borrowing formed",
+			"the Leipzig-Jakarta list.",
+		],
+		asjp: [
+			"## $t(ASJP List)",
+			"",
+			"The **$t(Automated Similarity Judgment Program)** is a",
+			"collaborative project applying computational approaches to",
+			"comparative linguistics using a database of word lists. It uses",
+			"a 40-word list to evaluate the similarity of words with the same",
+			"meaning from different languages.",
+		],
+		landau: [
+			"## $t(Landau 200)",
+			"",
+			"The **$t(Basic 200 List) is a subset of the",
+			"**$t(Landau Core Vocabulary-LCV)** developed by James Landau.",
+			"It is Part I of the entire $t(LCV). This list consists of 200",
+			"basic concepts that basically all anthropic cultures will have",
+			"and have words for. This list makes many semantic distinctions",
+			"that are not made in English (e.g \"leaf (on plant)\" vs. \"leaf",
+			"(fallen off)\"), and some that are not made in any \"Standard",
+			"Average European\" language (e.g. \"river (flowing into the",
+			"sea)\" vs. \"river (flowing into another river)\").",
+		]
 	},
 
 	"Swadesh Lists": "Swadesh Lists",
@@ -96,7 +97,7 @@ const concepts = {
 
 	"Landau 200": "Landau 200",
 	"Basic 200 List": "Basic 200 List",
-	"Landau Core Vocabulary (LCV)": "Landau Core Vocabulary $t(LCV)",
+	"Landau Core Vocabulary-LCV": "Landau Core Vocabulary $t(LCV)",
 	LCV: "LCV",
 
 	"Your selected meanings will be added to the Lexicon under that column.":
@@ -147,7 +148,8 @@ const concepts = {
 	"2nd-person plural pronoun (you)": "2nd-person plural pronoun (you)",
 	"2nd-person singular pronoun (you)": "2nd-person singular pronoun (you)",
 	"3rd-person plural pronoun (they)": "3rd-person plural pronoun (they)",
-	"3rd-person singular pronoun (he/she/it/him/her)": "3rd-person singular pronoun (he/she/it/him/her)",
+	"3rd-person singular pronoun (he/she/it/him/her)":
+		"3rd-person singular pronoun (he/she/it/him/her)",
 	afraid: "afraid",
 	air: "air",
 	"all (of a number)": "all (of a number)",
@@ -164,7 +166,8 @@ const concepts = {
 	bad: "bad",
 	"bark (of a tree)": "bark (of a tree)",
 	because: "because",
-	"belly (lower part of body, abdomen)": "belly (lower part of body, abdomen)",
+	"belly (lower part of body, abdomen)":
+		"belly (lower part of body, abdomen)",
 	big: "big",
 	bird: "bird",
 	"bite (verb)": "bite (verb)",
@@ -298,7 +301,8 @@ const concepts = {
 	"left (not right)": "left (not right)",
 	leg: "leg",
 	"lie (on back)": "lie (on back)",
-	"lie (on side, recline, as in a bed)": "lie (on side, recline, as in a bed)",
+	"lie (on side, recline, as in a bed)":
+		"lie (on side, recline, as in a bed)",
 	"life (experience of living)": "life (experience of living)",
 	"light (natural)": "light (natural)",
 	"live (verb)": "live (verb)",
@@ -312,7 +316,8 @@ const concepts = {
 	many: "many",
 	meat: "meat",
 	"meet (for the first time)": "meet (for the first time)",
-	"mind (center of thoughts and emotions)": "mind (center of thoughts and emotions)",
+	"mind (center of thoughts and emotions)":
+		"mind (center of thoughts and emotions)",
 	moon: "moon",
 	"morning (early morning)": "morning (early morning)",
 	"morning (late morning)": "morning (late morning)",
@@ -430,8 +435,10 @@ const concepts = {
 	"walk (verb)": "walk (verb)",
 	warm: "warm",
 	"wash (body parts)": "wash (body parts)",
-	"water (as drink or for cooking, cold)": "water (as drink or for cooking, cold)",
-	"water (as drink or for cooking, hot)": "water (as drink or for cooking, hot)",
+	"water (as drink or for cooking, cold)":
+		"water (as drink or for cooking, cold)",
+	"water (as drink or for cooking, hot)":
+		"water (as drink or for cooking, hot)",
 	"water (cold, moving)": "water (cold, moving)",
 	"water (cold, not moving)": "water (cold, not moving)",
 	"water (hot, moving)": "water (hot, moving)",

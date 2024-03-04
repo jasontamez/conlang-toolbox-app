@@ -22,6 +22,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
+import Markdown from 'react-markdown';
 
 import {
 	updateConceptsDisplay,
@@ -190,17 +191,19 @@ const ConceptsPage: FC<PageData> = (props) => {
 		columns: lexColumns,
 		customSort
 	} = useSelector((state: StateObject) => state.lexicon);
-	let customSortObj: SortObject | undefined;
-	let defaultCustomSortObj: SortObject | undefined;
-	customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
-		if(obj.id === customSort) {
-			customSortObj = obj;
-		} else if (obj.id === defaultCustomSort) {
-			defaultCustomSortObj = obj;
-		}
-		return !(customSortObj && defaultCustomSortObj);
-	})
-	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
+	const sorter = useMemo(() => {
+		let customSortObj: SortObject | undefined;
+		let defaultCustomSortObj: SortObject | undefined;
+		customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).every(obj => {
+			if(obj.id === customSort) {
+				customSortObj = obj;
+			} else if (obj.id === defaultCustomSort) {
+				defaultCustomSortObj = obj;
+			}
+			return !(customSortObj && defaultCustomSortObj);
+		})
+		return makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
+	}, [customSort, customSorts, sortLanguage, defaultSortLanguage, sensitivity, defaultCustomSort]);
 	const {
 		display,
 		showingCombos,
@@ -237,7 +240,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 	// Save to Lexicon
 	// // //
 
-	const saveToLexicon = (words: SavedWord[]) => {
+	const saveToLexicon = useCallback((words: SavedWord[]) => {
 		doAlert({
 			header: tc("Select a column"),
 			message: t("Your selected meanings will be added to the Lexicon under that column."),
@@ -303,8 +306,17 @@ const ConceptsPage: FC<PageData> = (props) => {
 				}
 			]
 		});
-	};
-	const doPickAndSave = () => {
+	}, [dispatch, doAlert, lexColumns, navigator, sorter, t, tc, toast]);
+	const donePickingAndSaving = useCallback(() => {
+		if(savedWords.length > 0) {
+			// Attempt to save
+			saveToLexicon(savedWords);
+		} else {
+			// Just stop saving
+			setPickAndSave(false);
+		}
+	}, [saveToLexicon, savedWords]);
+	const doPickAndSave = useCallback(() => {
 		if (pickAndSave) {
 			// Stop saving
 			return donePickingAndSaving();
@@ -324,17 +336,8 @@ const ConceptsPage: FC<PageData> = (props) => {
 			position: "top",
 			toast
 		});
-	};
-	const donePickingAndSaving = () => {
-		if(savedWords.length > 0) {
-			// Attempt to save
-			saveToLexicon(savedWords);
-		} else {
-			// Just stop saving
-			setPickAndSave(false);
-		}
-	};
-	const saveEverything = () => {
+	}, [donePickingAndSaving, lexColumns.length, pickAndSave, t, tc, toast]);
+	const saveEverything = useCallback(() => {
 		const words = shown.map(word => ({id: word.id, word: t(word.word)}));
 		if(showingCombos) {
 			combinations.forEach((combo: ConceptCombo) => {
@@ -347,7 +350,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		}
 		setSavedWords(words);
 		saveToLexicon(words);
-	};
+	}, [combinations, saveToLexicon, showingCombos, shown, t]);
 	const maybeSaveThisWord = useCallback((id: string, text: string, isCombo?: Concept[]) => {
 		// Returns a function that can be slotted into an onClick or whatever.
 		return () => {
@@ -373,7 +376,25 @@ const ConceptsPage: FC<PageData> = (props) => {
 	// Combine Into New Meaning
 	// // //
 
-	const toggleLinking = () => {
+	const saveNewMeaning = useCallback((makeToast: boolean = true) => {
+		const final: Concept[] = [];
+		savedWords.forEach(obj => {
+			if(obj.parts) {
+				final.push(...obj.parts);
+			} else {
+				final.push(obj);
+			}
+		});
+		dispatch(addCustomHybridMeaning(final));
+		makeToast && toaster({
+			message: tc("thingSaved", { thing: t("Combination") }),
+			duration: 2500,
+			position: "top",
+			color: "success",
+			toast
+		});
+	}, [dispatch, savedWords, t, tc, toast]);
+	const toggleLinking = useCallback(() => {
 		if(linking) {
 			if(savedWords.length > 1) {
 				// We have information left over. Do we want to keep it?
@@ -427,31 +448,13 @@ const ConceptsPage: FC<PageData> = (props) => {
 			position: "top",
 			toast
 		})
-	};
-	const saveNewMeaning = (makeToast: boolean = true) => {
-		const final: Concept[] = [];
-		savedWords.forEach(obj => {
-			if(obj.parts) {
-				final.push(...obj.parts);
-			} else {
-				final.push(obj);
-			}
-		});
-		dispatch(addCustomHybridMeaning(final));
-		makeToast && toaster({
-			message: tc("thingSaved", { thing: t("Combination") }),
-			duration: 2500,
-			position: "top",
-			color: "success",
-			toast
-		});
-	};
-	const doneLinking = () => {
+	}, [disableConfirms, doAlert, linking, saveNewMeaning, savedWords.length, t, tc, toast]);
+	const doneLinking = useCallback(() => {
 		saveNewMeaning();
 		setSavedWords([]);
 		setSavedWordsObject({});
-	};
-	const toggleUnlinking = () => {
+	}, [saveNewMeaning]);
+	const toggleUnlinking = useCallback(() => {
 		if(!unlinking) {
 			toaster({
 				message: t("Tap combinations you want to delete, then tap the Unlink button again."),
@@ -480,7 +483,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			return handler();
 		}
 		setUnlinking(!unlinking);
-	};
+	}, [disableConfirms, dispatch, doAlert, savedWords, t, tc, toast, unlinking]);
 
 	// // //
 	// Memoize display
@@ -626,40 +629,21 @@ export const ConceptCard = () => {
 				<IonLabel>{tc("Concepts")}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<p>{t("info.basic1")}</p>
-				<p>{t("info.basic2")}</p>
+				<Markdown>{t("info.basic", { joinArrays: "\n" })}</Markdown>
 				<hr />
 				<h2>{tc("Controls")}</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
-				<p>{t("info.controlLexicon")}</p>
+				<Markdown>{t("info.controlLexicon", { joinArrays: "\n" })}</Markdown>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
-				<p>{t("info.controlJoin")}</p>
+				<Markdown>{t("info.controlJoin", { joinArrays: "\n" })}</Markdown>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/unlink.svg" /></div>
-				<p>{t("info.controlUnjoin")}</p>
+				<Markdown>{t("info.controlUnjoin", { joinArrays: "\n" })}</Markdown>
 				<hr />
-				<h2>{t("Swadesh Lists")}</h2>
-				<p>
-					{t("info.swadesh1")}<strong>{t("Swadesh 100")}</strong>
-					{t("info.swadesh2")}<strong>{t("Swadesh 207")}</strong>
-					{t("info.swadesh3")}<strong>{t("Swadesh-Yakhontov")}</strong>
-					{t("info.swadesh4")}<strong>{t("Swadesh-Woodward Sign List")}</strong>
-					{t("info.swadesh5")}
-				</p>
-				<h2>{t("Dolgopolsky List")}</h2>
-				<p>{t("info.dolgopolsky")}</p>
-				<h2>{t("Leipzig-Jakarta List")}</h2>
-				<p>{t("info.leipzigJakarta")}</p>
-				<h2>{t("ASJP List")}</h2>
-				<p>
-					{t("info.asjp1")}<strong>{t("Automated Similarity Judgment Program")}</strong>
-					{t("info.asjp2")}
-				</p>
-				<h2>{t("Landau 200")}</h2>
-				<p>
-					{t("info.landau1")}<strong>{t("Basic 200 List")}</strong>
-					{t("info.landau2")}<strong>{t("Landau Core Vocabulary (LCV)")}</strong>
-					{t("info.landau3")}
-				</p>
+				<Markdown>{t("info.swadesh", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{t("info.dolgopolsky", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{t("info.leipzigJakarta", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{t("info.asjp", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{t("info.landau", { joinArrays: "\n" })}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);

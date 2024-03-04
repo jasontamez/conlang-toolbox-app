@@ -10,13 +10,13 @@ import {
 	IonPage
 } from '@ionic/react';
 import { informationCircle, settings } from 'ionicons/icons';
+import Markdown from 'react-markdown';
 
 import { PageData } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
 import Header from '../../components/Header';
 import { MorphoSyntaxIcon } from '../../components/icons';
-import Markdown from 'react-markdown';
 
 const MSinfo = (props: PageData) => {
 	const [ t ] = useTranslator('ms');
