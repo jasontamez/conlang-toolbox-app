@@ -98,6 +98,22 @@ const we = {
 
 	allThings: "all current $t(charGroup_other), $t(trans_other) and $t(sChange_other)",
 
+
+	// PRESETS
+
+	"Grassmann's Law": "Grassmann's Law",
+	"Ruki Rule": "Ruki Rule",
+	"Dahl's Law": "Dahl's Law",
+	"Ingvaeonic Nasal Spirant Law": "Ingvaeonic Nasal Spirant Law",
+	"Grim's Law": "Grim's Law",
+	"Great English Vowel Shift": "Great English Vowel Shift",
+	"High German Consonant Shift": "High German Consonant Shift",
+
+	"Unvoiced Consonants": "Unvoiced Consonants",
+	"Voiced Consonants": "Voiced Consonants",
+	"Vowels": "Vowels",
+	"New Vowels": "New Vowels",
+
 	info: {
 		input: [
 			"This tab has one purpose: determining which words you want to",

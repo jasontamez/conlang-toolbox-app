@@ -37,9 +37,25 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const maybeLoadPreset = (preset: string, object: WEPresetObject) => {
+	const maybeLoadPreset = (presetTitle: string, object: WEPresetObject) => {
+		const preset = t(presetTitle);
 		const handler = () => {
-			dispatch(loadStateWE(object));
+			const copy = {...object};
+			copy.characterGroups = object.characterGroups.map(group => {
+				const { title, ...etc } = group;
+				return {
+					...etc,
+					title: t(title)
+				};
+			});
+			copy.transforms = object.transforms.map(group => {
+				const { description, ...etc } = group;
+				return {
+					...etc,
+					description: t(description)
+				};
+			});
+			dispatch(loadStateWE(copy));
 			toaster({
 				message: tc("prefixTitleLoaded", { prefix: "Preset", title: preset }),
 				duration: 2500,
@@ -78,13 +94,13 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{WEPresets.map((preset) => (
+					{WEPresets.map(([title, object]) => (
 						<IonItem
-							key={preset[0]}
+							key={title}
 							button={true}
-							onClick={() => maybeLoadPreset(...preset)}
+							onClick={() => maybeLoadPreset(title, object)}
 						>
-							<IonLabel>{preset[0]}</IonLabel>
+							<IonLabel>{title}</IonLabel>
 						</IonItem>
 					))}
 				</IonList>

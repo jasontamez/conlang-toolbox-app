@@ -80,7 +80,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 					description: t(value, options)
 				};
 			});
-			dispatch(loadStateWG(object));
+			dispatch(loadStateWG(copy));
 			toaster({
 				message: tc("titleLoaded", { title: preset }),
 				duration: 2500,
