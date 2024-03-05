@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useCallback } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -41,7 +41,38 @@ interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 	setTitles: SetState<string[]>
 }
 
-const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
+interface SavedItemProps {
+	title: string
+	maybeLoad: () => void
+	maybeDelete: () => void
+}
+const SavedItem: FC<SavedItemProps> = (props) => {
+	const [ tc ] = useTranslator('common');
+	const { title, maybeLoad, maybeDelete } = props;
+	return (
+		<IonItem key={title}>
+			<IonLabel className="ion-text-wrap">{title}</IonLabel>
+			<IonButton
+				className="loadButton"
+				slot="end"
+				color="warning"
+				onClick={maybeLoad}
+				strong={true}
+			>{tc("Load")}</IonButton>
+			<IonButton
+				aria-label={tc("Delete")}
+				className="ion-no-margin"
+				slot="end"
+				color="danger"
+				onClick={maybeDelete}
+			>
+				<IonIcon icon={trashOutline} />
+			</IonButton>
+		</IonItem>
+	)
+};
+
+const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
@@ -50,11 +81,11 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const doCleanClose = () => {
+	const doCleanClose = useCallback(() => {
 		setTitles([]);
 		setIsOpen(false);
-	};
-	const maybeSaveInfo = () => {
+	}, [setIsOpen, setTitles]);
+	const maybeSaveInfo = useCallback(() => {
 		const el = $i<HTMLInputElement>("currentInfoSaveName");
 		const title = el ? escape(el.value).trim() : "";
 		if(title === "") {
@@ -103,8 +134,8 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				});
 			}
 		});
-	};
-	const maybeLoadInfo = (title: string) => {
+	}, [characterGroups, disableConfirms, doAlert, doCleanClose, soundChanges, tc, toast, transforms]);
+	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
 				if(value) {
@@ -144,8 +175,8 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				doAlert
 			});
 		}
-	};
-	const maybeDeleteInfo = (title: string) => {
+	}, [disableConfirms, dispatch, doAlert, doCleanClose, t, tc, toast]);
+	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			setTitles(titles.filter(ci => ci !== title));
 			CustomStorageWE.removeItem(title).then(() => {
@@ -170,7 +201,15 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, doAlert, setTitles, tc, titles, toast]);
+	const mapSavedItems = useCallback(
+		(title: string) => <SavedItem
+			title={title}
+			maybeDelete={() => maybeDeleteInfo(title)}
+			maybeLoad={() => maybeLoadInfo(title)}
+		/>,
+		[maybeDeleteInfo, maybeLoadInfo]
+	);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
 			<IonHeader>
@@ -180,7 +219,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => doCleanClose()} aria-label={tc("Close")}>
+						<IonButton onClick={doCleanClose} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -215,27 +254,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 						{(titles.length === 0) ?
 							<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
 						:
-							titles.map((title: string) => {
-								return (
-									<IonItem key={title}>
-										<IonLabel className="ion-text-wrap">{title}</IonLabel>
-										<IonButton
-											slot="end"
-											color="warning"
-											onClick={() => maybeLoadInfo(title)}
-											strong={true}
-											className="weCustomButon"
-										>{tc("Load")}</IonButton>
-										<IonButton
-											className="ion-no-margin"
-											aria-label={tc("Delete")}
-											slot="end"
-											color="danger"
-											onClick={() => maybeDeleteInfo(title)}
-										><IonIcon icon={trashOutline} /></IonButton>
-									</IonItem>
-								);
-							})
+							titles.map(mapSavedItems)
 						}
 					</IonItemGroup>
 				</IonList>

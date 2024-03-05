@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
 	IonContent,
 	IonHeader,
@@ -16,9 +16,13 @@ import {
 	IonIcon,
 	IonFooter,
 	IonSelect,
-	IonSelectOption
+	IonSelectOption,
+	ToggleChangeEventDetail,
+	RangeChangeEventDetail
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
+import { Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
 	checkmarkCircleOutline,
 	closeCircleOutline,
@@ -45,6 +49,12 @@ import useTranslator from '../../../store/translationHooks';
 
 import PermanentInfo from '../../../components/PermanentInfo';
 
+const setChecked = (dispatch: Dispatch, action: (x: boolean) => PayloadAction<boolean>) => {
+	return (e: CustomEvent<ToggleChangeEventDetail<any>>) => {
+		dispatch(action(e.detail.checked));
+	};
+};
+
 const OutputOptionsModal = (props: ModalProperties) => {
 	const { isOpen, setIsOpen } = props;
 	const [ t ] = useTranslator('we');
@@ -62,6 +72,18 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		customSort
 	} = useSelector((state: StateObject) => state.wg);
 	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
+	const onChangeWordsWordlist = useCallback(
+		(e: CustomEvent<RangeChangeEventDetail>) => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand)),
+		[dispatch]
+	);
+	const onChangeSentencesWordlist = useCallback(
+		(e: CustomEvent<RangeChangeEventDetail>) => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred)),
+		[dispatch]
+	);
+	const onChangeCustomSort = useCallback(
+		(e: CustomEvent) => dispatch(setCustomSort(e.detail.value)),
+		[dispatch]
+	);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
@@ -81,7 +103,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={showSyllableBreaks}
-							onIonChange={e => dispatch(setSyllableBreaksWG(e.detail.checked))}
+							onIonChange={setChecked(dispatch, setSyllableBreaksWG)}
 						>{t("Show syllable breaks")}</IonToggle>
 					</IonItem>
 					<IonItemDivider>{t("What to Generate")}</IonItemDivider>
@@ -118,7 +140,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							min={5} max={100}
 							value={sentencesPerText}
 							pin={true}
-							onIonChange={e => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred))}
+							onIonChange={onChangeSentencesWordlist}
 						>
 							<div slot="start">5</div>
 							<div slot="end">100</div>
@@ -129,7 +151,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={capitalizeWords}
-							onIonChange={e => dispatch(setCapitalizeWordsWG(e.detail.checked))}
+							onIonChange={setChecked(dispatch, setCapitalizeWordsWG)}
 						>{t("Capitalize words")}</IonToggle>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
@@ -137,7 +159,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={sortWordlist}
-							onIonChange={e => dispatch(setSortWordlistWG(e.detail.checked))}
+							onIonChange={setChecked(dispatch, setSortWordlistWG)}
 						>{t("Sort output")}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" || !sortWordlist) ? "hide" : ""}>
@@ -146,7 +168,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							className="ion-text-wrap settings"
 							label={tc("Sort method", { context: "presentation" })}
 							value={customSort || null}
-							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
+							onIonChange={onChangeCustomSort}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
@@ -166,7 +188,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={wordlistMultiColumn}
-							onIonChange={e => dispatch(setWordlistMulticolumnWG(e.detail.checked))}
+							onIonChange={setChecked(dispatch, setWordlistMulticolumnWG)}
 						>{t("Multi-column layout")}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>
@@ -178,7 +200,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							min={50} max={1000}
 							value={wordsPerWordlist}
 							pin={true}
-							onIonChange={e => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand))}
+							onIonChange={onChangeWordsWordlist}
 						>
 							<div slot="start">50</div>
 							<div slot="end">1000</div>

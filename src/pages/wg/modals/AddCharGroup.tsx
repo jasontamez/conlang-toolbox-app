@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -33,6 +33,14 @@ import useTranslator from '../../../store/translationHooks';
 import { $q, $i, $a } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 
+function resetError(prop: string) {
+	// Remove danger color if present
+	// Debounce means this sometimes doesn't exist by the time this is called.
+	return () => {
+		const where = $q("." + prop + "Label");
+		where && where.classList.remove("invalidValue");
+	}
+}
 const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
@@ -52,13 +60,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		});
 		setCharGroupMap(newMap);
 	}, [characterGroups]);
-	function resetError(prop: string) {
-		// Remove danger color if present
-		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
-	const generateLabel = () => {
+	const generateLabel = useCallback(() => {
 		const el = $i<HTMLInputElement>("newWGCharGroupTitle");
 		const words = (el ? el.value as string : "") // Get the title/description
 			.trim() // trim leading/trailing whitespace
@@ -91,8 +93,8 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			el && (el.value = label);
 			resetError("label");
 		}
-	};
-	const maybeSaveNewCharGroup = (close: boolean = true) => {
+	}, [charGroupMap, toast, tw]);
+	const maybeSaveNewCharGroup = useCallback((close: boolean = true) => (() => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCharGroup
 		const titleEl = $i<HTMLInputElement>("newWGCharGroupTitle");
@@ -161,7 +163,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			position: "top",
 			toast
 		});
-	};
+	}), [charGroupMap, characterGroupDropoff, dispatch, doAlert, dropoff, hasDropoff, setIsOpen, tc, toast, tw]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
@@ -187,7 +189,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							aria-label={tw("Title or description")}
 							id="newWGCharGroupTitle"
 							className="ion-margin-top"
-							onIonChange={e => resetError("title")}
+							onIonChange={resetError("title")}
 							autocomplete="on"
 						/>
 					</IonItem>
@@ -201,7 +203,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							id="newWGShortLabel"
 							className="serifChars"
 							helperText={tw("1 character only")}
-							onIonChange={e => resetError("label")}
+							onIonChange={resetError("label")}
 							maxlength={1}
 						/>
 						<IonButton slot="end" onClick={() => generateLabel()}>
@@ -217,7 +219,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 							id="newWGCharGroupRun"
 							className="ion-margin-top serifChars"
 							helperText={tw("Enter characters in group here")}
-							onIonChange={e => resetError("run")}
+							onIonChange={resetError("run")}
 						/>
 					</IonItem>
 					<IonItem>
@@ -250,7 +252,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="secondary"
 						slot="end"
-						onClick={() => maybeSaveNewCharGroup(false)}
+						onClick={maybeSaveNewCharGroup(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>{tc("addThing", { thing: tw("CharGroup") })}</IonLabel>
@@ -258,7 +260,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={() => maybeSaveNewCharGroup()}
+						onClick={maybeSaveNewCharGroup()}
 					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>{tc("Add and Close")}</IonLabel>

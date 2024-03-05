@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -32,6 +32,15 @@ import { $q, $a, $i } from '../../../components/DollarSignExports';
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
 
+function resetError(prop: string) {
+	// Remove danger color if present
+	// Debounce means this sometimes doesn't exist by the time this is called.
+	return () => {
+		const where = $q("." + prop + "Label");
+		where && where.classList.remove("invalidValue");
+	}
+}
+
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
@@ -40,13 +49,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	function resetError(prop: string) {
-		// Remove danger color if present
-		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
-	const maybeSaveNewTransform = (close: boolean = true) => {
+	const maybeSaveNewTransform = useCallback((close: boolean = true) => (() => {
 		const searchEl = $i<HTMLInputElement>("searchEx");
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
@@ -97,7 +100,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			position: "top",
 			toast
 		});
-	};
+	}), [dispatch, doAlert, setIsOpen, t, tc, toast, tw]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
@@ -123,7 +126,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 							aria-label={tw("search expression")}
 							id="searchEx"
 							className="ion-margin-top serifChars"
-							onIonChange={e => resetError("seek")}
+							onIonChange={resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -154,7 +157,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="tertiary"
 						slot="end"
-						onClick={() => maybeSaveNewTransform(false)}
+						onClick={maybeSaveNewTransform(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>{tc("addThing", { thing: tw("Transformation") })}</IonLabel>
@@ -162,7 +165,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={() => maybeSaveNewTransform()}
+						onClick={maybeSaveNewTransform()}
 					>
 						<IonIcon icon={addOutline} slot="start" />
 						<IonLabel>{tc("Add and Close")}</IonLabel>

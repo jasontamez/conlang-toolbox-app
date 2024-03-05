@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -40,6 +40,15 @@ interface ModalProps extends ExtraCharactersModalOpener {
 	setEditing: SetState<null | WGCharGroupObject>
 }
 
+function resetError (prop: keyof WGCharGroupObject) {
+	// Remove danger color if present
+	// Debounce means this sometimes doesn't exist by the time this is called.
+	return () => {
+		const where = $q("." + prop + "LabelEdit");
+		where && where.classList.remove("invalidValue");
+	}
+}
+
 const EditCharGroupModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
@@ -56,7 +65,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 	const [titleEl, setTitleEl] = useState<HTMLInputElement | null>(null);
 	const [labelEl, setLabelEl] = useState<HTMLInputElement | null>(null);
 	const [runEl, setRunEl] = useState<HTMLInputElement | null>(null);
-	const onLoad = () => {
+	const onLoad = useCallback(() => {
 		const _titleEl = $i<HTMLInputElement>("editingWGCharGroupTitle");
 		const _labelEl = $i<HTMLInputElement>("editingWGShortLabel");
 		const _runEl = $i<HTMLInputElement>("editingWGCharGroupRun");
@@ -85,15 +94,9 @@ const EditCharGroupModal = (props: ModalProps) => {
 		setTitleEl(_titleEl);
 		setLabelEl(_labelEl);
 		setRunEl(_runEl);
-	};
+	}, [characterGroupDropoff, characterGroups, editing]);
 
-	function resetError (prop: keyof WGCharGroupObject) {
-		// Remove danger color if present
-		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "LabelEdit");
-		where && where.classList.remove("invalidValue");
-	}
-	const generateLabel = () => {
+	const generateLabel = useCallback(() => {
 		//let invalid = "^$\\[]{}.*+()?|";
 		const words = (titleEl!.value as string) // Get the title/description
 			.trim() // trim leading/trailing whitespace
@@ -124,14 +127,14 @@ const EditCharGroupModal = (props: ModalProps) => {
 		} else {
 			// Suitable label found
 			labelEl!.value = label;
-			resetError("label");
+			resetError("label")();
 		}
-	};
-	const cancelEditing = () => {
+	}, [charGroupMap, editing, labelEl, titleEl, toast, tw]);
+	const cancelEditing = useCallback(() => {
 		setIsOpen(false);
 		setEditing(null);
-	};
-	const maybeSaveNewInfo = () => {
+	}, [setEditing, setIsOpen]);
+	const maybeSaveNewInfo = useCallback(() => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingWGCharGroup
 		const title = titleEl!.value.trim(),
@@ -197,8 +200,8 @@ const EditCharGroupModal = (props: ModalProps) => {
 			position: "top",
 			toast
 		});
-	};
-	const maybeDeleteCharGroup = () => {
+	}, [cancelEditing, charGroupMap, dispatch, doAlert, dropoff, editing, hasDropoff, labelEl, runEl, tc, titleEl, toast, tw]);
+	const maybeDeleteCharGroup = useCallback(() => {
 		const title = titleEl!.value.trim(),
 			label = labelEl!.value.trim(),
 			run = runEl!.value.trim();
@@ -230,9 +233,9 @@ const EditCharGroupModal = (props: ModalProps) => {
 				doAlert
 			});
 		}
-	};
+	}, [cancelEditing, disableConfirms, dispatch, doAlert, dropoff, hasDropoff, labelEl, runEl, tc, titleEl, toast, tw]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => cancelEditing()} onIonModalDidPresent={onLoad}>
+		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>{tc("editThing", { thing: tw("CharGroup") })}</IonTitle>
@@ -240,7 +243,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancelEditing()} aria-label={tc("Close")}>
+						<IonButton onClick={cancelEditing} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -256,7 +259,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 							aria-label={tw("Title or description")}
 							id="editingWGCharGroupTitle"
 							className="ion-margin-top"
-							onIonChange={e => resetError("title")}
+							onIonChange={resetError("title")}
 							autocomplete="on"
 						/>
 					</IonItem>
@@ -270,10 +273,10 @@ const EditCharGroupModal = (props: ModalProps) => {
 							id="editingWGShortLabel"
 							className="serifChars"
 							helperText={tw("1 character only")}
-							onIonChange={e => resetError("label")}
+							onIonChange={resetError("label")}
 							maxlength={1}
 						/>
-						<IonButton slot="end" onClick={() => generateLabel()}>
+						<IonButton slot="end" onClick={generateLabel}>
 							<IonIcon icon={chevronBackOutline} />{tw("Suggest")}
 						</IonButton>
 					</IonItem>
@@ -286,7 +289,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 							id="editingWGCharGroupRun"
 							className="ion-margin-top serifChars"
 							helperText={tw("Enter characters in group here")}
-							onIonChange={e => resetError("run")}
+							onIonChange={resetError("run")}
 						/>
 					</IonItem>
 					<IonItem>
@@ -313,11 +316,11 @@ const EditCharGroupModal = (props: ModalProps) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton color="secondary" slot="end" onClick={maybeSaveNewInfo}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>{tc("saveThing", { thing: tw("CharGroup") })}</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteCharGroup()}>
+					<IonButton color="danger" slot="start" onClick={maybeDeleteCharGroup}>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>{tc("deleteThing", { thing: tw("CharGroup") })}</IonLabel>
 					</IonButton>

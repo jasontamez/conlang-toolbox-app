@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -39,6 +39,14 @@ interface ModalProps extends ExtraCharactersModalOpener {
 	setEditing: SetState<null | WGTransformObject>
 }
 
+function resetError(prop: string) {
+	// Remove danger color if present
+	// Debounce means this sometimes doesn't exist by the time this is called.
+	return () => {
+		const where = $q("." + prop + "Label");
+		where && where.classList.remove("invalidValue");
+	};
+}
 const EditTransformModal = (props: ModalProps) => {
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
@@ -52,7 +60,7 @@ const EditTransformModal = (props: ModalProps) => {
 	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
 	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
 
-	const onLoad = () => {
+	const onLoad = useCallback(() => {
 		const _searchEl = $i<HTMLInputElement>("editSearchExWG");
 		const _replaceEl = $i<HTMLInputElement>("editReplaceExWG");
 		const _descEl = $i<HTMLInputElement>("editOptDescWG");
@@ -69,19 +77,13 @@ const EditTransformModal = (props: ModalProps) => {
 		setSearchEl(_searchEl);
 		setReplaceEl(_replaceEl);
 		setDescEl(_descEl);
-	};
+	}, [editing]);
 
-	const cancelEditing = () => {
+	const cancelEditing = useCallback(() => {
 		setIsOpen(false);
 		setEditing(null);
-	};
-	function resetError(prop: string) {
-		// Remove danger color if present
-		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
-	const maybeSaveNewTransformInfo = () => {
+	}, [setEditing, setIsOpen]);
+	const maybeSaveNewTransformInfo = useCallback(() => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
 		const seek = (searchEl && searchEl.value) || "";
@@ -128,8 +130,8 @@ const EditTransformModal = (props: ModalProps) => {
 			position: "top",
 			toast
 		});
-	};
-	const maybeDeleteTransform = () => {
+	}, [descEl, dispatch, doAlert, editing, replaceEl, searchEl, setIsOpen, t, tc, toast, tw]);
+	const maybeDeleteTransform = useCallback(() => {
 		const groups = $q<HTMLIonListElement>((".transforms"));
 		groups && groups.closeSlidingItems();
 		const handler = () => {
@@ -156,7 +158,7 @@ const EditTransformModal = (props: ModalProps) => {
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, t, tc, toast]);
 	return (
 		<IonModal
 			isOpen={isOpen}
@@ -170,7 +172,7 @@ const EditTransformModal = (props: ModalProps) => {
 						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancelEditing()} aria-label={tc("Close")}>
+						<IonButton onClick={cancelEditing} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -186,7 +188,7 @@ const EditTransformModal = (props: ModalProps) => {
 							aria-label={tw("search expression")}
 							id="editSearchExWG"
 							className="ion-margin-top serifChars"
-							onIonChange={e => resetError("seek")}
+							onIonChange={resetError("seek")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -214,11 +216,11 @@ const EditTransformModal = (props: ModalProps) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewTransformInfo()}>
+					<IonButton color="tertiary" slot="end" onClick={maybeSaveNewTransformInfo}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>{tc("saveThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => maybeDeleteTransform()}>
+					<IonButton color="danger" slot="start" onClick={maybeDeleteTransform}>
 						<IonIcon icon={trashOutline} slot="start" />
 						<IonLabel>{tc("deleteThing", { thing: tw("Transformation") })}</IonLabel>
 					</IonButton>
