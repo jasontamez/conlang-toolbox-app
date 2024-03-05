@@ -68,7 +68,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tw("Output Options")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

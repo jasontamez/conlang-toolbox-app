@@ -63,7 +63,7 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("Lexicon Sorting")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

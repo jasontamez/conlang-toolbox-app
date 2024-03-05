@@ -61,6 +61,7 @@ interface CharGroupProps {
 const CharGroup: FC<CharGroupProps> = (props) => {
 	const { charGroup, editCharGroup, maybeDeleteCharGroup } = props;
 	const { label = "", title, run } = charGroup;
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
@@ -73,6 +74,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={() => maybeDeleteCharGroup(label, charGroup)}
+					aria-label={tc("Delete")}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -231,20 +233,20 @@ const WGCharGroup = (props: PageData) => {
 					<IonTitle>{tw("Character Groups")}</IonTitle>
 					<IonButtons slot="end">
 						{characterGroups.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()}>
+							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
 						{weCharatcterGroups.length > 0 ?
-							<IonButton onClick={() => maybeCopyFromWE()}>
+							<IonButton onClick={() => maybeCopyFromWE()} aria-label={tc("Copy")}>
 								<CopyFromOtherIcon />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

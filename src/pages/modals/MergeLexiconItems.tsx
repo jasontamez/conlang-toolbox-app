@@ -131,6 +131,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 	const dispatch = useDispatch();
 	const { columns } = useSelector((state: StateObject) => state.lexicon);
 	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 
 	const makeMergedItem = useCallback((itsByCols: string[][], mMeths: (keyof Method)[]) => {
 		const result: Lexicon = {
@@ -196,7 +197,7 @@ const MergeLexiconItemsModal = (props: MergeProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("Merge Items")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

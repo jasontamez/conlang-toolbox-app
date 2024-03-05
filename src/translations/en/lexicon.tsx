@@ -33,7 +33,7 @@ const lexicon = {
 		+ " identical in that column, it will sort them by the next column in"
 		+ " the sort list, and so on.",
 
-	"Sort": "Sort",
+	Sort: "Sort",
 	"Sort_presentation": "Sort:",
 
 	"multiple lexicon items": "multiple lexicon items",

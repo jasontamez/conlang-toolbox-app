@@ -138,6 +138,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 							onClick={() => setShowHelp(!showHelp)}
 							color={showHelp ? "secondary" : undefined}
 							fill={showHelp ? "solid" : "clear"}
+							aria-label={t("Help", { ns: "common "})}
 						>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

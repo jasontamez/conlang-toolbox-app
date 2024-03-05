@@ -153,10 +153,10 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("editThing", { thing: t("Lexicon Item")} )}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancelEditing()}>
+						<IonButton onClick={() => cancelEditing()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

@@ -79,7 +79,7 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 						src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
 					/>
 				</IonButton>,
-				<IonButton key="conceptsHelpButton" disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+				<IonButton key="conceptsHelpButton" aria-label={t("Help")} disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
 					<IonIcon icon={helpCircleOutline} />
 				</IonButton>
 			]}

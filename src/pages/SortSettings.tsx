@@ -217,7 +217,7 @@ const SortSettings = (props: PageData) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("Manage Sort Methods")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton routerLink='/settings' routerDirection='back'>
+						<IonButton routerLink='/settings' routerDirection='back' aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

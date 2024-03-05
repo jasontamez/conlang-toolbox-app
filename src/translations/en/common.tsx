@@ -46,6 +46,7 @@ const common = {
 	Ok: "Ok",
 	Done: "Done", // finished, completed, etc.
 	Close: "Close", // close the open modal/dialog/whatever
+	Help: "Help",
 	"Display": "Display",
 	"Display_presentation": "Display:", // short label indicating the user can select an option to display
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved

@@ -41,6 +41,7 @@ interface CardProps {
 }
 const OverviewButton: FC<CardProps> = (props) => {
 	const { hideOverview, setIsOpenInfo } = props;
+	const [ tc ] = useTranslator('common');
 	if(hideOverview) {
 		return <></>;
 	}
@@ -51,6 +52,7 @@ const OverviewButton: FC<CardProps> = (props) => {
 			routerLink="/wg/overview"
 			routerDirection="forward"
 			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
+			aria-label={tc("Help")}
 		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>
@@ -175,9 +177,9 @@ export const TransCard: FC<CardProps> = (props) => {
 						code(props) {
 							const { children } = props;
 							return (
-								typeof(children) === "string"
-								&& blockStorage[children]
-							) || <IonIcon icon={reorderTwo} color="tertiary" size="small" />;
+								(typeof(children) === "string" && blockStorage[children])
+								|| <IonIcon icon={reorderTwo} color="tertiary" size="small" />
+							);
 						}
 					}}
 				>{plainText}</Markdown>

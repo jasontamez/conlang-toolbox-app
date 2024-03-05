@@ -101,10 +101,10 @@ const WEInput = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>{tc("Input")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenECM(true)}>
+						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

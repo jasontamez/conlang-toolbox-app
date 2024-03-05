@@ -115,10 +115,10 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("addThing", { thing: t("Lexicon Item") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancel()}>
+						<IonButton onClick={() => cancel()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

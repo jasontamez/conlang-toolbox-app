@@ -296,10 +296,10 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("editGeneralThings", { things: t("Columns") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => closeModal()}>
+						<IonButton onClick={() => closeModal()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -385,9 +385,11 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 											<IonCol size="auto">
 												<IonButton
 													color="danger"
-													onClick={() => deleteField(i)}><IonIcon
-													icon={trashOutline}
-												/></IonButton>
+													onClick={() => deleteField(i)}
+													aria-label={tc("Delete")}
+												>
+													<IonIcon icon={trashOutline} />
+												</IonButton>
 											</IonCol>
 										</IonRow>
 										<IonRow className="ion-align-items-center">

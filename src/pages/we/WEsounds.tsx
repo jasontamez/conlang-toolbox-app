@@ -59,6 +59,7 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 	const { seek, replace, context, anticontext, description } = change;
 	const changer = useCallback(() => editSoundChange(change), [change, editSoundChange]);
 	const deleter = useCallback(() => maybeDeleteSoundChange(change), [change, maybeDeleteSoundChange]);
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
@@ -71,6 +72,7 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={deleter}
+					aria-label={tc("Delete")}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -237,7 +239,7 @@ const WESChange: FC<PageData> = (props) => {
 					<IonTitle>{t("Sound Changes")}</IonTitle>
 					<IonButtons slot="end">
 						{soundChanges.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()}>
+							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
@@ -246,7 +248,7 @@ const WESChange: FC<PageData> = (props) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

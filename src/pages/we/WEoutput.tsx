@@ -978,12 +978,14 @@ const WEOut = (props: PageData) => {
 						<IonButton
 							onClick={() => openCustomInfoModal()}
 							disabled={isPickingSaving}
+							aria-label={tc("Save")}
 						>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 						<IonButton
 							onClick={() => setIsOpenInfo(true)}
 							disabled={isPickingSaving}
+							aria-label={tc("Help")}
 						>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>

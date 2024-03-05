@@ -131,7 +131,7 @@ const WGSet = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

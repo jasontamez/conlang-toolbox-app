@@ -52,7 +52,7 @@ const ThemeModal = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("Choose a Theme")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => cancel()}>
+						<IonButton onClick={() => cancel()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

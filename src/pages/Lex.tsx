@@ -161,30 +161,33 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			onClick={() => setIsOpenECM(true)}
 			slot="icon-only"
 			key="openExtraCharsLexButton"
+			aria-label={t("Extra Characters", { ns: "common" })}
 		>
 			<IonIcon icon={globeOutline} />
 		</IonButton>
-	), [ isDeleting, setIsOpenECM ]);
+	), [ isDeleting, setIsOpenECM, t ]);
 	const lexStoragebutton = useMemo(() => (
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenLexStorage(true)}
 			slot="icon-only"
 			key="openLexStorageButton"
+			aria-label={t("Help")}
 		>
 			<IonIcon icon={saveOutline} />
 		</IonButton>
-	), [ isDeleting ]);
+	), [ isDeleting, t ]);
 	const infobutton = useMemo(() => (
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenInfo(true)}
 			slot="icon-only"
 			key="openLexHelpButton"
+			aria-label={t("Help")}
 		>
 			<IonIcon icon={helpCircleOutline} />
 		</IonButton>
-	), [ isDeleting ]);
+	), [ isDeleting, t ]);
 
 	const endButtons = useMemo(() => [
 		hideButton,
@@ -278,6 +281,8 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		lexicon,
 		merging
 	} = data;
+	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
 	const lex: Lexicon = lexicon[index];
 	const cols = lex.columns;
 	const id = lex.id;
@@ -291,15 +296,15 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 			className="lexiconDisplay"
 		>
 			<IonItemOptions side="start" className="serifChars">
-				<IonItemOption color="tertiary" aria-label="Join" onClick={() => maybeSetForMerge(lex)}>
+				<IonItemOption color="tertiary" aria-label={t("Merge Items")} onClick={() => maybeSetForMerge(lex)}>
 					<IonIcon slot="icon-only" src="svg/link.svg" />
 				</IonItemOption>
 			</IonItemOptions>
 			<IonItemOptions side="end" className="serifChars">
-				<IonItemOption color="primary" aria-label="Edit" onClick={() => beginEdit(lex)}>
+				<IonItemOption color="primary" aria-label={tc("Edit")} onClick={() => beginEdit(lex)}>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
-				<IonItemOption color="danger" aria-label="Delete" onClick={() => delFromLex(lex)}>
+				<IonItemOption color="danger" aria-label={tc("Delete")} onClick={() => delFromLex(lex)}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
@@ -806,6 +811,7 @@ const Lex = (props: PageData) => {
 							color="danger"
 							title={tc("deleteGeneralThings", {things: t("multiple lexicon items")})}
 							onClick={() => beginMassDeleteMode()}
+							aria-label={t("Help")}
 						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
@@ -825,6 +831,7 @@ const Lex = (props: PageData) => {
 								color="danger"
 								title={t("Delete selected lexicon items")}
 								onClick={() => maybeFinishDeleting()}
+								aria-label={t("Help")}
 							>
 								<IonIcon icon={trash} />
 							</IonFabButton>
@@ -834,6 +841,7 @@ const Lex = (props: PageData) => {
 								color="warning"
 								title={t("Cancel deleting")}
 								onClick={() => maybeFinishDeleting(true)}
+								aria-label={t("Close")}
 							>
 								<IonIcon icon={closeCircle} />
 							</IonFabButton>

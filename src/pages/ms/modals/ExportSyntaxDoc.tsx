@@ -94,7 +94,7 @@ const ExportSyntaxModal = (props: ExportModalProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("exportTitle", {title})}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()}>
+						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

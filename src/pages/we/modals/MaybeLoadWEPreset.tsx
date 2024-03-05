@@ -86,7 +86,7 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("Load Preset")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

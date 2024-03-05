@@ -104,10 +104,10 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("addThing", { thing: t("Transformation") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpen(false)}>
+						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

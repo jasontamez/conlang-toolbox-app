@@ -58,6 +58,7 @@ interface TransformProps {
 const TransformItem: FC<TransformProps> = (props) => {
 	const { trans, editTransform, maybeDeleteTransform, arrow } = props;
 	const { id, seek, replace, description } = trans;
+	const [ tc ] = useTranslator('common');
 	const changer = useCallback(() => editTransform(trans), [trans, editTransform]);
 	const deleter = useCallback(() => maybeDeleteTransform(trans), [trans, maybeDeleteTransform]);
 	return (
@@ -72,6 +73,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={deleter}
+					aria-label={tc("Delete")}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -209,7 +211,7 @@ const WGRew = (props: PageData) => {
 					<IonTitle>{tw("Transformations")}</IonTitle>
 					<IonButtons slot="end">
 						{transforms.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()}>
+							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
@@ -218,7 +220,7 @@ const WGRew = (props: PageData) => {
 						<IonButton onClick={() => setIsOpen(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

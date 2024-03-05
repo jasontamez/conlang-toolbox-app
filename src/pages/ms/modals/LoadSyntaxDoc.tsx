@@ -81,7 +81,7 @@ const LoadMSModal = (props: MSmodalProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("loadThing", { thing: t("msDocument") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()}>
+						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

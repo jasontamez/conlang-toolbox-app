@@ -56,7 +56,7 @@ export const SyntaxHeader = (props: ModalProperties) => {
 			extraChars={modalPropsMaker}
 			title={title || tc("MorphoSyntax")}
 			endButtons={[
-				<IonButton key="msHelpButton" routerLink="/ms/overview" routerDirection="forward">
+				<IonButton key="msHelpButton" aria-label={tc("Help")} routerLink="/ms/overview" routerDirection="forward">
 					<IonIcon icon={helpCircleOutline} />
 				</IonButton>
 			]}

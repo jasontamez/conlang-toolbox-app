@@ -177,10 +177,10 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("Manage Custom Info")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => doCleanClose()}>
+						<IonButton onClick={() => doCleanClose()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -228,6 +228,7 @@ const ManageCustomInfoWE = (props: CustomInfoModalProps) => {
 										>{tc("Load")}</IonButton>
 										<IonButton
 											className="ion-no-margin"
+											aria-label={tc("Delete")}
 											slot="end"
 											color="danger"
 											onClick={() => maybeDeleteInfo(title)}

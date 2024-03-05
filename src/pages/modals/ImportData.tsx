@@ -395,7 +395,7 @@ const ImportData = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>{ts("Import Info")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={maybeClose}>
+						<IonButton onClick={maybeClose} aria-label={t("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

@@ -336,10 +336,10 @@ const AddGroup = (props: AddGroupProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("Add Group", { type: typeString })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={maybeCancel}>
+						<IonButton onClick={maybeCancel} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>

@@ -74,7 +74,7 @@ const Home = (props: PageData) => {
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.ms, "ms")}
-							<IonButton routerLink="/ms/overview" className="help" routerDirection="forward">
+							<IonButton routerLink="/ms/overview" aria-label={t("Help")} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -91,7 +91,7 @@ const Home = (props: PageData) => {
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.wg, "wg")}
-							<IonButton routerLink="/wg/overview" className="help" routerDirection="forward">
+							<IonButton routerLink="/wg/overview" aria-label={t("Help")} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -108,7 +108,7 @@ const Home = (props: PageData) => {
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.we, "we")}
-							<IonButton routerLink="/we/overview" className="help" routerDirection="forward">
+							<IonButton routerLink="/we/overview" aria-label={t("Help")} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -125,7 +125,7 @@ const Home = (props: PageData) => {
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.dj, "dj")}
-							<IonButton routerLink="/dj/overview" className="help" routerDirection="forward">
+							<IonButton routerLink="/dj/overview" aria-label={t("Help")} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -141,7 +141,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" onClick={() => setIsOpenLexicon(true)}>
+							<IonButton className="help" aria-label={t("Help")} onClick={() => setIsOpenLexicon(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -157,7 +157,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" onClick={() => setIsOpenConcepts(true)}>
+							<IonButton className="help" aria-label={t("Help")} onClick={() => setIsOpenConcepts(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>

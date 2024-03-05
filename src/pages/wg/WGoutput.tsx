@@ -688,7 +688,7 @@ const WGOut = (props: PageData) => {
 					</IonButtons>
 					<IonTitle>{tc("Output")}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenInfo(true)} disabled={isPickingSaving}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -747,6 +747,7 @@ const WGOut = (props: PageData) => {
 							strong={true}
 							color="success"
 							onClick={() => donePickingAndSaving()}
+							aria-label={tc("Save")}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 					</div>
 				</div>

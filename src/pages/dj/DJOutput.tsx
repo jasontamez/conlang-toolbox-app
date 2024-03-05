@@ -265,7 +265,7 @@ const DJOutput = (props: PageData) => {
 			<Header
 				title={tc("Output")}
 				endButtons={[
-					<IonButton key="djOutputHelpButton" onClick={() => setIsOpenInfo(true)}>
+					<IonButton key="djOutputHelpButton" aria-label={tc("Help")} onClick={() => setIsOpenInfo(true)}>
 						<IonIcon icon={helpCircleOutline} />
 					</IonButton>
 				]}

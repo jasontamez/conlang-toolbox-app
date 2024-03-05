@@ -30,6 +30,7 @@ interface CardProps {
 	setIsOpenInfo?: SetBooleanState
 }
 const OverviewButton = (props: CardProps) => {
+	const [ tc ] = useTranslator('common');
 	const { hideOverview, setIsOpenInfo } = props;
 	if(hideOverview) {
 		return <></>;
@@ -41,6 +42,7 @@ const OverviewButton = (props: CardProps) => {
 			routerLink="/dj/overview"
 			routerDirection="forward"
 			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
+			aria-label={tc("Help")}
 		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>

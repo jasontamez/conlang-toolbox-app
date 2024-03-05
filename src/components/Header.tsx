@@ -9,6 +9,7 @@ import {
 	IonToolbar
 } from "@ionic/react";
 import { globeOutline } from "ionicons/icons";
+import useTranslator from "../store/translationHooks";
 
 import ExtraCharactersModal from "../pages/modals/ExtraCharacters";
 import { ModalPropsMaker } from "../store/types";
@@ -36,6 +37,7 @@ const Header = (props: ModalProperties) => {
 		color
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const [ tc ] = useTranslator('common');
 	return (
 		<IonHeader id={id}>
 			{extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>}
@@ -48,7 +50,7 @@ const Header = (props: ModalProperties) => {
 				<IonButtons slot="end">
 					{preEndButtons}
 					{extraChars ?
-						<IonButton onClick={() => setIsOpenECM(true)}>
+						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
 					:

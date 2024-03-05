@@ -31,6 +31,7 @@ import {
 	saveOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 import { DJCustomInfo, DJGroup, Declenjugation, PageData, StateObject } from '../../store/types';
 import { deleteGroup, reorderGroups } from '../../store/declenjugatorSlice';
@@ -195,20 +196,21 @@ const DJGroups = (props: PageData) => {
 			<IonButton
 				onClick={() => openCustomInfoModal()}
 				key="djGroupsCustomInfoModalButton"
+				aria-label={tc("Save")}
 			>
 				<IonIcon icon={saveOutline} />
 			</IonButton>,
-			<IonButton key="djGroupsHelpButton" onClick={() => setIsOpenInfo(true)}>
+			<IonButton key="djGroupsHelpButton" aria-label={tc("Help")} onClick={() => setIsOpenInfo(true)}>
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];
 		canTrash && output.unshift(
-			<IonButton key="djGroupsClearEverything" onClick={() => maybeClearEverything()}>
+			<IonButton key="djGroupsClearEverything" aria-label={tc("Delete")} onClick={() => maybeClearEverything()}>
 				<IonIcon icon={trashBinOutline} />
 			</IonButton>
 		);
 		return output;
-	}, [canTrash, maybeClearEverything, openCustomInfoModal]);
+	}, [canTrash, maybeClearEverything, openCustomInfoModal, tc]);
 
 
 	const doReorder = useCallback((ed: ItemReorderEventDetail, type: keyof DJCustomInfo) => {
@@ -265,6 +267,7 @@ const DJGroups = (props: PageData) => {
 
 	const GroupInstance = memo((props: GroupInfo) => {
 		const [toggled, setToggled] = useState<boolean>(false);
+		const { t } = useTranslation('common');
 		const { group, type } = props;
 		const { title, id: mainID, appliesTo, declenjugations } = group;
 		return (
@@ -273,12 +276,14 @@ const DJGroups = (props: PageData) => {
 					<IonItemOption
 						color="primary"
 						onClick={() => editGroup(type, group)}
+						aria-label={t("Edit")}
 					>
 						<IonIcon slot="icon-only" src="svg/edit.svg" />
 					</IonItemOption>
 					<IonItemOption
 						color="danger"
 						onClick={() => maybeDeleteGroup(type, group)}
+						aria-label={t("Delete")}
 					>
 						<IonIcon slot="icon-only" icon={trash} />
 					</IonItemOption>

@@ -120,6 +120,7 @@ const WGSyl = (props: PageData) => {
 						dispatch(setSyllables({syllables: prop, value, override: dropoff }));
 						setIsEditing(null);
 					}}
+					aria-label={tc("Save")}
 				>
 					<IonIcon icon={saveSharp} />
 				</IonButton>
@@ -175,7 +176,7 @@ const WGSyl = (props: PageData) => {
 					<IonTitle>{t("Syllables")}</IonTitle>
 					<IonButtons slot="end">
 						{(singleWord || wordInitial || wordMiddle || wordFinal) ?
-							<IonButton onClick={() => maybeClearEverything()}>
+							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
@@ -184,7 +185,7 @@ const WGSyl = (props: PageData) => {
 						<IonButton onClick={() => setIsOpenECM(true)}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)}>
+						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>

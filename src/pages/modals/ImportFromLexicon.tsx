@@ -34,6 +34,7 @@ import {
 	close,
 	trash
 } from 'ionicons/icons';
+import i18n from '../../i18n';
 
 import { ExtraCharactersModalOpener, StateObject } from '../../store/types';
 
@@ -90,7 +91,7 @@ const displayTest = (text: string, deleter: MouseEventHandler<HTMLIonItemOptionE
 	return (
 		<IonItemSliding className="importFromLexiconSlider" key={`displayingTest:${text}`}>
 			<IonItemOptions>
-				<IonItemOption color="danger" onClick={deleter}>
+				<IonItemOption color="danger" onClick={deleter} aria-label={i18n.t("Help", { ns: "common" })}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
@@ -391,10 +392,10 @@ const LexiconImporterModal = (props: ImporterProps) => {
 				<IonToolbar color="primary">
 					<IonTitle>{tc("ImportFrom", { source: tc("Lexicon") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)}>
+						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => maybeDoClose()}>
+						<IonButton onClick={() => maybeDoClose()} aria-label={tc("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -439,6 +440,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="success"
 									slot="end"
 									onClick={() => addWordTest()}
+									aria-label={tc("Save")}
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 
@@ -457,6 +459,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="success"
 									slot="end"
 									onClick={() => addWordMatch()}
+									aria-label={tc("Save")}
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 
@@ -498,6 +501,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="success"
 									slot="end"
 									onClick={() => addColumnTest()}
+									aria-label={tc("Save")}
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 
@@ -539,6 +543,7 @@ const LexiconImporterModal = (props: ImporterProps) => {
 									color="success"
 									slot="end"
 									onClick={() => addColumnMatch()}
+									aria-label={tc("Save")}
 								><IonIcon icon={save} slot="icon-only" /></IonButton>
 							</IonItem>
 

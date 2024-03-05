@@ -345,7 +345,7 @@ const MExportAllData = (props: ModalProperties) => {
 				<IonToolbar color="primary">
 					<IonTitle>{t("exportThing", { thing: t("Info") })}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()}>
+						<IonButton onClick={() => doClose()} aria-label={t("Close")}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
