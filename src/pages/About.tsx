@@ -16,7 +16,6 @@ import {
 //import { globeOutline } from 'ionicons/icons';
 import { helpCircle } from 'ionicons/icons';
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next';
 
 import { PageData, StateObject } from '../store/types';
 import { currentVersion } from '../store/blankAppState';
@@ -32,6 +31,7 @@ import {
 import Header from '../components/Header';
 import { AppPage, appPagesObject } from '../components/appPagesInfo';
 import ModalWrap from '../components/ModalWrap';
+import useI18Memo from '../components/useI18Memo';
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import { ConceptCard } from './Concepts';
 import { LexCard } from './Lex';
@@ -45,21 +45,29 @@ const subPages = (objs: AppPage[], prefix: string) => objs.filter(obj => !obj.hi
 	);
 });
 
+const translations =  [
+	"App Info", "Concepts", "Conlang Toolbox", "Declenjugator", "Help",
+	"Lexicon", "MorphoSyntax", "WordEvolve", "WordGen"
+];
+
 const Home = (props: PageData) => {
-	const { t } = useTranslation(['common']);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
 	const [isOpenLexicon, setIsOpenLexicon] = useState<boolean>(false);
 	const originalTheme = useSelector((state: StateObject) => state.appSettings.theme);
 	const lastViewMS = useSelector((state: StateObject) => state.internals.lastViewMS);
 	const theme = originalTheme.replace(/ /g, "") + "Theme";
+	const [
+		tAppInfo, tConcepts, tConlangToolbox, tDeclenjugator, tHelp,
+		tLexicon, tMorphoSyntax, tWordEvolve, tWordGen
+	] = useI18Memo(translations);
 
 	return (
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...props.modalPropsMaker(isOpenConcepts, setIsOpenConcepts)}><ConceptCard /></ModalWrap>
 			<ModalWrap {...props.modalPropsMaker(isOpenLexicon, setIsOpenLexicon)}><LexCard /></ModalWrap>
-			<Header title={t("Conlang Toolbox")} />
+			<Header title={tConlangToolbox} />
 			<IonContent className="containedCards" id="about">
 				<IonGrid>
 
@@ -67,14 +75,14 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink={"/ms/" + lastViewMS} routerDirection="forward">
 								<MorphoSyntaxIcon slot="start" />
-								<IonLabel>{t("MorphoSyntax")}</IonLabel>
+								<IonLabel>{tMorphoSyntax}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.ms, "ms")}
-							<IonButton routerLink="/ms/overview" aria-label={t("Help")} className="help" routerDirection="forward">
+							<IonButton routerLink="/ms/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -84,14 +92,14 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/wg/overview" routerDirection="forward">
 								<WordGenIcon slot="start" />
-								<IonLabel>{t("WordGen")}</IonLabel>
+								<IonLabel>{tWordGen}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.wg, "wg")}
-							<IonButton routerLink="/wg/overview" aria-label={t("Help")} className="help" routerDirection="forward">
+							<IonButton routerLink="/wg/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -101,14 +109,14 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/we/overview" routerDirection="forward">
 								<WordEvolveIcon slot="start" />
-								<IonLabel>{t("WordEvolve")}</IonLabel>
+								<IonLabel>{tWordEvolve}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.we, "we")}
-							<IonButton routerLink="/we/overview" aria-label={t("Help")} className="help" routerDirection="forward">
+							<IonButton routerLink="/we/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -118,14 +126,14 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/dj/overview" routerDirection="forward">
 								<DeclenjugatorIcon slot="start" />
-								<IonLabel>{t("Declenjugator")}</IonLabel>
+								<IonLabel>{tDeclenjugator}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
 							{subPages(appPagesObject.dj, "dj")}
-							<IonButton routerLink="/dj/overview" aria-label={t("Help")} className="help" routerDirection="forward">
+							<IonButton routerLink="/dj/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -135,13 +143,13 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/lex" routerDirection="forward">
 								<LexiconIcon slot="start" />
-								<IonLabel>{t("Lexicon")}</IonLabel>
+								<IonLabel>{tLexicon}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" aria-label={t("Help")} onClick={() => setIsOpenLexicon(true)}>
+							<IonButton className="help" aria-label={tHelp} onClick={() => setIsOpenLexicon(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -151,13 +159,13 @@ const Home = (props: PageData) => {
 						<IonCol>
 							<IonButton size="large" routerLink="/wordlists" routerDirection="forward">
 								<ConceptsIcon slot="start" />
-								<IonLabel>{t("Concepts")}</IonLabel>
+								<IonLabel>{tConcepts}</IonLabel>
 							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" aria-label={t("Help")} onClick={() => setIsOpenConcepts(true)}>
+							<IonButton className="help" aria-label={tHelp} onClick={() => setIsOpenConcepts(true)}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -173,7 +181,7 @@ const Home = (props: PageData) => {
 								<IonCardHeader className="ion-text-center">
 									<IonCardTitle
 										className="ion-align-self-start"
-									>{t("App Info")}</IonCardTitle>
+									>{tAppInfo}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<div className="ion-text-center">v.{currentVersion}</div>

@@ -54,6 +54,7 @@ const common = {
 	Copy: "Copy", // button that will copy something to the clipboard
 	"Copy to Clipboard": "Copy to Clipboard",
 	"Copied to clipboard": "Copied to clipboard",
+	"Characters to be copied": "Characters to be copied", // aria-label
 	"Add New": "Add New",
 	"Add and Close": "Add and Close",
 	"Nothing to copy": "Nothing to copy",
@@ -272,9 +273,13 @@ const common = {
 	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.",
 	copiedCharToClipboard: "Copied {{char}} to clipboard",
 	Favorites: "Favorites",
+	"Start Favoriting characters" : "Start favoriting characters",
+	"Stop Favoriting characters" : "Stop favoriting characters",
 	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)",
 	"No longer saving to Favorites": "No longer saving to $t(Favorites)",
 	"Tap characters to add them here": "Tap characters to add them here",
+	"Show full character names": "Show full character names",
+	"Hide full character names": "Hide full character names",
 	extraHelp: {
 		help1p1:
 			`This is a place to find and copy characters that may not be

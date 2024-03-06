@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import {
 	IonIcon,
 	IonContent,
@@ -10,9 +10,10 @@ import {
 	IonModal
 } from '@ionic/react';
 import { closeCircleOutline } from 'ionicons/icons';
-import { useTranslation } from 'react-i18next';
-import i18n from '../i18n';
 import { SetBooleanState } from '../store/types';
+import useI18Memo from './useI18Memo';
+
+const translations = ["Info", "Close"];
 
 const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBooleanState}>) => {
 	const {
@@ -20,17 +21,18 @@ const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBool
 		setIsOpen,
 		children
 	} = props;
-	const { t } = useTranslation('common');
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const [tInfo, tClose] = useI18Memo(translations);
 	return (
 		<IonModal
 			isOpen={isOpen}
-			onDidDismiss={() => setIsOpen(false)}
+			onDidDismiss={closer}
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{i18n.t("Info")}</IonTitle>
+					<IonTitle>{tInfo}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} aria-label={t("Close")}>
+						<IonButton onClick={closer} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
