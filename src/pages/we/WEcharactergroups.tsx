@@ -182,7 +182,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tc("ImportFrom", { source: tc("WordGen") }),
-				message: tc("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
+				message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
 				cssClass: "warning",
 				submit: tc("yesImport"),
 				handler,

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonContent,
 	IonHeader,
@@ -33,7 +33,8 @@ import {
 	Fifty_OneThousand,
 	Five_OneHundred,
 	ModalProperties,
-	StateObject
+	StateObject,
+	WGOutputTypes
 } from '../../../store/types';
 import {
 	setOutputTypeWG,
@@ -48,6 +49,7 @@ import {
 import useTranslator from '../../../store/translationHooks';
 
 import PermanentInfo from '../../../components/PermanentInfo';
+import useI18Memo from '../../../components/useI18Memo';
 
 const setChecked = (dispatch: Dispatch, action: (x: boolean) => PayloadAction<boolean>) => {
 	return (e: CustomEvent<ToggleChangeEventDetail<any>>) => {
@@ -55,11 +57,29 @@ const setChecked = (dispatch: Dispatch, action: (x: boolean) => PayloadAction<bo
 	};
 };
 
+const translations = [
+	"All possible syllables", "Capitalize words", "Default",
+	"Multi-column layout", "Number of sentences", "Pseudo-text",
+	"Show syllable breaks", "Sort output", "What to Generate",
+	"Wordlist size", "Wordlist", "Pseudo-text Controls",
+	"Wordlist and Syllable-List Controls"
+];
+
+const commons = [ "Close", "Done" ];
+
 const OutputOptionsModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
-	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
+	const tOutOpts = useMemo(() => tw("Output Options"), [tw]);
+	const tSortMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
+	const [
+		tAllSyll, tCap, tDefault, tMulti, tNumSent,
+		tPseudo, tSyllBr, tSort, tWhat, tWLSize, tWL,
+		tPsCtrl, tWLSyllCtrl
+	] = useI18Memo(translations, 'wg');
+	const [ tClose, tDone ] = useI18Memo(commons);
+
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const {
 		output,
@@ -84,13 +104,18 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		(e: CustomEvent) => dispatch(setCustomSort(e.detail.value)),
 		[dispatch]
 	);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const dispatchOutputType = useCallback((type: WGOutputTypes) => dispatch(setOutputTypeWG(type)), [dispatch]);
+	const toText = useCallback(() => dispatchOutputType('text'), [dispatchOutputType]);
+	const toWL = useCallback(() => dispatchOutputType('wordlist'), [dispatchOutputType]);
+	const toSyll = useCallback(() => dispatchOutputType('syllables'), [dispatchOutputType]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tw("Output Options")}</IonTitle>
+					<IonTitle>{tOutOpts}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
+						<IonButton onClick={closer} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -104,35 +129,30 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={showSyllableBreaks}
 							onIonChange={setChecked(dispatch, setSyllableBreaksWG)}
-						>{t("Show syllable breaks")}</IonToggle>
+						>{tSyllBr}</IonToggle>
 					</IonItem>
-					<IonItemDivider>{t("What to Generate")}</IonItemDivider>
-					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('text'))}>
-						<IonLabel>{t("Pseudo-text")}</IonLabel>
+					<IonItemDivider>{tWhat}</IonItemDivider>
+					<IonItem button={true} onClick={toText}>
+						<IonLabel>{tPseudo}</IonLabel>
 						<IonIcon
 							icon={output === "text" ? checkmarkCircleOutline : ellipseOutline}
 						/>
 					</IonItem>
-					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('wordlist'))}>
-						<IonLabel>{t("Wordlist")}</IonLabel>
+					<IonItem button={true} onClick={toWL}>
+						<IonLabel>{tWL}</IonLabel>
 						<IonIcon
 							icon={output === "wordlist" ? checkmarkCircleOutline : ellipseOutline}
 						/>
 					</IonItem>
-					<IonItem button={true} onClick={() => dispatch(setOutputTypeWG('syllables'))}>
-						<IonLabel>{t("All possible syllables")}</IonLabel>
+					<IonItem button={true} onClick={toSyll}>
+						<IonLabel>{tAllSyll}</IonLabel>
 						<IonIcon
 							icon={output === "syllables" ? checkmarkCircleOutline : ellipseOutline}
 						/>
 					</IonItem>
-					<IonItemDivider>{t(
-						output === "text" ?
-							"Pseudo-text Controls"
-						:
-							"Wordlist and Syllable-List Controls"
-					)}</IonItemDivider>
+					<IonItemDivider>{output === "text" ? tPsCtrl : tWLSyllCtrl}</IonItemDivider>
 					<IonItem className={(output === "text" ? "" : "hide") + " labelled"}>
-						<IonLabel>{t("Number of sentences")}</IonLabel>
+						<IonLabel>{tNumSent}</IonLabel>
 					</IonItem>
 					<IonItem className={output === "text" ? "" : "hide"}>
 						<IonRange
@@ -152,7 +172,7 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={capitalizeWords}
 							onIonChange={setChecked(dispatch, setCapitalizeWordsWG)}
-						>{t("Capitalize words")}</IonToggle>
+						>{tCap}</IonToggle>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
 						<IonToggle
@@ -160,20 +180,20 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={sortWordlist}
 							onIonChange={setChecked(dispatch, setSortWordlistWG)}
-						>{t("Sort output")}</IonToggle>
+						>{tSort}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" || !sortWordlist) ? "hide" : ""}>
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={tc("Sort method", { context: "presentation" })}
+							label={tSortMethod}
 							value={customSort || null}
 							onIonChange={onChangeCustomSort}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
-							>{t("Default")}</IonSelectOption>
+							>{tDefault}</IonSelectOption>
 							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
 								<IonSelectOption
 									className="ion-text-wrap ion-text-align-end"
@@ -189,10 +209,10 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							labelPlacement="start"
 							checked={wordlistMultiColumn}
 							onIonChange={setChecked(dispatch, setWordlistMulticolumnWG)}
-						>{t("Multi-column layout")}</IonToggle>
+						>{tMulti}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>
-						<IonLabel>{t("Wordlist size")}</IonLabel>
+						<IonLabel>{tWLSize}</IonLabel>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
 						<IonRange
@@ -210,8 +230,8 @@ const OutputOptionsModal = (props: ModalProperties) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="success" slot="end" onClick={() => setIsOpen(false)}>
-						<IonLabel>{tc("Done")}</IonLabel>
+					<IonButton color="success" slot="end" onClick={closer}>
+						<IonLabel>{tDone}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

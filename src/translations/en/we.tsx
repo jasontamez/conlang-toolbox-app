@@ -5,8 +5,6 @@ const we = {
 	charGroup: "$t(wgwe:charGroup)",
 	charGroup_one: "$t(wgwe:charGroup_one)",
 	charGroup_other: "$t(wgwe:charGroup_other)",
-	Transform: "$t(wgwe:Transform)",
-	Transforms: "$t(wgwe:Transforms)",
 	Transformation: "$t(wgwe:Transformation)",
 	Transformations: "$t(wgwe:Transformations)",
 	trans: "$t(wgwe:trans)",

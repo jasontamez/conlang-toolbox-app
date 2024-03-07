@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC } from 'react';
+import React, { useCallback, useState, FC, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -42,6 +42,7 @@ import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import reorganize from '../../components/reorganizer';
+import useI18Memo from '../../components/useI18Memo';
 
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
@@ -53,12 +54,12 @@ interface TransformProps {
 	editTransform: (x: WGTransformObject) => void
 	maybeDeleteTransform: (x: WGTransformObject) => void
 	arrow: string
+	tDelete: string
 }
 
 const TransformItem: FC<TransformProps> = (props) => {
-	const { trans, editTransform, maybeDeleteTransform, arrow } = props;
+	const { trans, editTransform, maybeDeleteTransform, arrow, tDelete } = props;
 	const { id, seek, replace, description } = trans;
-	const [ tc ] = useTranslator('common');
 	const changer = useCallback(() => editTransform(trans), [trans, editTransform]);
 	const deleter = useCallback(() => maybeDeleteTransform(trans), [trans, maybeDeleteTransform]);
 	return (
@@ -73,7 +74,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={deleter}
-					aria-label={tc("Delete")}
+					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -98,9 +99,14 @@ const TransformItem: FC<TransformProps> = (props) => {
 	);
 };
 
+const commons = [ "Add New", "Delete", "Help" ];
+
 const WGRew = (props: PageData) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
+	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
+	const [ tAddNew, tDelete, tHelp ] = useI18Memo(commons);
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -125,7 +131,7 @@ const WGRew = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({
-				message: tc("thingsDeleted", { count: 1, things: tw("Transform") }),
+				message: tc("thingsDeleted", { count: 1, things: tw("Transformation") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -157,7 +163,7 @@ const WGRew = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(null));
 			toaster({
-				message: tc("thingsDeleted", { count, things: tw("Transforms", { count }) }),
+				message: tc("thingsDeleted", { count, things: tw("Transformations", { count }) }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -185,9 +191,12 @@ const WGRew = (props: PageData) => {
 				editTransform={editTransform}
 				maybeDeleteTransform={maybeDeleteTransform}
 				arrow={arrow}
+				tDelete={tDelete}
 			/>,
-		[editTransform, maybeDeleteTransform, arrow]
+		[editTransform, maybeDeleteTransform, arrow, tDelete]
 	);
+	const openEx = useCallback(() => setIsOpen(true), [setIsOpen]);
+	const openInfo = useCallback(() => setIsOpenInfo(true), []);
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
@@ -208,19 +217,19 @@ const WGRew = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{tw("Transformations")}</IonTitle>
+					<IonTitle>{tTransformations}</IonTitle>
 					<IonButtons slot="end">
 						{transforms.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpen(true)}>
+						<IonButton onClick={openEx}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={openInfo} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -239,7 +248,7 @@ const WGRew = (props: PageData) => {
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="tertiary"
-						title={tc("Add New")}
+						title={tAddNew}
 						onClick={() => setIsOpenAddTransform(true)}
 					>
 						<IonIcon icon={addOutline} />

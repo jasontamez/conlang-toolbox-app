@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -19,7 +19,8 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	RangeCustomEvent
 } from '@ionic/react';
 import {
 	addOutline,
@@ -47,6 +48,7 @@ import ModalWrap from "../../components/ModalWrap";
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { CopyFromOtherIcon } from '../../components/icons';
+import useI18Memo from '../../components/useI18Memo';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -56,12 +58,12 @@ interface CharGroupProps {
 	charGroup: WGCharGroupObject
 	editCharGroup: (x: WGCharGroupObject) => void
 	maybeDeleteCharGroup: (x: string, y: WGCharGroupObject) => void
+	tDelete: string
 }
 
 const CharGroup: FC<CharGroupProps> = (props) => {
-	const { charGroup, editCharGroup, maybeDeleteCharGroup } = props;
+	const { charGroup, editCharGroup, maybeDeleteCharGroup, tDelete } = props;
 	const { label = "", title, run } = charGroup;
-	const [ tc ] = useTranslator('common');
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
@@ -74,7 +76,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={() => maybeDeleteCharGroup(label, charGroup)}
-					aria-label={tc("Delete")}
+					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -103,10 +105,17 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 	);
 };
 
+const commons = [ "Add New", "Copy", "Delete", "Help", "WordEvolve" ];
+
 const WGCharGroup = (props: PageData) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
+	const tDropExpl = useMemo(() => t("characterDropoffExplanation"), [t]);
+	const tCharGroups = useMemo(() => tw("Character Groups"), [tw]);
+	const tDropoffFormal = useMemo(() => t("dropoff rate", { context: "formal" }), [t]);
+	const [ tAddNew, tCopy, tDelete, tHelp ] = useI18Memo(commons);
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
@@ -120,7 +129,7 @@ const WGCharGroup = (props: PageData) => {
 	const { characterGroups: weCharatcterGroups } = useSelector((state: StateObject) => state.we);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const editCharGroup = useCallback((charGroup: WGCharGroupObject) => {
-		const groups = $q<HTMLIonListElement>((".charGroups"));
+		const groups = $q<HTMLIonListElement>(".charGroups");
 		groups && groups.closeSlidingItems();
 		setIsOpenEditCharGroup(true);
 		setEditing(charGroup);
@@ -192,7 +201,7 @@ const WGCharGroup = (props: PageData) => {
 		} else {
 			yesNoAlert({
 				header: tc("ImportFrom", { source: tc("WordEvolve") }),
-				message: tc("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
+				message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
 				cssClass: "warning",
 				submit: tc("yesImport"),
 				handler,
@@ -207,8 +216,15 @@ const WGCharGroup = (props: PageData) => {
 				charGroup={charGroup}
 				editCharGroup={editCharGroup}
 				maybeDeleteCharGroup={maybeDeleteCharGroup}
+				tDelete={tDelete}
 			/>,
-		[editCharGroup, maybeDeleteCharGroup]
+		[editCharGroup, maybeDeleteCharGroup, tDelete]
+	);
+	const openHelp = useCallback(() => setIsOpenInfo(true), []);
+	const openAddCG = useCallback(() => setIsOpenAddCharGroup(true), []);
+	const setDropoff = useCallback(
+		(e: RangeCustomEvent) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty)),
+		[dispatch]
 	);
 	return (
 		<IonPage>
@@ -230,23 +246,23 @@ const WGCharGroup = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{tw("Character Groups")}</IonTitle>
+					<IonTitle>{tCharGroups}</IonTitle>
 					<IonButtons slot="end">
 						{characterGroups.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
 						{weCharatcterGroups.length > 0 ?
-							<IonButton onClick={() => maybeCopyFromWE()} aria-label={tc("Copy")}>
+							<IonButton onClick={maybeCopyFromWE} aria-label={tCopy}>
 								<CopyFromOtherIcon />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={openHelp} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -256,8 +272,8 @@ const WGCharGroup = (props: PageData) => {
 				<IonList className="charGroups units" lines="none">
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
-							<div><strong>{t("dropoff rate", { context: "formal" })}</strong></div>
-							<div className="minor ion-text-wrap">{t("characterDropoffExplanation")}</div>
+							<div><strong>{tDropoffFormal}</strong></div>
+							<div className="minor ion-text-wrap">{tDropExpl}</div>
 						</IonLabel>
 					</IonItem>
 					<IonItem>
@@ -266,7 +282,7 @@ const WGCharGroup = (props: PageData) => {
 							max={50}
 							value={characterGroupDropoff}
 							pin={true}
-							onIonChange={(e) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty))}
+							onIonChange={setDropoff}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -277,8 +293,8 @@ const WGCharGroup = (props: PageData) => {
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="secondary"
-						title={tc("Add New")}
-						onClick={() => setIsOpenAddCharGroup(true)}
+						title={tAddNew}
+						onClick={openAddCG}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

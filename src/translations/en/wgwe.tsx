@@ -28,10 +28,6 @@ const wgwe = {
 
 	"Enter words here one per line": "Enter words here, one per line",
 
-	Transform: "Transformation",
-	Transforms: "Transformations",
-	Transforms_one: "Transformations",
-	Transforms_other: "Transformations",
 	Transformation: "Transformation",
 	Transformations: "Transformations",
 	Transformations_one: "Transformation",
@@ -39,7 +35,7 @@ const wgwe = {
 	trans: "transformation",
 	trans_one: "transformation",
 	trans_other: "transformations",
-	"Description of the transformation": "$t(common:description_formal) of the $(trans)",
+	"Description of the transformation": "$t(common:description_formal) of the $t(trans)",
 	"Description of the transformation_presentation": "$t(Transformation) $t(common:description_formal):",
 
 	"No search expression present": "No search expression present",

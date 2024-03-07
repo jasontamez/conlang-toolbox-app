@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -32,27 +32,52 @@ import useTranslator from '../../../store/translationHooks';
 
 import { $q, $i, $a } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
 
 function resetError(prop: string) {
 	// Remove danger color if present
 	// Debounce means this sometimes doesn't exist by the time this is called.
-	return () => {
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
+	const where = $q("." + prop + "Label");
+	where && where.classList.remove("invalidValue");
 }
+
+const presentations = ["Letters Characters", "Short Label", "Title or description" ];
+const context = { context: "presentation" };
+
+
+const commons = [ "Add and Close", "Close", "Extra Characters", "error", "Cancel" ];
+
+const wgweWords = [
+	"1 character only", "CharGroup", "Enter characters in group here",
+	"Letters Characters", "No run present", "No title present", "Short Label",
+	"Suggest", "Title or description",
+	"Unable to suggest a unique label from the given descrption."
+];
+
+const addies = [ "thingAdded", "addThing" ];
+
 const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
+	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
+	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
+	const [ tAddClose, tClose, tExChar, tError, tCancel ] = useI18Memo(commons);
+	const [ tUseDrop ] = useI18Memo(["Use separate dropoff rate"], "wg");
+	const [
+		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
+		tShort, tSuggest, tTitleDesc, tNoSuggest
+	] = useI18Memo(wgweWords, 'wgwe');
+	const [ tThingAdd, tAddThing ] = useMemo(() => {
+		return addies.map(term => tc(term, { thing: tCG }));
+	}, [tc, tCG]);
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
-	const [ tw ] = useTranslator('wgwe');
 	const toast = useIonToast();
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: boolean }>({});
+
 	useEffect(() => {
 		const newMap: { [key: string]: boolean } = {};
 		characterGroups.forEach((cg: WGCharGroupObject) => {
@@ -60,6 +85,11 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		});
 		setCharGroupMap(newMap);
 	}, [characterGroups]);
+
+	const resetLabel = useCallback(() => resetError("label"), []);
+	const resetTitle = useCallback(() => resetError("title"), []);
+	const resetRun = useCallback(() => resetError("run"), []);
+
 	const generateLabel = useCallback(() => {
 		const el = $i<HTMLInputElement>("newWGCharGroupTitle");
 		const words = (el ? el.value as string : "") // Get the title/description
@@ -81,7 +111,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		if(!label) {
 			// No suitable label found
 			toaster({
-				message: tw("Unable to suggest a unique label from the given descrption."),
+				message: tNoSuggest,
 				color: "warning",
 				duration: 4000,
 				position: "top",
@@ -93,8 +123,9 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			el && (el.value = label);
 			resetError("label");
 		}
-	}, [charGroupMap, toast, tw]);
-	const maybeSaveNewCharGroup = useCallback((close: boolean = true) => (() => {
+	}, [charGroupMap, toast, tNoSuggest]);
+
+	const maybeSaveNewCharGroup = useCallback((close: boolean = true) => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCharGroup
 		const titleEl = $i<HTMLInputElement>("newWGCharGroupTitle");
@@ -106,7 +137,7 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		if(title === "") {
 			const el = $q(".titleLabel");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No title present"));
+			err.push(tNoTitle);
 		}
 		if(!label) {
 			const el = $q(".labelLabel");
@@ -127,17 +158,17 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		if(run === "") {
 			const el = $q(".runLabel");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No run present"));
+			err.push(tNoRun);
 		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: tc("error"),
+				header: tError,
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -157,23 +188,33 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 		setHasDropoff(false);
 		setDropoff(characterGroupDropoff);
 		toaster({
-			message: tc("thingAdded", { thing: tw("CharGroup") }),
+			message: tThingAdd,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	}), [charGroupMap, characterGroupDropoff, dispatch, doAlert, dropoff, hasDropoff, setIsOpen, tc, toast, tw]);
+	}, [
+		charGroupMap, characterGroupDropoff, dispatch, doAlert, dropoff,
+		hasDropoff, setIsOpen, tError, tCancel, toast, tw, tNoTitle,
+		tNoRun, tThingAdd
+	]);
+	const maybeSaveAndAdd = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
+	const maybeSaveAndClose = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const openEx = useCallback(() => openECM(true), [openECM]);
+	const toggleDropoff= useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff])
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("addThing", { thing: tw("CharGroup") })}</IonTitle>
+					<IonTitle>{tAddThing}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
+						<IonButton onClick={closer} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -182,14 +223,14 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabel">{tw("Title or description", { context: "presentation" })}</IonLabel>
+						<IonLabel className="titleLabel">{tpTitleDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Title or description")}
+							aria-label={tTitleDesc}
 							id="newWGCharGroupTitle"
 							className="ion-margin-top"
-							onIonChange={resetError("title")}
+							onIonChange={resetTitle}
 							autocomplete="on"
 						/>
 					</IonItem>
@@ -197,40 +238,39 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 						<div
 							slot="start"
 							className="ion-margin-end labelLabel"
-						>{tw("Short Label", { context: "presentation" })}</div>
+						>{tpShort}</div>
 						<IonInput
-							aria-label={tw("Short Label")}
+							aria-label={tShort}
 							id="newWGShortLabel"
 							className="serifChars"
-							helperText={tw("1 character only")}
-							onIonChange={resetError("label")}
+							helperText={t1Char}
+							onIonChange={resetLabel}
 							maxlength={1}
 						/>
-						<IonButton slot="end" onClick={() => generateLabel()}>
-							<IonIcon icon={chevronBackOutline} />{tw("Suggest")}
+						<IonButton slot="end" onClick={generateLabel}>
+							<IonIcon icon={chevronBackOutline} />{tSuggest}
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabel">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
+						<IonLabel className="runLabel">{tpLettChar}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Letters Characters")}
+							aria-label={tLettChar}
 							id="newWGCharGroupRun"
 							className="ion-margin-top serifChars"
-							helperText={tw("Enter characters in group here")}
-							onIonChange={resetError("run")}
+							helperText={tEnterChar}
+							onIonChange={resetRun}
 						/>
 					</IonItem>
 					<IonItem>
 						<IonToggle
 							enableOnOffLabels
 							labelPlacement="start"
-							aria-label={t("Use separate dropoff rate")}
 							justify="space-between"
-							onIonChange={() => setHasDropoff(!hasDropoff)}
+							onIonChange={toggleDropoff}
 							checked={hasDropoff}
-						>{t("Use separate dropoff rate")}</IonToggle>
+						>{tUseDrop}</IonToggle>
 					</IonItem>
 					<IonItem id="charGroupDropoffAddCWG" className={hasDropoff ? "" : "hide"}>
 						<IonRange
@@ -252,18 +292,18 @@ const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="secondary"
 						slot="end"
-						onClick={maybeSaveNewCharGroup(false)}
+						onClick={maybeSaveAndAdd}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: tw("CharGroup") })}</IonLabel>
+						<IonLabel>{tAddThing}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={maybeSaveNewCharGroup()}
+						onClick={maybeSaveAndClose}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("Add and Close")}</IonLabel>
+						<IonLabel>{tAddClose}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

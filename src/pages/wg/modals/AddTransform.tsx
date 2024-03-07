@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -31,25 +31,49 @@ import useTranslator from '../../../store/translationHooks';
 import { $q, $a, $i } from '../../../components/DollarSignExports';
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
 
-function resetError(prop: string) {
+function resetError() {
 	// Remove danger color if present
 	// Debounce means this sometimes doesn't exist by the time this is called.
-	return () => {
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
+	const where = $q(".seekLabel");
+	where && where.classList.remove("invalidValue");
 }
 
+const wgweWords = [
+	"Description of the transformation", "No search expression present",
+	"replacement expression", "search expression"
+];
+
+const presentational = [
+	"Description of the transformation",
+	"replacement expression", "search expression"
+];
+const context = { context: "presentational" };
+
+const commons = [
+	"Add and Close", "Cancel", "Close", "Extra Characters", "error", "optional", "dummy"
+];
+
+const addies = [ "thingAdded", "addThing" ];
+
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
-	const [ tw ] = useTranslator('wgwe');
+	const [ tThingAdd, tAddThing ] = useMemo(() => {
+		const tTransformation = t("Transformation");
+		return addies.map(term => tc(term, { thing: tTransformation }));
+	}, [t, tc]);
+	const [ tAddClose, tCancel, tClose, tExChar, tError, tOptional ] = useI18Memo(commons);
+	const [ tTransDesc, tNoSearch, tRepl, tSrch ] = useI18Memo(wgweWords, "wgwe");
+	const [ tpTrandDesc, tpRepl, tpSrch ] = useI18Memo(presentational, "wgwe", context);
+
+	const { isOpen, setIsOpen, openECM } = props;
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const maybeSaveNewTransform = useCallback((close: boolean = true) => (() => {
+
+	const maybeSaveNewTransform = useCallback((close: boolean = true) => {
 		const searchEl = $i<HTMLInputElement>("searchEx");
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
@@ -57,7 +81,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No search expression present"));
+			err.push(tNoSearch);
 		}
 		try {
 			new RegExp(seek);
@@ -67,12 +91,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: tc("error"),
+				header: tError,
 				message: err.join("; "),
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -94,23 +118,28 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		}));
 		$a<HTMLInputElement>("ion-list.wgAddTransform ion-input").forEach((input) => input.value = "");
 		toaster({
-			message: tc("thingAdded", { thing: t("Transformation")}),
+			message: tThingAdd,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	}), [dispatch, doAlert, setIsOpen, t, tc, toast, tw]);
+	}, [dispatch, doAlert, setIsOpen, toast, tThingAdd, tCancel, tError, tNoSearch]);
+	const maybeSaveAndAdd = useCallback(() => maybeSaveNewTransform(false), [maybeSaveNewTransform]);
+	const maybeSaveAndClose = useCallback(() => maybeSaveNewTransform(), [maybeSaveNewTransform]);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const openEx = useCallback(() => openECM(true), [openECM]);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("addThing", { thing: t("Transformation") })}</IonTitle>
+					<IonTitle>{tAddThing}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
+						<IonButton onClick={closer} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -119,35 +148,35 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{tw("search expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="seekLabel">{tpSrch}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("search expression")}
+							aria-label={tSrch}
 							id="searchEx"
 							className="ion-margin-top serifChars"
-							onIonChange={resetError("seek")}
+							onIonChange={resetError}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{tw("replacement expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("replacement expression")}
+							aria-label={tRepl}
 							id="replaceEx"
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpTrandDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Description of the transformation")}
+							aria-label={tTransDesc}
 							id="optDesc"
 							className="ion-margin-top"
-							placeholder={tc("optional")}
+							placeholder={tOptional}
 						></IonInput>
 					</IonItem>
 				</IonList>
@@ -157,18 +186,18 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="tertiary"
 						slot="end"
-						onClick={maybeSaveNewTransform(false)}
+						onClick={maybeSaveAndAdd}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: tw("Transformation") })}</IonLabel>
+						<IonLabel>{tAddThing}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={maybeSaveNewTransform()}
+						onClick={maybeSaveAndClose}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("Add and Close")}</IonLabel>
+						<IonLabel>{tAddClose}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

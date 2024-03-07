@@ -35,6 +35,7 @@ import { $i } from '../../../components/DollarSignExports';
 import { CustomStorageWG } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -45,10 +46,11 @@ interface SavedItemProps {
 	title: string
 	maybeLoad: () => void
 	maybeDelete: () => void
+	tLoad: string
+	tDelete: string
 }
 const SavedItem: FC<SavedItemProps> = (props) => {
-	const [ tc ] = useTranslator('common');
-	const { title, maybeLoad, maybeDelete } = props;
+	const { title, maybeLoad, maybeDelete, tLoad, tDelete } = props;
 	return (
 		<IonItem key={title}>
 			<IonLabel className="ion-text-wrap">{title}</IonLabel>
@@ -58,9 +60,9 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 				color="warning"
 				onClick={maybeLoad}
 				strong={true}
-			>{tc("Load")}</IonButton>
+			>{tLoad}</IonButton>
 			<IonButton
-				aria-label={tc("Delete")}
+				aria-label={tDelete}
 				className="ion-no-margin"
 				slot="end"
 				color="danger"
@@ -72,11 +74,37 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 	)
 };
 
+const commons = [
+	"Cancel", "Close", "Delete", "Extra Characters", "Load Error", "Load",
+	"Manage Custom Info", "Name of save", "Name your custom info",
+	"No saved info", "Ok", "Save", "Yes Overwrite It", "cannotUndo",
+	"confirmDelIt", "confirmLoad"
+];
+
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
-	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [
+		tCancel, tClose, tDelete, tExChar, tLoadError, tLoad,
+		tManage, tNameSave, tNameCustom, tNoSaved, tOk, tSave,
+		tYesOverwrite, tCannotUndo, tConfirmDel, tConfirmLoad
+	] = useI18Memo(commons);
+	const [tSaveInfo, tLoadInfo] = useMemo(() => {
+		const tCurr = tc("Current Info");
+		const save = tc("saveThing", { thing: tCurr });
+		const load = tc("loadThing", { thing: tCurr });
+		return [save, load];
+	}, [tc]);
+	const tMissingTitle = useMemo(() => {
+		return tc("missingThing", { thing: tc("title") });
+	}, [tc]);
+	const tClearPrevSave = useMemo(() => {
+		return tc("clearOverrideGeneralThings", { things: tc("the previous save") });
+	}, [tc]);
+	const tClearAll = useMemo(() => tc("clearOverrideGeneralThings", { things: t("allThings") }), [t, tc]);
+
+	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const wg = useSelector((state: StateObject) => state.wg);
@@ -91,11 +119,11 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		const title = el ? escape(el.value).trim() : "";
 		if(title === "") {
 			return doAlert({
-				header: tc("missingThing", { thing: tc("title") }),
+				header: tMissingTitle,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -133,15 +161,15 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			} else {
 				yesNoAlert({
 					header: tc("titleAlreadyExists", { title }),
-					message: tc("clearOverrideGeneralThings", { things: tc("the previous save") }),
+					message: tClearPrevSave,
 					cssClass: "warning",
-					submit: tc("Yes Overwrite It"),
+					submit: tYesOverwrite,
 					handler: () => doSave(title, "titleOverwritten"),
 					doAlert
 				});
 			}
 		});
-	}, [disableConfirms, doAlert, doCleanClose, tc, toast, wg]);
+	}, [disableConfirms, doAlert, doCleanClose, tc, toast, wg, tOk, tYesOverwrite, tClearPrevSave, tMissingTitle]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWG.getItem<Base_WG>(title).then((value) => {
@@ -157,12 +185,12 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 					doCleanClose();
 				} else {
 					doAlert({
-						header: tc("Load Error"),
+						header: tLoadError,
 						cssClass: "danger",
 						message: tc("titleNotFound", { title }),
 						buttons: [
 							{
-								text: tc("Ok"),
+								text: tOk,
 								role: "cancel",
 								cssClass: "cancel"
 							}
@@ -176,14 +204,14 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tc("loadTitle", { title }),
-				message: tc("clearOverrideGeneralThings", { title: t("allThings") }),
+				message: tClearAll,
 				cssClass: "warning",
-				submit: tc("confirmLoad"),
+				submit: tConfirmLoad,
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, doCleanClose, t, tc, toast]);
+	}, [disableConfirms, dispatch, doAlert, doCleanClose, tc, tClearAll, toast, tConfirmLoad, tOk, tLoadError]);
 	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);
@@ -203,32 +231,36 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tc("deleteTitle", { title }),
-				message: tc("cannotUndo"),
+				message: tCannotUndo,
 				cssClass: "warning",
-				submit: tc("confirmDelIt"),
+				submit: tConfirmDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast]);
+	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast, tCannotUndo, tConfirmDel]);
 	const mapSavedItems = useCallback(
-		(title: string) => <SavedItem
+		(title: string, i: number) => <SavedItem
 			title={title}
 			maybeDelete={() => maybeDeleteInfo(title)}
 			maybeLoad={() => maybeLoadInfo(title)}
+			tLoad={tLoad}
+			tDelete={tDelete}
+			key={`wgPreset/1::${title}`}
 		/>,
-		[maybeDeleteInfo, maybeLoadInfo]
+		[maybeDeleteInfo, maybeLoadInfo, tLoad, tDelete]
 	);
+	const openEx = useCallback(() => openECM(true), [openECM]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={doCleanClose}>
 			<IonHeader>
 				<IonToolbar color="primary">
-				<IonTitle>{tc("Manage Custom Info")}</IonTitle>
+				<IonTitle>{tManage}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => doCleanClose()} aria-label={tc("Close")}>
+						<IonButton onClick={doCleanClose} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -238,14 +270,14 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>{tc("saveThing", { thing: tc("Current Info") })}</IonLabel>
+							<IonLabel>{tSaveInfo}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput
-								aria-label={tc("Name of save")}
+								aria-label={tNameSave}
 								id="currentInfoSaveNameWG"
 								inputmode="text"
-								placeholder={tc("Name your custom info")}
+								placeholder={tNameCustom}
 								type="text"
 							/>
 							<IonButton
@@ -253,15 +285,15 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 								onClick={maybeSaveInfo}
 								strong={true}
 								color="success"
-							>{tc("Save")}</IonButton>
+							>{tSave}</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
-							<IonLabel>{tc("loadThing", { thing: tc("Current Info") })}</IonLabel>
+							<IonLabel>{tLoadInfo}</IonLabel>
 						</IonItemDivider>
 						{(customInfo.length === 0) ?
-							<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
+							<IonItem color="warning"><IonLabel>{tNoSaved}</IonLabel></IonItem>
 						:
 							customInfo.map(mapSavedItems)
 						}
@@ -270,9 +302,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={() => doCleanClose()}>
+					<IonButton color="danger" slot="end" onClick={doCleanClose}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

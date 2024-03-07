@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useCallback, useMemo } from 'react';
 import {
 	IonButton,
 	IonCard,
@@ -34,6 +34,7 @@ import {
 } from '../../components/icons';
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
 import { Block, BlockStorage, parseBlock } from '../../components/infoBlocks';
+import useI18Memo, { useI18MemoObject } from '../../components/useI18Memo';
 
 interface CardProps {
 	hideOverview?: boolean
@@ -42,6 +43,8 @@ interface CardProps {
 const OverviewButton: FC<CardProps> = (props) => {
 	const { hideOverview, setIsOpenInfo } = props;
 	const [ tc ] = useTranslator('common');
+	const tHelp = useMemo(() => tc('Help'), [tc]);
+	const clicker = useCallback(() => setIsOpenInfo && setIsOpenInfo(false), [setIsOpenInfo]);
 	if(hideOverview) {
 		return <></>;
 	}
@@ -51,25 +54,30 @@ const OverviewButton: FC<CardProps> = (props) => {
 			slot="end"
 			routerLink="/wg/overview"
 			routerDirection="forward"
-			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
-			aria-label={tc("Help")}
+			onClick={clicker}
+			aria-label={tHelp}
 		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>
 	);
 };
 
+const joinArrays = { joinArrays: "\n"};
+
+const charGroupInfo = [
+	"info.charGroups", "info.charGroupsHiddenOverview",
+	"info.charGroupsOverview"
+];
 export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const example = t("info.charGroupExample", { returnObjects: true });
-	const plainText = t("info.charGroups", { joinArrays: "\n"});
-	const endHiddenOverview = t("info.charGroupsHiddenOverview", { joinArrays: "\n"});
-	const endOverview = t("info.charGroupsOverview", { joinArrays: "\n"});
+	const example = useMemo(() => t("info.charGroupExample", { returnObjects: true }), [t]);
+	const tCharGroupTab = useMemo(() => t("Character Groups Tab"), [t]);
+	const [ plainText, endHiddenOverview, endOverview ] = useI18Memo(charGroupInfo, 'wg', joinArrays);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={gridOutline} slot="start" color="primary" />
-				<IonLabel>{t("Character Groups Tab")}</IonLabel>
+				<IonLabel>{tCharGroupTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -96,21 +104,27 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 		</IonCard>
 	);
 }
+
+const syllExamples = [ "info.charGroupExample", "info.syllablesExample" ];
+const syllInfo = [
+	"info.syllablesStartHideOverview", "info.syllablesStartOverview",
+	"info.syllables", "info.syllablesEndHideOverview",
+	"info.syllablesEndOverview"
+];
 export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const { hideOverview } = props;
-	const charGroupExample = t("info.charGroupExample", { returnObjects: true });
-	const startHiddenOverview = t("info.syllablesStartHideOverview", { joinArrays: "\n"});
-	const startOverview = t("info.syllablesStartOverview", { joinArrays: "\n"});
-	const example = t("info.syllablesExample", { returnObjects: true });
-	const plainText = t("info.syllables", { joinArrays: "\n"});
-	const endHiddenOverview = t("info.syllablesEndHideOverview", { joinArrays: "\n"});
-	const endOverview = t("info.syllablesEndOverview", { joinArrays: "\n"});
+	const [ charGroupExample, example ] = useI18MemoObject(syllExamples, 'wg');
+	const [
+		startHiddenOverview, startOverview,
+		plainText, endHiddenOverview, endOverview
+	] = useI18Memo(syllInfo, 'wg', joinArrays);
+	const tSyllTab = useMemo(() => t("Syllables Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<SyllablesIcon slot="start" color="primary" />
-				<IonLabel>{t("Syllables Tab")}</IonLabel>
+				<IonLabel>{tSyllTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -156,19 +170,23 @@ export const SylCard: FC<CardProps> = (props) => {
 }
 
 export const TransCard: FC<CardProps> = (props) => {
-	const arrow = (ltr() ? "⟶" : "⟵");
+	const arrow = useMemo(() => (ltr() ? "⟶" : "⟵"), []);
 	const [ t ] = useTranslator('wg');
-	const blocks = t("info.transBlocks", { returnObjects: true });
-	const blockStorage: BlockStorage = {};
-	Object.entries(blocks).forEach(([label, info]: [string, Block]) => {
-		blockStorage[label] = parseBlock(info, arrow);
-	});
-	const plainText = t("info.trans", { arrow, joinArrays: "\n"});
+	const blockStorage = useMemo(() => {
+		const blocks = t("info.transBlocks", { returnObjects: true });
+		const blockStorage: BlockStorage = {};
+		Object.entries(blocks).forEach(([label, info]: [string, Block]) => {
+			blockStorage[label] = parseBlock(info, arrow);
+		});
+		return blockStorage;
+	}, [arrow, t]);
+	const plainText = useMemo(() => t("info.trans", { arrow, joinArrays: "\n"}), [t, arrow]);
+	const tTransTab = useMemo(() => t("Transformations Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<TransformationsIcon slot="start" color="primary" />
-				<IonLabel>{t("Transformations Tab")}</IonLabel>
+				<IonLabel>{tTransTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -188,16 +206,17 @@ export const TransCard: FC<CardProps> = (props) => {
 		</IonCard>
 	);
 }
+
+const outInfo = [ "info.outputMain", "info.outputSettings", "info.outputLexicon" ];
 export const OutCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const main = t("info.outputMain", { joinArrays: "\n"});
-	const settings = t("info.outputSettings", { joinArrays: "\n"});
-	const lexicon = t("info.outputLexicon", { joinArrays: "\n"});
+	const [ main, settings, lexicon ] = useI18Memo(outInfo, 'wg', joinArrays);
+	const tOutTab = useMemo(() => t("Output Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={documentTextOutline} slot="start" color="primary" />
-				<IonLabel>{t("Output Tab")}</IonLabel>
+				<IonLabel>{tOutTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -214,14 +233,16 @@ export const OutCard: FC<CardProps> = (props) => {
 		</IonCard>
 	);
 }
+
 export const OptCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const main = t("info.settings", { joinArrays: "\n"});
+	const tSettTab = useMemo(() => t("Settings Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={optionsOutline} slot="start" color="primary" />
-				<IonLabel>{t("Settings Tab")}</IonLabel>
+				<IonLabel>{tSettTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -234,17 +255,21 @@ export const OptCard: FC<CardProps> = (props) => {
 const WGinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
-	const main = t("info.overview", { joinArrays: "\n"});
+	const main = useMemo(() => t("info.overview", { joinArrays: "\n"}), [t]);
+	const tOverview = useMemo(() => {
+		return tc("overviewOf", { what: tc("WordGen") });
+	}, [tc]);
+	const tWhatIsWG = useMemo(() => t("What is WordGen?"), [t]);
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={tc("overviewOf", { what: tc("WordGen") })} />
+				<Header title={tOverview} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>
 					<IonItem lines="full">
 						<WordGenIcon slot="start" color="primary" />
-						<IonLabel>{t("What is WordGen?")}</IonLabel>
+						<IonLabel>{tWhatIsWG}</IonLabel>
 					</IonItem>
 					<IonCardContent>
 						<Markdown>{main}</Markdown>

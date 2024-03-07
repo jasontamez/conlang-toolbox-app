@@ -43,13 +43,23 @@ import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
 import copyText from '../../components/copyText';
+import useI18Memo from '../../components/useI18Memo';
 
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGinfo";
 
+const commons = [ "Cancel", "Help", "Loading", "Output", "Save" ];
+const translations = [
+	"Generate", "You are missing one or more types of syllables.",
+	"You have no character groups defined.",
+	"You have no syllables defined."
+];
+
 const WGOut = (props: PageData) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
+	const [ tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
+	const [ tGenerate, tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -136,16 +146,16 @@ const WGOut = (props: PageData) => {
 		});
 		return [customSortObj, defaultCustomSortObj, customSortLexObj];
 	}, [customSort, customSorts, customSortLex, defaultCustomSort]);
-	const wgSorter = makeSorter(
+	const wgSorter = useMemo(() => makeSorter(
 		sortLanguage || defaultSortLanguage,
 		sensitivity,
 		customSortObj || defaultCustomSortObj
-	);
-	const lexSorter = makeSorter(
+	), [ customSortObj, defaultCustomSortObj, sensitivity, sortLanguage, defaultSortLanguage ]);
+	const lexSorter = useMemo(() => makeSorter(
 		sortLanguage || defaultSortLanguage,
 		sensitivity,
 		customSortLexObj || defaultCustomSortObj
-	);
+	), [ customSortLexObj, defaultCustomSortObj, sensitivity, sortLanguage, defaultSortLanguage ]);
 
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {
@@ -212,10 +222,10 @@ const WGOut = (props: PageData) => {
 		setErrorString("");
 		// Sanity check
 		if(characterGroups.length === 0) {
-			errors.push(t("You have no character groups defined."));
+			errors.push(tNoCG);
 		}
 		if (!multipleSyllableTypes && singleWord.length === 0) {
-			errors.push(t("You have no syllables defined."));
+			errors.push(tNoSyll);
 		}
 		if (multipleSyllableTypes &&
 			(
@@ -225,7 +235,7 @@ const WGOut = (props: PageData) => {
 				|| wordFinal.length === 0
 			)
 		) {
-			errors.push(t("You are missing one or more types of syllables."));
+			errors.push(tMissing);
 		}
 		if(errors.length > 0) {
 			setErrorString(errors.join(" "));
@@ -540,38 +550,8 @@ const WGOut = (props: PageData) => {
 	// // //
 	// Save to Lexicon
 	// // //
-	const pickAndSave = () => {
-		if (isPickingSaving) {
-			// Stop saving
-			return donePickingAndSaving();
-		} else if(lexColumns.length === 0) {
-			return toaster({
-				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
-		}
-		setIsPickingSaving(true);
-		return toaster({
-			message: tc("Tap words you want to save to Lexicon."),
-			duration: 2500,
-			position: "top",
-			toast
-		});
-	};
-	const donePickingAndSaving = () => {
-		setIsPickingSaving(false);
-		if(savedWords.length > 0) {
-			// Attempt to save
-			saveToLexicon(savedWords);
-		} else {
-			// Just stop picking
-			setIsPickingSaving(false);
-		}
-	};
-	const saveToLexicon = (words: string[]) => {
+
+	const saveToLexicon = useCallback((words: string[]) => {
 		doAlert({
 			header: tc("Select a column"),
 			message: tc("Your selected words will be added to the Lexicon under that column."),
@@ -586,12 +566,12 @@ const WGOut = (props: PageData) => {
 			}),
 			buttons: [
 				{
-					text: tc("Cancel"),
+					text: tCancel,
 					role: 'cancel',
 					cssClass: "cancel"
 				},
 				{
-					text: tc("Save"),
+					text: tSave,
 					handler: (col: LexiconColumn | undefined) => {
 						if(!col) {
 							// Treat as cancel
@@ -630,7 +610,38 @@ const WGOut = (props: PageData) => {
 				}
 			]
 		});
-	};
+	}, [dispatch, doAlert, lexColumns, lexSorter, navigator, tCancel, tSave, tc, toast]);
+	const donePickingAndSaving = useCallback(() => {
+		setIsPickingSaving(false);
+		if(savedWords.length > 0) {
+			// Attempt to save
+			saveToLexicon(savedWords);
+		} else {
+			// Just stop picking
+			setIsPickingSaving(false);
+		}
+	}, [saveToLexicon, savedWords]);
+	const pickAndSave = useCallback(() => {
+		if (isPickingSaving) {
+			// Stop saving
+			return donePickingAndSaving();
+		} else if(lexColumns.length === 0) {
+			return toaster({
+				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
+				color: "danger",
+				duration: 4000,
+				position: "top",
+				toast
+			});
+		}
+		setIsPickingSaving(true);
+		return toaster({
+			message: tc("Tap words you want to save to Lexicon."),
+			duration: 2500,
+			position: "top",
+			toast
+		});
+	}, [donePickingAndSaving, isPickingSaving, lexColumns.length, tc, toast]);
 
 	// // //
 	// Display
@@ -661,7 +672,7 @@ const WGOut = (props: PageData) => {
 			);
 		});
 	}, [displayList, maybeSaveThisWord]);
-	const makeOutput = useCallback(() => {
+	const theOutput = useMemo(() => {
 		if(displayString) {
 			if(isPickingSaving) {
 				return parsedWords;
@@ -675,9 +686,10 @@ const WGOut = (props: PageData) => {
 		return <></>;
 	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
 
+	const openInfo = useCallback(() => setIsOpenInfo(true), []);
 	return (
 		<IonPage>
-			<OutputOptionsModal {...props.modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
+			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<OutCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
@@ -686,9 +698,9 @@ const WGOut = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton disabled={isPickingSaving} />
 					</IonButtons>
-					<IonTitle>{tc("Output")}</IonTitle>
+					<IonTitle>{tOutput}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")} disabled={isPickingSaving}>
+						<IonButton onClick={openInfo} aria-label={tHelp} disabled={isPickingSaving}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -706,8 +718,8 @@ const WGOut = (props: PageData) => {
 						>
 							{
 								isGenerating ? (
-									<span className="ital">{tc("Loading")}</span>
-								) : t("Generate")
+									<span className="ital">{tLoad}</span>
+								) : tGenerate
 							}<IonIcon icon={caretForwardCircleOutline} />
 						</IonButton>
 						<div
@@ -715,7 +727,7 @@ const WGOut = (props: PageData) => {
 							style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}}
 							className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
 						>
-							{makeOutput()}
+							{theOutput}
 						</div>
 					</div>
 					<div className="rightHandSide">
@@ -738,7 +750,7 @@ const WGOut = (props: PageData) => {
 							strong={true}
 							className={isPickingSaving ? "hide" : ""}
 							color="secondary"
-							onClick={() => pickAndSave()}
+							onClick={pickAndSave}
 						><LexiconOutlineIcon slot="icon-only" /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "" : "hide"}
@@ -746,8 +758,8 @@ const WGOut = (props: PageData) => {
 							expand="block"
 							strong={true}
 							color="success"
-							onClick={() => donePickingAndSaving()}
-							aria-label={tc("Save")}
+							onClick={donePickingAndSaving}
+							aria-label={tSave}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 					</div>
 				</div>

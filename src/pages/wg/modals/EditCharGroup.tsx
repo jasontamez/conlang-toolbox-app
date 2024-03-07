@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -34,6 +34,7 @@ import useTranslator from '../../../store/translationHooks';
 import { $q, $i } from '../../../components/DollarSignExports';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WGCharGroupObject
@@ -43,21 +44,50 @@ interface ModalProps extends ExtraCharactersModalOpener {
 function resetError (prop: keyof WGCharGroupObject) {
 	// Remove danger color if present
 	// Debounce means this sometimes doesn't exist by the time this is called.
-	return () => {
-		const where = $q("." + prop + "LabelEdit");
-		where && where.classList.remove("invalidValue");
-	}
+	const where = $q("." + prop + "LabelEdit");
+	where && where.classList.remove("invalidValue");
 }
 
+
+const commons = [
+	"Are you sure you want to delete this? This cannot be undone.",
+	"Cancel", "Close", "Extra Characters", "confirmDelIt", "error"
+];
+
+const translations = [
+	"1 character only", "CharGroup", "Enter characters in group here",
+	"Letters Characters", "No label present", "No run present",
+	"No title present", "Short Label", "Suggest", "Title or description",
+	"Unable to suggest a unique label from the given descrption."
+];
+
+const presentations = [
+	"Title or description", "Short Label", "Letters Characters"
+];
+const context = { context: "presentation" };
+
+const things = [
+	"deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved"
+];
+
 const EditCharGroupModal = (props: ModalProps) => {
+	const [ t ] = useTranslator('wg');
+	const [ tw ] = useTranslator('wgwe');
+	const tUseSep = useMemo(() => t("Use separate dropoff rate"), [t]);
+	const [ tYouSure, tCancel, tClose, tExChar, tConfDel, tError ] = useI18Memo(commons);
+	const [
+		t1Char, tCG, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
+		tShort, tSuggest, tTitleDesc, tNoSuggest
+	] = useI18Memo(translations, 'wgwe');
+	const [ tpTitleDesc, tpShort, tpLettChar ] = useI18Memo(presentations, 'wgwe', context);
+	const thing = useMemo(() => ({ thing: tCG }), [tCG]);
+	const [ tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved ] = useI18Memo(things, "common", thing);
+
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [doAlert] = useIonAlert();
-	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
-	const [ tw ] = useTranslator('wgwe');
 	const toast = useIonToast();
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
@@ -96,6 +126,10 @@ const EditCharGroupModal = (props: ModalProps) => {
 		setRunEl(_runEl);
 	}, [characterGroupDropoff, characterGroups, editing]);
 
+	const resetLabel = useCallback(() => resetError("label"), []);
+	const resetTitle = useCallback(() => resetError("title"), []);
+	const resetRun = useCallback(() => resetError("run"), []);
+
 	const generateLabel = useCallback(() => {
 		//let invalid = "^$\\[]{}.*+()?|";
 		const words = (titleEl!.value as string) // Get the title/description
@@ -118,7 +152,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 		if(!label) {
 			// No suitable label found
 			toaster({
-				message: tw("Unable to suggest a unique label from the given descrption."),
+				message: tNoSuggest,
 				color: "warning",
 				duration: 4000,
 				position: "top",
@@ -127,9 +161,9 @@ const EditCharGroupModal = (props: ModalProps) => {
 		} else {
 			// Suitable label found
 			labelEl!.value = label;
-			resetError("label")();
+			resetError("label");
 		}
-	}, [charGroupMap, editing, labelEl, titleEl, toast, tw]);
+	}, [charGroupMap, editing, labelEl, titleEl, toast, tNoSuggest]);
 	const cancelEditing = useCallback(() => {
 		setIsOpen(false);
 		setEditing(null);
@@ -143,12 +177,12 @@ const EditCharGroupModal = (props: ModalProps) => {
 		if(title === "") {
 			const el = $q(".titleLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No title present"));
+			err.push(tNoTitle);
 		}
 		if(!label) {
 			const el = $q(".labelLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No label present"));
+			err.push(tNoLabel);
 		} else if (editing!.label !== label && charGroupMap[label]) {
 			const el = $q(".labelLabelEdit");
 			el && el.classList.add("invalidValue");
@@ -164,17 +198,17 @@ const EditCharGroupModal = (props: ModalProps) => {
 		if(run === "") {
 			const el = $q(".runLabelEdit");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No run present"));
+			err.push(tNoRun);
 		}
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: tc("error"),
+				header: tError,
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -194,13 +228,16 @@ const EditCharGroupModal = (props: ModalProps) => {
 			}
 		}));
 		toaster({
-			message: tc("thingSaved", { thing: tw("CharGroup") }),
+			message: tThingSaved,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	}, [cancelEditing, charGroupMap, dispatch, doAlert, dropoff, editing, hasDropoff, labelEl, runEl, tc, titleEl, toast, tw]);
+	}, [cancelEditing, charGroupMap, dispatch, doAlert, dropoff,
+		editing, hasDropoff, labelEl, runEl, titleEl, toast, tw,
+		tCancel, tError, tNoLabel, tNoRun, tNoTitle, tThingSaved
+	]);
 	const maybeDeleteCharGroup = useCallback(() => {
 		const title = titleEl!.value.trim(),
 			label = labelEl!.value.trim(),
@@ -214,7 +251,7 @@ const EditCharGroupModal = (props: ModalProps) => {
 				dropoffOverride: hasDropoff ? dropoff : undefined
 			}));
 			toaster({
-				message: tc("thingDeleted", { thing: tw("CharGroup") }),
+				message: tThingDel,
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -226,24 +263,27 @@ const EditCharGroupModal = (props: ModalProps) => {
 		} else {
 			yesNoAlert({
 				header: `${label}=${run}`,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [cancelEditing, disableConfirms, dispatch, doAlert, dropoff, hasDropoff, labelEl, runEl, tc, titleEl, toast, tw]);
+	}, [cancelEditing, disableConfirms, dispatch, doAlert, dropoff, hasDropoff,
+		labelEl, runEl, titleEl, toast, tConfDel, tThingDel, tYouSure]);
+	const openEx = useCallback(() => openECM(true), [openECM]);
+	const toggleDropoff= useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff])
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("editThing", { thing: tw("CharGroup") })}</IonTitle>
+					<IonTitle>{tEditThing}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={cancelEditing} aria-label={tc("Close")}>
+						<IonButton onClick={cancelEditing} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -252,14 +292,14 @@ const EditCharGroupModal = (props: ModalProps) => {
 			<IonContent>
 				<IonList lines="none" class="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabelEdit">{tw("Title or description", { context: "presentation" })}</IonLabel>
+						<IonLabel className="titleLabelEdit">{tpTitleDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Title or description")}
+							aria-label={tTitleDesc}
 							id="editingWGCharGroupTitle"
 							className="ion-margin-top"
-							onIonChange={resetError("title")}
+							onIonChange={resetTitle}
 							autocomplete="on"
 						/>
 					</IonItem>
@@ -267,38 +307,37 @@ const EditCharGroupModal = (props: ModalProps) => {
 						<div
 							slot="start"
 							className="ion-margin-end labelLabel"
-						>{tw("Short Label", { context: "presentation" })}</div>
+						>{tpShort}</div>
 						<IonInput
-							aria-label={tw("Short Label")}
+							aria-label={tShort}
 							id="editingWGShortLabel"
 							className="serifChars"
-							helperText={tw("1 character only")}
-							onIonChange={resetError("label")}
+							helperText={t1Char}
+							onIonChange={resetLabel}
 							maxlength={1}
 						/>
 						<IonButton slot="end" onClick={generateLabel}>
-							<IonIcon icon={chevronBackOutline} />{tw("Suggest")}
+							<IonIcon icon={chevronBackOutline} />{tSuggest}
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabelEdit">{tw("Letters Characters", { context: "presentation" })}</IonLabel>
+						<IonLabel className="runLabelEdit">{tpLettChar}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Letters Characters")}
+							aria-label={tLettChar}
 							id="editingWGCharGroupRun"
 							className="ion-margin-top serifChars"
-							helperText={tw("Enter characters in group here")}
-							onIonChange={resetError("run")}
+							helperText={tEnterHere}
+							onIonChange={resetRun}
 						/>
 					</IonItem>
 					<IonItem>
 						<IonToggle enableOnOffLabels
-							aria-label={t("Use separate dropoff rate")}
-							onClick={() => setHasDropoff(!hasDropoff)}
+							onClick={toggleDropoff}
 							labelPlacement="start"
 							checked={hasDropoff}
-						>{t("Use separate dropoff rate")}</IonToggle>
+						>{tUseSep}</IonToggle>
 					</IonItem>
 					<IonItem id="charGroupDropoffEditC" className={hasDropoff ? "" : "hide"}>
 						<IonRange
@@ -318,11 +357,11 @@ const EditCharGroupModal = (props: ModalProps) => {
 				<IonToolbar>
 					<IonButton color="secondary" slot="end" onClick={maybeSaveNewInfo}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveThing", { thing: tw("CharGroup") })}</IonLabel>
+						<IonLabel>{tSaveThing}</IonLabel>
 					</IonButton>
 					<IonButton color="danger" slot="start" onClick={maybeDeleteCharGroup}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tc("deleteThing", { thing: tw("CharGroup") })}</IonLabel>
+						<IonLabel>{tDelThing}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

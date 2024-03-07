@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement, Fragment, FC } from 'react';
+import React, { useState, useEffect, ReactElement, Fragment, FC, useCallback } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -30,13 +30,13 @@ import { PageData, SetState, StateObject, SyllableTypes, Zero_Fifty } from '../.
 import { setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes, clearSyllables } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
+import useI18Memo from '../../components/useI18Memo';
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
-import useI18Memo from '../../components/useI18Memo';
 
 const addLinebreaks = (input: string) => {
 	const output: ReactElement[] = [];
@@ -45,7 +45,7 @@ const addLinebreaks = (input: string) => {
 	split.forEach((bit, i) => {
 		output.push(
 			<br key={`${input}/br/${i}`} />,
-			<Fragment key={`${input}/br/${i}`}>{bit}</Fragment>
+			<Fragment key={`${input}/frag/${i}`}>{bit}</Fragment>
 		);
 	});
 	return output;
@@ -95,7 +95,7 @@ const SyllableButton: FC<SyllableButtonProps> = (props) => {
 
 // Translations
 const commons = [
-	"Save", "Edit", "Delete", "Help", "syllableDropoffExplanation"
+	"Save", "Edit", "Delete", "Help"
 ];
 const formals = [
 	"single-word syllables", "dropoff rate", "word-initial syllables",
@@ -113,12 +113,23 @@ const translations = [
 	"mid-word syllables",
 	"These syllables are used between the first and last syllable of a word",
 	"word-final syllables",
-	"These syllables are used to end words"
+	"These syllables are used to end words",
+	"syllableDropoffExplanation"
 ];
 
 const WGSyl: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
+	const [tSave, tEdit, tDelete, tHelp] = useI18Memo(commons);
+	const [
+		tSwSyllFormal, tDropoffFormal, tWiSyllFormal, tMwSyllFormal, tWfSyllFormal
+	] = useI18Memo(formals, "wg", formal);
+	const [
+		tSyllablesTitle, tFromZeroFifty, tUseMultiSyll, tUseCharLabel,
+		tUseDrop, tWiSyll, tWiSyllExpl, tMwSyll, tMwSyllExpl, tWeSyll,
+		tWeSyllExpl, tSyllableDropoffExplanation
+	] = useI18Memo(translations, "wg");
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -144,15 +155,6 @@ const WGSyl: FC<PageData> = (props) => {
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [tSave, tEdit, tDelete, tHelp, tSyllableDropoffExplanation] = useI18Memo(commons);
-	const [
-		tSwSyllFormal, tDropoffFormal, tWiSyllFormal, tMwSyllFormal, tWfSyllFormal
-	] = useI18Memo(formals, "wg", formal);
-	const [
-		tSyllablesTitle, tFromZeroFifty, tUseMultiSyll, tUseCharLabel,
-		tUseDrop, tWiSyll, tWiSyllExpl, tMwSyll, tMwSyllExpl, tWeSyll,
-		tWeSyllExpl
-	] = useI18Memo(translations, "wg");
 	useEffect(() => {
 		setSwDropoff(syllableDropoffOverrides.singleWord);
 	}, [syllableDropoffOverrides.singleWord]);
@@ -182,7 +184,7 @@ const WGSyl: FC<PageData> = (props) => {
 		func(value === null ? syllableBoxDropoff : null);
 	};
 	const firstBox = multipleSyllableTypes ? tSwSyllFormal : tSyllablesTitle;
-	const maybeClearEverything = () => {
+	const maybeClearEverything = useCallback(() => {
 		const count = wi.length + wm.length + wf.length + sw.length;
 		const handler = () => {
 			dispatch(clearSyllables());
@@ -206,7 +208,9 @@ const WGSyl: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, dispatch, doAlert, sw.length, t, tc, toast, wf.length, wi.length, wm.length]);
+	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
+	const openInfo = useCallback(() => setIsOpenInfo(true), []);
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -221,16 +225,16 @@ const WGSyl: FC<PageData> = (props) => {
 					<IonTitle>{tSyllablesTitle}</IonTitle>
 					<IonButtons slot="end">
 						{(singleWord || wordInitial || wordMiddle || wordFinal) ?
-							<IonButton onClick={() => maybeClearEverything()} aria-label={tDelete}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenECM(true)}>
+						<IonButton onClick={openEx}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tHelp}>
+						<IonButton onClick={openInfo} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
