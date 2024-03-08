@@ -55,13 +55,13 @@ const wgweWords = [
 ];
 
 const addies = [ "thingAdded", "addThing" ];
-
+const useDrop = ["Use separate dropoff rate"];
 const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
 	const [ tAddClose, tClose, tExChar, tError, tCancel ] = useI18Memo(commons);
-	const [ tUseDrop ] = useI18Memo(["Use separate dropoff rate"], "wg");
+	const [ tUseDrop ] = useI18Memo(useDrop, "wg");
 	const [
 		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoSuggest

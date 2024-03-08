@@ -687,6 +687,7 @@ const WGOut = (props: PageData) => {
 	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
 
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
 	return (
 		<IonPage>
 			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
@@ -735,14 +736,14 @@ const WGOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => setIsOpenOptions(true)}
+							onClick={openInfo}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText(copyString, toast)}
+							onClick={doCopy}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton

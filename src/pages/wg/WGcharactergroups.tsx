@@ -64,18 +64,20 @@ interface CharGroupProps {
 const CharGroup: FC<CharGroupProps> = (props) => {
 	const { charGroup, editCharGroup, maybeDeleteCharGroup, tDelete } = props;
 	const { label = "", title, run } = charGroup;
+	const editor = useCallback(() => editCharGroup(charGroup), [charGroup, editCharGroup]);
+	const deleter = useCallback(() => maybeDeleteCharGroup(label, charGroup), [maybeDeleteCharGroup, label, charGroup]);
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
 				<IonItemOption
 					color="primary"
-					onClick={() => editCharGroup(charGroup)}
+					onClick={editor}
 				>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
 				<IonItemOption
 					color="danger"
-					onClick={() => maybeDeleteCharGroup(label, charGroup)}
+					onClick={deleter}
 					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />

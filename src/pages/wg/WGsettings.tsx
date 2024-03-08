@@ -16,7 +16,9 @@ import {
 	IonToggle,
 	IonInput,
 	IonButton,
-	IonLoading
+	IonLoading,
+	RangeCustomEvent,
+	InputCustomEvent
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -120,6 +122,18 @@ const WGSet = (props: PageData) => {
 	}, [dispatch]);
 	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const closeLoader = useCallback(() => setLoadingOpen(false), []);
+	const openLoader = useCallback(() => setIsOpenLoadPreset(true), []);
+	const doSetMonosyllablesRate = useCallback((e: RangeCustomEvent) => dispatch(setMonosyllablesRate(e.target.value as Zero_OneHundred)), [dispatch]);
+	const doSetMaxSyllablesPerWord = useCallback((e: RangeCustomEvent) => dispatch(setMaxSyllablesPerWord(e.target.value as Two_Fifteen)), [dispatch]);
+	const doSetCharacterGroupDropoff = useCallback((e: RangeCustomEvent) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty)), [dispatch]);
+	const doSetSyllableBoxDropoff = useCallback((e: RangeCustomEvent) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty)), [dispatch]);
+	const doSetDeclarativeSentencePre = useCallback((e: InputCustomEvent) => dispatch(setDeclarativeSentencePre(e.target.value as string)), [dispatch]);
+	const doSetDeclarativeSentencePost = useCallback((e: InputCustomEvent) => dispatch(setDeclarativeSentencePost(e.target.value as string)), [dispatch]);
+	const doSetInterrogativeSentencePre = useCallback((e: InputCustomEvent) => dispatch(setInterrogativeSentencePre(e.target.value as string)), [dispatch]);
+	const doSetInterrogativeSentencePost = useCallback((e: InputCustomEvent) => dispatch(setInterrogativeSentencePost(e.target.value as string)), [dispatch]);
+	const doSetExclamatorySentencePre = useCallback((e: InputCustomEvent) => dispatch(setExclamatorySentencePre(e.target.value as string)), [dispatch]);
+	const doSetExclamatorySentencePost = useCallback((e: InputCustomEvent) => dispatch(setExclamatorySentencePost(e.target.value as string)), [dispatch]);
 	return (
 		<IonPage>
 			<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
@@ -136,7 +150,7 @@ const WGSet = (props: PageData) => {
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
-				onDidDismiss={() => setLoadingOpen(false)}
+				onDidDismiss={closeLoader}
 				message={tWait}
 				spinner="bubbles"
 				/*duration={300000}*/
@@ -164,13 +178,13 @@ const WGSet = (props: PageData) => {
 					<IonItem lines="none" id="presetsSection">
 						<div>
 							<IonButton
-								onClick={() => setIsOpenLoadPreset(true)}
+								onClick={openLoader}
 								strong={true}
 								color="secondary"
 								shape="round"
 							>{tLoad}</IonButton>
 							<IonButton
-								onClick={() => openCustomInfoModal()}
+								onClick={openCustomInfoModal}
 								strong={true}
 								color="tertiary"
 								shape="round"
@@ -189,7 +203,7 @@ const WGSet = (props: PageData) => {
 							max={100}
 							value={monosyllablesRate}
 							pin={true}
-							onIonChange={(e) => dispatch(setMonosyllablesRate(e.target.value as Zero_OneHundred))}
+							onIonChange={doSetMonosyllablesRate}
 						>
 							<div slot="start">{tNever}</div>
 							<div slot="end">{tAlways}</div>
@@ -209,7 +223,7 @@ const WGSet = (props: PageData) => {
 							snaps={true}
 							ticks={true}
 							step={1}
-							onIonChange={(e) => dispatch(setMaxSyllablesPerWord(e.target.value as Two_Fifteen))}
+							onIonChange={doSetMaxSyllablesPerWord}
 						>
 							<div slot="start">2</div>
 							<div slot="end">15</div>
@@ -226,7 +240,7 @@ const WGSet = (props: PageData) => {
 							max={50}
 							value={characterGroupDropoff}
 							pin={true}
-							onIonChange={(e) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty))}
+							onIonChange={doSetCharacterGroupDropoff}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -243,7 +257,7 @@ const WGSet = (props: PageData) => {
 							max={50}
 							value={syllableBoxDropoff}
 							pin={true}
-							onIonChange={(e) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty))}
+							onIonChange={doSetSyllableBoxDropoff}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -268,7 +282,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={declarativeSentencePre}
-							onIonChange={(e) => dispatch(setDeclarativeSentencePre(e.target.value as string))}
+							onIonChange={doSetDeclarativeSentencePre}
 						/>
 					</IonItem>
 					<IonItem className="labelled">
@@ -282,7 +296,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={declarativeSentencePost}
-							onIonChange={(e) => dispatch(setDeclarativeSentencePost(e.target.value as string))}
+							onIonChange={doSetDeclarativeSentencePost}
 						/>
 					</IonItem>
 					<IonItem className="labelled">
@@ -296,7 +310,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={interrogativeSentencePre}
-							onIonChange={(e) => dispatch(setInterrogativeSentencePre(e.target.value as string))}
+							onIonChange={doSetInterrogativeSentencePre}
 						/>
 					</IonItem>
 					<IonItem className="labelled">
@@ -310,7 +324,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={interrogativeSentencePost}
-							onIonChange={(e) => dispatch(setInterrogativeSentencePost(e.target.value as string))}
+							onIonChange={doSetInterrogativeSentencePost}
 						/>
 					</IonItem>
 					<IonItem className="labelled">
@@ -324,7 +338,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={exclamatorySentencePre}
-							onIonChange={(e) => dispatch(setExclamatorySentencePre(e.target.value as string))}
+							onIonChange={doSetExclamatorySentencePre}
 						/>
 					</IonItem>
 					<IonItem className="labelled">
@@ -338,7 +352,7 @@ const WGSet = (props: PageData) => {
 							minlength={0}
 							size={3}
 							value={exclamatorySentencePost}
-							onIonChange={(e) => dispatch(setExclamatorySentencePost(e.target.value as string))}
+							onIonChange={doSetExclamatorySentencePost}
 						/>
 					</IonItem>
 				</IonList>

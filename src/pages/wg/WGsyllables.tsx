@@ -16,7 +16,9 @@ import {
 	IonToggle,
 	IonRange,
 	useIonToast,
-	useIonAlert
+	useIonAlert,
+	RangeCustomEvent,
+	TextareaCustomEvent
 } from '@ionic/react';
 import {
 	helpCircleOutline,
@@ -63,17 +65,19 @@ interface SyllableButtonProps {
 const SyllableButton: FC<SyllableButtonProps> = (props) => {
 	const { prop, dropoff, isEditing, setIsEditing, save, edit } = props;
 	const dispatch = useDispatch();
+	const startEdit = useCallback(() => setIsEditing(prop), [prop, setIsEditing]);
+	const doSave = useCallback(() => {
+		const el = $i<HTMLInputElement>("Syl-" + prop);
+		const value = (el && el.value) || "";
+		dispatch(setSyllables({syllables: prop, value, override: dropoff }));
+		setIsEditing(null);
+	}, [dispatch, dropoff, prop, setIsEditing]);
 	if (isEditing === prop) {
 		return (
 			<IonButton
 				color="success"
 				fill="solid"
-				onClick={e => {
-					const el = $i<HTMLInputElement>("Syl-" + prop);
-					const value = (el && el.value) || "";
-					dispatch(setSyllables({syllables: prop, value, override: dropoff }));
-					setIsEditing(null);
-				}}
+				onClick={doSave}
 				aria-label={save}
 			>
 				<IonIcon icon={saveSharp} />
@@ -85,7 +89,7 @@ const SyllableButton: FC<SyllableButtonProps> = (props) => {
 			color="primary"
 			fill="clear"
 			disabled={!!isEditing}
-			onClick={e => setIsEditing(prop)}
+			onClick={startEdit}
 			aria-label={edit}
 		>
 			<IonIcon src="svg/edit.svg" />
@@ -180,9 +184,9 @@ const WGSyl: FC<PageData> = (props) => {
 		setWf(wordFinal);
 	}, [wordFinal]);
 	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
-	const toggleSeparateDropoff = (value: Zero_Fifty | null, func: SetState<Zero_Fifty | null>) => {
+	const toggleSeparateDropoff = useCallback((value: Zero_Fifty | null, func: SetState<Zero_Fifty | null>) => {
 		func(value === null ? syllableBoxDropoff : null);
-	};
+	}, [syllableBoxDropoff]);
 	const firstBox = multipleSyllableTypes ? tSwSyllFormal : tSyllablesTitle;
 	const maybeClearEverything = useCallback(() => {
 		const count = wi.length + wm.length + wf.length + sw.length;
@@ -209,8 +213,28 @@ const WGSyl: FC<PageData> = (props) => {
 			});
 		}
 	}, [disableConfirms, dispatch, doAlert, sw.length, t, tc, toast, wf.length, wi.length, wm.length]);
+
 	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const doSyllDropoff = useCallback((e: RangeCustomEvent) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty)), [dispatch]);
+	const doMultiSyll = useCallback(() => dispatch(setMultipleSyllableTypes(!multipleSyllableTypes)), [dispatch, multipleSyllableTypes]);
+
+	const doSetSw = useCallback((e: TextareaCustomEvent) => setSw(e.target.value as string), []);
+	const doToggleSwDropoff = useCallback(() => toggleSeparateDropoff(swDropoff, setSwDropoff), [toggleSeparateDropoff, swDropoff]);
+	const doSetSwDropoff = useCallback((e: RangeCustomEvent) => setSwDropoff(e.target.value as Zero_Fifty), []);
+
+	const doSetWi = useCallback((e: TextareaCustomEvent) => setWi(e.target.value as string), []);
+	const doToggleWiDropoff = useCallback(() => toggleSeparateDropoff(wiDropoff, setWiDropoff), [toggleSeparateDropoff, wiDropoff]);
+	const doSetWiDropoff = useCallback((e: RangeCustomEvent) => setWiDropoff(e.target.value as Zero_Fifty), []);
+
+	const doSetWm = useCallback((e: TextareaCustomEvent) => setWm(e.target.value as string), []);
+	const doToggleWmDropoff = useCallback(() => toggleSeparateDropoff(wmDropoff, setWmDropoff), [toggleSeparateDropoff, wmDropoff]);
+	const doSetWmDropoff = useCallback((e: RangeCustomEvent) => setWmDropoff(e.target.value as Zero_Fifty), []);
+
+	const doSetWf = useCallback((e: TextareaCustomEvent) => setWf(e.target.value as string), []);
+	const doToggleWfDropoff = useCallback(() => toggleSeparateDropoff(wfDropoff, setWfDropoff), [toggleSeparateDropoff, wfDropoff]);
+	const doSetWfDropoff = useCallback((e: RangeCustomEvent) => setWfDropoff(e.target.value as Zero_Fifty), []);
+
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -254,7 +278,7 @@ const WGSyl: FC<PageData> = (props) => {
 							min={0} max={50}
 							value={syllableBoxDropoff}
 							pin={true}
-							onIonChange={(e) => dispatch(setSyllableBoxDropoff(e.target.value as Zero_Fifty))}
+							onIonChange={doSyllDropoff}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -267,7 +291,7 @@ const WGSyl: FC<PageData> = (props) => {
 							justify="start"
 							disabled={!!isEditing}
 							checked={multipleSyllableTypes}
-							onClick={() => dispatch(setMultipleSyllableTypes(!multipleSyllableTypes))}
+							onClick={doMultiSyll}
 						>{tUseMultiSyll}</IonToggle>
 					</IonItem>
 				</IonList>
@@ -288,7 +312,7 @@ const WGSyl: FC<PageData> = (props) => {
 							id="Syl-singleWord"
 							value={sw}
 							rows={calculateRows(singleWord)}
-							onIonChange={(e) => setSw(e.target.value as string)}
+							onIonChange={doSetSw}
 							inputmode="text"
 							placeholder={tUseCharLabel}
 						/>
@@ -310,7 +334,7 @@ const WGSyl: FC<PageData> = (props) => {
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
-									onClick={() => toggleSeparateDropoff(swDropoff, setSwDropoff)}
+									onClick={doToggleSwDropoff}
 									labelPlacement="start"
 									checked={swDropoff !== null}
 								>{tUseDrop}</IonToggle>
@@ -324,7 +348,7 @@ const WGSyl: FC<PageData> = (props) => {
 									min={0} max={50}
 									pin={true}
 									value={(swDropoff || 0)}
-									onIonChange={(e) => setSwDropoff(e.target.value as Zero_Fifty)}
+									onIonChange={doSetSwDropoff}
 								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -348,7 +372,7 @@ const WGSyl: FC<PageData> = (props) => {
 							id="Syl-wordInitial"
 							value={wi}
 							rows={calculateRows(wordInitial)}
-							onIonChange={(e) => setWi(e.target.value as string)}
+							onIonChange={doSetWi}
 							inputmode="text"
 							placeholder={tWiSyllExpl}
 						/>
@@ -368,7 +392,7 @@ const WGSyl: FC<PageData> = (props) => {
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
-									onClick={() => toggleSeparateDropoff(wiDropoff, setWiDropoff)}
+									onClick={doToggleWiDropoff}
 									labelPlacement="start"
 									checked={wiDropoff !== null}
 								>{tUseDrop}</IonToggle>
@@ -382,7 +406,7 @@ const WGSyl: FC<PageData> = (props) => {
 									min={0} max={50}
 									pin={true}
 									value={(wiDropoff || 0)}
-									onIonChange={(e) => setWiDropoff(e.target.value as Zero_Fifty)}
+									onIonChange={doSetWiDropoff}
 								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -406,7 +430,7 @@ const WGSyl: FC<PageData> = (props) => {
 							id="Syl-wordMiddle"
 							value={wm}
 							rows={calculateRows(wordMiddle)}
-							onIonChange={(e) => setWm(e.target.value as string)}
+							onIonChange={doSetWm}
 							inputmode="text"
 							placeholder={tMwSyllExpl}
 						/>
@@ -426,7 +450,7 @@ const WGSyl: FC<PageData> = (props) => {
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
-									onClick={() => toggleSeparateDropoff(wmDropoff, setWmDropoff)}
+									onClick={doToggleWmDropoff}
 									labelPlacement="start"
 									checked={wmDropoff !== null}
 								>{tUseDrop}</IonToggle>
@@ -440,7 +464,7 @@ const WGSyl: FC<PageData> = (props) => {
 									min={0} max={50}
 									pin={true}
 									value={(wmDropoff || 0)}
-									onIonChange={(e) => setWmDropoff(e.target.value as Zero_Fifty)}
+									onIonChange={doSetWmDropoff}
 								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
@@ -464,7 +488,7 @@ const WGSyl: FC<PageData> = (props) => {
 							id="Syl-wordFinal"
 							value={wf}
 							rows={calculateRows(wordFinal)}
-							onIonChange={(e) => setWf(e.target.value as string)}
+							onIonChange={doSetWf}
 							inputmode="text"
 							placeholder={tWeSyllExpl}
 						/>
@@ -484,7 +508,7 @@ const WGSyl: FC<PageData> = (props) => {
 							<IonItem className="nonUnit ion-text-end">
 								<IonToggle
 									enableOnOffLabels
-									onClick={() => toggleSeparateDropoff(wfDropoff, setWfDropoff)}
+									onClick={doToggleWfDropoff}
 									labelPlacement="start"
 									checked={wfDropoff !== null}
 								>{tUseDrop}</IonToggle>
@@ -498,7 +522,7 @@ const WGSyl: FC<PageData> = (props) => {
 									min={0} max={50}
 									pin={true}
 									value={(wfDropoff || 0)}
-									onIonChange={(e) => setWfDropoff(e.target.value as Zero_Fifty)}
+									onIonChange={doSetWfDropoff}
 								>
 									<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 									<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />

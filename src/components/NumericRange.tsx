@@ -23,15 +23,15 @@ type Dec<T extends number> =
 	`${infer N extends number}` ? N : never : never :
 	T extends 0 ? -1 : Prev[T];
 
-// NumericRange<desired start, desired end + 1>
+// RangeStartToEndMinusOne<desired start, desired end + 1>
 // This will fail if (END - START) >= 1000
-type NumericRange<START extends number, END extends number, N extends number = never> =
-	START extends END ? N : NumericRange<Inc<START>, END, START | N>;
+type RangeStartToEndMinusOne<START extends number, END extends number, N extends number = never> =
+	START extends END ? N : RangeStartToEndMinusOne<Inc<START>, END, START | N>;
 
-export default NumericRange;
+export default RangeStartToEndMinusOne;
 
 // These are equivalent:
-//    type X = NumericRange<-4, 5>;
+//    type X = RangeStartToEndMinusOne<-4, 5>;
 //    type Y = -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4;
 // NOTE: The high end will cap out at (END - 1)
 

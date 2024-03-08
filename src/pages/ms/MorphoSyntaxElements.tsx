@@ -36,7 +36,7 @@ import useTranslator from '../../store/translationHooks';
 
 import { tMaker, tc } from '../../components/translators';
 import Header from '../../components/Header';
-import NumericRange from '../../components/NumericRange';
+import RangeStartToEndMinusOne from '../../components/NumericRange';
 
 interface ModalProperties {
 	title?: string
@@ -125,7 +125,7 @@ export const TextItem = (props: PropsWithChildren<{
 		</>
 	);
 };
-export const HeaderItem = (props: PropsWithChildren<{ level?: NumericRange<1, 5> }>) => (
+export const HeaderItem = (props: PropsWithChildren<{ level?: RangeStartToEndMinusOne<1, 5> }>) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>
@@ -503,7 +503,7 @@ export const MSMarkdown: FC<{children: string}> = (props) => {
 
 export interface SpecificMSPageData {
 	tag: string
-	level?: NumericRange<1, 5>
+	level?: RangeStartToEndMinusOne<1, 6>
 	heads?: (MSBool | MSText | true)[]
 	content?: string
 	title?: string

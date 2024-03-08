@@ -197,6 +197,7 @@ const WGRew = (props: PageData) => {
 	);
 	const openEx = useCallback(() => setIsOpen(true), [setIsOpen]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const openAdd = useCallback(() => setIsOpenAddTransform(true), []);
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
@@ -249,7 +250,7 @@ const WGRew = (props: PageData) => {
 					<IonFabButton
 						color="tertiary"
 						title={tAddNew}
-						onClick={() => setIsOpenAddTransform(true)}
+						onClick={openAdd}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

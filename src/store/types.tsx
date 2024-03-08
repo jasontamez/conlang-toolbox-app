@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
 import { LanguageCode } from "iso-639-1";
-import NumericRange from "../components/NumericRange";
+import RangeStartToEndMinusOne from "../components/NumericRange";
 
-export type Zero_OneHundred = NumericRange<0, 100>;
-export type Two_Fifteen = NumericRange<2, 15>;
-export type Zero_Fifty = NumericRange<0, 50>;
-export type Five_OneHundred = NumericRange<5, 100>;
-type FOTPartOne = NumericRange<50, 286>;
-type FOTPartTwo = NumericRange<287, 524>;
-type FOTPartThree = NumericRange<525, 761>;
-type FOTPartFour = NumericRange<762, 999>;
-export type Fifty_OneThousand = FOTPartOne | FOTPartTwo | FOTPartThree | FOTPartFour | 1000;
+export type Zero_OneHundred = RangeStartToEndMinusOne<0, 101>;
+export type Two_Fifteen = RangeStartToEndMinusOne<2, 16>;
+export type Zero_Fifty = RangeStartToEndMinusOne<0, 51>;
+export type Five_OneHundred = RangeStartToEndMinusOne<5, 101>;
+type FOTPartOne = RangeStartToEndMinusOne<50, 287>;
+type FOTPartTwo = RangeStartToEndMinusOne<287, 525>;
+type FOTPartThree = RangeStartToEndMinusOne<525, 762>;
+type FOTPartFour = RangeStartToEndMinusOne<762, 999>;
+export type Fifty_OneThousand = FOTPartOne | FOTPartTwo | FOTPartThree | FOTPartFour | 999 | 1000;
 
 //
 // SORTING SETTINGS
