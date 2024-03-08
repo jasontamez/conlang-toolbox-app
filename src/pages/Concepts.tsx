@@ -52,6 +52,7 @@ import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import PermanentInfo from '../components/PermanentInfo';
+import useI18Memo from '../components/useI18Memo';
 
 interface SavedWord { id: string, word: string, parts?: Concept[] }
 
@@ -60,18 +61,21 @@ interface InnerHeaderProps {
 	pickAndSave: boolean
 	modalPropsMaker: ModalPropsMaker
 }
+
+const pair = ["Concepts", "Help"];
 const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	const { textCenter, pickAndSave, modalPropsMaker } = props;
-	const { t } = useTranslation(['common']);
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
-	const title = useMemo(() => t("Concepts"), [ t ]);
+	const [tConcepts, tHelp] = useI18Memo(pair);
+	const toggleBool = useCallback(() => dispatch(toggleConceptsBoolean("textCenter")), [dispatch]);
+	const openInfo = useCallback(() => setIsOpenInfo(true), []);
 	return (<>
 		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
 		<Header
-			title={title}
+			title={tConcepts}
 			endButtons={[
-				<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
+				<IonButton key="conceptsTextCenterButton" onClick={toggleBool}>
 					<IonIcon
 						flipRtl
 						size="small"
@@ -79,7 +83,7 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 						src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
 					/>
 				</IonButton>,
-				<IonButton key="conceptsHelpButton" aria-label={t("Help")} disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+				<IonButton key="conceptsHelpButton" aria-label={tHelp} disabled={pickAndSave} onClick={openInfo}>
 					<IonIcon icon={helpCircleOutline} />
 				</IonButton>
 			]}
@@ -112,9 +116,11 @@ const WordItem: FC<WordItemProps> = (props) => {
 		(isSaved ? "saved " : "")
 		+ "word"
 		+ (isCombo ? " combo" : "");
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const maybeSave = useCallback(maybeSaveThisWord(id!, word, isCombo), [maybeSaveThisWord]);
 	return (
 		<div
-			onClick={maybeSaveThisWord(id!, word, isCombo)}
+			onClick={maybeSave}
 			key={id}
 			id={id}
 			className={classes}
@@ -521,6 +527,9 @@ const ConceptsPage: FC<PageData> = (props) => {
 		tc("Save")
 	], [ t, tc ]);
 
+	const toggleBool = useCallback(() => dispatch(toggleConceptsBoolean("showingCombos")), [dispatch]);
+	const savedWordsList = useMemo(() => savedWords.map(word => word.word).join("; "), [savedWords]);
+
 	return (
 		<IonPage>
 			{header}
@@ -533,7 +542,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							<IonChip
 								key="combinations"
 								outline={!showingCombos}
-								onClick={() => dispatch(toggleConceptsBoolean("showingCombos"))}
+								onClick={toggleBool}
 								className={showingCombos ? "active" : undefined}
 							>
 								<IonLabel>{myCombinations}</IonLabel>
@@ -587,7 +596,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
 						<IonLabel className="ion-text-wrap">
-							{currentCombo} {savedWords.map(word => word.word).join("; ")}
+							{currentCombo} {savedWordsList}
 						</IonLabel>
 						<IonButton
 							disabled={savedWords.length <= 1}
@@ -619,31 +628,30 @@ const ConceptsPage: FC<PageData> = (props) => {
 
 export default ConceptsPage;
 
+const info = [ "info.basic", "info.controlLexicon", "info.controlJoin", "info.controlUnjoin", "info.theLists" ];
+const joiner = { joinArrays: "\n" };
 export const ConceptCard = () => {
-	const [ t ] = useTranslator('concepts');
 	const [ tc ] = useTranslator('common');
+	const tConcepts = useMemo(() => tc("Concepts"), [tc]);
+	const [ tiBasic, tiCtrlLex, tiCtrlJoin, tiUnjoin, tiLists ] = useI18Memo(info, 'concepts', joiner)
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<ConceptsOutlineIcon slot="start" color="primary" />
-				<IonLabel>{tc("Concepts")}</IonLabel>
+				<IonLabel>{tConcepts}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<Markdown>{t("info.basic", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiBasic}</Markdown>
 				<hr />
-				<h2>{tc("Controls")}</h2>
+				<h2>{tConcepts}</h2>
 				<div className="ion-text-center"><LexiconOutlineIcon color="tertiary" size="large" /></div>
-				<Markdown>{t("info.controlLexicon", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiCtrlLex}</Markdown>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/link.svg" /></div>
-				<Markdown>{t("info.controlJoin", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiCtrlJoin}</Markdown>
 				<div className="ion-text-center"><IonIcon color="tertiary" size="large" src="svg/unlink.svg" /></div>
-				<Markdown>{t("info.controlUnjoin", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiUnjoin}</Markdown>
 				<hr />
-				<Markdown>{t("info.swadesh", { joinArrays: "\n" })}</Markdown>
-				<Markdown>{t("info.dolgopolsky", { joinArrays: "\n" })}</Markdown>
-				<Markdown>{t("info.leipzigJakarta", { joinArrays: "\n" })}</Markdown>
-				<Markdown>{t("info.asjp", { joinArrays: "\n" })}</Markdown>
-				<Markdown>{t("info.landau", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiLists}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);

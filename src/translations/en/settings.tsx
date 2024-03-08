@@ -92,6 +92,7 @@ const settings = {
 	"You did not enter any information.": "You did not enter any information.",
 	"You must provide a base character.": "You must provide a \"base\" character.",
 	"You must provide some equal characters.": "You must provide some \"equal\" characters.",
+	"New Custom Sort": "New Custom Sort",
 	"Custom Sort": "Custom Sort",
 	"Title for this sort": "Title for this sort",
 	"Unicode sort (language-independent)": "Unicode sort (language-independent)",

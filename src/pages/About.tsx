@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	IonPage,
 	IonIcon,
@@ -61,7 +61,8 @@ const Home = (props: PageData) => {
 		tAppInfo, tConcepts, tConlangToolbox, tDeclenjugator, tHelp,
 		tLexicon, tMorphoSyntax, tWordEvolve, tWordGen
 	] = useI18Memo(translations);
-
+	const openLex = useCallback(() => setIsOpenLexicon(true), []);
+	const openConcepts = useCallback(() => setIsOpenConcepts(true), []);
 	return (
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -149,7 +150,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" aria-label={tHelp} onClick={() => setIsOpenLexicon(true)}>
+							<IonButton className="help" aria-label={tHelp} onClick={openLex}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>
@@ -165,7 +166,7 @@ const Home = (props: PageData) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							<IonButton className="help" aria-label={tHelp} onClick={() => setIsOpenConcepts(true)}>
+							<IonButton className="help" aria-label={tHelp} onClick={openConcepts}>
 								<IonIcon icon={helpCircle} />
 							</IonButton>
 						</IonCol>

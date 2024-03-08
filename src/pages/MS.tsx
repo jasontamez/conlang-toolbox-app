@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonLabel,
@@ -19,6 +19,32 @@ import MSSettings from "./ms/msSettings";
 import './ms/MS.css';
 
 const range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const makeTab = (n: number, min: number, max: number) => {
+	let goto: string = "Settings";
+	if(n > 0) {
+		goto = String(n);
+		while(goto.length < 2) {
+			goto = "0" + goto;
+		}
+	}
+	return (
+		<IonTabButton
+			className={n < min || n > max ? "possiblyTooFar" : ""}
+			key={n}
+			tab={"Section-" + goto}
+			layout="icon-hide"
+			href={"/ms/ms" + goto}
+		>
+			<IonLabel>{
+				n > 0 ?
+					(<strong>{n}</strong>)
+				:
+					(<IonIcon className="align-middle" icon={settingsSharp} />)
+			}</IonLabel>
+		</IonTabButton>
+	);
+};
 
 const MS = (props: PageData) => {
 	const msPage: string = useSelector((state: StateObject) => state.internals.lastViewMS) || "msSettings";
@@ -46,31 +72,10 @@ const MS = (props: PageData) => {
 			}
 		}
 	}, [msPage, modifyTabBar, max, min, lastPage]);
-	const makeTab = (n: number) => {
-		let goto: string = "Settings";
-		if(n > 0) {
-			goto = String(n);
-			while(goto.length < 2) {
-				goto = "0" + goto;
-			}
-		}
-		return (
-			<IonTabButton
-				className={n < min || n > max ? "possiblyTooFar" : ""}
-				key={n}
-				tab={"Section-" + goto}
-				layout="icon-hide"
-				href={"/ms/ms" + goto}
-			>
-				<IonLabel>{
-					n > 0 ?
-						(<strong>{n}</strong>)
-					:
-						(<IonIcon className="align-middle" icon={settingsSharp} />)
-				}</IonLabel>
-			</IonTabButton>
-		);
-	};
+
+	const allTabs = useMemo(() => range.map((n: number) => makeTab(n, min, max)), [min, max]);
+	const modUp = useCallback(() => modifyTabBar(center + 2), [center, modifyTabBar]);
+	const modDown = useCallback(() => modifyTabBar(center - 2), [center, modifyTabBar]);
 	return (
 		<IonTabs>
 			<IonRouterOutlet placeholder>
@@ -96,19 +101,17 @@ const MS = (props: PageData) => {
 					className="moreIndicators"
 					tab="more to left"
 					layout="label-hide"
-					onClick={() => modifyTabBar(center - 2)}
+					onClick={modDown}
 					disabled={center <= 2}
 				>
 					<IonIcon icon={chevronBackCircle} className="align-middle" />
 				</IonTabButton>
-				{range.map((n: number) => {
-					return makeTab(n);
-				})}
+				{allTabs}
 				<IonTabButton
 					className="moreIndicators"
 					tab="more to right"
 					layout="label-hide"
-					onClick={() => modifyTabBar(center + 2)}
+					onClick={modUp}
 					disabled={center >= 8}
 				>
 					<IonIcon icon={chevronForwardCircle} className="align-middle" />

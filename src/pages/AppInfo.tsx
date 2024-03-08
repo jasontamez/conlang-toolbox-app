@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonPage,
 	IonGrid,
@@ -28,6 +28,7 @@ import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import Header from '../components/Header';
 import copyText from '../components/copyText';
+import useI18Memo from '../components/useI18Memo';
 
 function getBannerDimensions (windowWidth: number) {
 	// original banner size: 545x153
@@ -45,10 +46,30 @@ function getBannerDimensions (windowWidth: number) {
 	return {width: `${Math.round(width)}px`, height: `${Math.round(h * ratio)}px`};
 }
 
+const translations =  [
+	"Bug Reports", "Changelog", "Clear Logs", "Copy Logs",
+	"Credits and Acknowledgements", "Debug Info", "Delete Them Now",
+	"Entire State", "Get Error Log", "Hide Older Changes",
+	"Logs have been cleared.", "Show Older Changes", "bugReportMsg",
+	"credit1", "credit2", "credit3",
+	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."
+];
+const commons = [ "Close", "Copy", "Ok", "areYouSure" ];
+const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
+const context = { joinArrays: "\n" };
+
 const AppInfo = (props: PageData) => {
 	const width = useWindowWidth();
-	const [ t ] = useTranslator('appinfo');
 	const [ tc ] = useTranslator('common');
+	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
+	const [
+		tBugRep, tCLog, tClearLogs, tCopyLogs, tCredits, tDebug, tDelNow,
+		tEntire, tGetLog, tHide, tLogsCleared, tShow, tBugRepMsg,
+		tCr1, tCr2, tCr3, tLogs
+	] = useI18Memo(translations, 'appInfo');
+	const [ tClose, tCopy, tOk, tRUSure ] = useI18Memo(commons);
+	const [ tCL94, tCL95, tCL101, tCL113 ] = useI18Memo(changelog, 'appInfo', context);
+
 	const [originalTheme, internals, state]: [ThemeNames, InternalState, StateObject] = useSelector(
 		(state: StateObject) => [state.appSettings.theme, state.internals, state]
 	);
@@ -67,17 +88,17 @@ const AppInfo = (props: PageData) => {
 		setDebug(1);
 		const info = JSON.stringify(state);
 		doAlert({
-			header: t("Entire State"),
+			header: tEntire,
 			message: info,
 			cssClass: "warning",
 			buttons: [
 				{
-					text: tc("Copy"),
+					text: tCopy,
 					cssClass: "submit",
 					handler: () => copyText(info, toast)
 				},
 				{
-					text: tc("Ok"),
+					text: tOk,
 					role: "cancel",
 					cssClass: "cancel"
 				}
@@ -88,28 +109,28 @@ const AppInfo = (props: PageData) => {
 	const showLogs = () => {
 		const info = JSON.stringify(internals);
 		doAlert({
-			header: t("Debug Info"),
+			header: tDebug,
 			message: info,
 			cssClass: "warning",
 			buttons: [
 				{
-					text: t("Copy Logs"),
+					text: tCopyLogs,
 					cssClass: "submit",
 					handler: () => copyText(info, toast)
 				},
 				{
-					text: t("Clear Logs"),
+					text: tClearLogs,
 					cssClass: "danger",
 					handler: () => {
 						undoAlert().then(() => yesNoAlert({
-							header: tc("areYouSure"),
-							message: t("Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."),
-							submit: t("Delete Them Now"),
+							header: tRUSure,
+							message: tLogs,
+							submit: tDelNow,
 							cssClass: "danger",
 							handler: () => {
 								dispatch(clearLogs());
 								toaster({
-									message: t("Logs have been cleared."),
+									message: tLogsCleared,
 									duration: 3500,
 									color: "danger",
 									toast
@@ -120,7 +141,7 @@ const AppInfo = (props: PageData) => {
 					}
 				},
 				{
-					text: tc("Close"),
+					text: tClose,
 					role: "cancel",
 					cssClass: "cancel"
 				}
@@ -128,32 +149,34 @@ const AppInfo = (props: PageData) => {
 		});
 	};
 
+	const toggleShowOlder = useCallback(() => {setShowOlder(!showOlder)}, [showOlder]);
+
 	return (
 		<IonPage className={theme}>
-			<Header title={tc("exportThing", { thing: tc("App Info") })} />
+			<Header title={tExport} />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle className="ion-align-self-start">{t("Credits and Acknowledgements")}</IonCardTitle>
+									<IonCardTitle className="ion-align-self-start">{tCredits}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<IonList className="ion-text-center" lines="full">
 										<IonItem>
 											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
-												<Markdown>{t("credit1")}</Markdown>
+												<Markdown>{tCr1}</Markdown>
 											</IonLabel>
 										</IonItem>
 										<IonItem>
 											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
-												<Markdown>{t("credit2")}</Markdown>
+												<Markdown>{tCr2}</Markdown>
 											</IonLabel>
 										</IonItem>
 										<IonItem>
 											<IonLabel className="ion-text-center ion-text-wrap overrideMarkdown">
-												<Markdown>{t("credit3")}</Markdown>
+												<Markdown>{tCr3}</Markdown>
 											</IonLabel>
 										</IonItem>
 									</IonList>
@@ -165,14 +188,14 @@ const AppInfo = (props: PageData) => {
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle>{t("Bug Reports")}</IonCardTitle>
+									<IonCardTitle>{tBugRep}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent id="bugReport">
 									<div className="ion-text-center overrideCenter">
-										<Markdown>{t("bugReportMsg")}</Markdown>
+										<Markdown>{tBugRepMsg}</Markdown>
 									</div>
 									<div className="ion-text-center">
-										<IonButton size="small" onClick={showLogs} color="warning" fill="outline">{t("Get Error Log")}</IonButton>
+										<IonButton size="small" onClick={showLogs} color="warning" fill="outline">{tGetLog}</IonButton>
 									</div>
 								</IonCardContent>
 							</IonCard>
@@ -182,27 +205,27 @@ const AppInfo = (props: PageData) => {
 						<IonCol>
 							<IonCard id="changelog">
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle>{t("Changelog")}</IonCardTitle>
+									<IonCardTitle>{tCLog}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start changelog">
 									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.3</strong></h2>
-									<Markdown>{t("changelog.v0113", { joinArrays: "\n"})}</Markdown>
+									<Markdown>{tCL113}</Markdown>
 									<div id="changelogButtonContainer" className="ion-text-center">
 										<IonButton
-											onClick={() => {setShowOlder(!showOlder)}}
+											onClick={toggleShowOlder}
 											fill="outline"
 											color={showOlder ? "secondary" : "tertiary"}
 										>
-											<IonLabel>{t(showOlder ? "Hide Older Changes" : "Show Older Changes")}</IonLabel>
+											<IonLabel>{showOlder ? tHide : tShow}</IonLabel>
 										</IonButton>
 									</div>
 									<div className={showOlder ? "" : "hide"}>
 										<h2 className="ion-text-center"><strong>v.0.10.1</strong></h2>
-										<Markdown>{t("changelog.v0101", { joinArrays: "\n"})}</Markdown>
+										<Markdown>{tCL101}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>
-										<Markdown>{t("changelog.v095", { joinArrays: "\n"})}</Markdown>
+										<Markdown>{tCL95}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.9.4</strong></h2>
-										<Markdown>{t("changelog.v094", { joinArrays: "\n"})}</Markdown>
+										<Markdown>{tCL94}</Markdown>
 									</div>
 								</IonCardContent>
 							</IonCard>

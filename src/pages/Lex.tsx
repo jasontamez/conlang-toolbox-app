@@ -46,7 +46,7 @@ import { useWindowHeight } from '@react-hook/window-size/throttled';
 import { v4 as uuidv4 } from 'uuid';
 import { FixedSizeList, areEqual } from 'react-window';
 import memoizeOne from 'memoize-one';
-import { useTranslation } from 'react-i18next';
+import Markdown, { ExtraProps } from 'react-markdown';
 
 import {
 	addLexiconItem,
@@ -85,9 +85,10 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
+import useI18Memo from '../components/useI18Memo';
 import i18n from '../i18n';
 import './Lexicon.css';
-import Markdown from 'react-markdown';
+
 
 interface LexItem {
 	index: number
@@ -125,6 +126,10 @@ interface InnerHeaderProps {
 	isDeleting: boolean
 }
 
+const innerCommons = [
+	"Extra Characters", "Help", "Please wait...", "Working...", "Lexicon"
+];
+
 const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const {
 		setIsOpenECM,
@@ -133,7 +138,6 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 		setLexHeadersHidden,
 		isDeleting
 	} = props;
-	const { t } = useTranslation('common');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -142,6 +146,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
+	const [tExChar, tHelp, tWait, tWorking, tLex] = useI18Memo(innerCommons);
 
 	const hideButton = useMemo(() => (
 		<IonButton
@@ -161,33 +166,33 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			onClick={() => setIsOpenECM(true)}
 			slot="icon-only"
 			key="openExtraCharsLexButton"
-			aria-label={t("Extra Characters", { ns: "common" })}
+			aria-label={tExChar}
 		>
 			<IonIcon icon={globeOutline} />
 		</IonButton>
-	), [ isDeleting, setIsOpenECM, t ]);
+	), [ isDeleting, setIsOpenECM, tExChar ]);
 	const lexStoragebutton = useMemo(() => (
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenLexStorage(true)}
 			slot="icon-only"
 			key="openLexStorageButton"
-			aria-label={t("Help")}
+			aria-label={tHelp}
 		>
 			<IonIcon icon={saveOutline} />
 		</IonButton>
-	), [ isDeleting, t ]);
+	), [ isDeleting, tHelp ]);
 	const infobutton = useMemo(() => (
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenInfo(true)}
 			slot="icon-only"
 			key="openLexHelpButton"
-			aria-label={t("Help")}
+			aria-label={tHelp}
 		>
 			<IonIcon icon={helpCircleOutline} />
 		</IonButton>
-	), [ isDeleting, t ]);
+	), [ isDeleting, tHelp ]);
 
 	const endButtons = useMemo(() => [
 		hideButton,
@@ -203,9 +208,6 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 
 	const loadOff = useCallback(() => setIsLoading(false), []);
 	const workOff = useCallback(() => setIsWorking(false), []);
-	const loadMsg = useMemo(() => t("Please wait..."), [t]);
-	const workMsg = useMemo(() => t("Working..."), [t]);
-	const title = useMemo(() => t("Lexicon"), [t]);
 
 	return (<>
 		<LoadLexiconModal
@@ -235,7 +237,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			cssClass='loadingPage'
 			isOpen={isLoading}
 			onDidDismiss={loadOff}
-			message={loadMsg}
+			message={tWait}
 			spinner="bubbles"
 			duration={1000}
 		/>
@@ -243,14 +245,14 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			cssClass='loadingPage'
 			isOpen={isWorking}
 			onDidDismiss={workOff}
-			message={workMsg}
+			message={tWorking}
 			spinner="bubbles"
 			duration={1000}
 		/>
 		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><LexCard /></ModalWrap>
 		<Header
 			id="lexiconTopBar"
-			title={title}
+			title={tLex}
 			endButtons={endButtons}
 		/>
 	</>);
@@ -271,7 +273,12 @@ function maybeExpand (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, toas
 	}
 };
 
+const others = ["Edit", "Delete"];
 const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
+	const [ t ] = useTranslator('lexicon');
+	const tMergeItems = useMemo(() => t("Merge Items"), [t]);
+	const [ tEdit, tDelete ] = useI18Memo(others);
+	
 	const {
 		delFromLex,
 		beginEdit,
@@ -281,13 +288,24 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 		lexicon,
 		merging
 	} = data;
-	const [ t ] = useTranslator('lexicon');
-	const [ tc ] = useTranslator('common');
 	const lex: Lexicon = lexicon[index];
 	const cols = lex.columns;
 	const id = lex.id;
 	const isMerging = merging.indexOf(id) + 1;
 	const maybeMerging = isMerging ? <div className="merging">{String(isMerging)}</div> : <></>;
+	const doSetForMerge = useCallback(() => maybeSetForMerge(lex), [lex, maybeSetForMerge]);
+	const doBegin = useCallback(() => beginEdit(lex), [lex, beginEdit]);
+	const doDel = useCallback(() => delFromLex(lex), [lex, delFromLex]);
+	const columnElements = useMemo(() => cols.map((item: string, i: number) => (
+		<div
+			onClick={maybeExpand}
+			key={`${id}:col${i}`}
+			className={
+				"lexItem selectable "
+				+ columns[i].size
+			}
+		>{item}</div>
+	)), [cols, columns, id, maybeExpand]);
 	return (
 		<IonItemSliding
 			key={`${id}:slidingItem`}
@@ -296,15 +314,15 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 			className="lexiconDisplay"
 		>
 			<IonItemOptions side="start" className="serifChars">
-				<IonItemOption color="tertiary" aria-label={t("Merge Items")} onClick={() => maybeSetForMerge(lex)}>
+				<IonItemOption color="tertiary" aria-label={tMergeItems} onClick={doSetForMerge}>
 					<IonIcon slot="icon-only" src="svg/link.svg" />
 				</IonItemOption>
 			</IonItemOptions>
 			<IonItemOptions side="end" className="serifChars">
-				<IonItemOption color="primary" aria-label={tc("Edit")} onClick={() => beginEdit(lex)}>
+				<IonItemOption color="primary" aria-label={tEdit} onClick={doBegin}>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
-				<IonItemOption color="danger" aria-label={tc("Delete")} onClick={() => delFromLex(lex)}>
+				<IonItemOption color="danger" aria-label={tDelete} onClick={doDel}>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
 			</IonItemOptions>
@@ -313,16 +331,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 				+ (index % 2 ? "even" : "odd")
 			}>
 				{maybeMerging}
-				{cols.map((item: string, i: number) => (
-					<div
-						onClick={maybeExpand}
-						key={`${id}:col${i}`}
-						className={
-							"lexItem selectable "
-							+ columns[i].size
-						}
-					>{item}</div>
-				))}
+				{columnElements}
 				<div className="xs">
 					<IonIcon size="small" src="svg/slide-indicator.svg" />
 				</div>
@@ -342,6 +351,16 @@ const RenderLexiconDeleting = memo(({index, style, data}: LexItemDeleting) => {
 	const cols = lex.columns;
 	const id = lex.id;
 	const deleting = deletingObj[id];
+	const columnItems = useMemo(() => cols.map((item: string, i: number) => (
+		<div
+			key={`del:${id}:col${i}`}
+			className={
+				"lexItem selectable "
+				+ columns[i].size
+			}
+		>{item}</div>
+	)), [cols, columns, id]);
+	const deleter = useCallback(() => toggleDeleting(lex), [lex, toggleDeleting]);
 	return (
 		<IonItem
 			key={`${id}:deletingItem`}
@@ -352,17 +371,9 @@ const RenderLexiconDeleting = memo(({index, style, data}: LexItemDeleting) => {
 				+ (index % 2 ? "even" : "odd")
 				+ (deleting ? " deleting" : "")
 			}
-			onClick={() => toggleDeleting(lex)}
+			onClick={deleter}
 		>
-			{cols.map((item: string, i: number) => (
-				<div
-					key={`del:${id}:col${i}`}
-					className={
-						"lexItem selectable "
-						+ columns[i].size
-					}
-				>{item}</div>
-			))}
+			{columnItems}
 			<div className="xs"></div>
 		</IonItem>
 	);
@@ -381,7 +392,32 @@ const closeSliders = () => {
 	mainLexList && mainLexList.closeSlidingItems();
 };
 
+const translations = [
+	"Help", "Lexicon Title", "Merge selected items",
+	"beginDeleteMode", "delItemsSuccess",
+	"lexDescriptionHelperText", "lexTitleHelperText",
+	"Delete selected lexicon items"
+];
+
+const commons =  [
+	"Are you sure you want to delete this? This cannot be undone.",
+	"Description", "Ok", "areYouSure", "cannotUndo",  "confirmDelIt",
+	"You did not type any information into any text field.", "error",
+	"Add New", "Cancel deleting", "Close"
+];
+
+const presentations = [ "Lexicon Title", "Sort" ];
+const context = { context: "presentation" };
+
 const Lex = (props: PageData) => {
+	const [ tc ] = useTranslator('common');
+	const [ t ] = useTranslator('lexicon');
+	const [ tHelp, tLexTitle, tMergSel, tBegin, tDelSucc, tLexDescHT, tLexTitleHT, tDelSel ] = useI18Memo(translations, 'lexicon');
+	const [ tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel, tNoText, tError, tAddNew, tCancelDel, tClose ] = useI18Memo(commons);
+	const tDelThings = useMemo(() => tc("deleteGeneralThings", {things: t("multiple lexicon items")}), [t, tc]);
+	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
+	const tpDesc =  useMemo(() => tc("Description"), [tc]);
+
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		//id,
@@ -396,8 +432,6 @@ const Lex = (props: PageData) => {
 		customSort,
 		/*fontType*/
 	} = useSelector((state: StateObject) => state.lexicon);
-	const [ tc ] = useTranslator('common');
-	const [ t ] = useTranslator('lexicon');
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -421,6 +455,7 @@ const Lex = (props: PageData) => {
 		return !(customSortObj && defaultCustomSortObj);
 	})
 	const sorter = makeSorter(sortLanguage || defaultSortLanguage, sensitivity, customSortObj || defaultCustomSortObj);
+	const tLexItems = useMemo(() => t("lexItems", { count: lexicon.length }), [t, lexicon.length]);
 
 	// editing lex item
 	const [isOpenEditLexItem, setIsOpenEditLexItem] = useState<boolean>(false);
@@ -441,7 +476,7 @@ const Lex = (props: PageData) => {
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [deleting, setDeleting] = useState<Lexicon[]>([]);
 	const [deletingObj, setDeletingObj] = useState<{[key: string]: boolean}>({});
-	function maybeFinishDeleting (cancel: boolean = false) {
+	const maybeFinishDeleting = useCallback((cancel: boolean = false) => {
 		const length = deleting.length;
 		if(cancel || length === 0) {
 			setDeleting([]);
@@ -450,7 +485,7 @@ const Lex = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteMultipleLexiconItems(deleting.map(obj => obj.id)));
 			toaster({
-				message: t("delItemsSuccess"),
+				message: tDelSucc,
 				color: "danger",
 				position: "middle",
 				toast
@@ -460,24 +495,28 @@ const Lex = (props: PageData) => {
 		};
 		yesNoAlert({
 			header: t("delItems", { count: length }),
-			message: tc("cannotUndo") + " " + tc("areYouSure"),
+			message: tCannnotUndo + " " + tRUSure,
 			submit: tc("confirmDel", { count: length }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		})
-	};
-	const beginMassDeleteMode = () => {
+	}, [deleting, dispatch, doAlert, t, tc, toast, tCannnotUndo, tDelSucc, tRUSure]);
+	const clearMergedInfo = useCallback(() => {
+		setMerging([]);
+		setMergingObject({});
+	}, []);
+	const beginMassDeleteMode = useCallback(() => {
 		clearMergedInfo();
 		setIsDeleting(true);
 		toaster({
-			message: t("beginDeleteMode"),
+			message: tBegin,
 			duration: 8000,
 			position: "bottom",
 			color: "danger",
 			toast
 		})
-	};
+	}, [clearMergedInfo, tBegin, toast]);
 
 	// Height variables
 	const height = useWindowHeight();
@@ -508,12 +547,6 @@ const Lex = (props: PageData) => {
 		topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames // HTML elements
 	]);
 
-	// Update Lexicon description or title
-	const setNewInfo = (id: string, prop: "description" | "title") => {
-		const el = $i<HTMLInputElement>(id);
-		el && dispatch(updateLexiconText([prop, el.value.trim()]));
-	};
-
 	// Add new Lexicon item
 	const addToLex = useCallback(() => {
 		const newInfo: string[] = [];
@@ -532,12 +565,12 @@ const Lex = (props: PageData) => {
 		});
 		if(!foundFlag) {
 			doAlert({
-				header: tc("error"),
-				message: tc("You did not type any information into any text field."),
+				header: tError,
+				message: tNoText,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -555,7 +588,7 @@ const Lex = (props: PageData) => {
 			const el = $i<HTMLIonInputElement>(id);
 			el && el.getInputElement().then((el) => (el.value = ""));
 		});
-	}, [columns, dispatch, doAlert, sorter, tc]);
+	}, [columns, dispatch, doAlert, sorter, tError, tNoText, tOk]);
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
@@ -567,13 +600,13 @@ const Lex = (props: PageData) => {
 			yesNoAlert({
 				header: title,
 				cssClass: "danger",
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
-				submit: tc("confirmDelIt"),
+				message: tYouSure,
+				submit: tConfDel,
 				handler: () => dispatch(deleteLexiconItem(item.id)),
 				doAlert
 			});
 		}
-	}, [dispatch, disableConfirms, doAlert, tc]);
+	}, [dispatch, disableConfirms, doAlert, tYouSure, tConfDel]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
@@ -600,15 +633,11 @@ const Lex = (props: PageData) => {
 	}, [merging, mergingObject]);
 	const mergeButton = useMemo(() => merging.length > 1 ? (
 		<IonFab vertical="bottom" horizontal="start" slot="fixed">
-			<IonFabButton color="tertiary" title={t("Merge selected items")} onClick={() => setIsOpenMergeItems(true)}>
+			<IonFabButton color="tertiary" title={tMergSel} onClick={() => setIsOpenMergeItems(true)}>
 				<IonIcon src="svg/link.svg" />
 			</IonFabButton>
 		</IonFab>
-	) : <></>, [merging.length, t]);
-	const clearMergedInfo = useCallback(() => {
-		setMerging([]);
-		setMergingObject({});
-	}, []);
+	) : <></>, [merging.length, tMergSel]);
 
 	// memoize stuff for Lexicon display
 	const expander: MouseEventHandler<HTMLDivElement> = useCallback((e) => maybeExpand(e, toast), [toast]);
@@ -627,6 +656,46 @@ const Lex = (props: PageData) => {
 		setDeletingObj(newObj);
 	}, [deleting, deletingObj]);
 	const otherData = otherItemData(columns, lexicon, toggleDeleting, deletingObj);
+
+	// Memoize functions
+	const updateTitle = useCallback(() => {
+		const el = $i<HTMLInputElement>("lexTitle");
+		el && dispatch(updateLexiconText(["title", el.value.trim()]));
+	}, [dispatch]);
+	const updateDescription = useCallback(() => {
+		const el = $i<HTMLInputElement>("lexDesc");
+		el && dispatch(updateLexiconText(["description", el.value.trim()]));
+	}, [dispatch]);
+	const openLexSorter = useCallback(() => setIsOpenLexSorter(true), []);
+	const updateSortDir = useCallback(() => dispatch(updateLexiconSortDir([!sortDir, sorter])), [dispatch, sortDir, sorter]);
+	const openLexOrder = useCallback(() => setIsOpenLexOrder(true), []);
+	const openAdd = useCallback(() => setIsOpenAddLexItem(true), []);
+	const deleteSelected = useCallback(() => maybeFinishDeleting(), [maybeFinishDeleting]);
+	const cancelDeleting = useCallback(() => maybeFinishDeleting(true), [maybeFinishDeleting]);
+	const columnLabels = useMemo(() => columns.map((column: LexiconColumn) => (
+		<div
+			className={
+				"overflow-y-none "
+				+ (truncateColumns ? "" : "ion-text-wrap ")
+				+ column.size
+			}
+			key={column.id}
+		>{column.label}</div>
+	)), [columns, truncateColumns]);
+	const columnInputs = useMemo(() => columns.map((column: LexiconColumn) => {
+		const { id, label, size } = column;
+		const key = `input_lex_${id}`;
+		return (
+			<IonInput
+				id={key}
+				key={key}
+				aria-label={`${label} input`}
+				className={`${size} lexAddInput`}
+				type="text"
+				disabled={isDeleting}
+			/>
+		);
+	}), [columns, isDeleting]);
 
 	// JSX
 	return (
@@ -675,40 +744,40 @@ const Lex = (props: PageData) => {
 					id="lexiconTitleAndDescription"
 					className={lexHeadersHidden ? "hide" : undefined}
 				>
-					<IonItem className="labelled"><IonLabel>{t("Lexicon Title", { context: "presentation" })}</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{tpLexTitle}</IonLabel></IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Lexicon Title")}
+							aria-label={tLexTitle}
 							value={title}
 							id="lexTitle"
 							className="ion-margin-top"
-							helperText={t("lexTitleHelperText")}
-							onIonChange={() => setNewInfo("lexTitle", "title")}
+							helperText={tLexTitleHT}
+							onIonChange={updateTitle}
 						></IonInput>
 					</IonItem>
-					<IonItem className="labelled"><IonLabel>{tc("Description", { context: "presentation" })}</IonLabel></IonItem>
+					<IonItem className="labelled"><IonLabel>{tpDesc}</IonLabel></IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label={tc("Description")}
+							aria-label={tDesc}
 							value={description}
 							id="lexDesc"
 							className="ion-margin-top"
-							helperText={t("lexDescriptionHelperText")}
+							helperText={tLexDescHT}
 							rows={3}
-							onIonChange={() => setNewInfo("lexDesc", "description")}
+							onIonChange={updateDescription}
 						/>
 					</IonItem>
 				</IonList>
 				<IonList lines="none" id="mainLexList">
 					<div id="theLexiconHeader">
 						<div className="flex-basic">
-							<h1>{t("lexItems", { count: lexicon.length })}</h1>
+							<h1>{tLexItems}</h1>
 						</div>
 						<div className="flex-shrinker">
-							<h2>{t("Sort", { context: "presentation" })}</h2>
+							<h2>{tpSort}</h2>
 							<div
 								className="fakeButton"
-								onClick={() => setIsOpenLexSorter(true)}
+								onClick={openLexSorter}
 								role="button"
 								aria-label={columns[sortPattern[0]].label}
 							>
@@ -717,7 +786,7 @@ const Lex = (props: PageData) => {
 							</div>
 							<IonButton
 								color="secondary"
-								onClick={() => dispatch(updateLexiconSortDir([!sortDir, sorter]))}
+								onClick={updateSortDir}
 							>
 								<IonIcon size="small" src={`svg/sort-${sortDir ? "up" : "down"}.svg`} />
 							</IonButton>
@@ -726,7 +795,7 @@ const Lex = (props: PageData) => {
 							<IonButton
 								disabled={isDeleting}
 								color="tertiary"
-								onClick={() => setIsOpenLexOrder(true)}
+								onClick={openLexOrder}
 							>
 								<IonIcon size="small" icon={settings} />
 							</IonButton>
@@ -739,41 +808,19 @@ const Lex = (props: PageData) => {
 									id="lexColumnNames"
 									className="lexRow lexHeader"
 								>
-									{columns.map((column: LexiconColumn) => (
-										<div
-											className={
-												"overflow-y-none "
-												+ (truncateColumns ? "" : "ion-text-wrap ")
-												+ column.size
-											}
-											key={column.id}
-										>{column.label}</div>
-									))}
+									{columnLabels}
 									<div className="xs overflow-y-none"></div>
 								</IonItem>
 								<IonItem
 									id="lexColumnInputs"
 									className="lexRow serifChars lexInputs"
 								>
-									{columns.map((column: LexiconColumn) => {
-										const { id, label, size } = column;
-										const key = `input_lex_${id}`;
-										return (
-											<IonInput
-												id={key}
-												key={key}
-												aria-label={`${label} input`}
-												className={`${size} lexAddInput`}
-												type="text"
-												disabled={isDeleting}
-											/>
-										);
-									})}
+									{columnInputs}
 									<div className="xs overflow-y-none">
 										<IonButton
 											disabled={isDeleting}
 											color="success"
-											onClick={() => addToLex()}
+											onClick={addToLex}
 										>
 											<IonIcon icon={add} className="marginless" />
 										</IonButton>
@@ -809,16 +856,16 @@ const Lex = (props: PageData) => {
 					<IonFabList side="top">
 						<IonFabButton
 							color="danger"
-							title={tc("deleteGeneralThings", {things: t("multiple lexicon items")})}
-							onClick={() => beginMassDeleteMode()}
-							aria-label={t("Help")}
+							title={tDelThings}
+							onClick={beginMassDeleteMode}
+							aria-label={tHelp}
 						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
 						<IonFabButton
 							color="success"
-							title={tc("Add New")}
-							onClick={() => setIsOpenAddLexItem(true)}
+							title={tAddNew}
+							onClick={openAdd}
 						>
 							<IonIcon icon={addCircle} />
 						</IonFabButton>
@@ -829,9 +876,9 @@ const Lex = (props: PageData) => {
 						<IonFab vertical="top" horizontal="start" edge={true} slot="fixed">
 							<IonFabButton
 								color="danger"
-								title={t("Delete selected lexicon items")}
-								onClick={() => maybeFinishDeleting()}
-								aria-label={t("Help")}
+								title={tDelSel}
+								onClick={deleteSelected}
+								aria-label={tHelp}
 							>
 								<IonIcon icon={trash} />
 							</IonFabButton>
@@ -839,9 +886,9 @@ const Lex = (props: PageData) => {
 						<IonFab vertical="bottom" horizontal="start" slot="fixed">
 							<IonFabButton
 								color="warning"
-								title={t("Cancel deleting")}
-								onClick={() => maybeFinishDeleting(true)}
-								aria-label={t("Close")}
+								title={tCancelDel}
+								onClick={cancelDeleting}
+								aria-label={tClose}
 							>
 								<IonIcon icon={closeCircle} />
 							</IonFabButton>
@@ -858,45 +905,53 @@ const Lex = (props: PageData) => {
 
 export default Lex;
 
+const mdComponents = {
+	code(props: React.ClassAttributes<HTMLElement> & React.HTMLAttributes<HTMLElement> & ExtraProps) {
+		return <IonIcon icon={reorderTwo} color="tertiary" size="small" />;
+	}
+};
+const info = { joinArrays: "\n" };
+const information = [
+	"info.basic", "info.description", "info.saveCounterAndSort",
+	"info.editColumnsEtc", "info.mergeButton", "info.toolButton",
+	"info.exampleUse"
+];
 export const LexCard = () => {
 	const [ tc ] = useTranslator('common');
-	const [ t ] = useTranslator('lexicon');
+	const tLexicon = useMemo(() => tc("Lexicon"), [tc]);
+	const [ tiBasic, tiDesc, tiSave, tiEdit, tiMerge, tiTool, tiExample ] = useI18Memo(information, 'lexicon', info);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<LexiconIcon slot="start" color="primary" />
-				<IonLabel>{tc("Lexicon")}</IonLabel>
+				<IonLabel>{tLexicon}</IonLabel>
 			</IonItem>
 			<IonCardContent>
-				<Markdown>{t("info.basic", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiBasic}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={chevronUpCircle} color="tertiary" size="large" />
 				</p>
-				<Markdown>{t("info.description", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiDesc}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={saveOutline} color="tertiary" size="large" />
 				</p>
-				<Markdown>{t("info.saveCounterAndSort", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiSave}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={settings} color="tertiary" size="large" />
 				</p>
 				<Markdown
-					components={{
-						code(props) {
-							return <IonIcon icon={reorderTwo} color="tertiary" size="small" />;
-						}
-					}}
-				>{t("info.editColumnsEtc", { joinArrays: "\n" })}</Markdown>
+					components={mdComponents}
+				>{tiEdit}</Markdown>
 				<p className="center">
 					<IonIcon color="tertiary" size="large" src="svg/link.svg" />
 				</p>
-				<Markdown>{t("info.mergeButton", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiMerge}</Markdown>
 				<p className="center pad-top-rem">
 					<IonIcon icon={construct} color="tertiary" size="large" />
 				</p>
-				<Markdown>{t("info.toolButton", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiTool}</Markdown>
 				<hr />
-				<Markdown>{t("info.exampleUse", { joinArrays: "\n" })}</Markdown>
+				<Markdown>{tiExample}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);

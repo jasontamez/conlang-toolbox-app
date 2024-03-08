@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonIcon,
@@ -19,6 +19,15 @@ import DJinfo from './dj/DJinfo';
 
 
 const DJ = (props: PageData) => {
+	const tabs = useMemo(() => appPagesObject.dj.filter(obj => !obj.hidden).map(obj => {
+		const { title, tabTitle, url, tab, icon, Icon } = obj;
+		return (
+			<IonTabButton tab={tab!} href={url} key={"djTab-" + tab}>
+				{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
+				<IonLabel>{tabTitle || title}</IonLabel>
+			</IonTabButton>
+		);
+	}), []);
 	return (
 		<IonTabs>
 			<IonRouterOutlet placeholder>
@@ -32,15 +41,7 @@ const DJ = (props: PageData) => {
 				<Route path="/dj/output" render={() => <DJOutput {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				{appPagesObject.dj.filter(obj => !obj.hidden).map(obj => {
-					const { title, tabTitle, url, tab, icon, Icon } = obj;
-					return (
-						<IonTabButton tab={tab!} href={url} key={"djTab-" + tab}>
-							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
-							<IonLabel>{tabTitle || title}</IonLabel>
-						</IonTabButton>
-					);
-				})}
+				{tabs}
 			</IonTabBar>
 		</IonTabs>
 	);

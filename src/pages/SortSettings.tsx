@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -19,7 +19,9 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	useIonAlert,
-	IonToggle
+	IonToggle,
+	SelectCustomEvent,
+	ToggleCustomEvent
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -30,7 +32,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import ISO6391, { LanguageCode } from "iso-639-1";
 
-import { EqualityObject, PageData, RelationObject, SortObject, SortSensitivity, StateObject } from '../store/types';
+import { EqualityObject, PageData, RelationObject, SortObject, StateObject } from '../store/types';
 import { deleteCustomSort, setDefaultCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
 import useTranslator from '../store/translationHooks';
 
@@ -44,6 +46,7 @@ import EditCustomSort from './modals/EditCustomSort';
 import yesNoAlert from '../components/yesNoAlert';
 import { $i } from '../components/DollarSignExports';
 import PermanentInfo from '../components/PermanentInfo';
+import useI18Memo from '../components/useI18Memo';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -56,11 +59,32 @@ codes.forEach((code, i) => {
 });
 const permanents = PermanentInfo.sort.permanentCustomSorts;
 
+const presentations = [ "Sort Language", "Sort Sensitivity", "Using Custom Sort" ];
+const context = { context: "presentation" };
+
+const translations = [
+	"Are you sure you want to delete this? This cannot be undone.",
+	"Base letters only", "Basic Sort", "Diacritics and upper/lowercase",
+	"Diacritics", "Manage Sort Methods", "New Custom Sort",
+	"Note[colon] This can be overriden by a language's sorting rules.",
+	"Upper/lowercase", "Use Language-Based Sort", "custom alphabet",
+	"langSortExplanation", "(none)", "All Custom Sort Methods"
+];
+
+const commons = [ "Close", "Delete", "Edit", "Ok", "confirmDelIt", "Done" ];
+
 const SortSettings = (props: PageData) => {
-	const { modalPropsMaker } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
+	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone ] = useI18Memo(commons);
+	const [
+		tYouSure, tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort,
+		tNote, tUppLow, tUseLang, tCustom, tLangSort, tNone, tAll
+	] = useI18Memo(translations, 'settings');
+	const [ tpSortLang, tpSens, tpUsing ] = useI18Memo(presentations, 'settings', context);
+
+	const { modalPropsMaker } = props;
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	// main modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -90,16 +114,6 @@ const SortSettings = (props: PageData) => {
 	} = useSelector((state: StateObject) => state.sortSettings);
 	const defaultSortLanguage = useSelector((state: StateObject) => state.internals.defaultSortLanguage);
 	const [useLanguageSort, setUseLanguageSort] = useState<boolean>(sortLanguage !== "unicode");
-	const setCustomLang = (value: LanguageCode) => {
-		dispatch(setSortLanguageCustom(value));
-	};
-	const setSensitivity = (value: SortSensitivity) => {
-		dispatch(setSortSensitivity(value));
-	};
-	const toggleUsingLanguage = (newValue: boolean) => {
-		setUseLanguageSort(newValue);
-		dispatch(setSortLanguageCustom(newValue ? defaultSortLanguage : "unicode"));
-	};
 	const addRelationModalInfo = modalPropsMaker(addRelationOpen, setAddRelationOpen);
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
 	const editRelationModalInfo = modalPropsMaker(editRelationOpen, setEditRelationOpen);
@@ -110,33 +124,111 @@ const SortSettings = (props: PageData) => {
 		setEditingCustomSort(sorter);
 		setEditModalOpen(true);
 	};
-	const maybeDeleteSort = (id: string, title: string) => {
-		const el = $i<HTMLIonListElement>("listOfCustomSorts");
-		el && el.closeSlidingItems();
-		let message = permanents[id];
-		if(message) {
-			return doAlert({
-				header: "",
-				message,
-				cssClass: "danger",
-				buttons: [
-					{
-						text: tc("Ok"),
-						role: "cancel",
-						cssClass: "submit"
-					}
-				]
+
+	const setLang = useCallback((e: SelectCustomEvent) => dispatch(setSortLanguageCustom(e.detail.value)), [dispatch]);
+	const setSens = useCallback((e: SelectCustomEvent) => dispatch(setSortSensitivity(e.detail.value)), [dispatch]);
+	const setDefault = useCallback((e: SelectCustomEvent) => setDefaultCustomSort(e.detail.value), []);
+
+	const customSortOptions = useMemo(() => customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
+		<IonSelectOption
+			className="ion-text-wrap ion-text-align-end"
+			key={`customSortChooser:${sorter.id}:${sorter.title}`}
+			value={sorter.id}
+		>
+			{sorter.title}
+		</IonSelectOption>
+	)), [customSorts]);
+
+	const allCustomSortMethods = useMemo(() => customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => {
+		const {
+			id,
+			title,
+			sortLanguage,
+			sensitivity,
+			customAlphabet,
+			customizations
+		} = sorter;
+		const desc: string[] = [];
+		sortLanguage && desc.push(langObj[sortLanguage]);
+		sensitivity && desc.push(sensitivity);
+		customAlphabet && desc.push(tCustom);
+		if(customizations && customizations.length) {
+			let r: number = 0;
+			let e: number = 0;
+			customizations.forEach(custom => {
+				if("equals" in custom) {
+					e++;
+				} else {
+					r++;
+				}
 			});
+			r > 0 && desc.push(t("relation", { count: r }));
+			e > 0 && desc.push(t("equality", { count: e }));
 		}
-		yesNoAlert({
-			header: tc("deleteTitle", { title }),
-			message: t("Are you sure you want to delete this? This cannot be undone."),
-			submit: tc("confirmDelIt"),
-			cssClass: "danger",
-			handler: () => dispatch(deleteCustomSort(id)),
-			doAlert
-		});
-	};
+		const maybeDeleteSort = (id: string, title: string) => {
+			const el = $i<HTMLIonListElement>("listOfCustomSorts");
+			el && el.closeSlidingItems();
+			let message = permanents[id];
+			if(message) {
+				return doAlert({
+					header: "",
+					message,
+					cssClass: "danger",
+					buttons: [
+						{
+							text: tOk,
+							role: "cancel",
+							cssClass: "submit"
+						}
+					]
+				});
+			}
+			yesNoAlert({
+				header: tc("deleteTitle", { title }),
+				message: tYouSure,
+				submit: tConfirmDel,
+				cssClass: "danger",
+				handler: () => dispatch(deleteCustomSort(id)),
+				doAlert
+			});
+		};
+		return (
+			<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
+				<IonItemOptions side="end" className="serifChars">
+					<IonItemOption
+						color="primary"
+						aria-label={tEdit}
+						onClick={() => openEditor(sorter)}
+					>
+						<IonIcon slot="icon-only" src="svg/edit.svg" />
+					</IonItemOption>
+					<IonItemOption
+						color="danger"
+						aria-label={tDelete}
+						onClick={() => maybeDeleteSort(id, title)}
+					>
+						<IonIcon slot="icon-only" icon={trash} />
+					</IonItemOption>
+				</IonItemOptions>
+				<IonItem>
+					<IonLabel className="customSortDescription">
+						<h2>{title}</h2>
+						<p>{desc.join("; ")}</p>
+					</IonLabel>
+					<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+				</IonItem>
+			</IonItemSliding>
+		);
+	}), [customSorts, t, tc, doAlert, dispatch, tConfirmDel, tCustom, tDelete, tEdit, tOk, tYouSure]);
+
+	const toggleUsingLang = useCallback((e: ToggleCustomEvent) => {
+		const newValue = !useLanguageSort;
+		setUseLanguageSort(newValue);
+		dispatch(setSortLanguageCustom(newValue ? defaultSortLanguage : "unicode"));
+	}, [useLanguageSort, defaultSortLanguage, dispatch]);
+
+	const openAdd = useCallback(() => setAddModalOpen(true), []);
+
 	return (
 		<IonPage>
 			<AddCustomSort
@@ -215,9 +307,9 @@ const SortSettings = (props: PageData) => {
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Manage Sort Methods")}</IonTitle>
+					<IonTitle>{tManage}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton routerLink='/settings' routerDirection='back' aria-label={tc("Close")}>
+						<IonButton routerLink='/settings' routerDirection='back' aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -225,26 +317,26 @@ const SortSettings = (props: PageData) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings hasSpecialLabels">
-					<IonItemDivider>{t("Basic Sort")}</IonItemDivider>
+					<IonItemDivider>{tBasicSort}</IonItemDivider>
 					<IonItem className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={useLanguageSort}
-							onIonChange={e => toggleUsingLanguage(!useLanguageSort)}
+							onIonChange={toggleUsingLang}
 							disabled={defaultCustomSort === "unicode"}
 						>
-							<h2>{t("Use Language-Based Sort")}</h2>
-							<p>{t("langSortExplanation")}</p>
+							<h2>{tUseLang}</h2>
+							<p>{tLangSort}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Language", { context: "presentation" })}
+							label={tpSortLang}
 							value={sortLanguage || defaultSortLanguage || "unicode"}
-							onIonChange={(e) => setCustomLang(e.detail.value)}
+							onIonChange={setLang}
 							disabled={!useLanguageSort}
 						>
 							{languages.map((language) => (
@@ -261,119 +353,58 @@ const SortSettings = (props: PageData) => {
 							color="primary"
 							className="ion-text-wrap settings"
 							value={sensitivity || "variant"}
-							onIonChange={(e) => setSensitivity(e.detail.value)}
-							label={t("Sort Sensitivity", { context: "presentation" })}
+							onIonChange={setSens}
+							label={tpSens}
 							labelPlacement="start"
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="base"
 							>
-								{t("Base letters only")}
+								{tBaseOnly}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="accent"
 							>
-								{t("Diacritics")}
+								{tDia}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="case"
 							>
-								{t("Upper/lowercase")}
+								{tUppLow}
 							</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="variant"
 							>
-								{t("Diacritics and upper/lowercase")}
+								{tDiaCase}
 							</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="sublabel wrappableInnards">
-						<p className="ion-text-end">{t("Note[colon] This can be overriden by a language's sorting rules.")}</p>
+						<p className="ion-text-end">{tNote}</p>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Using Custom Sort", { context: "presentation" })}
+							label={tpUsing}
 							value={defaultCustomSort || null}
-							onIonChange={(e) => setDefaultCustomSort(e.detail.value)}
+							onIonChange={setDefault}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
 							>
-								{t("(none)")}
+								{tNone}
 							</IonSelectOption>
-							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
-								<IonSelectOption
-									className="ion-text-wrap ion-text-align-end"
-									key={`customSortChooser:${sorter.id}:${sorter.title}`}
-									value={sorter.id}
-								>
-									{sorter.title}
-								</IonSelectOption>
-							))}
+							{customSortOptions}
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider>{t("All Custom Sort Methods")}</IonItemDivider>
-					{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => {
-						const {
-							id,
-							title,
-							sortLanguage,
-							sensitivity,
-							customAlphabet,
-							customizations
-						} = sorter;
-						const desc: string[] = [];
-						sortLanguage && desc.push(langObj[sortLanguage]);
-						sensitivity && desc.push(sensitivity);
-						customAlphabet && desc.push(t("custom alphabet"));
-						if(customizations && customizations.length) {
-							let r: number = 0;
-							let e: number = 0;
-							customizations.forEach(custom => {
-								if("equals" in custom) {
-									e++;
-								} else {
-									r++;
-								}
-							});
-							r > 0 && desc.push(t("relation", { count: r }));
-							e > 0 && desc.push(t("equality", { count: e }));
-						}
-						return (
-							<IonItemSliding key={`sortSettings:display:${id}`} className="customSorts">
-								<IonItemOptions side="end" className="serifChars">
-									<IonItemOption
-										color="primary"
-										aria-label={tc("Edit")}
-										onClick={() => openEditor(sorter)}
-									>
-										<IonIcon slot="icon-only" src="svg/edit.svg" />
-									</IonItemOption>
-									<IonItemOption
-										color="danger"
-										aria-label={tc("Delete")}
-										onClick={() => maybeDeleteSort(id, title)}
-									>
-										<IonIcon slot="icon-only" icon={trash} />
-									</IonItemOption>
-								</IonItemOptions>
-								<IonItem>
-									<IonLabel className="customSortDescription">
-										<h2>{title}</h2>
-										<p>{desc.join("; ")}</p>
-									</IonLabel>
-									<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
-								</IonItem>
-							</IonItemSliding>
-						);
-					})}
+					<IonItemDivider>{tAll}</IonItemDivider>
+					{allCustomSortMethods}
 				</IonList>
 			</IonContent>
 			<IonFooter>
@@ -381,10 +412,10 @@ const SortSettings = (props: PageData) => {
 					<IonButton
 						color="primary"
 						slot="start"
-						onClick={() => setAddModalOpen(true)}
+						onClick={openAdd}
 					>
 						<IonIcon icon={addCircleSharp} slot="end" />
-						<IonLabel>New Custom Sort</IonLabel>
+						<IonLabel>{tNewSort}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -393,7 +424,7 @@ const SortSettings = (props: PageData) => {
 						routerDirection='back'
 					>
 						<IonIcon icon={checkmarkCircleSharp} slot="end" />
-						<IonLabel>Done</IonLabel>
+						<IonLabel>{tDone}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

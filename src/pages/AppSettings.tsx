@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonLabel,
 	IonPage,
@@ -17,13 +17,17 @@ import Header from '../components/Header';
 import ChooseThemeModal from './modals/Theme';
 import ExportAllData from './modals/ExportAllData';
 import ImportData from './modals/ImportData';
+import useI18Memo from '../components/useI18Memo';
 
+const translations =  [
+	"Change Theme", "Disable Confirmation Prompts",
+	"Eliminates yes/no prompts when deleting or overwriting data.",
+	"Import App Info", "Sort Settings"
+];
 
 const AppSettings = (props: PageData) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
-	const [ t ] = useTranslator('settings');
-	const [ tc ] = useTranslator('common');
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
 	const [isOpenExportAll, setIsOpenExportAll] = useState<boolean>(false);
 	const [isOpenImport, setIsOpenImport] = useState<boolean>(false);
@@ -31,12 +35,23 @@ const AppSettings = (props: PageData) => {
 		disableConfirms,
 		theme
 	} = useSelector((state: StateObject) => state.appSettings);
+	const openTheme = useCallback(() => setIsOpenTheme(true), []);
+	const openExportAll = useCallback(() => setIsOpenExportAll(true), []);
+	const openImport = useCallback(() => setIsOpenImport(true), []);
+
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
+	const tAppSettings = useMemo(() => tc("App Settings"), [tc]);
+	const tThemeName = useMemo(() => t(theme || "Default"), [t, theme]);
+	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings ] = useI18Memo(translations, 'settings');
+	const tExport = useMemo(() => t("exportThing", { thing: tc("App Info") }), [t, tc]);
+
 	return (
 		<IonPage>
 			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
 			<ExportAllData {...modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<ImportData {...modalPropsMaker(isOpenImport, setIsOpenImport)} />
-			<Header title={tc("App Settings")} />
+			<Header title={tAppSettings} />
 			<IonContent fullscreen>
 				<IonList lines="full">
 					<IonItem className="wrappableInnards">
@@ -46,25 +61,25 @@ const AppSettings = (props: PageData) => {
 							checked={disableConfirms}
 							onIonChange={e => dispatch(setDisableConfirms(e.detail.checked))}
 						>
-							<h2>{t("Disable Confirmation Prompts")}</h2>
-							<p>{t("Eliminates yes/no prompts when deleting or overwriting data.")}</p>
+							<h2>{tDisable}</h2>
+							<p>{tEliminate}</p>
 						</IonToggle>
 					</IonItem>
-					<IonItem button={true} onClick={() => setIsOpenTheme(true)}>
-						<IonLabel>{t("Change Theme")}</IonLabel>
-						<IonLabel slot="end" color="primary">{t(theme || "Default")}</IonLabel>
+					<IonItem button={true} onClick={openTheme}>
+						<IonLabel>{tChangeTheme}</IonLabel>
+						<IonLabel slot="end" color="primary">{tThemeName}</IonLabel>
 					</IonItem>
 					<IonItem button={true} routerLink="/sortSettings" routerDirection="forward">
-						<IonLabel>{t("Sort Settings")}</IonLabel>
+						<IonLabel>{tSortSettings}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => setIsOpenExportAll(true)}>
+					<IonItem button={true} onClick={openExportAll}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>{t("exportThing", { thing: tc("App Info") })}</h2>
+							<h2>{tExport}</h2>
 						</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => setIsOpenImport(true)}>
+					<IonItem button={true} onClick={openImport}>
 						<IonLabel className="possiblyLargeLabel">
-							<h2>{t("Import App Info")}</h2>
+							<h2>{tImport}</h2>
 						</IonLabel>
 					</IonItem>
 				</IonList>

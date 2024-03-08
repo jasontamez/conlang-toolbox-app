@@ -19,7 +19,7 @@ const concepts = {
 			"Use the \"join\" button to create compound meanings.",
 		controlUnjoin:
 			"Use the \"unjoin\" button to delete compound meanings.",
-		swadesh: [
+		theLists: [
 			"## $t(Swadesh Lists)",
 			"",
 			"Originally assembled by Morris Swadesh, this list of",
@@ -32,16 +32,14 @@ const concepts = {
 			"assembled by Sergei Yakhontov. And the",
 			"**$t(Swadesh-Woodward Sign List)** was assembled by James",
 			"Woodward to take into account the ways sign languages behave.",
-		],
-		dolgopolsky: [
+			"",
 			"## $t(Dolgopolsky List)",
 			"",
 			"Compiled by Aharon Dolgopolsky in 1964, this lists the 15",
 			"lexical items that are the least likely to be replaced by",
 			"other words as a language evolves. It was based on a study of",
 			"140 languages from across Eurasia, only.",
-		],
-		leipzigJakarta: [
+			"",
 			"## $t(Leipzig-Jakarta List)",
 			"",
 			"Similar to the Dolgopolsky list, this is a list of words",
@@ -53,8 +51,7 @@ const concepts = {
 			"borrowed was. The 100 concepts that were found in most",
 			"languages and were most resistant to borrowing formed",
 			"the Leipzig-Jakarta list.",
-		],
-		asjp: [
+			"",
 			"## $t(ASJP List)",
 			"",
 			"The **$t(Automated Similarity Judgment Program)** is a",
@@ -62,8 +59,7 @@ const concepts = {
 			"comparative linguistics using a database of word lists. It uses",
 			"a 40-word list to evaluate the similarity of words with the same",
 			"meaning from different languages.",
-		],
-		landau: [
+			"",
 			"## $t(Landau 200)",
 			"",
 			"The **$t(Basic 200 List) is a subset of the",

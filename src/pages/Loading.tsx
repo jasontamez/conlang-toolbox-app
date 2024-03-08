@@ -5,15 +5,16 @@ import {
 	IonSpinner,
 	IonText
 } from '@ionic/react';
-import { useTranslation } from 'react-i18next';
+import useI18Memo from '../components/useI18Memo';
 
+const loading = ["Loading"];
 const Loading = () => {
-	const { t } = useTranslation(['common']);
+	const [ tLoading ] = useI18Memo(loading)
 	return (
 		<IonPage>
 			<IonContent id="loadingPage">
 				<div>
-					<IonText color="primary"><h1>{t("Loading")}</h1></IonText>
+					<IonText color="primary"><h1>{tLoading}</h1></IonText>
 					<IonSpinner name="bubbles" color="secondary" />
 				</div>
 			</IonContent>

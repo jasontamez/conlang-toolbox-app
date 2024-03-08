@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonIcon,
@@ -21,6 +21,15 @@ import WGinfo from './wg/WGinfo';
 
 
 const WG = (props: PageData) => {
+	const tabs = useMemo(() => appPagesObject.wg.filter(obj => !obj.hidden).map(obj => {
+		const { title, tabTitle, url, tab, icon, Icon } = obj;
+		return (
+			<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
+				{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
+				<IonLabel>{tabTitle || title}</IonLabel>
+			</IonTabButton>
+		);
+	}), []);
 	return (
 		<IonTabs>
 			<IonRouterOutlet placeholder>
@@ -36,15 +45,7 @@ const WG = (props: PageData) => {
 				<Route path="/wg/settings" render={() => <WGSettings {...props} />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar slot="bottom">
-				{appPagesObject.wg.filter(obj => !obj.hidden).map(obj => {
-					const { title, tabTitle, url, tab, icon, Icon } = obj;
-					return (
-						<IonTabButton tab={tab!} href={url} key={"wgTab-" + tab}>
-							{icon ? <IonIcon icon={icon} /> : Icon ? <Icon /> : <></>}
-							<IonLabel>{tabTitle || title}</IonLabel>
-						</IonTabButton>
-					);
-				})}
+				{tabs}
 			</IonTabBar>
 		</IonTabs>
 	);
