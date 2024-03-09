@@ -393,17 +393,16 @@ const closeSliders = () => {
 };
 
 const translations = [
-	"Help", "Lexicon Title", "Merge selected items",
-	"beginDeleteMode", "delItemsSuccess",
+	"Lexicon Title", "Merge selected items", "beginDeleteMode",
 	"lexDescriptionHelperText", "lexTitleHelperText",
-	"Delete selected lexicon items"
+	"Delete selected lexicon items", "Cancel deleting"
 ];
 
 const commons =  [
 	"Are you sure you want to delete this? This cannot be undone.",
 	"Description", "Ok", "areYouSure", "cannotUndo",  "confirmDelIt",
 	"You did not type any information into any text field.", "error",
-	"Add New", "Cancel deleting", "Close"
+	"Help", "Add New", "Close"
 ];
 
 const presentations = [ "Lexicon Title", "Sort" ];
@@ -412,8 +411,13 @@ const context = { context: "presentation" };
 const Lex = (props: PageData) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
-	const [ tHelp, tLexTitle, tMergSel, tBegin, tDelSucc, tLexDescHT, tLexTitleHT, tDelSel ] = useI18Memo(translations, 'lexicon');
-	const [ tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel, tNoText, tError, tAddNew, tCancelDel, tClose ] = useI18Memo(commons);
+	const [
+		tLexTitle, tMergSel, tBegin, tLexDescHT, tLexTitleHT, tDelSel, tCancelDel
+	] = useI18Memo(translations, 'lexicon');
+	const [
+		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel,
+		tNoText, tError, tHelp, tAddNew, tClose
+	] = useI18Memo(commons);
 	const tDelThings = useMemo(() => tc("deleteGeneralThings", {things: t("multiple lexicon items")}), [t, tc]);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
 	const tpDesc =  useMemo(() => tc("Description"), [tc]);
@@ -485,7 +489,7 @@ const Lex = (props: PageData) => {
 		const handler = () => {
 			dispatch(deleteMultipleLexiconItems(deleting.map(obj => obj.id)));
 			toaster({
-				message: tDelSucc,
+				message: t("delItemsSuccess", { count: length }),
 				color: "danger",
 				position: "middle",
 				toast
@@ -501,7 +505,7 @@ const Lex = (props: PageData) => {
 			handler,
 			doAlert
 		})
-	}, [deleting, dispatch, doAlert, t, tc, toast, tCannnotUndo, tDelSucc, tRUSure]);
+	}, [deleting, dispatch, doAlert, t, tc, toast, tCannnotUndo, tRUSure]);
 	const clearMergedInfo = useCallback(() => {
 		setMerging([]);
 		setMergingObject({});

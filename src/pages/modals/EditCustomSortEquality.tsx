@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -16,7 +16,8 @@ import {
 	useIonAlert,
 	useIonToast,
 	IonSelect,
-	IonSelectOption
+	IonSelectOption,
+	SelectCustomEvent
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -31,23 +32,53 @@ import useTranslator from '../../store/translationHooks';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
+import useI18Memo from '../../components/useI18Memo';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	incomingEquality: EqualityObject | null
 	setOutgoingEquality: SetState<EqualityObject | null | string>
 }
 
+const translations = [
+	"Base character", "Characters equal to the base",
+	"Characters to be equal to the Base.", "Comma", "No separator", "Period",
+	"Semicolon", "Space", "The base character",
+	"You must provide a base character.",
+	"You must provide some equal characters."
+]
+
+const commons = [
+	"Close", "Delete", "Extra Characters", "Ok", "Save",
+	"areYouSure", "confirmDelIt", "emphasizedError"
+];
+
+const presentations = [ "Base Character", "Equal to the Base", "Equalities Separator" ];
+const context = { context: "presentation" };
+
+
 const EditCustomSortEquality = (props: CustomSortModal) => {
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
+	const [
+		tClose, tDelete, tExChar, tOk, tSave, tRUSure, tConfDel, tError
+	] = useI18Memo(commons);
+	const [
+		tBase, tCharEqual, tCharsToBeEqual, tComma, tNoSep,
+		tPeriod, tSemi, tSpace, tTheBase, tNoBase, tNoEqual
+	] = useI18Memo(translations, "settings");
+	const [ tpBase, tpEqual, tpSep ] = useI18Memo(presentations, "settings", context);
+	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
+	const tEditThing = useMemo(() => tc("editThing", { thing: t("Equality") }), [tc, t]);
+	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Equality") }), [t, tc]);
+	
 	const { isOpen, setIsOpen, openECM, incomingEquality, setOutgoingEquality } = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [ t ] = useTranslator('settings');
-	const [ tc ] = useTranslator('common');
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [_base, setBase] = useState<HTMLInputElement | null>(null);
 	const [_equals, setEquals] = useState<HTMLInputElement | null>(null);
-	const onLoad = () => {
-		const error = tc("errorEmphasized");
+	const onLoad = useCallback(() => {
+		const error = tError;
 		const {
 			separator = ",",
 			base = error,
@@ -60,21 +91,21 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 		setEquals(_equals);
 		_base && (_base.value = base);
 		_equals && (_equals.value = equals.join(separator));
-	};
-	const close = () => {
+	}, [incomingEquality, tError]);
+	const close = useCallback(() => {
 		_base && (_base.value = "");
 		_equals && (_equals.value = "");
 		setIsOpen(false);
-	};
-	const maybeSaveEquality = () => {
+	}, [setIsOpen, _base, _equals]);
+	const maybeSaveEquality = useCallback(() => {
 		const base = (_base && _base.value) || "";
 		if(!base) {
 			doAlert({
-				message: t("You must provide a base character."),
+				message: tNoBase,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -85,11 +116,11 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
 		if(equals.length === 0) {
 			doAlert({
-				message: t("You must provide some equal characters."),
+				message: tNoEqual,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -101,37 +132,39 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 		setOutgoingEquality(equality);
 		close();
 		toaster({
-			message: tc("thingEdited", { thing: t("Equality") }),
+			message: tThingEdited,
 			position: "top",
 			color: "success",
 			duration: 2000,
 			toast
 		});
-	};
-	const maybeDelete = () => {
+	}, [_base, _equals, close, doAlert, incomingEquality, separator, setOutgoingEquality, tNoBase, tNoEqual, tOk, tThingEdited, toast]);
+	const maybeDelete = useCallback(() => {
 		const handler = () => {
 			setOutgoingEquality(incomingEquality!.id);
 			close();
 		};
 		yesNoAlert({
-			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("areYouSure"),
-			submit: tc("confirmDelIt"),
+			header: tDelThing,
+			message: tRUSure,
+			submit: tConfDel,
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	};
+	}, [close, doAlert, incomingEquality, setOutgoingEquality, tConfDel, tDelThing, tRUSure]);
+	const openEx = useCallback(() => openECM(true), [openECM]);
+	const doSetSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("editThing", { thing: t("Equality") })}</IonTitle>
+					<IonTitle>{tEditThing}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={close} aria-label={tc("Close")}>
+						<IonButton onClick={close} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -143,54 +176,54 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						<div
 							slot="start"
 							className="ion-margin-end"
-						>{t("Base Character", { context: "presentation" })}</div>
+						>{tpBase}</div>
 						<IonInput
-							aria-label={t("Base character")}
+							aria-label={tBase}
 							id="editBaseEquality"
-							placeholder={t("The base character")}
+							placeholder={tTheBase}
 						/>
 					</IonItem>
 					<IonItem
 						className="labelled"
 						lines="none"
 					>
-						<IonLabel>{t("Equal to the Base", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpEqual}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Characters equal to the base")}
+							aria-label={tCharEqual}
 							id="editEqualsEquality"
-							placeholder={t("Characters to be equal to the Base.")}
+							placeholder={tCharsToBeEqual}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Equalities Separator", { context: "presentation" })}
+							label={tpSep}
 							value={separator}
-							onIonChange={(e) => setSeparator(e.detail.value)}
+							onIonChange={doSetSep}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=""
-							>{t("No separator")}</IonSelectOption>
+							>{tNoSep}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>{t("Space")}</IonSelectOption>
+							>{tSpace}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>{t("Comma")}</IonSelectOption>
+							>{tComma}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="."
-							>{t("Period")}</IonSelectOption>
+							>{tPeriod}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>{t("Semicolon")}</IonSelectOption>
+							>{tSemi}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 				</IonList>
@@ -203,7 +236,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						onClick={maybeDelete}
 					>
 						<IonIcon icon={trashOutline} slot="end" />
-						<IonLabel>{tc("Delete")}</IonLabel>
+						<IonLabel>{tDelete}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -211,7 +244,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 						onClick={maybeSaveEquality}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tc("Save")}</IonLabel>
+						<IonLabel>{tSave}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

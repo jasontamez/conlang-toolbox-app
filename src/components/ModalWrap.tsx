@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback } from 'react';
+import React, { PropsWithChildren, useCallback, FC } from 'react';
 import {
 	IonIcon,
 	IonContent,
@@ -15,7 +15,7 @@ import useI18Memo from './useI18Memo';
 
 const translations = ["Info", "Close"];
 
-const ModalWrap = (props: PropsWithChildren<{isOpen: boolean, setIsOpen: SetBooleanState}>) => {
+const ModalWrap: FC<PropsWithChildren<{isOpen: boolean, setIsOpen: SetBooleanState}>> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,

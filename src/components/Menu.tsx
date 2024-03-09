@@ -9,7 +9,7 @@ import {
 	IonMenuToggle,
 	IonNote,
 } from '@ionic/react';
-import React, { FC, ReactElement, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
 	caretForwardSharp,
@@ -115,47 +115,36 @@ const PlainMenuItem: FC<PlainMenuItemProps> = (props)  => {
 	);
 };
 
-type pageMap = (x: AppPage, y: string | false, z: SetState<string | false>) => ReactElement
-
-const sectionPageMap: pageMap = (appPage, menuInfo, setMenuInfo) => {
-	const { parentOf, parent, id } = appPage;
-	if(parentOf) {
-		return <ParentOf key={id} appPage={appPage} isToggled={menuInfo === parentOf} setMenuInfo={setMenuInfo} />;
-	} else if(parent) {
-		return <HasParent key={id} appPage={appPage} isToggled={menuInfo === parent} />;
-	}
-	return <PlainMenuItem key={id} appPage={appPage} />;
-};
-
-const sectionMap = (menuSection: MenuSection, displaySectionPage: (x: AppPage) => ReactElement) => {
-	const { header, note } = menuSection;
-	const theHeader = header ? <IonListHeader>{header}</IonListHeader> : <></>;
-	const aNote = note ? <IonNote>{note}</IonNote> : <></>;
-	const pages = menuSection.pages.map(displaySectionPage);
-	return (
-		<IonList key={menuSection.id} id={menuSection.id}>
-			{theHeader}
-			{aNote}
-			{pages}
-		</IonList>
-	);
-};
-
-const Menu = () => {
+const Menu: FC<{}> = () => {
 	const [menuInfo, setMenuInfo] = useState<string | false>(false);
-	const displaySectionPage = useCallback(
-		(page: AppPage) => sectionPageMap(page, menuInfo, setMenuInfo),
-		[menuInfo]
-	);
-	const sectionDisplayPage = useCallback(
-		(section: MenuSection) => sectionMap(section, displaySectionPage),
-		[displaySectionPage]
-	);
+	const allPages = useMemo(() => {
+		return appMenuInfo.map((menuSection: MenuSection) => {
+			const { header, note } = menuSection;
+			const theHeader = header ? <IonListHeader>{header}</IonListHeader> : <></>;
+			const aNote = note ? <IonNote>{note}</IonNote> : <></>;
+			const pages = menuSection.pages.map((appPage) => {
+				const { parentOf, parent, id } = appPage;
+				if(parentOf) {
+					return <ParentOf key={id} appPage={appPage} isToggled={menuInfo === parentOf} setMenuInfo={setMenuInfo} />;
+				} else if(parent) {
+					return <HasParent key={id} appPage={appPage} isToggled={menuInfo === parent} />;
+				}
+				return <PlainMenuItem key={id} appPage={appPage} />;
+			});
+			return (
+				<IonList key={menuSection.id} id={menuSection.id}>
+					{theHeader}
+					{aNote}
+					{pages}
+				</IonList>
+			);	
+		})
+	}, [menuInfo]);
 
 	return (
 		<IonMenu contentId="main" type="overlay" id="mainMenu">
 			<IonContent>
-				{appMenuInfo.map(sectionDisplayPage)}
+				{allPages}
 			</IonContent>
 		</IonMenu>
 	);

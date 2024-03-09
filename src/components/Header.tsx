@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import {
 	IonButton,
 	IonButtons,
@@ -38,9 +38,20 @@ const Header = (props: ModalProperties) => {
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [ tc ] = useTranslator('common');
+	const maybeModal = useMemo(
+		() => extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>,
+		[extraChars, isOpenECM]
+	);
+	const maybeButton = useMemo(() => (
+		extraChars ?
+			<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
+				<IonIcon icon={globeOutline} />
+			</IonButton>
+		: <></>),
+	[extraChars, tc]);
 	return (
 		<IonHeader id={id}>
-			{extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>}
+			{maybeModal}
 			<IonToolbar color={color}>
 				<IonButtons slot="start">
 					{menu ? <IonMenuButton /> : <></>}
@@ -49,13 +60,7 @@ const Header = (props: ModalProperties) => {
 				<IonTitle>{title}</IonTitle>
 				<IonButtons slot="end">
 					{preEndButtons}
-					{extraChars ?
-						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-					:
-						<></>
-					}
+					{maybeButton}
 					{endButtons}
 				</IonButtons>
 			</IonToolbar>

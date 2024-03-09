@@ -63,7 +63,6 @@ const presentations = [ "Sort Language", "Sort Sensitivity", "Using Custom Sort"
 const context = { context: "presentation" };
 
 const translations = [
-	"Are you sure you want to delete this? This cannot be undone.",
 	"Base letters only", "Basic Sort", "Diacritics and upper/lowercase",
 	"Diacritics", "Manage Sort Methods", "New Custom Sort",
 	"Note[colon] This can be overriden by a language's sorting rules.",
@@ -71,14 +70,17 @@ const translations = [
 	"langSortExplanation", "(none)", "All Custom Sort Methods"
 ];
 
-const commons = [ "Close", "Delete", "Edit", "Ok", "confirmDelIt", "Done" ];
+const commons = [
+	"Close", "Delete", "Edit", "Ok", "confirmDelIt", "Done",
+	"Are you sure you want to delete this? This cannot be undone."
+];
 
 const SortSettings = (props: PageData) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
-	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone ] = useI18Memo(commons);
+	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone, tYouSure ] = useI18Memo(commons);
 	const [
-		tYouSure, tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort,
+		tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort,
 		tNote, tUppLow, tUseLang, tCustom, tLangSort, tNone, tAll
 	] = useI18Memo(translations, 'settings');
 	const [ tpSortLang, tpSens, tpUsing ] = useI18Memo(presentations, 'settings', context);

@@ -125,7 +125,7 @@ export const TextItem = (props: PropsWithChildren<{
 		</>
 	);
 };
-export const HeaderItem = (props: PropsWithChildren<{ level?: RangeStartToEndMinusOne<1, 5> }>) => (
+export const HeaderItem = (props: PropsWithChildren<{ level?: RangeStartToEndMinusOne<1, 6> }>) => (
 	<IonItem className={"h" + (props.level ? " h" + String(props.level) : "")}>
 		<IonLabel>{props.children}</IonLabel>
 	</IonItem>

@@ -147,6 +147,10 @@ export const findCommons = (input: string[][]): string[] => {
 	return output;
 }
 
+const WORD = t("[word]");
+const STEM = t("[stem]");
+const EXAMPLE = t("Example");
+const EXAMPLES = t("Examples");
 const getDJRawInfo = (
 	group: DJGroup,
 	displayMethod: DJDisplayMethods,
@@ -165,10 +169,6 @@ const getDJRawInfo = (
 	const columnIds: string[] = [];
 	const columnClasses: ColumnClasses[] = [];
 	let className: string = displayMethod === "text" ? "text" : "chart";
-	const WORD = t("[word]");
-	const STEM = t("[stem]");
-	const EXAMPLE = t("Example");
-	const EXAMPLES = t("Examples");
 	if(displayMethod === "chartSH") {
 		// header example item1 item2
 		// header example item1 item2
@@ -330,6 +330,8 @@ const getTextFromChart = (rows: string[][]): string[] => {
 	return output;
 };
 
+const FORMS = t("Forms")
+const NOMATCHESFOUND = t("No words matched this group."); // NEED TO SEE IF MEMO() NEEDED IN MAIN DJ PAGES
 export const display = (
 	groups: DJGroup[],
 	data: DJDisplayData,
@@ -340,7 +342,7 @@ export const display = (
 		<div className="djTypeTitle" key={`${type}-title`}>{type}</div>
 	];
 	const copyStrings: string[] = [type.charAt(0).toLocaleUpperCase() + type.slice(1)];
-	const typeString = type === "other" ? t("Forms") : copyStrings[0];
+	const typeString = type === "other" ? FORMS : copyStrings[0];
 	const unfound: string[][] = [];
 	const {
 		input = [],
@@ -349,7 +351,6 @@ export const display = (
 		wordsMatchOneTimeOnly = false
 	} = data || {};
 	let currentInput = [...input];
-	const noMatchesFound = t("No words matched this group.");
 	// Gather group info
 	groups.forEach(group => {
 		const {
@@ -443,7 +444,7 @@ export const display = (
 				{(!data || found.length > 0) ?
 					<></>
 				:
-					<div className="unmatched">{noMatchesFound}</div>
+					<div className="unmatched">{NOMATCHESFOUND}</div>
 				}
 			</div>
 		);
@@ -461,7 +462,7 @@ export const display = (
 			// Chart display
 			copyStrings.push(...getTextFromChart(copyRows));
 		}
-		(data && (found.length === 0)) && copyStrings.push(noMatchesFound);
+		(data && (found.length === 0)) && copyStrings.push(NOMATCHESFOUND);
 	});
 	return [
 		output,
@@ -470,6 +471,8 @@ export const display = (
 	];
 };
 
+const DECLENSIONS = t("Declensions");
+const CONJUGATIONS = t("Conjugations");
 export const exporter = (
 	whatToExport: DJTypeObject,
 	declensions: DJGroup[],
@@ -506,7 +509,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			declensions,
 			displayMethod,
-			t("Declensions"),
+			DECLENSIONS,
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -525,7 +528,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			conjugations,
 			displayMethod,
-			t("Conjugations"),
+			CONJUGATIONS,
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -544,7 +547,7 @@ export const exporter = (
 		} = getDJRawInfoLoop(
 			other,
 			displayMethod,
-			t("Forms"),
+			FORMS,
 			currentInput,
 			showExamples,
 			wordsMatchOneTimeOnly
@@ -608,7 +611,7 @@ const getExportText = (
 	inputFlag: boolean
 ): string[] => {
 	const output: string[] = [];
-	const noMatches = "--" + t("No words matched this group.");
+	const noMatches = "--" + NOMATCHESFOUND;
 	info.forEach(declenjugation => {
 		const {
 			title,
@@ -632,6 +635,7 @@ const getExportText = (
 	return output;
 };
 
+const UNMATCHEDWORDS = t("Unmatched Words");
 const exportText = (data: DJExportData) => {
 	const {
 		declensions,
@@ -646,28 +650,28 @@ const exportText = (data: DJExportData) => {
 	const inputFlag = unfound !== null;
 	if(declensions) {
 		output.push(
-			t("Declensions")
+			DECLENSIONS
 			+ "\n"
 			+ getExportText(declensions, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(conjugations) {
 		output.push(
-			t("Conjugations")
+			CONJUGATIONS
 			+ "\n"
 			+ getExportText(conjugations, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(other) {
 		output.push(
-			t("Forms")
+			FORMS
 			+ "\n"
 			+ getExportText(other, showGroupInfo, chart, inputFlag).join("\n")
 		);
 	}
 	if(unfound && unfound.length > 0) {
 		output.push(
-			t("Unmatched Words")
+			UNMATCHEDWORDS
 			+ "\n\n"
 			+ unfound.join(", ")
 		);
@@ -681,7 +685,7 @@ const quote = (input: string): string => `"${input}"`;
 
 const getExportCSV = (info: DJRawInfo[], showGroupInfo: boolean, inputFlag: boolean): string[] => {
 	const output: string[] = [];
-	const noMatches = quote("--" + t("No words matched this group."));
+	const noMatches = quote("--" + NOMATCHESFOUND);
 	info.forEach(declension => {
 		const {
 			title,
@@ -714,28 +718,28 @@ const exportCSV = (data: DJExportData) => {
 	const inputFlag = unfound !== null;
 	if(declensions) {
 		output.push(
-			quote(t("Declensions"))
+			quote(DECLENSIONS)
 			+ "\n"
 			+ getExportCSV(declensions, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(conjugations) {
 		output.push(
-			quote(t("Conjugations"))
+			quote(CONJUGATIONS)
 			+ "\n"
 			+ getExportCSV(conjugations, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(other) {
 		output.push(
-			quote(t("Forms"))
+			quote(FORMS)
 			+ "\n"
 			+ getExportCSV(other, showGroupInfo, inputFlag).join("\n")
 		);
 	}
 	if(unfound && unfound.length > 0) {
 		output.push(
-			quote(t("Unmatched Words"))
+			quote(UNMATCHEDWORDS)
 			+ `\n`
 			+ unfound.map(word => quote(word)).join("\n")
 		);

@@ -44,7 +44,7 @@ const AppSettings = (props: PageData) => {
 	const tAppSettings = useMemo(() => tc("App Settings"), [tc]);
 	const tThemeName = useMemo(() => t(theme || "Default"), [t, theme]);
 	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings ] = useI18Memo(translations, 'settings');
-	const tExport = useMemo(() => t("exportThing", { thing: tc("App Info") }), [t, tc]);
+	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
 
 	return (
 		<IonPage>

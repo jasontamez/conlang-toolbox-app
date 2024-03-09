@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -31,19 +31,28 @@ import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
+import useI18Memo from '../../components/useI18Memo';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	columnInfo: LexiconColumn[]
 	sorter: SorterFunc
 }
 
+const commons = [ "Close", "Extra Characters", "Ok", "You did not type any information into any text field.", "error" ];
+const things = [ "Item", "Lexicon Item" ];
+
 const AddLexiconItemModal = (props: LexItemProps) => {
+	const [ t ] = useTranslator('lexicon');
+	const [ tc ] = useTranslator('common');
+	const [ tClose, tExChar, tOk, tNoInfo, tError ] = useI18Memo(commons);
+	const [ tAddItem, tAddLexItem ] = useMemo(() => things.map(thing => tc("addThing", { thing: t(thing) })), [tc, t]);
+	const tThingAdded = useMemo(() => tc("thingAdded", { thing: t("Item") }), [t, tc]);
+
 	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [ t ] = useTranslator('lexicon');
-	const [ tc ] = useTranslator('common');
+
 	const maybeSaveNewInfo = useCallback(() => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
@@ -58,12 +67,12 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		});
 		if(!foundFlag) {
 			doAlert({
-				header: tc("error"),
-				message: tc("You did not type any information into any text field."),
+				header: tError,
+				message: tNoInfo,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -80,45 +89,59 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		// toast
 		toaster({
-			message: tc("thingAdded", { thing: t("Item") }),
+			message: tThingAdded,
 			duration: 2500,
 			color: "success",
 			toast
 		});
-	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter, t, tc]);
+	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter, tError, tNoInfo, tOk, tThingAdded]);
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
-	const input = useCallback((label: string, id: string, size: string) => {
-		if(size === "l") {
-			//const rows = Math.min(12, Math.max(3, value.split(/\n/).length));
-			return (
-				<IonTextarea
-					aria-label={label}
-					id={`input_lexicon_modal_${id}`}
-					className="ion-margin-top serifChars"
-					rows={5}
-				></IonTextarea>
-			);
-		}
+	const opener = useCallback(() => openECM(true), [openECM]);
+
+	const columnarInfo = useMemo(() => columnInfo.map((col: LexiconColumn) => {
+		const {id, size, label} = col;
 		return (
-			<IonInput
-				aria-label={label}
-				id={`input_lexicon_modal_${id}`}
-				className="ion-margin-top serifChars"
-			></IonInput>
+			<React.Fragment key={`${id}:addFragment`}>
+				<IonItem className="labelled">
+					<IonLabel>{label}</IonLabel>
+				</IonItem>
+				<IonItem>
+					{(size === "l") ?
+						//const rows = Math.min(12, Math.max(3, value.split(/\n/).length));
+						(
+							<IonTextarea
+								aria-label={label}
+								id={`input_lexicon_modal_${id}`}
+								className="ion-margin-top serifChars"
+								rows={5}
+							></IonTextarea>
+						)
+					:
+						(
+							<IonInput
+								aria-label={label}
+								id={`input_lexicon_modal_${id}`}
+								className="ion-margin-top serifChars"
+							></IonInput>
+						)
+					}
+				</IonItem>
+			</React.Fragment>
 		);
-	}, []);
+	}), [columnInfo]);
+
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("addThing", { thing: t("Lexicon Item") })}</IonTitle>
+					<IonTitle>{tAddLexItem}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={opener} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancel()} aria-label={tc("Close")}>
+						<IonButton onClick={cancel} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -126,19 +149,7 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels ion-margin-end">
-					{columnInfo.map((col: LexiconColumn) => {
-						const {id, size, label} = col;
-						return (
-							<React.Fragment key={`${id}:addFragment`}>
-								<IonItem className="labelled">
-									<IonLabel>{label}</IonLabel>
-								</IonItem>
-								<IonItem>
-									{input(`${label} input`, id, size)}
-								</IonItem>
-							</React.Fragment>
-						);
-					})}
+					{columnarInfo}
 				</IonList>
 			</IonContent>
 			<IonFooter className="modalBorderTop">
@@ -146,10 +157,10 @@ const AddLexiconItemModal = (props: LexItemProps) => {
 					<IonButton
 						color="tertiary"
 						slot="end"
-						onClick={() => maybeSaveNewInfo()}
+						onClick={maybeSaveNewInfo}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: t("Item") })}</IonLabel>
+						<IonLabel>{tAddItem}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -22,7 +22,8 @@ import {
 	IonItemOptions,
 	IonItemOption,
 	IonReorderGroup,
-	IonReorder
+	IonReorder,
+	SelectCustomEvent
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -53,6 +54,7 @@ import { $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import PermanentInfo from '../../components/PermanentInfo';
+import useI18Memo from '../../components/useI18Memo';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	langObj: {[key: string]: string}
@@ -81,7 +83,50 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 
 const permanents = PermanentInfo.sort.permanentCustomSorts;
 
+const translations = [
+	"(none)", "Base letters only", "Blank alphabet provided.",
+	"Characters that should be sorted together as if they were strictly equal.",
+	"Comma", "Custom Alphabet", "Default sensitivity",
+	"Diacritics and upper/lowercase", "Diacritics", "Equalities",
+	"No separator", "Period", "Relations", "Semicolon",
+	"Similar characters that should be sorted separately.", "Space",
+	"Title for this sort", "Unicode sort (language-independent)",
+	"Upper/lowercase", "Use alternate alphabet", "Write your alphabet here.",
+	"You did not enter any information.", "Custom Sort",
+	"You must provide a title before saving.", "alternateAlphabetExplanation"
+];
+
+const commons = [
+	"Add New", "Close", "Default sort", "Delete", "Edit", "Extra Characters",
+	"Ok", "Save", "Title", "areYouSure", "confirmDelIt", "emphasizedError",
+	"Are you sure you want to delete this? This cannot be undone.",
+];
+
+const presentations = [ "Alphabet separator", "Sort Language", "Sort Sensitivity" ];
+const context = { context: "presentation" };
+
 const EditCustomSort = (props: CustomSortModal) => {
+	const [ t ] = useTranslator('settings');
+	const [ tc ] = useTranslator('common');
+	const [
+		tAddNew, tClose, tDefSort, tDelete, tEdit, tExChar, tOk,
+		tSave, tTitle, tRUSure, tConfDel, tError, tYouSure
+	] = useI18Memo(commons);
+	const [
+		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha,
+		tDefSens, tDiaPlus, tDia, tEqualities, tNoSep, tPeriod, tRelations,
+		tSemi, tCharsSepar, tSpace, tTitleSort, tUnicode, tUppLow, tUseAlt,
+		tWriteAlpha, tNoInfo, tNoTitle, tCustomSort, tAltAlphaExpl
+	] = useI18Memo(translations, "settings");
+	const [ tpAlphaSep, tpSortLang, tpSortSens ] = useI18Memo(presentations, "settings", context);
+	const tpTitle = useMemo(() => tc("Title", context), [tc]);
+	const [ tEditThing, tThingDeleted, tThingSaved ] = useMemo(
+		() => ["editThing", "thingDeleted", "thingSaved"].map(thing => tc(thing, { thing: tCustomSort })),
+		[tc, tCustomSort]
+	);
+	const tDelThisSort = useMemo(() => tc("deleteThing", { thing: t("This Sort") }), [t, tc]);
+	const tDelSort = useMemo(() => tc("deleteThing", { thing: t("Sort") }), [t, tc]);
+
 	const {
 		isOpen,
 		setIsOpen,
@@ -112,18 +157,16 @@ const EditCustomSort = (props: CustomSortModal) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [ t ] = useTranslator('settings');
-	const [ tc ] = useTranslator('common');
 	const [id, setId] = useState<string>("");
 	const [sortLang, setSortLang] = useState<SortLanguage | "unicode" | "default">("default");
 	const [sortSensitivity, setSortSensitivity] = useState<SortSensitivity | "default">("default");
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [customizations, setCustomizations] = useState<(RelationObject | EqualityObject)[]>([]);
-	const onLoad = () => {
+	const onLoad = useCallback(() => {
 		const {
 			id = "ERROR",
-			title = tc("errorEmphasized"),
+			title = tError,
 			sortLanguage = "default",
 			sensitivity = "default",
 			customAlphabet = [],
@@ -142,7 +185,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 		editCustomAlphabet && (editCustomAlphabet.value = customAlphabet.join(separator));
 		setSeparator(separator);
 		setCustomizations(customizations);
-	};
+	}, [editingCustomSort, tError]);
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setId("");
@@ -222,7 +265,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			setOutgoingEquality(null);
 		}
 	}, [isOpen, outgoingEquality, setOutgoingEquality, customizations]);
-	const maybeSaveEditedSort = () => {
+	const maybeSaveEditedSort = useCallback(() => {
 		let message = permanents[id];
 		if(message) {
 			return doAlert({
@@ -231,7 +274,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -242,11 +285,11 @@ const EditCustomSort = (props: CustomSortModal) => {
 		const title = editSortTitle ? editSortTitle.value.trim() : "";
 		if(!title) {
 			doAlert({
-				message: t("You must provide a title before saving."),
+				message: tNoTitle,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -266,11 +309,11 @@ const EditCustomSort = (props: CustomSortModal) => {
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
 				doAlert({
-					message: t("Blank alphabet provided."),
+					message: tBlank,
 					cssClass: "danger",
 					buttons: [
 						{
-							text: tc("Ok"),
+							text: tOk,
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -296,11 +339,11 @@ const EditCustomSort = (props: CustomSortModal) => {
 		}
 		if(!test) {
 			doAlert({
-				message: t("You did not enter any information."),
+				message: tNoInfo,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -311,14 +354,14 @@ const EditCustomSort = (props: CustomSortModal) => {
 		dispatch(editCustomSort(customSort));
 		closeModal();
 		toaster({
-			message: tc("thingSaved", { thing: t("Custom Sort") }),
+			message: tThingSaved,
 			position: "middle",
 			color: "success",
 			duration: 2000,
 			toast
 		});
-	};
-	const maybeDeleteSort = () => {
+	}, [closeModal, customizations, dispatch, doAlert, id, separator, sortLang, sortSensitivity, toast, usingAlpha, tBlank, tNoInfo, tNoTitle, tOk, tThingSaved]);
+	const maybeDeleteSort = useCallback(() => {
 		let message = permanents[id];
 		if(message) {
 			return doAlert({
@@ -327,7 +370,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -338,7 +381,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 			dispatch(deleteCustomSort(id));
 			setIsOpen(false);
 			toaster({
-				message: tc("thingDeleted", { thing: t("Custom Sort") }),
+				message: tThingDeleted,
 				color: "danger",
 				duration: 2000,
 				position: "top",
@@ -346,55 +389,55 @@ const EditCustomSort = (props: CustomSortModal) => {
 			});
 		};
 		yesNoAlert({
-			header: tc("deleteThing", { thing: t("This Sort") }),
-			message: t("Are you sure you want to delete this? This cannot be undone."),
-			submit: t("confirmDelIt"),
+			header: tDelThisSort,
+			message: tYouSure,
+			submit: tConfDel,
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	};
-	const maybeAddNewRelation = () => {
+	}, [dispatch, doAlert, id, setIsOpen, tDelThisSort, toast, tConfDel, tOk, tThingDeleted, tYouSure]);
+	const maybeAddNewRelation = useCallback(() => {
 		setSavedRelation(null);
 		addRelationModalInfo.setIsOpen(true);
-	};
-	const maybeAddNewEquality = () => {
+	}, [addRelationModalInfo, setSavedRelation]);
+	const maybeAddNewEquality = useCallback(() => {
 		setSavedEquality(null);
 		addEqualityModalInfo.setIsOpen(true);
-	};
-	const editRelation = (relation: RelationObject) => {
+	}, [addEqualityModalInfo, setSavedEquality]);
+	const editRelation = useCallback((relation: RelationObject) => {
 		const el = $i<HTMLIonListElement>("editingCustomSortList");
 		el && el.closeSlidingItems();
 		setIncomingRelation(relation);
 		editRelationModalInfo.setIsOpen(true);
-	};
-	const maybeDeleteRelation = (id: string) => {
+	}, [editRelationModalInfo, setIncomingRelation]);
+	const maybeDeleteRelation = useCallback((id: string) => {
 		yesNoAlert({
-			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("areYouSure"),
-			submit: tc("confirmDelIt"),
+			header: tDelThisSort,
+			message: tRUSure,
+			submit: tConfDel,
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
-	};
-	const editEquality = (relation: EqualityObject) => {
+	}, [customizations, doAlert, tDelThisSort, tConfDel, tRUSure]);
+	const editEquality = useCallback((relation: EqualityObject) => {
 		const el = $i<HTMLIonListElement>("editingCustomSortList");
 		el && el.closeSlidingItems();
 		setIncomingEquality(relation);
 		editEqualityModalInfo.setIsOpen(true);
-	};
-	const maybeDeleteEquality = (id: string) => {
+	}, [editEqualityModalInfo, setIncomingEquality]);
+	const maybeDeleteEquality = useCallback((id: string) => {
 		yesNoAlert({
-			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("areYouSure"),
-			submit: tc("confirmDelIt"),
+			header: tDelThisSort,
+			message: tRUSure,
+			submit: tConfDel,
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
-	};
-	const doReorder = (event: CustomEvent) => {
+	}, [customizations, doAlert, tDelThisSort, tConfDel, tRUSure]);
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
 		const { from, to } = ed;
@@ -405,7 +448,164 @@ const EditCustomSort = (props: CustomSortModal) => {
 		// save result
 		setCustomizations(final);
 		ed.complete();
-	};
+	}, [customizations]);
+	const opener = useCallback(() => openECM(true), [openECM]);
+	const allLanguages = useMemo(() => languages.map((language) => (
+		<IonSelectOption
+			key={`knownLang:${language}`}
+			className="ion-text-wrap ion-text-align-end"
+			value={language}
+		>{langObj[language] || language}</IonSelectOption>
+	)), [languages, langObj]);
+	const allCustomizations = useMemo(() => customizations.map(obj => {
+		const {
+			id,
+			base,
+			separator
+		} = obj;
+		if("equals" in obj) {
+			const {
+				equals
+			} = obj;
+			return (
+				<IonItemSliding
+					className="customSortItem"
+					key={`equalityy:${id}`}
+				>
+					<IonItemOptions
+						side="end"
+						className="serifChars"
+					>
+						<IonItemOption
+							color="primary"
+							aria-label={tEdit}
+							onClick={() => editEquality(obj)}
+						>
+							<IonIcon
+								slot="icon-only"
+								src="svg/edit.svg"
+							/>
+						</IonItemOption>
+						<IonItemOption
+							color="danger"
+							aria-label={tDelete}
+							onClick={() => maybeDeleteEquality(id)}
+						>
+							<IonIcon
+								slot="icon-only"
+								icon={trash}
+							/>
+						</IonItemOption>
+					</IonItemOptions>
+					<IonItem className="equality customization">
+						<IonReorder
+							className="ion-padding-end"
+						><IonIcon icon={reorderThree} /></IonReorder>
+						<div
+							className="base"
+						>{base}</div>
+						<div
+							className="equals"
+						>=</div>
+						<div
+							className="equalities"
+						>{
+							equals.map(
+								(ch, i) => (
+									<div
+										key={`equality:${ch}:${i}`}
+									>{i ? separator : ""}{ch}</div>
+								)
+							)
+						}</div>
+						<div
+							className="icon"
+						><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
+					</IonItem>
+				</IonItemSliding>
+			);
+		} else {
+			const {
+				pre,
+				post
+			} = obj;
+			return (
+				<IonItemSliding
+					className="customSortItem"
+					key={`relation:${id}`}
+				>
+					<IonItemOptions side="end" className="serifChars">
+						<IonItemOption
+							color="primary"
+							aria-label={tEdit}
+							onClick={() => editRelation(obj)}
+						>
+							<IonIcon slot="icon-only" src="svg/edit.svg" />
+						</IonItemOption>
+						<IonItemOption
+							color="danger"
+							aria-label={tDelete}
+							onClick={() => maybeDeleteRelation(id)}
+						>
+							<IonIcon slot="icon-only" icon={trash} />
+						</IonItemOption>
+					</IonItemOptions>
+					<IonItem className="relation customization">
+						<IonReorder
+							className="ion-padding-end"
+						><IonIcon icon={reorderThree} /></IonReorder>
+						{pre.length > 0 ?
+							<>
+								<div className="pre">
+									{
+										pre.map(
+											(ch, i) => (
+												<div
+													key={`pre:${ch}:${i}`}
+												>{i ? separator : ""}{ch}</div>
+											)
+										)
+									}
+								</div>
+								<div className="lessthan">&lt;</div>
+							</>
+						:
+							<></>
+						}
+						<div className="base">{base}</div>
+						{post.length > 0 ?
+							<>
+								<div className="lessthan">&lt;</div>
+								<div className="post">
+									{
+										post.map(
+											(ch, i) => (
+												<div
+													key={`post:${ch}:${i}`}
+												>{i ? separator : ""}{ch}</div>
+											)
+										)
+									}
+								</div>
+							</>
+						:
+							<></>
+						}
+						<div
+							className="icon"
+						><IonIcon
+							size="small"
+							src="svg/slide-indicator.svg"
+						/></div>
+					</IonItem>
+				</IonItemSliding>
+			);
+		}
+	}), [customizations, editEquality, editRelation, maybeDeleteEquality, maybeDeleteRelation, tDelete, tEdit]);
+	const doSetSeparator = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), [setSeparator]);
+	const toggleUsingAlpha = useCallback(() => setUsingAlpha(!usingAlpha), [usingAlpha]);
+	const doSetSortLang = useCallback((e: SelectCustomEvent) => setSortLang(e.detail.value), []);
+	const doSetSortSens = useCallback((e: SelectCustomEvent) => setSortSensitivity(e.detail.value), []);
 	return (
 		<IonModal
 			isOpen={isOpen}
@@ -414,12 +614,12 @@ const EditCustomSort = (props: CustomSortModal) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("editThing", { thing: t("Custom Sort") })}</IonTitle>
+					<IonTitle>{tEditThing}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={opener} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={closeModal} aria-label={tc("Close")}>
+						<IonButton onClick={closeModal} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -428,66 +628,60 @@ const EditCustomSort = (props: CustomSortModal) => {
 			<IonContent>
 				<IonList lines="full" id="editingCustomSortList">
 					<IonItem>
-					<div slot="start" className="ion-margin-end">{tc("Title", { context: "presentation" })}</div>
+					<div slot="start" className="ion-margin-end">{tpTitle}</div>
 						<IonInput
-							aria-label={tc("Title")}
+							aria-label={tTitle}
 							id="editSortTitle"
-							helperText={t("Title for this sort")}
+							helperText={tTitleSort}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Language", { context: "presentation" })}
+							label={tpSortLang}
 							value={sortLang}
-							onIonChange={(e) => setSortLang(e.detail.value)}
+							onIonChange={doSetSortLang}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="default"
-							>{tc("Default sort")}</IonSelectOption>
-							{languages.map((language) => (
-								<IonSelectOption
-									key={`knownLang:${language}`}
-									className="ion-text-wrap ion-text-align-end"
-									value={language}
-								>{langObj[language] || language}</IonSelectOption>
-							))}
+							>{tDefSort}</IonSelectOption>
+							{allLanguages}
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="unicode"
-							>{t("Unicode sort (language-independent)")}</IonSelectOption>
+							>{tUnicode}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Sort Sensitivity", { context: "presentation" })}
+							label={tpSortSens}
 							value={sortSensitivity}
-							onIonChange={(e) => setSortSensitivity(e.detail.value)}
+							onIonChange={doSetSortSens}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="default"
-							>{t("Default sensitivity")}</IonSelectOption>
+							>{tDefSens}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="base"
-							>{t("Base letters only")}</IonSelectOption>
+							>{tBase}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="accent"
-							>{t("Diacritics")}</IonSelectOption>
+							>{tDia}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="case"
-							>{t("Upper/lowercase")}</IonSelectOption>
+							>{tUppLow}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="variant"
-							>{t("Diacritics and upper/lowercase")}</IonSelectOption>
+							>{tDiaPlus}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem
@@ -498,10 +692,10 @@ const EditCustomSort = (props: CustomSortModal) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={usingAlpha}
-							onIonChange={e => setUsingAlpha(!usingAlpha)}
+							onIonChange={toggleUsingAlpha}
 						>
-							<h2>{t("Use alternate alphabet")}</h2>
-							<p>{t("alternateAlphabetExplanation")}</p>
+							<h2>{tUseAlt}</h2>
+							<p>{tAltAlphaExpl}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem
@@ -509,9 +703,9 @@ const EditCustomSort = (props: CustomSortModal) => {
 						style={usingAlpha ? {} : {display: "none"}}
 					>
 						<IonInput
-							aria-label={t("Custom Alphabet")}
+							aria-label={tCustomAlpha}
 							id="editCustomAlphabet"
-							helperText={t("Write your alphabet here.")}
+							helperText={tWriteAlpha}
 						/>
 					</IonItem>
 					<IonItem
@@ -521,202 +715,58 @@ const EditCustomSort = (props: CustomSortModal) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Alphabet separator", { context: "presentation" })}
+							label={tpAlphaSep}
 							value={separator}
-							onIonChange={(e) => setSeparator(e.detail.value)}
+							onIonChange={doSetSeparator}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=""
-							>{t("No separator")}</IonSelectOption>
+							>{tNoSep}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>{t("Space")}</IonSelectOption>
+							>{tSpace}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>{t("Comma")}</IonSelectOption>
+							>{tComma}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="."
-							>{t("Period")}</IonSelectOption>
+							>{tPeriod}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>{t("Semicolon")}</IonSelectOption>
+							>{tSemi}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
-							<h2>{t("Relations")}</h2>
-							<p>{t("Similar characters that should be sorted separately.")}</p>
+							<h2>{tRelations}</h2>
+							<p>{tCharsSepar}</p>
 						</IonLabel>
 						<IonButton color="secondary" slot="end" onClick={maybeAddNewRelation}>
 							<IonIcon icon={addOutline} slot="end" />
-							<IonLabel>{tc("Add New")}</IonLabel>
+							<IonLabel>{tAddNew}</IonLabel>
 						</IonButton>
 					</IonItem>
 					<IonItem className="wrappableInnards" lines="none">
 						<IonLabel>
-							<h2>{t("Equalities")}</h2>
-							<p>{t("Characters that should be sorted together as if they were strictly equal.")}</p>
+							<h2>{tEqualities}</h2>
+							<p>{tCharsEqual}</p>
 						</IonLabel>
 						<IonButton color="secondary" slot="end" onClick={maybeAddNewEquality}>
 							<IonIcon icon={addOutline} slot="end" />
-							<IonLabel>{tc("Add New")}</IonLabel>
+							<IonLabel>{tAddNew}</IonLabel>
 						</IonButton>
 					</IonItem>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
 						{customizations.length > 0 ?
-							customizations.map(obj => {
-								const {
-									id,
-									base,
-									separator
-								} = obj;
-								if("equals" in obj) {
-									const {
-										equals
-									} = obj;
-									return (
-										<IonItemSliding
-											className="customSortItem"
-											key={`equalityy:${id}`}
-										>
-											<IonItemOptions
-												side="end"
-												className="serifChars"
-											>
-												<IonItemOption
-													color="primary"
-													aria-label={tc("Edit")}
-													onClick={() => editEquality(obj)}
-												>
-													<IonIcon
-														slot="icon-only"
-														src="svg/edit.svg"
-													/>
-												</IonItemOption>
-												<IonItemOption
-													color="danger"
-													aria-label={tc("Delete")}
-													onClick={() => maybeDeleteEquality(id)}
-												>
-													<IonIcon
-														slot="icon-only"
-														icon={trash}
-													/>
-												</IonItemOption>
-											</IonItemOptions>
-											<IonItem className="equality customization">
-												<IonReorder
-													className="ion-padding-end"
-												><IonIcon icon={reorderThree} /></IonReorder>
-												<div
-													className="base"
-												>{base}</div>
-												<div
-													className="equals"
-												>=</div>
-												<div
-													className="equalities"
-												>{
-													equals.map(
-														(ch, i) => (
-															<div
-																key={`equality:${ch}:${i}`}
-															>{i ? separator : ""}{ch}</div>
-														)
-													)
-												}</div>
-												<div
-													className="icon"
-												><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
-											</IonItem>
-										</IonItemSliding>
-									);
-								} else {
-									const {
-										pre,
-										post
-									} = obj;
-									return (
-										<IonItemSliding
-											className="customSortItem"
-											key={`relation:${id}`}
-										>
-											<IonItemOptions side="end" className="serifChars">
-												<IonItemOption
-													color="primary"
-													aria-label={tc("Edit")}
-													onClick={() => editRelation(obj)}
-												>
-													<IonIcon slot="icon-only" src="svg/edit.svg" />
-												</IonItemOption>
-												<IonItemOption
-													color="danger"
-													aria-label={tc("Delete")}
-													onClick={() => maybeDeleteRelation(id)}
-												>
-													<IonIcon slot="icon-only" icon={trash} />
-												</IonItemOption>
-											</IonItemOptions>
-											<IonItem className="relation customization">
-												<IonReorder
-													className="ion-padding-end"
-												><IonIcon icon={reorderThree} /></IonReorder>
-												{pre.length > 0 ?
-													<>
-														<div className="pre">
-															{
-																pre.map(
-																	(ch, i) => (
-																		<div
-																			key={`pre:${ch}:${i}`}
-																		>{i ? separator : ""}{ch}</div>
-																	)
-																)
-															}
-														</div>
-														<div className="lessthan">&lt;</div>
-													</>
-												:
-													<></>
-												}
-												<div className="base">{base}</div>
-												{post.length > 0 ?
-													<>
-														<div className="lessthan">&lt;</div>
-														<div className="post">
-															{
-																post.map(
-																	(ch, i) => (
-																		<div
-																			key={`post:${ch}:${i}`}
-																		>{i ? separator : ""}{ch}</div>
-																	)
-																)
-															}
-														</div>
-													</>
-												:
-													<></>
-												}
-												<div
-													className="icon"
-												><IonIcon
-													size="small"
-													src="svg/slide-indicator.svg"
-												/></div>
-											</IonItem>
-										</IonItemSliding>
-									);
-								}
-							})
+							allCustomizations
 						:
 							<IonItem>
-								<IonLabel className="ion-text-align-end"><em>{t("(none)")}</em></IonLabel>
+								<IonLabel className="ion-text-align-end"><em>{tNone}</em></IonLabel>
 							</IonItem>
 						}
 					</IonReorderGroup>
@@ -730,7 +780,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						onClick={maybeDeleteSort}
 					>
 						<IonIcon icon={trash} slot="end" />
-						<IonLabel>{tc("deleteThing", { thing: t("Sort") })}</IonLabel>
+						<IonLabel>{tDelSort}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -738,7 +788,7 @@ const EditCustomSort = (props: CustomSortModal) => {
 						onClick={maybeSaveEditedSort}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tc("Save")}</IonLabel>
+						<IonLabel>{tSave}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -64,6 +64,8 @@ const settings = {
 		language-based sorting.)`,
 	"Sort Language": "Sort Language",
 	"Sort Language_presentation": "Sort Language:",
+	Sort: "Sort",
+	"This Sort": "This Sort",
 	"Base letters only":
 		"[ȁ = Ȁ, a = ȁ]: Base letters only",
 	Diacritics:
@@ -117,9 +119,11 @@ const settings = {
 		"[a.b.c.d.e]: Period",
 	Semicolon:
 		"[a;b;c;d;e]: Semicolon",
+	Relation: "Relation",
 	Relations: "Relations",
 	"Similar characters that should be sorted separately.":
 		"Similar characters that should be sorted separately.",
+	Equality: "Equality",
 	Equalities: "Equalities",
 	"Characters that should be sorted together as if they were strictly equal.":
 		"Characters that should be sorted together as if they were strictly equal.",
