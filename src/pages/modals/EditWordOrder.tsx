@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -24,7 +24,8 @@ import {
 	IonSelect,
 	IonSelectOption,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	SelectCustomEvent
 } from '@ionic/react';
 import {
 	closeCircleOutline,
@@ -55,6 +56,7 @@ import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
 import PermanentInfo from '../../components/PermanentInfo';
 import makeSorter from '../../components/stringSorter';
+import useI18Memo from '../../components/useI18Memo';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
@@ -65,11 +67,37 @@ interface OrderModalProps extends ExtraCharactersModalOpener {
 	sensitivity: SortSensitivity
 }
 
-const EditLexiconOrderModal = (props: OrderModalProps) => {
-	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
-	const dispatch = useDispatch();
+const translations = [
+	"Are you sure you want to delete this column? This cannot be undone.",
+	"As Alphabetically First", "As Alphabetically Last", "Field Name", "Large",
+	"Lexicon Options", "Med", "New", "Rearrange Lexicon Columns", "Small",
+	"Show Full Column Titles", "To Beginning, Always", "To End, Always"
+];
+
+const commons = [
+	"Close", "Default sort", "Delete", "Extra Characters",
+	"Nothing to save.", "confirmDelIt", "emphasizedError"
+];
+
+const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
+	const [
+		tClose, tDefSort, tDelete, tExChar, tNothing, tConfDel, tEmphError
+	] = useI18Memo(commons);
+	const [
+		tYouSure, tAlphaFirst, tAlphaLast, tFieldName, tLarge, tLexOpts,
+		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd
+	] = useI18Memo(translations, "lexicon");
+	const tpBlank = useMemo(() => t("Sort blank columns", { context: "presentation" }), [t]);
+	const tpMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
+	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
+	const tAddThing = useMemo(() => tc("addThing", { thing: t("Column") }), [tc, t]);
+	const tEditGeneral = useMemo(() => tc("editGeneralThings", { things: t("Columns") }), [tc, t]);
+	const tThingAdded = useMemo(() => tc("thingAdded", { thing: t("Column") }), [tc, t]);
+
+	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
+	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
 		lexicon,
@@ -88,13 +116,19 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 
-	const onLoad = () => {
+	const closeModal = useCallback(() => {
+		setShadowColumns(columns.slice().map(
+			(col: LexiconColumn, i: number) => ({...col, originalPosition: i})
+		));
+		setIsOpen(false);
+	}, [columns, setIsOpen]);
+	const onLoad = useCallback(() => {
 		setShadowColumns(columns.slice().map(
 			(col: LexiconColumn, i: number) => ({...col, originalPosition: i})
 		));
 		setShadowCustomSort(customSort || null);
-	};
-	const handleCheckboxes = (i: number, value: "s" | "m" | "l") => {
+	}, [columns, customSort]);
+	const handleCheckboxes = useCallback((i: number, value: "s" | "m" | "l") => {
 		const newCols = shadowColumns.slice();
 		newCols[i].size = value;
 		// save any changes to labels that may have been entered
@@ -106,8 +140,8 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		});
 		// save result
 		setShadowColumns(newCols);
-	};
-	const doneEditingOrder = () => {
+	}, [shadowColumns]);
+	const doneEditingOrder = useCallback(() => {
 		const original = columns.map((col: LexiconColumn, i: number) => {
 			const {label, size} = col;
 			return `${label}/${size}/${i}`;
@@ -115,11 +149,11 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
-			return `${el ? el.value : tc("emphasizedError")}/${size}/${originalPosition}`;
+			return `${el ? el.value : tEmphError}/${size}/${originalPosition}`;
 		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort} : ${shadowCustomSort}`;
 		if(testing === original) {
 			toaster({
-				message: tc("Nothing to save."),
+				message: tNothing,
 				color: "warning",
 				duration: 2500,
 				position: "top",
@@ -136,7 +170,7 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
 			return {
 				id,
-				label: el ? el.value : tc("emphasizedError"),
+				label: el ? el.value : tEmphError,
 				size
 			};
 		});
@@ -211,11 +245,16 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			toast
 		});
 		closeModal();
-	};
-	const addNewColumn = () => {
+	}, [
+		blankSort, closeModal, columns, customSort, customSorts, dispatch,
+		lexicon, sensitivity, shadowBlankSort, shadowColumns, shadowCustomSort,
+		shadowTruncate, sortLang, sortPattern, tEmphError, tNothing, toast,
+		truncateColumns
+	]);
+	const addNewColumn = useCallback(() => {
 		const final: ShadowColumn[] = [
 			...shadowColumns,
-			{ id: uuidv4(), size: "m", label: t("New"), originalPosition: -1 }
+			{ id: uuidv4(), size: "m", label: tNew, originalPosition: -1 }
 		];
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
@@ -227,14 +266,14 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		// save result
 		setShadowColumns(final);
 		toaster({
-			message: tc("thingAdded", { thing: t("Column") }),
+			message: tThingAdded,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	};
-	const deleteField = (i: number) => {
+	}, [shadowColumns, tNew, toast, tThingAdded]);
+	const deleteField = useCallback((i: number) => {
 		const handler = () => {
 			// delete the field
 			const newColumns = shadowColumns.slice(0, i).concat(shadowColumns.slice(i+1));
@@ -254,14 +293,14 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			yesNoAlert({
 				header: shadowColumns[i].label,
 				cssClass: "danger",
-				message: t("Are you sure you want to delete this column? This cannot be undone."),
-				submit: tc("confirmDelIt"),
+				message: tYouSure,
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	};
-	const doReorder = (event: CustomEvent) => {
+	}, [disableConfirms, doAlert, shadowColumns, tConfDel, tYouSure]);
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
 		const { from, to } = ed;
@@ -278,28 +317,98 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 		// save result
 		setShadowColumns(final);
 		ed.complete();
-	};
-	const closeModal = () => {
-		setShadowColumns(columns.slice().map(
-			(col: LexiconColumn, i: number) => ({...col, originalPosition: i})
-		));
-		setIsOpen(false);
-	};
+	}, [shadowColumns]);
+
+	const reorderColumns = useMemo(() => shadowColumns.map((column: LexiconColumn, i: number) => {
+		const { id, size, label } = column;
+		return (
+			<IonItem lines="full" key={`${id}:modal:editing`}>
+				<IonReorder
+					className="ion-padding-end"
+				><IonIcon icon={reorderTwo} /></IonReorder>
+				<IonGrid>
+					<IonRow className="ion-align-items-center">
+						<IonCol>
+							<IonInput
+								id={`input_colOrder_${id}`}
+								aria-label={tFieldName}
+								placeholder={tFieldName}
+								value={label}
+							/>
+						</IonCol>
+						<IonCol size="auto">
+							<IonButton
+								color="danger"
+								onClick={() => deleteField(i)}
+								aria-label={tDelete}
+							>
+								<IonIcon icon={trashOutline} />
+							</IonButton>
+						</IonCol>
+					</IonRow>
+					<IonRow className="ion-align-items-center">
+						<IonCol>
+							<IonCheckbox
+								labelPlacement="start"
+								id={`${id}:${i}:s`}
+								justify="start"
+								checked={size === "s"}
+								onIonChange={() => handleCheckboxes(i, "s")}
+							>{tSmall}</IonCheckbox>
+						</IonCol>
+						<IonCol>
+							<IonCheckbox
+								labelPlacement="start"
+								id={`${id}:${i}:m`}
+								justify="start"
+								checked={size === "m"}
+								onIonChange={() => handleCheckboxes(i, "m")}
+							>{tMed}</IonCheckbox>
+						</IonCol>
+						<IonCol>
+							<IonCheckbox
+								labelPlacement="start"
+								id={`${id}:${i}:l`}
+								justify="start"
+								checked={size === "l"}
+								onIonChange={() => handleCheckboxes(i, "l")}
+							>{tLarge}</IonCheckbox>
+						</IonCol>
+					</IonRow>
+				</IonGrid>
+			</IonItem>
+		);
+	}), [deleteField, handleCheckboxes, shadowColumns, tDelete, tFieldName, tLarge, tMed, tSmall]);
+
+	const opener = useCallback(() => openECM(true), [openECM]);
+	const toggleTruncate = useCallback(() => setShadowTruncate(!shadowTruncate), [shadowTruncate]);
+	const doSetCustomSort = useCallback((e: SelectCustomEvent) => setShadowCustomSort(e.detail.value), []);
+	const doSetBlankSort = useCallback((e: SelectCustomEvent) => setShadowBlankSort(e.detail.value), []);
+
+	const customSorters = useMemo(() => customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(
+		sorter => (
+			<IonSelectOption
+				key={`lex:modal:${sorter.id}`}
+				className="ion-text-wrap ion-text-align-end"
+				value={sorter.id}
+			>{sorter.title}</IonSelectOption>
+		)
+	), [customSorts]);
 	return (
 		<IonModal
 			isOpen={isOpen}
-			onDidDismiss={() => closeModal()}
+			onDidDismiss={closeModal}
 			backdropDismiss={false}
 			onIonModalDidPresent={onLoad}
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("editGeneralThings", { things: t("Columns") })}</IonTitle>
+					<IonTitle>{tEditGeneral}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={opener} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => closeModal()} aria-label={tc("Close")}>
+						<IonButton onClick={closeModal} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -307,127 +416,57 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 			</IonHeader>
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
-					<IonItemDivider>{t("Lexicon Options")}</IonItemDivider>
+					<IonItemDivider>{tLexOpts}</IonItemDivider>
 					<IonItem>
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={!shadowTruncate}
-							onIonChange={() => setShadowTruncate(!shadowTruncate)}
-						>{t("Show Full Column Titles")}</IonToggle>
+							onIonChange={toggleTruncate}
+						>{tShowTitle}</IonToggle>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label={tc("Sort method", { context: "presentation" })}
+							label={tpMethod}
 							value={shadowCustomSort}
-							onIonChange={(e) => setShadowCustomSort(e.detail.value)}
+							onIonChange={doSetCustomSort}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
-							>{tc("Default sort")}</IonSelectOption>
-							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(
-								sorter => (
-									<IonSelectOption
-										key={`lex:modal:${sorter.id}`}
-										className="ion-text-wrap ion-text-align-end"
-										value={sorter.id}
-									>{sorter.title}</IonSelectOption>
-								)
-							)}
+							>{tDefSort}</IonSelectOption>
+							{customSorters}
 						</IonSelect>
 					</IonItem>
 					<IonItem className="ion-text-wrap">
 						<IonSelect
 							className="ion-text-wrap"
-							label={t("Sort blank columns", { context: "presentation" })}
+							label={tpBlank}
 							value={shadowBlankSort}
-							onIonChange={(e) => setShadowBlankSort(e.detail.value)}
+							onIonChange={doSetBlankSort}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="first"
-							>{t("To Beginning, Always")}</IonSelectOption>
+							>{tToBeg}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="last"
-							>{t("To End, Always")}</IonSelectOption>
+							>{tToEnd}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="alphaFirst"
-							>{t("As Alphabetically First")}</IonSelectOption>
+							>{tAlphaFirst}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="alphaLast"
-							>{t("As Alphabetically Last")}</IonSelectOption>
+							>{tAlphaLast}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					<IonItemDivider>{t("Rearrange Lexicon Columns")}</IonItemDivider>
+					<IonItemDivider>{tRearr}</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
-						{shadowColumns.map((column: LexiconColumn, i: number) => {
-							const { id, size, label } = column;
-							return (
-								<IonItem lines="full" key={`${id}:modal:editing`}>
-									<IonReorder
-										className="ion-padding-end"
-									><IonIcon icon={reorderTwo} /></IonReorder>
-									<IonGrid>
-										<IonRow className="ion-align-items-center">
-											<IonCol>
-												<IonInput
-													id={`input_colOrder_${id}`}
-													aria-label={t("Field Name")}
-													placeholder={t("Field Name")}
-													value={label}
-												/>
-											</IonCol>
-											<IonCol size="auto">
-												<IonButton
-													color="danger"
-													onClick={() => deleteField(i)}
-													aria-label={tc("Delete")}
-												>
-													<IonIcon icon={trashOutline} />
-												</IonButton>
-											</IonCol>
-										</IonRow>
-										<IonRow className="ion-align-items-center">
-											<IonCol>
-												<IonCheckbox
-													labelPlacement="start"
-													id={`${id}:${i}:s`}
-													justify="start"
-													aria-label={t("Small size")}
-													checked={size === "s"}
-													onIonChange={() => handleCheckboxes(i, "s")}
-												>{t("Small")}</IonCheckbox>
-											</IonCol>
-											<IonCol>
-												<IonCheckbox
-													labelPlacement="start"
-													id={`${id}:${i}:m`}
-													justify="start"
-													aria-label={t("Medium size")}
-													checked={size === "m"}
-													onIonChange={() => handleCheckboxes(i, "m")}
-												>{t("Med")}</IonCheckbox>
-											</IonCol>
-											<IonCol>
-												<IonCheckbox
-													labelPlacement="start"
-													id={`${id}:${i}:l`}
-													justify="start"
-													aria-label={t("Large size")}
-													checked={size === "l"}
-													onIonChange={() => handleCheckboxes(i, "l")}
-												>{t("Large")}</IonCheckbox>
-											</IonCol>
-										</IonRow>
-									</IonGrid>
-								</IonItem>
-							);
-						})}
+						{reorderColumns}
 					</IonReorderGroup>
 				</IonList>
 			</IonContent>
@@ -436,18 +475,18 @@ const EditLexiconOrderModal = (props: OrderModalProps) => {
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={() => addNewColumn()}
+						onClick={addNewColumn}
 					>
 						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: t("Column") })}</IonLabel>
+						<IonLabel>{tAddThing}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="tertiary"
 						slot="end"
-						onClick={() => doneEditingOrder()}
+						onClick={doneEditingOrder}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveGeneralThings", { things: t("Changes") })}</IonLabel>
+						<IonLabel>{tSaveThings}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

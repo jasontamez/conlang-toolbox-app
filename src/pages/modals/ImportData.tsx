@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -44,6 +44,16 @@ import {
 	WGState
 } from '../../store/types';
 import { VALIDATE_import } from '../../store/validators';
+import { loadSortSettingsState } from '../../store/sortingSlice';
+import { loadStateSettings } from '../../store/settingsSlice';
+import { loadStateWG } from '../../store/wgSlice';
+import { loadStateWE } from '../../store/weSlice';
+import { loadStateMS } from '../../store/msSlice';
+import { loadStateDJ } from '../../store/declenjugatorSlice';
+import { loadStateLex } from '../../store/lexiconSlice';
+import { loadStateConcepts } from '../../store/conceptsSlice';
+import { loadStateEC } from '../../store/extraCharactersSlice';
+import useTranslator from '../../store/translationHooks';
 
 import {
 	CustomStorageWE,
@@ -55,17 +65,8 @@ import {
 import toaster from '../../components/toaster';
 import { $and, $delay, $i, $q } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
-import { loadSortSettingsState } from '../../store/sortingSlice';
-import { loadStateSettings } from '../../store/settingsSlice';
-import { loadStateWG } from '../../store/wgSlice';
-import { loadStateWE } from '../../store/weSlice';
-import { loadStateMS } from '../../store/msSlice';
-import { loadStateDJ } from '../../store/declenjugatorSlice';
-import { loadStateLex } from '../../store/lexiconSlice';
-import { loadStateConcepts } from '../../store/conceptsSlice';
-import { loadStateEC } from '../../store/extraCharactersSlice';
 import yesNoAlert from '../../components/yesNoAlert';
-import useTranslator from '../../store/translationHooks';
+import useI18Memo from '../../components/useI18Memo';
 
 type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
@@ -75,13 +76,48 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 	);
 };
 
+const commons = [
+	"App Settings", "Cancel", "Close", "Concepts", "Declenjugator",
+	"Extra Characters", "Lexicon", "MorphoSyntax", "WordEvolve",
+	"WordGen", "areYouSure"
+];
+
+const translations = [
+	"Analyze", "Are you SURE you want to do this?", "Data to Import",
+	"Error validating Import", "Import Info", "Import", "Other App Settings",
+	"Reset", "WARNING!", "What to Import", "Yes Close This",
+	"Yes I Want to Do This", "You did not choose anything to import.",
+	"You haven't imported anything yet.", "importDescription"
+];
+
 const ImportData = (props: ModalProperties) => {
+	const [ ts ] = useTranslator('settings');
+	const [
+		tAppSett, tCancel, tClose, tConcepts, tDJ, tExChar,
+		tLex, tMS, tWE, tWG, tRUSure
+	] = useI18Memo(commons);
+	const [
+		tAnalyze, tYouSure, tData, tError, tImportInfo, tImport, tOtherSett,
+		tReset, tWarning, tWhatToImp, tYesClose, tYesIWant, tNoChoice,
+		tNoImport, tImpDesc
+	] = useI18Memo(translations, "settings");
+	const tASConcepts = useMemo(() => ts("appSettings", { tool: tConcepts }), [ ts, tConcepts ]);
+	const tASExChar = useMemo(() => ts("appSettings", { tool: tExChar }), [ ts, tExChar ]);
+	const tCSDJ = useMemo(() => ts("currentSettings", { tool: tDJ }), [ ts, tDJ ]);
+	const tCSLex = useMemo(() => ts("currentSettings", { tool: tLex }), [ ts, tLex ]);
+	const tCSMS = useMemo(() => ts("currentSettings", { tool: tMS }), [ ts, tMS ]);
+	const tCSWE = useMemo(() => ts("currentSettings", { tool: tWE }), [ ts, tWE ]);
+	const tCSWG = useMemo(() => ts("currentSettings", { tool: tWG }), [ ts, tWG ]);
+	const tSDLex = useMemo(() => ts("storedDocuments", { tool: tLex }), [ ts, tLex ]);
+	const tSDMS = useMemo(() => ts("storedDocuments", { tool: tMS }), [ ts, tMS ]);
+	const tSSDJ = useMemo(() => ts("storedSettings", { tool: tDJ }), [ ts, tDJ ]);
+	const tSSWE = useMemo(() => ts("storedSettings", { tool: tWE }), [ ts, tWE ]);
+	const tSSWG = useMemo(() => ts("storedSettings", { tool: tWG }), [ ts, tWG ]);
+
 	const { isOpen, setIsOpen } = props;
 	const toast = useIonToast();
 	const [ doAlert ] = useIonAlert();
 	const dispatch = useDispatch();
-	const [ t ] = useTranslator('common');
-	const [ ts ] = useTranslator('settings');
 	const [readyToImport, setReadyToImport] = useState<boolean>(false);
 	const [hasImported, setHasImported] = useState<boolean>(false);
 
@@ -116,20 +152,7 @@ const ImportData = (props: ModalProperties) => {
 	const [potential_import_djStored, setPotential_import_djStored] = useState<storedDJ | false>(false);
 	const [potential_import_lexStored, setPotential_import_lexStored] = useState<storedLex | false>(false);
 
-	const morphosyntax = t("MorphoSyntax");
-	const wordgen = t("WordGen");
-	const wordevolve = t("WordEvolve");
-	const declenjugator = t("Declenjugator");
-	const lexicon = t("Lexicon");
-	const concepts = t("Concepts");
-	const extraCharacters = t("Extra Characters");
-
-	const doClose = () => {
-		resetAnalysis();
-		setIsOpen(false);
-	};
-
-	const resetAnalysis = () => {
+	const resetAnalysis = useCallback(() => {
 		const el = $i<HTMLInputElement>("importingData");
 		el && (el.value = "");
 		setReadyToImport(false);
@@ -145,20 +168,25 @@ const ImportData = (props: ModalProperties) => {
 		setPotential_import_djStored(false);
 		setPotential_import_msStored(false);
 		setPotential_import_lexStored(false);
-	};
+	}, []);
 
-	const maybeClose = () => {
+	const doClose = useCallback(() => {
+		resetAnalysis();
+		setIsOpen(false);
+	}, [setIsOpen, resetAnalysis]);
+
+	const maybeClose = useCallback(() => {
 		return readyToImport && !hasImported ? yesNoAlert({
-			header: t("areYouSure"),
-			message: ts("You haven't imported anything yet."),
+			header: tRUSure,
+			message: tNoImport,
 			handler: doClose,
-			submit: ts("Yes Close This"),
+			submit: tYesClose,
 			cssClass: "warning",
 			doAlert
 		}) : doClose();
-	};
+	}, [doAlert, doClose, hasImported, readyToImport, tNoImport, tRUSure, tYesClose]);
 
-	function onLoad() {
+	const onLoad = useCallback(() => {
 		const el = $i<HTMLInputElement>("importingData");
 		el && (el.value = "");
 		setDo_import_wg(true);
@@ -172,7 +200,7 @@ const ImportData = (props: ModalProperties) => {
 		setDo_import_djStored(true);
 		setDo_import_msStored(true);
 		setDo_import_lexStored(true);
-	};
+	}, []);
 
 	// Scan input for data and set state appropriately
 	function parseInput(object: ImportExportObject) {
@@ -254,7 +282,7 @@ const ImportData = (props: ModalProperties) => {
 	}, [readyToImport]);
 
 	// Look at the pasted import and try to make an object out of it
-	function analyze() {
+	const analyze = useCallback(() => {
 		const el = $i<HTMLInputElement>("importingData");
 		const incoming = (el && el.value) || "";
 		try {
@@ -265,7 +293,7 @@ const ImportData = (props: ModalProperties) => {
 					parseInput(parsed);
 				} catch(e) {
 					let message = (e instanceof Error) ? e.message : `${e}`;
-					log(dispatch, [ts("Error validating Import"), message], parsed);
+					log(dispatch, [tError, message], parsed);
 					toaster({
 						message,
 						color: "danger",
@@ -288,31 +316,40 @@ const ImportData = (props: ModalProperties) => {
 				toast
 			});
 		}
-	};
+	}, [dispatch, tError, toast]);
+
+	const toggleImportMs = useCallback(() => setDo_import_ms(!do_import_ms), [ do_import_ms ]);
+	const toggleImportMsStored = useCallback(() => setDo_import_msStored(!do_import_msStored), [ do_import_msStored ]);
+	const toggleImportWg = useCallback(() => setDo_import_wg(!do_import_wg), [ do_import_wg ]);
+	const toggleImportWgStored = useCallback(() => setDo_import_wgStored(!do_import_wgStored), [ do_import_wgStored ]);
+	const toggleImportWe = useCallback(() => setDo_import_we(!do_import_we), [ do_import_we ]);
+	const toggleImportWeStored = useCallback(() => setDo_import_weStored(!do_import_weStored), [ do_import_weStored ]);
+	const toggleImportDj = useCallback(() => setDo_import_dj(!do_import_dj), [ do_import_dj ]);
+	const toggleImportDjStored = useCallback(() => setDo_import_djStored(!do_import_djStored), [ do_import_djStored ]);
+	const toggleImportLex = useCallback(() => setDo_import_lex(!do_import_lex), [ do_import_lex ]);
+	const toggleImportLexStored = useCallback(() => setDo_import_lexStored(!do_import_lexStored), [ do_import_lexStored ]);
+	const toggleImportCon = useCallback(() => setDo_import_con(!do_import_con), [ do_import_con ]);
+	const toggleImportEc = useCallback(() => setDo_import_ec(!do_import_ec), [ do_import_ec ]);
+	const toggleImportSet = useCallback(() => setDo_import_set(!do_import_set), [ do_import_set ]);
 
 	// Actually import the given data
-	function doImport() {
+	const doImport = useCallback(() => {
 		// Get string list of data we're importing
 		const overwriting: string[] = [];
 		const storages: string[] = [];
-		const wordgen = t("WordGen");
-		do_import_wg && potential_import_wg && overwriting.push(wordgen);
-		const wordevolve = t("WordEvolve");
-		do_import_we && potential_import_we && overwriting.push(wordevolve);
-		const morphosyntax = t("MorphoSyntax");
-		do_import_ms && potential_import_ms && overwriting.push(morphosyntax);
-		const declenjugator = t("Declenjugator");
-		do_import_dj && potential_import_dj && overwriting.push(declenjugator);
-		const lexicon = t("Lexicon");
-		do_import_lex && potential_import_lex && overwriting.push(lexicon);
-		do_import_con && potential_import_con && overwriting.push(t("Concepts"));
-		do_import_ec && potential_import_ec && overwriting.push(t("Extra Characters"));
-		do_import_set && potential_import_set && overwriting.push(t("App Settings"));
-		do_import_wgStored && potential_import_wgStored && storages.push(wordgen);
-		do_import_weStored && potential_import_weStored && storages.push(wordevolve);
-		do_import_msStored && potential_import_msStored && storages.push(morphosyntax);
-		do_import_djStored && potential_import_djStored && storages.push(declenjugator);
-		do_import_lexStored && potential_import_lexStored && storages.push(lexicon);
+		do_import_wg && potential_import_wg && overwriting.push(tWG);
+		do_import_we && potential_import_we && overwriting.push(tWE);
+		do_import_ms && potential_import_ms && overwriting.push(tMS);
+		do_import_dj && potential_import_dj && overwriting.push(tDJ);
+		do_import_lex && potential_import_lex && overwriting.push(tLex);
+		do_import_con && potential_import_con && overwriting.push(tConcepts);
+		do_import_ec && potential_import_ec && overwriting.push(tExChar);
+		do_import_set && potential_import_set && overwriting.push(tAppSett);
+		do_import_wgStored && potential_import_wgStored && storages.push(tWG);
+		do_import_weStored && potential_import_weStored && storages.push(tWE);
+		do_import_msStored && potential_import_msStored && storages.push(tMS);
+		do_import_djStored && potential_import_djStored && storages.push(tDJ);
+		do_import_lexStored && potential_import_lexStored && storages.push(tLex);
 		// Create a handler that does the actual importing
 		const handler = () => {
 			// IMPORT!
@@ -359,7 +396,7 @@ const ImportData = (props: ModalProperties) => {
 		// Sanity check
 		if(storages.length + overwriting.length === 0) {
 			return toaster({
-				message: ts("You did not choose anything to import."),
+				message: tNoChoice,
 				color: "danger",
 				position: "middle",
 				duration: 5000,
@@ -378,24 +415,35 @@ const ImportData = (props: ModalProperties) => {
 				message = ts("willOverwriteStorage", { listing: $and(storages) });
 			}
 		}
-		message += " " + ts("Are you SURE you want to do this?");
+		message += " " + tYouSure;
 		yesNoAlert({
-			header: ts("WARNING!"),
+			header: tWarning,
 			message,
 			cssClass: "danger",
 			handler,
-			submit: ts("Yes I Want to Do This"),
+			submit: tYesIWant,
 			doAlert
 		});
-	};
+	}, [
+		disableConfirms, dispatch, doAlert, do_import_con, do_import_dj,
+		do_import_djStored, do_import_ec, do_import_lex, do_import_lexStored,
+		do_import_ms, do_import_msStored, do_import_set, do_import_we,
+		do_import_weStored, do_import_wg, do_import_wgStored,
+		potential_import_con, potential_import_dj, potential_import_djStored,
+		potential_import_ec, potential_import_lex, potential_import_lexStored,
+		potential_import_ms, potential_import_msStored, potential_import_set,
+		potential_import_we, potential_import_weStored, potential_import_wg,
+		potential_import_wgStored, tAppSett, tConcepts, tDJ, tExChar, tLex,
+		tMS, tNoChoice, tWE, tWG, tWarning, tYesIWant, tYouSure, toast, ts
+	]);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()} onIonModalDidPresent={onLoad} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} onDidDismiss={doClose} onIonModalDidPresent={onLoad} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{ts("Import Info")}</IonTitle>
+					<IonTitle>{tImportInfo}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={maybeClose} aria-label={t("Close")}>
+						<IonButton onClick={maybeClose} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -405,12 +453,12 @@ const ImportData = (props: ModalProperties) => {
 				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
 					<IonItem lines="none" className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
-							<h2 className="ion-text-center ion-text-wrap">{ts("importDescription")}</h2>
+							<h2 className="ion-text-center ion-text-wrap">{tImpDesc}</h2>
 						</IonLabel>
 					</IonItem>
 					<IonItem lines="none" className="permanent">
 						<IonTextarea
-							aria-label={ts("Data to Import")}
+							aria-label={tData}
 							wrap="soft"
 							rows={12}
 							id="importingData"
@@ -425,7 +473,7 @@ const ImportData = (props: ModalProperties) => {
 							className={readyToImport ? "showing" : "hiding"}
 							onClick={resetAnalysis}
 						>
-							<IonLabel>{ts("Reset")}</IonLabel>
+							<IonLabel>{tReset}</IonLabel>
 							<IonIcon icon={closeCircle} slot="end" />
 						</IonButton>
 						<IonButton
@@ -434,29 +482,27 @@ const ImportData = (props: ModalProperties) => {
 							slot="end"
 							onClick={analyze}
 						>
-							<IonLabel>{ts("Analyze")}</IonLabel>
+							<IonLabel>{tAnalyze}</IonLabel>
 							<IonIcon icon={sparkles} slot="start" />
 						</IonButton>
 					</IonItem>
-					<IonItemDivider>{ts("What to Import")}</IonItemDivider>
+					<IonItemDivider>{tWhatToImp}</IonItemDivider>
 					<IonItem
 						className={potential_import_ms ? "" : "notSelectable"}
 						lines={potential_import_msStored ? "none" : "full"}
 					>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("currentSettings", { tool: morphosyntax })}
 							checked={do_import_ms}
-							onIonChange={() => setDo_import_ms(!do_import_ms)}
-						>{ts("currentSettings", { tool: morphosyntax })}</IonToggle>
+							onIonChange={toggleImportMs}
+						>{tCSMS}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_msStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("storedDocuments", { tool: morphosyntax })}
 							checked={do_import_msStored}
-							onIonChange={() => setDo_import_msStored(!do_import_msStored)}
-						>{ts("storedDocuments", { tool: morphosyntax })}</IonToggle>
+							onIonChange={toggleImportMsStored}
+						>{tSDMS}</IonToggle>
 					</IonItem>
 					<IonItem
 						className={potential_import_wg ? "" : "notSelectable"}
@@ -464,18 +510,16 @@ const ImportData = (props: ModalProperties) => {
 					>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("currentSettings", { tool: wordgen })}
 							checked={do_import_wg}
-							onIonChange={() => setDo_import_wg(!do_import_wg)}
-						>{ts("currentSettings", { tool: wordgen })}</IonToggle>
+							onIonChange={toggleImportWg}
+						>{tCSWG}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_wgStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("storedSettings", { tool: wordgen })}
 							checked={do_import_wgStored}
-							onIonChange={() => setDo_import_wgStored(!do_import_wgStored)}
-						>{ts("storedSettings", { tool: wordgen })}</IonToggle>
+							onIonChange={toggleImportWgStored}
+						>{tSSWG}</IonToggle>
 					</IonItem>
 					<IonItem
 						className={potential_import_we ? "" : "notSelectable"}
@@ -483,18 +527,16 @@ const ImportData = (props: ModalProperties) => {
 					>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("currentSettings", { tool: wordevolve })}
 							checked={do_import_we}
-							onIonChange={() => setDo_import_we(!do_import_we)}
-						>{ts("currentSettings", { tool: wordevolve })}</IonToggle>
+							onIonChange={toggleImportWe}
+						>{tCSWE}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_weStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("storedSettings", { tool: wordevolve })}
 							checked={do_import_weStored}
-							onIonChange={() => setDo_import_weStored(!do_import_weStored)}
-						>{ts("storedSettings", { tool: wordevolve })}</IonToggle>
+							onIonChange={toggleImportWeStored}
+						>{tSSWE}</IonToggle>
 					</IonItem>
 					<IonItem
 						className={potential_import_dj ? "" : "notSelectable"}
@@ -502,18 +544,16 @@ const ImportData = (props: ModalProperties) => {
 					>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("currentSettings", { tool: declenjugator })}
 							checked={do_import_dj}
-							onIonChange={() => setDo_import_dj(!do_import_dj)}
-						>{ts("currentSettings", { tool: declenjugator })}</IonToggle>
+							onIonChange={toggleImportDj}
+						>{tCSDJ}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_djStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("storedSettings", { tool: declenjugator })}
 							checked={do_import_djStored}
-							onIonChange={() => setDo_import_djStored(!do_import_djStored)}
-						>{ts("storedSettings", { tool: declenjugator })}</IonToggle>
+							onIonChange={toggleImportDjStored}
+						>{tSSDJ}</IonToggle>
 					</IonItem>
 					<IonItem
 						className={potential_import_lex ? "" : "notSelectable"}
@@ -521,42 +561,37 @@ const ImportData = (props: ModalProperties) => {
 					>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("currentSettings", { tool: lexicon })}
 							checked={do_import_lex}
-							onIonChange={() => setDo_import_lex(!do_import_lex)}
-						>{ts("currentSettings", { tool: lexicon })}</IonToggle>
+							onIonChange={toggleImportLex}
+						>{tCSLex}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_lexStored ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("storedDocuments", { tool: lexicon })}
 							checked={do_import_lexStored}
-							onIonChange={() => setDo_import_lexStored(!do_import_lexStored)}
-						>{ts("storedDocuments", { tool: lexicon })}</IonToggle>
+							onIonChange={toggleImportLexStored}
+						>{tSDLex}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_con ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("appSettings", { tool: concepts })}
 							checked={do_import_con}
-							onIonChange={() => setDo_import_con(!do_import_con)}
-						>{ts("appSettings", { tool: concepts })}</IonToggle>
+							onIonChange={toggleImportCon}
+						>{tASConcepts}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_ec ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("appSettings", { tool: extraCharacters })}
 							checked={do_import_ec}
-							onIonChange={() => setDo_import_ec(!do_import_ec)}
-						>{ts("appSettings", { tool: extraCharacters })}</IonToggle>
+							onIonChange={toggleImportEc}
+						>{tASExChar}</IonToggle>
 					</IonItem>
 					<IonItem className={potential_import_set ? "" : "notSelectable"}>
 						<IonToggle
 							enableOnOffLabels
-							aria-label={ts("Other App Settings")}
 							checked={do_import_set}
-							onIonChange={() => setDo_import_set(!do_import_set)}
-						>{ts("Other App Settings")}</IonToggle>
+							onIonChange={toggleImportSet}
+						>{tOtherSett}</IonToggle>
 					</IonItem>
 					<IonItem>
 						<IonButton
@@ -564,7 +599,7 @@ const ImportData = (props: ModalProperties) => {
 							slot="end"
 							onClick={doImport}
 						>
-							<IonLabel>{ts("Import")}</IonLabel>
+							<IonLabel>{tImport}</IonLabel>
 							<IonIcon icon={arrowUpCircle} slot="start" />
 						</IonButton>
 					</IonItem>
@@ -574,7 +609,7 @@ const ImportData = (props: ModalProperties) => {
 				<IonToolbar>
 					<IonButton color="success" slot="end" onClick={maybeClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{t("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

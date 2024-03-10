@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -28,16 +28,23 @@ import useTranslator from '../../store/translationHooks';
 import { ModalProperties, SorterFunc, StateObject } from '../../store/types';
 import { updateLexiconSort } from '../../store/lexiconSlice';
 import reorganize from '../../components/reorganizer';
+import useI18Memo from '../../components/useI18Memo';
 
 interface EditSortModal extends ModalProperties {
 	sorter: SorterFunc
 }
 
-const EditLexiconSortModal = (props: EditSortModal) => {
-	const { isOpen, setIsOpen, sorter } = props;
-	const dispatch = useDispatch();
+const translations = [ "Lexicon Sorting", "sortLexDescription" ];
+
+const EditLexiconSortModal: FC<EditSortModal> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
+	const tClose = useMemo(() => tc("Close"), [tc]);
+	const [ tLexSorting, tSortLexDesc ] = useI18Memo(translations, "lexicon");
+	const tSaveChanges = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
+
+	const { isOpen, setIsOpen, sorter } = props;
+	const dispatch = useDispatch();
 	const {
 		columns,
 		sortPattern,
@@ -47,23 +54,40 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 		setSorting(sortPattern);
 	}, [sortPattern]);
 
-	const doneSorting = () => {
+	const doneSorting = useCallback(() => {
 		dispatch(updateLexiconSort([sorting, sorter]));
 		setIsOpen(false);
-	};
-	const doReorder = (event: CustomEvent) => {
+	}, [dispatch, setIsOpen, sorter, sorting]);
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const sortOrder = reorganize<number>(sorting, ed.from, ed.to);
 		setSorting(sortOrder);
 		ed.complete();
-	};
+	}, [sorting]);
+	const sortPatterns = useMemo(() => sorting.map((cNum: number, i: number) => {
+		if(!columns[cNum]) {
+			// in case things aren't updating
+			return <React.Fragment key={`missingColumn:${i}`}></React.Fragment>;
+		}
+		const {id, label} = columns[cNum];
+		return (
+			<IonReorder key={`${id}:modal:sortOrder`}>
+				<IonItem lines="full">
+					<IonIcon icon={reorderTwo} slot="start" />
+					<IonLabel className={i ? "" : "bold"}>{label}</IonLabel>
+					{i ? <></> : <IonIcon icon={checkmarkCircle} slot="end" />}
+				</IonItem>
+			</IonReorder>
+		);
+	}), [columns, sorting]);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)} backdropDismiss={false}>
+		<IonModal isOpen={isOpen} onDidDismiss={closer} backdropDismiss={false}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Lexicon Sorting")}</IonTitle>
+					<IonTitle>{tLexSorting}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
+						<IonButton onClick={closer} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -72,34 +96,19 @@ const EditLexiconSortModal = (props: EditSortModal) => {
 			<IonContent id="editLexiconItemOrder">
 				<IonList lines="full">
 					<IonItem>
-						<IonLabel className="ion-text-wrap">{t("sortLexDescription")}</IonLabel>
+						<IonLabel className="ion-text-wrap">{tSortLexDesc}</IonLabel>
 					</IonItem>
-					<IonItemDivider>{t("Lexicon Sorting")}</IonItemDivider>
+					<IonItemDivider>{tLexSorting}</IonItemDivider>
 					<IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
-						{sorting.map((cNum: number, i: number) => {
-							if(!columns[cNum]) {
-								// in case things aren't updating
-								return <React.Fragment key={`missingColumn:${i}`}></React.Fragment>;
-							}
-							const {id, label} = columns[cNum];
-							return (
-								<IonReorder key={`${id}:modal:sortOrder`}>
-									<IonItem lines="full">
-										<IonIcon icon={reorderTwo} slot="start" />
-										<IonLabel className={i ? "" : "bold"}>{label}</IonLabel>
-										{i ? <></> : <IonIcon icon={checkmarkCircle} slot="end" />}
-									</IonItem>
-								</IonReorder>
-							);
-						})}
+						{sortPatterns}
 					</IonReorderGroup>
 				</IonList>
 			</IonContent>
 			<IonFooter id="footerElement">
 				<IonToolbar color="darker">
-					<IonButton color="tertiary" slot="end" onClick={() => doneSorting()}>
+					<IonButton color="tertiary" slot="end" onClick={doneSorting}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveGeneralThings", { things: t("Changes") })}</IonLabel>
+						<IonLabel>{tSaveChanges}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

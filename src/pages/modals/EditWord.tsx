@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -31,6 +31,7 @@ import useTranslator from '../../store/translationHooks';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
+import useI18Memo from '../../components/useI18Memo';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	itemToEdit: Lexicon | null
@@ -48,18 +49,41 @@ function garble () {
 };
 const nonsense = garble();
 
-const EditLexiconItemModal = (props: LexItemProps) => {
-	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo, sorter } = props;
-	const dispatch = useDispatch();
+const translations = [
+	"Exit Without Saving?", "Item",
+	"You have unsaved changes. Are you sure you want to exit?"
+];
+
+const commons = [
+	"Are you sure you want to delete this? This cannot be undone.", "Close",
+	"Error", "Extra Characters", "Ok", "Yes Exit", "confirmDelIt",
+	"You did not type any information into any text field.", "areYouSure"
+];
+
+const things = [ "deleteThing", "saveThing", "thingDeleted", "thingEdited" ];
+
+const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
+	const [ tExit, tItem, tUnsavedChanges ] = useI18Memo(translations, "lexicon");
+	const [
+		tYouSure, tClose, tError, tExChar, tOk,
+		tYesExit, tConfDel, tNoInfo, tRUSure
+	] = useI18Memo(commons);
+	const tEditLexicon = useMemo(() => tc("editThing", { thing: t("Lexicon Item")}), [tc, t]);
+	const [
+		tDelThing, tSaveThing, tThingDel, tThingEdit
+	] = useMemo(() => things.map(item => tc(item, { thing: tItem })), [tc, tItem]);
+
+	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo, sorter } = props;
+	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [ id, setId ] = useState<string>("");
 	const [ cols, setCols ] = useState<string[]>([]);
 	const [ originalString, setOriginalString ] = useState<string>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const onLoad = () => {
+	const onLoad = useCallback(() => {
 		const id = (itemToEdit ? itemToEdit.id : "");
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		cols.forEach((col: string, i: number) => {
@@ -69,15 +93,15 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		setOriginalString(cols.join(nonsense));
 		setId(id);
 		setCols(cols);
-	};
-	const currentInfo = () => {
+	}, [itemToEdit]);
+	const currentInfo = useCallback(() => {
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		return cols.map((col: string, i: number) => {
 			const el = $i<HTMLInputElement>(`edit_lex_input_${id}_${i}`);
 			return el ? el.value.trim() : "";
 		});
-	};
-	const cancelEditing = () => {
+	}, [id, itemToEdit]);
+	const cancelEditing = useCallback(() => {
 		// If we're "open" and being closed by some other means, check and see if
 		//   1) we have disabled confirms
 		//   2) we haven't changed anything
@@ -88,24 +112,24 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		}
 		// Otherwise, doublecheck
 		yesNoAlert({
-			header: t("Exit Without Saving?"),
+			header: tExit,
 			cssClass: "warning",
-			message: t("You have unsaved changes. Are you sure you want to exit?"),
-			submit: tc("Yes Exit"),
+			message: tUnsavedChanges,
+			submit: tYesExit,
 			handler: () => setIsOpen(false),
 			doAlert
 		});
-	};
-	const maybeSaveNewInfo = () => {
+	}, [currentInfo, disableConfirms, doAlert, originalString, setIsOpen, tExit, tUnsavedChanges, tYesExit]);
+	const maybeSaveNewInfo = useCallback(() => {
 		const cols = currentInfo();
 		if(cols.join("") === "") {
 			doAlert({
-				header: tc("Error"),
-				message: tc("You did not type any information into any text field."),
+				header: tError,
+				message: tNoInfo,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -117,18 +141,18 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 		setIsOpen(false);
 		dispatch(doEditLexiconItem([{id, columns: cols}, sorter]));
 		toaster({
-			message: tc("thingEdited", { thing: t("Item") }),
+			message: tThingEdit,
 			color: "success",
 			duration: 2500,
 			toast
 		})
-	};
-	const delFromLex = () => {
+	}, [currentInfo, dispatch, doAlert, id, setIsOpen, sorter, tError, tNoInfo, tOk, tThingEdit, toast]);
+	const delFromLex = useCallback(() => {
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteLexiconItem(id));
 			toaster({
-				message: tc("thingDeleted", { thing: t("Item") }),
+				message: tThingDel,
 				duration: 2500,
 				color: "danger",
 				toast
@@ -138,25 +162,43 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("areYouSure"),
+				header: tRUSure,
 				cssClass: "danger",
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
-				submit: tc("confirmDelIt"),
+				message: tYouSure,
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, dispatch, doAlert, id, setIsOpen, tConfDel, tRUSure, tThingDel, tYouSure, toast]);
+	const opener = useCallback(() => openECM(true), [openECM]);
+	const columnarInfo = useMemo(() => columnInfo.map((col: LexiconColumn, i: number) => {
+		return (
+			<React.Fragment key={`${id}:fragment:${i}`}>
+				<IonItem className="labelled">
+					<IonLabel>{col.label}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={`${col.label} input`}
+						id={`edit_lex_input_${id}_${i}`}
+						className="ion-margin-top serifChars"
+						value={cols[i]}
+					></IonInput>
+				</IonItem>
+			</React.Fragment>
+		);
+	}), [cols, id, columnInfo]);
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("editThing", { thing: t("Lexicon Item")} )}</IonTitle>
+					<IonTitle>{tEditLexicon}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={opener} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => cancelEditing()} aria-label={tc("Close")}>
+						<IonButton onClick={cancelEditing} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -164,34 +206,18 @@ const EditLexiconItemModal = (props: LexItemProps) => {
 			</IonHeader>
 			<IonContent className="hasSpecialLabels">
 				<IonList lines="none">
-					{columnInfo.map((col: LexiconColumn, i: number) => {
-						return (
-							<React.Fragment key={`${id}:fragment:${i}`}>
-								<IonItem className="labelled">
-									<IonLabel>{col.label}</IonLabel>
-								</IonItem>
-								<IonItem>
-									<IonInput
-										aria-label={`${col.label} input`}
-										id={`edit_lex_input_${id}_${i}`}
-										className="ion-margin-top serifChars"
-										value={cols[i]}
-									></IonInput>
-								</IonItem>
-							</React.Fragment>
-						);
-					})}
+					{columnarInfo}
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={() => maybeSaveNewInfo()}>
+					<IonButton color="tertiary" slot="end" onClick={maybeSaveNewInfo}>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveThing", { thing: t("Item") })}</IonLabel>
+						<IonLabel>{tSaveThing}</IonLabel>
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={() => delFromLex()}>
+					<IonButton color="danger" slot="start" onClick={delFromLex}>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tc("deleteThing", { thing: t("Item") })}</IonLabel>
+						<IonLabel>{tDelThing}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

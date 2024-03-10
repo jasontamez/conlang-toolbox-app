@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -39,12 +39,7 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 	setOutgoingRelation: SetState<RelationObject | null | string>
 }
 
-/*
-', (and )?'
 
-\btc?\b\(.+("|\})\)
-
-*/
 const translations = [
 	"Base character", "Characters sorted after the base",
 	"Characters sorted before the base", "Comma",
@@ -62,7 +57,7 @@ const commons = [
 const presentations = [ "Base Character", "Pre/Post Separator", "Sorted After the Base", "Sorted Before the Base" ];
 const context = { context: "presentation" };
 
-const EditCustomSortRelation = (props: CustomSortModal) => {
+const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tConfDel, tError ] = useI18Memo(commons);

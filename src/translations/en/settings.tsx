@@ -17,8 +17,10 @@ const settings = {
 	"Solarized Light": "Solarized $t(Light)", // Solarized is the name of a popular color palette
 	"Solarized Dark": "Solarized $t(Dark)", // Solarized is the name of a popular color palette
 
-	exportAllMsg1: "Save this info to a note or file.",
-	exportAllMsg2: "You will be able to use it later to restore your data.",
+	exportAllMsg: [
+		"Save this info to a note or file.   ",
+		"You will be able to use it later to restore your data."
+	],
 	"Exported Data": "Exported Data",
 
 	"What to Export": "What to Export",

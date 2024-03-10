@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -24,7 +24,7 @@ import useTranslator from '../../store/translationHooks';
 
 import doExport from '../../components/ExportServices';
 import log from '../../components/Logging';
-import i18n from '../../i18n';
+import useI18Memo from '../../components/useI18Memo';
 
 interface ExportModalProps extends ModalProperties {
 	setLoading: SetBooleanState
@@ -32,7 +32,20 @@ interface ExportModalProps extends ModalProperties {
 
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
+const translations = [
+	"CSV File", "CSV File, no title/description", "JSON File",
+	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "XML File"
+];
+
+const commons = [ "Cancel", "Close", "Description", "TITLE" ];
+
 const ExportLexiconModal = (props: ExportModalProps) => {
+	const [ tc ] = useTranslator('common');
+	const [ tCancel, tClose, tDesc, tTITLE ] = useI18Memo(commons);
+	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");
+	const tFormat = useMemo(() => tc("Choose a format", { context: "presentation" }), [tc]);
+	const tExportThing = useMemo(() => tc("exportThing", { context: "presentation", thing: tc("Lexicon") }), [tc]);
+	
 	const { isOpen, setIsOpen, setLoading } = props;
 	const {
 		title,
@@ -40,26 +53,32 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		lexicon,
 		columns
 	} = useSelector((state: StateObject) => state.lexicon);
-	const doClose = () => {
+	const doClose = useCallback(() => {
 		setIsOpen(false);
 		setLoading(false);
-	};
+	}, [setIsOpen, setLoading]);
 	const dispatch = useDispatch();
-	const [ t ] = useTranslator('lexicon');
-	const [ tc ] = useTranslator('common');
-	const columnTitles = columns.map((obj) => obj.label);
+	const columnTitles = useMemo(() => columns.map((obj) => obj.label), [columns]);
 	const length = columns.length;
 	const toast = useIonToast();
-	const doTabbed = (e: IonItemEvent) => doText(e, "\t");
-	const doSemicolons = (e: IonItemEvent) => doText(e, "; ");
-	const doNewlines = (e: IonItemEvent) => doText(e, "\n", "\n\n");
-	const doText = (e: IonItemEvent, separator: string, unitSplit: string = "\n") => {
+	const doDownload = useCallback((e: IonItemEvent, output: string, extension: string) => {
+		e.preventDefault();
+		const filename = tc("fileFormat", { title, date: (new Date()).toDateString(), extension });
+		setLoading(true);
+		doExport(output, filename, toast, dispatch)
+			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))
+			.then(doClose);
+	}, [dispatch, doClose, setLoading, tc, title, toast]);
+	const doText = useCallback((e: IonItemEvent, separator: string, unitSplit: string = "\n") => {
 		const lines: string[] = [columnTitles.join(separator)];
 		lexicon.forEach((lex: Lexicon) => lines.push(lex.columns.join(separator)));
 		const output = title + "\n" + description + "\n\n" + lines.join(unitSplit) + "\n";
 		doDownload(e, output, "txt");
-	};
-	const doCSVall = (e: IonItemEvent) => {
+	}, [columnTitles, description, doDownload, lexicon, title]);
+	const doTabbed = useCallback((e: IonItemEvent) => doText(e, "\t"), [doText]);
+	const doSemicolons = useCallback((e: IonItemEvent) => doText(e, "; "), [doText]);
+	const doNewlines = useCallback((e: IonItemEvent) => doText(e, "\n", "\n\n"), [doText]);
+	const doCSVall = useCallback((e: IonItemEvent) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
 		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
@@ -73,12 +92,12 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 				filler = filler + ",";
 			}
 		}
-		const output = `"${tc("TITLE")}",${quotify(title)}${filler}\n`
-			+ `"${tc("Description")}",${description}${filler}\n`
+		const output = `"${tTITLE}",${quotify(title)}${filler}\n`
+			+ `"${tDesc}",${description}${filler}\n`
 			+ lines.join(length < 2 ? ",\n" : "\n") + "\n";
 		doDownload(e, output, "csv");
-	};
-	const doCSV = (e: IonItemEvent) => {
+	}, [columnTitles, description, doDownload, length, lexicon, tDesc, tTITLE, title]);
+	const doCSV = useCallback((e: IonItemEvent) => {
 		const quotify = (input: string) => JSON.stringify(input).replace(/\\"/g, "\"\"");
 		const lines: string[] = [columnTitles.map((colTitle: string) => quotify(colTitle)).join(",")];
 		lexicon.forEach(
@@ -86,8 +105,8 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		);
 		const output = lines.join("\n") + "\n";
 		doDownload(e, output, "csv");
-	};
-	const doJSON = (e: IonItemEvent) => {
+	}, [columnTitles, doDownload, lexicon]);
+	const doJSON = useCallback((e: IonItemEvent) => {
 		const counter: {[key: string]: number} = {};
 		const colTitles: string[] = [];
 		columnTitles.forEach((columnTitle: string) => {
@@ -120,8 +139,8 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		});
 		const output = JSON.stringify(base);
 		doDownload(e, output, "json");
-	};
-	const doXML = (e: IonItemEvent) => {
+	}, [columnTitles, description, doDownload, length, lexicon, title]);
+	const doXML = useCallback((e: IonItemEvent) => {
 		let XML: string =
 			'<?xml version="1.0" encoding="UTF-8"?>'
 			+ `\n<Lexicon>\n\t<Title>${title}</Title>\n\t<Description>${description}</Description>\n\t<Headers>\n`;
@@ -140,22 +159,14 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 		});
 		const output = XML + "\t</Content>\n</Lexicon>";
 		doDownload(e, output, "xml");
-	};
-	const doDownload = (e: IonItemEvent, output: string, extension: string) => {
-		e.preventDefault();
-		const filename = i18n.t("fileFormat", { title, date: (new Date()).toDateString(), extension });
-		setLoading(true);
-		doExport(output, filename, toast, dispatch)
-			.catch((e = "Error?") => log(dispatch, ["doExport / doDownload", e]))
-			.then(() => doClose());
-	};
+	}, [columnTitles, description, doDownload, lexicon, title]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={doClose}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("exportThing", { context: "presentation", thing: tc("Lexicon") })} {title}</IonTitle>
+					<IonTitle>{tExportThing} {title}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
+						<IonButton onClick={doClose} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -163,43 +174,43 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled multiLinePossible">
-					<IonItem>{tc("Choose a format", { context: "presentation" })}</IonItem>
+					<IonItem>{tFormat}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doTabbed(e)}
-					>{t("Text, Tabbed")}</IonItem>
+						onClick={doTabbed}
+					>{tTxTab}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doSemicolons(e)}
-					>{t("Text, Semicolons")}</IonItem>
+						onClick={doSemicolons}
+					>{tTxSemi}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doNewlines(e)}
-					>{t("Text, Newlines")}</IonItem>
+						onClick={doNewlines}
+					>{tTxNew}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doCSVall(e)}
-					>{t("CSV File")}</IonItem>
+						onClick={doCSVall}
+					>{tCSV}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doCSV(e)}
-					>{t("CSV File, no title/description")}</IonItem>
+						onClick={doCSV}
+					>{tCSVNoTitle}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doJSON(e)}
-					>{t("JSON File")}</IonItem>
+						onClick={doJSON}
+					>{tJSON}</IonItem>
 					<IonItem
 						button={true}
-						onClick={(e: IonItemEvent) => doXML(e)}
-					>{t("XML File")}</IonItem>
+						onClick={doXML}
+					>{tXML}</IonItem>
 				</IonList>
 				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="warning" slot="end" onClick={() => doClose()}>
+					<IonButton color="warning" slot="end" onClick={doClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

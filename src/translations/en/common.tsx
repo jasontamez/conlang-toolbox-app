@@ -281,23 +281,31 @@ const common = {
 	"Show full character names": "Show full character names",
 	"Hide full character names": "Hide full character names",
 	extraHelp: {
-		help1p1:
-			`This is a place to find and copy characters that may not be
-			easily accessible to you on your device's keyboard. The other
-			buttons can be toggled for additional effects:`,
-		help1p2:
-			`When active, copies any character you tap directly to the
-			clipboard. When inactive, copies tapped characters to the
-			copy-bar below, where you can copy them at your leisure.`,
-		help1p3:
-			`When active, tapping on a character adds or removes it from your
-			Favorites list. Characters will not be copied to the clipboard or
-			the copy-bar.`,
-		help1p4:
-			`When active, shows the standard Unicode name of every character.
-			When inactive, the characters are presented by themselves.`,
-		help2: "Tap a character set below to see the characters in that set.",
-		help3: "Characters will display below. Tap them to copy them to the copy-bar above.",
+		help1p1:[
+			"This is a place to find and copy characters that may not be",
+			"easily accessible to you on your device's keyboard. The other",
+			"buttons can be toggled for additional effects:"
+		],
+		help1p2:[
+			"When active, copies any character you tap directly to the",
+			"clipboard. When inactive, copies tapped characters to the",
+			"copy-bar below, where you can copy them at your leisure."
+		],
+		help1p3:[
+			"When active, tapping on a character adds or removes it from your",
+			"Favorites list. Characters will not be copied to the clipboard or",
+			"the copy-bar."
+		],
+		help1p4:[
+			"When active, shows the standard Unicode name of every character.",
+			"When inactive, the characters are presented by themselves."
+		],
+		help2: [
+			"Tap a character set below to see the characters in that set."
+		],
+		help3: [
+			"Characters will display below. Tap them to copy them to the copy-bar above."
+		],
 	},
 	characterInfo: characters,
 

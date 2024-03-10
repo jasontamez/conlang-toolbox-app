@@ -85,10 +85,6 @@ const lexicon = {
 	"Small": "Small",
 	"Med": "Med",
 	"Large": "Large",
-	// The following fields can be left longer
-	"Small size": "Small size",
-	"Medium size": "Medium size",
-	"Large size": "Large size",
 
 	Changes: "Changes",
 
