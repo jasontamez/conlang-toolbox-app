@@ -45,7 +45,7 @@ const settings = {
 	storedDocuments: "Stored {{tool}} Documents",
 	appSettings: "{{tool}} Settings",
 	"Other App Settings": "Other App Settings",
-	
+
 	"You did not choose anything to import.": "You did not choose anything to import.",
 	"WARNING!": "WARNING!",
 	willOverwriteCurrent: "This will overwrite all current data in {{listing}}.",

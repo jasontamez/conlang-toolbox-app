@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -37,6 +37,7 @@ import { $q } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { CopyFromOtherIcon } from '../../components/icons';
+import useI18Memo from '../../components/useI18Memo';
 import AddCharGroupWEModal from './modals/AddCharGroupWE';
 import EditCharGroupWEModal from './modals/EditCharGroupWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -51,20 +52,26 @@ interface CharGroupProps {
 const CharGroup: FC<CharGroupProps> = (props) => {
 	const { charGroup, editCharGroup, maybeDeleteCharGroup } = props;
 	const { label = "", title, run } = charGroup;
+
 	const [ tc ] = useTranslator('common');
+	const tDelete = useMemo(() => tc("Delete"), [tc]);
+
+	const editor = useCallback(() => editCharGroup(charGroup), [charGroup, editCharGroup]);
+	const deleter = useCallback(() => maybeDeleteCharGroup(label, charGroup), [label, charGroup, maybeDeleteCharGroup]);
+
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
 				<IonItemOption
 					color="primary"
-					onClick={() => editCharGroup(charGroup)}
+					onClick={editor}
 				>
 					<IonIcon slot="icon-only" src="svg/edit.svg" />
 				</IonItemOption>
 				<IonItemOption
 					color="danger"
-					onClick={() => maybeDeleteCharGroup(label, charGroup)}
-					aria-label={tc("Delete")}
+					onClick={deleter}
+					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -93,9 +100,17 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 	);
 };
 
+const commons = [
+	"Are you sure you want to delete this? This cannot be undone.",
+	"Add New", "Delete", "Help", "confirmDelIt", "yesImport"
+];
+
 const WECharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
+	const tCharGroups = useMemo(() => tw("Character Groups"), [tw]);
+	const [ tYouSure, tAddNew, tDelete, tHelp, tConfDel, tYesImp ] = useI18Memo(commons);
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -133,14 +148,14 @@ const WECharGroup: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: `${label}=${run}`,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, tc, toast, tw]);
+	}, [disableConfirms, dispatch, doAlert, tc, toast, tw, tYouSure, tConfDel]);
 	const maybeClearEverything = useCallback(() => {
 		const count = characterGroups.length;
 		const handler = () => {
@@ -184,22 +199,26 @@ const WECharGroup: FC<PageData> = (props) => {
 				header: tc("ImportFrom", { source: tc("WordGen") }),
 				message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
 				cssClass: "warning",
-				submit: tc("yesImport"),
+				submit: tYesImp,
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, tw, tc, doAlert, toast, disableConfirms, wgCharatcterGroups]);
-	const map = useCallback(
-		(charGroup: WECharGroupObject) =>
+	}, [dispatch, tw, tc, doAlert, toast, disableConfirms, wgCharatcterGroups, tYesImp]);
+	const cgroups = useMemo(() =>
+		characterGroups.map(charGroup => (
 			<CharGroup
 				key={`WE-CharGroup-${charGroup.label}`}
 				charGroup={charGroup}
 				editCharGroup={editCharGroup}
 				maybeDeleteCharGroup={maybeDeleteCharGroup}
-			/>,
-		[editCharGroup, maybeDeleteCharGroup]
+			/>
+		)),
+		[editCharGroup, maybeDeleteCharGroup, characterGroups]
 	);
+
+	const helper = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
+	const opener = useCallback(() => setIsOpenAddCharGroupWE(true), []);
 	return (
 		<IonPage>
 			<AddCharGroupWEModal
@@ -221,10 +240,10 @@ const WECharGroup: FC<PageData> = (props) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{tw("Character Groups")}</IonTitle>
+					<IonTitle>{tCharGroups}</IonTitle>
 					<IonButtons slot="end">
 						{characterGroups.length > 0 ?
-							<IonButton onClick={maybeClearEverything} aria-label={tc("Delete")}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
@@ -237,7 +256,7 @@ const WECharGroup: FC<PageData> = (props) => {
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={helper} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -245,13 +264,13 @@ const WECharGroup: FC<PageData> = (props) => {
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="charGroups units" lines="none">
-					{characterGroups.map(map)}
+					{cgroups}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="secondary"
-						title={tc("Add New")}
-						onClick={() => setIsOpenAddCharGroupWE(true)}
+						title={tAddNew}
+						onClick={opener}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

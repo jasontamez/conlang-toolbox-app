@@ -70,7 +70,7 @@ const EditCustomSortEquality = (props: CustomSortModal) => {
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tEditThing = useMemo(() => tc("editThing", { thing: t("Equality") }), [tc, t]);
 	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Equality") }), [t, tc]);
-	
+
 	const { isOpen, setIsOpen, openECM, incomingEquality, setOutgoingEquality } = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

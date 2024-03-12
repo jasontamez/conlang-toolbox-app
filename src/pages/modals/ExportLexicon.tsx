@@ -45,7 +45,7 @@ const ExportLexiconModal = (props: ExportModalProps) => {
 	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");
 	const tFormat = useMemo(() => tc("Choose a format", { context: "presentation" }), [tc]);
 	const tExportThing = useMemo(() => tc("exportThing", { context: "presentation", thing: tc("Lexicon") }), [tc]);
-	
+
 	const { isOpen, setIsOpen, setLoading } = props;
 	const {
 		title,

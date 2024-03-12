@@ -191,7 +191,7 @@ const wg = {
 	"m-plosive": "m-plosive",
 	"retroflex n-plosive": "retroflex n-plosive", // retroflex n followed by a plosive consonant
 	"p-nasal": "p-nasal", // p followed by a nasal consonant
-	"t-nasal": "t-nasal", 
+	"t-nasal": "t-nasal",
 	"nasal after retoflex t": "nasal after retoflex t",
 	"p-fricative": "p-fricative", // p followed by a fricative consonant
 	"t-fricative": "t-fricative",
@@ -564,7 +564,7 @@ const wg = {
 			"hit the save button that appears and you will be able to choose",
 			"how they are imported into the **$t(common:Lexicon)**."
 		],
-		
+
 		settings: [
 			"This final tab fine-tunes the output. These can make a huge",
 			"difference in how your conlang appears.",

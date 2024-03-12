@@ -69,7 +69,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tEditThing = useMemo(() => tc("editThing", { thing: t("Relation") }), [tc, t]);
 	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Relation") }), [tc, t]);
-	
+
 	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -25,25 +25,34 @@ import { loadStateLex } from '../../store/lexiconSlice';
 import useTranslator from '../../store/translationHooks';
 
 import yesNoAlert from '../../components/yesNoAlert';
+import useI18Memo from '../../components/useI18Memo';
 
 interface SavedLexProperties extends ModalProperties {
 	lexInfo: [string, LexiconState][]
 	setLexInfo: SetState<[string, LexiconState][]>
 }
 
+const translations = [ "No Saved Lexicons", "loadLexiconConfirm" ];
+
+const commons = [ "Cancel", "Close", "confirmLoad" ];
+
 const LoadLexiconModal = (props: SavedLexProperties) => {
-	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
-	const dispatch = useDispatch();
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
+	const [ tCancel, tClose, tConfLoad ] = useI18Memo(commons);
+	const [ tNoSaved, tLoadConfirm ] = useI18Memo(translations, "lexicon");
+	const tLoadLexicon = useMemo(() => tc("loadThing", { thing: tc("Lexicon")} ), [tc]);
+
+	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const data = (lexInfo && lexInfo.length > 0) ? lexInfo : [];
-	const doClose = () => {
+	const data = useMemo(() => lexInfo && lexInfo.length > 0 ? lexInfo : [], [lexInfo]);
+	const doClose = useCallback(() => {
 		setLexInfo([]);
 		setIsOpen(false);
-	};
-	const loadThis = (key: string) => {
+	}, [setIsOpen, setLexInfo]);
+	const loadThis = useCallback((key: string) => {
 		data.every((pair: [string, LexiconState]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
@@ -57,9 +66,9 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 				handler();
 			} else {
 				yesNoAlert({
-					message: t("loadLexiconConfirm"),
+					message: tLoadConfirm,
 					cssClass: "warning",
-					submit: tc("confirmLoad"),
+					submit: tConfLoad,
 					handler,
 					doAlert
 				});
@@ -67,14 +76,39 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 			// End loop
 			return false;
 		});
-	};
+	}, [data, disableConfirms, dispatch, doAlert, setIsOpen, tLoadConfirm, tConfLoad]);
+
+	const savedLexiconData = useMemo(
+		() => (data && data.length > 0 ?
+			data.map((pair: [string, LexiconState]) => {
+				const key = pair[0];
+				const lex = pair[1];
+				const time = new Date(lex.lastSave);
+				return (
+					<IonItem key={key} button={true} onClick={() => loadThis(key)}>
+						<IonLabel
+							className="ion-text-wrap"
+						>{lex.title} [{t("lexitems", { count: lex.lexicon.length })}]</IonLabel>
+						<IonNote
+							className="ion-text-wrap ital"
+							slot="end"
+						>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
+					</IonItem>
+				);
+			})
+		:
+			<h1>{tNoSaved}</h1>
+		),
+		[data, loadThis, t, tNoSaved, tc]
+	);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
+		<IonModal isOpen={isOpen} onDidDismiss={doClose}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tc("loadThing", { thing: tc("Lexicon")} )}</IonTitle>
+					<IonTitle>{tLoadLexicon}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
+						<IonButton onClick={doClose} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -82,31 +116,14 @@ const LoadLexiconModal = (props: SavedLexProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data && data.length > 0 ? data.map((pair: [string, LexiconState]) => {
-						const key = pair[0];
-						const lex = pair[1];
-						const time = new Date(lex.lastSave);
-						return (
-							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
-								<IonLabel
-									className="ion-text-wrap"
-								>{lex.title} [{t("lexitems", { count: lex.lexicon.length })}]</IonLabel>
-								<IonNote
-									className="ion-text-wrap ital"
-									slot="end"
-								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
-							</IonItem>
-						);
-					}) : (
-						<h1>{t("No Saved Lexicons")}</h1>
-					)}
+					{savedLexiconData}
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar className={data ? "" : "hide"}>
-					<IonButton color="warning" slot="end" onClick={() => doClose()}>
+					<IonButton color="warning" slot="end" onClick={doClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

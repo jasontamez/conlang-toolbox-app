@@ -278,7 +278,7 @@ const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 	const [ t ] = useTranslator('lexicon');
 	const tMergeItems = useMemo(() => t("Merge Items"), [t]);
 	const [ tEdit, tDelete ] = useI18Memo(others);
-	
+
 	const {
 		delFromLex,
 		beginEdit,

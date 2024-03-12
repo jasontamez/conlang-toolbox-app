@@ -136,7 +136,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 					_base && (_base.value = "");
 					_pre && (_pre.value = "");
 					_post && (_post.value = "");
-					setIsOpen(false);			
+					setIsOpen(false);
 				},
 				doAlert
 			});

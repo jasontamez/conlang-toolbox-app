@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -23,36 +23,46 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTheme } from '../../store/settingsSlice';
 import { ThemeNames, ModalProperties, StateObject } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
+import useI18Memo from '../../components/useI18Memo';
+
+const themes: ThemeNames[] = [
+	"Default",
+	"Light",
+	"Dark",
+	"Solarized Light",
+	"Solarized Dark"
+];
+
+const commons = [ "Cancel", "Close" ];
 
 const ThemeModal = (props: ModalProperties) => {
+	const [ t ] = useTranslator("settings");
+	const tChooseTheme = useMemo(() => t("Choose a Theme"), [t]);
+	const [ tCancel, tClose ] = useI18Memo(commons);
+
 	const { isOpen, setIsOpen } = props;
-	const [ t ] = useTranslator('settings');
-	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
-	const {
-		theme = "Default"
-	} = useSelector((state: StateObject) => state.appSettings);
-	const cancel = () => {
-		setIsOpen(false);
-	};
-	const changeAppTheme = (theme: ThemeNames) => {
+	const { theme = "Default" } = useSelector((state: StateObject) => state.appSettings);
+
+	const cancel = useCallback(() => { setIsOpen(false); }, [setIsOpen]);
+	const changeAppTheme = useCallback((theme: ThemeNames) => {
 		dispatch(setTheme(theme));
-		setIsOpen(false);
-	};
-	const themes: ThemeNames[] = [
-		"Default",
-		"Light",
-		"Dark",
-		"Solarized Light",
-		"Solarized Dark"
-	];
+		cancel();
+	}, [dispatch, cancel]);
+	const themeItems = useMemo(() => themes.map((themeName) => (
+		<IonItem key={themeName} button={true} onClick={() => changeAppTheme(themeName)}>
+			<IonLabel>{t(themeName)}</IonLabel>
+			{theme === themeName ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
+		</IonItem>
+	)), [changeAppTheme, t, theme]);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("Choose a Theme")}</IonTitle>
+					<IonTitle>{tChooseTheme}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => cancel()} aria-label={tc("Close")}>
+						<IonButton onClick={cancel} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -60,19 +70,14 @@ const ThemeModal = (props: ModalProperties) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{themes.map((themeName) => (
-						<IonItem key={themeName} button={true} onClick={() => changeAppTheme(themeName)}>
-							<IonLabel>{t(themeName)}</IonLabel>
-							{theme === themeName ? (<IonIcon icon={checkmarkCircleOutline} slot="end" />) : ""}
-						</IonItem>
-					))}
+					{themeItems}
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={() => setIsOpen(false)}>
+					<IonButton color="danger" slot="end" onClick={cancel}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

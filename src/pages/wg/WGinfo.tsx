@@ -147,7 +147,7 @@ export const SylCard: FC<CardProps> = (props) => {
 						}
 					}}
 				>{hideOverview ? startHiddenOverview : startOverview}</Markdown>
-				
+
 				<div className="emphasizedSection">
 					{(example as string[]).map((bit, i) => {
 						const inner: ReactElement[] = [];

@@ -207,7 +207,7 @@ const CaseMaker = (props: CaseMakerModal) => {
 						caseObjects.map((group) => {
 							return (
 								<CaseItem
-									key={`grouping:${group.header}`} 
+									key={`grouping:${group.header}`}
 									caseObject={group}
 									add={add}
 									toggleTitleGroup={toggleTitleGroup}

@@ -137,7 +137,7 @@ const Menu: FC<{}> = () => {
 					{aNote}
 					{pages}
 				</IonList>
-			);	
+			);
 		})
 	}, [menuInfo]);
 

@@ -217,7 +217,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			<Chip key={title} title={title} current={nowShowing === title} toggleChars={toggleChars} />
 	), [nowShowing, toggleChars]);
 	const mapCharsWithNames = useMemo(() => data.map(
-		(character: string) => 
+		(character: string) =>
 			<DisplayWithName
 				key={"mNamed" + nowShowing + character}
 				character={character}
@@ -226,7 +226,7 @@ const ExtraCharactersModal = (props: ModalProperties) => {
 			/>
 	), [characterClicked, currentFaves, data, nowShowing]);
 	const mapChars = useMemo(() => data.map(
-		(character: string) => 
+		(character: string) =>
 			<DisplayWithoutName
 				key={"mUnnamed" + nowShowing + character}
 				character={character}

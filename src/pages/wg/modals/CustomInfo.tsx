@@ -140,7 +140,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				sortWordlist,
 				wordlistMultiColumn,
 				wordsPerWordlist,
-				...save			
+				...save
 			} = wg;
 			CustomStorageWG.setItem(title, save).then(() => {
 				toaster({

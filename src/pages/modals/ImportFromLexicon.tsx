@@ -112,9 +112,9 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		tNoColumns, tMatchAll, tNothingToSave,
 		tSelOne, tSaved, tTypeWord, tTypeRegex,
 		tX, tMX, tYesEx
-	 ] = useI18Memo(commons);
-	 const tImpFromLexicon = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
-	 const [ tTestCol, tWordsCont, tWordsMatch, tWordsCol ] = useI18Memo(presentations, "common", context);
+	] = useI18Memo(commons);
+	const tImpFromLexicon = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
+	const [ tTestCol, tWordsCont, tWordsMatch, tWordsCol ] = useI18Memo(presentations, "common", context);
 
 	const {
 		isOpen,

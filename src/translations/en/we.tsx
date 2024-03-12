@@ -52,7 +52,7 @@ const we = {
 
 	Overview: "Overview: $t(common:WordEvolve)",
 	"What is WordEvolve?": "What is WordEvolve?",
-	
+
 	"Words to Evolve": "Words to Evolve",
 
 	"Input Tab": "$t(common:Input) Tab",
@@ -140,7 +140,7 @@ const we = {
 			"single character except for these: **^$\\()[]{}.*+?|**. The",
 			"letters/characters in your $t(charGroup) are called a",
 			"_$t(run)_."
-	 	],
+		],
 
 		// `anything` in backticks will be replaced with the icon for a drag hande
 		transformations: [
@@ -214,7 +214,7 @@ const we = {
 			"second, and so on down the list. This may cause unintended",
 			"effects, so you can reorganize your transforms by using the",
 			"`DRAG HANDLE` drag handles."
-	 	],
+		],
 
 		soundChangesBlocks: {
 			//    "important" info is put in a box.
@@ -314,8 +314,8 @@ const we = {
 			"second, and so on down the list. This may cause unintended",
 			"effects, so you can reorganize your $t(sChange) to avoid any such",
 			"effects by using the `DRAG HANDLE` drag handles."
-	 	],
-		
+		],
+
 		outputMain: [
 			"This is where the magic happens. Click the **Generate** button",
 			"and the evolver will process all your input words and present",
@@ -345,7 +345,7 @@ const we = {
 			"",
 			"The second option under the gear icon determines the style of",
 			"arrow that is displayed with the output."
-	 	],
+		],
 		outputLexicon: [
 			"Once you've evolved words, you can save them to the",
 			"**$t(common:Lexicon)**. Click the book button and you're",
@@ -355,7 +355,7 @@ const we = {
 			"word, and you can tap on a word to store it; when you're done",
 			"choosing hit the save button that appears and you will be able",
 			"to choose how they are imported into the **$t(common:Lexicon)**."
-	 	],
+		],
 
 		overview: [
 			"This tool is designed to take a list of words and transform them",
