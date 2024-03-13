@@ -140,7 +140,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("addThing", { thing: t("Sound Change") })}</IonTitle>
+					<IonTitle>{tc("addThing", { thing: t("Sound Change") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
@@ -158,7 +158,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("search expression", { context: "formal" })}
+							aria-label={tw("search expression", { context: "formal" })}
 							id="searchExWESC"
 							className="ion-margin-top serifChars"
 							helperText={t("sound to change")}
@@ -190,11 +190,11 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="anticontextLabel">{t("anticontext expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="anticontextLabel">{t("exception expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("anticontext expression", { context: "formal" })}
+							aria-label={t("exception expression", { context: "formal" })}
 							id="antiExWESC"
 							className="ion-margin-top serifChars"
 							helperText={t("where the change cannot happen")}
@@ -222,7 +222,7 @@ const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
 						onClick={() => maybeSaveNewSoundChange(false)}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("addThing", { what: t("SChange") })}</IonLabel>
+						<IonLabel>{tc("addThing", { what: t("SChange_one") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"

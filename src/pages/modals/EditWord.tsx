@@ -56,7 +56,7 @@ const translations = [
 
 const commons = [
 	"Are you sure you want to delete this? This cannot be undone.", "Close",
-	"Error", "Extra Characters", "Ok", "Yes Exit", "confirmDelIt",
+	"error", "Extra Characters", "Ok", "Yes Exit", "confirmDelIt",
 	"You did not type any information into any text field.", "areYouSure"
 ];
 

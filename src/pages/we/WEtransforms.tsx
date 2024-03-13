@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -43,24 +43,11 @@ import ExtraCharactersModal from '../modals/ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import reorganize from '../../components/reorganizer';
+import useI18Memo from '../../components/useI18Memo';
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
-import i18n from '../../i18n';
 import { TraCard } from "./WEinfo";
 
-const makeDescriptionOfDirection = (dir: string) => {
-	switch(dir) {
-		case "both":
-			return i18n.t("At input then undo at output", { ns: ["we"] });
-		case "double":
-			return i18n.t("At input and output", { ns: ["we"] });
-		case "in":
-			return i18n.t("At input", { ns: ["we"] });
-		case "out":
-			return i18n.t("At output", { ns: ["we"] });
-	}
-	return "Error";
-}
 const makeArrow = (dir: string) => {
 	if(dir === "double") {
 		return ltr() ? "⟹" : "⟸";
@@ -77,13 +64,28 @@ interface TransformProps {
 }
 
 const TransformItem: FC<TransformProps> = (props) => {
-	const { trans, editTransform, maybeDeleteTransform } = props;
+	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const tDelete = useMemo(() => tc("Delete"), [tc]);
+
+	const { trans, editTransform, maybeDeleteTransform } = props;
 	const { id, seek, direction, replace, description } = trans;
 	const changer = useCallback(() => editTransform(trans), [trans, editTransform]);
 	const deleter = useCallback(() => maybeDeleteTransform(trans), [trans, maybeDeleteTransform]);
 	const arrow = makeArrow(direction);
-	const directionDescription = makeDescriptionOfDirection(direction);
+	const directionDescription = useMemo(() => {
+		switch(direction) {
+			case "both":
+				return t("At input then undo at output");
+			case "double":
+				return t("At input and output");
+			case "in":
+				return t("At input");
+			case "out":
+				return t("At output");
+		}
+		return "Error";
+	}, [t, direction]);
 	return (
 		<IonItemSliding key={id}>
 			<IonItemOptions>
@@ -96,7 +98,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={deleter}
-					aria-label={tc("Delete")}
+					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -128,12 +130,21 @@ const TransformItem: FC<TransformProps> = (props) => {
 	);
 };
 
+const commons = [
+	"Add New", "Delete", "Extra Characters", "Help",
+	"confirmDelIt", "Clear Everything?",
+	"Are you sure you want to delete this? This cannot be undone."
+];
+
 const WERew = (props: PageData) => {
-	const { modalPropsMaker } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
+	const tTransformations = useMemo(() => t("Transformations"), [t]);
+	const [ tAddNew, tDelete, tExChar, tHelp, tConfDel, tClearAll, tYouSure ] = useI18Memo(commons);
+	
+	const { modalPropsMaker } = props;
+	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddTransform, setIsOpenAddTransform] = useState<boolean>(false);
@@ -168,14 +179,14 @@ const WERew = (props: PageData) => {
 			const { seek, direction, replace } = trans;
 			yesNoAlert({
 				header: `${seek} ${makeArrow(direction)} ${replace}`,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, tc, tw, toast, doAlert, disableConfirms]);
+	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, tYouSure, tConfDel]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WETransformObject>(transforms, ed.from, ed.to);
@@ -198,7 +209,7 @@ const WERew = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Clear Everything?"),
+				header: tClearAll,
 				message: tw("delAllTransforms", { count }),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),
@@ -206,17 +217,19 @@ const WERew = (props: PageData) => {
 				doAlert
 			});
 		}
-	}, [tc, tw, dispatch, transforms.length, disableConfirms, doAlert, toast]);
-	const map = useCallback(
-		(input: WETransformObject) =>
-			<TransformItem
-				key={input.id}
-				trans={input}
-				editTransform={editTransform}
-				maybeDeleteTransform={maybeDeleteTransform}
-			/>,
-		[editTransform, maybeDeleteTransform]
-	);
+	}, [tc, tw, dispatch, transforms.length, disableConfirms, doAlert, toast, tClearAll]);
+	const transformItems = useMemo(() => transforms.map((input: WETransformObject) =>
+		<TransformItem
+			key={input.id}
+			trans={input}
+			editTransform={editTransform}
+			maybeDeleteTransform={maybeDeleteTransform}
+		/>
+	), [editTransform, maybeDeleteTransform, transforms]);
+
+	const doOpenEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
+	const doHelp = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
+	const doAddTr = useCallback(() => setIsOpenAddTransform(true), []);
 	return (
 		<IonPage>
 			<AddTransformModal
@@ -238,19 +251,19 @@ const WERew = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{t("Transformations")}</IonTitle>
+					<IonTitle>{tTransformations}</IonTitle>
 					<IonButtons slot="end">
 						{transforms.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={doOpenEx} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={doHelp} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -263,14 +276,14 @@ const WERew = (props: PageData) => {
 						className="hideWhileAdding"
 						onIonItemReorder={doReorder}
 					>
-						{transforms.map(map)}
+						{transformItems}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="tertiary"
-						title={tc("Add New")}
-						onClick={() => setIsOpenAddTransform(true)}
+						title={tAddNew}
+						onClick={doAddTr}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

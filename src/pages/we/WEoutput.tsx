@@ -51,6 +51,7 @@ import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
 import copyText from '../../components/copyText';
+import useI18Memo from '../../components/useI18Memo';
 
 import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -68,10 +69,132 @@ interface soundChangeModified {
 	flagged: boolean
 }
 
+type CharGroupMap = {[key: string]: WECharGroupObject};
+
+const interpretFromAndTo = (input: string, charGroupMap: CharGroupMap) => {
+	var rules: (string | string[])[] = [],
+		assembly: (string | string[])[] = [],
+		fromTo = "",
+		backslash = false,
+		curly = false,
+		square = false;
+	input.split("").forEach(function(q) {
+		// If we previously had a backslash, add it to this element.
+		if (backslash) {
+			backslash = false;
+			fromTo += "\\" + q;
+		// If we discover a backslash, set up for the next loop.
+		} else if (q === "\\") {
+			backslash = true;
+			return;
+		// If we previously had a square brace, keep looking for its matching end.
+		} else if (square) {
+			if (q === "]") {
+				// Found it.
+				square = false;
+			}
+			fromTo += q;
+		// If we discover a square brace, pause lookups until we find its end.
+		} else if (q === "[") {
+			square = true;
+			fromTo += q;
+		// If we previously had a curly brace, keep looking for its matching end.
+		} else if (curly) {
+			if (q === "}") {
+				// Found it.
+				curly = false;
+			}
+			fromTo += q;
+		// If we discover a curly brace, pause lookups until we find its end.
+		} else if (q === "{") {
+			curly = true;
+			fromTo += q;
+		// Otherwise, treat as plain text (and possibly character groups or regex).
+		} else {
+			fromTo += q;
+		}
+	});
+	// Check for and insert missing end braces.
+	if (square) {
+		rules.push("]");
+	}
+	if (curly) {
+		rules.push("}");
+	}
+	// Now look for character groups
+	const double = uuidv4().replace(/[%!]/g,"x");
+	const negate = uuidv4().replace(/[%!]/g,"x");
+	// Hide %%
+	fromTo.replace(/%%/g, double);
+	// CharGroup negations
+	assembly = fromTo.split("!%");
+	fromTo = assembly.shift() as string;
+	assembly.forEach(unit => {
+		const q = unit[0];
+		const charGroup = charGroupMap[q];
+		if(charGroup !== undefined) {
+			// CharGroup found - negation, so do not make into Array
+			fromTo += "[^" + charGroup.run + "]" + unit.slice(1);
+		} else {
+			// Hide !%
+			fromTo += negate + unit;
+		}
+	});
+	// CharGroups
+	assembly = fromTo.split("%");
+	rules.push(assembly.shift()!);
+	assembly.forEach(unit => {
+		const q = unit[0];
+		const charGroup = charGroupMap[q];
+		if(charGroup !== undefined) {
+			// CharGroup found
+			rules.push(charGroup.run.split(""), unit.slice(1));
+		} else {
+			rules.push("%" + unit);
+		}
+	});
+	// Split strings, leave Arrays
+	assembly = rules;
+	rules = [];
+	assembly.forEach(unit => {
+		if(!unit) {
+			// Skip!
+		} else if(typeof unit === "string") {
+			// Restore any hidden %% or !% strings
+			// Add as individual characters
+			const d = new RegExp(escapeRegexp(double), "g");
+			const n = new RegExp(escapeRegexp(negate), "g");
+			rules.push(...(unit.replace(d, "%%").replace(n, "!%")).split(""));
+		} else {
+			// Add as Array
+			rules.push(unit);
+		}
+	});
+	return rules;
+};
+
+const translations = [
+	"Evolve", "You have no input words to evolve.",
+	"You have no sound changes defined."
+];
+const commons = [
+	"Help", "Load Preset", "Output", "Please wait...", "Save", "Cancel",
+	"Go to Lexicon", "Select a column", "Unknown error occurred.",
+	"Tap words you want to save to Lexicon.",
+	"You need to add columns to the Lexicon before you can add anything to it.",
+	"Your selected words will be added to the Lexicon under that column."
+];
+
 const WEOut = (props: PageData) => {
-	const { modalPropsMaker } = props;
-	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [
+		tHelp, tLoad, tOutput, tWait, tSave,
+		tCancel, tGoLex, tSelCol, tError,
+		tTapSave, tNoColumns, tSelectedWords
+	] = useI18Memo(commons)
+	const [ tEvolve, tNoWords, tNoSC ] = useI18Memo(translations, "we");
+
+	const { modalPropsMaker } = props;
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const [copyString, setCopyString] = useState<string>("");
@@ -132,11 +255,11 @@ const WEOut = (props: PageData) => {
 		});
 		return [customSortObj, defaultCustomSortObj, customSortLexObj];
 	}, [customSort, customSorts, customSortLex, defaultCustomSort]);
-	const lexSorter = makeSorter(
+	const lexSorter = useMemo(() => makeSorter(
 		sortLanguage || defaultSortLanguage,
 		sensitivity,
 		customSortLexObj || defaultCustomSortObj
-	);
+	), [customSortLexObj, defaultCustomSortObj, defaultSortLanguage, sensitivity, sortLanguage]);
 	const rawInput = useMemo(() => {
 		let lines = input.split(/\n/);
 		if(inputLower) {
@@ -159,7 +282,7 @@ const WEOut = (props: PageData) => {
 	]);
 
 	const charGroupMap = useMemo(() => {
-		const obj: {[key: string]: WECharGroupObject} = {};
+		const obj: CharGroupMap = {};
 		characterGroups.forEach((o: WECharGroupObject) => {
 			obj[o.label!] = o;
 		});
@@ -186,107 +309,6 @@ const WEOut = (props: PageData) => {
 		return newObj;
 	}, [transforms, charGroupMap]);
 	// Go through a from/to string and check for character groups and other regex stuff. Returns an array.
-	const interpretFromAndTo = useCallback((input: string) => {
-		var rules: (string | string[])[] = [],
-			assembly: (string | string[])[] = [],
-			fromTo = "",
-			backslash = false,
-			curly = false,
-			square = false;
-		input.split("").forEach(function(q) {
-			// If we previously had a backslash, add it to this element.
-			if (backslash) {
-				backslash = false;
-				fromTo += "\\" + q;
-			// If we discover a backslash, set up for the next loop.
-			} else if (q === "\\") {
-				backslash = true;
-				return;
-			// If we previously had a square brace, keep looking for its matching end.
-			} else if (square) {
-				if (q === "]") {
-					// Found it.
-					square = false;
-				}
-				fromTo += q;
-			// If we discover a square brace, pause lookups until we find its end.
-			} else if (q === "[") {
-				square = true;
-				fromTo += q;
-			// If we previously had a curly brace, keep looking for its matching end.
-			} else if (curly) {
-				if (q === "}") {
-					// Found it.
-					curly = false;
-				}
-				fromTo += q;
-			// If we discover a curly brace, pause lookups until we find its end.
-			} else if (q === "{") {
-				curly = true;
-				fromTo += q;
-			// Otherwise, treat as plain text (and possibly character groups or regex).
-			} else {
-				fromTo += q;
-			}
-		});
-		// Check for and insert missing end braces.
-		if (square) {
-			rules.push("]");
-		}
-		if (curly) {
-			rules.push("}");
-		}
-		// Now look for character groups
-		const double = uuidv4().replace(/[%!]/g,"x");
-		const negate = uuidv4().replace(/[%!]/g,"x");
-		// Hide %%
-		fromTo.replace(/%%/g, double);
-		// CharGroup negations
-		assembly = fromTo.split("!%");
-		fromTo = assembly.shift() as string;
-		assembly.forEach(unit => {
-			const q = unit[0];
-			const charGroup = charGroupMap[q];
-			if(charGroup !== undefined) {
-				// CharGroup found - negation, so do not make into Array
-				fromTo += "[^" + charGroup.run + "]" + unit.slice(1);
-			} else {
-				// Hide !%
-				fromTo += negate + unit;
-			}
-		});
-		// CharGroups
-		assembly = fromTo.split("%");
-		rules.push(assembly.shift()!);
-		assembly.forEach(unit => {
-			const q = unit[0];
-			const charGroup = charGroupMap[q];
-			if(charGroup !== undefined) {
-				// CharGroup found
-				rules.push(charGroup.run.split(""), unit.slice(1));
-			} else {
-				rules.push("%" + unit);
-			}
-		});
-		// Split strings, leave Arrays
-		assembly = rules;
-		rules = [];
-		assembly.forEach(unit => {
-			if(!unit) {
-				// Skip!
-			} else if(typeof unit === "string") {
-				// Restore any hidden %% or !% strings
-				// Add as individual characters
-				const d = new RegExp(escapeRegexp(double), "g");
-				const n = new RegExp(escapeRegexp(negate), "g");
-				rules.push(...(unit.replace(d, "%%").replace(n, "!%")).split(""));
-			} else {
-				// Add as Array
-				rules.push(unit);
-			}
-		});
-		return rules;
-	}, [charGroupMap]);
 	const soundChangeMap = useMemo(() => {
 		const newObj: { [key: string]: soundChangeModified } = {};
 		soundChanges.forEach((change: WESoundChangeObject) => {
@@ -298,7 +320,7 @@ const WEOut = (props: PageData) => {
 			// SEEK
 			let temp: any = change.seek;
 			if(charGroupFlag) {
-				seek = interpretFromAndTo(temp);
+				seek = interpretFromAndTo(temp, charGroupMap);
 				if(seek.every(unit => typeof unit === "string")) {
 					// No Arrays? No need for flag
 					charGroupFlag = false;
@@ -310,7 +332,7 @@ const WEOut = (props: PageData) => {
 			// REPLACE
 			temp = change.replace;
 			if(charGroupFlag) {
-				replace = interpretFromAndTo(temp);
+				replace = interpretFromAndTo(temp, charGroupMap);
 				if(replace.every(unit => typeof unit === "string")) {
 					// No Arrays? No need for flag
 					charGroupFlag = false;
@@ -386,7 +408,7 @@ const WEOut = (props: PageData) => {
 			};
 		});
 		return newObj;
-	}, [soundChanges, interpretFromAndTo, charGroupMap]);
+	}, [soundChanges, charGroupMap]);
 
 	useEffect(() => {
 		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
@@ -408,10 +430,10 @@ const WEOut = (props: PageData) => {
 		setErrorString("");
 		// Sanity check
 		if(soundChanges.length < 1) {
-			errors.push(t("You have no sound changes defined."));
+			errors.push(tNoSC);
 		}
 		if (rawInput.length < 1) {
-			errors.push(t("You have no input words to evolve."));
+			errors.push(tNoWords);
 		}
 		if(errors.length > 0) {
 			setErrorString(errors.join(" "));
@@ -471,7 +493,7 @@ const WEOut = (props: PageData) => {
 				*/
 				break;
 			default:
-				setErrorString(tc("Unknown error occurred."));
+				setErrorString(tError);
 		}
 		setNeedToGenerate(false);
 	};
@@ -713,31 +735,10 @@ const WEOut = (props: PageData) => {
 	// Save to Lexicon
 	// // //
 
-	const pickAndSave = () => {
-		if (isPickingSaving) {
-			// Stop saving
-			return donePickingAndSaving();
-		} else if(columns.length === 0) {
-			return toaster({
-				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
-		}
-		setIsPickingSaving(true);
-		return toaster({
-			message: tc("Tap words you want to save to Lexicon."),
-			duration: 2500,
-			position: "top",
-			toast
-		});
-	};
-	const saveToLexicon = (words: string[]) => {
+	const saveToLexicon = useCallback((words: string[]) => {
 		doAlert({
-			header: tc("Select a column"),
-			message: tc("Your selected words will be added to the Lexicon under that column."),
+			header: tSelCol,
+			message: tSelectedWords,
 			inputs: columns.map((col: LexiconColumn, i: number) => {
 				const input: AlertInput = {
 					type: 'radio',
@@ -749,12 +750,12 @@ const WEOut = (props: PageData) => {
 			}),
 			buttons: [
 				{
-					text: tc("Cancel"),
+					text: tCancel,
 					role: 'cancel',
 					cssClass: "cancel"
 				},
 				{
-					text: tc("Save"),
+					text: tSave,
 					handler: (col: LexiconColumn | undefined) => {
 						if(!col) {
 							// Treat as cancel
@@ -776,7 +777,7 @@ const WEOut = (props: PageData) => {
 							color: "success",
 							buttons: [
 								{
-									text: tc("Go to Lexicon"),
+									text: tGoLex,
 									handler: () => navigator.push("/lex")
 								}
 							],
@@ -786,8 +787,8 @@ const WEOut = (props: PageData) => {
 				}
 			]
 		});
-	};
-	const donePickingAndSaving = () => {
+	}, [columns, dispatch, doAlert, lexSorter, navigator, tc, toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords]);
+	const donePickingAndSaving = useCallback(() => {
 		setIsPickingSaving(false);
 		if(savedWords.length > 0) {
 			// Attempt to save
@@ -796,7 +797,28 @@ const WEOut = (props: PageData) => {
 			// Just stop picking
 			setIsPickingSaving(false);
 		}
-	};
+	}, [saveToLexicon, savedWords]);
+	const pickAndSave = useCallback(() => {
+		if (isPickingSaving) {
+			// Stop saving
+			return donePickingAndSaving();
+		} else if(columns.length === 0) {
+			return toaster({
+				message: tNoColumns,
+				color: "danger",
+				duration: 4000,
+				position: "top",
+				toast
+			});
+		}
+		setIsPickingSaving(true);
+		return toaster({
+			message: tTapSave,
+			duration: 2500,
+			position: "top",
+			toast
+		});
+	}, [columns.length, donePickingAndSaving, isPickingSaving, tTapSave, tNoColumns, toast]);
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {
 			if(text) {
@@ -822,7 +844,7 @@ const WEOut = (props: PageData) => {
 	// Save Custom Info
 	// // //
 
-	const openCustomInfoModal = () => {
+	const openSaveCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];
 		CustomStorageWE.iterate((value, title) => {
@@ -835,7 +857,7 @@ const WEOut = (props: PageData) => {
 		}).catch((err) => {
 			log(dispatch, ["Open Custom Info Modal (we)", err])
 		});
-	};
+	}, [dispatch]);
 
 	// // //
 	// Display
@@ -930,7 +952,7 @@ const WEOut = (props: PageData) => {
 		setCopyString(copiable.join("\n"));
 		return output;
 	}, [displayRulesApplied, maybeSaveThisWord]);
-	const makeOutput = useCallback(() => {
+	const makeOutput = useMemo(() => {
 		if (errorString) {
 			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
 		} else if (parsedWordList.length > 0) {
@@ -945,13 +967,18 @@ const WEOut = (props: PageData) => {
 		return <></>;
 	}, [errorString, parsedWordList, parsedRulesApplied, parsedInputOutput, parsedOutputInput]);
 
+	const undoLoading = useCallback(() => setLoadingOpen(false), [setLoadingOpen]);
+	const openInfo = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
+	const openLoadPreset = useCallback(() => setIsOpenLoadPreset(true), [setIsOpenLoadPreset]);
+	const openOptions = useCallback(() => setIsOpenOptions(true), []);
+	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
 	return (
 		<IonPage>
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
-				onDidDismiss={() => setLoadingOpen(false)}
-				message={tc("Please wait...")}
+				onDidDismiss={undoLoading}
+				message={tWait}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -973,19 +1000,19 @@ const WEOut = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton disabled={isPickingSaving} />
 					</IonButtons>
-					<IonTitle>{tc("Output")}</IonTitle>
+					<IonTitle>{tOutput}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton
-							onClick={() => openCustomInfoModal()}
+							onClick={openSaveCustomInfoModal}
 							disabled={isPickingSaving}
-							aria-label={tc("Save")}
+							aria-label={tSave}
 						>
 							<IonIcon icon={saveOutline} />
 						</IonButton>
 						<IonButton
-							onClick={() => setIsOpenInfo(true)}
+							onClick={openInfo}
 							disabled={isPickingSaving}
-							aria-label={tc("Help")}
+							aria-label={tHelp}
 						>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
@@ -996,24 +1023,24 @@ const WEOut = (props: PageData) => {
 				<div id="WEoutput">
 					<div>
 						<IonButton
-							onClick={() => setIsOpenLoadPreset(true)}
+							onClick={openLoadPreset}
 							color="tertiary"
 							strong={true}
 							disabled={isPickingSaving}
-						><IonIcon icon={duplicateOutline} slot="start" /> {tc("Load Preset")}</IonButton>
+						><IonIcon icon={duplicateOutline} slot="start" /> {tLoad}</IonButton>
 						<div className="evolving">
 							<IonButton
 								strong={true}
 								expand="block"
 								color="success"
-								onClick={() => evolveOutput()}
+								onClick={evolveOutput}
 								disabled={isPickingSaving}
-							>{t("Evolve")} <IonIcon icon={caretForwardCircleOutline} /></IonButton>
+							>{tEvolve} <IonIcon icon={caretForwardCircleOutline} /></IonButton>
 							<div
 								id="outputPaneWE"
 								className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
 							>
-								{makeOutput()}
+								{makeOutput}
 							</div>
 						</div>
 					</div>
@@ -1022,14 +1049,14 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => setIsOpenOptions(true)}
+							onClick={openOptions}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => copyText(copyString, toast)}
+							onClick={doCopy}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
 						<IonButton
@@ -1038,14 +1065,14 @@ const WEOut = (props: PageData) => {
 							expand="block"
 							strong={false}
 							color="success"
-							onClick={() => donePickingAndSaving()}
+							onClick={donePickingAndSaving}
 						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
 						<IonButton
 							className={isPickingSaving ? "hide" : ""}
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={() => pickAndSave()}
+							onClick={pickAndSave}
 						><LexiconOutlineIcon slot="icon-only" /></IonButton>
 					</div>
 				</div>

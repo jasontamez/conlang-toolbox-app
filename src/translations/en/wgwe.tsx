@@ -24,9 +24,6 @@ const wgwe = {
 	importOverwriteWarning:
 		"If any current {{thing}} has the same {{label}} as an incoming {{thing}}, "
 		+ "the current {{thing}} will be overwritten. Do you want to continue?",
-	yesImport: "Yes, Import",
-
-	"Enter words here one per line": "Enter words here, one per line",
 
 	Transformation: "Transformation",
 	Transformations: "Transformations",

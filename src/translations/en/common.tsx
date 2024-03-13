@@ -232,8 +232,8 @@ const common = {
 	"Column [x] must match expression [y]": "Column [x] must match expression [y]",
 	"Words that contain": "Words that contain",
 	"Words that contain_presentation": "Words that contain:",
-	"Words that match:": "Words that match:",
-	"Words where the column:": "Words where the column:",
+	"Words that match": "Words that match:",
+	"Words where the column": "Words where the column:",
 	columnContains: "[{{column}}] contains \"{{test}}\"",
 	columnMatches: "[{{column}}] matches /{{test}}/",
 	"Match all conditions": "Match all conditions",
@@ -243,6 +243,7 @@ const common = {
 	"Did not find anything to import.": "Did not find anything to import.",
 	importSuccess_one: "Imported {{count}} word from $t(Lexicon).",
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
+	yesImport: "Yes, Import",
 
 	// REGULAR EXPRESSIONS
 	"Regular Expression": "Regular Expression", // title of section

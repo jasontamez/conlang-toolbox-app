@@ -129,7 +129,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 							aria-label={t("Input Expression", { context: "presentation" })}
 							id="searchExWE"
 							className="ion-margin-top serifChars"
-							helperText={t("what to change")}
+							helperText={tw("what to change")}
 							onIonChange={e => resetError("seek")}
 						></IonInput>
 					</IonItem>
@@ -141,7 +141,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 							aria-label={t("Output Expression", { context: "presentation" })}
 							id="replaceExWE"
 							className="ion-margin-top serifChars"
-							helperText={t("what it changes into")}
+							helperText={tw("what it changes into")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">

@@ -38,10 +38,6 @@ const Header = (props: ModalProperties) => {
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [ tc ] = useTranslator('common');
-	const maybeModal = useMemo(
-		() => extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>,
-		[extraChars, isOpenECM]
-	);
 	const maybeButton = useMemo(() => (
 		extraChars ?
 			<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
@@ -51,7 +47,7 @@ const Header = (props: ModalProperties) => {
 	[extraChars, tc]);
 	return (
 		<IonHeader id={id}>
-			{maybeModal}
+			{extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>}
 			<IonToolbar color={color}>
 				<IonButtons slot="start">
 					{menu ? <IonMenuButton /> : <></>}

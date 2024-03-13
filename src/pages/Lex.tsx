@@ -917,13 +917,12 @@ const mdComponents = {
 const info = { joinArrays: "\n" };
 const information = [
 	"info.basic", "info.description", "info.saveCounterAndSort",
-	"info.editColumnsEtc", "info.mergeButton", "info.toolButton",
-	"info.exampleUse"
+	"info.editColumnsEtc", "info.mergeButton", "info.toolButton"
 ];
 export const LexCard = () => {
 	const [ tc ] = useTranslator('common');
 	const tLexicon = useMemo(() => tc("Lexicon"), [tc]);
-	const [ tiBasic, tiDesc, tiSave, tiEdit, tiMerge, tiTool, tiExample ] = useI18Memo(information, 'lexicon', info);
+	const [ tiBasic, tiDesc, tiSave, tiEdit, tiMerge, tiTool ] = useI18Memo(information, 'lexicon', info);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -954,8 +953,6 @@ export const LexCard = () => {
 					<IonIcon icon={construct} color="tertiary" size="large" />
 				</p>
 				<Markdown>{tiTool}</Markdown>
-				<hr />
-				<Markdown>{tiExample}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);

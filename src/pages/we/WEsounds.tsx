@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -42,6 +42,7 @@ import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import useI18Memo from '../../components/useI18Memo';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddSoundChangeModal from './modals/AddSoundChange';
 import EditSoundChangeModal from './modals/EditSoundChange';
@@ -55,11 +56,13 @@ interface SoundChangeItemProps {
 }
 
 const SoundChange: FC<SoundChangeItemProps> = (props) => {
+	const [ tc ] = useTranslator('common');
+	const tDelete = useMemo(() => tc("Delete"), [tc]);
+
 	const { change, editSoundChange, maybeDeleteSoundChange, arrow } = props;
 	const { seek, replace, context, anticontext, description } = change;
 	const changer = useCallback(() => editSoundChange(change), [change, editSoundChange]);
 	const deleter = useCallback(() => maybeDeleteSoundChange(change), [change, maybeDeleteSoundChange]);
-	const [ tc ] = useTranslator('common');
 	return (
 		<IonItemSliding>
 			<IonItemOptions>
@@ -72,7 +75,7 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 				<IonItemOption
 					color="danger"
 					onClick={deleter}
-					aria-label={tc("Delete")}
+					aria-label={tDelete}
 				>
 					<IonIcon slot="icon-only" icon={trash} />
 				</IonItemOption>
@@ -121,12 +124,20 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 	);
 };
 
+const commons = [
+	"Add New", "Are you sure you want to delete this? This cannot be undone.",
+	"Clear Everything?", "Delete", "Help", "confirmDelIt"
+];
 
 const WESChange: FC<PageData> = (props) => {
-	const { modalPropsMaker } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const tSChs = useMemo(() => t("Sound Changes"), [t]);
+	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp, tConfDel ] = useI18Memo(commons);
+	const tThingDeleted = useMemo(() => tc("thingDeleted", { thing: t("Sound Change") }), [tc,t]);
+
+	const { modalPropsMaker } = props;
+	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddSoundChange, setIsOpenAddSoundChange] = useState<boolean>(false);
@@ -149,7 +160,7 @@ const WESChange: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(change.id));
 			toaster({
-				message: tc("thingDeleted", { thing: t("Sound Change") }),
+				message: tThingDeleted,
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -165,14 +176,14 @@ const WESChange: FC<PageData> = (props) => {
 			}
 			yesNoAlert({
 				header: rule,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [arrow, disableConfirms, dispatch, doAlert, toast, t, tc]);
+	}, [arrow, disableConfirms, dispatch, doAlert, toast, tYouSure, tConfDel, tThingDeleted]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WESoundChangeObject>(soundChanges, ed.from, ed.to);
@@ -195,26 +206,31 @@ const WESChange: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Clear Everything?"),
+				header: tClearAll,
 				message: tc("deleteThingsCannotUndo", { things: t("all current sound changes"), count }),
 				cssClass: "warning",
-				submit: tc("confirmDel", { count }),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	}, [soundChanges.length, t, tc, doAlert, toast, disableConfirms, dispatch]);
-	const map = useCallback(
-		(input: WESoundChangeObject) =>
+	}, [soundChanges.length, t, tc, doAlert, toast, disableConfirms, dispatch, tClearAll, tConfDel]);
+	const soundchangesItems = useMemo(() =>
+		soundChanges.map((input: WESoundChangeObject) =>
 			<SoundChange
 				key={input.id}
 				change={input}
 				editSoundChange={editSoundChange}
 				maybeDeleteSoundChange={maybeDeleteSoundChange}
 				arrow={arrow}
-			/>,
-		[arrow, editSoundChange, maybeDeleteSoundChange]
+			/>
+		),
+		[arrow, editSoundChange, maybeDeleteSoundChange, soundChanges]
 	);
+
+	const doOpenEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
+	const doHelp = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
+	const doAddSC = useCallback(() => setIsOpenAddSoundChange(true), []);
 	return (
 		<IonPage>
 			<AddSoundChangeModal
@@ -236,19 +252,19 @@ const WESChange: FC<PageData> = (props) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{t("Sound Changes")}</IonTitle>
+					<IonTitle>{tSChs}</IonTitle>
 					<IonButtons slot="end">
 						{soundChanges.length > 0 ?
-							<IonButton onClick={() => maybeClearEverything()} aria-label={tc("Delete")}>
+							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
 								<IonIcon icon={trashBinOutline} />
 							</IonButton>
 						:
 							<></>
 						}
-						<IonButton onClick={() => setIsOpenECM(true)}>
+						<IonButton onClick={doOpenEx}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={doHelp} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -261,14 +277,14 @@ const WESChange: FC<PageData> = (props) => {
 						className="hideWhileAdding"
 						onIonItemReorder={doReorder}
 					>
-						{soundChanges.map(map)}
+						{soundchangesItems}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="secondary"
-						title={tc("Add New")}
-						onClick={() => setIsOpenAddSoundChange(true)}
+						title={tAddNew}
+						onClick={doAddSC}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

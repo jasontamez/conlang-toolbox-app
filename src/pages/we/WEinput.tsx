@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -26,21 +26,32 @@ import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
+import useI18Memo from '../../components/useI18Memo';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
 import { InpCard } from "./WEinfo";
 import useTranslator from '../../store/translationHooks';
 
+const commons = [
+	"Are you sure? This will clear the entire input and cannot be undone.",
+	"Clear Input", "Clear", "Extra Characters", "Help",
+	"Input", "Yes Clear It"
+];
+
+const translations = [ "Words to Evolve", "Enter words here one per line" ];
+
 const WEInput = (props: PageData) => {
+	const [ tc ] = useTranslator('common');
+	const [ tWordsToEvolve, tOnePerLine ] = useI18Memo(translations, "we");
+	const [ tYouSure, tClearInput, tClear, tExChar, tHelp, tInput, tYesClear ] = useI18Memo(commons);
+	const tImpFromLex = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenLexImport, setIsOpenLexImport] = useState<boolean>(false);
 	const [doAlert] = useIonAlert();
-	const [ tc ] = useTranslator('common');
-	const [ tw ] = useTranslator('wgwe');
-	const [ t ] = useTranslator('we');
 	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { input } = useSelector((state: StateObject) => state.we);
@@ -73,15 +84,19 @@ const WEInput = (props: PageData) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Clear Input"),
-				message: tc("Are you sure? This will clear the entire input and cannot be undone."),
+				header: tClearInput,
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("Yes Clear It"),
+				submit: tYesClear,
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, tc, updateInput]);
+	}, [disableConfirms, doAlert, tClearInput, tYesClear, tYouSure, updateInput]);
+
+	const openExChar = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
+	const openInfo = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
+	const openLexImport = useCallback(() => setIsOpenLexImport(true), []);
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -99,12 +114,12 @@ const WEInput = (props: PageData) => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{tc("Input")}</IonTitle>
+					<IonTitle>{tInput}</IonTitle>
 					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
+						<IonButton onClick={openExChar} aria-label={tExChar}>
 							<IonIcon icon={globeOutline} />
 						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
+						<IonButton onClick={openInfo} aria-label={tHelp}>
 							<IonIcon icon={helpCircleOutline} />
 						</IonButton>
 					</IonButtons>
@@ -114,9 +129,9 @@ const WEInput = (props: PageData) => {
 				<div className="hasMaxTextArea">
 					<textarea
 						spellCheck={false}
-						aria-label={t("Words to Evolve")}
+						aria-label={tWordsToEvolve}
 						id="weInput"
-						placeholder={tw("Enter words here one per line")}
+						placeholder={tOnePerLine}
 						defaultValue={input}
 						onChange={inputUpdated}
 					/>
@@ -129,16 +144,16 @@ const WEInput = (props: PageData) => {
 							color="warning"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={trashBinOutline} slot="start" /> {tc("Clear")}</IonButton>
+						><IonIcon icon={trashBinOutline} slot="start" /> {tClear}</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
-							onClick={() => setIsOpenLexImport(true)}
+							onClick={openLexImport}
 							disabled={lexicon.length === 0}
 							color="primary"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={enterOutline} slot="start" /> {tc("ImportFrom", { source: tc("Lexicon") })}</IonButton>
+						><IonIcon icon={enterOutline} slot="start" /> {tImpFromLex}</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>

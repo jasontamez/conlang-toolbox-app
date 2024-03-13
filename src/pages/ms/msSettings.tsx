@@ -185,7 +185,7 @@ const Syntax = (props: PageData) => {
 	};
 	const MSSaveError = () => {
 		doAlert({
-			header: tc("Error"),
+			header: tc("error"),
 			message: tc("missingThing", { thing: tc("title") }),
 			cssClass: "danger",
 			buttons: [

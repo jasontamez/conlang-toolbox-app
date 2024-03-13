@@ -25,7 +25,6 @@ const we = {
 	"Sound Change": "Sound Change",
 	"Sound Changes": "Sound Changes",
 	"Sound Changes Tab": "$t(Sound Changes) Tab",
-	sChange: "sound change",
 
 	// takes a `count` for plurality
 	"sChange_one": "sound change",
@@ -47,8 +46,8 @@ const we = {
 	multiUnderscore: "{{what}} can only have one underscore (_)",
 	wordBoundaryError: "{{what}} can only have word-boundaries (#) at the beginning and/or end",
 
-	"sound change description": "Description of the $t(sChange)",
-	"sound change description_presentation": "$t(SChange) $t(common:description_formal):",
+	"sound change description": "Description of the $t(sChange_one)",
+	"sound change description_presentation": "$t(SChange_one) $t(common:description_formal):",
 
 	Overview: "Overview: $t(common:WordEvolve)",
 	"What is WordEvolve?": "What is WordEvolve?",
@@ -56,6 +55,7 @@ const we = {
 	"Words to Evolve": "Words to Evolve",
 
 	"Input Tab": "$t(common:Input) Tab",
+	"Enter words here one per line": "Enter words here, one per line",
 	runs: "runs",
 
 	"You have no sound changes defined.": "You have no sound changes defined.",

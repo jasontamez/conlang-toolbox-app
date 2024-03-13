@@ -34,7 +34,6 @@ import {
 import { MSBool, MSNum, MSState, MSText, ModalPropsMaker, StateObject } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
-import { tMaker, tc } from '../../components/translators';
 import Header from '../../components/Header';
 import RangeStartToEndMinusOne from '../../components/NumericRange';
 
@@ -42,8 +41,6 @@ interface ModalProperties {
 	title?: string
 	modalPropsMaker: ModalPropsMaker
 }
-
-const t = tMaker({ ns: "ms"});
 
 export const SyntaxHeader = (props: ModalProperties) => {
 	const [ tc ] = useTranslator('common');
@@ -178,6 +175,12 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 		children,
 		modalPropsMaker
 	} = props;
+
+	const [ t ] = useTranslator('ms');
+	const [ tc ] = useTranslator('common');
+	const modalTitle = useMemo(() => title || t("MISSING TITLE"), [title, t]);
+	const tDone = useMemo(() => tc("Done"), [tc]);
+
 	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
 	const setOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
 	const setClosed = useCallback(() => setIsOpen(false), [setIsOpen]);
@@ -186,7 +189,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 			<IonModal isOpen={isOpen} onDidDismiss={setClosed}>
 				<IonHeader>
 					<IonToolbar color="primary">
-						<IonTitle>{title || t("MISSING TITLE")}</IonTitle>
+						<IonTitle>{modalTitle}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
 				<IonContent className="morphoSyntaxModal">
@@ -200,7 +203,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 					<IonToolbar className="ion-text-wrap">
 						<IonButtons slot="end">
 							<IonButton
-								onClick={setOpen}
+								onClick={setClosed}
 								slot="end"
 								fill="solid"
 								color="success"
@@ -209,13 +212,13 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 									icon={checkmarkCircleOutline}
 									slot="start"
 								/>
-								<IonLabel>{tc("Done")}</IonLabel>
+								<IonLabel>{tDone}</IonLabel>
 							</IonButton>
 						</IonButtons>
 					</IonToolbar>
 				</IonFooter>
 			</IonModal>
-			<IonButton color="primary" onClick={() => setIsOpen(true)}>
+			<IonButton color="primary" onClick={setOpen}>
 				<IonIcon
 					icon={informationCircleSharp}
 					className="msModalHelpIcon"

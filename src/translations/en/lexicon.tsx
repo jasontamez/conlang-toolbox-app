@@ -164,21 +164,13 @@ const lexicon = {
 			"all the items you've stored. They will appear as striped rows.",
 			"You can swipe left on each one to find Edit and Delete buttons."
 		],
-		toolButton: [
-			"At the bottom of the page, you'll find a large tool button. You",
-			"can tap on it to pull up a small menu. Tap on the (+) button to",
-			"pop up a large form for adding to the $t(common:Lexicon). Tap on",
-			"the trash can to enter mass-delete mode, where you can select",
-			"multiple entries and delete them all at once."
-		],
 		mergeButton: [
 			"You can swipe right on a lexicon item to find the",
 			"$t(Merge Items) button. You can use this to mark multiple",
 			"entries. Once you've selected at least two, a large paperclip",
 			"button will appear at the bottom of the page. Tapping on it will",
 			"prompt you to merge the selected items into one entry.",
-		],
-		exampleUse: [
+			"",
 			"Several tools in $t(common:Conlang Toolbox) can export info into",
 			"the $t(common:Lexicon). The merge function can be used to merge",
 			"all this different info. Here's an example:",
@@ -195,6 +187,13 @@ const lexicon = {
 			"5. Finally, you swipe and link each \"original\", \"changed\"",
 			"and \"definition\" column with each other and merge them into",
 			"single entries."
+		],
+		toolButton: [
+			"At the bottom of the page, you'll find a large tool button. You",
+			"can tap on it to pull up a small menu. Tap on the (+) button to",
+			"pop up a large form for adding to the $t(common:Lexicon). Tap on",
+			"the trash can to enter mass-delete mode, where you can select",
+			"multiple entries and delete them all at once."
 		],
 	}
 };

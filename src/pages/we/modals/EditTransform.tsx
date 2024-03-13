@@ -196,7 +196,7 @@ const EditTransformModal = (props: ModalProps) => {
 					<IonItem>
 						<IonInput
 							aria-label={t("Input Expression", { context: "presentation" })}
-							helperText={t("what to change")}
+							helperText={tw("what to change")}
 							id="editSearchExWE"
 							className="ion-margin-top serifChars"
 							onIonChange={e => resetError("seek")}
@@ -208,7 +208,7 @@ const EditTransformModal = (props: ModalProps) => {
 					<IonItem>
 						<IonInput
 							aria-label={t("Output Expression", { context: "presentation" })}
-							helperText={t("what it changes into")}
+							helperText={tw("what it changes into")}
 							id="editReplaceExWE"
 							className="ion-margin-top serifChars"
 						></IonInput>

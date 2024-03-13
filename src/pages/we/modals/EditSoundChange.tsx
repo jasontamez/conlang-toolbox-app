@@ -216,7 +216,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{t("editThing", { thing: t("Sound Change") })}</IonTitle>
+					<IonTitle>{tc("editThing", { thing: t("Sound Change") })}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
 							<IonIcon icon={globeOutline} />
@@ -234,7 +234,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("search expression", { context: "formal" })}
+							aria-label={tw("search expression", { context: "formal" })}
 							id="editSeekExWESC"
 							className="ion-margin-top serifChars"
 							helperText={t("sound to change")}
@@ -265,11 +265,11 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="anticontextLabel">{t("anticontext expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="anticontextLabel">{t("exception expression", { context: "presentation" })}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("anticontext expression", { context: "formal" })}
+							aria-label={t("exception expression", { context: "formal" })}
 							id="editAnticontextExWESC"
 							className="ion-margin-top serifChars"
 							helperText={t("where the change cannot happen")}
@@ -297,7 +297,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						onClick={() => maybeSaveNewSoundChangeInfo()}
 					>
 						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tc("saveThing", { thing: t("SChange") })}</IonLabel>
+						<IonLabel>{tc("saveThing", { thing: t("SChange_one") })}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="danger"
@@ -305,7 +305,7 @@ const EditSoundChangeModal = (props: ModalProps) => {
 						onClick={() => maybeDeleteSoundChange()}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tc("deleteThing", { thing: t("SChange") })}</IonLabel>
+						<IonLabel>{tc("deleteThing", { thing: t("SChange_one") })}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

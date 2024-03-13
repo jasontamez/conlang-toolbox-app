@@ -96,9 +96,10 @@ const commons = [
 	"Lexicon Has No Columns", "Match all conditions", "Nothing to save.",
 	"Please select at least one column to import from.", "Saved",
 	"Type part of word here.", "Type regular expression here.",
-	"Word must contain [x]", "Word must match expression [x]", "Yes Exit"
+	"Word must contain [x]", "Word must match expression [x]", "Yes Exit",
+	"Words that match", "Words where the column"
 ];
-const presentations = [ "Test column", "Words that contain", "Words that match", "Words where the column" ];
+const presentations = [ "Test column", "Words that contain" ];
 const context = { context: "presentation" };
 
 const LexiconImporterModal: FC<ImporterProps> = (props) => {
@@ -111,10 +112,11 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		tIfOff, tImport,
 		tNoColumns, tMatchAll, tNothingToSave,
 		tSelOne, tSaved, tTypeWord, tTypeRegex,
-		tX, tMX, tYesEx
+		tX, tMX, tYesEx,
+		tWordsMatch, tWordsCol
 	] = useI18Memo(commons);
 	const tImpFromLexicon = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
-	const [ tTestCol, tWordsCont, tWordsMatch, tWordsCol ] = useI18Memo(presentations, "common", context);
+	const [ tTestCol, tWordsCont ] = useI18Memo(presentations, "common", context);
 
 	const {
 		isOpen,
