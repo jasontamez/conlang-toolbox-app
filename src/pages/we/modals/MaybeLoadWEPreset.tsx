@@ -1,24 +1,18 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	closeCircleSharp
-} from 'ionicons/icons';
+import { closeCircleSharp } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import { ModalProperties, StateObject, WEPresetObject } from '../../../store/types';
@@ -28,36 +22,43 @@ import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
+
+const commons = [ "Cancel", "Load Preset", "confirmLoad" ];
 
 const MaybeLoadPresetModal = (props: ModalProperties) => {
-	const { isOpen, setIsOpen } = props;
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const tClearThings = useMemo(() => tc("clearOverrideGeneralThings", { title: t("allThings") }), [t, tc]);
+	const [ tCancel, tLoadPreset, tConfLoad ] = useI18Memo(commons);
+
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const maybeLoadPreset = (presetTitle: string, object: WEPresetObject) => {
-		const preset = t(presetTitle);
+
+	const maybeLoadPreset = useCallback((presetTitle: string, object: WEPresetObject) => {
 		const handler = () => {
 			const copy = {...object};
 			copy.characterGroups = object.characterGroups.map(group => {
 				const { title, ...etc } = group;
 				return {
 					...etc,
-					title: t(title)
+					title
 				};
 			});
 			copy.transforms = object.transforms.map(group => {
 				const { description, ...etc } = group;
 				return {
 					...etc,
-					description: t(description)
+					description
 				};
 			});
 			dispatch(loadStateWE(copy));
 			toaster({
-				message: tc("prefixTitleLoaded", { prefix: "Preset", title: preset }),
+				message: tc("prefixTitleLoaded", { prefix: "Preset", title: presetTitle }),
 				duration: 2500,
 				position: "top",
 				toast
@@ -68,41 +69,35 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("loadTitle", { title: preset }),
-				message: tc(
-					"clearOverwriteGeneralThings",
-					{ things: t("allThings") }
-				),
+				header: tc("loadTitle", { title: presetTitle }),
+				message: tClearThings,
 				cssClass: "danger",
-				submit: tc("confirmLoad"),
+				submit: tConfLoad,
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, dispatch, doAlert, setIsOpen, tClearThings, tConfLoad, tc, toast]);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const presets = useMemo(() => WEPresets.map((pair, i) => {
+		const [title, object] = pair;
+		return (
+			<IonItem
+				key={`${i}::${title}`}
+				button={true}
+				onClick={() => maybeLoadPreset(title, object)}
+			>
+				<IonLabel>{title}</IonLabel>
+			</IonItem>
+		);
+	}), [maybeLoadPreset]);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("Load Preset")}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
+			<ModalHeader title={tLoadPreset} closeModal={closer} />
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{WEPresets.map(([title, object]) => (
-						<IonItem
-							key={title}
-							button={true}
-							onClick={() => maybeLoadPreset(title, object)}
-						>
-							<IonLabel>{title}</IonLabel>
-						</IonItem>
-					))}
+					{presets}
 				</IonList>
 			</IonContent>
 			<IonFooter>
@@ -110,10 +105,10 @@ const MaybeLoadPresetModal = (props: ModalProperties) => {
 					<IonButton
 						color="danger"
 						slot="end"
-						onClick={() => setIsOpen(false)}
+						onClick={closer}
 					>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

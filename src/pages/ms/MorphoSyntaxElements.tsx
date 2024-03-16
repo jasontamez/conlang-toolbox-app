@@ -1,8 +1,6 @@
 import React, { FC, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import {
-	IonHeader,
 	IonToolbar,
-	IonTitle,
 	IonButtons,
 	IonButton,
 	IonIcon,
@@ -36,6 +34,7 @@ import useTranslator from '../../store/translationHooks';
 
 import Header from '../../components/Header';
 import RangeStartToEndMinusOne from '../../components/NumericRange';
+import ModalHeader from '../../components/ModalHeader';
 
 interface ModalProperties {
 	title?: string
@@ -187,11 +186,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	return (
 		<IonItem className={className ? className + " infoModal" : "infoModal"}>
 			<IonModal isOpen={isOpen} onDidDismiss={setClosed}>
-				<IonHeader>
-					<IonToolbar color="primary">
-						<IonTitle>{modalTitle}</IonTitle>
-					</IonToolbar>
-				</IonHeader>
+				<ModalHeader title={modalTitle} closeModal={setIsOpen} />
 				<IonContent className="morphoSyntaxModal">
 					<IonList lines="none">
 						<IonItem>

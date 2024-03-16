@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { FC, ReactElement, useMemo, useState } from "react";
 import {
 	IonButton,
 	IonButtons,
@@ -25,7 +25,7 @@ interface ModalProperties {
 	menu?: boolean
 }
 
-const Header = (props: ModalProperties) => {
+const Header: FC<ModalProperties> = (props) => {
 	const {
 		title,
 		extraChars,

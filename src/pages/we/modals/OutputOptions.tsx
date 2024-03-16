@@ -1,37 +1,47 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
-	IonTitle,
 	IonList,
 	IonButton,
 	IonItem,
 	IonLabel,
 	IonModal,
-	IonIcon,
 	IonFooter,
 	IonRadioGroup,
 	IonRadio,
 	IonToggle,
 	IonSelectOption,
-	IonSelect
+	IonSelect,
+	ToggleCustomEvent,
+	SelectCustomEvent,
+	RadioGroupCustomEvent
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
-import {
-	closeCircleOutline
-} from 'ionicons/icons';
 
 import useTranslator from '../../../store/translationHooks';
 import { WEOutputTypes, ModalProperties, StateObject } from '../../../store/types';
 import { setCustomSort, setFlag, setOutputWE } from '../../../store/weSlice';
 import PermanentInfo from '../../../components/PermanentInfo';
+import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
+
+const translations = [
+	"Convert input to lowercase before evolving", "Input then Output",
+	"Output Only", "Output and Sound-Change Rules", "Output then Input",
+	"Sort input before evolving"
+];
+
+const commons = [ "Default sort", "Done" ];
 
 const OutputOptionsModal = (props: ModalProperties) => {
-	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
+	const tOutOpt = useMemo(() => tw("Output Options"), [tw]);
+	const tMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
+	const [ tDefault, tDone ] = useI18Memo(commons);
+	const [ tConvert, tInOut, tOut, tOutSC, tOutIn, tSortIn ] = useI18Memo(translations, "we");
+
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const {
@@ -41,18 +51,25 @@ const OutputOptionsModal = (props: ModalProperties) => {
 		customSort
 	} = useSelector((state: StateObject) => state.we);
 	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
+	const sortMethods = useMemo(() => customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
+		<IonSelectOption
+			className="ion-text-wrap ion-text-align-end"
+			key={`inputSortChooser:${sorter.id}:${sorter.title}`}
+			value={sorter.id}
+		>{sorter.title}</IonSelectOption>
+	)), [customSorts]);
+	const toggleLower = useCallback((e: ToggleCustomEvent) => dispatch(setFlag(["inputLower", e.detail.checked])), [dispatch]);
+	const toggleAlpha = useCallback((e: ToggleCustomEvent) => dispatch(setFlag(["inputAlpha", e.detail.checked])), [dispatch]);
+	const doSetMethod = useCallback((e: SelectCustomEvent) => dispatch(setCustomSort(e.detail.value)), [dispatch]);
+	const setDisplayMethod = useCallback(
+		(e: RadioGroupCustomEvent) => dispatch(setOutputWE(e.detail.value as WEOutputTypes)),
+		[dispatch]
+	);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tw("Output Options")}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
+			<ModalHeader title={tOutOpt} closeModal={closer} />
 			<IonContent>
 				<IonList lines="none">
 					<IonItem lines="full">
@@ -60,69 +77,63 @@ const OutputOptionsModal = (props: ModalProperties) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={inputLower}
-							onIonChange={e => dispatch(setFlag(["inputLower", e.detail.checked]))}
-						>{t("Convert input to lowercase before evolving")}</IonToggle>
+							onIonChange={toggleLower}
+						>{tConvert}</IonToggle>
 					</IonItem>
 					<IonItem lines={inputAlpha ? "none" : undefined}>
 						<IonToggle
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={inputAlpha}
-							onIonChange={e => dispatch(setFlag(["inputAlpha", e.detail.checked]))}
-						>{t("Sort input before evolving")}</IonToggle>
+							onIonChange={toggleAlpha}
+						>{tSortIn}</IonToggle>
 					</IonItem>
 					<IonItem className={inputAlpha ? "" : "hide"} lines="full">
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={tc("Sort method", { context: "presentation" })}
+							label={tMethod}
 							value={customSort || null}
-							onIonChange={(e) => dispatch(setCustomSort(e.detail.value))}
+							onIonChange={doSetMethod}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
-							>{tc("Default sort")}</IonSelectOption>
-							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
-								<IonSelectOption
-									className="ion-text-wrap ion-text-align-end"
-									key={`inputSortChooser:${sorter.id}:${sorter.title}`}
-									value={sorter.id}
-								>{sorter.title}</IonSelectOption>
-							))}
+							>{tDefault}</IonSelectOption>
+							{sortMethods}
 						</IonSelect>
 					</IonItem>
 					<IonRadioGroup
 						value={outputStyle}
-						onIonChange={e => dispatch(setOutputWE(e.detail.value as WEOutputTypes))}
+						onIonChange={setDisplayMethod}
 					>
 						<IonItem className="ion-text-wrap">
 							<IonRadio
 								value="outputOnly"
 								labelPlacement="end"
 								justify="start"
-							>{t("Output Only")}</IonRadio>
+							>{tOut}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
 							<IonRadio
 								value="rulesApplied"
 								labelPlacement="end"
 								justify="start"
-							>{t("Output and Sound-Change Rules")}</IonRadio>
+							>{tOutSC}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap">
 							<IonRadio
 								value="inputFirst"
 								labelPlacement="end"
 								justify="start"
-							>{t("Input then Output")}</IonRadio>
+							>{tInOut}</IonRadio>
 						</IonItem>
 						<IonItem className="ion-text-wrap" lines="full">
 							<IonRadio
 								value="outputFirst"
 								labelPlacement="end"
 								justify="start"
-							>{t("Output then Input")}</IonRadio>
+							>{tOutIn}</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
@@ -132,9 +143,9 @@ const OutputOptionsModal = (props: ModalProperties) => {
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={() => setIsOpen(false)}
+						onClick={closer}
 					>
-						<IonLabel>{tc("Done")}</IonLabel>
+						<IonLabel>{tDone}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

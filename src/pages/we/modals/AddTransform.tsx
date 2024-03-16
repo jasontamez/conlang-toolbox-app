@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
@@ -19,11 +16,7 @@ import {
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	addOutline,
-	globeOutline
-} from 'ionicons/icons';
+import { addOutline } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,23 +26,51 @@ import useTranslator from '../../../store/translationHooks';
 
 import { $q, $a, $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
+import ModalHeader from '../../../components/ModalHeader';
+import useI18Memo from '../../../components/useI18Memo';
+
+function resetError() {
+	// Remove danger color if present
+	// Debounce means this sometimes doesn't exist by the time this is called.
+	const where = $q(".seekLabel");
+	where && where.classList.remove("invalidValue");
+}
+
+const commons = [
+	"Add and Close", "Cancel", "error", "optional", "Transformation"
+];
+const translations = [
+	"Description of the transformation", "No search expression present",
+	"what it changes into", "what to change"
+];
+const formals = [
+	"At input and at output", "At input only",
+	"At input then undo at output", "At output only"
+];
+const presentations = [
+	"Input Expression", "Output Expression", "Transformation Direction"
+];
+const formal = { context: "formal" };
+const context = { context: "presentation" };
 
 const AddTransformModal = (props: ExtraCharactersModalOpener) => {
-	const { isOpen, setIsOpen, openECM } = props;
-	const dispatch = useDispatch();
-	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
+	const [ tAddClose, tCancel, tError, tOptional, tTrans ] = useI18Memo(commons);
+	const [ tDesc, tNoSeek, tReplace, tSeek ] = useI18Memo(translations, "wgwe");
+	const [ tAddThing, tThingAdd ] = useMemo(() => ["addThing", "thingAdded"].map(thing => tc(thing, { thing: tTrans })), [tc, tTrans]);
+	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
+	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
+	const [ tpInEx, tpOutEx, tpTrDir ] = useI18Memo(presentations, "we", context);
+	const tpDesc = useMemo(() => tw("Description of the transformation", context), [tw]);
+
+	const { isOpen, setIsOpen, openECM } = props;
+	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
-	function resetError(prop: string) {
-		// Remove danger color if present
-		// Debounce means this sometimes doesn't exist by the time this is called.
-		const where = $q("." + prop + "Label");
-		where && where.classList.remove("invalidValue");
-	}
-	const maybeSaveNewTransform = (close: boolean = true) => {
+
+	const maybeSaveNewTransform = useCallback((close: boolean = true) => {
 		const err: string[] = [];
 		const seekEl = $i<HTMLInputElement>("searchExWE");
 		const seek = seekEl ? seekEl.value : "";
@@ -57,7 +78,7 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(seek === "") {
 			const el = $q(".seekLabel");
 			el && el.classList.add("invalidValue");
-			err.push(tw("No search expression present"));
+			err.push(tNoSeek);
 		}
 		try {
 			new RegExp(seek);
@@ -67,12 +88,12 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		if(err.length > 0) {
 			// Errors found.
 			doAlert({
-				header: tc("error"),
+				header: tError,
 				cssClass: "danger",
 				message: err.join("; "),
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -97,66 +118,57 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 		const el = $q<HTMLInputElement>("ion-list.weAddTransform ion-radio-group");
 		el && (el.value = "both");
 		toaster({
-			message: tc("thingAdded", { thing: t("Transformation")}),
+			message: tThingAdd,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	};
+	}, [direction, dispatch, doAlert, setIsOpen, tCancel, tError, tNoSeek, tThingAdd, toast]);
+	const saveClose = useCallback(() => maybeSaveNewTransform(), [maybeSaveNewTransform]);
+	const saveAdd = useCallback(() => maybeSaveNewTransform(false), [maybeSaveNewTransform]);
+	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("addThing", { thing: t("Transformation") })}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={() => setIsOpen(false)} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={closer}>
+			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels weAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{t("Input Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="seekLabel">{tpInEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Input Expression", { context: "presentation" })}
+							aria-label={tInEx}
 							id="searchExWE"
 							className="ion-margin-top serifChars"
-							helperText={tw("what to change")}
-							onIonChange={e => resetError("seek")}
+							helperText={tSeek}
+							onIonChange={resetError}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{t("Output Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="replaceLabel">{tpOutEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Output Expression", { context: "presentation" })}
+							aria-label={tOutEx}
 							id="replaceExWE"
 							className="ion-margin-top serifChars"
-							helperText={tw("what it changes into")}
+							helperText={tReplace}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{tw("Description of the transformation", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={tw("Description of the transformation")}
+							aria-label={tDesc}
 							id="optDescWE"
 							className="ion-margin-top"
-							placeholder={tc("optional")}
+							placeholder={tOptional}
 						></IonInput>
 					</IonItem>
 					<IonItemDivider>
-						<IonLabel>{t("Transformation Direction", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpTrDir}</IonLabel>
 					</IonItemDivider>
 					<IonRadioGroup
 						value={direction}
@@ -167,28 +179,28 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 								value="both"
 								labelPlacement="end"
 								justify="start"
-							>{t("At input then undo at output", { context: "formal" })}</IonRadio>
+							>{tInUnOut}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="double"
 								labelPlacement="end"
 								justify="start"
-							>{t("At input and at output", { context: "formal" })}</IonRadio>
+							>{tInOut}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="in"
 								labelPlacement="end"
 								justify="start"
-							>{t("At input only", { context: "formal" })}</IonRadio>
+							>{tIn}</IonRadio>
 						</IonItem>
 						<IonItem>
 							<IonRadio
 								value="out"
 								labelPlacement="end"
 								justify="start"
-							>{t("At output only", { context: "formal" })}</IonRadio>
+							>{tOut}</IonRadio>
 						</IonItem>
 					</IonRadioGroup>
 				</IonList>
@@ -198,18 +210,18 @@ const AddTransformModal = (props: ExtraCharactersModalOpener) => {
 					<IonButton
 						color="tertiary"
 						slot="end"
-						onClick={() => maybeSaveNewTransform(false)}
+						onClick={saveAdd}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("addThing", { thing: tw("Transformation") })}</IonLabel>
+						<IonLabel>{tAddThing}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
 						slot="end"
-						onClick={() => maybeSaveNewTransform()}
+						onClick={saveClose}
 					>
 						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tc("Add and Close")}</IonLabel>
+						<IonLabel>{tAddClose}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
