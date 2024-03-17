@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -6,11 +6,8 @@ import {
 	IonNote,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	useIonAlert,
@@ -27,6 +24,7 @@ import useTranslator from '../../../store/translationHooks';
 import { MorphoSyntaxStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
@@ -37,87 +35,84 @@ interface MSmodalProps extends ModalProperties {
 	setStoredInfo: SetState<[string, OldStyleSave][]>
 }
 
-const DeleteSyntaxDocModal = (props: MSmodalProps) => {
-	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
+const DeleteSyntaxDocModal: FC<MSmodalProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
+	const tTitle = useMemo(() => tc("deleteThing", { thing: t("msDocument", { context: "formal" }) }), [tc, t]);
+	const tCancel = useMemo(() => tc("Cancel"), [tc]);
+
+	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
-	const doClose = () => {
+
+	const data = useMemo(() => (storedInfo && storedInfo.length > 0) ? storedInfo : [], [storedInfo]);;
+	const doClose = useCallback(() => {
 		setStoredInfo([]);
 		setIsOpen(false);
-	};
-	const deleteThis = (key: string, title: string) => {
-		const handler = () => {
-			setLoadingScreen(true);
-			MorphoSyntaxStorage.removeItem(key).then(() => {
-				setLoadingScreen(false);
-				setStoredInfo([]);
-				setIsOpen(false);
-				toaster({
-					message: tc("thingDeleted", { thing: t("msDocument") }),
-					duration: 2500,
-					position: "top",
-					toast
+	}, [setIsOpen, setStoredInfo]);
+	const savedDocs = useMemo(() => data.length > 0 ? data.map((pair: [string, OldStyleSave]) => {
+		const key = pair[0];
+		const ms = pair[1];
+		const time = new Date(ms.lastSave);
+		const deleteThis = (key: string, title: string) => {
+			const handler = () => {
+				setLoadingScreen(true);
+				MorphoSyntaxStorage.removeItem(key).then(() => {
+					setLoadingScreen(false);
+					setStoredInfo([]);
+					setIsOpen(false);
+					toaster({
+						message: tc("thingDeleted", { thing: t("msDocument") }),
+						duration: 2500,
+						position: "top",
+						toast
+					});
 				});
-			});
+			};
+			if(disableConfirms) {
+				handler();
+			} else {
+				yesNoAlert({
+					header: tc("deleteTitle", { title }),
+					message: tc("cannotUndo"),
+					cssClass: "danger",
+					submit: tc("confirmDelIt"),
+					handler,
+					doAlert
+				});
+			}
 		};
-		if(disableConfirms) {
-			handler();
-		} else {
-			yesNoAlert({
-				header: tc("deleteTitle", { title }),
-				message: tc("cannotUndo"),
-				cssClass: "danger",
-				submit: tc("confirmDelIt"),
-				handler,
-				doAlert
-			});
-		}
-	};
+		return (
+			<IonItem
+				key={key}
+				button={true}
+				onClick={() => deleteThis(key, ms.title)}
+			>
+				<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
+				<IonNote
+					className="ion-text-wrap ital"
+					slot="end"
+				>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
+			</IonItem>
+		);
+	}) : (
+		<h1>{t("No Saved MorphoSyntax Documents")}</h1>
+	), [data, tc, disableConfirms, doAlert, setIsOpen, setLoadingScreen, setStoredInfo, t, toast]);
+
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("deleteThing", { thing: t("msDocument", { context: "formal" }) })}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={doClose}>
+			<ModalHeader title={tTitle} closeModal={doClose} />
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, OldStyleSave]) => {
-						const key = pair[0];
-						const ms = pair[1];
-						const time = new Date(ms.lastSave);
-						return (
-							<IonItem
-								key={key}
-								button={true}
-								onClick={() => deleteThis(key, ms.title)}
-							>
-								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
-								<IonNote
-									className="ion-text-wrap ital"
-									slot="end"
-								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
-							</IonItem>
-						);
-					}) : (
-						<h1>{t("No Saved MorphoSyntax Documents")}</h1>
-					)}
+					{savedDocs}
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
-					<IonButton color="warning" slot="end" onClick={() => doClose()}>
+					<IonButton color="warning" slot="end" onClick={doClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

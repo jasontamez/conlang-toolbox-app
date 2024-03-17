@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -40,7 +40,7 @@ const rangeChangeFunc = (dispatch: Dispatch, nProp: MSNum) => {
 	return (e: RangeCustomEvent) => dispatch(setSyntaxNum([nProp, e.target.value as number]));
 };
 
-const MSPage = (props: MSData) => {
+const MSPage: FC<MSData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const MSPage = (props: MSData) => {
 	const { modalPropsMaker, page } = props;
 	const info = msInfo[page] as SpecificMSPageData[];
 	const header = info[0].content;
-	const mapper = useCallback((block: SpecificMSPageData, i: number) => {
+	const pageContents = useMemo(() => info.map((block: SpecificMSPageData, i: number) => {
 		const { tag, prop, ...etc } = block;
 		const key = `${page}-${tag}-${i}`;
 		switch(tag) {
@@ -106,19 +106,20 @@ const MSPage = (props: MSData) => {
 		}
 		// THIS SHOULDN'T HAPPEN
 		return <React.Fragment key={key}>{tc("emphasizedError")}</React.Fragment>;
-	}, [ms, dispatch, page, t, modalPropsMaker, tc]);
+	}), [info, ms, dispatch, page, t, modalPropsMaker, tc]);
+	const title = useMemo(() => t(header || "error"), [t, header]);
 	useIonViewDidEnter(() => {
 		dispatch(setLastViewMS("ms" + page));
 	});
 	return (
 		<IonPage>
-			<SyntaxHeader title={t(header!)} {...props} />
+			<SyntaxHeader title={title} {...props} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
-					{info.map(mapper)}
+					{pageContents}
 				</IonList>
 			</IonContent>
 		</IonPage>

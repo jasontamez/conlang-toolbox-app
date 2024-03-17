@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -6,11 +6,8 @@ import {
 	IonNote,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	useIonAlert,
@@ -25,6 +22,7 @@ import { loadStateMS } from '../../../store/msSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
+import ModalHeader from '../../../components/ModalHeader';
 
 
 interface MSmodalProps extends ModalProperties {
@@ -36,18 +34,21 @@ interface OldStyleSave extends MSState {
 }
 
 const LoadMSModal = (props: MSmodalProps) => {
-	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
+	const tLoadDoc = useMemo(() => tc("loadThing", { thing: t("msDocument") }), [tc, t]);
+	const tCancel = useMemo(() => tc("Cancel"), [tc]);
+
+	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const [doAlert] = useIonAlert();
-	const data = (storedInfo && storedInfo.length > 0) ? storedInfo : [];
-	const doClose = () => {
+	const data = useMemo(() => (storedInfo && storedInfo.length > 0) ? storedInfo : [], [storedInfo]);
+	const doClose = useCallback(() => {
 		setStoredInfo([]);
 		setIsOpen(false);
-	};
-	const loadThis = (key: string) => {
+	}, [setStoredInfo, setIsOpen]);
+	const loadThis = useCallback((key: string) => {
 		data.every((pair: [string, OldStyleSave]) => {
 			if(pair[0] !== key) {
 				// Continue the loop
@@ -74,44 +75,36 @@ const LoadMSModal = (props: MSmodalProps) => {
 			// End loop
 			return false;
 		});
-	};
+	}, [data, disableConfirms, dispatch, doAlert, setIsOpen, t, tc]);
+	const savedDocs = useMemo(() => data.length > 0 ? data.map((pair: [string, MSState]) => {
+		const key = pair[0];
+		const ms = pair[1];
+		const time = new Date(ms.lastSave);
+		return (
+			<IonItem key={key} button={true} onClick={() => loadThis(key)}>
+				<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
+				<IonNote
+					className="ion-text-wrap ital"
+					slot="end"
+				>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
+			</IonItem>
+		);
+	}) : (
+		<h1>{t("No Saved MorphoSyntax Documents")}</h1>
+	), [data, loadThis, t, tc]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doClose()}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("loadThing", { thing: t("msDocument") })}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => doClose()} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={doClose}>
+			<ModalHeader title={tLoadDoc} closeModal={doClose} />
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
-					{data.length > 0 ? data.map((pair: [string, MSState]) => {
-						const key = pair[0];
-						const ms = pair[1];
-						const time = new Date(ms.lastSave);
-						return (
-							<IonItem key={key} button={true} onClick={() => loadThis(key)}>
-								<IonLabel className="ion-text-wrap">{ms.title}</IonLabel>
-								<IonNote
-									className="ion-text-wrap ital"
-									slot="end"
-								>{tc("SavedAt", { time: time.toLocaleString() })}</IonNote>
-							</IonItem>
-						);
-					}) : (
-						<h1>{t("No Saved MorphoSyntax Documents")}</h1>
-					)}
+					{savedDocs}
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar className={data.length > 0 ? "" : "hide"}>
-					<IonButton color="warning" slot="end" onClick={() => doClose()}>
+					<IonButton color="warning" slot="end" onClick={doClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

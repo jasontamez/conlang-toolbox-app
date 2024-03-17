@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 import {
 	IonCard,
 	IonCardContent,
@@ -17,39 +17,49 @@ import useTranslator from '../../store/translationHooks';
 
 import Header from '../../components/Header';
 import { MorphoSyntaxIcon } from '../../components/icons';
+import useI18Memo from '../../components/useI18Memo';
 
-const MSinfo = (props: PageData) => {
+const translations = [
+	"overviewInfo", "overviewMain", "overviewSettings", "overviewTopics"
+];
+
+const joiner = { joinArrays: "\n" };
+
+const MSinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
+	const tWhat = useMemo(() => t("What is MorphoSyntax?"), [t]);
+	const tOverview = useMemo(() => tc("overviewOf", { what: tc("MorphoSyntax")}), [tc]);
+	const [ tInfo, tMain, tSett, tTopic ] = useI18Memo(translations, "ms", joiner);
 
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={tc("overviewOf", { what: tc("MorphoSyntax")})} />
+				<Header title={tOverview} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>
 					<IonItem lines="full">
 						<MorphoSyntaxIcon slot="start" color="primary" />
-						<IonLabel>{t("What is MorphoSyntax?")}</IonLabel>
+						<IonLabel>{tWhat}</IonLabel>
 					</IonItem>
 					<IonCardContent>
 
-						<Markdown>{t("overviewMain", { joinArrays: "\n" })}</Markdown>
+						<Markdown>{tMain}</Markdown>
 
 						<p className="center pad-top-rem">
 							<IonIcon icon={settings} size="large" color="tertiary" />
 						</p>
-						<Markdown>{t("overviewSettings", { joinArrays: "\n" })}</Markdown>
+						<Markdown>{tSett}</Markdown>
 
 						<p className="center pad-top-rem">
 							<IonIcon icon={informationCircle} size="large" color="tertiary" />
 						</p>
-						<Markdown>{t("overviewInfo", { joinArrays: "\n" })}</Markdown>
+						<Markdown>{tInfo}</Markdown>
 
 						<hr />
 
-						<Markdown>{t("overviewTopics", { joinArrays: "\n" })}</Markdown>
+						<Markdown>{tTopic}</Markdown>
 
 					</IonCardContent>
 				</IonCard>

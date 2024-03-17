@@ -1,10 +1,12 @@
 const ms = {
 
-	"Show Unused Sections": "Show Unused Sections",
-	showUnusedDesc1:
-		"Include sections that you did not fill out, leaving space for you"
-		+ " to write in later.",
-	showUnusedDesc2: "NOTE: this option has no effect on JSON and XML exports.",
+	showUnused: [
+		"## Show Unused Sections",
+		"",
+		"Include sections that you did not fill out, leaving space for you",
+		"to write in later.   ",
+		"**NOTE: this option has no effect on JSON and XML exports.**"
+	],
 
 	"You have no information to clear.": "You have no information to clear.",
 	morphoSyntaxInfo:

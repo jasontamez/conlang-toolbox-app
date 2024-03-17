@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState, useMemo, useCallback } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -35,15 +35,44 @@ import debounce from '../../components/Debounce';
 import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
+import useI18Memo from '../../components/useI18Memo';
 
 import { SyntaxHeader } from './MorphoSyntaxElements';
 import LoadMS from './modals/LoadSyntaxDoc';
 import DeleteMS from './modals/DeleteSyntaxDoc';
 import ExportMS from './modals/ExportSyntaxDoc';
 
-const Syntax = (props: PageData) => {
+const translations = [
+	"A short description of this document.", "MorphoSyntax Info",
+	"MorphoSyntax Settings", "You have no information to clear.", "msTitle",
+	"Please add information to your MorphoSyntax document in at least one section before exporting it.",
+	"Usually the language name."
+];
+
+const commons = [
+	"Cancel", "Delete Everything?", "Ok", "Please wait...",
+	"Save as New", "confirmDelIt", "error"
+];
+
+const things = ["clearGeneralThings", "exportThing", "loadThing", "saveThing"];
+
+const contexts = [ "formal", "presentation" ];
+
+
+const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
+	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError ] = useI18Memo(commons);
+	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName ] = useI18Memo(translations, "ms");
+	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
+	const tClearAll = useMemo(() => tc("clearOverrideGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
+	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("Saved MorphoSyntax Info") }), [t, tc]);
+	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
+	const [
+		tClearThings, tExportThing, tLoadThing, tSaveThing
+	] = useMemo(() => things.map(thing => tc(thing, { thing: tMInfo })), [tc, tMInfo]);
+	const [ tfDesc, tpDesc ] = useMemo(() => contexts.map(context => tc("description", { context })), [tc]);
+
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
 	const [isOpenDelMS, setIsOpenDelMS] = useState<boolean>(false);
@@ -64,13 +93,13 @@ const Syntax = (props: PageData) => {
 	useIonViewDidEnter(() => {
 		dispatch(setLastViewMS("msSettings"));
 	});
-	const clearMS = () => {
+	const clearMS = useCallback(() => {
 		const handler = () => {
 			dispatch(loadStateMS(blankAppState.ms));
 		};
 		if(!(title || id || description || (allProps > 0))) {
 			toaster({
-				message: t("You have no information to clear."),
+				message: tNoInfo,
 				duration: 2500,
 				color: "warning",
 				position: "top",
@@ -78,18 +107,18 @@ const Syntax = (props: PageData) => {
 			});
 		} else if(!disableConfirms) {
 			yesNoAlert({
-				header: tc("Delete Everything?"),
-				message: tc("clearOverrideGeneralThings", { things: t("morphoSyntaxInfo") }),
+				header: tDelAll,
+				message: tClearAll,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		} else {
 			handler();
 		}
-	};
-	const openMSModal = (modalOpener: SetBooleanState) => {
+	}, [allProps, description, disableConfirms, dispatch, doAlert, id, tClearAll, tConfDel, tDelAll, tNoInfo, title, toast]);
+	const openMSModal = useCallback((modalOpener: SetBooleanState) => {
 		const info: [string, MSState][] = [];
 		setIsLoading(true);
 		MorphoSyntaxStorage.iterate((value: MSState, key: string) => {
@@ -100,16 +129,16 @@ const Syntax = (props: PageData) => {
 			setIsLoading(false);
 			modalOpener(true);
 		});
-	};
-	const maybeExportMS = () => {
+	}, []);
+	const maybeExportMS = useCallback(() => {
 		if(!title) {
 			return doAlert({
-				header: tc("error"),
-				message: tc("missingThing", tc("title")),
+				header: tError,
+				message: tMissingTitle,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -117,12 +146,12 @@ const Syntax = (props: PageData) => {
 			});
 		} else if (allProps < 1) {
 			return doAlert({
-				header: tc("error"),
-				message: t("Please add information to your MorphoSyntax document in at least one section before exporting it."),
+				header: tError,
+				message: tAddFirst,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Cancel"),
+						text: tCancel,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -130,8 +159,22 @@ const Syntax = (props: PageData) => {
 			});
 		}
 		setIsOpenExportMS(true);
-	};
-	const saveMSDoc = (
+	}, [allProps, doAlert, tAddFirst, tCancel, tError, tMissingTitle, title]);
+	const MSSaveError = useCallback(() => {
+		doAlert({
+			header: tError,
+			message: tMissingTitle,
+			cssClass: "danger",
+			buttons: [
+				{
+					text: tOk,
+					role: "cancel",
+					cssClass: "cancel"
+				}
+			]
+		});
+	}, [doAlert, tError, tMissingTitle, tOk]);
+	const saveMSDoc = useCallback((
 		announce: string = "msDocument",
 		key: string = id,
 		overwrite: boolean = true
@@ -174,30 +217,17 @@ const Syntax = (props: PageData) => {
 					toast
 				});
 			});
-	};
-	const saveMSNew = () => {
+	}, [MSSaveError, description, dispatch, id, msRemainder, t, tc, title, toast]);
+	const saveMSNew = useCallback(() => {
 		if(!title) {
 			return MSSaveError();
 		}
 		const key = uuidv4();
 		dispatch(setMorphoSyntaxText(["id", key]));
 		saveMSDoc("newMsDocument", key, false);
-	};
-	const MSSaveError = () => {
-		doAlert({
-			header: tc("error"),
-			message: tc("missingThing", { thing: tc("title") }),
-			cssClass: "danger",
-			buttons: [
-				{
-					text: tc("Ok"),
-					role: "cancel",
-					cssClass: "cancel"
-				}
-			]
-		});
-};
-	const setNewInfo = (id: string, prop: "description" | "title") => {
+	}, [MSSaveError, dispatch, saveMSDoc, title]);
+	const saveMSDocPlain = useCallback(() => saveMSDoc(), [saveMSDoc]);
+	const setNewInfo = useCallback((id: string, prop: "description" | "title") => {
 		const el = $i<HTMLInputElement>(id);
 		const value = el ? el.value.trim() : "";
 		debounce<Dispatch, Action>(
@@ -206,15 +236,19 @@ const Syntax = (props: PageData) => {
 			(prop === "description" ? 2000 : 1000),
 			"saveMS"
 		);
-	};
-	const info = t("MorphoSyntax Info");
+	}, [dispatch]);
+	const closeLoading = useCallback(() => setIsLoading(false), [setIsLoading]);
+	const openLoad = useCallback(() => openMSModal(setIsOpenLoadMS), [openMSModal]);
+	const openDel = useCallback(() => openMSModal(setIsOpenDelMS), [openMSModal]);
+	const changeTitle = useCallback(() => setNewInfo("msTitle", "title"), [setNewInfo]);
+	const changeDesc = useCallback(() => setNewInfo("msTitle", "description"), [setNewInfo]);
 	return (
 		<IonPage>
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={isLoading}
-				onDidDismiss={() => setIsLoading(false)}
-				message={tc("Please wait...")}
+				onDidDismiss={closeLoading}
+				message={tPlease}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
@@ -234,64 +268,64 @@ const Syntax = (props: PageData) => {
 				setStoredInfo={setStoredInfo}
 				setLoadingScreen={setIsLoading}
 			/>
-			<SyntaxHeader title={t("MorphoSyntax Settings")} {...props} />
+			<SyntaxHeader title={tMSett} {...props} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
 			>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel>{t("msTitle", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpTitle}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("msTitle")}
+							aria-label={tTitle}
 							value={title}
 							id="msTitle"
 							className="ion-margin-top"
-							placeholder={t("Usually the language name.")}
-							onIonChange={() => setNewInfo("msTitle", "title")}
+							placeholder={tName}
+							onIonChange={changeTitle}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel>{tc("description", { context: "presentation" })}</IonLabel>
+						<IonLabel>{tpDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label={tc("description", { context: "formal" })}
+							aria-label={tfDesc}
 							value={description}
 							id="msDesc"
 							className="ion-margin-top"
-							placeholder={t("A short description of this document.")}
+							placeholder={tShortDesc}
 							rows={3}
-							onIonChange={() => setNewInfo("msDesc", "description")}
+							onIonChange={changeDesc}
 						/>
 					</IonItem>
 				</IonList>
 				<IonList lines="none" className="ion-float-end aside">
-					<IonItem button={true} onClick={() => clearMS()}>
+					<IonItem button={true} onClick={clearMS}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>{tc("clearGeneralThings", { things: info })}</IonLabel>
+						<IonLabel>{tClearThings}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openMSModal(setIsOpenLoadMS)}>
+					<IonItem button={true} onClick={openLoad}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />
-						<IonLabel>{tc("loadThing", { thing: info })}</IonLabel>
+						<IonLabel>{tLoadThing}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => saveMSDoc()}>
+					<IonItem button={true} onClick={saveMSDocPlain}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>{tc("saveThing", { thing: info })}</IonLabel>
+						<IonLabel>{tSaveThing}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => saveMSNew()}>
+					<IonItem button={true} onClick={saveMSNew}>
 						<IonIcon icon={saveOutline} className="ion-padding-end" />
-						<IonLabel>{tc("Save as New")}</IonLabel>
+						<IonLabel>{tSaveNew}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => maybeExportMS()}>
+					<IonItem button={true} onClick={maybeExportMS}>
 						<IonIcon icon={codeDownloadOutline} className="ion-padding-end" />
-						<IonLabel>{tc("exportThing", { thing: info })}</IonLabel>
+						<IonLabel>{tExportThing}</IonLabel>
 					</IonItem>
-					<IonItem button={true} onClick={() => openMSModal(setIsOpenDelMS)}>
+					<IonItem button={true} onClick={openDel}>
 						<IonIcon icon={trashOutline} className="ion-padding-end" />
-						<IonLabel>{tc("deleteThing", { thing: t("Saved MorphoSyntax Info") })}</IonLabel>
+						<IonLabel>{tDelSavedInfo}</IonLabel>
 					</IonItem>
 				</IonList>
 			</IonContent>
