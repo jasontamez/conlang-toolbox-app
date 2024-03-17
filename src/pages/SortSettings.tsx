@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -75,7 +75,7 @@ const commons = [
 	"Are you sure you want to delete this? This cannot be undone."
 ];
 
-const SortSettings = (props: PageData) => {
+const SortSettings: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone, tYouSure ] = useI18Memo(commons);

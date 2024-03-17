@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -52,7 +52,7 @@ const translations = [
 
 const commons = [ "Add and Close", "Cancel", "error", "optional" ];
 
-const AddSoundChangeModal = (props: ExtraCharactersModalOpener) => {
+const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -46,7 +46,7 @@ interface AddDJModal extends ExtraCharactersModalOpener {
 	typeString: string
 }
 
-const AddDeclenjugation = (props: AddDJModal) => {
+const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback, useEffect, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -185,7 +185,7 @@ const commons = [
 	"Your selected words will be added to the Lexicon under that column."
 ];
 
-const WEOut = (props: PageData) => {
+const WEOut: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tHelp, tLoad, tOutput, tWait, tSave,

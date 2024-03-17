@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -76,7 +76,7 @@ const declarative = { type: "declarative" };
 const interrogative = { type: "interrogative" };
 const exclamatory = { type: "exclamatory" };
 
-const WGSet = (props: PageData) => {
+const WGSet: FC<PageData> = (props) => {
 	const [ tHelp, tLoad, tWait, tSettings ] = useI18Memo(commons);
 	const [
 		tAlways, tCap, tCGRD, tF050, tF0100, tF215, tMax, tNever, tPresets,

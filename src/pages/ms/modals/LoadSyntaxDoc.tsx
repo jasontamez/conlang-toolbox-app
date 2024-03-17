@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -33,7 +33,7 @@ interface OldStyleSave extends MSState {
 	boolStrings?: MSBool[]
 }
 
-const LoadMSModal = (props: MSmodalProps) => {
+const LoadMSModal: FC<MSmodalProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const tLoadDoc = useMemo(() => tc("loadThing", { thing: t("msDocument") }), [tc, t]);

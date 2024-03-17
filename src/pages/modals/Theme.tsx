@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -35,7 +35,7 @@ const themes: ThemeNames[] = [
 
 const commons = [ "Cancel", "Close" ];
 
-const ThemeModal = (props: ModalProperties) => {
+const ThemeModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator("settings");
 	const tChooseTheme = useMemo(() => t("Choose a Theme"), [t]);
 	const [ tCancel, tClose ] = useI18Memo(commons);

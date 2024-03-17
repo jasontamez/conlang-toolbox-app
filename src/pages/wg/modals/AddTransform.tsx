@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -57,7 +57,7 @@ const commons = [
 
 const addies = [ "thingAdded", "addThing" ];
 
-const AddTransformModal = (props: ExtraCharactersModalOpener) => {
+const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tThingAdd, tAddThing ] = useMemo(() => {

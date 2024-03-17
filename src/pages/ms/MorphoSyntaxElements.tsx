@@ -41,7 +41,7 @@ interface ModalProperties {
 	modalPropsMaker: ModalPropsMaker
 }
 
-export const SyntaxHeader = (props: ModalProperties) => {
+export const SyntaxHeader: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const {
 		title,
@@ -348,7 +348,7 @@ const HeaderRow: FC<HeaderRowProps> = (props) => {
 		</IonRow>
 	);
 };
-export const CheckboxItem = (props: CheckboxProps) => {
+export const CheckboxItem: FC<CheckboxProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const {

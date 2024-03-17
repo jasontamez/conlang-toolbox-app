@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -82,7 +82,7 @@ function makeDJGroupDescription (group: DJGroup) {
 	return total.join(separator);
 }
 
-const DJGroups = (props: PageData) => {
+const DJGroups: FC<PageData> = (props) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [ t ] = useTranslator('dj');

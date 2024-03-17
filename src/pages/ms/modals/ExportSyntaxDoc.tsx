@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback, useMemo, useState } from 'react';
+import React, { MouseEvent, useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -51,7 +51,7 @@ const commons = [
 	"Word Document (docx)", "XML File", "[Untitled]"
 ];
 
-const ExportSyntaxModal = (props: ExportModalProps) => {
+const ExportSyntaxModal: FC<ExportModalProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tJSON, tMD, tPlain, tDocx, tXML, tUntitled ] = useI18Memo(commons);

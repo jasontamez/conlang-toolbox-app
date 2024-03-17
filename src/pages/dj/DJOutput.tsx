@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -45,7 +45,7 @@ import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
 import { OutputCard } from './DJinfo';
 
-const DJOutput = (props: PageData) => {
+const DJOutput: FC<PageData> = (props) => {
 //	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();

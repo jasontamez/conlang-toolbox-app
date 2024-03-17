@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -40,7 +40,7 @@ const commons = [
 	"Cancel", "Close", "confirmDelIt", "Lexicon"
 ];
 
-const DeleteLexiconModal = (props: SavedLexProperties) => {
+const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const tNoSaved = useMemo(() => t("No Saved Lexicons"), [t]);

@@ -114,7 +114,7 @@ const DisplayWithoutName: FC<DisplayProps> = (props) => {
 	);
 };
 
-const ExtraCharactersModal = (props: ModalProperties) => {
+const ExtraCharactersModal: FC<ModalProperties> = (props) => {
 	//interface ExtraCharDataFlags {
 	//	[key: string]: boolean
 	//}

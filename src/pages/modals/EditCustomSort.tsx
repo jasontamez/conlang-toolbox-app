@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -105,7 +105,7 @@ const commons = [
 const presentations = [ "Alphabet separator", "Sort Language", "Sort Sensitivity" ];
 const context = { context: "presentation" };
 
-const EditCustomSort = (props: CustomSortModal) => {
+const EditCustomSort: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [

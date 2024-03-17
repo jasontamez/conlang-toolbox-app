@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonContent,
 	IonHeader,
@@ -67,7 +67,7 @@ const translations = [
 
 const commons = [ "Close", "Done" ];
 
-const OutputOptionsModal = (props: ModalProperties) => {
+const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const tOutOpts = useMemo(() => tw("Output Options"), [tw]);

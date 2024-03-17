@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -41,7 +41,7 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 	setTitles: SetState<string[] | null>
 }
 
-const ManageCustomInfo = (props: ExtraInfo) => {
+const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;

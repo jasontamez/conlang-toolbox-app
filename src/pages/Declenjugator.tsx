@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonIcon,
@@ -18,7 +18,7 @@ import DJOutput from './dj/DJOutput';
 import DJinfo from './dj/DJinfo';
 
 
-const DJ = (props: PageData) => {
+const DJ: FC<PageData> = (props) => {
 	const tabs = useMemo(() => appPagesObject.dj.filter(obj => !obj.hidden).map(obj => {
 		const { title, tabTitle, url, tab, icon, Icon } = obj;
 		return (

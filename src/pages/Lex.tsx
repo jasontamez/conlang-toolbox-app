@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -408,7 +408,7 @@ const commons =  [
 const presentations = [ "Lexicon Title", "Sort" ];
 const context = { context: "presentation" };
 
-const Lex = (props: PageData) => {
+const Lex: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [

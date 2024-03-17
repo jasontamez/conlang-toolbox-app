@@ -61,7 +61,7 @@ const PresetItem: FC<PresetItemProps> = (props) => {
 
 const commons = [ "Cancel", "Close", "Load Preset", "confirmLoad" ];
 
-const MaybeLoadPresetModal = (props: ModalProperties) => {
+const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tClose, tLoadPre, tConfLoad ] = useI18Memo(commons);

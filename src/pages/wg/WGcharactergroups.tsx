@@ -109,7 +109,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 
 const commons = [ "Add New", "Copy", "Delete", "Help", "WordEvolve" ];
 
-const WGCharGroup = (props: PageData) => {
+const WGCharGroup: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');

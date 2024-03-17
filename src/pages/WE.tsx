@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonIcon,
@@ -20,7 +20,7 @@ import WEOutput from "./we/WEoutput";
 import WEinfo from './we/WEinfo';
 
 
-const WE = (props: PageData) => {
+const WE: FC<PageData> = (props) => {
 	const tabs = useMemo(() => appPagesObject.we.filter(obj => !obj.hidden).map(obj => {
 		const { title, tabTitle, url, tab, icon, Icon } = obj;
 		return (

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -56,7 +56,7 @@ const wgweWords = [
 
 const addies = [ "thingAdded", "addThing" ];
 const useDrop = ["Use separate dropoff rate"];
-const AddCharGroupModal = (props: ExtraCharactersModalOpener) => {
+const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);

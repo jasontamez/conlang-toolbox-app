@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -27,7 +27,7 @@ import ModalHeader from '../../../components/ModalHeader';
 
 const commons = [ "Cancel", "Load Preset", "confirmLoad" ];
 
-const MaybeLoadPresetModal = (props: ModalProperties) => {
+const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const tClearThings = useMemo(() => tc("clearOverrideGeneralThings", { title: t("allThings") }), [t, tc]);

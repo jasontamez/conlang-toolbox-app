@@ -136,7 +136,7 @@ const commons = [
 	"Are you sure you want to delete this? This cannot be undone."
 ];
 
-const WERew = (props: PageData) => {
+const WERew: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');

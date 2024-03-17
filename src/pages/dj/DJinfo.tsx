@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
 	IonButton,
 	IonCard,
@@ -29,7 +29,7 @@ interface CardProps {
 	hideOverview?: boolean
 	setIsOpenInfo?: SetBooleanState
 }
-const OverviewButton = (props: CardProps) => {
+const OverviewButton: FC<CardProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const { hideOverview, setIsOpenInfo } = props;
 	if(hideOverview) {
@@ -49,7 +49,7 @@ const OverviewButton = (props: CardProps) => {
 	);
 };
 
-export const InputCard = (props: CardProps) => {
+export const InputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const main = t("info.input", { joinArrays: "\n"});
 	return (
@@ -66,7 +66,7 @@ export const InputCard = (props: CardProps) => {
 	);
 };
 
-export const GroupCard = (props: CardProps) => {
+export const GroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const main = t("info.groups", { joinArrays: "\n"});
 	const example = t("info.groupsExample", { returnObjects: true});
@@ -102,7 +102,7 @@ export const GroupCard = (props: CardProps) => {
 	);
 }
 
-export const OutputCard = (props: CardProps) => {
+export const OutputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const main = t("info.output", { joinArrays: "\n"});
 	return (
@@ -119,7 +119,7 @@ export const OutputCard = (props: CardProps) => {
 	);
 }
 
-const DJinfo = (props: PageData) => {
+const DJinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const main = t("info.overview", { joinArrays: "\n"});

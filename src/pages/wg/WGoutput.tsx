@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -55,7 +55,7 @@ const translations = [
 	"You have no syllables defined."
 ];
 
-const WGOut = (props: PageData) => {
+const WGOut: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, FC } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -57,7 +57,7 @@ const commons = [ "Close", "Copy to Clipboard", "Done", "Loading" ];
 const translations = [ "Exported Data", "Other App Settings", "What to Export" ];
 
 
-const MExportAllData = (props: ModalProperties) => {
+const MExportAllData: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('common');
 	const [ ts ] = useTranslator('settings');
 	const [ tClose, tCopy, tDone, tLoading ] = useI18Memo(commons);

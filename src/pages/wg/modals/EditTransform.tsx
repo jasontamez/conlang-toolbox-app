@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -66,7 +66,7 @@ const things = [
 	"deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved"
 ];
 
-const EditTransformModal = (props: ModalProps) => {
+const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tYouSure, tCancel, tClose, tExChar, tConfDel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSrch, tTrans, tRepl, tSrch ] = useI18Memo(translations, 'wgwe');
 	const [ tpTransDesc, tpRepl, tpSrch ] = useI18Memo(presentations, 'wgwe', context);

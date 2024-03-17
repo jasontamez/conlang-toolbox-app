@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	IonItem,
@@ -69,7 +69,7 @@ interface AddGroupProps extends ExtraCharactersModalOpener {
 	setOutgoingDeclenjugation: SetState<Declenjugation | null | string>
 }
 
-const AddGroup = (props: AddGroupProps) => {
+const AddGroup: FC<AddGroupProps> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,

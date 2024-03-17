@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -65,7 +65,7 @@ const weExp = [ "context expression", "exception expression", "sound change desc
 const formal = { context: "formal" };
 const presentation = { context: "presentation" };
 
-const EditSoundChangeModal = (props: ModalProps) => {
+const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tConfDel, tError, tOptional ] = useI18Memo(commons);

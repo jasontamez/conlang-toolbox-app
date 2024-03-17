@@ -101,7 +101,7 @@ const CaseItem: FC<CaseItemProps> = (props) => {
 	);
 };
 
-const CaseMaker = (props: CaseMakerModal) => {
+const CaseMaker: FC<CaseMakerModal> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,

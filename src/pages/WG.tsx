@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonIcon,
@@ -20,7 +20,7 @@ import WGSettings from "./wg/WGsettings";
 import WGinfo from './wg/WGinfo';
 
 
-const WG = (props: PageData) => {
+const WG: FC<PageData> = (props) => {
 	const tabs = useMemo(() => appPagesObject.wg.filter(obj => !obj.hidden).map(obj => {
 		const { title, tabTitle, url, tab, icon, Icon } = obj;
 		return (

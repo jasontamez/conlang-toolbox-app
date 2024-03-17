@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, FC } from 'react';
 import { Route } from 'react-router-dom';
 import {
 	IonLabel,
@@ -46,7 +46,7 @@ const makeTab = (n: number, min: number, max: number) => {
 	);
 };
 
-const MS = (props: PageData) => {
+const MS: FC<PageData> = (props) => {
 	const msPage: string = useSelector((state: StateObject) => state.internals.lastViewMS) || "msSettings";
 	const [lastPage, setLastPage] = useState<number>(Number(msPage.slice(-2)) || 0);
 	// 'center' should not fall more that two places from an edge

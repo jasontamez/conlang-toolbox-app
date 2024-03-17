@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IonIcon } from "@ionic/react";
 import {
 	create,
@@ -45,27 +45,27 @@ interface IconProps extends IonIconProps {
 	which: keyof Map
 }
 
-const Icon = (props: IconProps) => {
+const Icon: FC<IconProps> = (props) => {
 	const { which, ...rest } = props;
 	return <IonIcon {...rest} src={`svg/${map[which]}.svg`}></IonIcon>;
 };
 
-export const ConceptsIcon = (props: IonIconProps) => <Icon which="concepts" {...props}></Icon>;
-export const ConceptsOutlineIcon = (props: IonIconProps) => <Icon which="conceptsOutline" {...props}></Icon>;
-export const LexiconIcon = (props: IonIconProps) => <Icon flipRtl which="lexicon" {...props}></Icon>;
-export const LexiconOutlineIcon = (props: IonIconProps) => <Icon flipRtl which="lexiconOutline" {...props}></Icon>;
-export const MorphoSyntaxIcon = (props: IonIconProps) => <Icon which="morphoSyntax" {...props}></Icon>;
-//export const MorphoSyntaxOutlineIcon = (props: IonIconProps) => <Icon which="morphoSyntaxOutline" {...props}></Icon>;
-export const WordEvolveIcon = (props: IonIconProps) => <Icon flipRtl which="wordEvolve" {...props}></Icon>;
-//export const WordEvolveOutlineIcon = (props: IonIconProps) => <Icon flipRtl which="wordEvolveOutline" {...props}></Icon>;
+export const ConceptsIcon: FC<IonIconProps> = (props) => <Icon which="concepts" {...props}></Icon>;
+export const ConceptsOutlineIcon: FC<IonIconProps> = (props) => <Icon which="conceptsOutline" {...props}></Icon>;
+export const LexiconIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="lexicon" {...props}></Icon>;
+export const LexiconOutlineIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="lexiconOutline" {...props}></Icon>;
+export const MorphoSyntaxIcon: FC<IonIconProps> = (props) => <Icon which="morphoSyntax" {...props}></Icon>;
+//export const MorphoSyntaxOutlineIcon: FC<IonIconProps> = (props) => <Icon which="morphoSyntaxOutline" {...props}></Icon>;
+export const WordEvolveIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="wordEvolve" {...props}></Icon>;
+//export const WordEvolveOutlineIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="wordEvolveOutline" {...props}></Icon>;
 
-export const WordGenIcon = (props: IonIconProps) => <IonIcon flipRtl {...props} icon={create}></IonIcon>;
-//export const WordGenOutlineIcon = (props: IonIconProps) => <IonIcon flipRtl {...props} icon={createOutline}></IonIcon>;
+export const WordGenIcon: FC<IonIconProps> = (props) => <IonIcon flipRtl {...props} icon={create}></IonIcon>;
+//export const WordGenOutlineIcon: FC<IonIconProps> = (props) => <IonIcon flipRtl {...props} icon={createOutline}></IonIcon>;
 
-export const SyllablesIcon = (props: IonIconProps) => <Icon flipRtl which="syllables" {...props}></Icon>;
-export const TransformationsIcon = (props: IonIconProps) => <Icon flipRtl which="transformations" {...props}></Icon>;
-export const SoundChangesIcon = (props: IonIconProps) => <Icon flipRtl which="soundChanges" {...props}></Icon>;
-export const CopyFromOtherIcon = (props: IonIconProps) => <Icon flipRtl which="import" {...props}></Icon>
+export const SyllablesIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="syllables" {...props}></Icon>;
+export const TransformationsIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="transformations" {...props}></Icon>;
+export const SoundChangesIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="soundChanges" {...props}></Icon>;
+export const CopyFromOtherIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="import" {...props}></Icon>
 
-export const DeclenjugatorIcon = (props: IonIconProps) => <Icon flipRtl which="declenjugator" {...props}></Icon>;
-export const DJGroupsIcon = (props: IonIconProps) => <Icon flipRtl which="djGroups" {...props}></Icon>;
+export const DeclenjugatorIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="declenjugator" {...props}></Icon>;
+export const DJGroupsIcon: FC<IonIconProps> = (props) => <Icon flipRtl which="djGroups" {...props}></Icon>;

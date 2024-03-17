@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -56,7 +56,7 @@ const presentations = [ "Base Character", "Equal to the Base", "Equalities Separ
 const context = { context: "presentation" };
 
 
-const EditCustomSortEquality = (props: CustomSortModal) => {
+const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [

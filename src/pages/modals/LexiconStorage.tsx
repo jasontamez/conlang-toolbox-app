@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -56,7 +56,7 @@ const translations = [
 const commons = [ "Delete Everything?", "Done", "Ok", "Save as New", "confirmDelIt", "error" ];
 
 
-const LexiconStorageModal = (props: StorageModalProps) => {
+const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [

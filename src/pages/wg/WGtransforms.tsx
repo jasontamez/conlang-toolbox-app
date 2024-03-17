@@ -101,7 +101,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 
 const commons = [ "Add New", "Delete", "Help" ];
 
-const WGRew = (props: PageData) => {
+const WGRew: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tTransformations = useMemo(() => tw("Transformations"), [tw]);

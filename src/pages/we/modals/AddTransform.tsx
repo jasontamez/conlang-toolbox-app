@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -53,7 +53,7 @@ const presentations = [
 const formal = { context: "formal" };
 const context = { context: "presentation" };
 
-const AddTransformModal = (props: ExtraCharactersModalOpener) => {
+const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tAddClose, tCancel, tError, tOptional, tTrans ] = useI18Memo(commons);

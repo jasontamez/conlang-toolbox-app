@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonLabel,
 	IonPage,
@@ -25,7 +25,7 @@ const translations =  [
 	"Import App Info", "Sort Settings"
 ];
 
-const AppSettings = (props: PageData) => {
+const AppSettings: FC<PageData> = (props) => {
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);

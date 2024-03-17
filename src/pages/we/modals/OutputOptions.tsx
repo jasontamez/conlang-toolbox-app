@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonContent,
 	IonToolbar,
@@ -34,7 +34,7 @@ const translations = [
 
 const commons = [ "Default sort", "Done" ];
 
-const OutputOptionsModal = (props: ModalProperties) => {
+const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const tOutOpt = useMemo(() => tw("Output Options"), [tw]);

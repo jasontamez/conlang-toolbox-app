@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonPage,
 	IonGrid,
@@ -58,7 +58,7 @@ const commons = [ "Close", "Copy", "Ok", "areYouSure" ];
 const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
 const context = { joinArrays: "\n" };
 
-const AppInfo = (props: PageData) => {
+const AppInfo: FC<PageData> = (props) => {
 	const width = useWindowWidth();
 	const [ tc ] = useTranslator('common');
 	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);

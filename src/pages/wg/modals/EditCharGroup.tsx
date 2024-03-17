@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -70,7 +70,7 @@ const things = [
 	"deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved"
 ];
 
-const EditCharGroupModal = (props: ModalProps) => {
+const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const tUseSep = useMemo(() => t("Use separate dropoff rate"), [t]);

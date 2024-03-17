@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -31,7 +31,7 @@ import LexiconImporterModal from '../modals/ImportFromLexicon';
 import ModalWrap from '../../components/ModalWrap';
 import { InputCard } from './DJinfo';
 
-const DJInput = (props: PageData) => {
+const DJInput: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const { modalPropsMaker } = props;

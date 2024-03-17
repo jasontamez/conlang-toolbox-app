@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonPage,
 	IonIcon,
@@ -50,7 +50,7 @@ const translations =  [
 	"Lexicon", "MorphoSyntax", "WordEvolve", "WordGen"
 ];
 
-const Home = (props: PageData) => {
+const Home: FC<PageData> = (props) => {
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenConcepts, setIsOpenConcepts] = useState<boolean>(false);
 	const [isOpenLexicon, setIsOpenLexicon] = useState<boolean>(false);

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -41,7 +41,7 @@ interface LexItemProps extends ExtraCharactersModalOpener {
 const commons = [ "Close", "Extra Characters", "Ok", "You did not type any information into any text field.", "error" ];
 const things = [ "Item", "Lexicon Item" ];
 
-const AddLexiconItemModal = (props: LexItemProps) => {
+const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tExChar, tOk, tNoInfo, tError ] = useI18Memo(commons);

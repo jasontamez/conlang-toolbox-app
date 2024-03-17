@@ -63,7 +63,7 @@ export const appMenuInfo: MenuSection[] = [
 			{
 				title: tc("MorphoSyntax"),
 				url: '/ms',
-				MenuIcon: (props: IonIconProps) => <MorphoSyntaxIcon {...props} />,
+				MenuIcon: (props) => <MorphoSyntaxIcon {...props} />,
 				id: 'menuitemSyntax',
 				parentOf: 'ms'
 			},
@@ -167,7 +167,7 @@ export const appMenuInfo: MenuSection[] = [
 			{
 				title: tc("WordGen"),
 				url: '/wg',
-				MenuIcon: (props: IonIconProps) => <WordGenIcon {...props} />,
+				MenuIcon: (props) => <WordGenIcon {...props} />,
 				id: 'menuitemWG',
 				parentOf: 'wg'
 			},
@@ -194,7 +194,7 @@ export const appMenuInfo: MenuSection[] = [
 				url: '/wg/syllables',
 				tab: 'syllables',
 				id: 'menuitemWGsyl',
-				Icon: (props: IonIconProps) => <SyllablesIcon {...props} />,
+				Icon: (props) => <SyllablesIcon {...props} />,
 				parent: 'wg'
 			},
 			{
@@ -203,7 +203,7 @@ export const appMenuInfo: MenuSection[] = [
 				tab: 'transforms',
 				tabTitle: 'Transforms',
 				id: 'menuitemWGrew',
-				Icon: (props: IonIconProps) => <TransformationsIcon {...props} />,
+				Icon: (props) => <TransformationsIcon {...props} />,
 				parent: 'wg'
 			},
 			{
@@ -225,7 +225,7 @@ export const appMenuInfo: MenuSection[] = [
 			{
 				title: tc("WordEvolve"),
 				url: '/we',
-				MenuIcon: (props: IonIconProps) => <WordEvolveIcon {...props} />,
+				MenuIcon: (props) => <WordEvolveIcon {...props} />,
 				id: 'menuitemWE',
 				parentOf: 'we'
 			},
@@ -261,7 +261,7 @@ export const appMenuInfo: MenuSection[] = [
 				tab: 'transformations',
 				tabTitle: 'Transforms',
 				id: 'menuitemWEtns',
-				Icon: (props: IonIconProps) => <TransformationsIcon {...props} />,
+				Icon: (props) => <TransformationsIcon {...props} />,
 				parent: 'we'
 			},
 			{
@@ -270,7 +270,7 @@ export const appMenuInfo: MenuSection[] = [
 				tab: 'soundchanges',
 				tabTitle: 'Changes',
 				id: 'menuitemWEscs',
-				Icon: (props: IonIconProps) => <SoundChangesIcon {...props} />,
+				Icon: (props) => <SoundChangesIcon {...props} />,
 				parent: 'we'
 			},
 			{
@@ -284,7 +284,7 @@ export const appMenuInfo: MenuSection[] = [
 			{
 				title: tc("Declenjugator"),
 				url: '/dj',
-				MenuIcon: (props: IonIconProps) => <DeclenjugatorIcon {...props} />,
+				MenuIcon: (props) => <DeclenjugatorIcon {...props} />,
 				id: 'menuitemDJ',
 				parentOf: 'dj'
 			},
@@ -309,7 +309,7 @@ export const appMenuInfo: MenuSection[] = [
 				url: '/dj/groups',
 				tab: 'groups',
 				id: 'menuitemDJgroup',
-				Icon: (props: IonIconProps) => <DJGroupsIcon {...props} />,
+				Icon: (props) => <DJGroupsIcon {...props} />,
 				parent: 'dj'
 			},
 			{
@@ -329,13 +329,13 @@ export const appMenuInfo: MenuSection[] = [
 			{
 				title: tc("Lexicon"),
 				url: '/lex',
-				MenuIcon: (props: IonIconProps) => <LexiconIcon {...props} />,
+				MenuIcon: (props) => <LexiconIcon {...props} />,
 				id: 'menuitemLX'
 			},
 			{
 				title: tc("Concepts"),
 				url: '/wordlists',
-				MenuIcon: (props: IonIconProps) => <ConceptsIcon {...props} />,
+				MenuIcon: (props) => <ConceptsIcon {...props} />,
 				id: 'menuitemConcepts'
 			}
 		],

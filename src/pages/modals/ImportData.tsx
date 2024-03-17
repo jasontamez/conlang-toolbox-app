@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, FC } from 'react';
 import {
 	IonIcon,
 	IonLabel,
@@ -90,7 +90,7 @@ const translations = [
 	"You haven't imported anything yet.", "importDescription"
 ];
 
-const ImportData = (props: ModalProperties) => {
+const ImportData: FC<ModalProperties> = (props) => {
 	const [ ts ] = useTranslator('settings');
 	const [
 		tAppSett, tCancel, tClose, tConcepts, tDJ, tExChar,

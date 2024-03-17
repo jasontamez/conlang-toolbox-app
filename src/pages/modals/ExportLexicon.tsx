@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback, useMemo } from 'react';
+import React, { MouseEvent, useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -39,7 +39,7 @@ const translations = [
 
 const commons = [ "Cancel", "Close", "Description", "TITLE" ];
 
-const ExportLexiconModal = (props: ExportModalProps) => {
+const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tClose, tDesc, tTITLE ] = useI18Memo(commons);
 	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");

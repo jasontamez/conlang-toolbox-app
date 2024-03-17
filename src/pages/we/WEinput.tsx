@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler, useMemo } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, useMemo, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -40,7 +40,7 @@ const commons = [
 
 const translations = [ "Words to Evolve", "Enter words here one per line" ];
 
-const WEInput = (props: PageData) => {
+const WEInput: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tWordsToEvolve, tOnePerLine ] = useI18Memo(translations, "we");
 	const [ tYouSure, tClearInput, tClear, tExChar, tHelp, tInput, tYesClear ] = useI18Memo(commons);

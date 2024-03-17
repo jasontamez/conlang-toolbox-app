@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -36,7 +36,7 @@ const translations = [ "No Saved Lexicons", "loadLexiconConfirm" ];
 
 const commons = [ "Cancel", "Close", "confirmLoad" ];
 
-const LoadLexiconModal = (props: SavedLexProperties) => {
+const LoadLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [ tCancel, tClose, tConfLoad ] = useI18Memo(commons);

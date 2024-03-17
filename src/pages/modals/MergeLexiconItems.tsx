@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -118,7 +118,7 @@ const translations = [
 	"lexiconMergeInstructions"
 ];
 
-const MergeLexiconItemsModal = (props: MergeProps) => {
+const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const methodDescriptions: MethodDescriptions = useMemo(() => ({
