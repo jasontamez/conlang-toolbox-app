@@ -19,7 +19,7 @@ import {
 	reorderTwo,
 	helpCircle
 } from 'ionicons/icons';
-import Markdown from 'react-markdown';
+import Markdown, { ExtraProps } from 'react-markdown';
 
 import { PageData, SetBooleanState } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
@@ -35,6 +35,8 @@ import {
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
 import { Block, BlockStorage, parseBlock } from '../../components/infoBlocks';
 import useI18Memo, { useI18MemoObject } from '../../components/useI18Memo';
+
+type CodeProps = React.ClassAttributes<HTMLElement> & React.HTMLAttributes<HTMLElement> & ExtraProps;
 
 interface CardProps {
 	hideOverview?: boolean
@@ -73,6 +75,22 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 	const example = useMemo(() => t("info.charGroupExample", { returnObjects: true }), [t]);
 	const tCharGroupTab = useMemo(() => t("Character Groups Tab"), [t]);
 	const [ plainText, endHiddenOverview, endOverview ] = useI18Memo(charGroupInfo, 'wg', joinArrays);
+	const codeProps = useMemo(() => ({
+		code: (props: CodeProps) => {
+			const { children } = props;
+			if(children === "example") {
+				const inner: ReactElement[] = [];
+				(example as string[]).forEach((bit, i) => {
+					inner.push(
+						<strong key={`charGroupExample/${bit}/${i}`}>{bit}</strong>,
+						<br key={`charGroupExample/linebreak-${i}`} />
+					)
+				});
+				return <span className="emphasizedSection">{inner}</span>;
+			}
+			return <IPA>{children}</IPA>;
+		}
+	}), [example]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -81,24 +99,7 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<Markdown
-					components={{
-						code(props) {
-							const { children } = props;
-							if(children === "example") {
-								const inner: ReactElement[] = [];
-								(example as string[]).forEach((bit, i) => {
-									inner.push(
-										<strong key={`charGroupExample/${bit}/${i}`}>{bit}</strong>,
-										<br key={`charGroupExample/linebreak-${i}`} />
-									)
-								});
-								return <span className="emphasizedSection">{inner}</span>;
-							}
-							return <IPA>{children}</IPA>;
-						}
-					}}
-				>{plainText}</Markdown>
+				<Markdown components={codeProps}>{plainText}</Markdown>
 				<Markdown>{props.hideOverview ? endHiddenOverview : endOverview}</Markdown>
 			</IonCardContent>
 		</IonCard>
@@ -120,6 +121,36 @@ export const SylCard: FC<CardProps> = (props) => {
 		plainText, endHiddenOverview, endOverview
 	] = useI18Memo(syllInfo, 'wg', joinArrays);
 	const tSyllTab = useMemo(() => t("Syllables Tab"), [t]);
+	const codeProps = useMemo(() => ({
+		code(props: CodeProps) {
+			const { children } = props;
+			if(children === "charGroup example") {
+				const inner: ReactElement[] = [];
+				(charGroupExample as string[]).forEach((bit, i) => {
+					inner.push(
+						<strong key={`syllCharGroupExample/${bit}/${i}`}>{bit}</strong>
+					);
+					(i + 1 !== (charGroupExample as string[]).length)
+						&& inner.push(<br key={`syllCharGroupExample/linebreak-${i}`} />);
+				});
+				return <span className="emphasizedSection">{inner}</span>;
+			}
+			return <></>;
+		}
+	}), [charGroupExample])
+	const emphasis = useMemo(() => (
+		<div className="emphasizedSection">
+			{(example as string[]).map((bit, i) => {
+				const inner: ReactElement[] = [];
+				inner.push(
+					<strong key={`syllExample/${bit}/${i}`}>{bit}</strong>
+				);
+				(i + 1 !== (example as string[]).length)
+					&& inner.push(<br key={`syllExample/linebreak-${i}`} />);
+				return <React.Fragment key={`syllExampleGroup/${bit}/${i}`}>{inner}</React.Fragment>
+			})}
+		</div>
+	), [example]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -128,37 +159,9 @@ export const SylCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<Markdown
-					components={{
-						code(props) {
-							const { children } = props;
-							if(children === "charGroup example") {
-								const inner: ReactElement[] = [];
-								(charGroupExample as string[]).forEach((bit, i) => {
-									inner.push(
-										<strong key={`syllCharGroupExample/${bit}/${i}`}>{bit}</strong>
-									);
-									(i + 1 !== (charGroupExample as string[]).length)
-										&& inner.push(<br key={`syllCharGroupExample/linebreak-${i}`} />);
-								});
-								return <span className="emphasizedSection">{inner}</span>;
-							}
-							return <></>;
-						}
-					}}
-				>{hideOverview ? startHiddenOverview : startOverview}</Markdown>
+				<Markdown components={codeProps}>{hideOverview ? startHiddenOverview : startOverview}</Markdown>
 
-				<div className="emphasizedSection">
-					{(example as string[]).map((bit, i) => {
-						const inner: ReactElement[] = [];
-						inner.push(
-							<strong key={`syllExample/${bit}/${i}`}>{bit}</strong>
-						);
-						(i + 1 !== (example as string[]).length)
-							&& inner.push(<br key={`syllExample/linebreak-${i}`} />);
-						return <React.Fragment key={`syllExampleGroup/${bit}/${i}`}>{inner}</React.Fragment>
-					})}
-				</div>
+				{emphasis}
 
 				<Markdown>{plainText}</Markdown>
 
@@ -172,16 +175,24 @@ export const SylCard: FC<CardProps> = (props) => {
 export const TransCard: FC<CardProps> = (props) => {
 	const arrow = useMemo(() => (ltr() ? "⟶" : "⟵"), []);
 	const [ t ] = useTranslator('wg');
-	const blockStorage = useMemo(() => {
+	const plainText = useMemo(() => t("info.trans", { arrow, joinArrays: "\n"}), [t, arrow]);
+	const tTransTab = useMemo(() => t("Transformations Tab"), [t]);
+	const codeProps = useMemo(() => {
 		const blocks = t("info.transBlocks", { returnObjects: true });
 		const blockStorage: BlockStorage = {};
 		Object.entries(blocks).forEach(([label, info]: [string, Block]) => {
 			blockStorage[label] = parseBlock(info, arrow);
 		});
-		return blockStorage;
-	}, [arrow, t]);
-	const plainText = useMemo(() => t("info.trans", { arrow, joinArrays: "\n"}), [t, arrow]);
-	const tTransTab = useMemo(() => t("Transformations Tab"), [t]);
+		return {
+			code(props: CodeProps) {
+				const { children } = props;
+				return (
+					(typeof(children) === "string" && blockStorage[children])
+					|| <IonIcon icon={reorderTwo} color="tertiary" size="small" />
+				);
+			}
+		};
+	}, [t, arrow]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -190,17 +201,7 @@ export const TransCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<Markdown
-					components={{
-						code(props) {
-							const { children } = props;
-							return (
-								(typeof(children) === "string" && blockStorage[children])
-								|| <IonIcon icon={reorderTwo} color="tertiary" size="small" />
-							);
-						}
-					}}
-				>{plainText}</Markdown>
+				<Markdown components={codeProps}>{plainText}</Markdown>
 				<RegularExpressions />
 			</IonCardContent>
 		</IonCard>

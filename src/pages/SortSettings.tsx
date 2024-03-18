@@ -231,6 +231,14 @@ const SortSettings: FC<PageData> = (props) => {
 
 	const openAdd = useCallback(() => setAddModalOpen(true), []);
 
+	const languageOptions = useMemo(() => languages.map((language) => (
+		<IonSelectOption
+			key={`knownLang:${language}`}
+			className="ion-text-wrap ion-text-align-end"
+			value={language}
+		>{langObj[language] || language}</IonSelectOption>
+	)), []);
+
 	return (
 		<IonPage>
 			<AddCustomSort
@@ -341,13 +349,7 @@ const SortSettings: FC<PageData> = (props) => {
 							onIonChange={setLang}
 							disabled={!useLanguageSort}
 						>
-							{languages.map((language) => (
-								<IonSelectOption
-									key={`knownLang:${language}`}
-									className="ion-text-wrap ion-text-align-end"
-									value={language}
-								>{langObj[language] || language}</IonSelectOption>
-							))}
+							{languageOptions}
 						</IonSelect>
 					</IonItem>
 					<IonItem className="wrappableInnards sublabelled">

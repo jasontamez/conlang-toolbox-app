@@ -5,25 +5,21 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
 	IonToggle,
 	IonRange,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	RangeCustomEvent
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	chevronBackOutline,
 	saveOutline,
-	trashOutline,
-	globeOutline
+	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -35,6 +31,7 @@ import { $q, $i } from '../../../components/DollarSignExports';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WGCharGroupObject
@@ -51,7 +48,7 @@ function resetError (prop: keyof WGCharGroupObject) {
 
 const commons = [
 	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "Close", "Extra Characters", "confirmDelIt", "error"
+	"Cancel", "confirmDelIt", "error"
 ];
 
 const translations = [
@@ -74,7 +71,7 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const tUseSep = useMemo(() => t("Use separate dropoff rate"), [t]);
-	const [ tYouSure, tCancel, tClose, tExChar, tConfDel, tError ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tConfDel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tCG, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoSuggest
@@ -272,23 +269,11 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 		}
 	}, [cancelEditing, disableConfirms, dispatch, doAlert, dropoff, hasDropoff,
 		labelEl, runEl, titleEl, toast, tConfDel, tThingDel, tYouSure]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
-	const toggleDropoff= useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff])
+	const toggleDropoff = useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff]);
+	const doDropoff = useCallback((e: RangeCustomEvent) => {setDropoff(e.detail.value as Zero_Fifty)}, []);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tEditThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={cancelEditing} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tEditThing} openECM={openECM} closeModal={cancelEditing} />
 			<IonContent>
 				<IonList lines="none" class="hasSpecialLabels">
 					<IonItem className="labelled">
@@ -345,7 +330,7 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 							max={50}
 							pin={true}
 							value={dropoff}
-							onIonChange={e => {setDropoff(e.detail.value as Zero_Fifty)}}
+							onIonChange={doDropoff}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />

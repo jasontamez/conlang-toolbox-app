@@ -5,7 +5,8 @@ import {
 	IonContent,
 	IonList,
 	IonItem,
-	IonToggle
+	IonToggle,
+	ToggleCustomEvent
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -46,6 +47,8 @@ const AppSettings: FC<PageData> = (props) => {
 	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings ] = useI18Memo(translations, 'settings');
 	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
 
+	const setConfirms = useCallback((e: ToggleCustomEvent) => dispatch(setDisableConfirms(e.detail.checked)), [dispatch]);
+
 	return (
 		<IonPage>
 			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
@@ -59,7 +62,7 @@ const AppSettings: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={disableConfirms}
-							onIonChange={e => dispatch(setDisableConfirms(e.detail.checked))}
+							onIonChange={setConfirms}
 						>
 							<h2>{tDisable}</h2>
 							<p>{tEliminate}</p>

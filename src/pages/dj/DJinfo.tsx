@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import {
 	IonButton,
 	IonCard,
@@ -16,7 +16,7 @@ import {
 	logOutOutline,
 	reorderThree
 } from 'ionicons/icons';
-import Markdown from 'react-markdown';
+import Markdown, { ExtraProps } from 'react-markdown';
 
 import { PageData, SetBooleanState } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
@@ -25,6 +25,7 @@ import Header from '../../components/Header';
 import { DJGroupsIcon, DeclenjugatorIcon } from '../../components/icons';
 import { RegularExpressions } from '../../components/regularExpressionsInfo';
 
+type CodeProps = React.ClassAttributes<HTMLElement> & React.HTMLAttributes<HTMLElement> & ExtraProps;
 interface CardProps {
 	hideOverview?: boolean
 	setIsOpenInfo?: SetBooleanState
@@ -32,6 +33,8 @@ interface CardProps {
 const OverviewButton: FC<CardProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const { hideOverview, setIsOpenInfo } = props;
+	const clicker = useCallback(() => setIsOpenInfo && setIsOpenInfo(false), [setIsOpenInfo]);
+	const tHelp = useMemo(() => tc("Help"), [tc]);
 	if(hideOverview) {
 		return <></>;
 	}
@@ -41,8 +44,8 @@ const OverviewButton: FC<CardProps> = (props) => {
 			slot="end"
 			routerLink="/dj/overview"
 			routerDirection="forward"
-			onClick={() => setIsOpenInfo && setIsOpenInfo(false)}
-			aria-label={tc("Help")}
+			onClick={clicker}
+			aria-label={tHelp}
 		>
 			<IonIcon icon={helpCircle} />
 		</IonButton>
@@ -51,12 +54,13 @@ const OverviewButton: FC<CardProps> = (props) => {
 
 export const InputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
-	const main = t("info.input", { joinArrays: "\n"});
+	const main = useMemo(() => t("info.input", { joinArrays: "\n"}), [t]);
+	const tInputTab = useMemo(() => t("Input Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={logInOutline} slot="start" color="primary" />
-				<IonLabel>{t("Input Tab")}</IonLabel>
+				<IonLabel>{tInputTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -68,33 +72,36 @@ export const InputCard: FC<CardProps> = (props) => {
 
 export const GroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('dj');
-	const main = t("info.groups", { joinArrays: "\n"});
-	const example = t("info.groupsExample", { returnObjects: true});
+	const main = useMemo(() => t("info.groups", { joinArrays: "\n"}), [t]);
+	const example = useMemo(() => t("info.groupsExample", { returnObjects: true}), [t]);
+	const examples = useMemo(() => (example as {title: string, content: string[]}[]).map((obj, i) => {
+		const {title, content} = obj;
+		return (
+			<React.Fragment key={`DJexample/${title}/${i}`}>
+				<div className="title">{t(title)}</div>
+				<Markdown>{content.join("\n")}</Markdown>
+			</React.Fragment>
+		);
+	}), [example, t]);
+	const codeComps = useMemo(() => ({
+		code(props: CodeProps) {
+			return <IonIcon icon={reorderThree} color="tertiary" size="small" />;
+		}
+	}), []);
+	const tGroupsTab = useMemo(() => t("Groups Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<DJGroupsIcon slot="start" color="primary" />
-				<IonLabel>{t("Groups Tab")}</IonLabel>
+				<IonLabel>{tGroupsTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
 				<Markdown
-					components={{
-						code(props) {
-							return <IonIcon icon={reorderThree} color="tertiary" size="small" />;
-						}
-					}}
+					components={codeComps}
 				>{main}</Markdown>
 				<div className="example">
-					{(example as {title: string, content: string[]}[]).map((obj, i) => {
-						const {title, content} = obj;
-						return (
-							<React.Fragment key={`DJexample/${title}/${i}`}>
-								<div className="title">{t(title)}</div>
-								<Markdown>{content.join("\n")}</Markdown>
-							</React.Fragment>
-						);
-					})}
+					{examples}
 				</div>
 				<RegularExpressions />
 			</IonCardContent>
@@ -104,12 +111,13 @@ export const GroupCard: FC<CardProps> = (props) => {
 
 export const OutputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('dj');
-	const main = t("info.output", { joinArrays: "\n"});
+	const main = useMemo(() => t("info.output", { joinArrays: "\n"}), [t]);
+	const tOutputTab = useMemo(() => t("Output Tab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
 				<IonIcon icon={logOutOutline} slot="start" color="primary" />
-				<IonLabel>{t("Output Tab")}</IonLabel>
+				<IonLabel>{tOutputTab}</IonLabel>
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
@@ -122,18 +130,20 @@ export const OutputCard: FC<CardProps> = (props) => {
 const DJinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
-	const main = t("info.overview", { joinArrays: "\n"});
+	const main = useMemo(() => t("info.overview", { joinArrays: "\n"}), [t]);
+	const tOverview = useMemo(() => tc("overviewOf", { what: tc("Declenjugator") }), [tc]);
+	const tWhat = useMemo(() => t("What is Declenjugator?"), [t]);
 
 	return (
 		<IonPage>
 			<IonHeader>
-				<Header title={tc("overviewOf", { what: tc("Declenjugator") })} />
+				<Header title={tOverview} />
 			</IonHeader>
 			<IonContent className="overview">
 				<IonCard>
 					<IonItem lines="full">
 						<DeclenjugatorIcon slot="start" color="primary" />
-						<IonLabel>{t("What is Declenjugator?")}</IonLabel>
+						<IonLabel>{tWhat}</IonLabel>
 					</IonItem>
 					<IonCardContent>
 						<Markdown>{main}</Markdown>

@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback, useMemo } from 'react';
+import React, { useState, FC, useCallback, useMemo, ReactElement } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -6,12 +6,7 @@ import {
 	IonList,
 	IonContent,
 	IonPage,
-	IonHeader,
-	IonToolbar,
-	IonMenuButton,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonFab,
 	IonFabButton,
 	IonRange,
@@ -49,6 +44,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { CopyFromOtherIcon } from '../../components/icons';
 import useI18Memo from '../../components/useI18Memo';
+import Header from '../../components/Header';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -107,7 +103,11 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 	);
 };
 
-const commons = [ "Add New", "Copy", "Delete", "Help", "WordEvolve" ];
+const commons = [
+	"Add New", "Copy", "Delete", "Help", "WordEvolve",
+	"Are you sure you want to delete this? This cannot be undone.",
+	"confirmDelIt", "yesImport",
+];
 
 const WGCharGroup: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
@@ -116,7 +116,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 	const tDropExpl = useMemo(() => t("characterDropoffExplanation"), [t]);
 	const tCharGroups = useMemo(() => tw("Character Groups"), [tw]);
 	const tDropoffFormal = useMemo(() => t("dropoff rate", { context: "formal" }), [t]);
-	const [ tAddNew, tCopy, tDelete, tHelp ] = useI18Memo(commons);
+	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tConfDel, tYes ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -136,91 +136,42 @@ const WGCharGroup: FC<PageData> = (props) => {
 		setIsOpenEditCharGroup(true);
 		setEditing(charGroup);
 	}, []);
-	const maybeDeleteCharGroup = useCallback((label: string, charGroup: WGCharGroupObject) => {
-		const groups = $q<HTMLIonListElement>((".charGroups"));
-		groups && groups.closeSlidingItems();
-		const handler = () => {
-			dispatch(deleteCharGroupWG(charGroup));
-			toaster({
-				message: tc("thingDeleted", { thing: tw("Character Group") }),
-				duration: 2500,
-				color: "danger",
-				position: "top",
-				toast
-			});
-		};
-		if(disableConfirms) {
-			handler();
-		} else {
-			yesNoAlert({
-				header: `${label}=${charGroup.run}`,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
-				cssClass: "danger",
-				submit: tc("confirmDelIt"),
-				handler,
-				doAlert
-			});
-		}
-	}, [dispatch, tc, tw, toast, disableConfirms, doAlert]);
-	const maybeClearEverything = useCallback(() => {
-		const count = characterGroups.length;
-		const handler = () => {
-			dispatch(deleteCharGroupWG(null));
-			toaster({
-				message: tc("thingsDeleted", { count, things: tw("CharGroup", { count }) }),
-				duration: 2500,
-				color: "danger",
-				position: "top",
-				toast
-			});
-		};
-		if(disableConfirms) {
-			handler();
-		} else {
-			yesNoAlert({
-				header: tc("clearThings?", { count, things: tw("CharGroup", { count }) }),
-				message: tw("delAllCharGroups", { count }),
-				cssClass: "warning",
-				submit: tc("confirmDel", { count }),
-				handler,
-				doAlert
-			});
-		}
-	}, [characterGroups.length, dispatch, tc, tw, toast, disableConfirms, doAlert]);
-	const maybeCopyFromWE = useCallback(() => {
-		const handler = () => {
-			dispatch(copyCharacterGroupsFromElsewhere(weCharatcterGroups));
-			toaster({
-				message: tw("importCharGroups", { count: weCharatcterGroups.length }),
-				duration: 2500,
-				color: "success",
-				position: "top",
-				toast
-			});
-		};
-		if(disableConfirms) {
-			handler();
-		} else {
-			yesNoAlert({
-				header: tc("ImportFrom", { source: tc("WordEvolve") }),
-				message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
-				cssClass: "warning",
-				submit: tc("yesImport"),
-				handler,
-				doAlert
-			});
-		}
-	}, [dispatch, tw, tc, doAlert, toast, disableConfirms, weCharatcterGroups]);
-	const map = useCallback(
+	const allGroups = useMemo(() => characterGroups.map(
 		(charGroup: WGCharGroupObject) =>
 			<CharGroup
 				key={`WG-CharGroup-${charGroup.label}`}
 				charGroup={charGroup}
 				editCharGroup={editCharGroup}
-				maybeDeleteCharGroup={maybeDeleteCharGroup}
+				maybeDeleteCharGroup={(label: string, charGroup: WGCharGroupObject) => {
+					const groups = $q<HTMLIonListElement>((".charGroups"));
+					groups && groups.closeSlidingItems();
+					const handler = () => {
+						dispatch(deleteCharGroupWG(charGroup));
+						toaster({
+							message: tc("thingDeleted", { thing: tw("Character Group") }),
+							duration: 2500,
+							color: "danger",
+							position: "top",
+							toast
+						});
+					};
+					if(disableConfirms) {
+						handler();
+					} else {
+						yesNoAlert({
+							header: `${label}=${charGroup.run}`,
+							message: tYouSure,
+							cssClass: "danger",
+							submit: tConfDel,
+							handler,
+							doAlert
+						});
+					}
+				}}
 				tDelete={tDelete}
-			/>,
-		[editCharGroup, maybeDeleteCharGroup, tDelete]
+			/>
+		),
+		[characterGroups, editCharGroup, tDelete, dispatch, tc, tw, toast, disableConfirms, doAlert, tConfDel, tYouSure]
 	);
 	const openHelp = useCallback(() => setIsOpenInfo(true), []);
 	const openAddCG = useCallback(() => setIsOpenAddCharGroup(true), []);
@@ -228,9 +179,91 @@ const WGCharGroup: FC<PageData> = (props) => {
 		(e: RangeCustomEvent) => dispatch(setCharacterGroupDropoff(e.target.value as Zero_Fifty)),
 		[dispatch]
 	);
+	const endButtons = useMemo(() => {
+		const buttons: ReactElement[] = [];
+		if(characterGroups.length > 0) {
+			buttons.push(
+				<IonButton
+					aria-label={tDelete}
+					onClick={() => {
+						const count = characterGroups.length;
+						const handler = () => {
+							dispatch(deleteCharGroupWG(null));
+							toaster({
+								message: tc("thingsDeleted", { count, things: tw("CharGroup", { count }) }),
+								duration: 2500,
+								color: "danger",
+								position: "top",
+								toast
+							});
+						};
+						if(disableConfirms) {
+							handler();
+						} else {
+							yesNoAlert({
+								header: tc("clearThings?", { count, things: tw("CharGroup", { count }) }),
+								message: tw("delAllCharGroups", { count }),
+								cssClass: "warning",
+								submit: tc("confirmDel", { count }),
+								handler,
+								doAlert
+							});
+						}
+					}}
+				>
+					<IonIcon icon={trashBinOutline} />
+				</IonButton>
+			)
+		}
+		if(weCharatcterGroups.length > 0) {
+			buttons.push(
+				<IonButton
+					aria-label={tCopy}
+					onClick={() => {
+						const handler = () => {
+							dispatch(copyCharacterGroupsFromElsewhere(weCharatcterGroups));
+							toaster({
+								message: tw("importCharGroups", { count: weCharatcterGroups.length }),
+								duration: 2500,
+								color: "success",
+								position: "top",
+								toast
+							});
+						};
+						if(disableConfirms) {
+							handler();
+						} else {
+							yesNoAlert({
+								header: tc("ImportFrom", { source: tc("WordEvolve") }),
+								message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
+								cssClass: "warning",
+								submit: tYes,
+								handler,
+								doAlert
+							});
+						}
+					}}
+				>
+					<CopyFromOtherIcon />
+				</IonButton>
+			);
+		}
+		return [
+			...buttons,
+			(
+				<IonButton onClick={openHelp} aria-label={tHelp}>
+					<IonIcon icon={helpCircleOutline} />
+				</IonButton>
+			)
+		];
+	}, [
+		tDelete, characterGroups.length, disableConfirms, tc, toast, tw,
+		tCopy, dispatch, tYes, doAlert, weCharatcterGroups, openHelp, tHelp
+	]);
 	return (
 		<IonPage>
-			<AddCharGroupModal {...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
+			<AddCharGroupModal
+				{...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
 				openECM={setIsOpenECM}
 			/>
 			<EditCharGroupModal
@@ -243,33 +276,10 @@ const WGCharGroup: FC<PageData> = (props) => {
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<CharGroupCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{tCharGroups}</IonTitle>
-					<IonButtons slot="end">
-						{characterGroups.length > 0 ?
-							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
-								<IonIcon icon={trashBinOutline} />
-							</IonButton>
-						:
-							<></>
-						}
-						{weCharatcterGroups.length > 0 ?
-							<IonButton onClick={maybeCopyFromWE} aria-label={tCopy}>
-								<CopyFromOtherIcon />
-							</IonButton>
-						:
-							<></>
-						}
-						<IonButton onClick={openHelp} aria-label={tHelp}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<Header
+				title={tCharGroups}
+				endButtons={endButtons}
+			/>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="charGroups units" lines="none">
 					<IonItem className="nonUnit">
@@ -290,7 +300,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
 						</IonRange>
 					</IonItem>
-					{characterGroups.map(map)}
+					{allGroups}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton

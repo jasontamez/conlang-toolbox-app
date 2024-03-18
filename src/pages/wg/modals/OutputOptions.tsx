@@ -1,10 +1,7 @@
 import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
-	IonTitle,
 	IonList,
 	IonButton,
 	IonItemDivider,
@@ -17,15 +14,13 @@ import {
 	IonFooter,
 	IonSelect,
 	IonSelectOption,
-	ToggleChangeEventDetail,
-	RangeChangeEventDetail
+	ToggleCustomEvent,
+	RangeCustomEvent,
+	SelectCustomEvent
 } from '@ionic/react';
 import { useSelector, useDispatch } from "react-redux";
-import { Dispatch } from 'redux';
-import { PayloadAction } from '@reduxjs/toolkit';
 import {
 	checkmarkCircleOutline,
-	closeCircleOutline,
 	ellipseOutline
 } from 'ionicons/icons';
 
@@ -33,8 +28,7 @@ import {
 	Fifty_OneThousand,
 	Five_OneHundred,
 	ModalProperties,
-	StateObject,
-	WGOutputTypes
+	StateObject
 } from '../../../store/types';
 import {
 	setOutputTypeWG,
@@ -50,12 +44,7 @@ import useTranslator from '../../../store/translationHooks';
 
 import PermanentInfo from '../../../components/PermanentInfo';
 import useI18Memo from '../../../components/useI18Memo';
-
-const setChecked = (dispatch: Dispatch, action: (x: boolean) => PayloadAction<boolean>) => {
-	return (e: CustomEvent<ToggleChangeEventDetail<any>>) => {
-		dispatch(action(e.detail.checked));
-	};
-};
+import ModalHeader from '../../../components/ModalHeader';
 
 const translations = [
 	"All possible syllables", "Capitalize words", "Default",
@@ -64,8 +53,6 @@ const translations = [
 	"Wordlist size", "Wordlist", "Pseudo-text Controls",
 	"Wordlist and Syllable-List Controls"
 ];
-
-const commons = [ "Close", "Done" ];
 
 const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
@@ -77,7 +64,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 		tPseudo, tSyllBr, tSort, tWhat, tWLSize, tWL,
 		tPsCtrl, tWLSyllCtrl
 	] = useI18Memo(translations, 'wg');
-	const [ tClose, tDone ] = useI18Memo(commons);
+	const tDone = useMemo(() => tc("Done"), [tc]);
 
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
@@ -93,34 +80,38 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	} = useSelector((state: StateObject) => state.wg);
 	const { customSorts } = useSelector((state: StateObject) => state.sortSettings);
 	const onChangeWordsWordlist = useCallback(
-		(e: CustomEvent<RangeChangeEventDetail>) => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand)),
+		(e: RangeCustomEvent) => dispatch(setWordsPerWordlistWG(e.detail.value as Fifty_OneThousand)),
 		[dispatch]
 	);
 	const onChangeSentencesWordlist = useCallback(
-		(e: CustomEvent<RangeChangeEventDetail>) => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred)),
+		(e: RangeCustomEvent) => dispatch(setSentencesPerTextWG(e.detail.value as Five_OneHundred)),
 		[dispatch]
 	);
 	const onChangeCustomSort = useCallback(
-		(e: CustomEvent) => dispatch(setCustomSort(e.detail.value)),
+		(e: SelectCustomEvent) => dispatch(setCustomSort(e.detail.value)),
 		[dispatch]
 	);
+	const setSylBreak = useCallback((e: ToggleCustomEvent) => dispatch(setSyllableBreaksWG(e.detail.checked)), [dispatch]);
+	const setCapWords = useCallback((e: ToggleCustomEvent) => dispatch(setCapitalizeWordsWG(e.detail.checked)), [dispatch]);
+	const setSortList = useCallback((e: ToggleCustomEvent) => dispatch(setSortWordlistWG(e.detail.checked)), [dispatch]);
+	const setWLMultiC = useCallback((e: ToggleCustomEvent) => dispatch(setWordlistMulticolumnWG(e.detail.checked)), [dispatch]);
+
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
-	const dispatchOutputType = useCallback((type: WGOutputTypes) => dispatch(setOutputTypeWG(type)), [dispatch]);
-	const toText = useCallback(() => dispatchOutputType('text'), [dispatchOutputType]);
-	const toWL = useCallback(() => dispatchOutputType('wordlist'), [dispatchOutputType]);
-	const toSyll = useCallback(() => dispatchOutputType('syllables'), [dispatchOutputType]);
+	const toText = useCallback(() => dispatch(setOutputTypeWG('text')), [dispatch]);
+	const toWL = useCallback(() => dispatch(setOutputTypeWG('wordlist')), [dispatch]);
+	const toSyll = useCallback(() => dispatch(setOutputTypeWG('syllables')), [dispatch]);
+
+	const sortOptions = useMemo(() => customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
+		<IonSelectOption
+			className="ion-text-wrap ion-text-align-end"
+			key={`customSortChooser:${sorter.id}:${sorter.title}`}
+			value={sorter.id}
+		>{sorter.title}</IonSelectOption>
+	)), [customSorts]);
+
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tOutOpts}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={closer} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tOutOpts} closeModal={setIsOpen} />
 			<IonContent>
 				<IonList lines="full" className="hasSpecialLabels">
 					<IonItem>
@@ -128,7 +119,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={showSyllableBreaks}
-							onIonChange={setChecked(dispatch, setSyllableBreaksWG)}
+							onIonChange={setSylBreak}
 						>{tSyllBr}</IonToggle>
 					</IonItem>
 					<IonItemDivider>{tWhat}</IonItemDivider>
@@ -171,7 +162,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={capitalizeWords}
-							onIonChange={setChecked(dispatch, setCapitalizeWordsWG)}
+							onIonChange={setCapWords}
 						>{tCap}</IonToggle>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
@@ -179,7 +170,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={sortWordlist}
-							onIonChange={setChecked(dispatch, setSortWordlistWG)}
+							onIonChange={setSortList}
 						>{tSort}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" || !sortWordlist) ? "hide" : ""}>
@@ -194,13 +185,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 								className="ion-text-wrap ion-text-align-end"
 								value={null}
 							>{tDefault}</IonSelectOption>
-							{customSorts.concat(PermanentInfo.sort.permanentCustomSortObjs).map(sorter => (
-								<IonSelectOption
-									className="ion-text-wrap ion-text-align-end"
-									key={`customSortChooser:${sorter.id}:${sorter.title}`}
-									value={sorter.id}
-								>{sorter.title}</IonSelectOption>
-							))}
+							{sortOptions}
 						</IonSelect>
 					</IonItem>
 					<IonItem className={output === "text" ? "hide" : ""}>
@@ -208,7 +193,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 							enableOnOffLabels
 							labelPlacement="start"
 							checked={wordlistMultiColumn}
-							onIonChange={setChecked(dispatch, setWordlistMulticolumnWG)}
+							onIonChange={setWLMultiC}
 						>{tMulti}</IonToggle>
 					</IonItem>
 					<IonItem className={(output === "text" ? "hide" : "") + " labelled"}>

@@ -38,7 +38,7 @@ const Header: FC<ModalProperties> = (props) => {
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [ tc ] = useTranslator('common');
-	const maybeButton = useMemo(() => (
+	const maybeExCharButton = useMemo(() => (
 		extraChars ?
 			<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
 				<IonIcon icon={globeOutline} />
@@ -56,7 +56,7 @@ const Header: FC<ModalProperties> = (props) => {
 				<IonTitle>{title}</IonTitle>
 				<IonButtons slot="end">
 					{preEndButtons}
-					{maybeButton}
+					{maybeExCharButton}
 					{endButtons}
 				</IonButtons>
 			</IonToolbar>

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useMemo, useState, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -45,6 +45,7 @@ import log from '../../components/Logging';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
+import useI18Memo from '../../components/useI18Memo';
 
 import ManageCustomInfo from './modals/CustomInfoDJ';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -59,17 +60,154 @@ interface GroupingInfo {
 	label: string
 	groups: DJGroup[]
 	type: keyof DJCustomInfo
+	doReorder: (ed: ItemReorderEventDetail, type: keyof DJCustomInfo) => void
+	editGroup: (type: keyof DJCustomInfo, group: DJGroup) => void
+	maybeDeleteGroup: (type: keyof DJCustomInfo, group: DJGroup) => void
+	tEdit: string
+	tDel: string
 }
 
 interface GroupInfo {
 	group: DJGroup
 	type: keyof DJCustomInfo
+	editGroup: (type: keyof DJCustomInfo, group: DJGroup) => void
+	maybeDeleteGroup: (type: keyof DJCustomInfo, group: DJGroup) => void
+	tEdit: string
+	tDel: string
 }
 
 interface DeclenjugationInfo {
 	dj: Declenjugation
 	toggled: boolean
 }
+
+const DeclenjugationInstance: FC<DeclenjugationInfo> = (props) => {
+	const { dj, toggled } = props;
+	const { title, prefix, suffix, regex, useWholeWord } = dj;
+	let stem = <></>;
+	if(regex) {
+		const arrow = (ltr() ? "⟶" : "⟵");
+		const [match, replace] = regex;
+		stem = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
+	} else {
+		let rootling = "-";
+		prefix && (rootling = prefix + rootling);
+		suffix && (rootling = rootling + suffix);
+		stem = <em>{rootling}</em>;
+	}
+	return (
+		<IonItem
+			className={`toggleable${toggled ? " toggled": ""}`}
+		>
+			<div className="title"><strong>{title}</strong></div>
+			<div className="description"><em>{stem}</em></div>
+			{
+				useWholeWord ?
+					<div className="ww">[W]</div>
+				:
+					<></>
+			}
+		</IonItem>
+	);
+};
+
+const GroupInstance: FC<GroupInfo> = (props) => {
+	const [toggled, setToggled] = useState<boolean>(false);
+	const { t } = useTranslation('common');
+	const { group, type, editGroup, maybeDeleteGroup, tEdit, tDel } = props;
+	const { title, id: mainID, appliesTo, declenjugations } = group;
+	const theDescription = useMemo(() => makeDJGroupDescription(group), [group]);
+	const application = useMemo(() => appliesTo && t("groupAppliesTo", { appliesTo }), [appliesTo, t]);
+	const djInstances = useMemo(() => declenjugations.map((dj) => (
+		<DeclenjugationInstance
+			dj={dj}
+			key={`${mainID}/${dj.id}`}
+			toggled={toggled}
+		/>
+	)), [declenjugations, mainID, toggled]);
+	const doEdit = useCallback(() => editGroup(type, group), [editGroup, type, group]);
+	const doDelete = useCallback(() => maybeDeleteGroup(type, group), [group, maybeDeleteGroup, type]);
+	const doToggle = useCallback(() => setToggled(!toggled), [toggled]);
+	return (
+		<IonItemSliding className="djGroupMain" disabled={false}>
+			<IonItemOptions>
+				<IonItemOption
+					color="primary"
+					onClick={doEdit}
+					aria-label={tEdit}
+				>
+					<IonIcon slot="icon-only" src="svg/edit.svg" />
+				</IonItemOption>
+				<IonItemOption
+					color="danger"
+					onClick={doDelete}
+					aria-label={tDel}
+				>
+					<IonIcon slot="icon-only" icon={trash} />
+				</IonItemOption>
+			</IonItemOptions>
+			<IonItem className="innerList">
+				<IonList className="hasToggles" lines="none">
+					<IonItem className="wrappableInnards">
+						<IonReorder slot="start">
+							<IonIcon icon={reorderThree} />
+						</IonReorder>
+						<IonButton
+							fill="clear"
+							onClick={doToggle}
+							className={`djGroup-caret${toggled ? " toggled": ""}`}
+						>
+							<IonIcon
+								slot="icon-only"
+								icon={caretDown}
+							/>
+						</IonButton>
+						<IonLabel className="wrappableInnards">
+							<div><strong>{title}</strong></div>
+							<div className="description">
+								<em>
+									{theDescription}{application}
+								</em>
+							</div>
+						</IonLabel>
+						<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
+					</IonItem>
+					{djInstances}
+				</IonList>
+			</IonItem>
+		</IonItemSliding>
+	);
+};
+
+const Grouping: FC<GroupingInfo> = (props) => {
+	const { groups, type, label, doReorder, editGroup, maybeDeleteGroup, tDel, tEdit } = props;
+	const theGroups = useMemo(() => groups.map((group: DJGroup) => (
+		<GroupInstance
+			key={`${group.id}`}
+			group={group}
+			type={type}
+			editGroup={editGroup}
+			maybeDeleteGroup={maybeDeleteGroup}
+			tDel={tDel}
+			tEdit={tEdit}
+		/>
+	)), [groups, editGroup, maybeDeleteGroup, tDel, tEdit, type]);
+	const onReorder = useCallback((event: ItemReorderCustomEvent) => doReorder(event.detail, type), [doReorder, type]);
+	if(groups.length === 0) {
+		return <></>;
+	}
+	return (
+		<>
+			<IonItemDivider sticky color="secondary">{label}</IonItemDivider>
+			<IonReorderGroup
+				disabled={false}
+				onIonItemReorder={onReorder}
+			>
+				{theGroups}
+			</IonReorderGroup>
+		</>
+	);
+};
 
 function makeDJGroupDescription (group: DJGroup) {
 	const { startsWith, endsWith, regex, separator } = group;
@@ -82,11 +220,28 @@ function makeDJGroupDescription (group: DJGroup) {
 	return total.join(separator);
 }
 
+const translations = [
+	"Clear All Groups?", "Conjugations", "Declensions", "Groups", "Other"
+];
+
+const commons = [
+	"Add New", "Delete", "Help", "Please wait...", "Save",
+	"confirmDelIt", "confirmDel_other", "Edit",
+	"Are you sure? This will clear the entire input and cannot be undone."
+];
+
+
 const DJGroups: FC<PageData> = (props) => {
-	const { modalPropsMaker } = props;
-	const dispatch = useDispatch();
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
+	const [ tAddNew, tDel, tHelp, tWait, tSave, tConfDel, tConfDelOther, tEdit, tYouSure ] = useI18Memo(commons);
+	const [ tClear, tConj, tDecl, tGroups, tOther  ] = useI18Memo(translations, "dj");
+	const tfDelGroup = useMemo(() => tc("deleteThing", { thing: t("this entire Group", { context: "formal" }) }), [tc, t]);
+	const tDelGroup = useMemo(() => tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}), [t, tc]);
+	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [tc, t]);
+
+	const { modalPropsMaker } = props;
+	const dispatch = useDispatch();
 
 	// main modals
 	const [isOpenAddGroup, setIsOpenAddGroup] = useState<boolean>(false);
@@ -122,19 +277,19 @@ const DJGroups: FC<PageData> = (props) => {
 	const editDeclenjugationModalInfo = modalPropsMaker(editDeclenjugationOpen, setEditDeclenjugationOpen);
 	const caseMakerModalInfo = modalPropsMaker(caseMakerOpen, setCaseMakerOpen);
 
-	const editGroup = (type: keyof DJCustomInfo, group: DJGroup) => {
+	const editGroup = useCallback((type: keyof DJCustomInfo, group: DJGroup) => {
 		const groups = $q<HTMLIonListElement>(".djGroups");
 		groups && groups.closeSlidingItems();
 		setEditingGroup([type, group]);
 		setIsOpenEditGroup(true);
-	};
-	const maybeDeleteGroup = (type: keyof DJCustomInfo, group: DJGroup) => {
+	}, []);
+	const maybeDeleteGroup = useCallback((type: keyof DJCustomInfo, group: DJGroup) => {
 		const groups = $q<HTMLIonListElement>(".djGroups");
 		groups && groups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteGroup([type, group.id]));
 			toaster({
-				message: tc("thingDeleted", { thing: t("Group") }),
+				message: tGroupDeleted,
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -142,17 +297,18 @@ const DJGroups: FC<PageData> = (props) => {
 			});
 		};
 		if(!disableConfirms) {
-			return yesNoAlert({
-				header: tc("deleteThing", { thing: "Entire Group" }),
-				message: tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}),
+			yesNoAlert({
+				header: tfDelGroup,
+				message: tDelGroup,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
+			return;
 		}
 		handler();
-	};
+	}, [disableConfirms, dispatch, doAlert, tConfDel, tDelGroup, tGroupDeleted, tfDelGroup, toast]);
 	const maybeClearEverything = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
@@ -168,15 +324,15 @@ const DJGroups: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: t("Clear All Groups?"),
-				message: tc("deleteThingsCannotUndo", { things: t("all current groups"), count: allGroups}),
+				header: tClear,
+				message: tYouSure,
 				cssClass: "warning",
-				submit: tc("confirmDel_other"),
+				submit: tConfDelOther,
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, t, tc, toast, doAlert, disableConfirms, allGroups]);
+	}, [dispatch, t, tc, toast, doAlert, disableConfirms, allGroups, tClear, tConfDelOther, tYouSure]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];
@@ -196,21 +352,21 @@ const DJGroups: FC<PageData> = (props) => {
 			<IonButton
 				onClick={() => openCustomInfoModal()}
 				key="djGroupsCustomInfoModalButton"
-				aria-label={tc("Save")}
+				aria-label={tSave}
 			>
 				<IonIcon icon={saveOutline} />
 			</IonButton>,
-			<IonButton key="djGroupsHelpButton" aria-label={tc("Help")} onClick={() => setIsOpenInfo(true)}>
+			<IonButton key="djGroupsHelpButton" aria-label={tHelp} onClick={() => setIsOpenInfo(true)}>
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];
 		canTrash && output.unshift(
-			<IonButton key="djGroupsClearEverything" aria-label={tc("Delete")} onClick={() => maybeClearEverything()}>
+			<IonButton key="djGroupsClearEverything" aria-label={tDel} onClick={() => maybeClearEverything()}>
 				<IonIcon icon={trashBinOutline} />
 			</IonButton>
 		);
 		return output;
-	}, [canTrash, maybeClearEverything, openCustomInfoModal, tc]);
+	}, [canTrash, maybeClearEverything, openCustomInfoModal, tDel, tHelp, tSave]);
 
 
 	const doReorder = useCallback((ed: ItemReorderEventDetail, type: keyof DJCustomInfo) => {
@@ -235,124 +391,8 @@ const DJGroups: FC<PageData> = (props) => {
 		ed.complete();
 	}, [conjugations, declensions, other, dispatch]);
 
-	const DeclenjugationInstance = memo((props: DeclenjugationInfo) => {
-		const { dj, toggled } = props;
-		const { title, prefix, suffix, regex, useWholeWord } = dj;
-		let stem = <></>;
-		if(regex) {
-			const arrow = (ltr() ? "⟶" : "⟵");
-			const [match, replace] = regex;
-			stem = <>/<em>{match}</em>/ {arrow} <em>{replace}</em></>;
-		} else {
-			let rootling = "-";
-			prefix && (rootling = prefix + rootling);
-			suffix && (rootling = rootling + suffix);
-			stem = <em>{rootling}</em>;
-		}
-		return (
-			<IonItem
-				className={`toggleable${toggled ? " toggled": ""}`}
-			>
-				<div className="title"><strong>{title}</strong></div>
-				<div className="description"><em>{stem}</em></div>
-				{
-					useWholeWord ?
-						<div className="ww">[W]</div>
-					:
-						<></>
-				}
-			</IonItem>
-		);
-	});
-
-	const GroupInstance = memo((props: GroupInfo) => {
-		const [toggled, setToggled] = useState<boolean>(false);
-		const { t } = useTranslation('common');
-		const { group, type } = props;
-		const { title, id: mainID, appliesTo, declenjugations } = group;
-		return (
-			<IonItemSliding className="djGroupMain" disabled={false}>
-				<IonItemOptions>
-					<IonItemOption
-						color="primary"
-						onClick={() => editGroup(type, group)}
-						aria-label={t("Edit")}
-					>
-						<IonIcon slot="icon-only" src="svg/edit.svg" />
-					</IonItemOption>
-					<IonItemOption
-						color="danger"
-						onClick={() => maybeDeleteGroup(type, group)}
-						aria-label={t("Delete")}
-					>
-						<IonIcon slot="icon-only" icon={trash} />
-					</IonItemOption>
-				</IonItemOptions>
-				<IonItem className="innerList">
-					<IonList className="hasToggles" lines="none">
-						<IonItem className="wrappableInnards">
-							<IonReorder slot="start">
-								<IonIcon icon={reorderThree} />
-							</IonReorder>
-							<IonButton
-								fill="clear"
-								onClick={() => setToggled(!toggled)}
-								className={`djGroup-caret${toggled ? " toggled": ""}`}
-							>
-								<IonIcon
-									slot="icon-only"
-									icon={caretDown}
-								/>
-							</IonButton>
-							<IonLabel className="wrappableInnards">
-								<div><strong>{title}</strong></div>
-								<div className="description">
-									<em>
-										{makeDJGroupDescription(group)}{appliesTo && t("groupAppliesTo", { appliesTo })}
-									</em>
-								</div>
-							</IonLabel>
-							<IonIcon size="small" slot="end" src="svg/slide-indicator.svg" />
-						</IonItem>
-						{declenjugations.map((dj) => (
-							<DeclenjugationInstance
-								dj={dj}
-								key={`${mainID}/${dj.id}`}
-								toggled={toggled}
-							/>
-						))}
-					</IonList>
-				</IonItem>
-			</IonItemSliding>
-		);
-	});
-
-	const Grouping = memo((props: GroupingInfo) => {
-		const { groups, type, label } = props;
-		if(groups.length === 0) {
-			return <></>;
-		}
-		return (
-			<>
-				<IonItemDivider sticky color="secondary">{label}</IonItemDivider>
-				<IonReorderGroup
-					disabled={false}
-					onIonItemReorder={
-						(event: ItemReorderCustomEvent) => doReorder(event.detail, type)
-					}
-				>
-					{groups.map((group: DJGroup) => (
-						<GroupInstance
-							key={`${group.id}`}
-							group={group}
-							type={type}
-						/>
-					))}
-				</IonReorderGroup>
-			</>
-		);
-	});
-
+	const setLoader = useCallback(() => setLoadingOpen(false), []);
+	const opener = useCallback(() => setIsOpenAddGroup(true), []);
 	return (
 		<IonPage>
 			<AddGroup
@@ -424,27 +464,54 @@ const DJGroups: FC<PageData> = (props) => {
 			<IonLoading
 				cssClass='loadingPage'
 				isOpen={loadingOpen}
-				onDidDismiss={() => setLoadingOpen(false)}
-				message={tc("Please wait...")}
+				onDidDismiss={setLoader}
+				message={tWait}
 				spinner="bubbles"
 				/*duration={300000}*/
 				duration={1000}
 			/>
 			<Header
-				title={t("Groups")}
+				title={tGroups}
 				endButtons={headerButtons}
 			/>
 			<IonContent className="hasFabButton">
 				<IonList className="djGroups units dragArea" lines="full">
-					<Grouping groups={declensions} label={t("Declensions")} type="declensions" />
-					<Grouping groups={conjugations} label={t("Conjugations")} type="conjugations" />
-					<Grouping groups={other} label={t("Other")} type="other" />
+					<Grouping
+						groups={declensions}
+						label={tDecl}
+						type="declensions"
+						doReorder={doReorder}
+						editGroup={editGroup}
+						maybeDeleteGroup={maybeDeleteGroup}
+						tDel={tDel}
+						tEdit={tEdit}
+					/>
+					<Grouping
+						groups={conjugations}
+						label={tConj}
+						type="conjugations"
+						doReorder={doReorder}
+						editGroup={editGroup}
+						maybeDeleteGroup={maybeDeleteGroup}
+						tDel={tDel}
+						tEdit={tEdit}
+					/>
+					<Grouping
+						groups={other}
+						label={tOther}
+						type="other"
+						doReorder={doReorder}
+						editGroup={editGroup}
+						maybeDeleteGroup={maybeDeleteGroup}
+						tDel={tDel}
+						tEdit={tEdit}
+					/>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">
 					<IonFabButton
 						color="primary"
-						title={tc("Add New")}
-						onClick={() => setIsOpenAddGroup(true)}
+						title={tAddNew}
+						onClick={opener}
 					>
 						<IonIcon icon={addOutline} />
 					</IonFabButton>

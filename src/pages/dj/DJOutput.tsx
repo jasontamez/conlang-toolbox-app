@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState, FC } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState, FC, useCallback } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -11,7 +11,9 @@ import {
 	IonIcon,
 	useIonToast,
 	useIonAlert,
-	AlertInput
+	AlertInput,
+	SelectCustomEvent,
+	ToggleCustomEvent
 } from '@ionic/react';
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -43,14 +45,43 @@ import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
+import useI18Memo from '../../components/useI18Memo';
 import { OutputCard } from './DJinfo';
 
+const translations = [
+	"Chart, Side Headers", "Chart, Top Headers", "Declensions",
+	"Display any words that were not matched by any group.",
+	"Display the declensions/conjugations of words in the input.",
+	"Include general group information.", "Include generic example.",
+	"Input words can only match one <method>", "One Match", "Other",
+	"Please choose at least one group to display.", "Show Examples",
+	"Show Group Info", "Show Unmatched Words", "Sort Input", "Text",
+	"Unmatched Words", "Use Input", "You didn't select a format.",
+	"Conjugations"
+];
+
+const commons = [
+	"Cancel", "Choose a Format", "Copy to Clipboard", "Export", "Generate",
+	"Help", "Output", "Spreadsheet (csv)", "Text File", "Word Document (docx)"
+];
+
 const DJOutput: FC<PageData> = (props) => {
+	const [ t ] = useTranslator('dj');
+	const [
+		tCancel, tChoose, tCopy, tExport, tGen,
+		tHelp, tOut, tCSV, tTxt, tDocx
+	] = useI18Memo(commons);
+	const [
+		tChartSide, tChartTop, tDecl, tShowNotMatched, tShowDeclConj,
+		tIncludeInfo, tIncludeGeneric, tOneMethod, tOneMatch, tOther,
+		tChooseOne, tShowExamples, tShowGroupInfo, tShowUnmatchedWords,
+		tSortInput, tText, tUnmatchedWords, tUseInput, tNoFormat, tConj
+	] = useI18Memo(translations, "dj");
+	const tpDisplayAs = useMemo(() => t("Display as", { context: "presentation" }), [t]);
+
 //	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
-	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
 	const toast = useIonToast();
 //	const navigator = useIonRouter();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -132,76 +163,74 @@ const DJOutput: FC<PageData> = (props) => {
 		return null;
 	}, [usingInput, input, sortInput, sortObject, showGroupInfo, showExamples, wordsMatchOneTimeOnly]);
 
-	const doExport = (format: null | "" | undefined | DJFormatTypes) => {
-		if(!format) {
-			return toaster({
-				message: t("You didn't select a format."),
-				color: "danger",
-				duration: 3000,
-				toast
-			});
-		}
-		exporter(
-			typeObj,
-			declensions,
-			conjugations,
-			other,
-			data,
-			displayType,
-			format,
-			data ? showUnmatched : null,
-			dispatch,
-			toast
-		);
-	};
-
-	const maybeDoExport = () => {
+	const maybeDoExport = useCallback(() => {
 		if(type.length === 0) {
 			return toaster({
-				message: t("Please choose at least one group to display."),
+				message: tChoose,
 				color: "danger",
 				toast
 			});
 		}
 		const inputs: AlertInput[] = [
 			{
-				label: tc("Word Document (docx)"),
+				label: tDocx,
 				type: "radio",
 				value: "docx"
 			},
 			{
-				label: tc("Text File"),
+				label: tTxt,
 				type: "radio",
 				value: "text"
 			}
 		];
 		displayType !== "text" && inputs.unshift({
-			label: tc("Spreadsheet (csv)"),
+			label: tCSV,
 			type: "radio",
 			value: "csv"
 		});
 		doAlert({
-			header: tc("Choose a Format"),
+			header: tChooseOne,
 			inputs,
 			buttons: [
 				{
-					text: tc("Cancel"),
+					text: tCancel,
 					role: "cancel",
 					cssClass: "cancel"
 				},
 				{
-					text: tc("Export"),
+					text: tExport,
 					cssClass: "submit",
-					handler: doExport
+					handler: (format: null | "" | undefined | DJFormatTypes) => {
+						if(!format) {
+							return toaster({
+								message: tNoFormat,
+								color: "danger",
+								duration: 3000,
+								toast
+							});
+						}
+						exporter(
+							typeObj,
+							declensions,
+							conjugations,
+							other,
+							data,
+							displayType,
+							format,
+							data ? showUnmatched : null,
+							dispatch,
+							toast
+						);
+					}
 				}
 			]
 		});
-	};
+	}, [conjugations, data, declensions, dispatch, displayType, doAlert, other, showUnmatched, tCSV, tCancel, tChoose, tChooseOne, tDocx, tExport, tNoFormat, tTxt, toast, type.length, typeObj]);
 
-	const doGenerate = () => {
+	const doGenerate = useCallback(() => {
 		if(type.length === 0) {
 			return toaster({
-				message: t("Please choose at least one group to display."),
+				message: tChooseOne,
 				color: "danger",
 				toast
 			});
@@ -246,7 +275,7 @@ const DJOutput: FC<PageData> = (props) => {
 			const unfound: string[] = (newData && newData.wordsMatchOneTimeOnly) ? newData.input : findCommons(unmatched);
 			setDisplayUnmatched(unfound.length > 0 ? [
 				<div className="unmatchedWords" key="unmatched:all">
-					<div className="title">{t("Unmatched Words")}</div>
+					<div className="title">{tUnmatchedWords}</div>
 					<div className="contents">{
 						unfound.map((word, i) => <span key={`unmatched:${word}:${i}`}>{word}</span>)
 					}</div>
@@ -255,7 +284,68 @@ const DJOutput: FC<PageData> = (props) => {
 		} else {
 			setDisplayUnmatched([]);
 		}
-	};
+	}, [conjugations, data, declensions, displayType, other, showUnmatched, tChooseOne, tUnmatchedWords, toast, type.length, typeObj]);
+
+	const endButtons = useMemo(() => [
+		<IonButton key="djOutputHelpButton" aria-label={tHelp} onClick={() => setIsOpenInfo(true)}>
+			<IonIcon icon={helpCircleOutline} />
+		</IonButton>
+	], [tHelp]);
+	const saveDisplayType = useCallback((e: SelectCustomEvent) => setDisplayType(e.detail.value), []);
+
+	const groupSelector = useMemo(() => numberOfTypes > 1 ? (
+		<IonItem>
+			<IonSelect
+				color="primary"
+				className="ion-text-wrap settings"
+				label="Group(s):"
+				value={type}
+				onIonChange={(e) => setType(e.detail.value)}
+				multiple
+			>
+				{
+					declensions.length > 0 ?
+						(
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="declensions"
+							>{tDecl}</IonSelectOption>
+						)
+					:
+						<></>
+				}
+				{
+					conjugations.length > 0 ?
+						(
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="conjugations"
+							>{tConj}</IonSelectOption>
+						)
+					:
+						<></>
+				}
+				{
+					other.length > 0 ?
+						(
+							<IonSelectOption
+								className="ion-text-wrap ion-text-align-end"
+								value="other"
+							>{tOther}</IonSelectOption>
+						)
+					:
+						<></>
+				}
+			</IonSelect>
+		</IonItem>
+	) : <></>, [conjugations.length, declensions.length, numberOfTypes, other.length, tConj, tDecl, tOther, type]);
+	const doSetInputUse = useCallback((e: ToggleCustomEvent) => setUsingInput(!usingInput), [usingInput]);
+	const doSetShowingInfo = useCallback((e: ToggleCustomEvent) => setShowGroupInfo(!showGroupInfo), [showGroupInfo]);
+	const doSetShowingExamples = useCallback((e: ToggleCustomEvent) => setShowExamples(!showExamples), [showExamples]);
+	const doSetSorting = useCallback((e: ToggleCustomEvent) => setSortInput(!sortInput), [sortInput]);
+	const setMatchOnce = useCallback((e: ToggleCustomEvent) => setWordsMatchOneTimeOnly(!wordsMatchOneTimeOnly), [wordsMatchOneTimeOnly]);
+	const setShowingUnmatched = useCallback((e: ToggleCustomEvent) => setShowUnmatched(!showUnmatched), [showUnmatched]);
+	const doCopy = useCallback(() => copyText(copyStrings.filter(line => line).join("\n\n\n"), toast), [toast, copyStrings]);
 
 	return (
 		<IonPage>
@@ -263,12 +353,8 @@ const DJOutput: FC<PageData> = (props) => {
 				<OutputCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
 			<Header
-				title={tc("Output")}
-				endButtons={[
-					<IonButton key="djOutputHelpButton" aria-label={tc("Help")} onClick={() => setIsOpenInfo(true)}>
-						<IonIcon icon={helpCircleOutline} />
-					</IonButton>
-				]}
+				title={tOut}
+				endButtons={endButtons}
 			/>
 			<IonContent className="hasFabButton">
 				<IonList lines="full" className="djOutput hasToggles">
@@ -276,84 +362,34 @@ const DJOutput: FC<PageData> = (props) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Display as", { context: "presentation" })}
+							label={tpDisplayAs}
 							value={displayType}
-							onIonChange={(e) => setDisplayType(e.detail.value)}
+							onIonChange={saveDisplayType}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="chartTH"
-							>{t("Chart, Top Headers")}</IonSelectOption>
+							>{tChartTop}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="chartSH"
-							>{t("Chart, Side Headers")}</IonSelectOption>
+							>{tChartSide}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="text"
-							>{t("Text")}</IonSelectOption>
+							>{tText}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
-					{
-						numberOfTypes > 1 ?
-							(
-								<IonItem>
-									<IonSelect
-										color="primary"
-										className="ion-text-wrap settings"
-										label="Group(s):"
-										value={type}
-										onIonChange={(e) => setType(e.detail.value)}
-										multiple
-									>
-										{
-											declensions.length > 0 ?
-												(
-													<IonSelectOption
-														className="ion-text-wrap ion-text-align-end"
-														value="declensions"
-													>{t("Declensions")}</IonSelectOption>
-												)
-											:
-												<></>
-										}
-										{
-											conjugations.length > 0 ?
-												(
-													<IonSelectOption
-														className="ion-text-wrap ion-text-align-end"
-														value="conjugations"
-													>t{("Conjugations")}</IonSelectOption>
-												)
-											:
-												<></>
-										}
-										{
-											other.length > 0 ?
-												(
-													<IonSelectOption
-														className="ion-text-wrap ion-text-align-end"
-														value="other"
-													>{t("Other")}</IonSelectOption>
-												)
-											:
-												<></>
-										}
-									</IonSelect>
-								</IonItem>
-							)
-						:
-							<></>
-					}
+					{groupSelector}
 					<IonItem className="wrappableInnards">
 						<IonToggle
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={usingInput}
-							onIonChange={e => setUsingInput(!usingInput)}
+							onIonChange={doSetInputUse}
 						>
-							<h2>{t("Use Input")}</h2>
-							<p>{t("Display the declensions/conjugations of words in the input.")}</p>
+							<h2>{tUseInput}</h2>
+							<p>{tShowDeclConj}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem
@@ -363,10 +399,10 @@ const DJOutput: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={showGroupInfo}
-							onIonChange={e => setShowGroupInfo(!showGroupInfo)}
+							onIonChange={doSetShowingInfo}
 						>
-							<h2>{t("Show Group Info")}</h2>
-							<p>{t("Include general group information.")}</p>
+							<h2>{tShowGroupInfo}</h2>
+							<p>{tIncludeInfo}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem
@@ -376,10 +412,10 @@ const DJOutput: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={showExamples}
-							onIonChange={e => setShowExamples(!showExamples)}
+							onIonChange={doSetShowingExamples}
 						>
-							<h2>{t("Show Examples")}</h2>
-							<p>{t("Include generic example.")}</p>
+							<h2>{tShowExamples}</h2>
+							<p>{tIncludeGeneric}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem
@@ -389,9 +425,9 @@ const DJOutput: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={sortInput}
-							onIonChange={e => setSortInput(!sortInput)}
+							onIonChange={doSetSorting}
 						>
-							<h2>{t("Sort Input")}</h2>
+							<h2>{tSortInput}</h2>
 						</IonToggle>
 					</IonItem>
 					<IonItem
@@ -401,10 +437,10 @@ const DJOutput: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={wordsMatchOneTimeOnly}
-							onIonChange={e => setWordsMatchOneTimeOnly(!wordsMatchOneTimeOnly)}
+							onIonChange={setMatchOnce}
 						>
-							<h2>{t("One Match")}</h2>
-							<p>{t("Input words can only match one <method>")}</p>
+							<h2>{tOneMatch}</h2>
+							<p>{tOneMethod}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className={"wrappableInnards toggleable" + (usingInput ? "" : " toggled")}>
@@ -412,10 +448,10 @@ const DJOutput: FC<PageData> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={showUnmatched}
-							onIonChange={e => setShowUnmatched(!showUnmatched)}
+							onIonChange={setShowingUnmatched}
 						>
-							<h2>{t("Show Unmatched Words")}</h2>
-							<p>{t("Display any words that were not matched by any group.")}</p>
+							<h2>{tShowUnmatchedWords}</h2>
+							<p>{tShowNotMatched}</p>
 						</IonToggle>
 					</IonItem>
 				</IonList>
@@ -424,18 +460,18 @@ const DJOutput: FC<PageData> = (props) => {
 						strong={true}
 						size="small"
 						color="tertiary"
-						onClick={() => maybeDoExport()}
+						onClick={maybeDoExport}
 					>
-						{tc("Export")}
+						{tExport}
 						<IonIcon icon={codeDownloadOutline} />
 					</IonButton>
 					<IonButton
 						strong={true}
 						size="small"
 						color="success"
-						onClick={() => doGenerate()}
+						onClick={doGenerate}
 					>
-						{tc("Generate")}
+						{tGen}
 						<IonIcon icon={caretForwardCircleOutline} />
 					</IonButton>
 				</div>
@@ -446,9 +482,9 @@ const DJOutput: FC<PageData> = (props) => {
 				<div className={(displayOutput.length + displayUnmatched.length) > 0 ? "ion-padding-start ion-padding-bottom" : "hide"}>
 					<IonButton
 						color="primary"
-						onClick={() => copyText(copyStrings.filter(line => line).join("\n\n\n"), toast)}
+						onClick={doCopy}
 					>
-						{tc("Copy to Clipboard")}
+						{tCopy}
 						<IonIcon icon={copyOutline} slot="start" />
 					</IonButton>
 				</div>

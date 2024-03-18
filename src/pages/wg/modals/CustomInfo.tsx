@@ -5,11 +5,8 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	IonItemGroup,
@@ -19,10 +16,8 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	closeCircleSharp,
-	trashOutline,
-	globeOutline
+	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -36,6 +31,7 @@ import { CustomStorageWG } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -75,7 +71,7 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 };
 
 const commons = [
-	"Cancel", "Close", "Delete", "Extra Characters", "Load Error", "Load",
+	"Cancel", "Delete", "Load Error", "Load",
 	"Manage Custom Info", "Name of save", "Name your custom info",
 	"No saved info", "Ok", "Save", "Yes Overwrite It", "cannotUndo",
 	"confirmDelIt", "confirmLoad"
@@ -85,9 +81,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [
-		tCancel, tClose, tDelete, tExChar, tLoadError, tLoad,
-		tManage, tNameSave, tNameCustom, tNoSaved, tOk, tSave,
-		tYesOverwrite, tCannotUndo, tConfirmDel, tConfirmLoad
+		tCancel, tDelete, tLoadError, tLoad, tManage, tNameSave, tNameCustom,
+		tNoSaved, tOk, tSave, tYesOverwrite, tCannotUndo, tConfirmDel,
+		tConfirmLoad
 	] = useI18Memo(commons);
 	const [tSaveInfo, tLoadInfo] = useMemo(() => {
 		const tCurr = tc("Current Info");
@@ -239,33 +235,19 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			});
 		}
 	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast, tCannotUndo, tConfirmDel]);
-	const mapSavedItems = useCallback(
-		(title: string, i: number) => <SavedItem
+	const customInfoList = useMemo(() => customInfo.map((title: string, i: number) => (
+		<SavedItem
 			title={title}
 			maybeDelete={() => maybeDeleteInfo(title)}
 			maybeLoad={() => maybeLoadInfo(title)}
 			tLoad={tLoad}
 			tDelete={tDelete}
 			key={`wgPreset/1::${title}`}
-		/>,
-		[maybeDeleteInfo, maybeLoadInfo, tLoad, tDelete]
-	);
-	const openEx = useCallback(() => openECM(true), [openECM]);
+		/>
+	)), [customInfo, maybeDeleteInfo, maybeLoadInfo, tLoad, tDelete]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={doCleanClose}>
-			<IonHeader>
-				<IonToolbar color="primary">
-				<IonTitle>{tManage}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={doCleanClose} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tManage} openECM={openECM} closeModal={doCleanClose} />
 			<IonContent>
 				<IonList lines="none">
 					<IonItemGroup>
@@ -295,7 +277,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 						{(customInfo.length === 0) ?
 							<IonItem color="warning"><IonLabel>{tNoSaved}</IonLabel></IonItem>
 						:
-							customInfo.map(mapSavedItems)
+							customInfoList
 						}
 					</IonItemGroup>
 				</IonList>

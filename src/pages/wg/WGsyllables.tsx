@@ -1,14 +1,9 @@
-import React, { useState, useEffect, ReactElement, Fragment, FC, useCallback } from 'react';
+import React, { useState, useEffect, ReactElement, Fragment, FC, useCallback, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
-	IonHeader,
-	IonToolbar,
-	IonMenuButton,
-	IonButtons,
 	IonButton,
 	IonIcon,
-	IonTitle,
 	IonList,
 	IonItem,
 	IonLabel,
@@ -37,6 +32,7 @@ import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
 import { $i } from '../../components/DollarSignExports';
+import Header from '../../components/Header';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
 
@@ -52,6 +48,7 @@ const addLinebreaks = (input: string) => {
 	});
 	return output;
 };
+const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
 
 interface SyllableButtonProps {
 	prop: SyllableTypes
@@ -183,11 +180,15 @@ const WGSyl: FC<PageData> = (props) => {
 	useEffect(() => {
 		setWf(wordFinal);
 	}, [wordFinal]);
-	const calculateRows = (input: string) => Math.min(Math.max(4, input.split(/\n/).length), 12);
 	const toggleSeparateDropoff = useCallback((value: Zero_Fifty | null, func: SetState<Zero_Fifty | null>) => {
 		func(value === null ? syllableBoxDropoff : null);
 	}, [syllableBoxDropoff]);
 	const firstBox = multipleSyllableTypes ? tSwSyllFormal : tSyllablesTitle;
+
+	const [boxTitle1, boxTitle2, boxTitle3, boxTitle4] = useMemo(() => {
+		return [firstBox, tWiSyllFormal, tMwSyllFormal, tWfSyllFormal].map(title => addLinebreaks(title))
+	}, [firstBox, tWiSyllFormal, tMwSyllFormal, tWfSyllFormal]);
+
 	const maybeClearEverything = useCallback(() => {
 		const count = wi.length + wm.length + wf.length + sw.length;
 		const handler = () => {
@@ -235,35 +236,36 @@ const WGSyl: FC<PageData> = (props) => {
 	const doToggleWfDropoff = useCallback(() => toggleSeparateDropoff(wfDropoff, setWfDropoff), [toggleSeparateDropoff, wfDropoff]);
 	const doSetWfDropoff = useCallback((e: RangeCustomEvent) => setWfDropoff(e.target.value as Zero_Fifty), []);
 
+	const endButtons = useMemo(() => {
+		const buttons: ReactElement[] = [];
+		if(singleWord || wordInitial || wordMiddle || wordFinal) {
+			buttons.push(
+				<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
+					<IonIcon icon={trashBinOutline} />
+				</IonButton>
+			);
+		}
+		return [
+			...buttons,
+			<IonButton onClick={openEx}>
+				<IonIcon icon={globeOutline} />
+			</IonButton>,
+			<IonButton onClick={openInfo} aria-label={tHelp}>
+				<IonIcon icon={helpCircleOutline} />
+			</IonButton>
+		];
+	}, [maybeClearEverything, openEx, openInfo, singleWord, tDelete, tHelp, wordFinal, wordInitial, wordMiddle]);
+
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<SylCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{tSyllablesTitle}</IonTitle>
-					<IonButtons slot="end">
-						{(singleWord || wordInitial || wordMiddle || wordFinal) ?
-							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
-								<IonIcon icon={trashBinOutline} />
-							</IonButton>
-						:
-							<></>
-						}
-						<IonButton onClick={openEx}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={openInfo} aria-label={tHelp}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<Header
+				title={tSyllablesTitle}
+				endButtons={endButtons}
+			/>
 			<IonContent fullscreen className="evenBackground disappearingHeaderKludgeFix">
 				<IonList lines="none">
 					<IonItem className="nonUnit">
@@ -298,7 +300,7 @@ const WGSyl: FC<PageData> = (props) => {
 				<IonList className="syllables units" lines="none">
 					<IonItem className="nonUnit">
 						<div className="header">
-							<div className="title">{addLinebreaks(firstBox)}</div>
+							<div className="title">{boxTitle1}</div>
 							{swDropoff !== null ?
 								<div className="percentage">{swDropoff}%</div>
 							:
@@ -358,7 +360,7 @@ const WGSyl: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">{addLinebreaks(tWiSyllFormal)}</div>
+							<div className="title">{boxTitle2}</div>
 							{wiDropoff !== null ?
 								<div className="percentage">{wiDropoff}%</div>
 							:
@@ -416,7 +418,7 @@ const WGSyl: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">{addLinebreaks(tMwSyllFormal)}</div>
+							<div className="title">{boxTitle3}</div>
 							{wmDropoff !== null ?
 								<div className="percentage">{wmDropoff}%</div>
 							:
@@ -474,7 +476,7 @@ const WGSyl: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem className={multipleSyllableTypes ? "nonUnit" : "hide"}>
 						<div className="header">
-							<div className="title">{addLinebreaks(tWfSyllFormal)}</div>
+							<div className="title">{boxTitle4}</div>
 							{wfDropoff !== null ?
 								<div className="percentage">{wfDropoff}%</div>
 							:

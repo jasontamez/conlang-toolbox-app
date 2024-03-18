@@ -5,24 +5,20 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
 	IonToggle,
 	IonRange,
 	useIonAlert,
-	useIonToast
+	useIonToast,
+	RangeCustomEvent
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	addOutline,
-	chevronBackOutline,
-	globeOutline
+	chevronBackOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -33,6 +29,7 @@ import useTranslator from '../../../store/translationHooks';
 import { $q, $i, $a } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 function resetError(prop: string) {
 	// Remove danger color if present
@@ -45,7 +42,7 @@ const presentations = ["Letters Characters", "Short Label", "Title or descriptio
 const context = { context: "presentation" };
 
 
-const commons = [ "Add and Close", "Close", "Extra Characters", "error", "Cancel" ];
+const commons = [ "Add and Close", "error", "Cancel" ];
 
 const wgweWords = [
 	"1 character only", "CharGroup", "Enter characters in group here",
@@ -55,13 +52,14 @@ const wgweWords = [
 ];
 
 const addies = [ "thingAdded", "addThing" ];
-const useDrop = ["Use separate dropoff rate"];
+
 const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
+	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
-	const [ tAddClose, tClose, tExChar, tError, tCancel ] = useI18Memo(commons);
-	const [ tUseDrop ] = useI18Memo(useDrop, "wg");
+	const [ tAddClose, tError, tCancel ] = useI18Memo(commons);
+	const tUseDrop = useMemo(() => t("Use separate dropoff rate"), [t]);
 	const [
 		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoSuggest
@@ -202,24 +200,13 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const maybeSaveAndAdd = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
 	const maybeSaveAndClose = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
-	const toggleDropoff= useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff])
+	const toggleDropoff = useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff]);
+
+	const doDropoff = useCallback((e: RangeCustomEvent) => setDropoff(e.detail.value as Zero_Fifty), []);
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tAddThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={closer} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
 					<IonItem className="labelled">
@@ -278,7 +265,7 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 							max={50}
 							pin={true}
 							value={dropoff}
-							onIonChange={e => setDropoff(e.detail.value as Zero_Fifty)}
+							onIonChange={doDropoff}
 							debounce={250}
 						>
 							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC } from 'react';
+import React, { useCallback, useState, FC, useMemo } from 'react';
 import {
 	IonPage,
 	IonIcon,
@@ -63,6 +63,12 @@ const Home: FC<PageData> = (props) => {
 	] = useI18Memo(translations);
 	const openLex = useCallback(() => setIsOpenLexicon(true), []);
 	const openConcepts = useCallback(() => setIsOpenConcepts(true), []);
+
+	const msLinks = useMemo(() => subPages(appPagesObject.ms, "ms"), []);
+	const weLinks = useMemo(() => subPages(appPagesObject.we, "we"), []);
+	const wgLinks = useMemo(() => subPages(appPagesObject.wg, "wg"), []);
+	const djLinks = useMemo(() => subPages(appPagesObject.dj, "dj"), []);
+
 	return (
 		<IonPage className={theme}>
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -82,7 +88,7 @@ const Home: FC<PageData> = (props) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{subPages(appPagesObject.ms, "ms")}
+							{msLinks}
 							<IonButton routerLink="/ms/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -99,7 +105,7 @@ const Home: FC<PageData> = (props) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{subPages(appPagesObject.wg, "wg")}
+							{wgLinks}
 							<IonButton routerLink="/wg/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -116,7 +122,7 @@ const Home: FC<PageData> = (props) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{subPages(appPagesObject.we, "we")}
+							{weLinks}
 							<IonButton routerLink="/we/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>
@@ -133,7 +139,7 @@ const Home: FC<PageData> = (props) => {
 					</IonRow>
 					<IonRow>
 						<IonCol>
-							{subPages(appPagesObject.dj, "dj")}
+							{djLinks}
 							<IonButton routerLink="/dj/overview" aria-label={tHelp} className="help" routerDirection="forward">
 								<IonIcon icon={helpCircle} />
 							</IonButton>

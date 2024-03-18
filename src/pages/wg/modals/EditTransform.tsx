@@ -5,11 +5,8 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
@@ -17,10 +14,8 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	saveOutline,
-	trashOutline,
-	globeOutline
+	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -33,6 +28,7 @@ import ltr from '../../../components/LTR';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WGTransformObject
@@ -48,8 +44,7 @@ function resetError() {
 
 const commons = [
 	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "Close", "Extra Characters", "confirmDelIt",
-	"error", "optional"
+	"Cancel", "confirmDelIt", "error", "optional"
 ];
 
 const translations = [
@@ -67,7 +62,7 @@ const things = [
 ];
 
 const EditTransformModal: FC<ModalProps> = (props) => {
-	const [ tYouSure, tCancel, tClose, tExChar, tConfDel, tError, tOptional ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tConfDel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSrch, tTrans, tRepl, tSrch ] = useI18Memo(translations, 'wgwe');
 	const [ tpTransDesc, tpRepl, tpSrch ] = useI18Memo(presentations, 'wgwe', context);
 	const thing = useMemo(() => ({ thing: tTrans }), [tTrans]);
@@ -181,26 +176,14 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			});
 		}
 	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tConfDel, tYouSure, tThingDel]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
+
 	return (
 		<IonModal
 			isOpen={isOpen}
 			onDidDismiss={cancelEditing}
 			onIonModalDidPresent={onLoad}
 		>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tEditThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={cancelEditing} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tEditThing} openECM={openECM} closeModal={cancelEditing} />
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">

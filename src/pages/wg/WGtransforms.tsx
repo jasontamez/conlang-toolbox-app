@@ -1,15 +1,10 @@
-import React, { useCallback, useState, FC, useMemo } from 'react';
+import React, { useCallback, useState, FC, useMemo, ReactElement } from 'react';
 import {
 	IonContent,
 	IonPage,
-	IonHeader,
-	IonToolbar,
-	IonMenuButton,
-	IonButtons,
 	IonFab,
 	IonFabButton,
 	IonButton,
-	IonTitle,
 	IonIcon,
 	IonList,
 	IonItem,
@@ -43,6 +38,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import reorganize from '../../components/reorganizer';
 import useI18Memo from '../../components/useI18Memo';
+import Header from '../../components/Header';
 
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
@@ -183,21 +179,40 @@ const WGRew: FC<PageData> = (props) => {
 			});
 		}
 	}, [tc, tw, dispatch, disableConfirms, doAlert, toast, transforms.length]);
-	const map = useCallback(
-		(input: WGTransformObject) =>
-			<TransformItem
-				key={input.id}
-				trans={input}
-				editTransform={editTransform}
-				maybeDeleteTransform={maybeDeleteTransform}
-				arrow={arrow}
-				tDelete={tDelete}
-			/>,
-		[editTransform, maybeDeleteTransform, arrow, tDelete]
-	);
+	const transformationsMap = useMemo(() => transforms.map((input: WGTransformObject) => (
+		<TransformItem
+			key={input.id}
+			trans={input}
+			editTransform={editTransform}
+			maybeDeleteTransform={maybeDeleteTransform}
+			arrow={arrow}
+			tDelete={tDelete}
+		/>
+	)), [transforms, editTransform, maybeDeleteTransform, arrow, tDelete])
 	const openEx = useCallback(() => setIsOpen(true), [setIsOpen]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
 	const openAdd = useCallback(() => setIsOpenAddTransform(true), []);
+
+	const endButtons = useMemo(() => {
+		const buttons: ReactElement[] = [];
+		if(transforms.length > 0) {
+			buttons.push(
+				<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
+					<IonIcon icon={trashBinOutline} />
+				</IonButton>
+			);
+		}
+		return [
+			...buttons,
+			<IonButton onClick={openEx}>
+				<IonIcon icon={globeOutline} />
+			</IonButton>,
+			<IonButton onClick={openInfo} aria-label={tHelp}>
+				<IonIcon icon={helpCircleOutline} />
+			</IonButton>
+		];
+	}, [maybeClearEverything, openEx, openInfo, tDelete, tHelp, transforms.length]);
+
 	return (
 		<IonPage>
 			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
@@ -213,29 +228,10 @@ const WGRew: FC<PageData> = (props) => {
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<TransCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{tTransformations}</IonTitle>
-					<IonButtons slot="end">
-						{transforms.length > 0 ?
-							<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
-								<IonIcon icon={trashBinOutline} />
-							</IonButton>
-						:
-							<></>
-						}
-						<IonButton onClick={openEx}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={openInfo} aria-label={tHelp}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<Header
+				title={tTransformations}
+				endButtons={endButtons}
+			/>
 			<IonContent fullscreen className="hasFabButton">
 				<IonList className="transforms units dragArea" lines="none">
 					<IonReorderGroup
@@ -243,7 +239,7 @@ const WGRew: FC<PageData> = (props) => {
 						className="hideWhileAdding"
 						onIonItemReorder={doReorder}
 					>
-						{transforms.map(map)}
+						{transformationsMap}
 					</IonReorderGroup>
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">

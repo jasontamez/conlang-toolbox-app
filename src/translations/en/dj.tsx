@@ -35,6 +35,7 @@ const dj = {
 		"Words to send through $t(common:Declenjugator)",
 	"Enter words here, one per line": "Enter words here, one per line",
 	"this entire Group": "this entire $t(Group)",
+	"this entire Group_formal": "This Entire $t(Group)",
 	"all current groups": "all current $t(Groups)",
 	"Clear All Groups?": "Clear All $t(Groups)?",
 	"This will delete all current groups, and it cannot be undone.":

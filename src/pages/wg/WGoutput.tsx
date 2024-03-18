@@ -22,6 +22,7 @@ import {
 	helpCircleOutline,
 	copyOutline
 } from 'ionicons/icons';
+import { TFunction } from 'i18next';
 
 import {
 	WGTransformObject,
@@ -29,7 +30,9 @@ import {
 	PageData,
 	LexiconColumn,
 	StateObject,
-	SortObject
+	SortObject,
+	WGState,
+	SetBooleanState
 } from '../../store/types';
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 import useTranslator from '../../store/translationHooks';
@@ -48,6 +51,14 @@ import useI18Memo from '../../components/useI18Memo';
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGinfo";
 
+interface GeneratorResponse {
+	copy: string,
+	list?: string[],
+	string?: string,
+	html?: string[][],
+	error?: string
+}
+
 const commons = [ "Cancel", "Help", "Loading", "Output", "Save" ];
 const translations = [
 	"Generate", "You are missing one or more types of syllables.",
@@ -60,6 +71,7 @@ const WGOut: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
 	const [ tGenerate, tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
@@ -83,6 +95,7 @@ const WGOut: FC<PageData> = (props) => {
 
 	// Pseudo-text needs no special formatting, wrap entirely in a <div>
 	// Wordlists require columnWidth equal to the largest word's width (using determineWidth) and each word in a <div>
+	const wg = useSelector((state: StateObject) => state.wg);
 	const {
 		characterGroups,
 		multipleSyllableTypes,
@@ -90,28 +103,11 @@ const WGOut: FC<PageData> = (props) => {
 		wordInitial,
 		wordMiddle,
 		wordFinal,
-		syllableDropoffOverrides,
 		transforms,
 		monosyllablesRate,
-		maxSyllablesPerWord,
-		characterGroupDropoff,
-		syllableBoxDropoff,
-		output,
 		customSort,
-		showSyllableBreaks,
-		sentencesPerText,
-		capitalizeSentences,
-		declarativeSentencePre,
-		declarativeSentencePost,
-		interrogativeSentencePre,
-		interrogativeSentencePost,
-		exclamatorySentencePre,
-		exclamatorySentencePost,
-		capitalizeWords,
-		sortWordlist,
-		wordlistMultiColumn,
-		wordsPerWordlist
-	} = useSelector((state: StateObject) => state.wg);
+		wordlistMultiColumn
+	} = wg;
 	const {
 		sortLanguage,
 		sensitivity,
@@ -200,18 +196,16 @@ const WGOut: FC<PageData> = (props) => {
 		return newObj;
 	}, [transforms, charGroupMap]);
 
-
-	const textWidthTester = document.createElement("canvas").getContext("2d");
-	textWidthTester!.font = "var(--ion-default-font)";
-	const determineWidth = (input: string) => {
-		return textWidthTester!.measureText(input).width;
-	};
-	const getWidestWord = (words: string[]) => {
-		const max = Math.max(...words.map(w => determineWidth(w))) * 2;
-		return Math.ceil(max).toString() + "px";
-	};
-
-	const generateOutput = async () => {
+	const generateOutput = useCallback(async () => {
+		const textWidthTester = document.createElement("canvas").getContext("2d");
+		textWidthTester!.font = "var(--ion-default-font)";
+		const determineWidth = (input: string) => {
+			return textWidthTester!.measureText(input).width;
+		};
+		const getWidestWord = (words: string[]) => {
+			const max = Math.max(...words.map(w => determineWidth(w))) * 2;
+			return Math.ceil(max).toString() + "px";
+		};
 		const errors: string[] = [];
 		// Clear any previous output.
 		setDisplayList([]);
@@ -241,22 +235,294 @@ const WGOut: FC<PageData> = (props) => {
 			setErrorString(errors.join(" "));
 			return;
 		}
-		// Determine what we're making.
-		if(output === "text") {
-			// pseudotext
-			return generatePseudoText();
+
+		const results = await generator(wg, charGroupMap, regExpMap, setIsGenerating, wgSorter, t);
+		const { string, copy, html, list, error } = results;
+		if(error) {
+			setCopyString(copy);
+			setErrorString(error);
+			return;
+		} if(html) {
+			// Pseudo-text
+			setDisplayHTML(html);
+			setDisplayString(string || "");
+			setCopyString(copy);
+			return;
+		} else if (!list) {
+			// SHOULD NOT HAPPEN
+			return;
 		}
 		// Every syllable, or a wordlist
-		setIsGenerating(true);
-		const resolveFunc = (output === "syllables") ? getEverySyllable : makeWordlist;
-		const result = await resolveFunc();
-		setColsNum(getWidestWord(result));
-		setCopyString(result.join("\n"));
-		setDisplayList(result);
-		// columnar stuff takes a bit to process, so delay a bit?
-		setIsGenerating(false);
-	};
+		setColsNum(getWidestWord(list));
+		setDisplayList(list);
+	}, [charGroupMap, characterGroups.length, monosyllablesRate, multipleSyllableTypes, regExpMap, singleWord.length, t, tMissing, tNoCG, tNoSyll, wg, wgSorter, wordFinal.length, wordInitial.length, wordMiddle.length]);
 
+	// // //
+	// Save to Lexicon
+	// // //
+
+	const saveToLexicon = useCallback((words: string[]) => {
+		doAlert({
+			header: tc("Select a column"),
+			message: tc("Your selected words will be added to the Lexicon under that column."),
+			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
+				const obj: AlertInput = {
+					type: 'radio',
+					label: col.label,
+					value: col,
+					checked: !i
+				};
+				return obj;
+			}),
+			buttons: [
+				{
+					text: tCancel,
+					role: 'cancel',
+					cssClass: "cancel"
+				},
+				{
+					text: tSave,
+					handler: (col: LexiconColumn | undefined) => {
+						if(!col) {
+							// Treat as cancel
+							return;
+						}
+						log(dispatch, ["WG Send to Lexicon"], col);
+						// Send off to the lexicon
+						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
+						// Clear info
+						setSavedWords([]);
+						setSavedWordsObject({});
+						setIsPickingSaving(false);
+						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
+						// Toast
+						toaster({
+							message: tc(
+								"saveToLexColumn",
+								{
+									count: words.length,
+									what: tc("word", { count: words.length }),
+									column: col.label
+								}
+							),
+							duration: 3500,
+							position: "top",
+							buttons: [
+								{
+									text: tc("Go to Lexicon"),
+									handler: () => navigator.push("/lex")
+								}
+							],
+							color: "success",
+							toast
+						});
+					}
+				}
+			]
+		});
+	}, [dispatch, doAlert, lexColumns, lexSorter, navigator, tCancel, tSave, tc, toast]);
+	const donePickingAndSaving = useCallback(() => {
+		setIsPickingSaving(false);
+		if(savedWords.length > 0) {
+			// Attempt to save
+			saveToLexicon(savedWords);
+		} else {
+			// Just stop picking
+			setIsPickingSaving(false);
+		}
+	}, [saveToLexicon, savedWords]);
+	const pickAndSave = useCallback(() => {
+		if (isPickingSaving) {
+			// Stop saving
+			return donePickingAndSaving();
+		} else if(lexColumns.length === 0) {
+			return toaster({
+				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
+				color: "danger",
+				duration: 4000,
+				position: "top",
+				toast
+			});
+		}
+		setIsPickingSaving(true);
+		return toaster({
+			message: tc("Tap words you want to save to Lexicon."),
+			duration: 2500,
+			position: "top",
+			toast
+		});
+	}, [donePickingAndSaving, isPickingSaving, lexColumns.length, tc, toast]);
+
+	// // //
+	// Display
+	// // //
+
+	const parsedWords = useMemo(() => {
+		return displayHTML.map((words: string[], i: number) => {
+			const id = `createdWord${i}`;
+			return <React.Fragment key={i}>
+				<span
+					className="word"
+					id={id}
+					onClick={() => maybeSaveThisWord(words[0], id)}
+				>{words[1]}</span>{' '}
+			</React.Fragment>;
+		});
+	}, [displayHTML, maybeSaveThisWord]);
+	const parsedWordList = useMemo(() => {
+		return displayList.map((word: string, i: number) => {
+			const id = `createdWord${i}`;
+			return (
+				<div
+					className="word"
+					key={i}
+					id={id}
+					onClick={() => maybeSaveThisWord(word, id)}
+				>{word}</div>
+			);
+		});
+	}, [displayList, maybeSaveThisWord]);
+	const theOutput = useMemo(() => {
+		if(displayString) {
+			if(isPickingSaving) {
+				return parsedWords;
+			}
+			return [displayString];
+		} else if (errorString) {
+			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
+		} else if (displayList.length > 0) {
+			return parsedWordList;
+		}
+		return <></>;
+	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
+
+	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
+	return (
+		<IonPage>
+			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+				<OutCard setIsOpenInfo={setIsOpenInfo} />
+			</ModalWrap>
+			<IonHeader>
+				<IonToolbar>
+					<IonButtons slot="start">
+						<IonMenuButton disabled={isPickingSaving} />
+					</IonButtons>
+					<IonTitle>{tOutput}</IonTitle>
+					<IonButtons slot="end">
+						<IonButton onClick={openInfo} aria-label={tHelp} disabled={isPickingSaving}>
+							<IonIcon icon={helpCircleOutline} />
+						</IonButton>
+					</IonButtons>
+				</IonToolbar>
+			</IonHeader>
+			<IonContent fullscreen>
+				<div id="WGoutput">
+					<div className="leftHandSide">
+						<IonButton
+							strong={true}
+							size="small"
+							color="success"
+							onClick={generateOutput}
+							disabled={isPickingSaving}
+						>
+							{
+								isGenerating ? (
+									<span className="ital">{tLoad}</span>
+								) : tGenerate
+							}<IonIcon icon={caretForwardCircleOutline} />
+						</IonButton>
+						<div
+							id="outputPane"
+							style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}}
+							className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
+						>
+							{theOutput}
+						</div>
+					</div>
+					<div className="rightHandSide">
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={openInfo}
+							disabled={isPickingSaving}
+						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
+						<IonButton
+							expand="block"
+							strong={false}
+							color="secondary"
+							onClick={doCopy}
+							disabled={isPickingSaving}
+						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
+						<IonButton
+							expand="block"
+							strong={true}
+							className={isPickingSaving ? "hide" : ""}
+							color="secondary"
+							onClick={pickAndSave}
+						><LexiconOutlineIcon slot="icon-only" /></IonButton>
+						<IonButton
+							className={isPickingSaving ? "" : "hide"}
+							id="doneSavingButton"
+							expand="block"
+							strong={true}
+							color="success"
+							onClick={donePickingAndSaving}
+							aria-label={tSave}
+						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
+					</div>
+				</div>
+			</IonContent>
+		</IonPage>
+	);
+};
+
+export default WGOut;
+
+
+interface CGMap {
+	[key: string]: WGCharGroupObject
+}
+interface RXMap {
+	[key: string]: RegExp
+}
+
+const generator = async (
+	wg: WGState,
+	charGroupMap: CGMap,
+	regExpMap: RXMap,
+	setIsGenerating: SetBooleanState,
+	wgSorter: (a: string, b: string) => number,
+	t: TFunction<string[], undefined>
+): Promise<GeneratorResponse> => {
+	const {
+		multipleSyllableTypes,
+		singleWord,
+		wordInitial,
+		wordMiddle,
+		wordFinal,
+		syllableDropoffOverrides,
+		transforms,
+		monosyllablesRate,
+		maxSyllablesPerWord,
+		characterGroupDropoff,
+		syllableBoxDropoff,
+		output,
+		showSyllableBreaks,
+		sentencesPerText,
+		capitalizeSentences,
+		declarativeSentencePre,
+		declarativeSentencePost,
+		interrogativeSentencePre,
+		interrogativeSentencePost,
+		exclamatorySentencePre,
+		exclamatorySentencePost,
+		capitalizeWords,
+		sortWordlist,
+		wordsPerWordlist
+	} = wg;
 
 	// // //
 	// Generate a psuedo-text
@@ -304,9 +570,11 @@ const WGOut: FC<PageData> = (props) => {
 			}));
 		}
 		const textString = text.join(" ");
-		setDisplayString(textString);
-		setCopyString(textString);
-		setDisplayHTML(textInfo);
+		return {
+			string: textString,
+			copy: textString,
+			html: textInfo
+		};
 	};
 
 	// // //
@@ -537,8 +805,7 @@ const WGOut: FC<PageData> = (props) => {
 			}
 		}
 		if(counter <= 0) {
-			setErrorString(t("unableToCreateXWords", { amount: wordsPerWordlist, max: words.length }));
-			return [];
+			return t("unableToCreateXWords", { amount: wordsPerWordlist, max: words.length });
 		}
 		// Sort if needed
 		if(sortWordlist) {
@@ -547,226 +814,31 @@ const WGOut: FC<PageData> = (props) => {
 		return words;
 	};
 
-	// // //
-	// Save to Lexicon
-	// // //
 
-	const saveToLexicon = useCallback((words: string[]) => {
-		doAlert({
-			header: tc("Select a column"),
-			message: tc("Your selected words will be added to the Lexicon under that column."),
-			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
-				const obj: AlertInput = {
-					type: 'radio',
-					label: col.label,
-					value: col,
-					checked: !i
-				};
-				return obj;
-			}),
-			buttons: [
-				{
-					text: tCancel,
-					role: 'cancel',
-					cssClass: "cancel"
-				},
-				{
-					text: tSave,
-					handler: (col: LexiconColumn | undefined) => {
-						if(!col) {
-							// Treat as cancel
-							return;
-						}
-						log(dispatch, ["WG Send to Lexicon"], col);
-						// Send off to the lexicon
-						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
-						// Clear info
-						setSavedWords([]);
-						setSavedWordsObject({});
-						setIsPickingSaving(false);
-						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
-						// Toast
-						toaster({
-							message: tc(
-								"saveToLexColumn",
-								{
-									count: words.length,
-									what: tc("word", { count: words.length }),
-									column: col.label
-								}
-							),
-							duration: 3500,
-							position: "top",
-							buttons: [
-								{
-									text: tc("Go to Lexicon"),
-									handler: () => navigator.push("/lex")
-								}
-							],
-							color: "success",
-							toast
-						});
-					}
-				}
-			]
-		});
-	}, [dispatch, doAlert, lexColumns, lexSorter, navigator, tCancel, tSave, tc, toast]);
-	const donePickingAndSaving = useCallback(() => {
-		setIsPickingSaving(false);
-		if(savedWords.length > 0) {
-			// Attempt to save
-			saveToLexicon(savedWords);
-		} else {
-			// Just stop picking
-			setIsPickingSaving(false);
-		}
-	}, [saveToLexicon, savedWords]);
-	const pickAndSave = useCallback(() => {
-		if (isPickingSaving) {
-			// Stop saving
-			return donePickingAndSaving();
-		} else if(lexColumns.length === 0) {
-			return toaster({
-				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
-		}
-		setIsPickingSaving(true);
-		return toaster({
-			message: tc("Tap words you want to save to Lexicon."),
-			duration: 2500,
-			position: "top",
-			toast
-		});
-	}, [donePickingAndSaving, isPickingSaving, lexColumns.length, tc, toast]);
 
-	// // //
-	// Display
-	// // //
+	// Determine what we're making.
+	if(output === "text") {
+		// pseudotext
+		return await generatePseudoText();
+	}
+	// Every syllable, or a wordlist
+	setIsGenerating(true);
+	const result = (output === "syllables") ? (await getEverySyllable()) : (await makeWordlist());
+	/*
+	const resolveFunc = (output === "syllables") ? getEverySyllable : makeWordlist;
+	const result = await resolveFunc();
+	*/
+	if(typeof result === "string") {
+		// Error
+		setIsGenerating(false);
+		return { copy: result, error: result };
+	}
+	// columnar stuff takes a bit to process, so delay a bit?
+	setIsGenerating(false);
 
-	const parsedWords = useMemo(() => {
-		return displayHTML.map((words: string[], i: number) => {
-			const id = `createdWord${i}`;
-			return <React.Fragment key={i}>
-				<span
-					className="word"
-					id={id}
-					onClick={() => maybeSaveThisWord(words[0], id)}
-				>{words[1]}</span>{' '}
-			</React.Fragment>;
-		});
-	}, [displayHTML, maybeSaveThisWord]);
-	const parsedWordList = useMemo(() => {
-		return displayList.map((word: string, i: number) => {
-			const id = `createdWord${i}`;
-			return (
-				<div
-					className="word"
-					key={i}
-					id={id}
-					onClick={() => maybeSaveThisWord(word, id)}
-				>{word}</div>
-			);
-		});
-	}, [displayList, maybeSaveThisWord]);
-	const theOutput = useMemo(() => {
-		if(displayString) {
-			if(isPickingSaving) {
-				return parsedWords;
-			}
-			return [displayString];
-		} else if (errorString) {
-			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
-		} else if (displayList.length > 0) {
-			return parsedWordList;
-		}
-		return <></>;
-	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
+	return {
+		list: result,
+		copy: result.join("\n")
+	};
 
-	const openInfo = useCallback(() => setIsOpenInfo(true), []);
-	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
-	return (
-		<IonPage>
-			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
-			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
-				<OutCard setIsOpenInfo={setIsOpenInfo} />
-			</ModalWrap>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton disabled={isPickingSaving} />
-					</IonButtons>
-					<IonTitle>{tOutput}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openInfo} aria-label={tHelp} disabled={isPickingSaving}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent fullscreen>
-				<div id="WGoutput">
-					<div className="leftHandSide">
-						<IonButton
-							strong={true}
-							size="small"
-							color="success"
-							onClick={() => {new Promise(() => generateOutput())}}
-							disabled={isPickingSaving}
-						>
-							{
-								isGenerating ? (
-									<span className="ital">{tLoad}</span>
-								) : tGenerate
-							}<IonIcon icon={caretForwardCircleOutline} />
-						</IonButton>
-						<div
-							id="outputPane"
-							style={{columnWidth: wordlistMultiColumn ? colsNum : "auto"}}
-							className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
-						>
-							{theOutput}
-						</div>
-					</div>
-					<div className="rightHandSide">
-						<IonButton
-							expand="block"
-							strong={false}
-							color="secondary"
-							onClick={openInfo}
-							disabled={isPickingSaving}
-						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
-						<IonButton
-							expand="block"
-							strong={false}
-							color="secondary"
-							onClick={doCopy}
-							disabled={isPickingSaving}
-						><IonIcon slot="icon-only" icon={copyOutline} /></IonButton>
-						<IonButton
-							expand="block"
-							strong={true}
-							className={isPickingSaving ? "hide" : ""}
-							color="secondary"
-							onClick={pickAndSave}
-						><LexiconOutlineIcon slot="icon-only" /></IonButton>
-						<IonButton
-							className={isPickingSaving ? "" : "hide"}
-							id="doneSavingButton"
-							expand="block"
-							strong={true}
-							color="success"
-							onClick={donePickingAndSaving}
-							aria-label={tSave}
-						><IonIcon slot="icon-only" icon={saveOutline} /></IonButton>
-					</div>
-				</div>
-			</IonContent>
-		</IonPage>
-	);
 };
-
-export default WGOut;

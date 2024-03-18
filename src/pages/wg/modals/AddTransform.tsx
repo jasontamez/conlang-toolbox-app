@@ -5,22 +5,15 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	addOutline,
-	globeOutline
-} from 'ionicons/icons';
+import { addOutline } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -32,6 +25,7 @@ import { $q, $a, $i } from '../../../components/DollarSignExports';
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 function resetError() {
 	// Remove danger color if present
@@ -52,7 +46,7 @@ const presentational = [
 const context = { context: "presentational" };
 
 const commons = [
-	"Add and Close", "Cancel", "Close", "Extra Characters", "error", "optional", "dummy"
+	"Add and Close", "Cancel", "error", "optional", "dummy"
 ];
 
 const addies = [ "thingAdded", "addThing" ];
@@ -64,7 +58,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 		const tTransformation = t("Transformation");
 		return addies.map(term => tc(term, { thing: tTransformation }));
 	}, [t, tc]);
-	const [ tAddClose, tCancel, tClose, tExChar, tError, tOptional ] = useI18Memo(commons);
+	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSearch, tRepl, tSrch ] = useI18Memo(wgweWords, "wgwe");
 	const [ tpTrandDesc, tpRepl, tpSrch ] = useI18Memo(presentational, "wgwe", context);
 
@@ -128,23 +122,10 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const maybeSaveAndAdd = useCallback(() => maybeSaveNewTransform(false), [maybeSaveNewTransform]);
 	const maybeSaveAndClose = useCallback(() => maybeSaveNewTransform(), [maybeSaveNewTransform]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tAddThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={closer} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
 					<IonItem className="labelled">

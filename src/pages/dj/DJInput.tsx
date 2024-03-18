@@ -1,12 +1,9 @@
-import React, { useState, useCallback, ChangeEventHandler, FC } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, FC, useMemo } from 'react';
 import {
 	IonContent,
 	IonPage,
-	IonHeader,
 	IonToolbar,
-	IonMenuButton,
 	IonButtons,
-	IonTitle,
 	IonButton,
 	IonIcon,
 	useIonAlert
@@ -26,14 +23,27 @@ import useTranslator from '../../store/translationHooks';
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
+import ModalWrap from '../../components/ModalWrap';
+import useI18Memo from '../../components/useI18Memo';
+import Header from '../../components/Header';
+
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
-import ModalWrap from '../../components/ModalWrap';
 import { InputCard } from './DJinfo';
 
+const translations = [ "Enter words here, one per line", "Words to send through Declenjugator" ];
+
+const commons = [
+	"Clear", "Extra Characters", "Help", "Input", "Yes Clear It",
+	"Are you sure? This will clear the entire input and cannot be undone."
+];
+
 const DJInput: FC<PageData> = (props) => {
-	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
+	const [ tClear, tExChar, tHelp, tInput, tYes, tYouSure ] = useI18Memo(commons);
+	const [ tEnterHere, tWords ] = useI18Memo(translations, "dj");
+	const tImportFrom = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
+
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
@@ -63,7 +73,7 @@ const DJInput: FC<PageData> = (props) => {
 		el && (el.value = value);
 		updateInput(value);
 	}, [updateInput]);
-	const clearInput = () => {
+	const clearInput = useCallback(() => {
 		const handler = () => {
 			const el = $i<HTMLInputElement>("djInput");
 			el && (el.value = "");
@@ -73,15 +83,24 @@ const DJInput: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Clear Input"),
-				message: tc("Are you sure? This will clear the entire input and cannot be undone."),
+				header: tClear,
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("Yes Clear It"),
+				submit: tYes,
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [disableConfirms, doAlert, updateInput, tClear, tYes, tYouSure]);
+	const openLex = useCallback(() => setIsOpenLexImport(true), []);
+	const endButtons = useMemo(() => [
+		<IonButton onClick={() => setIsOpenECM(true)} aria-label={tExChar}>
+			<IonIcon icon={globeOutline} />
+		</IonButton>,
+		<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tHelp}>
+			<IonIcon icon={helpCircleOutline} />
+		</IonButton>
+	], [tExChar, tHelp]);
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
@@ -94,29 +113,17 @@ const DJInput: FC<PageData> = (props) => {
 				currentInput={input}
 				importFunc={acceptImport}
 			/>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{tc("Input")}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tc("Help")}>
-							<IonIcon icon={helpCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<Header
+				title={tInput}
+				endButtons={endButtons}
+			/>
 			<IonContent fullscreen className="evenBackground">
 				<div className="hasMaxTextArea">
 					<textarea
 						spellCheck={false}
-						aria-label={t("Words to send through Declenjugator")}
+						aria-label={tWords}
 						id="djInput"
-						placeholder={t("Enter words here, one per line")}
+						placeholder={tEnterHere}
 						defaultValue={input}
 						onChange={inputUpdated}
 					/>
@@ -129,16 +136,16 @@ const DJInput: FC<PageData> = (props) => {
 							color="warning"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={trashBinOutline} slot="start" /> {tc("Clear")}</IonButton>
+						><IonIcon icon={trashBinOutline} slot="start" /> {tClear}</IonButton>
 					</IonButtons>
 					<IonButtons slot="end">
 						<IonButton
-							onClick={() => setIsOpenLexImport(true)}
+							onClick={openLex}
 							disabled={lexicon.length === 0}
 							color="primary"
 							fill="solid"
 							shape="round"
-						><IonIcon icon={enterOutline} slot="start" /> {tc("ImportFrom", { source: tc("Lexicon") })}</IonButton>
+						><IonIcon icon={enterOutline} slot="start" /> {tImportFrom}</IonButton>
 					</IonButtons>
 				</IonToolbar>
 			</IonContent>
