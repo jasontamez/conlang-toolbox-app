@@ -240,17 +240,17 @@ const WGSyl: FC<PageData> = (props) => {
 		const buttons: ReactElement[] = [];
 		if(singleWord || wordInitial || wordMiddle || wordFinal) {
 			buttons.push(
-				<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
+				<IonButton key="wgSyllbutton-0" onClick={maybeClearEverything} aria-label={tDelete}>
 					<IonIcon icon={trashBinOutline} />
 				</IonButton>
 			);
 		}
 		return [
 			...buttons,
-			<IonButton onClick={openEx}>
+			<IonButton key="wgSyllbutton-1" onClick={openEx}>
 				<IonIcon icon={globeOutline} />
 			</IonButton>,
-			<IonButton onClick={openInfo} aria-label={tHelp}>
+			<IonButton key="wgSyllbutton-2" onClick={openInfo} aria-label={tHelp}>
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];

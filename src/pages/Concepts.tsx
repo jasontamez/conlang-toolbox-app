@@ -68,25 +68,26 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [tConcepts, tHelp] = useI18Memo(pair);
-	const toggleBool = useCallback(() => dispatch(toggleConceptsBoolean("textCenter")), [dispatch]);
-	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const endButtons = useMemo(() => {
+		return [
+			<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
+				<IonIcon
+					flipRtl
+					size="small"
+					slot="end"
+					src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
+				/>
+			</IonButton>,
+			<IonButton key="conceptsHelpButton" aria-label={tHelp} disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+				<IonIcon icon={helpCircleOutline} />
+			</IonButton>
+		];
+	}, [pickAndSave, tHelp, textCenter, dispatch]);
 	return (<>
 		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
 		<Header
 			title={tConcepts}
-			endButtons={[
-				<IonButton key="conceptsTextCenterButton" onClick={toggleBool}>
-					<IonIcon
-						flipRtl
-						size="small"
-						slot="end"
-						src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
-					/>
-				</IonButton>,
-				<IonButton key="conceptsHelpButton" aria-label={tHelp} disabled={pickAndSave} onClick={openInfo}>
-					<IonIcon icon={helpCircleOutline} />
-				</IonButton>
-			]}
+			endButtons={endButtons}
 		/>
 	</>);
 };

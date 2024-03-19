@@ -83,7 +83,7 @@ const commons = [
 ];
 
 const translations = [
-	"Analyze", "Are you SURE you want to do this?", "Data to Import",
+	"Analyze", "areYouVerySure", "Data to Import",
 	"Error validating Import", "Import Info", "Import", "Other App Settings",
 	"Reset", "WARNING!", "What to Import", "Yes Close This",
 	"Yes I Want to Do This", "You did not choose anything to import.",

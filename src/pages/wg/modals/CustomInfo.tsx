@@ -95,9 +95,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		return tc("missingThing", { thing: tc("title") });
 	}, [tc]);
 	const tClearPrevSave = useMemo(() => {
-		return tc("clearOverrideGeneralThings", { things: tc("the previous save") });
+		return tc("clearOverwriteGeneralThings", { things: tc("the previous save") });
 	}, [tc]);
-	const tClearAll = useMemo(() => tc("clearOverrideGeneralThings", { things: t("allThings") }), [t, tc]);
+	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("allThings") }), [t, tc]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

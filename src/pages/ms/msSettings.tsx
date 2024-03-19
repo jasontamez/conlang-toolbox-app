@@ -65,7 +65,7 @@ const Syntax: FC<PageData> = (props) => {
 	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError ] = useI18Memo(commons);
 	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
-	const tClearAll = useMemo(() => tc("clearOverrideGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
+	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
 	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("Saved MorphoSyntax Info") }), [t, tc]);
 	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
 	const [

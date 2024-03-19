@@ -137,10 +137,9 @@ const commons = [
 ];
 
 const WERew: FC<PageData> = (props) => {
-	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const tTransformations = useMemo(() => t("Transformations"), [t]);
+	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
 	const [ tAddNew, tDelete, tExChar, tHelp, tConfDel, tClearAll, tYouSure ] = useI18Memo(commons);
 	
 	const { modalPropsMaker } = props;

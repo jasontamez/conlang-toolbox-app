@@ -44,7 +44,7 @@ const resetTitle = () => resetError("title");
 const resetLabel = () => resetError("label");
 const resetRun = () => resetError("run");
 
-const presentations = [ "Letters Character", "Short Label", "Title or description" ];
+const presentations = [ "Letters Characters", "Short Label", "Title or description" ];
 const context = { context: "presentation" };
 
 const commons =  [

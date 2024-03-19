@@ -397,6 +397,7 @@ const WGOut: FC<PageData> = (props) => {
 	}, [displayList, displayString, errorString, parsedWords, parsedWordList, isPickingSaving]);
 
 	const openInfo = useCallback(() => setIsOpenInfo(true), []);
+	const openOptions = useCallback(() => setIsOpenOptions(true), []);
 	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
 	return (
 		<IonPage>
@@ -446,7 +447,7 @@ const WGOut: FC<PageData> = (props) => {
 							expand="block"
 							strong={false}
 							color="secondary"
-							onClick={openInfo}
+							onClick={openOptions}
 							disabled={isPickingSaving}
 						><IonIcon slot="icon-only" icon={settingsOutline} /></IonButton>
 						<IonButton

@@ -50,7 +50,7 @@ const resetException = () => resetError("anticontext");
 const translations = [
 	"sound change description", "sound changes into this",
 	"where the change cannot happen", "where the change happens",
-	"Sound Change", "sound to change", "No search expression present"
+	"Sound Change", "sound to change"
 ]
 
 const commons = [
@@ -68,8 +68,9 @@ const presentation = { context: "presentation" };
 const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
+	const [ tw ] = useTranslator('wgwe');
 	const [ tYouSure, tCancel, tConfDel, tError, tOptional ] = useI18Memo(commons);
-	const [ tSCDesc, tReplace, tException, tContext, tSC, tSearch, tNoSearch ] = useI18Memo(translations, "we");
+	const [ tSCDesc, tReplace, tException, tContext, tSC, tSearch ] = useI18Memo(translations, "we");
 	const [ tfRepl, tfSrch ] = useI18Memo(wgweExp, "wgwe", formal);
 	const [ tpRepl, tpSrch ] = useI18Memo(wgweExp, "wgwe", presentation);
 	const [ tfCEx, tfEEx ] = useI18Memo(weExp, "we", formal);
@@ -77,6 +78,7 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [
 		tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved
 	] = useMemo(() => things.map(thing => tc(thing, { thing: tSC })), [tc, tSC]);
+	const tNoSearch = useMemo(() => tw("No search expression present"), [tw])
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

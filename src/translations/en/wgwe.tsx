@@ -17,9 +17,9 @@ const wgwe = {
 	delAllCharGroups_other:
 		"This will delete all {{count}} current $t(charGroup, { \"count\": {{count}} }), and cannot be undone.",
 	delAllTransforms_one:
-		"This will delete the current $t(trans, { \"count\": {{count}} }), and cannot be undone.",
+		"This will delete the current $t(wgwe:trans, { \"count\": {{count}} }), and cannot be undone.",
 	delAllTransforms_other:
-		"This will delete all {{count}} current $t(trans, { \"count\": {{count}} }), and cannot be undone.",
+		"This will delete all {{count}} current $t(wgwe:trans, { \"count\": {{count}} }), and cannot be undone.",
 	importCharGroups: "{{count}} $t(CharGroup, { \"count\": {{count}} }) imported.",
 	importOverwriteWarning:
 		"If any current {{thing}} has the same {{label}} as an incoming {{thing}}, "
@@ -32,8 +32,8 @@ const wgwe = {
 	trans: "transformation",
 	trans_one: "transformation",
 	trans_other: "transformations",
-	"Description of the transformation": "$t(common:description_formal) of the $t(trans)",
-	"Description of the transformation_presentation": "$t(Transformation) $t(common:description_formal):",
+	"Description of the transformation": "$t(common:description_formal) of the $t(wgwe:trans)",
+	"Description of the transformation_presentation": "$t(wgwe:Transformation) $t(common:description_formal):",
 
 	"No search expression present": "No search expression present",
 	"search expression": "search expression",
@@ -53,10 +53,10 @@ const wgwe = {
 	label: "label",
 	label_one: "label",
 	label_other: "labels",
-	labels: "$t(label_other)",
+	labels: "$t(wgwe:label_other)",
 	run: "run",
 
-	"transformation description": "$t(trans) $t(description)",
+	"transformation description": "$t(wgwe:trans) $t(common:description)",
 
 	"Save everything": "Save everything",
 	"Choose what to save": "Choose what to save",

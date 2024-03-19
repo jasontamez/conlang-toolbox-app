@@ -1,15 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	IonItemGroup,
@@ -19,10 +16,8 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	closeCircleSharp,
-	trashOutline,
-	globeOutline
+	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -35,15 +30,35 @@ import { $i } from '../../../components/DollarSignExports';
 import { DeclenjugatorStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
+import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
 	setTitles: SetState<string[] | null>
 }
 
+const translations = [ "You must provide a title or description before saving.", "all current groups" ];
+
+const commons = [
+	"Are you sure you want to delete this? This cannot be undone.", "Cancel",
+	"Delete", "Load Error", "Load Saved Info", "Load", "Manage Custom Info",
+	"Name of save", "Name your custom info", "No saved info", "Ok", "Save",
+	"Yes Overwrite It", "confirmDelIt", "confirmLoad"
+];
+
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
-	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
+	const [
+		tYouSure, tCancel, tDel, tLoadErr, tLoadInfo, tLoad, tManage,
+		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes, tConfDel,
+		tConfLoad
+	] = useI18Memo(commons);
+	const [ tNoTitle, tAllGroups ] = useI18Memo(translations, "dj");
+	const tOverwriteAll = useMemo(() => tc("clearOverwriteGeneralThings", { things:tAllGroups }), [tc, tAllGroups]);
+	const tOverwritePrev = useMemo(() => tc("clearOverwriteThings", { things: tc("the previous save"), count: 1 }), [tc]);
+	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("Current Info") }), [tc]);
+
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
@@ -54,21 +69,21 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		other
 	} = useSelector((state: StateObject) => state.dj);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
-	const customInfo: string[] = titles || [];
-	const doCleanClose = () => {
+	const customInfo: string[] = useMemo(() => titles || [], [titles]);
+	const doCleanClose = useCallback(() => {
 		setTitles(null);
 		setIsOpen(false);
-	};
-	const maybeSaveInfo = () => {
+	}, [setIsOpen, setTitles]);
+	const maybeSaveInfo = useCallback(() => {
 		const el = $i<HTMLInputElement>("currentDJInfoSaveName");
 		const title = (el && escape(el.value).trim()) || "";
 		if(title === "") {
 			return doAlert({
-				message: t("You must provide a title or description before saving."),
+				message: tNoTitle,
 				cssClass: "warning",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "cancel"
 					}
@@ -99,16 +114,16 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			} else {
 				yesNoAlert({
 					header: tc("titleAlreadyExists", { title }),
-					message: tc("clearOverwriteThings", { things: tc("the previous save"), count: 1 }),
+					message: tOverwritePrev,
 					cssClass: "warning",
-					submit: tc("Yes Overwrite It"),
+					submit: tYes,
 					handler: () => doSave(title, "titleOverwritten"),
 					doAlert
 				});
 			}
 		});
-	};
-	const maybeLoadInfo = (title: string) => {
+	}, [conjugations, declensions, disableConfirms, doAlert, doCleanClose, other, tNoTitle, tOk, tOverwritePrev, tYes, tc, toast]);
+	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			DeclenjugatorStorage.getItem<DJCustomInfo>(title).then((value) => {
 				if(value) {
@@ -123,12 +138,12 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 					doCleanClose();
 				} else {
 					doAlert({
-						header: tc("Load Error"),
+						header: tLoadErr,
 						cssClass: "danger",
 						message: tc("titleNotFound", { title }),
 						buttons: [
 							{
-								text: tc("Ok"),
+								text: tOk,
 								role: "cancel",
 								cssClass: "cancel"
 							}
@@ -142,15 +157,15 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		} else {
 			yesNoAlert({
 				header:  tc("loadTitle", { title }),
-				message: tc("clearOverwriteGeneralThings", { things: t("all current groups") }),
+				message: tOverwriteAll,
 				cssClass: "warning",
-				submit: tc("confirmLoad"),
+				submit: tConfLoad,
 				handler,
 				doAlert
 			});
 	}
-	};
-	const maybeDeleteInfo = (title: string) => {
+	}, [disableConfirms, dispatch, doAlert, doCleanClose, tConfLoad, tLoadErr, tOk, tOverwriteAll, tc, toast]);
+	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);
 			setTitles(newCustom.length > 0 ? newCustom : null);
@@ -169,81 +184,70 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tc("deleteTitle", { title }),
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tYouSure,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
-	};
+	}, [customInfo, disableConfirms, doAlert, setTitles, tConfDel, tYouSure, tc, toast]);
+	const customInfoItems = useMemo(() => customInfo.map((title: string) => {
+		return (
+			<IonItem key={title}>
+				<IonLabel className="ion-text-wrap">{title}</IonLabel>
+				<IonButton
+					className="loadButton"
+					slot="end"
+					color="warning"
+					onClick={() => maybeLoadInfo(title)}
+					strong={true}
+				>{tLoad}</IonButton>
+				<IonButton
+					className="ion-no-margin"
+					slot="end"
+					color="danger"
+					aria-label={tDel}
+					onClick={() => maybeDeleteInfo(title)}
+				>
+					<IonIcon icon={trashOutline} />
+				</IonButton>
+			</IonItem>
+		);
+	}), [customInfo, maybeDeleteInfo, maybeLoadInfo, tDel, tLoad]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={() => doCleanClose()}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("Manage Custom Info")}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={() => doCleanClose()} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+		<IonModal isOpen={isOpen} onDidDismiss={doCleanClose}>
+			<ModalHeader title={tManage} openECM={openECM} closeModal={doCleanClose} />
 			<IonContent>
 				<IonList lines="none">
 					<IonItemGroup>
 						<IonItemDivider>
-							<IonLabel>{tc("saveGeneralThings", { things: tc("Current Info") })}</IonLabel>
+							<IonLabel>{tSaveThings}</IonLabel>
 						</IonItemDivider>
 						<IonItem>
 							<IonInput
-								aria-label={tc("Name of save")}
+								aria-label={tNameSave}
 								id="currentDJInfoSaveName"
 								inputmode="text"
-								placeholder={tc("Name your custom info")}
+								placeholder={tNameInfo}
 								type="text"
 							/>
 							<IonButton
 								slot="end"
-								onClick={() => maybeSaveInfo()}
+								onClick={maybeSaveInfo}
 								strong={true}
 								color="success"
-							>{tc("Save")}</IonButton>
+							>{tSave}</IonButton>
 						</IonItem>
 					</IonItemGroup>
 					<IonItemGroup className="buttonFilled">
 						<IonItemDivider>
-							<IonLabel>{tc("Load Saved Info")}</IonLabel>
+							<IonLabel>{tLoadInfo}</IonLabel>
 						</IonItemDivider>
-						{customInfo.map((title: string) => {
-							return (
-								<IonItem key={title}>
-									<IonLabel className="ion-text-wrap">{title}</IonLabel>
-									<IonButton
-										className="loadButton"
-										slot="end"
-										color="warning"
-										onClick={() => maybeLoadInfo(title)}
-										strong={true}
-									>{tc("Load")}</IonButton>
-									<IonButton
-										className="ion-no-margin"
-										slot="end"
-										color="danger"
-										aria-label={tc("Delete")}
-										onClick={() => maybeDeleteInfo(title)}
-									>
-										<IonIcon icon={trashOutline} />
-									</IonButton>
-								</IonItem>
-							);
-						})}
+						{customInfoItems}
 						{
 							(customInfo.length === 0) ?
-								<IonItem color="warning"><IonLabel>{tc("No saved info")}</IonLabel></IonItem>
+								<IonItem color="warning"><IonLabel>{tNoSaved}</IonLabel></IonItem>
 							:
 								<></>
 						}
@@ -252,9 +256,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={() => doCleanClose()}>
+					<IonButton color="danger" slot="end" onClick={doCleanClose}>
 						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useState, FC } from 'react';
+import React, { useCallback, useEffect, useState, FC, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
@@ -21,7 +18,6 @@ import {
 import {
 	closeCircleOutline,
 	saveOutline,
-	globeOutline,
 	addCircle
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,6 +33,8 @@ import useTranslator from '../../../store/translationHooks';
 import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
+import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 interface AddDJModal extends ExtraCharactersModalOpener {
 	setSavedDeclenjugation: SetState<Declenjugation | null>
@@ -45,6 +43,22 @@ interface AddDJModal extends ExtraCharactersModalOpener {
 	setSavedTitle: SetState<string>
 	typeString: string
 }
+
+const translations = [
+	"This applies your modifications to the base word instead of the stem.",
+	"Modification", "Prefix", "Suffix", "Use advanced method",
+	"You did not enter a match expression.", "Use entire word",
+	"You must provide a title or description before saving.",
+	"Matching Expression", "Replacement Expression"
+];
+
+const commons = [
+	"Are you sure you want to discard this?", "Cancel",
+	"Ok", "Save", "Unsaved Info", "Yes Discard"
+];
+
+const expressions = [ "Matching Expression", "Replacement Expression" ];
+const context = { context: "presentation" };
 
 const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const {
@@ -58,10 +72,19 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		typeString: pluralType
 	} = props;
 	const typeString = pluralType.slice(0, -1);
-	const [doAlert] = useIonAlert();
-	const toast = useIonToast();
+
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
+	const [ tYouSure, tCancel, tOk, tSave, tUnsaved, tYes ] = useI18Memo(commons);
+	const [ tBaseNotStem, tMod, tPref, tSuff, tAdvMeth, tNoMatch, tUseWord, tNoTitle, tMEx, tREx ] = useI18Memo(translations, "dj");
+	const tAddThing = useMemo(() => typeString ? tc("addThing", { thing: t(typeString) }) : "", [t, tc, typeString]);
+	const tThingSaved = useMemo(() => typeString ? tc("thingSaved", { thing: t(typeString) }) : "", [tc, t, typeString]);
+	const [ tpMEx, tpREx ] = useI18Memo(expressions, "dj", context);
+	const tTitleMethod = useMemo(() => t("Title Method", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
+	const tAdvExpl = useMemo(() => t("advancedExplanation", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
+
+	const [doAlert] = useIonAlert();
+	const toast = useIonToast();
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const onLoad = useCallback(() => {
@@ -81,7 +104,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
-	const grabInfo = () => {
+	const grabInfo = useCallback(() => {
 		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
 		const title = addDJTitle ? addDJTitle.value.trim() : "";
 		const addDJPrefix = $i<HTMLInputElement>("addDJPrefix");
@@ -99,7 +122,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 			regex1,
 			regex2
 		};
-	};
+	}, []);
 
 	// Accept new title from other modal
 	useEffect(() => {
@@ -115,7 +138,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		}
 	}, [isOpen, savedTitle, setSavedTitle]);
 
-	const maybeSaveNewDeclenjugation = () => {
+	const maybeSaveNewDeclenjugation = useCallback(() => {
 		const {
 			title,
 			prefix,
@@ -125,11 +148,11 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		} = grabInfo();
 		if(!title) {
 			doAlert({
-				message: t("You must provide a title or description before saving."),
+				message: tNoTitle,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -145,11 +168,11 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		if(useAdvancedMethod) {
 			if(!regex1) {
 				doAlert({
-					message: t("You did not enter a match expression."),
+					message: tNoMatch,
 					cssClass: "danger",
 					buttons: [
 						{
-							text: tc("Ok"),
+							text: tOk,
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -166,7 +189,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 					cssClass: "danger",
 					buttons: [
 						{
-							text: tc("Ok"),
+							text: tOk,
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -182,14 +205,17 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		setSavedDeclenjugation(newDJ);
 		closeModal();
 		toaster({
-			message: tc("thingSaved", { thing: typeString && t(typeString) }),
+			message: tThingSaved,
 			position: "middle",
 			color: "success",
 			duration: 2000,
 			toast
 		});
-	};
-	const maybeCancel = () => {
+	}, [
+		closeModal, doAlert, grabInfo, setSavedDeclenjugation, t, tNoMatch,
+		tNoTitle, tOk, tThingSaved, toast, useAdvancedMethod, useWholeWord
+	]);
+	const maybeCancel = useCallback(() => {
 		const {
 			title,
 			prefix,
@@ -206,42 +232,33 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 			)
 		) {
 			return yesNoAlert({
-				header: tc("Unsaved Info"),
-				message: tc("Are you sure you want to discard this?"),
+				header: tUnsaved,
+				message: tYouSure,
 				cssClass: "warning",
-				submit: tc("Yes Discard"),
+				submit: tYes,
 				handler: closeModal,
 				doAlert
 			});
 		}
 		closeModal();
-	};
+	}, [closeModal, doAlert, grabInfo, tUnsaved, tYes, tYouSure, useAdvancedMethod]);
+	const openCase = useCallback(() => caseMakerModalInfo.setIsOpen(true), [caseMakerModalInfo]);
+	const toggleUseWholeWord = useCallback(() => setUseWholeWord(!useWholeWord), [useWholeWord]);
+	const toggleUseAdvanced = useCallback(() => setUseAdvancedMethod(!useAdvancedMethod), [useAdvancedMethod]);
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tc("addThing", { thing: t(typeString) })}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={maybeCancel} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tAddThing} closeModal={maybeCancel} openECM={openECM} />
 			<IonContent>
 				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Title Method", { method: typeString.toLocaleLowerCase() })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleMethod}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Title Method", { method: typeString.toLocaleLowerCase() })}
+							aria-label={tTitleMethod}
 							id="addDJTitle"
 						/>
-						<IonButton color="primary" onClick={() => caseMakerModalInfo.setIsOpen(true)} slot="end">
+						<IonButton color="primary" onClick={openCase} slot="end">
 							<IonIcon icon={addCircle} slot="icon-only" />
 						</IonButton>
 					</IonItem>
@@ -250,10 +267,10 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={useWholeWord}
-							onIonChange={e => setUseWholeWord(!useWholeWord)}
+							onIonChange={toggleUseWholeWord}
 						>
-							<h2>{t("Use entire word")}</h2>
-							<p>{t("This applies your modifications to the base word instead of the stem.")}</p>
+							<h2>{tUseWord}</h2>
+							<p>{tBaseNotStem}</p>
 						</IonToggle>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -261,39 +278,39 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={useAdvancedMethod}
-							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
+							onIonChange={toggleUseAdvanced}
 						>
-							<h2>{t("Use advanced method")}</h2>
-							<p>{t("advancedExplanation", { method: typeString.toLocaleLowerCase() })}</p>
+							<h2>{tAdvMeth}</h2>
+							<p>{tAdvExpl}</p>
 						</IonToggle>
 					</IonItem>
-					<IonItemDivider>{t("Modification")}</IonItemDivider>
+					<IonItemDivider>{tMod}</IonItemDivider>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMEx}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex1"
-							aria-label={t("Matching Expression", { context: "presentation" })}
+							aria-label={tMEx}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpREx}</IonLabel>
 					</IonItem>
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex2"
-							aria-label={t("Replacement Expression", { context: "presentation" })}
+							aria-label={tREx}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<div slot="start">{t("Prefix")}</div>
-						<div slot="end">{t("Suffix")}</div>
+						<div slot="start">{tPref}</div>
+						<div slot="end">{tSuff}</div>
 					</IonItem>
 					<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
 							id="addDJPrefix"
-							aria-label={t("Prefix")}
+							aria-label={tPref}
 							className="ion-text-end"
 						/>
 						<div className="ion-text-center stem pad-horizontal-rem">
@@ -301,7 +318,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 						</div>
 						<IonInput
 							id="addDJSuffix"
-							aria-label={t("Suffix")}
+							aria-label={tSuff}
 							className="ion-text-start"
 						/>
 					</IonItem>
@@ -315,7 +332,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={closeCircleOutline} slot="end" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -323,7 +340,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 						onClick={maybeSaveNewDeclenjugation}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tc("Save")}</IonLabel>
+						<IonLabel>{tSave}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

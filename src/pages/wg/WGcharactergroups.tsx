@@ -185,6 +185,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 			buttons.push(
 				<IonButton
 					aria-label={tDelete}
+					key="wgCGbutton-1"
 					onClick={() => {
 						const count = characterGroups.length;
 						const handler = () => {
@@ -219,6 +220,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 			buttons.push(
 				<IonButton
 					aria-label={tCopy}
+					key="wgCGbutton-2"
 					onClick={() => {
 						const handler = () => {
 							dispatch(copyCharacterGroupsFromElsewhere(weCharatcterGroups));
@@ -251,7 +253,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 		return [
 			...buttons,
 			(
-				<IonButton onClick={openHelp} aria-label={tHelp}>
+				<IonButton key="wgCGbutton-3" onClick={openHelp} aria-label={tHelp}>
 					<IonIcon icon={helpCircleOutline} />
 				</IonButton>
 			)

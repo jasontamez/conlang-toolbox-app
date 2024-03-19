@@ -46,18 +46,18 @@ const presentational = [
 const context = { context: "presentational" };
 
 const commons = [
-	"Add and Close", "Cancel", "error", "optional", "dummy"
+	"Add and Close", "Cancel", "error", "optional"
 ];
 
 const addies = [ "thingAdded", "addThing" ];
 
 const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
-	const [ t ] = useTranslator('we');
+	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const [ tThingAdd, tAddThing ] = useMemo(() => {
-		const tTransformation = t("Transformation");
+		const tTransformation = tw("Transformation");
 		return addies.map(term => tc(term, { thing: tTransformation }));
-	}, [t, tc]);
+	}, [tw, tc]);
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSearch, tRepl, tSrch ] = useI18Memo(wgweWords, "wgwe");
 	const [ tpTrandDesc, tpRepl, tpSrch ] = useI18Memo(presentational, "wgwe", context);

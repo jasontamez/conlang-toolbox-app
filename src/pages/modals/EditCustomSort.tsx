@@ -116,7 +116,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha,
 		tDefSens, tDiaPlus, tDia, tEqualities, tNoSep, tPeriod, tRelations,
 		tSemi, tCharsSepar, tSpace, tTitleSort, tUnicode, tUppLow, tUseAlt,
-		tWriteAlpha, tNoInfo, tNoTitle, tCustomSort, tAltAlphaExpl
+		tWriteAlpha, tNoInfo, tCustomSort, tNoTitle, tAltAlphaExpl
 	] = useI18Memo(translations, "settings");
 	const [ tpAlphaSep, tpSortLang, tpSortSens ] = useI18Memo(presentations, "settings", context);
 	const tpTitle = useMemo(() => tc("Title", context), [tc]);

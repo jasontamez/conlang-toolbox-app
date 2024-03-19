@@ -103,14 +103,14 @@ const common = {
 	"Save as New": "Save as New",
 
 	// Things will take `count` properties for plurality
-	clearOverrideThings: "This will clear and overwrite {{things}}.",
+	clearOverwriteThings: "This will clear and overwrite {{things}}.",
 	"clearThings?": "Clear {{things}}?",
 	deleteThings: "This will delete {{things}}.",
 	deleteThingsCannotUndo: "This will delete {{things}}, and cannot be undone.",
 	thingsDeleted: "{{things}} deleted.",
 
 	// General Things are unknown, may be 0, 1, or any number
-	clearOverrideGeneralThings: "This will clear and overwrite {{things}}.",
+	clearOverwriteGeneralThings: "This will clear and overwrite {{things}}.",
 	clearGeneralThings: "Clear {{things}}",
 	deleteGeneralThings: "Delete {{things}}",
 	editGeneralThings: "Edit {{things}}",
@@ -172,7 +172,7 @@ const common = {
 	This: "This",
 	Delete: "Delete",
 	Edit: "Edit",
-	"Deleted.": "Deleted",
+	Deleted: "Deleted",
 	"Unsaved Info": "Unsaved Info",
 	"Are you sure you want to discard this?":
 		"Are you sure you want to discard this?",

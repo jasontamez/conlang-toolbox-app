@@ -13,7 +13,7 @@ const en = {
 	common: common,
 	concepts: concepts,
   lexicon: lexicon,
-  appinfo: appinfo,
+  appInfo: appinfo,
   settings: settings,
   wgwe: wgwe,
   dj: dj,

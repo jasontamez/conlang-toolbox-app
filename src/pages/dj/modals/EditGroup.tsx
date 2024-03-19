@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, FC } from 'react';
+import React, { useCallback, useEffect, useState, FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	IonItem,
@@ -6,11 +6,8 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
 	IonFooter,
@@ -24,12 +21,11 @@ import {
 	IonItemOptions,
 	IonItemSliding,
 	IonToggle,
-	IonReorderGroup
+	IonReorderGroup,
+	SelectCustomEvent
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	saveOutline,
-	globeOutline,
 	addCircleOutline,
 	trash,
 	reorderThree,
@@ -53,6 +49,8 @@ import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import ltr from '../../../components/LTR';
+import useI18Memo from '../../../components/useI18Memo';
+import ModalHeader from '../../../components/ModalHeader';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
@@ -72,7 +70,53 @@ interface EditGroupProps extends ExtraCharactersModalOpener {
 	setOutgoingDeclenjugation: SetState<Declenjugation | null | string>
 }
 
+const presentations = [
+	"Type(s) of word this group affects", "Matching Expression",
+	"Remove from Start of Word to Find Root", "Replacement Expression",
+	"Remove from End of Word to Find Root",
+	"Separate Multiple Conditions With", "Type"
+];
+const context = { context: "presentation" };
+
+const translations = [
+	"Choose Separator", "Comma", "Conjugations_one", "Declensions_one",
+	"If using regular expressions you must provide both match and replacement expressions.",
+	"Other_one", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
+	"Use advanced method", "Use regular expressions to identify the stem.",
+	"You must provide a title or description before saving.",
+	"You must provide at least one condition (start or end) before saving.",
+	"exampleAppliesTo", "wordMarker"
+];
+
+const commons = [
+	"Add New", "Are you sure you want to discard your edits?", "Delete",
+	"Deleted", "Edit", "Ok", "Regular Expression", "Save", "Unsaved Info",
+	"Yes Discard", "areYouSure", "confirmDelIt", "emphasizedError"
+];
+
+
 const EditGroup: FC<EditGroupProps> = (props) => {
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
+	const [
+		tAddNew, tYouSure, tDel, tDeleted, tEdit, tOk, tRegEx, tSave,
+		tUnsaved, tYes, tRUSure, tConfDel, tError
+	] = useI18Memo(commons);
+	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
+		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
+		tNoCond, tExample, tWM
+	] = useI18Memo(translations, "dj");
+	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
+	const [
+		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
+		tpRemoveEnd, tpSeparate, tpType
+	] = useI18Memo(presentations, "dj", context);
+	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
+	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
+	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [t, tc]);
+	const tDelEntireGroup = useMemo(() => tc("deleteThing", { thing: "Entire Group" }), [tc]);
+	const tDelAllMsg = useMemo(() => tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}), [t, tc]);
+
 	const {
 		isOpen,
 		setIsOpen,
@@ -90,8 +134,6 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		outgoingDeclenjugation,
 		setOutgoingDeclenjugation
 	} = props;
-	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -142,9 +184,9 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		setTypeString(typingString);
 	}, [t, type, setDeclenjugationType]);
 
-	const onLoad = () => {
+	const onLoad = useCallback(() => {
 		const [editingType, editingGroup] = editingGroupInfo || [type, null];
-		const error = tc("emphasizedError");
+		const error = tError;
 		const {
 			id = error,
 			title = error,
@@ -176,7 +218,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		} else {
 			setUseAdvancedMethod(false);
 		}
-	};
+	}, [editingGroupInfo, type, tError]);
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
@@ -197,7 +239,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		editRegex2 && (editRegex2.value = "");
 	}, [setIsOpen]);
 
-	const grabInfo = () => {
+	const grabInfo = useCallback(() => {
 		const editTitle = $i<HTMLInputElement>("editTitle");
 		const title = editTitle ? editTitle.value.trim() : "";
 		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
@@ -218,8 +260,8 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			regex1,
 			regex2
 		};
-	};
-	const maybeSaveGroup = () => {
+	}, [separator]);
+	const maybeSaveGroup = useCallback(() => {
 		const {
 			title,
 			appliesTo,
@@ -230,11 +272,11 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		} = grabInfo();
 		if(!title) {
 			doAlert({
-				message: t("You must provide a title or description before saving."),
+				message: tNoTitle,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -244,11 +286,11 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		} else if (useAdvancedMethod) {
 			if(!regex1 || !regex2) {
 				doAlert({
-					message: t("If using regular expressions you must provide both match and replacement expressions."),
+					message: tNeedBoth,
 					cssClass: "danger",
 					buttons: [
 						{
-							text: tc("Ok"),
+							text: tOk,
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -265,7 +307,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 					cssClass: "danger",
 					buttons: [
 						{
-							text: tc("Ok"),
+							text: tOk,
 							role: "cancel",
 							cssClass: "submit"
 						}
@@ -275,11 +317,11 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			}
 		} else if((startsWith.length + endsWith.length) === 0) {
 			doAlert({
-				message: t("You must provide at least one condition (start or end) before saving."),
+				message: tNoCond,
 				cssClass: "danger",
 				buttons: [
 					{
-						text: tc("Ok"),
+						text: tOk,
 						role: "cancel",
 						cssClass: "submit"
 					}
@@ -308,14 +350,18 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		}
 		closeModal();
 		toaster({
-			message: tc("thingSaved", { thing: t("Group") }),
+			message: tThingSaved,
 			position: "middle",
 			color: "success",
 			duration: 2000,
 			toast
 		});
-	};
-	const maybeCancel = () => {
+	}, [
+		closeModal, declenjugations, dispatch, doAlert, editingGroupInfo,
+		grabInfo, id, separator, tThingSaved, tc, toast, type, useAdvancedMethod,
+		tNeedBoth, tNoCond, tNoTitle, tOk
+	]);
+	const maybeCancel = useCallback(() => {
 		const {
 			title,
 			appliesTo,
@@ -357,22 +403,22 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		);
 		if(changed) {
 			return yesNoAlert({
-				header: tc("Unsaved Info"),
-				message: tc("Are you sure you want to discard your edits?"),
+				header: tUnsaved,
+				message: tYouSure,
 				cssClass: "warning",
-				submit: tc("Yes Discard"),
+				submit: tYes,
 				handler: closeModal,
 				doAlert
 			});
 		}
 		closeModal();
-	};
-	const maybeDeleteGroup = () => {
+	}, [closeModal, declenjugations, doAlert, editingGroupInfo, grabInfo, separator, type, tUnsaved, tYes, tYouSure]);
+	const maybeDeleteGroup = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup([editingGroupInfo![0], id]));
 			closeModal();
 			toaster({
-				message: tc("thingDeleted", { thing: t("Group") }),
+				message: tGroupDeleted,
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -381,34 +427,34 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: tc("deleteThing", { thing: "Entire Group" }),
-				message: tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}),
+				header: tDelEntireGroup,
+				message: tDelAllMsg,
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tConfDel,
 				handler,
 				doAlert
 			});
 		}
 		handler();
-	};
+	}, [closeModal, disableConfirms, dispatch, doAlert, editingGroupInfo, id, tConfDel, toast, tDelAllMsg, tDelEntireGroup, tGroupDeleted]);
 
-	const maybeAddNewDeclenjugation = () => {
+	const maybeAddNewDeclenjugation = useCallback(() => {
 		setSavedDeclenjugation(null);
 		addDeclenjugationModalInfo.setIsOpen(true);
-	};
-	const editDeclenjugation = (declenjugation: Declenjugation) => {
+	}, [addDeclenjugationModalInfo, setSavedDeclenjugation]);
+	const editDeclenjugation = useCallback((declenjugation: Declenjugation) => {
 		const el = $i<HTMLIonListElement>("editingDJGroup");
 		el && el.closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
-	};
-	const maybeDeleteDeclenjugation = (id: string) => {
+	}, [editDeclenjugationModalInfo, setIncomingDeclenjugation]);
+	const maybeDeleteDeclenjugation = useCallback((id: string) => {
 		const el = $i<HTMLIonListElement>("editingDJGroup");
 		el && el.closeSlidingItems();
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({
-				message: tc("Deleted."),
+				message: tDeleted,
 				position: "middle",
 				color: "danger",
 				duration: 2000,
@@ -416,16 +462,16 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: tc("deleteThing", { thing: tc("This") }),
-			message: tc("areYouSure"),
-			submit: tc("confirmDelIt"),
+			header: tDelThing,
+			message: tRUSure,
+			submit: tConfDel,
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	};
+	}, [declenjugations, disableConfirms, doAlert, tConfDel, tDeleted, tRUSure, toast, tDelThing]);
 
-	const doReorder = (event: CustomEvent) => {
+	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
 		const { from, to } = ed;
@@ -435,33 +481,94 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		// save result
 		setDeclenjugations(final);
 		ed.complete();
-	};
+	}, [declenjugations]);
+
+	const tEditGroup = useMemo(() => t("Edit Group", { type: typeString }), [t, typeString])
+	const tTitleInput = useMemo(() => t("Title Input", { type: typeString }), [t, typeString]);
+
+	const allDeclenjugations = useMemo(() => declenjugations.map(dj => {
+		const {
+			title,
+			id,
+			prefix,
+			suffix,
+			regex,
+			useWholeWord
+		} = dj;
+		let stem = "";
+		if(regex) {
+			const arrow = (ltr() ? "⟶" : "⟵");
+			const [match, replace] = regex;
+			stem = `/${match}/ ${arrow} ${replace}`;
+		} else {
+			stem = "-";
+			prefix && (stem = prefix + stem);
+			suffix && (stem = stem + suffix);
+		}
+		return (
+			<IonItemSliding
+				className="groupedDeclenjugation"
+				key={`add:${id}`}
+			>
+				<IonItemOptions side="end" className="serifChars">
+					<IonItemOption
+						color="primary"
+						aria-label={tEdit}
+						onClick={() => editDeclenjugation(dj)}
+					>
+						<IonIcon
+							slot="icon-only"
+							src="svg/edit.svg"
+						/>
+					</IonItemOption>
+					<IonItemOption
+						color="danger"
+						aria-label={tDel}
+						onClick={() => maybeDeleteDeclenjugation(id)}
+					>
+						<IonIcon
+							slot="icon-only"
+							icon={trash}
+						/>
+					</IonItemOption>
+				</IonItemOptions>
+				<IonItem className="groupedDeclenjugation">
+					<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
+					<div className="title"><strong>{title}</strong></div>
+					<div className="stem">
+						<em>{stem}</em>
+						{
+							useWholeWord ?
+								<em className="mini">{tWM}</em>
+							:
+								<></>
+						}
+					</div>
+					<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
+				</IonItem>
+			</IonItemSliding>
+		);
+	}), [declenjugations, editDeclenjugation, maybeDeleteDeclenjugation, tDel, tEdit, tWM]);
+
+	const doSetType = useCallback((e: SelectCustomEvent) => setType(e.detail.value), []);
+	const toggleAdvMeth = useCallback(() => setUseAdvancedMethod(!useAdvancedMethod), [useAdvancedMethod]);
+	const doSetSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
+	const interfaceOperatorSep = useMemo(() => ({header: "Separator"}), []);
+	const interfaceOperatorType = useMemo(() => ({header: tType}), [tType]);
 
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{t("Edit Group", { type: typeString })}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={maybeCancel} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tEditGroup} openECM={openECM} closeModal={maybeCancel}  />
 			<IonContent>
 				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">
-							{t("Title Input", { type: typeString })}
+							{tTitleInput}
 						</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Title Input", { type: typeString })}
+							aria-label={tTitleInput}
 							id="editTitle"
 						/>
 					</IonItem>
@@ -469,35 +576,35 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							label={t("Type", { context: "presentation" })}
+							label={tpType}
 							value={type}
-							onIonChange={(e) => setType(e.detail.value)}
-							interfaceOptions={{header: t("Type")}}
+							onIonChange={doSetType}
+							interfaceOptions={interfaceOperatorType}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="declensions"
-							>{t("Declensions_one")}</IonSelectOption>
+							>{tDecl1}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="conjugations"
-							>{t("Conjugations_one")}</IonSelectOption>
+							>{tConj1}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="other"
-							>{t("Other_one")}</IonSelectOption>
+							>{tOther1}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">
-							{t("Type(s) of word this group affects", { context: "presentation" })}
+							{tpTypes}
 						</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
-							aria-label={t("Type(s) of word this group affects", { context: "presentation" })}
+							aria-label={tTypes}
 							id="editAppliesTo"
-							placeholder={t("exampleAppliesTo")}
+							placeholder={tExample}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -505,156 +612,94 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 							labelPlacement="start"
 							enableOnOffLabels
 							checked={useAdvancedMethod}
-							onIonChange={e => setUseAdvancedMethod(!useAdvancedMethod)}
+							onIonChange={toggleAdvMeth}
 						>
-							<h2>{t("Use advanced method")}</h2>
-							<p>{t("Use regular expressions to identify the stem.")}</p>
+							<h2>{tUseAdv}</h2>
+							<p>{tUseRegex}</p>
 						</IonToggle>
 					</IonItem>
-					<IonItemDivider>{useAdvancedMethod ? tc("Regular Expression") : t("Simple Root Finder")}</IonItemDivider>
+					<IonItemDivider>{useAdvancedMethod ? tRegEx : tSimple}</IonItemDivider>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Matching Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMatching}</IonLabel>
 					</IonItem>
 					<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label={t("Matching Expression", { context: "presentation" })}
+							aria-label={tMatching}
 							id="editRegex1"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Replacement Expression", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpReplacement}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
-							aria-label={t("Replacement Expression", { context: "presentation" })}
+							aria-label={tReplacement}
 							id="editRegex2"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from Start of Word to Find Root", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveStart}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label={t("Remove from Start of Word to Find Root", { context: "presentation" })}
+							aria-label={tRemoveStart}
 							id="editStarts"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Remove from End of Word to Find Root", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveEnd}</IonLabel>
 					</IonItem>
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
-							aria-label={t("Remove from End of Word to Find Root", { context: "presentation" })}
+							aria-label={tRemoveEnd}
 							id="editEnds"
 							labelPlacement="stacked"
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{t("Separate Multiple Conditions With", { context: "presentation" })}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpSeparate}</IonLabel>
 					</IonItem>
 					<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonSelect
 							color="primary"
 							className="ion-text-wrap settings"
-							aria-label={t("Choose Separator")}
+							aria-label={tChooseSep}
 							value={separator}
-							onIonChange={(e) => setSeparator(e.detail.value)}
-							interfaceOptions={{header: "Separator"}}
+							onIonChange={doSetSep}
+							interfaceOptions={interfaceOperatorSep}
 						>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=" "
-							>{t("Space")}</IonSelectOption>
+							>{tSpace}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=","
-							>{t("Comma")}</IonSelectOption>
+							>{tComma}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value=";"
-							>{t("Semicolon")}</IonSelectOption>
+							>{tSemi}</IonSelectOption>
 							<IonSelectOption
 								className="ion-text-wrap ion-text-align-end"
 								value="/"
-							>{t("Slash")}</IonSelectOption>
+							>{tSlash}</IonSelectOption>
 						</IonSelect>
 					</IonItem>
 					<IonItemDivider color="secondary">{typeString}</IonItemDivider>
 					<IonItem>
 						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
 							<IonIcon slot="start" icon={addCircleOutline} />
-							{tc("Add New")}
+							{tAddNew}
 						</IonButton>
 					</IonItem>
 					<IonReorderGroup
 						disabled={false}
 						onIonItemReorder={doReorder}
 					>
-						{declenjugations.map(dj => {
-							const {
-								title,
-								id,
-								prefix,
-								suffix,
-								regex,
-								useWholeWord
-							} = dj;
-							let stem = "";
-							if(regex) {
-								const arrow = (ltr() ? "⟶" : "⟵");
-								const [match, replace] = regex;
-								stem = `/${match}/ ${arrow} ${replace}`;
-							} else {
-								stem = "-";
-								prefix && (stem = prefix + stem);
-								suffix && (stem = stem + suffix);
-							}
-							return (
-								<IonItemSliding
-									className="groupedDeclenjugation"
-									key={`add:${id}`}
-								>
-									<IonItemOptions side="end" className="serifChars">
-										<IonItemOption
-											color="primary"
-											aria-label={tc("Edit")}
-											onClick={() => editDeclenjugation(dj)}
-										>
-											<IonIcon
-												slot="icon-only"
-												src="svg/edit.svg"
-											/>
-										</IonItemOption>
-										<IonItemOption
-											color="danger"
-											aria-label={tc("Delete")}
-											onClick={() => maybeDeleteDeclenjugation(id)}
-										>
-											<IonIcon
-												slot="icon-only"
-												icon={trash}
-											/>
-										</IonItemOption>
-									</IonItemOptions>
-									<IonItem className="groupedDeclenjugation">
-										<IonReorder className="ion-padding-end"><IonIcon icon={reorderThree} /></IonReorder>
-										<div className="title"><strong>{title}</strong></div>
-										<div className="stem">
-											<em>{stem}</em>
-											{
-												useWholeWord ?
-													<em className="mini">{t("wordMarker")}</em>
-												:
-													<></>
-											}
-										</div>
-										<div className="icon"><IonIcon size="small" src="svg/slide-indicator.svg" /></div>
-									</IonItem>
-								</IonItemSliding>
-							);
-						})}
+						{allDeclenjugations}
 					</IonReorderGroup>
 				</IonList>
 			</IonContent>
@@ -666,7 +711,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 						onClick={maybeDeleteGroup}
 					>
 						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tc("Delete")}</IonLabel>
+						<IonLabel>{tDel}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -674,7 +719,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 						onClick={maybeSaveGroup}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tc("Save")}</IonLabel>
+						<IonLabel>{tSave}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

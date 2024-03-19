@@ -72,8 +72,9 @@ const charGroupInfo = [
 ];
 export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
+	const [ tw ] = useTranslator('wgwe');
 	const example = useMemo(() => t("info.charGroupExample", { returnObjects: true }), [t]);
-	const tCharGroupTab = useMemo(() => t("Character Groups Tab"), [t]);
+	const tCharGroupTab = useMemo(() => tw("Character Groups Tab"), [tw]);
 	const [ plainText, endHiddenOverview, endOverview ] = useI18Memo(charGroupInfo, 'wg', joinArrays);
 	const codeProps = useMemo(() => ({
 		code: (props: CodeProps) => {
@@ -175,8 +176,9 @@ export const SylCard: FC<CardProps> = (props) => {
 export const TransCard: FC<CardProps> = (props) => {
 	const arrow = useMemo(() => (ltr() ? "⟶" : "⟵"), []);
 	const [ t ] = useTranslator('wg');
+	const [ tw ] = useTranslator('wgwe');
 	const plainText = useMemo(() => t("info.trans", { arrow, joinArrays: "\n"}), [t, arrow]);
-	const tTransTab = useMemo(() => t("Transformations Tab"), [t]);
+	const tTransTab = useMemo(() => tw("Transformations Tab"), [tw]);
 	const codeProps = useMemo(() => {
 		const blocks = t("info.transBlocks", { returnObjects: true });
 		const blockStorage: BlockStorage = {};
@@ -210,9 +212,9 @@ export const TransCard: FC<CardProps> = (props) => {
 
 const outInfo = [ "info.outputMain", "info.outputSettings", "info.outputLexicon" ];
 export const OutCard: FC<CardProps> = (props) => {
-	const [ t ] = useTranslator('wg');
+	const [ tw ] = useTranslator('wgwe');
 	const [ main, settings, lexicon ] = useI18Memo(outInfo, 'wg', joinArrays);
-	const tOutTab = useMemo(() => t("Output Tab"), [t]);
+	const tOutTab = useMemo(() => tw("Output Tab"), [tw]);
 	return (
 		<IonCard>
 			<IonItem lines="full">

@@ -91,8 +91,8 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 		[tCurrInfo, tc]
 	);
 	const tMissing = useMemo(() => tc("missingThing", tTitle), [tc, tTitle]);
-	const tClearThings = useMemo(() => tc("clearOverrideGeneralThings", { title: t("allThings") }), [t, tc]);
-	const tClearSave = useMemo(() => tc("clearOverrideGeneralThings", { things: tPrevSave }), [tc, tPrevSave]);
+	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { title: t("allThings") }), [t, tc]);
+	const tClearSave = useMemo(() => tc("clearOverwriteGeneralThings", { things: tPrevSave }), [tc, tPrevSave]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
@@ -222,7 +222,8 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 		}
 	}, [disableConfirms, doAlert, setTitles, titles, toast, tCannot, tConfDel, tc]);
 	const allTitles = useMemo(() => 
-		titles.map((title: string) => <SavedItem
+		titles.map((title: string, i: number) => <SavedItem
+			key={`${i}:weCustomInfo:${title}`}
 			title={title}
 			maybeDelete={() => maybeDeleteInfo(title)}
 			maybeLoad={() => maybeLoadInfo(title)}

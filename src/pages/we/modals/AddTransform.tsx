@@ -37,11 +37,11 @@ function resetError() {
 }
 
 const commons = [
-	"Add and Close", "Cancel", "error", "optional", "Transformation"
+	"Add and Close", "Cancel", "error", "optional"
 ];
 const translations = [
 	"Description of the transformation", "No search expression present",
-	"what it changes into", "what to change"
+	"what it changes into", "what to change", "Transformation"
 ];
 const formals = [
 	"At input and at output", "At input only",
@@ -56,8 +56,8 @@ const context = { context: "presentation" };
 const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const [ tAddClose, tCancel, tError, tOptional, tTrans ] = useI18Memo(commons);
-	const [ tDesc, tNoSeek, tReplace, tSeek ] = useI18Memo(translations, "wgwe");
+	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
+	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans ] = useI18Memo(translations, "wgwe");
 	const [ tAddThing, tThingAdd ] = useMemo(() => ["addThing", "thingAdded"].map(thing => tc(thing, { thing: tTrans })), [tc, tTrans]);
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");

@@ -30,7 +30,7 @@ const commons = [ "Cancel", "Load Preset", "confirmLoad" ];
 const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
-	const tClearThings = useMemo(() => tc("clearOverrideGeneralThings", { title: t("allThings") }), [t, tc]);
+	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { title: t("allThings") }), [t, tc]);
 	const [ tCancel, tLoadPreset, tConfLoad ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen } = props;
@@ -83,7 +83,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 		const [title, object] = pair;
 		return (
 			<IonItem
-				key={`${i}::${title}`}
+				key={`${i}:wePreset:${title}`}
 				button={true}
 				onClick={() => maybeLoadPreset(title, object)}
 			>

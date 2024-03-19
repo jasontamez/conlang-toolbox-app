@@ -148,7 +148,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
 	const [tExChar, tHelp, tWait, tWorking, tLex] = useI18Memo(innerCommons);
 
-	const hideButton = useMemo(() => (
+	const endButtons = useMemo(() => [
 		<IonButton
 			color={lexHeadersHidden ? "secondary" : undefined}
 			onClick={() => setLexHeadersHidden(!lexHeadersHidden)}
@@ -158,9 +158,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 				icon={lexHeadersHidden ? chevronDownCircle : chevronUpCircle}
 				slot="icon-only"
 			/>
-		</IonButton>
-	), [ lexHeadersHidden, setLexHeadersHidden ]);
-	const exCharsbutton = useMemo(() => (
+		</IonButton>,
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenECM(true)}
@@ -169,9 +167,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			aria-label={tExChar}
 		>
 			<IonIcon icon={globeOutline} />
-		</IonButton>
-	), [ isDeleting, setIsOpenECM, tExChar ]);
-	const lexStoragebutton = useMemo(() => (
+		</IonButton>,
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenLexStorage(true)}
@@ -180,9 +176,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			aria-label={tHelp}
 		>
 			<IonIcon icon={saveOutline} />
-		</IonButton>
-	), [ isDeleting, tHelp ]);
-	const infobutton = useMemo(() => (
+		</IonButton>,
 		<IonButton
 			disabled={isDeleting}
 			onClick={() => setIsOpenInfo(true)}
@@ -192,19 +186,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 		>
 			<IonIcon icon={helpCircleOutline} />
 		</IonButton>
-	), [ isDeleting, tHelp ]);
-
-	const endButtons = useMemo(() => [
-		hideButton,
-		exCharsbutton,
-		lexStoragebutton,
-		infobutton
-	], [
-		hideButton,
-		exCharsbutton,
-		lexStoragebutton,
-		infobutton
-	]);
+	], [isDeleting, lexHeadersHidden, setIsOpenECM, setLexHeadersHidden, tExChar, tHelp]);
 
 	const loadOff = useCallback(() => setIsLoading(false), []);
 	const workOff = useCallback(() => setIsWorking(false), []);

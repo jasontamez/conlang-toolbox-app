@@ -94,10 +94,10 @@ const DJInput: FC<PageData> = (props) => {
 	}, [disableConfirms, doAlert, updateInput, tClear, tYes, tYouSure]);
 	const openLex = useCallback(() => setIsOpenLexImport(true), []);
 	const endButtons = useMemo(() => [
-		<IonButton onClick={() => setIsOpenECM(true)} aria-label={tExChar}>
+		<IonButton key="dj-endbutton1" onClick={() => setIsOpenECM(true)} aria-label={tExChar}>
 			<IonIcon icon={globeOutline} />
 		</IonButton>,
-		<IonButton onClick={() => setIsOpenInfo(true)} aria-label={tHelp}>
+		<IonButton key="dj-endbutton2" onClick={() => setIsOpenInfo(true)} aria-label={tHelp}>
 			<IonIcon icon={helpCircleOutline} />
 		</IonButton>
 	], [tExChar, tHelp]);

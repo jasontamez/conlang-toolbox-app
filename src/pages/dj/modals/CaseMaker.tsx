@@ -1,15 +1,12 @@
-import React, { useCallback, useState, FC, Fragment } from 'react';
+import React, { useCallback, useState, FC, Fragment, useMemo } from 'react';
 import {
 	IonItem,
 	IonIcon,
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	useIonAlert,
@@ -18,8 +15,7 @@ import {
 } from '@ionic/react';
 import {
 	closeCircleOutline,
-	saveOutline,
-	globeOutline
+	saveOutline
 } from 'ionicons/icons';
 
 import {
@@ -30,6 +26,8 @@ import useTranslator from '../../../store/translationHooks';
 
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
+import ModalHeader from '../../../components/ModalHeader';
+import useI18Memo from '../../../components/useI18Memo';
 
 interface CaseMakerModal extends ExtraCharactersModalOpener {
 	setSavedTitle: SetState<string>
@@ -53,55 +51,76 @@ const CaseItem: FC<CaseItemProps> = (props) => {
 	const { caseObject, add, toggleTitleGroup, titleGroup } = props;
 	const { header, content, extended } = caseObject;
 	const [ t ] = useTranslator('dj');
+	const tHideOrShow = useMemo(() => t(titleGroup[header] ? "Hide" : "Show More"), [t, header, titleGroup]);
+
+	const contents = useMemo(() => content.map((option) => {
+		const title = Array.isArray(option) ? option[0] : option;
+		return (
+			<div
+				key={`opt:${header}:${title}`}
+				onClick={() => add(option)}
+				className="option"
+			>{title}</div>
+		)
+	}), [add, content, header]);
+
+	const maybeExtended = useMemo(() => extended ? (
+		<Fragment key={`opt-extra:${header}`}>
+			<div
+				className="toggleButton option"
+				onClick={() => toggleTitleGroup(header)}
+			>{tHideOrShow}</div>
+			<div
+				className={
+					"toggleGroup " +
+					(titleGroup[header]
+						? "active"
+						: "inactive")
+				}
+			>
+				{extended.map((option) => {
+					const title = Array.isArray(option) ? option[0] : option;
+					return (
+						<div
+							key={`opt:${header}:${title}`}
+							onClick={() => add(option)}
+							className="option"
+						>{title}</div>
+					);
+				})}
+			</div>
+		</Fragment>
+	) : <></>, [add, extended, header, tHideOrShow, titleGroup, toggleTitleGroup]);
+
 	return (
 		<IonItem className="wrappableInnards">
 			<div className="caseObjects">
 				<div className="title">{header}</div>
 				<div className="options">
-					{content.map((option) => {
-						const title = Array.isArray(option) ? option[0] : option;
-						return (
-							<div
-								key={`opt:${header}:${title}`}
-								onClick={() => add(option)}
-								className="option"
-							>{title}</div>
-						)
-					})}
-					{extended ? (
-						<Fragment key={`opt-extra:${header}`}>
-							<div
-								className="toggleButton option"
-								onClick={() => toggleTitleGroup(header)}
-							>{t(titleGroup[header] ? "Hide" : "Show More")}</div>
-							<div
-								className={
-									"toggleGroup " +
-									(titleGroup[header]
-										? "active"
-										: "inactive")
-								}
-							>
-								{extended.map((option) => {
-									const title = Array.isArray(option) ? option[0] : option;
-									return (
-										<div
-											key={`opt:${header}:${title}`}
-											onClick={() => add(option)}
-											className="option"
-										>{title}</div>
-									);
-								})}
-							</div>
-						</Fragment>
-					) : <></>}
+					{contents}
+					{maybeExtended}
 				</div>
 			</div>
 		</IonItem>
 	);
 };
 
+const translations = [ "caseMakerInstructions", "declenjugatorTitle" ];
+
+const commons =  [
+	"Are you sure you want to discard this?", "Cancel", 
+	"Nothing to save.", "Save", "Unsaved Info", "Yes Discard"
+];
+
+
 const CaseMaker: FC<CaseMakerModal> = (props) => {
+	const [ t ] = useTranslator('dj');
+	const [ tc ] = useTranslator('common');
+	const [ tYouSure, tCancel, tNoSave, tSave, tUnsaved, tYes ] = useI18Memo(commons);
+	const [ tInstructions, tTitle ] = useI18Memo(translations, "dj");
+	const tThingSaved = useMemo(() => tc("thingSaved", { thing: tc("Title") }), [tc]);
+	const caseObjects = useMemo(() => t("cases", { returnObjects: true }), [t]) as CaseObject[];
+
 	const {
 		isOpen,
 		setIsOpen,
@@ -110,8 +129,6 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 	} = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
-	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
 	const [titleParts, setTitleParts] = useState<caseBit[]>([]);
 	const [titleGroup, setTitleGroup] = useState<{[key: string]: boolean}>({});
 	const onLoad = useCallback(() => {
@@ -123,7 +140,6 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 		setTitleParts([]);
 		setTitleGroup({});
 	}, [setIsOpen]);
-	const caseObjects = t("cases", { returnObjects: true }) as CaseObject[];
 
 	const toggleTitleGroup = useCallback((group: string) => {
 		setTitleGroup({
@@ -135,7 +151,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 		if(titleParts.length === 0) {
 			closeModal();
 			return toaster({
-				message: tc("Nothing to save."),
+				message: tNoSave,
 				position: "middle",
 				color: "warning",
 				duration: 2000,
@@ -145,7 +161,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 		setSavedTitle(titleParts.map(part => Array.isArray(part) ? part.join("") : part + " ").join("").trim());
 		closeModal();
 		toaster({
-			message: tc("thingSaved", { thing: tc("Title") }),
+			message: tThingSaved,
 			position: "middle",
 			color: "success",
 			duration: 2000,
@@ -156,10 +172,10 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 	const maybeCancel = () => {
 		if(titleParts.length > 0) {
 			return yesNoAlert({
-				header: tc("Unsaved Info"),
-				message: tc("Are you sure you want to discard this?"),
+				header: tUnsaved,
+				message: tYouSure,
 				cssClass: "warning",
-				submit: tc("Yes Discard"),
+				submit: tYes,
 				handler: closeModal,
 				doAlert
 			});
@@ -175,47 +191,36 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 		setTitleParts(titleParts.filter((str, i) => i !== what));
 	}, [titleParts]);
 
+	const allObjects = useMemo(() => caseObjects.map((group) => {
+		return (
+			<CaseItem
+				key={`grouping:${group.header}`}
+				caseObject={group}
+				add={add}
+				toggleTitleGroup={toggleTitleGroup}
+				titleGroup={titleGroup}
+			/>
+		);
+	}), [add, caseObjects, titleGroup, toggleTitleGroup]);
+	const titleInParts = useMemo(() => titleParts.map((part: caseBit, i: number) => {
+		const title = Array.isArray(part) ? part[0] : part;
+		return <div onClick={() => remove(i)} key={`title-output:${title}:${i}`}>{title}</div>
+	}), [remove, titleParts]);
+
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{t("declenjugatorTitle")}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={maybeCancel} aria-label={tc("Close")}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tTitle} closeModal={maybeCancel} openECM={openECM} />
 			<IonContent>
 				<IonList lines="full" id="makingTitle" className="hasSpecialLabels">
 					<IonItem>
-						<IonLabel className="ion-text-wrap ion-text-center">{t("caseMakerInstructions")}</IonLabel>
+						<IonLabel className="ion-text-wrap ion-text-center">{tInstructions}</IonLabel>
 					</IonItem>
 					<IonItemDivider sticky>
 						<div id="titleOutput">
-							{titleParts.map((part: caseBit, i: number) => {
-								const title = Array.isArray(part) ? part[0] : part;
-								return <div onClick={() => remove(i)} key={`title-output:${title}:${i}`}>{title}</div>
-							})}
+							{titleInParts}
 						</div>
 					</IonItemDivider>
-					{
-						caseObjects.map((group) => {
-							return (
-								<CaseItem
-									key={`grouping:${group.header}`}
-									caseObject={group}
-									add={add}
-									toggleTitleGroup={toggleTitleGroup}
-									titleGroup={titleGroup}
-								/>
-							);
-						})
-					}
+					{allObjects}
 				</IonList>
 			</IonContent>
 			<IonFooter className="modalBorderTop">
@@ -226,7 +231,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 						onClick={maybeCancel}
 					>
 						<IonIcon icon={closeCircleOutline} slot="end" />
-						<IonLabel>{tc("Cancel")}</IonLabel>
+						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>
 					<IonButton
 						color="success"
@@ -234,7 +239,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 						onClick={maybeSaveTitle}
 					>
 						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tc("Save")}</IonLabel>
+						<IonLabel>{tSave}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

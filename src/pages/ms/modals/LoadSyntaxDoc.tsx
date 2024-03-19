@@ -65,7 +65,7 @@ const LoadMSModal: FC<MSmodalProps> = (props) => {
 			} else {
 				yesNoAlert({
 					header: tc("areYouSure"),
-					message: tc("clearOverrideGeneralThings", { things: t("your current MorphoSyntax information") }),
+					message: tc("clearOverwriteGeneralThings", { things: t("your current MorphoSyntax information") }),
 					cssClass: "warning",
 					submit: tc("confirmLoad"),
 					handler,

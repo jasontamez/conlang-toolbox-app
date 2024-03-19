@@ -47,11 +47,11 @@ function resetError() {
 }
 
 const commons = [
-	"Cancel", "error", "optional", "Transformation"
+	"Cancel", "error", "optional"
 ];
 const translations = [
 	"Description of the transformation", "No search expression present",
-	"what it changes into", "what to change"
+	"what it changes into", "what to change", "Transformation"
 ];
 const formals = [
 	"At input and at output", "At input only",
@@ -69,8 +69,8 @@ const things = [
 const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const [ tCancel, tError, tOptional, tTrans ] = useI18Memo(commons);
-	const [ tDesc, tNoSeek, tReplace, tSeek ] = useI18Memo(translations, "wgwe");
+	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
+	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans ] = useI18Memo(translations, "wgwe");
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx, tpTrDir ] = useI18Memo(presentations, "we", context);

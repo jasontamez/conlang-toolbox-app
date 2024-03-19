@@ -197,17 +197,17 @@ const WGRew: FC<PageData> = (props) => {
 		const buttons: ReactElement[] = [];
 		if(transforms.length > 0) {
 			buttons.push(
-				<IonButton onClick={maybeClearEverything} aria-label={tDelete}>
+				<IonButton key="wgTransbutton-1" onClick={maybeClearEverything} aria-label={tDelete}>
 					<IonIcon icon={trashBinOutline} />
 				</IonButton>
 			);
 		}
 		return [
 			...buttons,
-			<IonButton onClick={openEx}>
+			<IonButton key="wgTransbutton-2" onClick={openEx}>
 				<IonIcon icon={globeOutline} />
 			</IonButton>,
-			<IonButton onClick={openInfo} aria-label={tHelp}>
+			<IonButton key="wgTransbutton-3" onClick={openInfo} aria-label={tHelp}>
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];
