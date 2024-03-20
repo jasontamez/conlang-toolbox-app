@@ -377,14 +377,14 @@ const closeSliders = () => {
 const translations = [
 	"Lexicon Title", "Merge selected items", "beginDeleteMode",
 	"lexDescriptionHelperText", "lexTitleHelperText",
-	"Delete selected lexicon items", "Cancel deleting"
+	"Delete selected lexicon items", "Cancel deleting",
+	"You did not type any information into any text field."
 ];
 
 const commons =  [
 	"Are you sure you want to delete this? This cannot be undone.",
 	"Description", "Ok", "areYouSure", "cannotUndo",  "confirmDelIt",
-	"You did not type any information into any text field.", "error",
-	"Help", "Add New", "Close"
+	"error", "Help", "Add New", "Close"
 ];
 
 const presentations = [ "Lexicon Title", "Sort" ];
@@ -394,11 +394,12 @@ const Lex: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [
-		tLexTitle, tMergSel, tBegin, tLexDescHT, tLexTitleHT, tDelSel, tCancelDel
+		tLexTitle, tMergSel, tBegin, tLexDescHT, tLexTitleHT,
+		tDelSel, tCancelDel, tNoText
 	] = useI18Memo(translations, 'lexicon');
 	const [
 		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel,
-		tNoText, tError, tHelp, tAddNew, tClose
+		tError, tHelp, tAddNew, tClose
 	] = useI18Memo(commons);
 	const tDelThings = useMemo(() => tc("deleteGeneralThings", {things: t("multiple lexicon items")}), [t, tc]);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);

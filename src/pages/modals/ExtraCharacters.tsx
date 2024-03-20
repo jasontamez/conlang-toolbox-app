@@ -62,8 +62,6 @@ const arrays = [
 	"extraHelp.help2", "extraHelp.help3"
 ];
 const joinArrays = { joinArrays: "\n" };
-const presenting = ["Display"];
-const presentation = { context: "presentation" };
 
 interface ChipProperties {
 	title: ExtraCharactersDisplayName
@@ -144,7 +142,7 @@ const ExtraCharactersModal: FC<ModalProperties> = (props) => {
 	const [showHelp, setShowHelp] = useState<boolean>(false);
 	const [tNowShowingCharInfo, setNowShowingCharInfo] = useState<string>("");
 	const toast = useIonToast();
-	const [ tDisplay ] = useI18Memo(presenting, "common", presentation);
+	const tDisplay = useMemo(() => t("Display"), [t]);
 
 	useEffect(() => {
 		const newFaves: CurrentFavorites = {};

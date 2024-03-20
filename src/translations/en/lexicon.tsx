@@ -11,6 +11,9 @@ const lexicon = {
 	delItemsSuccess_one: "Deleted {{count}} item.",
 	delItemsSuccess_other: "Deleted {{count}} items.",
 
+	"You did not type any information into any text field.":
+		"You did not type any information into any text field.",
+
 	"Merge selected items": "Merge selected items",
 
 	"Lexicon Title": "$t(common:Lexicon) $t(common:Title)",

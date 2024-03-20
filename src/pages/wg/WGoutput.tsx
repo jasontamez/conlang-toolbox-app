@@ -59,9 +59,9 @@ interface GeneratorResponse {
 	error?: string
 }
 
-const commons = [ "Cancel", "Help", "Loading", "Output", "Save" ];
+const commons = [ "Generate", "Cancel", "Help", "Loading", "Output", "Save" ];
 const translations = [
-	"Generate", "You are missing one or more types of syllables.",
+	"You are missing one or more types of syllables.",
 	"You have no character groups defined.",
 	"You have no syllables defined."
 ];
@@ -69,8 +69,8 @@ const translations = [
 const WGOut: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
-	const [ tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
-	const [ tGenerate, tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
+	const [ tGenerate, tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
+	const [ tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -301,7 +301,6 @@ const WGOut: FC<PageData> = (props) => {
 								"saveToLexColumn",
 								{
 									count: words.length,
-									what: tc("word", { count: words.length }),
 									column: col.label
 								}
 							),

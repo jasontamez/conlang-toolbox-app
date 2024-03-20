@@ -226,15 +226,15 @@ const translations = [
 
 const commons = [
 	"Add New", "Delete", "Help", "Please wait...", "Save",
-	"confirmDelIt", "confirmDel_other", "Edit",
-	"Are you sure? This will clear the entire input and cannot be undone."
+	"confirmDelIt", "Edit",
+	"areYouSure", "cannotUndo"
 ];
 
 
 const DJGroups: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
-	const [ tAddNew, tDel, tHelp, tWait, tSave, tConfDel, tConfDelOther, tEdit, tYouSure ] = useI18Memo(commons);
+	const [ tAddNew, tDel, tHelp, tWait, tSave, tConfDel, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
 	const [ tClear, tConj, tDecl, tGroups, tOther  ] = useI18Memo(translations, "dj");
 	const tfDelGroup = useMemo(() => tc("deleteThing", { thing: t("this entire Group", { context: "formal" }) }), [tc, t]);
 	const tDelGroup = useMemo(() => tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}), [t, tc]);
@@ -325,14 +325,14 @@ const DJGroups: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tClear,
-				message: tYouSure,
+				message: `${tYouSure} ${tCannotUndo}`,
 				cssClass: "warning",
-				submit: tConfDelOther,
+				submit: tc("confirmDel", { count: allGroups }),
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, t, tc, toast, doAlert, disableConfirms, allGroups, tClear, tConfDelOther, tYouSure]);
+	}, [dispatch, t, tc, toast, doAlert, disableConfirms, allGroups, tClear, tYouSure, tCannotUndo]);
 	const openCustomInfoModal = useCallback(() => {
 		setLoadingOpen(true);
 		const titles: string[] = [];

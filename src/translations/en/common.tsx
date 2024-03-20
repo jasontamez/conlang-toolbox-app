@@ -1,10 +1,36 @@
 import characters from "./characters";
 
+/*
+PLURALITY:
+	Some terms will end in _one or _other. They always have a `count` property that can be used if needed.
+		dog_one = 1 dog
+		dog_other = 0 dogs, 2+ dogs, etc
+	Other languages may have their own plurality _endings. Check your i18n specifications.
+
+CONTEXTS:
+	Some terms may be used in a specific context.
+
+	dog = Normal use
+	dog_filename = Must consist of only characters safe to use in a filename.
+		(this is generally anything except \/:*?"<>|)
+	dog_formal = This is being used as a proper name or otherwise has
+		importance. In English, this simply means Capitalizing Most Words.
+	dog_presentational = This is a user-facing term that is
+		"pointing" at...
+			* important information
+			* a text box
+			* a selectable option
+			* a toggleable option
+			* etc.
+		In English, I add a colon on the end of the formal term, e.g. "Dog:"
+
+*/
+
 const common = {
 
 	"Conlang Toolbox": "Conlang Toolbox", // name of the App
 	"Conlang Toolbox_filename": "ConlangToolbox", // safe for use as a filename
-	"tools for language invention": "tools for language invention",
+	"tools for language invention": "tools for language invention", // subtitle
 	Controls: "Controls", // the buttons used in the app
 
 	MorphoSyntax: "MorphoSyntax", // name of tool
@@ -30,12 +56,16 @@ const common = {
 	// name of tool
 	Concepts: "Concepts",
 
+	// name of tool
 	"Extra Characters": "Extra Characters",
 
+	// page names
 	"App Info": "App Info",
 	Settings: "Settings",
 	"App Settings": "App Settings",
 	Main: "Main",
+
+	// general terms that get reused a lot
 	Overview: "Overview",
 	Input: "Input",
 	Output: "Output",
@@ -43,27 +73,29 @@ const common = {
 	Cancel: "Cancel",
 	Clear: "Clear",
 	Save: "Save",
-	Ok: "Ok",
+	Ok: "Ok", // general acknowledgement
 	Done: "Done", // finished, completed, etc.
 	Close: "Close", // close the open modal/dialog/whatever
 	Help: "Help",
-	"Display": "Display",
-	"Display_presentation": "Display:", // short label indicating the user can select an option to display
 	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
 	Saved: "Saved", // message indicating something was saved to the device or to app state
 	Copy: "Copy", // button that will copy something to the clipboard
-	"Copy to Clipboard": "Copy to Clipboard",
-	"Copied to clipboard": "Copied to clipboard",
-	"Characters to be copied": "Characters to be copied", // aria-label
 	"Add New": "Add New",
 	"Add and Close": "Add and Close",
-	"Nothing to copy": "Nothing to copy",
 	Export: "Export",
 	Generate: "Generate",
 	Info: "Info", // short for "Information"
 
-	fileFormat: "{{title}} - {{date}}.{{extension}}",
-	"[Untitled]": "[Untitled]",
+	// This term should be treated as the `presentational` context
+	Display: "Display:", // short label indicating the user can select an option to display
+
+	"Copy to Clipboard": "Copy to Clipboard", // action
+	"Copied to clipboard": "Copied to clipboard", // result message
+	"Characters to be copied": "Characters to be copied", // aria-label
+	"Nothing to copy": "Nothing to copy", // error message
+
+	"[Untitled]": "[Untitled]", // used as a document title if no title provided
+	fileFormat: "{{title}} - {{date}}.{{extension}}", // safe for use as a filename
 	exportTitle: "Export: {{title}}",
 	"Unable to export": "UNABLE TO EXPORT: {{error}}",
 	"File exported": "{{filename}} exported.",
@@ -71,45 +103,48 @@ const common = {
 	generalError: "Error saving file {{filename}} ({{error}})",
 	fileSaved: "File saved as {{filename}}",
 
-	joinTwo: "{{one}} and {{two}}",
+	// lists of things
 	andGlue: ", ", // put between items in a list
 	andFinal: ", and ", // put between the penultimate and the last item in a list
+	joinTwo: "{{one}} and {{two}}", // used when there are only two items in a list
 
 	"Exit App?": "Exit App?",
 	"Do you want to exit the app?": "Do you want to exit the app?",
 	"Yes Exit!": "Yes, Exit!",
 
-	// saveToLexColumn also takes a {{count}} in case a plural version is needed
-	saveToLexColumn: "{{what}} saved to $t(Lexicon) under \"{{column}}\"",
+	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"",
+	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"",
 	"Select a column": "Select a column",
 	"Go to Lexicon": "Go to $t(Lexicon)",
 	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).",
 	"Your selected words will be added to the Lexicon under that column.":
 		"Your selected words will be added to the $t(Lexicon) under that column.",
-	word_one: "{{count}} word",
-	word_other: "{{count}} words",
 
 	"Word Document (docx)": "Word Document (docx)",
 	"Text File": "Text File",
 	"Text File (plain)": "$t(Text File) (plain)",
 	"Text File (markdown)": "$t(Text File) (markdown)",
 	"Spreadsheet (csv)": "Spreadsheet (csv)",
-	"Choose a Format": "Choose a Format",
-	"Choose a format": "Choose a format",
-	"Choose a format_presentation": "Choose a format:",
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
+	"Choose a format": "Choose a Format",
+	"Choose a format_presentation": "Choose a format:",
+
 	"Save as New": "Save as New",
 
-	// Things will take `count` properties for plurality
-	clearOverwriteThings: "This will clear and overwrite {{things}}.",
-	"clearThings?": "Clear {{things}}?",
-	deleteThings: "This will delete {{things}}.",
-	deleteThingsCannotUndo: "This will delete {{things}}, and cannot be undone.",
-	thingsDeleted: "{{things}} deleted.",
+	// Things will take `count` properties for plurality, but the exact number will usually be expressed
+	//   in the `things` property itself
+	"clearThings?_one": "Clear {{things}}?",
+	"clearThings?_other": "Clear {{things}}?",
+	deleteThings_one: "This will delete {{things}}.",
+	deleteThings_other: "This will delete {{things}}.",
+	deleteThingsCannotUndo_one: "This will delete {{things}}, and cannot be undone.",
+	deleteThingsCannotUndo_other: "This will delete {{things}}, and cannot be undone.",
+	thingsDeleted_one: "{{things}} deleted.",
+	thingsDeleted_other: "{{things}} deleted.",
 
-	// General Things are unknown, may be 0, 1, or any number
+	// General Things are unknown: may be 0, 1, or any number
 	clearOverwriteGeneralThings: "This will clear and overwrite {{things}}.",
 	clearGeneralThings: "Clear {{things}}",
 	deleteGeneralThings: "Delete {{things}}",
@@ -117,6 +152,7 @@ const common = {
 	saveGeneralThings: "Save {{things}}",
 
 	// Singular Things
+	clearOverwriteThing: "This will clear and overwrite {{thing}}.",
 	thingAdded: "{{thing}} added.",
 	thingSaved: "{{thing}} saved.",
 	thingDeleted: "{{thing}} deleted.",
@@ -142,8 +178,10 @@ const common = {
 	titleDeleted: "\"{{title}}\" deleted.",
 	titleOverwritten: "\"{{title}}\" overwritten.",
 
-	"the previous save": "the previous save",
+	// "It" refers to saved info from WG, WE, or Declenjugation
 	"Yes Overwrite It": "Yes, Overwrite It",
+
+	"the previous save": "the previous save",
 	"Load Error": "Load Error",
 	"Manage Custom Info": "Manage Custom Info",
 	"Current Info": "Current Info",
@@ -163,25 +201,51 @@ const common = {
 		"Are you sure you want to delete this? $t(cannotUndo)",
 	"Clear Everything?": "Clear Everything?",
 	"Delete Everything?": "Delete Everything?",
-	confirmDelIt: "Yes, Delete It",  // "It" might refer to many things
-	confirmDel_one: "$t(confirmDelIt)",  // "It" might refer to many things
-	confirmDel_other: "Yes, Delete Them", // "Them" might refer to many things
-	confirmLoad: "Yes, Load It", // "It" may refer to many things
+
+	// in confirmDel, the thing/things being deleted might be...
+	//    custom meanings in Concepts
+	//    Lexicon items
+	//    Character Groups in WG and WE
+	//    Transformations in WG and WE
+	//    Syllables in WG
+	confirmDel_one: "Yes, Delete It",
+	confirmDel_other: "Yes, Delete Them",
+
+	// in confirmDelIt, "It" might refer to...
+	//    Character Groups in WG and WE
+	//    Sound Changes in WE
+	//    Transformations in WG and WE
+	//    saved Custom Info in WG, WE, Declenjugator, Lexicon, and MorphoSyntax
+	//    all info in MorphoSyntax or Lexicon
+	//    Lexicon columns and items
+	//    Custom Sorts, or one of their relations or equalities
+	//    Declenjugator groups, or the separate declensions/etc within one
+	confirmDelIt: "Yes, Delete It",
+
+	// "It" may refer to saved Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax
+	confirmLoad: "Yes, Load It",
+
+	// "This" gets slotted into 'deleteThing' and may refer to...
+	//    Custom Sorts, or one of their relations or equalities
+	//    Declenjugator groups, or the separate declensions/etc within one
+	This: "This",
+
 	"Yes Exit": "Yes, Exit",
 	"Nothing to save.": "Nothing to save.",
-	This: "This",
 	Delete: "Delete",
 	Edit: "Edit",
 	Deleted: "Deleted",
 	"Unsaved Info": "Unsaved Info",
-	"Are you sure you want to discard this?":
+
+	"Are you sure you want to discard this?": // when deciding not to add a new thing
 		"Are you sure you want to discard this?",
-	"Are you sure you want to discard your edits?":
+	"Are you sure you want to discard your edits?": // when deciding not to edit an existing thing
 		"Are you sure you want to discard your edits?",
 	"Yes Discard": "Yes, Discard",
 	"Clear Input": "Clear Input",
 	"Are you sure? This will clear the entire input and cannot be undone.":
 		"$t(areYouSure) This will clear the entire input, and cannot be undone.",
+	// "It" refers to the Input in Declenjugator and WE
 	"Yes Clear It": "Yes, Clear It",
 
 	"Default sort": "Default sort", // Refers to the default sort method, whatever it may be
@@ -194,9 +258,6 @@ const common = {
 
 	regexpError: "Error trying to parse \"{{regex}}\"",
 
-	"You did not type any information into any text field.":
-		"You did not type any information into any text field.",
-
 	Loading: "Loading",
 	"Working...": "Working...",
 	"Please wait...": "Please wait...",
@@ -205,17 +266,17 @@ const common = {
 	title: "title",
 	Title: "Title",
 	"Title_presentation": "Title:",
-	Description: "Description",
 	description: "description",
 	description_formal: "Description",
 	description_presentation: "Description:",
+	Description: "$t(description, { \"context\": \"formal\" })",
 
 	overviewOf: "Overview: {{what}}",
 
-	ImportFrom: "Import from {{source}}",
+	ImportFrom: "Import from {{source}}", // source is always Lexicon, WordGen or WordEvolve
 	"Load Preset": "Load Preset",
 
-	// Import from Lexicon
+	// Import from Lexicon (to WG or WE)
 	Import: "Import",
 	"Import from Lexicon": "Import from $t(common:Lexicon)",
 	"Import from which column(s)?": "Import from which column(s)?",
@@ -227,13 +288,14 @@ const common = {
 	"Word must match expression [x]": "Word must match expression [x]",
 	"Type regular expression here.": "Type regular expression here.",
 	"Column [x] must contain [y]": "Column [x] must contain [y]",
-	"Test column": "Test column",
-	"Test column_presentation": "Test column:",
 	"Column [x] must match expression [y]": "Column [x] must match expression [y]",
-	"Words that contain": "Words that contain",
-	"Words that contain_presentation": "Words that contain:",
+
+	// These terms should be treated as the `presentational` context
+	"Test column": "Test column:", // the column being tested for a match
+	"Words that contain": "Words that contain:",
 	"Words that match": "Words that match:",
 	"Words where the column": "Words where the column:",
+
 	columnContains: "[{{column}}] contains \"{{test}}\"",
 	columnMatches: "[{{column}}] matches /{{test}}/",
 	"Match all conditions": "Match all conditions",
@@ -253,7 +315,7 @@ const common = {
 	"Regexes": "Regexes", // plural, generic, starts a sentence, shorter version of Regular Expressions
 	"regular expression": "regular expression", // single instance
 
-	regexpInfo: [
+	regexpInfo: [ // Markdown format
 		"To put it as simply as possible, a $t(regular expression) is a",
 		"sequence of characters that specifies a match pattern in text.",
 		"$t(Conlang Toolbox) uses JavaScript-style regexes without the",
@@ -272,7 +334,7 @@ const common = {
 	// EXTRA CHARACTERS
 	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.",
 	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.",
-	copiedCharToClipboard: "Copied {{char}} to clipboard",
+	copiedCharToClipboard: "Copied {{char}} to clipboard", // only one character was copied
 	Favorites: "Favorites",
 	"Start favoriting characters" : "Start favoriting characters",
 	"Stop favoriting characters" : "Stop favoriting characters",
@@ -281,7 +343,8 @@ const common = {
 	"Tap characters to add them here": "Tap characters to add them here",
 	"Show full character names": "Show full character names",
 	"Hide full character names": "Hide full character names",
-	extraHelp: {
+
+	extraHelp: { // Markdown format
 		help1p1:[
 			"This is a place to find and copy characters that may not be",
 			"easily accessible to you on your device's keyboard. The other",
@@ -294,8 +357,8 @@ const common = {
 		],
 		help1p3:[
 			"When active, tapping on a character adds or removes it from your",
-			"Favorites list. Characters will not be copied to the clipboard or",
-			"the copy-bar."
+			"Favorites list. Characters will not be copied to the clipboard",
+			"or the copy-bar."
 		],
 		help1p4:[
 			"When active, shows the standard Unicode name of every character.",
@@ -305,7 +368,8 @@ const common = {
 			"Tap a character set below to see the characters in that set."
 		],
 		help3: [
-			"Characters will display below. Tap them to copy them to the copy-bar above."
+			"Characters will display below. Tap them to copy them to the",
+			"copy-bar above."
 		],
 	},
 	characterInfo: characters,

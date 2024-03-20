@@ -66,7 +66,6 @@ const wg = {
 	wiSyll: "word-initial $t(syll_other)",
 	wfSyll: "word-final $t(syll_other)",
 	mwSyll: "mid-word $t(syll_other)",
-	Generate: "Generate",
 	"Pseudo-text": "Pseudo-text",
 	"Pseudo-texts": "Pseudo-texts",
 	Wordlist: "Wordlist",

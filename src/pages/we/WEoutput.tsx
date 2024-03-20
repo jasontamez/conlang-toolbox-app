@@ -771,7 +771,7 @@ const WEOut: FC<PageData> = (props) => {
 						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
-							message: tc("saveToLexColumn", { what: "Selected words", column: col.label }),
+							message: tc("saveToLexColumn", { count: words.length, column: col.label }),
 							duration: 3500,
 							position: "top",
 							color: "success",

@@ -56,7 +56,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	] = useI18Memo(commons);
 	const [ tNoTitle, tAllGroups ] = useI18Memo(translations, "dj");
 	const tOverwriteAll = useMemo(() => tc("clearOverwriteGeneralThings", { things:tAllGroups }), [tc, tAllGroups]);
-	const tOverwritePrev = useMemo(() => tc("clearOverwriteThings", { things: tc("the previous save"), count: 1 }), [tc]);
+	const tOverwritePrev = useMemo(() => tc("clearOverwriteThing", { thing: tc("the previous save") }), [tc]);
 	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("Current Info") }), [tc]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;

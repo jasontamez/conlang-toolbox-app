@@ -209,12 +209,12 @@ const WESChange: FC<PageData> = (props) => {
 				header: tClearAll,
 				message: tc("deleteThingsCannotUndo", { things: t("all current sound changes"), count }),
 				cssClass: "warning",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count }),
 				handler,
 				doAlert
 			});
 		}
-	}, [soundChanges.length, t, tc, doAlert, toast, disableConfirms, dispatch, tClearAll, tConfDel]);
+	}, [soundChanges.length, t, tc, doAlert, toast, disableConfirms, dispatch, tClearAll]);
 	const soundchangesItems = useMemo(() =>
 		soundChanges.map((input: WESoundChangeObject) =>
 			<SoundChange

@@ -49,7 +49,8 @@ const translations = [
 	"Modification", "Prefix", "Suffix", "Use advanced method",
 	"You did not enter a match expression.", "Use entire word",
 	"You must provide a title or description before saving.",
-	"Matching Expression", "Replacement Expression"
+	"Matching Expression", "Replacement Expression",
+	"word", "stem"
 ];
 
 const commons = [
@@ -76,7 +77,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tOk, tSave, tUnsaved, tYes ] = useI18Memo(commons);
-	const [ tBaseNotStem, tMod, tPref, tSuff, tAdvMeth, tNoMatch, tUseWord, tNoTitle, tMEx, tREx ] = useI18Memo(translations, "dj");
+	const [ tBaseNotStem, tMod, tPref, tSuff, tAdvMeth, tNoMatch, tUseWord, tNoTitle, tMEx, tREx, tWord, tStem ] = useI18Memo(translations, "dj");
 	const tAddThing = useMemo(() => typeString ? tc("addThing", { thing: t(typeString) }) : "", [t, tc, typeString]);
 	const tThingSaved = useMemo(() => typeString ? tc("thingSaved", { thing: t(typeString) }) : "", [tc, t, typeString]);
 	const [ tpMEx, tpREx ] = useI18Memo(expressions, "dj", context);
@@ -314,7 +315,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 							className="ion-text-end"
 						/>
 						<div className="ion-text-center stem pad-horizontal-rem">
-							<strong>{useWholeWord ? "word" : "stem"}</strong>
+							<strong>{useWholeWord ? tWord : tStem}</strong>
 						</div>
 						<IonInput
 							id="addDJSuffix"
