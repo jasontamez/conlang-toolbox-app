@@ -205,7 +205,7 @@ const WGSyl: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("clearThings?", { count, things: t("Syllable", { count }) }),
+				header: tc("Delete All Syllables"),
 				message: t("delAllSyllables", { count }),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),

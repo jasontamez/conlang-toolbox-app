@@ -55,9 +55,9 @@ const translations = [
 ];
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Are you sure you want to discard your edits?", "Delete", "Deleted", "Ok",
-	"Save", "Unsaved Info", "Yes Discard", "confirmDelIt"
+	"deleteThisCannotUndo", "Are you sure you want to discard your edits?",
+	"Delete", "Deleted", "Ok", "Save", "Unsaved Info", "Yes Discard",
+	"confirmDelIt"
 ];
 
 const presentations = [ "Matching Expression", "Replacement Expression" ];

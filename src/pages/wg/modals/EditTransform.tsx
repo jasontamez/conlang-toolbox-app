@@ -43,8 +43,7 @@ function resetError() {
 }
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "confirmDelIt", "error", "optional"
+	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error", "optional"
 ];
 
 const translations = [

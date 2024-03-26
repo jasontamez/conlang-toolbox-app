@@ -12,6 +12,7 @@ const wgwe = {
 	CharGroup_other: "Character Groups",
 	"clearCharGroups?_one": "Clear $t(CharGroup)?",
 	"clearCharGroups?_other": "Clear $t(CharGroup_other)?",
+	"Delete All": "Delete All",
 	delAllCharGroups_one:
 		"This will delete the current $t(charGroup, { \"count\": {{count}} }), and cannot be undone.",
 	delAllCharGroups_other:

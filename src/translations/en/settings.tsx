@@ -3,6 +3,7 @@ const settings = {
 	// SETTINGS
 
 	"Export All Data": "Export All Data",
+	Data: "Data",
 	"Disable Confirmation Prompts": "Disable Confirmation Prompts",
 	"Eliminates yes/no prompts when deleting or overwriting data.":
 		"Eliminates yes/no prompts when deleting or overwriting data.",

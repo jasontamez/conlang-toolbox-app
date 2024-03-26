@@ -184,9 +184,10 @@ export const OutCard: FC<CardProps> = (props) => {
 
 const WEinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('we');
+	const [ tc ] = useTranslator('common');
 	const main = useMemo(() => t("info.overview", { joinArrays: "\n"}), [t]);
 	const tWhat = useMemo(() => t("What is WordEvolve?"), [t]);
-	const tOverview = useMemo(() => t("Overview"), [t]);
+	const tOverview = useMemo(() => tc("Overview"), [tc]);
 	return (
 		<IonPage>
 			<IonHeader>

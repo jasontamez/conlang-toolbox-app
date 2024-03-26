@@ -199,7 +199,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("loadTitle", { title }),
+				header: tc("loadTitleQ", { title }),
 				message: tClearAll,
 				cssClass: "warning",
 				submit: tConfirmLoad,
@@ -226,7 +226,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("deleteTitle", { title }),
+				header: tc("deleteTitleQ", { title }),
 				message: tCannotUndo,
 				cssClass: "warning",
 				submit: tConfirmDel,

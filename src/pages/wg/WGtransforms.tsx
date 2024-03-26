@@ -140,7 +140,7 @@ const WGRew: FC<PageData> = (props) => {
 			const { seek, replace } = transform;
 			yesNoAlert({
 				header: `${seek}${arrow}${replace}`,
-				message: tc("Are you sure you want to delete this? This cannot be undone."),
+				message: tc("deleteThisCannotUndo"),
 				cssClass: "danger",
 				submit: tc("confirmDelIt"),
 				handler,

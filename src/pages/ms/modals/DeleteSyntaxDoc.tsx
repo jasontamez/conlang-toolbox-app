@@ -74,7 +74,7 @@ const DeleteSyntaxDocModal: FC<MSmodalProps> = (props) => {
 				handler();
 			} else {
 				yesNoAlert({
-					header: tc("deleteTitle", { title }),
+					header: tc("deleteTitleQ", { title }),
 					message: tc("cannotUndo"),
 					cssClass: "danger",
 					submit: tc("confirmDelIt"),

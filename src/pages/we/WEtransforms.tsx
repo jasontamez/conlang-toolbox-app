@@ -132,8 +132,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 
 const commons = [
 	"Add New", "Delete", "Extra Characters", "Help",
-	"confirmDelIt", "Clear Everything?",
-	"Are you sure you want to delete this? This cannot be undone."
+	"confirmDelIt", "Clear Everything?", "deleteThisCannotUndo"
 ];
 
 const WERew: FC<PageData> = (props) => {

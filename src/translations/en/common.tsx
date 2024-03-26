@@ -10,11 +10,12 @@ PLURALITY:
 CONTEXTS:
 	Some terms may be used in a specific context.
 
-	dog = Normal use
+	dog = Normal use, e.g. "dog"
 	dog_filename = Must consist of only characters safe to use in a filename.
-		(this is generally anything except \/:*?"<>|)
+		(this is generally anything except \/:*?"<>|), e.g. "dog"
 	dog_formal = This is being used as a proper name or otherwise has
-		importance. In English, this simply means Capitalizing Most Words.
+		importance. In English, this simply means Capitalizing Most Words,
+		e.g. "Dog"
 	dog_presentational = This is a user-facing term that is
 		"pointing" at...
 			* important information
@@ -28,30 +29,30 @@ CONTEXTS:
 
 const common = {
 
-	"Conlang Toolbox": "Conlang Toolbox", // name of the App
-	"Conlang Toolbox_filename": "ConlangToolbox", // safe for use as a filename
-	"tools for language invention": "tools for language invention", // subtitle
-	Controls: "Controls", // the buttons used in the app
+	// title, subtitle of the App
+	"Conlang Toolbox": "Conlang Toolbox",
+	"Conlang Toolbox_filename": "ConlangToolbox",
+	"tools for language invention": "tools for language invention",
 
 	MorphoSyntax: "MorphoSyntax", // name of tool
 
 	// name of tool - word + generator
 	WordGen: "WordGen",
-	WordGen_filename: "WordGen", // safe for use as a filename
+	WordGen_filename: "WordGen",
 	WG: "WG", // shorthand for WordGen
 
 	// name of tool - word + evolve
 	WordEvolve: "WordEvolve",
-	WordEvolve_filename: "WordEvolve", // safe for use as a filename
+	WordEvolve_filename: "WordEvolve",
 	WE: "WG", // shorthand for WordEvolve
 
 	// name of tool - declension + conjugation
 	Declenjugator: "Declenjugator",
-	Declenjugator_filename: "Declenjugator", // safe for use as a filename
+	Declenjugator_filename: "Declenjugator",
 
 	// name of tool
 	Lexicon: "Lexicon",
-	Lexicon_filename: "Lexicon",  // safe for use as a filename
+	Lexicon_filename: "Lexicon",
 
 	// name of tool
 	Concepts: "Concepts",
@@ -66,37 +67,40 @@ const common = {
 	Main: "Main",
 
 	// general terms that get reused a lot
-	Overview: "Overview",
+	
+	// title of some pages
+	Overview: "Overview", 
 	Input: "Input",
 	Output: "Output",
-	Stop: "Stop",
-	Cancel: "Cancel",
-	Clear: "Clear",
-	Save: "Save",
-	Ok: "Ok", // general acknowledgement
-	Done: "Done", // finished, completed, etc.
-	Close: "Close", // close the open modal/dialog/whatever
-	Help: "Help",
-	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
-	Saved: "Saved", // message indicating something was saved to the device or to app state
-	Copy: "Copy", // button that will copy something to the clipboard
-	"Add New": "Add New",
-	"Add and Close": "Add and Close",
-	Export: "Export",
-	Generate: "Generate",
 	Info: "Info", // short for "Information"
+
+	// title of some buttons
+	Cancel: "Cancel",                // abandon the current action
+	Clear: "Clear",                  // remove all current information
+	Save: "Save",                    // save current information
+	Ok: "Ok",                        // general acknowledgement
+	Done: "Done",                    // use has finished and does not need to continue
+	Close: "Close",                  // close the open modal/dialog/whatever
+	Help: "Help",                    // show "help" documentation
+	"Add and Close": "Add and Close",// add a new item and close this modal
+	"Add New": "Add New",            // add a new item; may imply that the current modal will remain open
+	Copy: "Copy",                    // copy something to the clipboard
+	Generate: "Generate",            // the tool will create something new
+	"Save as New": "Save as New",    // save current info as a new document
+
+	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
 
 	// This term should be treated as the `presentational` context
 	Display: "Display:", // short label indicating the user can select an option to display
 
-	"Copy to Clipboard": "Copy to Clipboard", // action
-	"Copied to clipboard": "Copied to clipboard", // result message
-	"Characters to be copied": "Characters to be copied", // aria-label
-	"Nothing to copy": "Nothing to copy", // error message
+	// Toast and Alert messages
+	Saved: "Saved",                              // something was saved to the device or to app state
+	"Copy to Clipboard": "Copy to Clipboard",    // action
+	"Copied to clipboard": "Copied to clipboard",// result message
+	"Nothing to copy": "Nothing to copy",        // error message
 
-	"[Untitled]": "[Untitled]", // used as a document title if no title provided
+	"[Untitled]": "[Untitled]", // used as a document title if no title is provided
 	fileFormat: "{{title}} - {{date}}.{{extension}}", // safe for use as a filename
-	exportTitle: "Export: {{title}}",
 	"Unable to export": "UNABLE TO EXPORT: {{error}}",
 	"File exported": "{{filename}} exported.",
 	"Unable to write file": "UNABLE TO WRITE FILE: {{error}}",
@@ -104,14 +108,16 @@ const common = {
 	fileSaved: "File saved as {{filename}}",
 
 	// lists of things
-	andGlue: ", ", // put between items in a list
+	andGlue: ", ", // this is put between items in a list
 	andFinal: ", and ", // put between the penultimate and the last item in a list
 	joinTwo: "{{one}} and {{two}}", // used when there are only two items in a list
 
+	// Exit the App messages
 	"Exit App?": "Exit App?",
 	"Do you want to exit the app?": "Do you want to exit the app?",
 	"Yes Exit!": "Yes, Exit!",
 
+	// Saving words to the Lexicon from other tools
 	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"",
 	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"",
 	"Select a column": "Select a column",
@@ -120,6 +126,11 @@ const common = {
 	"Your selected words will be added to the Lexicon under that column.":
 		"Your selected words will be added to the $t(Lexicon) under that column.",
 
+	// Exporting files
+	"Choose a format": "Choose a Format",
+	"Choose a format_presentation": "Choose a format:",
+
+	// Types of file exports
 	"Word Document (docx)": "Word Document (docx)",
 	"Text File": "Text File",
 	"Text File (plain)": "$t(Text File) (plain)",
@@ -128,17 +139,10 @@ const common = {
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
-	"Choose a format": "Choose a Format",
-	"Choose a format_presentation": "Choose a format:",
-
-	"Save as New": "Save as New",
+	"Characters to be copied": "Characters to be copied", // aria-label
 
 	// Things will take `count` properties for plurality, but the exact number will usually be expressed
 	//   in the `things` property itself
-	"clearThings?_one": "Clear {{things}}?",
-	"clearThings?_other": "Clear {{things}}?",
-	deleteThings_one: "This will delete {{things}}.",
-	deleteThings_other: "This will delete {{things}}.",
 	deleteThingsCannotUndo_one: "This will delete {{things}}, and cannot be undone.",
 	deleteThingsCannotUndo_other: "This will delete {{things}}, and cannot be undone.",
 	thingsDeleted_one: "{{things}} deleted.",
@@ -167,13 +171,11 @@ const common = {
 	exportThing_presentation: "Export {{thing}}:",
 
 	// Titled things
-	deleteTitle: "Delete \"{{title}}\"?",
-	loadTitle: "Load \"{{title}}\"?",
-
+	deleteTitleQ: "Delete \"{{title}}\"?",
+	loadTitleQ: "Load \"{{title}}\"?",
 	titleSaved: "\"{{title}}\" saved.",
-	titleAlreadyExists: "\"{{title}}\" already exists",
+	titleAlreadyExists: "\"{{title}}\" already exists.",
 	titleLoaded: "\"{{title}}\" loaded.",
-	prefixTitleLoaded: "{{prefix}} \"{{title}}\" loaded.",
 	titleNotFound: "\"{{title}}\" not found.",
 	titleDeleted: "\"{{title}}\" deleted.",
 	titleOverwritten: "\"{{title}}\" overwritten.",
@@ -197,8 +199,7 @@ const common = {
 
 	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // Do you want to do this action?
-	"Are you sure you want to delete this? This cannot be undone.":
-		"Are you sure you want to delete this? $t(cannotUndo)",
+	deleteThisCannotUndo: "Are you sure you want to delete this? $t(cannotUndo)",
 	"Clear Everything?": "Clear Everything?",
 	"Delete Everything?": "Delete Everything?",
 

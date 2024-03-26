@@ -62,7 +62,7 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 	const [ ts ] = useTranslator('settings');
 	const [ tClose, tCopy, tDone, tLoading ] = useI18Memo(commons);
 	const [ tExportedData, tOtherSettings, tWhatToExport ] = useI18Memo(translations, "settings");
-	const tExportThing = useMemo(() => t("exportThing", { thing: t("Info") }), [t]);
+	const tExportThing = useMemo(() => t("exportThing", { thing: ts("Data") }), [t, ts]);
 	const tExportMsg = useMemo(() => ts("exportAllMsg", { joinArrays: "\n" }), [ts]);
 	const tCurrentMorphoSyntaxSettings = useMemo(() => ts("currentSettings", { tool: t("MorphoSyntax") }), [ts, t]);
 	const tStoredMorphoSyntaxDocuments = useMemo(() => ts("storedDocuments", { tool: t("MorphoSyntax") }), [ts, t]);

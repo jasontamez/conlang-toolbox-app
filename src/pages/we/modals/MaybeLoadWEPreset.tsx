@@ -58,7 +58,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 			});
 			dispatch(loadStateWE(copy));
 			toaster({
-				message: tc("prefixTitleLoaded", { prefix: "Preset", title: presetTitle }),
+				message: tc("titleLoaded", { title: presetTitle }),
 				duration: 2500,
 				position: "top",
 				toast
@@ -69,7 +69,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("loadTitle", { title: presetTitle }),
+				header: tc("loadTitleQ", { title: presetTitle }),
 				message: tClearThings,
 				cssClass: "danger",
 				submit: tConfLoad,

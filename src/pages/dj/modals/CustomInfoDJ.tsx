@@ -41,10 +41,10 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 const translations = [ "You must provide a title or description before saving.", "all current groups" ];
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.", "Cancel",
-	"Delete", "Load Error", "Load Saved Info", "Load", "Manage Custom Info",
-	"Name of save", "Name your custom info", "No saved info", "Ok", "Save",
-	"Yes Overwrite It", "confirmDelIt", "confirmLoad"
+	"deleteThisCannotUndo", "Cancel", "Delete", "Load Error",
+	"Load Saved Info", "Load", "Manage Custom Info", "Name of save",
+	"Name your custom info", "No saved info", "Ok", "Save", "Yes Overwrite It",
+	"confirmDelIt", "confirmLoad"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
@@ -156,7 +156,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header:  tc("loadTitle", { title }),
+				header:  tc("loadTitleQ", { title }),
 				message: tOverwriteAll,
 				cssClass: "warning",
 				submit: tConfLoad,
@@ -183,7 +183,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("deleteTitle", { title }),
+				header: tc("deleteTitleQ", { title }),
 				message: tYouSure,
 				cssClass: "danger",
 				submit: tConfDel,

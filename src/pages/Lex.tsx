@@ -382,9 +382,8 @@ const translations = [
 ];
 
 const commons =  [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Description", "Ok", "areYouSure", "cannotUndo",  "confirmDelIt",
-	"error", "Help", "Add New", "Close"
+	"deleteThisCannotUndo", "Description", "Ok", "areYouSure", "cannotUndo",
+	"confirmDelIt", "error", "Help", "Add New", "Close"
 ];
 
 const presentations = [ "Lexicon Title", "Sort" ];

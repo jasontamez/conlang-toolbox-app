@@ -1,5 +1,7 @@
 const concepts = {
 	// Concepts
+	Stop: "Stop",
+
 	info: {
 		basic: [
 			"Presented here are a number of lists of basic concepts,",

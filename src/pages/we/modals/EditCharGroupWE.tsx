@@ -48,8 +48,7 @@ const presentations = [ "Letters Characters", "Short Label", "Title or descripti
 const context = { context: "presentation" };
 
 const commons =  [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "confirmDelIt", "error"
+	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error"
 ];
 
 const translations = [

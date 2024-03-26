@@ -57,25 +57,26 @@ const translations = [
 	"Please choose at least one group to display.", "Show Examples",
 	"Show Group Info", "Show Unmatched Words", "Sort Input", "Text",
 	"Unmatched Words", "Use Input", "You didn't select a format.",
-	"Conjugations"
+	"Conjugations", "Export"
 ];
 
 const commons = [
-	"Cancel", "Choose a format", "Copy to Clipboard", "Export", "Generate",
+	"Cancel", "Choose a format", "Copy to Clipboard", "Generate",
 	"Help", "Output", "Spreadsheet (csv)", "Text File", "Word Document (docx)"
 ];
 
 const DJOutput: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [
-		tCancel, tChoose, tCopy, tExport, tGen,
+		tCancel, tChoose, tCopy, tGen,
 		tHelp, tOut, tCSV, tTxt, tDocx
 	] = useI18Memo(commons);
 	const [
 		tChartSide, tChartTop, tDecl, tShowNotMatched, tShowDeclConj,
 		tIncludeInfo, tIncludeGeneric, tOneMethod, tOneMatch, tOther,
 		tChooseOne, tShowExamples, tShowGroupInfo, tShowUnmatchedWords,
-		tSortInput, tText, tUnmatchedWords, tUseInput, tNoFormat, tConj
+		tSortInput, tText, tUnmatchedWords, tUseInput, tNoFormat, tConj,
+		tExport
 	] = useI18Memo(translations, "dj");
 	const tpDisplayAs = useMemo(() => t("Display as", { context: "presentation" }), [t]);
 

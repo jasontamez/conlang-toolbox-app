@@ -109,7 +109,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("loadTitle", { title: preset }),
+				header: tc("loadTitleQ", { title: preset }),
 				message: tClearAll,
 				cssClass: "warning",
 				submit: tConfLoad,

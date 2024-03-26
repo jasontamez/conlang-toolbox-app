@@ -56,8 +56,8 @@ const translations = [
 ];
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.", "Close",
-	"error", "Extra Characters", "Ok", "Yes Exit", "confirmDelIt", "areYouSure"
+	"deleteThisCannotUndo", "Close", "error", "Extra Characters", "Ok",
+	"Yes Exit", "confirmDelIt", "areYouSure"
 ];
 
 const things = [ "deleteThing", "saveThing", "thingDeleted", "thingEdited" ];

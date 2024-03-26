@@ -106,6 +106,7 @@ const dj = {
 	"Groups Tab": "$t(Groups) Tab",
 	"Output Tab": "Output Tab",
 
+	Export: "Export",
 	Example: "Example",
 	Examples: "Examples",
 	Prefix: "Prefix",

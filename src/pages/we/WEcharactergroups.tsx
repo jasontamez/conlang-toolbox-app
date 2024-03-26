@@ -101,8 +101,8 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 };
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Add New", "Delete", "Help", "confirmDelIt", "yesImport"
+	"deleteThisCannotUndo", "Add New", "Delete", "Help",
+	"confirmDelIt", "yesImport"
 ];
 
 const WECharGroup: FC<PageData> = (props) => {
@@ -172,7 +172,7 @@ const WECharGroup: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tw("clearCharGroups?", { count }),
+				header: tw("Delete All"),
 				message: tw("delAllCharGroups", { count }),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),

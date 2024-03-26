@@ -262,7 +262,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			}),
 			buttons: [
 				{
-					text: tc("Stop"),
+					text: t("Stop"),
 					handler: () => {
 						setSavedWords([]);
 						setSavedWordsObject({});

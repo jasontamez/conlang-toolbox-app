@@ -186,7 +186,7 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("loadTitle", { title }),
+				header: tc("loadTitleQ", { title }),
 				message: tClearThings,
 				cssClass: "warning",
 				submit: tConfLoad,
@@ -212,7 +212,7 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("deleteTitle", { title }),
+				header: tc("deleteTitleQ", { title }),
 				message: tCannot,
 				cssClass: "warning",
 				submit: tConfDel,

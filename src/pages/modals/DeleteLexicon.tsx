@@ -36,8 +36,7 @@ interface SavedLexProperties extends ModalProperties {
 }
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "Close", "confirmDelIt", "Lexicon"
+	"deleteThisCannotUndo", "Cancel", "Close", "confirmDelIt", "Lexicon"
 ];
 
 const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
@@ -74,7 +73,7 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("deleteTitle", { title }),
+				header: tc("deleteTitleQ", { title }),
 				cssClass: "danger",
 				message: tYouSure,
 				submit: tConfDel,

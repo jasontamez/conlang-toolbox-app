@@ -99,7 +99,7 @@ const translations = [
 const commons = [
 	"Add New", "Close", "Default sort", "Delete", "Edit", "Extra Characters",
 	"Ok", "Save", "Title", "areYouSure", "confirmDelIt", "emphasizedError",
-	"Are you sure you want to delete this? This cannot be undone.",
+	"deleteThisCannotUndo",
 ];
 
 const presentations = [ "Alphabet separator", "Sort Language", "Sort Sensitivity" ];

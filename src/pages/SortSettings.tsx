@@ -72,7 +72,7 @@ const translations = [
 
 const commons = [
 	"Close", "Delete", "Edit", "Ok", "confirmDelIt", "Done",
-	"Are you sure you want to delete this? This cannot be undone."
+	"deleteThisCannotUndo"
 ];
 
 const SortSettings: FC<PageData> = (props) => {
@@ -186,7 +186,7 @@ const SortSettings: FC<PageData> = (props) => {
 				});
 			}
 			yesNoAlert({
-				header: tc("deleteTitle", { title }),
+				header: tc("deleteTitleQ", { title }),
 				message: tYouSure,
 				submit: tConfirmDel,
 				cssClass: "danger",

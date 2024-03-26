@@ -125,8 +125,8 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 };
 
 const commons = [
-	"Add New", "Are you sure you want to delete this? This cannot be undone.",
-	"Clear Everything?", "Delete", "Help", "confirmDelIt"
+	"Add New", "deleteThisCannotUndo", "Clear Everything?",
+	"Delete", "Help", "confirmDelIt"
 ];
 
 const WESChange: FC<PageData> = (props) => {

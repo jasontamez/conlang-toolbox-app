@@ -47,8 +47,7 @@ function resetError (prop: keyof WGCharGroupObject) {
 
 
 const commons = [
-	"Are you sure you want to delete this? This cannot be undone.",
-	"Cancel", "confirmDelIt", "error"
+	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error"
 ];
 
 const translations = [

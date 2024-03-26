@@ -20,8 +20,9 @@ const wg = {
 
 	"Syllables Tab": "$t(Syllables) Tab",
 	"Settings Tab": "$t(common:Settings) Tab",
-	"What is WordGen?": "What is $t(common:WordGen)?",
+	"What is WordGen?": "What is $t(common:WordGen)?4694632246",
 
+	"Delete All Syllables": "Delete All Syllables",
 	delAllSyllables_one:
 		"This will delete the current $t(syll, { \"count\": {{count}} }), and cannot be undone.",
 	delAllSyllables_other:
