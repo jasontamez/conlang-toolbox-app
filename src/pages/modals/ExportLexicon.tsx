@@ -34,10 +34,11 @@ type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const translations = [
 	"CSV File", "CSV File, no title/description", "JSON File",
-	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "XML File"
+	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "XML File",
+	"TITLE"
 ];
 
-const commons = [ "Cancel", "Close", "Description", "TITLE" ];
+const commons = [ "Cancel", "Close", "Description" ];
 
 const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');

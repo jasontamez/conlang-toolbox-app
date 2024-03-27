@@ -78,11 +78,10 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [_base, setBase] = useState<HTMLInputElement | null>(null);
 	const [_equals, setEquals] = useState<HTMLInputElement | null>(null);
 	const onLoad = useCallback(() => {
-		const error = tError;
 		const {
 			separator = ",",
-			base = error,
-			equals = [error]
+			base = tError,
+			equals = [tError]
 		} = incomingEquality || {};
 		setSeparator(separator);
 		const _base = $i<HTMLInputElement>("editBaseEquality");

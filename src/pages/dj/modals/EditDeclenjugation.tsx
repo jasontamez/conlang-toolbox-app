@@ -233,7 +233,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 			message: tTitleSaved,
 			position: "middle",
 			color: "success",
-			duration: 2000,
+			duration: 2500,
 			toast
 		});
 	}, [

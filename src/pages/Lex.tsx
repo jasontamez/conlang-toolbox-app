@@ -127,10 +127,11 @@ interface InnerHeaderProps {
 }
 
 const innerCommons = [
-	"Extra Characters", "Help", "Please wait...", "Working...", "Lexicon"
+	"Extra Characters", "Help", "Please wait...", "Lexicon"
 ];
 
 const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
+	const [ t ] = useTranslator("lexicon")
 	const {
 		setIsOpenECM,
 		modalPropsMaker,
@@ -146,7 +147,8 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [isOpenLexStorage, setIsOpenLexStorage] = useState<boolean>(false);
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
-	const [tExChar, tHelp, tWait, tWorking, tLex] = useI18Memo(innerCommons);
+	const [tExChar, tHelp, tWait, tLex] = useI18Memo(innerCommons);
+	const tWorking = useMemo(() => t("Working..."), [t]);
 
 	const endButtons = useMemo(() => [
 		<IonButton
@@ -378,7 +380,8 @@ const translations = [
 	"Lexicon Title", "Merge selected items", "beginDeleteMode",
 	"lexDescriptionHelperText", "lexTitleHelperText",
 	"Delete selected lexicon items", "Cancel deleting",
-	"You did not type any information into any text field."
+	"You did not type any information into any text field.",
+	"Delete multiple lexicon items"
 ];
 
 const commons =  [
@@ -394,15 +397,14 @@ const Lex: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [
 		tLexTitle, tMergSel, tBegin, tLexDescHT, tLexTitleHT,
-		tDelSel, tCancelDel, tNoText
+		tDelSel, tCancelDel, tNoText, tDelThings
 	] = useI18Memo(translations, 'lexicon');
 	const [
 		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel,
 		tError, tHelp, tAddNew, tClose
 	] = useI18Memo(commons);
-	const tDelThings = useMemo(() => tc("deleteGeneralThings", {things: t("multiple lexicon items")}), [t, tc]);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
-	const tpDesc =  useMemo(() => tc("Description"), [tc]);
+	const tpDesc =  useMemo(() => tc("Description", { context: "presentational" }), [tc]);
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {

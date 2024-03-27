@@ -38,6 +38,8 @@ const we = {
 	"Enter words here one per line": "Enter words here, one per line",
 	runs: "runs",
 
+	"Clear Input": "Clear Input",
+
 	"You have no sound changes defined.": "You have no sound changes defined.",
 	"You have no input words to evolve.": "You have no input words to evolve.",
 

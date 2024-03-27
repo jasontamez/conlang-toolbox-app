@@ -34,16 +34,18 @@ import useTranslator from '../../store/translationHooks';
 
 const commons = [
 	"Are you sure? This will clear the entire input and cannot be undone.",
-	"Clear Input", "Clear", "Extra Characters", "Help",
+	"Clear", "Extra Characters", "Help",
 	"Input", "Yes Clear It"
 ];
 
-const translations = [ "Words to Evolve", "Enter words here one per line" ];
+const translations = [
+	"Words to Evolve", "Enter words here one per line", "Clear Input"
+];
 
 const WEInput: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
-	const [ tWordsToEvolve, tOnePerLine ] = useI18Memo(translations, "we");
-	const [ tYouSure, tClearInput, tClear, tExChar, tHelp, tInput, tYesClear ] = useI18Memo(commons);
+	const [ tWordsToEvolve, tOnePerLine, tClearInput ] = useI18Memo(translations, "we");
+	const [ tYouSure, tClear, tExChar, tHelp, tInput, tYesClear ] = useI18Memo(commons);
 	const tImpFromLex = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
 
 	const { modalPropsMaker } = props;

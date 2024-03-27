@@ -50,7 +50,8 @@ const translations = [
 	"Nothing to clear", "Lexicon saved as new lexicon!",
 	"Please add words to your lexicon before exporting it.",
 	"Please give your lexicon a title before exporting it.",
-	"You must input a title before saving.", "deleteEverythingMessage"
+	"You must input a title before saving.", "deleteEverythingMessage",
+	"Clear Lexicon"
 ]
 
 const commons = [ "Delete Everything?", "Done", "Ok", "Save as New", "confirmDelIt", "error" ];
@@ -64,9 +65,9 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 	] = useI18Memo(commons);
 	const [
 		tLexStor, tLexClear, tNoClear, tLexNew,
-		tNoWords, tNoTitleEx, tNoTitle, tDelAll
+		tNoWords, tNoTitleEx, tNoTitle, tDelAll,
+		tClearLex
 	] = useI18Memo(translations, "lexicon");
-	const tClearGenLex = useMemo(() => tc("clearGeneralThings", { things: tc("Lexicon") }), [tc])
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: t("Saved Lexicon") }), [tc, t])
 	const tExThing = useMemo(() => tc("exportThing", { thing: tc("Lexicon") }), [tc])
 	const tLoadThing = useMemo(() => tc("loadThing", { thing: tc("Lexicon") }), [tc])
@@ -261,7 +262,7 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 				<IonList lines="none">
 					<IonItem button={true} onClick={clearLexicon}>
 						<IonIcon icon={removeCircleOutline} className="ion-padding-end" />
-						<IonLabel>{tClearGenLex}</IonLabel>
+						<IonLabel>{tClearLex}</IonLabel>
 					</IonItem>
 					<IonItem button={true} onClick={openLoadModal}>
 						<IonIcon icon={addCircleOutline} className="ion-padding-end" />

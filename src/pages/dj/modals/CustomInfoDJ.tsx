@@ -38,11 +38,15 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 	setTitles: SetState<string[] | null>
 }
 
-const translations = [ "You must provide a title or description before saving.", "all current groups" ];
+const translations = [
+	"You must provide a title or description before saving.",
+	"Load Saved Info", "all current groups",
+	"This will clear and overwrite the previous save."
+];
 
 const commons = [
 	"deleteThisCannotUndo", "Cancel", "Delete", "Load Error",
-	"Load Saved Info", "Load", "Manage Custom Info", "Name of save",
+	"Load", "Manage Custom Info", "Name of save",
 	"Name your custom info", "No saved info", "Ok", "Save", "Yes Overwrite It",
 	"confirmDelIt", "confirmLoad"
 ];
@@ -50,13 +54,12 @@ const commons = [
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
-		tYouSure, tCancel, tDel, tLoadErr, tLoadInfo, tLoad, tManage,
+		tYouSure, tCancel, tDel, tLoadErr, tLoad, tManage,
 		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes, tConfDel,
 		tConfLoad
 	] = useI18Memo(commons);
-	const [ tNoTitle, tAllGroups ] = useI18Memo(translations, "dj");
+	const [ tNoTitle, tLoadInfo, tAllGroups, tOverwritePrev ] = useI18Memo(translations, "dj");
 	const tOverwriteAll = useMemo(() => tc("clearOverwriteGeneralThings", { things:tAllGroups }), [tc, tAllGroups]);
-	const tOverwritePrev = useMemo(() => tc("clearOverwriteThing", { thing: tc("the previous save") }), [tc]);
 	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("Current Info") }), [tc]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;

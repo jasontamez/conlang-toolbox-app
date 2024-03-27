@@ -41,6 +41,7 @@ const lexicon = {
 
 	"multiple lexicon items": "multiple lexicon items",
 	"Delete selected lexicon items": "Delete selected lexicon items",
+	"Delete multiple lexicon items": "Delete multiple lexicon items",
 	"Cancel deleting": "Cancel deleting",
 	"Lexicon cleared": "Lexicon cleared",
 	"Nothing to clear": "Nothing to clear",
@@ -63,6 +64,7 @@ const lexicon = {
 	Item: "Item",
 	Column: "Column",
 	Columns: "Columns",
+	"Edit Columns": "Edit Columns",
 	"Lexicon Item": "$t(common:Lexicon) $t(Item)",
 	"Exit Without Saving?": "Exit Without Saving?",
 	"You have unsaved changes. Are you sure you want to exit?":
@@ -90,6 +92,8 @@ const lexicon = {
 	"Large": "Large",
 
 	Changes: "Changes",
+	"Working...": "Working...",
+	TITLE: "TITLE",
 
 	"Text, Tabbed": "Text, Tabbed",
 	"Text, Semicolons": "Text, Semicolons",

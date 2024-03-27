@@ -25,56 +25,67 @@ CONTEXTS:
 			* etc.
 		In English, I add a colon on the end of the formal term, e.g. "Dog:"
 
+LEGEND:
+	|H| Headers (important text in the app, possibly placed in the toolbar)
+	(B) button or option text
+	<D> dialog box messages (yes/no prompts, alerts, etc)
+	<D:H> dialog box headers
+	[T:x] toast messages (popups that disappear on their own in `x` seconds)
+	{A} ARIA labels (accessibility messages, not visible to the average user)
+
+	Keys without any of these notes are only shown on-screen in plain text.
+
+	Button text should be kept short. Dialog box text should be clear and concise.
+	Text headers should be relatively short and are usually capitalized. Dialog
+	box headers should be kept reasonably short. Users should be able to read toast
+	messages before `x` seconds have expired.
 */
 
 const common = {
 
-	// title, subtitle of the App
+	// |H| title, subtitle of the App
 	"Conlang Toolbox": "Conlang Toolbox",
 	"Conlang Toolbox_filename": "ConlangToolbox",
 	"tools for language invention": "tools for language invention",
 
-	MorphoSyntax: "MorphoSyntax", // name of tool
+	// |H| name of tool
+	MorphoSyntax: "MorphoSyntax",
 
-	// name of tool - word + generator
+	// |H| name of tool - word + generator
 	WordGen: "WordGen",
 	WordGen_filename: "WordGen",
-	WG: "WG", // shorthand for WordGen
 
-	// name of tool - word + evolve
+	// |H| name of tool - word + evolve
 	WordEvolve: "WordEvolve",
 	WordEvolve_filename: "WordEvolve",
-	WE: "WG", // shorthand for WordEvolve
 
-	// name of tool - declension + conjugation
+	// |H| name of tool - declension + conjugation
 	Declenjugator: "Declenjugator",
 	Declenjugator_filename: "Declenjugator",
 
-	// name of tool
+	// |H| name of tool
 	Lexicon: "Lexicon",
 	Lexicon_filename: "Lexicon",
 
-	// name of tool
+	// |H| name of tool
 	Concepts: "Concepts",
 
-	// name of tool
+	// |H| name of tool
 	"Extra Characters": "Extra Characters",
 
-	// page names
+	// |H| page names
 	"App Info": "App Info",
 	Settings: "Settings",
 	"App Settings": "App Settings",
 	Main: "Main",
 
-	// general terms that get reused a lot
-	
-	// title of some pages
+	// |H| title of some pages
 	Overview: "Overview", 
 	Input: "Input",
 	Output: "Output",
 	Info: "Info", // short for "Information"
 
-	// title of some buttons
+	// (B) title of some buttons
 	Cancel: "Cancel",                // abandon the current action
 	Clear: "Clear",                  // remove all current information
 	Save: "Save",                    // save current information
@@ -87,25 +98,25 @@ const common = {
 	Copy: "Copy",                    // copy something to the clipboard
 	Generate: "Generate",            // the tool will create something new
 	"Save as New": "Save as New",    // save current info as a new document
-
-	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
+	"Copy to Clipboard":
+		"Copy to Clipboard",         // the button will copy something to the clipboard
 
 	// This term should be treated as the `presentational` context
 	Display: "Display:", // short label indicating the user can select an option to display
 
+	"SavedAt": "Saved: {{time}}", // short phrase describing when something was saved
+
 	// Toast and Alert messages
-	Saved: "Saved",                              // something was saved to the device or to app state
-	"Copy to Clipboard": "Copy to Clipboard",    // action
-	"Copied to clipboard": "Copied to clipboard",// result message
-	"Nothing to copy": "Nothing to copy",        // error message
+	"Copied to clipboard": "Copied to clipboard",// [T:1.5] result message
+	"Nothing to copy": "Nothing to copy",        // [T:1.5] error message
 
 	"[Untitled]": "[Untitled]", // used as a document title if no title is provided
 	fileFormat: "{{title}} - {{date}}.{{extension}}", // safe for use as a filename
-	"Unable to export": "UNABLE TO EXPORT: {{error}}",
-	"File exported": "{{filename}} exported.",
-	"Unable to write file": "UNABLE TO WRITE FILE: {{error}}",
-	generalError: "Error saving file {{filename}} ({{error}})",
-	fileSaved: "File saved as {{filename}}",
+	"Unable to export": "UNABLE TO EXPORT: {{error}}", // [T:10]
+	"File exported": "{{filename}} exported.", // [T:5]
+	"Unable to write file": "UNABLE TO WRITE FILE: {{error}}", // [T:10]
+	generalError: "Error saving file {{filename}} ({{error}})", // [T:5]
+	fileSaved: "File saved as {{filename}}", // [T:5]
 
 	// lists of things
 	andGlue: ", ", // this is put between items in a list
@@ -113,21 +124,21 @@ const common = {
 	joinTwo: "{{one}} and {{two}}", // used when there are only two items in a list
 
 	// Exit the App messages
-	"Exit App?": "Exit App?",
-	"Do you want to exit the app?": "Do you want to exit the app?",
-	"Yes Exit!": "Yes, Exit!",
+	"Exit App?": "Exit App?", // <D:H>
+	"Do you want to exit the app?": "Do you want to exit the app?", // <D>
+	"Yes Exit!": "Yes, Exit!", // (B)
 
 	// Saving words to the Lexicon from other tools
-	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"",
-	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"",
+	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"", // [T:3.5]
+	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"", // [T:3.5]
 	"Select a column": "Select a column",
-	"Go to Lexicon": "Go to $t(Lexicon)",
-	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).",
-	"Your selected words will be added to the Lexicon under that column.":
+	"Go to Lexicon": "Go to $t(Lexicon)", // [T:3.5]+(B)
+	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).", // [T:2.5]
+	"Your selected words will be added to the Lexicon under that column.": // <D>
 		"Your selected words will be added to the $t(Lexicon) under that column.",
 
 	// Exporting files
-	"Choose a format": "Choose a Format",
+	"Choose a format": "Choose a Format", // <D:H> and |H|
 	"Choose a format_presentation": "Choose a format:",
 
 	// Types of file exports
@@ -139,69 +150,63 @@ const common = {
 	"JSON File": "JSON File",
 	"XML File": "XML File",
 
-	"Characters to be copied": "Characters to be copied", // aria-label
+	"Characters to be copied": "Characters to be copied", // {A}
 
 	// Things will take `count` properties for plurality, but the exact number will usually be expressed
 	//   in the `things` property itself
-	deleteThingsCannotUndo_one: "This will delete {{things}}, and cannot be undone.",
+	deleteThingsCannotUndo_one: "This will delete {{things}}, and cannot be undone.", // <D>
 	deleteThingsCannotUndo_other: "This will delete {{things}}, and cannot be undone.",
-	thingsDeleted_one: "{{things}} deleted.",
+	thingsDeleted_one: "{{things}} deleted.", // [T:2.5]
 	thingsDeleted_other: "{{things}} deleted.",
 
 	// General Things are unknown: may be 0, 1, or any number
-	clearOverwriteGeneralThings: "This will clear and overwrite {{things}}.",
-	clearGeneralThings: "Clear {{things}}",
-	deleteGeneralThings: "Delete {{things}}",
-	editGeneralThings: "Edit {{things}}",
-	saveGeneralThings: "Save {{things}}",
+	clearOverwriteGeneralThings: "This will clear and overwrite {{things}}.", // <D>
+	saveGeneralThings: "Save {{things}}", // |H| (B)
 
 	// Singular Things
-	clearOverwriteThing: "This will clear and overwrite {{thing}}.",
-	thingAdded: "{{thing}} added.",
-	thingSaved: "{{thing}} saved.",
-	thingDeleted: "{{thing}} deleted.",
-	thingEdited: "{{thing}} edited.",
-	deleteThing: "Delete {{thing}}",
-	editThing: "Edit {{thing}}",
-	addThing: "Add {{thing}}",
-	saveThing: "Save {{thing}}",
-	loadThing: "Load {{thing}}",
-	missingThing: "Missing {{thing}}",
-	exportThing: "Export {{thing}}",
+	thingAdded: "{{thing}} added.", // [T:2]
+	thingSaved: "{{thing}} saved.", // [T:2]
+	thingDeleted: "{{thing}} deleted.", // [T:2.5]
+	thingEdited: "{{thing}} edited.", // [T:2] <D:H>
+	deleteThing: "Delete {{thing}}", // (B) <D:H>
+	editThing: "Edit {{thing}}", // (H)
+	addThing: "Add {{thing}}", // |H| (B)
+	saveThing: "Save {{thing}}", // (B)
+	loadThing: "Load {{thing}}", // |H|
+	missingThing: "Missing {{thing}}", // <D:H>
+	exportThing: "Export {{thing}}", // |H|
 	exportThing_presentation: "Export {{thing}}:",
 
 	// Titled things
-	deleteTitleQ: "Delete \"{{title}}\"?",
-	loadTitleQ: "Load \"{{title}}\"?",
-	titleSaved: "\"{{title}}\" saved.",
-	titleAlreadyExists: "\"{{title}}\" already exists.",
-	titleLoaded: "\"{{title}}\" loaded.",
-	titleNotFound: "\"{{title}}\" not found.",
-	titleDeleted: "\"{{title}}\" deleted.",
-	titleOverwritten: "\"{{title}}\" overwritten.",
+	deleteTitleQ: "Delete \"{{title}}\"?", // <D:H>
+	loadTitleQ: "Load \"{{title}}\"?", // <D:H>
+	titleSaved: "\"{{title}}\" saved.", // [T:2.5]
+	titleAlreadyExists: "\"{{title}}\" already exists.", // <D:H>
+	titleLoaded: "\"{{title}}\" loaded.", // [T:2.5]
+	titleNotFound: "\"{{title}}\" not found.", // <D>
+	titleDeleted: "\"{{title}}\" deleted.", // [T:2.5]
+	titleOverwritten: "\"{{title}}\" overwritten.", // [T:2.5]
 
 	// "It" refers to saved info from WG, WE, or Declenjugation
-	"Yes Overwrite It": "Yes, Overwrite It",
+	"Yes Overwrite It": "Yes, Overwrite It", // (B)
 
 	"the previous save": "the previous save",
-	"Load Error": "Load Error",
-	"Manage Custom Info": "Manage Custom Info",
+	"Load Error": "Load Error", // <D:H>
+	"Manage Custom Info": "Manage Custom Info", // |H|
 	"Current Info": "Current Info",
 	"Name of save": "Name of save",
 	"Name your custom info": "Name your custom info",
-	"Load Saved Info": "Load Saved Info",
-	Load: "Load",
+	Load: "Load", // (B)
 	"No saved info": "No saved info",
 
-	"Unknown error occurred.": "Unknown error occurred.",
 	"Sort method": "Sort method",
 	"Sort method_presentation": "Sort method:",
 
-	cannotUndo: "This cannot be undone.", // This action, usually deleting something, cannot be undone.
-	areYouSure: "Are you sure?", // Do you want to do this action?
-	deleteThisCannotUndo: "Are you sure you want to delete this? $t(cannotUndo)",
-	"Clear Everything?": "Clear Everything?",
-	"Delete Everything?": "Delete Everything?",
+	cannotUndo: "This cannot be undone.", // <D> This action, usually deleting something, cannot be undone.
+	areYouSure: "Are you sure?", // <D> Do you want to do this action?
+	deleteThisCannotUndo: "Are you sure you want to delete this? $t(cannotUndo)", // <D>
+	"Clear Everything?": "Clear Everything?", // <D:H>
+	"Delete Everything?": "Delete Everything?", // <D:H>
 
 	// in confirmDel, the thing/things being deleted might be...
 	//    custom meanings in Concepts
@@ -209,8 +214,8 @@ const common = {
 	//    Character Groups in WG and WE
 	//    Transformations in WG and WE
 	//    Syllables in WG
-	confirmDel_one: "Yes, Delete It",
-	confirmDel_other: "Yes, Delete Them",
+	confirmDel_one: "Yes, Delete It", // (B)
+	confirmDel_other: "Yes, Delete Them", // (B)
 
 	// in confirmDelIt, "It" might refer to...
 	//    Character Groups in WG and WE
@@ -221,61 +226,56 @@ const common = {
 	//    Lexicon columns and items
 	//    Custom Sorts, or one of their relations or equalities
 	//    Declenjugator groups, or the separate declensions/etc within one
-	confirmDelIt: "Yes, Delete It",
+	confirmDelIt: "Yes, Delete It", // (B)
 
 	// "It" may refer to saved Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax
-	confirmLoad: "Yes, Load It",
+	confirmLoad: "Yes, Load It", // (B)
 
 	// "This" gets slotted into 'deleteThing' and may refer to...
 	//    Custom Sorts, or one of their relations or equalities
 	//    Declenjugator groups, or the separate declensions/etc within one
 	This: "This",
 
-	"Yes Exit": "Yes, Exit",
-	"Nothing to save.": "Nothing to save.",
-	Delete: "Delete",
-	Edit: "Edit",
-	Deleted: "Deleted",
-	"Unsaved Info": "Unsaved Info",
+	"Yes Exit": "Yes, Exit", // (B)
+	"Nothing to save.": "Nothing to save.", // [T:2.5]
+	Delete: "Delete", // (B)
+	Edit: "Edit", // (B)
+	Deleted: "Deleted", // [T:2]
+	"Unsaved Info": "Unsaved Info", // <D:H>
 
-	"Are you sure you want to discard this?": // when deciding not to add a new thing
+	"Are you sure you want to discard this?": // <D> when deciding not to add a new thing
 		"Are you sure you want to discard this?",
-	"Are you sure you want to discard your edits?": // when deciding not to edit an existing thing
+	"Are you sure you want to discard your edits?": // <D> when deciding not to edit an existing thing
 		"Are you sure you want to discard your edits?",
-	"Yes Discard": "Yes, Discard",
-	"Clear Input": "Clear Input",
-	"Are you sure? This will clear the entire input and cannot be undone.":
+	"Yes Discard": "Yes, Discard", // (B)
+	"Are you sure? This will clear the entire input and cannot be undone.": // <D>
 		"$t(areYouSure) This will clear the entire input, and cannot be undone.",
 	// "It" refers to the Input in Declenjugator and WE
-	"Yes Clear It": "Yes, Clear It",
+	"Yes Clear It": "Yes, Clear It", // (B)
 
-	"Default sort": "Default sort", // Refers to the default sort method, whatever it may be
+	"Default sort": "Default sort", // (B) Refers to the default sort method, whatever it may be
 
-	"You need to add columns to the Lexicon before you can add anything to it.":
+	"You need to add columns to the Lexicon before you can add anything to it.": // <D>
 		"You need to add columns to the $t(Lexicon) before you can add anything to it.",
 
 	error: "Error",
-	emphasizedError: "<$t(error)>",
+	emphasizedError: "<$t(error)>", // |H|
 
-	regexpError: "Error trying to parse \"{{regex}}\"",
+	regexpError: "Error trying to parse \"{{regex}}\"", // <D:H>
 
-	Loading: "Loading",
-	"Working...": "Working...",
-	"Please wait...": "Please wait...",
+	Loading: "Loading", // |H|
+	"Please wait...": "Please wait...", // |H|
 
-	TITLE: "TITLE",
 	title: "title",
-	Title: "Title",
+	Title: "Title", // {A} |H|
 	"Title_presentation": "Title:",
-	description: "description",
-	description_formal: "Description",
-	description_presentation: "Description:",
-	Description: "$t(description, { \"context\": \"formal\" })",
+	Description: "Description", // |H| {A}
+	Description_presentation: "Description:",
 
-	overviewOf: "Overview: {{what}}",
+	overviewOf: "Overview: {{what}}", // |H|
 
-	ImportFrom: "Import from {{source}}", // source is always Lexicon, WordGen or WordEvolve
-	"Load Preset": "Load Preset",
+	ImportFrom: "Import from {{source}}", // (B) |H| <D:H> source is always Lexicon, WordGen or WordEvolve
+	"Load Preset": "Load Preset", // (B)
 
 	// Import from Lexicon (to WG or WE)
 	Import: "Import",
@@ -290,6 +290,7 @@ const common = {
 	"Type regular expression here.": "Type regular expression here.",
 	"Column [x] must contain [y]": "Column [x] must contain [y]",
 	"Column [x] must match expression [y]": "Column [x] must match expression [y]",
+	Condition: "Condition",
 
 	// These terms should be treated as the `presentational` context
 	"Test column": "Test column:", // the column being tested for a match
@@ -376,7 +377,7 @@ const common = {
 	characterInfo: characters,
 
 	// PERMANENT INTO
-	"WG Presets Sorter": "$t(WG) Presets Sorter", // Title of the permanent sort method in sort settings.
+	"WG Presets Sorter": "WG Presets Sorter", // Title of the permanent sort method in sort settings.
 
 	// The key below is used when someone tries to edit or delete the permanent sort method in sort settings.
 	"This is used by WordGen presets. It cannot be modified or deleted.":

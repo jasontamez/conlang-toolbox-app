@@ -51,18 +51,15 @@ const translations = [
 
 const commons = [
 	"Cancel", "Delete Everything?", "Ok", "Please wait...",
-	"Save as New", "confirmDelIt", "error"
+	"Save as New", "confirmDelIt", "error", "Description"
 ];
 
 const things = ["clearGeneralThings", "exportThing", "loadThing", "saveThing"];
 
-const contexts = [ "formal", "presentation" ];
-
-
 const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError ] = useI18Memo(commons);
+	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc ] = useI18Memo(commons);
 	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
@@ -71,7 +68,7 @@ const Syntax: FC<PageData> = (props) => {
 	const [
 		tClearThings, tExportThing, tLoadThing, tSaveThing
 	] = useMemo(() => things.map(thing => tc(thing, { thing: tMInfo })), [tc, tMInfo]);
-	const [ tfDesc, tpDesc ] = useMemo(() => contexts.map(context => tc("description", { context })), [tc]);
+	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
 
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
@@ -292,7 +289,7 @@ const Syntax: FC<PageData> = (props) => {
 					</IonItem>
 					<IonItem>
 						<IonTextarea
-							aria-label={tfDesc}
+							aria-label={tDesc}
 							value={description}
 							id="msDesc"
 							className="ion-margin-top"

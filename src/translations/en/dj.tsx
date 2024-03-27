@@ -106,6 +106,9 @@ const dj = {
 	"Groups Tab": "$t(Groups) Tab",
 	"Output Tab": "Output Tab",
 
+	"This will clear and overwrite the previous save.": "This will clear and overwrite the previous save.",
+	"Load Saved Info": "Load Saved Info",
+
 	Export: "Export",
 	Example: "Example",
 	Examples: "Examples",
