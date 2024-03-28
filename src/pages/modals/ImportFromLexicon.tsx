@@ -89,9 +89,9 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 
 const commons = [
 	"Close", "Extra Characters", "Save", "Help",
-	"Add Conditions (optional)", "Cancel", "Column [x] must contain [y]",
+	"Add Conditions optional", "Cancel", "Column [x] must contain [y]",
 	"Column [x] must match expression [y]", "Did not find anything to import.",
-	"Exit Without Importing?", "Import from which column(s)?",
+	"Exit Without Importing?", "Import from which columns",
 	"If off, this will import words that match any condition.", "Import",
 	"Lexicon Has No Columns", "Match all conditions", "Nothing to save.",
 	"Please select at least one column to import from.",
@@ -485,7 +485,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 				{columnMatches.map((obj, i) => {
 					const {col, test} = obj;
 					return displayTest(
-						tc("columnContains", { column: columns[col].label, test }),
+						tc("columnMatches", { column: columns[col].label, test }),
 						() => deleteColumnMatch(col, test)
 					)
 				})}

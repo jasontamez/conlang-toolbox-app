@@ -79,12 +79,12 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 const commons = [
 	"App Settings", "Cancel", "Close", "Concepts", "Declenjugator",
 	"Extra Characters", "Lexicon", "MorphoSyntax", "WordEvolve",
-	"WordGen", "areYouSure"
+	"WordGen", "areYouSure", "Import"
 ];
 
 const translations = [
 	"Analyze", "areYouVerySure", "Data to Import",
-	"Error validating Import", "Import Info", "Import", "Other App Settings",
+	"Error validating Import", "Import Info", "Other App Settings",
 	"Reset", "WARNING!", "What to Import", "Yes Close This",
 	"Yes I Want to Do This", "You did not choose anything to import.",
 	"You haven't imported anything yet.", "importDescription"
@@ -94,10 +94,10 @@ const ImportData: FC<ModalProperties> = (props) => {
 	const [ ts ] = useTranslator('settings');
 	const [
 		tAppSett, tCancel, tClose, tConcepts, tDJ, tExChar,
-		tLex, tMS, tWE, tWG, tRUSure
+		tLex, tMS, tWE, tWG, tRUSure, tImport
 	] = useI18Memo(commons);
 	const [
-		tAnalyze, tYouSure, tData, tError, tImportInfo, tImport, tOtherSett,
+		tAnalyze, tYouSure, tData, tError, tImportInfo, tOtherSett,
 		tReset, tWarning, tWhatToImp, tYesClose, tYesIWant, tNoChoice,
 		tNoImport, tImpDesc
 	] = useI18Memo(translations, "settings");

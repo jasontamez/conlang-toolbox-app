@@ -1,9 +1,9 @@
 const concepts = {
 	// Concepts
-	Stop: "Stop",
+	Stop: "Stop", // (B)
 
 	info: {
-		basic: [
+		basic: [ // Markdown format
 			"Presented here are a number of lists of basic concepts,",
 			"which were originaly created for the purposes of",
 			"historical-comparative linguistics.",
@@ -13,16 +13,16 @@ const concepts = {
 			"Remember: you can combine multiple meanings into a single",
 			"word!",
 		],
-		controlLexicon: [
+		controlLexicon: [ // Markdown format
 			"Use the \"lexicon\" button to quickly save meanings",
 			"to the $t(common:Lexicon)."
 		],
-		controlJoin:
-			"Use the \"join\" button to create compound meanings.",
-		controlUnjoin:
-			"Use the \"unjoin\" button to delete compound meanings.",
-		theLists: [
-			"## $t(Swadesh Lists)",
+		controlJoin: // Markdown format
+			[ "Use the \"join\" button to create compound meanings." ],
+		controlUnjoin: // Markdown format
+			[ "Use the \"unjoin\" button to delete compound meanings." ],
+		theLists: [ // Markdown format
+			"## Swadesh Lists",
 			"",
 			"Originally assembled by Morris Swadesh, this list of",
 			"concepts was chosen for their universal, culturally",
@@ -32,17 +32,17 @@ const concepts = {
 			"from 1971. The **$t(Swadesh 207)** is adapted from his original",
 			"list from 1952. **$t(Swadesh-Yakhontov)** is a subset of the 207",
 			"assembled by Sergei Yakhontov. And the",
-			"**$t(Swadesh-Woodward Sign List)** was assembled by James",
+			"**$t(Swadesh-Woodward) Sign List** was assembled by James",
 			"Woodward to take into account the ways sign languages behave.",
 			"",
-			"## $t(Dolgopolsky List)",
+			"## $t(Dolgopolsky) List",
 			"",
 			"Compiled by Aharon Dolgopolsky in 1964, this lists the 15",
 			"lexical items that are the least likely to be replaced by",
 			"other words as a language evolves. It was based on a study of",
 			"140 languages from across Eurasia, only.",
 			"",
-			"## $t(Leipzig-Jakarta List)",
+			"## $t(Leipzig-Jakarta) List",
 			"",
 			"Similar to the Dolgopolsky list, this is a list of words",
 			"judged to be the most resistant to borrowing. Experts on 41",
@@ -54,9 +54,9 @@ const concepts = {
 			"languages and were most resistant to borrowing formed",
 			"the Leipzig-Jakarta list.",
 			"",
-			"## $t(ASJP List)",
+			"## $t(ASJP) List",
 			"",
-			"The **$t(Automated Similarity Judgment Program)** is a",
+			"The **Automated Similarity Judgment Program** is a",
 			"collaborative project applying computational approaches to",
 			"comparative linguistics using a database of word lists. It uses",
 			"a 40-word list to evaluate the similarity of words with the same",
@@ -64,9 +64,9 @@ const concepts = {
 			"",
 			"## $t(Landau 200)",
 			"",
-			"The **$t(Basic 200 List) is a subset of the",
-			"**$t(Landau Core Vocabulary-LCV)** developed by James Landau.",
-			"It is Part I of the entire $t(LCV). This list consists of 200",
+			"The **Basic 200 List** is a subset of the",
+			"**Landau Core Vocabulary (LCV)** developed by James Landau.",
+			"It is Part I of the entire LCV. This list consists of 200",
 			"basic concepts that basically all anthropic cultures will have",
 			"and have words for. This list makes many semantic distinctions",
 			"that are not made in English (e.g \"leaf (on plant)\" vs. \"leaf",
@@ -76,66 +76,48 @@ const concepts = {
 		]
 	},
 
-	"Swadesh Lists": "Swadesh Lists",
-	"Swadesh 100": "Swadesh 100",
-	"Swadesh 207": "Swadesh 207",
-	"Swadesh-Yakhontov": "Swadesh-Yakhontov",
-	"Swadesh-Woodward": "Swadesh-Woodward",
-	"Swadesh-Woodward Sign List": "$t(Swadesh-Woodward) Sign List",
+	"Swadesh 100": "Swadesh 100", // (B)
+	"Swadesh 207": "Swadesh 207", // (B)
+	"Swadesh-Yakhontov": "Swadesh-Yakhontov", // (B)
+	"Swadesh-Woodward": "Swadesh-Woodward", // (B)
+	Dolgopolsky: "Dolgopolsky", // (B)
+	"Leipzig-Jakarta": "Leipzig-Jakarta", // (B)
+	ASJP: "ASJP", // (B)
+	"Landau 200": "Landau 200", // (B)
 
-	Dolgopolsky: "Dolgopolsky",
-	"Dolgopolsky List": "$t(Dolgopolsky) List",
-
-	"Leipzig-Jakarta": "Leipzig-Jakarta",
-	"Leipzig-Jakarta List": "$t(Leipzig-Jakarta) List",
-
-	ASJP: "ASJP",
-	"ASJP List": "$t(ASJP) List",
-	"Automated Similarity Judgment Program": "Automated Similarity Judgment Program",
-
-	"Landau 200": "Landau 200",
-	"Basic 200 List": "Basic 200 List",
-	"Landau Core Vocabulary-LCV": "Landau Core Vocabulary $t(LCV)",
-	LCV: "LCV",
-
-	"Your selected meanings will be added to the Lexicon under that column.":
+	"Your selected meanings will be added to the Lexicon under that column.": // <D>
 		"Your selected meanings will be added to the $t(common:Lexicon) under that column.",
 
-	"Tap meanings you want to link, in the order you wish to link them.":
+	"Tap meanings you want to link, in the order you wish to link them.": // [T:5]
 		"Tap meanings you want to link, in the order you wish to link them.",
 
 	// The key below takes a {{count}} in case special plurals are needed. Count will NEVER be 0 or 1.
-	"You have some meanings still selected. Do you want to link them?":
-		"You have some meanings still selected. Do you want to link them?",
+	meaningsStillSelected_other: "You have {{count}} meanings still selected. Do you want to link them?", // <D>
 
-	"Stop Linking?": "Stop Linking?",
+	"Stop Linking?": "Stop Linking?", // <D:H>
 
-	"Yes Save Them": "Yes, Save Them", // "Them" refers to the meanings being linked together
-	"No Discard Them": "No, Discard Them", // See above
-	"Combination saved": "Combination saved", // The combination of meanings
-	Combination: "Combination",
+	"Yes Save Them": "Yes, Save Them", // (B) "Them" refers to the meanings being linked together
+	"No Discard Them": "No, Discard Them", // (B) See above
+	Combination: "Combination", // The combination of meanings, used by thingSaved
 
-	"Tap meanings you want to save to Lexicon":
+	"Tap meanings you want to save to Lexicon": // [T:2.5]
 		"Tap meanings you want to save to $t(common:Lexicon)",
 
 	"Selected meanings_one": "Selected meaning", // Fills the {{what}} role in saveToLexColumn
 	"Selected meanings_other": "Selected meanings",
 
-	"Tap combinations you want to delete, then tap the Unlink button again.":
+	"Tap combinations you want to delete, then tap the Unlink button again.": // [T:3]
 		"Tap combinations you want to delete, then tap the Unlink button again.",
 
-	delMeanings_one: "Delete {{count}} meaning?",
+	delMeanings_one: "Delete {{count}} meaning?", // <D:H>
 	delMeanings_other: "Delete {{count}} meanings?",
-	delMeaningsMessage_one: "The selected meaning will be removed. $t(common:cannotUndo)",
+	delMeaningsMessage_one: "The selected meaning will be removed. $t(common:cannotUndo)", // <D>
 	delMeaningsMessage_other: "The selected meanings will be removed. $t(common:cannotUndo)",
 
-	"My Combinations": "My Combinations",
-	"Save All Meanings": "Save All Meanings",
-	"Save Selected Meanings": "Save Selected Meanings",
-	"All Meanings": "All Meanings",
-	"Selected Meanings": "the Selected Meanings",
-	"Current Combination": "Current Combination",
-	"Current Combination_presentation": "Current Combination:",
+	"My Combinations": "My Combinations", // (B)
+	"All Meanings": "All Meanings", // (B) saveGeneralThings
+	"Selected Meanings": "the Selected Meanings", // (B) saveGeneralThings
+	"Current Combination": "Current Combination:", // |H| always presentational context
 
 	//
 	//

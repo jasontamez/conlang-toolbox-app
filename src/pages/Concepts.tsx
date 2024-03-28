@@ -415,7 +415,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 						header: t("Stop Linking?"),
 						cssClass: "danger",
 						message: t(
-							"You have some meanings still selected. Do you want to link them?",
+							"meaningsStillSelected",
 							{ count: savedWords.length }
 						),
 						buttons: [
@@ -513,18 +513,18 @@ const ConceptsPage: FC<PageData> = (props) => {
 		[ display, toggleChars ]
 	);
 	const [
-		displayColon,
-		myCombinations,
-		saveAllMeanings,
-		saveSelectedMeanings,
-		currentCombo,
-		save
+		tDisplay,
+		tMyCombinations,
+		tSaveAll,
+		tSaveSelected,
+		tCurrentCombo,
+		tSave
 	] = useMemo(() => [
 		tc("Display"),
 		t("My Combinations"),
 		tc("saveGeneralThings", {things: t("All Meanings")}),
 		tc("saveGeneralThings", {things: t("Selected Meanings")}),
-		t("Current Combination", { context: "presentation" }),
+		t("Current Combination"),
 		tc("Save")
 	], [ t, tc ]);
 
@@ -538,7 +538,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 				<IonList lines="none">
 					<IonItem className="conceptsChips">
 						<div className="chips">
-							<span>{displayColon}</span>
+							<span>{tDisplay}</span>
 							{chips}
 							<IonChip
 								key="combinations"
@@ -546,7 +546,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 								onClick={toggleBool}
 								className={showingCombos ? "active" : undefined}
 							>
-								<IonLabel>{myCombinations}</IonLabel>
+								<IonLabel>{tMyCombinations}</IonLabel>
 							</IonChip>
 						</div>
 						<div className="controls">
@@ -583,7 +583,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							color="tertiary"
 							onClick={saveEverything}
 						>
-							<IonIcon icon={saveOutline} className="conceptIcons" /> {saveAllMeanings}
+							<IonIcon icon={saveOutline} className="conceptIcons" /> {tSaveAll}
 						</IonButton>
 					</IonItem>
 					<IonItem className={pickAndSave ? "" : "hide"}>
@@ -592,12 +592,12 @@ const ConceptsPage: FC<PageData> = (props) => {
 							color="secondary"
 							onClick={donePickingAndSaving}
 						>
-							<IonIcon icon={checkmarkDoneOutline} className="conceptIcons" /> {saveSelectedMeanings}
+							<IonIcon icon={checkmarkDoneOutline} className="conceptIcons" /> {tSaveSelected}
 						</IonButton>
 					</IonItem>
 					<IonItem className={linking ? "" : "hide"}>
 						<IonLabel className="ion-text-wrap">
-							{currentCombo} {savedWordsList}
+							{tCurrentCombo} {savedWordsList}
 						</IonLabel>
 						<IonButton
 							disabled={savedWords.length <= 1}
@@ -606,7 +606,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							color="success"
 							onClick={doneLinking}
 						>
-							<IonIcon icon={saveOutline} className="conceptIcons" /> {save}
+							<IonIcon icon={saveOutline} className="conceptIcons" /> {tSave}
 						</IonButton>
 					</IonItem>
 					<div

@@ -5,20 +5,20 @@ const characters = {
 	// Note that, if you use $t(prop) in these definitions, they should
 	//   refer to $t(characterInfo.prop) instead.
 
-	Latin: "Latin",
-	IPA: "IPA",
-	Greek: "Greek",
-	Coptic: "Coptic",
-	Cyrillic: "Cyrillic",
-	Armenian: "Armenian",
-	Hebrew: "Hebrew",
-	Arabic: "Arabic",
-	Thai: "Thai",
-	Lao: "Lao",
-	Hiragana: "Hiragana",
-	Katakana: "Katakana",
-	Bopomofo: "Bopomofo",
-	Favorites: "$t(common:Favorites)",
+	Latin: "Latin", // (B)
+	IPA: "IPA", // (B)
+	Greek: "Greek", // (B)
+	Coptic: "Coptic", // (B)
+	Cyrillic: "Cyrillic", // (B)
+	Armenian: "Armenian", // (B)
+	Hebrew: "Hebrew", // (B)
+	Arabic: "Arabic", // (B)
+	Thai: "Thai", // (B)
+	Lao: "Lao", // (B)
+	Hiragana: "Hiragana", // (B)
+	Katakana: "Katakana", // (B)
+	Bopomofo: "Bopomofo", // (B)
+	Favorites: "$t(common:Favorites)", // (B)
 
 	// These are the official Unicode designations for these characters
 

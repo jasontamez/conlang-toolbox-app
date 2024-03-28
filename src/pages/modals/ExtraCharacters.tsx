@@ -46,23 +46,6 @@ const {
 	contents
 } = charData;
 
-const translations = [
-	"Characters to be copied", "Copy", "Done", "Extra Characters", "Favorites",
-	"Help", "Hide full character names", "Show full character names",
-	"Start favoriting characters", "Stop favoriting characters",
-	"Tap characters to add them here",
-	"No longer copying directly to clipboard.",
-	"Now copying immediately to clipboard.",
-	"No longer saving to Favorites",
-	"Now saving characters to Favorites"
-];
-const arrays = [
-	"extraHelp.help1p1", "extraHelp.help1p2",
-	"extraHelp.help1p3", "extraHelp.help1p4",
-	"extraHelp.help2", "extraHelp.help3"
-];
-const joinArrays = { joinArrays: "\n" };
-
 interface ChipProperties {
 	title: ExtraCharactersDisplayName
 	current: boolean
@@ -111,6 +94,23 @@ const DisplayWithoutName: FC<DisplayProps> = (props) => {
 		>{character}</div>
 	);
 };
+
+const translations = [
+	"Characters to be copied", "Copy", "Done", "Extra Characters", "Favorites",
+	"Help", "Hide full character names", "Show full character names",
+	"Start favoriting characters", "Stop favoriting characters",
+	"Tap characters to add them here",
+	"No longer copying directly to clipboard.",
+	"Now copying immediately to clipboard.",
+	"No longer saving to Favorites",
+	"Now saving characters to Favorites"
+];
+const arrays = [
+	"extraHelp.help1p1", "extraHelp.help1p2",
+	"extraHelp.help1p3", "extraHelp.help1p4",
+	"extraHelp.help2", "extraHelp.help3"
+];
+const joinArrays = { joinArrays: "\n" };
 
 const ExtraCharactersModal: FC<ModalProperties> = (props) => {
 	//interface ExtraCharDataFlags {

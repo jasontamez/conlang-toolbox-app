@@ -83,13 +83,13 @@ const translations = [
 	"Use advanced method", "Use regular expressions to identify the stem.",
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
-	"exampleAppliesTo", "wordMarker"
+	"exampleAppliesTo", "wordMarker", "Regular Expression"
 ];
 
 const commons = [
 	"Add New", "Are you sure you want to discard your edits?", "Cancel",
-	"Delete", "Deleted", "Edit", "Ok", "Regular Expression", "Save",
-	"Unsaved Info", "Yes Discard", "areYouSure", "confirmDelIt"
+	"Delete", "Deleted", "Edit", "Ok", "Save", "Unsaved Info", "Yes Discard",
+	"areYouSure", "confirmDelIt"
 ];
 
 const AddGroup: FC<AddGroupProps> = (props) => {
@@ -97,12 +97,13 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tChoose, tComma, tConj1, tDecl1, tNeedExpr, tOther1, tSemi, tSimple,
-		tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle, tNoCond, tEx, tWM
-	] = useI18Memo(commons);
+		tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle, tNoCond, tEx, tWM,
+		tRegEx
+	] = useI18Memo(translations);
 	const [
-		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk,
-		tRegEx, tSave, tUnsaved, tYes, tRUSure, tConfDel
-	] = useI18Memo(translations, "dj");
+		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk, tSave,
+		tUnsaved, tYes, tRUSure, tConfDel
+	] = useI18Memo(commons, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
 		tpTypes, tpMatching, tpRemoveStart, tpReplacement,

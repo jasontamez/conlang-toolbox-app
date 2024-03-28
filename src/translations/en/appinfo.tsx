@@ -2,45 +2,51 @@ const appinfo = {
 
 	// APP INFO
 
-	"Credits and Acknowledgements": "Credits and Acknowledgements",
-	credit1:
-		"App icon is based on " +
-		"[Toolbox by Maxicons](https://thenounproject.com/term/toolbox/2586725/)"
-		+ " from the Noun Project",
-	credit2:
-		"$t(common:WordGen) and $t(common:WordEvolve) heavily inspired by "
-		+ "[Gen](http://www.zompist.com/gen.html) and "
-		+ "[SCA²](http://www.zompist.com/sca2.html) by Mark Rosenfelder",
-	credit3:
-		"$t(common:MorphoSyntax) is based on an outline presented throughout "
-		+ "_Describing Morphosyntax: A Guide for Field Linguists_ by Thomas "
-		+ "E. Paine, and it also uses some foreign-language examples "
-		+ "presented therein",
+	"Credits and Acknowledgements": "Credits and Acknowledgements", // |H|
+	credit1: [ // Markdown format
+		"App icon is based on",
+		"[Toolbox by Maxicons](https://thenounproject.com/term/toolbox/2586725/)",
+		"from the Noun Project"
+	],
+	credit2: [ // Markdown format
+		"$t(common:WordGen) and $t(common:WordEvolve) are heavily inspired by",
+		"[Gen](http://www.zompist.com/gen.html) and",
+		"[SCA²](http://www.zompist.com/sca2.html) by Mark Rosenfelder",
+	],
+	credit3: [ // Markdown format
+		"$t(common:MorphoSyntax) is based on an outline presented throughout",
+		"_Describing Morphosyntax: A Guide for Field Linguists_ by Thomas",
+		"E. Paine, and it also uses some foreign-language examples",
+		"presented therein"
+	],
 
-	"Bug Reports": "Bug Reports",
-	bugReportMsg:
-		"Please report bugs and errors to "
-		+ "[jasontankapps@gmail.com](mailto:jasontankapps@gmail.com) and "
-		+ "incude an error log.",
-	"Get Error Log": "Get Error Log",
+	"Bug Reports": "Bug Reports", // |H|
+	bugReportMsg: [ // Markdown format
+		"Please report bugs and errors to",
+		"[jasontankapps@gmail.com](mailto:jasontankapps@gmail.com) and",
+		"incude an error log."
+	],
+	"Get Error Log": "Get Error Log", // (B)
 
 	// 'state' refers to the info saved by the app that is used to display info,
 	//   create info, etc.
-	"Entire State": "Entire State",
-	"Debug Info": "Debug Info",
+	"Entire State": "Entire State", // <D:H>
+	"Debug Info": "Debug Info", // <D:H>
+
 	// 'logs' refer to hidden reports/notes that the app sometimes makes when
 	//   it encounters an error.
-	"Copy Logs": "Copy Logs",
-	"Clear Logs": "Clear Logs",
-	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.":
+	"Copy Logs": "Copy Logs", // (B)
+	"Clear Logs": "Clear Logs", // (B)
+	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.": // <D>
 		"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.",
-	"Delete Them Now": "Delete Them Now",
-	"Logs have been cleared.": "Logs have been cleared.",
+	"Delete Them Now": "Delete Them Now", // (B)
+	"Logs have been cleared.": "Logs have been cleared.", // [T:3.5]
 
-	"Changelog": "Changelog", // a list of changes made to the app
-	"Hide Older Changes": "Hide Older Changes",
-	"Show Older Changes": "Show Older Changes",
+	Changelog: "Changelog", // |H| a list of changes made to the app
+	"Hide Older Changes": "Hide Older Changes", // (B)
+	"Show Older Changes": "Show Older Changes", // (B)
 	changelog: {
+		// Markdown format
 		//v0.11.3
 		v0113: [
 			"- Overhauled main page.",
@@ -90,7 +96,6 @@ const appinfo = {
 		],
 		//v.0.9.5
 		v095: [
-
 			"- You can now swipe left on $t(common:Lexicon) items,",
 			"$t(wgwe:Character Groups), $t(wgwe:Transformations) and",
 			"$t(we:Sound Changes) to edit or delete them.",
@@ -135,9 +140,7 @@ const appinfo = {
 			"had unreachable info off the side of the screen.",
 			"- Added \"$t(concepts:Landau 200)\" to $t(common:Concepts)."
 		]
-
-	},
-
+	}
 };
 
 export default appinfo;

@@ -50,10 +50,10 @@ const translations =  [
 	"Bug Reports", "Changelog", "Clear Logs", "Copy Logs",
 	"Credits and Acknowledgements", "Debug Info", "Delete Them Now",
 	"Entire State", "Get Error Log", "Hide Older Changes",
-	"Logs have been cleared.", "Show Older Changes", "bugReportMsg",
-	"credit1", "credit2", "credit3",
+	"Logs have been cleared.", "Show Older Changes",
 	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."
 ];
+const markdowns = [ "credit1", "credit2", "credit3", "bugReportMsg" ];
 const commons = [ "Close", "Copy", "Ok", "areYouSure" ];
 const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
 const context = { joinArrays: "\n" };
@@ -64,11 +64,11 @@ const AppInfo: FC<PageData> = (props) => {
 	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
 	const [
 		tBugRep, tCLog, tClearLogs, tCopyLogs, tCredits, tDebug, tDelNow,
-		tEntire, tGetLog, tHide, tLogsCleared, tShow, tBugRepMsg,
-		tCr1, tCr2, tCr3, tLogs
+		tEntire, tGetLog, tHide, tLogsCleared, tShow, tLogs
 	] = useI18Memo(translations, 'appInfo');
 	const [ tClose, tCopy, tOk, tRUSure ] = useI18Memo(commons);
 	const [ tCL94, tCL95, tCL101, tCL113 ] = useI18Memo(changelog, 'appInfo', context);
+	const [ tCr1, tCr2, tCr3, tBugRepMsg ] = useI18Memo(markdowns, "appInfo", context);
 
 	const [originalTheme, internals, state]: [ThemeNames, InternalState, StateObject] = useSelector(
 		(state: StateObject) => [state.appSettings.theme, state.internals, state]

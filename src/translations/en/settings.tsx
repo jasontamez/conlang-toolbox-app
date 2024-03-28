@@ -32,7 +32,6 @@ const settings = {
 	alsoOverwrote: "; also completely overwrote storage for {{listing}}",
 	successOverwrote: "Completely overwrote storage for {{listing}}",
 
-	Import: "Import",
 	"Import Info": "Import Info",
 	importDescription:
 		"Paste your data below. This only accepts data exported through"

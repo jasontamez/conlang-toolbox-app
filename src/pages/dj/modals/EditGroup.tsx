@@ -85,12 +85,12 @@ const translations = [
 	"Use advanced method", "Use regular expressions to identify the stem.",
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
-	"exampleAppliesTo", "wordMarker"
+	"exampleAppliesTo", "wordMarker", "Regular Expression"
 ];
 
 const commons = [
 	"Add New", "Are you sure you want to discard your edits?", "Delete",
-	"Deleted", "Edit", "Ok", "Regular Expression", "Save", "Unsaved Info",
+	"Deleted", "Edit", "Ok", "Save", "Unsaved Info",
 	"Yes Discard", "areYouSure", "confirmDelIt", "emphasizedError"
 ];
 
@@ -99,12 +99,12 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [
-		tAddNew, tYouSure, tDel, tDeleted, tEdit, tOk, tRegEx, tSave,
+		tAddNew, tYouSure, tDel, tDeleted, tEdit, tOk, tSave,
 		tUnsaved, tYes, tRUSure, tConfDel, tError
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
-		tNoCond, tExample, tWM
+		tNoCond, tExample, tWM, tRegEx
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [

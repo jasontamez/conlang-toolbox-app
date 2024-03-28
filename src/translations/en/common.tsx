@@ -278,12 +278,11 @@ const common = {
 	"Load Preset": "Load Preset", // (B)
 
 	// Import from Lexicon (to WG or WE)
-	Import: "Import",
-	"Import from Lexicon": "Import from $t(common:Lexicon)",
-	"Import from which column(s)?": "Import from which column(s)?",
-	"Lexicon Has No Columns": "Lexicon Has No Columns",
-	"optional": "(optional)",
-	"Add Conditions (optional)": "Add Conditions $t(optional)",
+	Import: "Import", // (B)
+	"Import from which columns": "Import from which column(s)?", // <D:H>
+	"Lexicon Has No Columns": "Lexicon Has No Columns", // |H|
+	optional: "(optional)",
+	"Add Conditions optional": "Add Conditions $t(optional)",
 	"Word must contain [x]": "Word must contain [x]",
 	"Type part of word here.": "Type part of word here.",
 	"Word must match expression [x]": "Word must match expression [x]",
@@ -293,32 +292,24 @@ const common = {
 	Condition: "Condition",
 
 	// These terms should be treated as the `presentational` context
-	"Test column": "Test column:", // the column being tested for a match
-	"Words that contain": "Words that contain:",
-	"Words that match": "Words that match:",
-	"Words where the column": "Words where the column:",
+	"Test column": "Test column:", // |H| the column being tested for a match
+	"Words that contain": "Words that contain:", // |H|
+	"Words that match": "Words that match:", // |H|
+	"Words where the column": "Words where the column:", // |H|
 
 	columnContains: "[{{column}}] contains \"{{test}}\"",
 	columnMatches: "[{{column}}] matches /{{test}}/",
-	"Match all conditions": "Match all conditions",
+	"Match all conditions": "Match all conditions", // |H|
 	"If off, this will import words that match any condition.": "If off, this will import words that match any condition.",
-	"Exit Without Importing?": "Exit Without Importing?",
-	"Please select at least one column to import from.": "Please select at least one column to import from.",
-	"Did not find anything to import.": "Did not find anything to import.",
-	importSuccess_one: "Imported {{count}} word from $t(Lexicon).",
+	"Exit Without Importing?": "Exit Without Importing?", // <D:H>
+	"Please select at least one column to import from.": "Please select at least one column to import from.", // [T:2.5]
+	"Did not find anything to import.": "Did not find anything to import.", // [T:4.5]
+	importSuccess_one: "Imported {{count}} word from $t(Lexicon).", // [T:3.5]
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
-	yesImport: "Yes, Import",
-
-	// REGULAR EXPRESSIONS
-	"Regular Expression": "Regular Expression", // title of section
-	"Regular Expressions": "Regular Expressions", // title of section
-	"Regular expressions": "Regular expressions", // start of sentence
-	"regular expressions": "regular expressions", // plural, generic
-	"Regexes": "Regexes", // plural, generic, starts a sentence, shorter version of Regular Expressions
-	"regular expression": "regular expression", // single instance
+	yesImport: "Yes, Import", // (B)
 
 	regexpInfo: [ // Markdown format
-		"To put it as simply as possible, a $t(regular expression) is a",
+		"To put it as simply as possible, a regular expression is a",
 		"sequence of characters that specifies a match pattern in text.",
 		"$t(Conlang Toolbox) uses JavaScript-style regexes without the",
 		"surrounding slash characters.",
@@ -334,17 +325,17 @@ const common = {
 	],
 
 	// EXTRA CHARACTERS
-	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.",
-	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.",
-	copiedCharToClipboard: "Copied {{char}} to clipboard", // only one character was copied
-	Favorites: "Favorites",
-	"Start favoriting characters" : "Start favoriting characters",
-	"Stop favoriting characters" : "Stop favoriting characters",
-	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)",
-	"No longer saving to Favorites": "No longer saving to $t(Favorites)",
+	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.", // [T:2.5]
+	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.", // [T:2.5]
+	copiedCharToClipboard: "Copied {{char}} to clipboard", // [T:1.5] only one character was copied
+	Favorites: "Favorites", // (B)
+	"Start favoriting characters" : "Start favoriting characters", // {A}
+	"Stop favoriting characters" : "Stop favoriting characters", // {A}
+	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)", // [T:2,5]
+	"No longer saving to Favorites": "No longer saving to $t(Favorites)", // [T:2.5]
 	"Tap characters to add them here": "Tap characters to add them here",
-	"Show full character names": "Show full character names",
-	"Hide full character names": "Hide full character names",
+	"Show full character names": "Show full character names", // {A}
+	"Hide full character names": "Hide full character names", // {A}
 
 	extraHelp: { // Markdown format
 		help1p1:[
@@ -376,11 +367,11 @@ const common = {
 	},
 	characterInfo: characters,
 
-	// PERMANENT INTO
-	"WG Presets Sorter": "WG Presets Sorter", // Title of the permanent sort method in sort settings.
+	// PERMANENT INFO - Title of the permanent sort method in sort settings.
+	"WG Presets Sorter": "WG Presets Sorter", // (B) "WG" stands for "WordGen"
 
 	// The key below is used when someone tries to edit or delete the permanent sort method in sort settings.
-	"This is used by WordGen presets. It cannot be modified or deleted.":
+	"This is used by WordGen presets. It cannot be modified or deleted.": // <D>
 		"This is used by $t(WordGen) presets. It cannot be modified or deleted.",
 };
 
