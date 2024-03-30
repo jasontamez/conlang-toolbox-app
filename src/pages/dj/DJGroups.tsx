@@ -313,7 +313,7 @@ const DJGroups: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
 			toaster({
-				message: tc("thingsDeleted", { things: t("Group", { count: allGroups }), count: allGroups }),
+				message: tc("thingsDeleted", { things: t("Number of Groups", { count: allGroups }), count: allGroups }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

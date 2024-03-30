@@ -596,7 +596,7 @@ export const exporter = (
 		);
 	}
 	return toaster({
-		message: "Error in exporting: bad format (internal)",
+		message: "Error in exporting: bad internal format",
 		color: "danger",
 		toast
 	});

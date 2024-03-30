@@ -23,7 +23,6 @@ import {
 	copyOutline
 } from 'ionicons/icons';
 
-import useTranslator from '../../store/translationHooks';
 import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
@@ -53,11 +52,11 @@ const translations = [
 	"Display any words that were not matched by any group.",
 	"Display the declensions/conjugations of words in the input.",
 	"Include general group information.", "Include generic example.",
-	"Input words can only match one <method>", "One Match", "Other",
+	"Input words can only match one method", "One Match", "Other",
 	"Please choose at least one group to display.", "Show Examples",
 	"Show Group Info", "Show Unmatched Words", "Sort Input", "Text",
 	"Unmatched Words", "Use Input", "You didn't select a format.",
-	"Conjugations", "Export"
+	"Conjugations", "Export", "Display as"
 ];
 
 const commons = [
@@ -66,7 +65,6 @@ const commons = [
 ];
 
 const DJOutput: FC<PageData> = (props) => {
-	const [ t ] = useTranslator('dj');
 	const [
 		tCancel, tChoose, tCopy, tGen,
 		tHelp, tOut, tCSV, tTxt, tDocx
@@ -76,9 +74,8 @@ const DJOutput: FC<PageData> = (props) => {
 		tIncludeInfo, tIncludeGeneric, tOneMethod, tOneMatch, tOther,
 		tChooseOne, tShowExamples, tShowGroupInfo, tShowUnmatchedWords,
 		tSortInput, tText, tUnmatchedWords, tUseInput, tNoFormat, tConj,
-		tExport
+		tExport, tpDisplayAs
 	] = useI18Memo(translations, "dj");
-	const tpDisplayAs = useMemo(() => t("Display as", { context: "presentation" }), [t]);
 
 //	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();

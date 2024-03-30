@@ -70,9 +70,8 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 		caseMakerModalInfo,
 		savedTitle,
 		setSavedTitle,
-		typeString: pluralType
+		typeString
 	} = props;
-	const typeString = pluralType.slice(0, -1);
 
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
@@ -81,8 +80,8 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const tAddThing = useMemo(() => typeString ? tc("addThing", { thing: t(typeString) }) : "", [t, tc, typeString]);
 	const tThingSaved = useMemo(() => typeString ? tc("thingSaved", { thing: t(typeString) }) : "", [tc, t, typeString]);
 	const [ tpMEx, tpREx ] = useI18Memo(expressions, "dj", context);
-	const tTitleMethod = useMemo(() => t("Title Method", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
-	const tAdvExpl = useMemo(() => t("advancedExplanation", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
+	const tTitleMethod = useMemo(() => t("Title Method", { context: typeString }), [t, typeString]);
+	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString }), [t, typeString]);
 
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

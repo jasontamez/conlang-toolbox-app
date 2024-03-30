@@ -101,7 +101,7 @@ const we = {
 			"",
 			"The easiest way is to copy-paste a list of words, each on a line",
 			"by itself. Or, you can use the",
-			"**$t(common:Import from Lexicon)** button to pull in words",
+			"**Import from Lexicon** button to pull in words",
 			"stored in the **$t(common:Lexicon)**.",
 			"",
 			"Use the **$t(common:Clear)** button to empty all words from",

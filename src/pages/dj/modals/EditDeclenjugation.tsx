@@ -74,16 +74,15 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		caseMakerModalInfo,
 		savedTitle,
 		setSavedTitle,
-		typeString: pluralType
+		typeString
 	} = props;
-	const typeString = pluralType.slice(0, -1);
 
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [ tYouSureDel, tYouSureDiscard, tDel, tDeleted, tOk, tSave, tUnsaved, tYes, tConfDel ] = useI18Memo(commons);
 	const [ tMod, tPref, tSuff, tBaseWord, tAdvMeth, tWord, tNoMatch, tNoTitle ] = useI18Memo(translations, "dj");
-	const tTitleMethod = useMemo(() => t("Title Method", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
-	const tAdvExpl = useMemo(() => t("advancedExplanation", { method: typeString.toLocaleLowerCase() }), [t, typeString]);
+	const tTitleMethod = useMemo(() => t("Title Method", { context: typeString }), [t, typeString]);
+	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString }), [t, typeString]);
 	const [ tpMatch, tpReplace ] = useI18Memo(presentations, "dj", context);
 	const [ tMatch, tReplace ] = useI18Memo(presentations, "dj");
 	const tTypeString = useMemo(() => typeString ? t(typeString) : "", [typeString, t]);

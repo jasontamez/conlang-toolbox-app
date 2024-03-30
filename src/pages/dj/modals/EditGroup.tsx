@@ -73,8 +73,7 @@ interface EditGroupProps extends ExtraCharactersModalOpener {
 const presentations = [
 	"Type(s) of word this group affects", "Matching Expression",
 	"Remove from Start of Word to Find Root", "Replacement Expression",
-	"Remove from End of Word to Find Root",
-	"Separate Multiple Conditions With", "Type"
+	"Remove from End of Word to Find Root", "Type"
 ];
 const context = { context: "presentation" };
 
@@ -85,7 +84,8 @@ const translations = [
 	"Use advanced method", "Use regular expressions to identify the stem.",
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
-	"exampleAppliesTo", "wordMarker", "Regular Expression"
+	"exampleAppliesTo", "wordMarker", "Regular Expression",
+	"Separate Multiple Conditions With"
 ];
 
 const commons = [
@@ -104,12 +104,12 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
-		tNoCond, tExample, tWM, tRegEx
+		tNoCond, tExample, tWM, tRegEx, tpSeparate
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
 		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
-		tpRemoveEnd, tpSeparate, tpType
+		tpRemoveEnd, tpType
 	] = useI18Memo(presentations, "dj", context);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);

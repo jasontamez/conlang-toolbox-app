@@ -1,146 +1,133 @@
 const dj = {
 
-	Groups: "Groups",
+	Groups: "Groups", // |H|
 	Group: "Group",
-	Group_one: "Group",
-	Group_other: "Groups",
-	Type: "Type",
+	"Number of Groups_one": "{{count}} Group",
+	"Number of Groups_other": "{{count}} Groups",
+	Type: "Type", // |H|
 	Type_presentation: "Type:",
-	Declensions: "Declensions", // group of declensions on-screen
-	Declension: "Declension", // single declension on-screen
-	Declensions_one: "Declension", // single declension on-screen
-	Declensions_other: "Declensions", // multiple declensions on-screen
-	Conjugations: "Conjugations", // group of conjugations on-screen
-	Conjugation: "Conjugation", // single conjugation on-screen
-	Conjugations_one: "Conjugation", // single conjugation on-screen
-	Conjugations_other: "Conjugations", // multiple conjugations on-screen
-	Other: "Other", // group of 'other' type on-screen
-	Other_one: "Other", // single 'other' type on-screen
-	Other_other: "Other", // multiple 'other' types on-screen
-	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
-	"Error in exporting: bad format (internal)":
-		"Error in exporting: bad format (internal)",
+	Declensions: "Declensions", // |H| (B) group of declensions on-screen
 	declension: "declension",
-	declensions: "declensions",
+	Conjugations: "Conjugations", // |H| (B) group of conjugations on-screen
 	conjugation: "conjugation",
-	conjugations: "conjugation",
+	Other: "Other", // |H| (B) group of 'other' type on-screen
 	other: "other",
-	method: "declension/conjugation/etc.",
-	method_one: "$t(method)",
-	method_other: "declensions/conjugations/etc.",
+	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
+	"Error in exporting: bad internal format":
+		"Error in exporting: bad format (internal)",
 	Equality: "Equality",
 	Relation: "Relation",
 
-	"Words to send through Declenjugator":
+	"Words to send through Declenjugator": // {A}
 		"Words to send through $t(common:Declenjugator)",
 	"Enter words here, one per line": "Enter words here, one per line",
-	"this entire Group": "this entire $t(Group)",
-	"this entire Group_formal": "This Entire $t(Group)",
-	"all current groups": "all current $t(Groups)",
-	"Clear All Groups?": "Clear All $t(Groups)?",
-	"This will delete all current groups, and it cannot be undone.":
-		"This will delete all current $t(Groups), and it cannot be undone.",
-	"Yes Delete Them": "Yes, Delete Them",
-	"You must provide a title or description before saving.":
+	"this entire Group": "this entire Group",
+	"this entire Group_formal": "This Entire Group",
+	"all current groups": "all current Groups",
+	"Clear All Groups?": "Clear All Groups?", // <D:H>
+	"You must provide a title or description before saving.": // <D>
 		"You must provide a title or description before saving.",
-	"If using regular expressions you must provide both match and replacement expressions.":
+	"If using regular expressions you must provide both match and replacement expressions.": // <D>
 		"If using $t(common:regular expressions), you must provide both match and replacement expressions.",
-	"You must provide at least one condition (start or end) before saving.":
+	"You must provide at least one condition (start or end) before saving.": // <D>
 		"You must provide at least one condition (start or end) before saving.",
-	"You did not enter a match expression.":
+	"You did not enter a match expression.": // <D>
 		"You did not enter a match expression.",
-	"Add Group": "Add $t({{type}}) Group",
-	"Edit Group": "Edit $t({{type}}) Group",
+	"Add Group": "Add $t({{type}}) Group", // |H|
+	"Edit Group": "Edit $t({{type}}) Group", // |H|
 	"Title Input": "Title or Description of this $t({{type}}) grouping:",
-	"Type(s) of word this group affects": "Type(s) of word this group affects",
+	"Type(s) of word this group affects": "Type(s) of word this group affects", // {A}
 	"Type(s) of word this group affects_presentation": "Type(s) of word this group affects:",
 	exampleAppliesTo: "nouns? verbs? adjectives?",
 	"Use regular expressions to identify the stem.": "Use regular expressions to identify the stem.",
-	"Simple Root Finder": "Simple Root Finder",
-	Modification: "Modification",
-	"Matching Expression": "Matching Expression",
+	"Simple Root Finder": "Simple Root Finder", // |H|
+	Modification: "Modification", // |H|
+	"Matching Expression": "Matching Expression", // |H|
 	"Matching Expression_presentation": "Matching Expression:",
-	"Replacement Expression": "Replacement Expression",
+	"Replacement Expression": "Replacement Expression", // |H|
 	"Replacement Expression_presentation": "Replacement Expression:",
-	"Title Method": "Title or Description of this $t({{method}}):",
+	"Title Method_Declension": "Title or Description of this declension:", // |H|
+	"Title Method_Conjugation": "Title or Description of this conjugation:", // |H|
+	"Title Method_Other": "Title or Description of this method:", // |H|
+	advancedExplanation_Declension: "Use regular expressions to craft a declension.",
+	advancedExplanation_Conjugation: "Use regular expressions to craft a conjugation.",
+	advancedExplanation_Other: "Use regular expressions to craft a method.",
 
+	// appliesTo will be a user-generated string
 	groupAppliesTo: "; applies to $t(appliesTo)",
 
-	"What is Declenjugator?": "What is $t(common:Declenjugator)?",
+	"What is Declenjugator?": "What is $t(common:Declenjugator)?", // |H|
 
-	"You didn't select a format.": "You didn't select a format.",
-	"Please choose at least one group to display.":
-		"Please choose at least one $t(Group) to display.",
-	"Unmatched Words": "Unmatched Words",
-	declenjugatorTitle: "$t(Declensions_one)/$t(Conjugations_one) Title",
-	declenjugatorDocumentTitle: "$t(Declensions)/$t(Conjugations)",
+	"You didn't select a format.": "You didn't select a format.", // <D>
+	"Please choose at least one group to display.": // <D> [T:2.5]
+		"Please choose at least one Group to display.",
+	"Unmatched Words": "Unmatched Words", // |H|
+	declenjugatorTitle: "Declension/Conjugation Title", // |H|
+	declenjugatorDocumentTitle: "Declensions/Conjugations", // |H|
 	declenjugatorDocumentDescription:
-		"A $t(declension)/$t(conjugation) document exported from $t(common:Conlang Toolbox).",
+		"A declension/conjugation document exported from $t(common:Conlang Toolbox).",
 	caseMakerInstructions:
 		"Tap on terms to add them. Tap them again to remove them. Tap save button when you're finished.",
-	Hide: "Hide",
-	"Show More": "Show More",
+	Hide: "Hide", // (B)
+	"Show More": "Show More", // (B)
 
-	"Display as": "Display as",
-	"Display as_presentation": "Display as:",
-	"Chart, Top Headers": "Chart, Top Headers",
-	"Chart, Side Headers": "Chart, Side Headers",
-	Text: "Text",
+	// Always presentational context:
+	"Display as": "Display as:",
 
-	"Use Input": "Use $t(common:Input)",
+	"Chart, Top Headers": "Chart, Top Headers", // (B)
+	"Chart, Side Headers": "Chart, Side Headers", // (B)
+	Text: "Text", // (B)
+
+	"Use Input": "Use $t(common:Input)", // |H|
 	"Display the declensions/conjugations of words in the input.":
-		"Display the $t(declensions)/$t(conjugations) of words in the input.",
-	"Show Group Info": "Show $t(Group) Info",
-	"Include general group information.": "Include general $t(Group) information.",
-	"Show Examples": "Show Examples",
+		"Display the declensions/conjugations of words in the input.",
+	"Show Group Info": "Show Group Info", // |H|
+	"Include general group information.": "Include general Group information.",
+	"Show Examples": "Show Examples", // |H|
 	"Include generic example.": "Include generic example.",
-	"Sort Input": "Sort $t(common:Input)",
-	"One Match": "One Match",
-	"Input words can only match one <method>":
-		"$t(common:Input) words can only match one $t(method)",
-	"Show Unmatched Words": "Show Unmatched Words",
+	"Sort Input": "Sort $t(common:Input)", // |H|
+	"One Match": "One Match", // |H|
+	"Input words can only match one method":
+		"$t(common:Input) words can only match one method",
+	"Show Unmatched Words": "Show Unmatched Words", // |H|
 	"Display any words that were not matched by any group.":
-		"Display any words that were not matched by any $t(Group).",
+		"Display any words that were not matched by any Group.",
 
-	"Input Tab": "$t(common:Input) Tab",
-	"Groups Tab": "$t(Groups) Tab",
-	"Output Tab": "Output Tab",
+	"Input Tab": "$t(common:Input) Tab", // |H|
+	"Groups Tab": "Groups Tab", // |H|
+	"Output Tab": "Output Tab", // |H|
 
 	"Regular Expression": "Regular Expression", // |H|
 
-	"This will clear and overwrite the previous save.": "This will clear and overwrite the previous save.",
-	"Load Saved Info": "Load Saved Info",
+	"This will clear and overwrite the previous save.": // <D>
+		"This will clear and overwrite the previous save.",
+	"Load Saved Info": "Load Saved Info", // |H|
 
-	Export: "Export",
-	Example: "Example",
-	Examples: "Examples",
-	Prefix: "Prefix",
-	Suffix: "Suffix",
-	stem: "stem",
-	word: "word",
+	Export: "Export", // (B)
+	Example: "Example", // |H|
+	Examples: "Examples", // |H|
+	Prefix: "Prefix", // |H|
+	Suffix: "Suffix", // |H|
+	stem: "stem", // |H|
+	word: "word", // |H|
 	"[word]": "[word]",
 	"[stem]": "[stem]",
-	"No words matched this group.": "No words matched this $t(Group).",
-	"Remove from End of Word": "Remove from End of Word",
-	"Remove from End of Word to Find Root": "Remove from End of Word to Find Root",
-	"Remove from End of Word to Find Root_presentation": "Remove from End of Word to Find Root:",
-	"Remove from Start of Word": "Remove from Start of Word",
-	"Remove from Start of Word to Find Root": "Remove from Start of Word to Find Root",
-	"Remove from Start of Word to Find Root_presentation": "Remove from Start of Word to Find Root:",
-	"advanced method": "advanced method",
-	"Use advanced method": "Use advanced method",
-	advancedExplanation: "Use regular expressions to craft a $t({{method}}).",
-	"Use entire word": "Use entire word",
+	"No words matched this group.": "No words matched this Group.",
+	"Remove from End of Word to Find Root": "Remove from End of Word to Find Root", // {A}
+	"Remove from End of Word to Find Root_presentation": "Remove from End of Word to Find Root:", // |H|
+	"Remove from Start of Word to Find Root": "Remove from Start of Word to Find Root", // {A}
+	"Remove from Start of Word to Find Root_presentation": "Remove from Start of Word to Find Root:", // |H|
+	"Use advanced method": "Use advanced method", // |H|
+	"Use entire word": "Use entire word", // |H|
 	"This applies your modifications to the base word instead of the stem.":
 		"This applies your modifications to the base word instead of the stem.",
-	"Add New": "Add New",
-	"Separate Multiple Conditions With": "Separate Multiple Conditions With",
-	"Separate Multiple Conditions With_presentation": "Separate Multiple Conditions With:",
-	"Choose Separator": "Choose Separator",
-	Space: "[ ] Space",
-	Comma: "[,] Comma",
-	Semicolon: "[;] Semicolon",
-	Slash: "[/] Slash",
+	// Always presentation context:
+	"Separate Multiple Conditions With": "Separate Multiple Conditions With:",
+	"Choose Separator": "Choose Separator", // {A}
+	Space: "[ ] Space", // (B)
+	Comma: "[,] Comma", // (B)
+	Semicolon: "[;] Semicolon", // (B)
+	Slash: "[/] Slash", // (B)
 	wordMarker: "[W]", // small notation that this declension/etc uses the "entire word" option instead of the stem/root
 
 	// Short description describing how a declension or conjugation is found
@@ -156,7 +143,6 @@ const dj = {
 	singular: "singular",
 	plural: "plural",
 	present: "present",
-	"(blank)": "(blank)",
 
 	// By default, cases will be added with a space in between them.
 	// To override this, supply an array [ "case", "separator" ] instead of a string
@@ -325,50 +311,48 @@ const dj = {
 			"decline or conjugate. Using this tab is entirely optional.",
 			"",
 			"The easiest way is to copy-paste a list of words, each on a",
-			"line by itself. Or, you can use the",
-			"**$t(common:Import From Lexicon)** button to pull in words",
-			"stored in the **$t(common:Lexicon)**.",
+			"line by itself. Or, you can use the **Import From Lexicon**",
+			"button to pull in words stored in the **$t(common:Lexicon)**.",
 			"",
 			"Use the **$t(common:Input)** button to empty all words from",
 			"$t(common:Input).",
 		],
 		groups: [
-			"This is where you define groups of $t(declensions) and",
-			"$t(conjugations). Most languages treat certain groupings of",
-			"words differently when they are declined or conjugated. For",
-			"instance, English only declines its pronouns for case and person",
-			"while Spanish has different $t(conjugations) for verbs depending",
-			"on if they end in -ar, -er, or -ir.",
+			"This is where you define groups of declensions and conjugations.",
+			"Most languages treat certain groupings of words differently when",
+			"they are declined or conjugated. For instance, English only",
+			"declines its pronouns for case and person while Spanish has",
+			"different conjugations for verbs depending on if they end in",
+			"-ar, -er, or -ir.",
 			"",
-			"Click the (+) button to add a new $t(Group). When you make a",
-			"$t(Group), you must give it a title or description. You can",
-			"choose to label this as a _$t(declension)_, a _$t(conjugation)_",
-			"or under _$t(other)_ if you don't want to use those labels.",
-			"Optionally, you can note what types of words this $t(Group) will",
-			"apply to.",
+			"Click the (+) button to add a new Group. When you make a Group,",
+			"you must give it a title or description. You can choose to label",
+			"this as a _declension_, a _conjugation_ or under _other_ if you",
+			"don't want to use those labels Optionally, you can note what",
+			"types of words this Group will apply to.",
 			"",
 			"Next, you will provide instructions on how to find the",
 			"\"$t(stem)\" of the word. For example, if you were creating a",
-			"$t(conjugation) for words ending in -ar, you would put \"ar\" in",
+			"conjugation for words ending in -ar, you would put \"ar\" in",
 			"the box labelled \"$t(Remove from End of Word to Find Root)\".",
 			"",
 			"Note: You can provide multiple conditions. For instance, putting",
 			"\"ar\" in both boxes will match words that begin with ar- _and_",
 			"end with -ar. You can also hit the \"$t(Use advanced method)\"",
-			"toggle switch to use **$t(common:regular expressions)** to find",
-			"a $t(stem). (See the end of this section for more info on",
-			"$t(common:regular expressions).)",
+			"toggle switch to use **regular expressions** to find a $t(stem).",
+			"(See the end of this section for more info on regular",
+			"expressions.)",
 			"",
 			"---",
 			"",
-			"At the bottom of the form, you will see an \"$t(Add New)\"",
-			"button. Use this to create the $t(Group)'s individual",
-			"$t(declensions) or $t(conjugations). For simplicity, we will use",
-			"the term \"method\" to mean either.",
+			"At the end of the form, you will see an \"$t(common:Add New)\"",
+			"button. Use this to create the Group's individual declensions",
+			"or conjugations. For simplicity, we will use the term \"method\"",
+			"to mean either.",
 			"",
 			"First, you give the method a title. There is a small (+) button",
 			"next to the input that will open a pop-up with numerous common",
-			"$t(declension) and $t(conjugation) types, if you wish to use it.",
+			"declension and conjugation types, if you wish to use it.",
 			"",
 			"Below that is a toggle \"$t(Use entire word)\". If checked, the",
 			"method will operate on the entire word instead of just the",
@@ -379,78 +363,75 @@ const dj = {
 			"above.) If this method would add a prefix, put the prefix in the",
 			"box before \"$t(stem)\". If it would use a suffix, put it in the",
 			"box after \"$t(stem)\". You can use both boxes for a circumfix",
-			"but for infixes and $t(other) more complicated changes, you will",
-			"need to use the \"$t(advanced method)\" and",
-			"$t(common:regular expressions).",
+			"but for infixes and other more complicated changes, you will",
+			"need to use the \"advanced method\" and regular expressions.",
 			"",
 			"---",
 			"",
 			// `DRAG HANDLE` (or any other text inside backticks) will be
 			//    replaced with the drag handle icon
-			"Once your $t(Groups) are made, they will show up on the screen.",
+			"Once your Groups are made, they will show up on the screen.",
 			"Swipe left on them to find $t(common:Edit) and $t(common:Delete)",
 			"buttons. You can also use the `DRAG HANDLE` drag handles to",
 			"rearrange their order. (Note: you can't rearrange across types",
-			"dragging a \"$t(conjugation)\" into the \"$t(other)\" or",
-			"\"$t(declension)\" areas, for example. If you want to change its",
-			"type, swipe left and choose the $t(common:Edit) button.)",
+			"dragging a \"conjugation\" into the \"other\" or \"declension\"",
+			"areas, for example. If you want to change its type, swipe left",
+			"and choose the $t(common:Edit) button.)",
 			"",
 			"Here's an example of possible methods you could make for a",
-			"Spanish-type $t(conjugation):",
+			"Spanish-type conjugation:",
 		],
 		groupsExample: [
 			{
 				title: "Group",
 				content: [
 					"- **$t(common:Title)**: Conjugations (A)",
-					"- **$t(Type)**: _$t(conjugation)_",
-					"- **$t(Remove from Start of Word)**: (blank)",
-					"- **$t(Remove from End of Word)**: ar",
+					"- **Type**: _conjugation_",
+					"- **Remove from Start of Word**: (blank)",
+					"- **Remove from End of Word**: ar",
 				],
 			},
 			{
 				title: "Conjugations",
 				content: [
-					"- **$t(1st-person) $t(singular) $t(present)**: $t(stem)[o]",
-					"- **$t(2nd-person) $t(singular) $t(present)**: $t(stem)[as]",
-					"- **$t(3rd-person) $t(singular) $t(present)**: $t(stem)[a]",
-					"- **$t(1st-person) $t(plural) $t(present)**: $t(stem)[amos]",
-					"- **$t(3rd-person) $t(plural) $t(present)**: $t(stem)[an]",
+					"- **1st-person singular present**: $t(stem)[o]",
+					"- **2nd-person singular present**: $t(stem)[as]",
+					"- **3rd-person singular present**: $t(stem)[a]",
+					"- **1st-person plural present**: $t(stem)[amos]",
+					"- **3rd-person plural present**: $t(stem)[an]",
 				],
 			}
 		],
 		output: [
 			"This is where you can find the results of your work. At the top",
 			"of the page, you can choose how you want the information to",
-			"display, and choose if you want to display $t(declensions)",
-			"$t(conjugations), and/or $t(other). If you want to",
-			"decline/conjugate words you put in the **$t(common:Input)** tab",
-			"be sure to switch the toggle on. It will open up a new set of",
-			"options you can use to fine-tune the results.",
+			"display, and choose if you want to display declensions",
+			"conjugations, and/or other. If you want to decline/conjugate",
+			"words you put in the **$t(common:Input)** tab be sure to switch",
+			"the toggle on. It will open up a new set of options you can use",
+			"to fine-tune the results.",
 			"",
 			"Click on $t(common:Generate) to display your info, or click on",
-			"$t(common:Export) to export your info to a file. **Note**: when",
+			"$t(Export) to export your info to a file. **Note**: when",
 			"displaying a chart in the app, it may clip off the edge of the",
 			"screen. If this happens, you can drag the chart left and right to",
 			"scroll the hidden areas into view.",
 		],
 		overview: [
-			"This tool is for creating **$t(declensions)** and",
-			"**$t(conjugations)**.",
+			"This tool is for creating **declensions** and **conjugations**.",
 			"",
-			"A $t(declension) is, at its most basic, modifying a word to",
-			"show its role in a sentence. $t(Declensions) may apply to nouns",
+			"A declension is, at its most basic, modifying a word to show its",
+			"role in a sentence. $t(Declensions) may apply to nouns",
 			"pronouns, adjectives, adverbs, and articles to indicate number",
-			"($t(singular), dual, $t(plural), etc), case (nominative",
+			"(singular, dual, plural, etc), case (nominative",
 			"accusative, genitive, dative, etc), gender (male, female",
 			"inanimate, etc), and other grammatical categories. ",
 			"",
-			"A $t(conjugation) is much like a $t(declension), but it",
-			"modifies verbs. Like $t(declensions), they can indicate number",
-			"gender, and case, but they also often include person (I, you",
-			"they, etc), tense (past, $t(present), future, etc), aspect",
-			"(perfect, imperfect, etc), mood/mode, politeness, and numerous",
-			"other verb qualities.",
+			"A conjugation is much like a declension, but it modifies verbs.",
+			"Like declensions, they can indicate number gender, and case, but",
+			"they also often include person (I, you they, etc), tense (past,",
+			"present, future, etc), aspect (perfect, imperfect, etc),",
+			"mood/mode, politeness, and numerous other verb qualities.",
 		],
 	}
 
