@@ -7,10 +7,13 @@ const dj = {
 	Type: "Type", // |H|
 	Type_presentation: "Type:",
 	Declensions: "Declensions", // |H| (B) group of declensions on-screen
+	Declension: "Declension", // a single Declension
 	declension: "declension",
 	Conjugations: "Conjugations", // |H| (B) group of conjugations on-screen
+	Conjugation: "Conjugation", // a single Conjugation
 	conjugation: "conjugation",
 	Other: "Other", // |H| (B) group of 'other' type on-screen
+	Other1: "Other", // a single instance of an 'Other' type
 	other: "other",
 	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
 	"Error in exporting: bad internal format":
@@ -28,14 +31,14 @@ const dj = {
 	"You must provide a title or description before saving.": // <D>
 		"You must provide a title or description before saving.",
 	"If using regular expressions you must provide both match and replacement expressions.": // <D>
-		"If using $t(common:regular expressions), you must provide both match and replacement expressions.",
+		"If using regular expressions, you must provide both match and replacement expressions.",
 	"You must provide at least one condition (start or end) before saving.": // <D>
 		"You must provide at least one condition (start or end) before saving.",
 	"You did not enter a match expression.": // <D>
 		"You did not enter a match expression.",
-	"Add Group": "Add $t({{type}}) Group", // |H|
-	"Edit Group": "Edit $t({{type}}) Group", // |H|
-	"Title Input": "Title or Description of this $t({{type}}) grouping:",
+	"Add Group": "Add Group", // |H|
+	"Edit Group": "Edit Group", // |H|
+	"Title Input": "Title or Description of this grouping:",
 	"Type(s) of word this group affects": "Type(s) of word this group affects", // {A}
 	"Type(s) of word this group affects_presentation": "Type(s) of word this group affects:",
 	exampleAppliesTo: "nouns? verbs? adjectives?",
@@ -46,11 +49,11 @@ const dj = {
 	"Matching Expression_presentation": "Matching Expression:",
 	"Replacement Expression": "Replacement Expression", // |H|
 	"Replacement Expression_presentation": "Replacement Expression:",
-	"Title Method_Declension": "Title or Description of this declension:", // |H|
-	"Title Method_Conjugation": "Title or Description of this conjugation:", // |H|
+	"Title Method_Declensions": "Title or Description of this declension:", // |H|
+	"Title Method_Conjugations": "Title or Description of this conjugation:", // |H|
 	"Title Method_Other": "Title or Description of this method:", // |H|
-	advancedExplanation_Declension: "Use regular expressions to craft a declension.",
-	advancedExplanation_Conjugation: "Use regular expressions to craft a conjugation.",
+	advancedExplanation_Declensions: "Use regular expressions to craft a declension.",
+	advancedExplanation_Conjugations: "Use regular expressions to craft a conjugation.",
 	advancedExplanation_Other: "Use regular expressions to craft a method.",
 
 	// appliesTo will be a user-generated string
@@ -306,7 +309,7 @@ const dj = {
 	],
 
 	info: {
-		input: [
+		input: [ // Markdown format
 			"This tab has one purpose: determining which words you want to",
 			"decline or conjugate. Using this tab is entirely optional.",
 			"",
@@ -317,7 +320,7 @@ const dj = {
 			"Use the **$t(common:Input)** button to empty all words from",
 			"$t(common:Input).",
 		],
-		groups: [
+		groups: [ // Markdown format
 			"This is where you define groups of declensions and conjugations.",
 			"Most languages treat certain groupings of words differently when",
 			"they are declined or conjugated. For instance, English only",
@@ -384,7 +387,7 @@ const dj = {
 		groupsExample: [
 			{
 				title: "Group",
-				content: [
+				content: [ // Markdown format (list)
 					"- **$t(common:Title)**: Conjugations (A)",
 					"- **Type**: _conjugation_",
 					"- **Remove from Start of Word**: (blank)",
@@ -393,7 +396,7 @@ const dj = {
 			},
 			{
 				title: "Conjugations",
-				content: [
+				content: [ // Markdown format (list)
 					"- **1st-person singular present**: $t(stem)[o]",
 					"- **2nd-person singular present**: $t(stem)[as]",
 					"- **3rd-person singular present**: $t(stem)[a]",
@@ -402,7 +405,7 @@ const dj = {
 				],
 			}
 		],
-		output: [
+		output: [ // Markdown format
 			"This is where you can find the results of your work. At the top",
 			"of the page, you can choose how you want the information to",
 			"display, and choose if you want to display declensions",
@@ -414,10 +417,10 @@ const dj = {
 			"Click on $t(common:Generate) to display your info, or click on",
 			"$t(Export) to export your info to a file. **Note**: when",
 			"displaying a chart in the app, it may clip off the edge of the",
-			"screen. If this happens, you can drag the chart left and right to",
-			"scroll the hidden areas into view.",
+			"screen. If this happens, you can drag the chart left and right",
+			"to scroll the hidden areas into view.",
 		],
-		overview: [
+		overview: [ // Markdown format
 			"This tool is for creating **declensions** and **conjugations**.",
 			"",
 			"A declension is, at its most basic, modifying a word to show its",

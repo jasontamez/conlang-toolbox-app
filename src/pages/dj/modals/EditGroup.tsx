@@ -78,14 +78,14 @@ const presentations = [
 const context = { context: "presentation" };
 
 const translations = [
-	"Choose Separator", "Comma", "Conjugations_one", "Declensions_one",
+	"Choose Separator", "Comma", "Conjugation", "Declension",
 	"If using regular expressions you must provide both match and replacement expressions.",
-	"Other_one", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
+	"Other1", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
 	"Use advanced method", "Use regular expressions to identify the stem.",
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
 	"exampleAppliesTo", "wordMarker", "Regular Expression",
-	"Separate Multiple Conditions With"
+	"Separate Multiple Conditions With", "Edit Group", "Title Input"
 ];
 
 const commons = [
@@ -104,7 +104,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
-		tNoCond, tExample, tWM, tRegEx, tpSeparate
+		tNoCond, tExample, tWM, tRegEx, tpSeparate, tEditGroup, tTitleInput
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
@@ -482,9 +482,6 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		setDeclenjugations(final);
 		ed.complete();
 	}, [declenjugations]);
-
-	const tEditGroup = useMemo(() => t("Edit Group", { type: typeString }), [t, typeString])
-	const tTitleInput = useMemo(() => t("Title Input", { type: typeString }), [t, typeString]);
 
 	const allDeclenjugations = useMemo(() => declenjugations.map(dj => {
 		const {

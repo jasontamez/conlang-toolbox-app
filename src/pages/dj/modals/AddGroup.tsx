@@ -76,14 +76,14 @@ const presentations = [
 const context = { context: "presentation" };
 
 const translations = [
-	"Choose Separator", "Comma", "Conjugations_one", "Declensions_one",
+	"Choose Separator", "Comma", "Conjugation", "Declension",
 	"If using regular expressions you must provide both match and replacement expressions.",
-	"Other_one", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
+	"Other1", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
 	"Use advanced method", "Use regular expressions to identify the stem.",
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
 	"exampleAppliesTo", "wordMarker", "Regular Expression",
-	"Separate Multiple Conditions With"
+	"Separate Multiple Conditions With", "Add Group", "Title Input"
 ];
 
 const commons = [
@@ -98,12 +98,12 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const [
 		tChoose, tComma, tConj1, tDecl1, tNeedExpr, tOther1, tSemi, tSimple,
 		tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle, tNoCond, tEx, tWM,
-		tRegEx, tpSeparate
-	] = useI18Memo(translations);
+		tRegEx, tpSeparate, tAddGroup, tTitleInput
+	] = useI18Memo(translations, "dj");
 	const [
 		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk, tSave,
 		tUnsaved, tYes, tRUSure, tConfDel
-	] = useI18Memo(commons, "dj");
+	] = useI18Memo(commons);
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
 		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
@@ -137,9 +137,6 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const [typeString, setTypeString] = useState<string>("Declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	
-	const tAddGroup = useMemo(() => t("Add Group", { type: typeString }), [t, typeString])
-	const tTitleInput = useMemo(() => t("Title Input", { type: typeString }), [t, typeString]);
-
 	// Accept new declenjugation from other modal
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {

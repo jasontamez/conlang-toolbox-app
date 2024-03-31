@@ -7,6 +7,11 @@ import toaster from './toaster';
 import log from './Logging';
 import i18n from '../i18n';
 
+// FOR BROWSER TESTING ONLY
+import { saveAs } from 'file-saver';
+import { isPlatform } from "@ionic/react";
+// FOR BROWSER TESTING ONLY
+
 const doExport = async (
 	output: string,
 	fileName: string,
@@ -17,6 +22,21 @@ const doExport = async (
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
 	const path = sanitize(i18n.t("Conlang Toolbox", { context: "filename" }));
+
+
+	// FOR BROWSER TESTING ONLY
+	if(!isPlatform("android")) {
+		saveAs(output, filename);
+		toaster({
+			message: "File saved as " + filename + " (browser)",
+			color: "success",
+			toast
+		})
+		return;
+	}
+	// FOR BROWSER TESTING ONLY
+
+
 	try {
 		/*const ret =*/ await Filesystem.readdir({
 			path,
