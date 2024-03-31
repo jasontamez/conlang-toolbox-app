@@ -72,7 +72,7 @@ const translations = [
 	"As Alphabetically First", "As Alphabetically Last", "Field Name", "Large",
 	"Lexicon Options", "Med", "New", "Rearrange Lexicon Columns", "Small",
 	"Show Full Column Titles", "To Beginning, Always", "To End, Always",
-	"Edit Columns"
+	"Edit Columns", "Sort blank columns"
 ];
 
 const commons = [
@@ -88,9 +88,9 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	] = useI18Memo(commons);
 	const [
 		tYouSure, tAlphaFirst, tAlphaLast, tFieldName, tLarge, tLexOpts,
-		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd, tEditGeneral
+		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd, tEditGeneral,
+		tpBlank
 	] = useI18Memo(translations, "lexicon");
-	const tpBlank = useMemo(() => t("Sort blank columns", { context: "presentation" }), [t]);
 	const tpMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
 	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
 	const tAddThing = useMemo(() => tc("addThing", { thing: t("Column") }), [tc, t]);

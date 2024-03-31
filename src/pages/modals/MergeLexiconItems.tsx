@@ -115,7 +115,8 @@ const methods: Methods = ["first", "last", "merge", "firstAll", "lastAll", "merg
 const translations = [
 	"Cancel Merging", "How to Merge",
 	"Merge Items", "Save and Merge",
-	"lexiconMergeInstructions"
+	"lexiconMergeInstructions",
+	"Current merged result"
 ];
 
 const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
@@ -132,9 +133,8 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 	}), [t]);
 	const tClose = useMemo(() => tc("Close"), [tc]);
 	const [
-		tCancelMerge, tHowTo, tMergeItems, tSaveMerge, tLexMergeIns
+		tCancelMerge, tHowTo, tMergeItems, tSaveMerge, tLexMergeIns, tMergeResult
 	] = useI18Memo(translations, "lexicon");
-	const tMergeResult = useMemo(() => t("Current merged result", { context: "presentation" }), [t]);
 
 	const { isOpen, setIsOpen, merging, mergingObject, clearInfo, sorter } = props;
 	const [items, setItems] = useState<Lexicon[]>([]);
