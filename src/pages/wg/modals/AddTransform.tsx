@@ -55,7 +55,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const [ tThingAdd, tAddThing ] = useMemo(() => {
-		const tTransformation = tw("Transformation");
+		const tTransformation = tw("Transformations_one");
 		return addies.map(term => tc(term, { thing: tTransformation }));
 	}, [tw, tc]);
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);

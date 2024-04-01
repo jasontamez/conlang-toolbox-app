@@ -45,9 +45,9 @@ const context = { context: "presentation" };
 const commons = [ "Add and Close", "error", "Cancel" ];
 
 const wgweWords = [
-	"1 character only", "CharGroup", "Enter characters in group here",
+	"1 character only", "CharGroup_one", "Enter characters in group here",
 	"Letters Characters", "No run present", "No title present", "Short Label",
-	"Suggest", "Title or description",
+	"Suggest", "Title or description", "No label present",
 	"Unable to suggest a unique label from the given descrption."
 ];
 
@@ -62,7 +62,7 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const tUseDrop = useMemo(() => t("Use separate dropoff rate"), [t]);
 	const [
 		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitleDesc, tNoSuggest
+		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest
 	] = useI18Memo(wgweWords, 'wgwe');
 	const [ tThingAdd, tAddThing ] = useMemo(() => {
 		return addies.map(term => tc(term, { thing: tCG }));
@@ -140,7 +140,7 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 		if(!label) {
 			const el = $q(".labelLabel");
 			el && el.classList.add("invalidValue");
-			err.push("No label present");
+			err.push(tNoLabel);
 		} else if (charGroupMap[label]) {
 			const el = $q(".labelLabel");
 			el && el.classList.add("invalidValue");
@@ -195,7 +195,7 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	}, [
 		charGroupMap, characterGroupDropoff, dispatch, doAlert, dropoff,
 		hasDropoff, setIsOpen, tError, tCancel, toast, tw, tNoTitle,
-		tNoRun, tThingAdd
+		tNoRun, tThingAdd, tNoLabel
 	]);
 	const maybeSaveAndAdd = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
 	const maybeSaveAndClose = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);

@@ -113,7 +113,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tDropExpl = useMemo(() => t("characterDropoffExplanation"), [t]);
-	const tCharGroups = useMemo(() => tw("Character Groups"), [tw]);
+	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
 	const tDropoffFormal = useMemo(() => t("dropoff rate", { context: "formal" }), [t]);
 	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tConfDel, tYes ] = useI18Memo(commons);
 
@@ -147,7 +147,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 					const handler = () => {
 						dispatch(deleteCharGroupWG(charGroup));
 						toaster({
-							message: tc("thingDeleted", { thing: tw("Character Group") }),
+							message: tc("thingDeleted", { thing: tw("CharGroup_one") }),
 							duration: 2500,
 							color: "danger",
 							position: "top",
@@ -190,7 +190,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 						const handler = () => {
 							dispatch(deleteCharGroupWG(null));
 							toaster({
-								message: tc("thingsDeleted", { count, things: tw("CharGroup", { count }) }),
+								message: tc("thingsDeleted", { count, things: tw("CharGroup_one") }),
 								duration: 2500,
 								color: "danger",
 								position: "top",
@@ -236,7 +236,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 						} else {
 							yesNoAlert({
 								header: tc("ImportFrom", { source: tc("WordEvolve") }),
-								message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
+								message: tw("importOverwriteCG"),
 								cssClass: "warning",
 								submit: tYes,
 								handler,

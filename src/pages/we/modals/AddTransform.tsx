@@ -41,7 +41,7 @@ const commons = [
 ];
 const translations = [
 	"Description of the transformation", "No search expression present",
-	"what it changes into", "what to change", "Transformation"
+	"what it changes into", "what to change", "Transformations_one"
 ];
 const formals = [
 	"At input and at output", "At input only",

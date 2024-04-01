@@ -53,7 +53,7 @@ const appinfo = {
 			"- Added an \"$t(common:Overview)\" to each tool.",
 			"- Created new tool $t(common:Declenjugator) for crafting",
 			"declensions and conjugations.",
-			"- Added ability to copy $t(wgwe:Character Groups) between",
+			"- Added ability to copy $t(wgwe:CharGroup_other) between",
 			"$t(common:WordGen) and $t(common:WordEvolve).",
 			"- $t(settings:Export All Data) now has a copy-to-clipboard",
 			"button, and you can limit what you export.",
@@ -71,7 +71,7 @@ const appinfo = {
 			"$t(common:MorphoSyntax) info modals.",
 			"   - Some $t(common:WordGen) syllables weren't saving correctly.",
 			"   - $t(common:WordGen)/$t(common:WordEvolve)",
-			"$t(wgwe:Transformations) with %X references were silently",
+			"$t(wgwe:Transformations_other) with %X references were silently",
 			"crashing if no category \"X\" existed.",
 		],
 		//v0.10.1
@@ -97,7 +97,7 @@ const appinfo = {
 		//v.0.9.5
 		v095: [
 			"- You can now swipe left on $t(common:Lexicon) items,",
-			"$t(wgwe:Character Groups), $t(wgwe:Transformations) and",
+			"$t(wgwe:CharGroup_other), $t(wgwe:Transformations_other) and",
 			"$t(we:Sound Changes) to edit or delete them.",
 			"- Changed the way you export information into the",
 			"$t(common:Lexicon) from other components. It should be more",

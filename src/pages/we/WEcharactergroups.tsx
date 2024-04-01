@@ -108,7 +108,7 @@ const commons = [
 const WECharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const tCharGroups = useMemo(() => tw("Character Groups"), [tw]);
+	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
 	const [ tYouSure, tAddNew, tDelete, tHelp, tConfDel, tYesImp ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
@@ -136,7 +136,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
-				message: tc("thingDeleted", { thing: tw("Character Group") }),
+				message: tc("thingDeleted", { thing: tw("CharGroup_one") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -161,7 +161,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
 			toaster({
-				message: tc("thingsDeleted", { count, things: tw("CharGroup", { count }) }),
+				message: tc("thingsDeleted", { count, things: tw("CharGroup_one") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -197,7 +197,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tc("ImportFrom", { source: tc("WordGen") }),
-				message: tw("importOverwriteWarning", { thing: tw("CharGroup"), label: tw("label") }),
+				message: tw("importOverwriteCG"),
 				cssClass: "warning",
 				submit: tYesImp,
 				handler,

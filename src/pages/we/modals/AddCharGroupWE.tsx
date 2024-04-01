@@ -46,7 +46,7 @@ const commons = [ "Add and Close", "Cancel", "error" ];
 const translations = [
 	"1 character only", "Enter characters in group here", "Letters Characters",
 	"No label present", "No run present", "No title present", "Short Label",
-	"Suggest", "Title or description", "CharGroup",
+	"Suggest", "Title or description", "CharGroup_one",
 	"Unable to suggest a unique label from the given descrption."
 ];
 

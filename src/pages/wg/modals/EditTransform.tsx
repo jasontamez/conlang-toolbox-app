@@ -48,7 +48,7 @@ const commons = [
 
 const translations = [
 	"Description of the transformation", "No search expression present",
-	"Transformation", "replacement expression", "search expression"
+	"Transformations_one", "replacement expression", "search expression"
 ];
 
 const presentations = [
