@@ -78,12 +78,11 @@ const doText = (
 						let counter = min;
 						let range = "";
 						const maybeMarkDown = usingMarkDown ? "**" : "";
-						const text = t("textSelectedRange", { number: value });
 						while(counter <= max) {
 							if(counter === value) {
-								range = range + ` ${maybeMarkDown}${text}${maybeMarkDown}`;
+								range = range + ` ${maybeMarkDown}${t("textSelectedRange", { number: value })}${maybeMarkDown}`;
 							} else {
-								range = range + ` ${counter}`;
+								range = range + ` ${t("textUnselectedRange", { number: counter })}`;
 							}
 							counter++;
 						}

@@ -185,19 +185,18 @@ const doDocx = (
 							bold: true
 						}));
 						while(counter <= max) {
+							paragraph.push(new TextRun({ text: " " }));
 							if(counter === value) {
 								paragraph.push(
-									new TextRun({
-										text: " "
-									}),
 									new TextRun({
 										text: t("textSelectedRange", { number: counter }),
 										bold: true
 									})
 								);
 							} else {
-								paragraph.push(new TextRun({
-									text: ` ${counter}`
+								paragraph.push(
+									new TextRun({
+									text: t("textUnselectedRange", { number: counter })
 								}));
 							}
 							counter++;
