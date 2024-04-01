@@ -46,7 +46,9 @@ const translations = [
 	"End with the one just before the Base.", "No separator", "Period",
 	"Semicolon", "Space", "Start with the one just after the Base.",
 	"The base character", "You must provide a base character.",
-	"You must provide some pre or post characters."
+	"You must provide some pre or post characters.",
+	"Base Character", "Pre/Post Separator", "Sorted After the Base",
+	"Sorted Before the Base"
 ];
 
 const commons = [
@@ -54,18 +56,15 @@ const commons = [
 	"areYouSure", "confirmDelIt", "emphasizedError"
 ];
 
-const presentations = [ "Base Character", "Pre/Post Separator", "Sorted After the Base", "Sorted Before the Base" ];
-const context = { context: "presentation" };
-
 const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tConfDel, tError ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tEndBefore, tNoSep, tPeriod,
-		tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost
+		tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost, tpBase,
+		tpPrePost, tpAfter, tpBefore
 	] = useI18Memo(translations, "settings");
-	const [ tpBase, tpPrePost, tpAfter, tpBefore ] = useI18Memo(presentations, "settings", context);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tEditThing = useMemo(() => tc("editThing", { thing: t("Relation") }), [tc, t]);
 	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Relation") }), [tc, t]);

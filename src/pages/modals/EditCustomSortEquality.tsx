@@ -44,17 +44,14 @@ const translations = [
 	"Characters to be equal to the Base.", "Comma", "No separator", "Period",
 	"Semicolon", "Space", "The base character",
 	"You must provide a base character.",
-	"You must provide some equal characters."
+	"You must provide some equal characters.",
+	"Base Character", "Equal to the Base", "Equalities Separator"
 ]
 
 const commons = [
 	"Close", "Delete", "Extra Characters", "Ok", "Save",
 	"areYouSure", "confirmDelIt", "emphasizedError"
 ];
-
-const presentations = [ "Base Character", "Equal to the Base", "Equalities Separator" ];
-const context = { context: "presentation" };
-
 
 const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
@@ -63,10 +60,9 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 		tClose, tDelete, tExChar, tOk, tSave, tRUSure, tConfDel, tError
 	] = useI18Memo(commons);
 	const [
-		tBase, tCharEqual, tCharsToBeEqual, tComma, tNoSep,
-		tPeriod, tSemi, tSpace, tTheBase, tNoBase, tNoEqual
+		tBase, tCharEqual, tCharsToBeEqual, tComma, tNoSep, tPeriod, tSemi,
+		tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpEqual, tpSep
 	] = useI18Memo(translations, "settings");
-	const [ tpBase, tpEqual, tpSep ] = useI18Memo(presentations, "settings", context);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tEditThing = useMemo(() => tc("editThing", { thing: t("Equality") }), [tc, t]);
 	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Equality") }), [t, tc]);

@@ -59,15 +59,13 @@ codes.forEach((code, i) => {
 });
 const permanents = PermanentInfo.sort.permanentCustomSorts;
 
-const presentations = [ "Sort Language", "Sort Sensitivity", "Using Custom Sort" ];
-const context = { context: "presentation" };
-
 const translations = [
 	"Base letters only", "Basic Sort", "Diacritics and upper/lowercase",
 	"Diacritics", "Manage Sort Methods", "New Custom Sort",
 	"Note[colon] This can be overriden by a language's sorting rules.",
 	"Upper/lowercase", "Use Language-Based Sort", "custom alphabet",
-	"langSortExplanation", "(none)", "All Custom Sort Methods"
+	"langSortExplanation", "(none)", "All Custom Sort Methods",
+	"Sort Language", "Using Custom Sort", "Sort Sensitivity"
 ];
 
 const commons = [
@@ -80,10 +78,10 @@ const SortSettings: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone, tYouSure ] = useI18Memo(commons);
 	const [
-		tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort,
-		tNote, tUppLow, tUseLang, tCustom, tLangSort, tNone, tAll
+		tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort, tNote, 
+		tUppLow, tUseLang, tCustom, tLangSort, tNone, tAll, tpSortLang,
+		tpUsing, tpSens
 	] = useI18Memo(translations, 'settings');
-	const [ tpSortLang, tpSens, tpUsing ] = useI18Memo(presentations, 'settings', context);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();

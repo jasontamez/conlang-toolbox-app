@@ -43,7 +43,8 @@ const translations = [
 	"Characters to be equal to the Base.", "Comma", "No separator", "Period",
 	"Semicolon", "Space", "The base character",
 	"You must provide a base character.",
-	"You must provide some equal characters."
+	"You must provide some equal characters.", "Base Character",
+	"Characters Separator", "Equal to the Base"
 ];
 
 const commons = [
@@ -51,19 +52,13 @@ const commons = [
 	"Extra Characters", "Ok", "Save", "Unsaved Info", "Yes Discard"
 ];
 
-const presentations = [
-	"Base Character", "Characters Separator", "Equal to the Base"
-];
-const context = { context: "presentation" };
-
 const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
-		tBase, tCharBase, tEquality, tCharEqual, tComma, tNoSep,
-		tPeriod, tSemi, tSpace, tTheBase, tNoBase, tNoEqual
+		tBase, tCharBase, tEquality, tCharEqual, tComma, tNoSep, tPeriod,
+		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpSep, tpEqual
 	] = useI18Memo(translations, "settings");
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
-	const [ tpBase, tpSep, tpEqual ] = useI18Memo(presentations, "settings", context);
 	const [ tAddThing, tThingAdded ] = useMemo(
 		() => [ "addThing", "thingAdded" ].map(thing => tc(thing, { thing: tEquality })),
 		[tEquality, tc]

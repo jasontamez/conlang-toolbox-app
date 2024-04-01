@@ -93,7 +93,8 @@ const translations = [
 	"Title for this sort", "Unicode sort (language-independent)",
 	"Upper/lowercase", "Use alternate alphabet", "Write your alphabet here.",
 	"You did not enter any information.", "Custom Sort",
-	"You must provide a title before saving.", "alternateAlphabetExplanation"
+	"You must provide a title before saving.", "alternateAlphabetExplanation",
+	"Sort Language", "Sort Sensitivity", "Alphabet separator"
 ];
 
 const commons = [
@@ -101,9 +102,6 @@ const commons = [
 	"Ok", "Save", "Title", "areYouSure", "confirmDelIt", "emphasizedError",
 	"deleteThisCannotUndo",
 ];
-
-const presentations = [ "Alphabet separator", "Sort Language", "Sort Sensitivity" ];
-const context = { context: "presentation" };
 
 const EditCustomSort: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
@@ -113,13 +111,13 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		tSave, tTitle, tRUSure, tConfDel, tError, tYouSure
 	] = useI18Memo(commons);
 	const [
-		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha,
-		tDefSens, tDiaPlus, tDia, tEqualities, tNoSep, tPeriod, tRelations,
-		tSemi, tCharsSepar, tSpace, tTitleSort, tUnicode, tUppLow, tUseAlt,
-		tWriteAlpha, tNoInfo, tCustomSort, tNoTitle, tAltAlphaExpl
+		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha, tDefSens,
+		tDiaPlus, tDia, tEqualities, tNoSep, tPeriod, tRelations, tSemi,
+		tCharsSepar, tSpace, tTitleSort, tUnicode, tUppLow, tUseAlph,
+		tWriteAlpha, tNoInfo, tCustomSort, tNoTitle, tAltAlphaExpl, tpSortLang,
+		tpSortSens, tpAlphaSep
 	] = useI18Memo(translations, "settings");
-	const [ tpAlphaSep, tpSortLang, tpSortSens ] = useI18Memo(presentations, "settings", context);
-	const tpTitle = useMemo(() => tc("Title", context), [tc]);
+	const tpTitle = useMemo(() => tc("Title", { context: "presentation" }), [tc]);
 	const [ tEditThing, tThingDeleted, tThingSaved ] = useMemo(
 		() => ["editThing", "thingDeleted", "thingSaved"].map(thing => tc(thing, { thing: tCustomSort })),
 		[tc, tCustomSort]
@@ -694,7 +692,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 							checked={usingAlpha}
 							onIonChange={toggleUsingAlpha}
 						>
-							<h2>{tUseAlt}</h2>
+							<h2>{tUseAlph}</h2>
 							<p>{tAltAlphaExpl}</p>
 						</IonToggle>
 					</IonItem>

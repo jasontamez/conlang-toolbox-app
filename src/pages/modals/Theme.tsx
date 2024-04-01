@@ -5,16 +5,12 @@ import {
 	IonLabel,
 	IonList,
 	IonContent,
-	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter
 } from '@ionic/react';
 import {
-	closeCircleOutline,
 	closeCircleSharp,
 	checkmarkCircleOutline
 } from 'ionicons/icons';
@@ -23,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTheme } from '../../store/settingsSlice';
 import { ThemeNames, ModalProperties, StateObject } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
-import useI18Memo from '../../components/useI18Memo';
+import ModalHeader from '../../components/ModalHeader';
 
 const themes: ThemeNames[] = [
 	"Default",
@@ -33,12 +29,11 @@ const themes: ThemeNames[] = [
 	"Solarized Dark"
 ];
 
-const commons = [ "Cancel", "Close" ];
-
 const ThemeModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator("settings");
+	const [ tc ] = useTranslator("commons");
 	const tChooseTheme = useMemo(() => t("Choose a Theme"), [t]);
-	const [ tCancel, tClose ] = useI18Memo(commons);
+	const tCancel = useMemo(() => tc("Cancel"), [tc]);
 
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
@@ -58,16 +53,7 @@ const ThemeModal: FC<ModalProperties> = (props) => {
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancel}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tChooseTheme}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={cancel} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<ModalHeader title={tChooseTheme} closeModal={cancel} />
 			<IonContent>
 				<IonList lines="none" className="buttonFilled">
 					{themeItems}

@@ -44,26 +44,23 @@ const translations = [
 	"End with the one just before the Base.", "No separator", "Period",
 	"Semicolon", "Space", "Start with the one just after the Base.",
 	"The base character", "You must provide a base character.",
-	"You must provide some pre or post characters."
+	"You must provide some pre or post characters.",
+	"Base Character", "Pre/Post Separator", "Sorted After the Base",
+	"Sorted Before the Base"
 ];
 const commons = [
 	"Are you sure you want to discard this?", "Cancel", "Close",
 	"Extra Characters", "Ok", "Save", "Unsaved Info", "Yes Discard"
 ];
 
-const presentations = [ "Base Character", "Pre/Post Separator", "Sorted After the Base", "Sorted Before the Base" ];
-const context = { context: "presentation" };
-
 const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tRelation, tEndBefore, tNoSep,
-		tPeriod, tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost
-	] = useI18Memo(translations, "settings");
-	const [
+		tPeriod, tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost,
 		tpBase, tpSep, tpAfter, tpBefore
-	] = useI18Memo(presentations, "settings", context);
+	] = useI18Memo(translations, "settings");
 	const [ tAddThing, tThingAdded ] = useMemo(
 		() => [ "addThing", "thingAdded" ].map(thing => tc(thing, { thing: tRelation })),
 		[tc, tRelation]

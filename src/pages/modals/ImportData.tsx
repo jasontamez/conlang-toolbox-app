@@ -7,9 +7,7 @@ import {
 	IonContent,
 	IonHeader,
 	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
 	IonModal,
 	IonFooter,
 	IonTextarea,
@@ -67,6 +65,7 @@ import { $and, $delay, $i, $q } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import ModalHeader from '../../components/ModalHeader';
 
 type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
@@ -77,14 +76,14 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 };
 
 const commons = [
-	"App Settings", "Cancel", "Close", "Concepts", "Declenjugator",
+	"App Settings", "Cancel", "Concepts", "Declenjugator",
 	"Extra Characters", "Lexicon", "MorphoSyntax", "WordEvolve",
 	"WordGen", "areYouSure", "Import"
 ];
 
 const translations = [
 	"Analyze", "areYouVerySure", "Data to Import",
-	"Error validating Import", "Import Info", "Other App Settings",
+	"Import Info", "Other App Settings",
 	"Reset", "WARNING!", "What to Import", "Yes Close This",
 	"Yes I Want to Do This", "You did not choose anything to import.",
 	"You haven't imported anything yet.", "importDescription"
@@ -93,11 +92,11 @@ const translations = [
 const ImportData: FC<ModalProperties> = (props) => {
 	const [ ts ] = useTranslator('settings');
 	const [
-		tAppSett, tCancel, tClose, tConcepts, tDJ, tExChar,
+		tAppSett, tCancel, tConcepts, tDJ, tExChar,
 		tLex, tMS, tWE, tWG, tRUSure, tImport
 	] = useI18Memo(commons);
 	const [
-		tAnalyze, tYouSure, tData, tError, tImportInfo, tOtherSett,
+		tAnalyze, tYouSure, tData, tImportInfo, tOtherSett,
 		tReset, tWarning, tWhatToImp, tYesClose, tYesIWant, tNoChoice,
 		tNoImport, tImpDesc
 	] = useI18Memo(translations, "settings");
@@ -293,7 +292,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 					parseInput(parsed);
 				} catch(e) {
 					let message = (e instanceof Error) ? e.message : `${e}`;
-					log(dispatch, [tError, message], parsed);
+					log(dispatch, ["Error validating Import", message], parsed);
 					toaster({
 						message,
 						color: "danger",
@@ -316,7 +315,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 				toast
 			});
 		}
-	}, [dispatch, tError, toast]);
+	}, [dispatch, toast]);
 
 	const toggleImportMs = useCallback(() => setDo_import_ms(!do_import_ms), [ do_import_ms ]);
 	const toggleImportMsStored = useCallback(() => setDo_import_msStored(!do_import_msStored), [ do_import_msStored ]);
@@ -440,14 +439,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={doClose} onIonModalDidPresent={onLoad} backdropDismiss={false}>
 			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tImportInfo}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={maybeClose} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
+				<ModalHeader title={tImportInfo} closeModal={maybeClose} />
 			</IonHeader>
 			<IonContent id="importDataContent">
 				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
