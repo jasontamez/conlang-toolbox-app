@@ -72,9 +72,9 @@ const translations =  [
 	"Save/Load Custom Info", "Syllable box dropoff", "Word Generation Controls"
 ];
 const sentences = [ "sentenceBeginning", "sentenceEnding" ];
-const declarative = { type: "declarative" };
-const interrogative = { type: "interrogative" };
-const exclamatory = { type: "exclamatory" };
+const declarative = { context: "declarative" };
+const interrogative = { context: "interrogative" };
+const exclamatory = { context: "exclamatory" };
 
 const WGSet: FC<PageData> = (props) => {
 	const [ tHelp, tLoad, tWait, tSettings ] = useI18Memo(commons);

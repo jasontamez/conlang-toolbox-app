@@ -1,32 +1,22 @@
 const wg = {
 
-	Syllable: "Syllable",
-	Syllables: "Syllables",
-	Syllable_one: "Syllable",
-	Syllable_other: "Syllables",
-	syll: "syllable",
-	syll_one: "syllable",
-	syll_other: "syllables",
-	"single-word syllables": "single-word syllables",
-	"single-word syllables_formal": "Single-Syllable Words",
+	Syllables_one: "Syllable",
+	Syllables_other: "Syllables",
+	"single-word syllables": "Single-Syllable Words", // |H| formal context
 	"word-initial syllables": "word-initial syllables",
-	"word-initial syllables_formal": "Word-Initial Syllables",
+	"word-initial syllables_formal": "Word-Initial Syllables", // |H|
 	"mid-word syllables": "mid-word syllables",
-	"mid-word syllables_formal": "Mid-Word Syllables",
+	"mid-word syllables_formal": "Mid-Word Syllables", // |H|
 	"word-final syllables": "word-final syllables",
-	"word-final syllables_formal": "Word-Final Syllables",
-	Preset: "Preset",
-	Presets: "Presets",
+	"word-final syllables_formal": "Word-Final Syllables", // |H|
 
-	"Syllables Tab": "$t(Syllables) Tab",
-	"Settings Tab": "$t(common:Settings) Tab",
-	"What is WordGen?": "What is $t(common:WordGen)?4694632246",
+	"Syllables Tab": "Syllables Tab", // |H|
+	"Settings Tab": "Settings Tab", // |H|
+	"What is WordGen?": "What is $t(common:WordGen)?", // |H|
 
 	"Delete All Syllables": "Delete All Syllables",
-	delAllSyllables_one:
-		"This will delete the current $t(syll, { \"count\": {{count}} }), and cannot be undone.",
-	delAllSyllables_other:
-		"This will delete all {{count}} current $t(syll, { \"count\": {{count}} }), and cannot be undone.",
+	delAllSyllables: // <D>
+		"This will delete any and all current syllables, and cannot be undone.",
 
 	syllableDropoffExplanation:
 		"Syllables at the top of a box tend to be picked more often than"
@@ -36,75 +26,66 @@ const wg = {
 
 	"Use character group labels to construct syllables":
 		"Use character group labels to construct syllables",
-	"Use separate dropoff rate": "Use separate dropoff rate",
+	"Use separate dropoff rate": "Use separate dropoff rate", // (B) |H|
 	"These syllables are used to begin words": "These syllables are used to begin words",
 	"These syllables are used between the first and last syllable of a word":
 		"These syllables are used between the first and last syllable of a word",
 	"These syllables are used to end words": "These syllables are used to end words",
-	"From 0 to 50": "From 0 to 50",
-	"From 0% to 100%": "From 0% to 100%",
-	"From 2 to 15": "From 2 to 15",
+	"From 0 to 50": "From 0 to 50", // {A}
+	"From 0% to 100%": "From 0% to 100%", // {A}
+	"From 2 to 15": "From 2 to 15", // {A}
 
-	"You have no character groups defined.": "You have no character groups defined.",
-	"You have no syllables defined.": "You have no syllables defined.",
-	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.",
-	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})",
+	"You have no character groups defined.": "You have no character groups defined.", // <D>
+	"You have no syllables defined.": "You have no syllables defined.", // <D>
+	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.", // <D>
+	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})", // |H|
 
-	consonants: "consonants",
-	vowels: "vowels",
-	"dropoff rate": "dropoff rate",
-	"dropoff rate_formal": "Dropoff Rate",
-	"characterDropoffExplanation":
+	"dropoff rate": "Dropoff Rate", // formal context
+	characterDropoffExplanation:
 		"Characters at the beginning of a group tend to be picked more often"
 		+ " than characters at the end of the group. This slider controls this"
 		+ " tendency. A rate of zero is flat, making all characters"
 		+ " equiprobable.",
-	"Character Group run dropoff": "$t(wgwe:CharGroup_one) run dropoff",
-	"Syllable box dropoff": "$t(syll) box dropoff",
-	"Use multiple syllable types" : "Use multiple $t(syll) types",
-	swSyll: "single-word $t(syll_other)",
-	wiSyll: "word-initial $t(syll_other)",
-	wfSyll: "word-final $t(syll_other)",
-	mwSyll: "mid-word $t(syll_other)",
-	"Pseudo-text": "Pseudo-text",
-	"Pseudo-texts": "Pseudo-texts",
-	Wordlist: "Wordlist",
-	"All possible syllables":"All possible $t(syll_other)",
+	"Character Group run dropoff": "Character Group run dropoff", // |H|
+	"Syllable box dropoff": "syllable box dropoff", // |H|
+	"Use multiple syllable types" : "Use multiple syllable types", // (B)
+	"Pseudo-text": "Pseudo-text", // (B)
+	Wordlist: "Wordlist", // (B)
+	"All possible syllables":"All possible syllables",
 	"Number of sentences":"Number of sentences",
 	"Capitalize words": "Capitalize words",
 	"Sort output": "Sort output",
 	"Multi-column layout": "Multi-column layout",
-	"Wordlist size": "$t(Wordlist) size",
-	"Show syllable breaks": "Show syllable breaks",
-	Simple: "Simple",
-	"Clear All Fields": "Clear All Fields",
-	"Save/Load Custom Info": "Save/Load Custom Info",
-	"Rate of monosyllable words": "Rate of monosyllable words",
-	"Maximum number of syllables per word": "Maximum number of syllables per word",
-	"Capitalize sentences": "Capitalize sentences",
-	declarative: "declarative",
-	declarative_formal: "Declarative",
-	interrogative: "interrogative",
-	interrogative_formal: "Interrogative",
-	exclamatory: "exclamatory",
-	exclamatory_formal: "Exclamatory",
-	sentenceBeginning: "$t({{type}}, { \"context\": \"formal\" }) sentence beginning",
-	sentenceEnding: "$t({{type}}, { \"context\": \"formal\" }) sentence ending",
+	"Wordlist size": "Wordlist size",
+	"Show syllable breaks": "Show syllable breaks", // (B)
+	"Save/Load Custom Info": "Save/Load Custom Info", // (B)
+	"Rate of monosyllable words": "Rate of monosyllable words", // |H|
+	"Maximum number of syllables per word": "Maximum number of syllables per word", // |H|
+	"Capitalize sentences": "Capitalize sentences", // (B)
+	sentenceBeginning_declarative: "Declarative sentence beginning",
+	sentenceEnding_declarative: "Declarative sentence ending",
+	sentenceBeginning_interrogative: "Interrogative sentence beginning",
+	sentenceEnding_interrogative: "Interrogative sentence ending",
+	sentenceBeginning_exclamatory: "Exclamatory sentence beginning",
+	sentenceEnding_exclamatory: "Exclamatory sentence ending",
 
-	"Presets and Stored Info": "Presets and Stored Info",
-	"Word Generation Controls": "Word Generation Controls",
-	Never: "Never",
-	Always: "Always",
-	"Pseudo-text Controls": "Pseudo-text Controls",
-	"Wordlist and Syllable-List Controls": "Wordlist and Syllable-List Controls",
-	"What to Generate": "What to Generate",
-	Default: "Default",
+	"Presets and Stored Info": "Presets and Stored Info", // |H|
+	"Word Generation Controls": "Word Generation Controls", // |H|
+	Never: "Never", // (B)
+	Always: "Always", // (B)
+	"Pseudo-text Controls": "Pseudo-text Controls", // |H|
+	"Wordlist and Syllable-List Controls": "Wordlist and Syllable-List Controls", // |H|
+	"What to Generate": "What to Generate", // |H|
+	Default: "Default", // (B) default sort option
 
-	allThings: "all current $t(wgwe:charGroup_other), $t(syll_other), $t(wgwe:trans_other), and settings",
+	// used by clearOverwriteGeneralThings:
+	allThings: "all current character groups, syllables, transformations, and settings",
 
 
 	// PRESETS
 
+	// names of presets
+	Simple: "Simple",
 	Medium: "Medium",
 	Complex: "Complex",
 	"Pseudo-Latin": "Pseudo-Latin",
@@ -113,6 +94,7 @@ const wg = {
 	"Pseudo-English": "Pseudo-English",
 	"Pseudo-Japanese": "Pseudo-Japanese",
 
+	// titles of character groups in presets
 	Consonants: "Consonants",
 	"Initial consonants": "Initial consonants",
 	"Word-ending consonants": "Word-ending consonants",
@@ -123,7 +105,6 @@ const wg = {
 	Nasals: "Nasals",
 	Plosives: "Plosives",
 	"Aspirated consonants": "Aspirated consonants",
-
 	Vowels: "Vowels",
 	"Mid-word vowels": "Mid-word vowels",
 	"Vowels 1": "Vowels 1",
@@ -131,35 +112,37 @@ const wg = {
 	Dipthongs: "Dipthongs",
 
 	"Word-final conjugation": "Word-final conjugation",
-
 	CONJ: "conjugation: {{type}}",
-	// keys here have ! instead of . because it can mess up translation-finding
-	"1s": "1s",
-	"2s/3s!AN": "2s/3s.AN",
-	"2s": "2s",
-	"3s!AN": "3s.AN",
-	"2s!FORM": "2s.FORM",
-	"3s!INAN": "3s.INAN",
-	"1!DU!IN": "1.DU.IN",
-	"1!DU!EX": "1.DU.EX",
-	"1!PAU!IN/1p!IN": "1.PAU.IN/1p.IN",
-	"1!PAU!IN": "1.PAU.IN",
-	"1!PAU!IN/1!PAU!EX/1p!IN": "1.PAU.IN/1.PAU.EX/1p.IN",
-	"1!PAU!EX": "1.PAU.EX",
-	"1!PAU!EX/1p!IN": "1.PAU.EX/1p.IN",
-	"1!PAU!EX/1p!EX": "1.PAU.EX/1p.EX",
-	"1p!IN": "1p.IN",
-	"1p!EX": "1p.EX",
-	"2!PAU": "2.PAU",
-	"2!PAU!FORM": "2.PAU.FORM",
-	"2p": "2p",
-	"2p!FORM": "2p.FORM",
-	"3!PAU!AN": "3.PAU.AN",
-	"3p!AN": "3p.AN",
-	"3!PAU!INAN": "3.PAU.INAN",
-	"3p!INAN": "3p.INAN",
-	"GER": "GER",
+	// (keys here have ! instead of . in their keys because it can mess up translation-finding)
+	//   The translations below are in "glossing rules" format
+	//   see: https://www.eva.mpg.de/lingua/resources/glossing-rules.php
+	"1s": "1s", // 1st-person singular
+	"2s/3s!AN": "2s/3s.AN", // 2nd-person singular, 3rd-person singular animate
+	"2s": "2s", // 2nd-person singular
+	"3s!AN": "3s.AN", // 3rd-person singular animate
+	"2s!FORM": "2s.FORM", // 2nd-person singular formal
+	"3s!INAN": "3s.INAN", // 3rd-person singular inanimate
+	"1!DU!IN": "1.DU.INCL", // 1st-person dual inclusive
+	"1!DU!EX": "1.DU.EXCL", // 1st-person dual exclusive
+	"1!PAU!IN/1p!IN": "1.PAU.INCL/1p.INCL", // 1st-person paucal inclusive, 1st-person plural inclusive
+	"1!PAU!IN": "1.PAU.INCL", // 1st-person paucal inclusive
+	"1!PAU!IN/1!PAU!EX/1p!IN": "1.PAU.INCL/1.PAU.EXCL/1p.INCL", // 1st-person paucal inclusive, 1st-person paucal exclusive, 1st-person plural inclusive
+	"1!PAU!EX": "1.PAU.EXCL", // 1st-person paucal exclusive
+	"1!PAU!EX/1p!IN": "1.PAU.EXCL/1p.INCL", // 1st-person paucal exclusive, 1st-person plural inclusive
+	"1!PAU!EX/1p!EX": "1.PAU.EXCL/1p.EXCL", // 1st-person paucal exclusive, 1st-person plural exclusive
+	"1p!IN": "1p.INCL", // 1st-person plural inclusive
+	"1p!EX": "1p.EXCL", // 1st-person plural exclusive
+	"2!PAU": "2.PAU", // 2nd-person paucal
+	"2!PAU!FORM": "2.PAU.FORM", // 2nd-person paucal formal
+	"2p": "2p", // 2nd-person
+	"2p!FORM": "2p.FORM", // 2nd-person formal
+	"3!PAU!AN": "3.PAU.AN", // 3rd-person paucal animate
+	"3p!AN": "3p.AN", // 3rd-person plural animate
+	"3!PAU!INAN": "3.PAU.INAN", // 3rd-person paucal inanimate
+	"3p!INAN": "3p.INAN", // 3rd-person plural inanimate
+	"GER": "GER", // gerund
 
+	// transformation descriptions: changes (something) to (something else)
 	changeTo: "change {{from}} to {{to}}",
 	// FROM
 	"triple vowels": "triple vowels",
@@ -247,8 +230,10 @@ const wg = {
 	"dipthong before i": "dipthong before i",
 	"plosive before an r": "plosive before an r",
 	"nasal after k": "nasal after k",
-	"non-retroflex consonant after retroflex consonants": "non-retroflex consonant after retroflex consonants",
-	"retroflex consonant after non-retroflex consonant": "retroflex consonant after non-retroflex consonant",
+	"non-retroflex consonant after retroflex consonants":
+		"non-retroflex consonant after retroflex consonants",
+	"retroflex consonant after non-retroflex consonant":
+		"retroflex consonant after non-retroflex consonant",
 	"all other h": "all other h",
 	"remaining Bs": "remaining Bs",
 	"duplicate ys": "duplicate ys",
@@ -256,25 +241,28 @@ const wg = {
 
 
 	// Complex
-	"reduce multiple h to single": "reduce multiple h to single",
-	"reduce double consonants to one": "reduce double consonants to one",
-	"reduce kh to k": "reduce kh to k",
+	"reduce multiple h to single": "reduce multiple h to single", // e.g. hhhhh -> h
+	"reduce double consonants to one": "reduce double consonants to one", // e.g. cc -> c, dd-> d
+	"reduce kh to k": "reduce kh to k", // kh -> k
 
 	"save h before stressed syllable": "save h before stressed syllable",
 	"save word-initial h": "save word-initial h",
 	"save word-final h": "save word-final h",
-	"restore saved h": "restore saved h",
+	"restore saved h": "restore saved h", // previously, h was "saved" as H. now, H becomes h again.
 
 	// Pseudo-English
 	"i before e except after c": "i before e except after c",
 	"reduce tl cluster to t after non-vowel": "reduce tl cluster to t after non-vowel",
-	"reduce tl cluster to t before consonant or word-end": "reduce tl cluster to t before consonant or word-end",
+	"reduce tl cluster to t before consonant or word-end":
+		"reduce tl cluster to t before consonant or word-end",
 	"reduce triple-letter clusters to two": "reduce triple-letter clusters to two",
-	"reduce multiple vowels in a row, where any two vowels match, to the matching vowels": "reduce multiple vowels in a row, where any two vowels match, to the matching vowels",
+	"reduce multiple vowels in a row, where any two vowels match, to the matching vowels":
+		"reduce multiple vowels in a row, where any two vowels match, to the matching vowels",
 	"q is always followed by u": "q is always followed by u",
 
 	// Pseudo-Japanese
-	"replace forbidden syllable": "replace forbidden syllable",
+	"replace forbidden syllable": // some syllables *could* be possible, but are never actually used in Japanese
+		"replace forbidden syllable",
 	"remove duplicate characters": "remove duplicate characters",
 	"reduce 3+ vowels in a row down to just 2": "reduce 3+ vowels in a row down to just 2",
 
@@ -285,76 +273,74 @@ const wg = {
 			"C=pbklr",
 			"V=eioau"
 		],
-		charGroups:[
+		charGroups:[ // Markdown format
 			// `example` will insert the charGroupExample as a block
 			// `anything else` will treat "anything else" as highlighted IPA text
 			"This is where you define groups of sounds. The two simplest",
 			"groupings are _consonants_ and _vowels_, but you may want to",
-			"create multiple $t(wgwe:charGroup_other) depending on how you",
-			"want your language's $t(syll_other) formed. For example, the",
+			"create multiple character groups depending on how you",
+			"want your language's syllables formed. For example, the",
 			"consonants `pbk` in English may be followed by the consonants",
-			"`lr` at the beginning of $t(syll_other). So you might choose",
-			"them as $t(wgwe:charGroup_other), while also putting `pbklr` in",
-			"a third $t(wgwe:charGroup_one) for general consonants.",
+			"`lr` at the beginning of syllables. So you might choose",
+			"them as character groups, while also putting `pbklr` in",
+			"a third character group for general consonants.",
 			"",
-			"Click the (+) button to add a new $t(wgwe:charGroup_one). When",
-			"you make a $t(wgwe:charGroup_one), you must give it a",
-			"_description_ and a one-character _label_.",
-			"The label can be any single character except for these:",
-			"**^$\\()[]{}.*+?|**. The description is for your own",
-			"benefit, while the label will be used to refer to this",
-			"$t(wgwe:charGroup_one) in the **Syllables** tab. So you may end",
-			"up with $t(wgwe:charGroup_other) that look like the following:",
+			"Click the (+) button to add a new character group. When",
+			"you make a character group, you must give it a _description_",
+			"and a one-character _label_. The label can be any single",
+			"character except for these: **^$\\()[]{}.*+?|**. The",
+			"description is for your own benefit, while the label will be",
+			"used to refer to this character group in the **Syllables**",
+			"tab. So you may end up with character groups that look like",
+			"the following:",
 			"",
 			"`example`",
 			"",
-			"The letters/characters in your $t(wgwe:charGroup_one) are called",
-			"a _run_. The run should be put in a specific",
-			"order. The first letter is more likely to be used than the",
-			"second, the second more likely than the third, and so on. This",
-			"is designed to mimic natural languages, which tend to use",
-			"certain sounds more than others. You can adjust this",
-			"_$t(dropoff rate)_, or eliminate it entirely, on the",
-			"**$t(common:Settings)** tab.",
+			"The letters/characters in your character group are called",
+			"a _run_. The run should be put in a specific order. The first",
+			"letter is more likely to be used than the second, the second",
+			"more likely than the third, and so on. This is designed to mimic",
+			"natural languages, which tend to use certain sounds more than",
+			"others. You can adjust this _dropoff rate_, or eliminate it",
+			"entirely, on the **$t(common:Settings)** tab.",
 		],
-		charGroupsHiddenOverview: [
-			"**$t(CharGroup_one run dropoff)** is explained in the",
+		charGroupsHiddenOverview: [ // Markdown format
+			"**Character group run dropoff** is explained in the",
 			"**$t(common:Settings)** section below.",
 		],
-		charGroupsOverview: [
-			"**$t(CharGroup_one run dropoff)** ranges from 0 to 50. At zero",
-			"(flat), $t(wgwe:charGroup_one) choices are all equiprobable.",
-			"Otherwise, the higher the number, the more likely it is that the",
-			"first characters in the $t(wgwe:charGroup_one) are used. See the",
-			"help section on the **$t(common:Settings)** page for more",
-			"information."
+		charGroupsOverview: [ // Markdown format
+			"**Character group run dropoff** ranges from 0 to 50. At zero",
+			"(flat), character group choices are all equiprobable. Otherwise,",
+			"the higher the number, the more likely it is that the first",
+			"characters in the character group are used. See the help section",
+			"on the **$t(common:Settings)** page for more information."
 		],
 
 
-		syllablesStartHideOverview: [
+		syllablesStartHideOverview: [ // Markdown format
 			// This section is used if we're only showing the Syllables card
 				// `charGroup example` will insert the charGroupExample as a block
 				// `anything else` will be ignored
-			"This is where you determine how your $t(syll_other) are formed.",
+			"This is where you determine how your syllables are formed.",
 			"You use the _labels_ to describe the elements that make",
-			"up a $t(syll).",
+			"up a syllable.",
 			"",
-			"For example, using the $t(wgwe:charGroup_other) in the previous",
-			"section, you could decide to make a list of $t(syll_other) that",
+			"For example, using the character groups in the previous",
+			"section, you could decide to make a list of syllables that",
 			"looks like this:",
 			"",
 			"`charGroup example`",
 			"",
-			"...you could decide to make a list of $t(syll_other) such as the",
+			"...you could decide to make a list of syllables such as the",
 			"following:",
 		],
-		syllablesStartOverview: [
+		syllablesStartOverview: [ // Markdown format
 			// This section is used if we're showing all cards at once
-			"This is where you determine how your $t(syll_other) are formed.",
+			"This is where you determine how your syllables are formed.",
 			"You use the _labels_ to describe the elements that make",
-			"up a $t(syll). For example, using the $t(wgwe:charGroup_other)",
+			"up a syllable. For example, using the character groups",
 			"in the previous section, you could decide to make a list of",
-			"$t(syll_other) such as the following:",
+			"syllables such as the following:",
 		],
 		// syllablesExample is shown as a block in between syllablesStart* and syllables
 		syllablesExample: [ //strong, emphasized
@@ -362,40 +348,40 @@ const wg = {
 			"CV",
 			"ILVC"
 		],
-		syllables: [
-			"The above can generate $t(syll_other) such as _pla_, _ku_, or",
+		syllables: [ // Markdown format
+			"The above can generate syllables such as _pla_, _ku_, or",
 			"_brep_, which could then be combined into words such as",
-			"_plabrep_ or _kupla_. You can also put characters in a $t(syll)",
-			"that don't correspond to a $t(wgwe:charGroup_one): **sILV**",
-			"could generate $t(syll_other) such as _sbra_ or _spli_.",
+			"_plabrep_ or _kupla_. You can also put characters in a syllable",
+			"that don't correspond to a character group: **sILV**",
+			"could generate syllables such as _sbra_ or _spli_.",
 			"",
 			"If you desire a greater amount of control over your words, you",
-			"can turn on the **$t(Use multiple syllable types)** toggle. This",
+			"can turn on the **Use multiple syllable types** toggle. This",
 			"will show you four separate boxes, each with a different role in",
-			"a word: **$t(single-word syllables)** are used exclusively for",
-			"one-syllable words, **$t(word-initial syllables)** are only used",
-			"at the start of a word, **$t(word-final syllables)** are only",
-			"used at the end of a word, and **$t(mid-word syllables)** fill",
+			"a word: **single-word syllables** are used exclusively for",
+			"one-syllable words, **word-initial syllables** are only used",
+			"at the start of a word, **word-final syllables** are only",
+			"used at the end of a word, and **mid-word syllables** fill",
 			"out the middle of words when needed.",
 			"",
-			"The order of $t(syll_other) in each box makes a difference. The",
-			"first $t(syll) listed is more likely to be used than the second,",
+			"The order of syllables in each box makes a difference. The",
+			"first syllable listed is more likely to be used than the second,",
 			"the second more likely than the third, and so on. You can adjust",
-			"this _$t(dropoff rate)_, or eliminate it entirely, on the",
+			"this _dropoff rate_, or eliminate it entirely, on the",
 			"**$t(common:Settings)** tab. You'll also find options there to",
 			"determine how often one-syllable words are generated, and put an",
-			"upper limit on the number of $t(syll_other) any one word can",
+			"upper limit on the number of syllables any one word can",
 			"have."
 		],
-		syllablesEndOverview: [
+		syllablesEndOverview: [ // Markdown format
 			// This section is used if we're showing all cards at once
-			"The **$t(Syllable box dropoff)** is explained in the",
+			"The **Syllable box dropoff** is explained in the",
 			"**$t(common:Settings)** section below.",
 		],
-		syllablesEndHideOverview: [
+		syllablesEndHideOverview: [ // Markdown format
 			// This section is used if we're only showing the Syllables card
-			"The **$t(Syllable box dropoff)** ranges from 0 to 50. At zero",
-			"(flat), $t(syll) choices are all equiprobable. Otherwise, the",
+			"The **Syllable box dropoff** ranges from 0 to 50. At zero",
+			"(flat), syllable choices are all equiprobable. Otherwise, the",
 			"higher the number, the more likely it is that the first lines in",
 			"the box are used. See the help section on the",
 			"**$t(common:Settings)** page for more information.",
@@ -455,32 +441,32 @@ const wg = {
 				simple: ["[kp]t+", "->", "tt"]
 			}
 		},
-		trans: [
+		trans: [ // Markdown format
 			// Use `DRAG HANDLE` to insert the drag handle icon into the text.
 			"There may be cases when you need to fine-tune the words that",
-			"get generated on the **$t(wgwe:Output Tab)**. A common",
-			"reason would be to turn a specific character into two or",
-			"three letters. You may create a group such as **C=pbkClrS**,",
-			"using capital letters in place of sounds like _\"ch\"_ or",
-			"_\"sh\"_. This could generate syllables like _Cu_ or _pliS_.",
+			"get generated on the **Output Tab**. A common reason would be to",
+			"turn a specific character into two or three letters. You may",
+			"create a group such as **C=pbkClrS**, using capital letters in",
+			"place of sounds like _\"ch\"_ or _\"sh\"_. This could generate",
+			"syllables like _Cu_ or _pliS_.",
 			"",
-			"When you make a new _$t(wgwe:trans_one)_, you provide a",
+			"When you make a new _transformation_, you provide a",
 			"_$t(wgwe:search expression)_, a",
 			"_$t(wgwe:replacement expression)_, and, optionally, a",
-			"_$t(wgwe:trans_one) description_ for your own",
+			"_transformation description_ for your own",
 			"benefit.",
 			"",
-			"Both expressions can use **$t(common:regular expressions)**",
-			"(an explanation can be found at the end of this section).",
-			"You can also use the special expression %X to indicate any",
-			"character in group X's run, or !%X to indicate any character",
-			"_not_ in that run. (e.g, If _X=abc_, then %X will be treated",
-			"as if it was the $t(common:regular expression) _[abc]_.)",
+			"Both expressions can use **regular expressions** (an explanation",
+			"can be found at the end of this section). You can also use the",
+			"special expression %X to indicate any character in group X's",
+			"run, or !%X to indicate any character _not_ in that run. (e.g, If",
+			"_X=abc_, then %X will be treated as if it was the regular",
+			"expression _[abc]_.)",
 			"",
 			"So, you could make a $t(wgwe:search expression) **C** with a",
 			"$t(wgwe:replacement expression) **ch**, which will result in",
 			"_Cu_ above becoming _chu_. This will result in a",
-			"$t(wgwe:trans_one) that looks like the following:",
+			"transformation that looks like the following:",
 			"",
 			"`block1`",
 			"",
@@ -499,45 +485,44 @@ const wg = {
 			"- Anticipatory assimilation: `block5`",
 		],
 
-		outputMain: [
-			"This is where the magic happens. Click the **$t(Generate)**",
+		outputMain: [ // Markdown format
+			"This is where the magic happens. Click the **Generate**",
 			"button and your output will appear. Press the button again",
 			"and a new set of output will replace it."
 		],
-		outputSettings: [
+		outputSettings: [ // Markdown format
 			"Click on the gear icon to open a list of options. The first",
 			"is a drop-down menu where you can select what to output. The",
-			"choices are **$t(Pseudo-text)**, **$t(Wordlist)** and",
-			"**$t(All possible syllables)**.",
+			"choices are **Pseudo-text**, **Wordlist** and",
+			"**All possible syllables**.",
 			"",
-			"The **$t(Pseudo-text)** will create words and put them into",
+			"The **Pseudo-text** will create words and put them into",
 			"sentences, making a block of text you might find in a book.",
 			"You can determine how many sentences are made by adjusting",
-			"the **$t(Number of sentences)** slider.",
+			"the **Number of sentences** slider.",
 			"",
-			"The **$t(Wordlist)** outputs a list of words devoid of context.",
+			"The **Wordlist** outputs a list of words devoid of context.",
 			"You can choose a number of options to modify this list.",
-			"**$t(Capitalize words)** will capitalize every word.",
-			"**$t(Sort output)** will alphabetize the list, and",
-			"**$t(Multi-column layout)** will arrange the list in multiple",
+			"**Capitalize words** will capitalize every word.",
+			"**Sort output** will alphabetize the list, and",
+			"**Multi-column layout** will arrange the list in multiple",
 			"columns instead of one long column. At the bottom, there is a",
-			"**$t(Wordlist size)** slider that controls how many words",
+			"**Wordlist size** slider that controls how many words",
 			"are generated.",
 			"",
-			"**$t(All possible syllables)**, as you might guess, outputs a",
-			"list of every possible $t(syll) your $t(wgwe:charGroup_other),",
-			"$t(syll_other) and $t(wgwe:trans_other) allow.",
-			"The _$t(Capitalize words)_, _$t(Sort output)_ and",
-			"_$t(Multi-column layout)_ options above will also work on this",
-			"$t(syll) list.",
+			"**All possible syllables**, as you might guess, outputs a",
+			"list of every possible syllable your character groups,",
+			"syllables and transformations allow. The _Capitalize words_,",
+			"_Sort output_ and _Multi-column layout_ options above will also",
+			"work on this syllable list.",
 			"",
-			"At the top of the settings, you can choose to",
-			"**$t(Show syllable breaks)**, which will in·sert a dot be·tween",
-			"eve·ry syl·la·ble in each word. While this option can be useful,",
-			"please note that it will break any _$t(wgwe:trans_other)_ that",
-			"try to work across syllable boundaries."
+			"At the top of the settings, you can choose to **Show syllable",
+			"breaks**, which will in·sert a dot be·tween eve·ry syl·la·ble in",
+			"each word. While this option can be useful, please note that it",
+			"will break any _transformations_ that try to work across",
+			"syllable boundaries."
 		],
-		outputLexicon: [
+		outputLexicon: [ // Markdown format
 			"Once you've generated words, you can save them to the",
 			"**$t(common:Lexicon)**. Click the book button and the generated",
 			"words will light up. Tap on words you wish to save. When you've",
@@ -546,41 +531,35 @@ const wg = {
 			"**$t(common:Lexicon)** column to import them into."
 		],
 
-		settings: [
+		settings: [ // Markdown format
 			"This final tab fine-tunes the output. These can make a huge",
 			"difference in how your conlang appears.",
 			"",
 			"## The Buttons",
 			"",
-			"**$t(common:Load Preset)** brings up a menu where you can choose",
+			"**Load Preset** brings up a menu where you can choose",
 			"from several pre-loaded options. The initial settings when you",
-			"first start the app are the _$t(Simple)_ preset. The others are",
+			"first start the app are the _Simple_ preset. The others are",
 			"offered to give you ideas of what's possible with the app. They",
-			"will load _$t(wgwe:charGroup_other)_, _$t(syll_other)_,",
-			"_$t(wgwe:trans_other)_ and possibly change the remaining",
-			"settings on this page, too.",
+			"will load _character groups_, _syllables_, _transformations_ and",
+			"possibly change the remaining settings on this page, too.",
 			"",
-			"**$t(Clear All Fields)** clears all _$t(wgwe:charGroup_other)_,",
-			"_$t(syll_other)_ and _$t(wgwe:trans_other)_, but does not affect",
-			"any other settings.",
-			"",
-			"**$t(Save/Load Custom Info)** opens a dialog where you can save",
-			"your own _$t(wgwe:charGroup_other)_, _$t(syll_other)_,",
-			"_$t(wgwe:trans_other)_ and the settings on this page. This",
-			"allows you to switch between your own personal language",
-			"settings.",
+			"**Save/Load Custom Info** opens a dialog where you can save",
+			"your own _character groups_, _syllables_, _transformations_",
+			"and the settings on this page. This allows you to switch between",
+			"your own personal language settings.",
 			"",
 			"## The Settings",
 			"",
-			"**$t(Rate of monosyllable words)** determines how often a",
+			"**Rate of monosyllable words** determines how often a",
 			"one-syllable word is created. It's a percentage from 0 (never)",
 			"to 100 (always).",
 			"",
-			"**$t(Maximum number of syllables per word)** sets an upper limit",
+			"**Maximum number of syllables per word** sets an upper limit",
 			"on how long your words can grow.",
 			"",
-			"**$t(CharGroup_one run dropoff)** and",
-			"**$t(Syllable box dropoff)** range from 0 to 50. At zero (flat),",
+			"**Character group run dropoff** and",
+			"**Syllable box dropoff** range from 0 to 50. At zero (flat),",
 			"group and syllable choices are all equiprobable. Otherwise, the",
 			"number becomes a percentage. The higher the number, the more",
 			"likely it is that the first syllables or group characters are",
@@ -595,25 +574,25 @@ const wg = {
 			"4. This cycle continues until a number is generated that is",
 			"equal to or greater than the dropoff percentage.",
 			"",
-			"The remaining options only apply to _$t(Pseudo-texts)_.",
+			"The remaining options only apply to _Pseudo-texts_.",
 			"",
-			"**$t(Capitalize sentences)** determines if each sentence starts",
+			"**Capitalize sentences** determines if each sentence starts",
 			"with a capital letter.",
 			"",
 			"The other options determine what your sentences look like.",
-			"Three-fourths of all sentences will be _$t(declarative)_",
-			"(simple statements), one-sixth will be _$t(interrogative)_",
+			"Three-fourths of all sentences will be _declarative_",
+			"(simple statements), one-sixth will be _interrogative_",
 			"(questions), and the remaining one-twelfth will be",
-			"_$t(exclamatory)_ (excited utterances). You can put special",
+			"_exclamatory_ (excited utterances). You can put special",
 			"punctuation before and after these sentences if you wish."
 		],
 
-		overview: [
+		overview: [ // Markdown format
 			"This tool is for attempting to generate new words based on",
 			"rules you set up.",
 			"",
 			"WordGen makes two assumptions. First, that he basic unit of a",
-			"\"word\" is a $t(syll), and second, that a \"$t(syll)\" can be",
+			"\"word\" is a syllable, and second, that a \"syllable\" can be",
 			"described as a combination of sounds that are spoken together.",
 			"",
 			"This is the most basic use case:",
@@ -622,7 +601,7 @@ const wg = {
 			"characters (letters) that will represent these sounds.",
 			"2. Separate these characters into groups, such as vowels and",
 			"consonants.",
-			"3. Decide the structure(s) of the $t(syll_other) these sounds",
+			"3. Decide the structure(s) of the syllables these sounds",
 			"form.",
 			"",
 			"For example, a (very rough) approximation of Japanese might be:",
@@ -644,16 +623,16 @@ const wg = {
 			"With that information, you can proceed into the rest of this",
 			"tool:",
 			"",
-			"The **$t(wgwe:CharGroup_other)** tab is for holding groups of",
-			"sounds, and the **$t(Syllables)** tab describes how they fit",
-			"together. For more complex words, the",
-			"**$t(wgwe:Transformations_other)** tab provides a way to tweak",
-			"the generated output with search expressions and replacement",
-			"expressions. The **$t(wgwe:Output Tab)** is where the new words",
-			"can be found, and the **$t(common:Settings)** tab has other",
-			"options you can tweak if needed.",
+			"The **Character Groups** tab is for holding groups of",
+			"sounds, and the **Syllables** tab describes how they fit",
+			"together. For more complex words, the **Transformations** tab",
+			"provides a way to tweak the generated output with search",
+			"expressions and replacement expressions. The **Output Tab** is",
+			"where the new words can be found, and the",
+			"**$t(common:Settings)** tab has other options you can tweak if",
+			"needed.",
 			"",
-			"Be sure to check out the _$t(Presets)_ over on the Settings tab.",
+			"Be sure to check out the _Presets_ over on the Settings tab.",
 			"The \"Pseudo-Japanese\" preset shows one way to put the above",
 			"info to use.",
 		]

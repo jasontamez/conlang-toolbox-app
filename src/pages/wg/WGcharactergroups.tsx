@@ -108,13 +108,13 @@ const commons = [
 	"deleteThisCannotUndo", "confirmDelIt", "yesImport",
 ];
 
+const translations = [ "dropoff rate", "characterDropoffExplanation" ];
+
 const WGCharGroup: FC<PageData> = (props) => {
-	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const tDropExpl = useMemo(() => t("characterDropoffExplanation"), [t]);
+	const [ tDropoffFormal, tDropExpl ] = useI18Memo(translations, "wg");
 	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
-	const tDropoffFormal = useMemo(() => t("dropoff rate", { context: "formal" }), [t]);
 	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tConfDel, tYes ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;

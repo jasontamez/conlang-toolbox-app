@@ -99,12 +99,12 @@ const commons = [
 	"Save", "Edit", "Delete", "Help"
 ];
 const formals = [
-	"single-word syllables", "dropoff rate", "word-initial syllables",
+	"word-initial syllables",
 	"mid-word syllables", "word-final syllables"
 ];
 const formal = { context: "formal" };
 const translations = [
-	"Syllables",
+	"Syllables_other",
 	"From 0 to 50",
 	"Use multiple syllable types",
 	"Use character group labels to construct syllables",
@@ -115,7 +115,9 @@ const translations = [
 	"These syllables are used between the first and last syllable of a word",
 	"word-final syllables",
 	"These syllables are used to end words",
-	"syllableDropoffExplanation"
+	"syllableDropoffExplanation",
+	"single-word syllables",
+	"dropoff rate"
 ];
 
 const WGSyl: FC<PageData> = (props) => {
@@ -123,12 +125,13 @@ const WGSyl: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [tSave, tEdit, tDelete, tHelp] = useI18Memo(commons);
 	const [
-		tSwSyllFormal, tDropoffFormal, tWiSyllFormal, tMwSyllFormal, tWfSyllFormal
+		tWiSyllFormal, tMwSyllFormal, tWfSyllFormal
 	] = useI18Memo(formals, "wg", formal);
 	const [
 		tSyllablesTitle, tFromZeroFifty, tUseMultiSyll, tUseCharLabel,
 		tUseDrop, tWiSyll, tWiSyllExpl, tMwSyll, tMwSyllExpl, tWeSyll,
-		tWeSyllExpl, tSyllableDropoffExplanation
+		tWeSyllExpl, tSyllableDropoffExplanation, tSwSyllFormal,
+		tDropoffFormal
 	] = useI18Memo(translations, "wg");
 
 	const { modalPropsMaker } = props;
@@ -194,7 +197,7 @@ const WGSyl: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(clearSyllables());
 			toaster({
-				message: tc("thingsDeleted", { count, things: t("Syllable", { count }) }),
+				message: tc("thingsDeleted", { count, things: t("Syllables", { count }) }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -205,8 +208,8 @@ const WGSyl: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Delete All Syllables"),
-				message: t("delAllSyllables", { count }),
+				header: t("Delete All Syllables"),
+				message: t("delAllSyllables"),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),
 				handler,

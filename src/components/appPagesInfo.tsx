@@ -190,7 +190,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: tc("Syllables", { ns: "wg" }),
+				title: tc("Syllables_other", { ns: "wg" }),
 				url: '/wg/syllables',
 				tab: 'syllables',
 				id: 'menuitemWGsyl',
