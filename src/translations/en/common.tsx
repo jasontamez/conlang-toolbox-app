@@ -16,7 +16,7 @@ CONTEXTS:
 	dog_formal = This is being used as a proper name or otherwise has
 		importance. In English, this simply means Capitalizing Most Words,
 		e.g. "Dog"
-	dog_presentational = This is a user-facing term that is
+	dog_presentation = This is a user-facing term that is
 		"pointing" at...
 			* important information
 			* a text box

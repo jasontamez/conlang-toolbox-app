@@ -12,7 +12,7 @@ const wgwe = {
 	delAllCharGroups_other:
 		"This will delete all {{count}} current $t(charGroup_other), and cannot be undone.",
 	delAllTransforms_one:
-		"This will delete the current $t(wgwe:trans_one), and cannot be undone.",
+		"This will delete the current transformation, and cannot be undone.",
 	delAllTransforms_other:
 		"This will delete all {{count}} current $t(wgwe:trans_other), and cannot be undone.",
 	importCharGroups_one: "Imported 1 $t(CharGroup_one).",
@@ -26,8 +26,9 @@ const wgwe = {
 	Transformations_other: "Transformations",
 	trans_one: "transformation",
 	trans_other: "transformations",
-	"Description of the transformation": "$t(common:description_formal) of the $t(wgwe:trans_one)",
-	"Description of the transformation_presentation": "$t(wgwe:Transformation) $t(common:description_formal):",
+	"Description of the transformation": "Description of the transformation",
+	"Description of the transformation_formal": "Description of the transformation",
+	"Description of the transformation_presentation": "Transformation Description:",
 
 	"No search expression present": "No search expression present",
 	"search expression": "search expression",

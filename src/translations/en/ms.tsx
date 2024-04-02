@@ -8,6 +8,7 @@ const ms = {
 		"**NOTE: this option has no effect on JSON and XML exports.**"
 	],
 
+	clearMSInfo: "Clear $t(common:MorphoSyntax) Info",
 	"You have no information to clear.": "You have no information to clear.", // [T:2.5]
 	morphoSyntaxInfo: // used by clearOverwriteGeneralThings
 		"everything currently in $t(common:MorphoSyntax) (but not anything previously saved)",
@@ -1036,7 +1037,7 @@ const ms = {
 		"   replace the direct object entirely (which technically isn't",
 		"   valence-increasing!)",
 		"      - \"I arrived at Shionti's\" in Nomatsiguenga.",
-		"      `[translationTable] n-areeka | Sionti-ke||I-arrive | Shionti-LOC (valence: 1) || n-areeka-re | Sionti || I-arrive-him | Shionti (valence: 2)`"
+		"      `[translationTable] n-areeka | Sionti-ke || I-arrive | Shionti-LOC (valence: 1) || n-areeka-re | Sionti || I-arrive-him | Shionti (valence: 2)`"
 	],
 	text712: "Describe which method(s) the language uses for applicatives, if any.",
 	"7-1-3-Dative Shift": "7.1.3. Dative Shift",
@@ -1072,7 +1073,7 @@ const ms = {
 		"- In many languages, this exists separate from a dative",
 		"of interest.",
 		"   - \"I fixed the railroad track\" in Choctaw.",
-		"   `[translationTable] Tali | i-hina-ya | ayska-li-tok||rock | AGR(III)-road-NS | fix-1s-PST (nor&shy;mal con&shy;struc&shy;tion) || Tali-ya | hina | im-ayska-li-tok || rock-NS | road | AGR(III)-fix-1s-PST (pos&shy;ses&shy;sor raised)`"
+		"   `[translationTable] Tali | i-hina-ya | ayska-li-tok || rock | AGR(III)-road-NS | fix-1s-PST (nor&shy;mal con&shy;struc&shy;tion) || Tali-ya | hina | im-ayska-li-tok || rock-NS | road | AGR(III)-fix-1s-PST (pos&shy;ses&shy;sor raised)`"
 	],
 	text715: "Does possessor raising occur?",
 	"7-2-Valence-Decreasing Operations": "7.2. Valence-Decreasing Operations",
@@ -2137,7 +2138,7 @@ const ms = {
 		"         - Non-specific subject:",
 		"         `[translationTable] [Di | o | doo | fosi] | o | wini || REL | FUT | arrive | first | FUT | win ||| \"Whoever arrives first will win\"`",
 		"         - Specific subject:",
-		"         `[translationTable] A|mainsí | ya | a | [di | e | tan | a | ini | se] || the | eel | here | COP | REL | CONT | stay | LOC | in&shy;side | sea ||| \"The eel is what (the one that) lives in the sea\"`",
+		"         `[translationTable] A | mainsí | ya | a | [di | e | tan | a | ini | se] || the | eel | here | COP | REL | CONT | stay | LOC | in&shy;side | sea ||| \"The eel is what (the one that) lives in the sea\"`",
 		"      - But it can happen in other languages, such as English:",
 		"         - Headless RC: [That which John said] annoyed her.",
 		"         (Something specific he said annoyed her)",

@@ -43,7 +43,7 @@ const presentational = [
 	"Description of the transformation",
 	"replacement expression", "search expression"
 ];
-const context = { context: "presentational" };
+const context = { context: "presentation" };
 
 const commons = [
 	"Add and Close", "Cancel", "error", "optional"

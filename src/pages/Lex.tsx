@@ -404,7 +404,7 @@ const Lex: FC<PageData> = (props) => {
 		tError, tHelp, tAddNew, tClose
 	] = useI18Memo(commons);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
-	const tpDesc =  useMemo(() => tc("Description", { context: "presentational" }), [tc]);
+	const tpDesc =  useMemo(() => tc("Description", { context: "presentation" }), [tc]);
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {

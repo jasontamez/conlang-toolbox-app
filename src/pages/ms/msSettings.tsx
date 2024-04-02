@@ -46,7 +46,7 @@ const translations = [
 	"A short description of this document.", "MorphoSyntax Info",
 	"MorphoSyntax Settings", "You have no information to clear.", "msTitle",
 	"Please add information to your MorphoSyntax document in at least one section before exporting it.",
-	"Usually the language name."
+	"Usually the language name.", "clearMSInfo"
 ];
 
 const commons = [
@@ -54,19 +54,19 @@ const commons = [
 	"Save as New", "confirmDelIt", "error", "Description"
 ];
 
-const things = ["clearGeneralThings", "exportThing", "loadThing", "saveThing"];
+const things = ["exportThing", "loadThing", "saveThing"];
 
 const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc ] = useI18Memo(commons);
-	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName ] = useI18Memo(translations, "ms");
+	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
 	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("Saved MorphoSyntax Info") }), [t, tc]);
 	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
 	const [
-		tClearThings, tExportThing, tLoadThing, tSaveThing
+		tExportThing, tLoadThing, tSaveThing
 	] = useMemo(() => things.map(thing => tc(thing, { thing: tMInfo })), [tc, tMInfo]);
 	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
 

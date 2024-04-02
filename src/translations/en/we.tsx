@@ -49,10 +49,13 @@ const we = {
 	"Transformation Direction": "Transformation Direction:", // presentational context
 	"At input then undo at output": "At input, then undo at output",
 	"At input then undo at output_formal": "At Input, Then Undo At Output",
+	"At input and output": "At input and output",
 	"At input and at output": "At input and at output",
 	"At input and at output_formal": "At Input and At Output",
+	"At input": "At input",
 	"At input only": "At input only",
 	"At input only_formal": "At Input Only",
+	"At output": "At output",
 	"At output only": "At output only",
 	"At output only_formal": "At Output Only",
 	"context expression_formal": "Context Expression",

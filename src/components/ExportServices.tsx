@@ -26,7 +26,8 @@ const doExport = async (
 
 	// FOR BROWSER TESTING ONLY
 	if(!isPlatform("android")) {
-		saveAs(output, filename);
+		var blob = new Blob([output], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, filename);
 		toaster({
 			message: "File saved as " + filename + " (browser)",
 			color: "success",

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonPage,
 	IonGrid,
@@ -22,7 +22,6 @@ import { useWindowWidth } from '@react-hook/window-size/throttled';
 
 import { InternalState, PageData, StateObject, ThemeNames } from '../store/types';
 import { clearLogs } from '../store/internalsSlice';
-import useTranslator from '../store/translationHooks';
 
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
@@ -54,19 +53,17 @@ const translations =  [
 	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."
 ];
 const markdowns = [ "credit1", "credit2", "credit3", "bugReportMsg" ];
-const commons = [ "Close", "Copy", "Ok", "areYouSure" ];
+const commons = [ "Close", "Copy", "Ok", "areYouSure", "App Info" ];
 const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
 const context = { joinArrays: "\n" };
 
 const AppInfo: FC<PageData> = (props) => {
 	const width = useWindowWidth();
-	const [ tc ] = useTranslator('common');
-	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
 	const [
 		tBugRep, tCLog, tClearLogs, tCopyLogs, tCredits, tDebug, tDelNow,
 		tEntire, tGetLog, tHide, tLogsCleared, tShow, tLogs
 	] = useI18Memo(translations, 'appInfo');
-	const [ tClose, tCopy, tOk, tRUSure ] = useI18Memo(commons);
+	const [ tClose, tCopy, tOk, tRUSure, tAppInfo ] = useI18Memo(commons);
 	const [ tCL94, tCL95, tCL101, tCL113 ] = useI18Memo(changelog, 'appInfo', context);
 	const [ tCr1, tCr2, tCr3, tBugRepMsg ] = useI18Memo(markdowns, "appInfo", context);
 
@@ -153,7 +150,7 @@ const AppInfo: FC<PageData> = (props) => {
 
 	return (
 		<IonPage className={theme}>
-			<Header title={tExport} />
+			<Header title={tAppInfo} />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>

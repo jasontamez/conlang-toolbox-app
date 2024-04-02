@@ -63,7 +63,7 @@ const ExportSyntaxModal: FC<ExportModalProps> = (props) => {
 	const toast = useIonToast();
 	const msInfo = useSelector((state: StateObject) => state.ms);
 	const { title = tUntitled } = msInfo;
-	const tExportTitle = useMemo(() => tc("exportThing", {title: `"${title}"`}), [tc, title]);
+	const tExportTitle = useMemo(() => tc("exportThing", {thing: `"${title}"`}), [tc, title]);
 	const dispatch = useDispatch();
 	const doClose = useCallback(() => {
 		setIsOpen(false);

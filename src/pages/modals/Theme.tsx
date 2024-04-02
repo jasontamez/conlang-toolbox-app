@@ -31,7 +31,7 @@ const themes: ThemeNames[] = [
 
 const ThemeModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator("settings");
-	const [ tc ] = useTranslator("commons");
+	const [ tc ] = useTranslator("common");
 	const tChooseTheme = useMemo(() => t("Choose a Theme"), [t]);
 	const tCancel = useMemo(() => tc("Cancel"), [tc]);
 

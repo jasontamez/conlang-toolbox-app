@@ -55,7 +55,7 @@ const appinfo = {
 			"declensions and conjugations.",
 			"- Added ability to copy $t(wgwe:CharGroup_other) between",
 			"$t(common:WordGen) and $t(common:WordEvolve).",
-			"- $t(settings:Export All Data) now has a copy-to-clipboard",
+			"- _Export App Info_ now has a copy-to-clipboard",
 			"button, and you can limit what you export.",
 			"- Added ability to import data through $t(common:Settings).",
 			"- _$t(common:MorphoSyntax)_",

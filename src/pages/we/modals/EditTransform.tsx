@@ -51,8 +51,7 @@ const commons = [
 ];
 const translations = [
 	"Description of the transformation", "No search expression present",
-	"what it changes into", "what to change", "Transformations_one",
-	"Transformation Direction"
+	"what it changes into", "what to change", "Transformations_one"
 ];
 const formals = [
 	"At input and at output", "At input only",
@@ -68,10 +67,12 @@ const things = [
 ];
 
 const EditTransformModal: FC<ModalProps> = (props) => {
+	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans, tpTrDir ] = useI18Memo(translations, "wgwe");
+	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans ] = useI18Memo(translations, "wgwe");
+	const tpTrDir = useMemo(() => t("Transformation Direction"), [t]);
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);
