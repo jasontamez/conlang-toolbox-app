@@ -221,7 +221,8 @@ function makeDJGroupDescription (group: DJGroup) {
 }
 
 const translations = [
-	"Clear All Groups?", "Conjugations", "Declensions", "Groups", "Other"
+	"Clear All Groups?", "Conjugations", "Declensions", "Groups", "Other",
+	"delEntireGroup"
 ];
 
 const commons = [
@@ -235,9 +236,7 @@ const DJGroups: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [ tAddNew, tDel, tHelp, tWait, tSave, tConfDel, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
-	const [ tClear, tConj, tDecl, tGroups, tOther  ] = useI18Memo(translations, "dj");
-	const tfDelGroup = useMemo(() => tc("deleteThing", { thing: t("this entire Group", { context: "formal" }) }), [tc, t]);
-	const tDelGroup = useMemo(() => tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}), [t, tc]);
+	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup  ] = useI18Memo(translations, "dj");
 	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [tc, t]);
 
 	const { modalPropsMaker } = props;
@@ -298,7 +297,7 @@ const DJGroups: FC<PageData> = (props) => {
 		};
 		if(!disableConfirms) {
 			yesNoAlert({
-				header: tfDelGroup,
+				header: tYouSure,
 				message: tDelGroup,
 				cssClass: "danger",
 				submit: tConfDel,
@@ -308,7 +307,7 @@ const DJGroups: FC<PageData> = (props) => {
 			return;
 		}
 		handler();
-	}, [disableConfirms, dispatch, doAlert, tConfDel, tDelGroup, tGroupDeleted, tfDelGroup, toast]);
+	}, [disableConfirms, dispatch, doAlert, tConfDel, tDelGroup, tGroupDeleted, tYouSure, toast]);
 	const maybeClearEverything = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup(null));

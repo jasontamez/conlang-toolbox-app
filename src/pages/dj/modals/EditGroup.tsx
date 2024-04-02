@@ -85,7 +85,8 @@ const translations = [
 	"You must provide a title or description before saving.",
 	"You must provide at least one condition (start or end) before saving.",
 	"exampleAppliesTo", "wordMarker", "Regular Expression",
-	"Separate Multiple Conditions With", "Edit Group", "Title Input"
+	"Separate Multiple Conditions With", "Edit Group", "Title Input",
+	"delEntireGroup"
 ];
 
 const commons = [
@@ -104,7 +105,8 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
-		tNoCond, tExample, tWM, tRegEx, tpSeparate, tEditGroup, tTitleInput
+		tNoCond, tExample, tWM, tRegEx, tpSeparate, tEditGroup, tTitleInput,
+		tDelAllMsg
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
@@ -115,7 +117,6 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
 	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [t, tc]);
 	const tDelEntireGroup = useMemo(() => tc("deleteThing", { thing: "Entire Group" }), [tc]);
-	const tDelAllMsg = useMemo(() => tc("deleteThingsCannotUndo", { things: t("this entire Group"), count: 1}), [t, tc]);
 
 	const {
 		isOpen,

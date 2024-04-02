@@ -24,8 +24,7 @@ const dj = {
 	"Words to send through Declenjugator": // {A}
 		"Words to send through $t(common:Declenjugator)",
 	"Enter words here, one per line": "Enter words here, one per line",
-	"this entire Group": "this entire Group",
-	"this entire Group_formal": "This Entire Group",
+	delEntireGroup: "This will delete this entire Group, and cannot be undone.",
 	"all current groups": "all current Groups",
 	"Clear All Groups?": "Clear All Groups?", // <D:H>
 	"You must provide a title or description before saving.": // <D>

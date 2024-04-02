@@ -207,7 +207,7 @@ const WESChange: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tClearAll,
-				message: tc("deleteThingsCannotUndo", { things: t("all current sound changes"), count }),
+				message: t("dellAllSC"),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),
 				handler,

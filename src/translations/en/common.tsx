@@ -154,8 +154,6 @@ const common = {
 
 	// Things will take `count` properties for plurality, but the exact number will usually be expressed
 	//   in the `things` property itself
-	deleteThingsCannotUndo_one: "This will delete {{things}}, and cannot be undone.", // <D>
-	deleteThingsCannotUndo_other: "This will delete {{things}}, and cannot be undone.",
 	thingsDeleted_one: "{{things}} deleted.", // [T:2.5]
 	thingsDeleted_other: "{{things}} deleted.",
 

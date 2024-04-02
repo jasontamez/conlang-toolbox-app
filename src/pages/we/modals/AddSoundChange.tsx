@@ -107,7 +107,7 @@ const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 			el && el.classList.add("invalidValue");
 			err.push(temp);
 		}
-		if(anticontext && (temp = contextTest(anticontext, "Anticontext"))) {
+		if(anticontext && (temp = contextTest(anticontext, "Exception"))) {
 			const el = $q(".anticontextLabel");
 			el && el.classList.add("invalidValue");
 			err.push(temp);

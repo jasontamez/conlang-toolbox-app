@@ -156,7 +156,7 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			const el = $q(".contextLabel");
 			el && el.classList.add("invalidValue");
 		}
-		if(anti && (temp = contextTest(anti, "Anticontext"))) {
+		if(anti && (temp = contextTest(anti, "Exception"))) {
 			err.push(temp);
 			const el = $q(".anticontextLabel");
 			el && el.classList.add("invalidValue");
