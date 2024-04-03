@@ -13,7 +13,6 @@
     "@capacitor/ios": "^5.0.0",
     "@capacitor/splash-screen": "^5.0.0",
     "@ionic-native/core": "^5.36.0",
-    "@ionic-native/file-chooser": "^5.36.0",
     "@ionic/react": "^7.3.0",
     "@ionic/react-router": "^7.3.0",
     "@react-hook/window-size": "^3.0.7",
@@ -29,7 +28,6 @@
     "caniuse-lite": "^1.0.30001512",
     "capitalize": "^2.0.3",
     "compare-versions": "^6.1.0",
-    "cordova-plugin-filechooser": "^1.2.0",
     "docx": "^6.0.3",
     "escape-string-regexp": "^4.0.0",
     "file-saver": "^2.0.5",
@@ -54,7 +52,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "remark-gfm": "^4.0.0",
-    "rxjs": "^6.5.0",
     "sanitize-filename": "^1.6.3",
     "typescript": "^5.3.3",
     "uuid": "^8.3.2"
