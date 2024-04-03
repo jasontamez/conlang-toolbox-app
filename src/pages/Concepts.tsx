@@ -290,7 +290,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 						setPickAndSave(false);
 						// Toast
 						toaster({
-							message: t(
+							message: tc(
 								'saveToLexColumn',
 								{
 									what: t("Selected meanings", { count: words.length }),

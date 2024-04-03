@@ -4,8 +4,8 @@ const concepts = {
 
 	info: {
 		basic: [ // Markdown format
-			"Presented here are a number of lists of basic concepts,",
-			"which were originaly created for the purposes of",
+			"Presented here are a number of lists of basic concepts.",
+			"Each list was originaly created for the purposes of",
 			"historical-comparative linguistics.",
 			"",
 			"They are included in this app because they may serve you as",

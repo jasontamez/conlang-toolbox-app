@@ -41,6 +41,19 @@ interface ModalProperties {
 	modalPropsMaker: ModalPropsMaker
 }
 
+const doParse = (input: string) => {
+	// This needs to parse Markdown, maybe?
+	// Turn it into a <div>?
+	return (
+		<Markdown
+			remarkPlugins={[remarkGfm]}
+			components={{
+				p: "div"
+			}}
+		>{input}</Markdown>
+	);
+};
+
 export const SyntaxHeader: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const {
@@ -277,15 +290,15 @@ const CheckboxRow: FC<CheckboxRowProps> = (props) => {
 	const mappedLabels = useMemo(() => {
 		const max = labels.length - 1;
 		return labels.map((label: string, i: number) => (
-			<IonCol className={i === max ? undefined : labelClass} key={`LABEL-${id}-${i}`}><div>{label}</div></IonCol>
+			<IonCol className={i === max ? undefined : labelClass} key={`LABEL-${id}-${i}`}><div>{doParse(label)}</div></IonCol>
 		));
 	}, [id, labels, labelClass]);
 	const mappedRow = useMemo(() => {
-		const joinedLabels = labels.join(", ");
+		const ariaLabel = labels.join(", ");
 		return row.map((prop: MSBool, i: number) => (
 			<IonCol className="cbox" key={`COL-${id}-${i}`}>
 				<RadioBox
-					label={headers ? `${headers[i]}, ${joinedLabels}` : joinedLabels}
+					label={headers ? `${headers[i]}, ${ariaLabel}` : ariaLabel}
 					prop={prop}
 					checked={state[prop]}
 				/>
@@ -297,18 +310,6 @@ const CheckboxRow: FC<CheckboxRowProps> = (props) => {
 			{mappedRow}
 			{mappedLabels}
 		</IonRow>
-	);
-};
-const doParse = (input: string) => {
-	// This needs to parse Markdown, maybe?
-	// Turn it into a <div>?
-	return (
-		<Markdown
-			remarkPlugins={[remarkGfm]}
-			components={{
-				p: "div"
-			}}
-		>{input}</Markdown>
 	);
 };
 interface HeaderRowProps {
@@ -325,7 +326,7 @@ const HeaderRow: FC<HeaderRowProps> = (props) => {
 		labelClass
 	} = props;
 	const final = row.pop() || "";
-	const label = hasLabel ? row.pop() : undefined;
+	const columnHeader = hasLabel ? row.pop() : undefined;
 	const mappedCols = useMemo(() => {
 		return row.map(
 			(c: string, i: number) =>
@@ -336,11 +337,11 @@ const HeaderRow: FC<HeaderRowProps> = (props) => {
 		<IonRow className="header">
 			{mappedCols}
 			{
-				label ?
+				columnHeader ?
 					<IonCol
 						className={labelClass}
 						key={`L-${id}`}
-					>{doParse(label)}</IonCol>
+					>{doParse(columnHeader)}</IonCol>
 				:
 					<></>
 			}
@@ -389,7 +390,7 @@ export const CheckboxItem: FC<CheckboxProps> = (props) => {
 				row={row.slice()}
 				key={`${key}-${i}`}
 				state={stateInfo}
-				label={labels[i] || error }
+				label={labels[i] || error}
 				id={key}
 				headers={columnHeaders && columnHeaders.slice()}
 				labelClass={labelClass}

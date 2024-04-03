@@ -1,6 +1,6 @@
 const ms = {
 
-	showUnused: [ // Markdown format
+	showUnused: [
 		"## Show Unused Sections",
 		"",
 		"Include sections that you did not fill out, leaving space for you",
@@ -42,11 +42,103 @@ const ms = {
 	"[NO TEXT ENTERED]": "[NO TEXT ENTERED]",
 	"[NO DESCRIPTION PROVIDED]": "[NO DESCRIPTION PROVIDED]",
 	"[NONE SELECTED]": "[NONE SELECTED]",
-	// Only used in export, indicates what range number was selected
+	// Only used in exports, indicates what range number was selected
 	textUnselectedRange: "{{number}}", // not selected by user
 	textSelectedRange: "({{number}})", // selected by user
-	// Only used in export, indicates that a checkbox was checked
+	// Only used in exports, indicates that a checkbox was checked
 	textCheckedBox: "X",
+
+	// INFORMATIONAL KEYS
+	//   This is where you'll find the jargon-heavy explanation of
+	//      linguistics that is the essence of MorphoSyntax. Please be sure
+	//      to use the proper linguistic terms of your localization!
+
+	// Keys that begin with "title", "label" and "info" are linked. They are
+	//    used to create the information pop-ups that appear throughout
+	//    MorphoSyntax.
+	//
+	// Keys that begin with "title" will be used as the header of the
+	//    pop-up.
+	//
+	// Keys that begin with "label" will be used as the text of the buttons
+	//    that launch the pop-ups. These keys are OPTIONAL: If a "title" and
+	//    "info" are missing a corresponding "label" key, then the button will
+	//    use the text provided in the "genericInfoButtonText" key above.
+	//
+	// Keys that begin with "label" need not be translated directly. You can
+	//    change them to whatever you think works best for your localization,
+	//    or omit them entirely. (Many of the "label" keys are English puns or
+	//    other quirky phrases that will not translate well!)
+	//
+	// Keys that begin with "info" are arrays that use Markdown formatting.
+	//    They should be kept in a nested-list format. Please translate the
+	//    basic information as carefully as you can. They will often contain
+	//    examples from English or other languages. You may omit the examples,
+	//    or change them to an example that is better understood by your
+	//    target audience.
+	//
+	// "Info" keys may also contain "Translation Tables", which are a special
+	//    format used by the app. They will be in a format like the following:
+	//
+	//    `[translationTable] Le | cortó | el | pelo. || 3.DAT | cut.3s.PST | DEF.M.s | hair ||| Optional final line.`
+	//
+	//    It is important to keep the following:
+	//       1) The indentation of the line (it should match the list item
+	//          it is a part of)
+	//       2) The surrounding `backticks`
+	//       3) The exact text "[translationTable]" at the beginning
+	//       4) The entire table MUST remain in a single string, not spread
+	//          among multiple strings
+	//
+	//    The format follows this pattern:
+	//       1) table cells in a row separated by single pipes: |
+	//       2) table rows separated by double pipes: ||
+	//       3) an optional final row, not broken into cells, separated by
+	//          three pipes: |||
+	//       4) pipes must have at least one space on either side, e.g.
+	//          "this is || ok", "this is||not ok"
+	//
+	//    Except for the optional final row, table rows should have an equal
+	//       number of cells. The odd rows will be an example, while the even
+	//       rows will be the cell-by-cell translation of the given example.
+	//       These translations use Leipzig Glossing rules. I am unsure how
+	//       universal these rules are, or if they have localized forms in
+	//       other languages. You can learn about these rules here:
+	//       https://www.eva.mpg.de/lingua/resources/glossing-rules.php
+	//
+	//    The cells and rows may contain simple Markdown formatting, but NOT
+	//       table formatting.
+
+	// Keys that begin with "checkbox" will have other properties. Only
+	//    translate the plain text within them. DO NOT change the format
+	//    of the information. E.g, if a property is an array of three strings,
+	//    the translated property MUST also be an array of three strings.
+	//
+	// Keys that begin with "checkbox" and DO NOT end with "Export" will
+	//    have a "labels" property, and may have a "header" and/or
+	//    "columnHeaders" properties. The "labels" property will be an array
+	//    of strings, or an array of arrays of strings. The "columnHeaders"
+	//    property will be an array of strings. The "header" property will be
+	//    a single string. Each individual string in these properties can use
+	//    Markdown formatting.
+	//
+	// Keys that begin with "checkbox" and DO end with "Export" also have
+	//    "labels" and "header" properties, but are PLAIN TEXT ONLY.
+
+	// Keys with a "_percentage" context are used in docx/text exports only.
+	//
+	// Keys with a "_percentageMarkdown" context are used in Markdown text
+	//    exports, and may use Markdown formatting.
+
+	// Keys that begin with "text" are prompts that appear before open text
+	//    boxes the user can write in.
+
+
+	// HTML in Markdown is DISABLED and should not be used.
+
+	// In MorphoSyntax ONLY, GitHub Flavored Markdown format is supported.
+	//    This allows for things like tables and strike-throughs. You can
+	//    learn more about the format here: https://github.github.com/gfm/
 
 	// PAGE ONE
 
@@ -54,12 +146,12 @@ const ms = {
 	"1-1-Traditional Typology": "1.1. Traditional Typology",
 	title11: "Synthesis and Fusion",
 	label11: "The Basic Building Blocks of Words",
-	info11: [ // Markdown format
+	info11: [
 		"- Languages can be broadly classified on two continuums based on",
 		"their **morphemes**.",
 		"   - A morpheme is the most basic unit of meaning in a language.",
-		"   For example, the word \"cats\" has two morphemes: \"cat\" (a",
-		"   feline animal) and \"s\" (more than one of them are being",
+		"   For example, the English word \"cats\" has two morphemes: \"cat\"",
+		"   (a feline animal) and \"s\" (more than one of them are being",
 		"   talked about).",
 		"- [newSection]**Synthesis** is a measure of how many morphemes",
 		"appear in a word.",
@@ -106,7 +198,7 @@ const ms = {
 	"1-2-Morphological Processes": "1.2. Morphological Processes",
 	title12: "Affixes and Other Modifications",
 //	label12: "",
-	info12: [ // Markdown format
+	info12: [
 		"- **Affixes**:",
 		"   - Completely fusional languages will usually lack affixes.",
 		"   - Most natural languages use suffixes. Some also have prefixes",
@@ -156,7 +248,7 @@ const ms = {
 	"Dependent Marked": "Dependent Marked",
 	title13: "Head/Dependent Marking",
 //	label13: ""
-	info13: [ // Markdown format
+	info13: [
 		"- The **Head** of a phrase is the element that determines the",
 		"syntactic function of the whole phrase.",
 		"   - Example sentence: _\"The smallest dog ate a porkchop with",
@@ -183,7 +275,7 @@ const ms = {
 	"2-1-1-1-Proper Names": "2.1.1.1. Proper Names",
 	title2111: "Proper Names",
 //	label2111: "",
-	info2111: [ // Markdown format
+	info2111: [
 		"- In English, they do not easily take articles, quantifiers and",
 		"other modifiers.",
 		"- Other languages may have special case markers (4.4) for them."
@@ -192,7 +284,7 @@ const ms = {
 	"2-1-1-2-Possessability": "2.1.1.2. Possessability",
 	title2112: "Possessability",
 	label2112: "Systems of Possession",
-	info2112: [ // Markdown format
+	info2112: [
 		"- Languages may have one of the following systems to",
 		"differentiate nouns.",
 		"   - [newSection]**Possessable vs Unpossessable**:",
@@ -209,7 +301,7 @@ const ms = {
 	"2-1-1-3-Count vs Mass": "2.1.1.3. Count vs Mass",
 	title2113: "Count Nouns and Mass Nouns",
 	label2113: "A Piece of Information",
-	info2113: [ // Markdown format
+	info2113: [
 		"- Typically, most nouns are countable, while fewer are considered",
 		"as a mass.",
 		"- e.g. \"sand\" requires \"a grain of sand\" to be countable, and",
@@ -219,7 +311,7 @@ const ms = {
 	"2-1-2-Pronouns and Anaphoric Clitics": "2.1.2. Pronouns and Anaphoric Clitics",
 	title212: "Pronouns and Anaphoric Clitics",
 	label212: "What Are They?",
-	info212: [ // Markdown format
+	info212: [
 		"- **Pronouns**:",
 		"   - Free forms that are used to refer to or replace a word used",
 		"   earlier in a sentence, to avoid repetition.",
@@ -229,7 +321,7 @@ const ms = {
 		"   clause level, but is bound phonologically to another word.",
 		"   - An Anaphoric Clitic functions as a full noun phrase.",
 		"      - Spanish:",
-		"      `[translationTable] lav-o | el | auto || wash-1s | the | car ||| \"I wash the car\" :: **-o** functions as the noun phrase \"I\"`",
+		"      `[translationTable] lav-o | el | auto || wash-1s | the | car ||| \"I wash the car\"; **-o** functions as the noun phrase \"I\"`",
 		"- [newSection]Both types often differ according to person",
 		"(3rd/2nd/1st including inclusive/exclusive), number",
 		"(singular/plural), noun class (gender/animacy), grammatical role",
@@ -246,7 +338,7 @@ const ms = {
 	"2-2-1-Semantic Roles": "2.2.1. Semantic Roles",
 	title221: "Semantic Roles",
 	label221: "A Quick Primer",
-	info221: [ // Markdown format
+	info221: [
 		"- Verbs can be divided into groups depending on which roles they",
 		"require.",
 		"   - [newSection]**Agent**: active, physical, has volition",
@@ -271,22 +363,22 @@ const ms = {
 	"2-2-2-Verb Classes": "2.2.2. Verb Classes",
 	checkboxVerbClasses: {
 		columnHeaders: ["Special?", "Type", "Description"], 
-		labels: [ // second item in each array can use Markdown format
+		labels: [
 			[ "Actions", "Agent affects Patient." ],
 			[ "Action-Processes", "Agent only." ],
-			[ "Weather Verbs", "in English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!" ],
-			[ "States", "be hot, be broken, be frozen, etc; may be predicate-bound" ],
-			[ "Involuntary Processes", "he grew; it broke; they died; etc." ],
-			[ "Bodily Functions", "cough, sweat, bleed, cry, etc." ],
-			[ "Motion", "go, float, proceed, etc." ],
-			[ "Position", "sit, stand, hang, etc." ],
-			[ "Factive", "something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions" ],
-			[ "Cognition", "know, suspect, forget etc." ],
-			[ "Sensation", "hear, see, taste, etc." ],
-			[ "Emotion", "be happy, be afraid, be mellow, etc." ],
-			[ "Utterance", "say, yell, murmur, declare, chat, etc." ],
-			[ "Manipulation", "force, urge, cause, let, permit, allow, compel, etc." ],
-			[ "Other Verb Class(es)", "(you might have a distinction different from those already listed)" ]
+			[ "Weather Verbs", "In English, these require a dummy Agent (\"_It_ is raining\"); this is not the case in many other languages!" ],
+			[ "States", "Be hot, be broken, be frozen, etc; may be predicate-bound" ],
+			[ "Involuntary Processes", "He grew; it broke; they died; etc." ],
+			[ "Bodily Functions", "Cough, sweat, bleed, cry, etc." ],
+			[ "Motion", "Go, float, proceed, etc." ],
+			[ "Position", "Sit, stand, hang, etc." ],
+			[ "Factive", "Something comes into being: e.g. build, form, ignite, create; rarely treated differently than Actions" ],
+			[ "Cognition", "Know, suspect, forget etc." ],
+			[ "Sensation", "Hear, see, taste, etc." ],
+			[ "Emotion", "Be happy, be afraid, be mellow, etc." ],
+			[ "Utterance", "Say, yell, murmur, declare, chat, etc." ],
+			[ "Manipulation", "Force, urge, cause, let, permit, allow, compel, etc." ],
+			[ "Other Verb Class(es)", "(You might have a distinction different from those already listed)" ]
 		]
 	},
 	checkboxVerbClassesExport: {
@@ -313,7 +405,7 @@ const ms = {
 	"2-2-3-Verb Structure": "2.2.3. Verb Structure",
 	title223: "Verb Structure",
 	label223: "Structure and Operations Info",
-	info223: [ // Markdown format
+	info223: [
 		"- In polysynthetic languages, verbs tend to be the most complex.",
 		"   - English is very simple:",
 		"      - root verb   ",
@@ -353,7 +445,7 @@ const ms = {
 	"2-3-1-Property Concepts (Descriptive Adjectives)": "2.3.1. Property Concepts (Descriptive Adjectives)",
 	checkboxVerbPropConcepts: {
 		header: "Different Ways Property Concepts Are Handled in Human Language",
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Lexicalized as verbs (Acehnese)",
 			"Lexicalized as nouns (Finnish)",
 			"Lexicalized as nouns or verbs depending on the demands of discourse (Dutch)",
@@ -374,7 +466,7 @@ const ms = {
 	title231: "Property Concepts",
 	label231: "More Info",
 
-	info231: [ // Markdown format
+	info231: [
 		"- If Property Concepts (adjectives) exist as a separate category,",
 		"they will express:",
 		"   - age",
@@ -413,7 +505,7 @@ const ms = {
 	"2-3-3-Numerals": "2.3.3. Numerals",
 	title233: "Numerals",
 	label233: "Things to Consider",
-	info233: [ // Markdown format
+	info233: [
 		"- **Extent**:",
 		"   - Some languages have restricted numerals: e.g. 1, 2, 3, many.",
 		"   - Only very advanced societies will have a need for numbers",
@@ -446,7 +538,7 @@ const ms = {
 
 	checkboxNumberBase: {
 		header: "Number Base",
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Base Five",
 			"Base Ten",
 			"Base Twenty",
@@ -464,7 +556,7 @@ const ms = {
 	},
 	checkboxNumberFormat: {
 		header: "Number Format",
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Greatest-to-Least (twenty-two)",
 			"Least-to-Greatest (two-twenty)",
 			"Single Digits Only (two-two)"
@@ -480,7 +572,7 @@ const ms = {
 	},
 	checkboxNumberOtherProps: {
 		header: "Other Properties",
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Multiple Sets of Numerals",
 			"Numerals Agree With Head"
 		]
@@ -492,7 +584,7 @@ const ms = {
 	"2-4-Adverbs": "2.4. Adverbs",
 	title24: "Adverbs",
 	label24: "A \"Catch-All\" Category",
-	info24: [ // Markdown format
+	info24: [
 		"- These may or may not exist as a separate category of words.",
 		"- Languages may use adjectives in special phrases to fulfill",
 		"this role.",
@@ -513,7 +605,7 @@ const ms = {
 	"3-1-In Main Clauses": "3.1. In Main Clauses",
 	checkboxMainClauses: {
 		columnHeaders: ["Primary?", "Order", "Example"],
-		labels: [ // second item in each array can use Markdown format
+		labels: [
 			[ "APV/SV", "\"Steve softballs pitches; Steve pitches.\"" ],
 			[ "AVP/SV", "\"Steve pitches softballs; Steve pitches.\"" ],
 			[ "VAP/VS", "\"Pitches Steve softballs; Pitches Steve.\"" ],
@@ -528,7 +620,7 @@ const ms = {
 	title31: "Basic Typology",
 	label31: "What is This?",
 
-	info31: [ // Markdown format
+	info31: [
 		"- Human languages tend towards one of six different basic forms.",
 		"   - **S** is the Subject of an intransitive clause.",
 		"      - _Steve_ pitches.",
@@ -569,7 +661,7 @@ const ms = {
 	text33: "What is the order of the determiners (4.5), numerals (2.3.3), genitives (possessors), modifiers (2.3.1), relative clauses (10.5), classifiers (4.7), and the head noun?",
 	"3-4-Adpositional Phrases": "3.4. Adpositional Phrases",
 	checkboxAdpositionalPhrases: {
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Preposition (_with_ an apple)",
 			"Postpostition (an apple _with_)",
 			"Circumposition (rare; _with_ an apple _with_)"
@@ -585,7 +677,7 @@ const ms = {
 	},
 	title34: "Adpositions",
 	label34: "More Info",
-	info34: [ // Markdown format
+	info34: [
 		"- Many **Adpositions** derive from verbs, especially serial",
 		"verbs (see 10.1).",
 		"- Others derive from nouns, especially body parts (top, back,",
@@ -598,7 +690,7 @@ const ms = {
 	"3-5-Comparatives": "3.5. Comparatives",
 	title35: "Comparatives",
 	label35: "Comparing Things",
-	info35: [ // Markdown format
+	info35: [
 		"- Does the language even have a form? Some languages get by with",
 		"strategies like \"X is big, Y is very big.\"",
 		"- A comparison phrase requires a known standard, a marker that",
@@ -613,7 +705,7 @@ const ms = {
 	"3-6-Question Particles and Words": "3.6. Question Particles and Words",
 	title36: "Questions",
 //	label36: "",
-	info36: [ // Markdown format
+	info36: [
 		"- In many languages, yes/no questions are indicated by a change",
 		"in intonation. In others, a question particle is used; e.g. _do_",
 		"you understand?",
@@ -631,10 +723,10 @@ const ms = {
 	"4-1-Compounding": "4.1. Compounding",
 	title41: "Compounding",
 	label41: "Noun-Piles",
-	info41: [ // Markdown format
+	info41: [
 		"- When two nouns are combined into one, several changes may occur.",
-		"   - Stress pattern change, e.g. \"_black_bird\" vs",
-		"   \"black _bird_\".",
+		"   - Stress pattern change, e.g. \"*black*bird\" vs",
+		"   \"black *bird*\".",
 		"   - Unusual word order, e.g. \"housekeeper\" vs \"keeper of",
 		"   the house\".",
 		"   - Morphology specific to compounds, e.g. \"can-opener\" does",
@@ -648,7 +740,7 @@ const ms = {
 	"4-2-Denominalization": "4.2. Denominalization",
 	title42: "Denominalization",
 	label42: "Verbing a Noun",
-	info42: [ // Markdown format
+	info42: [
 		"- Some languages have many ways of changing a noun into a non-noun.",
 		"   - English can append _-like_ to make an adjective.",
 		"   - Eskimo has many verbalizing forms, e.g. to be X, to go towards",
@@ -658,7 +750,7 @@ const ms = {
 	"4-3-Number Marking": "4.3. Number Marking",
 	title43: "Number Marking",
 	label43: "Plurality, etc.",
-	info43: [ // Markdown format
+	info43: [
 		"- Some languages only mark number occassionally or optionally",
 		"depending on the type of noun.",
 		"- This is often intertwined with other markers, such as case",
@@ -685,7 +777,7 @@ const ms = {
 	title44: "Case Marking",
 	label44: "How it works",
 
-	info44: [ // Markdown format
+	info44: [
 		"- Case markings can describe the role a noun plays in a sentence.",
 		"- In English, most case markings only survive in the pronouns,",
 		"with word order doing the job for regular nouns. The major",
@@ -713,7 +805,7 @@ const ms = {
 	"4-5-Articles and Demonstratives": "4.5. Articles and Demonstratives",
 	title45: "Articles",
 	label45: "What Are They?",
-	info45: [ // Markdown format
+	info45: [
 		"- English is relatively rare in having **Articles**: a, an, the.",
 		"More often, languages have a broader class of demonstratives.",
 		"- [newSection]**Demonstratives** are words that distinguish",
@@ -727,7 +819,7 @@ const ms = {
 	"4-6-Possessors": "4.6. Possessors",
 	title46: "Possessors",
 	label46: "Possessor Expressions",
-	info46: [ // Markdown format
+	info46: [
 		"- Refer back to 2.1.1.2 to note your system of possession. This",
 		"does **not** refer to possessive clauses! (5.4)",
 		"- [newSection]How are possessors expressed in the noun phrase?",
@@ -737,7 +829,7 @@ const ms = {
 	"4-7-Class (Gender)": "4.7. Class (Gender)",
 	title47: "Class and Gender",
 	label47: "What They Are",
-	info47: [ // Markdown format
+	info47: [
 		"- Class system often require classifiers (special operators) to",
 		"declare class.",
 		"- Pure gender systems use \"agreement\" instead of classifiers.",
@@ -762,7 +854,7 @@ const ms = {
 	"4-8-Diminution/Augmentation": "4.8. Diminution/Augmentation",
 	title48: "Diminution and Augmentation",
 	label48: "Bigger and Smaller",
-	info48: [ // Markdown format
+	info48: [
 		"- If diminution (making smaller) and/or augmentation (making",
 		"bigger) is used in the language, answer the following questions:",
 		"   - Is it obligatory? Does one member have to occur in every full",
@@ -789,7 +881,7 @@ const ms = {
 	"5-Predicate Nominals and Related Constructions": "5. Predicate Nominals and Related Constructions",
 	title5: "Predicate Nominals",
 	label5: "General Information to Consider",
-	info5: [ // Markdown format
+	info5: [
 		"- These forms generally encode the following information:",
 		"   - **Equation**: X is Y",
 		"   - **Proper Inclusion**: X is a Y",
@@ -804,7 +896,7 @@ const ms = {
 	"5-1-Predicate Nominals and Adjectives": "5.1. Predicate Nominals and Adjectives",
 	title51: "Predicate Nominals and Adjectives",
 	label51: "What It Is and What It Seems Like",
-	info51: [ // Markdown format
+	info51: [
 		"- May encode _proper inclusion_ (X is a Y) and _equation_ (X is Y)",
 		"- Predicate adjectives are usually handled the same as predicate",
 		"nominals, though they will sometimes use a different copula than",
@@ -845,7 +937,7 @@ const ms = {
 	"5-2-Predicate Locatives": "5.2. Predicate Locatives",
 	title52: "Predicate Locatives",
 	label52: "Where It Is",
-	info52: [ // Markdown format
+	info52: [
 		"- Many languages use a word that gets translated as \"be at\".",
 		"- The locative word is often the same as a locative adposition.",
 		"- Word order usually distinguishes possessive clauses from",
@@ -861,7 +953,7 @@ const ms = {
 	"5-3-Existentials": "5.3. Existentials",
 	title53: "Existentials",
 	label53: "These Exist",
-	info53: [ // Markdown format
+	info53: [
 		"- These constructions usually serve a presentative function,",
 		"introducing new participants.",
 		"- Usually, the nominal is indefinite: Consider \"There are lions",
@@ -883,7 +975,7 @@ const ms = {
 	"5-4-Possessive Clauses": "5.4. Possessive Clauses",
 	title54: "Possessive Clauses",
 //	label54: "",
-	info54: [ // Markdown format
+	info54: [
 		"- These follow two main strategies:",
 		"   - Verb strategy: \"I have a book.\"",
 		"   - Copula strategy: \"The book is at me.\""
@@ -895,7 +987,7 @@ const ms = {
 	"6-Grammatical Relations": "6. Grammatical Relations",
 	title6: "Alignments",
 	label6: "Show the Alignments",
-	info6: [ // Markdown format
+	info6: [
 		"- **Nominative/Accusative Alignment**:",
 		"   - (S)ubjects and (A)gents are treated the same in the",
 		"   nominative case.",
@@ -957,7 +1049,7 @@ const ms = {
 	"7-Voice and Valence Adjusting Operations": "7. Voice and Valence Adjusting Operations",
 	title7: "Valence",
 	label7: "What is Valence?",
-	info7: [ // Markdown format
+	info7: [
 		"- **Valence** refers to the amount of arguments in a clause.",
 		"   - \"I fell\" has a valence of 1.",
 		"   - \"I pushed Steve\" has a valence of 2.",
@@ -971,7 +1063,7 @@ const ms = {
 	"7-1-1-Causatives": "7.1.1. Causatives",
 	title711: "Causatives",
 	label711: "Forcing You to Read This",
-	info711: [ // Markdown format
+	info711: [
 		"- **Lexical**:",
 		"   - Most languages have at least some form of this. There are three",
 		"   major methods employed:",
@@ -1029,7 +1121,7 @@ const ms = {
 	"7-1-2-Applicatives": "7.1.2. Applicatives",
 	title712: "Applicatives",
 	label712: "Adding a Third Participant",
-	info712: [ // Markdown format
+	info712: [
 		"- The verb is marked for the role of a direct object, bringing a",
 		"peripheral participant (the applied object) on stage in a more",
 		"central role.",
@@ -1043,7 +1135,7 @@ const ms = {
 	"7-1-3-Dative Shift": "7.1.3. Dative Shift",
 	title713: "Dative Shift",
 	label713: "Looking Shifty",
-	info713: [ // Markdown format
+	info713: [
 		"- This only applies to verbs that take an Agent, a Patient and a",
 		"Recipient or Experiencer. This latter argument is usually put in",
 		"the _dative_ case.",
@@ -1058,7 +1150,7 @@ const ms = {
 	"7-1-4-Dative of Interest": "7.1.4. Dative of Interest",
 	title714: "Dative of Interest",
 	label714: "Pique Your Interest",
-	info714: [ // Markdown format
+	info714: [
 		"- This is adding a participant that is associated in some way.",
 		"   - \"Dinner is burned [for me]\" in Spanish",
 		"   `[translationTable] Se | me | quemó | la | cena. || REFL | 1s | burn.3s.PST | DEF.f.s | din&shy;ner`",
@@ -1069,7 +1161,7 @@ const ms = {
 	"7-1-5-Possessor Raising (a.k.a. External Possession)": "7.1.5. Possessor Raising (a.k.a. External Possession)",
 	title715: "Possessor Raising",
 	label715: "What Is This?",
-	info715: [ // Markdown format
+	info715: [
 		"- In many languages, this exists separate from a dative",
 		"of interest.",
 		"   - \"I fixed the railroad track\" in Choctaw.",
@@ -1080,7 +1172,7 @@ const ms = {
 	"7-2-1-Reflexives": "7.2.1. Reflexives",
 	title721: "Reflexives",
 	label721: "You Are Me?",
-	info721: [ // Markdown format
+	info721: [
 		"- The Agent and Patient are the same, so one is omitted.",
 		"- [newSection]Lexical reflexives:",
 		"   - The verb itself implies reflexivity.",
@@ -1100,7 +1192,7 @@ const ms = {
 	"7-2-2-Reciprocals": "7.2.2. Reciprocals",
 	title722: "Reciprocals",
 	label722: "Working Together",
-	info722: [ // Markdown format
+	info722: [
 		"- The Agent and Patient are performing the same action, or",
 		"performing an action together. These are often expressed the",
 		"same way as reflexives.",
@@ -1114,7 +1206,7 @@ const ms = {
 	"7-2-3-Passives": "7.2.3. Passives",
 	title723: "Passives",
 	label723: "Moving Focus From the Agent",
-	info723: [ // Markdown format
+	info723: [
 		"- A semantically transitive verb with omitted Agent, the Patient",
 		"treated as Subject, and the verb behaves as if it is intransitive.",
 		"(The Agent is made less topical than the Patient.)",
@@ -1144,7 +1236,7 @@ const ms = {
 	"7-2-4-Inverses": "7.2.4. Inverses",
 	title724: "Inverses",
 	label724: "Playing The Reverse Card",
-	info724: [ // Markdown format
+	info724: [
 		"- This is a valence \"rearranging\" device, e.g. \"Steve taught",
 		"him\" becomes \"Him, Steve taught.\"",
 		"- Often follows a hierarchy where a \"higher\" Agent requires",
@@ -1152,7 +1244,7 @@ const ms = {
 	],
 
 	checkboxInverses: {
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Marked inverse only",
 			"Both direct and inverse explicitly marked",
 			"Special verb agreement markers for inverse",
@@ -1166,7 +1258,7 @@ const ms = {
 	"7-2-5-Middle Constructions": "7.2.5. Middle Constructions",
 	title725: "Middle Constructions",
 	label725: "What Are These?",
-	info725: [ // Markdown format
+	info725: [
 		"- Also known as anticausatives or detransitivation: a semantically",
 		"transitive situation expressed as a process undergone by a",
 		"Patient (rather than carried out by an Agent).",
@@ -1181,7 +1273,7 @@ const ms = {
 	"7-2-6-Antipassives": "7.2.6. Antipassives",
 	title726: "Antipassives",
 	label726: "What Are These?",
-	info726: [ // Markdown format
+	info726: [
 		"- Similar to passives, but the Patient is downgraded instead",
 		"of the Agent.",
 		"- Generally, this only happens in ergative languages or in",
@@ -1193,7 +1285,7 @@ const ms = {
 	"7-2-7-Object Demotion/Omission/Incorporation": "7.2.7. Object Demotion/Omission/Incorporation",
 	title727: "Object Demotion and Related Functions",
 	label727: "What Are These?",
-	info727: [ // Markdown format
+	info727: [
 		"- **Demotion**: \"Steve shot Bob\" becomes \"Steve shot at Bob\".",
 		"- [newSection]**Omission**: \"Steve shot Bob\" becomes",
 		"\"Steve shot\".",
@@ -1216,7 +1308,7 @@ const ms = {
 	"8-1-Nominalization": "8.1. Nominalization",
 	title81: "Nominalization",
 	label81: "Making Nouns",
-	info81: [ // Markdown format
+	info81: [
 		"- Every language has strategies of adjusting the grammatical",
 		"category of a root. Turning a word into a noun is _nominalization_.",
 		"- [newSection]English has multiple methods, with differing",
@@ -1277,7 +1369,7 @@ const ms = {
 	"8-2-Compounding": "8.2. Compounding",
 	title82: "Compounding",
 	label82: "Word-Making",
-	info82: [ // Markdown format
+	info82: [
 		"- **Noun Incorporation**: noun becomes attached to a verb",
 		"(see 7.2.7).",
 		"   - The most common form is Patient incorporation (sell pigs →",
@@ -1293,7 +1385,7 @@ const ms = {
 	"8-3-Tense/Aspect/Mode": "8.3. Tense/Aspect/Mode",
 	title83: "Tense, Aspect and Mode",
 	label83: "What Are They?",
-	info83: [ // Markdown format
+	info83: [
 		"- **TAM** (Tense, Aspect, Mode) are sometimes hard to tease apart,",
 		"and may only be considered separate because of how they are in",
 		"western language.",
@@ -1323,7 +1415,7 @@ const ms = {
 	"8-3-1-Tense": "8.3.1. Tense",
 	title831: "Tense",
 	label831: "Info on Tense",
-	info831: [ // Markdown format
+	info831: [
 		"- **Tense** sets an action in time in relation to \"now\".",
 		"- Languages can divide time up into different sets of tenses:",
 		"   - Past/Present/Future",
@@ -1332,9 +1424,9 @@ const ms = {
 		"   - Not-Now/Now/Not-Now (two tenses!)",
 		"   - Distant Past/A Year Ago/A Month Ago/A Week Ago/Today or",
 		"   Yesterday/Now/Soon/Future",
-		"      - When human languages have divided past or future into",
-		"      multiple segments, there are never more future segments than",
-		"      past segments!",
+		"      - Of all known human languages that have divided past or",
+		"      future into multiple segments, **none** have more future",
+		"      segments than past segments!",
 		"- [newSection]Future tense markers often derive from \"want\",",
 		"\"come\", or \"go\".",
 		"   - These verbs may still function separately!",
@@ -1346,7 +1438,7 @@ const ms = {
 	"8-3-2-Aspect": "8.3.2. Aspect",
 	title832: "Aspect",
 	label832: "Info on Aspect",
-	info832: [ // Markdown format
+	info832: [
 		"- **Aspect** describes the internal structure of an event or",
 		"state. Here are some typical aspects:",
 		"   - **Perfective**: The situation is viewed as a single event.",
@@ -1416,7 +1508,7 @@ const ms = {
 	"8-3-3-Mode": "8.3.3. Mode",
 	title833: "Mode",
 	label833: "Info on Mode",
-	info833: [ // Markdown format
+	info833: [
 		"- **Mode** describes a speaker's attitude toward a situation,",
 		"including how likely or truthful it is, or how relevant the",
 		"situation is to them.",
@@ -1456,7 +1548,7 @@ const ms = {
 	"8-4-Location/Direction": "8.4. Location/Direction",
 	title84: "Location and Direction",
 	label84: "Where?",
-	info84: [ // Markdown format
+	info84: [
 		"- While Tense grounds statements in time, some languages",
 		"grammaticize location and/or direction markers to ground statements",
 		"in space. It may be even more central to discourse than tense in",
@@ -1487,7 +1579,7 @@ const ms = {
 	"8-5-Evidentiality, Validationality and Mirativity": "8.5. Evidentiality, Validationality and Mirativity",
 	title85: "Evidentiality",
 	label85: "Truth and Certainty",
-	info85: [ // Markdown format
+	info85: [
 		"- **Evidentiality** expresses how much evidence the speaker has",
 		"to make this assertion. For instance, first-hand knowledge is more",
 		"evidential than third-hand suspect information.",
@@ -1519,7 +1611,7 @@ const ms = {
 	"8-6-Miscellaneous": "8.6. Miscellaneous",
 	title86: "Miscelaneous",
 	label86: "Leftovers",
-	info86: [ // Markdown format
+	info86: [
 		"- There are miscellaneous verb-phrase operations that might",
 		"or might not exist.",
 		"   - Lexical time reference (as opposed to tense)",
@@ -1540,7 +1632,7 @@ const ms = {
 	"9-Pragmatically Marked Structures": "9. Pragmatically Marked Structures",
 	title9: "Pragmatics",
 	label9: "What are Pragmatics?",
-	info9: [ // Markdown format
+	info9: [
 		"- Pragmatics is the interpretation of utterances, and Pragmatic",
 		"Statuses relate the _content_ of an utterance to its _context_.",
 		"They cover the following concepts:",
@@ -1594,7 +1686,7 @@ const ms = {
 	"9-1-Focus, Contrast and Topicalization": "9.1. Focus, Contrast and Topicalization",
 	title91: "Focus, Contrast, etc.",
 	label91: "Focus is What This is About",
-	info91: [ // Markdown format
+	info91: [
 		"- **Intonation and Vocalization**, such as tempo changes (\"Do.",
 		"Not. Do. That.\"), volume changes (screaming, whispering), and",
 		"pitch changes (\"Do _not_ do that\"), are nearly universal.",
@@ -1654,7 +1746,7 @@ const ms = {
 	"9-2-Negation": "9.2. Negation",
 	title92: "Negation",
 	label92: "Don't not read this.",
-	info92: [ // Markdown format
+	info92: [
 		"- Common negation strategies:",
 		"   - **Clausal negation** - negates an entire proposition",
 		"      - \"I didn't do it.\"",
@@ -1763,7 +1855,7 @@ const ms = {
 	"9-3-Non-Declarative Speech": "9.3. Non-Declarative Speech",
 	title93: "Declarative Statements",
 	label93: "Minor Note on Declaratives",
-	info93: [ // Markdown format
+	info93: [
 		"- A declarative statement is an assertion. Most speech is",
 		"declarative.",
 		"- Other types of statements are usually handled as \"modes\"",
@@ -1778,7 +1870,7 @@ const ms = {
 	"9-3-1-1-Yes/No Questions": "9.3.1.1. Yes/No Questions",
 	title9311: "Yes/No Questions",
 	label9311: "Yes? No?",
-	info9311: [ // Markdown format
+	info9311: [
 		"- **Yes/No Questions**, hereafter referred to as _YNQs_, are",
 		"interrogative clauses where the expected answer is either \"yes\"",
 		"or \"no\". They can employ any or all of the strategies below.",
@@ -1846,7 +1938,7 @@ const ms = {
 	"9-3-1-2-Questions-Word Questions": "9.3.1.2. Questions-Word Questions",
 	title9312: "Question-Word Questions",
 	label9312: "Who? What? Why?",
-	info9312: [ // Markdown format
+	info9312: [
 		"- Also known as **Content Questions** or **Information Questions**,",
 		"Question-Word Questions (QWs) are best exemplified by the English",
 		"words who, whom, what, where, when, why, which, and how.",
@@ -1877,7 +1969,7 @@ const ms = {
 	"9-3-2-Imperatives": "9.3.2. Imperatives",
 	title932: "Imperatives",
 	label932: "Command Sentences",
-	info932: [ // Markdown format
+	info932: [
 		"- Imperatives are direct commands to an addressee.",
 		"- It is often not necessary to indicate the Agent (addressee),",
 		"since the actor is obvious.",
@@ -1904,7 +1996,7 @@ const ms = {
 	"10-Clause Combinations": "10. Clause Combinations",
 	title10: "Terms",
 	label10: "Quick Primer on Clauses",
-	info10: [ // Markdown format
+	info10: [
 		"- An **Independent Clause** is one that is fully inflected",
 		"and can stand on its own.",
 		"- A **Dependent Clause** depends on some other clause for at least",
@@ -1920,7 +2012,7 @@ const ms = {
 	"10-1-Serial Verbs": "10.1. Serial Verbs",
 	title101: "Serial Verbs",
 	label101: "Go Tap on This",
-	info101: [ // Markdown format
+	info101: [
 		"- **Serial Verbs** are two or more verb roots that aren't",
 		"compounded (8.2) or members of different clauses.",
 		"- These occur in all sorts of languages, but may be more common in",
@@ -1967,7 +2059,7 @@ const ms = {
 	"10-2-Complement Clauses": "10.2. Complement Clauses",
 	title102: "Complement Clauses",
 	label102: "Enter The Matrix",
-	info102: [ // Markdown format
+	info102: [
 		"- A **Complement Clause** (or Embedded Clause) functions as an",
 		"argument to another clause.",
 		"- A **Matrix Clause** (or Main Clause) has a Complement Clause as",
@@ -2006,7 +2098,7 @@ const ms = {
 	"10-3-Adverbial Clauses": "10.3. Adverbial Clauses",
 	title103: "Adverbial Clauses",
 	label103: "Tap This When You're Ready",
-	info103: [ // Markdown format
+	info103: [
 		"- Also called _Adjuncts_, **Adverbial Clauses** behave as adverbs.",
 		"- They can convey certain kinds of information:",
 		"   - _Time_:",
@@ -2044,7 +2136,7 @@ const ms = {
 	"10-4-Clause Chaining, Medial Clauses, and Switch References": "10.4. Clause Chaining, Medial Clauses, and Switch References",
 	title104: "Clause Chaining, Medial Clauses, and Switch References",
 	label104: "Chain Chain Chain...",
-	info104: [ // Markdown format
+	info104: [
 		"- **Clause Chains** are clauses presented in series. They can form",
 		"a large part of discourse in many languages, such as the ones of",
 		"New Guinea, Australia, and the Americas.",
@@ -2108,7 +2200,7 @@ const ms = {
 	"10-5-Relative Clauses": "10.5. Relative Clauses",
 	title105: "Relative Clauses",
 	label105: "Clauses as Adjectives",
-	info105: [ // Markdown format
+	info105: [
 		"- A **Relative Clause** is a clause that functions as a nominal",
 		"modifier. They can be identified by four points.",
 		"   - Example: \"The fumes that made Chris faint.\"",
@@ -2211,7 +2303,7 @@ const ms = {
 	"10-6-Coordinating Clauses": "10.6. Coordinating Clauses",
 	title106: "Coordinating Clauses",
 	label106: "This And That",
-	info106: [ // Markdown format
+	info106: [
 		"- **Coordinating Clauses** are linked together, equal in grammatical",
 		"status. They may be difficult to distinguish from juxtaposition.",
 		"- They often use methods identical to those used to join",
@@ -2249,7 +2341,7 @@ const ms = {
 
 	checkboxCoord: {
 		header: "Coordinating Conjunction Positions",
-		labels: [ // items in this array can use Markdown format
+		labels: [
 			"Between the clauses",
 			"After the first element of the second clause",
 			"After the last element"
@@ -2264,7 +2356,7 @@ const ms = {
 
 	"What is MorphoSyntax?": "What is $t(common:MorphoSyntax)?",
 
-	overviewMain: [ // Markdown format
+	overviewMain: [
 		"This tool offers a way to describe the \"rules\" of a language. It's",
 		"based on methods linguists use to describe real-world languages.",
 		"Because of this, it uses \"technical\" language extensively and may",
@@ -2276,17 +2368,17 @@ const ms = {
 		"where you can pick and choose what interests you and ignore the",
 		"rest.",
 	],
-	overviewSettings: [ // Markdown format
+	overviewSettings: [
 		"The settings page has a place for you to title and describe your",
 		"morphosyntax document. There are also buttons where you can save,",
 		"store, export, and delete your saved documents.",
 	],
-	overviewInfo: [ // Markdown format
+	overviewInfo: [
 		"As you go through the pages, you will see buttons with the (i)",
 		"symbol. They will provide you with more detailed information about",
 		"the associated topic.",
 	],
-	overviewTopics: [ // Markdown format
+	overviewTopics: [
 		"The pages are arranged according to these topics:",
 		"",
 		"1. Morphological Typology",

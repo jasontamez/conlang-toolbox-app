@@ -573,8 +573,8 @@ const Lex: FC<PageData> = (props) => {
 		}, sorter]));
 		// clear all inputs
 		ids.forEach((id: string) => {
-			const el = $i<HTMLIonInputElement>(id);
-			el && el.getInputElement().then((el) => (el.value = ""));
+			const el = $i<HTMLInputElement>(id);
+			el && (el.value = "");
 		});
 	}, [columns, dispatch, doAlert, sorter, tError, tNoText, tOk]);
 
