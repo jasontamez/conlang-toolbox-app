@@ -89,8 +89,8 @@ function merge (items: string[]) {
 	return final;
 };
 function mergeAll (items: string[]) {
-	let final: string = items.shift() || "";
-	items.forEach(s => {
+	let [final = "", ...copy] = items;
+	copy.forEach(s => {
 		final = final + glue + s;
 	});
 	return final;
@@ -100,7 +100,7 @@ function blank (items: string[]) {
 	return "";
 }
 
-const method: Method = {
+const mergingMethodFunctions: Method = {
 	first,
 	last,
 	merge,
@@ -144,11 +144,11 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 	const { columns } = useSelector((state: StateObject) => state.lexicon);
 	const dispatch = useDispatch();
 
-	const makeMergedItem = useCallback((itsByCols: string[][], mMeths: (keyof Method)[]) => {
+	const makeMergedItem = useCallback((itemsByCols: string[][], mergingMethods: (keyof Method)[]) => {
 		const result: Lexicon = {
 			id: "temp",
-			columns: itsByCols.map((col: string[], i: number) => {
-				return method[mMeths[i]](col);
+			columns: itemsByCols.map((col: string[], i: number) => {
+				return mergingMethodFunctions[mergingMethods[i]](col);
 			})
 		};
 		setMergedResult(result);
@@ -177,16 +177,17 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 		merging.length > 0 && makeMergedItem(cols, methodology);
 	}, [merging, mergingObject, columns, makeMergedItem]);
 
-	const setMethod = useCallback((value: string, i: number) => {
+	const setMergingMethod = useCallback((value: string, i: number) => {
 		const newMethods = [...mergeMethods];
 		newMethods[i] = value;
-		setMergeMethods(newMethods);
 		if(mergeMethods[i] !== value) {
+			// Don't bother making a new merged result if the method hasn't changed.
 			makeMergedItem(itemsByColumn, newMethods);
 		}
+		setMergeMethods(newMethods);
 	}, [mergeMethods, makeMergedItem, itemsByColumn]);
 
-	const saveMerge = useCallback(() => {
+	const saveMergedResultAndClose = useCallback(() => {
 		// clear merged items from Lexicon
 		clearInfo();
 		// dispatch info to store
@@ -195,7 +196,7 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 		setIsOpen(false);
 	}, [clearInfo, dispatch, items, mergedResult, setIsOpen, sorter]);
 
-	const cancelMerge = useCallback(() => {
+	const cancelMergingAndClose = useCallback(() => {
 		// clear merged items from Lexicon
 		clearInfo();
 		// close this modal
@@ -211,7 +212,7 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 					className="ion-text-wrap"
 					value={mergeMethods[i]}
 					label={label + ":"}
-					onIonChange={(e) => setMethod(e.detail.value, i)}
+					onIonChange={(e) => setMergingMethod(e.detail.value, i)}
 				>
 					{methods.map((m: (keyof Method)) => {
 						return (
@@ -225,7 +226,7 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 				</IonSelect>
 			</IonItem>
 		);
-	}), [columns, mergeMethods, methodDescriptions, setMethod]);
+	}), [columns, mergeMethods, methodDescriptions, setMergingMethod]);
 	const currentMergeResult = useMemo(() => columns.map((col: LexiconColumn, i: number) => {
 		const { id, label } = col;
 		return (
@@ -268,11 +269,11 @@ const MergeLexiconItemsModal: FC<MergeProps> = (props) => {
 			</IonContent>
 			<IonFooter id="footerElement">
 				<IonToolbar color="darker">
-					<IonButton color="warning" slot="end" onClick={cancelMerge}>
+					<IonButton color="warning" slot="end" onClick={cancelMergingAndClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>{tCancelMerge}</IonLabel>
 					</IonButton>
-					<IonButton color="tertiary" slot="end" onClick={saveMerge}>
+					<IonButton color="tertiary" slot="end" onClick={saveMergedResultAndClose}>
 						<IonIcon icon={saveOutline} slot="start" />
 						<IonLabel>{tSaveMerge}</IonLabel>
 					</IonButton>
