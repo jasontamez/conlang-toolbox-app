@@ -29,10 +29,10 @@ const lexicon = {
 	"Saved Lexicon": "Saved $t(common:Lexicon)",
 	"Lexicon Sorting": "$t(common:Lexicon) Sorting", // |H|
 	sortLexDescription:
-		"The Lexicon will be sorted alphabetically in the order you choose."
-		+ " It sorts by the first column you choose. If two items are"
-		+ " identical in that column, it will sort them by the next column in"
-		+ " the sort list, and so on.",
+		"The Lexicon will be sorted in the order you choose. It alphabetically"
+		+ " sorts by the first column in the list. If two items are identical"
+		+ " in that column, it will sort them by the next column in the list,"
+		+ " and so on.",
 
 	Sort: "Sort",
 	Sort_presentation: "Sort:",
@@ -166,7 +166,8 @@ const lexicon = {
 			"",
 			"Under those boxes you'll find the meat of $t(common:Lexicon):",
 			"all the items you've stored. They will appear as striped rows.",
-			"You can swipe left on each one to find Edit and Delete buttons."
+			"You can **swipe left** on each one to find **Edit** and",
+			"**Delete** buttons."
 		],
 		mergeButton: [ // Markdown format
 			"You can swipe right on a lexicon item to find the",

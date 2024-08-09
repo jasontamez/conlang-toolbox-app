@@ -157,7 +157,7 @@ const AppInfo: FC<PageData> = (props) => {
 						<IonCol>
 							<IonCard>
 								<IonCardHeader className="ion-text-center">
-									<IonCardTitle className="ion-align-self-start">{tCredits}</IonCardTitle>
+									<IonCardTitle className="ion-text-center ion-text-wrap">{tCredits}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent>
 									<IonList className="ion-text-center" lines="full">
@@ -188,7 +188,7 @@ const AppInfo: FC<PageData> = (props) => {
 									<IonCardTitle>{tBugRep}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent id="bugReport">
-									<div className="ion-text-center overrideCenter">
+									<div className="ion-text-center overrideMarkdown">
 										<Markdown>{tBugRepMsg}</Markdown>
 									</div>
 									<div className="ion-text-center">

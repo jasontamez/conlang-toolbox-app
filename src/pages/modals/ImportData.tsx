@@ -599,7 +599,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="success" slot="end" onClick={maybeClose}>
+					<IonButton color="success" slot="start" onClick={maybeClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>{tCancel}</IonLabel>
 					</IonButton>

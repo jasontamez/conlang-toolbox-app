@@ -74,7 +74,7 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 	const tStoredDeclenjugatorSettings = useMemo(() => ts("storedSettings", { tool: t("Declenjugator") }), [ts, t]);
 	const tCurrentLexiconSettings = useMemo(() => ts("currentSettings", { tool: t("Lexicon") }), [ts, t]);
 	const tStoredLexiconDocuments = useMemo(() => ts("storedDocuments", { tool: t("Lexicon") }), [ts, t]);
-	const tConceptsSettings = useMemo(() => ts("appSettings", { tool: t("Extra Characters") }), [ts, t]);
+	const tConceptsSettings = useMemo(() => ts("appSettings", { tool: t("Concepts") }), [ts, t]);
 	const tExtraCharactersSettings = useMemo(() => ts("appSettings", { tool: t("Extra Characters") }), [ts, t]);
 
 	const { isOpen, setIsOpen } = props;

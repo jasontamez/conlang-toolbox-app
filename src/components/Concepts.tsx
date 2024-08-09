@@ -299,7 +299,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "fqrwxmxlxkgnbffmtsxpm",
-		word: "claw",
+		word: "claw (noun)",
 		s100: true
 	},
 	{
@@ -404,7 +404,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "pphcxxfqzgpdjlqbbhfw",
-		word: "dead",
+		word: "dead (adjective)",
 		d: true
 	},
 	{
@@ -533,7 +533,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "qqglzwfmjvbgcwvwfqpd",
-		word: "face",
+		word: "face (noun)",
 		l200: true
 	},
 	{
@@ -551,12 +551,12 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "ffgppmvdzrskwdtchqf",
-		word: "fast",
+		word: "fast (adjective)",
 		l200: true
 	},
 	{
 		id: "fxkkxmdnkqgvpsprbmv",
-		word: "father",
+		word: "father (noun)",
 		s207: true,
 		ssl: true,
 		l200: true
@@ -591,7 +591,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "lsxdvwhwghzcxwzntnsvmkbt",
-		word: "finger",
+		word: "finger (noun)",
 		l200: true
 	},
 	{
@@ -780,7 +780,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "nwkbkhctcqtggxmpw",
-		word: "guts",
+		word: "guts (body part)",
 		s207: true
 	},
 	{
@@ -793,7 +793,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "gjsjjdnxglkxqzmxlrhrjpm",
-		word: "hand",
+		word: "hand (noun)",
 		sy: true,
 		s100: true,
 		s207: true,
@@ -807,7 +807,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "vfvfssvvnfhzzxnvqbv",
-		word: "hard",
+		word: "hard (not soft)",
 		lj: true,
 		l200: true
 	},
@@ -829,7 +829,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "hckgbzwbbzjzlxnfns",
-		word: "heart",
+		word: "heart (body part)",
 		s100: true,
 		s207: true,
 		d: true,
@@ -1135,7 +1135,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "fdkwttrlmrckbhntqmqhrzp",
-		word: "mother",
+		word: "mother (noun)",
 		s207: true,
 		ssl: true,
 		l200: true
@@ -1151,7 +1151,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "qtxhlbsncrdxnqgxnsh",
-		word: "mouth",
+		word: "mouth (body part)",
 		s100: true,
 		s207: true,
 		lj: true,
@@ -1175,7 +1175,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "pgsnjpzgqcjxhtf",
-		word: "narrow",
+		word: "narrow (adjective)",
 		s207: true,
 		ssl: true
 	},
@@ -1308,7 +1308,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "qgzlxzsbfdvfkrdbfhwgfgq",
-		word: "plant",
+		word: "plant (botanical noun)",
 		l200: true
 	},
 	{
@@ -1527,7 +1527,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "lpknjhdtcvbfgpqdrpr",
-		word: "skin/hide",
+		word: "skin/hide (body part)",
 		s100: true,
 		s207: true,
 		lj: true,
@@ -1549,7 +1549,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "llndnmfvtrvzsbmk",
-		word: "slow",
+		word: "slow (adjective)",
 		l200: true
 	},
 	{
@@ -1581,7 +1581,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "pdfqxmdpdxrvzjmdbnq",
-		word: "snake",
+		word: "snake (animal)",
 		s207: true,
 		ssl: true
 	},
@@ -1653,7 +1653,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "wbfrwqjbcdqbrnvsvlfhz",
-		word: "star",
+		word: "star (astronomical)",
 		s100: true,
 		s207: true,
 		ssl: true,
@@ -1663,13 +1663,13 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "knftphjmjfgwxgljs",
-		word: "stick",
+		word: "stick (noun)",
 		s207: true,
 		l200: true
 	},
 	{
 		id: "xtdsjwjddrnztnpdfkcbw",
-		word: "stone/rock",
+		word: "stone/rock (noun)",
 		sy: true,
 		s100: true,
 		s207: true,
@@ -1719,7 +1719,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "fqbjrdgdjkjpjzgbjncjjs",
-		word: "tail",
+		word: "tail (body part)",
 		sy: true,
 		s100: true,
 		s207: true,
@@ -1875,7 +1875,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "xnqfxzbpvrtfjmmmkxtvbgq",
-		word: "warm",
+		word: "warm (adjective)",
 		s207: true,
 		ssl: true,
 		l200: true
@@ -1929,7 +1929,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "mgbrndcclxhtsftlbd",
-		word: "wet",
+		word: "wet (adjective)",
 		s207: true,
 		ssl: true,
 		l200: true
@@ -2042,7 +2042,7 @@ export const Concepts: Concept[] = [
 	},
 	{
 		id: "vznlqtkcnmqqwbzxss",
-		word: "worm",
+		word: "worm (animal)",
 		s207: true,
 		ssl: true
 	},
