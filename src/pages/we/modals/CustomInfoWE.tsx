@@ -71,10 +71,10 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 };
 
 const commons = [
-	"Cancel", "Load Error", "Manage Custom Info", "Name of save",
-	"Name your custom info", "No saved info", "Ok", "Save",
-	"Yes Overwrite It", "cannotUndo", "confirmDelIt", "confirmLoad",
-	"Load", "Delete", "title", "Current Info", "the previous save"
+	"Cancel", "LoadError", "ManageCustomInfo", "NameOfSave",
+	"NameYourInfo", "NoSavedInfo", "Ok", "Save",
+	"YesOverwriteIt", "cannotUndo", "confirmDelIt", "confirmLoad",
+	"Load", "Delete", "title", "CurrentInfo", "prevSave"
 ];
 const things = [ "loadThing", "saveThing" ];
 

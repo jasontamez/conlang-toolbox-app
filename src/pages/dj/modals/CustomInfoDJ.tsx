@@ -45,9 +45,9 @@ const translations = [
 ];
 
 const commons = [
-	"deleteThisCannotUndo", "Cancel", "Delete", "Load Error",
-	"Load", "Manage Custom Info", "Name of save",
-	"Name your custom info", "No saved info", "Ok", "Save", "Yes Overwrite It",
+	"deleteThisCannotUndo", "Cancel", "Delete", "LoadError",
+	"Load", "ManageCustomInfo", "NameOfSave",
+	"NameYourInfo", "NoSavedInfo", "Ok", "Save", "YesOverwriteIt",
 	"confirmDelIt", "confirmLoad"
 ];
 
@@ -60,7 +60,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	] = useI18Memo(commons);
 	const [ tNoTitle, tLoadInfo, tAllGroups, tOverwritePrev ] = useI18Memo(translations, "dj");
 	const tOverwriteAll = useMemo(() => tc("clearOverwriteGeneralThings", { things:tAllGroups }), [tc, tAllGroups]);
-	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("Current Info") }), [tc]);
+	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("CurrentInfo") }), [tc]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

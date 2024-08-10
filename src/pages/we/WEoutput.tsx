@@ -179,10 +179,10 @@ const translations = [
 ];
 const commons = [
 	"Help", "Load Preset", "Output", "Please wait...", "Save", "Cancel",
-	"Go to Lexicon", "Select a column", "error",
-	"Tap words you want to save to Lexicon.",
+	"GoToLexicon", "SelectAColumn", "error",
+	"TapWordsToSave",
 	"You need to add columns to the Lexicon before you can add anything to it.",
-	"Your selected words will be added to the Lexicon under that column."
+	"SaveToLexiconMessage"
 ];
 
 const WEOut: FC<PageData> = (props) => {

@@ -6,7 +6,7 @@ const lexicon = {
 		+ " button.",
 	delItems_one: "Delete {{count}} Item?", // 🟨
 	delItems_other: "Delete {{count}} Items?",
-	delItemsSuccess_one: "Deleted {{count}} item.", // 🟦2.5🟦
+	delItemsSuccess_one: "Deleted {{count}} item.", // 🟦2.5
 	delItemsSuccess_other: "Deleted {{count}} items.",
 
 	"You did not type any information into any text field.": // 🟡
@@ -40,8 +40,8 @@ const lexicon = {
 	"Delete selected lexicon items": "Delete selected lexicon items", // 🔵
 	"Delete multiple lexicon items": "Delete multiple lexicon items", // 🔵
 	"Cancel deleting": "Cancel deleting", // 🔵
-	"Lexicon cleared": "Lexicon cleared", // 🟦4🟦
-	"Nothing to clear": "Nothing to clear", // 🟦3🟦
+	"Lexicon cleared": "Lexicon cleared", // 🟦4
+	"Nothing to clear": "Nothing to clear", // 🟦3
 	deleteEverythingMessage: // 🟡
 		"This will erase everything currently displayed (but not anything"
 		+ " previously saved). Are you sure you want to do this?",
@@ -51,7 +51,7 @@ const lexicon = {
 		+ " lexicon and cannot be reversed.",
 	"No Saved Lexicons": "No Saved Lexicons", // 🟥
 
-	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!", // 🟦2.5🟦
+	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!", // 🟦2.5
 	"You must input a title before saving.": "You must input a title before saving.", // 🟡
 	"Please give your lexicon a title before exporting it.": // 🟡
 		"Please give your lexicon a title before exporting it.",
@@ -98,8 +98,8 @@ const lexicon = {
 	"Text, Newlines": "Text, Newlines",
 	"CSV File": "CSV File",
 	"CSV File, no title/description": "CSV File, no title/description",
-	"JSON File": "JSON File",
-	"XML File": "XML File",
+	fileJson: "JSON File",
+	fileXml: "XML File",
 
 	// Initial lexicon column labels
 	"Word": "Word",

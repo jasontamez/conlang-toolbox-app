@@ -249,7 +249,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 
 	const saveToLexicon = useCallback((words: SavedWord[]) => {
 		doAlert({
-			header: tc("Select a column"),
+			header: tc("SelectAColumn"),
 			message: t("Your selected meanings will be added to the Lexicon under that column."),
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
 				const obj: AlertInput = {
@@ -302,7 +302,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							position: "top",
 							buttons: [
 								{
-									text: tc("Go to Lexicon"),
+									text: tc("GoToLexicon"),
 									handler: () => navigator.push("/lex")
 								}
 							],

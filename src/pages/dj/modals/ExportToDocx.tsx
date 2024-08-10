@@ -426,20 +426,20 @@ const exportDocx = (
 			.catch((e = "Error doexport docx") => {
 				log(dispatch, ["DJExport / Packer / doExport", e]);//
 				toaster({
-					message: tc("generalError", { filename, error: `${e}` }),
+					message: tc("UnableToExport", { error: `${e}` }),
 					color: "success",
 					toast
 				});
 			});
 		toaster({
-			message: tc("fileSaved", { filename }),
+			message: tc("FileExported", { filename }),
 			color: "success",
 			toast
 		});
 	}).catch((e = "Error 64") => {
 		log(dispatch, ["DJExport / Packer", e]);
 		toaster({
-			message: tc("generalError", { filename, error: `64 ${e}` }),
+			message: tc("UnableToExport", { error: `64 ${e}` }),
 			color: "success",
 			toast
 		});

@@ -263,8 +263,8 @@ const WGOut: FC<PageData> = (props) => {
 
 	const saveToLexicon = useCallback((words: string[]) => {
 		doAlert({
-			header: tc("Select a column"),
-			message: tc("Your selected words will be added to the Lexicon under that column."),
+			header: tc("SelectAColumn"),
+			message: tc("SaveToLexiconMessage"),
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
 				const obj: AlertInput = {
 					type: 'radio',
@@ -308,7 +308,7 @@ const WGOut: FC<PageData> = (props) => {
 							position: "top",
 							buttons: [
 								{
-									text: tc("Go to Lexicon"),
+									text: tc("GoToLexicon"),
 									handler: () => navigator.push("/lex")
 								}
 							],
@@ -345,7 +345,7 @@ const WGOut: FC<PageData> = (props) => {
 		}
 		setIsPickingSaving(true);
 		return toaster({
-			message: tc("Tap words you want to save to Lexicon."),
+			message: tc("TapWordsToSave"),
 			duration: 2500,
 			position: "top",
 			toast

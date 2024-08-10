@@ -46,7 +46,7 @@ const wgwe = {
 
 	"transformation description": "transformation description",
 
-	"Unable to suggest a unique label from the given descrption.": // 🟦4🟦
+	"Unable to suggest a unique label from the given descrption.": // 🟦4
 		"Unable to suggest a unique label from the given descrption.",
 	"No title present": "No title present", // 🟡
 	"No label present": "No label present", // 🟡

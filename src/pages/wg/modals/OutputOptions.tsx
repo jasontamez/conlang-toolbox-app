@@ -58,7 +58,7 @@ const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const tOutOpts = useMemo(() => tw("Output Options"), [tw]);
-	const tSortMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
+	const tSortMethod = useMemo(() => tc("SortMethod"), [tc]);
 	const [
 		tAllSyll, tCap, tDefault, tMulti, tNumSent,
 		tPseudo, tSyllBr, tSort, tWhat, tWLSize, tWL,

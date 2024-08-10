@@ -96,7 +96,7 @@ const DisplayWithoutName: FC<DisplayProps> = (props) => {
 };
 
 const translations = [
-	"Characters to be copied", "Copy", "Done", "ExtraChars", "Favorites",
+	"CharactersToBeCopied", "Copy", "Done", "ExtraChars", "Favorites",
 	"Help", "Hide full character names", "Show full character names",
 	"Start favoriting characters", "Stop favoriting characters",
 	"Tap characters to add them here",

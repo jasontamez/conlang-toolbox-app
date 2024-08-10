@@ -98,10 +98,10 @@ export const MainOutlet = memo(() => {
 			} else if (!navigator.canGoBack()) {
 				// Are we trying to exit the app?
 				yesNoAlert({
-					header: t("Exit App?"),
-					message: t("Do you want to exit the app?"),
+					header: t("ExitAppQHead"),
+					message: t("ExitAppQ"),
 					cssClass: "warning",
-					submit: t("Yes Exit!"),
+					submit: t("YesExit"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});
@@ -192,10 +192,10 @@ const App = memo(() => {
 			} else if (!navigator.canGoBack()) {
 				// Are we trying to exit the app?
 				yesNoAlert({
-					header: t("Exit App?"),
-					message: t("Do you want to exit the app?"),
+					header: t("ExitAppQHead"),
+					message: t("ExitAppQ"),
 					cssClass: "warning",
-					submit: t("Yes Exit!"),
+					submit: t("YesExit"),
 					handler: Capacitor.exitApp,
 					doAlert
 				});

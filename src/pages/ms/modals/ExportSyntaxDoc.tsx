@@ -47,8 +47,8 @@ interface ExportModalProps extends ModalProperties {
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const commons = [
-	"Cancel", "JSON File", "Text File (markdown)", "Text File (plain)",
-	"Word Document (docx)", "XML File", "Untitled"
+	"Cancel", "fileJson", "fileMd", "filePlain",
+	"fileDocx", "fileXml", "Untitled"
 ];
 
 const ExportSyntaxModal: FC<ExportModalProps> = (props) => {
@@ -56,7 +56,7 @@ const ExportSyntaxModal: FC<ExportModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tJSON, tMD, tPlain, tDocx, tXML, tUntitled ] = useI18Memo(commons);
 	const tUnusedDesc = useMemo(() => t("showUnused", { joinArrays: "\n" }), [t]);
-	const tChooseFormat = useMemo(() => tc("Choose a format", { context: "presentation" }), [tc]);
+	const tChooseFormat = useMemo(() => tc("ChooseFormat", { context: "presentation" }), [tc]);
 
 	const { isOpen, setIsOpen, setLoading } = props;
 	const [showUnused, setShowUnused] = useState<boolean>(true);

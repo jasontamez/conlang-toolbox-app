@@ -33,8 +33,8 @@ interface ExportModalProps extends ModalProperties {
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const translations = [
-	"CSV File", "CSV File, no title/description", "JSON File",
-	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "XML File",
+	"CSV File", "CSV File, no title/description", "fileJson",
+	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "fileXml",
 	"TITLE"
 ];
 
@@ -44,7 +44,7 @@ const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tClose, tDesc, tTITLE ] = useI18Memo(commons);
 	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");
-	const tFormat = useMemo(() => tc("Choose a format", { context: "presentation" }), [tc]);
+	const tFormat = useMemo(() => tc("ChooseFormat", { context: "presentation" }), [tc]);
 	const tExportThing = useMemo(() => tc("exportThing", { context: "presentation", thing: tc("Lexicon") }), [tc]);
 
 	const { isOpen, setIsOpen, setLoading } = props;

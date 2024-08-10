@@ -9,7 +9,7 @@ const ms = {
 	],
 
 	clearMSInfo: "Clear $t(common:MorphoSyntax) Info",
-	"You have no information to clear.": "You have no information to clear.", // 🟦2.5🟦
+	"You have no information to clear.": "You have no information to clear.", // 🟦2.5
 	morphoSyntaxInfo: // used by clearOverwriteGeneralThings
 		"everything currently in $t(common:MorphoSyntax) (but not anything previously saved)",
 	"Please add information to your MorphoSyntax document in at least one section before exporting it.": // 🟡

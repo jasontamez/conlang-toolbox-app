@@ -40,7 +40,7 @@ const appinfo = {
 	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.": // 🟡
 		"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.",
 	"Delete Them Now": "Delete Them Now", // 🔴
-	"Logs have been cleared.": "Logs have been cleared.", // 🟦3.5🟦
+	"Logs have been cleared.": "Logs have been cleared.", // 🟦3.5
 
 	Changelog: "Changelog", // 🟥 a list of changes made to the app
 	"Hide Older Changes": "Hide Older Changes", // 🔴

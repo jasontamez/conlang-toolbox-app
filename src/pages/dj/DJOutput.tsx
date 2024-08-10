@@ -60,8 +60,8 @@ const translations = [
 ];
 
 const commons = [
-	"Cancel", "Choose a format", "CopyToClipboard", "Generate",
-	"Help", "Output", "Spreadsheet (csv)", "Text File", "Word Document (docx)"
+	"Cancel", "ChooseFormat", "CopyToClipboard", "Generate",
+	"Help", "Output", "fileCsv", "fileText", "fileDocx"
 ];
 
 const DJOutput: FC<PageData> = (props) => {

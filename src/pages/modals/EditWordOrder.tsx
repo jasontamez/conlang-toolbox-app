@@ -91,7 +91,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd, tEditGeneral,
 		tpBlank
 	] = useI18Memo(translations, "lexicon");
-	const tpMethod = useMemo(() => tc("Sort method", { context: "presentation" }), [tc]);
+	const tpMethod = useMemo(() => tc("SortMethod"), [tc]);
 	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
 	const tAddThing = useMemo(() => tc("addThing", { thing: t("Column") }), [tc, t]);
 	const tThingAdded = useMemo(() => tc("thingAdded", { thing: t("Column") }), [tc, t]);

@@ -55,7 +55,7 @@ const doExport = async (
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to make directory', e]);
 			toast && toaster({
-				message: i18n.t("Unable to export", { error: String(e).replace(/\n+/g, " ") }),
+				message: i18n.t("UnableToExport", { error: String(e).replace(/\n+/g, " ") }),
 				color: "danger",
 				duration: 10000,
 				toast
@@ -71,7 +71,7 @@ const doExport = async (
 			});
 //			console.log('Wrote file', result);
 			toast && toaster({
-				message: i18n.t("File exported", { filename }),
+				message: i18n.t("FileExported", { filename }),
 				color: "success",
 				duration: 5000,
 				toast
@@ -79,7 +79,7 @@ const doExport = async (
 		} catch(e) {
 			log(dispatch, ['doExport: Unable to write file', e]);
 			toast && toaster({
-				message: i18n.t("Unable to write file", { error: String(e).replace(/\n+/g, " ") }),
+				message: i18n.t("UnableToExport", { error: String(e).replace(/\n+/g, " ") }),
 				color: "danger",
 				duration: 10000,
 				toast

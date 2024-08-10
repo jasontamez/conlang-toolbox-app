@@ -26,9 +26,9 @@ const settings = {
 	"What to Export": "What to Export", // 🟥
 	"You haven't imported anything yet.": "You haven't imported anything yet.", // 🟡
 	"Yes Close This": "Yes, Close This", // 🔴
-	successImport: "Imported new info for {{listing}}", // 🟦10🟦
-	alsoOverwrote: "; also completely overwrote storage for {{listing}}", // 🟦10🟦
-	successOverwrote: "Completely overwrote storage for {{listing}}", // 🟦10🟦
+	successImport: "Imported new info for {{listing}}", // 🟦10
+	alsoOverwrote: "; also completely overwrote storage for {{listing}}", // 🟦10
+	successOverwrote: "Completely overwrote storage for {{listing}}", // 🟦10
 
 	"Import Info": "Import Info",
 	importDescription:
@@ -45,7 +45,7 @@ const settings = {
 	appSettings: "{{tool}} Settings", // 🔴
 	"Other App Settings": "Other App Settings", // 🔴
 
-	"You did not choose anything to import.": "You did not choose anything to import.", // 🟦5🟦
+	"You did not choose anything to import.": "You did not choose anything to import.", // 🟦5
 	"WARNING!": "WARNING!", // 🟨
 	willOverwriteCurrent: "This will overwrite all current data in {{listing}}.", // 🟡
 	alsoOverwriteStorage: "It will ALSO delete and replace stored data for {{listing}}.", // 🟡

@@ -61,7 +61,7 @@ const dj = {
 	"What is Declenjugator?": "What is $t(common:Declenjugator)?", // 🟥
 
 	"You didn't select a format.": "You didn't select a format.", // 🟡
-	"Please choose at least one group to display.": // 🟡 🟦2.5🟦
+	"Please choose at least one group to display.": // 🟡 🟦2.5
 		"Please choose at least one Group to display.",
 	"Unmatched Words": "Unmatched Words", // 🟥
 	declenjugatorTitle: "Declension/Conjugation Title", // 🟥

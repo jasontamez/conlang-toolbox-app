@@ -107,16 +107,13 @@ const common = {
 	SavedAt: "Saved: {{time}}", // short phrase describing when something was saved
 
 	// Toast and Alert messages
-	"Copied to clipboard": "Copied to clipboard",// 🟦1.5🟦 result message
-	"Nothing to copy": "Nothing to copy",        // 🟦1.5🟦 error message
+	CopiedToClipboard: "Copied to clipboard",// 🟦1.5 result message
+	NothingToCopy: "Nothing to copy",        // 🟦1.5 error message
 
 	Untitled: "[Untitled]", // used as a document title if no title is provided
 	fileFormat: "{{title}} - {{date}}.{{extension}}", // safe for use as a filename
-	"Unable to export": "UNABLE TO EXPORT: {{error}}", // 🟦10🟦
-	"File exported": "{{filename}} exported.", // 🟦5🟦
-	"Unable to write file": "UNABLE TO WRITE FILE: {{error}}", // 🟦10🟦
-	generalError: "Error saving file {{filename}} ({{error}})", // 🟦5🟦
-	fileSaved: "File saved as {{filename}}", // 🟦5🟦
+	UnableToExport: "UNABLE TO EXPORT: {{error}}", // 🟦10
+	FileExported: "{{filename}} exported.", // 🟦5
 
 	// lists of things
 	andGlue: ", ", // this is put between items in a list
@@ -124,37 +121,37 @@ const common = {
 	joinTwo: "{{one}} and {{two}}", // used when there are only two items in a list
 
 	// Exit the App messages
-	"Exit App?": "Exit App?", // 🟨
-	"Do you want to exit the app?": "Do you want to exit the app?", // 🟡
-	"Yes Exit!": "Yes, Exit!", // 🔴
+	ExitAppQHead: "Exit App?", // 🟨
+	ExitAppQ: "Do you want to exit the app?", // 🟡
+	YesExit: "Yes, Exit!", // 🔴
 
 	// Saving words to the Lexicon from other tools
-	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"", // 🟦3.5🟦
-	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"", // 🟦3.5🟦
-	"Select a column": "Select a column",
-	"Go to Lexicon": "Go to $t(Lexicon)", // 🟦3.5🟦+🔴
-	"Tap words you want to save to Lexicon.": "Tap words you want to save to $t(Lexicon).", // 🟦2.5🟦
-	"Your selected words will be added to the Lexicon under that column.": // 🟡
+	saveToLexColumn_one: "{{count}} word saved to $t(Lexicon) under \"{{column}}\"", // 🟦3.5
+	saveToLexColumn_other: "{{count}} words saved to $t(Lexicon) under \"{{column}}\"", // 🟦3.5
+	SelectAColumn: "Select a column",
+	GoToLexicon: "Go to $t(Lexicon)", // 🟦3.5+🔴
+	TapWordsToSave: "Tap words you want to save to $t(Lexicon).", // 🟦2.5
+	"SaveToLexiconMessage": // 🟡
 		"Your selected words will be added to the $t(Lexicon) under that column.",
 
 	// Exporting files
-	"Choose a format": "Choose a Format", // 🟨 and 🟥
-	"Choose a format_presentation": "Choose a format:",
+	ChooseFormat: "Choose a Format", // 🟨 and 🟥
+	ChooseFormat_presentation: "Choose a format:",
 
-	// Types of file exports
-	"Word Document (docx)": "Word Document (docx)",
-	"Text File": "Text File",
-	"Text File (plain)": "$t(Text File) (plain)",
-	"Text File (markdown)": "$t(Text File) (markdown)",
-	"Spreadsheet (csv)": "Spreadsheet (csv)",
-	"JSON File": "JSON File",
-	"XML File": "XML File",
+	// Types of file exports file file(Docx|Text|Plain|Md|Csv|Json|Xml)
+	fileDocx: "Word Document (docx)",
+	fileText: "Text File",
+	filePlain: "$t(fileText) (plain)",
+	fileMd: "$t(fileText) (markdown)",
+	fileCsv: "Spreadsheet (csv)",
+	fileJson: "JSON File",
+	fileXml: "XML File",
 
-	"Characters to be copied": "Characters to be copied", // 🔵
+	CharactersToBeCopied: "Characters to be copied", // 🔵
 
 	// Things will take `count` properties for plurality, but the exact number will usually be expressed
 	//   in the `things` property itself
-	thingsDeleted_one: "{{things}} deleted.", // 🟦2.5🟦
+	thingsDeleted_one: "{{things}} deleted.", // 🟦2.5
 	thingsDeleted_other: "{{things}} deleted.",
 
 	// General Things are unknown: may be 0, 1, or any number
@@ -162,10 +159,10 @@ const common = {
 	saveGeneralThings: "Save {{things}}", // 🟥 🔴
 
 	// Singular Things
-	thingAdded: "{{thing}} added.", // 🟦2🟦
-	thingSaved: "{{thing}} saved.", // 🟦2🟦
-	thingDeleted: "{{thing}} deleted.", // 🟦2.5🟦
-	thingEdited: "{{thing}} edited.", // 🟦2🟦 🟨
+	thingAdded: "{{thing}} added.", // 🟦2
+	thingSaved: "{{thing}} saved.", // 🟦2
+	thingDeleted: "{{thing}} deleted.", // 🟦2.5
+	thingEdited: "{{thing}} edited.", // 🟦2 🟨
 	deleteThing: "Delete {{thing}}", // 🔴 🟨
 	editThing: "Edit {{thing}}", // (H)
 	addThing: "Add {{thing}}", // 🟥 🔴
@@ -178,27 +175,26 @@ const common = {
 	// Titled things
 	deleteTitleQ: "Delete \"{{title}}\"?", // 🟨
 	loadTitleQ: "Load \"{{title}}\"?", // 🟨
-	titleSaved: "\"{{title}}\" saved.", // 🟦2.5🟦
+	titleSaved: "\"{{title}}\" saved.", // 🟦2.5
 	titleAlreadyExists: "\"{{title}}\" already exists.", // 🟨
-	titleLoaded: "\"{{title}}\" loaded.", // 🟦2.5🟦
+	titleLoaded: "\"{{title}}\" loaded.", // 🟦2.5
 	titleNotFound: "\"{{title}}\" not found.", // 🟡
-	titleDeleted: "\"{{title}}\" deleted.", // 🟦2.5🟦
-	titleOverwritten: "\"{{title}}\" overwritten.", // 🟦2.5🟦
+	titleDeleted: "\"{{title}}\" deleted.", // 🟦2.5
+	titleOverwritten: "\"{{title}}\" overwritten.", // 🟦2.5
 
 	// "It" refers to saved info from WG, WE, or Declenjugation
-	"Yes Overwrite It": "Yes, Overwrite It", // 🔴
+	YesOverwriteIt: "Yes, Overwrite It", // 🔴
 
-	"the previous save": "the previous save",
-	"Load Error": "Load Error", // 🟨
-	"Manage Custom Info": "Manage Custom Info", // 🟥
-	"Current Info": "Current Info",
-	"Name of save": "Name of save",
-	"Name your custom info": "Name your custom info",
+	prevSave: "the previous save",
+	LoadError: "Load Error", // 🟨
+	ManageCustomInfo: "Manage Custom Info", // 🟥
+	CurrentInfo: "Current Info",
+	NameOfSave: "Name of save",
+	NameYourInfo: "Name your custom info",
 	Load: "Load", // 🔴
-	"No saved info": "No saved info",
+	NoSavedInfo: "No saved info",
 
-	"Sort method": "Sort method",
-	"Sort method_presentation": "Sort method:",
+	SortMethod: "Sort method:",
 
 	cannotUndo: "This cannot be undone.", // 🟡 This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // 🟡 Do you want to do this action?
@@ -235,10 +231,10 @@ const common = {
 	This: "This",
 
 	"Yes Exit": "Yes, Exit", // 🔴
-	"Nothing to save.": "Nothing to save.", // 🟦2.5🟦
+	"Nothing to save.": "Nothing to save.", // 🟦2.5
 	Delete: "Delete", // 🔴
 	Edit: "Edit", // 🔴
-	Deleted: "Deleted", // 🟦2🟦
+	Deleted: "Deleted", // 🟦2
 	"Unsaved Info": "Unsaved Info", // 🟨
 
 	"Are you sure you want to discard this?": // 🟡 when deciding not to add a new thing
@@ -300,9 +296,9 @@ const common = {
 	"Match all conditions": "Match all conditions", // 🟥
 	"If off, this will import words that match any condition.": "If off, this will import words that match any condition.",
 	"Exit Without Importing?": "Exit Without Importing?", // 🟨
-	"Please select at least one column to import from.": "Please select at least one column to import from.", // 🟦2.5🟦
-	"Did not find anything to import.": "Did not find anything to import.", // 🟦4.5🟦
-	importSuccess_one: "Imported {{count}} word from $t(Lexicon).", // 🟦3.5🟦
+	"Please select at least one column to import from.": "Please select at least one column to import from.", // 🟦2.5
+	"Did not find anything to import.": "Did not find anything to import.", // 🟦4.5
+	importSuccess_one: "Imported {{count}} word from $t(Lexicon).", // 🟦3.5
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
 	yesImport: "Yes, Import", // 🔴
 
@@ -323,14 +319,14 @@ const common = {
 	],
 
 	// EXTRA CHARACTERS
-	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.", // 🟦2.5🟦
-	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.", // 🟦2.5🟦
-	copiedCharToClipboard: "Copied {{char}} to clipboard", // 🟦1.5🟦 only one character was copied
+	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.", // 🟦2.5
+	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.", // 🟦2.5
+	copiedCharToClipboard: "Copied {{char}} to clipboard", // 🟦1.5 only one character was copied
 	Favorites: "Favorites", // 🔴
 	"Start favoriting characters" : "Start favoriting characters", // 🔵
 	"Stop favoriting characters" : "Stop favoriting characters", // 🔵
 	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)", // [T:2,5]
-	"No longer saving to Favorites": "No longer saving to $t(Favorites)", // 🟦2.5🟦
+	"No longer saving to Favorites": "No longer saving to $t(Favorites)", // 🟦2.5
 	"Tap characters to add them here": "Tap characters to add them here",
 	"Show full character names": "Show full character names", // 🔵
 	"Hide full character names": "Hide full character names", // 🔵

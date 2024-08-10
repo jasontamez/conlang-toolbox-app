@@ -88,7 +88,7 @@ const concepts = {
 	"Your selected meanings will be added to the Lexicon under that column.": // 🟡
 		"Your selected meanings will be added to the $t(common:Lexicon) under that column.",
 
-	"Tap meanings you want to link, in the order you wish to link them.": // 🟦5🟦
+	"Tap meanings you want to link, in the order you wish to link them.": // 🟦5
 		"Tap meanings you want to link, in the order you wish to link them.",
 
 	// The key below takes a {{count}} in case special plurals are needed. Count will NEVER be 0 or 1.
@@ -100,13 +100,13 @@ const concepts = {
 	"No Discard Them": "No, Discard Them", // 🔴 See above
 	Combination: "Combination", // The combination of meanings, used by thingSaved
 
-	"Tap meanings you want to save to Lexicon": // 🟦2.5🟦
+	"Tap meanings you want to save to Lexicon": // 🟦2.5
 		"Tap meanings you want to save to $t(common:Lexicon)",
 
 	"Selected meanings_one": "Selected meaning", // Fills the {{what}} role in saveToLexColumn
 	"Selected meanings_other": "Selected meanings",
 
-	"Tap combinations you want to delete, then tap the Unlink button again.": // 🟦3🟦
+	"Tap combinations you want to delete, then tap the Unlink button again.": // 🟦3
 		"Tap combinations you want to delete, then tap the Unlink button again.",
 
 	delMeanings_one: "Delete {{count}} meaning?", // 🟨

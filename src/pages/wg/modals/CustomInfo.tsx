@@ -71,9 +71,9 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 };
 
 const commons = [
-	"Cancel", "Delete", "Load Error", "Load",
-	"Manage Custom Info", "Name of save", "Name your custom info",
-	"No saved info", "Ok", "Save", "Yes Overwrite It", "cannotUndo",
+	"Cancel", "Delete", "LoadError", "Load",
+	"ManageCustomInfo", "NameOfSave", "NameYourInfo",
+	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "cannotUndo",
 	"confirmDelIt", "confirmLoad"
 ];
 
@@ -86,7 +86,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		tConfirmLoad
 	] = useI18Memo(commons);
 	const [tSaveInfo, tLoadInfo] = useMemo(() => {
-		const tCurr = tc("Current Info");
+		const tCurr = tc("CurrentInfo");
 		const save = tc("saveThing", { thing: tCurr });
 		const load = tc("loadThing", { thing: tCurr });
 		return [save, load];
@@ -95,7 +95,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		return tc("missingThing", { thing: tc("title") });
 	}, [tc]);
 	const tClearPrevSave = useMemo(() => {
-		return tc("clearOverwriteGeneralThings", { things: tc("the previous save") });
+		return tc("clearOverwriteGeneralThings", { things: tc("prevSave") });
 	}, [tc]);
 	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("allThings") }), [t, tc]);
 
