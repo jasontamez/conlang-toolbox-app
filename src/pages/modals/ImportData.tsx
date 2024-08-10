@@ -76,8 +76,8 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 };
 
 const commons = [
-	"App Settings", "Cancel", "Concepts", "Declenjugator",
-	"Extra Characters", "Lexicon", "MorphoSyntax", "WordEvolve",
+	"AppSettings", "Cancel", "Concepts", "Declenjugator",
+	"ExtraChars", "Lexicon", "MorphoSyntax", "WordEvolve",
 	"WordGen", "areYouSure", "Import"
 ];
 
@@ -585,23 +585,17 @@ const ImportData: FC<ModalProperties> = (props) => {
 							onIonChange={toggleImportSet}
 						>{tOtherSett}</IonToggle>
 					</IonItem>
-					<IonItem>
-						<IonButton
-							color="secondary"
-							slot="end"
-							onClick={doImport}
-						>
-							<IonLabel>{tImport}</IonLabel>
-							<IonIcon icon={arrowUpCircle} slot="start" />
-						</IonButton>
-					</IonItem>
 				</IonList>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButton color="success" slot="start" onClick={maybeClose}>
+					<IonButton color="danger" slot="start" onClick={maybeClose}>
 						<IonIcon icon={closeCircleOutline} slot="start" />
 						<IonLabel>{tCancel}</IonLabel>
+					</IonButton>
+					<IonButton color="secondary" slot="end" onClick={doImport}>
+						<IonIcon icon={arrowUpCircle} slot="start" />
+						<IonLabel>{tImport}</IonLabel>
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>

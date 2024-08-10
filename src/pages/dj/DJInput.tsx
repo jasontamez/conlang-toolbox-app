@@ -34,7 +34,7 @@ import { InputCard } from './DJinfo';
 const translations = [ "Enter words here, one per line", "Words to send through Declenjugator" ];
 
 const commons = [
-	"Clear", "Extra Characters", "Help", "Input", "Yes Clear It",
+	"Clear", "ExtraChars", "Help", "Input", "Yes Clear It",
 	"Are you sure? This will clear the entire input and cannot be undone."
 ];
 

@@ -2,7 +2,7 @@ const appinfo = {
 
 	// APP INFO
 
-	"Credits and Acknowledgements": "Credits and Acknowledgements", // |H|
+	"Credits and Acknowledgements": "Credits and Acknowledgements", // 🟥
 	credit1: [ // Markdown format
 		"App icon is based on",
 		"[Toolbox by Maxicons](https://thenounproject.com/term/toolbox/2586725/)",
@@ -20,31 +20,31 @@ const appinfo = {
 		"presented therein"
 	],
 
-	"Bug Reports": "Bug Reports", // |H|
+	"Bug Reports": "Bug Reports", // 🟥
 	bugReportMsg: [ // Markdown format
 		"Please report bugs and errors to",
 		"[jasontankapps@gmail.com](mailto:jasontankapps@gmail.com) and",
 		"incude an error log."
 	],
-	"Get Error Log": "Get Error Log", // (B)
+	"Get Error Log": "Get Error Log", // 🔴
 
 	// 'state' refers to the info saved by the app that is used to display info,
 	//   create info, etc.
-	"Entire State": "Entire State", // <D:H>
-	"Debug Info": "Debug Info", // <D:H>
+	"Entire State": "Entire State", // 🟨
+	"Debug Info": "Debug Info", // 🟨
 
 	// 'logs' refer to hidden reports/notes that the app sometimes makes when
 	//   it encounters an error.
-	"Copy Logs": "Copy Logs", // (B)
-	"Clear Logs": "Clear Logs", // (B)
-	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.": // <D>
+	"Copy Logs": "Copy Logs", // 🔴
+	"Clear Logs": "Clear Logs", // 🔴
+	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.": // 🟡
 		"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone.",
-	"Delete Them Now": "Delete Them Now", // (B)
-	"Logs have been cleared.": "Logs have been cleared.", // [T:3.5]
+	"Delete Them Now": "Delete Them Now", // 🔴
+	"Logs have been cleared.": "Logs have been cleared.", // 🟦3.5🟦
 
-	Changelog: "Changelog", // |H| a list of changes made to the app
-	"Hide Older Changes": "Hide Older Changes", // (B)
-	"Show Older Changes": "Show Older Changes", // (B)
+	Changelog: "Changelog", // 🟥 a list of changes made to the app
+	"Hide Older Changes": "Hide Older Changes", // 🔴
+	"Show Older Changes": "Show Older Changes", // 🔴
 	changelog: {
 		// Markdown format
 		//v0.11.3

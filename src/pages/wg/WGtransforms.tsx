@@ -95,7 +95,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 	);
 };
 
-const commons = [ "Add New", "Delete", "Help" ];
+const commons = [ "AddNew", "Delete", "Help" ];
 
 const WGRew: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');

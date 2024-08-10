@@ -4,30 +4,30 @@ const lexicon = {
 		"Tap on items to mark them for deletion. Finish deleting by tapping"
 		+ " the top floating button. Cancel by tapping the bottom floating"
 		+ " button.",
-	delItems_one: "Delete {{count}} Item?", // <D:H>
+	delItems_one: "Delete {{count}} Item?", // 🟨
 	delItems_other: "Delete {{count}} Items?",
-	delItemsSuccess_one: "Deleted {{count}} item.", // [T:2.5]
+	delItemsSuccess_one: "Deleted {{count}} item.", // 🟦2.5🟦
 	delItemsSuccess_other: "Deleted {{count}} items.",
 
-	"You did not type any information into any text field.": // <D>
+	"You did not type any information into any text field.": // 🟡
 		"You did not type any information into any text field.",
 
-	"Merge selected items": "Merge selected items", // {A}
+	"Merge selected items": "Merge selected items", // 🔵
 
 	"Lexicon Title": "$t(common:Lexicon) $t(common:Title)",
 	"Lexicon Title_presentation": "$t(common:Lexicon) $t(common:Title)", // presentation context will pull Title_presentation by default
 	lexTitleHelperText: "Usually the language name.",
 	lexDescriptionHelperText: "A short description of this lexicon.",
 
-	lexItems_one: "{{count}} Item", // |H|
+	lexItems_one: "{{count}} Item", // 🟥
 	lexItems_other: "{{count}} Items",
 	lexitems_one: "{{count}} item",
 	lexitems_other: "{{count}} items",
 
-	"Lexicon Storage": "$t(common:Lexicon) Storage", // |H|
-	"Clear Lexicon": "Clear $t(common:Lexicon)", // (B)
+	"Lexicon Storage": "$t(common:Lexicon) Storage", // 🟥
+	"Clear Lexicon": "Clear $t(common:Lexicon)", // 🔴
 	"Saved Lexicon": "Saved $t(common:Lexicon)",
-	"Lexicon Sorting": "$t(common:Lexicon) Sorting", // |H|
+	"Lexicon Sorting": "$t(common:Lexicon) Sorting", // 🟥
 	sortLexDescription:
 		"The Lexicon will be sorted in the order you choose. It alphabetically"
 		+ " sorts by the first column in the list. If two items are identical"
@@ -37,52 +37,52 @@ const lexicon = {
 	Sort: "Sort",
 	Sort_presentation: "Sort:",
 
-	"Delete selected lexicon items": "Delete selected lexicon items", // {A}
-	"Delete multiple lexicon items": "Delete multiple lexicon items", // {A}
-	"Cancel deleting": "Cancel deleting", // {A}
-	"Lexicon cleared": "Lexicon cleared", // [T:4]
-	"Nothing to clear": "Nothing to clear", // [T:3]
-	deleteEverythingMessage: // <D>
+	"Delete selected lexicon items": "Delete selected lexicon items", // 🔵
+	"Delete multiple lexicon items": "Delete multiple lexicon items", // 🔵
+	"Cancel deleting": "Cancel deleting", // 🔵
+	"Lexicon cleared": "Lexicon cleared", // 🟦4🟦
+	"Nothing to clear": "Nothing to clear", // 🟦3🟦
+	deleteEverythingMessage: // 🟡
 		"This will erase everything currently displayed (but not anything"
 		+ " previously saved). Are you sure you want to do this?",
 
-	loadLexiconConfirm: // <D>
+	loadLexiconConfirm: // 🟡
 		"Are you sure you want to load this? It will overwrite your current"
 		+ " lexicon and cannot be reversed.",
-	"No Saved Lexicons": "No Saved Lexicons", // |H|
+	"No Saved Lexicons": "No Saved Lexicons", // 🟥
 
-	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!", // [T:2.5]
-	"You must input a title before saving.": "You must input a title before saving.", // <D>
-	"Please give your lexicon a title before exporting it.": // <D>
+	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!", // 🟦2.5🟦
+	"You must input a title before saving.": "You must input a title before saving.", // 🟡
+	"Please give your lexicon a title before exporting it.": // 🟡
 		"Please give your lexicon a title before exporting it.",
-	"Please add words to your lexicon before exporting it.": // <D>
+	"Please add words to your lexicon before exporting it.": // 🟡
 		"Please add words to your lexicon before exporting it.",
 
-	Item: "Item", // (B)
-	Column: "Column", // (B)
-	"Edit Columns": "Edit Columns", // |H|
-	"Lexicon Item": "$t(common:Lexicon) $t(Item)", // |H|
-	"Exit Without Saving?": "Exit Without Saving?", // <D:H>
-	"You have unsaved changes. Are you sure you want to exit?": // <D>
+	Item: "Item", // 🔴
+	Column: "Column", // 🔴
+	"Edit Columns": "Edit Columns", // 🟥
+	"Lexicon Item": "$t(common:Lexicon) $t(Item)", // 🟥
+	"Exit Without Saving?": "Exit Without Saving?", // 🟨
+	"You have unsaved changes. Are you sure you want to exit?": // 🟡
 		"You have unsaved changes. Are you sure you want to exit?",
 
 	"New": "New", // Default label for a new column
-	"Are you sure you want to delete this column? This cannot be undone.": // <D>
+	"Are you sure you want to delete this column? This cannot be undone.": // 🟡
 		"Are you sure you want to delete this column? $t(common:cannotUndo)",
-	"Lexicon Options": "$t(common:Lexicon) Options", // |H|
-	"Show Full Column Titles": "Show Full Column Titles", // (B)
+	"Lexicon Options": "$t(common:Lexicon) Options", // 🟥
+	"Show Full Column Titles": "Show Full Column Titles", // 🔴
 
 	// always presentational context:
 	"Sort blank columns": "Sort blank columns:",
 
-	"Rearrange Lexicon Columns": "Rearrange Lexicon Columns", // |H|
+	"Rearrange Lexicon Columns": "Rearrange Lexicon Columns", // 🟥
 	// The below describe how blank columns will be sorted in the Lexicon
-	"To Beginning, Always": "To Beginning, Always", // (B)
-	"To End, Always": "To End, Always", // (B)
-	"As Alphabetically First": "As Alphabetically First", // (B)
-	"As Alphabetically Last": "As Alphabetically Last", // (B)
+	"To Beginning, Always": "To Beginning, Always", // 🔴
+	"To End, Always": "To End, Always", // 🔴
+	"As Alphabetically First": "As Alphabetically First", // 🔴
+	"As Alphabetically Last": "As Alphabetically Last", // 🔴
 	// Column Info
-	"Field Name": "Field Name", // {A}
+	"Field Name": "Field Name", // 🔵
 	// The following labels should be kept short
 	"Small": "Small", // (small column size)
 	"Med": "Med", // (medium column size)
@@ -107,15 +107,15 @@ const lexicon = {
 	"Definition": "Definition",
 
 	lexiconMergeInstructions:
-		"The Lexicon will be sorted alphabetically in the order you choose."
-		+ " It sorts by the first column you choose. If two items are"
-		+ " identical in that column, it will sort them by the next column"
-		+ " in the sort list, and so on.",
+		"This will combine the selected Lexicon items into one single Lexicon"
+		+ " item. Use the \"How to Merge\" section to choose how the items"
+		+ " are merged, and see a preview of the final result in the \"Current"
+		+ " Merged Result\" section. This action cannot be undone.",
 	"How to Merge": "How to Merge",
 	"Current merged result": "Current merged result:", // presentational context
-	"Cancel Merging": "Cancel Merging", // (B)
-	"Save and Merge": "Save and Merge", // (B)
-	"Merge Items": "Merge Items", // |H| {A}
+	"Cancel Merging": "Cancel Merging", // 🔴
+	"Save and Merge": "Save and Merge", // 🔴
+	"Merge Items": "Merge Items", // 🟥 🔵
 
 	merge: {
 		first: "Use first non-blank value",
@@ -176,7 +176,7 @@ const lexicon = {
 			"button will appear at the bottom of the page. Tapping on it will",
 			"prompt you to merge the selected items into one entry.",
 			"",
-			"Several tools in $t(common:Conlang Toolbox) can export info into",
+			"Several tools in $t(common:appTitle) can export info into",
 			"the $t(common:Lexicon). The merge function can be used to merge",
 			"all this different info. Here's an example:",
 			"",

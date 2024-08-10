@@ -37,7 +37,7 @@ function resetError() {
 }
 
 const commons = [
-	"Add and Close", "Cancel", "error", "optional"
+	"AddAndClose", "Cancel", "error", "optional"
 ];
 const translations = [
 	"Description of the transformation", "No search expression present",

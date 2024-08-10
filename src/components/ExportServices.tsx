@@ -21,7 +21,7 @@ const doExport = async (
 ) => {
 	const Docs = Directory.Documents;
 	const filename = sanitize(fileName) || "defaultfilename.txt";
-	const path = sanitize(i18n.t("Conlang Toolbox", { context: "filename" }));
+	const path = sanitize(i18n.t("appTitle", { context: "filename" }));
 
 
 	// FOR BROWSER TESTING ONLY

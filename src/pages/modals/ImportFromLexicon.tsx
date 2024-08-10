@@ -88,7 +88,7 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 
 
 const commons = [
-	"Close", "Extra Characters", "Save", "Help",
+	"Close", "ExtraChars", "Save", "Help",
 	"Add Conditions optional", "Cancel", "Column [x] must contain [y]",
 	"Column [x] must match expression [y]", "Did not find anything to import.",
 	"Exit Without Importing?", "Import from which columns",

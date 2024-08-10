@@ -6,7 +6,7 @@ const wgwe = {
 	charGroup_other: "character groups",
 	CharGroup_one: "Character Group",
 	CharGroup_other: "Character Groups",
-	"Delete All": "Delete All", // <D:H>
+	"Delete All": "Delete All", // 🟨
 	delAllCharGroups_one:
 		"This will delete the current $t(charGroup_one), and cannot be undone.",
 	delAllCharGroups_other:
@@ -46,22 +46,22 @@ const wgwe = {
 
 	"transformation description": "transformation description",
 
-	"Unable to suggest a unique label from the given descrption.": // [T:4]
+	"Unable to suggest a unique label from the given descrption.": // 🟦4🟦
 		"Unable to suggest a unique label from the given descrption.",
-	"No title present": "No title present", // <D>
-	"No label present": "No label present", // <D>
-	duplicateLabel: "There is already a label \"{{label}}\"", // <D>
-	invalidLabel: "You cannot use \"{{label}}\" as a label", // <D>
-	"No run present": "No run present", // <D>
+	"No title present": "No title present", // 🟡
+	"No label present": "No label present", // 🟡
+	duplicateLabel: "There is already a label \"{{label}}\"", // 🟡
+	invalidLabel: "You cannot use \"{{label}}\" as a label", // 🟡
+	"No run present": "No run present", // 🟡
 
-	"Title or description": "Title or description", // {A}
-	"Title or description_presentation": "Title/Description:", // |H|
-	"Short Label": "Short Label", // {A}
-	"Short Label_presentation": "Short Label:", // |H|
+	"Title or description": "Title or description", // 🔵
+	"Title or description_presentation": "Title/Description:", // 🟥
+	"Short Label": "Short Label", // 🔵
+	"Short Label_presentation": "Short Label:", // 🟥
 	"1 character only": "1 character only",
-	Suggest: "Suggest", // (B) suggest a 1-character label for this character group
-	"Letters Characters": "Letters, Characters", // {A}
-	"Letters Characters_presentation": "Letters/Characters:", // |H|
+	Suggest: "Suggest", // 🔴 suggest a 1-character label for this character group
+	"Letters Characters": "Letters, Characters", // 🔵
+	"Letters Characters_presentation": "Letters/Characters:", // 🟥
 	"Enter characters in group here": "Enter characters in $t(CharGroup_one) here",
 	"what to change": "what to change",
 	"what it changes into": "what it changes into",

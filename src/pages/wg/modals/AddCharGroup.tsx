@@ -42,7 +42,7 @@ const presentations = ["Letters Characters", "Short Label", "Title or descriptio
 const context = { context: "presentation" };
 
 
-const commons = [ "Add and Close", "error", "Cancel" ];
+const commons = [ "AddAndClose", "error", "Cancel" ];
 
 const wgweWords = [
 	"1 character only", "CharGroup_one", "Enter characters in group here",

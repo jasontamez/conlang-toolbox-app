@@ -33,7 +33,7 @@ const ModalHeader: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const maybeButton = useMemo(() => (
 		openECM ?
-			<IonButton onClick={() => openECM(true)} aria-label={tc("Extra Characters")}>
+			<IonButton onClick={() => openECM(true)} aria-label={tc("ExtraChars")}>
 				<IonIcon icon={globeOutline} />
 			</IonButton>
 		: <></>

@@ -94,9 +94,9 @@ const translations = [
 ];
 
 const commons = [
-	"Add New", "deleteThisCannotUndo",
+	"AddNew", "deleteThisCannotUndo",
 	"Are you sure you want to discard this?", "Cancel", "Close",
-	"Default sort", "Delete", "Edit", "Extra Characters", "Ok", "Save",
+	"Default sort", "Delete", "Edit", "ExtraChars", "Ok", "Save",
 	"Title", "Unsaved Info", "Yes Discard", "areYouSure", "confirmDelIt"
 ];
 

@@ -49,7 +49,7 @@ const translations = [
 ]
 
 const commons = [
-	"Close", "Delete", "Extra Characters", "Ok", "Save",
+	"Close", "Delete", "ExtraChars", "Ok", "Save",
 	"areYouSure", "confirmDelIt", "emphasizedError"
 ];
 

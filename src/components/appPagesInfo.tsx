@@ -57,8 +57,8 @@ export interface AppPageObject {
 
 export const appMenuInfo: MenuSection[] = [
 	{
-		header: tc("Conlang Toolbox"),
-		note: tc("tools for language invention"),
+		header: tc("appTitle"),
+		note: tc("appSubtitle"),
 		pages: [
 			{
 				title: tc("MorphoSyntax"),
@@ -361,7 +361,7 @@ export const appMenuInfo: MenuSection[] = [
 	{
 		pages: [
 			{
-				title: tc("App Info"),
+				title: tc("AppInfo"),
 				url: '/appinfo',
 				id: 'menuitemAppInfo'
 			}

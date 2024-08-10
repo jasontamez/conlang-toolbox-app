@@ -17,7 +17,7 @@ import {
 	IonItemDivider,
 	IonToggle
 } from '@ionic/react';
-import { closeCircleOutline } from "ionicons/icons";
+import { closeCircleOutline, checkmarkDoneCircleOutline } from "ionicons/icons";
 import { useSelector } from 'react-redux';
 import Markdown from 'react-markdown';
 
@@ -52,7 +52,7 @@ import { $i } from '../../components/DollarSignExports';
 import copyText from '../../components/copyText';
 import useI18Memo from '../../components/useI18Memo';
 
-const commons = [ "Close", "Copy to Clipboard", "Done", "Loading" ];
+const commons = [ "Close", "CopyToClipboard", "Done", "Loading" ];
 
 const translations = [ "Exported Data", "Other App Settings", "What to Export" ];
 
@@ -75,7 +75,7 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 	const tCurrentLexiconSettings = useMemo(() => ts("currentSettings", { tool: t("Lexicon") }), [ts, t]);
 	const tStoredLexiconDocuments = useMemo(() => ts("storedDocuments", { tool: t("Lexicon") }), [ts, t]);
 	const tConceptsSettings = useMemo(() => ts("appSettings", { tool: t("Concepts") }), [ts, t]);
-	const tExtraCharactersSettings = useMemo(() => ts("appSettings", { tool: t("Extra Characters") }), [ts, t]);
+	const tExtraCharactersSettings = useMemo(() => ts("appSettings", { tool: t("ExtraChars") }), [ts, t]);
 
 	const { isOpen, setIsOpen } = props;
 	const toast = useIonToast();
@@ -497,7 +497,7 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 			<IonFooter>
 				<IonToolbar>
 					<IonButton color="success" slot="end" onClick={doClose}>
-						<IonIcon icon={closeCircleOutline} slot="start" />
+						<IonIcon icon={checkmarkDoneCircleOutline} slot="start" />
 						<IonLabel>{tDone}</IonLabel>
 					</IonButton>
 				</IonToolbar>

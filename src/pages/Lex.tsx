@@ -127,7 +127,7 @@ interface InnerHeaderProps {
 }
 
 const innerCommons = [
-	"Extra Characters", "Help", "Please wait...", "Lexicon"
+	"ExtraChars", "Help", "Please wait...", "Lexicon"
 ];
 
 const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
@@ -386,7 +386,7 @@ const translations = [
 
 const commons =  [
 	"deleteThisCannotUndo", "Description", "Ok", "areYouSure", "cannotUndo",
-	"confirmDelIt", "error", "Help", "Add New", "Close"
+	"confirmDelIt", "error", "Help", "AddNew", "Close"
 ];
 
 const presentations = [ "Lexicon Title", "Sort" ];

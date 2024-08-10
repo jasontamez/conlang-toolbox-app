@@ -125,7 +125,7 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 };
 
 const commons = [
-	"Add New", "deleteThisCannotUndo", "Clear Everything?",
+	"AddNew", "deleteThisCannotUndo", "Clear Everything?",
 	"Delete", "Help", "confirmDelIt"
 ];
 

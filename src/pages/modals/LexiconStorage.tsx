@@ -54,7 +54,7 @@ const translations = [
 	"Clear Lexicon"
 ]
 
-const commons = [ "Delete Everything?", "Done", "Ok", "Save as New", "confirmDelIt", "error" ];
+const commons = [ "Delete Everything?", "Done", "Ok", "SaveAsNew"", "confirmDelIt", "error" ];
 
 
 const LexiconStorageModal: FC<StorageModalProps> = (props) => {

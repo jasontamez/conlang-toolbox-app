@@ -10,42 +10,42 @@ const we = {
 	"SChange_one": "1 Sound Change",
 	"SChange_other": "{{count}} Sound Changes",
 
-	"Convert input to lowercase before evolving": "Convert input to lowercase before evolving", // |H| (B)
-	"Sort input before evolving": "Sort input before evolving", // |H| (B)
+	"Convert input to lowercase before evolving": "Convert input to lowercase before evolving", // 🟥 🔴
+	"Sort input before evolving": "Sort input before evolving", // 🟥 🔴
 	delAllSC: "This will delete all current sound changes, and cannot be undone.",
 
 	Context: "Context",
 	Exception: "Exception",
 	// "what" is either "Context" or "Exception", as above
-	noUnderscore: "{{what}} must contain one underscore (_)", // <D>
-	multiUnderscore: "{{what}} can only have one underscore (_)", // <D>
-	wordBoundaryError: "{{what}} can only have word-boundaries (#) at the beginning and/or end", // <D>
+	noUnderscore: "{{what}} must contain one underscore (_)", // 🟡
+	multiUnderscore: "{{what}} can only have one underscore (_)", // 🟡
+	wordBoundaryError: "{{what}} can only have word-boundaries (#) at the beginning and/or end", // 🟡
 
 	"sound change description": "Description of the sound change",
 	"sound change description_presentation": "Sound Change Description:",
 
-	Overview: "Overview: $t(common:WordEvolve)", // |H|
-	"What is WordEvolve?": "What is $t(common:WordEvolve)?", // |H|
+	Overview: "Overview: $t(common:WordEvolve)", // 🟥
+	"What is WordEvolve?": "What is $t(common:WordEvolve)?", // 🟥
 
-	"Words to Evolve": "Words to Evolve", // {A}
+	"Words to Evolve": "Words to Evolve", // 🔵
 
-	"Input Tab": "$t(common:Input) Tab", // |H|
+	"Input Tab": "$t(common:Input) Tab", // 🟥
 	"Enter words here one per line": "Enter words here, one per line",
 
-	"Clear Input": "Clear Input", // <D:H>
+	"Clear Input": "Clear Input", // 🟨
 
-	"You have no sound changes defined.": "You have no sound changes defined.", // <D>
-	"You have no input words to evolve.": "You have no input words to evolve.", // <D>
+	"You have no sound changes defined.": "You have no sound changes defined.", // 🟡
+	"You have no input words to evolve.": "You have no input words to evolve.", // 🟡
 
 	"sound to change": "sound to change",
 	"sound changes into this": "sound changes into this",
 	"where the change happens": "where the change happens",
 	"where the change cannot happen": "where the change cannot happen",
 
-	"Input Expression": "Input Expression", // {A}
-	"Input Expression_presentation": "Input Expression:", // |H|
-	"Output Expression": "Output Expression", // {A}
-	"Output Expression_presentation": "Output Expression:", // |H|
+	"Input Expression": "Input Expression", // 🔵
+	"Input Expression_presentation": "Input Expression:", // 🟥
+	"Output Expression": "Output Expression", // 🔵
+	"Output Expression_presentation": "Output Expression:", // 🟥
 	"Transformation Direction": "Transformation Direction:", // presentational context
 	"At input then undo at output": "At input, then undo at output",
 	"At input then undo at output_formal": "At Input, Then Undo At Output",
@@ -62,10 +62,10 @@ const we = {
 	"context expression_presentation": "Context Expression:",
 	"exception expression_formal": "Exception Expression",
 	"exception expression_presentation": "Exception Expression:",
-	"Output Only": "$t(common:Output) only", // (B)
-	"Output and Sound-Change Rules": "$t(common:Output) and Sound-Change Rules", // (B)
-	"Input then Output": "$t(common:Input), then $t(common:Output)", // (B)
-	"Output then Input": "$t(common:Output), then $t(common:Input)", // (B)
+	"Output Only": "$t(common:Output) only", // 🔴
+	"Output and Sound-Change Rules": "$t(common:Output) and Sound-Change Rules", // 🔴
+	"Input then Output": "$t(common:Input), then $t(common:Output)", // 🔴
+	"Output then Input": "$t(common:Output), then $t(common:Input)", // 🔴
 
 	// used by clearOverwriteGeneralThings
 	allThings: "all current character groups, transformations and sound changes",

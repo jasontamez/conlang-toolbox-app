@@ -41,7 +41,7 @@ const resetRun = () => resetError("run");
 const presentations = [ "Letters Characters", "Short Label", "Title or description" ];
 const context = { context: "presentation" };
 
-const commons = [ "Add and Close", "Cancel", "error" ];
+const commons = [ "AddAndClose", "Cancel", "error" ];
 
 const translations = [
 	"1 character only", "Enter characters in group here", "Letters Characters",

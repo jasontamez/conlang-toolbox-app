@@ -60,7 +60,7 @@ const translations = [
 ];
 
 const commons = [
-	"Cancel", "Choose a format", "Copy to Clipboard", "Generate",
+	"Cancel", "Choose a format", "CopyToClipboard", "Generate",
 	"Help", "Output", "Spreadsheet (csv)", "Text File", "Word Document (docx)"
 ];
 

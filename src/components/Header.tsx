@@ -40,7 +40,7 @@ const Header: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const maybeExCharButton = useMemo(() => (
 		extraChars ?
-			<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("Extra Characters")}>
+			<IonButton onClick={() => setIsOpenECM(true)} aria-label={tc("ExtraChars")}>
 				<IonIcon icon={globeOutline} />
 			</IonButton>
 		: <></>),

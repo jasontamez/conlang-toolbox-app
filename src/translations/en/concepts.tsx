@@ -1,6 +1,6 @@
 const concepts = {
 	// Concepts
-	Stop: "Stop", // (B)
+	Stop: "Stop", // 🔴
 
 	info: {
 		basic: [ // Markdown format
@@ -76,48 +76,48 @@ const concepts = {
 		]
 	},
 
-	"Swadesh 100": "Swadesh 100", // (B)
-	"Swadesh 207": "Swadesh 207", // (B)
-	"Swadesh-Yakhontov": "Swadesh-Yakhontov", // (B)
-	"Swadesh-Woodward": "Swadesh-Woodward", // (B)
-	Dolgopolsky: "Dolgopolsky", // (B)
-	"Leipzig-Jakarta": "Leipzig-Jakarta", // (B)
-	ASJP: "ASJP", // (B)
-	"Landau 200": "Landau 200", // (B)
+	"Swadesh 100": "Swadesh 100", // 🔴
+	"Swadesh 207": "Swadesh 207", // 🔴
+	"Swadesh-Yakhontov": "Swadesh-Yakhontov", // 🔴
+	"Swadesh-Woodward": "Swadesh-Woodward", // 🔴
+	Dolgopolsky: "Dolgopolsky", // 🔴
+	"Leipzig-Jakarta": "Leipzig-Jakarta", // 🔴
+	ASJP: "ASJP", // 🔴
+	"Landau 200": "Landau 200", // 🔴
 
-	"Your selected meanings will be added to the Lexicon under that column.": // <D>
+	"Your selected meanings will be added to the Lexicon under that column.": // 🟡
 		"Your selected meanings will be added to the $t(common:Lexicon) under that column.",
 
-	"Tap meanings you want to link, in the order you wish to link them.": // [T:5]
+	"Tap meanings you want to link, in the order you wish to link them.": // 🟦5🟦
 		"Tap meanings you want to link, in the order you wish to link them.",
 
 	// The key below takes a {{count}} in case special plurals are needed. Count will NEVER be 0 or 1.
-	meaningsStillSelected_other: "You have {{count}} meanings still selected. Do you want to link them?", // <D>
+	meaningsStillSelected_other: "You have {{count}} meanings still selected. Do you want to link them?", // 🟡
 
-	"Stop Linking?": "Stop Linking?", // <D:H>
+	"Stop Linking?": "Stop Linking?", // 🟨
 
-	"Yes Save Them": "Yes, Save Them", // (B) "Them" refers to the meanings being linked together
-	"No Discard Them": "No, Discard Them", // (B) See above
+	"Yes Save Them": "Yes, Save Them", // 🔴 "Them" refers to the meanings being linked together
+	"No Discard Them": "No, Discard Them", // 🔴 See above
 	Combination: "Combination", // The combination of meanings, used by thingSaved
 
-	"Tap meanings you want to save to Lexicon": // [T:2.5]
+	"Tap meanings you want to save to Lexicon": // 🟦2.5🟦
 		"Tap meanings you want to save to $t(common:Lexicon)",
 
 	"Selected meanings_one": "Selected meaning", // Fills the {{what}} role in saveToLexColumn
 	"Selected meanings_other": "Selected meanings",
 
-	"Tap combinations you want to delete, then tap the Unlink button again.": // [T:3]
+	"Tap combinations you want to delete, then tap the Unlink button again.": // 🟦3🟦
 		"Tap combinations you want to delete, then tap the Unlink button again.",
 
-	delMeanings_one: "Delete {{count}} meaning?", // <D:H>
+	delMeanings_one: "Delete {{count}} meaning?", // 🟨
 	delMeanings_other: "Delete {{count}} meanings?",
-	delMeaningsMessage_one: "The selected meaning will be removed. $t(common:cannotUndo)", // <D>
+	delMeaningsMessage_one: "The selected meaning will be removed. $t(common:cannotUndo)", // 🟡
 	delMeaningsMessage_other: "The selected meanings will be removed. $t(common:cannotUndo)",
 
-	"My Combinations": "My Combinations", // (B)
-	"All Meanings": "All Meanings", // (B) saveGeneralThings
-	"Selected Meanings": "the Selected Meanings", // (B) saveGeneralThings
-	"Current Combination": "Current Combination:", // |H| always presentational context
+	"My Combinations": "My Combinations", // 🔴
+	"All Meanings": "All Meanings", // 🔴 saveGeneralThings
+	"Selected Meanings": "the Selected Meanings", // 🔴 saveGeneralThings
+	"Current Combination": "Current Combination:", // 🟥 always presentational context
 
 	//
 	//

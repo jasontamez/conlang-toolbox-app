@@ -385,7 +385,7 @@ const exportDocx = (
 		});
 	}
 	const doc = new Document({
-		creator: tc("Conlang Toolbox"),
+		creator: tc("appTitle"),
 		description: t("declenjugatorDocumentDescription"),
 		title: t("declenjugatorDocumentTitle"),
 		sections: sections

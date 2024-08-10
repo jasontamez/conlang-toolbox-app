@@ -2,20 +2,20 @@ const wg = {
 
 	Syllables_one: "Syllable",
 	Syllables_other: "Syllables",
-	"single-word syllables": "Single-Syllable Words", // |H| formal context
+	"single-word syllables": "Single-Syllable Words", // 🟥 formal context
 	"word-initial syllables": "word-initial syllables",
-	"word-initial syllables_formal": "Word-Initial Syllables", // |H|
+	"word-initial syllables_formal": "Word-Initial Syllables", // 🟥
 	"mid-word syllables": "mid-word syllables",
-	"mid-word syllables_formal": "Mid-Word Syllables", // |H|
+	"mid-word syllables_formal": "Mid-Word Syllables", // 🟥
 	"word-final syllables": "word-final syllables",
-	"word-final syllables_formal": "Word-Final Syllables", // |H|
+	"word-final syllables_formal": "Word-Final Syllables", // 🟥
 
-	"Syllables Tab": "Syllables Tab", // |H|
-	"Settings Tab": "Settings Tab", // |H|
-	"What is WordGen?": "What is $t(common:WordGen)?", // |H|
+	"Syllables Tab": "Syllables Tab", // 🟥
+	"Settings Tab": "Settings Tab", // 🟥
+	"What is WordGen?": "What is $t(common:WordGen)?", // 🟥
 
 	"Delete All Syllables": "Delete All Syllables",
-	delAllSyllables: // <D>
+	delAllSyllables: // 🟡
 		"This will delete any and all current syllables, and cannot be undone.",
 
 	syllableDropoffExplanation:
@@ -26,19 +26,19 @@ const wg = {
 
 	"Use character group labels to construct syllables":
 		"Use character group labels to construct syllables",
-	"Use separate dropoff rate": "Use separate dropoff rate", // (B) |H|
+	"Use separate dropoff rate": "Use separate dropoff rate", // 🔴 🟥
 	"These syllables are used to begin words": "These syllables are used to begin words",
 	"These syllables are used between the first and last syllable of a word":
 		"These syllables are used between the first and last syllable of a word",
 	"These syllables are used to end words": "These syllables are used to end words",
-	"From 0 to 50": "From 0 to 50", // {A}
-	"From 0% to 100%": "From 0% to 100%", // {A}
-	"From 2 to 15": "From 2 to 15", // {A}
+	"From 0 to 50": "From 0 to 50", // 🔵
+	"From 0% to 100%": "From 0% to 100%", // 🔵
+	"From 2 to 15": "From 2 to 15", // 🔵
 
-	"You have no character groups defined.": "You have no character groups defined.", // <D>
-	"You have no syllables defined.": "You have no syllables defined.", // <D>
-	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.", // <D>
-	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})", // |H|
+	"You have no character groups defined.": "You have no character groups defined.", // 🟡
+	"You have no syllables defined.": "You have no syllables defined.", // 🟡
+	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.", // 🟡
+	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})", // 🟥
 
 	"dropoff rate": "Dropoff Rate", // formal context
 	characterDropoffExplanation:
@@ -46,22 +46,22 @@ const wg = {
 		+ " than characters at the end of the group. This slider controls this"
 		+ " tendency. A rate of zero is flat, making all characters"
 		+ " equiprobable.",
-	"Character Group run dropoff": "Character Group run dropoff", // |H|
-	"Syllable box dropoff": "syllable box dropoff", // |H|
-	"Use multiple syllable types" : "Use multiple syllable types", // (B)
-	"Pseudo-text": "Pseudo-text", // (B)
-	Wordlist: "Wordlist", // (B)
+	"Character Group run dropoff": "Character Group run dropoff", // 🟥
+	"Syllable box dropoff": "syllable box dropoff", // 🟥
+	"Use multiple syllable types" : "Use multiple syllable types", // 🔴
+	"Pseudo-text": "Pseudo-text", // 🔴
+	Wordlist: "Wordlist", // 🔴
 	"All possible syllables":"All possible syllables",
 	"Number of sentences":"Number of sentences",
 	"Capitalize words": "Capitalize words",
 	"Sort output": "Sort output",
 	"Multi-column layout": "Multi-column layout",
 	"Wordlist size": "Wordlist size",
-	"Show syllable breaks": "Show syllable breaks", // (B)
-	"Save/Load Custom Info": "Save/Load Custom Info", // (B)
-	"Rate of monosyllable words": "Rate of monosyllable words", // |H|
-	"Maximum number of syllables per word": "Maximum number of syllables per word", // |H|
-	"Capitalize sentences": "Capitalize sentences", // (B)
+	"Show syllable breaks": "Show syllable breaks", // 🔴
+	"Save/Load Custom Info": "Save/Load Custom Info", // 🔴
+	"Rate of monosyllable words": "Rate of monosyllable words", // 🟥
+	"Maximum number of syllables per word": "Maximum number of syllables per word", // 🟥
+	"Capitalize sentences": "Capitalize sentences", // 🔴
 	sentenceBeginning_declarative: "Declarative sentence beginning",
 	sentenceEnding_declarative: "Declarative sentence ending",
 	sentenceBeginning_interrogative: "Interrogative sentence beginning",
@@ -69,14 +69,14 @@ const wg = {
 	sentenceBeginning_exclamatory: "Exclamatory sentence beginning",
 	sentenceEnding_exclamatory: "Exclamatory sentence ending",
 
-	"Presets and Stored Info": "Presets and Stored Info", // |H|
-	"Word Generation Controls": "Word Generation Controls", // |H|
-	Never: "Never", // (B)
-	Always: "Always", // (B)
-	"Pseudo-text Controls": "Pseudo-text Controls", // |H|
-	"Wordlist and Syllable-List Controls": "Wordlist and Syllable-List Controls", // |H|
-	"What to Generate": "What to Generate", // |H|
-	Default: "Default", // (B) default sort option
+	"Presets and Stored Info": "Presets and Stored Info", // 🟥
+	"Word Generation Controls": "Word Generation Controls", // 🟥
+	Never: "Never", // 🔴
+	Always: "Always", // 🔴
+	"Pseudo-text Controls": "Pseudo-text Controls", // 🟥
+	"Wordlist and Syllable-List Controls": "Wordlist and Syllable-List Controls", // 🟥
+	"What to Generate": "What to Generate", // 🟥
+	Default: "Default", // 🔴 default sort option
 
 	// used by clearOverwriteGeneralThings:
 	allThings: "all current character groups, syllables, transformations, and settings",

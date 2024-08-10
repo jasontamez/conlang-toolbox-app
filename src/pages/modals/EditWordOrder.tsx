@@ -76,7 +76,7 @@ const translations = [
 ];
 
 const commons = [
-	"Close", "Default sort", "Delete", "Extra Characters",
+	"Close", "Default sort", "Delete", "ExtraChars",
 	"Nothing to save.", "confirmDelIt", "emphasizedError"
 ];
 

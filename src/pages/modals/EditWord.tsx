@@ -56,7 +56,7 @@ const translations = [
 ];
 
 const commons = [
-	"deleteThisCannotUndo", "Close", "error", "Extra Characters", "Ok",
+	"deleteThisCannotUndo", "Close", "error", "ExtraChars", "Ok",
 	"Yes Exit", "confirmDelIt", "areYouSure"
 ];
 

@@ -448,7 +448,7 @@ const doDocx = (
 	});
 	log_original(null, checksum);
 	const doc = new Document({
-		creator: tc("Conlang Toolbox"),
+		creator: tc("appTitle"),
 		description: t("msDocumentDescription"),
 		title: `${title} - ${t("msDocument_formal")}`,
 		sections

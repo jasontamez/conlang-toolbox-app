@@ -46,7 +46,7 @@ const presentational = [
 const context = { context: "presentation" };
 
 const commons = [
-	"Add and Close", "Cancel", "error", "optional"
+	"AddAndClose", "Cancel", "error", "optional"
 ];
 
 const addies = [ "thingAdded", "addThing" ];

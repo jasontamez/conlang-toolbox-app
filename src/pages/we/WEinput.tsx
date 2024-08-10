@@ -34,7 +34,7 @@ import useTranslator from '../../store/translationHooks';
 
 const commons = [
 	"Are you sure? This will clear the entire input and cannot be undone.",
-	"Clear", "Extra Characters", "Help",
+	"Clear", "ExtraChars", "Help",
 	"Input", "Yes Clear It"
 ];
 

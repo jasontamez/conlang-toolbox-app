@@ -9,31 +9,31 @@ const ms = {
 	],
 
 	clearMSInfo: "Clear $t(common:MorphoSyntax) Info",
-	"You have no information to clear.": "You have no information to clear.", // [T:2.5]
+	"You have no information to clear.": "You have no information to clear.", // 🟦2.5🟦
 	morphoSyntaxInfo: // used by clearOverwriteGeneralThings
 		"everything currently in $t(common:MorphoSyntax) (but not anything previously saved)",
-	"Please add information to your MorphoSyntax document in at least one section before exporting it.": // <D>
+	"Please add information to your MorphoSyntax document in at least one section before exporting it.": // 🟡
 		"Please add information to your MorphoSyntax document in at least one section before exporting it.",
 	msDocument: "$t(common:MorphoSyntax) document",
 	msDocument_formal: "$t(common:MorphoSyntax) Document",
 	newMsDocument: "New $t(common:MorphoSyntax) document",
 	msDocumentDescription: // Used in docx exports, only
-		"A $t(msDocument_formal) exported from $t(common:Conlang Toolbox).",
-	"MorphoSyntax Settings": "$t(common:MorphoSyntax) $t(common:Settings)", // |H|
-	"No Saved MorphoSyntax Documents": // |H|
+		"A $t(msDocument_formal) exported from $t(common:appTitle).",
+	"MorphoSyntax Settings": "$t(common:MorphoSyntax) $t(common:Settings)", // 🟥
+	"No Saved MorphoSyntax Documents": // 🟥
 		"No Saved $t(common:MorphoSyntax) Documents.",
 	"your current MorphoSyntax information": // used by clearOverwriteGeneralThings
 		"your current $t(common:MorphoSyntax) information",
-	msTitle: "$t(common:MorphoSyntax) Title", // {A}
-	msTitle_presentation: "$t(common:MorphoSyntax) Title:", // |H|
+	msTitle: "$t(common:MorphoSyntax) Title", // 🔵
+	msTitle_presentation: "$t(common:MorphoSyntax) Title:", // 🟥
 	"Usually the language name.": "Usually the language name.",
 	"A short description of this document.":
 		"A short description of this document.",
 	"MorphoSyntax Info": "$t(common:MorphoSyntax) Info",
 	"Saved MorphoSyntax Info": "Saved $t(MorphoSyntax Info)",
-	"MISSING TITLE": "MISSING TITLE", // |H| (error message)
-	genericInfoButtonText: "Information", // (B)
-	rangeFromTo: "Range from {{start}} to {{end}}", // {A}
+	"MISSING TITLE": "MISSING TITLE", // 🟥 (error message)
+	genericInfoButtonText: "Information", // 🔴
+	rangeFromTo: "Range from {{start}} to {{end}}", // 🔵
 	// The items below are error (or informative) messages that will only be used in exports
 	"[MISSING]": "[MISSING]",
 	"[MISSING TEXT PROMPT]": "[MISSING TEXT PROMPT]",

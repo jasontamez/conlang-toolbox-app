@@ -90,7 +90,7 @@ const translations = [
 ];
 
 const commons = [
-	"Add New", "Are you sure you want to discard your edits?", "Delete",
+	"AddNew", "Are you sure you want to discard your edits?", "Delete",
 	"Deleted", "Edit", "Ok", "Save", "Unsaved Info",
 	"Yes Discard", "areYouSure", "confirmDelIt", "emphasizedError"
 ];

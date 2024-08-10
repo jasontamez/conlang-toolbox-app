@@ -131,7 +131,7 @@ const TransformItem: FC<TransformProps> = (props) => {
 };
 
 const commons = [
-	"Add New", "Delete", "Extra Characters", "Help",
+	"AddNew", "Delete", "ExtraChars", "Help",
 	"confirmDelIt", "Clear Everything?", "deleteThisCannotUndo"
 ];
 

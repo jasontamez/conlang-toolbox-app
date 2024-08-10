@@ -53,7 +53,7 @@ const translations =  [
 	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."
 ];
 const markdowns = [ "credit1", "credit2", "credit3", "bugReportMsg" ];
-const commons = [ "Close", "Copy", "Ok", "areYouSure", "App Info" ];
+const commons = [ "Close", "Copy", "Ok", "areYouSure", "AppInfo" ];
 const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
 const context = { joinArrays: "\n" };
 

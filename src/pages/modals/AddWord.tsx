@@ -38,7 +38,7 @@ interface LexItemProps extends ExtraCharactersModalOpener {
 	sorter: SorterFunc
 }
 
-const commons = [ "Close", "Extra Characters", "Ok", "error" ];
+const commons = [ "Close", "ExtraChars", "Ok", "error" ];
 const things = [ "Item", "Lexicon Item" ];
 
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {

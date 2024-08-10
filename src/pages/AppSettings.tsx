@@ -42,10 +42,10 @@ const AppSettings: FC<PageData> = (props) => {
 
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
-	const tAppSettings = useMemo(() => tc("App Settings"), [tc]);
+	const tAppSettings = useMemo(() => tc("AppSettings"), [tc]);
 	const tThemeName = useMemo(() => t(theme || "Default"), [t, theme]);
 	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings ] = useI18Memo(translations, 'settings');
-	const tExport = useMemo(() => tc("exportThing", { thing: tc("App Info") }), [tc]);
+	const tExport = useMemo(() => tc("exportThing", { thing: tc("AppInfo") }), [tc]);
 
 	const setConfirms = useCallback((e: ToggleCustomEvent) => dispatch(setDisableConfirms(e.detail.checked)), [dispatch]);
 

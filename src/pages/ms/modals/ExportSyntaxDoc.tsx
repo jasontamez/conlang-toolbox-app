@@ -48,7 +48,7 @@ type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const commons = [
 	"Cancel", "JSON File", "Text File (markdown)", "Text File (plain)",
-	"Word Document (docx)", "XML File", "[Untitled]"
+	"Word Document (docx)", "XML File", "Untitled"
 ];
 
 const ExportSyntaxModal: FC<ExportModalProps> = (props) => {

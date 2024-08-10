@@ -50,7 +50,7 @@ const translations = [
 	"where the change happens"
 ];
 
-const commons = [ "Add and Close", "Cancel", "error", "optional" ];
+const commons = [ "AddAndClose", "Cancel", "error", "optional" ];
 
 const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('we');

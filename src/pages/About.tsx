@@ -46,7 +46,7 @@ const subPages = (objs: AppPage[], prefix: string) => objs.filter(obj => !obj.hi
 });
 
 const translations =  [
-	"App Info", "Concepts", "Conlang Toolbox", "Declenjugator", "Help",
+	"AppInfo", "Concepts", "appTitle", "Declenjugator", "Help",
 	"Lexicon", "MorphoSyntax", "WordEvolve", "WordGen"
 ];
 
