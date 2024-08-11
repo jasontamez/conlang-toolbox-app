@@ -54,7 +54,7 @@ const translations = [
 ]
 
 const commons = [
-	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error", "optional"
+	"deleteThisCannotUndo", "Cancel", "error", "optional"
 ];
 
 const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved" ];
@@ -68,7 +68,7 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const [ tYouSure, tCancel, tConfDel, tError, tOptional ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tSCDesc, tReplace, tException, tContext, tSC, tSearch ] = useI18Memo(translations, "we");
 	const [ tfRepl, tfSrch ] = useI18Memo(wgweExp, "wgwe", formal);
 	const [ tpRepl, tpSrch ] = useI18Memo(wgweExp, "wgwe", presentation);
@@ -232,12 +232,12 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 				header: soundChange,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tConfDel, tThingDel, tYouSure]);
+	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tc, tThingDel, tYouSure]);
 
 	return (
 		<IonModal

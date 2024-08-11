@@ -105,7 +105,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 
 const commons = [
 	"AddNew", "Copy", "Delete", "Help", "WordEvolve",
-	"deleteThisCannotUndo", "confirmDelIt", "yesImport",
+	"deleteThisCannotUndo", "yesImport",
 ];
 
 const translations = [ "dropoff rate", "characterDropoffExplanation" ];
@@ -115,7 +115,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tDropoffFormal, tDropExpl ] = useI18Memo(translations, "wg");
 	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
-	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tConfDel, tYes ] = useI18Memo(commons);
+	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tYes ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -161,7 +161,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 							header: `${label}=${charGroup.run}`,
 							message: tYouSure,
 							cssClass: "danger",
-							submit: tConfDel,
+							submit: tc("confirmDel", { count: 1 }),
 							handler,
 							doAlert
 						});
@@ -170,7 +170,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 				tDelete={tDelete}
 			/>
 		),
-		[characterGroups, editCharGroup, tDelete, dispatch, tc, tw, toast, disableConfirms, doAlert, tConfDel, tYouSure]
+		[characterGroups, editCharGroup, tDelete, dispatch, tc, tw, toast, disableConfirms, doAlert, tYouSure]
 	);
 	const openHelp = useCallback(() => setIsOpenInfo(true), []);
 	const openAddCG = useCallback(() => setIsOpenAddCharGroup(true), []);

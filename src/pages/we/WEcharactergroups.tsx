@@ -101,15 +101,14 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 };
 
 const commons = [
-	"deleteThisCannotUndo", "AddNew", "Delete", "Help",
-	"confirmDelIt", "yesImport"
+	"deleteThisCannotUndo", "AddNew", "Delete", "Help", "yesImport"
 ];
 
 const WECharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
-	const [ tYouSure, tAddNew, tDelete, tHelp, tConfDel, tYesImp ] = useI18Memo(commons);
+	const [ tYouSure, tAddNew, tDelete, tHelp, tYesImp ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -150,12 +149,12 @@ const WECharGroup: FC<PageData> = (props) => {
 				header: `${label}=${run}`,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, tc, toast, tw, tYouSure, tConfDel]);
+	}, [disableConfirms, dispatch, doAlert, tc, toast, tw, tYouSure]);
 	const maybeClearEverything = useCallback(() => {
 		const count = characterGroups.length;
 		const handler = () => {

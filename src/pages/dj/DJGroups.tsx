@@ -226,8 +226,7 @@ const translations = [
 ];
 
 const commons = [
-	"AddNew", "Delete", "Help", "Please wait...", "Save",
-	"confirmDelIt", "Edit",
+	"AddNew", "Delete", "Help", "Please wait...", "Save", "Edit",
 	"areYouSure", "cannotUndo"
 ];
 
@@ -235,7 +234,7 @@ const commons = [
 const DJGroups: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
-	const [ tAddNew, tDel, tHelp, tWait, tSave, tConfDel, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
+	const [ tAddNew, tDel, tHelp, tWait, tSave, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
 	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup  ] = useI18Memo(translations, "dj");
 	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [tc, t]);
 
@@ -300,14 +299,14 @@ const DJGroups: FC<PageData> = (props) => {
 				header: tYouSure,
 				message: tDelGroup,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 			return;
 		}
 		handler();
-	}, [disableConfirms, dispatch, doAlert, tConfDel, tDelGroup, tGroupDeleted, tYouSure, toast]);
+	}, [disableConfirms, dispatch, doAlert, tc, tDelGroup, tGroupDeleted, tYouSure, toast]);
 	const maybeClearEverything = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup(null));

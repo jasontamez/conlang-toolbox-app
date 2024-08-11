@@ -191,7 +191,7 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 				header: `${seek} ${makeArrow(direction)} ${replace}`,
 				message: tc("deleteThisCannotUndo"),
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});

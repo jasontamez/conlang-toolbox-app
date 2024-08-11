@@ -132,14 +132,14 @@ const TransformItem: FC<TransformProps> = (props) => {
 
 const commons = [
 	"AddNew", "Delete", "ExtraChars", "Help",
-	"confirmDelIt", "Clear Everything?", "deleteThisCannotUndo"
+	"DeleteEverythingQ", "deleteThisCannotUndo"
 ];
 
 const WERew: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const tTransformations = useMemo(() => tw("Transformations_other"), [tw]);
-	const [ tAddNew, tDelete, tExChar, tHelp, tConfDel, tClearAll, tYouSure ] = useI18Memo(commons);
+	const [ tAddNew, tDelete, tExChar, tHelp, tClearAll, tYouSure ] = useI18Memo(commons);
 	
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -179,12 +179,12 @@ const WERew: FC<PageData> = (props) => {
 				header: `${seek} ${makeArrow(direction)} ${replace}`,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, tYouSure, tConfDel]);
+	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, tYouSure]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WETransformObject>(transforms, ed.from, ed.to);

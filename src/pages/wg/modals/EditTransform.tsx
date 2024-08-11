@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { ExtraCharactersModalOpener, SetState, StateObject, WGTransformObject } from '../../../store/types';
 import { editTransformWG, deleteTransformWG } from '../../../store/wgSlice';
+import useTranslator from '../../../store/translationHooks';
 
 import repairRegexErrors from '../../../components/RepairRegex';
 import { $i, $q } from '../../../components/DollarSignExports';
@@ -43,7 +44,7 @@ function resetError() {
 }
 
 const commons = [
-	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error", "optional"
+	"deleteThisCannotUndo", "Cancel", "error", "optional"
 ];
 
 const translations = [
@@ -61,7 +62,8 @@ const things = [
 ];
 
 const EditTransformModal: FC<ModalProps> = (props) => {
-	const [ tYouSure, tCancel, tConfDel, tError, tOptional ] = useI18Memo(commons);
+	const [ tc ] = useTranslator('common');
+	const [ tYouSure, tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSrch, tTrans, tRepl, tSrch ] = useI18Memo(translations, 'wgwe');
 	const [ tpTransDesc, tpRepl, tpSrch ] = useI18Memo(presentations, 'wgwe', context);
 	const thing = useMemo(() => ({ thing: tTrans }), [tTrans]);
@@ -169,12 +171,12 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 				header: `${seek}${ltr() ? "⟶" : "⟵"}${replace}`,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tConfDel, tYouSure, tThingDel]);
+	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tc, tYouSure, tThingDel]);
 
 	return (
 		<IonModal

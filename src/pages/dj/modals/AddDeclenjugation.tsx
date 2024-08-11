@@ -55,7 +55,7 @@ const translations = [
 
 const commons = [
 	"Are you sure you want to discard this?", "Cancel",
-	"Ok", "Save", "Unsaved Info", "Yes Discard"
+	"Ok", "Save", "UnsavedInfo", "Yes Discard"
 ];
 
 const expressions = [ "Matching Expression", "Replacement Expression" ];

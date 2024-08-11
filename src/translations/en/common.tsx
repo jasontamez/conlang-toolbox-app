@@ -92,6 +92,8 @@ const common = {
 	Ok: "Ok",                        // general acknowledgement
 	Done: "Done",                    // use has finished and does not need to continue
 	Close: "Close",                  // close the open modal/dialog/whatever
+	Delete: "Delete",                // delete an item
+	Edit: "Edit",                    // edit an item
 	Help: "Help",                    // show "help" documentation
 	AddAndClose: "Add and Close",    // add a new item and close this modal
 	AddNew: "Add New",            // add a new item; may imply that the current modal will remain open
@@ -199,43 +201,36 @@ const common = {
 	cannotUndo: "This cannot be undone.", // 🟡 This action, usually deleting something, cannot be undone.
 	areYouSure: "Are you sure?", // 🟡 Do you want to do this action?
 	deleteThisCannotUndo: "Are you sure you want to delete this? $t(cannotUndo)", // 🟡
-	"Clear Everything?": "Clear Everything?", // 🟨
-	"Delete Everything?": "Delete Everything?", // 🟨
+	DeleteEverythingQ: "Delete Everything?", // 🟨
 
 	// in confirmDel, the thing/things being deleted might be...
 	//    custom meanings in Concepts
 	//    Lexicon items
-	//    Character Groups in WG and WE
-	//    Transformations in WG and WE
-	//    Syllables in WG
-	confirmDel_one: "Yes, Delete It", // 🔴
-	confirmDel_other: "Yes, Delete Them", // 🔴
-
-	// in confirmDelIt, "It" might refer to...
-	//    Character Groups in WG and WE
+	//    Character Groups or Transformations in WG and WE
 	//    Sound Changes in WE
-	//    Transformations in WG and WE
+	//    Syllables in WG
 	//    saved Custom Info in WG, WE, Declenjugator, Lexicon, and MorphoSyntax
-	//    all info in MorphoSyntax or Lexicon
 	//    Lexicon columns and items
 	//    Custom Sorts, or one of their relations or equalities
 	//    Declenjugator groups, or the separate declensions/etc within one
-	confirmDelIt: "Yes, Delete It", // 🔴
+	confirmDel_one: "Yes, Delete It", // 🔴
+	confirmDel_other: "Yes, Delete Them", // 🔴
 
-	// "It" may refer to saved Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax
-	confirmLoad: "Yes, Load It", // 🔴
+	// in confirmDelAll, "All" might refer to...
+	//    all info in MorphoSyntax or Lexicon
+	confirmDelAll: "Yes, Delete All", // 🔴
+
+	// "Info" may refer to saved Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax
+	confirmLoad: "Yes, Load Info", // 🔴
 
 	// "This" gets slotted into 'deleteThing' and may refer to...
 	//    Custom Sorts, or one of their relations or equalities
 	//    Declenjugator groups, or the separate declensions/etc within one
 	This: "This",
 
-	"Yes Exit": "Yes, Exit", // 🔴
-	"Nothing to save.": "Nothing to save.", // 🟦2.5
-	Delete: "Delete", // 🔴
-	Edit: "Edit", // 🔴
+	NothingToSave: "Nothing to save.", // 🟦2.5
 	Deleted: "Deleted", // 🟦2
-	"Unsaved Info": "Unsaved Info", // 🟨
+	UnsavedInfo: "Unsaved Info", // 🟨
 
 	"Are you sure you want to discard this?": // 🟡 when deciding not to add a new thing
 		"Are you sure you want to discard this?",

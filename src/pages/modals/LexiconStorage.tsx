@@ -54,14 +54,14 @@ const translations = [
 	"Clear Lexicon"
 ]
 
-const commons = [ "Delete Everything?", "Done", "Ok", "SaveAsNew"", "confirmDelIt", "error" ];
+const commons = [ "DeleteEverythingQ", "Done", "Ok", "SaveAsNew", "error" ];
 
 
 const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [
-		tDelEverything, tDone, tOk, tSaveNew, tConfDel, tError
+		tDelEverything, tDone, tOk, tSaveNew, tError
 	] = useI18Memo(commons);
 	const [
 		tLexStor, tLexClear, tNoClear, tLexNew,
@@ -123,12 +123,16 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 				header: tDelEverything,
 				cssClass: "danger",
 				message: tDelAll,
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [description, disableConfirms, dispatch, doAlert, id, lexicon.length, setIsOpen, tConfDel, tDelAll, tDelEverything, tLexClear, tNoClear, title, toast]);
+	}, [
+		description, disableConfirms, dispatch, doAlert, id, lexicon.length,
+		setIsOpen, tc, tDelAll, tDelEverything, tLexClear, tNoClear,
+		title, toast
+	]);
 	const openLexiconModal = useCallback((whichToOpen: SetBooleanState) => {
 		const info: [string, LexiconState][] = [];
 		setLoading(true);

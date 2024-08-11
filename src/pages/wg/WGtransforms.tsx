@@ -142,7 +142,7 @@ const WGRew: FC<PageData> = (props) => {
 				header: `${seek}${arrow}${replace}`,
 				message: tc("deleteThisCannotUndo"),
 				cssClass: "danger",
-				submit: tc("confirmDelIt"),
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
@@ -170,7 +170,7 @@ const WGRew: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("Clear Everything?"),
+				header: tc("DeleteEverythingQ"),
 				message: tw("delAllTransforms", { count }),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),

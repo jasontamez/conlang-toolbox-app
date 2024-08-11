@@ -385,8 +385,8 @@ const translations = [
 ];
 
 const commons =  [
-	"deleteThisCannotUndo", "Description", "Ok", "areYouSure", "cannotUndo",
-	"confirmDelIt", "error", "Help", "AddNew", "Close"
+	"deleteThisCannotUndo", "Description", "Ok", "areYouSure",
+	"cannotUndo", "error", "Help", "AddNew", "Close"
 ];
 
 const presentations = [ "Lexicon Title", "Sort" ];
@@ -400,7 +400,7 @@ const Lex: FC<PageData> = (props) => {
 		tDelSel, tCancelDel, tNoText, tDelThings
 	] = useI18Memo(translations, 'lexicon');
 	const [
-		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo, tConfDel,
+		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo,
 		tError, tHelp, tAddNew, tClose
 	] = useI18Memo(commons);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
@@ -589,12 +589,12 @@ const Lex: FC<PageData> = (props) => {
 				header: title,
 				cssClass: "danger",
 				message: tYouSure,
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler: () => dispatch(deleteLexiconItem(item.id)),
 				doAlert
 			});
 		}
-	}, [dispatch, disableConfirms, doAlert, tYouSure, tConfDel]);
+	}, [dispatch, disableConfirms, doAlert, tYouSure, tc]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {

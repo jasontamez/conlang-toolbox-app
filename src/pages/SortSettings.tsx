@@ -69,14 +69,13 @@ const translations = [
 ];
 
 const commons = [
-	"Close", "Delete", "Edit", "Ok", "confirmDelIt", "Done",
-	"deleteThisCannotUndo"
+	"Close", "Delete", "Edit", "Ok", "Done", "deleteThisCannotUndo"
 ];
 
 const SortSettings: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
-	const [ tClose, tDelete, tEdit, tOk, tConfirmDel, tDone, tYouSure ] = useI18Memo(commons);
+	const [ tClose, tDelete, tEdit, tOk, tDone, tYouSure ] = useI18Memo(commons);
 	const [
 		tBaseOnly, tBasicSort, tDiaCase, tDia, tManage, tNewSort, tNote, 
 		tUppLow, tUseLang, tCustom, tLangSort, tNone, tAll, tpSortLang,
@@ -186,7 +185,7 @@ const SortSettings: FC<PageData> = (props) => {
 			yesNoAlert({
 				header: tc("deleteTitleQ", { title }),
 				message: tYouSure,
-				submit: tConfirmDel,
+				submit: tc("confirmDel", { count: 1 }),
 				cssClass: "danger",
 				handler: () => dispatch(deleteCustomSort(id)),
 				doAlert
@@ -219,7 +218,7 @@ const SortSettings: FC<PageData> = (props) => {
 				</IonItem>
 			</IonItemSliding>
 		);
-	}), [customSorts, t, tc, doAlert, dispatch, tConfirmDel, tCustom, tDelete, tEdit, tOk, tYouSure]);
+	}), [customSorts, t, tc, doAlert, dispatch, tCustom, tDelete, tEdit, tOk, tYouSure]);
 
 	const toggleUsingLang = useCallback((e: ToggleCustomEvent) => {
 		const newValue = !useLanguageSort;

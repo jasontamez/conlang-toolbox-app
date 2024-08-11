@@ -115,6 +115,8 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🔴 | Done | Done | User has finished using this modal or tool |
 | 🔴 | Close | Close | Close the modal |
 | 🔴 | Help | Help | Get helpful information |
+| 🔴 | Delete | Delete | Delete something |
+| 🔴 | Edit | Edit | Edit something |
 | 🔴 | AddAndClose | Add and Close | Text of button that adds something and closes a modal |
 | 🔴 | AddNew | Add New | Text of button that adds a new thing |
 | 🔴 | Copy | Copy | Copy information |
@@ -154,6 +156,7 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦2.5 | thingsDeleted_other | {{things}} deleted | Same as above, but for English plurality rules. |
 | 🟡 | clearOverwriteGeneralThings | This will clear and overwrite {{things}}. | General Things are unknown: may be 0, 1, or any number. `{{things}}` will be provided by the app. |
 | 🟥 🔴 | saveGeneralThings | Save {{things}} | General Things are unknown: may be 0, 1, or any number. `{{things}}` will be provided by the app. |
+| 🟨 | DeleteEverythingQ | Delete Everything? | Asking to delete something. The dialog text will specify what is being deleted. |
 | 🟦2 | thingAdded | {{thing}} added. | General message |
 | 🟦2 | thingSaved | {{thing}} saved. | General message |
 | 🟦2.5 | thingDeleted | {{thing}} deleted. | General message |
@@ -187,3 +190,11 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟡 | cannotUndo | This cannot be undone. | This action, usually deleting something, cannot be undone. |
 | 🟡 | areYouSure | Are you sure? | Do you want to do this action? |
 | 🟡 | deleteThisCannotUndo | Are you sure you want to delete this? $t(cannotUndo) | Combines the `cannotDo` message with the common use case where something is about to be deleted. |
+| 🔴 | confirmDel_one | Yes, Delete It | The things being deleted might be: 1) custom meanings in Concepts; 2) A column or item in Lexicon; 3) Character Groups or Transformations in WG and WE; 4) Syllables in WG; 5) Sound Changes in WE; 6) A single unit of saved custom info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax; 7) A Custom Sort in Settings, or one of their relations or equalities; 8) a group in Declenjugator, or a single declension or conjugation in a group. |
+| 🔴 | confirmDel_other | Yes, Delete Them | The English plural version of the key above. |
+| 🔴 | confirmDelAll | Yes, Delete All | Confirmation when deleting all info in MorphoSyntax or Lexicon. |
+| 🔴 | confirmLoad | Yes, Load Info | Used to confirm loading Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax |
+|  | This | This | `This` is used by `deleteThing` and may refer to 1) a Custom Sort in Settings, or one of their relations or equalities; 2) a group in Declenjugator, or a single declension or conjugation in a group |
+| 🟦2.5 | NothingToSave | Nothing to save. | An attempt was made to save something, but there was no information to save. |
+| 🟦2 | Deleted | Deleted | Successful deletion. |
+| 🟨 | UnsavedInfo | Unsaved Info | Dialogs regarding exiting or closing something before everything has saved. |

@@ -90,9 +90,9 @@ const translations = [
 ];
 
 const commons = [
-	"AddNew", "Are you sure you want to discard your edits?", "Delete",
-	"Deleted", "Edit", "Ok", "Save", "Unsaved Info",
-	"Yes Discard", "areYouSure", "confirmDelIt", "emphasizedError"
+	"AddNew", "Are you sure you want to discard your edits?",
+	"Delete", "Deleted", "Edit", "Ok", "Save", "UnsavedInfo",
+	"Yes Discard", "areYouSure", "emphasizedError"
 ];
 
 
@@ -101,7 +101,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tAddNew, tYouSure, tDel, tDeleted, tEdit, tOk, tSave,
-		tUnsaved, tYes, tRUSure, tConfDel, tError
+		tUnsaved, tYes, tRUSure, tError
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
@@ -431,13 +431,16 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 				header: tDelEntireGroup,
 				message: tDelAllMsg,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
 		handler();
-	}, [closeModal, disableConfirms, dispatch, doAlert, editingGroupInfo, id, tConfDel, toast, tDelAllMsg, tDelEntireGroup, tGroupDeleted]);
+	}, [
+		closeModal, disableConfirms, dispatch, doAlert, editingGroupInfo,
+		id, tc, toast, tDelAllMsg, tDelEntireGroup, tGroupDeleted
+	]);
 
 	const maybeAddNewDeclenjugation = useCallback(() => {
 		setSavedDeclenjugation(null);
@@ -465,12 +468,12 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		disableConfirms ? handler() : yesNoAlert({
 			header: tDelThing,
 			message: tRUSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [declenjugations, disableConfirms, doAlert, tConfDel, tDeleted, tRUSure, toast, tDelThing]);
+	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, tDelThing]);
 
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;

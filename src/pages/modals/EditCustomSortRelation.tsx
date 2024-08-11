@@ -53,13 +53,13 @@ const translations = [
 
 const commons = [
 	"Close", "Delete", "ExtraChars", "Ok", "Save",
-	"areYouSure", "confirmDelIt", "emphasizedError"
+	"areYouSure", "emphasizedError"
 ];
 
 const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
-	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tConfDel, tError ] = useI18Memo(commons);
+	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tError ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tEndBefore, tNoSep, tPeriod,
 		tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost, tpBase,
@@ -152,12 +152,12 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 		yesNoAlert({
 			header: tDelThing,
 			message: tRUSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [close, doAlert, incomingRelation, setOutgoingRelation, tConfDel, tDelThing, tRUSure]);
+	}, [close, doAlert, incomingRelation, setOutgoingRelation, tc, tDelThing, tRUSure]);
 	const openEx = useCallback(() => openECM(true), [openECM]);
 	const doSetSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (

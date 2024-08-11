@@ -48,7 +48,7 @@ const presentations = [ "Letters Characters", "Short Label", "Title or descripti
 const context = { context: "presentation" };
 
 const commons =  [
-	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error"
+	"deleteThisCannotUndo", "Cancel", "error"
 ];
 
 const translations = [
@@ -63,7 +63,7 @@ const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thing
 const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const [ tYouSure, tCancel, tConfDel, tError ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnter, tLettChar, tNoLabel, tNoRun,
 		tNoTitle, tShort, tSuggest, tTitle, tCG, tUnable
@@ -231,12 +231,12 @@ const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 				header: `${label}=${run}`,
 				message: tYouSure,
 				cssClass: "warning",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [cancelEditing, disableConfirms, dispatch, doAlert, editing, toast, tConfDel, tThingDel, tYouSure]);
+	}, [cancelEditing, disableConfirms, dispatch, doAlert, editing, toast, tc, tThingDel, tYouSure]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
 			<ModalHeader title={tEditThing} closeModal={cancelEditing} openECM={openECM} />

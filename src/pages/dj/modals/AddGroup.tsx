@@ -87,9 +87,9 @@ const translations = [
 ];
 
 const commons = [
-	"AddNew", "Are you sure you want to discard your edits?", "Cancel",
-	"Delete", "Deleted", "Edit", "Ok", "Save", "Unsaved Info", "Yes Discard",
-	"areYouSure", "confirmDelIt"
+	"AddNew", "Are you sure you want to discard your edits?", "Cancel", 
+	"Delete", "Deleted", "Edit", "Ok", "Save", "UnsavedInfo", "Yes Discard",
+	"areYouSure"
 ];
 
 const AddGroup: FC<AddGroupProps> = (props) => {
@@ -102,7 +102,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	] = useI18Memo(translations, "dj");
 	const [
 		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk, tSave,
-		tUnsaved, tYes, tRUSure, tConfDel
+		tUnsaved, tYes, tRUSure
 	] = useI18Memo(commons);
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
@@ -352,12 +352,12 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		disableConfirms ? handler() : yesNoAlert({
 			header: tDelThing,
 			message: tRUSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [declenjugations, disableConfirms, doAlert, tConfDel, tDelThing, tDeleted, tRUSure, toast]);
+	}, [declenjugations, disableConfirms, doAlert, tc, tDelThing, tDeleted, tRUSure, toast]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around

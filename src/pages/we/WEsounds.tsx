@@ -125,15 +125,14 @@ const SoundChange: FC<SoundChangeItemProps> = (props) => {
 };
 
 const commons = [
-	"AddNew", "deleteThisCannotUndo", "Clear Everything?",
-	"Delete", "Help", "confirmDelIt"
+	"AddNew", "deleteThisCannotUndo", "DeleteEverythingQ", "Delete", "Help"
 ];
 
 const WESChange: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const tSChs = useMemo(() => t("Sound Changes"), [t]);
-	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp, tConfDel ] = useI18Memo(commons);
+	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp ] = useI18Memo(commons);
 	const tThingDeleted = useMemo(() => tc("thingDeleted", { thing: t("Sound Change") }), [tc,t]);
 
 	const { modalPropsMaker } = props;
@@ -178,12 +177,12 @@ const WESChange: FC<PageData> = (props) => {
 				header: rule,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [arrow, disableConfirms, dispatch, doAlert, toast, tYouSure, tConfDel, tThingDeleted]);
+	}, [arrow, disableConfirms, dispatch, doAlert, toast, tYouSure, tc, tThingDeleted]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WESoundChangeObject>(soundChanges, ed.from, ed.to);

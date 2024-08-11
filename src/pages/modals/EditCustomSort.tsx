@@ -99,7 +99,7 @@ const translations = [
 
 const commons = [
 	"AddNew", "Close", "Default sort", "Delete", "Edit", "ExtraChars",
-	"Ok", "Save", "Title", "areYouSure", "confirmDelIt", "emphasizedError",
+	"Ok", "Save", "Title", "areYouSure", "emphasizedError",
 	"deleteThisCannotUndo",
 ];
 
@@ -108,7 +108,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tAddNew, tClose, tDefSort, tDelete, tEdit, tExChar, tOk,
-		tSave, tTitle, tRUSure, tConfDel, tError, tYouSure
+		tSave, tTitle, tRUSure, tError, tYouSure
 	] = useI18Memo(commons);
 	const [
 		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha, tDefSens,
@@ -389,12 +389,12 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		yesNoAlert({
 			header: tDelThisSort,
 			message: tYouSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [dispatch, doAlert, id, setIsOpen, tDelThisSort, toast, tConfDel, tOk, tThingDeleted, tYouSure]);
+	}, [dispatch, doAlert, id, setIsOpen, tDelThisSort, toast, tc, tOk, tThingDeleted, tYouSure]);
 	const maybeAddNewRelation = useCallback(() => {
 		setSavedRelation(null);
 		addRelationModalInfo.setIsOpen(true);
@@ -413,12 +413,12 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		yesNoAlert({
 			header: tDelThisSort,
 			message: tRUSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
-	}, [customizations, doAlert, tDelThisSort, tConfDel, tRUSure]);
+	}, [customizations, doAlert, tDelThisSort, tc, tRUSure]);
 	const editEquality = useCallback((relation: EqualityObject) => {
 		const el = $i<HTMLIonListElement>("editingCustomSortList");
 		el && el.closeSlidingItems();
@@ -429,12 +429,12 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		yesNoAlert({
 			header: tDelThisSort,
 			message: tRUSure,
-			submit: tConfDel,
+			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
-	}, [customizations, doAlert, tDelThisSort, tConfDel, tRUSure]);
+	}, [customizations, doAlert, tDelThisSort, tc, tRUSure]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around

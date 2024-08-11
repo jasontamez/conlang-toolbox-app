@@ -50,7 +50,7 @@ const translations = [
 ];
 const commons = [
 	"Are you sure you want to discard this?", "Cancel", "Close",
-	"ExtraChars", "Ok", "Save", "Unsaved Info", "Yes Discard"
+	"ExtraChars", "Ok", "Save", "UnsavedInfo", "Yes Discard"
 ];
 
 const AddCustomSortRelation: FC<CustomSortModal> = (props) => {

@@ -56,8 +56,7 @@ const translations = [
 
 const commons = [
 	"deleteThisCannotUndo", "Are you sure you want to discard your edits?",
-	"Delete", "Deleted", "Ok", "Save", "Unsaved Info", "Yes Discard",
-	"confirmDelIt"
+	"Delete", "Deleted", "Ok", "Save", "UnsavedInfo", "Yes Discard"
 ];
 
 const presentations = [ "Matching Expression", "Replacement Expression" ];
@@ -81,7 +80,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tYouSureDel, tYouSureDiscard, tDel, tDeleted, tOk,
-		tSave, tUnsaved, tYes, tConfDel
+		tSave, tUnsaved, tYes
 	] = useI18Memo(commons);
 	const [
 		tMod, tPref, tSuff, tBaseWord, tAdvMeth, tWord,
@@ -294,7 +293,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 				header: tDelThing,
 				message: tYouSureDel,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
@@ -302,7 +301,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		handler();
 	}, [
 		closeModal, disableConfirms, doAlert, id, setOutgoingDeclenjugation,
-		tDelThing, tConfDel, tDeleted, tYouSureDel, toast
+		tDelThing, tc, tDeleted, tYouSureDel, toast
 	]);
 	const openCase = useCallback(() => caseMakerModalInfo.setIsOpen(true), [caseMakerModalInfo]);
 	const toggleUseWholeWord = useCallback(() => setUseWholeWord(!useWholeWord), [useWholeWord]);

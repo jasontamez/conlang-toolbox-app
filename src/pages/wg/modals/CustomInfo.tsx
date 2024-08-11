@@ -71,10 +71,9 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 };
 
 const commons = [
-	"Cancel", "Delete", "LoadError", "Load",
-	"ManageCustomInfo", "NameOfSave", "NameYourInfo",
-	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "cannotUndo",
-	"confirmDelIt", "confirmLoad"
+	"Cancel", "Delete", "LoadError", "Load", "ManageCustomInfo",
+	"NameOfSave", "NameYourInfo", "NoSavedInfo", "Ok", "Save",
+	"YesOverwriteIt", "cannotUndo", "confirmLoad"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
@@ -82,8 +81,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tCancel, tDelete, tLoadError, tLoad, tManage, tNameSave, tNameCustom,
-		tNoSaved, tOk, tSave, tYesOverwrite, tCannotUndo, tConfirmDel,
-		tConfirmLoad
+		tNoSaved, tOk, tSave, tYesOverwrite, tCannotUndo, tConfirmLoad
 	] = useI18Memo(commons);
 	const [tSaveInfo, tLoadInfo] = useMemo(() => {
 		const tCurr = tc("CurrentInfo");
@@ -229,12 +227,12 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				header: tc("deleteTitleQ", { title }),
 				message: tCannotUndo,
 				cssClass: "warning",
-				submit: tConfirmDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast, tCannotUndo, tConfirmDel]);
+	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast, tCannotUndo]);
 	const customInfoList = useMemo(() => customInfo.map((title: string, i: number) => (
 		<SavedItem
 			title={title}

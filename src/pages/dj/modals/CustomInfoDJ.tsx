@@ -46,16 +46,15 @@ const translations = [
 
 const commons = [
 	"deleteThisCannotUndo", "Cancel", "Delete", "LoadError",
-	"Load", "ManageCustomInfo", "NameOfSave",
-	"NameYourInfo", "NoSavedInfo", "Ok", "Save", "YesOverwriteIt",
-	"confirmDelIt", "confirmLoad"
+	"Load", "ManageCustomInfo", "NameOfSave", "NameYourInfo",
+	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "confirmLoad"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tYouSure, tCancel, tDel, tLoadErr, tLoad, tManage,
-		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes, tConfDel,
+		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes,
 		tConfLoad
 	] = useI18Memo(commons);
 	const [ tNoTitle, tLoadInfo, tAllGroups, tOverwritePrev ] = useI18Memo(translations, "dj");
@@ -189,12 +188,12 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				header: tc("deleteTitleQ", { title }),
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [customInfo, disableConfirms, doAlert, setTitles, tConfDel, tYouSure, tc, toast]);
+	}, [customInfo, disableConfirms, doAlert, setTitles, tYouSure, tc, toast]);
 	const customInfoItems = useMemo(() => customInfo.map((title: string) => {
 		return (
 			<IonItem key={title}>

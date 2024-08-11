@@ -93,10 +93,10 @@ const commons = [
 	"Column [x] must match expression [y]", "Did not find anything to import.",
 	"Exit Without Importing?", "Import from which columns",
 	"If off, this will import words that match any condition.", "Import",
-	"Lexicon Has No Columns", "Match all conditions", "Nothing to save.",
+	"Lexicon Has No Columns", "Match all conditions", "NothingToSave",
 	"Please select at least one column to import from.",
 	"Type part of word here.", "Type regular expression here.",
-	"Word must contain [x]", "Word must match expression [x]", "Yes Exit",
+	"Word must contain [x]", "Word must match expression [x]",
 	"Words that match", "Words where the column", "Test column",
 	"Words that contain"
 ];
@@ -112,7 +112,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		tNoColumns, tMatchAll, tNothingToSave,
 		tSelOne,
 		tTypeWord, tTypeRegex,
-		tX, tMX, tYesEx,
+		tX, tMX,
 		tWordsMatch, tWordsCol, tTestCol,
 		tWordsCont
 	] = useI18Memo(commons);
@@ -168,14 +168,14 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		) {
 			return yesNoAlert({
 				message: tExWithout,
-				submit: tYesEx,
+				submit: tClose,
 				cssClass: "warning",
 				handler: doClose,
 				doAlert
 			});
 		}
 		doClose();
-	}, [columnMatches.length, columnTests.length, doAlert, doClose, importing, tExWithout, tYesEx, wordMatches.length, wordTests.length]);
+	}, [columnMatches.length, columnTests.length, doAlert, doClose, importing, tExWithout, tClose, wordMatches.length, wordTests.length]);
 
 	const onLoad = useCallback(() => {
 		const bools: boolean[] = [];

@@ -109,7 +109,7 @@ const translations = [ "caseMakerInstructions", "declenjugatorTitle" ];
 
 const commons =  [
 	"Are you sure you want to discard this?", "Cancel", 
-	"Nothing to save.", "Save", "Unsaved Info", "Yes Discard"
+	"NothingToSave", "Save", "UnsavedInfo", "Yes Discard"
 ];
 
 

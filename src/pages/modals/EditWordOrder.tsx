@@ -77,14 +77,14 @@ const translations = [
 
 const commons = [
 	"Close", "Default sort", "Delete", "ExtraChars",
-	"Nothing to save.", "confirmDelIt", "emphasizedError"
+	"NothingToSave", "emphasizedError"
 ];
 
 const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [
-		tClose, tDefSort, tDelete, tExChar, tNothing, tConfDel, tEmphError
+		tClose, tDefSort, tDelete, tExChar, tNothing, tEmphError
 	] = useI18Memo(commons);
 	const [
 		tYouSure, tAlphaFirst, tAlphaLast, tFieldName, tLarge, tLexOpts,
@@ -294,12 +294,12 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 				header: shadowColumns[i].label,
 				cssClass: "danger",
 				message: tYouSure,
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, shadowColumns, tConfDel, tYouSure]);
+	}, [disableConfirms, doAlert, shadowColumns, tc, tYouSure]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around

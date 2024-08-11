@@ -56,8 +56,8 @@ const translations = [
 ];
 
 const commons = [
-	"deleteThisCannotUndo", "Close", "error", "ExtraChars", "Ok",
-	"Yes Exit", "confirmDelIt", "areYouSure"
+	"deleteThisCannotUndo", "Close", "error",
+	"ExtraChars", "Ok", "areYouSure"
 ];
 
 const things = [ "deleteThing", "saveThing", "thingDeleted", "thingEdited" ];
@@ -66,10 +66,7 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [ tExit, tItem, tUnsavedChanges, tNoInfo ] = useI18Memo(translations, "lexicon");
-	const [
-		tYouSure, tClose, tError, tExChar, tOk,
-		tYesExit, tConfDel, tRUSure
-	] = useI18Memo(commons);
+	const [ tYouSure, tClose, tError, tExChar, tOk, tRUSure ] = useI18Memo(commons);
 	const tEditLexicon = useMemo(() => tc("editThing", { thing: t("Lexicon Item")}), [tc, t]);
 	const [
 		tDelThing, tSaveThing, tThingDel, tThingEdit
@@ -115,11 +112,11 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 			header: tExit,
 			cssClass: "warning",
 			message: tUnsavedChanges,
-			submit: tYesExit,
+			submit: tClose,
 			handler: () => setIsOpen(false),
 			doAlert
 		});
-	}, [currentInfo, disableConfirms, doAlert, originalString, setIsOpen, tExit, tUnsavedChanges, tYesExit]);
+	}, [currentInfo, disableConfirms, doAlert, originalString, setIsOpen, tExit, tUnsavedChanges, tClose]);
 	const maybeSaveNewInfo = useCallback(() => {
 		const cols = currentInfo();
 		if(cols.join("") === "") {
@@ -165,12 +162,12 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 				header: tRUSure,
 				cssClass: "danger",
 				message: tYouSure,
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, id, setIsOpen, tConfDel, tRUSure, tThingDel, tYouSure, toast]);
+	}, [disableConfirms, dispatch, doAlert, id, setIsOpen, tc, tRUSure, tThingDel, tYouSure, toast]);
 	const opener = useCallback(() => openECM(true), [openECM]);
 	const columnarInfo = useMemo(() => columnInfo.map((col: LexiconColumn, i: number) => {
 		return (

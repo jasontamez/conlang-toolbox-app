@@ -97,7 +97,7 @@ const commons = [
 	"AddNew", "deleteThisCannotUndo",
 	"Are you sure you want to discard this?", "Cancel", "Close",
 	"Default sort", "Delete", "Edit", "ExtraChars", "Ok", "Save",
-	"Title", "Unsaved Info", "Yes Discard", "areYouSure", "confirmDelIt"
+	"Title", "UnsavedInfo", "Yes Discard", "areYouSure"
 ];
 
 const AddCustomSort: FC<CustomSortModal> = (props) => {
@@ -112,8 +112,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 	] = useI18Memo(translations, 'settings');
 	const [
 		tAddNew, tYouSure, tSureDiscard, tCancel, tClose, tDefSort, tDelete,
-		tEdit, tExChar, tOk, tSave, tTitle, tUnsaved, tYesDisc, tRUSure,
-		tConfDel
+		tEdit, tExChar, tOk, tSave, tTitle, tUnsaved, tYesDisc, tRUSure
 	] = useI18Memo(commons);
 	const tAddThing = useMemo(() => tc("addThing", { thing: t("Custom Sort") }), [ tc, t ]);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [ tc ]);
@@ -403,7 +402,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 								yesNoAlert({
 									header: tDelThing,
 									message: tYouSure,
-									submit: tConfDel,
+									submit: tc("confirmDel", { count: 1 }),
 									cssClass: "danger",
 									handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 									doAlert
@@ -486,7 +485,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 								yesNoAlert({
 									header: tDelThing,
 									message: tRUSure,
-									submit: tConfDel,
+									submit: tc("confirmDel", { count: 1 }),
 									cssClass: "danger",
 									handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 									doAlert
@@ -548,7 +547,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 			);
 		}
 	}), [
-		customizations, tDelete, doAlert, tConfDel, tDelThing, tRUSure,
+		customizations, tDelete, doAlert, tc, tDelThing, tRUSure,
 		tEdit, editEqualityModalInfo, editRelationModalInfo, tYouSure,
 		setIncomingEquality, setIncomingRelation
 	]);

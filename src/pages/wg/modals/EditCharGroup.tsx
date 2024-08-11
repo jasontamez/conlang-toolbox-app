@@ -46,9 +46,7 @@ function resetError (prop: keyof WGCharGroupObject) {
 }
 
 
-const commons = [
-	"deleteThisCannotUndo", "Cancel", "confirmDelIt", "error"
-];
+const commons = [ "deleteThisCannotUndo", "Cancel", "error" ];
 
 const translations = [
 	"1 character only", "CharGroup_one", "Enter characters in group here",
@@ -69,8 +67,9 @@ const things = [
 const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
+	const [ tc ] = useTranslator('common');
 	const tUseSep = useMemo(() => t("Use separate dropoff rate"), [t]);
-	const [ tYouSure, tCancel, tConfDel, tError ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tCG, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoSuggest
@@ -261,13 +260,13 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 				header: `${label}=${run}`,
 				message: tYouSure,
 				cssClass: "danger",
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
 	}, [cancelEditing, disableConfirms, dispatch, doAlert, dropoff, hasDropoff,
-		labelEl, runEl, titleEl, toast, tConfDel, tThingDel, tYouSure]);
+		labelEl, runEl, titleEl, toast, tc, tThingDel, tYouSure]);
 	const toggleDropoff = useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff]);
 	const doDropoff = useCallback((e: RangeCustomEvent) => {setDropoff(e.detail.value as Zero_Fifty)}, []);
 	return (

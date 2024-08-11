@@ -36,14 +36,14 @@ interface SavedLexProperties extends ModalProperties {
 }
 
 const commons = [
-	"deleteThisCannotUndo", "Cancel", "Close", "confirmDelIt", "Lexicon"
+	"deleteThisCannotUndo", "Cancel", "Close", "Lexicon"
 ];
 
 const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const tNoSaved = useMemo(() => t("No Saved Lexicons"), [t]);
-	const [ tYouSure, tCancel, tClose, tConfDel, tLexicon ] = useI18Memo(commons);
+	const [ tYouSure, tCancel, tClose, tLexicon ] = useI18Memo(commons);
 	const tDeleteLexicon = useMemo(() => tc("deleteThing", { thing: tLexicon }), [tc, tLexicon]);
 
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
@@ -76,12 +76,12 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 				header: tc("deleteTitleQ", { title }),
 				cssClass: "danger",
 				message: tYouSure,
-				submit: tConfDel,
+				submit: tc("confirmDel", { count: 1 }),
 				handler,
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, setIsOpen, setLexInfo, setLoadingScreen, tConfDel, tYouSure, tc, toast, tLexicon]);
+	}, [disableConfirms, doAlert, setIsOpen, setLexInfo, setLoadingScreen, tYouSure, tc, toast, tLexicon]);
 	const listOfLexicons = useMemo(() => data.map((pair: [string, LexiconState]) => {
 		const key = pair[0];
 		const lex = pair[1];
