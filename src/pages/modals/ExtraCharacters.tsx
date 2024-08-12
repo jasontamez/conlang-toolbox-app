@@ -97,13 +97,13 @@ const DisplayWithoutName: FC<DisplayProps> = (props) => {
 
 const translations = [
 	"CharactersToBeCopied", "Copy", "Done", "ExtraChars", "Favorites",
-	"Help", "Hide full character names", "Show full character names",
-	"Start favoriting characters", "Stop favoriting characters",
-	"Tap characters to add them here",
-	"No longer copying directly to clipboard.",
-	"Now copying immediately to clipboard.",
-	"No longer saving to Favorites",
-	"Now saving characters to Favorites"
+	"Help", "HideNames", "ShowNames",
+	"startedFavoriting", "stoppedFavoriting",
+	"TapToAdd",
+	"stoppedCopying",
+	"startedCopying",
+	"stoppedSaving",
+	"startedSaving"
 ];
 const arrays = [
 	"extraHelp.help1p1", "extraHelp.help1p2",

@@ -49,8 +49,8 @@ const translations = [
 	"Sorted Before the Base"
 ];
 const commons = [
-	"Are you sure you want to discard this?", "Cancel", "Close",
-	"ExtraChars", "Ok", "Save", "UnsavedInfo", "Yes Discard"
+	"MaybeDiscardThing", "Cancel", "Close",
+	"ExtraChars", "Ok", "Save", "UnsavedInfo", "YesDiscard"
 ];
 
 const AddCustomSortRelation: FC<CustomSortModal> = (props) => {

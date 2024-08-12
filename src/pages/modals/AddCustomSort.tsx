@@ -95,9 +95,9 @@ const translations = [
 
 const commons = [
 	"AddNew", "deleteThisCannotUndo",
-	"Are you sure you want to discard this?", "Cancel", "Close",
-	"Default sort", "Delete", "Edit", "ExtraChars", "Ok", "Save",
-	"Title", "UnsavedInfo", "Yes Discard", "areYouSure"
+	"MaybeDiscardThing", "Cancel", "Close",
+	"defaultSort", "Delete", "Edit", "ExtraChars", "Ok", "Save",
+	"Title", "UnsavedInfo", "YesDiscard", "areYouSure"
 ];
 
 const AddCustomSort: FC<CustomSortModal> = (props) => {

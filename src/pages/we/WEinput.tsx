@@ -33,9 +33,9 @@ import { InpCard } from "./WEinfo";
 import useTranslator from '../../store/translationHooks';
 
 const commons = [
-	"Are you sure? This will clear the entire input and cannot be undone.",
+	"MaybeClearEntireInput",
 	"Clear", "ExtraChars", "Help",
-	"Input", "Yes Clear It"
+	"Input", "YesClear"
 ];
 
 const translations = [

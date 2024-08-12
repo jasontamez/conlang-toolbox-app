@@ -50,7 +50,7 @@ const translations = [
 ];
 
 const commons = [
-	"Cancel", "DeleteEverythingQ", "Ok", "Please wait...",
+	"Cancel", "DeleteEverythingQ", "Ok", "PleaseWait",
 	"SaveAsNew", "confirmDelAll", "error", "Description"
 ];
 

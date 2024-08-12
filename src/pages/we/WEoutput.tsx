@@ -178,10 +178,10 @@ const translations = [
 	"You have no sound changes defined."
 ];
 const commons = [
-	"Help", "Load Preset", "Output", "Please wait...", "Save", "Cancel",
+	"Help", "LoadPreset", "Output", "PleaseWait", "Save", "Cancel",
 	"GoToLexicon", "SelectAColumn", "error",
 	"TapWordsToSave",
-	"You need to add columns to the Lexicon before you can add anything to it.",
+	"LexiconNeedsColumns",
 	"SaveToLexiconMessage"
 ];
 

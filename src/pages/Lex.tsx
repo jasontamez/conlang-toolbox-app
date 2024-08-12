@@ -127,7 +127,7 @@ interface InnerHeaderProps {
 }
 
 const innerCommons = [
-	"ExtraChars", "Help", "Please wait...", "Lexicon"
+	"ExtraChars", "Help", "PleaseWait", "Lexicon"
 ];
 
 const InnerHeader: React.FC<InnerHeaderProps> = (props) => {

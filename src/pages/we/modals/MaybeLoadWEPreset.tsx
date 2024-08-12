@@ -25,7 +25,7 @@ import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
 
-const commons = [ "Cancel", "Load Preset", "confirmLoad" ];
+const commons = [ "Cancel", "LoadPreset", "confirmLoad" ];
 
 const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');

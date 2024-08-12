@@ -151,6 +151,7 @@ const WORD = t("[word]");
 const STEM = t("[stem]");
 const EXAMPLE = t("Example");
 const EXAMPLES = t("Examples");
+const ERROR = tc("error");
 const getDJRawInfo = (
 	group: DJGroup,
 	displayMethod: DJDisplayMethods,
@@ -381,12 +382,12 @@ export const display = (
 			const maxColClass = columnClasses.length - 1;
 			rows.forEach((row, i) => {
 				copyRows.push([...row]);
-				const rowId = rowIds[i] || "error";
+				const rowId = rowIds[i] || ERROR;
 				const rowClass = rowClasses[i > maxRowClass ? maxRowClass : i];
 				const cells: ReactElement[] = [];
 				const maxRow = row.length - 1;
 				row.forEach((col, j) => {
-					const colId = columnIds[j] || "error";
+					const colId = columnIds[j] || ERROR;
 					const colClass = columnClasses[j > maxColClass ? maxColClass : j];
 					const period = (j === maxRow) ? "." : "";
 					if(textDisplayActive) {

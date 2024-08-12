@@ -63,7 +63,7 @@ import { OptCard } from "./WGinfo";
 //   []  interrogative   [?]   weight: [2]
 //   []  exclamatory     [!]   weight: [1]
 
-const commons = [ "Help", "Load Preset", "Please wait...", "Settings" ];
+const commons = [ "Help", "LoadPreset", "PleaseWait", "Settings" ];
 const translations =  [
 	"Always", "Capitalize sentences", "Character Group run dropoff",
 	"From 0 to 50", "From 0% to 100%", "From 2 to 15",

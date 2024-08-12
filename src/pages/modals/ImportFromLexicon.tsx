@@ -89,16 +89,16 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 
 const commons = [
 	"Close", "ExtraChars", "Save", "Help",
-	"Add Conditions optional", "Cancel", "Column [x] must contain [y]",
-	"Column [x] must match expression [y]", "Did not find anything to import.",
-	"Exit Without Importing?", "Import from which columns",
-	"If off, this will import words that match any condition.", "Import",
-	"Lexicon Has No Columns", "Match all conditions", "NothingToSave",
-	"Please select at least one column to import from.",
-	"Type part of word here.", "Type regular expression here.",
-	"Word must contain [x]", "Word must match expression [x]",
-	"Words that match", "Words where the column", "Test column",
-	"Words that contain"
+	"AddConditions", "Cancel", "ColXMustHaveY",
+	"ColXMustMatchY", "NothingToImport",
+	"ExitWOImport", "ImportFromWhichColumns",
+	"ifMatchAllOff", "Import",
+	"LexiconHasNoColumns", "MatchAllConditions", "NothingToSave",
+	"SelectOneCol",
+	"TypeWordHere", "TypeRegExHere",
+	"WordMustContainX", "WordMustMatchX",
+	"WordsThatMatch", "WordsWithColumn", "TestColumn",
+	"WordsThatContain"
 ];
 
 const LexiconImporterModal: FC<ImporterProps> = (props) => {

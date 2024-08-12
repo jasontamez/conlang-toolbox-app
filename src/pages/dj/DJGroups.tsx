@@ -226,7 +226,7 @@ const translations = [
 ];
 
 const commons = [
-	"AddNew", "Delete", "Help", "Please wait...", "Save", "Edit",
+	"AddNew", "Delete", "Help", "PleaseWait", "Save", "Edit",
 	"areYouSure", "cannotUndo"
 ];
 

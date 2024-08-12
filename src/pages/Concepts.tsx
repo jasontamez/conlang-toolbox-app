@@ -329,7 +329,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			return donePickingAndSaving();
 		} else if(lexColumns.length === 0) {
 			return toaster({
-				message: tc("You need to add columns to the Lexicon before you can add anything to it."),
+				message: tc("LexiconNeedsColumns"),
 				color: "danger",
 				duration: 4000,
 				position: "top",

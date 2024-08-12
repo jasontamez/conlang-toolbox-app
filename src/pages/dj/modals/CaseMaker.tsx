@@ -108,8 +108,8 @@ const CaseItem: FC<CaseItemProps> = (props) => {
 const translations = [ "caseMakerInstructions", "declenjugatorTitle" ];
 
 const commons =  [
-	"Are you sure you want to discard this?", "Cancel", 
-	"NothingToSave", "Save", "UnsavedInfo", "Yes Discard"
+	"MaybeDiscardThing", "Cancel", 
+	"NothingToSave", "Save", "UnsavedInfo", "YesDiscard"
 ];
 
 

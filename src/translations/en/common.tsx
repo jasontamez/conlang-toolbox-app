@@ -232,19 +232,17 @@ const common = {
 	Deleted: "Deleted", // 🟦2
 	UnsavedInfo: "Unsaved Info", // 🟨
 
-	"Are you sure you want to discard this?": // 🟡 when deciding not to add a new thing
-		"Are you sure you want to discard this?",
-	"Are you sure you want to discard your edits?": // 🟡 when deciding not to edit an existing thing
-		"Are you sure you want to discard your edits?",
-	"Yes Discard": "Yes, Discard", // 🔴
-	"Are you sure? This will clear the entire input and cannot be undone.": // 🟡
-		"$t(areYouSure) This will clear the entire input, and cannot be undone.",
-	// "It" refers to the Input in Declenjugator and WE
-	"Yes Clear It": "Yes, Clear It", // 🔴
+	// 🟡 when deciding not to add a new thing
+	MaybeDiscardThing: "Are you sure you want to discard this?",
+	// 🟡 when deciding not to edit an existing thing
+	MaybeDiscardEdits: "Are you sure you want to discard your edits?",
+	YesDiscard: "Yes, Discard", // 🔴
+	MaybeClearEntireInput: "$t(areYouSure) This will clear the entire input, and cannot be undone.", // 🟡
+	YesClear: "Yes, Clear It", // 🔴 "It" refers to the Input in Declenjugator and WE
 
-	"Default sort": "Default sort", // 🔴 Refers to the default sort method, whatever it may be
+	defaultSort: "Default sort", // 🔴 Refers to the default sort method, whatever it may be
 
-	"You need to add columns to the Lexicon before you can add anything to it.": // 🟡
+	LexiconNeedsColumns: // 🟡
 		"You need to add columns to the $t(Lexicon) before you can add anything to it.",
 
 	error: "Error",
@@ -253,46 +251,46 @@ const common = {
 	regexpError: "Error trying to parse \"{{regex}}\"", // 🟨
 
 	Loading: "Loading", // 🟥
-	"Please wait...": "Please wait...", // 🟥
+	PleaseWait: "Please wait...", // 🟥
 
 	title: "title",
 	Title: "Title", // 🔵 🟥
-	"Title_presentation": "Title:",
+	Title_presentation: "Title:",
 	Description: "Description", // 🟥 🔵
 	Description_presentation: "Description:",
 
 	overviewOf: "Overview: {{what}}", // 🟥
 
 	ImportFrom: "Import from {{source}}", // 🔴 🟥 🟨 source is always Lexicon, WordGen or WordEvolve
-	"Load Preset": "Load Preset", // 🔴
+	LoadPreset: "Load Preset", // 🔴
 
 	// Import from Lexicon (to WG or WE)
 	Import: "Import", // 🔴
-	"Import from which columns": "Import from which column(s)?", // 🟨
-	"Lexicon Has No Columns": "Lexicon Has No Columns", // 🟥
+	ImportFromWhichColumns: "Import from which column(s)?", // 🟨
+	LexiconHasNoColumns: "Lexicon Has No Columns", // 🟥
 	optional: "(optional)",
-	"Add Conditions optional": "Add Conditions $t(optional)",
-	"Word must contain [x]": "Word must contain [x]",
-	"Type part of word here.": "Type part of word here.",
-	"Word must match expression [x]": "Word must match expression [x]",
-	"Type regular expression here.": "Type regular expression here.",
-	"Column [x] must contain [y]": "Column [x] must contain [y]",
-	"Column [x] must match expression [y]": "Column [x] must match expression [y]",
+	AddConditions: "Add Conditions $t(optional)",
+	WordMustContainX: "Word must contain [x]",
+	TypeWordHere: "Type part of word here.",
+	WordMustMatchX: "Word must match expression [x]",
+	TypeRegExHere: "Type regular expression here.",
+	ColXMustHaveY: "Column [x] must contain [y]",
+	ColXMustMatchY: "Column [x] must match expression [y]",
 	Condition: "Condition",
 
 	// These terms should be treated as the `presentational` context
-	"Test column": "Test column:", // 🟥 the column being tested for a match
-	"Words that contain": "Words that contain:", // 🟥
-	"Words that match": "Words that match:", // 🟥
-	"Words where the column": "Words where the column:", // 🟥
+	TestColumn: "Test column:", // 🟥 the column being tested for a match
+	WordsThatContain: "Words that contain:", // 🟥
+	WordsThatMatch: "Words that match:", // 🟥
+	WordsWithColumn: "Words where the column:", // 🟥
 
 	columnContains: "[{{column}}] contains \"{{test}}\"",
 	columnMatches: "[{{column}}] matches /{{test}}/",
-	"Match all conditions": "Match all conditions", // 🟥
-	"If off, this will import words that match any condition.": "If off, this will import words that match any condition.",
-	"Exit Without Importing?": "Exit Without Importing?", // 🟨
-	"Please select at least one column to import from.": "Please select at least one column to import from.", // 🟦2.5
-	"Did not find anything to import.": "Did not find anything to import.", // 🟦4.5
+	MatchAllConditions: "Match all conditions", // 🟥
+	ifMatchAllOff: "If off, this will import words that match any condition.",
+	ExitWOImport: "Exit Without Importing?", // 🟨
+	SelectOneCol: "Please select at least one column to import from.", // 🟦2.5
+	NothingToImport: "Did not find anything to import.", // 🟦4.5
 	importSuccess_one: "Imported {{count}} word from $t(Lexicon).", // 🟦3.5
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
 	yesImport: "Yes, Import", // 🔴
@@ -314,17 +312,17 @@ const common = {
 	],
 
 	// EXTRA CHARACTERS
-	"No longer copying directly to clipboard.": "No longer copying directly to clipboard.", // 🟦2.5
-	"Now copying immediately to clipboard.": "Now copying immediately to clipboard.", // 🟦2.5
+	stoppedCopying: "No longer copying directly to clipboard.", // 🟦2.5
+	startedCopying: "Now copying immediately to clipboard.", // 🟦2.5
 	copiedCharToClipboard: "Copied {{char}} to clipboard", // 🟦1.5 only one character was copied
 	Favorites: "Favorites", // 🔴
-	"Start favoriting characters" : "Start favoriting characters", // 🔵
-	"Stop favoriting characters" : "Stop favoriting characters", // 🔵
-	"Now saving characters to Favorites": "Now saving characters to $t(Favorites)", // [T:2,5]
-	"No longer saving to Favorites": "No longer saving to $t(Favorites)", // 🟦2.5
-	"Tap characters to add them here": "Tap characters to add them here",
-	"Show full character names": "Show full character names", // 🔵
-	"Hide full character names": "Hide full character names", // 🔵
+	startedFavoriting : "Start favoriting characters", // 🔵
+	stoppedFavoriting : "Stop favoriting characters", // 🔵
+	startedSaving: "Now saving characters to $t(Favorites)", // 🟦2.5
+	stoppedSaving: "No longer saving to $t(Favorites)", // 🟦2.5
+	TapToAdd: "Tap characters to add them here",
+	ShowNames: "Show full character names", // 🔵
+	HideNames: "Hide full character names", // 🔵
 
 	extraHelp: { // Markdown format
 		help1p1:[
@@ -357,11 +355,10 @@ const common = {
 	characterInfo: characters,
 
 	// PERMANENT INFO - Title of the permanent sort method in sort settings.
-	"WG Presets Sorter": "WG Presets Sorter", // 🔴 "WG" stands for "WordGen"
+	WGPresetsSorter: "WG Presets Sorter", // 🔴 "WG" stands for "WordGen"
 
 	// The key below is used when someone tries to edit or delete the permanent sort method in sort settings.
-	"This is used by WordGen presets. It cannot be modified or deleted.": // 🟡
-		"This is used by $t(WordGen) presets. It cannot be modified or deleted.",
+	cannotDeleteSorter: "This is used by $t(WordGen) presets. It cannot be modified or deleted.", // 🟡
 };
 
 export default common;

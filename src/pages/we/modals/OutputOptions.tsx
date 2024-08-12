@@ -32,7 +32,7 @@ const translations = [
 	"Sort input before evolving"
 ];
 
-const commons = [ "Default sort", "Done" ];
+const commons = [ "defaultSort", "Done" ];
 
 const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');

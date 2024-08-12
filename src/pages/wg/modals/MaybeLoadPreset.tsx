@@ -54,7 +54,7 @@ const PresetItem: FC<PresetItemProps> = (props) => {
 	);
 };
 
-const commons = [ "Cancel", "Load Preset", "confirmLoad" ];
+const commons = [ "Cancel", "LoadPreset", "confirmLoad" ];
 
 const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('wg');

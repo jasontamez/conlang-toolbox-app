@@ -34,8 +34,8 @@ import { InputCard } from './DJinfo';
 const translations = [ "Enter words here, one per line", "Words to send through Declenjugator" ];
 
 const commons = [
-	"Clear", "ExtraChars", "Help", "Input", "Yes Clear It",
-	"Are you sure? This will clear the entire input and cannot be undone."
+	"Clear", "ExtraChars", "Help", "Input", "YesClear",
+	"MaybeClearEntireInput"
 ];
 
 const DJInput: FC<PageData> = (props) => {

@@ -94,7 +94,7 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | --- | --- | --- | --- |
 | 🟥 | appTitle | Conlang Toolbox | Title of the app. |
 | 🟥 | appSubtitle | tools for language invention | Subtitle of the app. |
-| 🟥 | MorphoSyntax | MorphoSyntax | Title of the MorphoSyntax tool. It is based on the word "morphosyntax", the study of the form and meaning of language through the structure of words and sentences. |
+| 🟥 | MorphoSyntax | MorphoSyntax | Title of the MorphoSyntax tool. It is based on the word "morphosyntax the study of the form and meaning of language through the structure of words and sentences. |
 | 🟥 | WordGen | WordGen | Title of the WordGen tool. It is a combination of "word" and "generator". |
 | 🟥 | WordEvolve | WordEvolve | Title of the WordEvolve tool. It is a combination of "word" and "evolve". |
 | 🟥 | Declenjugator | Declenjugator | Title of the Declenjugator tool. It is a combination of "declension" (modifying nouns based on their case) and "conjugation" (modifying verbs based on their tense, aspect and/or mode), along with an -or suffix to indicate it's an object that does something. |
@@ -128,11 +128,11 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦1.5 | CopiedToClipboard | Copied to clipboard | Displays after anything has been copied to the clipboard. |
 | 🟦1.5 | NothingToCopy | Nothing to copy | Displays when the user tries to copy something to the clipboard, but there is nothing to copy. |
 | | Untitled | \[Untitled] | This is used as a document title if no title is given. |
-| | fileFormat | {{title}} - {{date}}.{{extension}} | This becomes a filename and is used by MorphoSyntax, Declenjugator, and Lexicon for exporting documents. `{{title}}` is user-generated, `{{date}}` is replaced with a datestamp in a format like "Thu Jan 01 1970", and `{{extension}}` will be a common file extension like "docx" or "csv". |
+| | fileFormat | {{title}} - {{date}}.{{extension}} | This becomes a filename and is used by MorphoSyntax, Declenjugator, and Lexicon for exporting documents. `{{title}}` is user-generated, `{{date}}` is replaced with a datestamp in a format like "Thu Jan 01 1970 and `{{extension}}` will be a common file extension like "docx" or "csv". |
 | 🟦10 | UnableToExport | UNABLE TO EXPORT: {{error}} | Displayed when the app is unable to export a document to the user's device. `{{error}}` is a system-generated error message. |
 | 🟦5 | FileExported | {{filename}} exported. | Displayed when a file is successfully exported to the user's device. |
-| | andGlue | ", " | Put between items when the app assembles items into a single sentence. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
-| | andFinal | ", and " | Put between the penultimate and ultimate items instead of `andGlue`. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
+| | andGlue |  " | Put between items when the app assembles items into a single sentence. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
+| | andFinal |  and " | Put between the penultimate and ultimate items instead of `andGlue`. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
 | | joinTwo | {{one}} and {{two}} | Used instead of `andGlue` when there are only two items in a list. |
 | 🟨 | ExitAppQHead | Exit App? | Header of a yes/no confirmation dialog when the user hits the device back button and is about to close the app. |
 | 🟡 | ExitAppQ | Do you want to exit the app? | Body text of the confirmation dialog above |
@@ -198,3 +198,57 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦2.5 | NothingToSave | Nothing to save. | An attempt was made to save something, but there was no information to save. |
 | 🟦2 | Deleted | Deleted | Successful deletion. |
 | 🟨 | UnsavedInfo | Unsaved Info | Dialogs regarding exiting or closing something before everything has saved. |
+|  | error | Error | Simple translation |
+| 🟥 | emphasizedError | \<$t(error)\> | A visually emphasized version of `error`. |
+| 🟨 | regexpError | Error trying to parse "{{regex}}" | The user gave a malformed regular expression `{{regex}}` in WG or WE. |
+| 🟥 | Loading | Loading | A tool or page is loading. |
+| 🟥 | PleaseWait | Please wait... | An additional loading message. |
+| 🟡 | MaybeDiscardThing | Are you sure you want to discard this? | When deciding not to add a new thing |
+| 🟡 | MaybeDiscardEdits | Are you sure you want to discard your edits? | When deciding not to edit an existing thing |
+| 🔴 | YesDiscard | Yes, Discard | Affirmative answer to either of the above two questions. |
+| 🟡 | MaybeClearEntireInput | $t(areYouSure) This will clear the entire input, and cannot be undone. | Clearing the entire Input in Declenjugator and WE |
+| 🔴 | YesClear | Yes, Clear It | Affirmative answer to the above question. |
+| 🔴 | defaultSort | Default sort | Refers to the default sort method (whatever it may be) |
+| 🟡 | LexiconNeedsColumns | You need to add columns to the $t(Lexicon) before you can add anything to it. | Error message |
+| 🔴 🟥 🟨 | ImportFrom | Import from {{source}} | `{{source}}` is always Lexicon, WordGen or WordEvolve |
+| 🔴 | LoadPreset | Load Preset | Load a preset in WE or WG |
+| 🔴 | Import | Import | Import from Lexicon (to WG or WE) |
+| 🟨 | ImportFromWhichColumns | Import from which column(s)? | Import from Lexicon (to WG or WE) |
+| 🟥 | LexiconHasNoColumns | Lexicon Has No Columns | Error message trying to import from an empty Lexicon |
+|  | optional | (optional) | Placeholder text for optional text inputs |
+|  | AddConditions | Add Conditions $t(optional) | The user can specify conditions that must be met before a specific word can be imported from the Lexicon. |
+|  | Condition | Condition | Used in `thingSaved` inside the Import from Lexicon modal |
+|  | WordMustContainX | Word must contain \[x\] | A condition |
+| 🟥 | WordsThatContain | Words that contain: | *(presentation context)* Prefixes the input box for the above key |
+|  | TypeWordHere | Type part of word here. | Placeholder text for the above input |
+|  | WordMustMatchX | Word must match expression \[x\] | A condition |
+| 🟥 | WordsThatMatch | Words that match: | *(presentation context)* Prefixes the input box for the above key |
+|  | TypeRegExHere | Type regular expression here. | Placeholder text for the above input |
+|  | ColXMustHaveY | Column \[x\] must contain \[y\] | A condition |
+|  | ColXMustMatchY | Column \[x\] must match expression \[y\] | A condition |
+| 🟥 | TestColumn | Test column: | *(presentation context)* The column being tested for a match (see the two keys above) |
+| 🟥 | WordsWithColumn | Words where the column: | *(presentation context)* Header for displaying the column conditions |
+|  | columnContains | \[{{column}}\] contains "{{test}}" | Shows a result of `ColXMustHaveY` where `{{column}}` is the Lexicon column and `{{test}}` is the user-provided string a word must contain. |
+|  | columnMatches | \[{{column}}\] matches /{{test}}/ | Same as above, but `{{test}}` is the user-provided regular expression. |
+| 🟥 | MatchAllConditions | Match all conditions | Toggle switch label |
+|  | ifMatchAllOff | If off, this will import words that match any condition. | Explanatory text for the toggle |
+| 🟨 | ExitWOImport | Exit Without Importing? | Exit the importer without actually importing anything. |
+| 🟦2.5 | SelectOneCol | Please select at least one column to import from. | Error message where no column was selected for the importer. |
+| 🟦4.5 | NothingToImport | Did not find anything to import. | The conditions given resulted in no words being eligible for importing. |
+| 🟦3.5 | importSuccess_one | Imported {{count}} word from $t(Lexicon) | Successful import |
+| 🟦3.5 | importSuccess_other | Imported {{count}} word from $t(Lexicon) | English plural of the above |
+| 🔴 | yesImport | Yes, Import | Proceed with the import |
+|  | regexpInfo | *This is an array of strings in Markdown format. See [regexpInfo](#regexpinfo) section below.* | A minimal explanation of how to find information on regular expressions. |
+
+### regexpInfo
+
+>\[  
+>"To put it as simply as possible, a regular expression is a sequence of characters that specifies a match pattern in text. $t(appTitle) uses JavaScript-style regexes without the surrounding slash characters.",  
+>"",  
+>"Fully explaining regular expressions is a topic that's too complicated for this app to cover, but they are very useful. Here are some resources where you can learn more about them:",  
+>"",  
+>"\- \[Wikipedia: Regular Expression\]\(https:/\/en.wikipedia.org/wiki/Regular_expression\)",  
+>"\- \[MDN: Writing a regular expression\]\(https:\//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern\)",  
+>"\- \[Regular-Expressions.info\]\(https:\//www.regular-expressions.info\) (a tutorial site)",  
+>"\- \[Geeks for Geeks: Write Reguar Expressions\]\(https:/\/www.geeksforgeeks.org/write-regular-expressions/\)"  
+>\]
