@@ -25,14 +25,14 @@ const themes: ThemeNames[] = [
 	"Default",
 	"Light",
 	"Dark",
-	"Solarized Light",
-	"Solarized Dark"
+	"SolarizedLight",
+	"SolarizedDark"
 ];
 
 const ThemeModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator("settings");
 	const [ tc ] = useTranslator("common");
-	const tChooseTheme = useMemo(() => t("Choose a Theme"), [t]);
+	const tChooseTheme = useMemo(() => t("ChooseATheme"), [t]);
 	const tCancel = useMemo(() => tc("Cancel"), [tc]);
 
 	const { isOpen, setIsOpen } = props;

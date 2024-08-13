@@ -21,9 +21,9 @@ import ImportData from './modals/ImportData';
 import useI18Memo from '../components/useI18Memo';
 
 const translations =  [
-	"Change Theme", "Disable Confirmation Prompts",
-	"Eliminates yes/no prompts when deleting or overwriting data.",
-	"Import App Info", "Sort Settings"
+	"ChangeTheme", "DisableConfPrompts",
+	"confPromptExplanation",
+	"ImportAppInfo", "SortSettings"
 ];
 
 const AppSettings: FC<PageData> = (props) => {

@@ -18,7 +18,6 @@ const characters = {
 	Hiragana: "Hiragana", // 🔴
 	Katakana: "Katakana", // 🔴
 	Bopomofo: "Bopomofo", // 🔴
-	Favorites: "$t(common:Favorites)", // 🔴
 
 	// These are the official Unicode designations for these characters
 

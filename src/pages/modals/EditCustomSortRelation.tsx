@@ -41,14 +41,14 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 
 
 const translations = [
-	"Base character", "Characters sorted after the base",
-	"Characters sorted before the base", "Comma",
-	"End with the one just before the Base.", "No separator", "Period",
-	"Semicolon", "Space", "Start with the one just after the Base.",
-	"The base character", "You must provide a base character.",
-	"You must provide some pre or post characters.",
-	"Base Character", "Pre/Post Separator", "Sorted After the Base",
-	"Sorted Before the Base"
+	"Basecharacter", "CharsPostBase",
+	"CharsPreBase", "Comma",
+	"charsPreBaseMsg", "NoSeparator", "Period",
+	"Semicolon", "Space", "charsPostBaseMsg",
+	"TheBaseCharacter", "noBaseCharMsg",
+	"noPostPreCharMsg",
+	"BaseChar", "PrePostSeparator", "SortedAfterBase",
+	"SortedBeforeBase"
 ];
 
 const commons = [

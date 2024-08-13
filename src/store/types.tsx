@@ -357,7 +357,7 @@ export interface ExtraCharactersState {
 // SETTINGS
 //
 
-export type ThemeNames = "Default" | "Light" | "Dark" | "Solarized Light" | "Solarized Dark";
+export type ThemeNames = "Default" | "Light" | "Dark" | "SolarizedLight" | "SolarizedDark";
 
 export interface AppSettings {
 	theme: ThemeNames
@@ -476,7 +476,7 @@ interface ARCHIVE_WordListsState {
 	listsDisplayed: { [key in keyof Omit<Concept, "id" | "word">]: boolean }
 }
 interface ARCHIVE_AppSettings {
-	theme: ThemeNames
+	theme: "Default" | "Light" | "Dark" | "Solarized Light" | "Solarized Dark"
 	disableConfirms: boolean
 }
 export interface ImportExportObject {

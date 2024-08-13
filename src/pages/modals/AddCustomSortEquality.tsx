@@ -39,12 +39,12 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"Base character", "Characters equal to the base", "Equality",
-	"Characters to be equal to the Base.", "Comma", "No separator", "Period",
-	"Semicolon", "Space", "The base character",
-	"You must provide a base character.",
-	"You must provide some equal characters.", "Base Character",
-	"Characters Separator", "Equal to the Base"
+	"Basecharacter", "CharsEqual", "Equality",
+	"CharsToBeEqual", "Comma", "NoSeparator", "Period",
+	"Semicolon", "Space", "TheBaseCharacter",
+	"noBaseCharMsg",
+	"noEqualCharMsg", "BaseChar",
+	"CharsSeparator", "BaseEqual"
 ];
 
 const commons = [

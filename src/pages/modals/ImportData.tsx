@@ -82,11 +82,11 @@ const commons = [
 ];
 
 const translations = [
-	"Analyze", "areYouVerySure", "Data to Import",
-	"Import Info", "Other App Settings",
-	"Reset", "WARNING!", "What to Import", "Yes Close This",
-	"Yes I Want to Do This", "You did not choose anything to import.",
-	"You haven't imported anything yet.", "importDescription"
+	"Analyze", "areYouVerySure", "DataToImport",
+	"ImportInfo", "OtherAppSettings",
+	"Reset", "WARNING", "WhatToImport", "YesClose",
+	"YesIAmSure", "nothingChosenForImportMsg",
+	"nothingImportedMsg", "importDescription"
 ];
 
 const ImportData: FC<ModalProperties> = (props) => {

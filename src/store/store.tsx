@@ -28,7 +28,7 @@ import sortingSlice from './sortingSlice';
 import declenjugatorSlice from './declenjugatorSlice';
 import blankAppState from './blankAppState';
 import internalsSlice from './internalsSlice';
-import { ConceptDisplay, ConceptDisplayObject } from './types';
+import { AppSettings, ConceptDisplay, ConceptDisplayObject, ThemeNames } from './types';
 
 //
 //
@@ -94,8 +94,18 @@ const migrations = {
 		const display: ConceptDisplayObject = {};
 		((state.concepts.display || []) as ConceptDisplay[]).forEach(prop => display[prop] = true);
 		newState.concepts.display = display;
+		return newState;
+	},
+	3: (state: any) => {
+		// Fix potential bugs with "Solarized Light" becoming "SolarizedLight", etc
+		const newState = {...state};
+		const appState: AppSettings = {
+			...newState.appSettings
+		};
+		appState.theme = (appState.theme.replace(/ /g, "") as ThemeNames);
+		newState.appSettings = newState;
 		console.log({...state});
-		console.log({...display});
+		console.log({...appState});
 		console.log({...newState});
 		return newState;
 	}
@@ -136,7 +146,7 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 };
 const persistConfig = {
 	key: 'root',
-	version: 2,
+	version: 2, // NEEDS TO BE UPDATED TO 3 BEFORE NEXT BUILD
 	storage,
 	stateReconciler,
 	migrate: createMigrate(migrations, { debug: false })

@@ -80,17 +80,17 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"(none)", "Base letters only", "Blank alphabet provided.",
-	"Characters that should be sorted together as if they were strictly equal.",
-	"Comma", "Custom Alphabet", "Default sensitivity",
-	"Diacritics and upper/lowercase", "Diacritics", "Equalities",
-	"No separator", "Period", "Relations", "Semicolon",
-	"Similar characters that should be sorted separately.", "Space",
-	"Title for this sort", "Unicode sort (language-independent)",
-	"Upper/lowercase", "Use alternate alphabet", "Write your alphabet here.",
-	"You did not enter any information.",
-	"You must provide a title before saving.", "alternateAlphabetExplanation",
-	"Sort Language", "Sort Sensitivity", "Alphabet separator",
+	"none", "BaseOnly", "blankAlphabetProvided",
+	"equalityMsg",
+	"Comma", "CustomAlphabet", "DefaultSensitivity",
+	"DiacriticsUpperLowercase", "Diacritics", "Equalities",
+	"NoSeparator", "Period", "Relations", "Semicolon",
+	"relationMsg", "Space",
+	"TitleOfSort", "UnicodeSort",
+	"UpperLowercase", "UseAlternateAlphabet", "WriteAlphaHere",
+	"noEnteredInfoMsg",
+	"needTitleMsg", "alternateAlphabetExplanation",
+	"SortLanguage", "SortSensitivity", "AlphabetSeparator",
 ];
 
 const commons = [
@@ -114,9 +114,9 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 		tAddNew, tYouSure, tSureDiscard, tCancel, tClose, tDefSort, tDelete,
 		tEdit, tExChar, tOk, tSave, tTitle, tUnsaved, tYesDisc, tRUSure
 	] = useI18Memo(commons);
-	const tAddThing = useMemo(() => tc("addThing", { thing: t("Custom Sort") }), [ tc, t ]);
+	const tAddThing = useMemo(() => tc("addThing", { thing: t("CustomSort") }), [ tc, t ]);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [ tc ]);
-	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Custom Sort") }), [ tc, t ]);
+	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("CustomSort") }), [ tc, t ]);
 	const tpTitle = useMemo(() => tc("Title", { context: "presentation" }), [tc]);
 
 	const {

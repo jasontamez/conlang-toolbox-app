@@ -84,17 +84,17 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 const permanents = PermanentInfo.sort.permanentCustomSorts;
 
 const translations = [
-	"(none)", "Base letters only", "Blank alphabet provided.",
-	"Characters that should be sorted together as if they were strictly equal.",
-	"Comma", "Custom Alphabet", "Default sensitivity",
-	"Diacritics and upper/lowercase", "Diacritics", "Equalities",
-	"No separator", "Period", "Relations", "Semicolon",
-	"Similar characters that should be sorted separately.", "Space",
-	"Title for this sort", "Unicode sort (language-independent)",
-	"Upper/lowercase", "Use alternate alphabet", "Write your alphabet here.",
-	"You did not enter any information.", "Custom Sort",
-	"You must provide a title before saving.", "alternateAlphabetExplanation",
-	"Sort Language", "Sort Sensitivity", "Alphabet separator"
+	"none", "BaseOnly", "blankAlphabetProvided",
+	"equalityMsg",
+	"Comma", "CustomAlphabet", "DefaultSensitivity",
+	"DiacriticsUpperLowercase", "Diacritics", "Equalities",
+	"NoSeparator", "Period", "Relations", "Semicolon",
+	"relationMsg", "Space",
+	"TitleOfSort", "UnicodeSort",
+	"UpperLowercase", "UseAlternateAlphabet", "WriteAlphaHere",
+	"noEnteredInfoMsg", "CustomSort",
+	"needTitleMsg", "alternateAlphabetExplanation",
+	"SortLanguage", "SortSensitivity", "AlphabetSeparator"
 ];
 
 const commons = [
@@ -122,7 +122,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		() => ["editThing", "thingDeleted", "thingSaved"].map(thing => tc(thing, { thing: tCustomSort })),
 		[tc, tCustomSort]
 	);
-	const tDelThisSort = useMemo(() => tc("deleteThing", { thing: t("This Sort") }), [t, tc]);
+	const tDelThisSort = useMemo(() => tc("deleteThing", { thing: t("ThisSort") }), [t, tc]);
 	const tDelSort = useMemo(() => tc("deleteThing", { thing: t("Sort") }), [t, tc]);
 
 	const {

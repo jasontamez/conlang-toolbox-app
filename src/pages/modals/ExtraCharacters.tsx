@@ -60,7 +60,7 @@ const Chip: FC<ChipProperties> = (props) => {
 			onClick={() => toggleChars(title)}
 			className={current ? "active" : ""}
 		>
-			<IonLabel>{t("characterInfo." + title)}</IonLabel>
+			<IonLabel>{title === "Favorites" ? t("Favorites") : t("characterInfo." + title)}</IonLabel>
 		</IonChip>
 	);
 }
@@ -150,8 +150,8 @@ const ExtraCharactersModal: FC<ModalProperties> = (props) => {
 		setCurrentFaves(newFaves);
 	}, [faves]);
 	useEffect(() => {
-		setNowShowingCharInfo(t("characterInfo." + nowShowing));
-	}, [nowShowing, t]);
+		setNowShowingCharInfo(nowShowing === "Favorites" ? tFavorites : t("characterInfo." + nowShowing));
+	}, [nowShowing, t, tFavorites]);
 
 	const cancel = useCallback(() => {
 		setIsOpen(false);

@@ -54,7 +54,7 @@ import useI18Memo from '../../components/useI18Memo';
 
 const commons = [ "Close", "CopyToClipboard", "Done", "Loading" ];
 
-const translations = [ "Exported Data", "Other App Settings", "What to Export" ];
+const translations = [ "ExportedData", "OtherAppSettings", "WhatToExport" ];
 
 
 const MExportAllData: FC<ModalProperties> = (props) => {

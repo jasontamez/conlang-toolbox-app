@@ -60,12 +60,12 @@ codes.forEach((code, i) => {
 const permanents = PermanentInfo.sort.permanentCustomSorts;
 
 const translations = [
-	"Base letters only", "Basic Sort", "Diacritics and upper/lowercase",
-	"Diacritics", "Manage Sort Methods", "New Custom Sort",
-	"Note[colon] This can be overriden by a language's sorting rules.",
-	"Upper/lowercase", "Use Language-Based Sort", "custom alphabet",
-	"langSortExplanation", "(none)", "All Custom Sort Methods",
-	"Sort Language", "Using Custom Sort", "Sort Sensitivity"
+	"BaseOnly", "BasicSort", "DiacriticsUpperLowercase",
+	"Diacritics", "ManageSortMethods", "NewCustomSort",
+	"overrideNoteMsg",
+	"UpperLowercase", "UseLangBasedSort", "customAlphabet",
+	"langSortExplanation", "none", "AllCustomSortMethods",
+	"SortLanguage", "UsingCustomSort", "SortSensitivity"
 ];
 
 const commons = [

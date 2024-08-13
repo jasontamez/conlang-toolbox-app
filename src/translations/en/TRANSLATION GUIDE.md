@@ -30,9 +30,9 @@ Some terms may be used in a specific context. This app uses `filename`, `formal`
 
 ### Filename
 
->**dog_filename** = Must consist of only characters safe to use in a filename (this is generally anything except `\/:*?"<>|`).
+>**dog_filename** = Must consist of only characters safe to use in a filename (this is generally anything except the backslash `\`, slash `/`, colon `:`, asterisk `*`, question mark `?`, quotation mark `"`, greater-than sign `>`, less-than sign `<`, and vertical bar `|`).
 >
->>`"dogQuestion_filename": "Is this a dog"`
+>>`"dogQuestion_filename": "Is_this_a_dog"`
 
 ### Formal
 
@@ -54,6 +54,8 @@ Some terms may be used in a specific context. This app uses `filename`, `formal`
 >
 >>`"dogQuestion_presentation": "Is This a Dog?:"`
 
+**Note:** Some keys are always in `presentation` context, even though they don't use the `_presentation` suffix. This will be noted in its description.
+
 ---
 
 ## Labels
@@ -74,11 +76,11 @@ These symbols indicate *where* in the app a message is used.
 >
 >> Dialog box text should be clear and concise. Dialog box headers should be kept reasonably short.
 >
->**🟦x** :: Toast messages that stays on screen for `x` seconds *('Toasts' are popups that disappear on their own)*
+>**🟦x** :: "Toast" message that stays on screen for `x` seconds before disappearing on its own.
 >
->> *For example,* `🟦3.5` *indicates a toast message that displays for three and a half seconds before disappearing.*
+>>The average user should be able to read a toast message before `x` seconds have expired.
 >>
->> Users should be able to read toast messages before `x` seconds have expired.
+>> For example, `🟦3.5` indicates a toast message that displays for three and a half seconds before disappearing. A message like *"Good job!"* would be appropriate, but *"Good job! Your next task is to read 30 pages of Hemmigway's biography and prepare a 2-page essay on what you've learned. The paper should be double-spaced in a font no smaller than 12pt."* would be far too long.
 >
 >🔵 :: ARIA labels *(accessibility messages, not visible to the average user)*
 
@@ -239,6 +241,47 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦3.5 | importSuccess_other | Imported {{count}} word from $t(Lexicon) | English plural of the above |
 | 🔴 | yesImport | Yes, Import | Proceed with the import |
 |  | regexpInfo | *This is an array of strings in Markdown format. See [regexpInfo](#regexpinfo) section below.* | A minimal explanation of how to find information on regular expressions. |
+| 🟦2.5 | stoppedCopying | No longer copying directly to clipboard. | Extra Characters |
+| 🟦2.5 | startedCopying | Now copying immediately to clipboard. | Extra Characters |
+| 🟦1.5 | copiedCharToClipboard | Copied {{char}} to clipboard | Extra Characters: Only one character was copied |
+| 🔴 | Favorites | Favorites | Extra Characters |
+| 🔵 | startedFavoriting | Start favoriting characters | Extra Characters |
+| 🔵 | stoppedFavoriting | Stop favoriting characters | Extra Characters |
+| 🟦2.5 | startedSaving | Now saving characters to $t(Favorites) | Extra Characters |
+| 🟦2.5 | stoppedSaving | No longer saving to $t(Favorites) | Extra Characters |
+|  | TapToAdd | Tap characters to add them here | Extra Characters: placeholder text |
+| 🔵 | ShowNames | Show full character names | Extra Characters |
+| 🔵 | HideNames | Hide full character names | Extra Characters |
+|  | extraHelp.help1p1 | \[ "This is a place to find and copy characters that may not be easily accessible to you on your device's keyboard. The other buttons can be toggled for additional effects:" \] | Help text for Extra Characters. This text appears at the top of the modal, and is followed by the icon for copying to the clipboard. *This is an array of strings in Markdown format.* |
+|  | extraHelp.help1p2 | \[ "When active, copies any character you tap directly to the clipboard. When inactive, copies tapped characters to the copy-bar below, where you can copy them at your leisure." \] | Help text for Extra Characters. This text is followed by the icon for favoriting characters. *This is an array of strings in Markdown format.* |
+|  | extraHelp.help1p3 | \[ "When active, tapping on a character adds or removes it from your Favorites list. Characters will not be copied to the clipboard or the copy-bar." \] | Help text for Extra Characters. This text is followed by the icon for showing full Unicode names of the characters. *This is an array of strings in Markdown format.* |
+|  | extraHelp.help1p4 | \[ "When active, shows the standard Unicode name of every character. When inactive, the characters are presented by themselves." \] | Help text for Extra Characters. This ends the first help section in the modal. *This is an array of strings in Markdown format.* |
+|  | extraHelp.help2 | \[ "Tap a character set below to see the characters in that set." \] | Help text for Extra Characters. This text appears between the control buttons and the area where you choose which character set to display. *This is an array of strings in Markdown format.* |
+|  | extraHelp.help3 | \[ "Characters will display below. Tap them to copy them to the copy-bar above." \] | Help text for Extra Characters. This text appears between the character set display controls and the characters being displayed. *This is an array of strings in Markdown format.* |
+| 🔴 | WGPresetsSorter | WG Presets Sorter | The name of the permanent sort method in sort settings. |
+| 🟡 | cannotDeleteSorter | This is used by $t(WordGen) presets. It cannot be modified or deleted. | Error message shown when a user tries to delete the permanent sort method. |
+
+### Extra Characters : characters.tsx
+
+This file is imported into common.tsx, and its properties become properties of the `characterInfo` object within it.
+
+| Label | Key | English Translation | Description (if needed) |
+| --- | --- | --- | --- |
+| 🔴 | characterInfo.Latin | Latin | The Latin character set |
+| 🔴 | characterInfo.IPA | IPA | Characters used in the International Phonetic Alphabet |
+| 🔴 | characterInfo.Greek | Greek | The Greek character set |
+| 🔴 | characterInfo.Coptic | Coptic | The Coptic character set |
+| 🔴 | characterInfo.Cyrillic | Cyrillic | The Cyrillic character set |
+| 🔴 | characterInfo.Armenian | Armenian | The Armenian character set |
+| 🔴 | characterInfo.Hebrew | Hebrew | The Hebrew character set |
+| 🔴 | characterInfo.Arabic | Arabic | The Arabic character set |
+| 🔴 | characterInfo.Thai | Thai | The Thai character set |
+| 🔴 | characterInfo.Lao | Lao | The Lao character set |
+| 🔴 | characterInfo.Hiragana | Hiragana | The Hiragana character set |
+| 🔴 | characterInfo.Katakana | Katakana | The Katakana character set |
+| 🔴 | characterInfo.Bopomofo | Bopomofo | The Bopomofo character set |
+
+Each character in Extra Characters has an official Unicode name. You can find the list of them in [CHARACTERCODES.md](CHARACTERCODES.md).
 
 ### regexpInfo
 
@@ -252,3 +295,111 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 >"\- \[Regular-Expressions.info\]\(https:\//www.regular-expressions.info\) (a tutorial site)",  
 >"\- \[Geeks for Geeks: Write Reguar Expressions\]\(https:/\/www.geeksforgeeks.org/write-regular-expressions/\)"  
 >\]
+
+---
+
+## Settings : settings.tsx
+
+| Label | Key | English Translation | Description (if needed) |
+| --- | --- | --- | --- |
+|  | Data | Data | used by `exportThing` |
+| 🟥 🔴 | DisableConfPrompts | Disable Confirmation Prompts |  |
+|  | confPromptExplanation | Eliminates yes/no prompts when deleting or overwriting data. | Explanation for the setting above |
+| 🟥 🔴 | ChangeTheme | Change Theme |  |
+| 🟥 🔴 | SortSettings | Sort Settings |  |
+| 🟥 🔴 | ImportAppInfo | Import App Info |  |
+|  | ChooseATheme | Choose a Theme |  |
+| 🔴 | Default | Default | Theme name |
+| 🔴 | Light | Light | Theme name |
+| 🔴 | Dark | Dark | Theme name |
+| 🔴 | SolarizedLight | Solarized Light | Theme name; "Solarized" is the name of a popular color palette |
+| 🔴 | SolarizedDark | Solarized Dark | Theme name; "Solarized" is the name of a popular color palette |
+|  | exportAllMsg | \[ "Save this info to a note or file.&nbsp;&nbsp;&nbsp;", "You will be able to use it later to restore your data." \] | *This is an array of strings in Markdown format.* |
+| 🔵 | ExportedData | Exported Data |  |
+| 🟥 | WhatToExport | What to Export |  |
+| 🟡 | nothingImportedMsg | You haven't imported anything yet. |  |
+| 🔴 | YesClose | Yes, Close This |  |
+| 🟦10 | successImport | Imported new info for {{listing}} | `{{listing}}` will be replaced with a list of tools that received imported data. |
+| 🟦10 | alsoOverwrote | ; also completely overwrote storage for {{listing}} | Optionally appended to `successImport`; `{{listing}}` will be replaced with a list of tools that had data overwritten with imported data. |
+| 🟦10 | successOverwrote | Completely overwrote storage for {{listing}} | `{{listing}}` will be replaced with a list of tools that had data overwritten with imported data. |
+|  | ImportInfo | Import Info |  |
+|  | importDescription | Paste your data below. This only accepts data exported through "Export App Info". | The phrase `Export App Info` should be the same text that would be generated if you used the `exportThing` key and replaced `{{thing}}` with the `AppInfo` key. |
+| 🔵 | DataToImport | Data to Import |  |
+| 🔴 | Reset | Reset |  |
+| 🔴 | Analyze | Analyze |  |
+| 🟥 | WhatToImport | What to Import |  |
+| 🔴 | currentSettings | Current {{tool}} Settings | `{{tool}}` is replaced with "WordGen", "MorphoSyntax", etc. |
+| 🔴 | storedSettings | Stored {{tool}} Settings | `{{tool}}` is replaced with "WordGen", "MorphoSyntax", etc. |
+| 🔴 | storedDocuments | Stored {{tool}} Documents | `{{tool}}` is replaced with "WordGen", "MorphoSyntax", etc. |
+| 🔴 | appSettings | {{tool}} Settings | `{{tool}}` is replaced with "WordGen", "MorphoSyntax", etc. |
+| 🔴 | OtherAppSettings | Other App Settings |  |
+| 🟦5 | nothingChosenForImportMsg | You did not choose anything to import. |  |
+| 🟨 | WARNING | WARNING! | Header for the importing data warning |
+| 🟡 | willOverwriteCurrent | This will overwrite all current data in {{listing}}. |  |
+| 🟡 | alsoOverwriteStorage | It will ALSO delete and replace stored data for {{listing}}. |  |
+| 🟡 | willOverwriteStorage | This will delete and replace stored data for {{listing}}. |  |
+| 🟡 | areYouVerySure | Are you SURE you want to do this? |  |
+| 🔴 | YesIAmSure | Yes, I Want to Do This | Confirmation button for the importing data warning |
+| 🔴 | none | (none) | Indicates no custom sort is being used. |
+| 🟥 | ManageSortMethods | Manage Sort Methods |  |
+| 🟥 | BasicSort | Basic Sort |  |
+| 🔴 🟥 | UseLangBasedSort | Use Language-Based Sort |  |
+|  | langSortExplanation | Use a language's rules for sorting instead of using Unicode points. (If this option is disabled, your device does not support language-based sorting.) | Explanation for the `UseLangBasedSort` option |
+| 🔴 | SortLanguage | Sort Language: | *(presentation context)* |
+|  | Sort | Sort | used in `deleteThing` |
+| 🟨 | ThisSort | This Sort | used in `deleteThing` |
+| 🔴 | BaseOnly | \[ȁ = Ȁ, a = ȁ\]: Base letters only | *This key and the next three display a representation of the sort option in \[brackets\], followed by its description.* The sort only compares the base letter, ignores case and diacritics |
+| 🔴 | Diacritics | \[ȁ = Ȁ, a ≠ ȁ\]: Diacritics | The sort compares the base letter and its diacritics, ignores case |
+| 🔴 | UpperLowercase | \[ȁ ≠ Ȁ, a = ȁ\]: Upper/lowercase | The sort compares the base letter and its case, ignores diacritics |
+| 🔴 | DiacriticsUpperLowercase | \[ȁ ≠ Ȁ, a ≠ ȁ\]: Diacritics and upper/lowercase | The sort compares the base letter, its case, and its diacritics |
+|  | overrideNoteMsg | Note: This can be overriden by a language's sorting rules. |  |
+|  | UsingCustomSort | Using Custom Sort: | *(presentation context)* |
+| 🟥 | AllCustomSortMethods | All Custom Sort Methods |  |
+|  | customAlphabet | custom alphabet |  |
+| 🔵 | CustomAlphabet | Custom Alphabet |  |
+|  | relation_one | {{count}} relation | A "relation" is the relationship between two characters (e.g. 'A', 'B', and 'C' are before 'D') |
+|  | relation_other | {{count}} relations | As above, but the English plural |
+|  | equality_one | {{count}} equality | An "equality" is declaring two or more characters equal (e.g. 'A' is equal to 'a') |
+|  | equality_other | {{count}} equalities | As above, but the English plural |
+| 🟡 | needTitleMsg | You must provide a title before saving. | Error message |
+| 🟡 | blankAlphabetProvided | The alphabet provided was blank. | Error message |
+| 🟡 | noEnteredInfoMsg | You did not enter any information. | Error message |
+| 🟡 | noBaseCharMsg | You must provide a "base" character. | Error message |
+| 🟡 | noEqualCharMsg | You must provide some "equal" characters. | Error message |
+| 🟡 | noPostPreCharMsg | You must provide some "pre" or "post" characters. | Error message |
+| 🔴 | NewCustomSort | New Custom Sort |  |
+|  | CustomSort | Custom Sort | Used by `editThing`, `thingDeleted`, `thingSaved`, and `addThing` |
+|  | TitleOfSort | Title for this sort |  |
+| 🔴 | UnicodeSort | Unicode sort (language-independent) |  |
+|  | SortSensitivity | Sort Sensitivity: | *(presentation context)* |
+| 🔴 | DefaultSensitivity | Default sensitivity |  |
+| 🔴 | UseAlternateAlphabet | Use alternate alphabet |  |
+|  | alternateAlphabetExplanation | Items will be sorted according to the order you provide. Characters not in your alphabet will be sorted according to the rules above. |  |
+|  | WriteAlphaHere | Write your alphabet here. |  |
+|  | AlphabetSeparator | Alphabet separator: | *(presentation context)* |
+| 🔴 | NoSeparator | \[abcde\]: No separator | This key and the next four keys display a representation of the option in \[brackets\], followed by its descriptive name |
+| 🔴 | Space | \[a b c d e\]: Space |  |
+| 🔴 | Comma | \[a,b,c,d,e\]: Comma |  |
+| 🔴 | Period | \[a.b.c.d.e\]: Period |  |
+| 🔴 | Semicolon | \[a;b;c;d;e\]: Semicolon |  |
+|  | Relation | Relation | Used in `addThing`, `thingAdded`, `editThing` and `thingEdited` |
+| 🟥 | Relations | Relations |  |
+|  | relationMsg | Similar characters that should be sorted separately. |  |
+|  | Equality | Equality | Used in `addThing`, `thingAdded`, `editThing` and `thingEdited` |
+| 🟥 | Equalities | Equalities |  |
+|  | equalityMsg | Characters that should be sorted together as if they were strictly equal. |  |
+|  | BaseChar | Base Character: | *(presentation context)* |
+|  | BaseEqual | Equal to the Base: | *(presentation context)* |
+|  | CharsSeparator | Characters Separator: | *(presentation context)* |
+|  | PrePostSeparator | Pre/Post Separator: | *(presentation context)* |
+|  | SortedAfterBase | Sorted After the Base: | *(presentation context)* |
+|  | SortedBeforeBase | Sorted Before the Base: | *(presentation context)* |
+|  | EqualsSeparator | Equalities Separator: | *(presentation context)* |
+| 🔵 | Basecharacter | Base character |  |
+|  | TheBaseCharacter | The base character | Placeholder text in an input box |
+| 🔵 | CharsEqual | Characters equal to the base |  |
+|  | CharsToBeEqual | Characters to be equal to the Base. | Placeholder text in an input box |
+| 🔵 | CharsPreBase | Characters sorted before the base |  |
+|  | charsPreBaseMsg | End with the one just before the Base. | Placeholder text in an input box |
+| 🔵 | CharsPostBase | Characters sorted after the base |  |
+|  | charsPostBaseMsg | Start with the one just after the Base. | Placeholder text in an input box |
