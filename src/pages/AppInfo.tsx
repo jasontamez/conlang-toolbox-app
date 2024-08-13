@@ -46,11 +46,11 @@ function getBannerDimensions (windowWidth: number) {
 }
 
 const translations =  [
-	"Bug Reports", "Changelog", "Clear Logs", "Copy Logs",
-	"Credits and Acknowledgements", "Debug Info", "Delete Them Now",
-	"Entire State", "Get Error Log", "Hide Older Changes",
-	"Logs have been cleared.", "Show Older Changes",
-	"Logs normally delete themselves after 90 days. Deleting logs this way cannot be undone."
+	"BugReports", "Changelog", "ClearLogs", "CopyLogs",
+	"CreditsAcknowledgements", "DebugInfo", "DelThemNow",
+	"EntireState", "GetErrLog", "HideOlderChanges",
+	"logsClearedMsg", "ShowOlderChanges",
+	"logDeletionMsg"
 ];
 const markdowns = [ "credit1", "credit2", "credit3", "bugReportMsg" ];
 const commons = [ "Close", "Copy", "Ok", "areYouSure", "AppInfo" ];

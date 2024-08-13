@@ -1,8 +1,10 @@
 # Translation Guide
 
+This contains a copy of the translation files for [Conlang Toolbox](https://www.github.com/jasontankapps/conlang-toolbox) for easy access. They are formatted as Typescript modules that export JSON objects compliant with [i18next](https://www.i18next.com/misc/json-format).
+
 ## PLURALITY
 
-Some terms will end in \_one or \_other. They always have a `count` property that can be used if needed.
+Some terms will end in `_one` or `_other`. They always have a `{{count}}` that can be used if needed.
 
 >**dog_one** = 1 dog
 >
@@ -403,3 +405,28 @@ Each character in Extra Characters has an official Unicode name. You can find th
 |  | charsPreBaseMsg | End with the one just before the Base. | Placeholder text in an input box |
 | 🔵 | CharsPostBase | Characters sorted after the base |  |
 |  | charsPostBaseMsg | Start with the one just after the Base. | Placeholder text in an input box |
+
+---
+
+## App Info : appInfo.tsx
+
+| Label | Key | English Translation | Description (if needed) |
+| --- | --- | --- | --- |
+| 🟥 | CreditsAcknowledgements | Credits and Acknowledgements |  |
+|  | credit1 | \[ "App icon is based on \[Toolbox by Maxicons\]\(https:/\/thenounproject.com/term/toolbox/2586725/\) from the Noun Project" \] | *This is an array of strings in Markdown format.* |
+|  | credit2 | \[ "$t(common:WordGen) and $t(common:WordEvolve) are heavily inspired by \[Gen\]\(http:/\/www.zompist.com/gen.html\) and \[SCA²\]\(http:/\/www.zompist.com/sca2.html\) by Mark Rosenfelder" \] | *This is an array of strings in Markdown format.* |
+|  | credit3 | \[ "$t(common:MorphoSyntax) is based on an outline presented throughout \_Describing Morphosyntax: A Guide for Field Linguists\_ by Thomas E. Paine, and it also uses some foreign-language examples presented therein" \] | *This is an array of strings in Markdown format.* |
+| 🟥 | BugReports | Bug Reports |  |
+|  | bugReportMsg | \[ "Please report bugs and errors to \[the Github repository\]\(https:\//github.com/jasontankapps/conlang-toolbox/issues\) and incude an error log." \] | *This is an array of strings in Markdown format.* |
+| 🔴 | GetErrLog | Get Error Log |  |
+| 🟨 | EntireState | Entire State | 'State' refers to the info saved by the app that is used to display info, create info, etc. |
+| 🟨 | DebugInfo | Debug Info |  |
+| 🔴 | CopyLogs | Copy Logs | 'Logs' refer to hidden reports/notes that the app sometimes makes when it encounters an error. |
+| 🔴 | ClearLogs | Clear Logs | 'Logs' refer to hidden reports/notes that the app sometimes makes when it encounters an error. |
+| 🟡 | logDeletionMsg | Logs normally delete themselves after 90 days. Deleting logs cannot be undone. | 'Logs' refer to hidden reports/notes that the app sometimes makes when it encounters an error. |
+| 🔴 | DelThemNow | Delete Them Now | "Them" refers to the logs. |
+| 🟦3.5 | logsClearedMsg | Logs have been cleared. |  |
+| 🟥 | Changelog | Changelog | A list of changes made to the app |
+| 🔴 | HideOlderChanges | Hide Older Changes |  |
+| 🔴 | ShowOlderChanges | Show Older Changes |  |
+|  | changeLog | *See description* | This is a special object containing multiple properties. Each property is an array of strings in Markdown format. They describe the various changes to the app. |
