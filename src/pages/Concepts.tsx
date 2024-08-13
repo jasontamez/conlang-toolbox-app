@@ -250,7 +250,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 	const saveToLexicon = useCallback((words: SavedWord[]) => {
 		doAlert({
 			header: tc("SelectAColumn"),
-			message: t("Your selected meanings will be added to the Lexicon under that column."),
+			message: t("addToColumnMsg"),
 			inputs: lexColumns.map((col: LexiconColumn, i: number) => {
 				const obj: AlertInput = {
 					type: 'radio',
@@ -293,7 +293,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 							message: tc(
 								'saveToLexColumn',
 								{
-									what: t("Selected meanings", { count: words.length }),
+									what: t("SelectedMeanings", { count: words.length }),
 									column: col.label,
 									count: words.length
 								}
@@ -338,7 +338,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		}
 		setPickAndSave(true);
 		return toaster({
-			message: t("Tap meanings you want to save to Lexicon"),
+			message: t("tapToSaveMsg"),
 			duration: 2500,
 			position: "top",
 			toast
@@ -412,7 +412,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 				};
 				if(!disableConfirms) {
 					return doAlert({
-						header: t("Stop Linking?"),
+						header: t("StopLinking"),
 						cssClass: "danger",
 						message: t(
 							"meaningsStillSelected",
@@ -425,7 +425,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 								cssClass: "cancel"
 							},
 							{
-								text: t("Yes Save Them"),
+								text: t("YesSaveThem"),
 								cssClass: "submit",
 								handler: () => {
 									saveNewMeaning();
@@ -433,7 +433,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 								}
 							},
 							{
-								text: t("No Discard Them"),
+								text: t("NoDiscardThem"),
 								cssClass: "cancel",
 								handler
 							}
@@ -450,7 +450,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		}
 		setLinking(true);
 		return toaster({
-			message: t("Tap meanings you want to link, in the order you wish to link them."),
+			message: t("tapToLinkMsg"),
 			duration: 5000,
 			position: "top",
 			toast
@@ -464,7 +464,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 	const toggleUnlinking = useCallback(() => {
 		if(!unlinking) {
 			toaster({
-				message: t("Tap combinations you want to delete, then tap the Unlink button again."),
+				message: t("tapToUnlinkMsg"),
 				duration: 3000,
 				position: "top",
 				color: "warning",
@@ -521,10 +521,10 @@ const ConceptsPage: FC<PageData> = (props) => {
 		tSave
 	] = useMemo(() => [
 		tc("Display"),
-		t("My Combinations"),
-		tc("saveGeneralThings", {things: t("All Meanings")}),
-		tc("saveGeneralThings", {things: t("Selected Meanings")}),
-		t("Current Combination"),
+		t("MyCombinations"),
+		tc("saveGeneralThings", {things: t("AllMeanings")}),
+		tc("saveGeneralThings", {things: t("SelectedMeanings")}),
+		t("CurrentCombo"),
 		tc("Save")
 	], [ t, tc ]);
 

@@ -28,11 +28,11 @@ const concepts = {
 			"concepts was chosen for their universal, culturally",
 			"independent availability in as many languages as possible.",
 			"However, he relied more on his intuition than on a",
-			"rigorous set of criteria. **$t(Swadesh 100)** is his final list",
-			"from 1971. The **$t(Swadesh 207)** is adapted from his original",
-			"list from 1952. **$t(Swadesh-Yakhontov)** is a subset of the 207",
+			"rigorous set of criteria. **$t(Swadesh100)** is his final list",
+			"from 1971. The **$t(Swadesh207)** is adapted from his original",
+			"list from 1952. **$t(SwadeshYakhontov)** is a subset of the 207",
 			"assembled by Sergei Yakhontov. And the",
-			"**$t(Swadesh-Woodward) Sign List** was assembled by James",
+			"**$t(SwadeshWoodward) Sign List** was assembled by James",
 			"Woodward to take into account the ways sign languages behave.",
 			"",
 			"## $t(Dolgopolsky) List",
@@ -42,7 +42,7 @@ const concepts = {
 			"other words as a language evolves. It was based on a study of",
 			"140 languages from across Eurasia, only.",
 			"",
-			"## $t(Leipzig-Jakarta) List",
+			"## $t(LeipzigJakarta) List",
 			"",
 			"Similar to the Dolgopolsky list, this is a list of words",
 			"judged to be the most resistant to borrowing. Experts on 41",
@@ -62,7 +62,7 @@ const concepts = {
 			"a 40-word list to evaluate the similarity of words with the same",
 			"meaning from different languages.",
 			"",
-			"## $t(Landau 200)",
+			"## $t(Landau200)",
 			"",
 			"The **Basic 200 List** is a subset of the",
 			"**Landau Core Vocabulary (LCV)** developed by James Landau.",
@@ -76,48 +76,46 @@ const concepts = {
 		]
 	},
 
-	"Swadesh 100": "Swadesh 100", // 🔴
-	"Swadesh 207": "Swadesh 207", // 🔴
-	"Swadesh-Yakhontov": "Swadesh-Yakhontov", // 🔴
-	"Swadesh-Woodward": "Swadesh-Woodward", // 🔴
+	Swadesh100: "Swadesh 100", // 🔴
+	Swadesh207: "Swadesh 207", // 🔴
+	SwadeshYakhontov: "Swadesh-Yakhontov", // 🔴
+	SwadeshWoodward: "Swadesh-Woodward", // 🔴
 	Dolgopolsky: "Dolgopolsky", // 🔴
-	"Leipzig-Jakarta": "Leipzig-Jakarta", // 🔴
+	LeipzigJakarta: "Leipzig-Jakarta", // 🔴
 	ASJP: "ASJP", // 🔴
-	"Landau 200": "Landau 200", // 🔴
+	Landau200: "Landau 200", // 🔴
 
-	"Your selected meanings will be added to the Lexicon under that column.": // 🟡
+	addToColumnMsg: // 🟡
 		"Your selected meanings will be added to the $t(common:Lexicon) under that column.",
 
-	"Tap meanings you want to link, in the order you wish to link them.": // 🟦5
+	tapToLinkMsg: // 🟦5
 		"Tap meanings you want to link, in the order you wish to link them.",
 
 	// The key below takes a {{count}} in case special plurals are needed. Count will NEVER be 0 or 1.
 	meaningsStillSelected_other: "You have {{count}} meanings still selected. Do you want to link them?", // 🟡
 
-	"Stop Linking?": "Stop Linking?", // 🟨
+	StopLinking: "Stop Linking?", // 🟨
 
-	"Yes Save Them": "Yes, Save Them", // 🔴 "Them" refers to the meanings being linked together
-	"No Discard Them": "No, Discard Them", // 🔴 See above
+	YesSaveThem: "Yes, Save Them", // 🔴 "Them" refers to the meanings being linked together
+	NoDiscardThem: "No, Discard Them", // 🔴 See above
 	Combination: "Combination", // The combination of meanings, used by thingSaved
 
-	"Tap meanings you want to save to Lexicon": // 🟦2.5
-		"Tap meanings you want to save to $t(common:Lexicon)",
+	tapToSaveMsg: "Tap meanings you want to save to $t(common:Lexicon)", // 🟦2.5
 
-	"Selected meanings_one": "Selected meaning", // Fills the {{what}} role in saveToLexColumn
-	"Selected meanings_other": "Selected meanings",
+	SelectedMeanings_one: "Selected meaning", // Fills the {{what}} role in saveToLexColumn
+	SelectedMeanings_other: "Selected meanings",
 
-	"Tap combinations you want to delete, then tap the Unlink button again.": // 🟦3
-		"Tap combinations you want to delete, then tap the Unlink button again.",
+	tapToUnlinkMsg: "Tap combinations you want to delete, then tap the Unlink button again.", // 🟦3
 
 	delMeanings_one: "Delete {{count}} meaning?", // 🟨
 	delMeanings_other: "Delete {{count}} meanings?",
 	delMeaningsMessage_one: "The selected meaning will be removed. $t(common:cannotUndo)", // 🟡
 	delMeaningsMessage_other: "The selected meanings will be removed. $t(common:cannotUndo)",
 
-	"My Combinations": "My Combinations", // 🔴
-	"All Meanings": "All Meanings", // 🔴 saveGeneralThings
-	"Selected Meanings": "the Selected Meanings", // 🔴 saveGeneralThings
-	"Current Combination": "Current Combination:", // 🟥 always presentational context
+	MyCombinations: "My Combinations", // 🔴
+	AllMeanings: "All Meanings", // 🔴 saveGeneralThings
+	SelectedMeanings: "the Selected Meanings", // 🔴 saveGeneralThings
+	CurrentCombo: "Current Combination:", // 🟥 always presentational context
 
 	//
 	//

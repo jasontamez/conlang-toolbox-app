@@ -1,14 +1,15 @@
 import { Concept, ConceptDisplay } from "../store/types";
 
 export const ConceptsSources: [string, ConceptDisplay][] = [
-	["Swadesh 100", "s100"],
-	["Swadesh 207", "s207"],
-	["Swadesh-Yakhontov", "sy"],
-	["Swadesh-Woodward", "ssl"],
+	// This is in the format [ i18nKey, conceptDisplayProp ]
+	["Swadesh100", "s100"],
+	["Swadesh207", "s207"],
+	["SwadeshYakhontov", "sy"],
+	["SwadeshWoodward", "ssl"],
 	["Dolgopolsky", "d"],
-	["Leipzig-Jakarta", "lj"],
+	["LeipzigJakarta", "lj"],
 	["ASJP", "asjp"],
-	["Landau 200", "l200"]
+	["Landau200", "l200"]
 ];
 
 export const Concepts: Concept[] = [
