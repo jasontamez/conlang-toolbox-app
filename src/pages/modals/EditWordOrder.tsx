@@ -68,11 +68,11 @@ interface OrderModalProps extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"Are you sure you want to delete this column? This cannot be undone.",
-	"As Alphabetically First", "As Alphabetically Last", "Field Name", "Large",
-	"Lexicon Options", "Med", "New", "Rearrange Lexicon Columns", "Small",
-	"Show Full Column Titles", "To Beginning, Always", "To End, Always",
-	"Edit Columns", "Sort blank columns"
+	"deleteColumnMsg",
+	"optionAlphaFirst", "optionAlphaLast", "FieldName", "Large",
+	"LexOptions", "Med", "New", "RearrangeColumns", "Small",
+	"ShowTitles", "optionToBeginning", "optionToEnd",
+	"EditCols", "SortBlanks"
 ];
 
 const commons = [

@@ -9,13 +9,13 @@ const lexicon = {
 	delItemsSuccess_one: "Deleted {{count}} item.", // 🟦2.5
 	delItemsSuccess_other: "Deleted {{count}} items.",
 
-	"You did not type any information into any text field.": // 🟡
-		"You did not type any information into any text field.",
+	noInfoProvided: "You did not type any information into any text field.", // 🟡
 
-	"Merge selected items": "Merge selected items", // 🔵
+	MergeSelected: "Merge selected items", // 🔵
 
-	"Lexicon Title": "$t(common:Lexicon) $t(common:Title)",
-	"Lexicon Title_presentation": "$t(common:Lexicon) $t(common:Title)", // presentation context will pull Title_presentation by default
+	LexiconTitle: "$t(common:Lexicon) $t(common:Title)",
+	LexiconTitle_presentation: "$t(common:Lexicon) $t(common:Title)",
+		// presentation context will pull Title_presentation by default
 	lexTitleHelperText: "Usually the language name.",
 	lexDescriptionHelperText: "A short description of this lexicon.",
 
@@ -24,10 +24,10 @@ const lexicon = {
 	lexitems_one: "{{count}} item",
 	lexitems_other: "{{count}} items",
 
-	"Lexicon Storage": "$t(common:Lexicon) Storage", // 🟥
-	"Clear Lexicon": "Clear $t(common:Lexicon)", // 🔴
-	"Saved Lexicon": "Saved $t(common:Lexicon)",
-	"Lexicon Sorting": "$t(common:Lexicon) Sorting", // 🟥
+	LexiconStorage: "$t(common:Lexicon) Storage", // 🟥
+	ClearLexicon: "Clear $t(common:Lexicon)", // 🔴
+	SavedLexicon: "Saved $t(common:Lexicon)",
+	LexiconSorting: "$t(common:Lexicon) Sorting", // 🟥
 	sortLexDescription:
 		"The Lexicon will be sorted in the order you choose. It alphabetically"
 		+ " sorts by the first column in the list. If two items are identical"
@@ -37,11 +37,11 @@ const lexicon = {
 	Sort: "Sort",
 	Sort_presentation: "Sort:",
 
-	"Delete selected lexicon items": "Delete selected lexicon items", // 🔵
-	"Delete multiple lexicon items": "Delete multiple lexicon items", // 🔵
-	"Cancel deleting": "Cancel deleting", // 🔵
-	"Lexicon cleared": "Lexicon cleared", // 🟦4
-	"Nothing to clear": "Nothing to clear", // 🟦3
+	DeleteSelectedLexItems: "Delete selected lexicon items", // 🔵
+	DeleteMultipleLexItems: "Delete multiple lexicon items", // 🔵
+	CancelDel: "Cancel deleting", // 🔵
+	LexCleared: "Lexicon cleared", // 🟦4
+	NothingToClear: "Nothing to clear", // 🟦3
 	deleteEverythingMessage: // 🟡
 		"This will erase everything currently displayed (but not anything"
 		+ " previously saved). Are you sure you want to do this?",
@@ -49,73 +49,69 @@ const lexicon = {
 	loadLexiconConfirm: // 🟡
 		"Are you sure you want to load this? It will overwrite your current"
 		+ " lexicon and cannot be reversed.",
-	"No Saved Lexicons": "No Saved Lexicons", // 🟥
+	NoSavedLexicons: "No Saved Lexicons", // 🟥
 
-	"Lexicon saved as new lexicon!": "Lexicon saved as new lexicon!", // 🟦2.5
-	"You must input a title before saving.": "You must input a title before saving.", // 🟡
-	"Please give your lexicon a title before exporting it.": // 🟡
-		"Please give your lexicon a title before exporting it.",
-	"Please add words to your lexicon before exporting it.": // 🟡
-		"Please add words to your lexicon before exporting it.",
+	LexSavedAsNew: "Lexicon saved as new lexicon!", // 🟦2.5
+	needTitleMsg: "You must input a title before saving.", // 🟡
+	needLexiconTitleMsg: "Please give your lexicon a title before exporting it.", // 🟡
+	needWordsMsg: "Please add words to your lexicon before exporting it.", // 🟡
 
 	Item: "Item", // 🔴
 	Column: "Column", // 🔴
-	"Edit Columns": "Edit Columns", // 🟥
-	"Lexicon Item": "$t(common:Lexicon) $t(Item)", // 🟥
-	"Exit Without Saving?": "Exit Without Saving?", // 🟨
-	"You have unsaved changes. Are you sure you want to exit?": // 🟡
-		"You have unsaved changes. Are you sure you want to exit?",
+	EditCols: "Edit Columns", // 🟥
+	LexItem: "$t(common:Lexicon) $t(Item)", // 🟥
+	ExitWOSave: "Exit Without Saving?", // 🟨
+	exitWithoutSavingMsg: "You have unsaved changes. Are you sure you want to exit?", // 🟡
 
-	"New": "New", // Default label for a new column
-	"Are you sure you want to delete this column? This cannot be undone.": // 🟡
-		"Are you sure you want to delete this column? $t(common:cannotUndo)",
-	"Lexicon Options": "$t(common:Lexicon) Options", // 🟥
-	"Show Full Column Titles": "Show Full Column Titles", // 🔴
+	New: "New", // Default label for a new column
+	deleteColumnMsg: "Are you sure you want to delete this column? $t(common:cannotUndo)", // 🟡
+	LexOptions: "$t(common:Lexicon) Options", // 🟥
+	ShowTitles: "Show Full Column Titles", // 🔴
 
 	// always presentational context:
-	"Sort blank columns": "Sort blank columns:",
+	SortBlanks: "Sort blank columns:",
 
-	"Rearrange Lexicon Columns": "Rearrange Lexicon Columns", // 🟥
+	RearrangeColumns: "Rearrange Lexicon Columns", // 🟥
 	// The below describe how blank columns will be sorted in the Lexicon
-	"To Beginning, Always": "To Beginning, Always", // 🔴
-	"To End, Always": "To End, Always", // 🔴
-	"As Alphabetically First": "As Alphabetically First", // 🔴
-	"As Alphabetically Last": "As Alphabetically Last", // 🔴
+	optionToBeginning: "To Beginning, Always", // 🔴
+	optionToEnd: "To End, Always", // 🔴
+	optionAlphaFirst: "As Alphabetically First", // 🔴
+	optionAlphaLast: "As Alphabetically Last", // 🔴
 	// Column Info
-	"Field Name": "Field Name", // 🔵
+	FieldName: "Field Name", // 🔵
 	// The following labels should be kept short
-	"Small": "Small", // (small column size)
-	"Med": "Med", // (medium column size)
-	"Large": "Large",  // (large column size)
+	Small: "Small", // (small column size)
+	Med: "Med", // (medium column size)
+	Large: "Large",  // (large column size)
 
 	Changes: "Changes",
-	"Working...": "Working...",
+	workingMsg: "Working...",
 	TITLE: "TITLE", // Only used in CSV exports
 
 	// Types of exports
-	"Text, Tabbed": "Text, Tabbed",
-	"Text, Semicolons": "Text, Semicolons",
-	"Text, Newlines": "Text, Newlines",
-	"CSV File": "CSV File",
-	"CSV File, no title/description": "CSV File, no title/description",
+	exportTextTab: "Text, Tabbed",
+	exportTextSemicolon: "Text, Semicolons",
+	exportTextNewline: "Text, Newlines",
+	exportCSVFile: "CSV File",
+	exportCSVFileNoDesc: "CSV File, no title/description",
 	fileJson: "JSON File",
 	fileXml: "XML File",
 
 	// Initial lexicon column labels
-	"Word": "Word",
-	"Part of Speech": "Part of Speech",
-	"Definition": "Definition",
+	Word: "Word",
+	PartOfSpeech: "Part of Speech",
+	Definition: "Definition",
 
 	lexiconMergeInstructions:
 		"This will combine the selected Lexicon items into one single Lexicon"
 		+ " item. Use the \"How to Merge\" section to choose how the items"
 		+ " are merged, and see a preview of the final result in the \"Current"
 		+ " Merged Result\" section. This action cannot be undone.",
-	"How to Merge": "How to Merge",
-	"Current merged result": "Current merged result:", // presentational context
-	"Cancel Merging": "Cancel Merging", // 🔴
-	"Save and Merge": "Save and Merge", // 🔴
-	"Merge Items": "Merge Items", // 🟥 🔵
+	HowToMerge: "How to Merge",
+	CurrentMerge: "Current merged result:", // presentational context
+	CancelMerge: "Cancel Merging", // 🔴
+	SaveMerge: "Save and Merge", // 🔴
+	MergeItems: "Merge Items", // 🟥 🔵
 
 	merge: {
 		first: "Use first non-blank value",

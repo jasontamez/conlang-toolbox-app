@@ -46,12 +46,12 @@ interface StorageModalProps extends ModalProperties {
 }
 
 const translations = [
-	"Lexicon Storage", "Lexicon cleared",
-	"Nothing to clear", "Lexicon saved as new lexicon!",
-	"Please add words to your lexicon before exporting it.",
-	"Please give your lexicon a title before exporting it.",
-	"You must input a title before saving.", "deleteEverythingMessage",
-	"Clear Lexicon"
+	"LexiconStorage", "LexCleared",
+	"NothingToClear", "LexSavedAsNew",
+	"needWordsMsg",
+	"needLexiconTitleMsg",
+	"needTitleMsg", "deleteEverythingMessage",
+	"ClearLexicon"
 ]
 
 const commons = [ "DeleteEverythingQ", "Done", "Ok", "SaveAsNew", "error" ];
@@ -68,7 +68,7 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 		tNoWords, tNoTitleEx, tNoTitle, tDelAll,
 		tClearLex
 	] = useI18Memo(translations, "lexicon");
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: t("Saved Lexicon") }), [tc, t])
+	const tDelThing = useMemo(() => tc("deleteThing", { thing: t("SavedLexicon") }), [tc, t])
 	const tExThing = useMemo(() => tc("exportThing", { thing: tc("Lexicon") }), [tc])
 	const tLoadThing = useMemo(() => tc("loadThing", { thing: tc("Lexicon") }), [tc])
 	const tSaveThing = useMemo(() => tc("saveThing", { thing: tc("Lexicon") }), [tc])

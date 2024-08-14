@@ -34,7 +34,7 @@ interface EditSortModal extends ModalProperties {
 	sorter: SorterFunc
 }
 
-const translations = [ "Lexicon Sorting", "sortLexDescription" ];
+const translations = [ "LexiconSorting", "sortLexDescription" ];
 
 const EditLexiconSortModal: FC<EditSortModal> = (props) => {
 	const [ t ] = useTranslator('lexicon');

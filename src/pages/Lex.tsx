@@ -148,7 +148,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [isOpenDelLex, setIsOpenDelLex] = useState<boolean>(false);
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
 	const [tExChar, tHelp, tWait, tLex] = useI18Memo(innerCommons);
-	const tWorking = useMemo(() => t("Working..."), [t]);
+	const tWorking = useMemo(() => t("workingMsg"), [t]);
 
 	const endButtons = useMemo(() => [
 		<IonButton
@@ -260,7 +260,7 @@ function maybeExpand (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, toas
 const others = ["Edit", "Delete"];
 const RenderLexiconItem = memo(({index, style, data}: LexItem) => {
 	const [ t ] = useTranslator('lexicon');
-	const tMergeItems = useMemo(() => t("Merge Items"), [t]);
+	const tMergeItems = useMemo(() => t("MergeItems"), [t]);
 	const [ tEdit, tDelete ] = useI18Memo(others);
 
 	const {
@@ -377,19 +377,19 @@ const closeSliders = () => {
 };
 
 const translations = [
-	"Lexicon Title", "Merge selected items", "beginDeleteMode",
+	"LexiconTitle", "MergeSelected", "beginDeleteMode",
 	"lexDescriptionHelperText", "lexTitleHelperText",
-	"Delete selected lexicon items", "Cancel deleting",
-	"You did not type any information into any text field.",
-	"Delete multiple lexicon items"
+	"DeleteSelectedLexItems", "CancelDel",
+	"noInfoProvided",
+	"DeleteMultipleLexItems"
 ];
 
 const commons =  [
 	"deleteThisCannotUndo", "Description", "Ok", "areYouSure",
-	"cannotUndo", "error", "Help", "AddNew", "Close"
+	"cannotUndo", "error", "AddNew"
 ];
 
-const presentations = [ "Lexicon Title", "Sort" ];
+const presentations = [ "LexiconTitle", "Sort" ];
 const context = { context: "presentation" };
 
 const Lex: FC<PageData> = (props) => {
@@ -400,8 +400,8 @@ const Lex: FC<PageData> = (props) => {
 		tDelSel, tCancelDel, tNoText, tDelThings
 	] = useI18Memo(translations, 'lexicon');
 	const [
-		tYouSure, tDesc, tOk, tRUSure, tCannnotUndo,
-		tError, tHelp, tAddNew, tClose
+		tYouSure, tDesc, tOk, tRUSure,
+		tCannnotUndo, tError, tAddNew
 	] = useI18Memo(commons);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
 	const tpDesc =  useMemo(() => tc("Description", { context: "presentation" }), [tc]);
@@ -844,15 +844,14 @@ const Lex: FC<PageData> = (props) => {
 					<IonFabList side="top">
 						<IonFabButton
 							color="danger"
-							title={tDelThings}
 							onClick={beginMassDeleteMode}
-							aria-label={tHelp}
+							aria-label={tDelThings}
 						>
 							<IonIcon icon={trash} />
 						</IonFabButton>
 						<IonFabButton
 							color="success"
-							title={tAddNew}
+							aria-label={tAddNew}
 							onClick={openAdd}
 						>
 							<IonIcon icon={addCircle} />
@@ -864,9 +863,8 @@ const Lex: FC<PageData> = (props) => {
 						<IonFab vertical="top" horizontal="start" edge={true} slot="fixed">
 							<IonFabButton
 								color="danger"
-								title={tDelSel}
 								onClick={deleteSelected}
-								aria-label={tHelp}
+								aria-label={tDelSel}
 							>
 								<IonIcon icon={trash} />
 							</IonFabButton>
@@ -874,9 +872,8 @@ const Lex: FC<PageData> = (props) => {
 						<IonFab vertical="bottom" horizontal="start" slot="fixed">
 							<IonFabButton
 								color="warning"
-								title={tCancelDel}
 								onClick={cancelDeleting}
-								aria-label={tClose}
+								aria-label={tCancelDel}
 							>
 								<IonIcon icon={closeCircle} />
 							</IonFabButton>

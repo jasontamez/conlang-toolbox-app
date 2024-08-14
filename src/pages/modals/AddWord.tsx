@@ -39,7 +39,7 @@ interface LexItemProps extends ExtraCharactersModalOpener {
 }
 
 const commons = [ "Close", "ExtraChars", "Ok", "error" ];
-const things = [ "Item", "Lexicon Item" ];
+const things = [ "Item", "LexItem" ];
 
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ t ] = useTranslator('lexicon');
@@ -47,7 +47,7 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
 	const [ tAddItem, tAddLexItem ] = useMemo(() => things.map(thing => tc("addThing", { thing: t(thing) })), [tc, t]);
 	const tThingAdded = useMemo(() => tc("thingAdded", { thing: t("Item") }), [t, tc]);
-	const tNoInfo = useMemo(() => t("You did not type any information into any text field."), [t]);
+	const tNoInfo = useMemo(() => t("noInfoProvided"), [t]);
 
 	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
 	const dispatch = useDispatch();

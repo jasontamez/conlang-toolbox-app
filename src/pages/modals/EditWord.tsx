@@ -50,9 +50,9 @@ function garble () {
 const nonsense = garble();
 
 const translations = [
-	"Exit Without Saving?", "Item",
-	"You have unsaved changes. Are you sure you want to exit?",
-	"You did not type any information into any text field."
+	"ExitWOSave", "Item",
+	"exitWithoutSavingMsg",
+	"noInfoProvided"
 ];
 
 const commons = [
@@ -67,7 +67,7 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tExit, tItem, tUnsavedChanges, tNoInfo ] = useI18Memo(translations, "lexicon");
 	const [ tYouSure, tClose, tError, tExChar, tOk, tRUSure ] = useI18Memo(commons);
-	const tEditLexicon = useMemo(() => tc("editThing", { thing: t("Lexicon Item")}), [tc, t]);
+	const tEditLexicon = useMemo(() => tc("editThing", { thing: t("LexItem")}), [tc, t]);
 	const [
 		tDelThing, tSaveThing, tThingDel, tThingEdit
 	] = useMemo(() => things.map(item => tc(item, { thing: tItem })), [tc, tItem]);

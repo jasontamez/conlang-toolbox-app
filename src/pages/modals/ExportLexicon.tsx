@@ -33,8 +33,8 @@ interface ExportModalProps extends ModalProperties {
 type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const translations = [
-	"CSV File", "CSV File, no title/description", "fileJson",
-	"Text, Newlines", "Text, Semicolons", "Text, Tabbed", "fileXml",
+	"exportCSVFile", "exportCSVFileNoDesc", "fileJson",
+	"exportTextNewline", "exportTextSemicolon", "exportTextTab", "fileXml",
 	"TITLE"
 ];
 

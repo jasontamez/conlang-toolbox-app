@@ -32,7 +32,7 @@ interface SavedLexProperties extends ModalProperties {
 	setLexInfo: SetState<[string, LexiconState][]>
 }
 
-const translations = [ "No Saved Lexicons", "loadLexiconConfirm" ];
+const translations = [ "NoSavedLexicons", "loadLexiconConfirm" ];
 
 const commons = [ "Cancel", "Close", "confirmLoad" ];
 

@@ -113,10 +113,10 @@ const mergingMethodFunctions: Method = {
 const methods: Methods = ["first", "last", "merge", "firstAll", "lastAll", "mergeAll", "blank"];
 
 const translations = [
-	"Cancel Merging", "How to Merge",
-	"Merge Items", "Save and Merge",
+	"CancelMerge", "HowToMerge",
+	"MergeItems", "SaveMerge",
 	"lexiconMergeInstructions",
-	"Current merged result"
+	"CurrentMerge"
 ];
 
 const MergeLexiconItemsModal: FC<MergeProps> = (props) => {

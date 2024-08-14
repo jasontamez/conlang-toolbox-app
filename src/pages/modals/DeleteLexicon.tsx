@@ -42,7 +42,7 @@ const commons = [
 const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
-	const tNoSaved = useMemo(() => t("No Saved Lexicons"), [t]);
+	const tNoSaved = useMemo(() => t("NoSavedLexicons"), [t]);
 	const [ tYouSure, tCancel, tClose, tLexicon ] = useI18Memo(commons);
 	const tDeleteLexicon = useMemo(() => tc("deleteThing", { thing: tLexicon }), [tc, tLexicon]);
 

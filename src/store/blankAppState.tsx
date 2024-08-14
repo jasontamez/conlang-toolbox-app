@@ -5,7 +5,7 @@ import { StateCleanerObject, StateObject } from "./types";
 export const currentVersion = packageJson.version;
 
 const word = i18n.t("Word", { ns: "lexicon" });
-const partOfSpeech = i18n.t("Part of Speech", { ns: "lexicon" });
+const partOfSpeech = i18n.t("PartOfSpeech", { ns: "lexicon" });
 const definition = i18n.t("Definition", { ns: "lexicon" });
 
 const blankAppState: StateObject = {
