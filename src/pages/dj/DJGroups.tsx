@@ -221,7 +221,7 @@ function makeDJGroupDescription (group: DJGroup) {
 }
 
 const translations = [
-	"Clear All Groups?", "Conjugations", "Declensions", "Groups", "Other",
+	"ClearAllGroups", "Conjugations", "Declensions", "Groups", "Other",
 	"delEntireGroup"
 ];
 
@@ -311,7 +311,7 @@ const DJGroups: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
 			toaster({
-				message: tc("thingsDeleted", { things: t("Number of Groups", { count: allGroups }), count: allGroups }),
+				message: tc("thingsDeleted", { things: t("NumGroups", { count: allGroups }), count: allGroups }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

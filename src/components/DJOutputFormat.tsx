@@ -147,8 +147,8 @@ export const findCommons = (input: string[][]): string[] => {
 	return output;
 }
 
-const WORD = t("[word]");
-const STEM = t("[stem]");
+const WORD = t("wordBlock");
+const STEM = t("stemBlock");
 const EXAMPLE = t("Example");
 const EXAMPLES = t("Examples");
 const ERROR = tc("error");
@@ -332,7 +332,7 @@ const getTextFromChart = (rows: string[][]): string[] => {
 };
 
 const FORMS = t("Forms")
-const NOMATCHESFOUND = t("No words matched this group."); // NEED TO SEE IF MEMO() NEEDED IN MAIN DJ PAGES
+const NOMATCHESFOUND = t("noMatchesMsg"); // NEED TO SEE IF MEMO() NEEDED IN MAIN DJ PAGES
 export const display = (
 	groups: DJGroup[],
 	data: DJDisplayData,
@@ -597,7 +597,7 @@ export const exporter = (
 		);
 	}
 	return toaster({
-		message: "Error in exporting: bad internal format",
+		message: "errorBadInternalFormatMsg",
 		color: "danger",
 		toast
 	});
@@ -636,7 +636,7 @@ const getExportText = (
 	return output;
 };
 
-const UNMATCHEDWORDS = t("Unmatched Words");
+const UNMATCHEDWORDS = t("UnmatchedWords");
 const exportText = (data: DJExportData) => {
 	const {
 		declensions,

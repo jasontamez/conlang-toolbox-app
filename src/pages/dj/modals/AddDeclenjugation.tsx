@@ -45,11 +45,11 @@ interface AddDJModal extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"This applies your modifications to the base word instead of the stem.",
-	"Modification", "Prefix", "Suffix", "Use advanced method",
-	"You did not enter a match expression.", "Use entire word",
-	"You must provide a title or description before saving.",
-	"Matching Expression", "Replacement Expression",
+	"modBaseWordNotStemMsg",
+	"Modification", "Prefix", "Suffix", "UseAdvancedMethod",
+	"noMatchExpressionMsg", "UseEntireWord",
+	"needTitleOrDescriptionMsg",
+	"MatchingExpression", "ReplacementExpression",
 	"word", "stem"
 ];
 
@@ -58,7 +58,7 @@ const commons = [
 	"Ok", "Save", "UnsavedInfo", "YesDiscard"
 ];
 
-const expressions = [ "Matching Expression", "Replacement Expression" ];
+const expressions = [ "MatchingExpression", "ReplacementExpression" ];
 const context = { context: "presentation" };
 
 const AddDeclenjugation: FC<AddDJModal> = (props) => {
@@ -83,7 +83,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const tAddThing = useMemo(() => typeString ? tc("addThing", { thing: t(typeString) }) : "", [t, tc, typeString]);
 	const tThingSaved = useMemo(() => typeString ? tc("thingSaved", { thing: t(typeString) }) : "", [tc, t, typeString]);
 	const [ tpMEx, tpREx ] = useI18Memo(expressions, "dj", context);
-	const tTitleMethod = useMemo(() => t("Title Method", { context: typeString || "Other" }), [t, typeString]);
+	const tTitleMethod = useMemo(() => t("TitleMethod", { context: typeString || "Other" }), [t, typeString]);
 	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString || "Other" }), [t, typeString]);
 
 	const [doAlert] = useIonAlert();

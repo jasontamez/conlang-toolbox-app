@@ -55,7 +55,7 @@ const OverviewButton: FC<CardProps> = (props) => {
 export const InputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const main = useMemo(() => t("info.input", { joinArrays: "\n"}), [t]);
-	const tInputTab = useMemo(() => t("Input Tab"), [t]);
+	const tInputTab = useMemo(() => t("InputTab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -88,7 +88,7 @@ export const GroupCard: FC<CardProps> = (props) => {
 			return <IonIcon icon={reorderThree} color="tertiary" size="small" />;
 		}
 	}), []);
-	const tGroupsTab = useMemo(() => t("Groups Tab"), [t]);
+	const tGroupsTab = useMemo(() => t("GroupsTab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -112,7 +112,7 @@ export const GroupCard: FC<CardProps> = (props) => {
 export const OutputCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const main = useMemo(() => t("info.output", { joinArrays: "\n"}), [t]);
-	const tOutputTab = useMemo(() => t("Output Tab"), [t]);
+	const tOutputTab = useMemo(() => t("OutputTab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -132,7 +132,7 @@ const DJinfo: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const main = useMemo(() => t("info.overview", { joinArrays: "\n"}), [t]);
 	const tOverview = useMemo(() => tc("overviewOf", { what: tc("Declenjugator") }), [tc]);
-	const tWhat = useMemo(() => t("What is Declenjugator?"), [t]);
+	const tWhat = useMemo(() => t("WhatIsDJ"), [t]);
 
 	return (
 		<IonPage>

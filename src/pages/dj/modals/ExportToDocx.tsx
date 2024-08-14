@@ -70,7 +70,7 @@ const topChart = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = t("No words matched this group.");
+	const noMatchesFound = t("noMatchesMsg");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -156,7 +156,7 @@ const sideChart = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = t("No words matched this group.");
+	const noMatchesFound = t("noMatchesMsg");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -238,7 +238,7 @@ const text = (
 	showGroupInfo: boolean,
 	inputFlag: boolean
 ) => {
-	const noMatchesFound = t("No words matched this group.");
+	const noMatchesFound = t("noMatchesMsg");
 	const children: Child[] = [];
 	data.forEach(grouping => {
 		const {
@@ -373,7 +373,7 @@ const exportDocx = (
 			properties: { type: SectionType.CONTINUOUS },
 			children: [
 				new Paragraph({
-					text: t("Unmatched Words"),
+					text: t("UnmatchedWords"),
 					heading: HeadingLevel.HEADING_2,
 					spacing
 				}),

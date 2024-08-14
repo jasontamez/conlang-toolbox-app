@@ -69,21 +69,21 @@ interface AddGroupProps extends ExtraCharactersModalOpener {
 }
 
 const presentations = [
-	"Type(s) of word this group affects", "Matching Expression",
-	"Remove from Start of Word to Find Root", "Replacement Expression",
-	"Remove from End of Word to Find Root", "Type"
+	"TypesBeingAffected", "MatchingExpression",
+	"RemoveFromStartOfWordToFindRoot", "ReplacementExpression",
+	"RemoveFromEndOfWordToFindRoot", "Type"
 ];
 const context = { context: "presentation" };
 
 const translations = [
-	"Choose Separator", "Comma", "Conjugation", "Declension",
-	"If using regular expressions you must provide both match and replacement expressions.",
-	"Other1", "Semicolon", "Simple Root Finder", "Slash", "Space", "Type",
-	"Use advanced method", "Use regular expressions to identify the stem.",
-	"You must provide a title or description before saving.",
-	"You must provide at least one condition (start or end) before saving.",
-	"exampleAppliesTo", "wordMarker", "Regular Expression",
-	"Separate Multiple Conditions With", "Add Group", "Title Input"
+	"ChooseSeparator", "Comma", "Conjugation", "Declension",
+	"regExNeedsBothMsg",
+	"Other1", "Semicolon", "SimpleRootFinder", "Slash", "Space", "Type",
+	"UseAdvancedMethod", "UseRegExpToIdStem",
+	"needTitleOrDescriptionMsg",
+	"needConditionMsg",
+	"exampleAppliesTo", "wordMarker", "RegExp",
+	"SepMultiWith", "AddGroup", "TitleInput"
 ];
 
 const commons = [

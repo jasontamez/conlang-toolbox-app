@@ -31,7 +31,7 @@ import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
 import { InputCard } from './DJinfo';
 
-const translations = [ "Enter words here, one per line", "Words to send through Declenjugator" ];
+const translations = [ "EnterWordsOnePerLine", "WordsToGiveDJ" ];
 
 const commons = [
 	"Clear", "ExtraChars", "Help", "Input", "YesClear",

@@ -2,55 +2,46 @@ const dj = {
 
 	Groups: "Groups", // 🟥
 	Group: "Group",
-	"Number of Groups_one": "{{count}} Group",
-	"Number of Groups_other": "{{count}} Groups",
+	NumGroups_one: "{{count}} Group",
+	NumGroups_other: "{{count}} Groups",
 	Type: "Type", // 🟥
 	Type_presentation: "Type:",
 	Declensions: "Declensions", // 🟥 🔴 group of declensions on-screen
 	Declension: "Declension", // a single Declension
-	declension: "declension",
 	Conjugations: "Conjugations", // 🟥 🔴 group of conjugations on-screen
 	Conjugation: "Conjugation", // a single Conjugation
-	conjugation: "conjugation",
 	Other: "Other", // 🟥 🔴 group of 'other' type on-screen
 	Other1: "Other", // a single instance of an 'Other' type
-	other: "other",
 	Forms: "Forms", // a pluralized version of 'other', mainly used in exports
-	"Error in exporting: bad internal format":
-		"Error in exporting: bad format (internal)",
+	errorBadInternalFormatMsg: "Error in exporting: bad format (internal)",
 	Equality: "Equality",
 	Relation: "Relation",
 
-	"Words to send through Declenjugator": // 🔵
-		"Words to send through $t(common:Declenjugator)",
-	"Enter words here, one per line": "Enter words here, one per line",
+	WordsToGiveDJ: "Words to send through $t(common:Declenjugator)", // 🔵
+	EnterWordsOnePerLine: "Enter words here, one per line",
 	delEntireGroup: "This will delete this entire Group, and cannot be undone.",
-	"all current groups": "all current Groups",
-	"Clear All Groups?": "Clear All Groups?", // 🟨
-	"You must provide a title or description before saving.": // 🟡
-		"You must provide a title or description before saving.",
-	"If using regular expressions you must provide both match and replacement expressions.": // 🟡
-		"If using regular expressions, you must provide both match and replacement expressions.",
-	"You must provide at least one condition (start or end) before saving.": // 🟡
-		"You must provide at least one condition (start or end) before saving.",
-	"You did not enter a match expression.": // 🟡
-		"You did not enter a match expression.",
-	"Add Group": "Add Group", // 🟥
-	"Edit Group": "Edit Group", // 🟥
-	"Title Input": "Title or Description of this grouping:",
-	"Type(s) of word this group affects": "Type(s) of word this group affects", // 🔵
-	"Type(s) of word this group affects_presentation": "Type(s) of word this group affects:",
+	AllCurrentGroups: "all current Groups",
+	ClearAllGroups: "Clear All Groups?", // 🟨
+	needTitleOrDescriptionMsg: "You must provide a title or description before saving.", // 🟡
+	regExNeedsBothMsg: "If using regular expressions, you must provide both match and replacement expressions.", // 🟡
+	needConditionMsg: "You must provide at least one condition (start or end) before saving.", // 🟡
+	noMatchExpressionMsg: "You did not enter a match expression.", // 🟡
+	AddGroup: "Add Group", // 🟥
+	EditGroup: "Edit Group", // 🟥
+	TitleInput: "Title or Description of this grouping:",
+	TypesBeingAffected: "Type(s) of word this group affects", // 🔵
+	TypesBeingAffected_presentation: "Type(s) of word this group affects:",
 	exampleAppliesTo: "nouns? verbs? adjectives?",
-	"Use regular expressions to identify the stem.": "Use regular expressions to identify the stem.",
-	"Simple Root Finder": "Simple Root Finder", // 🟥
+	UseRegExpToIdStem: "Use regular expressions to identify the stem.",
+	SimpleRootFinder: "Simple Root Finder", // 🟥
 	Modification: "Modification", // 🟥
-	"Matching Expression": "Matching Expression", // 🟥
-	"Matching Expression_presentation": "Matching Expression:",
-	"Replacement Expression": "Replacement Expression", // 🟥
-	"Replacement Expression_presentation": "Replacement Expression:",
-	"Title Method_Declensions": "Title or Description of this declension:", // 🟥
-	"Title Method_Conjugations": "Title or Description of this conjugation:", // 🟥
-	"Title Method_Other": "Title or Description of this method:", // 🟥
+	MatchingExpression: "Matching Expression", // 🟥
+	MatchingExpression_presentation: "Matching Expression:",
+	ReplacementExpression: "Replacement Expression", // 🟥
+	ReplacementExpression_presentation: "Replacement Expression:",
+	TitleMethod_Declensions: "Title or Description of this declension:", // 🟥
+	TitleMethod_Conjugations: "Title or Description of this conjugation:", // 🟥
+	TitleMethod_Other: "Title or Description of this method:", // 🟥
 	advancedExplanation_Declensions: "Use regular expressions to craft a declension.",
 	advancedExplanation_Conjugations: "Use regular expressions to craft a conjugation.",
 	advancedExplanation_Other: "Use regular expressions to craft a method.",
@@ -58,12 +49,11 @@ const dj = {
 	// appliesTo will be a user-generated string
 	groupAppliesTo: "; applies to $t(appliesTo)",
 
-	"What is Declenjugator?": "What is $t(common:Declenjugator)?", // 🟥
+	WhatIsDJ: "What is $t(common:Declenjugator)?", // 🟥
 
-	"You didn't select a format.": "You didn't select a format.", // 🟡
-	"Please choose at least one group to display.": // 🟡 🟦2.5
-		"Please choose at least one Group to display.",
-	"Unmatched Words": "Unmatched Words", // 🟥
+	noFormatMsg: "You didn't select a format.", // 🟡
+	noDisplayGroupMsg: "Please choose at least one Group to display.", // 🟡 🟦2.5
+	UnmatchedWords: "Unmatched Words", // 🟥
 	declenjugatorTitle: "Declension/Conjugation Title", // 🟥
 	declenjugatorDocumentTitle: "Declensions/Conjugations", // 🟥
 	declenjugatorDocumentDescription:
@@ -71,39 +61,35 @@ const dj = {
 	caseMakerInstructions:
 		"Tap on terms to add them. Tap them again to remove them. Tap save button when you're finished.",
 	Hide: "Hide", // 🔴
-	"Show More": "Show More", // 🔴
+	ShowMore: "Show More", // 🔴
 
 	// Always presentational context:
-	"Display as": "Display as:",
+	DisplayAs: "Display as:",
 
-	"Chart, Top Headers": "Chart, Top Headers", // 🔴
-	"Chart, Side Headers": "Chart, Side Headers", // 🔴
+	ChartTopHeaders: "Chart, Top Headers", // 🔴
+	ChartSideHeaders: "Chart, Side Headers", // 🔴
 	Text: "Text", // 🔴
 
-	"Use Input": "Use $t(common:Input)", // 🟥
-	"Display the declensions/conjugations of words in the input.":
-		"Display the declensions/conjugations of words in the input.",
-	"Show Group Info": "Show Group Info", // 🟥
-	"Include general group information.": "Include general Group information.",
-	"Show Examples": "Show Examples", // 🟥
-	"Include generic example.": "Include generic example.",
-	"Sort Input": "Sort $t(common:Input)", // 🟥
-	"One Match": "One Match", // 🟥
-	"Input words can only match one method":
-		"$t(common:Input) words can only match one method",
-	"Show Unmatched Words": "Show Unmatched Words", // 🟥
-	"Display any words that were not matched by any group.":
-		"Display any words that were not matched by any Group.",
+	UseInput: "Use $t(common:Input)", // 🟥
+	showDeclenjugationsInInputMsg: "Display the declensions/conjugations of words in the input.",
+	ShowGroupInfo: "Show Group Info", // 🟥
+	includeGeneralInfoMsg: "Include general Group information.",
+	ShowExamples: "Show Examples", // 🟥
+	includeGenericMsg: "Include generic example.",
+	SortInput: "Sort $t(common:Input)", // 🟥
+	OneMatch: "OneMatch", // 🟥
+	oneMatchMsg: "$t(common:Input) words can only match one method",
+	ShowUnmatchedWords: "Show Unmatched Words", // 🟥
+	showUnmatchedMsg: "Display any words that were not matched by any Group.",
 
-	"Input Tab": "$t(common:Input) Tab", // 🟥
-	"Groups Tab": "Groups Tab", // 🟥
-	"Output Tab": "Output Tab", // 🟥
+	InputTab: "$t(common:Input) Tab", // 🟥
+	GroupsTab: "Groups Tab", // 🟥
+	OutputTab: "Output Tab", // 🟥
 
-	"Regular Expression": "Regular Expression", // 🟥
+	RegExp: "Regular Expression", // 🟥
 
-	"This will clear and overwrite the previous save.": // 🟡
-		"This will clear and overwrite the previous save.",
-	"Load Saved Info": "Load Saved Info", // 🟥
+	willClearOverwriteMsg: "This will clear and overwrite the previous save.", // 🟡
+	LoadSavedInfo: "Load Saved Info", // 🟥
 
 	Export: "Export", // 🔴
 	Example: "Example", // 🟥
@@ -112,20 +98,19 @@ const dj = {
 	Suffix: "Suffix", // 🟥
 	stem: "stem", // 🟥
 	word: "word", // 🟥
-	"[word]": "[word]",
-	"[stem]": "[stem]",
-	"No words matched this group.": "No words matched this Group.",
-	"Remove from End of Word to Find Root": "Remove from End of Word to Find Root", // 🔵
-	"Remove from End of Word to Find Root_presentation": "Remove from End of Word to Find Root:", // 🟥
-	"Remove from Start of Word to Find Root": "Remove from Start of Word to Find Root", // 🔵
-	"Remove from Start of Word to Find Root_presentation": "Remove from Start of Word to Find Root:", // 🟥
-	"Use advanced method": "Use advanced method", // 🟥
-	"Use entire word": "Use entire word", // 🟥
-	"This applies your modifications to the base word instead of the stem.":
-		"This applies your modifications to the base word instead of the stem.",
+	wordBlock: "[word]",
+	stemBlock: "[stem]",
+	noMatchesMsg: "No words matched this Group.",
+	RemoveFromEndOfWordToFindRoot: "Remove from End of Word to Find Root", // 🔵
+	RemoveFromEndOfWordToFindRoot_presentation: "Remove from End of Word to Find Root:", // 🟥
+	RemoveFromStartOfWordToFindRoot: "Remove from Start of Word to Find Root", // 🔵
+	RemoveFromStartOfWordToFindRoot_presentation: "Remove from Start of Word to Find Root:", // 🟥
+	UseAdvancedMethod: "Use advanced method", // 🟥
+	UseEntireWord: "Use entire word", // 🟥
+	modBaseWordNotStemMsg: "This applies your modifications to the base word instead of the stem.",
 	// Always presentation context:
-	"Separate Multiple Conditions With": "Separate Multiple Conditions With:",
-	"Choose Separator": "Choose Separator", // 🔵
+	SepMultiWith: "Separate Multiple Conditions With:",
+	ChooseSeparator: "Choose Separator", // 🔵
 	Space: "[ ] Space", // 🔴
 	Comma: "[,] Comma", // 🔴
 	Semicolon: "[;] Semicolon", // 🔴
@@ -139,16 +124,21 @@ const dj = {
 	//   matches /[a-z]d[aeiou]$/
 	matchesParameters: "matches {{params}}",
 
-	"1st-person": "1st-person",
-	"2nd-person": "2nd-person",
-	"3rd-person": "3rd-person",
-	singular: "singular",
-	plural: "plural",
-	present: "present",
-
-	// By default, cases will be added with a space in between them.
-	// To override this, supply an array [ "case", "separator" ] instead of a string
-	// .extended cases will be hidden; the user can toggle to see them
+	// The CASES object is an array of objects. Each object has a 'header'
+	//   property (a string), a 'content' property (an array, described below),
+	//   and an optional 'extended' property (an array, same contents as
+	//   'content').
+	// The 'content' and 'extended' properties are an array of either strings
+	//   or arrays with exactly two strings.
+	//
+	// The 'header' is presented to the user, along with the items in the
+	//   content property. (Items that are arrays only show the first string.)
+	//   Tapping on an item will add it to the user's input, along with
+	//   a single space. (Items that are array will add the second string
+	//   instead of a space.)
+	//
+	// The 'extended' items will be hidden; the user can toggle to see them,
+	//   At which point they appear the same way as 'content' items.
 	cases: [
 		{
 			header: "Modifiers",
@@ -336,11 +326,11 @@ const dj = {
 			"Next, you will provide instructions on how to find the",
 			"\"$t(stem)\" of the word. For example, if you were creating a",
 			"conjugation for words ending in -ar, you would put \"ar\" in",
-			"the box labelled \"$t(Remove from End of Word to Find Root)\".",
+			"the box labelled \"$t(RemoveFromEndOfWordToFindRoot)\".",
 			"",
 			"Note: You can provide multiple conditions. For instance, putting",
 			"\"ar\" in both boxes will match words that begin with ar- _and_",
-			"end with -ar. You can also hit the \"$t(Use advanced method)\"",
+			"end with -ar. You can also hit the \"$t(UseAdvancedMethod)\"",
 			"toggle switch to use **regular expressions** to find a $t(stem).",
 			"(See the end of this section for more info on regular",
 			"expressions.)",
@@ -356,7 +346,7 @@ const dj = {
 			"next to the input that will open a pop-up with numerous common",
 			"declension and conjugation types, if you wish to use it.",
 			"",
-			"Below that is a toggle \"$t(Use entire word)\". If checked, the",
+			"Below that is a toggle \"$t(UseEntireWord)\". If checked, the",
 			"method will operate on the entire word instead of just the",
 			"$t(stem).",
 			"",
@@ -383,7 +373,10 @@ const dj = {
 			"Here's an example of possible methods you could make for a",
 			"Spanish-type conjugation:",
 		],
+		// This section is presented with the 'title' property as a header and
+		//   the 'content' is an array of Markdown-formatted strings.
 		groupsExample: [
+			// This first object describe a Declenjugation group.
 			{
 				title: "Group",
 				content: [ // Markdown format (list)
@@ -393,6 +386,7 @@ const dj = {
 					"- **Remove from End of Word**: ar",
 				],
 			},
+			// This second object describes a set of conjugations.
 			{
 				title: "Conjugations",
 				content: [ // Markdown format (list)

@@ -48,15 +48,15 @@ import useI18Memo from '../../components/useI18Memo';
 import { OutputCard } from './DJinfo';
 
 const translations = [
-	"Chart, Side Headers", "Chart, Top Headers", "Declensions",
-	"Display any words that were not matched by any group.",
-	"Display the declensions/conjugations of words in the input.",
-	"Include general group information.", "Include generic example.",
-	"Input words can only match one method", "One Match", "Other",
-	"Please choose at least one group to display.", "Show Examples",
-	"Show Group Info", "Show Unmatched Words", "Sort Input", "Text",
-	"Unmatched Words", "Use Input", "You didn't select a format.",
-	"Conjugations", "Export", "Display as"
+	"ChartSideHeaders", "ChartTopHeaders", "Declensions",
+	"showUnmatchedMsg",
+	"showDeclenjugationsInInputMsg",
+	"includeGeneralInfoMsg", "includeGenericMsg",
+	"oneMatchMsg", "OneMatch", "Other",
+	"noDisplayGroupMsg", "ShowExamples",
+	"ShowGroupInfo", "ShowUnmatchedWords", "SortInput", "Text",
+	"UnmatchedWords", "UseInput", "noFormatMsg",
+	"Conjugations", "Export", "DisplayAs"
 ];
 
 const commons = [

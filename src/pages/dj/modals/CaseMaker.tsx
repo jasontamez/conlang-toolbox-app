@@ -51,7 +51,7 @@ const CaseItem: FC<CaseItemProps> = (props) => {
 	const { caseObject, add, toggleTitleGroup, titleGroup } = props;
 	const { header, content, extended } = caseObject;
 	const [ t ] = useTranslator('dj');
-	const tHideOrShow = useMemo(() => t(titleGroup[header] ? "Hide" : "Show More"), [t, header, titleGroup]);
+	const tHideOrShow = useMemo(() => t(titleGroup[header] ? "Hide" : "ShowMore"), [t, header, titleGroup]);
 
 	const contents = useMemo(() => content.map((option) => {
 		const title = Array.isArray(option) ? option[0] : option;

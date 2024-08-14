@@ -48,10 +48,10 @@ interface EditDJModal extends ExtraCharactersModalOpener {
 
 const translations = [
 	"Modification", "Prefix", "Suffix",
-	"This applies your modifications to the base word instead of the stem.",
-	"Use advanced method", "Use entire word",
-	"You did not enter a match expression.",
-	"You must provide a title or description before saving."
+	"modBaseWordNotStemMsg",
+	"UseAdvancedMethod", "UseEntireWord",
+	"noMatchExpressionMsg",
+	"needTitleOrDescriptionMsg"
 ];
 
 const commons = [
@@ -59,7 +59,7 @@ const commons = [
 	"Delete", "Deleted", "Ok", "Save", "UnsavedInfo", "YesDiscard"
 ];
 
-const presentations = [ "Matching Expression", "Replacement Expression" ];
+const presentations = [ "MatchingExpression", "ReplacementExpression" ];
 
 const context = { context: "presentation" };
 
@@ -86,7 +86,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		tMod, tPref, tSuff, tBaseWord, tAdvMeth, tWord,
 		tNoMatch, tNoTitle
 	] = useI18Memo(translations, "dj");
-	const tTitleMethod = useMemo(() => t("Title Method", { context: typeString || "Other" }), [t, typeString]);
+	const tTitleMethod = useMemo(() => t("TitleMethod", { context: typeString || "Other" }), [t, typeString]);
 	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString || "Other" }), [t, typeString]);
 	const [ tpMatch, tpReplace ] = useI18Memo(presentations, "dj", context);
 	const [ tMatch, tReplace ] = useI18Memo(presentations, "dj");

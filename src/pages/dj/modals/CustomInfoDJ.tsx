@@ -39,9 +39,9 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"You must provide a title or description before saving.",
-	"Load Saved Info", "all current groups",
-	"This will clear and overwrite the previous save."
+	"needTitleOrDescriptionMsg",
+	"LoadSavedInfo", "AllCurrentGroups",
+	"willClearOverwriteMsg"
 ];
 
 const commons = [
