@@ -32,19 +32,19 @@ Some terms may be used in a specific context. This app uses `filename`, `formal`
 
 ### Filename
 
->**dog_filename** = Must consist of only characters safe to use in a filename (this is generally anything except the backslash `\`, slash `/`, colon `:`, asterisk `*`, question mark `?`, quotation mark `"`, greater-than sign `>`, less-than sign `<`, and vertical bar `|`).
+>**dogQuestion_filename** = Must consist of only characters safe to use in a filename (this is generally anything except the backslash `\`, slash `/`, colon `:`, asterisk `*`, question mark `?`, quotation mark `"`, greater-than sign `>`, less-than sign `<`, and vertical bar `|`).
 >
 >>`"dogQuestion_filename": "Is_this_a_dog"`
 
 ### Formal
 
->**dog_formal** = This is being used as a proper name or otherwise has importance. In English, this simply means Capitalizing Most Words.
+>**dogQuestion_formal** = This is being used as a proper name or otherwise has importance. In English, this simply means Capitalizing Most Words.
 >
 >>`"dogQuestion_formal": "Is This a Dog?"`
 
 ### Presentation
 
->**dog_presentation** = This is a user-facing term that is "pointing" at...
+>**dogQuestion_presentation** = This is a user-facing term that is "pointing" at...
 >
 >- important information
 >- a text box
@@ -56,7 +56,7 @@ Some terms may be used in a specific context. This app uses `filename`, `formal`
 >
 >>`"dogQuestion_presentation": "Is This a Dog?:"`
 
-**Note:** Some keys are always in `presentation` context, even though they don't use the `_presentation` suffix. This will be noted in its description.
+**Note:** Some keys are always in `presentation` or `formal` context, even though they don't use the listed suffix. This will be noted in the key's description.
 
 ---
 
@@ -86,7 +86,7 @@ These symbols indicate *where* in the app a message is used.
 >
 >🔵 :: ARIA labels *(accessibility messages, not visible to the average user)*
 
-Keys without any of these notes are only shown on-screen in plain text.
+Keys without any of these labels are only shown on-screen in plain text.
 
 ---
 
@@ -131,12 +131,12 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | | SavedAt | Saved: {{time}} | Indicates when something was saved. `{{time}}` is replaced with a timestamp. |
 | 🟦1.5 | CopiedToClipboard | Copied to clipboard | Displays after anything has been copied to the clipboard. |
 | 🟦1.5 | NothingToCopy | Nothing to copy | Displays when the user tries to copy something to the clipboard, but there is nothing to copy. |
-| | Untitled | \[Untitled] | This is used as a document title if no title is given. |
+| | Untitled | \[Untitled\] | This is used as a document title if no title is given. |
 | | fileFormat | {{title}} - {{date}}.{{extension}} | This becomes a filename and is used by MorphoSyntax, Declenjugator, and Lexicon for exporting documents. `{{title}}` is user-generated, `{{date}}` is replaced with a datestamp in a format like "Thu Jan 01 1970 and `{{extension}}` will be a common file extension like "docx" or "csv". |
 | 🟦10 | UnableToExport | UNABLE TO EXPORT: {{error}} | Displayed when the app is unable to export a document to the user's device. `{{error}}` is a system-generated error message. |
 | 🟦5 | FileExported | {{filename}} exported. | Displayed when a file is successfully exported to the user's device. |
-| | andGlue |  " | Put between items when the app assembles items into a single sentence. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
-| | andFinal |  and " | Put between the penultimate and ultimate items instead of `andGlue`. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
+| | andGlue | ", " | Put between items when the app assembles items into a single sentence. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
+| | andFinal | ", and " | Put between the penultimate and ultimate items instead of `andGlue`. **Note:** The quotation marks are not a part of the message, they are there to indicate it ends with a space. |
 | | joinTwo | {{one}} and {{two}} | Used instead of `andGlue` when there are only two items in a list. |
 | 🟨 | ExitAppQHead | Exit App? | Header of a yes/no confirmation dialog when the user hits the device back button and is about to close the app. |
 | 🟡 | ExitAppQ | Do you want to exit the app? | Body text of the confirmation dialog above |
@@ -316,7 +316,7 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🔴 | Dark | Dark | Theme name |
 | 🔴 | SolarizedLight | Solarized Light | Theme name; "Solarized" is the name of a popular color palette |
 | 🔴 | SolarizedDark | Solarized Dark | Theme name; "Solarized" is the name of a popular color palette |
-|  | exportAllMsg | \[ "Save this info to a note or file.&nbsp;&nbsp;&nbsp;", "You will be able to use it later to restore your data." \] | *This is an array of strings in Markdown format.* |
+|  | exportAllMsg | \[ "Save this info to a note or file.&nbsp;&nbsp;", "You will be able to use it later to restore your data." \] | *This is an array of strings in Markdown format.* |
 | 🔵 | ExportedData | Exported Data |  |
 | 🟥 | WhatToExport | What to Export |  |
 | 🟡 | nothingImportedMsg | You haven't imported anything yet. |  |
@@ -512,7 +512,7 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 >"## $t(Landau200)",  
 >"",  
 >"The \*\*Basic 200 List\*\* is a subset of the \*\*Landau Core Vocabulary (LCV)\*\* developed by James Landau. It is Part I of the entire LCV. This list consists of 200 basic concepts that basically all anthropic cultures will have and have words for. This list makes many semantic distinctions that are not made in English (e.g \"leaf (on plant)\" vs. \"leaf (fallen off)\"), and some that are not made in any \"Standard Average European\" language (e.g. \"river (flowing into the sea)\" vs. \"river (flowing into another river)\").",  
->]
+>\]
 
 ### The concepts list
 
@@ -611,35 +611,35 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 
 #### info.basic
 
->[ "This tool is for storing the raw info of your language, whether that be words or something else. The default setup includes dictionary-style columns such as \"word\", \"part of speech\" and \"definition\", but you can add, remove, or rename columns as you see fit." ]
+>\[ "This tool is for storing the raw info of your language, whether that be words or something else. The default setup includes dictionary-style columns such as \"word\", \"part of speech\" and \"definition\", but you can add, remove, or rename columns as you see fit." \]
 
 #### info.description
 
->[ "The beginning of the page has a place where you can title your collection and give it a short description. You can toggle this" entire section by using the (^) button at the top of the page." ]
+>\[ "The beginning of the page has a place where you can title your collection and give it a short description. You can toggle this" entire section by using the (^) button at the top of the page." \]
 
 #### info.saveCounterAndSort
 
->[  
+>\[  
 >"The save button at the top can be used to store, delete, and export entire lexicons.",  
 >"",  
 >"Below the title and description, you'll find a counter displaying how many words you have stored in your $t(common:Lexicon). Next to it is are two sort buttons, where you can choose which columns will be used to sort your collection."  
->]
+>\]
 
 #### info.editColumnsEtc
 
 **Note:** Use `` `DRAG HANDLE` `` to insert the drag handle icon into the text.
 
->[  
+>\[  
 >"The gear icon opens the \*\*Edit Columns\*\* settings. You can choose whether or not to show the columns' full names, the method you wish to use to sort the $t(common:Lexicon), and how blank columns will be handled. Below that you'll find a list of all current columns. You can edit them, delete them, add more, or use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order.",  
 >"",  
 >"The second row contains the titles of the columns. Beneath them are input boxes for quickly adding info to the $t(common:Lexicon). Use the small (+) button to save what you've typed.",  
 >"",  
 >"Under those boxes you'll find the meat of $t(common:Lexicon): all the items you've stored. They will appear as striped rows. You can \*\*swipe left\*\* on each one to find \*\*Edit\*\* and \*\*Delete\*\* buttons."  
->]
+>\]
 
 #### info.mergeButton
 
->[  
+>\[  
 >"You can swipe right on a lexicon item to find the \*\*Merge Items\*\* button. You can use this to mark multiple entries. Once you've selected at least two, a large paperclip button will appear at the bottom of the page. Tapping on it will prompt you to merge the selected items into one entry.",  
 >"",  
 >"Several tools in $t(common:appTitle) can export info into the $t(common:Lexicon). The merge function can be used to merge all this different info. Here's an example:",  
@@ -649,11 +649,11 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 >"3. Next, you change those words with $t(common:WordEvolve) and export the changed words to \"changed\".",
 >"4. Then, you visit $t(common:Concepts) and export meanings to \"definition\".",
 >"5. Finally, you swipe and link each \"original\", \"changed\" and \"definition\" column with each other and merge them into single entries."  
->]
+>\]
 
 #### info.toolButton
 
->[ "At the bottom of the page, you'll find a large tool button. You can tap on it to pull up a small menu. Tap on the (+) button to pop up a large form for adding to the $t(common:Lexicon). Tap on the trash can to enter mass-delete mode, where you can select multiple entries and delete them all at once." ]
+>\[ "At the bottom of the page, you'll find a large tool button. You can tap on it to pull up a small menu. Tap on the (+) button to pop up a large form for adding to the $t(common:Lexicon). Tap on the trash can to enter mass-delete mode, where you can select multiple entries and delete them all at once." \]
 
 ---
 
@@ -761,7 +761,7 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 | 🔴 | Semicolon | \[;\] Semicolon |  |
 | 🔴 | Slash | \[/\] Slash |  |
 |  | wordMarker | \[W\] | a small notation that this declension/etc uses the "entire word" option instead of the stem/root |
-|  | matchesParameters | matches {{params}} | This is a short description describing how a declension or conjugation is found. `{{params}}` may become something like `"-ar, -or"`, `"en-oof"`, or `"/[a-z]d[aeiou]$/"` |
+|  | matchesParameters | matches {{params}} | This is a short description describing how a declension or conjugation is found. `{{params}}` may become something like `"-ar, -or"`, `"en-oof"`, or `"/\[a-z\]d\[aeiou\]$/"` |
 
 ### cases
 
@@ -866,7 +866,7 @@ The `info` object has several properties. Most are arrays of strings in Markdown
 >"",  
 >"Once your Groups are made, they will show up on the screen. Swipe left on them to find $t(common:Edit) and $t(common:Delete) buttons. You can also use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order. (Note: you can't rearrange across types dragging a \"conjugation\" into the \"other\" or \"declension\" areas, for example. If you want to change its type, swipe left and choose the $t(common:Edit) button.)",  
 >"",  
->"Here's an example of possible methods you could make for a Spanish-type conjugation:",
+>"Here's an example of possible methods you could make for a Spanish-type conjugation:",  
 >\]
 
 #### info.groupsExample
@@ -879,14 +879,14 @@ This first object describe a Declenjugation group.
 
 >>{  
 >>**title:** "Group",  
->>**content:** [ "- \*\*$t(common:Title)\*\*: Conjugations (A)", "- \*\*Type\*\*: \_conjugation\_", "- \*\*Remove from Start of Word\*\*: (blank)", "- \*\*Remove from End of Word\*\*: ar", ],  
+>>**content:** \[ "- \*\*$t(common:Title)\*\*: Conjugations (A)", "- \*\*Type\*\*: \_conjugation\_", "- \*\*Remove from Start of Word\*\*: (blank)", "- \*\*Remove from End of Word\*\*: ar", \],  
 >>},
 
 This second object describes a set of conjugations.
 
 >>{  
 >>**title:** "Conjugations",  
->>**content:** [ "- \*\*1st-person singular present\*\*: $t\(stem\)\[o\]", "- \*\*2nd-person singular present\*\*: $t\(stem\)\[as\]", "- \*\*3rd-person singular present\*\*: $t\(stem\)\[a\]", "- \*\*1st-person plural present\*\*: $t\(stem\)\[amos\]", "- \*\*3rd-person plural present\*\*: $t\(stem\)\[an\]", ],  
+>>**content:** \[ "- \*\*1st-person singular present\*\*: $t\(stem\)\[o\]", "- \*\*2nd-person singular present\*\*: $t\(stem\)\[as\]", "- \*\*3rd-person singular present\*\*: $t\(stem\)\[a\]", "- \*\*1st-person plural present\*\*: $t\(stem\)\[amos\]", "- \*\*3rd-person plural present\*\*: $t\(stem\)\[an\]", \],  
 >>}
 >
 >\]
@@ -896,7 +896,7 @@ This second object describes a set of conjugations.
 >\[  
 >"This is where you can find the results of your work. At the top of the page, you can choose how you want the information to display, and choose if you want to display declensions conjugations, and/or other. If you want to decline/conjugate words you put in the \*\*$t(common:Input)\*\* tab be sure to switch the toggle on. It will open up a new set of options you can use to fine-tune the results.",  
 >"",  
->"Click on $t(common:Generate) to display your info, or click on $t(Export) to export your info to a file. \*\*Note\*\*: when displaying a chart in the app, it may clip off the edge of the screen. If this happens, you can drag the chart left and right to scroll the hidden areas into view.",
+>"Click on $t(common:Generate) to display your info, or click on $t(Export) to export your info to a file. \*\*Note\*\*: when displaying a chart in the app, it may clip off the edge of the screen. If this happens, you can drag the chart left and right to scroll the hidden areas into view.",  
 >\]
 
 #### info.overview
@@ -906,7 +906,48 @@ This second object describes a set of conjugations.
 >"",  
 >"A declension is, at its most basic, modifying a word to show its role in a sentence. $t(Declensions) may apply to nouns pronouns, adjectives, adverbs, and articles to indicate number (singular, dual, plural, etc), case (nominative accusative, genitive, dative, etc), gender (male, female inanimate, etc), and other grammatical categories. ",  
 >"",  
->"A conjugation is much like a declension, but it modifies verbs. Like declensions, they can indicate number gender, and case, but they also often include person (I, you they, etc), tense (past, present, future, etc), aspect (perfect, imperfect, etc), mood/mode, politeness, and numerous other verb qualities.",
+>"A conjugation is much like a declension, but it modifies verbs. Like declensions, they can indicate number gender, and case, but they also often include person (I, you they, etc), tense (past, present, future, etc), aspect (perfect, imperfect, etc), mood/mode, politeness, and numerous other verb qualities.",  
 >\]
+
+---
+
+## MorphoSyntax : ms.tsx
+
+| Label | Key | English Translation | Description (if needed) |
+| --- | --- | --- | --- |
+|  | showUnused | \[ "\#\# Show Unused Sections", "", "Include sections that you did not fill out, leaving space for you to write in later.&nbsp;&nbsp;", "\*\*NOTE: this option has no effect on JSON and XML exports.\*\*" \] | This is an array of strings in Markdown format. |
+|  | clearMSInfo | Clear $t(common:MorphoSyntax) Info |  |
+| 🟦2.5 | noInfoToClearMsg | You have no information to clear. |  |
+|  | morphoSyntaxInfo | everything currently in $t(common:MorphoSyntax) (but not anything previously saved) | used by clearOverwriteGeneralThings |
+| 🟡 | needInfoToExportMsg | Please add information to your MorphoSyntax document in at least one section before exporting it. |  |
+|  | msDocument | $t(common:MorphoSyntax) document |  |
+|  | msDocument_formal | $t(common:MorphoSyntax) Document |  |
+|  | newMsDocument | New $t(common:MorphoSyntax) document |  |
+|  | msDocumentDescription | A $t(msDocument) exported from $t(common:appTitle). | Used in docx exports, only |
+| 🟥 | MorphoSyntaxSettings | $t(common:MorphoSyntax) $t(common:Settings) |  |
+| 🟥 | NoSavedMorphoSyntaxDocuments | No Saved $t(common:MorphoSyntax) Documents. |  |
+|  | CurrentMSInfo | your current $t(common:MorphoSyntax) information | used by clearOverwriteGeneralThings |
+| 🔵 | msTitle | $t(common:MorphoSyntax) Title |  |
+| 🟥 | msTitle_presentation | $t(common:MorphoSyntax) Title: |  |
+|  | UsuallyLangName | Usually the language name. |  |
+|  | ShortDescriptionMsg | A short description of this document. |  |
+|  | MorphoSyntaxInfo | $t(common:MorphoSyntax) Info |  |
+|  | SavedMorphoSyntaxInfo | Saved $t(MorphoSyntax Info) |  |
+| 🟥 | MISSINGTITLE | MISSING TITLE | (error message) |
+| 🔴 | genericInfoButtonText | Information |  |
+| 🔵 | rangeFromTo | Range from {{start}} to {{end}} |  |
+|  | missingDocumentMsg | \[MISSING\] | This is an error message that only appears in exports. |
+|  | missingTextDocumentMsg | \[MISSING TEXT PROMPT\] | This is an error message that only appears in exports. |
+|  | noLabelDocumentMsg | \[LABEL NOT FOUND FOR \"{{box}}\"\] | This is an error message that only appears in exports. `{{box}}` is an internal name. |
+|  | noTextExportMsg | \[NO TEXT ENTERED\] | This is an informative message that is only used in exports. |
+|  | noDescriptionExportMsg | \[NO DESCRIPTION PROVIDED\] | This is an informative message that is only used in exports. |
+|  | noSelectionExportMsg | \[NONE SELECTED\] | This is an informative message that is only used in exports. |
+|  | textUnselectedRange | {{number}} | Indicates a number **not** selected by user; only used in exports. |
+|  | textSelectedRange | ({{number}}) | Indicates the number selected by user; only used in exports. |
+|  | textCheckedBox | X | This indicates that a checkbox was checked; only used in exports. |
+
+### The Rest of the Keys
+
+The remaining keys are where you'll find the essence of MorphoSyntax: the jargon-heavy explanation of linguistics. They are covered in [MORPHOSYNTAX.md](MORPHOSYNTAX.md).
 
 ---

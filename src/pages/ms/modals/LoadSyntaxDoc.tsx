@@ -65,7 +65,7 @@ const LoadMSModal: FC<MSmodalProps> = (props) => {
 			} else {
 				yesNoAlert({
 					header: tc("areYouSure"),
-					message: tc("clearOverwriteGeneralThings", { things: t("your current MorphoSyntax information") }),
+					message: tc("clearOverwriteGeneralThings", { things: t("CurrentMSInfo") }),
 					cssClass: "warning",
 					submit: tc("confirmLoad"),
 					handler,
@@ -90,7 +90,7 @@ const LoadMSModal: FC<MSmodalProps> = (props) => {
 			</IonItem>
 		);
 	}) : (
-		<h1>{t("No Saved MorphoSyntax Documents")}</h1>
+		<h1>{t("NoSavedMorphoSyntaxDocuments")}</h1>
 	), [data, loadThis, t, tc]);
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={doClose}>

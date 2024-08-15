@@ -43,10 +43,10 @@ import DeleteMS from './modals/DeleteSyntaxDoc';
 import ExportMS from './modals/ExportSyntaxDoc';
 
 const translations = [
-	"A short description of this document.", "MorphoSyntax Info",
-	"MorphoSyntax Settings", "You have no information to clear.", "msTitle",
-	"Please add information to your MorphoSyntax document in at least one section before exporting it.",
-	"Usually the language name.", "clearMSInfo"
+	"ShortDescriptionMsg", "MorphoSyntaxInfo",
+	"MorphoSyntaxSettings", "noInfoToClearMsg", "msTitle",
+	"needInfoToExportMsg",
+	"UsuallyLangName", "clearMSInfo"
 ];
 
 const commons = [
@@ -63,7 +63,7 @@ const Syntax: FC<PageData> = (props) => {
 	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
-	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("Saved MorphoSyntax Info") }), [t, tc]);
+	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("SavedMorphoSyntaxInfo") }), [t, tc]);
 	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
 	const [
 		tExportThing, tLoadThing, tSaveThing

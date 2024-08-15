@@ -224,7 +224,7 @@ const doDocx = (
 							],
 							spacing
 						}));
-						const tArr: string[] = (msInfo[prop as MSText] || t("[NO TEXT ENTERED]")).split(/\n\n+/);
+						const tArr: string[] = (msInfo[prop as MSText] || t("noTextExportMsg")).split(/\n\n+/);
 						tArr.forEach((txt: string, i: number) => {
 							const run: TextRun[] = [];
 							txt.split(/\n/).forEach((x: string, j: number) => {

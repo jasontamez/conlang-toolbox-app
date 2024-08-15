@@ -97,7 +97,7 @@ const DeleteSyntaxDocModal: FC<MSmodalProps> = (props) => {
 			</IonItem>
 		);
 	}) : (
-		<h1>{t("No Saved MorphoSyntax Documents")}</h1>
+		<h1>{t("NoSavedMorphoSyntaxDocuments")}</h1>
 	), [data, tc, disableConfirms, doAlert, setIsOpen, setLoadingScreen, setStoredInfo, t, toast]);
 
 	return (

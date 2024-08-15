@@ -190,7 +190,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const modalTitle = useMemo(() => title || t("MISSING TITLE"), [title, t]);
+	const modalTitle = useMemo(() => title || t("MISSINGTITLE"), [title, t]);
 	const tDone = useMemo(() => tc("Done"), [tc]);
 
 	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
@@ -533,7 +533,7 @@ export interface MSModal extends BasicModal {
 	tag: "Modal"
 }
 
-export type BasicCheckbox = Required<Pick<SpecificMSPageData,  "boxes" | "display">>;
+export type BasicCheckbox = Required<Pick<SpecificMSPageData, "boxes" | "display">>;
 export interface MSCheckboxes extends BasicCheckbox {
 	tag: "Checkboxes"
 }

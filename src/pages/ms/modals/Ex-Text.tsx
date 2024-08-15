@@ -32,8 +32,8 @@ const doText = (
 				max = 4,
 				prop,
 				spectrum,
-				start: START = "[MISSING]",
-				end: END = "[MISSING]",
+				start: START = "missingDocumentMsg",
+				end: END = "missingDocumentMsg",
 				display,
 				boxes,
 				heads = []
@@ -95,7 +95,7 @@ const doText = (
 					if(showUnused || textInfo) {
 						if(usingMarkDown) {
 							let txt = "";
-							const tArr: string[] = (textInfo || t("[NO TEXT ENTERED]")).split(/\n\n+/);
+							const tArr: string[] = (textInfo || t("noTextExportMsg")).split(/\n\n+/);
 							tArr.forEach((tbit: string, i: number) => {
 								if(i > 0) {
 									txt += "\n\n"; // inserts paragraph break
@@ -107,11 +107,11 @@ const doText = (
 									txt += x.trim();
 								});
 							});
-							lines.push(t(content || "[MISSING TEXT PROMPT]"), txt);
+							lines.push(t(content || "missingTextDocumentMsg"), txt);
 						} else {
 							lines.push(
-								t(content || "[MISSING TEXT PROMPT]"),
-								textInfo || t("[NO TEXT ENTERED]")
+								t(content || "missingTextDocumentMsg"),
+								textInfo || t("noTextExportMsg")
 							);
 						}
 					}
@@ -154,7 +154,7 @@ const doText = (
 							});
 							let foundText: string;
 							if (found.length === 0) {
-								const none = t("[NONE SELECTED]");
+								const none = t("noSelectionExportMsg");
 								foundText = usingMarkDown ? `_${none}_` : none;
 							} else if (found.length === 1) {
 								foundText = usingMarkDown ? `_${found[0]}_` : found[0];
@@ -183,11 +183,11 @@ const doText = (
 							const [box, value] = boxesCopy.shift()!;
 							const label = outLabels.shift();
 							if(value) {
-								found.push(label ? (Array.isArray(label) ? label.join(" ") : label) : t("[LABEL NOT FOUND]", { box }));
+								found.push(label ? (Array.isArray(label) ? label.join(" ") : label) : t("noLabelDocumentMsg", { box }));
 							}
 						}
 						if (found.length === 0) {
-							const none = t("[NONE SELECTED]");
+							const none = t("noSelectionExportMsg");
 							result = usingMarkDown ? `_${none}_` : none;
 						} else if (found.length === 1) {
 							result = usingMarkDown ? "_" + found[0] + "_" : found[0];
@@ -206,7 +206,7 @@ const doText = (
 	});
 	log(null, lines);
 	const ital = usingMarkDown ? "_" : "";
-	const output = `${usingMarkDown ? "# " : ""}${title}\n\n${ital}${description || t("[NO DESCRIPTION PROVIDED]")}${ital}\n\n${lines.join("\n\n")}\n`;
+	const output = `${usingMarkDown ? "# " : ""}${title}\n\n${ital}${description || t("noDescriptionExportMsg")}${ital}\n\n${lines.join("\n\n")}\n`;
 	doDownload(e, output, usingMarkDown ? "md" : "txt");
 };
 

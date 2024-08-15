@@ -4,44 +4,38 @@ const ms = {
 		"## Show Unused Sections",
 		"",
 		"Include sections that you did not fill out, leaving space for you",
-		"to write in later.   ",
+		"to write in later.  ",
 		"**NOTE: this option has no effect on JSON and XML exports.**"
 	],
 
 	clearMSInfo: "Clear $t(common:MorphoSyntax) Info",
-	"You have no information to clear.": "You have no information to clear.", // 🟦2.5
-	morphoSyntaxInfo: // used by clearOverwriteGeneralThings
-		"everything currently in $t(common:MorphoSyntax) (but not anything previously saved)",
-	"Please add information to your MorphoSyntax document in at least one section before exporting it.": // 🟡
-		"Please add information to your MorphoSyntax document in at least one section before exporting it.",
+	noInfoToClearMsg: "You have no information to clear.", // 🟦2.5
+	morphoSyntaxInfo: "everything currently in $t(common:MorphoSyntax) (but not anything previously saved)", // used by clearOverwriteGeneralThings
+	needInfoToExportMsg: "Please add information to your MorphoSyntax document in at least one section before exporting it.", // 🟡
 	msDocument: "$t(common:MorphoSyntax) document",
 	msDocument_formal: "$t(common:MorphoSyntax) Document",
 	newMsDocument: "New $t(common:MorphoSyntax) document",
-	msDocumentDescription: // Used in docx exports, only
-		"A $t(msDocument_formal) exported from $t(common:appTitle).",
-	"MorphoSyntax Settings": "$t(common:MorphoSyntax) $t(common:Settings)", // 🟥
-	"No Saved MorphoSyntax Documents": // 🟥
-		"No Saved $t(common:MorphoSyntax) Documents.",
-	"your current MorphoSyntax information": // used by clearOverwriteGeneralThings
-		"your current $t(common:MorphoSyntax) information",
+	msDocumentDescription: "A $t(msDocument) exported from $t(common:appTitle).", // Used in docx exports, only
+	MorphoSyntaxSettings: "$t(common:MorphoSyntax) $t(common:Settings)", // 🟥
+	NoSavedMorphoSyntaxDocuments: "No Saved $t(common:MorphoSyntax) Documents.", // 🟥
+	CurrentMSInfo: "your current $t(common:MorphoSyntax) information", // used by clearOverwriteGeneralThings
 	msTitle: "$t(common:MorphoSyntax) Title", // 🔵
 	msTitle_presentation: "$t(common:MorphoSyntax) Title:", // 🟥
-	"Usually the language name.": "Usually the language name.",
-	"A short description of this document.":
-		"A short description of this document.",
-	"MorphoSyntax Info": "$t(common:MorphoSyntax) Info",
-	"Saved MorphoSyntax Info": "Saved $t(MorphoSyntax Info)",
-	"MISSING TITLE": "MISSING TITLE", // 🟥 (error message)
+	UsuallyLangName: "Usually the language name.",
+	ShortDescriptionMsg: "A short description of this document.",
+	MorphoSyntaxInfo: "$t(common:MorphoSyntax) Info",
+	SavedMorphoSyntaxInfo: "Saved $t(MorphoSyntax Info)",
+	MISSINGTITLE: "MISSING TITLE", // 🟥 (error message)
 	genericInfoButtonText: "Information", // 🔴
 	rangeFromTo: "Range from {{start}} to {{end}}", // 🔵
 	// The items below are error (or informative) messages that will only be used in exports
-	"[MISSING]": "[MISSING]",
-	"[MISSING TEXT PROMPT]": "[MISSING TEXT PROMPT]",
-	"[LABEL NOT FOUND]": "[LABEL NOT FOUND FOR \"{{box}}\"]",
+	missingDocumentMsg: "[MISSING]",
+	missingTextDocumentMsg: "[MISSING TEXT PROMPT]",
+	noLabelDocumentMsg: "[LABEL NOT FOUND FOR \"{{box}}\"]",
 	// The items below are informative messages that will only be used in exports
-	"[NO TEXT ENTERED]": "[NO TEXT ENTERED]",
-	"[NO DESCRIPTION PROVIDED]": "[NO DESCRIPTION PROVIDED]",
-	"[NONE SELECTED]": "[NONE SELECTED]",
+	noTextExportMsg: "[NO TEXT ENTERED]",
+	noDescriptionExportMsg: "[NO DESCRIPTION PROVIDED]",
+	noSelectionExportMsg: "[NONE SELECTED]",
 	// Only used in exports, indicates what range number was selected
 	textUnselectedRange: "{{number}}", // not selected by user
 	textSelectedRange: "({{number}})", // selected by user
@@ -177,23 +171,23 @@ const ms = {
 		"government patronage of the Church of England.\")"
 	],
 	Synthesis: "Synthesis",
-	"Synthesis_percentage": "{{percent}}% Synthesis",
-	"Synthesis_percentageMarkdown": "**{{percent}}%** Synthesis",
+	Synthesis_percentage: "{{percent}}% Synthesis",
+	Synthesis_percentageMarkdown: "**{{percent}}%** Synthesis",
 	Isolating: "Isolating",
-	"Isolating_percentage": "{{percent}}% Isolating",
-	"Isolating_percentageMarkdown": "**{{percent}}%** Isolating",
+	Isolating_percentage: "{{percent}}% Isolating",
+	Isolating_percentageMarkdown: "**{{percent}}%** Isolating",
 	Polysynthetic: "Polysynthetic",
-	"Polysynthetic_percentage": "{{percent}}% Polysynthetic",
-	"Polysynthetic_percentageMarkdown": "**{{percent}}%** Polysynthetic",
+	Polysynthetic_percentage: "{{percent}}% Polysynthetic",
+	Polysynthetic_percentageMarkdown: "**{{percent}}%** Polysynthetic",
 	Fusion: "Fusion",
-	"Fusion_percentage": "{{percent}}% Fusion",
-	"Fusion_percentageMarkdown": "**{{percent}}%** Fusion",
+	Fusion_percentage: "{{percent}}% Fusion",
+	Fusion_percentageMarkdown: "**{{percent}}%** Fusion",
 	Agglutinative: "Agglutinative",
-	"Agglutinative_percentage": "{{percent}}% Agglutinative",
-	"Agglutinative_percentageMarkdown": "**{{percent}}%** Agglutinative",
+	Agglutinative_percentage: "{{percent}}% Agglutinative",
+	Agglutinative_percentageMarkdown: "**{{percent}}%** Agglutinative",
 	Fusional: "Fusional",
-	"Fusional_percentage": "{{percent}}% Fusional",
-	"Fusional_percentageMarkdown": "**{{percent}}%** Fusional",
+	Fusional_percentage: "{{percent}}% Fusional",
+	Fusional_percentageMarkdown: "**{{percent}}%** Fusional",
 	text11: "Give examples of the dominant pattern and any secondary patterns.",
 	"1-2-Morphological Processes": "1.2. Morphological Processes",
 	title12: "Affixes and Other Modifications",
@@ -408,15 +402,15 @@ const ms = {
 	info223: [
 		"- In polysynthetic languages, verbs tend to be the most complex.",
 		"   - English is very simple:",
-		"      - root verb   ",
+		"      - root verb  ",
 		"      \\+ (optional tense marker OR agreement marker)",
 		"   - Panare is much more complex:",
-		"      - person/neutral marker   ",
-		"      \\+ (optional valence marker)   ",
-		"      \\+ (optional detransification marker)   ",
-		"      \\+ (optional incorporation marker)   ",
-		"      \\+ root verb   ",
-		"      \\+ (optional derivation marker)   ",
+		"      - person/neutral marker  ",
+		"      \\+ (optional valence marker)  ",
+		"      \\+ (optional detransification marker)  ",
+		"      \\+ (optional incorporation marker)  ",
+		"      \\+ root verb  ",
+		"      \\+ (optional derivation marker)  ",
 		"      \\+ tense/aspect/mode marker",
 		"- [newSection]Polysynthetic languages may have any/all of",
 		"these operations",
@@ -2165,7 +2159,7 @@ const ms = {
 		"   Reference systems that indicate the temporal relations of the",
 		"   clauses, whether or not the verbs' subjects agree, and strongly",
 		"indicate a reason why the clauses are linked.",
-		"      - Panare: Suffix / Temporal / Agreement / Linkage   ",
+		"      - Panare: Suffix / Temporal / Agreement / Linkage  ",
 		"         - -séjpe / succession / Actor = Actor / purpose",
 		"         - -séñape / succession / Absolutive = Patient / result",
 		"         - -ñére / succession / Actors are different / movement",
