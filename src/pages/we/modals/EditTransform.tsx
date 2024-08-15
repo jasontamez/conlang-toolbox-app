@@ -50,8 +50,8 @@ const commons = [
 	"Cancel", "error", "optional"
 ];
 const translations = [
-	"Description of the transformation", "No search expression present",
-	"what it changes into", "what to change", "Transformations_one"
+	"DescOfTheTransformation", "noSearchMsg",
+	"WhatItChangesTo", "WhatToChange", "Transformation"
 ];
 const formals = [
 	"At input and at output", "At input only",
@@ -76,7 +76,7 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);
-	const tpDesc = useMemo(() => tw("Description of the transformation", context), [tw]);
+	const tpDesc = useMemo(() => tw("DescOfTheTransformation", context), [tw]);
 	const thingContext = useMemo(() => ({ thing: tTrans }), [tTrans]);
 	const [tSaveThing, tThingSave, tEditThing, tDelThing, tThingDel] = useI18Memo(things, "common", thingContext);
 

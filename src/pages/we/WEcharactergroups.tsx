@@ -107,7 +107,7 @@ const commons = [
 const WECharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
+	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
 	const [ tYouSure, tAddNew, tDelete, tHelp, tYesImp ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
@@ -135,7 +135,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
-				message: tc("thingDeleted", { thing: tw("CharGroup_one") }),
+				message: tc("thingDeleted", { thing: tw("CharGroup") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -160,7 +160,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
 			toaster({
-				message: tc("thingsDeleted", { count, things: tw("CharGroup_one") }),
+				message: tc("thingsDeleted", { count, things: tw("CharGroups") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -171,7 +171,7 @@ const WECharGroup: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tw("Delete All"),
+				header: tw("DeleteAll"),
 				message: tw("delAllCharGroups", { count }),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),

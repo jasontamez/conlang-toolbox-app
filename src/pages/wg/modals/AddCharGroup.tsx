@@ -38,17 +38,17 @@ function resetError(prop: string) {
 	where && where.classList.remove("invalidValue");
 }
 
-const presentations = ["Letters Characters", "Short Label", "Title or description" ];
+const presentations = ["LettersCharacters", "ShortLabel", "TitleOrDesc" ];
 const context = { context: "presentation" };
 
 
 const commons = [ "AddAndClose", "error", "Cancel" ];
 
 const wgweWords = [
-	"1 character only", "CharGroup_one", "Enter characters in group here",
-	"Letters Characters", "No run present", "No title present", "Short Label",
-	"Suggest", "Title or description", "No label present",
-	"Unable to suggest a unique label from the given descrption."
+	"OneCharOnly", "CharGroup", "enterCharsInGroupHere",
+	"LettersCharacters", "noRunMsg", "noTitleMsg", "ShortLabel",
+	"Suggest", "TitleOrDesc", "noLabelMsg",
+	"cantMakeLabelMsg"
 ];
 
 const addies = [ "thingAdded", "addThing" ];

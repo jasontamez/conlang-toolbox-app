@@ -59,7 +59,7 @@ const commons = [
 
 const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved" ];
 
-const wgweExp = [ "replacement expression", "search expression" ];
+const wgweExp = [ "replacementExpression", "searchExpression" ];
 const weExp = [ "context expression", "exception expression", "sound change description" ];
 const formal = { context: "formal" };
 const presentation = { context: "presentation" };
@@ -77,7 +77,7 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [
 		tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved
 	] = useMemo(() => things.map(thing => tc(thing, { thing: tSC })), [tc, tSC]);
-	const tNoSearch = useMemo(() => tw("No search expression present"), [tw])
+	const tNoSearch = useMemo(() => tw("noSearchMsg"), [tw])
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

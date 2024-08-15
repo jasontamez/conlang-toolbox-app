@@ -48,12 +48,12 @@ const commons = [
 ];
 
 const translations = [
-	"Description of the transformation", "No search expression present",
-	"Transformations_one", "replacement expression", "search expression"
+	"DescOfTheTransformation", "noSearchMsg",
+	"Transformation", "replacementExpression", "searchExpression"
 ];
 
 const presentations = [
-	"Description of the transformation", "replacement expression", "search expression"
+	"DescOfTheTransformation", "replacementExpression", "searchExpression"
 ];
 const context = { context: "presentation" };
 

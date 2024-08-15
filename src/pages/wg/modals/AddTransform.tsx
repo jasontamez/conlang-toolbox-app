@@ -35,13 +35,13 @@ function resetError() {
 }
 
 const wgweWords = [
-	"Description of the transformation", "No search expression present",
-	"replacement expression", "search expression"
+	"DescOfTheTransformation", "noSearchMsg",
+	"replacementExpression", "searchExpression"
 ];
 
 const presentational = [
-	"Description of the transformation",
-	"replacement expression", "search expression"
+	"DescOfTheTransformation",
+	"replacementExpression", "searchExpression"
 ];
 const context = { context: "presentation" };
 
@@ -55,7 +55,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const [ tThingAdd, tAddThing ] = useMemo(() => {
-		const tTransformation = tw("Transformations_one");
+		const tTransformation = tw("Transformation");
 		return addies.map(term => tc(term, { thing: tTransformation }));
 	}, [tw, tc]);
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);

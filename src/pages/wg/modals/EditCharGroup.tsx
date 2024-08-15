@@ -49,14 +49,14 @@ function resetError (prop: keyof WGCharGroupObject) {
 const commons = [ "deleteThisCannotUndo", "Cancel", "error" ];
 
 const translations = [
-	"1 character only", "CharGroup_one", "Enter characters in group here",
-	"Letters Characters", "No label present", "No run present",
-	"No title present", "Short Label", "Suggest", "Title or description",
-	"Unable to suggest a unique label from the given descrption."
+	"OneCharOnly", "CharGroup", "enterCharsInGroupHere",
+	"LettersCharacters", "noLabelMsg", "noRunMsg",
+	"noTitleMsg", "ShortLabel", "Suggest", "TitleOrDesc",
+	"cantMakeLabelMsg"
 ];
 
 const presentations = [
-	"Title or description", "Short Label", "Letters Characters"
+	"TitleOrDesc", "ShortLabel", "LettersCharacters"
 ];
 const context = { context: "presentation" };
 

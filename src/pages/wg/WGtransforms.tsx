@@ -100,7 +100,7 @@ const commons = [ "AddNew", "Delete", "Help" ];
 const WGRew: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const tTransformations = useMemo(() => tw("Transformations_other"), [tw]);
+	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
 	const [ tAddNew, tDelete, tHelp ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
@@ -127,7 +127,7 @@ const WGRew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({
-				message: tc("thingsDeleted", { count: 1, things: tw("Transformations_one") }),
+				message: tc("thingsDeleted", { count: 1, things: tw("Transformation") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -159,7 +159,7 @@ const WGRew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(null));
 			toaster({
-				message: tc("thingsDeleted", { things: tw("Transformations_one") }),
+				message: tc("thingsDeleted", { things: tw("Transformation") }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

@@ -44,7 +44,7 @@ const resetTitle = () => resetError("title");
 const resetLabel = () => resetError("label");
 const resetRun = () => resetError("run");
 
-const presentations = [ "Letters Characters", "Short Label", "Title or description" ];
+const presentations = [ "LettersCharacters", "ShortLabel", "TitleOrDesc" ];
 const context = { context: "presentation" };
 
 const commons =  [
@@ -52,10 +52,10 @@ const commons =  [
 ];
 
 const translations = [
-	"1 character only", "Enter characters in group here", "Letters Characters",
-	"No label present", "No run present", "No title present", "Short Label",
-	"Suggest", "Title or description", "CharGroup_one",
-	"Unable to suggest a unique label from the given descrption."
+	"OneCharOnly", "enterCharsInGroupHere", "LettersCharacters",
+	"noLabelMsg", "noRunMsg", "noTitleMsg", "ShortLabel",
+	"Suggest", "TitleOrDesc", "CharGroup",
+	"cantMakeLabelMsg"
 ];
 
 const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved" ];

@@ -37,7 +37,7 @@ const commons = [ "defaultSort", "Done" ];
 const OutputOptionsModal: FC<ModalProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
-	const tOutOpt = useMemo(() => tw("Output Options"), [tw]);
+	const tOutOpt = useMemo(() => tw("OutputOptions"), [tw]);
 	const tMethod = useMemo(() => tc("SortMethod"), [tc]);
 	const [ tDefault, tDone ] = useI18Memo(commons);
 	const [ tConvert, tInOut, tOut, tOutSC, tOutIn, tSortIn ] = useI18Memo(translations, "we");

@@ -79,7 +79,7 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tw ] = useTranslator('wgwe');
 	const main = useMemo(() => t("info.charGroups", { joinArrays: "\n"}), [t]);
-	const tCG = useMemo(() => tw("Character Groups Tab"), [tw]);
+	const tCG = useMemo(() => tw("CharacterGroupsTab"), [tw]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -103,7 +103,7 @@ export const TraCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tw ] = useTranslator('wgwe');
 	const main = useMemo(() => t("info.transformations", { joinArrays: "\n"}), [t]);
-	const tTransformations = useMemo(() => tw("Transformations Tab"), [tw]);
+	const tTransformations = useMemo(() => tw("TransformationsTab"), [tw]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -159,7 +159,7 @@ export const OutCard: FC<CardProps> = (props) => {
 	const main = useMemo(() => t("info.outputMain", { joinArrays: "\n"}), [t]);
 	const settings = useMemo(() => t("info.outputSettings", { joinArrays: "\n"}), [t]);
 	const lexicon = useMemo(() => t("info.outputLexicon", { joinArrays: "\n"}), [t]);
-	const tOutput = useMemo(() => tw("Output Tab"), [tw]);
+	const tOutput = useMemo(() => tw("OutputTab"), [tw]);
 	return (
 		<IonCard>
 			<IonItem lines="full">

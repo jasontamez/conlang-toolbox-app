@@ -37,7 +37,7 @@ const resetSeek = () => resetError("seek");
 const resetContext = () => resetError("context");
 const resetException = () => resetError("anticontext");
 
-const wgweExp = [ "replacement expression", "search expression" ];
+const wgweExp = [ "replacementExpression", "searchExpression" ];
 const weExp = [ "context expression", "exception expression", "sound change description" ];
 const formal = { context: "formal" };
 const presentation = { context: "presentation" };
@@ -63,7 +63,7 @@ const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tfCEx, tfEEx ] = useI18Memo(weExp, "we", formal);
 	const [ tpCEx, tpEEx, tpSCD ] = useI18Memo(weExp, "we", presentation);
 	const [ tAddThing, tThingSaved ] = useMemo(() => things.map(thing => tc(thing, { thing: tSC })), [tc, tSC]);
-	const tNoSearch = useMemo(() => tw("No search expression present"), [tw])
+	const tNoSearch = useMemo(() => tw("noSearchMsg"), [tw])
 
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();

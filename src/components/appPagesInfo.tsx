@@ -181,7 +181,7 @@ export const appMenuInfo: MenuSection[] = [
 				hidden: true
 			},
 			{
-				title: tc("CharGroup_other", { ns: "wgwe" }),
+				title: tc("CharGroups", { ns: "wgwe" }),
 				url: '/wg/charGroups',
 				tab: 'charGroups',
 				tabTitle: 'Char Groups',
@@ -198,7 +198,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'wg'
 			},
 			{
-				title: tc("Transformations_other", { ns: "wgwe" }),
+				title: tc("Transformations", { ns: "wgwe" }),
 				url: '/wg/transforms',
 				tab: 'transforms',
 				tabTitle: 'Transforms',
@@ -247,7 +247,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: tc("CharGroup_other", { ns: "wgwe" }),
+				title: tc("CharGroups", { ns: "wgwe" }),
 				url: '/we/charGroups',
 				tab: 'charGroups',
 				tabTitle: 'Char Groups',
@@ -256,7 +256,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: tc("Transformations_other", { ns: "wgwe" }),
+				title: tc("Transformations", { ns: "wgwe" }),
 				url: '/we/transformations',
 				tab: 'transformations',
 				tabTitle: 'Transforms',

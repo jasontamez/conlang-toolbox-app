@@ -114,7 +114,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const [ tDropoffFormal, tDropExpl ] = useI18Memo(translations, "wg");
-	const tCharGroups = useMemo(() => tw("CharGroup_other"), [tw]);
+	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
 	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tYes ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
@@ -147,7 +147,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 					const handler = () => {
 						dispatch(deleteCharGroupWG(charGroup));
 						toaster({
-							message: tc("thingDeleted", { thing: tw("CharGroup_one") }),
+							message: tc("thingDeleted", { thing: tw("CharGroup") }),
 							duration: 2500,
 							color: "danger",
 							position: "top",
@@ -190,7 +190,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 						const handler = () => {
 							dispatch(deleteCharGroupWG(null));
 							toaster({
-								message: tc("thingsDeleted", { count, things: tw("CharGroup_one") }),
+								message: tc("thingsDeleted", { count, things: tw("CharGroups") }),
 								duration: 2500,
 								color: "danger",
 								position: "top",
@@ -201,7 +201,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 							handler();
 						} else {
 							yesNoAlert({
-								header: tc("Delete All"),
+								header: tw("DeleteAll"),
 								message: tw("delAllCharGroups", { count }),
 								cssClass: "warning",
 								submit: tc("confirmDel", { count }),
