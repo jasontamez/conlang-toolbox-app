@@ -39,7 +39,7 @@ const commons = [
 ];
 
 const translations = [
-	"Words to Evolve", "Enter words here one per line", "Clear Input"
+	"WordsToEvolve", "EnterWordsHere", "ClearInput"
 ];
 
 const WEInput: FC<PageData> = (props) => {

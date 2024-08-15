@@ -174,8 +174,8 @@ const interpretFromAndTo = (input: string, charGroupMap: CharGroupMap) => {
 };
 
 const translations = [
-	"Evolve", "You have no input words to evolve.",
-	"You have no sound changes defined."
+	"Evolve", "noInputWordsMsg",
+	"noSoundChangesMsg"
 ];
 const commons = [
 	"Help", "LoadPreset", "Output", "PleaseWait", "Save", "Cancel",

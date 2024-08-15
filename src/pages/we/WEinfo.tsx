@@ -60,7 +60,7 @@ const OverviewButton: FC<CardProps> = (props) => {
 export const InpCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const main = useMemo(() => t("info.input", { joinArrays: "\n"}), [t]);
-	const tInput = useMemo(() => t("Input Tab"), [t]);
+	const tInput = useMemo(() => t("InputTab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -121,7 +121,7 @@ export const TraCard: FC<CardProps> = (props) => {
 export const SChCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const main = useMemo(() => t("info.soundChanges", { joinArrays: "\n"}), [t]);
-	const tSound = useMemo(() => t("Sound Changes Tab"), [t]);
+	const tSound = useMemo(() => t("SoundChangesTab"), [t]);
 	const components = useMemo(() => {
 		const arrow = (ltr() ? "⟶" : "⟵");
 		const blockStorage: BlockStorage = {};
@@ -186,7 +186,7 @@ const WEinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const main = useMemo(() => t("info.overview", { joinArrays: "\n"}), [t]);
-	const tWhat = useMemo(() => t("What is WordEvolve?"), [t]);
+	const tWhat = useMemo(() => t("WhatIsWE"), [t]);
 	const tOverview = useMemo(() => tc("Overview"), [tc]);
 	return (
 		<IonPage>

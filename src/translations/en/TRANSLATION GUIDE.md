@@ -287,16 +287,18 @@ Each character in Extra Characters has an official Unicode name. You can find th
 
 ### regexpInfo
 
->\[  
->"To put it as simply as possible, a regular expression is a sequence of characters that specifies a match pattern in text. $t(appTitle) uses JavaScript-style regexes without the surrounding slash characters.",  
->"",  
->"Fully explaining regular expressions is a topic that's too complicated for this app to cover, but they are very useful. Here are some resources where you can learn more about them:",  
->"",  
->"\- \[Wikipedia: Regular Expression\]\(https:/\/en.wikipedia.org/wiki/Regular_expression\)",  
->"\- \[MDN: Writing a regular expression\]\(https:\//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern\)",  
->"\- \[Regular-Expressions.info\]\(https:\//www.regular-expressions.info\) (a tutorial site)",  
->"\- \[Geeks for Geeks: Write Reguar Expressions\]\(https:/\/www.geeksforgeeks.org/write-regular-expressions/\)"  
->\]
+```javascript
+[
+  "To put it as simply as possible, a regular expression is a sequence of characters that specifies a match pattern in text. $t(appTitle) uses JavaScript-style regexes without the surrounding slash characters.",
+  "",
+  "Fully explaining regular expressions is a topic that's too complicated for this app to cover, but they are very useful. Here are some resources where you can learn more about them:",
+  "",
+  "- [Wikipedia: Regular Expression](https:/\/en.wikipedia.org/wiki/Regular_expression)",
+  "- [MDN: Writing a regular expression](https:\//developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern)",
+  "- [Regular-Expressions.info](https:\//www.regular-expressions.info) (a tutorial site)",
+  "- [Geeks for Geeks: Write Reguar Expressions](https:/\/www.geeksforgeeks.org/write-regular-expressions/)"
+]
+```
 
 ---
 
@@ -472,47 +474,63 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 
 #### info.basic
 
->\[  
->"Presented here are a number of lists of basic concepts. Each list was originaly created for the purposes of historical-comparative linguistics.",  
->"",  
->"They are included in this app because they may serve you as a useful source of meanings to start a conlang with. Remember: you can combine multiple meanings into a single word!",  
->\],
+```javascript
+[
+  "Presented here are a number of lists of basic concepts. Each list was originaly created for the purposes of historical-comparative linguistics.",
+  "",
+  "They are included in this app because they may serve you as a useful source of meanings to start a conlang with. Remember: you can combine multiple meanings into a single word!",
+]
+```
 
 #### info.controlLexicon
 
->\[ "Use the \"lexicon\" button to quickly save meanings to the $t(common:Lexicon)." \],
+```javascript
+[
+  "Use the \"lexicon\" button to quickly save meanings to the $t(common:Lexicon)."
+],
+```
 
 #### info.controlJoin
 
->\[ "Use the \"join\" button to create compound meanings." \],
+```javascript
+[
+  "Use the \"join\" button to create compound meanings."
+],
+```
 
 #### info.controlUnjoin
 
->\[ "Use the \"unjoin\" button to delete compound meanings." \],
+```javascript
+[
+  "Use the \"unjoin\" button to delete compound meanings."
+],
+```
 
 #### info.theLists
 
->\[  
->"## Swadesh Lists",  
->"",  
->"Originally assembled by Morris Swadesh, this list of concepts was chosen for their universal, culturally independent availability in as many languages as possible. However, he relied more on his intuition than on a rigorous set of criteria. \*\*$t(Swadesh100)\*\* is his final list from 1971. The \*\*$t(Swadesh207)\*\* is adapted from his original list from 1952. \*\*$t(SwadeshYakhontov)\*\* is a subset of the 207 assembled by Sergei Yakhontov. And the \*\*$t(SwadeshWoodward) Sign List\*\* was assembled by James Woodward to take into account the ways sign languages behave.",  
->"",  
->"## $t(Dolgopolsky) List",  
->"",  
->"Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are the least likely to be replaced by other words as a language evolves. It was based on a study of 140 languages from across Eurasia, only.",  
->"",  
->"## $t(LeipzigJakarta) List",  
->"",  
->"Similar to the Dolgopolsky list, this is a list of words judged to be the most resistant to borrowing. Experts on 41 languages from across the world were given a uniform vocabulary list and asked to provide the words for each item in the language on which they were an expert, as well as information on how strong the evidence that each word was borrowed was. The 100 concepts that were found in most languages and were most resistant to borrowing formed the Leipzig-Jakarta list.",  
->"",  
->"## $t(ASJP) List",  
->"",  
->"The \*\*Automated Similarity Judgment Program\*\* is a collaborative project applying computational approaches to comparative linguistics using a database of word lists. It uses a 40-word list to evaluate the similarity of words with the same meaning from different languages.",  
->"",  
->"## $t(Landau200)",  
->"",  
->"The \*\*Basic 200 List\*\* is a subset of the \*\*Landau Core Vocabulary (LCV)\*\* developed by James Landau. It is Part I of the entire LCV. This list consists of 200 basic concepts that basically all anthropic cultures will have and have words for. This list makes many semantic distinctions that are not made in English (e.g \"leaf (on plant)\" vs. \"leaf (fallen off)\"), and some that are not made in any \"Standard Average European\" language (e.g. \"river (flowing into the sea)\" vs. \"river (flowing into another river)\").",  
->\]
+```javascript
+[  
+  "## Swadesh Lists",
+  "",
+  "Originally assembled by Morris Swadesh, this list of concepts was chosen for their universal, culturally independent availability in as many languages as possible. However, he relied more on his intuition than on a rigorous set of criteria. **$t(Swadesh100)** is his final list from 1971. The **$t(Swadesh207)** is adapted from his original list from 1952. **$t(SwadeshYakhontov)** is a subset of the 207 assembled by Sergei Yakhontov. And the **$t(SwadeshWoodward) Sign List** was assembled by James Woodward to take into account the ways sign languages behave.",
+  "",
+  "## $t(Dolgopolsky) List",
+  "",
+  "Compiled by Aharon Dolgopolsky in 1964, this lists the 15 lexical items that are the least likely to be replaced by other words as a language evolves. It was based on a study of 140 languages from across Eurasia, only.",
+  "",
+  "## $t(LeipzigJakarta) List",
+  "",
+  "Similar to the Dolgopolsky list, this is a list of words judged to be the most resistant to borrowing. Experts on 41 languages from across the world were given a uniform vocabulary list and asked to provide the words for each item in the language on which they were an expert, as well as information on how strong the evidence that each word was borrowed was. The 100 concepts that were found in most languages and were most resistant to borrowing formed the Leipzig-Jakarta list.",
+  "",
+  "## $t(ASJP) List",
+  "",
+  "The **Automated Similarity Judgment Program** is a collaborative project applying computational approaches to comparative linguistics using a database of word lists. It uses a 40-word list to evaluate the similarity of words with the same meaning from different languages.",
+  "",
+  "## $t(Landau200)",
+  "",
+  "The **Basic 200 List** is a subset of the **Landau Core Vocabulary (LCV)** developed by James Landau. It is Part I of the entire LCV. This list consists of 200 basic concepts that basically all anthropic cultures will have and have words for. This list makes many semantic distinctions that are not made in English (e.g \"leaf (on plant)\" vs. \"leaf (fallen off)\"), and some that are not made in any \"Standard Average European\" language (e.g. \"river (flowing into the sea)\" vs. \"river (flowing into another river)\").",
+]
+```
 
 ### The concepts list
 
@@ -591,7 +609,7 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 |  | Word | Word | Initial column name |
 |  | PartOfSpeech | Part of Speech | Initial column name |
 |  | Definition | Definition | Initial column name |
-|  | lexiconMergeInstructions | This will combine the selected Lexicon items into one single Lexicon item. Use the \"How to Merge\" section to choose how the items are merged, and see a preview of the final result in the \"Current Merged Result\" section. This action cannot be undone. |  |
+|  | lexiconMergeInstructions | This will combine the selected Lexicon items into one single Lexicon item. Use the "How to Merge" section to choose how the items are merged, and see a preview of the final result in the "Current Merged Result" section. This action cannot be undone. |  |
 |  | HowToMerge | How to Merge |  |
 |  | CurrentMerge | Current merged result: | *(presentation context)* |
 | 🔴 | CancelMerge | Cancel Merging |  |
@@ -611,49 +629,67 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 
 #### info.basic
 
->\[ "This tool is for storing the raw info of your language, whether that be words or something else. The default setup includes dictionary-style columns such as \"word\", \"part of speech\" and \"definition\", but you can add, remove, or rename columns as you see fit." \]
+```javascript
+[
+  "This tool is for storing the raw info of your language, whether that be words or something else. The default setup includes dictionary-style columns such as \"word\", \"part of speech\" and \"definition\", but you can add, remove, or rename columns as you see fit."
+]
+```
 
 #### info.description
 
->\[ "The beginning of the page has a place where you can title your collection and give it a short description. You can toggle this" entire section by using the (^) button at the top of the page." \]
+```javascript
+[
+  "The beginning of the page has a place where you can title your collection and give it a short description. You can toggle this entire section by using the (^) button at the top of the page."
+]
+```
 
 #### info.saveCounterAndSort
 
->\[  
->"The save button at the top can be used to store, delete, and export entire lexicons.",  
->"",  
->"Below the title and description, you'll find a counter displaying how many words you have stored in your $t(common:Lexicon). Next to it is are two sort buttons, where you can choose which columns will be used to sort your collection."  
->\]
+```javascript
+[  
+  "The save button at the top can be used to store, delete, and export entire lexicons.",  
+  "",  
+  "Below the title and description, you'll find a counter displaying how many words you have stored in your $t(common:Lexicon). Next to it is are two sort buttons, where you can choose which columns will be used to sort your collection."  
+]
+```
 
 #### info.editColumnsEtc
 
 **Note:** Use `` `DRAG HANDLE` `` to insert the drag handle icon into the text.
 
->\[  
->"The gear icon opens the \*\*Edit Columns\*\* settings. You can choose whether or not to show the columns' full names, the method you wish to use to sort the $t(common:Lexicon), and how blank columns will be handled. Below that you'll find a list of all current columns. You can edit them, delete them, add more, or use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order.",  
->"",  
->"The second row contains the titles of the columns. Beneath them are input boxes for quickly adding info to the $t(common:Lexicon). Use the small (+) button to save what you've typed.",  
->"",  
->"Under those boxes you'll find the meat of $t(common:Lexicon): all the items you've stored. They will appear as striped rows. You can \*\*swipe left\*\* on each one to find \*\*Edit\*\* and \*\*Delete\*\* buttons."  
->\]
+```javascript
+[  
+  "The gear icon opens the **Edit Columns** settings. You can choose whether or not to show the columns' full names, the method you wish to use to sort the $t(common:Lexicon), and how blank columns will be handled. Below that you'll find a list of all current columns. You can edit them, delete them, add more, or use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order.",
+  "",
+  "The second row contains the titles of the columns. Beneath them are input boxes for quickly adding info to the $t(common:Lexicon). Use the small (+) button to save what you've typed.",
+  "",
+  "Under those boxes you'll find the meat of $t(common:Lexicon): all the items you've stored. They will appear as striped rows. You can **swipe left** on each one to find **Edit** and **Delete** buttons."
+]
+```
 
 #### info.mergeButton
 
->\[  
->"You can swipe right on a lexicon item to find the \*\*Merge Items\*\* button. You can use this to mark multiple entries. Once you've selected at least two, a large paperclip button will appear at the bottom of the page. Tapping on it will prompt you to merge the selected items into one entry.",  
->"",  
->"Several tools in $t(common:appTitle) can export info into the $t(common:Lexicon). The merge function can be used to merge all this different info. Here's an example:",  
->"",  
->"1. You begin by naming columns in the $t(common:Lexicon) \"original\", \"changed\", and \"definition\".",
->"2. Then, you use $t(common:WordGen) to create a bunch of new words, which you export to $t(common:Lexicon) under the \"original\" column.",
->"3. Next, you change those words with $t(common:WordEvolve) and export the changed words to \"changed\".",
->"4. Then, you visit $t(common:Concepts) and export meanings to \"definition\".",
->"5. Finally, you swipe and link each \"original\", \"changed\" and \"definition\" column with each other and merge them into single entries."  
->\]
+```javascript
+[  
+  "You can swipe right on a lexicon item to find the **Merge Items** button. You can use this to mark multiple entries. Once you've selected at least two, a large paperclip button will appear at the bottom of the page. Tapping on it will prompt you to merge the selected items into one entry.",
+  "",
+  "Several tools in $t(common:appTitle) can export info into the $t(common:Lexicon). The merge function can be used to merge all this different info. Here's an example:",
+  "",
+  "1. You begin by naming columns in the $t(common:Lexicon) \"original\", \"changed\", and \"definition\".",
+  "2. Then, you use $t(common:WordGen) to create a bunch of new words, which you export to $t(common:Lexicon) under the \"original\" column.",
+  "3. Next, you change those words with $t(common:WordEvolve) and export the changed words to \"changed\".",
+  "4. Then, you visit $t(common:Concepts) and export meanings to \"definition\".",
+  "5. Finally, you swipe and link each \"original\", \"changed\" and \"definition\" column with each other and merge them into single entries."
+]
+```
 
 #### info.toolButton
 
->\[ "At the bottom of the page, you'll find a large tool button. You can tap on it to pull up a small menu. Tap on the (+) button to pop up a large form for adding to the $t(common:Lexicon). Tap on the trash can to enter mass-delete mode, where you can select multiple entries and delete them all at once." \]
+```javascript
+[
+  "At the bottom of the page, you'll find a large tool button. You can tap on it to pull up a small menu. Tap on the (+) button to pop up a large form for adding to the $t(common:Lexicon). Tap on the trash can to enter mass-delete mode, where you can select multiple entries and delete them all at once."
+]
+```
 
 ---
 
@@ -773,57 +809,49 @@ The `header` is presented to the user, along with the items in the content prope
 
 The `extended` items will be hidden; the user can toggle to see them, At which point they appear the same way as `content` items.
 
->**cases:** \[
->
->>{  
->>**header:** "Modifiers",  
->>**content:** \[ \[ "non-", "" \], \[ "high-", "" \], \[ "low-", "" \], "formal", "diminutive", "augmentative", "emphatic" \]  
->>},
->>
->>{  
->>**header:** "Number",  
->>**content:** \[ "singular", "plural", "dual", "trial", "paucal", "definite", "indefinite" \]  
->>},
->>
->>{  
->>**header:** "Noun Case",  
->>**content:** \[ "male", "female", "neuter", "animate", "inanimate" \]  
->>},
->>
->>{  
->>**header:** "Grammatical Case",  
->>**content:** \[ "nominative", "accusative", "genitive", "dative", "ablative", "instrumental", "locative" \],  
->>**extended:** \[ "vocative", "ergative", "absolutive", "partitive", "abessive", "adessive", "allative", "benefactive", "causal", "comitative", "delative", "distributive", "elative", "essive", "illative", "inessive", "instructive", "interrogative", "semblative", "sociative", "sublative", "superessive", "temporal", "terminative", "translative", "proximal", "relative", "adverbial", "oblique", "prepositional" \]  
->>},
->>
->>{  
->>**header:** "Person",  
->>**content:** \[ "1st-person", "2nd-person", "3rd-person", "1s", "1pl", "2s", "2pl", "3s", "3pl" \]  
->>},
->>
->>{  
->>**header:** "Tense",  
->>**content:** \[ "past", "present", "future" \]  
->>},
->>
->>{  
->>**header:** "Aspect",  
->>**content:** \[ "perfective", "imperfective", "perfect", "continuative", "progressive" \],  
->>**extended:** \[ "pluperfect", "habitual", "punctual", "iterative", "completive", "inceptive", "atelic", "telic", "static" \]  
->>},
->>
->>{  
->>**header:** "Mode",  
->>**content:** \[ "realis", "irrealis", "conditional", "subjunctive", "interrogative" \],  
->>**extended:** \[ "optative", "deontic", "hypothetical", "imaginary", "potential", "evidentiality", "validationality", "mirativity" \]  
->>},
->>
->>{  
->>**header:** "Valence",  
->>**content:** \[ "causative", "applicative", "reflexive", "reciprocal", "passive", "inverse", "anticausative", "antipassive" \]  
->>}
->
->\],
+```javascript
+[
+  {  
+    header: "Modifiers",  
+    content: [ [ "non-", "" ], [ "high-", "" ], [ "low-", "" ], "formal", "diminutive", "augmentative", "emphatic" ]  
+  },
+  {  
+    header: "Number",  
+    content: [ "singular", "plural", "dual", "trial", "paucal", "definite", "indefinite" ]  
+  },
+  {  
+    header: "Noun Case",  
+    content: [ "male", "female", "neuter", "animate", "inanimate" ]  
+  },
+  {  
+    header: "Grammatical Case",  
+    content: [ "nominative", "accusative", "genitive", "dative", "ablative", "instrumental", "locative" ],  
+    extended: [ "vocative", "ergative", "absolutive", "partitive", "abessive", "adessive", "allative", "benefactive", "causal", "comitative", "delative", "distributive", "elative", "essive", "illative", "inessive", "instructive", "interrogative", "semblative", "sociative", "sublative", "superessive", "temporal", "terminative", "translative", "proximal", "relative", "adverbial", "oblique", "prepositional" ]  
+  },
+  {  
+    header: "Person",  
+    content: [ "1st-person", "2nd-person", "3rd-person", "1s", "1pl", "2s", "2pl", "3s", "3pl" ]  
+  },
+  {  
+    header: "Tense",  
+    content: [ "past", "present", "future" ]  
+  },
+  {  
+    header: "Aspect",  
+    content: [ "perfective", "imperfective", "perfect", "continuative", "progressive" ],  
+    extended: [ "pluperfect", "habitual", "punctual", "iterative", "completive", "inceptive", "atelic", "telic", "static" ]  
+  },
+  {  
+    header: "Mode",  
+    content: [ "realis", "irrealis", "conditional", "subjunctive", "interrogative" ],  
+    extended: [ "optative", "deontic", "hypothetical", "imaginary", "potential", "evidentiality", "validationality", "mirativity" ]  
+  },
+  {  
+    header: "Valence",  
+    content: [ "causative", "applicative", "reflexive", "reciprocal", "passive", "inverse", "anticausative", "antipassive" ]  
+  }
+],
+```
 
 ### info
 
@@ -831,83 +859,99 @@ The `info` object has several properties. Most are arrays of strings in Markdown
 
 #### info.input
 
->\[  
->"This tab has one purpose: determining which words you want to decline or conjugate. Using this tab is entirely optional.",  
->"",  
->"The easiest way is to copy-paste a list of words, each on a line by itself. Or, you can use the \*\*Import From Lexicon\*\* button to pull in words stored in the \*\*$t(common:Lexicon)\*\*.",  
->"",  
->"Use the \*\*$t(common:Input)\*\* button to empty all words from $t(common:Input).",  
->\]
+```javascript
+[
+  "This tab has one purpose: determining which words you want to decline or conjugate. Using this tab is entirely optional.",
+  "",
+  "The easiest way is to copy-paste a list of words, each on a line by itself. Or, you can use the **Import From Lexicon** button to pull in words stored in the **$t(common:Lexicon)**.",
+  "",
+  "Use the **$t(common:Input)** button to empty all words from $t(common:Input).",
+]
+```
 
 #### info.groups
 
 `` `DRAG HANDLE` `` (or any other text inside backticks) will be replaced with the drag handle icon.
 
->\[  
->"This is where you define groups of declensions and conjugations. Most languages treat certain groupings of words differently when they are declined or conjugated. For instance, English only declines its pronouns for case and person while Spanish has different conjugations for verbs depending on if they end in -ar, -er, or -ir.",  
->"",  
->"Click the (+) button to add a new Group. When you make a Group, you must give it a title or description. You can choose to label this as a \_declension\_, a \_conjugation\_ or under \_other\_ if you don't want to use those labels Optionally, you can note what types of words this Group will apply to.",  
->"",  
->"Next, you will provide instructions on how to find the \"$t(stem)\" of the word. For example, if you were creating a conjugation for words ending in -ar, you would put \"ar\" in the box labelled \"$t(RemoveFromEndOfWordToFindRoot)\".",  
->"",  
->"Note: You can provide multiple conditions. For instance, putting \"ar\" in both boxes will match words that begin with ar- \_and\_ end with -ar. You can also hit the \"$t(UseAdvancedMethod)\" toggle switch to use \*\*regular expressions\*\* to find a $t(stem). (See the end of this section for more info on regular expressions.)",  
->"",  
->"---",  
->"",  
->"At the end of the form, you will see an \"$t(common:AddNew)\" button. Use this to create the Group's individual declensions or conjugations. For simplicity, we will use the term \"method\" to mean either.",  
->"",  
->"First, you give the method a title. There is a small (+) button next to the input that will open a pop-up with numerous common declension and conjugation types, if you wish to use it.",  
->"",  
->"Below that is a toggle \"$t(UseEntireWord)\". If checked, the method will operate on the entire word instead of just the $t(stem).",  
->"",  
->"At the bottom, there are two input boxes around the word \"$t(stem)\". (This becomes \"$t(word)\" if you check the toggle above.) If this method would add a prefix, put the prefix in the box before \"$t(stem)\". If it would use a suffix, put it in the box after \"$t(stem)\". You can use both boxes for a circumfix but for infixes and other more complicated changes, you will need to use the \"advanced method\" and regular expressions.",  
->"",  
->"---",  
->"",  
->"Once your Groups are made, they will show up on the screen. Swipe left on them to find $t(common:Edit) and $t(common:Delete) buttons. You can also use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order. (Note: you can't rearrange across types dragging a \"conjugation\" into the \"other\" or \"declension\" areas, for example. If you want to change its type, swipe left and choose the $t(common:Edit) button.)",  
->"",  
->"Here's an example of possible methods you could make for a Spanish-type conjugation:",  
->\]
+```javascript
+[
+  "This is where you define groups of declensions and conjugations. Most languages treat certain groupings of words differently when they are declined or conjugated. For instance, English only declines its pronouns for case and person while Spanish has different conjugations for verbs depending on if they end in -ar, -er, or -ir.",
+  "",
+  "Click the (+) button to add a new Group. When you make a Group, you must give it a title or description. You can choose to label this as a _declension_, a _conjugation_ or under _other_ if you don't want to use those labels Optionally, you can note what types of words this Group will apply to.",
+  "",
+  "Next, you will provide instructions on how to find the \"$t(stem)\" of the word. For example, if you were creating a conjugation for words ending in -ar, you would put \"ar\" in the box labelled \"$t(RemoveFromEndOfWordToFindRoot)\".",
+  "",
+  "Note: You can provide multiple conditions. For instance, putting \"ar\" in both boxes will match words that begin with ar- _and_ end with -ar. You can also hit the \"$t(UseAdvancedMethod)\" toggle switch to use **regular expressions** to find a $t(stem). (See the end of this section for more info on regular expressions.)",
+  "",
+  "---",
+  "",
+  "At the end of the form, you will see an \"$t(common:AddNew)\" button. Use this to create the Group's individual declensions or conjugations. For simplicity, we will use the term \"method\" to mean either.",
+  "",
+  "First, you give the method a title. There is a small (+) button next to the input that will open a pop-up with numerous common declension and conjugation types, if you wish to use it.",
+  "",
+  "Below that is a toggle \"$t(UseEntireWord)\". If checked, the method will operate on the entire word instead of just the $t(stem).",
+  "",
+  "At the bottom, there are two input boxes around the word \"$t(stem)\". (This becomes \"$t(word)\" if you check the toggle above.) If this method would add a prefix, put the prefix in the box before \"$t(stem)\". If it would use a suffix, put it in the box after \"$t(stem)\". You can use both boxes for a circumfix but for infixes and other more complicated changes, you will need to use the \"advanced method\" and regular expressions.",
+  "",
+  "---",
+  "",
+  "Once your Groups are made, they will show up on the screen. Swipe left on them to find $t(common:Edit) and $t(common:Delete) buttons. You can also use the &#96;DRAG HANDLE&#96; drag handles to rearrange their order. (Note: you can't rearrange across types dragging a \"conjugation\" into the \"other\" or \"declension\" areas, for example. If you want to change its type, swipe left and choose the $t(common:Edit) button.)",
+  "",
+  "Here's an example of possible methods you could make for a Spanish-type conjugation:",
+]
+```
 
 #### info.groupsExample
 
 This is an array of two objects. Each object has a `title` property as a header and a `content` property that is an array of strings in Markdown format.
 
->\[
-
-This first object describe a Declenjugation group.
-
->>{  
->>**title:** "Group",  
->>**content:** \[ "- \*\*$t(common:Title)\*\*: Conjugations (A)", "- \*\*Type\*\*: \_conjugation\_", "- \*\*Remove from Start of Word\*\*: (blank)", "- \*\*Remove from End of Word\*\*: ar", \],  
->>},
-
-This second object describes a set of conjugations.
-
->>{  
->>**title:** "Conjugations",  
->>**content:** \[ "- \*\*1st-person singular present\*\*: $t\(stem\)\[o\]", "- \*\*2nd-person singular present\*\*: $t\(stem\)\[as\]", "- \*\*3rd-person singular present\*\*: $t\(stem\)\[a\]", "- \*\*1st-person plural present\*\*: $t\(stem\)\[amos\]", "- \*\*3rd-person plural present\*\*: $t\(stem\)\[an\]", \],  
->>}
->
->\]
+```javascript
+[
+  //This first object describe a Declenjugation group.
+  {
+    title: "Group",
+    content: [
+      "- **$t(common:Title)**: Conjugations (A)",
+      "- **Type**: _conjugation_",
+      "- **Remove from Start of Word**: (blank)",
+      "- **Remove from End of Word**: ar",
+    ],
+  },
+  //This second object describes a set of conjugations.
+  {
+    title: "Conjugations",
+    content: [
+      "- **1st-person singular present**: $t(stem)[o]",
+      "- **2nd-person singular present**: $t(stem)[as]",
+      "- **3rd-person singular present**: $t(stem)[a]",
+      "- **1st-person plural present**: $t(stem)[amos]",
+      "- **3rd-person plural present**: $t(stem)[an]",
+    ],
+  }
+]
+```
 
 #### info.output
 
->\[  
->"This is where you can find the results of your work. At the top of the page, you can choose how you want the information to display, and choose if you want to display declensions conjugations, and/or other. If you want to decline/conjugate words you put in the \*\*$t(common:Input)\*\* tab be sure to switch the toggle on. It will open up a new set of options you can use to fine-tune the results.",  
->"",  
->"Click on $t(common:Generate) to display your info, or click on $t(Export) to export your info to a file. \*\*Note\*\*: when displaying a chart in the app, it may clip off the edge of the screen. If this happens, you can drag the chart left and right to scroll the hidden areas into view.",  
->\]
+```javascript
+[
+  "This is where you can find the results of your work. At the top of the page, you can choose how you want the information to display, and choose if you want to display declensions conjugations, and/or other. If you want to decline/conjugate words you put in the **$t(common:Input)** tab be sure to switch the toggle on. It will open up a new set of options you can use to fine-tune the results.",
+  "",
+  "Click on $t(common:Generate) to display your info, or click on $t(Export) to export your info to a file. **Note**: when displaying a chart in the app, it may clip off the edge of the screen. If this happens, you can drag the chart left and right to scroll the hidden areas into view.",
+]
+```
 
 #### info.overview
 
->\[  
->"This tool is for creating \*\*declensions\*\* and \*\*conjugations\*\*.",  
->"",  
->"A declension is, at its most basic, modifying a word to show its role in a sentence. $t(Declensions) may apply to nouns pronouns, adjectives, adverbs, and articles to indicate number (singular, dual, plural, etc), case (nominative accusative, genitive, dative, etc), gender (male, female inanimate, etc), and other grammatical categories. ",  
->"",  
->"A conjugation is much like a declension, but it modifies verbs. Like declensions, they can indicate number gender, and case, but they also often include person (I, you they, etc), tense (past, present, future, etc), aspect (perfect, imperfect, etc), mood/mode, politeness, and numerous other verb qualities.",  
->\]
+```javascript
+[
+  "This tool is for creating **declensions** and **conjugations**.",
+  "",
+  "A declension is, at its most basic, modifying a word to show its role in a sentence. $t(Declensions) may apply to nouns pronouns, adjectives, adverbs, and articles to indicate number (singular, dual, plural, etc), case (nominative accusative, genitive, dative, etc), gender (male, female inanimate, etc), and other grammatical categories. ",
+  "",
+  "A conjugation is much like a declension, but it modifies verbs. Like declensions, they can indicate number gender, and case, but they also often include person (I, you they, etc), tense (past, present, future, etc), aspect (perfect, imperfect, etc), mood/mode, politeness, and numerous other verb qualities.",
+]
+```
 
 ---
 
@@ -921,14 +965,14 @@ This second object describes a set of conjugations.
 |  | morphoSyntaxInfo | everything currently in $t(common:MorphoSyntax) (but not anything previously saved) | used by clearOverwriteGeneralThings |
 | 🟡 | needInfoToExportMsg | Please add information to your MorphoSyntax document in at least one section before exporting it. |  |
 |  | msDocument | $t(common:MorphoSyntax) document |  |
-|  | msDocument_formal | $t(common:MorphoSyntax) Document |  |
+|  | msDocument_formal | $t(common:MorphoSyntax) Document | *(formal context)* |
 |  | newMsDocument | New $t(common:MorphoSyntax) document |  |
 |  | msDocumentDescription | A $t(msDocument) exported from $t(common:appTitle). | Used in docx exports, only |
 | 🟥 | MorphoSyntaxSettings | $t(common:MorphoSyntax) $t(common:Settings) |  |
 | 🟥 | NoSavedMorphoSyntaxDocuments | No Saved $t(common:MorphoSyntax) Documents. |  |
 |  | CurrentMSInfo | your current $t(common:MorphoSyntax) information | used by clearOverwriteGeneralThings |
 | 🔵 | msTitle | $t(common:MorphoSyntax) Title |  |
-| 🟥 | msTitle_presentation | $t(common:MorphoSyntax) Title: |  |
+| 🟥 | msTitle_presentation | $t(common:MorphoSyntax) Title: | *(presentation context)* |
 |  | UsuallyLangName | Usually the language name. |  |
 |  | ShortDescriptionMsg | A short description of this document. |  |
 |  | MorphoSyntaxInfo | $t(common:MorphoSyntax) Info |  |
@@ -938,7 +982,7 @@ This second object describes a set of conjugations.
 | 🔵 | rangeFromTo | Range from {{start}} to {{end}} |  |
 |  | missingDocumentMsg | \[MISSING\] | This is an error message that only appears in exports. |
 |  | missingTextDocumentMsg | \[MISSING TEXT PROMPT\] | This is an error message that only appears in exports. |
-|  | noLabelDocumentMsg | \[LABEL NOT FOUND FOR \"{{box}}\"\] | This is an error message that only appears in exports. `{{box}}` is an internal name. |
+|  | noLabelDocumentMsg | \[LABEL NOT FOUND FOR "{{box}}"\] | This is an error message that only appears in exports. `{{box}}` is an internal name. |
 |  | noTextExportMsg | \[NO TEXT ENTERED\] | This is an informative message that is only used in exports. |
 |  | noDescriptionExportMsg | \[NO DESCRIPTION PROVIDED\] | This is an informative message that is only used in exports. |
 |  | noSelectionExportMsg | \[NONE SELECTED\] | This is an informative message that is only used in exports. |
@@ -961,25 +1005,25 @@ These are terms that are used in both WordGen and WordEvolve.
 |  | CharGroup | Character Group |  |
 |  | CharGroups | Character Groups |  |
 | 🟨 | DeleteAll | Delete All |  |
-| 🟡 | delAllCharGroups_one | This will delete the current character group, and cannot be undone. |  |
-| 🟡 | delAllCharGroups_other | This will delete all {{count}} current character groups, and cannot be undone. |  |
-| 🟡 | delAllTransforms_one | This will delete the current transformation, and cannot be undone. |  |
-| 🟡 | delAllTransforms_other | This will delete all {{count}} current transformations, and cannot be undone. |  |
+| 🟡 | delAllCharGroups_one | This will delete the current character group, and cannot be undone. | Takes a `{{count}}` property, if needed. |
+| 🟡 | delAllCharGroups_other | This will delete all {{count}} current character groups, and cannot be undone. | English plural version of the above key. |
+| 🟡 | delAllTransforms_one | This will delete the current transformation, and cannot be undone. | Takes a `{{count}}` property, if needed. |
+| 🟡 | delAllTransforms_other | This will delete all {{count}} current transformations, and cannot be undone. | English plural version of the above key. |
 | 🟦2.5 | importCharGroups_one | Imported {{count}} Character Group. |  |
-| 🟦2.5 | importCharGroups_other | Imported {{count}} Character Groups. |  |
+| 🟦2.5 | importCharGroups_other | Imported {{count}} Character Groups. | English plural version of the above key. |
 | 🟡 | importOverwriteCG | If any current character group has the same label as an incoming character group, the current character group will be overwritten. Do you want to continue? |  |
 |  | Transformation | Transformation |  |
 |  | Transformations | Transformations |  |
 |  | DescOfTheTransformation | Description of the transformation |  |
-|  | DescOfTheTransformation_formal | Description of the transformation |  |
-|  | DescOfTheTransformation_presentation | Transformation Description: |  |
+|  | DescOfTheTransformation_formal | Description of the transformation | *(formal context)* |
+|  | DescOfTheTransformation_presentation | Transformation Description: | *(presentation context)* |
 | 🟡 | noSearchMsg | No search expression present |  |
 |  | searchExpression | search expression |  |
-|  | searchExpression_formal | Search Expression |  |
-|  | searchExpression_presentation | Search Expression: |  |
+|  | searchExpression_formal | Search Expression | *(formal context)* |
+|  | searchExpression_presentation | Search Expression: | *(presentation context)* |
 |  | replacementExpression | replacement expression |  |
-|  | replacementExpression_formal | Replacement Expression |  |
-|  | replacementExpression_presentation | Replacement Expression: |  |
+|  | replacementExpression_formal | Replacement Expression | *(formal context)* |
+|  | replacementExpression_presentation | Replacement Expression: | *(presentation context)* |
 | 🟥 | CharacterGroupsTab | Character Groups Tab |  |
 | 🟥 | TransformationsTab | Transformations Tab |  |
 | 🟥 | OutputTab | Output Tab |  |
@@ -987,19 +1031,252 @@ These are terms that are used in both WordGen and WordEvolve.
 | 🟦4 | cantMakeLabelMsg | Unable to suggest a unique label from the given descrption. |  |
 | 🟡 | noTitleMsg | No title present |  |
 | 🟡 | noLabelMsg | No label present |  |
-| 🟡 | duplicateLabel | There is already a label \"{{label}}\" |  |
-| 🟡 | invalidLabel | You cannot use \"{{label}}\" as a label |  |
+| 🟡 | duplicateLabel | There is already a label "{{label}}" |  |
+| 🟡 | invalidLabel | You cannot use "{{label}}" as a label |  |
 | 🟡 | noRunMsg | No run present |  |
 | 🔵 | TitleOrDesc | Title or description |  |
-| 🟥 | TitleOrDesc_presentation | Title/Description: |  |
+| 🟥 | TitleOrDesc_presentation | Title/Description: | *(presentation context)* |
 | 🔵 | ShortLabel | Short Label |  |
-| 🟥 | ShortLabel_presentation | Short Label: |  |
+| 🟥 | ShortLabel_presentation | Short Label: | *(presentation context)* |
 |  | OneCharOnly | 1 character only |  |
 | 🔴 | Suggest | Suggest | suggest a 1-character label for this character group |
 | 🔵 | LettersCharacters | Letters, Characters |  |
-| 🟥 | LettersCharacters_presentation | Letters/Characters: |  |
+| 🟥 | LettersCharacters_presentation | Letters/Characters: | *(presentation context)* |
 |  | enterCharsInGroupHere | Enter characters in Character Group here |  |
 |  | WhatToChange | what to change | Helper text for a text input |
 |  | WhatItChangesTo | what it changes into | Helper text for a text input |
+
+---
+
+## WordEvolve : we.tsx
+
+| Label | Key | English Translation | Description (if needed) |
+| --- | --- | --- | --- |
+|  | Evolve | Evolve |  |
+|  | SoundChange | Sound Change |  |
+|  | SoundChanges | Sound Changes |  |
+|  | SoundChangesTab | Sound Changes Tab |  |
+|  | SChange_one | 1 Sound Change | called by `thingsDeleted` |
+|  | SChange_other | {{count}} Sound Changes | English plural form of the above |
+| 🟥 🔴 | ConvertToLowercase | Convert input to lowercase before evolving |  |
+| 🟥 🔴 | SortBeforehand | Sort input before evolving |  |
+|  | delAllSC | This will delete all current sound changes, and cannot be undone. |  |
+|  | Context | Context |  |
+|  | Exception | Exception |  |
+| 🟡 | noUnderscore | {{what}} must contain one underscore (_) | `{{what}}` is either Context or Exception above |
+| 🟡 | multiUnderscore | {{what}} can only have one underscore (_) | `{{what}}` is either Context or Exception above |
+| 🟡 | wordBoundaryError | {{what}} can only have word-boundaries (#) at the beginning and/or end | `{{what}}` is either Context or Exception above |
+|  | soundChangeDesc | Description of the sound change |  |
+|  | soundChangeDesc_presentation | Sound Change Description: | *(presentation context)* |
+| 🟥 | Overview | Overview: $t(common:WordEvolve) |  |
+| 🟥 | WhatIsWE | What is $t(common:WordEvolve)? |  |
+| 🔵 | WordsToEvolve | Words to Evolve |  |
+| 🟥 | InputTab | $t(common:Input) Tab |  |
+|  | EnterWordsHere | Enter words here, one per line |  |
+| 🟨 | ClearInput | Clear Input |  |
+| 🟡 | noSoundChangesMsg | You have no sound changes defined. |  |
+| 🟡 | noInputWordsMsg | You have no input words to evolve. |  |
+|  | soundToChange | sound to change |  |
+|  | soundChangesTo | sound changes into this |  |
+|  | whereChangeHappens | where the change happens |  |
+|  | whereChangeDoesntHappen | where the change cannot happen |  |
+| 🔵 | InputExpression | Input Expression |  |
+| 🟥 | InputExpression_presentation | Input Expression: | *(presentation context)* |
+| 🔵 | OutputExpression | Output Expression |  |
+| 🟥 | OutputExpression_presentation | Output Expression: |  |
+|  | TransformationDirection | Transformation Direction: | *(presentation context)* |
+|  | atInputUndoOutput | At input, then undo at output |  |
+|  | atInputUndoOutput_formal | At Input, Then Undo At Output | *(formal context)* |
+|  | atInputAtOutput | At input and at output |  |
+|  | atInputAtOutput_formal | At Input and At Output | *(formal context)* |
+|  | atInput | At input only |  |
+|  | atInput_formal | At Input Only | *(formal context)* |
+|  | atOutput | At output only |  |
+|  | atOutput_formal | At Output Only | *(formal context)* |
+|  | contextExpression_formal | Context Expression | *(formal context)* |
+|  | contextExpression_presentation | Context Expression: | *(presentation context)* |
+|  | exceptionExpression_formal | Exception Expression | *(formal context)* |
+|  | exceptionExpression_presentation | Exception Expression: | *(presentation context)* |
+| 🔴 | OutputOnly | $t(common:Output) only |  |
+| 🔴 | OutputAndSCRules | $t(common:Output) and Sound-Change Rules |  |
+| 🔴 | InputThenOutput | $t(common:Input), then $t(common:Output) |  |
+| 🔴 | OutputThenInput | $t(common:Output), then $t(common:Input) |  |
+|  | allThings | all current character groups, transformations and sound changes | used by `clearOverwriteGeneralThings` |
+|  | GrassmannLaw | Grassmann's Law | Used in Presets |
+|  | RukiRule | Ruki Rule | Used in Presets |
+|  | DahlLaw | Dahl's Law | Used in Presets |
+|  | IngvaeonicNasalSpirantLaw | Ingvaeonic Nasal Spirant Law | Used in Presets |
+|  | GrimLaw | Grim's Law | Used in Presets |
+|  | GreatEnglishVowelShift | Great English Vowel Shift | Used in Presets |
+|  | HighGermanConsonantShift | High German Consonant Shift | Used in Presets |
+|  | UnvoicedConsonants | Unvoiced Consonants | Used in Presets |
+|  | VoicedConsonants | Voiced Consonants | Used in Presets |
+|  | Vowels | Vowels | Used in Presets |
+|  | NewVowels | New Vowels | Used in Presets |
+
+### info
+
+The `info` key has multiple subkeys. All but one are arrays of strings in Markdown format.
+
+#### info.input
+
+```javascript
+[
+  "This tab has one purpose: determining which words you want to change.",
+  "",
+  "The easiest way is to copy-paste a list of words, each on a line by itself. Or, you can use the **Import from Lexicon** button to pull in words stored in the **$t(common:Lexicon)**.",
+  "",
+  "Use the **$t(common:Clear)** button to empty all words from $t(common:Input)."
+],
+```
+
+### info.charGroups
+
+```javascript
+[
+  "This is where you define groups of characters representing sounds. You can reference these character groups in **Transformations** and **Sound Changes** to fine-tune the way your language evolves.",
+  "",
+  "Click the (+) button to add a new character group. When you make a character group, you must give it a _description_ and a one-character _label_. The description is for your own benefit, while the label will be used to refer to this character group in the other tabs. The label can be any single character except for these: **^$()[]{}.*+?|**. The letters/characters in your character group are called a _run_."
+],
+```
+
+### info.transformations
+
+Words placed in `` `backticks` `` will be replaced with the icon for a drag hande
+
+```javascript
+[
+  "There may be cases when you need to modify the input words before you evolve them. A common reason would be to turn a group of characters (such as \"sh\", \"th\", or \"ng\" in English) into a single character that can be targeted more easily.",
+  "",
+  "When you make a new _transformation_, you provide an _input expression_, a _transformation direction_, an _output expression_, and, optionally, a _transformation description_ for your own benefit.",
+  "",
+  "The _transformation direction_ is either \"At input then undo at output\", \"At input and at output\", \"At input only\", or \"At output only\", and they determine how the two expressions are used.",
+  "",
+  "**At input only:** Before anything else happens, input words are searched, and any instances of the _input expression_ are replaced with the _output expression_. **Regular expressions** (see the **Sound Changes Tab**'s help section) and %Group references are allowed in the _input expression_ only. (A %Group reference is something like **%G** to indicate any character in character group G's run, or **!%G** to indicate any character _not_ in that run.)",
+  "",
+  "**At output only:** After all **sound changes** are processed, any instances of the _input expression_ are replaced with the _output expression_. Regular expressions and %Group references are allowed in the _input expression_ only.",
+  "",
+  "**At input then undo at output:** Before anything else happens, input words are searched, and any instances of the _input expression_ are replaced with the _output expression_. After all **sound changes** are processed, any instances of the _output expression_ are replaced with the _input expression_.",
+  "",
+  "Regular expressions are not allowed, but non-negative %Group references are allowed if and only if both input and output have them. In that case, something special happens: when the transformation matches a character in a character group, it will note what position that character is in the character group's run. It will then look at the other expression's character group and pick out the character in the same position.",
+  "",
+  "For example: If %S is being replaced with %Z, and those character groups have runs \"ptk\" and \"bdg\", \"p\" will be replaced with \"b\", \"t\" will be replaced with \"d\", and \"k\" will be replaced by \"g\". If the first character group has more letters than the second, the second character group's run will be repeated until it's long enough to find a match.",
+  "",
+  "NOTE: If you have unequal numbers of %Group references in the search and replacement expressions, errors may occur.",
+  "",
+  "**At input and at output:** As _At input then undo at output_, but the _input expression_ is replaced with the _output expression_ before AND after the **sound changes** are processed.",
+  "",
+  "Click the (+) button to add a new transformation. The first transformation in the list will be run first, the second transformation second, and so on down the list. This may cause unintended effects as previous transformations mutate the original word, so you can reorganize your transformations by using the `DRAG HANDLE` drag handles."
+],
+```
+
+### info.soundChangesBlocks
+
+This object defines `BlockFormat` objects that will be inserted into the text as specially-formatted HTML blocks.
+
+The tables will have "important" text enclosed in a box, and "unimportant" text linking the boxes together.
+
+Each object will have an optional `arrow` property (defaults to `"-&gt;"`), an optional `serif` property that changes the font to a serif font (defaults to `false`).
+
+Each object chooses **one** of the following sets of properties to add.
+
+1. **simple**: an array of strings in the format `important, uninmportant, important...`
+2. **reversed**: an array of strings in the format `unimportant, important, unimportant...`
+3. Three properties:
+     - **important**: a string that marks the boundaries of "important" info (defaults to `"!"`)
+     - **unimportant**: a string that marks the boundaries of "unimportant" info (defaults to `"$"`)
+     - **complex**: an array of strings, each formatted as `"Some !important! and $unimportant$ stuff with regular stuff mixed in."`
+
+You probably do **not** need to translate these or modify them in any way. They just express certain linguistic concepts. The arrow may need adjusting if your target language is RtL.
+
+```javascript
+{
+  block1: {
+    arrow: "->",
+    simple: ["s", "->", "z", "/", "d_", "!", "_h"]
+  },
+  block2: {
+    arrow: "->",
+    simple: ["s", "->", "z", "/", "#_"]
+  },
+},
+```
+
+Other `info` properties may access these bits on information by putting a block's name inside of `` `backticks` `` on a line by itself. Anything else put inside backticks will be replaced with the drag handle icon.
+
+### info.soundChanges
+
+```javascript
+[
+  "This is where you determine how your words evolve. The display follows basic standard phonological rules for describing sound changes:",
+  "",
+  "`block1`",
+  "",
+  "The above means that \"s\" changes to \"z\" after a \"d\", but not when it's before an \"h\".",
+  "",
+  "The first box is the _search expression_, the second is the _replacement expression_, the third is the _context expression_, and the last is the _exception expression_.",
+  "",
+  "The _search expression_ can include plain text or **regular expressions** (see the end of this section for more info). It can also contain %Group references. (A %Group reference is something like **%G** to indicate any character in character group C's run, or **!%G** to indicate any character that is _not_ in that run.)",
+  "",
+  "The _replacement expression_ should be plain text. However, it can include non-negative %Group references **if and only if** the _search expression_ does, too. In that case, something special happens: when the evolver matches a character in a character group, it will note what position that character is in the character group's run. It will then look at _replacement_ character group and pick out the character in the same position. For example: If %S is being replaced with %Z, and those character groups have runs \"ptk\" and \"bdg\", \"p\" will be replaced with \"b\", \"t\" will be replaced with \"d\", and \"k\" will be replaced by \"g\". (If the first character group has more letters than the second, the second character group's run will be repeated until it's long enough to find a match.) **NOTE:** If you have unequal numbers of %Group references in the _search expression_ and _replacement expression_, errors may occur.",
+  "",
+  "The _context expression_ describes where in the word the _search expression_ must be before it can be changed into the _replacement expression_. The _exception expression_ is similar, but it describes where in the world a match **can't** be made. (The _exception expression_ is optional.)",
+  "",
+  "There are two characters in a _context expression_ and _exception expression_ that have special functions. The underscore **_** represents where the _replacement expression_ is being matched. You **must** include an underscore. The hash symbol **#** represents the beginning or end of a word. For example: if you want to turn \"s\" into \"z\" at the beginning of a word, you could create the following:",
+  "",
+  "`block2`",
+  "",
+  "If you have no special rules for where in a word a replacement can happen, just make a _context expression_ that's only a single underscore.",
+  "",
+  "Click the (+) button to add a new sound change. The first sound change in the list will be run first, the second sound change second, and so on down the list. This may cause unintended effects, so you can reorganize your sound change to avoid any such effects by using the `DRAG HANDLE` drag handles."
+],
+```
+
+### info.outputMain
+
+```javascript
+[
+  "This is where the magic happens. Click the **Generate** button and the evolver will process all your input words and present your output in the space below.",
+],
+```
+
+### info.outputSettings
+
+```javascript
+[
+  "Click on the gear icon to open a list of options. The first is a drop-down menu where you can select what to output. The choices are **Output Only**, **Output and Sound-Change Rules**, **Input then Output** and **Output then Input**.",
+  "",
+  "Choosing **Output Only** will display a simple list of evolved words.",
+  "",
+  "**Output and Sound-Change Rules** displays the most complex output. For every word, it will print the input word, an arrow, and then the evolved word. Below that, it will print an indented list of the **Sound Changes** that evolved the word, in the format [rule] [arrow] [evolved word]. (If a sound change didn't affect that word, then it will be omitted from this list.)",
+  "",
+  "**Input then Output**, as you might guess, prints a list in the format [input word] [arrow] [evolved word]. **Output then Input** is the same, but the evolved word comes first.",
+  "",
+  "The second option under the gear icon determines the style of arrow that is displayed with the output."
+],
+```
+
+### info.outputLexicon
+
+```javascript
+[
+  "Once you've evolved words, you can save them to the **$t(common:Lexicon)**. Click the book button and the evolved words will light up. Tap on words you wish to save. When you've selected all the words you want, tap the book button again and you'll be given a pop-up where you can choose which **$t(common:Lexicon)** column to import them into."
+],
+```
+
+### info.overview
+
+```javascript
+[
+  "This tool is designed to take a list of words and transform them into (possibly) new forms. The idea is to mimic the way natural languages change over time.",
+  "",
+  "This is the most basic use case:",
+  "- Decide on how your language will evolve over time.",
+  "- Identify which parts will change, such as vowels and consonants.",
+  "- Note the environment in which the sound change takes place. (For example, a vowel may change only if it's preceded by a nasal consonant.)",
+  "",
+  "The **$t(common:Input)** tab holds the words you wish to change. **Character Groups** can hold categories of sounds that will change in the same way. **Transformations** is a place where you can define complex transformations that may be needed to simplify your sound changes. (For example, you may want to simplify multi-letter sounds into a single character.) The **Sound Changes** tab is where you define the various changes you want to make, and the **$t(common:Output)** tab is where you can see the results."
+]
+```
 
 ---

@@ -97,7 +97,7 @@ const appinfo = {
 		v095: [
 			"- You can now swipe left on $t(common:Lexicon) items,",
 			"$t(wgwe:CharGroups), $t(wgwe:Transformations) and",
-			"$t(we:Sound Changes) to edit or delete them.",
+			"$t(we:SoundChanges) to edit or delete them.",
 			"- Changed the way you export information into the",
 			"$t(common:Lexicon) from other components. It should be more",
 			"intuitive now.",

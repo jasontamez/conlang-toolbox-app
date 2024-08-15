@@ -2,16 +2,16 @@ const we = {
 
 	Evolve: "Evolve",
 
-	"Sound Change": "Sound Change",
-	"Sound Changes": "Sound Changes",
-	"Sound Changes Tab": "Sound Changes Tab",
+	SoundChange: "Sound Change",
+	SoundChanges: "Sound Changes",
+	SoundChangesTab: "Sound Changes Tab",
 
 	// takes a `count` for plurality, called by thingsDeleted
-	"SChange_one": "1 Sound Change",
-	"SChange_other": "{{count}} Sound Changes",
+	SChange_one: "1 Sound Change",
+	SChange_other: "{{count}} Sound Changes",
 
-	"Convert input to lowercase before evolving": "Convert input to lowercase before evolving", // 🟥 🔴
-	"Sort input before evolving": "Sort input before evolving", // 🟥 🔴
+	ConvertToLowercase: "Convert input to lowercase before evolving", // 🟥 🔴
+	SortBeforehand: "Sort input before evolving", // 🟥 🔴
 	delAllSC: "This will delete all current sound changes, and cannot be undone.",
 
 	Context: "Context",
@@ -21,51 +21,48 @@ const we = {
 	multiUnderscore: "{{what}} can only have one underscore (_)", // 🟡
 	wordBoundaryError: "{{what}} can only have word-boundaries (#) at the beginning and/or end", // 🟡
 
-	"sound change description": "Description of the sound change",
-	"sound change description_presentation": "Sound Change Description:",
+	soundChangeDesc: "Description of the sound change",
+	soundChangeDesc_presentation: "Sound Change Description:",
 
 	Overview: "Overview: $t(common:WordEvolve)", // 🟥
-	"What is WordEvolve?": "What is $t(common:WordEvolve)?", // 🟥
+	WhatIsWE: "What is $t(common:WordEvolve)?", // 🟥
 
-	"Words to Evolve": "Words to Evolve", // 🔵
+	WordsToEvolve: "Words to Evolve", // 🔵
 
-	"Input Tab": "$t(common:Input) Tab", // 🟥
-	"Enter words here one per line": "Enter words here, one per line",
+	InputTab: "$t(common:Input) Tab", // 🟥
+	EnterWordsHere: "Enter words here, one per line",
 
-	"Clear Input": "Clear Input", // 🟨
+	ClearInput: "Clear Input", // 🟨
 
-	"You have no sound changes defined.": "You have no sound changes defined.", // 🟡
-	"You have no input words to evolve.": "You have no input words to evolve.", // 🟡
+	noSoundChangesMsg: "You have no sound changes defined.", // 🟡
+	noInputWordsMsg: "You have no input words to evolve.", // 🟡
 
-	"sound to change": "sound to change",
-	"sound changes into this": "sound changes into this",
-	"where the change happens": "where the change happens",
-	"where the change cannot happen": "where the change cannot happen",
+	soundToChange: "sound to change",
+	soundChangesTo: "sound changes into this",
+	whereChangeHappens: "where the change happens",
+	whereChangeDoesntHappen: "where the change cannot happen",
 
-	"Input Expression": "Input Expression", // 🔵
-	"Input Expression_presentation": "Input Expression:", // 🟥
-	"Output Expression": "Output Expression", // 🔵
-	"Output Expression_presentation": "Output Expression:", // 🟥
-	"Transformation Direction": "Transformation Direction:", // presentational context
-	"At input then undo at output": "At input, then undo at output",
-	"At input then undo at output_formal": "At Input, Then Undo At Output",
-	"At input and output": "At input and output",
-	"At input and at output": "At input and at output",
-	"At input and at output_formal": "At Input and At Output",
-	"At input": "At input",
-	"At input only": "At input only",
-	"At input only_formal": "At Input Only",
-	"At output": "At output",
-	"At output only": "At output only",
-	"At output only_formal": "At Output Only",
-	"context expression_formal": "Context Expression",
-	"context expression_presentation": "Context Expression:",
-	"exception expression_formal": "Exception Expression",
-	"exception expression_presentation": "Exception Expression:",
-	"Output Only": "$t(common:Output) only", // 🔴
-	"Output and Sound-Change Rules": "$t(common:Output) and Sound-Change Rules", // 🔴
-	"Input then Output": "$t(common:Input), then $t(common:Output)", // 🔴
-	"Output then Input": "$t(common:Output), then $t(common:Input)", // 🔴
+	InputExpression: "Input Expression", // 🔵
+	InputExpression_presentation: "Input Expression:", // 🟥
+	OutputExpression: "Output Expression", // 🔵
+	OutputExpression_presentation: "Output Expression:", // 🟥
+	TransformationDirection: "Transformation Direction:", // presentational context
+	atInputUndoOutput: "At input, then undo at output",
+	atInputUndoOutput_formal: "At Input, Then Undo At Output",
+	atInputAtOutput: "At input and at output",
+	atInputAtOutput_formal: "At Input and At Output",
+	atInput: "At input only",
+	atInput_formal: "At Input Only",
+	atOutput: "At output only",
+	atOutput_formal: "At Output Only",
+	contextExpression_formal: "Context Expression",
+	contextExpression_presentation: "Context Expression:",
+	exceptionExpression_formal: "Exception Expression",
+	exceptionExpression_presentation: "Exception Expression:",
+	OutputOnly: "$t(common:Output) only", // 🔴
+	OutputAndSCRules: "$t(common:Output) and Sound-Change Rules", // 🔴
+	InputThenOutput: "$t(common:Input), then $t(common:Output)", // 🔴
+	OutputThenInput: "$t(common:Output), then $t(common:Input)", // 🔴
 
 	// used by clearOverwriteGeneralThings
 	allThings: "all current character groups, transformations and sound changes",
@@ -73,18 +70,18 @@ const we = {
 
 	// PRESETS
 
-	"Grassmann's Law": "Grassmann's Law",
-	"Ruki Rule": "Ruki Rule",
-	"Dahl's Law": "Dahl's Law",
-	"Ingvaeonic Nasal Spirant Law": "Ingvaeonic Nasal Spirant Law",
-	"Grim's Law": "Grim's Law",
-	"Great English Vowel Shift": "Great English Vowel Shift",
-	"High German Consonant Shift": "High German Consonant Shift",
+	GrassmannLaw: "Grassmann's Law",
+	RukiRule: "Ruki Rule",
+	DahlLaw: "Dahl's Law",
+	IngvaeonicNasalSpirantLaw: "Ingvaeonic Nasal Spirant Law",
+	GrimLaw: "Grim's Law",
+	GreatEnglishVowelShift: "Great English Vowel Shift",
+	HighGermanConsonantShift: "High German Consonant Shift",
 
-	"Unvoiced Consonants": "Unvoiced Consonants",
-	"Voiced Consonants": "Voiced Consonants",
-	"Vowels": "Vowels",
-	"New Vowels": "New Vowels",
+	UnvoicedConsonants: "Unvoiced Consonants",
+	VoicedConsonants: "Voiced Consonants",
+	Vowels: "Vowels",
+	NewVowels: "New Vowels",
 
 	info: {
 		input: [ // Markdown format

@@ -265,7 +265,7 @@ export const appMenuInfo: MenuSection[] = [
 				parent: 'we'
 			},
 			{
-				title: tc("Sound Changes", { ns: "we" }),
+				title: tc("SoundChanges", { ns: "we" }),
 				url: '/we/soundchanges',
 				tab: 'soundchanges',
 				tabTitle: 'Changes',

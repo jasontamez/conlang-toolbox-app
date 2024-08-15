@@ -54,11 +54,11 @@ const translations = [
 	"WhatItChangesTo", "WhatToChange", "Transformation"
 ];
 const formals = [
-	"At input and at output", "At input only",
-	"At input then undo at output", "At output only"
+	"atInputAtOutput", "atInput",
+	"atInputUndoOutput", "atOutput"
 ];
 const presentations = [
-	"Input Expression", "Output Expression"
+	"InputExpression", "OutputExpression"
 ];
 const formal = { context: "formal" };
 const context = { context: "presentation" };
@@ -72,7 +72,7 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans ] = useI18Memo(translations, "wgwe");
-	const tpTrDir = useMemo(() => t("Transformation Direction"), [t]);
+	const tpTrDir = useMemo(() => t("TransformationDirection"), [t]);
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);

@@ -27,9 +27,9 @@ import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
 
 const translations = [
-	"Convert input to lowercase before evolving", "Input then Output",
-	"Output Only", "Output and Sound-Change Rules", "Output then Input",
-	"Sort input before evolving"
+	"ConvertToLowercase", "InputThenOutput",
+	"OutputOnly", "OutputAndSCRules", "OutputThenInput",
+	"SortBeforehand"
 ];
 
 const commons = [ "defaultSort", "Done" ];

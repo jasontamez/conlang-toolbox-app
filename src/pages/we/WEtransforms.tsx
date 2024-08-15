@@ -76,13 +76,13 @@ const TransformItem: FC<TransformProps> = (props) => {
 	const directionDescription = useMemo(() => {
 		switch(direction) {
 			case "both":
-				return t("At input then undo at output");
+				return t("atInputUndoOutput");
 			case "double":
-				return t("At input and output");
+				return t("atInputAtOutput");
 			case "in":
-				return t("At input");
+				return t("atInput");
 			case "out":
-				return t("At output");
+				return t("atOutput");
 		}
 		return "Error";
 	}, [t, direction]);

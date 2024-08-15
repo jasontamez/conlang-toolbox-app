@@ -38,16 +38,16 @@ const resetContext = () => resetError("context");
 const resetException = () => resetError("anticontext");
 
 const wgweExp = [ "replacementExpression", "searchExpression" ];
-const weExp = [ "context expression", "exception expression", "sound change description" ];
+const weExp = [ "contextExpression", "exceptionExpression", "soundChangeDesc" ];
 const formal = { context: "formal" };
 const presentation = { context: "presentation" };
 
 const things = [ "addThing", "thingSaved" ];
 
 const translations = [
-	"sound change description", "sound changes into this",
-	"sound to change", "Sound Change", "where the change cannot happen",
-	"where the change happens"
+	"soundChangeDesc", "soundChangesTo",
+	"soundToChange", "SoundChange", "whereChangeDoesntHappen",
+	"whereChangeHappens"
 ];
 
 const commons = [ "AddAndClose", "Cancel", "error", "optional" ];

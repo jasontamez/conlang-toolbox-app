@@ -1,7 +1,7 @@
 import { WEPresets as WEPresetsMap } from './types';
 
 const WEPresets: WEPresetsMap = [
-	["Grassmann's Law", {
+	["GrassmannLaw", {
 		characterGroups: [],
 		soundChanges: [
 			{
@@ -15,7 +15,7 @@ const WEPresets: WEPresetsMap = [
 		],
 		transforms: []
 	}],
-	["Ruki Rule", {
+	["RukiRule", {
 		characterGroups: [],
 		soundChanges: [
 			{
@@ -29,16 +29,16 @@ const WEPresets: WEPresetsMap = [
 		],
 		transforms: []
 	}],
-	["Dahl's Law", {
+	["DahlLaw", {
 		characterGroups: [
 			{
 				label: "U",
-				title: "Unvoiced Consonants",
+				title: "UnvoicedConsonants",
 				run: "ptk"
 			},
 			{
 				label: "C",
-				title: "Voiced Consonants",
+				title: "VoicedConsonants",
 				run: "bdg"
 			},
 			{
@@ -59,7 +59,7 @@ const WEPresets: WEPresetsMap = [
 		],
 		transforms: []
 	}],
-	["Ingvaeonic Nasal Spirant Law", {
+	["IngvaeonicNasalSpirantLaw", {
 		characterGroups: [
 			{
 				label: "V",
@@ -68,7 +68,7 @@ const WEPresets: WEPresetsMap = [
 			},
 			{
 				label: "N",
-				title: "New Vowels",
+				title: "NewVowels",
 				run: "oeiou"
 			}
 		],
@@ -92,7 +92,7 @@ const WEPresets: WEPresetsMap = [
 		],
 		transforms: []
 	}],
-	["Grim's Law", {
+	["GrimLaw", {
 		characterGroups: [],
 		soundChanges: [
 			{
@@ -130,7 +130,7 @@ const WEPresets: WEPresetsMap = [
 		],
 		transforms: []
 	}],
-	["Great English Vowel Shift", {
+	["GreatEnglishVowelShift", {
 		characterGroups: [
 			{
 				label: "V",
@@ -139,7 +139,7 @@ const WEPresets: WEPresetsMap = [
 			},
 			{
 				label: "N",
-				title: "New Vowels",
+				title: "NewVowels",
 				run: "EiiAuUO"
 			}
 		],
@@ -184,7 +184,7 @@ const WEPresets: WEPresetsMap = [
 			}
 		]
 	}],
-	["High German Consonant Shift", {
+	["HighGermanConsonantShift", {
 		characterGroups: [
 			{
 				label: "V",
