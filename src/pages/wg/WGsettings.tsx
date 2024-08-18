@@ -65,11 +65,11 @@ import { OptCard } from "./WGinfo";
 
 const commons = [ "Help", "LoadPreset", "PleaseWait", "Settings" ];
 const translations =  [
-	"Always", "Capitalize sentences", "Character Group run dropoff",
-	"From 0 to 50", "From 0% to 100%", "From 2 to 15",
-	"Maximum number of syllables per word", "Never", "Presets and Stored Info",
-	"Pseudo-text Controls", "Rate of monosyllable words",
-	"Save/Load Custom Info", "Syllable box dropoff", "Word Generation Controls"
+	"Always", "CapSentences", "CharGroupRunDropoff",
+	"From0To50", "From0To100", "From2To15",
+	"MaxSyllPerWord", "Never", "PresetsStoredInfo",
+	"PseudoTextControls", "RateOfMonos",
+	"SaveLoadCustomInfo", "SyllableBoxDropoff", "WordGenControls"
 ];
 const sentences = [ "sentenceBeginning", "sentenceEnding" ];
 const declarative = { context: "declarative" };

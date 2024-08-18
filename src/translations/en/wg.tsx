@@ -2,21 +2,20 @@ const wg = {
 
 	Syllables_one: "Syllable",
 	Syllables_other: "Syllables",
-	"single-word syllables": "Single-Syllable Words", // 🟥 formal context
-	"word-initial syllables": "word-initial syllables",
-	"word-initial syllables_formal": "Word-Initial Syllables", // 🟥
-	"mid-word syllables": "mid-word syllables",
-	"mid-word syllables_formal": "Mid-Word Syllables", // 🟥
-	"word-final syllables": "word-final syllables",
-	"word-final syllables_formal": "Word-Final Syllables", // 🟥
+	swSyllables: "Single-Syllable Words", // 🟥 formal context
+	wiSyllables: "word-initial syllables",
+	wiSyllables_formal: "Word-Initial Syllables", // 🟥
+	mwSyllables: "mid-word syllables",
+	mwSyllables_formal: "Mid-Word Syllables", // 🟥
+	wfSyllables: "word-final syllables",
+	wfSyllables_formal: "Word-Final Syllables", // 🟥
 
-	"Syllables Tab": "Syllables Tab", // 🟥
-	"Settings Tab": "Settings Tab", // 🟥
-	"What is WordGen?": "What is $t(common:WordGen)?", // 🟥
+	SyllablesTab: "Syllables Tab", // 🟥
+	SettingsTab: "Settings Tab", // 🟥
+	WhatIsWordGen: "What is $t(common:WordGen)?", // 🟥
 
-	"Delete All Syllables": "Delete All Syllables",
-	delAllSyllables: // 🟡
-		"This will delete any and all current syllables, and cannot be undone.",
+	DeleteAllSyllables: "Delete All Syllables",
+	delAllSyllables: "This will delete any and all current syllables, and cannot be undone.", // 🟡
 
 	syllableDropoffExplanation:
 		"Syllables at the top of a box tend to be picked more often than"
@@ -24,44 +23,42 @@ const wg = {
 		+ " tendency. A rate of zero is flat, making all syllables"
 		+ " equiprobable.",
 
-	"Use character group labels to construct syllables":
-		"Use character group labels to construct syllables",
-	"Use separate dropoff rate": "Use separate dropoff rate", // 🔴 🟥
-	"These syllables are used to begin words": "These syllables are used to begin words",
-	"These syllables are used between the first and last syllable of a word":
-		"These syllables are used between the first and last syllable of a word",
-	"These syllables are used to end words": "These syllables are used to end words",
-	"From 0 to 50": "From 0 to 50", // 🔵
-	"From 0% to 100%": "From 0% to 100%", // 🔵
-	"From 2 to 15": "From 2 to 15", // 🔵
+	useLabelsToMakeSyllables: "Use character group labels to construct syllables",
+	useSepDropoffRate: "Use separate dropoff rate", // 🔴 🟥
+	usedToBeginWords: "These syllables are used to begin words",
+	usedInMiddleOfWords: "These syllables are used between the first and last syllable of a word",
+	usedToEndWords: "These syllables are used to end words",
+	From0To50: "From 0 to 50", // 🔵
+	From0To100: "From 0% to 100%", // 🔵
+	From2To15: "From 2 to 15", // 🔵
 
-	"You have no character groups defined.": "You have no character groups defined.", // 🟡
-	"You have no syllables defined.": "You have no syllables defined.", // 🟡
-	"You are missing one or more types of syllables.": "You are missing one or more types of syllables.", // 🟡
+	noCharGroupsDefinedMsg: "You have no character groups defined.", // 🟡
+	noSyllablesDefinedMsg: "You have no syllables defined.", // 🟡
+	missingSyllableTypesMsg: "You are missing one or more types of syllables.", // 🟡
 	unableToCreateXWords: "Unable to create {{amount}} unique words (maxed out at {{max}})", // 🟥
 
-	"dropoff rate": "Dropoff Rate", // formal context
+	dropoffRate: "Dropoff Rate", // formal context
 	characterDropoffExplanation:
 		"Characters at the beginning of a group tend to be picked more often"
 		+ " than characters at the end of the group. This slider controls this"
 		+ " tendency. A rate of zero is flat, making all characters"
 		+ " equiprobable.",
-	"Character Group run dropoff": "Character Group run dropoff", // 🟥
-	"Syllable box dropoff": "syllable box dropoff", // 🟥
-	"Use multiple syllable types" : "Use multiple syllable types", // 🔴
-	"Pseudo-text": "Pseudo-text", // 🔴
+	CharGroupRunDropoff: "Character Group run dropoff", // 🟥
+	SyllableBoxDropoff: "syllable box dropoff", // 🟥
+	UseMultiSyllTypes: "Use multiple syllable types", // 🔴
+	PseudoText: "Pseudo-text", // 🔴
 	Wordlist: "Wordlist", // 🔴
-	"All possible syllables":"All possible syllables",
-	"Number of sentences":"Number of sentences",
-	"Capitalize words": "Capitalize words",
-	"Sort output": "Sort output",
-	"Multi-column layout": "Multi-column layout",
-	"Wordlist size": "Wordlist size",
-	"Show syllable breaks": "Show syllable breaks", // 🔴
-	"Save/Load Custom Info": "Save/Load Custom Info", // 🔴
-	"Rate of monosyllable words": "Rate of monosyllable words", // 🟥
-	"Maximum number of syllables per word": "Maximum number of syllables per word", // 🟥
-	"Capitalize sentences": "Capitalize sentences", // 🔴
+	AllPossibleSyllables: "All possible syllables",
+	NumberOfSentences: "Number of sentences",
+	CapitalizeWords: "Capitalize words",
+	SortOutput: "Sort output",
+	MultiColumnLayout: "Multi-column layout",
+	WordlistSize: "Wordlist size",
+	ShowSyllableBreaks: "Show syllable breaks", // 🔴
+	SaveLoadCustomInfo: "Save/Load Custom Info", // 🔴
+	RateOfMonos: "Rate of monosyllable words", // 🟥
+	MaxSyllPerWord: "Maximum number of syllables per word", // 🟥
+	CapSentences: "Capitalize sentences", // 🔴
 	sentenceBeginning_declarative: "Declarative sentence beginning",
 	sentenceEnding_declarative: "Declarative sentence ending",
 	sentenceBeginning_interrogative: "Interrogative sentence beginning",
@@ -69,13 +66,13 @@ const wg = {
 	sentenceBeginning_exclamatory: "Exclamatory sentence beginning",
 	sentenceEnding_exclamatory: "Exclamatory sentence ending",
 
-	"Presets and Stored Info": "Presets and Stored Info", // 🟥
-	"Word Generation Controls": "Word Generation Controls", // 🟥
+	PresetsStoredInfo: "Presets and Stored Info", // 🟥
+	WordGenControls: "Word Generation Controls", // 🟥
 	Never: "Never", // 🔴
 	Always: "Always", // 🔴
-	"Pseudo-text Controls": "Pseudo-text Controls", // 🟥
-	"Wordlist and Syllable-List Controls": "Wordlist and Syllable-List Controls", // 🟥
-	"What to Generate": "What to Generate", // 🟥
+	PseudoTextControls: "Pseudo-text Controls", // 🟥
+	WordListSyllListControls: "Wordlist and Syllable-List Controls", // 🟥
+	WhatToGenerate: "What to Generate", // 🟥
 	Default: "Default", // 🔴 default sort option
 
 	// used by clearOverwriteGeneralThings:
@@ -88,129 +85,127 @@ const wg = {
 	Simple: "Simple",
 	Medium: "Medium",
 	Complex: "Complex",
-	"Pseudo-Latin": "Pseudo-Latin",
-	"Pseudo-Chinese": "Pseudo-Chinese",
-	"Pseudo-Greek": "Pseudo-Greek",
-	"Pseudo-English": "Pseudo-English",
-	"Pseudo-Japanese": "Pseudo-Japanese",
+	PseudoLatin: "Pseudo-Latin",
+	PseudoChinese: "Pseudo-Chinese",
+	PseudoGreek: "Pseudo-Greek",
+	PseudoEnglish: "Pseudo-English",
+	PseudoJapanese: "Pseudo-Japanese",
 
 	// titles of character groups in presets
 	Consonants: "Consonants",
-	"Initial consonants": "Initial consonants",
-	"Word-ending consonants": "Word-ending consonants",
-	"Pre-liquid consonants": "Pre-liquid consonants",
-	"Syllable-final consonants": "Syllable-final consonants",
-	"Post-nasal or -liquid Final Consonants": "Post-nasal or -liquid Final Consonants",
+	InitialConsonants: "Initial consonants",
+	WordEndingConsonants: "Word-ending consonants",
+	PreLiquidConsonants: "Pre-liquid consonants",
+	SyllableFinalConsonants: "Syllable-final consonants",
+	PNoLFConsonants: "Post-nasal or -liquid Final Consonants",
 	Liquids: "Liquids",
 	Nasals: "Nasals",
 	Plosives: "Plosives",
-	"Aspirated consonants": "Aspirated consonants",
+	AspiratedConsonants: "Aspirated consonants",
 	Vowels: "Vowels",
-	"Mid-word vowels": "Mid-word vowels",
-	"Vowels 1": "Vowels 1",
-	"Vowels 2": "Vowels 2",
+	MWVowels: "Mid-word vowels",
+	Vowels1: "Vowels 1",
+	Vowels2: "Vowels 2",
 	Dipthongs: "Dipthongs",
 
-	"Word-final conjugation": "Word-final conjugation",
+	WFConjugation: "Word-final conjugation",
 	CONJ: "conjugation: {{type}}",
-	// (keys here have ! instead of . in their keys because it can mess up translation-finding)
 	//   The translations below are in "glossing rules" format
 	//   see: https://www.eva.mpg.de/lingua/resources/glossing-rules.php
-	"1s": "1s", // 1st-person singular
-	"2s/3s!AN": "2s/3s.AN", // 2nd-person singular, 3rd-person singular animate
-	"2s": "2s", // 2nd-person singular
-	"3s!AN": "3s.AN", // 3rd-person singular animate
-	"2s!FORM": "2s.FORM", // 2nd-person singular formal
-	"3s!INAN": "3s.INAN", // 3rd-person singular inanimate
-	"1!DU!IN": "1.DU.INCL", // 1st-person dual inclusive
-	"1!DU!EX": "1.DU.EXCL", // 1st-person dual exclusive
-	"1!PAU!IN/1p!IN": "1.PAU.INCL/1p.INCL", // 1st-person paucal inclusive, 1st-person plural inclusive
-	"1!PAU!IN": "1.PAU.INCL", // 1st-person paucal inclusive
-	"1!PAU!IN/1!PAU!EX/1p!IN": "1.PAU.INCL/1.PAU.EXCL/1p.INCL", // 1st-person paucal inclusive, 1st-person paucal exclusive, 1st-person plural inclusive
-	"1!PAU!EX": "1.PAU.EXCL", // 1st-person paucal exclusive
-	"1!PAU!EX/1p!IN": "1.PAU.EXCL/1p.INCL", // 1st-person paucal exclusive, 1st-person plural inclusive
-	"1!PAU!EX/1p!EX": "1.PAU.EXCL/1p.EXCL", // 1st-person paucal exclusive, 1st-person plural exclusive
-	"1p!IN": "1p.INCL", // 1st-person plural inclusive
-	"1p!EX": "1p.EXCL", // 1st-person plural exclusive
-	"2!PAU": "2.PAU", // 2nd-person paucal
-	"2!PAU!FORM": "2.PAU.FORM", // 2nd-person paucal formal
-	"2p": "2p", // 2nd-person
-	"2p!FORM": "2p.FORM", // 2nd-person formal
-	"3!PAU!AN": "3.PAU.AN", // 3rd-person paucal animate
-	"3p!AN": "3p.AN", // 3rd-person plural animate
-	"3!PAU!INAN": "3.PAU.INAN", // 3rd-person paucal inanimate
-	"3p!INAN": "3p.INAN", // 3rd-person plural inanimate
-	"GER": "GER", // gerund
+	g1s: "1s", // 1st-person singular
+	g2s3sAN: "2s/3s.AN", // 2nd-person singular, 3rd-person singular animate
+	g2s: "2s", // 2nd-person singular
+	g3sAN: "3s.AN", // 3rd-person singular animate
+	g2sFORM: "2s.FORM", // 2nd-person singular formal
+	g3sINAN: "3s.INAN", // 3rd-person singular inanimate
+	g1DUIN: "1.DU.INCL", // 1st-person dual inclusive
+	g1DUEX: "1.DU.EXCL", // 1st-person dual exclusive
+	g1PAUIN1pIN: "1.PAU.INCL/1p.INCL", // 1st-person paucal inclusive, 1st-person plural inclusive
+	g1PAUIN: "1.PAU.INCL", // 1st-person paucal inclusive
+	g1PAUIN1PAUEX1pIN: "1.PAU.INCL/1.PAU.EXCL/1p.INCL", // 1st-person paucal inclusive, 1st-person paucal exclusive, 1st-person plural inclusive
+	g1PAUEX: "1.PAU.EXCL", // 1st-person paucal exclusive
+	g1PAUEX1pIN: "1.PAU.EXCL/1p.INCL", // 1st-person paucal exclusive, 1st-person plural inclusive
+	g1PAUEX1pEX: "1.PAU.EXCL/1p.EXCL", // 1st-person paucal exclusive, 1st-person plural exclusive
+	g1pIN: "1p.INCL", // 1st-person plural inclusive
+	g1pEX: "1p.EXCL", // 1st-person plural exclusive
+	g2PAU: "2.PAU", // 2nd-person paucal
+	g2PAUFORM: "2.PAU.FORM", // 2nd-person paucal formal
+	g2p: "2p", // 2nd-person
+	g2pFORM: "2p.FORM", // 2nd-person formal
+	g3PAUAN: "3.PAU.AN", // 3rd-person paucal animate
+	g3pAN: "3p.AN", // 3rd-person plural animate
+	g3PAUINAN: "3.PAU.INAN", // 3rd-person paucal inanimate
+	g3pINAN: "3p.INAN", // 3rd-person plural inanimate
+	gGER: "GER", // gerund
 
 	// transformation descriptions: changes (something) to (something else)
 	changeTo: "change {{from}} to {{to}}",
 	// FROM
-	"triple vowels": "triple vowels",
-	"double-dipthongs": "double-dipthongs",
-	"certain non-word-initial vowel-i pairs": "certain non-word-initial vowel-i pairs",
-	"n-plosive": "n-plosive", // n followed by a plosive consonant
-	"m-plosive": "m-plosive",
-	"retroflex n-plosive": "retroflex n-plosive", // retroflex n followed by a plosive consonant
-	"p-nasal": "p-nasal", // p followed by a nasal consonant
-	"t-nasal": "t-nasal",
-	"nasal after retoflex t": "nasal after retoflex t",
-	"p-fricative": "p-fricative", // p followed by a fricative consonant
-	"t-fricative": "t-fricative",
-	"post-retroflex t fricative": "post-retroflex t fricative",
-	"k-fricative": "k-fricative",
-	"f-fricative": "f-fricative",
-	"s-fricative": "s-fricative",
-	"post-retroflex s fricative": "post-retroflex s fricative",
-	"h-fricative": "h-fricative",
+	tripleVowels: "triple vowels",
+	doubleDipthongs: "double-dipthongs",
+	nonWIVowelIPairs: "certain non-word-initial vowel-i pairs",
+	nPlosive: "n-plosive", // n followed by a plosive consonant
+	mPlosive: "m-plosive",
+	retroNPlosive: "retroflex n-plosive", // retroflex n followed by a plosive consonant
+	pNasal: "p-nasal", // p followed by a nasal consonant
+	tNasal: "t-nasal",
+	nasalPostRetroT: "nasal after retoflex t",
+	pFricative: "p-fricative", // p followed by a fricative consonant
+	tFricative: "t-fricative",
+	postRetroTFric: "post-retroflex t fricative",
+	kFricative: "k-fricative",
+	fFricative: "f-fricative",
+	sFricative: "s-fricative",
+	postRetroSFric: "post-retroflex s fricative",
+	hFricative: "h-fricative",
 	ft: "ft",
-	"retroflex s-t": "retroflex s-t", // retroflex s followed by a t
-	"non-initial h not preceded by a g": "non-initial h not preceded by a g",
-	"W-vowel": "W-vowel", // W followed by a vowel
-	"remaining Ws": "remaining Ws",
-	"vowel-ch": "vowel-ch", // vowel followed by ch
-	"B after a vowel and at word-end or before a non-vowel":
-		"B after a vowel and at word-end or before a non-vowel",
-	"vowel-B": "vowel-B",
-	"word-final o or au": "word-final o or au",
-	"word-final ou or ei": "word-final ou or ei",
-	"qu at word-end": "qu at word-end",
-	"word-final c": "word-final c",
-	"double a/i/u": "double a/i/u", // aa, ii, or uu
-	"word-final mk or mt": "word-final mk or mt",
-	"word-final nk or np": "word-final nk or np",
-	"ngk and ngt": "ngk and ngt",
+	retroST: "retroflex s-t", // retroflex s followed by a t
+	nonInitHNotPreG: "non-initial h not preceded by a g",
+	WVowel: "W-vowel", // W followed by a vowel
+	remWs: "remaining Ws",
+	vowelCh: "vowel-ch", // vowel followed by ch
+	bWithConditions: "B after a vowel and at word-end or before a non-vowel",
+	vowelB: "vowel-B",
+	wordFinalOOrAu: "word-final o or au",
+	wordFinalOuOrEi: "word-final ou or ei",
+	wordFinalQu: "qu at word-end",
+	wordFinalC: "word-final c",
+	doubleAIU: "double a/i/u", // aa, ii, or uu
+	wordFinalMkOrMt: "word-final mk or mt",
+	wordFinalNkOrNp: "word-final nk or np",
+	ngkNgt: "ngk and ngt",
 
 	//TO
-	"double vowels": "double vowels",
-	"single dipthongs": "single dipthongs",
+	doubleVowels: "double vowels",
+	singleDipthongs: "single dipthongs",
 	dipthongs: "dipthongs",
 	nt: "nt",
 	mp: "mp",
-	"retroflex n-retroflex plosive": "retroflex n-retroflex plosive", // retroflex n followed by retroflex plosive consonant
+	retroNRetroPlosive: "retroflex n-retroflex plosive", // retroflex n followed by retroflex plosive consonant
 	pm: "pm",
 	tn: "tn",
-	"retroflex n": "retroflex n",
+	retroN: "retroflex n",
 	pf: "pf",
 	ts: "ts",
-	"retroflex s": "retroflex s",
+	retroS: "retroflex s",
 	kh: "kh",
 	fp: "fp",
 	st: "st",
-	"retroflex t": "retroflex t",
+	retroT: "retroflex t",
 	hk: "hk",
 	// fp
-	"retroflex s-retroflex t": "retroflex s-retroflex t", // retroflex s followed by a retroflex t
+	retroSRetroT: "retroflex s-retroflex t", // retroflex s followed by a retroflex t
 	k: "k",
-	"wh-vowel": "wh-vowel", // wh followed by a vowel
+	whVowel: "wh-vowel", // wh followed by a vowel
 	w: "w",
-	"vowel-tch": "vowel-tch", // vowel followed by tch
-	"vowel-ble": "vowel-ble",
-	"vowel-bl": "vowel-bl",
+	vowelTch: "vowel-tch", // vowel followed by tch
+	vowelBle: "vowel-ble",
+	vowelBl: "vowel-bl",
 	ow: "ow",
-	"ough or eigh": "ough or eigh",
+	oughEigh: "ough or eigh",
 	que: "que",
 	ck: "ck",
-	"single a/i/u": "single a/i/u", // a single a, i, or u (started as aa, ii or uu)
+	singleAIU: "single a/i/u", // a single a, i, or u (started as aa, ii or uu)
 	// mp
 	// nt
 	nk: "nk",
@@ -218,7 +213,7 @@ const wg = {
 	deRetro: "de-retroflex {{char}} after {{what}}",
 	deRetroBefore: "de-retroflex {{one}} before retroflex {{two}}",
 	markRetro: "mark retroflex {{char}}",
-	"a dipthong": "a dipthong",
+	aDipthong: "a dipthong",
 	s: "s",
 	t: "t",
 	n: "n",
@@ -226,45 +221,40 @@ const wg = {
 
 	nix: "eliminate {{what}}",
 	// things being eliminated
-	"third vowel in a row": "third vowel in a row",
-	"dipthong before i": "dipthong before i",
-	"plosive before an r": "plosive before an r",
-	"nasal after k": "nasal after k",
-	"non-retroflex consonant after retroflex consonants":
-		"non-retroflex consonant after retroflex consonants",
-	"retroflex consonant after non-retroflex consonant":
-		"retroflex consonant after non-retroflex consonant",
-	"all other h": "all other h",
-	"remaining Bs": "remaining Bs",
-	"duplicate ys": "duplicate ys",
-	"triple+ vowels after q": "triple+ vowels after q",
+	thirdVowel: "third vowel in a row",
+	dipthongI: "dipthong before i",
+	plosiveR: "plosive before an r",
+	kNasal: "nasal after k",
+	retroConsNonRetroCons: "non-retroflex consonant after retroflex consonants",
+	nonRetroConsRetroCons: "retroflex consonant after non-retroflex consonant",
+	otherHs: "all other h",
+	otherBs: "remaining Bs",
+	dupeYs: "duplicate ys",
+	qTripVowels: "triple+ vowels after q",
 
 
 	// Complex
-	"reduce multiple h to single": "reduce multiple h to single", // e.g. hhhhh -> h
-	"reduce double consonants to one": "reduce double consonants to one", // e.g. cc -> c, dd-> d
-	"reduce kh to k": "reduce kh to k", // kh -> k
+	reduceMultiHsToH: "reduce multiple h to single", // e.g. hhhhh -> h
+	reduceDoubleConsToCon: "reduce double consonants to one", // e.g. cc -> c, dd-> d
+	reduceKhToK: "reduce kh to k", // kh -> k
 
-	"save h before stressed syllable": "save h before stressed syllable",
-	"save word-initial h": "save word-initial h",
-	"save word-final h": "save word-final h",
-	"restore saved h": "restore saved h", // previously, h was "saved" as H. now, H becomes h again.
+	saveHBeforeStress: "save h before stressed syllable",
+	saveWIH: "save word-initial h",
+	saveWFH: "save word-final h",
+	restoreSavedH: "restore saved h", // previously, h was "saved" as H. now, H becomes h again.
 
 	// Pseudo-English
-	"i before e except after c": "i before e except after c",
-	"reduce tl cluster to t after non-vowel": "reduce tl cluster to t after non-vowel",
-	"reduce tl cluster to t before consonant or word-end":
-		"reduce tl cluster to t before consonant or word-end",
-	"reduce triple-letter clusters to two": "reduce triple-letter clusters to two",
-	"reduce multiple vowels in a row, where any two vowels match, to the matching vowels":
-		"reduce multiple vowels in a row, where any two vowels match, to the matching vowels",
-	"q is always followed by u": "q is always followed by u",
+	iBeforeE: "i before e except after c",
+	reduceTlClusterAfterCon: "reduce tl cluster to t after non-vowel",
+	reduceTlClusterBeforeConOrEnd: "reduce tl cluster to t before consonant or word-end",
+	reduceTripleToTwo: "reduce triple-letter clusters to two",
+	reduceMultiVowelsToMatching: "reduce multiple vowels in a row, where any two vowels match, to the matching vowels",
+	qFollowedByU: "q is always followed by u",
 
 	// Pseudo-Japanese
-	"replace forbidden syllable": // some syllables *could* be possible, but are never actually used in Japanese
-		"replace forbidden syllable",
-	"remove duplicate characters": "remove duplicate characters",
-	"reduce 3+ vowels in a row down to just 2": "reduce 3+ vowels in a row down to just 2",
+	replaceForbiddenSyll: "replace forbidden syllable", // some syllables *could* be possible, but are never actually used in Japanese
+	removeDupeChars: "remove duplicate characters",
+	reduceTripPlusVowelsToTwo: "reduce 3+ vowels in a row down to just 2",
 
 	info: {
 		charGroupExample: [ // strong, emphasized
@@ -273,7 +263,7 @@ const wg = {
 			"C=pbklr",
 			"V=eioau"
 		],
-		charGroups:[ // Markdown format
+		charGroups: [ // Markdown format
 			// `example` will insert the charGroupExample as a block
 			// `anything else` will treat "anything else" as highlighted IPA text
 			"This is where you define groups of sounds. The two simplest",
@@ -304,11 +294,11 @@ const wg = {
 			"others. You can adjust this _dropoff rate_, or eliminate it",
 			"entirely, on the **$t(common:Settings)** tab.",
 		],
-		charGroupsHiddenOverview: [ // Markdown format
+		charGroupsIsOverview: [ // Markdown format
 			"**Character group run dropoff** is explained in the",
 			"**$t(common:Settings)** section below.",
 		],
-		charGroupsOverview: [ // Markdown format
+		charGroupsNotOverview: [ // Markdown format
 			"**Character group run dropoff** ranges from 0 to 50. At zero",
 			"(flat), character group choices are all equiprobable. Otherwise,",
 			"the higher the number, the more likely it is that the first",
@@ -317,7 +307,7 @@ const wg = {
 		],
 
 
-		syllablesStartHideOverview: [ // Markdown format
+		syllablesStart: [ // Markdown format
 			// This section is used if we're only showing the Syllables card
 				// `charGroup example` will insert the charGroupExample as a block
 				// `anything else` will be ignored
@@ -334,7 +324,7 @@ const wg = {
 			"...you could decide to make a list of syllables such as the",
 			"following:",
 		],
-		syllablesStartOverview: [ // Markdown format
+		syllablesStartIsOverview: [ // Markdown format
 			// This section is used if we're showing all cards at once
 			"This is where you determine how your syllables are formed.",
 			"You use the _labels_ to describe the elements that make",
@@ -373,12 +363,12 @@ const wg = {
 			"upper limit on the number of syllables any one word can",
 			"have."
 		],
-		syllablesEndOverview: [ // Markdown format
+		syllablesEndIsOverview: [ // Markdown format
 			// This section is used if we're showing all cards at once
 			"The **Syllable box dropoff** is explained in the",
 			"**$t(common:Settings)** section below.",
 		],
-		syllablesEndHideOverview: [ // Markdown format
+		syllablesEnd: [ // Markdown format
 			// This section is used if we're only showing the Syllables card
 			"The **Syllable box dropoff** ranges from 0 to 50. At zero",
 			"(flat), syllable choices are all equiprobable. Otherwise, the",
@@ -476,7 +466,9 @@ const wg = {
 			"cause unintended effects as previous transformations mutate the",
 			"original word, so you can reorganize your transformations by",
 			"using the `DRAG HANDLE` drag handles.",
-			"***",
+			"",
+			"---",
+			"",
 			"Here are some sample transformations for some linguistic",
 			"phenomina:",
 			"- Consonant harmony: `block2`",

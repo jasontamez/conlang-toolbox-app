@@ -61,9 +61,9 @@ interface GeneratorResponse {
 
 const commons = [ "Generate", "Cancel", "Help", "Loading", "Output", "Save" ];
 const translations = [
-	"You are missing one or more types of syllables.",
-	"You have no character groups defined.",
-	"You have no syllables defined."
+	"missingSyllableTypesMsg",
+	"noCharGroupsDefinedMsg",
+	"noSyllablesDefinedMsg"
 ];
 
 const WGOut: FC<PageData> = (props) => {

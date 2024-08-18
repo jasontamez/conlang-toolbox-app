@@ -47,11 +47,11 @@ import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
 
 const translations = [
-	"All possible syllables", "Capitalize words", "Default",
-	"Multi-column layout", "Number of sentences", "Pseudo-text",
-	"Show syllable breaks", "Sort output", "What to Generate",
-	"Wordlist size", "Wordlist", "Pseudo-text Controls",
-	"Wordlist and Syllable-List Controls"
+	"AllPossibleSyllables", "CapitalizeWords", "Default",
+	"MultiColumnLayout", "NumberOfSentences", "PseudoText",
+	"ShowSyllableBreaks", "SortOutput", "WhatToGenerate",
+	"WordlistSize", "Wordlist", "PseudoTextControls",
+	"WordListSyllListControls"
 ];
 
 const OutputOptionsModal: FC<ModalProperties> = (props) => {

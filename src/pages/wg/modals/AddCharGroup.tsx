@@ -59,7 +59,7 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
 	const [ tAddClose, tError, tCancel ] = useI18Memo(commons);
-	const tUseDrop = useMemo(() => t("Use separate dropoff rate"), [t]);
+	const tUseDrop = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [
 		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest

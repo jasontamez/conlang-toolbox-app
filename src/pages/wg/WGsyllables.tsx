@@ -99,25 +99,25 @@ const commons = [
 	"Save", "Edit", "Delete", "Help"
 ];
 const formals = [
-	"word-initial syllables",
-	"mid-word syllables", "word-final syllables"
+	"wiSyllables",
+	"mwSyllables", "wfSyllables"
 ];
 const formal = { context: "formal" };
 const translations = [
 	"Syllables_other",
-	"From 0 to 50",
-	"Use multiple syllable types",
-	"Use character group labels to construct syllables",
-	"Use separate dropoff rate",
-	"word-initial syllables",
-	"These syllables are used to begin words",
-	"mid-word syllables",
-	"These syllables are used between the first and last syllable of a word",
-	"word-final syllables",
-	"These syllables are used to end words",
+	"From0To50",
+	"UseMultiSyllTypes",
+	"useLabelsToMakeSyllables",
+	"useSepDropoffRate",
+	"wiSyllables",
+	"usedToBeginWords",
+	"mwSyllables",
+	"usedInMiddleOfWords",
+	"wfSyllables",
+	"usedToEndWords",
 	"syllableDropoffExplanation",
-	"single-word syllables",
-	"dropoff rate"
+	"swSyllables",
+	"dropoffRate"
 ];
 
 const WGSyl: FC<PageData> = (props) => {
@@ -208,7 +208,7 @@ const WGSyl: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: t("Delete All Syllables"),
+				header: t("DeleteAllSyllables"),
 				message: t("delAllSyllables"),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),

@@ -206,7 +206,7 @@ const WESChange: FC<PageData> = (props) => {
 		} else {
 			yesNoAlert({
 				header: tClearAll,
-				message: t("dellAllSC"),
+				message: t("delAllSC"),
 				cssClass: "warning",
 				submit: tc("confirmDel", { count }),
 				handler,

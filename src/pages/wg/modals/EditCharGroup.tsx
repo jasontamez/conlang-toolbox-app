@@ -68,7 +68,7 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const tUseSep = useMemo(() => t("Use separate dropoff rate"), [t]);
+	const tUseSep = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tCG, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,

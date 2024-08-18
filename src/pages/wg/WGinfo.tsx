@@ -39,15 +39,15 @@ import useI18Memo, { useI18MemoObject } from '../../components/useI18Memo';
 type CodeProps = React.ClassAttributes<HTMLElement> & React.HTMLAttributes<HTMLElement> & ExtraProps;
 
 interface CardProps {
-	hideOverview?: boolean
+	isOverview?: boolean
 	setIsOpenInfo?: SetBooleanState
 }
 const OverviewButton: FC<CardProps> = (props) => {
-	const { hideOverview, setIsOpenInfo } = props;
+	const { isOverview, setIsOpenInfo } = props;
 	const [ tc ] = useTranslator('common');
 	const tHelp = useMemo(() => tc('Help'), [tc]);
 	const clicker = useCallback(() => setIsOpenInfo && setIsOpenInfo(false), [setIsOpenInfo]);
-	if(hideOverview) {
+	if(isOverview) {
 		return <></>;
 	}
 	return (
@@ -67,15 +67,15 @@ const OverviewButton: FC<CardProps> = (props) => {
 const joinArrays = { joinArrays: "\n"};
 
 const charGroupInfo = [
-	"info.charGroups", "info.charGroupsHiddenOverview",
-	"info.charGroupsOverview"
+	"info.charGroups", "info.charGroupsNotOverview",
+	"info.charGroupsIsOverview"
 ];
 export const CharGroupCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const example = useMemo(() => t("info.charGroupExample", { returnObjects: true }), [t]);
 	const tCharGroupTab = useMemo(() => tw("CharacterGroupsTab"), [tw]);
-	const [ plainText, endHiddenOverview, endOverview ] = useI18Memo(charGroupInfo, 'wg', joinArrays);
+	const [ plainText, endNotOverview, endIsOverview ] = useI18Memo(charGroupInfo, 'wg', joinArrays);
 	const codeProps = useMemo(() => ({
 		code: (props: CodeProps) => {
 			const { children } = props;
@@ -101,7 +101,7 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 			</IonItem>
 			<IonCardContent>
 				<Markdown components={codeProps}>{plainText}</Markdown>
-				<Markdown>{props.hideOverview ? endHiddenOverview : endOverview}</Markdown>
+				<Markdown>{props.isOverview ? endIsOverview : endNotOverview}</Markdown>
 			</IonCardContent>
 		</IonCard>
 	);
@@ -109,17 +109,17 @@ export const CharGroupCard: FC<CardProps> = (props) => {
 
 const syllExamples = [ "info.charGroupExample", "info.syllablesExample" ];
 const syllInfo = [
-	"info.syllablesStartHideOverview", "info.syllablesStartOverview",
-	"info.syllables", "info.syllablesEndHideOverview",
-	"info.syllablesEndOverview"
+	"info.syllablesStartIsOverview", "info.syllablesStart",
+	"info.syllables", "info.syllablesEndIsOverview",
+	"info.syllablesEnd"
 ];
 export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const { hideOverview } = props;
+	const { isOverview } = props;
 	const [ charGroupExample, example ] = useI18MemoObject(syllExamples, 'wg');
 	const [
-		startHiddenOverview, startOverview,
-		plainText, endHiddenOverview, endOverview
+		startIsOverview, startNotOverview,
+		plainText, endIsOverview, endNotOverview
 	] = useI18Memo(syllInfo, 'wg', joinArrays);
 	const tSyllTab = useMemo(() => t("Syllables Tab"), [t]);
 	const codeProps = useMemo(() => ({
@@ -160,13 +160,13 @@ export const SylCard: FC<CardProps> = (props) => {
 				<OverviewButton {...props} />
 			</IonItem>
 			<IonCardContent>
-				<Markdown components={codeProps}>{hideOverview ? startHiddenOverview : startOverview}</Markdown>
+				<Markdown components={codeProps}>{isOverview ? startIsOverview : startNotOverview}</Markdown>
 
 				{emphasis}
 
 				<Markdown>{plainText}</Markdown>
 
-				<Markdown>{hideOverview ? endHiddenOverview : endOverview}</Markdown>
+				<Markdown>{isOverview ? endIsOverview : endNotOverview}</Markdown>
 
 			</IonCardContent>
 		</IonCard>
@@ -278,11 +278,11 @@ const WGinfo: FC<PageData> = (props) => {
 						<Markdown>{main}</Markdown>
 					</IonCardContent>
 				</IonCard>
-				<CharGroupCard hideOverview />
-				<SylCard hideOverview />
-				<TransCard hideOverview />
-				<OutCard hideOverview />
-				<OptCard hideOverview />
+				<CharGroupCard isOverview />
+				<SylCard isOverview />
+				<TransCard isOverview />
+				<OutCard isOverview />
+				<OptCard isOverview />
 			</IonContent>
 		</IonPage>
 	);

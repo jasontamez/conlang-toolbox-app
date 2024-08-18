@@ -141,7 +141,7 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "S",
-				title: "Initial consonants",
+				title: "InitialConsonants",
 				run: "tspkThfS"
 			},
 			{
@@ -151,17 +151,17 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "I",
-				title: "Mid-word vowels",
+				title: "MWVowels",
 				run: "aoueAOUE"
 			},
 			{
 				label: "E",
-				title: "Word-ending consonants",
+				title: "WordEndingConsonants",
 				run: "sfSnmNktpTh"
 			},
 			{
 				label: "J",
-				title: "Word-final conjugation",
+				title: "WFConjugation",
 				run: "1234567890!@#-&=_;:~",
 				dropoffOverride: 0
 			}
@@ -177,403 +177,403 @@ const WGPresets: WGPresetArray = [
 				id: "50.1",
 				seek: "1",
 				replace: "e",
-				description: "CONJ[type=1s]"
+				description: "CONJ[type=g1s]"
 			},
 			{
 				id: "50.2.1",
 				seek: "([mfpkh])2|([hk])3",
 				replace: "$1$2a",
-				description: "CONJ[type=2s/3s!AN]"
+				description: "CONJ[type=g2s3sAN]"
 			},
 			{
 				id: "50.2.2",
 				seek: "([nts])2|([mfp])3",
 				replace: "$1$2i",
-				description: "CONJ[type=2s/3s!AN]"
+				description: "CONJ[type=g2s3sAN]"
 			},
 			{
 				id: "50.2.3",
 				seek: "([NTS])2",
 				replace: "$1u",
-				description: "CONJ[type=2s]"
+				description: "CONJ[type=g2s]"
 			},
 			{
 				id: "50.3",
 				seek: "([nstNTS])3",
 				replace: "$1o",
-				description: "CONJ[type=3s!AN]"
+				description: "CONJ[type=g3sAN]"
 			},
 			{
 				id: "50.4.1",
 				seek: "([mfp])4",
 				replace: "$1a$1e",
-				description: "CONJ[type=2s!FORM]"
+				description: "CONJ[type=g2sFORM]"
 			},
 			{
 				id: "50.4.2",
 				seek: "([nst])4",
 				replace: "$1i$1eĭ",
-				description: "CONJ[type=2s!FORM]"
+				description: "CONJ[type=g2sFORM]"
 			},
 			{
 				id: "50.4.3",
 				seek: "([NTS])4",
 				replace: "$1u$1eĭ",
-				description: "CONJ[type=2s!FORM]"
+				description: "CONJ[type=g2sFORM]"
 			},
 			{
 				id: "50.4.4",
 				seek: "([hk])4",
 				replace: "$1ate",
-				description: "CONJ[type=2s!FORM]"
+				description: "CONJ[type=g2sFORM]"
 			},
 			{
 				id: "50.5.1",
 				seek: "([mfp])5",
 				replace: "$1o$1o",
-				description: "CONJ[type=3s!INAN]"
+				description: "CONJ[type=g3sINAN]"
 			},
 			{
 				id: "50.5.2",
 				seek: "([nstNST])5",
 				replace: "$1aa",
-				description: "CONJ[type=3s!INAN]"
+				description: "CONJ[type=g3sINAN]"
 			},
 			{
 				id: "50.5.3",
 				seek: "([hk])5",
 				replace: "$1iki",
-				description: "CONJ[type=3s!INAN]"
+				description: "CONJ[type=g3sINAN]"
 			},
 			{
 				id: "50.6.1",
 				seek: "([mfp])6",
 				replace: "$1eo",
-				description: "CONJ[type=1!DU!IN]"
+				description: "CONJ[type=g1DUIN]"
 			},
 			{
 				id: "50.6.2",
 				seek: "([nst])6",
 				replace: "$1io",
-				description: "CONJ[type=1!DU!IN]"
+				description: "CONJ[type=g1DUIN]"
 			},
 			{
 				id: "50.6.3",
 				seek: "([NTS])6",
 				replace: "$1ua",
-				description: "CONJ[type=1!DU!IN]"
+				description: "CONJ[type=g1DUIN]"
 			},
 			{
 				id: "50.6.4",
 				seek: "([hk])6",
 				replace: "$1ee",
-				description: "CONJ[type=1!DU!IN]"
+				description: "CONJ[type=g1DUIN]"
 			},
 			{
 				id: "50.7.1",
 				seek: "([mfp])7",
 				replace: "$1uo",
-				description: "CONJ[type=1!DU!EX]"
+				description: "CONJ[type=g1DUEX]"
 			},
 			{
 				id: "50.7.2",
 				seek: "([nstNST])7",
 				replace: "$1u",
-				description: "CONJ[type=1!DU!EX]"
+				description: "CONJ[type=g1DUEX]"
 			},
 			{
 				id: "50.7.3",
 				seek: "([kh])7",
 				replace: "$1eo",
-				description: "CONJ[type=1!DU!EX]"
+				description: "CONJ[type=g1DUEX]"
 			},
 			{
 				id: "50.8.1",
 				seek: "([mfp])8|([NST])0",
 				replace: "$1$2eĭ",
-				description: "CONJ[type=1!PAU!IN/1p!IN]"
+				description: "CONJ[type=g1PAUIN1pIN]"
 			},
 			{
 				id: "50.8.2",
 				seek: "([nst])8",
 				replace: "$1u$1u",
-				description: "CONJ[type=1!PAU!IN]"
+				description: "CONJ[type=g1PAUIN]"
 			},
 			{
 				id: "50.8.3",
 				seek: "([NTS])8",
 				replace: "$1a$1a",
-				description: "CONJ[type=1!PAU!IN]"
+				description: "CONJ[type=g1PAUIN]"
 			},
 			{
 				id: "50.8.4",
 				seek: "([hk])8|([nst])9|([mfp])0",
 				replace: "$1$2$3aĭ",
-				description: "CONJ[type=1.PAU!IN/1!PAU!EX/1p!IN]"
+				description: "CONJ[type=g1PAUIN1PAUEX1pIN]"
 			},
 			{
 				id: "50.9.1",
 				seek: "([mfp])9",
 				replace: "$1ae",
-				description: "CONJ[type=1!PAU!EX]"
+				description: "CONJ[type=g1PAUEX]"
 			},
 			{
 				id: "50.9.2",
 				seek: "([NTS])9|([nst])0",
 				replace: "$1$2oĭ",
-				description: "CONJ[type=1!PAU!EX/1p!IN]"
+				description: "CONJ[type=g1PAUEX1pIN]"
 			},
 			{
 				id: "50.9.3",
 				seek: "([hk])[9!]",
 				replace: "$1oe",
-				description: "CONJ[type=1!PAU!EX/1p!EX]"
+				description: "CONJ[type=g1PAUEX1pEX]"
 			},
 			{
 				id: "50.10",
 				seek: "([hk])0",
 				replace: "$1uu",
-				description: "CONJ[type=1p!IN]"
+				description: "CONJ[type=g1pIN]"
 			},
 			{
 				id: "50.11.1",
 				seek: "([fmp])!",
 				replace: "$1ou",
-				description: "CONJ[type=1p!EX]"
+				description: "CONJ[type=g1pEX]"
 			},
 			{
 				id: "50.11.2",
 				seek: "([nst])!",
 				replace: "$1uaĭ",
-				description: "CONJ[type=1p!EX]"
+				description: "CONJ[type=g1pEX]"
 			},
 			{
 				id: "50.11.3",
 				seek: "([NST])!",
 				replace: "$1uoĭ",
-				description: "CONJ[type=1p!EX]"
+				description: "CONJ[type=g1pEX]"
 			},
 			{
 				id: "50.12.1",
 				seek: "([fmphk])@",
 				replace: "$1ara",
-				description: "CONJ[type=2!PAU]"
+				description: "CONJ[type=g2PAU]"
 			},
 			{
 				id: "50.12.2",
 				seek: "([nst])@",
 				replace: "$1aro",
-				description: "CONJ[type=2!PAU]"
+				description: "CONJ[type=g2PAU]"
 			},
 			{
 				id: "50.12.3",
 				seek: "([NST])@",
 				replace: "$1uro",
-				description: "CONJ[type=2!PAU]"
+				description: "CONJ[type=g2PAU]"
 			},
 			{
 				id: "50.13.1",
 				seek: "([fmpnsthk])#",
 				replace: "$1areĭ",
-				description: "CONJ[type=2!PAU!FORM]"
+				description: "CONJ[type=g2PAUFORM]"
 			},
 			{
 				id: "50.13.2",
 				seek: "([NST])#",
 				replace: "$1ureĭ",
-				description: "CONJ[type=2!PAU!FORM]"
+				description: "CONJ[type=g2PAUFORM]"
 			},
 			{
 				id: "50.14.1",
 				seek: "([fmphk])-",
 				replace: "$1ala",
-				description: "CONJ[type=2p]"
+				description: "CONJ[type=g2p]"
 			},
 			{
 				id: "50.14.2",
 				seek: "([nst])-",
 				replace: "$1alo",
-				description: "CONJ[type=2p]"
+				description: "CONJ[type=g2p]"
 			},
 			{
 				id: "50.14.3",
 				seek: "([NST])-",
 				replace: "$1uLo",
-				description: "CONJ[type=2p]"
+				description: "CONJ[type=g2p]"
 			},
 			{
 				id: "50.15.1",
 				seek: "([fmpnsthk])&",
 				replace: "$1aleĭ",
-				description: "CONJ[type=2p!FORM]"
+				description: "CONJ[type=g2pFORM]"
 			},
 			{
 				id: "50.15.2",
 				seek: "([NST])&",
 				replace: "$1uleĭ",
-				description: "CONJ[type=2p!FORM]"
+				description: "CONJ[type=g2pFORM]"
 			},
 			{
 				id: "50.16.1",
 				seek: "([fmp])=",
 				replace: "$1iro",
-				description: "CONJ[type=3!PAU!AN]"
+				description: "CONJ[type=g3PAUAN]"
 			},
 			{
 				id: "50.16.2",
 				seek: "([nstNST])=",
 				replace: "$1ore",
-				description: "CONJ[type=3!PAU!AN]"
+				description: "CONJ[type=g3PAUAN]"
 			},
 			{
 				id: "50.16.3",
 				seek: "([hk])=",
 				replace: "$1aro",
-				description: "CONJ[type=3!PAU!AN]"
+				description: "CONJ[type=g3PAUAN]"
 			},
 			{
 				id: "50.17.1",
 				seek: "([mfp])_",
 				replace: "$1ilo",
-				description: "CONJ[type=3p!AN]"
+				description: "CONJ[type=g3pAN]"
 			},
 			{
 				id: "50.17.2",
 				seek: "([nst])_",
 				replace: "$1ole",
-				description: "CONJ[type=3p!AN]"
+				description: "CONJ[type=g3pAN]"
 			},
 			{
 				id: "50.17.3",
 				seek: "([NTS])_",
 				replace: "$1oLe",
-				description: "CONJ[type=3p!AN]"
+				description: "CONJ[type=g3pAN]"
 			},
 			{
 				id: "50.17.4",
 				seek: "([hk])_",
 				replace: "$1alo",
-				description: "CONJ[type=3p!AN]"
+				description: "CONJ[type=g3pAN]"
 			},
 			{
 				id: "50.18.1",
 				seek: "([mfp]);",
 				replace: "$1oro",
-				description: "CONJ[type=3!PAU!INAN]"
+				description: "CONJ[type=g3PAUINAN]"
 			},
 			{
 				id: "50.18.2",
 				seek: "([nstNST]);",
 				replace: "$1ara",
-				description: "CONJ[type=3!PAU!INAN]"
+				description: "CONJ[type=g3PAUINAN]"
 			},
 			{
 				id: "50.18.3",
 				seek: "([kh]);",
 				replace: "$1iri",
-				description: "CONJ[type=3!PAU!INAN]"
+				description: "CONJ[type=g3PAUINAN]"
 			},
 			{
 				id: "50.19.1",
 				seek: "([mfp]):",
 				replace: "$1olo",
-				description: "CONJ[type=3p!INAN]"
+				description: "CONJ[type=g3pINAN]"
 			},
 			{
 				id: "50.19.2",
 				seek: "([nst]):",
 				replace: "$1ala",
-				description: "CONJ[type=3p!INAN]"
+				description: "CONJ[type=g3pINAN]"
 			},
 			{
 				id: "50.19.3",
 				seek: "([NTS]):",
 				replace: "$1aLa",
-				description: "CONJ[type=3p!INAN]"
+				description: "CONJ[type=g3pINAN]"
 			},
 			{
 				id: "50.19.4",
 				seek: "([hk]):",
 				replace: "$1ili",
-				description: "CONJ[type=3p!INAN]"
+				description: "CONJ[type=g3pINAN]"
 			},
 			{
 				id: "50.20.1",
 				seek: "([mfphk])~",
 				replace: "$1aĭa",
-				description: "CONJ[type=GER]"
+				description: "CONJ[type=gGER]"
 			},
 			{
 				id: "50.20.2",
 				seek: "([nstNST])~",
 				replace: "$1oĭa",
-				description: "CONJ[type=GER]"
+				description: "CONJ[type=gGER]"
 			},
 			{
 				id: "0",
 				seek: "([aeiou])\\1{2,}",
 				replace: "$1$1",
-				description: "changeTo[from=triple vowels][to=double vowels]"
+				description: "changeTo[from=tripleVowels][to=doubleVowels]"
 			},
 			{
 				id: "1",
 				seek: "([AEOU])\\1+",
 				replace: "$1",
-				description: "changeTo[from=double-dipthongs][to=single dipthongs]"
+				description: "changeTo[from=doubleDipthongs][to=singleDipthongs]"
 			},
 			{
 				id: "2",
 				seek: "(%V{2})%V+",
 				replace: "$1",
-				description: "nix[what=third vowel in a row]"
+				description: "nix[what=thirdVowel]"
 			},
 			{
 				id: "3",
 				seek: "h+",
 				replace: "h",
-				description: "reduce multiple h to single"
+				description: "reduceMultiHsToH"
 			},
 			{
 				id: "4",
 				seek: "h(?=%V(%E|%C{0,2}%V)\\b)",
 				replace: "H",
-				description: "save h before stressed syllable"
+				description: "saveHBeforeStress"
 			},
 			{
 				id: "5",
 				seek: "(%V)h(?=%V\\b)",
 				replace: "$1H",
-				description: "save h before stressed syllable"
+				description: "saveHBeforeStress"
 			},
 			{
 				id: "6",
 				seek: "\\bh",
 				replace: "H",
-				description: "save word-initial h"
+				description: "saveWIH"
 			},
 			{
 				id: "7",
 				seek: "h\\b",
 				replace: "H",
-				description: "save word-final h"
+				description: "saveWFH"
 			},
 			{
 				id: "8",
 				seek: "h",
 				replace: "",
-				description: "nix[what=all other h]"
+				description: "nix[what=otherHs]"
 			},
 			{
 				id: "9",
 				seek: "H",
 				replace: "h",
-				description: "restore saved h"
+				description: "restoreSavedH"
 			},
 			{
 				id: "9.1",
 				seek: "kh",
 				replace: "k",
-				description: "reduce kh to k"
+				description: "reduceKhToK"
 			},
 			{
 				id: "10",
@@ -603,139 +603,139 @@ const WGPresets: WGPresetArray = [
 				id: "14",
 				seek: "ĭi",
 				replace: "i",
-				description: "nix[what=dipthong before i]"
+				description: "nix[what=dipthongI]"
 			},
 			{
 				id: "15",
 				seek: "ĭT",
 				replace: "ĭt",
-				description: "deRetro[char=t][what=a dipthong]"
+				description: "deRetro[char=t][what=aDipthong]"
 			},
 			{
 				id: "16",
 				seek: "ĭS",
 				replace: "ĭs",
-				description: "deRetro[char=s][what=a dipthong]"
+				description: "deRetro[char=s][what=aDipthong]"
 			},
 			{
 				id: "17",
 				seek: "ĭL",
 				replace: "ĭl",
-				description: "deRetro[char=l][what=a dipthong]"
+				description: "deRetro[char=l][what=aDipthong]"
 			},
 			{
 				id: "18",
 				seek: "ĭN",
 				replace: "ĭn",
-				description: "deRetro[char=n][what=a dipthong]"
+				description: "deRetro[char=n][what=aDipthong]"
 			},
 			{
 				id: "19",
 				seek: "(.\\B[aeou])i",
 				replace: "$1ĭ",
-				description: "changeTo[from=certain non-word-initial vowel-i pairs][to=dipthongs]"
+				description: "changeTo[from=nonWIVowelIPairs][to=dipthongs]"
 			},
 			{
 				id: "20",
 				seek: "(%C)\\1",
 				replace: "$1",
-				description: "reduce double consonants to one"
+				description: "reduceDoubleConsToCon"
 			},
 			{
 				id: "21",
 				seek: "[tkpT]r",
 				replace: "r",
-				description: "nix[what=plosive before an r]"
+				description: "nix[what=plosiveR]"
 			},
 			{
 				id: "22",
 				seek: "n[pTk]",
 				replace: "nt",
-				description: "changeTo[from=n-plosive][to=nt]"
+				description: "changeTo[from=nPlosive][to=nt]"
 			},
 			{
 				id: "23",
 				seek: "m[tTk]",
 				replace: "mp",
-				description: "changeTo[from=m-plosive][to=mp]"
+				description: "changeTo[from=mPlosive][to=mp]"
 			},
 			{
 				id: "24",
 				seek: "N[ptk]",
 				replace: "NT",
-				description: "changeTo[from=retroflex n-plosive][to=retroflex n-retroflex plosive]"
+				description: "changeTo[from=retroNPlosive][to=retroNRetroPlosive]"
 			},
 			{
 				id: "25",
 				seek: "k[nmN]",
 				replace: "k",
-				description: "nix[what=nasal after k]"
+				description: "nix[what=kNasal]"
 			},
 			{
 				id: "26",
 				seek: "p[nN]",
 				replace: "pm",
-				description: "changeTo[from=p-nasal][to=pm]"
+				description: "changeTo[from=pNasal][to=pm]"
 			},
 			{
 				id: "27",
 				seek: "t[mN]",
 				replace: "tn",
-				description: "changeTo[from=t-nasal][to=tn]"
+				description: "changeTo[from=tNasal][to=tn]"
 			},
 			{
 				id: "28",
 				seek: "T[nm]",
 				replace: "TN",
-				description: "changeTo[from=nasal after retoflex t][to=retroflex n]"
+				description: "changeTo[from=nasalPostRetroT][to=retroN]"
 			},
 			{
 				id: "29",
 				seek: "p[sSh]",
 				replace: "pf",
-				description: "changeTo[from=p-fricative][to=pf]"
+				description: "changeTo[from=pFricative][to=pf]"
 			},
 			{
 				id: "30",
 				seek: "t[fSh]",
 				replace: "ts",
-				description: "changeTo[from=t-fricative][to=ts]"
+				description: "changeTo[from=tFricative][to=ts]"
 			},
 			{
 				id: "31",
 				seek: "T[fsh]",
 				replace: "TS",
-				description: "changeTo[from=post-retroflex t fricative][to=retroflex s]"
+				description: "changeTo[from=postRetroTFric][to=retroS]"
 			},
 			{
 				id: "32",
 				seek: "k[fsS]",
 				replace: "kh",
-				description: "changeTo[from=k-fricative][to=kh]"
+				description: "changeTo[from=kFricative][to=kh]"
 			},
 			{
 				id: "33",
 				seek: "f[sSh]",
 				replace: "fp",
-				description: "changeTo[from=f-fricative][to=fp]"
+				description: "changeTo[from=fFricative][to=fp]"
 			},
 			{
 				id: "34",
 				seek: "s[fSh]",
 				replace: "st",
-				description: "changeTo[from=s-fricative][to=st]"
+				description: "changeTo[from=sFricative][to=st]"
 			},
 			{
 				id: "35",
 				seek: "S[fsh]",
 				replace: "ST",
-				description: "changeTo[from=post-retroflex s fricative][to=retroflex t]"
+				description: "changeTo[from=postRetroSFric][to=retroT]"
 			},
 			{
 				id: "36",
 				seek: "h[fsS]",
 				replace: "hk",
-				description: "changeTo[from=h-fricative][to=hk]"
+				description: "changeTo[from=hFricative][to=hk]"
 			},
 			{
 				id: "37",
@@ -753,19 +753,19 @@ const WGPresets: WGPresetArray = [
 				id: "39",
 				seek: "St",
 				replace: "ST",
-				description: "changeTo[from=retroflex s-t][to=retroflex s-retroflex t]"
+				description: "changeTo[from=retroST][to=retroSRetroT]"
 			},
 			{
 				id: "40",
 				seek: "([TSLN])[tsln]",
 				replace: "$1",
-				description: "nix[what=non-retroflex consonant after retroflex consonants]"
+				description: "nix[what=retroConsNonRetroCons]"
 			},
 			{
 				id: "41",
 				seek: "([tsln])[TSLN]",
 				replace: "$1",
-				description: "nix[what=retroflex consonant after non-retroflex consonant]"
+				description: "nix[what=nonRetroConsRetroCons]"
 			},
 			{
 				id: "42",
@@ -826,7 +826,7 @@ const WGPresets: WGPresetArray = [
 		exclamatorySentencePre: "[",
 		exclamatorySentencePost: "]"
 	}],
-	["Pseudo-Latin", {
+	["PseudoLatin", {
 		characterGroups: [
 			{
 				label: "C",
@@ -835,17 +835,17 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "V",
-				title: "Vowels 1",
+				title: "Vowels1",
 				run: "aiueo"
 			},
 			{
 				label: "U",
-				title: "Vowels 2",
+				title: "Vowels2",
 				run: "aiuàê"
 			},
 			{
 				label: "P",
-				title: "Pre-liquid consonants",
+				title: "PreLiquidConsonants",
 				run: "ptkbdg"
 			},
 			{
@@ -855,7 +855,7 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "F",
-				title: "Syllable-final consonants",
+				title: "SyllableFinalConsonants",
 				run: "nsrmltc"
 			}
 		],
@@ -889,7 +889,7 @@ const WGPresets: WGPresetArray = [
 		],
 		...basicSettings
 	}],
-	["Pseudo-Chinese", {
+	["PseudoChinese", {
 		characterGroups: [
 			{
 				label: "C",
@@ -913,7 +913,7 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "A",
-				title: "Aspirated consonants",
+				title: "AspiratedConsonants",
 				run: "ptkč"
 			}
 		],
@@ -953,7 +953,7 @@ const WGPresets: WGPresetArray = [
 		],
 		...basicSettings
 	}],
-	["Pseudo-Greek", {
+	["PseudoGreek", {
 		characterGroups: [
 			{
 				label: "C",
@@ -989,7 +989,7 @@ const WGPresets: WGPresetArray = [
 		],
 		...basicSettings
 	}],
-	["Pseudo-English", {
+	["PseudoEnglish", {
 		characterGroups: [
 			{
 				label: "C",
@@ -1018,7 +1018,7 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "F",
-				title: "Post-nasal or -liquid Final Consonants",
+				title: "PNoLFConsonants",
 				run: "TS"
 			}
 		],
@@ -1033,7 +1033,7 @@ const WGPresets: WGPresetArray = [
 				id: "15",
 				seek: "([^g])h",
 				replace: "$1k",
-				description: "changeTo[from=non-initial h not preceded by a g][to=k]"
+				description: "changeTo[from=nonInitHNotPreG][to=k]"
 			},
 			{
 				id: "0",
@@ -1063,19 +1063,19 @@ const WGPresets: WGPresetArray = [
 				id: "6",
 				seek: "w*W+(%V)",
 				replace: "wh$1",
-				description: "changeTo[from=W-vowel][to=wh-vowel]"
+				description: "changeTo[from=WVowel][to=whVowel]"
 			},
 			{
 				id: "6.1",
 				seek: "[wW]+",
 				replace: "w",
-				description: "changeTo[from=remaining Ws][to=w]"
+				description: "changeTo[from=remWs][to=w]"
 			},
 			{
 				id: "7",
 				seek: "(%V)ch",
 				replace: "$1tch",
-				description: "changeTo[from=vowel-ch][to=vowel-tch]"
+				description: "changeTo[from=vowelCh][to=vowelTch]"
 			},
 			{
 				id: "8",
@@ -1087,19 +1087,19 @@ const WGPresets: WGPresetArray = [
 				id: "9",
 				seek: "(%V)B(\\b|!%V)",
 				replace: "$1ble$2",
-				description: "changeTo[from=B after a vowel and at word-end or before a non-vowel][to=vowel-ble]"
+				description: "changeTo[from=bWithConditions][to=vowelBle]"
 			},
 			{
 				id: "9.1",
 				seek: "(%V)B",
 				replace: "$1bl",
-				description: "changeTo[from=vowel-B][to=vowel-bl]"
+				description: "changeTo[from=vowelB][to=vowelBl]"
 			},
 			{
 				id: "9.2",
 				seek: "B",
 				replace: "",
-				description: "nix[what=remaining Bs]"
+				description: "nix[what=otherBs]"
 			},
 			{
 				id: "10",
@@ -1135,103 +1135,103 @@ const WGPresets: WGPresetArray = [
 				id: "13.2",
 				seek: "([^c])ei",
 				replace: "$1ie",
-				description: "i before e except after c"
+				description: "iBeforeE"
 			},
 			{
 				id: "14",
 				seek: "([^aeiou])(o|au)\\b",
 				replace: "$1ow",
-				description: "changeTo[from=word-final o or au][to=ow]"
+				description: "changeTo[from=wordFinalOOrAu][to=ow]"
 			},
 			{
 				id: "14.1",
 				seek: "([^aeiou])(ou|ei)\\b",
 				replace: "$1$2gh",
-				description: "changeTo[from=word-final ou or ei][to=ough or eigh]"
+				description: "changeTo[from=wordFinalOuOrEi][to=oughEigh]"
 			},
 			{
 				id: "16",
 				seek: "y+",
 				replace: "y",
-				description: "nix[what=duplicate ys]"
+				description: "nix[what=dupeYs]"
 			},
 			{
 				id: "17",
 				seek: "(\\b|[^aeiou])tl",
 				replace: "$1t",
-				description: "reduce tl cluster to t after non-vowel"
+				description: "reduceTlClusterAfterCon"
 			},
 			{
 				id: "17.1",
 				seek: "tl(\\b|%C)",
 				replace: "t$1",
-				description: "reduce tl cluster to t before consonant or word-end"
+				description: "reduceTlClusterBeforeConOrEnd"
 			},
 			{
 				id: "18",
 				seek: "(.)\\1{2,}",
 				replace: "$1$1",
-				description: "reduce triple-letter clusters to two"
+				description: "reduceTripleToTwo"
 			},
 			{
 				id: "18.1",
 				seek: "[aeiou]*([aeiou])[aeiou]*\\1[aeiou]*",
 				replace: "$1$1",
-				description: "reduce multiple vowels in a row, where any two vowels match, to the matching vowels"
+				description: "reduceMultiVowelsToMatching"
 			},
 			{
 				id: "3",
 				seek: "q+",
 				replace: "qu",
-				description: "q is always followed by u"
+				description: "qFollowedByU"
 			},
 			{
 				id: "4",
 				seek: "qu\\b",
 				replace: "que",
-				description: "changeTo[from=qu at word-end][to=que]"
+				description: "changeTo[from=wordFinalQu][to=que]"
 			},
 			{
 				id: "4.1",
 				seek: "qu([aeiou])[aeiou]+",
 				replace: "qu$1",
-				description: "nix[what=triple+ vowels after q]"
+				description: "nix[what=qTripVowels]"
 			},
 			{
 				id: "19",
 				seek: "c\\b",
 				replace: "ck",
-				description: "changeTo[from=word-final c][to=ck]"
+				description: "changeTo[from=wordFinalC][to=ck]"
 			},
 			{
 				id: "20",
 				seek: "([aiu])\\1",
 				replace: "$1",
-				description: "changeTo[from=double a/i/u][to=single a/i/u]"
+				description: "changeTo[from=doubleAIU][to=singleAIU]"
 			},
 			{
 				id: "21",
 				seek: "m[kt]\\b",
 				replace: "mp",
-				description: "changeTo[from=word-final mk or mt][to=mp]"
+				description: "changeTo[from=wordFinalMkOrMt][to=mp]"
 			},
 			{
 				id: "21.1",
 				seek: "n[kp]\\b",
 				replace: "nt",
-				description: "changeTo[from=word-final nk or np][to=nt]"
+				description: "changeTo[from=wordFinalNkOrNp][to=nt]"
 			},
 			{
 				id: "21.2",
 				seek: "ng[kt]",
 				replace: "nk",
-				description: "changeTo[from=ngk and ngt][to=nk]"
+				description: "changeTo[from=ngkNgt][to=nk]"
 			}
 		],
 		...basicSettings,
 		maxSyllablesPerWord: 5
 	}],
-	["Pseudo-Japanese", {
+	["PseudoJapanese", {
 		characterGroups: [
 			{
 				label: "C",
@@ -1251,25 +1251,25 @@ const WGPresets: WGPresetArray = [
 				id: "1",
 				seek: "y([ie])",
 				replace: "r$1",
-				description: "replace forbidden syllable"
+				description: "replaceForbiddenSyll"
 			},
 			{
 				id: "2",
 				seek: "w([ieu])",
 				replace: "b$1",
-				description: "replace forbidden syllable"
+				description: "replaceForbiddenSyll"
 			},
 			{
 				id: "3",
 				seek: "(.)\\1+",
 				replace: "$1",
-				description: "remove duplicate characters"
+				description: "removeDupeChars"
 			},
 			{
 				id: "4",
 				seek: "(%V%V)%V+",
 				replace: "$1",
-				description: "reduce 3+ vowels in a row down to just 2"
+				description: "reduceTripPlusVowelsToTwo"
 			}
 		],
 		...basicSettings,

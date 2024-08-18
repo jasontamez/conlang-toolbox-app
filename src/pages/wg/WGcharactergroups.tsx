@@ -108,7 +108,7 @@ const commons = [
 	"deleteThisCannotUndo", "yesImport",
 ];
 
-const translations = [ "dropoff rate", "characterDropoffExplanation" ];
+const translations = [ "dropoffRate", "characterDropoffExplanation" ];
 
 const WGCharGroup: FC<PageData> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
