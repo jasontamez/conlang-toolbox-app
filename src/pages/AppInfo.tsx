@@ -54,7 +54,7 @@ const translations =  [
 ];
 const markdowns = [ "credit1", "credit2", "credit3", "bugReportMsg" ];
 const commons = [ "Close", "Copy", "Ok", "areYouSure", "AppInfo" ];
-const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113" ];
+const changelog = [ "changelog.v094", "changelog.v095", "changelog.v0101", "changelog.v0113", "changelog.v0120" ];
 const context = { joinArrays: "\n" };
 
 const AppInfo: FC<PageData> = (props) => {
@@ -64,7 +64,7 @@ const AppInfo: FC<PageData> = (props) => {
 		tEntire, tGetLog, tHide, tLogsCleared, tShow, tLogs
 	] = useI18Memo(translations, 'appInfo');
 	const [ tClose, tCopy, tOk, tRUSure, tAppInfo ] = useI18Memo(commons);
-	const [ tCL94, tCL95, tCL101, tCL113 ] = useI18Memo(changelog, 'appInfo', context);
+	const [ tCL94, tCL95, tCL101, tCL113, tCL120 ] = useI18Memo(changelog, 'appInfo', context);
 	const [ tCr1, tCr2, tCr3, tBugRepMsg ] = useI18Memo(markdowns, "appInfo", context);
 
 	const [originalTheme, internals, state]: [ThemeNames, InternalState, StateObject] = useSelector(
@@ -205,8 +205,8 @@ const AppInfo: FC<PageData> = (props) => {
 									<IonCardTitle>{tCLog}</IonCardTitle>
 								</IonCardHeader>
 								<IonCardContent className="ion-padding-start changelog">
-									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.11.3</strong></h2>
-									<Markdown>{tCL113}</Markdown>
+									<h2 className="ion-text-center" onClick={maybeDebug}><strong>v.0.12.0</strong></h2>
+									<Markdown>{tCL120}</Markdown>
 									<div id="changelogButtonContainer" className="ion-text-center">
 										<IonButton
 											onClick={toggleShowOlder}
@@ -217,6 +217,8 @@ const AppInfo: FC<PageData> = (props) => {
 										</IonButton>
 									</div>
 									<div className={showOlder ? "" : "hide"}>
+										<h2 className="ion-text-center"><strong>v.0.11.3</strong></h2>
+										<Markdown>{tCL113}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.10.1</strong></h2>
 										<Markdown>{tCL101}</Markdown>
 										<h2 className="ion-text-center"><strong>v.0.9.5</strong></h2>

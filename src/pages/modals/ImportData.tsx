@@ -38,6 +38,7 @@ import {
 	storedMS,
 	storedWE,
 	storedWG,
+	ThemeNames,
 	WEState,
 	WGState
 } from '../../store/types';
@@ -259,7 +260,16 @@ const ImportData: FC<ModalProperties> = (props) => {
 			setPotential_import_con(false);
 		}
 		if(appSettings) {
-			setPotential_import_set([appSettings, sortSettings || null]);
+			if(compare(currentVersion, "0.12.0", "<")) {
+				const fixedSettings: AppSettings = {
+					...appSettings,
+					// Changes "Solarized Light" to "SolarizedLight"/Dark
+					theme: appSettings.theme ? appSettings.theme.replace(/ /g, "") as ThemeNames : "Default"
+				};
+				setPotential_import_set([fixedSettings, sortSettings || null]);
+			} else {
+				setPotential_import_set([appSettings as AppSettings, sortSettings || null]);
+			}
 		} else if (sortSettings) {
 			setPotential_import_set([null, sortSettings]);
 		} else {

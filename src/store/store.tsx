@@ -146,7 +146,7 @@ const stateReconciler = (incomingState: any, originalState: any, reducedState: a
 };
 const persistConfig = {
 	key: 'root',
-	version: 2, // NEEDS TO BE UPDATED TO 3 BEFORE NEXT BUILD
+	version: 3,
 	storage,
 	stateReconciler,
 	migrate: createMigrate(migrations, { debug: false })
