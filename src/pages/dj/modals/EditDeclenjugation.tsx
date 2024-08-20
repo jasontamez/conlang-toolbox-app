@@ -93,7 +93,6 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const tTypeString = useMemo(() => typeString ? t(typeString) : "", [typeString, t]);
 	const tEditThing = useMemo(() => tc("editThing", { thing: tTypeString }), [tTypeString, tc]);
 	const tDelThing = useMemo(() => tc("deleteThing", { thing: tTypeString }), [tTypeString, tc]);
-	const tTitleSaved = useMemo(() => tc("titleSaved", { method: tTypeString }), [tTypeString, tc]);
 
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -234,7 +233,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		setOutgoingDeclenjugation(editedDJ);
 		closeModal();
 		toaster({
-			message: tTitleSaved,
+			message: tc("titleSaved", { title }),
 			position: "middle",
 			color: "success",
 			duration: 2500,
@@ -242,7 +241,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		});
 	}, [
 		closeModal, doAlert, grabInfo, id, setOutgoingDeclenjugation, t,
-		tTitleSaved, tNoMatch, tNoTitle, tOk, toast, useAdvancedMethod,
+		tc, tNoMatch, tNoTitle, tOk, toast, useAdvancedMethod,
 		useWholeWord
 	]);
 	const maybeCancel = useCallback(() => {

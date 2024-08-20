@@ -169,7 +169,7 @@ const doText = (
 								const inner = $and(found, `_${tc("andGlue")}_`, `_${tc("andFinal")}_`);
 								foundText = `_${inner}_`;
 							} else {
-								foundText = $and(found);
+								foundText = $and(found, tc("andGlue"), tc("andFinal"));
 							}
 							return `${rowHeader} ${foundText}`;
 						});
@@ -192,12 +192,17 @@ const doText = (
 						} else if (found.length === 1) {
 							result = usingMarkDown ? "_" + found[0] + "_" : found[0];
 						} else if (found.length === 2) {
-							if(usingMarkDown) {
-								const inner = $and(found, `_${tc("andGlue")}_`, `_${tc("andFinal")}_`);
-								result = `_${inner}_`;
-							} else {
-								result = $and(found);
-							}
+							result = (
+								usingMarkDown ?
+									tc("joinTwo", { one: `_${found[0]}_`, two: `_${found[1]}_`})
+								:
+									tc("joinTwo", { one: found[0], two: found[1] })
+							);
+						} else if(usingMarkDown) {
+							const inner = $and(found, `_${tc("andGlue")}_`, `_${tc("andFinal")}_`);
+							result = `_${inner}_`;
+						} else {
+							result = $and(found, tc("andGlue"), tc("andFinal"));
 						}
 						lines.push(`${expoHeader || header} ${result}`);
 					}

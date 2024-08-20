@@ -46,7 +46,7 @@ const translations = [
 	"ShortDescriptionMsg", "MorphoSyntaxInfo",
 	"MorphoSyntaxSettings", "noInfoToClearMsg", "msTitle",
 	"needInfoToExportMsg",
-	"UsuallyLangName", "clearMSInfo"
+	"UsuallyLangName", "clearMSInfo", "clearedMS"
 ];
 
 const commons = [
@@ -60,7 +60,7 @@ const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc ] = useI18Memo(commons);
-	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings ] = useI18Memo(translations, "ms");
+	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings, tClearedThings ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
 	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("SavedMorphoSyntaxInfo") }), [t, tc]);
@@ -93,6 +93,13 @@ const Syntax: FC<PageData> = (props) => {
 	const clearMS = useCallback(() => {
 		const handler = () => {
 			dispatch(loadStateMS(blankAppState.ms));
+			toaster({
+				message: tClearedThings,
+				duration: 2500,
+				color: "warning",
+				position: "top",
+				toast
+			});
 		};
 		if(!(title || id || description || (allProps > 0))) {
 			toaster({
@@ -114,7 +121,7 @@ const Syntax: FC<PageData> = (props) => {
 		} else {
 			handler();
 		}
-	}, [allProps, description, disableConfirms, dispatch, doAlert, id, tClearAll, tConfDel, tDelAll, tNoInfo, title, toast]);
+	}, [allProps, description, disableConfirms, tClearedThings, dispatch, doAlert, id, tClearAll, tConfDel, tDelAll, tNoInfo, title, toast]);
 	const openMSModal = useCallback((modalOpener: SetBooleanState) => {
 		const info: [string, MSState][] = [];
 		setIsLoading(true);

@@ -66,7 +66,7 @@ const commons = [
 
 const DJOutput: FC<PageData> = (props) => {
 	const [
-		tCancel, tChoose, tCopy, tGen,
+		tCancel, tChooseFormat, tCopy, tGen,
 		tHelp, tOut, tCSV, tTxt, tDocx
 	] = useI18Memo(commons);
 	const [
@@ -164,7 +164,7 @@ const DJOutput: FC<PageData> = (props) => {
 	const maybeDoExport = useCallback(() => {
 		if(type.length === 0) {
 			return toaster({
-				message: tChoose,
+				message: tChooseOne,
 				color: "danger",
 				toast
 			});
@@ -187,7 +187,7 @@ const DJOutput: FC<PageData> = (props) => {
 			value: "csv"
 		});
 		doAlert({
-			header: tChooseOne,
+			header: tChooseFormat,
 			inputs,
 			buttons: [
 				{
@@ -223,7 +223,7 @@ const DJOutput: FC<PageData> = (props) => {
 				}
 			]
 		});
-	}, [conjugations, data, declensions, dispatch, displayType, doAlert, other, showUnmatched, tCSV, tCancel, tChoose, tChooseOne, tDocx, tExport, tNoFormat, tTxt, toast, type.length, typeObj]);
+	}, [conjugations, data, declensions, dispatch, displayType, doAlert, other, showUnmatched, tCSV, tCancel, tChooseFormat, tChooseOne, tDocx, tExport, tNoFormat, tTxt, toast, type.length, typeObj]);
 
 	const doGenerate = useCallback(() => {
 		if(type.length === 0) {

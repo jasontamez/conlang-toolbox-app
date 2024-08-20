@@ -1021,15 +1021,15 @@ ion-alert button.alert-button {
 }
 ion-alert button.alert-button.cancel {
 	background: var(--btn-background-cancel) !important;
-	color: var(--btn-color-cancel);
+	color: var(--btn-color-cancel) !important;
 }
 ion-alert button.alert-button.danger {
 	background: var(--ion-color-danger) !important;
-	color: var(--ion-color-danger-contrast);
+	color: var(--ion-color-danger-contrast) !important;
 }
 ion-alert button.alert-button.warning {
 	background: var(--ion-color-warning) !important;
-	color: var(--ion-color-warning-contrast);
+	color: var(--ion-color-warning-contrast) !important;
 }
 
 ion-toast {
@@ -1399,7 +1399,7 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	width: 100%;
 }
 #makingTitle #titleOutput div,
-#makingTitle .titleOptions .options .option {
+#makingTitle .caseObjects .options .option {
 	display: inline-block;
 	padding: 0.1rem 0.5rem 0.25rem;
 	margin: 0.5rem 0.5rem;
@@ -1409,14 +1409,14 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	background: var(--ion-color-primary);
 	color: var(--ion-color-primary-contrast);
 }
-#makingTitle .titleOptions {
+#makingTitle .caseObjects {
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 }
-#makingTitle .titleOptions .title {
+#makingTitle .caseObjects .title {
 	background-color: var(--ion-background-tinter);
 	text-align: center;
 	font-weight: bold;
@@ -1424,13 +1424,13 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	padding: 0.25rem 0.5rem;
 	border-radius: 2rem;
 }
-#makingTitle .titleOptions .options {
+#makingTitle .caseObjects .options {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
 }
-#makingTitle ion-item .titleOptions .options .option {
+#makingTitle ion-item .caseObjects .options .option {
 	border-color: var(--ion-color-secondary-tint);
 	border-radius: 0.25em;
 	padding-inline: 0.25em;
@@ -1439,29 +1439,29 @@ ion-item-sliding.djGroupMain ion-item.toggleable div.ww {
 	color: var(--ion-color-secondary-contrast);
 	white-space: nowrap;
 }
-#makingTitle ion-item:nth-child(even) .titleOptions .options .option {
+#makingTitle ion-item:nth-child(even) .caseObjects .options .option {
 	border-color: var(--ion-color-tertiary-tint);
 	background: var(--ion-color-tertiary);
 	color: var(--ion-color-tertiary-contrast);
 }
-#makingTitle ion-item .titleOptions .options .option.toggleButton {
+#makingTitle ion-item .caseObjects .options .option.toggleButton {
 	background: transparent;
 	border-width: 1px;
 	border-style: solid;
 	color: inherit;
 	font-style: italic;
 }
-#makingTitle ion-item .titleOptions .toggleGroup {
+#makingTitle ion-item .caseObjects .toggleGroup {
 	display: contents;
 	padding: 0;
 	margin: 0;
 }
-#makingTitle ion-item .titleOptions .options .toggleGroup.active .option {
+#makingTitle ion-item .caseObjects .options .toggleGroup.active .option {
 	max-width: 90vw;
 	overflow: hidden;
 	transition: all 0.5s linear;
 }
-#makingTitle ion-item .titleOptions .options .toggleGroup.inactive .option {
+#makingTitle ion-item .caseObjects .options .toggleGroup.inactive .option {
 	max-width: 0;
 	padding-inline: 0;
 	border-width: 0;

@@ -103,7 +103,7 @@ const migrations = {
 			...newState.appSettings
 		};
 		appState.theme = (appState.theme.replace(/ /g, "") as ThemeNames);
-		newState.appSettings = newState;
+		newState.appSettings = appState;
 		console.log({...state});
 		console.log({...appState});
 		console.log({...newState});

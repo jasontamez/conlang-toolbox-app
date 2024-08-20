@@ -104,7 +104,7 @@ const CharGroup: FC<CharGroupProps> = (props) => {
 };
 
 const commons = [
-	"AddNew", "Copy", "Delete", "Help", "WordEvolve",
+	"AddNew", "Copy", "Delete", "Help",
 	"deleteThisCannotUndo", "yesImport",
 ];
 

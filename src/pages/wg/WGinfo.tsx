@@ -121,7 +121,7 @@ export const SylCard: FC<CardProps> = (props) => {
 		startIsOverview, startNotOverview,
 		plainText, endIsOverview, endNotOverview
 	] = useI18Memo(syllInfo, 'wg', joinArrays);
-	const tSyllTab = useMemo(() => t("Syllables Tab"), [t]);
+	const tSyllTab = useMemo(() => t("SyllablesTab"), [t]);
 	const codeProps = useMemo(() => ({
 		code(props: CodeProps) {
 			const { children } = props;
@@ -240,7 +240,7 @@ export const OutCard: FC<CardProps> = (props) => {
 export const OptCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const main = t("info.settings", { joinArrays: "\n"});
-	const tSettTab = useMemo(() => t("Settings Tab"), [t]);
+	const tSettTab = useMemo(() => t("SettingsTab"), [t]);
 	return (
 		<IonCard>
 			<IonItem lines="full">
@@ -262,7 +262,7 @@ const WGinfo: FC<PageData> = (props) => {
 	const tOverview = useMemo(() => {
 		return tc("overviewOf", { what: tc("WordGen") });
 	}, [tc]);
-	const tWhatIsWG = useMemo(() => t("What is WordGen?"), [t]);
+	const tWhatIsWG = useMemo(() => t("WhatIsWordGen"), [t]);
 	return (
 		<IonPage>
 			<IonHeader>

@@ -30,7 +30,7 @@ const commons = [ "Cancel", "LoadPreset", "confirmLoad" ];
 const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
-	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { title: t("allThings") }), [t, tc]);
+	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("allThings") }), [t, tc]);
 	const [ tCancel, tLoadPreset, tConfLoad ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen } = props;
@@ -46,14 +46,14 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 				const { title, ...etc } = group;
 				return {
 					...etc,
-					title
+					title: t(title)
 				};
 			});
 			copy.transforms = object.transforms.map(group => {
 				const { description, ...etc } = group;
 				return {
 					...etc,
-					description
+					description: description && t(description)
 				};
 			});
 			dispatch(loadStateWE(copy));
@@ -77,20 +77,21 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, setIsOpen, tClearThings, tConfLoad, tc, toast]);
+	}, [disableConfirms, dispatch, doAlert, setIsOpen, tClearThings, tConfLoad, t, tc, toast]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	const presets = useMemo(() => WEPresets.map((pair, i) => {
 		const [title, object] = pair;
+		const presetTitle = t(title);
 		return (
 			<IonItem
 				key={`${i}:wePreset:${title}`}
 				button={true}
-				onClick={() => maybeLoadPreset(title, object)}
+				onClick={() => maybeLoadPreset(presetTitle, object)}
 			>
-				<IonLabel>{title}</IonLabel>
+				<IonLabel>{presetTitle}</IonLabel>
 			</IonItem>
 		);
-	}), [maybeLoadPreset]);
+	}), [maybeLoadPreset, t]);
 
 	return (
 		<IonModal isOpen={isOpen} onDidDismiss={closer}>

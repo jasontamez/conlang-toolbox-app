@@ -67,8 +67,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
-	const maybeLoadPreset = useCallback((presetTitle: string, object: Base_WG) => {
-		const preset = t(presetTitle);
+	const maybeLoadPreset = useCallback((preset: string, object: Base_WG) => {
 		const handler = () => {
 			const copy = {...object};
 			copy.characterGroups = object.characterGroups.map(group => {
@@ -92,7 +91,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 				});
 				return {
 					...etc,
-					description: t(value, options)
+					description: value && t(value, options)
 				};
 			});
 			dispatch(loadStateWG(copy));
@@ -121,7 +120,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const presets = useMemo(() => WGPresets.map((pair: WGPresetArray[number]) => {
 		const [ title, object ] = pair;
 		const tTitle = t(title);
-		return <PresetItem title={tTitle} key={title} onClick={() => maybeLoadPreset(title, object)} />;
+		return <PresetItem title={tTitle} key={title} onClick={() => maybeLoadPreset(tTitle, object)} />;
 	}), [maybeLoadPreset, t]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 
