@@ -327,14 +327,6 @@ const ConceptsPage: FC<PageData> = (props) => {
 		if (pickAndSave) {
 			// Stop saving
 			return donePickingAndSaving();
-		} else if(lexColumns.length === 0) {
-			return toaster({
-				message: tc("LexiconNeedsColumns"),
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
 		}
 		setPickAndSave(true);
 		return toaster({
@@ -343,7 +335,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [donePickingAndSaving, lexColumns.length, pickAndSave, t, tc, toast]);
+	}, [donePickingAndSaving, pickAndSave, t, toast]);
 	const saveEverything = useCallback(() => {
 		const words = shown.map(word => ({id: word.id, word: t(word.word)}));
 		if(showingCombos) {
@@ -355,7 +347,6 @@ const ConceptsPage: FC<PageData> = (props) => {
 				})
 			});
 		}
-		setSavedWords(words);
 		saveToLexicon(words);
 	}, [combinations, saveToLexicon, showingCombos, shown, t]);
 	const maybeSaveThisWord = useCallback((id: string, text: string, isCombo?: Concept[]) => {

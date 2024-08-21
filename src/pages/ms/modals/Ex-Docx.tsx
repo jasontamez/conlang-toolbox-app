@@ -454,7 +454,7 @@ const doDocx = (
 		sections
 	});
 	e.preventDefault();
-	const filename =  tc("fileFormat", { title, date: (new Date()).toDateString(), extension: "docx" });
+	const filename = tc("fileFormat", { title, date: (new Date()).toDateString(), extension: "docx" });
 	setLoading(true);
 
 

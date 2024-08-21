@@ -213,12 +213,10 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟡 | MaybeClearEntireInput | $t(areYouSure) This will clear the entire input, and cannot be undone. | Clearing the entire Input in Declenjugator and WE |
 | 🔴 | YesClear | Yes, Clear It | Affirmative answer to the above question. |
 | 🔴 | defaultSort | Default sort | Refers to the default sort method (whatever it may be) |
-| 🟡 | LexiconNeedsColumns | You need to add columns to the $t(Lexicon) before you can add anything to it. | Error message |
 | 🔴 🟥 🟨 | ImportFrom | Import from {{source}} | `{{source}}` is always Lexicon, WordGen or WordEvolve |
 | 🔴 | LoadPreset | Load Preset | Load a preset in WE or WG |
 | 🔴 | Import | Import | Import from Lexicon (to WG or WE) |
 | 🟨 | ImportFromWhichColumns | Import from which column(s)? | Import from Lexicon (to WG or WE) |
-| 🟥 | LexiconHasNoColumns | Lexicon Has No Columns | Error message trying to import from an empty Lexicon |
 |  | optional | (optional) | Placeholder text for optional text inputs |
 |  | AddConditions | Add Conditions $t(optional) | The user can specify conditions that must be met before a specific word can be imported from the Lexicon. |
 |  | Condition | Condition | Used in `thingSaved` inside the Import from Lexicon modal |
@@ -586,6 +584,7 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 | 🟡 | deleteColumnMsg | Are you sure you want to delete this column? $t(common:cannotUndo) |  |
 | 🟥 | LexOptions | $t(common:Lexicon) Options |  |
 | 🔴 | ShowTitles | Show Full Column Titles |  |
+| 🟦 5 | cannotDeleteFinalColumnMsg | Cannot delete: a Lexicon must contain at least ONE column. |  |
 |  | SortBlanks | Sort blank columns: | *(presentation context)* |
 | 🟥 | RearrangeColumns | Rearrange Lexicon Columns |  |
 | 🔴 | optionToBeginning | To Beginning, Always | Describes how blank columns will be sorted in the Lexicon |
@@ -1439,6 +1438,7 @@ These keys are a part of `wg.tsx` and name Presets and their components' descrip
 |  | ngkNgt | ngk and ngt | a `{{from}}` |
 |  | doubleVowels | double vowels | a `{{to}}` |
 |  | singleDipthongs | single dipthongs | a `{{to}}` |
+|  | dipthong | dipthong | a `{{to}}` |
 |  | dipthongs | dipthongs | a `{{to}}` |
 |  | nt | nt | a `{{to}}` |
 |  | mp | mp | a `{{to}}` |
@@ -1867,6 +1867,7 @@ If you have a working app with the translation loaded, you can follow these step
                 - Verify the title of the page, then tap Save and verify the message is correct
             1. Swipe left on the Custom Sort, tap the delete button, verify the message is correct
 2. Morphosyntax
+    - **Note:** be sure to notice the "Loading" page!
     - Go through each page, starting with the Overview, then going through pages 1-10.
         - Hit every information button on every page, making sure the info text matches the section it's linked in.
     - On the settings page, hit the Clear Info button to see the popup.
@@ -1887,8 +1888,9 @@ If you have a working app with the translation loaded, you can follow these step
             - Check the sliders, checkboxes and text boxes you modified
             - Check the other checkboxes that were not modified and text boxes not filled
 3. WordGen
-    1. Check the overview
+    1. Check the overview, verify all text
     2. Go to Character Groups
+        - Tap on Help button, verify all text
         - Tap on the Add button
         - Attempt to save, verify the error message
         - Tap the Suggest button, verify the error message
@@ -1905,6 +1907,7 @@ If you have a working app with the translation loaded, you can follow these step
             - Verify the text
             - Tap Yes, verify the toast message
     3. Go to Syllables
+        - Tap on Help button, verify all text
         - Toggle the multiple syllable types **on**
         - Edit the main syllables box only
         - Tap the Clear Everything button
@@ -1947,6 +1950,21 @@ If you have a working app with the translation loaded, you can follow these step
             - Tap on Simple
                 - Verify warning message
                 - Confirm, and verify toast message
+                - Go back to Character Groups, verify titles of all groups
+            - Return to Settings, Load the Medium preset
+                - Go back to Character Groups, verify titles of all groups
+            - Return to Settings, Load the Complex preset.......
+                - Go back to Character Groups, verify titles of all groups
+                - Go to Transformations, verify descriptions of all transforms
+            - Return to Settings, Load the Pseudo-Latin preset
+                - Go back to Character Groups, verify titles of all groups
+            - Return to Settings, Load the Pseudo-Chinese preset
+                - Go back to Character Groups, verify titles of all groups
+            - Return to Settings, Load the Pseudo-English preset......
+                - Go back to Character Groups, verify titles of all groups
+                - Go to Transformations, verify descriptions of all transforms
+            - Return to Settings, Load the Pseudo-Japanese preset
+                - Go to Transformations, verify descriptions of all transforms
     7. Go back to Output
         - Tap "Generate"
         - Tap Copy button, verify toast message
@@ -2062,9 +2080,83 @@ If you have a working app with the translation loaded, you can follow these step
         - Tap on Export, verify text and all three options
             - If only two options appear, Tap Display As and change it to a Chart, then Tap on Export again
 6. Lexicon
-
-### To-Do
-
-Need to test "lexicon has no columns" message when saving to it from WG/WE.
-
-Need to test Import from Lexicon in WE/Input/DJ
+    1. Verify main text
+    1. Tap Help button, verify text
+    1. Tap (+) button, verify error message
+    1. Add at least one item into the Lexicon
+        - Swipe left on the item, tap Edit
+            - Verify text
+            - Tap Delete, verify message, cancel
+            - Change anything, then Tap on the (x)
+                - Verify error message
+            - Tap Save, verify toast message
+        - Swipe left on the item, tap Delete
+            - Verify text,
+            - Tap Yes, verify toast message
+    1. Tap Save button, verify text
+        - Tap "Save", verify error message (no title)
+        - Tap "Export", verify error message (no title)
+        - Tap "Load", verify the no-lexicons-saved message
+    1. Tap on the "Sort" button
+        - Verify all text, close modal
+    1. Add a title, Tap Save button again
+        - Tap "Export", verify error message (no items)
+        - Tap "Save", verify toast message
+        - Tap "Save as New", verify toast message
+        - Tap "Clear", verify text, Tap Yes, verify toast message
+            - Verify all three default column labels
+        - Tap "Load", choose a saved Lex, verify toast message
+    1. Tap the Tools button, then Tap on the Add button
+        - Verify all text
+        - Finish adding an item to the Lexicon
+        - Tap Tools again, Tap on the Trash button, verify toast messages
+    1. Tap Save button again
+        - Tap "Export", verify all text
+    1. Tap the Settings button
+        - Tap on "Sort blank columns", verify all four options
+        - Tap "Add Column"
+            - Verify toast message
+            - Verify the default column name
+        - Tap Delete button on a column, verify text
+        - Delete all columns
+            - Verify error message when trying to delete the last column
+        - Cancel the modal
+    1. Add item(s) until there are at least two Lexicon items
+        - Swipe right on two or more items and tap the Link buttons underneath
+        - Tap the Link button
+        - Verify all text
+        - Tap on a column under "How to Merge", verify all seven options
+        - Save or Cancel
+    1. Ensure there are items in the Lexicon, and that ALL items are BLANK in at least one column
+    1. Go to WordEvolve (or Declenjugator), Input tab
+        - Tap on Import From Lexicon, verify all text
+        - Tap on Import without selecting a column, verify toast message
+        - Select a BLANK column, Tap Import, verify toast message
+        - Select a filled column, Tap Import, verify toast message
+7. Concepts
+    1. Verify Display buttons
+    1. Tap the help icon, verify all text
+    1. Tap on all Display buttons
+        - Verify ALL words on screen
+    1. Tap the Lexicon button
+        - Verify toast message and button texts
+        - Tap on at least one word
+        - Tap on Save Selected Meanings
+            - Verify dialog text
+            - Tap Save, verify toast message
+    1. Tap the Link button
+        - Verify the toast message
+        - Verify "Current Combination" text
+        - Select at least two words
+        - Tap Save, verify toast message
+    1. Tap the Unlink button
+        - Verify toast message
+        - Tap on the combination you created
+        - Tap Unlink again
+            - Verify dialog text
+8. App Info
+    1. Verify all text
+    2. Tap on Get Error Logs, verify the text
+    3. Tap on Show Older Changes
+        - Verify the new "Hide Other Changes" button
+        - Verify all new text

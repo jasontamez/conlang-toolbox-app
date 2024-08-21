@@ -181,7 +181,6 @@ const commons = [
 	"Help", "LoadPreset", "Output", "PleaseWait", "Save", "Cancel",
 	"GoToLexicon", "SelectAColumn", "error",
 	"TapWordsToSave",
-	"LexiconNeedsColumns",
 	"SaveToLexiconMessage"
 ];
 
@@ -190,7 +189,7 @@ const WEOut: FC<PageData> = (props) => {
 	const [
 		tHelp, tLoad, tOutput, tWait, tSave,
 		tCancel, tGoLex, tSelCol, tError,
-		tTapSave, tNoColumns, tSelectedWords
+		tTapSave, tSelectedWords
 	] = useI18Memo(commons)
 	const [ tEvolve, tNoWords, tNoSC ] = useI18Memo(translations, "we");
 
@@ -802,14 +801,6 @@ const WEOut: FC<PageData> = (props) => {
 		if (isPickingSaving) {
 			// Stop saving
 			return donePickingAndSaving();
-		} else if(columns.length === 0) {
-			return toaster({
-				message: tNoColumns,
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
 		}
 		setIsPickingSaving(true);
 		return toaster({
@@ -818,7 +809,7 @@ const WEOut: FC<PageData> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [columns.length, donePickingAndSaving, isPickingSaving, tTapSave, tNoColumns, toast]);
+	}, [donePickingAndSaving, isPickingSaving, tTapSave, toast]);
 	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
 		if(isPickingSaving) {
 			if(text) {

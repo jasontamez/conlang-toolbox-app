@@ -26,7 +26,7 @@ import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
 
 const getSpecialValue: (x: string) => [string, ...[string, string][]] | [string] = (input) => {
-	let m = input.match(/^(.+)((?:\[[^=]+=[^\]]+\])+)$/);
+	let m = input.match(/^(.+?)((?:\[[^=]+=[^\]]+\])+)$/);
 	if(m) {
 		const key = m[1];
 		let remains = m[2];
@@ -74,8 +74,8 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 				const { title, ...etc } = group;
 				const [value, ...pairs] = getSpecialValue(title);
 				const options: {[key: string]: string} = {};
-				pairs.forEach(([prop, value]) => {
-					options[prop] = value;
+				pairs.forEach(([prop, v]) => {
+					options[prop] = t(v);
 				});
 				return {
 					...etc,
@@ -86,8 +86,8 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 				const { description, ...etc } = group;
 				const [value, ...pairs] = getSpecialValue(description);
 				const options: {[key: string]: string} = {};
-				pairs.forEach(([prop, value]) => {
-					options[prop] = value;
+				pairs.forEach(([prop, v]) => {
+					options[prop] = t(v);
 				});
 				return {
 					...etc,

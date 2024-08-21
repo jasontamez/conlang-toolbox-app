@@ -384,7 +384,7 @@ const translations = [
 	"DeleteMultipleLexItems"
 ];
 
-const commons =  [
+const commons = [
 	"deleteThisCannotUndo", "Description", "Ok", "areYouSure",
 	"cannotUndo", "error", "AddNew"
 ];
@@ -404,7 +404,7 @@ const Lex: FC<PageData> = (props) => {
 		tCannnotUndo, tError, tAddNew
 	] = useI18Memo(commons);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
-	const tpDesc =  useMemo(() => tc("Description", { context: "presentation" }), [tc]);
+	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {

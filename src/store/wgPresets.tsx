@@ -903,7 +903,7 @@ const WGPresets: WGPresetArray = [
 			},
 			{
 				label: "F",
-				title: "Syllable-final Consonants",
+				title: "SyllableFinalConsonants",
 				run: "nnŋmktp"
 			},
 			{

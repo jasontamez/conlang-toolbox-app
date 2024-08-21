@@ -71,7 +71,7 @@ const doText = (
 						const context = usingMarkDown ? "percentageMarkdown" : "percentage";
 						lines.push(
 							t(start, { context, percent: 100 - lesser })
-							+ "   \n" // extra spaces before newline are needed to make MarkDown insert a linebreak
+							+ "  \n" // two extra spaces before newline are needed to make MarkDown insert a linebreak
 							+ t(end, { context, percent: lesser })
 						);
 					} else {

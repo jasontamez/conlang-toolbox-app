@@ -334,14 +334,6 @@ const WGOut: FC<PageData> = (props) => {
 		if (isPickingSaving) {
 			// Stop saving
 			return donePickingAndSaving();
-		} else if(lexColumns.length === 0) {
-			return toaster({
-				message: tc("LexiconNeedsColumns"),
-				color: "danger",
-				duration: 4000,
-				position: "top",
-				toast
-			});
 		}
 		setIsPickingSaving(true);
 		return toaster({
@@ -350,7 +342,7 @@ const WGOut: FC<PageData> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [donePickingAndSaving, isPickingSaving, lexColumns.length, tc, toast]);
+	}, [donePickingAndSaving, isPickingSaving, tc, toast]);
 
 	// // //
 	// Display

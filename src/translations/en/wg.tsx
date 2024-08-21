@@ -178,6 +178,7 @@ const wg = {
 	//TO
 	doubleVowels: "double vowels",
 	singleDipthongs: "single dipthongs",
+	dipthong: "dipthong",
 	dipthongs: "dipthongs",
 	nt: "nt",
 	mp: "mp",

@@ -72,7 +72,7 @@ const translations = [
 	"optionAlphaFirst", "optionAlphaLast", "FieldName", "Large",
 	"LexOptions", "Med", "New", "RearrangeColumns", "Small",
 	"ShowTitles", "optionToBeginning", "optionToEnd",
-	"EditCols", "SortBlanks"
+	"EditCols", "SortBlanks", "cannotDeleteFinalColumnMsg"
 ];
 
 const commons = [
@@ -89,7 +89,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [
 		tYouSure, tAlphaFirst, tAlphaLast, tFieldName, tLarge, tLexOpts,
 		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd, tEditGeneral,
-		tpBlank
+		tpBlank, tCannotDelete
 	] = useI18Memo(translations, "lexicon");
 	const tpMethod = useMemo(() => tc("SortMethod"), [tc]);
 	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
@@ -274,6 +274,15 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		});
 	}, [shadowColumns, tNew, toast, tThingAdded]);
 	const deleteField = useCallback((i: number) => {
+		if(shadowColumns.length === 1) {
+			return toaster({
+				message: tCannotDelete,
+				duration: 5000,
+				color: "danger",
+				position: "middle",
+				toast
+			});	
+		}
 		const handler = () => {
 			// delete the field
 			const newColumns = shadowColumns.slice(0, i).concat(shadowColumns.slice(i+1));
@@ -299,7 +308,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, shadowColumns, tc, tYouSure]);
+	}, [disableConfirms, doAlert, shadowColumns, tc, tYouSure, tCannotDelete, toast]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
