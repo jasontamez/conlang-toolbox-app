@@ -48,10 +48,10 @@ const wgweWords = [
 	"OneCharOnly", "CharGroup", "enterCharsInGroupHere",
 	"LettersCharacters", "noRunMsg", "noTitleMsg", "ShortLabel",
 	"Suggest", "TitleOrDesc", "noLabelMsg",
-	"cantMakeLabelMsg"
+	"cantMakeLabelMsg", "charGroupSaved"
 ];
 
-const addies = [ "thingAdded", "addThing" ];
+const addies = [ "addThing" ];
 
 const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('wg');
@@ -62,9 +62,9 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const tUseDrop = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [
 		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest
+		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest, tThingAdd
 	] = useI18Memo(wgweWords, 'wgwe');
-	const [ tThingAdd, tAddThing ] = useMemo(() => {
+	const [ tAddThing ] = useMemo(() => {
 		return addies.map(term => tc(term, { thing: tCG }));
 	}, [tc, tCG]);
 	const { isOpen, setIsOpen, openECM } = props;

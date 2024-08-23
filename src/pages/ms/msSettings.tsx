@@ -46,7 +46,8 @@ const translations = [
 	"ShortDescriptionMsg", "MorphoSyntaxInfo",
 	"MorphoSyntaxSettings", "noInfoToClearMsg", "msTitle",
 	"needInfoToExportMsg",
-	"UsuallyLangName", "clearMSInfo", "clearedMS"
+	"UsuallyLangName", "clearMSInfo", "clearedMS",
+	"clearAllMS"
 ];
 
 const commons = [
@@ -60,9 +61,8 @@ const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc ] = useI18Memo(commons);
-	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings, tClearedThings ] = useI18Memo(translations, "ms");
+	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings, tClearedThings, tClearAll ] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
-	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("morphoSyntaxInfo") }), [t, tc]);
 	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("SavedMorphoSyntaxInfo") }), [t, tc]);
 	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
 	const [

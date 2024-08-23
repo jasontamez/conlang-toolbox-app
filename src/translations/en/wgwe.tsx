@@ -13,18 +13,24 @@ const wgwe = {
 		"This will delete the current transformation, and cannot be undone.", // 🟡
 	delAllTransforms_other:
 		"This will delete all {{count}} current transformations, and cannot be undone.", // 🟡
+	charGroupsDeleted_one: "{{count}} Character Groups deleted.", // 🟦2.5
+	charGroupsDeleted_other: "{{count}} Character Groups deleted.", // 🟦2.5
+	transDeleted_one: "{{count}} Transformation deleted.", // 🟦2.5
+	transDeleted_other: "{{count}} Transformations deleted.", // 🟦2.5
 	importCharGroups_one: "Imported {{count}} Character Group.", // 🟦2.5
 	importCharGroups_other: "Imported {{count}} Character Groups.", // 🟦2.5
 	importOverwriteCG:
 		"If any current character group has the same label as an incoming"
 		+ " character group,the current character group will be overwritten."
 		+ " Do you want to continue?", // 🟡
+	charGroupAdded: "Character Group added.", // 🟦2.5
 
 	Transformation: "Transformation",
 	Transformations: "Transformations",
 	DescOfTheTransformation: "Description of the transformation",
 	DescOfTheTransformation_formal: "Description of the transformation",
 	DescOfTheTransformation_presentation: "Transformation Description:",
+	transformationAdded: "Transformation added.", // 🟦2
 
 	noSearchMsg: "No search expression present", // 🟡
 	searchExpression: "search expression",

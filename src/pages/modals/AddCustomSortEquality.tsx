@@ -39,7 +39,7 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 }
 
 const translations = [
-	"Basecharacter", "CharsEqual", "Equality",
+	"Basecharacter", "CharsEqual", "EqualityAdded",
 	"CharsToBeEqual", "Comma", "NoSeparator", "Period",
 	"Semicolon", "Space", "TheBaseCharacter",
 	"noBaseCharMsg",
@@ -55,13 +55,13 @@ const commons = [
 const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
-		tBase, tCharBase, tEquality, tCharEqual, tComma, tNoSep, tPeriod,
+		tBase, tCharBase, tThingAdded, tCharEqual, tComma, tNoSep, tPeriod,
 		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpSep, tpEqual
 	] = useI18Memo(translations, "settings");
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
-	const [ tAddThing, tThingAdded ] = useMemo(
-		() => [ "addThing", "thingAdded" ].map(thing => tc(thing, { thing: tEquality })),
-		[tEquality, tc]
+	const [ tAddThing ] = useMemo(
+		() => [ "addThing" ].map(thing => tc(thing, { thing: "tEquality" })),
+		[tc]
 	);
 
 	const { isOpen, setIsOpen, openECM, setSavedEquality } = props;
@@ -110,7 +110,7 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 			message: tThingAdded,
 			position: "top",
 			color: "success",
-			duration: 2000,
+			duration: 2500,
 			toast
 		});
 	}, [setIsOpen, doAlert, separator, setSavedEquality, tNoBase, tNoEqual, tOk, tThingAdded, toast]);

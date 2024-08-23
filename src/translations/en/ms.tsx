@@ -11,7 +11,7 @@ const ms = {
 	clearMSInfo: "Clear $t(common:MorphoSyntax) Info",
 	noInfoToClearMsg: "You have no information to clear.", // 🟦2.5
 	clearedMS: "All $t(common:MorphoSyntax) information has been cleared.", // 🟦2.5
-	morphoSyntaxInfo: "everything currently in $t(common:MorphoSyntax) (but not anything previously saved)", // used by clearOverwriteGeneralThings
+	clearAllMS: "This will clear and overwrite everything currently in $t(common:MorphoSyntax) (but not anything previously saved).", // 🟡
 	needInfoToExportMsg: "Please add information to your MorphoSyntax document in at least one section before exporting it.", // 🟡
 	msDocument: "$t(common:MorphoSyntax) document",
 	msDocument_formal: "$t(common:MorphoSyntax) Document",
@@ -19,7 +19,7 @@ const ms = {
 	msDocumentDescription: "A $t(msDocument) exported from $t(common:appTitle).", // Used in docx exports, only
 	MorphoSyntaxSettings: "$t(common:MorphoSyntax) $t(common:Settings)", // 🟥
 	NoSavedMorphoSyntaxDocuments: "No Saved $t(common:MorphoSyntax) Documents.", // 🟥
-	CurrentMSInfo: "your current $t(common:MorphoSyntax) information", // used by clearOverwriteGeneralThings
+	clearMSInfoMsg: "This will clear and overwrite your current $t(common:MorphoSyntax) information.", // 🟡
 	msTitle: "$t(common:MorphoSyntax) Title", // 🔵
 	msTitle_presentation: "$t(common:MorphoSyntax) Title:", // 🟥
 	UsuallyLangName: "Usually the language name.",

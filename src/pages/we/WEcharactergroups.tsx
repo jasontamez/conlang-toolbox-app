@@ -105,6 +105,7 @@ const commons = [
 ];
 
 const WECharGroup: FC<PageData> = (props) => {
+	const [ t ] = useTranslator('we');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
@@ -160,7 +161,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE(null));
 			toaster({
-				message: tc("thingsDeleted", { count, things: tw("CharGroups") }),
+				message: tw("charGroupsDeleted", { count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -195,7 +196,7 @@ const WECharGroup: FC<PageData> = (props) => {
 			handler();
 		} else {
 			yesNoAlert({
-				header: tc("ImportFrom", { source: tc("WordGen") }),
+				header: t("ImportFromWG"),
 				message: tw("importOverwriteCG"),
 				cssClass: "warning",
 				submit: tYesImp,
@@ -203,7 +204,7 @@ const WECharGroup: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [dispatch, tw, tc, doAlert, toast, disableConfirms, wgCharatcterGroups, tYesImp]);
+	}, [dispatch, tw, t, doAlert, toast, disableConfirms, wgCharatcterGroups, tYesImp]);
 	const cgroups = useMemo(() =>
 		characterGroups.map(charGroup => (
 			<CharGroup

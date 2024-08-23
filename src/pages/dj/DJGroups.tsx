@@ -222,7 +222,7 @@ function makeDJGroupDescription (group: DJGroup) {
 
 const translations = [
 	"ClearAllGroups", "Conjugations", "Declensions", "Groups", "Other",
-	"delEntireGroup"
+	"delEntireGroup", "GroupDeleted"
 ];
 
 const commons = [
@@ -235,8 +235,7 @@ const DJGroups: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [ tAddNew, tDel, tHelp, tWait, tSave, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
-	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup  ] = useI18Memo(translations, "dj");
-	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [tc, t]);
+	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup, tGroupDeleted  ] = useI18Memo(translations, "dj");
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -311,7 +310,7 @@ const DJGroups: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
 			toaster({
-				message: tc("thingsDeleted", { things: t("NumGroups", { count: allGroups }), count: allGroups }),
+				message: t("groupsDeleted", { count: allGroups }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

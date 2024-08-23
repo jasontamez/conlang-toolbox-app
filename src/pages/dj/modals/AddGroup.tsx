@@ -109,7 +109,6 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
 		tpRemoveEnd, tpType
 	] = useI18Memo(presentations, "dj", context);
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
 
 	const {
@@ -172,10 +171,21 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	}, [isOpen, outgoingDeclenjugation, setOutgoingDeclenjugation, declenjugations]);
 	// Set typeString
 	useEffect(() => {
-		const typingString = type.charAt(0).toLocaleUpperCase() + type.slice(1);
-		setDeclenjugationType(typingString);
-		setTypeString(typingString);
-	}, [type, setDeclenjugationType]);
+		let declenjugation: string | undefined;
+		switch(type) {
+			case "declensions":
+				declenjugation = "Declensions";
+				break;
+			case "conjugations":
+				declenjugation = "Conjugations";
+				break;
+			case "other":
+				declenjugation = "Other";
+		}
+		const plural = t(declenjugation || "Other");
+		setDeclenjugationType(plural);
+		setTypeString(plural);
+	}, [t, type, setDeclenjugationType]);
 
 	const onLoad = useCallback(() => {
 		setSeparator(" ");
@@ -350,14 +360,14 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: tDelThing,
+			header: t("Delete" + typeString),
 			message: tRUSure,
 			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [declenjugations, disableConfirms, doAlert, tc, tDelThing, tDeleted, tRUSure, toast]);
+	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, t, typeString]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around

@@ -90,9 +90,8 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString || "Other" }), [t, typeString]);
 	const [ tpMatch, tpReplace ] = useI18Memo(presentations, "dj", context);
 	const [ tMatch, tReplace ] = useI18Memo(presentations, "dj");
-	const tTypeString = useMemo(() => typeString ? t(typeString) : "", [typeString, t]);
-	const tEditThing = useMemo(() => tc("editThing", { thing: tTypeString }), [tTypeString, tc]);
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: tTypeString }), [tTypeString, tc]);
+	const tEditThing = useMemo(() => t("Edit" + (typeString || "Other")), [typeString, t]);
+	const tDelThing = useMemo(() => t("Delete" + (typeString || "Other")), [typeString, t]);
 
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

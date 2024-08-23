@@ -41,7 +41,7 @@ const EditLexiconSortModal: FC<EditSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const tClose = useMemo(() => tc("Close"), [tc]);
 	const [ tLexSorting, tSortLexDesc ] = useI18Memo(translations, "lexicon");
-	const tSaveChanges = useMemo(() => tc("saveGeneralThings", { things: t("Changes") }), [tc, t]);
+	const tSaveChanges = useMemo(() => t("SaveChanges"), [t]);
 
 	const { isOpen, setIsOpen, sorter } = props;
 	const dispatch = useDispatch();

@@ -40,7 +40,7 @@ interface CustomSortModal extends ExtraCharactersModalOpener {
 
 const translations = [
 	"Basecharacter", "CharsPostBase",
-	"CharsPreBase", "Comma", "Relation",
+	"CharsPreBase", "Comma", "RelationAdded",
 	"charsPreBaseMsg", "NoSeparator", "Period",
 	"Semicolon", "Space", "charsPostBaseMsg",
 	"TheBaseCharacter", "noBaseCharMsg",
@@ -57,13 +57,13 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
 	const [
-		tBase, tAfterBase, tBeforeBase, tComma, tRelation, tEndBefore, tNoSep,
+		tBase, tAfterBase, tBeforeBase, tComma, tThingAdded, tEndBefore, tNoSep,
 		tPeriod, tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost,
 		tpBase, tpSep, tpAfter, tpBefore
 	] = useI18Memo(translations, "settings");
-	const [ tAddThing, tThingAdded ] = useMemo(
-		() => [ "addThing", "thingAdded" ].map(thing => tc(thing, { thing: tRelation })),
-		[tc, tRelation]
+	const [ tAddThing ] = useMemo(
+		() => [ "addThing" ].map(thing => tc(thing, { thing: "tRelation" })),
+		[tc]
 	);
 
 	const { isOpen, setIsOpen, openECM, setSavedRelation } = props;
@@ -115,7 +115,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 			message: tThingAdded,
 			position: "top",
 			color: "success",
-			duration: 2000,
+			duration: 2500,
 			toast
 		});
 	}, [doAlert, separator, setIsOpen, setSavedRelation, tNoBase, tNoPrePost, tOk, tThingAdded, toast]);

@@ -18,7 +18,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { PageData, StateObject } from '../../store/types';
 import { setInput } from '../../store/declenjugatorSlice';
-import useTranslator from '../../store/translationHooks';
 
 import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
@@ -35,14 +34,12 @@ const translations = [ "EnterWordsOnePerLine", "WordsToGiveDJ" ];
 
 const commons = [
 	"Clear", "ExtraChars", "Help", "Input", "YesClear",
-	"MaybeClearEntireInput"
+	"MaybeClearEntireInput", "ImportFromLexicon"
 ];
 
 const DJInput: FC<PageData> = (props) => {
-	const [ tc ] = useTranslator('common');
-	const [ tClear, tExChar, tHelp, tInput, tYes, tYouSure ] = useI18Memo(commons);
+	const [ tClear, tExChar, tHelp, tInput, tYes, tYouSure, tImportFrom ] = useI18Memo(commons);
 	const [ tEnterHere, tWords ] = useI18Memo(translations, "dj");
-	const tImportFrom = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();

@@ -194,7 +194,7 @@ const WESChange: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(null));
 			toaster({
-				message: tc("thingsDeleted", { things: t("SChange", { count }), count }),
+				message: t("changesDeleted", { count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

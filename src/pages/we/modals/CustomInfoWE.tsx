@@ -74,7 +74,8 @@ const commons = [
 	"Cancel", "LoadError", "ManageCustomInfo", "NameOfSave",
 	"NameYourInfo", "NoSavedInfo", "Ok", "Save",
 	"YesOverwriteIt", "cannotUndo", "confirmLoad",
-	"Load", "Delete", "title", "CurrentInfo", "prevSave"
+	"Load", "Delete", "title", "SaveCurrentInfo",
+	"ClearOverwritePrevSave"
 ];
 const things = [ "loadThing", "saveThing" ];
 
@@ -84,15 +85,14 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const [
 		tCancel, tLoadErr, tManage, tNameSave, tNameInfo,
 		tNoInfo, tOk, tSave, tYes, tCannot, tConfLoad, tLoad, tDel,
-		tTitle, tCurrInfo, tPrevSave
+		tTitle, tSaveThing, tClearSave
 	] = useI18Memo(commons);
-	const [ tLoadThing, tSaveThing ] = useMemo(
-		() => things.map(thing => tc(thing, { thing: tCurrInfo })),
-		[tCurrInfo, tc]
+	const [ tLoadThing ] = useMemo(
+		() => things.map(thing => tc(thing, { thing: "tCurrInfo" })),
+		[tc]
 	);
+	const tClearThings = useMemo(() => t("clearAllThingsMsg"), [t]);
 	const tMissing = useMemo(() => tc("missingThing", tTitle), [tc, tTitle]);
-	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { title: t("allThings") }), [t, tc]);
-	const tClearSave = useMemo(() => tc("clearOverwriteGeneralThings", { things: tPrevSave }), [tc, tPrevSave]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

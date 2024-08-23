@@ -30,7 +30,7 @@ const commons = [ "Cancel", "LoadPreset", "confirmLoad" ];
 const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
-	const tClearThings = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("allThings") }), [t, tc]);
+	const tClearThings = useMemo(() => t("clearAllThingsMsg"), [t]);
 	const [ tCancel, tLoadPreset, tConfLoad ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen } = props;

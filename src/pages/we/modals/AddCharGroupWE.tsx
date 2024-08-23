@@ -165,13 +165,13 @@ const AddCharGroupWEModal: FC<ExtraCharactersModalOpener> = (props) => {
 			(input) => input.value = ""
 		);
 		toaster({
-			message: tc("thingAdded", { thing: tCG }),
+			message: tw("charGroupAdded"),
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	}, [charGroupMap, dispatch, doAlert, setIsOpen, tCG, tCancel, tError, tNoLabel, tNoRun, tNoTitle, tc, toast, tw]);
+	}, [charGroupMap, dispatch, doAlert, setIsOpen, tCancel, tError, tNoLabel, tNoRun, tNoTitle, toast, tw]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	const adder = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
 	const addAndCloser = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);

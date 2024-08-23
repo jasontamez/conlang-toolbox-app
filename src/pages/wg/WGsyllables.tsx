@@ -197,7 +197,7 @@ const WGSyl: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(clearSyllables());
 			toaster({
-				message: tc("thingsDeleted", { count, things: t("Syllables", { count }) }),
+				message: t("syllablesDeleted", { count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

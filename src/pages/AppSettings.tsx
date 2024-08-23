@@ -23,7 +23,8 @@ import useI18Memo from '../components/useI18Memo';
 const translations =  [
 	"ChangeTheme", "DisableConfPrompts",
 	"confPromptExplanation",
-	"ImportAppInfo", "SortSettings"
+	"ImportAppInfo", "SortSettings",
+	"exportAppInfo"
 ];
 
 const AppSettings: FC<PageData> = (props) => {
@@ -44,8 +45,7 @@ const AppSettings: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const tAppSettings = useMemo(() => tc("AppSettings"), [tc]);
 	const tThemeName = useMemo(() => t(theme || "Default"), [t, theme]);
-	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings ] = useI18Memo(translations, 'settings');
-	const tExport = useMemo(() => tc("exportThing", { thing: tc("AppInfo") }), [tc]);
+	const [ tChangeTheme, tDisable, tEliminate, tImport, tSortSettings, tExport ] = useI18Memo(translations, 'settings');
 
 	const setConfirms = useCallback((e: ToggleCustomEvent) => dispatch(setDisableConfirms(e.detail.checked)), [dispatch]);
 

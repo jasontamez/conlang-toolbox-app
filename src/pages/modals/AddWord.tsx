@@ -46,7 +46,7 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
 	const [ tAddItem, tAddLexItem ] = useMemo(() => things.map(thing => tc("addThing", { thing: t(thing) })), [tc, t]);
-	const tThingAdded = useMemo(() => tc("thingAdded", { thing: t("Item") }), [t, tc]);
+	const tThingAdded = useMemo(() => t("ItemSaved"), [t]);
 	const tNoInfo = useMemo(() => t("noInfoProvided"), [t]);
 
 	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;

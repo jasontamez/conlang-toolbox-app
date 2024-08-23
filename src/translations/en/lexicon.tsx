@@ -60,8 +60,10 @@ const lexicon = {
 	Column: "Column", // 🔴
 	EditCols: "Edit Columns", // 🟥
 	LexItem: "$t(common:Lexicon) $t(Item)", // 🟥
+	ItemSaved: "Item saved to Lexicon", // 🟦2.5
 	ExitWOSave: "Exit Without Saving?", // 🟨
 	exitWithoutSavingMsg: "You have unsaved changes. Are you sure you want to exit?", // 🟡
+	ColumnAdded: "Column added", // 🟦2.5
 
 	New: "New", // Default label for a new column
 	deleteColumnMsg: "Are you sure you want to delete this column? $t(common:cannotUndo)", // 🟡

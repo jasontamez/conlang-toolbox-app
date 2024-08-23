@@ -36,7 +36,8 @@ function resetError() {
 
 const wgweWords = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"replacementExpression", "searchExpression"
+	"replacementExpression", "searchExpression",
+	"transformationAdded"
 ];
 
 const presentational = [
@@ -49,17 +50,17 @@ const commons = [
 	"AddAndClose", "Cancel", "error", "optional"
 ];
 
-const addies = [ "thingAdded", "addThing" ];
+const addies = [ "addThing" ];
 
 const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
-	const [ tThingAdd, tAddThing ] = useMemo(() => {
+	const [ tAddThing ] = useMemo(() => {
 		const tTransformation = tw("Transformation");
 		return addies.map(term => tc(term, { thing: tTransformation }));
 	}, [tw, tc]);
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tTransDesc, tNoSearch, tRepl, tSrch ] = useI18Memo(wgweWords, "wgwe");
+	const [ tTransDesc, tNoSearch, tRepl, tSrch, tThingAdd ] = useI18Memo(wgweWords, "wgwe");
 	const [ tpTrandDesc, tpRepl, tpSrch ] = useI18Memo(presentational, "wgwe", context);
 
 	const { isOpen, setIsOpen, openECM } = props;

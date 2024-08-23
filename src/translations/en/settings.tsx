@@ -28,6 +28,7 @@ const settings = {
 	successImport: "Imported new info for {{listing}}", // 🟦10
 	alsoOverwrote: "; also completely overwrote storage for {{listing}}", // 🟦10
 	successOverwrote: "Completely overwrote storage for {{listing}}", // 🟦10
+	exportAppInfo: "Export App Info", // 🔴
 
 	ImportInfo: "Import Info",
 	importDescription:
@@ -125,9 +126,11 @@ const settings = {
 	Relation: "Relation",
 	Relations: "Relations", // 🟥
 	relationMsg: "Similar characters that should be sorted separately.",
+	RelationAdded: "Relation added", // 🟦2.5
 	Equality: "Equality",
 	Equalities: "Equalities", // 🟥
 	equalityMsg: "Characters that should be sorted together as if they were strictly equal.",
+	EqualityAdded: "Equality added", // 🟦2.5
 	
 	// The below are presentational context
 	BaseChar: "Base Character:",

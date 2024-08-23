@@ -6,9 +6,8 @@ const we = {
 	SoundChanges: "Sound Changes",
 	SoundChangesTab: "Sound Changes Tab",
 
-	// takes a `count` for plurality, called by thingsDeleted
-	SChange_one: "1 Sound Change",
-	SChange_other: "{{count}} Sound Changes",
+	changesDeleted_one: "{{count}} Sound Change deleted.",
+	changesDeleted_other: "{{count}} Sound Changes deleted.",
 
 	ConvertToLowercase: "Convert input to lowercase before evolving", // 🟥 🔴
 	SortBeforehand: "Sort input before evolving", // 🟥 🔴
@@ -63,9 +62,9 @@ const we = {
 	OutputAndSCRules: "$t(common:Output) and Sound-Change Rules", // 🔴
 	InputThenOutput: "$t(common:Input), then $t(common:Output)", // 🔴
 	OutputThenInput: "$t(common:Output), then $t(common:Input)", // 🔴
+	ImportFromWG: "Import from WordGen", // 🟥
 
-	// used by clearOverwriteGeneralThings
-	allThings: "all current character groups, transformations and sound changes",
+	clearAllThingsMsg: "This will clear and overwrite all current character groups, transformations and sound changes.",
 
 
 	// PRESETS

@@ -74,14 +74,13 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	} = props;
 
 	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tOk, tSave, tUnsaved, tYes ] = useI18Memo(commons);
 	const [
 		tBaseNotStem, tMod, tPref, tSuff, tAdvMeth, tNoMatch,
 		tUseWord, tNoTitle, tMEx, tREx, tWord, tStem
 	] = useI18Memo(translations, "dj");
-	const tAddThing = useMemo(() => typeString ? tc("addThing", { thing: t(typeString) }) : "", [t, tc, typeString]);
-	const tThingSaved = useMemo(() => typeString ? tc("thingSaved", { thing: t(typeString) }) : "", [tc, t, typeString]);
+	const tAddThing = useMemo(() => typeString ? t("Add" + (typeString || "Other")) : "", [t, typeString]);
+	const tThingSaved = useMemo(() => typeString ? t((typeString || "Other") + "Saved") : "", [t, typeString]);
 	const [ tpMEx, tpREx ] = useI18Memo(expressions, "dj", context);
 	const tTitleMethod = useMemo(() => t("TitleMethod", { context: typeString || "Other" }), [t, typeString]);
 	const tAdvExpl = useMemo(() => t("advancedExplanation", { context: typeString || "Other" }), [t, typeString]);

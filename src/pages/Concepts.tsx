@@ -290,10 +290,9 @@ const ConceptsPage: FC<PageData> = (props) => {
 						setPickAndSave(false);
 						// Toast
 						toaster({
-							message: tc(
+							message: t(
 								'saveToLexColumn',
 								{
-									what: t("SelectedMeanings", { count: words.length }),
 									column: col.label,
 									count: words.length
 								}
@@ -385,13 +384,13 @@ const ConceptsPage: FC<PageData> = (props) => {
 		});
 		dispatch(addCustomHybridMeaning(final));
 		makeToast && toaster({
-			message: tc("thingSaved", { thing: t("Combination") }),
+			message: t("CombinationSaved"),
 			duration: 2500,
 			position: "top",
 			color: "success",
 			toast
 		});
-	}, [dispatch, savedWords, t, tc, toast]);
+	}, [dispatch, savedWords, t, toast]);
 	const toggleLinking = useCallback(() => {
 		if(linking) {
 			if(savedWords.length > 1) {
@@ -513,8 +512,8 @@ const ConceptsPage: FC<PageData> = (props) => {
 	] = useMemo(() => [
 		tc("Display"),
 		t("MyCombinations"),
-		tc("saveGeneralThings", {things: t("AllMeanings")}),
-		tc("saveGeneralThings", {things: t("SelectedMeanings")}),
+		t("SaveAllMeanings"),
+		t("SaveSelectedMeanings"),
 		t("CurrentCombo"),
 		tc("Save")
 	], [ t, tc ]);

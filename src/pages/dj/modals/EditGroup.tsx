@@ -110,10 +110,9 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
-		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
-		tpRemoveEnd, tpType
+		tpTypes, tpMatching, tpRemoveStart,
+		tpReplacement, tpRemoveEnd, tpType
 	] = useI18Memo(presentations, "dj", context);
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
 	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
 	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [t, tc]);
 	const tDelEntireGroup = useMemo(() => tc("deleteThing", { thing: "Entire Group" }), [tc]);
@@ -180,9 +179,20 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	}, [isOpen, outgoingDeclenjugation, setOutgoingDeclenjugation, declenjugations]);
 	// Set typeString
 	useEffect(() => {
-		const typingString = type.charAt(0).toLocaleUpperCase() + type.slice(1);
-		setDeclenjugationType(typingString);
-		setTypeString(typingString);
+		let declenjugation: string | undefined;
+		switch(type) {
+			case "declensions":
+				declenjugation = "Declensions";
+				break;
+			case "conjugations":
+				declenjugation = "Conjugations";
+				break;
+			case "other":
+				declenjugation = "Other";
+		}
+		const plural = t(declenjugation || "");
+		setDeclenjugationType(plural);
+		setTypeString(plural);
 	}, [t, type, setDeclenjugationType]);
 
 	const onLoad = useCallback(() => {
@@ -466,14 +476,14 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			});
 		};
 		disableConfirms ? handler() : yesNoAlert({
-			header: tDelThing,
+			header: t("Delete" + typeString),
 			message: tRUSure,
 			submit: tc("confirmDel", { count: 1 }),
 			cssClass: "danger",
 			handler,
 			doAlert
 		});
-	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, tDelThing]);
+	}, [typeString, t, declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast]);
 
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;

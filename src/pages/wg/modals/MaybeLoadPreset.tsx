@@ -60,7 +60,7 @@ const MaybeLoadPresetModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tLoadPre, tConfLoad ] = useI18Memo(commons);
-	const tClearAll = useMemo(() => tc("clearOverwriteGeneralThings", { things: t("allThings") }), [t, tc]);
+	const tClearAll = useMemo(() => t("clearAllThingsMsg"), [t]);
 
 	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();

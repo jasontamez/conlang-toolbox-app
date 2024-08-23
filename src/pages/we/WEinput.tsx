@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler, useMemo, FC } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -30,12 +30,11 @@ import useI18Memo from '../../components/useI18Memo';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
 import { InpCard } from "./WEinfo";
-import useTranslator from '../../store/translationHooks';
 
 const commons = [
 	"MaybeClearEntireInput",
 	"Clear", "ExtraChars", "Help",
-	"Input", "YesClear"
+	"Input", "YesClear", "ImportFromLexicon"
 ];
 
 const translations = [
@@ -43,10 +42,8 @@ const translations = [
 ];
 
 const WEInput: FC<PageData> = (props) => {
-	const [ tc ] = useTranslator('common');
 	const [ tWordsToEvolve, tOnePerLine, tClearInput ] = useI18Memo(translations, "we");
-	const [ tYouSure, tClear, tExChar, tHelp, tInput, tYesClear ] = useI18Memo(commons);
-	const tImpFromLex = useMemo(() => tc("ImportFrom", { source: tc("Lexicon") }), [tc]);
+	const [ tYouSure, tClear, tExChar, tHelp, tInput, tYesClear, tImpFromLex ] = useI18Memo(commons);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();

@@ -164,7 +164,7 @@ const WERew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWE(trans.id));
 			toaster({
-				message: tc("thingsDeleted", { count: 1, things: tw("Transformation") }),
+				message: tw("transDeleted", { count: 1 }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -196,7 +196,7 @@ const WERew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWE(null));
 			toaster({
-				message: tc("thingsDeleted", { things: tw("Transformation") }),
+				message: tw("transDeleted", { count: 1 }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

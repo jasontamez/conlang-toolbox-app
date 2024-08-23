@@ -127,7 +127,7 @@ const WGRew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({
-				message: tc("thingsDeleted", { count: 1, things: tw("Transformation") }),
+				message: tw("transDeleted", { count: 1 }),
 				duration: 2500,
 				color: "danger",
 				position: "top",
@@ -159,7 +159,7 @@ const WGRew: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteTransformWG(null));
 			toaster({
-				message: tc("thingsDeleted", { count, things: tw("Transformation") }),
+				message: tw("transDeleted", { count }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

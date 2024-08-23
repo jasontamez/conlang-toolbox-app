@@ -151,22 +151,12 @@ const common = {
 
 	CharactersToBeCopied: "Characters to be copied", // 🔵
 
-	// Things will take `count` properties for plurality, but the exact number will usually be expressed
-	//   in the `things` property itself
-	thingsDeleted_one: "{{things}} deleted.", // 🟦2.5
-	thingsDeleted_other: "{{things}} deleted.",
-
-	// General Things are unknown: may be 0, 1, or any number
-	clearOverwriteGeneralThings: "This will clear and overwrite {{things}}.", // 🟡
-	saveGeneralThings: "Save {{things}}", // 🟥 🔴
-
 	// Singular Things
-	thingAdded: "{{thing}} added.", // 🟦2
 	thingSaved: "{{thing}} saved.", // 🟦2
 	thingDeleted: "{{thing}} deleted.", // 🟦2.5
 	thingEdited: "{{thing}} edited.", // 🟦2 🟨
 	deleteThing: "Delete {{thing}}", // 🔴 🟨
-	editThing: "Edit {{thing}}", // (H)
+	editThing: "Edit {{thing}}", // 🟥
 	addThing: "Add {{thing}}", // 🟥 🔴
 	saveThing: "Save {{thing}}", // 🔴
 	loadThing: "Load {{thing}}", // 🟥
@@ -187,10 +177,10 @@ const common = {
 	// "It" refers to saved info from WG, WE, or Declenjugation
 	YesOverwriteIt: "Yes, Overwrite It", // 🔴
 
-	prevSave: "the previous save",
+	ClearOverwritePrevSave: "This will clear and overwrite the previous save",
 	LoadError: "Load Error", // 🟨
 	ManageCustomInfo: "Manage Custom Info", // 🟥
-	CurrentInfo: "Current Info",
+	SaveCurrentInfo: "Save Current Information", // Used by DJ and WE
 	NameOfSave: "Name of save",
 	NameYourInfo: "Name your custom info",
 	Load: "Load", // 🔴
@@ -259,6 +249,7 @@ const common = {
 	overviewOf: "Overview: {{what}}", // 🟥
 
 	ImportFrom: "Import from {{source}}", // 🔴 🟥 🟨 source is always Lexicon, WordGen or WordEvolve
+	ImportFromLexicon: "Import from Lexicon", // 🔴 🟥 🟨
 	LoadPreset: "Load Preset", // 🔴
 
 	// Import from Lexicon (to WG or WE)

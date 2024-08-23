@@ -40,14 +40,15 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 
 const translations = [
 	"needTitleOrDescriptionMsg",
-	"LoadSavedInfo", "AllCurrentGroups",
+	"LoadSavedInfo", "clearEverythingMsg",
 	"willClearOverwriteMsg"
 ];
 
 const commons = [
 	"deleteThisCannotUndo", "Cancel", "Delete", "LoadError",
 	"Load", "ManageCustomInfo", "NameOfSave", "NameYourInfo",
-	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "confirmLoad"
+	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "confirmLoad",
+	"SaveCurrentInfo"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
@@ -55,11 +56,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [
 		tYouSure, tCancel, tDel, tLoadErr, tLoad, tManage,
 		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes,
-		tConfLoad
+		tConfLoad, tSaveThings
 	] = useI18Memo(commons);
-	const [ tNoTitle, tLoadInfo, tAllGroups, tOverwritePrev ] = useI18Memo(translations, "dj");
-	const tOverwriteAll = useMemo(() => tc("clearOverwriteGeneralThings", { things:tAllGroups }), [tc, tAllGroups]);
-	const tSaveThings = useMemo(() => tc("saveGeneralThings", { things: tc("CurrentInfo") }), [tc]);
+	const [ tNoTitle, tLoadInfo, tClearEverything, tOverwritePrev ] = useI18Memo(translations, "dj");
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
@@ -159,14 +158,14 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		} else {
 			yesNoAlert({
 				header:  tc("loadTitleQ", { title }),
-				message: tOverwriteAll,
+				message: tClearEverything,
 				cssClass: "warning",
 				submit: tConfLoad,
 				handler,
 				doAlert
 			});
 	}
-	}, [disableConfirms, dispatch, doAlert, doCleanClose, tConfLoad, tLoadErr, tOk, tOverwriteAll, tc, toast]);
+	}, [disableConfirms, dispatch, doAlert, doCleanClose, tConfLoad, tLoadErr, tOk, tClearEverything, tc, toast]);
 	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);
