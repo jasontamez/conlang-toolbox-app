@@ -98,7 +98,8 @@ const commons = [
 	"TypeWordHere", "TypeRegExHere",
 	"WordMustContainX", "WordMustMatchX",
 	"WordsThatMatch", "WordsWithColumn", "TestColumn",
-	"WordsThatContain", "ImportFromLexicon"
+	"WordsThatContain", "ImportFromLexicon",
+	"ConditionSaved"
 ];
 
 const LexiconImporterModal: FC<ImporterProps> = (props) => {
@@ -114,9 +115,8 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		tTypeWord, tTypeRegex,
 		tX, tMX,
 		tWordsMatch, tWordsCol, tTestCol,
-		tWordsCont, tImpFromLexicon
+		tWordsCont, tImpFromLexicon, tSaved
 	] = useI18Memo(commons);
-	const tSaved = useMemo(() => tc("thingSaved", { thing: tc("Condition") }), [tc]);
 
 	const {
 		isOpen,

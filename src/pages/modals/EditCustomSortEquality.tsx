@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -45,7 +45,8 @@ const translations = [
 	"Semicolon", "Space", "TheBaseCharacter",
 	"noBaseCharMsg",
 	"noEqualCharMsg",
-	"BaseChar", "BaseEqual", "EqualsSeparator"
+	"BaseChar", "BaseEqual", "EqualsSeparator",
+	"DeleteEquality", "EqualityEdited", "EditEquality"
 ]
 
 const commons = [
@@ -54,18 +55,15 @@ const commons = [
 ];
 
 const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
-	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [
 		tClose, tDelete, tExChar, tOk, tSave, tRUSure, tError
 	] = useI18Memo(commons);
 	const [
-		tBase, tCharEqual, tCharsToBeEqual, tComma, tNoSep, tPeriod, tSemi,
-		tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpEqual, tpSep
+		tBase, tCharEqual, tCharsToBeEqual, tComma, tNoSep, tPeriod,
+		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpEqual,
+		tpSep, tDelThing, tThingEdited, tEditThing
 	] = useI18Memo(translations, "settings");
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
-	const tEditThing = useMemo(() => tc("editThing", { thing: t("Equality") }), [tc, t]);
-	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Equality") }), [t, tc]);
 
 	const { isOpen, setIsOpen, openECM, incomingEquality, setOutgoingEquality } = props;
 	const [doAlert] = useIonAlert();

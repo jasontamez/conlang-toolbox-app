@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -27,7 +27,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
-import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -44,7 +43,7 @@ const translations = [
 	"Semicolon", "Space", "TheBaseCharacter",
 	"noBaseCharMsg",
 	"noEqualCharMsg", "BaseChar",
-	"CharsSeparator", "BaseEqual"
+	"CharsSeparator", "BaseEqual", "AddEquality"
 ];
 
 const commons = [
@@ -53,16 +52,12 @@ const commons = [
 ];
 
 const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
-	const [ tc ] = useTranslator('common');
 	const [
 		tBase, tCharBase, tThingAdded, tCharEqual, tComma, tNoSep, tPeriod,
-		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpSep, tpEqual
+		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpSep, tpEqual,
+		tAddThing
 	] = useI18Memo(translations, "settings");
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
-	const [ tAddThing ] = useMemo(
-		() => [ "addThing" ].map(thing => tc(thing, { thing: "tEquality" })),
-		[tc]
-	);
 
 	const { isOpen, setIsOpen, openECM, setSavedEquality } = props;
 	const [separator, setSeparator] = useState<SortSeparator>("");

@@ -35,17 +35,17 @@ type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 const translations = [
 	"exportCSVFile", "exportCSVFileNoDesc", "fileJson",
 	"exportTextNewline", "exportTextSemicolon", "exportTextTab", "fileXml",
-	"TITLE"
+	"TITLE", "ExportThing"
 ];
 
 const commons = [ "Cancel", "Close", "Description" ];
 
 const ExportLexiconModal: FC<ExportModalProps> = (props) => {
+	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const [ tCancel, tClose, tDesc, tTITLE ] = useI18Memo(commons);
 	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");
 	const tFormat = useMemo(() => tc("ChooseFormat", { context: "presentation" }), [tc]);
-	const tExportThing = useMemo(() => tc("exportThing", { context: "presentation", thing: tc("Lexicon") }), [tc]);
 
 	const { isOpen, setIsOpen, setLoading } = props;
 	const {
@@ -54,6 +54,7 @@ const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 		lexicon,
 		columns
 	} = useSelector((state: StateObject) => state.lexicon);
+	const tExportThing = useMemo(() => t("exportThing", { title }), [t, title]);
 	const doClose = useCallback(() => {
 		setIsOpen(false);
 		setLoading(false);
@@ -165,7 +166,7 @@ const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 		<IonModal isOpen={isOpen} onDidDismiss={doClose}>
 			<IonHeader>
 				<IonToolbar color="primary">
-					<IonTitle>{tExportThing} {title}</IonTitle>
+					<IonTitle>{tExportThing}</IonTitle>
 					<IonButtons slot="end">
 						<IonButton onClick={doClose} aria-label={tClose}>
 							<IonIcon icon={closeCircleOutline} />

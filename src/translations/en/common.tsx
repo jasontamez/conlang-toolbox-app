@@ -240,9 +240,8 @@ const common = {
 	Loading: "Loading", // 🟥
 	PleaseWait: "Please wait...", // 🟥
 
-	title: "title",
 	Title: "Title", // 🔵 🟥
-	Title_presentation: "Title:",
+	Title_presentation: "Title:", // 🔴
 	Description: "Description", // 🟥 🔵
 	Description_presentation: "Description:",
 
@@ -263,7 +262,7 @@ const common = {
 	TypeRegExHere: "Type regular expression here.",
 	ColXMustHaveY: "Column [x] must contain [y]",
 	ColXMustMatchY: "Column [x] must match expression [y]",
-	Condition: "Condition",
+	ConditionSaved: "Condition saved.", // 🟦2.5
 
 	// These terms should be treated as the `presentational` context
 	TestColumn: "Test column:", // 🟥 the column being tested for a match

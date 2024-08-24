@@ -157,17 +157,6 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🔴 | fileJson | JSON File | User-selectable option for file export |
 | 🔴 | fileXml | XML File | User-selectable option for file export |
 | 🟨 | DeleteEverythingQ | Delete Everything? | Asking to delete something. The dialog text will specify what is being deleted. |
-| 🟦2 | thingSaved | {{thing}} saved. | General message |
-| 🟦2.5 | thingDeleted | {{thing}} deleted. | General message |
-| 🟦2 🟨 | thingEdited | {{thing}} edited. | General message |
-| 🔴 🟨 | deleteThing | Delete {{thing}} | General message |
-| 🟥 | editThing | Edit {{thing}} | General message |
-| 🟥 🔴 | addThing | Add {{thing}} | General message |
-| 🔴 | saveThing | Save {{thing}} | General message |
-| 🟥 | loadThing | Load {{thing}} | General message |
-| 🟨 | missingThing | Missing {{thing}} | General message |
-| 🟥 | exportThing | Export {{thing}} | General message |
-|  | exportThing_presentation | Export {{thing}}: | *Presentation* context of the above. |
 | 🟨 | deleteTitleQ | Delete "{{title}}"? | Message used with user-titled info. |
 | 🟨 | loadTitleQ | Load "{{title}}"? | Message used with user-titled info. |
 | 🟦2.5 | titleSaved | "{{title}}" saved. | Message used with user-titled info. |
@@ -202,6 +191,8 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟨 | regexpError | Error trying to parse "{{regex}}" | The user gave a malformed regular expression `{{regex}}` in WG or WE. |
 | 🟥 | Loading | Loading | A tool or page is loading. |
 | 🟥 | PleaseWait | Please wait... | An additional loading message. |
+| 🔵 | Title | Title |  |
+| 🔴 | Title_presentation | Title: | *(presentation context)* |
 | 🟡 | MaybeDiscardThing | Are you sure you want to discard this? | When deciding not to add a new thing |
 | 🟡 | MaybeDiscardEdits | Are you sure you want to discard your edits? | When deciding not to edit an existing thing |
 | 🔴 | YesDiscard | Yes, Discard | Affirmative answer to either of the above two questions. |
@@ -214,7 +205,7 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟨 | ImportFromWhichColumns | Import from which column(s)? | Import from Lexicon (to WG or WE) |
 |  | optional | (optional) | Placeholder text for optional text inputs |
 |  | AddConditions | Add Conditions $t(optional) | The user can specify conditions that must be met before a specific word can be imported from the Lexicon. |
-|  | Condition | Condition | Used in `thingSaved` inside the Import from Lexicon modal |
+| 🟦2.5 | ConditionSaved | Condition saved. | One of the conditions below has been saved. |
 |  | WordMustContainX | Word must contain \[x\] | A condition |
 | 🟥 | WordsThatContain | Words that contain: | *(presentation context)* Prefixes the input box for the above key |
 |  | TypeWordHere | Type part of word here. | Placeholder text for the above input |
@@ -302,7 +293,6 @@ Each character in Extra Characters has an official Unicode name. You can find th
 
 | Label | Key | English Translation | Description (if needed) |
 | --- | --- | --- | --- |
-|  | Data | Data | used by `exportThing` |
 | 🟥 🔴 | DisableConfPrompts | Disable Confirmation Prompts |  |
 |  | confPromptExplanation | Eliminates yes/no prompts when deleting or overwriting data. | Explanation for the setting above |
 | 🟥 🔴 | ChangeTheme | Change Theme |  |
@@ -314,7 +304,8 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🔴 | Dark | Dark | Theme name |
 | 🔴 | SolarizedLight | Solarized Light | Theme name; "Solarized" is the name of a popular color palette |
 | 🔴 | SolarizedDark | Solarized Dark | Theme name; "Solarized" is the name of a popular color palette |
-|  | exportAllMsg | \[ "Save this info to a note or file.&nbsp;&nbsp;", "You will be able to use it later to restore your data." \] | *This is an array of strings in Markdown format.* |
+| 🟥 | ExportData | Export App Data | Title of the "Export App Info" modal |
+|  | exportAllMsg | \[ "Save this info to a note or file.&nbsp;&nbsp;", "You can use it later to restore your data." \] | *This is an array of strings in Markdown format.* |
 | 🔵 | ExportedData | Exported Data |  |
 | 🟥 | WhatToExport | What to Export |  |
 | 🟡 | nothingImportedMsg | You haven't imported anything yet. |  |
@@ -386,9 +377,19 @@ Each character in Extra Characters has an official Unicode name. You can find th
 |  | Relation | Relation | Used in `addThing`, `editThing` and `thingEdited` |
 | 🟥 | Relations | Relations |  |
 |  | relationMsg | Similar characters that should be sorted separately. |  |
+| 🟥 | AddRelation | Add Relation |  |
+| 🟦2.5 | RelationAdded | Relation added |  |
+| 🟥 | DeleteRelation | Delete Relation? |  |
+| 🟦2.5 | RelationEdited | Relation edited |  |
+| 🟥 | EditRelation | Edit Relation? |  |
 |  | Equality | Equality | Used in `addThing`, `editThing` and `thingEdited` |
 | 🟥 | Equalities | Equalities |  |
 |  | equalityMsg | Characters that should be sorted together as if they were strictly equal. |  |
+| 🟥 | AddEquality | Add Equality |  |
+| 🟦2.5 | EqualityAdded | Equality added |  |
+| 🟥 | DeleteEquality | Delete Equality? |  |
+| 🟦2.5 | EqualityEdited | Equality edited |  |
+| 🟥 | EditEquality | Edit Equality? |  |
 |  | BaseChar | Base Character: | *(presentation context)* |
 |  | BaseEqual | Equal to the Base: | *(presentation context)* |
 |  | CharsSeparator | Characters Separator: | *(presentation context)* |
@@ -569,14 +570,23 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 | 🟡 | deleteEverythingMessage | This will erase everything currently displayed (but not anything previously saved). Are you sure you want to do this? |  |
 | 🟡 | loadLexiconConfirm | Are you sure you want to load this? It will overwrite your current lexicon and cannot be reversed. |  |
 | 🟥 | NoSavedLexicons | No Saved Lexicons |  |
+| 🟥 | DeleteStoredLexicon | Delete Stored Lexicon |  |
+| 🟦2.5 | LexiconDeleted | Lexicon deleted. |  |
+| 🟥 | LoadLexicon | Load Lexicon | 🔴 |
+| 🔴 | SaveLexicon | Save Lexicon |  |
+| 🟦2.5 | LexiconSaved | Lexicon saved. |  |
 | 🟦2.5 | LexSavedAsNew | Lexicon saved as new lexicon! |  |
 | 🟡 | needTitleMsg | You must input a title before saving. |  |
 | 🟡 | needLexiconTitleMsg | Please give your lexicon a title before exporting it. |  |
 | 🟡 | needWordsMsg | Please add words to your lexicon before exporting it. |  |
-| 🔴 | Item | Item |  |
+| 🟥 | AddLexiconItem | Add Lexicon Item |  |
+| 🔴 | AddItem | Add Item |  |
+| 🟥 | EditLexiconItem | Edit Lexicon Item |  |
+| 🟨 | DeleteItem | Delete Item? |  |
+| 🟦2.5 | ItemDeleted | Item was deleted. |  |
+| 🔴 | SaveItem | Save Item |  |
 | 🔴 | Column | Column |  |
 | 🟥 | EditCols | Edit Columns |  |
-| 🟥 | LexItem | $t(common:Lexicon) $t(Item) |  |
 | 🟨 | ExitWOSave | Exit Without Saving? |  |
 | 🟡 | exitWithoutSavingMsg | You have unsaved changes. Are you sure you want to exit? |  |
 | 🟦2.5 | ColumnAdded | Column added |  |
@@ -598,6 +608,8 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 | 🟡 | SaveChanges | Save Changes | Used when saving an edited word or saving edited columns |
 |  | workingMsg | Working... |  |
 |  | TITLE | TITLE | Only used in CSV exports |
+| 🔴 | ExportLex | Export Lexicon |  |
+| 🟥 | ExportLexicon | Export Lexicon: "{{title}}" | *(semi-presentation context)* `{{title}}` will be replaced with a Lexicon's title |
 | 🔴 | exportTextTab | Text, Tabbed | Type of export |
 | 🔴 | exportTextSemicolon | Text, Semicolons | Type of export |
 | 🔴 | exportTextNewline | Text, Newlines | Type of export |
@@ -700,6 +712,8 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 |  | Group | Group | used in `thingDeleted` and `thingSaved` |
 | 🟦2.5 | groupsDeleted_one | {{count}} Group deleted. |  |
 | 🟦2.5 | groupsDeleted_other | {{count}} Groups deleted. | English plural of the key above |
+| 🟦2.5 | GroupSaved | Group saved. |  |
+| 🟦2.5 | GroupDeleted | Group deleted. |  |
 | 🟥 | Type | Type | The 'type' refers to whether a group is a declension, conjugation, or other. |
 |  | Type_presentation | Type: | *(presentation context)* |
 | 🟥 🔴 | Declensions | Declensions | group of declensions on-screen |
@@ -724,7 +738,6 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 | 🔵 | WordsToGiveDJ | Words to send through $t(common:Declenjugator) |  |
 |  | EnterWordsOnePerLine | Enter words here, one per line |  |
 | 🟡 | delEntireGroup | This will delete this entire Group, and cannot be undone. |  |
-| 🟦2.5 | GroupDeleted | Group deleted. |  |
 | 🟡 | clearEverythingMsg | This will clear and overwrite all current Groups. |  |
 | 🟨 | ClearAllGroups | Clear All Groups? |  |
 | 🟡 | needTitleOrDescriptionMsg | You must provide a title or description before saving. |  |
@@ -747,6 +760,7 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 | 🟥 | TitleMethod_Declensions | Title or Description of this declension: | *(presentation context)* |
 | 🟥 | TitleMethod_Conjugations | Title or Description of this conjugation: | *(presentation context)* |
 | 🟥 | TitleMethod_Other | Title or Description of this method: | *(presentation context)* |
+| 🟦2.5 | TitleSaved | Title/Description saved. |  |
 |  | advancedExplanation_Declensions | Use regular expressions to craft a declension. |  |
 |  | advancedExplanation_Conjugations | Use regular expressions to craft a conjugation. |  |
 |  | advancedExplanation_Other | Use regular expressions to craft a method. |  |

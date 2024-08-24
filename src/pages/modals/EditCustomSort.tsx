@@ -92,9 +92,11 @@ const translations = [
 	"relationMsg", "Space",
 	"TitleOfSort", "UnicodeSort",
 	"UpperLowercase", "UseAlternateAlphabet", "WriteAlphaHere",
-	"noEnteredInfoMsg", "CustomSort",
+	"noEnteredInfoMsg",
 	"needTitleMsg", "alternateAlphabetExplanation",
-	"SortLanguage", "SortSensitivity", "AlphabetSeparator"
+	"SortLanguage", "SortSensitivity", "AlphabetSeparator",
+	"DeleteSortButton", "DeleteSort", "SortAdded", "EditSort",
+	"SortDeleted"
 ];
 
 const commons = [
@@ -104,7 +106,6 @@ const commons = [
 ];
 
 const EditCustomSort: FC<CustomSortModal> = (props) => {
-	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [
 		tAddNew, tClose, tDefSort, tDelete, tEdit, tExChar, tOk,
@@ -114,16 +115,11 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		tNone, tBase, tBlank, tCharsEqual, tComma, tCustomAlpha, tDefSens,
 		tDiaPlus, tDia, tEqualities, tNoSep, tPeriod, tRelations, tSemi,
 		tCharsSepar, tSpace, tTitleSort, tUnicode, tUppLow, tUseAlph,
-		tWriteAlpha, tNoInfo, tCustomSort, tNoTitle, tAltAlphaExpl, tpSortLang,
-		tpSortSens, tpAlphaSep
+		tWriteAlpha, tNoInfo, tNoTitle, tAltAlphaExpl,
+		tpSortLang, tpSortSens, tpAlphaSep, tDelSort, tDelThisSort,
+		tThingSaved, tEditThing, tThingDeleted
 	] = useI18Memo(translations, "settings");
 	const tpTitle = useMemo(() => tc("Title", { context: "presentation" }), [tc]);
-	const [ tEditThing, tThingDeleted, tThingSaved ] = useMemo(
-		() => ["editThing", "thingDeleted", "thingSaved"].map(thing => tc(thing, { thing: tCustomSort })),
-		[tc, tCustomSort]
-	);
-	const tDelThisSort = useMemo(() => tc("deleteThing", { thing: t("ThisSort") }), [t, tc]);
-	const tDelSort = useMemo(() => tc("deleteThing", { thing: t("Sort") }), [t, tc]);
 
 	const {
 		isOpen,

@@ -81,7 +81,7 @@ const translations = [
 	"Other1", "Semicolon", "SimpleRootFinder", "Slash", "Space", "Type",
 	"UseAdvancedMethod", "UseRegExpToIdStem",
 	"needTitleOrDescriptionMsg",
-	"needConditionMsg",
+	"needConditionMsg", "GroupSaved",
 	"exampleAppliesTo", "wordMarker", "RegExp",
 	"SepMultiWith", "AddGroup", "TitleInput"
 ];
@@ -97,8 +97,8 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tChoose, tComma, tConj1, tDecl1, tNeedExpr, tOther1, tSemi, tSimple,
-		tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle, tNoCond, tEx, tWM,
-		tRegEx, tpSeparate, tAddGroup, tTitleInput
+		tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle, tNoCond,
+		tThingSaved, tEx, tWM, tRegEx, tpSeparate, tAddGroup, tTitleInput
 	] = useI18Memo(translations, "dj");
 	const [
 		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk, tSave,
@@ -109,7 +109,6 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		tpTypes, tpMatching, tpRemoveStart, tpReplacement,
 		tpRemoveEnd, tpType
 	] = useI18Memo(presentations, "dj", context);
-	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
 
 	const {
 		isOpen,

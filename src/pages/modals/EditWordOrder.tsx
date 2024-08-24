@@ -73,27 +73,25 @@ const translations = [
 	"LexOptions", "Med", "New", "RearrangeColumns", "Small",
 	"ShowTitles", "optionToBeginning", "optionToEnd",
 	"EditCols", "SortBlanks", "cannotDeleteFinalColumnMsg",
-	"SaveChanges", "ColumnAdded"
+	"SaveChanges", "ColumnAdded", "AddColumn"
 ];
 
 const commons = [
 	"Close", "defaultSort", "Delete", "ExtraChars",
-	"NothingToSave", "emphasizedError"
+	"NothingToSave", "emphasizedError", "SortMethod"
 ];
 
 const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
-	const [ t ] = useTranslator('lexicon');
 	const [
-		tClose, tDefSort, tDelete, tExChar, tNothing, tEmphError
+		tClose, tDefSort, tDelete, tExChar,
+		tNothing, tEmphError, tpMethod
 	] = useI18Memo(commons);
 	const [
 		tYouSure, tAlphaFirst, tAlphaLast, tFieldName, tLarge, tLexOpts,
 		tMed, tNew, tRearr, tSmall, tShowTitle, tToBeg, tToEnd, tEditGeneral,
-		tpBlank, tCannotDelete, tSaveThings, tThingAdded
+		tpBlank, tCannotDelete, tSaveThings, tThingAdded, tAddThing
 	] = useI18Memo(translations, "lexicon");
-	const tpMethod = useMemo(() => tc("SortMethod"), [tc]);
-	const tAddThing = useMemo(() => tc("addThing", { thing: t("Column") }), [tc, t]);
 
 	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
 	const dispatch = useDispatch();

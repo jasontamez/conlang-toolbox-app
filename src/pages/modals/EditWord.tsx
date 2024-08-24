@@ -50,9 +50,11 @@ function garble () {
 const nonsense = garble();
 
 const translations = [
-	"ExitWOSave", "Item",
+	"ExitWOSave",
 	"exitWithoutSavingMsg",
-	"noInfoProvided"
+	"noInfoProvided", "EditLexiconItem",
+	"DeleteItem", "SaveItem", "ItemDeleted",
+	"ItemSaved"
 ];
 
 const commons = [
@@ -60,17 +62,13 @@ const commons = [
 	"ExtraChars", "Ok", "areYouSure"
 ];
 
-const things = [ "deleteThing", "saveThing", "thingDeleted", "thingEdited" ];
-
 const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tc ] = useTranslator('common');
-	const [ t ] = useTranslator('lexicon');
-	const [ tExit, tItem, tUnsavedChanges, tNoInfo ] = useI18Memo(translations, "lexicon");
-	const [ tYouSure, tClose, tError, tExChar, tOk, tRUSure ] = useI18Memo(commons);
-	const tEditLexicon = useMemo(() => tc("editThing", { thing: t("LexItem")}), [tc, t]);
 	const [
-		tDelThing, tSaveThing, tThingDel, tThingEdit
-	] = useMemo(() => things.map(item => tc(item, { thing: tItem })), [tc, tItem]);
+		tExit, tUnsavedChanges, tNoInfo, tEditLexicon,
+		tDelThing, tSaveThing, tThingDel, tThingSaved
+	] = useI18Memo(translations, "lexicon");
+	const [ tYouSure, tClose, tError, tExChar, tOk, tRUSure ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen, openECM, itemToEdit, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
@@ -138,12 +136,12 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 		setIsOpen(false);
 		dispatch(doEditLexiconItem([{id, columns: cols}, sorter]));
 		toaster({
-			message: tThingEdit,
+			message: tThingSaved,
 			color: "success",
 			duration: 2500,
 			toast
 		})
-	}, [currentInfo, dispatch, doAlert, id, setIsOpen, sorter, tError, tNoInfo, tOk, tThingEdit, toast]);
+	}, [currentInfo, dispatch, doAlert, id, setIsOpen, sorter, tError, tNoInfo, tOk, tThingSaved, toast]);
 	const delFromLex = useCallback(() => {
 		const handler = () => {
 			setIsOpen(false);

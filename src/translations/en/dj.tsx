@@ -4,6 +4,8 @@ const dj = {
 	Group: "Group",
 	groupsDeleted_one: "{{count}} Group deleted.",
 	groupsDeleted_other: "{{count}} Groups deleted.",
+	GroupSaved: "Group saved.",
+	GroupDeleted: "Group deleted.",
 	Type: "Type", // 🟥
 	Type_presentation: "Type:",
 	Declensions: "Declensions", // 🟥 🔴 group of declensions on-screen
@@ -28,7 +30,6 @@ const dj = {
 
 	WordsToGiveDJ: "Words to send through $t(common:Declenjugator)", // 🔵
 	EnterWordsOnePerLine: "Enter words here, one per line",
-	GroupDeleted: "Delete Group?", // 🟦2.5
 	delEntireGroup: "This will delete this entire Group, and cannot be undone.", // 🟡
 	ClearAllGroups: "Clear All Groups?", // 🟨
 	clearEverythingMsg: "This will clear and overwrite all current Groups.", // 🟡
@@ -53,6 +54,7 @@ const dj = {
 	TitleMethod_Declensions: "Title or Description of this declension:", // 🟥
 	TitleMethod_Conjugations: "Title or Description of this conjugation:", // 🟥
 	TitleMethod_Other: "Title or Description of this method:", // 🟥
+	TitleSaved: "Title/Description saved.", // 🟦2.5
 	advancedExplanation_Declensions: "Use regular expressions to craft a declension.",
 	advancedExplanation_Conjugations: "Use regular expressions to craft a conjugation.",
 	advancedExplanation_Other: "Use regular expressions to craft a method.",

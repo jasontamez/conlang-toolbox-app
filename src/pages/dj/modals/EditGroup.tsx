@@ -83,10 +83,10 @@ const translations = [
 	"Other1", "Semicolon", "SimpleRootFinder", "Slash", "Space", "Type",
 	"UseAdvancedMethod", "UseRegExpToIdStem",
 	"needTitleOrDescriptionMsg",
-	"needConditionMsg",
+	"needConditionMsg", "GroupSaved",
 	"exampleAppliesTo", "wordMarker", "RegExp",
 	"SepMultiWith", "EditGroup", "TitleInput",
-	"delEntireGroup"
+	"delEntireGroup", "GroupDeleted"
 ];
 
 const commons = [
@@ -105,17 +105,14 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	] = useI18Memo(commons);
 	const [ tChooseSep, tComma, tConj1, tDecl1, tNeedBoth, tOther1, tSemi,
 		tSimple, tSlash, tSpace, tType, tUseAdv, tUseRegex, tNoTitle,
-		tNoCond, tExample, tWM, tRegEx, tpSeparate, tEditGroup, tTitleInput,
-		tDelAllMsg
+		tNoCond, tThingSaved, tExample, tWM, tRegEx, tpSeparate, tEditGroup,
+		tTitleInput, tDelAllMsg, tGroupDeleted
 	] = useI18Memo(translations, "dj");
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
 	const [
 		tpTypes, tpMatching, tpRemoveStart,
 		tpReplacement, tpRemoveEnd, tpType
 	] = useI18Memo(presentations, "dj", context);
-	const tThingSaved = useMemo(() => tc("thingSaved", { thing: t("Group") }), [t, tc]);
-	const tGroupDeleted = useMemo(() => tc("thingDeleted", { thing: t("Group") }), [t, tc]);
-	const tDelEntireGroup = useMemo(() => tc("deleteThing", { thing: "Entire Group" }), [tc]);
 
 	const {
 		isOpen,
@@ -438,7 +435,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		};
 		if(!disableConfirms) {
 			return yesNoAlert({
-				header: tDelEntireGroup,
+				header: tYouSure,
 				message: tDelAllMsg,
 				cssClass: "danger",
 				submit: tc("confirmDel", { count: 1 }),
@@ -449,7 +446,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		handler();
 	}, [
 		closeModal, disableConfirms, dispatch, doAlert, editingGroupInfo,
-		id, tc, toast, tDelAllMsg, tDelEntireGroup, tGroupDeleted
+		id, tc, toast, tDelAllMsg, tYouSure, tGroupDeleted
 	]);
 
 	const maybeAddNewDeclenjugation = useCallback(() => {

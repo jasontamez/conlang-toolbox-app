@@ -54,15 +54,15 @@ import useI18Memo from '../../components/useI18Memo';
 
 const commons = [ "Close", "CopyToClipboard", "Done", "Loading" ];
 
-const translations = [ "ExportedData", "OtherAppSettings", "WhatToExport" ];
-
+const translations = [
+	"ExportedData", "OtherAppSettings", "WhatToExport", "ExportData"
+];
 
 const MExportAllData: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('common');
 	const [ ts ] = useTranslator('settings');
 	const [ tClose, tCopy, tDone, tLoading ] = useI18Memo(commons);
-	const [ tExportedData, tOtherSettings, tWhatToExport ] = useI18Memo(translations, "settings");
-	const tExportThing = useMemo(() => t("exportThing", { thing: ts("Data") }), [t, ts]);
+	const [ tExportedData, tOtherSettings, tWhatToExport, tExportThing ] = useI18Memo(translations, "settings");
 	const tExportMsg = useMemo(() => ts("exportAllMsg", { joinArrays: "\n" }), [ts]);
 	const tCurrentMorphoSyntaxSettings = useMemo(() => ts("currentSettings", { tool: t("MorphoSyntax") }), [ts, t]);
 	const tStoredMorphoSyntaxDocuments = useMemo(() => ts("storedDocuments", { tool: t("MorphoSyntax") }), [ts, t]);

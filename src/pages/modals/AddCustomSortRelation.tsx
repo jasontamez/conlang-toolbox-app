@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -27,7 +27,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
-import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -46,7 +45,7 @@ const translations = [
 	"TheBaseCharacter", "noBaseCharMsg",
 	"noPostPreCharMsg",
 	"BaseChar", "PrePostSeparator", "SortedAfterBase",
-	"SortedBeforeBase"
+	"SortedBeforeBase", "AddRelation"
 ];
 const commons = [
 	"MaybeDiscardThing", "Cancel", "Close",
@@ -54,17 +53,12 @@ const commons = [
 ];
 
 const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
-	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tThingAdded, tEndBefore, tNoSep,
 		tPeriod, tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost,
-		tpBase, tpSep, tpAfter, tpBefore
+		tpBase, tpSep, tpAfter, tpBefore, tAddThing
 	] = useI18Memo(translations, "settings");
-	const [ tAddThing ] = useMemo(
-		() => [ "addThing" ].map(thing => tc(thing, { thing: "tRelation" })),
-		[tc]
-	);
 
 	const { isOpen, setIsOpen, openECM, setSavedRelation } = props;
 	const [separator, setSeparator] = useState<SortSeparator>("");

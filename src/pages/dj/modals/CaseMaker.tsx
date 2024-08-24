@@ -105,7 +105,9 @@ const CaseItem: FC<CaseItemProps> = (props) => {
 	);
 };
 
-const translations = [ "caseMakerInstructions", "declenjugatorTitle" ];
+const translations = [
+	"caseMakerInstructions", "declenjugatorTitle", "TitleSaved"
+];
 
 const commons =  [
 	"MaybeDiscardThing", "Cancel", 
@@ -115,10 +117,8 @@ const commons =  [
 
 const CaseMaker: FC<CaseMakerModal> = (props) => {
 	const [ t ] = useTranslator('dj');
-	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tNoSave, tSave, tUnsaved, tYes ] = useI18Memo(commons);
-	const [ tInstructions, tTitle ] = useI18Memo(translations, "dj");
-	const tThingSaved = useMemo(() => tc("thingSaved", { thing: tc("Title") }), [tc]);
+	const [ tInstructions, tTitle, tThingSaved ] = useI18Memo(translations, "dj");
 	const caseObjects = useMemo(() => t("cases", { returnObjects: true }), [t]) as CaseObject[];
 
 	const {
@@ -164,7 +164,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 			message: tThingSaved,
 			position: "middle",
 			color: "success",
-			duration: 2000,
+			duration: 2500,
 			toast
 		});
 	};

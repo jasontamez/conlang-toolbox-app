@@ -36,15 +36,17 @@ interface SavedLexProperties extends ModalProperties {
 }
 
 const commons = [
-	"deleteThisCannotUndo", "Cancel", "Close", "Lexicon"
+	"deleteThisCannotUndo", "Cancel", "Close"
+];
+const lexicons = [
+	"NoSavedLexicons", "DeleteStoredLexicon", "Lexicon Deleted"
 ];
 
 const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
-	const tNoSaved = useMemo(() => t("NoSavedLexicons"), [t]);
-	const [ tYouSure, tCancel, tClose, tLexicon ] = useI18Memo(commons);
-	const tDeleteLexicon = useMemo(() => tc("deleteThing", { thing: tLexicon }), [tc, tLexicon]);
+	const [tNoSaved, tDeleteLexicon, tLexiconDeleted] = useI18Memo(lexicons);
+	const [ tYouSure, tCancel, tClose ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
@@ -63,7 +65,7 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 				setLexInfo([]);
 				setIsOpen(false);
 				toaster({
-					message: tc("thingDeleted", { thing: tLexicon }),
+					message: tLexiconDeleted,
 					duration: 2500,
 					toast
 				});
@@ -81,7 +83,7 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, setIsOpen, setLexInfo, setLoadingScreen, tYouSure, tc, toast, tLexicon]);
+	}, [disableConfirms, doAlert, setIsOpen, setLexInfo, setLoadingScreen, tYouSure, tc, toast, tLexiconDeleted]);
 	const listOfLexicons = useMemo(() => data.map((pair: [string, LexiconState]) => {
 		const key = pair[0];
 		const lex = pair[1];

@@ -38,14 +38,11 @@ interface LexItemProps extends ExtraCharactersModalOpener {
 	sorter: SorterFunc
 }
 
-const commons = [ "Close", "ExtraChars", "Ok", "error" ];
-const things = [ "Item", "LexItem" ];
+const commons = [ "Close", "ExtraChars", "Ok", "error", "AddLexiconItem", "AddItem" ];
 
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ t ] = useTranslator('lexicon');
-	const [ tc ] = useTranslator('common');
-	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
-	const [ tAddItem, tAddLexItem ] = useMemo(() => things.map(thing => tc("addThing", { thing: t(thing) })), [tc, t]);
+	const [ tClose, tExChar, tOk, tError, tAddItem, tAddLexItem ] = useI18Memo(commons);
 	const tThingAdded = useMemo(() => t("ItemSaved"), [t]);
 	const tNoInfo = useMemo(() => t("noInfoProvided"), [t]);
 

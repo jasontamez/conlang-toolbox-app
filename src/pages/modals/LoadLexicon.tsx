@@ -32,7 +32,9 @@ interface SavedLexProperties extends ModalProperties {
 	setLexInfo: SetState<[string, LexiconState][]>
 }
 
-const translations = [ "NoSavedLexicons", "loadLexiconConfirm" ];
+const translations = [
+	"NoSavedLexicons", "loadLexiconConfirm", "LoadLexicon"
+];
 
 const commons = [ "Cancel", "Close", "confirmLoad" ];
 
@@ -40,8 +42,7 @@ const LoadLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [ tCancel, tClose, tConfLoad ] = useI18Memo(commons);
-	const [ tNoSaved, tLoadConfirm ] = useI18Memo(translations, "lexicon");
-	const tLoadLexicon = useMemo(() => tc("loadThing", { thing: tc("Lexicon")} ), [tc]);
+	const [ tNoSaved, tLoadConfirm, tLoadLexicon ] = useI18Memo(translations, "lexicon");
 
 	const { isOpen, setIsOpen, lexInfo, setLexInfo } = props;
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);

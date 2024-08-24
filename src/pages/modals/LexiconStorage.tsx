@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, FC } from 'react';
+import React, { useCallback, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -51,7 +51,9 @@ const translations = [
 	"needWordsMsg",
 	"needLexiconTitleMsg",
 	"needTitleMsg", "deleteEverythingMessage",
-	"ClearLexicon"
+	"ClearLexicon", "DeleteStoredLexicon",
+	"ExportLex", "LoadLexicon", "SaveLexicon",
+	"LexiconSaved"
 ]
 
 const commons = [ "DeleteEverythingQ", "Done", "Ok", "SaveAsNew", "error" ];
@@ -59,20 +61,15 @@ const commons = [ "DeleteEverythingQ", "Done", "Ok", "SaveAsNew", "error" ];
 
 const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
-	const [ t ] = useTranslator('lexicon');
 	const [
 		tDelEverything, tDone, tOk, tSaveNew, tError
 	] = useI18Memo(commons);
 	const [
 		tLexStor, tLexClear, tNoClear, tLexNew,
 		tNoWords, tNoTitleEx, tNoTitle, tDelAll,
-		tClearLex
+		tClearLex, tDelThing, tExThing, tLoadThing,
+		tSaveThing, tThingSaved
 	] = useI18Memo(translations, "lexicon");
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: t("SavedLexicon") }), [tc, t])
-	const tExThing = useMemo(() => tc("exportThing", { thing: tc("Lexicon") }), [tc])
-	const tLoadThing = useMemo(() => tc("loadThing", { thing: tc("Lexicon") }), [tc])
-	const tSaveThing = useMemo(() => tc("saveThing", { thing: tc("Lexicon") }), [tc])
-	const tThingSaved = useMemo(() => tc("thingSaved", { thing: tc("Lexicon") }), [tc])
 
 	const {
 		isOpen,

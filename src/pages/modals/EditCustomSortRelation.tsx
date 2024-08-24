@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -48,7 +48,8 @@ const translations = [
 	"TheBaseCharacter", "noBaseCharMsg",
 	"noPostPreCharMsg",
 	"BaseChar", "PrePostSeparator", "SortedAfterBase",
-	"SortedBeforeBase"
+	"SortedBeforeBase", "DeleteRelation",
+	"RelationEdited", "EditRelation"
 ];
 
 const commons = [
@@ -57,17 +58,13 @@ const commons = [
 ];
 
 const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
-	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tError ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tEndBefore, tNoSep, tPeriod,
 		tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost, tpBase,
-		tpPrePost, tpAfter, tpBefore
+		tpPrePost, tpAfter, tpBefore, tDelThing, tThingEdited, tEditThing
 	] = useI18Memo(translations, "settings");
-	const tDelThing = useMemo(() => tc("deleteThing", { thing: tc("This") }), [tc]);
-	const tEditThing = useMemo(() => tc("editThing", { thing: t("Relation") }), [tc, t]);
-	const tThingEdited = useMemo(() => tc("thingEdited", { thing: t("Relation") }), [tc, t]);
 
 	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
 	const [doAlert] = useIonAlert();
