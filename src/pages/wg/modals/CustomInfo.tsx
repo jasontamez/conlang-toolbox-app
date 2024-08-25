@@ -73,7 +73,8 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 const commons = [
 	"Cancel", "Delete", "LoadError", "Load", "ManageCustomInfo",
 	"NameOfSave", "NameYourInfo", "NoSavedInfo", "Ok", "Save",
-	"YesOverwriteIt", "cannotUndo", "confirmLoad", "ClearOverwritePrevSave"
+	"YesOverwriteIt", "cannotUndo", "confirmLoad", "ClearOverwritePrevSave",
+	"SaveCurrentInfo", "LoadSavedInfo", "missingTitleMsg"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
@@ -82,18 +83,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [
 		tCancel, tDelete, tLoadError, tLoad, tManage, tNameSave,
 		tNameCustom, tNoSaved, tOk, tSave, tYesOverwrite, tCannotUndo,
-		tConfirmLoad, tClearPrevSave
+		tConfirmLoad, tClearPrevSave, tSaveInfo, tLoadInfo, tMissingTitle
 	] = useI18Memo(commons);
-	const [tSaveInfo, tLoadInfo] = useMemo(() => {
-		const tCurr = t("SaveCurrentInfo");
-		const save = t("SaveCurrentInfo");
-		const load = tc("loadThing", { thing: tCurr });
-		return [save, load];
-	}, [tc, t]);
 	const tClearAll = useMemo(() => { return t("clearAllThingsMsg"); }, [t]);
-	const tMissingTitle = useMemo(() => {
-		return tc("missingThing", { thing: tc("title") });
-	}, [tc]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

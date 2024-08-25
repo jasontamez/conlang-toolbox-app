@@ -97,12 +97,17 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | Label | Key | English Translation | Description (if needed) |
 | --- | --- | --- | --- |
 | 🟥 | appTitle | Conlang Toolbox | Title of the app. |
+|  | appTitle_filename | ConlangToolbox | *(filename context)* |
 | 🟥 | appSubtitle | tools for language invention | Subtitle of the app. |
 | 🟥 | MorphoSyntax | MorphoSyntax | Title of the MorphoSyntax tool. It is based on the word "morphosyntax the study of the form and meaning of language through the structure of words and sentences. |
 | 🟥 | WordGen | WordGen | Title of the WordGen tool. It is a combination of "word" and "generator". |
+|  | WordGen_filename | WordGen | *(filename context)* |
 | 🟥 | WordEvolve | WordEvolve | Title of the WordEvolve tool. It is a combination of "word" and "evolve". |
+|  | WordEvolve_filename | WordEvolve | *(filename context)* |
 | 🟥 | Declenjugator | Declenjugator | Title of the Declenjugator tool. It is a combination of "declension" (modifying nouns based on their case) and "conjugation" (modifying verbs based on their tense, aspect and/or mode), along with an -or suffix to indicate it's an object that does something. |
+|  | Declenjugator_filename | Declenjugator | *(filename context)* |
 | 🟥 | Lexicon | Lexicon | Title of the Lexicon tool. |
+|  | Lexicon_filename | Lexicon | *(filename context)* |
 | 🟥 | Concepts | Concepts | Title of the Concepts tool. |
 | 🟥 | AppInfo | App Info | Title of the page where you find information about the app. |
 | 🟥 | AppSettings | App Settings | Title of the page where you find settings for the entire app. |
@@ -118,19 +123,20 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🔴 | Ok | Ok | General acknowledgement |
 | 🔴 | Done | Done | User has finished using this modal or tool |
 | 🔴 | Close | Close | Close the modal |
-| 🔴 | Help | Help | Get helpful information |
 | 🔴 | Delete | Delete | Delete something |
 | 🔴 | Edit | Edit | Edit something |
+| 🔴 | Help | Help | Get helpful information |
 | 🔴 | AddAndClose | Add and Close | Text of button that adds something and closes a modal |
 | 🔴 | AddNew | Add New | Text of button that adds a new thing |
 | 🔴 | Copy | Copy | Copy information |
 | 🔴 | Generate | Generate | Generate some output |
+| 🔴 | SaveAsNew | Save as New | save current info as a new document |
 | 🔴 | CopyToClipboard | Copy to Clipboard | Copy something to the clipboard |
-| 🔵 | CharactersToBeCopied | Characters to be copied | ARIA label for the input box inside Extra Characters that holds characters to be copied. |
 | | Display | Display: | *(presentation context)* A choice of something to display |
 | | SavedAt | Saved: {{time}} | Indicates when something was saved. `{{time}}` is replaced with a timestamp. |
 | 🟦1.5 | CopiedToClipboard | Copied to clipboard | Displays after anything has been copied to the clipboard. |
 | 🟦1.5 | NothingToCopy | Nothing to copy | Displays when the user tries to copy something to the clipboard, but there is nothing to copy. |
+| 🔵 | CharactersToBeCopied | Characters to be copied | ARIA label for the input box inside Extra Characters that holds characters to be copied. |
 | | Untitled | \[Untitled\] | This is used as a document title if no title is given. |
 | | fileFormat | {{title}} - {{date}}.{{extension}} | This becomes a filename and is used by MorphoSyntax, Declenjugator, and Lexicon for exporting documents. `{{title}}` is user-generated, `{{date}}` is replaced with a datestamp in a format like "Thu Jan 01 1970 and `{{extension}}` will be a common file extension like "docx" or "csv". |
 | 🟦10 | UnableToExport | UNABLE TO EXPORT: {{error}} | Displayed when the app is unable to export a document to the user's device. `{{error}}` is a system-generated error message. |
@@ -144,9 +150,9 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦3.5 | saveToLexColumn_one | {{count}} word saved to $t(Lexicon) under "{{column}}" | Used when words from other tools are added to Lexicon. `{{column}}` is the name of the column the words were saved under. `$t(Lexicon)` is replaced with the `Lexicon` translation above. |
 | 🟦3.5 | saveToLexColumn_other | {{count}} words saved to $t(Lexicon) under "{{column}}" | Same as above, but for English plurality rules. |
 | 🟨 | SelectAColumn | Select a column | Used in dialogs where the user is attempting to take words from a tool and save them in Lexicon. |
-| 🟡 | SaveToLexiconMessage | Your selected words will be added to the $t(Lexicon) under that column. | Used in dialogs where the user is about to send words to the Lexicon to be saved. |
 | 🟦3.5 🔴 | GoToLexicon | Go to $t(Lexicon) | Used in a button inside a toast message after the user has successfully saved words from a tool into Lexicon. |
 | 🟦2.5 | TapWordsToSave | Tap words you want to save to $t(Lexicon). | Used inside of tools when prompting the user to tap on words on the screen that they wish to save to Lexicon. |
+| 🟡 | SaveToLexiconMessage | Your selected words will be added to the $t(Lexicon) under that column. | Used in dialogs where the user is about to send words to the Lexicon to be saved. |
 | 🟨 🟥 | ChooseFormat | Choose a Format | Used when the user is about to export a file and they have to choose what file format they will use. |
 | 🟨 🟥 | ChooseFormat_presentation | Choose a format: | The *presentation* context of the above. |
 | 🔴 | fileDocx | Word Document (docx) | User-selectable option for file export |
@@ -156,7 +162,6 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🔴 | fileCsv | Spreadsheet (csv) | User-selectable option for file export |
 | 🔴 | fileJson | JSON File | User-selectable option for file export |
 | 🔴 | fileXml | XML File | User-selectable option for file export |
-| 🟨 | DeleteEverythingQ | Delete Everything? | Asking to delete something. The dialog text will specify what is being deleted. |
 | 🟨 | deleteTitleQ | Delete "{{title}}"? | Message used with user-titled info. |
 | 🟨 | loadTitleQ | Load "{{title}}"? | Message used with user-titled info. |
 | 🟦2.5 | titleSaved | "{{title}}" saved. | Message used with user-titled info. |
@@ -167,25 +172,33 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟦2.5 | titleOverwritten | "{{title}}" overwritten. | Message used with user-titled info. |
 | 🔴 | YesOverwriteIt | Yes, Overwrite It | Confirmation button when the user is about to overwrite stored info in WordGen, WordEvolve, or Declenjugator |
 | 🟡 | ClearOverwritePrevSave | This will clear and overwrite the previous save | Used with stored information in several tools |
-| 🟡 | SaveCurrentInfo | Save Current Info | Used by DJ and WE when saving custom info |
 | 🟨 | LoadError | Load Error | Shows up in dialogs explaining that the app was unable to load stored info. |
 | 🟥 | ManageCustomInfo | Manage Custom Info | Header for modals where the user is manipulating stored info inside a tool. |
-|  | NameYourInfo | Name your custom info | Provided as a hint when the user is prompted to entitle a save. |
+| 🟡 | SaveCurrentInfo | Save Current Info | Used by DJ and WE when saving custom info |
 | 🔵 | NameOfSave | Name of save | As above, but is the ARIA text for the input. |
+|  | NameYourInfo | Name your custom info | Provided as a hint when the user is prompted to entitle a save. |
 | 🔴 | Load | Load | When loading stored information. |
 |  | NoSavedInfo | No saved info | A message that shows up in some dialog boxes if the user hasn't saved anything in that tool yet. |
+| 🟡 | missingTitleMsg | Missing title. |  |
 |  | SortMethod | Sort method: | *(presentation context)* Indicates a way to sort the given info. |
 | 🟡 | cannotUndo | This cannot be undone. | This action, usually deleting something, cannot be undone. |
 | 🟡 | areYouSure | Are you sure? | Do you want to do this action? |
 | 🟡 | deleteThisCannotUndo | Are you sure you want to delete this? $t(cannotUndo) | Combines the `cannotDo` message with the common use case where something is about to be deleted. |
+| 🟨 | DeleteEverythingQ | Delete Everything? | Asking to delete something. The dialog text will specify what is being deleted. |
 | 🔴 | confirmDel_one | Yes, Delete It | The things being deleted might be: 1) custom meanings in Concepts; 2) A column or item in Lexicon; 3) Character Groups or Transformations in WG and WE; 4) Syllables in WG; 5) Sound Changes in WE; 6) A single unit of saved custom info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax; 7) A Custom Sort in Settings, or one of their relations or equalities; 8) a group in Declenjugator, or a single declension or conjugation in a group. |
 | 🔴 | confirmDel_other | Yes, Delete Them | The English plural version of the key above. |
-| 🔴 | confirmDelAll | Yes, Delete All | Confirmation when deleting all info in MorphoSyntax or Lexicon. |
+| \*🔴 | confirmDelAll | Yes, Delete All | Confirmation when deleting all info in MorphoSyntax or Lexicon. |
 | 🔴 | confirmLoad | Yes, Load Info | Used to confirm loading Custom Info in WG, WE, Declenjugator, Lexicon, or MorphoSyntax |
-|  | This | This | `This` is used by `deleteThing` and may refer to 1) a Custom Sort in Settings, or one of their relations or equalities; 2) a group in Declenjugator, or a single declension or conjugation in a group |
+| \* | This | This | `This` is used by `deleteThing` and may refer to 1) a Custom Sort in Settings, or one of their relations or equalities; 2) a group in Declenjugator, or a single declension or conjugation in a group |
 | 🟦2.5 | NothingToSave | Nothing to save. | An attempt was made to save something, but there was no information to save. |
 | 🟦2 | Deleted | Deleted | Successful deletion. |
 | 🟨 | UnsavedInfo | Unsaved Info | Dialogs regarding exiting or closing something before everything has saved. |
+| 🟡 | MaybeDiscardThing | Are you sure you want to discard this? | When deciding not to add a new thing |
+| 🟡 | MaybeDiscardEdits | Are you sure you want to discard your edits? | When deciding not to edit an existing thing |
+| 🔴 | YesDiscard | Yes, Discard | Affirmative answer to either of the above two questions. |
+| 🟡 | MaybeClearEntireInput | $t(areYouSure) This will clear the entire input, and cannot be undone. | Clearing the entire Input in Declenjugator and WE |
+| 🔴 | YesClear | Yes, Clear It | Affirmative answer to the above question. |
+| 🔴 | defaultSort | Default sort | Refers to the default sort method (whatever it may be) |
 |  | error | Error | Simple translation |
 | 🟥 | emphasizedError | \<$t(error)\> | A visually emphasized version of `error`. |
 | 🟨 | regexpError | Error trying to parse "{{regex}}" | The user gave a malformed regular expression `{{regex}}` in WG or WE. |
@@ -193,28 +206,25 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟥 | PleaseWait | Please wait... | An additional loading message. |
 | 🔵 | Title | Title |  |
 | 🔴 | Title_presentation | Title: | *(presentation context)* |
-| 🟡 | MaybeDiscardThing | Are you sure you want to discard this? | When deciding not to add a new thing |
-| 🟡 | MaybeDiscardEdits | Are you sure you want to discard your edits? | When deciding not to edit an existing thing |
-| 🔴 | YesDiscard | Yes, Discard | Affirmative answer to either of the above two questions. |
-| 🟡 | MaybeClearEntireInput | $t(areYouSure) This will clear the entire input, and cannot be undone. | Clearing the entire Input in Declenjugator and WE |
-| 🔴 | YesClear | Yes, Clear It | Affirmative answer to the above question. |
-| 🔴 | defaultSort | Default sort | Refers to the default sort method (whatever it may be) |
+| 🟥 🔵 | Description | Description |  |
+|  | Description_presentation | Description: | *(presentation context)* |
+| 🟥 | overviewOf | Overview: {{what}} | `{{what}}` will be replaced by the name of a tool: Declenjugator, WordEvolve or WordGen |
+| 🔴 🟥 🟨 | ImportFromLexicon | Import from Lexicon | (to DJ, WG or WE) |
 | 🔴 | LoadPreset | Load Preset | Load a preset in WE or WG |
 | 🔴 | Import | Import | Import from Lexicon (to WG or WE) |
-| 🔴 🟥 🟨 | ImportFromLexicon | Import from Lexicon | (to DJ, WG or WE) |
 | 🟨 | ImportFromWhichColumns | Import from which column(s)? | Import from Lexicon (to WG or WE) |
 |  | optional | (optional) | Placeholder text for optional text inputs |
 |  | AddConditions | Add Conditions $t(optional) | The user can specify conditions that must be met before a specific word can be imported from the Lexicon. |
-| 🟦2.5 | ConditionSaved | Condition saved. | One of the conditions below has been saved. |
 |  | WordMustContainX | Word must contain \[x\] | A condition |
-| 🟥 | WordsThatContain | Words that contain: | *(presentation context)* Prefixes the input box for the above key |
 |  | TypeWordHere | Type part of word here. | Placeholder text for the above input |
 |  | WordMustMatchX | Word must match expression \[x\] | A condition |
-| 🟥 | WordsThatMatch | Words that match: | *(presentation context)* Prefixes the input box for the above key |
 |  | TypeRegExHere | Type regular expression here. | Placeholder text for the above input |
 |  | ColXMustHaveY | Column \[x\] must contain \[y\] | A condition |
 |  | ColXMustMatchY | Column \[x\] must match expression \[y\] | A condition |
+| 🟦2.5 | ConditionSaved | Condition saved. | One of the conditions below has been saved. |
 | 🟥 | TestColumn | Test column: | *(presentation context)* The column being tested for a match (see the two keys above) |
+| 🟥 | WordsThatContain | Words that contain: | *(presentation context)* Prefixes the input box for the above key |
+| 🟥 | WordsThatMatch | Words that match: | *(presentation context)* Prefixes the input box for the above key |
 | 🟥 | WordsWithColumn | Words where the column: | *(presentation context)* Header for displaying the column conditions |
 |  | columnContains | \[{{column}}\] contains "{{test}}" | Shows a result of `ColXMustHaveY` where `{{column}}` is the Lexicon column and `{{test}}` is the user-provided string a word must contain. |
 |  | columnMatches | \[{{column}}\] matches /{{test}}/ | Same as above, but `{{test}}` is the user-provided regular expression. |
@@ -315,7 +325,7 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🟦10 | successOverwrote | Completely overwrote storage for {{listing}} | `{{listing}}` will be replaced with a list of tools that had data overwritten with imported data. |
 | 🔴 | exportAppInfo | Export App Info |  |
 |  | ImportInfo | Import Info |  |
-|  | importDescription | Paste your data below. This only accepts data exported through "Export App Info". | The phrase `Export App Info` should be the same text that would be generated if you used the `exportThing` key and replaced `{{thing}}` with the `AppInfo` key. |
+|  | importDescription | Paste your data below. This only accepts data exported through "Export App Info". | The phrase `Export App Info` should be the same text as the `exportAppInfo` key. |
 | 🔵 | DataToImport | Data to Import |  |
 | 🔴 | Reset | Reset |  |
 | 🔴 | Analyze | Analyze |  |
@@ -572,7 +582,7 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 | 🟥 | NoSavedLexicons | No Saved Lexicons |  |
 | 🟥 | DeleteStoredLexicon | Delete Stored Lexicon |  |
 | 🟦2.5 | LexiconDeleted | Lexicon deleted. |  |
-| 🟥 | LoadLexicon | Load Lexicon | 🔴 |
+| 🟥 🔴 | LoadLexicon | Load Lexicon |  |
 | 🔴 | SaveLexicon | Save Lexicon |  |
 | 🟦2.5 | LexiconSaved | Lexicon saved. |  |
 | 🟦2.5 | LexSavedAsNew | Lexicon saved as new lexicon! |  |
@@ -1004,7 +1014,6 @@ This is an array of two objects. Each object has a `title` property as a header 
 | 🔴 | SaveMorphoSyntaxInfo | Save MorphoSyntax Info |  |
 | 🟥 🔴 | LoadMorphoSyntaxInfo | Load MorphoSyntax Info |  |
 | 🟥 | MISSINGTITLE | MISSING TITLE | (error message) |
-| 🟡 | missingTitleMsg | Missing title. |  |
 | 🔴 | genericInfoButtonText | Information |  |
 | 🔵 | rangeFromTo | Range from {{start}} to {{end}} |  |
 |  | missingDocumentMsg | \[MISSING\] | This is an error message that only appears in exports. |

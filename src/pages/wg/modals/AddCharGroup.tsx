@@ -45,28 +45,22 @@ const context = { context: "presentation" };
 const commons = [ "AddAndClose", "error", "Cancel" ];
 
 const wgweWords = [
-	"OneCharOnly", "CharGroup", "enterCharsInGroupHere",
+	"OneCharOnly", "addCharGroup", "enterCharsInGroupHere",
 	"LettersCharacters", "noRunMsg", "noTitleMsg", "ShortLabel",
 	"Suggest", "TitleOrDesc", "noLabelMsg",
 	"cantMakeLabelMsg", "charGroupSaved"
 ];
 
-const addies = [ "addThing" ];
-
 const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('wg');
-	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
 	const [ tAddClose, tError, tCancel ] = useI18Memo(commons);
 	const tUseDrop = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [
-		t1Char, tCG, tEnterChar, tLettChar, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest, tThingAdd
+		t1Char, tAddThing, tEnterChar, tLettChar, tNoRun, tNoTitle,
+		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest, tThingAdd		
 	] = useI18Memo(wgweWords, 'wgwe');
-	const [ tAddThing ] = useMemo(() => {
-		return addies.map(term => tc(term, { thing: tCG }));
-	}, [tc, tCG]);
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -49,7 +49,8 @@ const commons = [
 
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"Transformation", "replacementExpression", "searchExpression"
+	"replacementExpression", "searchExpression", "DeleteTrans",
+	"EditTrans", "SaveTrans", "TransDeleted", "TransSaved"
 ];
 
 const presentations = [
@@ -57,17 +58,14 @@ const presentations = [
 ];
 const context = { context: "presentation" };
 
-const things = [
-	"deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved"
-];
-
 const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tTransDesc, tNoSrch, tTrans, tRepl, tSrch ] = useI18Memo(translations, 'wgwe');
+	const [
+		tTransDesc, tNoSrch, tRepl, tSrch, tDelThing, tEditThing,
+		tSaveThing, tThingDel, tThingSaved
+	] = useI18Memo(translations, 'wgwe');
 	const [ tpTransDesc, tpRepl, tpSrch ] = useI18Memo(presentations, 'wgwe', context);
-	const thing = useMemo(() => ({ thing: tTrans }), [tTrans]);
-	const [ tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved ] = useI18Memo(things, "common", thing);
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

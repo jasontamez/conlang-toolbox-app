@@ -111,6 +111,7 @@ const common = {
 	// Toast and Alert messages
 	CopiedToClipboard: "Copied to clipboard",// 🟦1.5 result message
 	NothingToCopy: "Nothing to copy",        // 🟦1.5 error message
+	CharactersToBeCopied: "Characters to be copied", // 🔵
 
 	Untitled: "[Untitled]", // used as a document title if no title is provided
 	fileFormat: "{{title}} - {{date}}.{{extension}}", // safe for use as a filename
@@ -133,7 +134,7 @@ const common = {
 	SelectAColumn: "Select a column",
 	GoToLexicon: "Go to $t(Lexicon)", // 🟦3.5+🔴
 	TapWordsToSave: "Tap words you want to save to $t(Lexicon).", // 🟦2.5
-	"SaveToLexiconMessage": // 🟡
+	SaveToLexiconMessage: // 🟡
 		"Your selected words will be added to the $t(Lexicon) under that column.",
 
 	// Exporting files
@@ -148,21 +149,6 @@ const common = {
 	fileCsv: "Spreadsheet (csv)",
 	fileJson: "JSON File",
 	fileXml: "XML File",
-
-	CharactersToBeCopied: "Characters to be copied", // 🔵
-
-	// Singular Things
-	thingSaved: "{{thing}} saved.", // 🟦2
-	thingDeleted: "{{thing}} deleted.", // 🟦2.5
-	thingEdited: "{{thing}} edited.", // 🟦2 🟨
-	deleteThing: "Delete {{thing}}", // 🔴 🟨
-	editThing: "Edit {{thing}}", // 🟥
-	addThing: "Add {{thing}}", // 🟥 🔴
-	saveThing: "Save {{thing}}", // 🔴
-	loadThing: "Load {{thing}}", // 🟥
-	missingThing: "Missing {{thing}}", // 🟨
-	exportThing: "Export {{thing}}", // 🟥
-	exportThing_presentation: "Export {{thing}}:",
 
 	// Titled things
 	deleteTitleQ: "Delete \"{{title}}\"?", // 🟨
@@ -186,6 +172,7 @@ const common = {
 	Load: "Load", // 🔴
 	NoSavedInfo: "No saved info",
 	LoadSavedInfo: "Load Saved Info",
+	missingTitleMsg: "Missing title.", // 🟡
 
 	SortMethod: "Sort method:",
 
@@ -248,7 +235,6 @@ const common = {
 
 	overviewOf: "Overview: {{what}}", // 🟥
 
-	ImportFrom: "Import from {{source}}", // 🔴 🟥 🟨 source is always Lexicon, WordGen or WordEvolve
 	ImportFromLexicon: "Import from Lexicon", // 🔴 🟥 🟨
 	LoadPreset: "Load Preset", // 🔴
 
@@ -281,22 +267,6 @@ const common = {
 	importSuccess_one: "Imported {{count}} word from $t(Lexicon).", // 🟦3.5
 	importSuccess_other: "Imported {{count}} words from $t(Lexicon).",
 	yesImport: "Yes, Import", // 🔴
-
-	regexpInfo: [ // Markdown format
-		"To put it as simply as possible, a regular expression is a",
-		"sequence of characters that specifies a match pattern in text.",
-		"$t(appTitle) uses JavaScript-style regexes without the",
-		"surrounding slash characters.",
-		"",
-		"Fully explaining regular expressions is a topic that's too",
-		"complicated for this app to cover, but they are very useful. Here",
-		"are some resources where you can learn more about them:",
-		"",
-		"- [Wikipedia: Regular Expression](https://en.wikipedia.org/wiki/Regular_expression)",
-		"- [MDN: Writing a regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern)",
-		"- [Regular-Expressions.info](https://www.regular-expressions.info) (a tutorial site)",
-		"- [Geeks for Geeks: Write Reguar Expressions](https://www.geeksforgeeks.org/write-regular-expressions/)"
-	],
 
 	// EXTRA CHARACTERS
 	stoppedCopying: "No longer copying directly to clipboard.", // 🟦2.5
@@ -346,6 +316,23 @@ const common = {
 
 	// The key below is used when someone tries to edit or delete the permanent sort method in sort settings.
 	cannotDeleteSorter: "This is used by $t(WordGen) presets. It cannot be modified or deleted.", // 🟡
+
+	regexpInfo: [ // Markdown format
+		"To put it as simply as possible, a regular expression is a",
+		"sequence of characters that specifies a match pattern in text.",
+		"$t(appTitle) uses JavaScript-style regexes without the",
+		"surrounding slash characters.",
+		"",
+		"Fully explaining regular expressions is a topic that's too",
+		"complicated for this app to cover, but they are very useful. Here",
+		"are some resources where you can learn more about them:",
+		"",
+		"- [Wikipedia: Regular Expression](https://en.wikipedia.org/wiki/Regular_expression)",
+		"- [MDN: Writing a regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#writing_a_regular_expression_pattern)",
+		"- [Regular-Expressions.info](https://www.regular-expressions.info) (a tutorial site)",
+		"- [Geeks for Geeks: Write Reguar Expressions](https://www.geeksforgeeks.org/write-regular-expressions/)"
+	],
+
 };
 
 export default common;

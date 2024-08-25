@@ -49,20 +49,17 @@ function resetError (prop: keyof WGCharGroupObject) {
 const commons = [ "deleteThisCannotUndo", "Cancel", "error" ];
 
 const translations = [
-	"OneCharOnly", "CharGroup", "enterCharsInGroupHere",
+	"OneCharOnly", "enterCharsInGroupHere",
 	"LettersCharacters", "noLabelMsg", "noRunMsg",
 	"noTitleMsg", "ShortLabel", "Suggest", "TitleOrDesc",
-	"cantMakeLabelMsg"
+	"cantMakeLabelMsg", "DeleteCharGroup", "EditCharGroup",
+	"SaveCharGroup", "CharGroupDeleted", "CharGroupSaved"
 ];
 
 const presentations = [
 	"TitleOrDesc", "ShortLabel", "LettersCharacters"
 ];
 const context = { context: "presentation" };
-
-const things = [
-	"deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved"
-];
 
 const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('wg');
@@ -71,12 +68,11 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const tUseSep = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
-		t1Char, tCG, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitleDesc, tNoSuggest
+		t1Char, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
+		tShort, tSuggest, tTitleDesc, tNoSuggest, tDelThing,
+		tEditThing, tSaveThing, tThingDel, tThingSaved
 	] = useI18Memo(translations, 'wgwe');
 	const [ tpTitleDesc, tpShort, tpLettChar ] = useI18Memo(presentations, 'wgwe', context);
-	const thing = useMemo(() => ({ thing: tCG }), [tCG]);
-	const [ tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved ] = useI18Memo(things, "common", thing);
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

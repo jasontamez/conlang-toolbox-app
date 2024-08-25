@@ -30,7 +30,6 @@ const ms = {
 	LoadMorphoSyntaxInfo: "Load MorphoSyntax Info", // 🟥 🔴
 	MorphoSyntaxInfoSaved: "MorphoSyntax info saved.", // 🟦2.5
 	MISSINGTITLE: "MISSING TITLE", // 🟥 (error message)
-	missingTitleMsg: "Missing title.", // 🟡
 	genericInfoButtonText: "Information", // 🔴
 	rangeFromTo: "Range from {{start}} to {{end}}", // 🔵
 	// The items below are error (or informative) messages that will only be used in exports
