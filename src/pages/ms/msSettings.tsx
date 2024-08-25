@@ -43,11 +43,13 @@ import DeleteMS from './modals/DeleteSyntaxDoc';
 import ExportMS from './modals/ExportSyntaxDoc';
 
 const translations = [
-	"ShortDescriptionMsg", "MorphoSyntaxInfo",
-	"MorphoSyntaxSettings", "noInfoToClearMsg", "msTitle",
+	"ShortDescriptionMsg", "MorphoSyntaxSettings",
+	"noInfoToClearMsg", "msTitle",
 	"needInfoToExportMsg",
 	"UsuallyLangName", "clearMSInfo", "clearedMS",
-	"clearAllMS"
+	"clearAllMS", "DeleteSavedMorphoSyntaxInfo",
+	"missingTitleMsg", "ExportMorphoSyntaxInfo",
+	"LoadMorphoSyntaxInfo", "SaveMorphoSyntaxInfo"
 ];
 
 const commons = [
@@ -55,19 +57,18 @@ const commons = [
 	"SaveAsNew", "confirmDelAll", "error", "Description"
 ];
 
-const things = ["exportThing", "loadThing", "saveThing"];
-
 const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const [ tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc ] = useI18Memo(commons);
-	const [ tShortDesc, tMInfo, tMSett, tNoInfo, tTitle, tAddFirst, tName, tClearThings, tClearedThings, tClearAll ] = useI18Memo(translations, "ms");
-	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
-	const tDelSavedInfo = useMemo(() => tc("deleteThing", { thing: t("SavedMorphoSyntaxInfo") }), [t, tc]);
-	const tMissingTitle = useMemo(() => tc("missingThing", { thing: tc("title") }), [tc]);
 	const [
+		tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel, tError, tDesc
+	] = useI18Memo(commons);
+	const [
+		tShortDesc, tMSett, tNoInfo, tTitle, tAddFirst, tName,
+		tClearThings, tClearedThings, tClearAll, tDelSavedInfo, tMissingTitle,
 		tExportThing, tLoadThing, tSaveThing
-	] = useMemo(() => things.map(thing => tc(thing, { thing: tMInfo })), [tc, tMInfo]);
+	] = useI18Memo(translations, "ms");
+	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
 
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
@@ -179,7 +180,6 @@ const Syntax: FC<PageData> = (props) => {
 		});
 	}, [doAlert, tError, tMissingTitle, tOk]);
 	const saveMSDoc = useCallback((
-		announce: string = "msDocument",
 		key: string = id,
 		overwrite: boolean = true
 	) => {
@@ -215,20 +215,20 @@ const Syntax: FC<PageData> = (props) => {
 				}
 				setIsLoading(false);
 				toaster({
-					message: tc("thingSaved", { thing: t(announce) }),
+					message: t("MorphoSyntaxInfoSaved"),
 					duration: 2500,
 					position: "top",
 					toast
 				});
 			});
-	}, [MSSaveError, description, dispatch, id, msRemainder, t, tc, title, toast]);
+	}, [MSSaveError, description, dispatch, id, msRemainder, t, title, toast]);
 	const saveMSNew = useCallback(() => {
 		if(!title) {
 			return MSSaveError();
 		}
 		const key = uuidv4();
 		dispatch(setMorphoSyntaxText(["id", key]));
-		saveMSDoc("newMsDocument", key, false);
+		saveMSDoc(key, false);
 	}, [MSSaveError, dispatch, saveMSDoc, title]);
 	const saveMSDocPlain = useCallback(() => saveMSDoc(), [saveMSDoc]);
 	const setNewInfo = useCallback((id: string, prop: "description" | "title") => {

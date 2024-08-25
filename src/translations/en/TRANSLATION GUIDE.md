@@ -415,7 +415,7 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🟥 | CreditsAcknowledgements | Credits and Acknowledgements |  |
 |  | credit1 | \[ "App icon is based on \[Toolbox by Maxicons\]\(https:/\/thenounproject.com/term/toolbox/2586725/\) from the Noun Project" \] | *This is an array of strings in Markdown format.* |
 |  | credit2 | \[ "$t(common:WordGen) and $t(common:WordEvolve) are heavily inspired by \[Gen\]\(https:/\/www.zompist.com/gen.html\) and \[SCA²\]\(https:/\/www.zompist.com/sca2.html\) by Mark Rosenfelder" \] | *This is an array of strings in Markdown format.* |
-|  | credit3 | \[ "$t(common:MorphoSyntax) is based on an outline presented throughout \_Describing Morphosyntax: A Guide for Field Linguists\_ by Thomas E. Paine, and it also uses some foreign-language examples presented therein" \] | *This is an array of strings in Markdown format.* |
+|  | credit3 | \[ "MorphoSyntax is based on an outline presented throughout \_Describing Morphosyntax: A Guide for Field Linguists\_ by Thomas E. Paine, and it also uses some foreign-language examples presented therein" \] | *This is an array of strings in Markdown format.* |
 | 🟥 | BugReports | Bug Reports |  |
 |  | bugReportMsg | \[ "Please report bugs and errors to \[the Github repository\]\(https:\//github.com/jasontankapps/conlang-toolbox/issues\) and incude an error log." \] | *This is an array of strings in Markdown format.* |
 | 🔴 | GetErrLog | Get Error Log |  |
@@ -983,25 +983,28 @@ This is an array of two objects. Each object has a `title` property as a header 
 | Label | Key | English Translation | Description (if needed) |
 | --- | --- | --- | --- |
 |  | showUnused | \[ "\#\# Show Unused Sections", "", "Include sections that you did not fill out, leaving space for you to write in later.&nbsp;&nbsp;", "\*\*NOTE: this option has no effect on JSON and XML exports.\*\*" \] | This is an array of strings in Markdown format. |
-|  | clearMSInfo | Clear $t(common:MorphoSyntax) Info |  |
+|  | clearMSInfo | Clear MorphoSyntax Info |  |
 | 🟦2.5 | noInfoToClearMsg | You have no information to clear. |  |
-| 🟦2.5 | clearedMS | All $t(common:MorphoSyntax) information has been cleared. |  |
-| 🟡 | clearAllMS | This will clear and overwrite everything currently in $t(common:MorphoSyntax) (but not anything previously saved) |  |
+| 🟦2.5 | clearedMS | All MorphoSyntax information has been cleared. |  |
+| 🟡 | clearAllMS | This will clear and overwrite everything currently in MorphoSyntax (but not anything previously saved) |  |
 | 🟡 | needInfoToExportMsg | Please add information to your MorphoSyntax document in at least one section before exporting it. |  |
-|  | msDocument | $t(common:MorphoSyntax) document |  |
-|  | msDocument_formal | $t(common:MorphoSyntax) Document | *(formal context)* |
-|  | newMsDocument | New $t(common:MorphoSyntax) document |  |
-|  | msDocumentDescription | A $t(msDocument) exported from $t(common:appTitle). | Used in docx exports, only |
-| 🟥 | MorphoSyntaxSettings | $t(common:MorphoSyntax) $t(common:Settings) |  |
-| 🟥 | NoSavedMorphoSyntaxDocuments | No Saved $t(common:MorphoSyntax) Documents. |  |
-| 🟡 | clearMSInfoMsg | This will clear and overwrite your current $t(common:MorphoSyntax) information |  |
-| 🔵 | msTitle | $t(common:MorphoSyntax) Title |  |
-| 🟥 | msTitle_presentation | $t(common:MorphoSyntax) Title: | *(presentation context)* |
+|  | msDocument | {{title}} - MorphoSyntax Document | *(formal context)* Used in `docx` exports as the title of the file; `{{title}}` is replaced with the user-generated title. |
+|  | msDocumentDescription | A MorphoSyntax document exported from $t(common:appTitle). | Used in `docx` exports to describe the file |
+| 🟥 | DeleteMorphoSyntaxDocument | Delete Saved MorphoSyntax Info | *(formal context)* |
+| 🟥 | MorphoSyntaxSettings | MorphoSyntax $t(common:Settings) |  |
+| 🟥 | NoSavedMorphoSyntaxDocuments | No Saved MorphoSyntax Documents. |  |
+| 🟡 | clearMSInfoMsg | This will clear and overwrite your current MorphoSyntax information |  |
+| 🔵 | msTitle | MorphoSyntax Title |  |
+| 🟥 | msTitle_presentation | MorphoSyntax Title: | *(presentation context)* |
 |  | UsuallyLangName | Usually the language name. |  |
 |  | ShortDescriptionMsg | A short description of this document. |  |
-|  | MorphoSyntaxInfo | $t(common:MorphoSyntax) Info |  |
-|  | SavedMorphoSyntaxInfo | Saved $t(MorphoSyntaxInfo) |  |
+| 🔴 | DeleteSavedMorphoSyntaxInfo | Delete Saved MorphoSyntax Info |  |
+| 🟦2.5 | SavedMorphoSyntaxInfoDeleted | Saved MorphoSyntax info deleted. |  |
+| 🟥 🔴 | ExportMorphoSyntaxInfo | Export MorphoSyntax Info |  |
+| 🔴 | SaveMorphoSyntaxInfo | Save MorphoSyntax Info |  |
+| 🟥 🔴 | LoadMorphoSyntaxInfo | Load MorphoSyntax Info |  |
 | 🟥 | MISSINGTITLE | MISSING TITLE | (error message) |
+| 🟡 | missingTitleMsg | Missing title. |  |
 | 🔴 | genericInfoButtonText | Information |  |
 | 🔵 | rangeFromTo | Range from {{start}} to {{end}} |  |
 |  | missingDocumentMsg | \[MISSING\] | This is an error message that only appears in exports. |

@@ -450,7 +450,7 @@ const doDocx = (
 	const doc = new Document({
 		creator: tc("appTitle"),
 		description: t("msDocumentDescription"),
-		title: `${title} - ${t("msDocument_formal")}`,
+		title: t("msDocument", { title }),
 		sections
 	});
 	e.preventDefault();

@@ -36,7 +36,7 @@ interface OldStyleSave extends MSState {
 const LoadMSModal: FC<MSmodalProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const tLoadDoc = useMemo(() => tc("loadThing", { thing: t("msDocument") }), [tc, t]);
+	const tLoadDoc = useMemo(() => t("LoadMorphoSyntaxInfo"), [t]);
 	const tCancel = useMemo(() => tc("Cancel"), [tc]);
 
 	const { isOpen, setIsOpen, storedInfo, setStoredInfo } = props;

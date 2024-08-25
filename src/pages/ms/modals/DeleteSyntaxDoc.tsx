@@ -38,7 +38,7 @@ interface MSmodalProps extends ModalProperties {
 const DeleteSyntaxDocModal: FC<MSmodalProps> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const tTitle = useMemo(() => tc("deleteThing", { thing: t("msDocument", { context: "formal" }) }), [tc, t]);
+	const tTitle = useMemo(() => t("DeleteMorphoSyntaxDocument"), [t]);
 	const tCancel = useMemo(() => tc("Cancel"), [tc]);
 
 	const { isOpen, setIsOpen, setLoadingScreen, storedInfo, setStoredInfo } = props;
@@ -63,7 +63,7 @@ const DeleteSyntaxDocModal: FC<MSmodalProps> = (props) => {
 					setStoredInfo([]);
 					setIsOpen(false);
 					toaster({
-						message: tc("thingDeleted", { thing: t("msDocument") }),
+						message: t("SavedMorphoSyntaxInfoDeleted"),
 						duration: 2500,
 						position: "top",
 						toast
