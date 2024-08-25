@@ -1033,6 +1033,7 @@ These are terms that are used in both WordGen and WordEvolve.
 |  | CharGroups | Character Groups |  |
 | 🟦2.5 | charGroupsDeleted_one | {{count}} Character Groups deleted. |  |
 | 🟦2.5 | charGroupsDeleted_other | {{count}} Character Groups deleted. | English plural of the above |
+| 🟦2.5 | CharGroupDeleted | Character Group deleted. |  |
 | 🟨 | DeleteAll | Delete All |  |
 | 🟡 | delAllCharGroups_one | This will delete the current character group, and cannot be undone. | Takes a `{{count}}` property, if needed. |
 | 🟡 | delAllCharGroups_other | This will delete all {{count}} current character groups, and cannot be undone. | English plural version of the above key. |
@@ -1041,13 +1042,24 @@ These are terms that are used in both WordGen and WordEvolve.
 | 🟦2.5 | importCharGroups_one | Imported {{count}} Character Group. |  |
 | 🟦2.5 | importCharGroups_other | Imported {{count}} Character Groups. | English plural version of the above key. |
 | 🟡 | importOverwriteCG | If any current character group has the same label as an incoming character group, the current character group will be overwritten. Do you want to continue? |  |
+| 🟨 | addCharGroup | Add Character Group |  |
 | 🟦2.5 | charGroupAdded | Character Group added. |  |
+| 🟨 | DeleteCharGroup | Delete Character Group |  |
+| 🟨 | EditCharGroup | Edit Character Group |  |
+| 🟨 | SaveCharGroup | Save Character Group |  |
+| 🟦2.5 | CharGroupSaved | Character Group saved. |  |
 |  | Transformation | Transformation |  |
 |  | Transformations | Transformations |  |
 |  | DescOfTheTransformation | Description of the transformation |  |
 |  | DescOfTheTransformation_formal | Description of the transformation | *(formal context)* |
 |  | DescOfTheTransformation_presentation | Transformation Description: | *(presentation context)* |
+| 🟨 | addTransformation | Add Transformation |  |
 | 🟦2.5 | transformationAdded | Transformation added. |  |
+| 🔴 | SaveTrans | Save Transformation |  |
+| 🟦2.5 | TransSaved | Transformation saved. |  |
+| 🟥 | EditTrans | Edit Transformation |  |
+| 🔴 | DeleteTrans | Delete Transformation |  |
+| 🟦2.5 | TransDeleted | Transformation deleted. |  |
 | 🟡 | noSearchMsg | No search expression present |  |
 |  | searchExpression | search expression |  |
 |  | searchExpression_formal | Search Expression | *(formal context)* |
@@ -1084,9 +1096,16 @@ These are terms that are used in both WordGen and WordEvolve.
 | Label | Key | English Translation | Description (if needed) |
 | --- | --- | --- | --- |
 |  | Evolve | Evolve |  |
-|  | SoundChange | Sound Change | Used by `addThing`, `deleteThing`, `editThing`, `saveThing`, `thingDeleted`, and `thingSaved` |
+|  | SoundChanges | Sound Changes | ?? |
 | 🟦2.5 | changesDeleted_one | {{count}} Sound Change deleted. |  |
 | 🟦2.5 | changesDeleted_other | {{count}} Sound Changes deleted. | English plural form of the above |
+| 🟥 | AddSoundChange | Add Sound Change |  |
+| 🟦2.5 | SoundChangeAdded | Sound Change added. |  |
+| 🔴 | DeleteSoundChange | Delete Sound Change |  |
+| 🟥 | EditSoundChange | Edit Sound Change |  |
+| 🔴 | SaveSoundChange | Save Sound Change |  |
+| 🟦2.5 | SoundChangeDeleted | Sound Change deleted. |  |
+| 🟦2.5 | SoundChangeSaved | Sound Change saved. |  |
 | 🟥 🔴 | ConvertToLowercase | Convert input to lowercase before evolving |  |
 | 🟥 🔴 | SortBeforehand | Sort input before evolving |  |
 | 🟡 | delAllSC | This will delete all current sound changes, and cannot be undone. |  |

@@ -185,6 +185,7 @@ const common = {
 	NameYourInfo: "Name your custom info",
 	Load: "Load", // 🔴
 	NoSavedInfo: "No saved info",
+	LoadSavedInfo: "Load Saved Info",
 
 	SortMethod: "Sort method:",
 

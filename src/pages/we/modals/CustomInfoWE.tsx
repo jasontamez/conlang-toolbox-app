@@ -75,9 +75,8 @@ const commons = [
 	"NameYourInfo", "NoSavedInfo", "Ok", "Save",
 	"YesOverwriteIt", "cannotUndo", "confirmLoad",
 	"Load", "Delete", "title", "SaveCurrentInfo",
-	"ClearOverwritePrevSave"
+	"ClearOverwritePrevSave", "LoadSavedInfo"
 ];
-const things = [ "loadThing", "saveThing" ];
 
 const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const [ t ] = useTranslator('we');
@@ -85,12 +84,8 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const [
 		tCancel, tLoadErr, tManage, tNameSave, tNameInfo,
 		tNoInfo, tOk, tSave, tYes, tCannot, tConfLoad, tLoad, tDel,
-		tTitle, tSaveThing, tClearSave
+		tTitle, tSaveThing, tClearSave, tLoadThing
 	] = useI18Memo(commons);
-	const [ tLoadThing ] = useMemo(
-		() => things.map(thing => tc(thing, { thing: "tCurrInfo" })),
-		[tc]
-	);
 	const tClearThings = useMemo(() => t("clearAllThingsMsg"), [t]);
 	const tMissing = useMemo(() => tc("missingThing", tTitle), [tc, tTitle]);
 

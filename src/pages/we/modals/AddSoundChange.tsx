@@ -42,27 +42,23 @@ const weExp = [ "contextExpression", "exceptionExpression", "soundChangeDesc" ];
 const formal = { context: "formal" };
 const presentation = { context: "presentation" };
 
-const things = [ "addThing", "thingSaved" ];
-
 const translations = [
 	"soundChangeDesc", "soundChangesTo",
-	"soundToChange", "SoundChange", "whereChangeDoesntHappen",
-	"whereChangeHappens"
+	"soundToChange", "whereChangeDoesntHappen",
+	"whereChangeHappens", "AddSoundChange", "SoundChangeAdded"
 ];
 
 const commons = [ "AddAndClose", "Cancel", "error", "optional" ];
 
 const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('we');
-	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tSCDesc, tReplace, tSearch, tSC, tException, tContext ] = useI18Memo(translations, "we");
+	const [ tSCDesc, tReplace, tSearch, tException, tContext, tAddThing, tThingSaved ] = useI18Memo(translations, "we");
 	const [ tfRepl, tfSrch ] = useI18Memo(wgweExp, "wgwe", formal);
 	const [ tpRepl, tpSrch ] = useI18Memo(wgweExp, "wgwe", presentation);
 	const [ tfCEx, tfEEx ] = useI18Memo(weExp, "we", formal);
 	const [ tpCEx, tpEEx, tpSCD ] = useI18Memo(weExp, "we", presentation);
-	const [ tAddThing, tThingSaved ] = useMemo(() => things.map(thing => tc(thing, { thing: tSC })), [tc, tSC]);
 	const tNoSearch = useMemo(() => tw("noSearchMsg"), [tw])
 
 	const { isOpen, setIsOpen, openECM } = props;

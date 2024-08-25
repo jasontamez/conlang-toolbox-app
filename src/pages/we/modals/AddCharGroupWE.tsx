@@ -46,19 +46,16 @@ const commons = [ "AddAndClose", "Cancel", "error" ];
 const translations = [
 	"OneCharOnly", "enterCharsInGroupHere", "LettersCharacters",
 	"noLabelMsg", "noRunMsg", "noTitleMsg", "ShortLabel",
-	"Suggest", "TitleOrDesc", "CharGroup",
-	"cantMakeLabelMsg"
+	"Suggest", "TitleOrDesc", "cantMakeLabelMsg", "addCharGroup"
 ];
 
 const AddCharGroupWEModal: FC<ExtraCharactersModalOpener> = (props) => {
-	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tAddClose, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnter, tLetChar, tNoLabel, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitle, tCG, tNoSuggest
+		tShort, tSuggest, tTitle, tNoSuggest, tAdding
 	] = useI18Memo(translations, "wgwe");
-	const tAdding = useMemo(() => tc("addThing", { thing: tCG }), [tc, tCG]);
 	const [ tpLetChar, tpShort, tpTitle ] = useI18Memo(presentations, "wgwe", context);
 
 	const { isOpen, setIsOpen, openECM } = props;

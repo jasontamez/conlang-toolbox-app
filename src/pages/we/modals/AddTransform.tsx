@@ -41,8 +41,8 @@ const commons = [
 ];
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"WhatItChangesTo", "WhatToChange", "Transformation",
-	"transformationAdded"
+	"WhatItChangesTo", "WhatToChange",
+	"transformationAdded", "addTransformation"
 ];
 const formals = [
 	"atInputAtOutput", "atInput",
@@ -56,12 +56,10 @@ const context = { context: "presentation" };
 
 const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ t ] = useTranslator('we');
-	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans, tThingAdd ] = useI18Memo(translations, "wgwe");
+	const [ tDesc, tNoSeek, tReplace, tSeek, tThingAdd, tAddThing ] = useI18Memo(translations, "wgwe");
 	const tpTrDir = useMemo(() => t("TransformationDirection"), [t]);
-	const [ tAddThing ] = useMemo(() => ["addThing"].map(thing => tc(thing, { thing: tTrans })), [tc, tTrans]);
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);

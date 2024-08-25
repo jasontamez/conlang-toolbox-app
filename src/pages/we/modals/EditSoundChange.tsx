@@ -50,14 +50,14 @@ const resetException = () => resetError("anticontext");
 const translations = [
 	"soundChangeDesc", "soundChangesTo",
 	"whereChangeDoesntHappen", "whereChangeHappens",
-	"SoundChange", "soundToChange"
+	"soundToChange", "DeleteSoundChange",
+	"EditSoundChange", "SaveSoundChange",
+	"SoundChangeDeleted", "SoundChangeSaved"
 ]
 
 const commons = [
 	"deleteThisCannotUndo", "Cancel", "error", "optional"
 ];
-
-const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved" ];
 
 const wgweExp = [ "replacementExpression", "searchExpression" ];
 const weExp = [ "contextExpression", "exceptionExpression", "soundChangeDesc" ];
@@ -69,14 +69,14 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tYouSure, tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tSCDesc, tReplace, tException, tContext, tSC, tSearch ] = useI18Memo(translations, "we");
+	const [
+		tSCDesc, tReplace, tException, tContext, tSearch,
+		tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved
+	] = useI18Memo(translations, "we");
 	const [ tfRepl, tfSrch ] = useI18Memo(wgweExp, "wgwe", formal);
 	const [ tpRepl, tpSrch ] = useI18Memo(wgweExp, "wgwe", presentation);
 	const [ tfCEx, tfEEx ] = useI18Memo(weExp, "we", formal);
 	const [ tpCEx, tpEEx, tpSCD ] = useI18Memo(weExp, "we", presentation);
-	const [
-		tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved
-	] = useMemo(() => things.map(thing => tc(thing, { thing: tSC })), [tc, tSC]);
 	const tNoSearch = useMemo(() => tw("noSearchMsg"), [tw])
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;

@@ -136,7 +136,7 @@ const WECharGroup: FC<PageData> = (props) => {
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
 			toaster({
-				message: tc("thingDeleted", { thing: tw("CharGroup") }),
+				message: tw("charGroupsDeleted", { count: 1 }),
 				duration: 2500,
 				color: "danger",
 				position: "top",

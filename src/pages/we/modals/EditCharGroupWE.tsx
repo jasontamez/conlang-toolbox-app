@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -54,11 +54,10 @@ const commons =  [
 const translations = [
 	"OneCharOnly", "enterCharsInGroupHere", "LettersCharacters",
 	"noLabelMsg", "noRunMsg", "noTitleMsg", "ShortLabel",
-	"Suggest", "TitleOrDesc", "CharGroup",
-	"cantMakeLabelMsg"
+	"Suggest", "TitleOrDesc", "cantMakeLabelMsg",
+	"DeleteCharGroup", "EditCharGroup",
+	"SaveCharGroup", "CharGroupDeleted", "CharGroupSaved"
 ];
-
-const things = [ "deleteThing", "editThing", "saveThing", "thingDeleted", "thingSaved" ];
 
 const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
@@ -66,12 +65,10 @@ const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnter, tLettChar, tNoLabel, tNoRun,
-		tNoTitle, tShort, tSuggest, tTitle, tCG, tUnable
+		tNoTitle, tShort, tSuggest, tTitle, tUnable, tDelThing,
+		tEditThing, tSaveThing, tThingDel, tThingSaved
 	] = useI18Memo(translations, "wgwe");
 	const [ tpLetChar, tpShort, tpTitle ] = useI18Memo(presentations, "wgwe", context);
-	const [
-		tDelThing, tEditThing, tSaveThing, tThingDel, tThingSaved
-	] = useMemo(() => things.map(thing => tc(thing, { thing: tCG })), [tc, tCG]);
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

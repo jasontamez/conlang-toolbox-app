@@ -51,7 +51,9 @@ const commons = [
 ];
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"WhatItChangesTo", "WhatToChange", "Transformation"
+	"WhatItChangesTo", "WhatToChange", "Transformation",
+	"SaveTrans", "TransSaved", "EditTrans",
+	"DeleteTrans", "TransDeleted"
 ];
 const formals = [
 	"atInputAtOutput", "atInput",
@@ -62,23 +64,21 @@ const presentations = [
 ];
 const formal = { context: "formal" };
 const context = { context: "presentation" };
-const things = [
-	"saveThing", "thingSaved", "editThing", "deleteThing", "thingDeleted"
-];
 
 const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
-	const [ tDesc, tNoSeek, tReplace, tSeek, tTrans ] = useI18Memo(translations, "wgwe");
+	const [
+		tDesc, tNoSeek, tReplace, tSeek, tSaveThing,
+		tThingSave, tEditThing, tDelThing, tThingDel
+	] = useI18Memo(translations, "wgwe");
 	const tpTrDir = useMemo(() => t("TransformationDirection"), [t]);
 	const [ tInOut, tIn, tInUnOut, tOut ] = useI18Memo(formals, "we", formal);
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);
 	const tpDesc = useMemo(() => tw("DescOfTheTransformation", context), [tw]);
-	const thingContext = useMemo(() => ({ thing: tTrans }), [tTrans]);
-	const [tSaveThing, tThingSave, tEditThing, tDelThing, tThingDel] = useI18Memo(things, "common", thingContext);
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();

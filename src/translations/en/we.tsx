@@ -2,12 +2,20 @@ const we = {
 
 	Evolve: "Evolve",
 
-	SoundChange: "Sound Change",
+	SoundChange: "Sound Change", // del?
 	SoundChanges: "Sound Changes",
 	SoundChangesTab: "Sound Changes Tab",
 
 	changesDeleted_one: "{{count}} Sound Change deleted.",
 	changesDeleted_other: "{{count}} Sound Changes deleted.",
+
+	AddSoundChange: "Add Sound Change", // 🟥
+	SoundChangeAdded: "Sound Change added.", // 🟦2.5
+	DeleteSoundChange: "Delete Sound Change", // 🔴
+	EditSoundChange: "Edit Sound Change", // 🟥
+	SaveSoundChange: "Save Sound Change", // 🔴
+	SoundChangeDeleted: "Sound Change deleted.", // 🟦2.5
+	SoundChangeSaved: "Sound Change saved.", // 🟦2.5
 
 	ConvertToLowercase: "Convert input to lowercase before evolving", // 🟥 🔴
 	SortBeforehand: "Sort input before evolving", // 🟥 🔴
