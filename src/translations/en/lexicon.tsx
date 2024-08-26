@@ -96,8 +96,8 @@ const lexicon = {
 	Small: "Small", // (small column size)
 	Med: "Med", // (medium column size)
 	Large: "Large",  // (large column size)
+	SaveChanges: "Save Changes", // 🟡
 
-	Changes: "Changes",
 	workingMsg: "Working...",
 	TITLE: "TITLE", // Only used in CSV exports
 

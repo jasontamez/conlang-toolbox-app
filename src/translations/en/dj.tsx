@@ -12,12 +12,12 @@ const dj = {
 	AddDeclensions: "Add Declension", // 🟥
 	EditDeclensions: "Edit Declension", // 🟥
 	DeleteDeclensions: "Delete Declension?", // 🟨
-	DeclensionSaved: "Declension saved.", // 🟦2.5
+	DeclensionsSaved: "Declension saved.", // 🟦2.5
 	Conjugations: "Conjugations", // 🟥 🔴 group of conjugations on-screen
 	AddConjugations: "Add Conjugation", // 🟥
 	EditConjugations: "Edit Conjugation", // 🟥
 	DeleteConjugations: "Delete Conjugation?", // 🟨
-	ConjugationSaved: "Conjugation saved.", // 🟦2.5
+	ConjugationsSaved: "Conjugation saved.", // 🟦2.5
 	Other: "Other", // 🟥 🔴 group of 'other' type on-screen
 	AddOther: "Add Other", // 🟥
 	EditOther: "Edit Other", // 🟥
@@ -102,7 +102,6 @@ const dj = {
 	RegExp: "Regular Expression", // 🟥
 
 	willClearOverwriteMsg: "This will clear and overwrite the previous save.", // 🟡
-	LoadSavedInfo: "Load Saved Info", // 🟥
 
 	Export: "Export", // 🔴
 	Example: "Example", // 🟥

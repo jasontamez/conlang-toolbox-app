@@ -40,7 +40,7 @@ interface ExtraInfo extends ExtraCharactersModalOpener {
 
 const translations = [
 	"needTitleOrDescriptionMsg",
-	"LoadSavedInfo", "clearEverythingMsg",
+	"clearEverythingMsg",
 	"willClearOverwriteMsg"
 ];
 
@@ -48,7 +48,7 @@ const commons = [
 	"deleteThisCannotUndo", "Cancel", "Delete", "LoadError",
 	"Load", "ManageCustomInfo", "NameOfSave", "NameYourInfo",
 	"NoSavedInfo", "Ok", "Save", "YesOverwriteIt", "confirmLoad",
-	"SaveCurrentInfo"
+	"LoadSavedInfo", "SaveCurrentInfo"
 ];
 
 const ManageCustomInfo: FC<ExtraInfo> = (props) => {
@@ -56,9 +56,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [
 		tYouSure, tCancel, tDel, tLoadErr, tLoad, tManage,
 		tNameSave, tNameInfo, tNoSaved, tOk, tSave, tYes,
-		tConfLoad, tSaveThings
+		tConfLoad, tLoadInfo, tSaveThings
 	] = useI18Memo(commons);
-	const [ tNoTitle, tLoadInfo, tClearEverything, tOverwritePrev ] = useI18Memo(translations, "dj");
+	const [ tNoTitle, tClearEverything, tOverwritePrev ] = useI18Memo(translations, "dj");
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

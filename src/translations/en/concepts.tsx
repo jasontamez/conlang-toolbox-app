@@ -102,9 +102,6 @@ const concepts = {
 
 	tapToSaveMsg: "Tap meanings you want to save to $t(common:Lexicon)", // 🟦2.5
 
-	SelectedMeanings_one: "Selected meaning", // Fills the {{what}} role in saveToLexColumn
-	SelectedMeanings_other: "Selected meanings",
-
 	tapToUnlinkMsg: "Tap combinations you want to delete, then tap the Unlink button again.", // 🟦3
 
 	delMeanings_one: "Delete {{count}} meaning?", // 🟨

@@ -2,7 +2,6 @@ const we = {
 
 	Evolve: "Evolve",
 
-	SoundChange: "Sound Change", // del?
 	SoundChanges: "Sound Changes",
 	SoundChangesTab: "Sound Changes Tab",
 

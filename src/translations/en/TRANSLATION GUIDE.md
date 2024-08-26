@@ -109,6 +109,7 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🟥 | Lexicon | Lexicon | Title of the Lexicon tool. |
 |  | Lexicon_filename | Lexicon | *(filename context)* |
 | 🟥 | Concepts | Concepts | Title of the Concepts tool. |
+| 🟥 🔵 | ExtraChars | ExtraChars | Title of the Exra Characters tool. |
 | 🟥 | AppInfo | App Info | Title of the page where you find information about the app. |
 | 🟥 | AppSettings | App Settings | Title of the page where you find settings for the entire app. |
 | 🟥 | Main | Main | Title of the "About" page, which is also the app startup page. |
@@ -178,7 +179,8 @@ These are terms used across the app, or only on "main" app pages, like Settings 
 | 🔵 | NameOfSave | Name of save | As above, but is the ARIA text for the input. |
 |  | NameYourInfo | Name your custom info | Provided as a hint when the user is prompted to entitle a save. |
 | 🔴 | Load | Load | When loading stored information. |
-|  | NoSavedInfo | No saved info | A message that shows up in some dialog boxes if the user hasn't saved anything in that tool yet. |
+| 🟡 | NoSavedInfo | No saved info | A message that shows up in some dialog boxes if the user hasn't saved anything in that tool yet. |
+| 🟥 | LoadSavedInfo | Load Saved Info | Used in DJ, WE and WG |
 | 🟡 | missingTitleMsg | Missing title. |  |
 |  | SortMethod | Sort method: | *(presentation context)* Indicates a way to sort the given info. |
 | 🟡 | cannotUndo | This cannot be undone. | This action, usually deleting something, cannot be undone. |
@@ -299,6 +301,8 @@ This file is imported into common.tsx, and its properties become properties of t
 
 Each character in Extra Characters has an official Unicode name. You can find the list of them in [CHARACTERCODES.md](CHARACTERCODES.md).
 
+---
+
 ## Settings : settings.tsx
 
 | Label | Key | English Translation | Description (if needed) |
@@ -370,7 +374,12 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🟡 | noEqualCharMsg | You must provide some "equal" characters. | Error message |
 | 🟡 | noPostPreCharMsg | You must provide some "pre" or "post" characters. | Error message |
 | 🔴 | NewCustomSort | New Custom Sort |  |
-|  | CustomSort | Custom Sort | Used by `editThing`, `thingDeleted`, `thingSaved`, and `addThing` |
+| 🟥 | AddSort | Add Custom Sort |  |
+| 🟦2.5 | SortAdded | Custom Sort added |  |
+| 🟨 | DeleteSort | Delete This? |  |
+| 🔴 | DeleteSortButton | Delete Sort |  |
+| 🟦2.5 | SortDeleted | Custom Sort deleted |  |
+| 🟥 | EditSort | Edit Custom Sort |  |
 |  | TitleOfSort | Title for this sort |  |
 | 🔴 | UnicodeSort | Unicode sort (language-independent) |  |
 |  | SortSensitivity | Sort Sensitivity: | *(presentation context)* |
@@ -597,9 +606,11 @@ You can find the master list of concepts in [CONCEPTS.md](CONCEPTS.md).
 | 🔴 | SaveItem | Save Item |  |
 | 🔴 | Column | Column |  |
 | 🟥 | EditCols | Edit Columns |  |
+| 🟦2.5 | ItemSaved | Item saved to Lexicon |  |
 | 🟨 | ExitWOSave | Exit Without Saving? |  |
 | 🟡 | exitWithoutSavingMsg | You have unsaved changes. Are you sure you want to exit? |  |
 | 🟦2.5 | ColumnAdded | Column added |  |
+| 🟥 | AddColumn | Add Column |  |
 |  | New | New | Default label for a new column |
 | 🟡 | deleteColumnMsg | Are you sure you want to delete this column? $t(common:cannotUndo) |  |
 | 🟥 | LexOptions | $t(common:Lexicon) Options |  |
@@ -805,7 +816,6 @@ The `info` key has multiple subkeys. They are all arrays of strings in Markdown 
 | 🟥 | OutputTab | Output Tab |  |
 | 🟥 | RegExp | Regular Expression |  |
 | 🟡 | willClearOverwriteMsg | This will clear and overwrite the previous save. |  |
-| 🟥 | LoadSavedInfo | Load Saved Info |  |
 | 🔴 | Export | Export |  |
 | 🟥 | Example | Example |  |
 | 🟥 | Examples | Examples |  |
@@ -1013,6 +1023,7 @@ This is an array of two objects. Each object has a `title` property as a header 
 | 🟥 🔴 | ExportMorphoSyntaxInfo | Export MorphoSyntax Info |  |
 | 🔴 | SaveMorphoSyntaxInfo | Save MorphoSyntax Info |  |
 | 🟥 🔴 | LoadMorphoSyntaxInfo | Load MorphoSyntax Info |  |
+| 🟦2.5 | MorphoSyntaxInfoSaved | MorphoSyntax info saved. |  |
 | 🟥 | MISSINGTITLE | MISSING TITLE | (error message) |
 | 🔴 | genericInfoButtonText | Information |  |
 | 🔵 | rangeFromTo | Range from {{start}} to {{end}} |  |
@@ -1043,6 +1054,8 @@ These are terms that are used in both WordGen and WordEvolve.
 | 🟦2.5 | charGroupsDeleted_one | {{count}} Character Groups deleted. |  |
 | 🟦2.5 | charGroupsDeleted_other | {{count}} Character Groups deleted. | English plural of the above |
 | 🟦2.5 | CharGroupDeleted | Character Group deleted. |  |
+| 🟦2.5 | transDeleted_one | {{count}} Transformation deleted. |  |
+| 🟦2.5 | transDeleted_other | {{count}} Transformations deleted. |  |
 | 🟨 | DeleteAll | Delete All |  |
 | 🟡 | delAllCharGroups_one | This will delete the current character group, and cannot be undone. | Takes a `{{count}}` property, if needed. |
 | 🟡 | delAllCharGroups_other | This will delete all {{count}} current character groups, and cannot be undone. | English plural version of the above key. |
@@ -1105,7 +1118,8 @@ These are terms that are used in both WordGen and WordEvolve.
 | Label | Key | English Translation | Description (if needed) |
 | --- | --- | --- | --- |
 |  | Evolve | Evolve |  |
-|  | SoundChanges | Sound Changes | ?? |
+|  | SoundChanges | Sound Changes | Title of page |
+|  | SoundChangesTab | Sound Changes Tab |  |
 | 🟦2.5 | changesDeleted_one | {{count}} Sound Change deleted. |  |
 | 🟦2.5 | changesDeleted_other | {{count}} Sound Changes deleted. | English plural form of the above |
 | 🟥 | AddSoundChange | Add Sound Change |  |
@@ -1880,6 +1894,8 @@ Second-level numeric lists, like the "Sounds can be grouped like this:" sublist,
   "Be sure to check out the _Presets_ over on the Settings tab. The \"Pseudo-Japanese\" preset shows one way to put the above info to use."
 ]
 ```
+
+---
 
 ## CHECKLIST
 

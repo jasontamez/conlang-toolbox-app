@@ -2,6 +2,8 @@ const wg = {
 
 	Syllables_one: "Syllable",
 	Syllables_other: "Syllables",
+	syllablesDeleted_one: "{{count}} Syllable deleted.",
+	syllablesDeleted_other: "{{count}} Syllables deleted.",
 	swSyllables: "Single-Syllable Words", // 🟥 formal context
 	wiSyllables: "word-initial syllables",
 	wiSyllables_formal: "Word-Initial Syllables", // 🟥
@@ -74,7 +76,7 @@ const wg = {
 	WordListSyllListControls: "Wordlist and Syllable-List Controls", // 🟥
 	WhatToGenerate: "What to Generate", // 🟥
 	Default: "Default", // 🔴 default sort option
-	ImportFromWG: "Import from WordGen", // 🟥
+	ImportFromWE: "Import from WordEvolve", // 🟥
 
 	clearAllThingsMsg: "This will clear and overwrite all current character groups, syllables, transformations, and settings.",
 

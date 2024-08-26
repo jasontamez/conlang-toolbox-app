@@ -70,8 +70,8 @@ const common = {
 	// 🟥 name of tool
 	Concepts: "Concepts",
 
-	// 🟥 name of tool
-	ExtraChars: "ExtraChars",
+	// 🟥 🔵 name of tool
+	ExtraChars: "Extra Characters",
 
 	// 🟥 page names
 	AppInfo: "App Info",
