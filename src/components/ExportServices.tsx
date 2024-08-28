@@ -86,15 +86,6 @@ const doExport = async (
 			});
 		}
 	}
-	//const blob = new Blob([output]);
-	//const blobby = URL.createObjectURL(blob);
-	//const link = $q("a.downloader");
-	//link.download = filename.replace(/[^ a-zA-Z0-9-_]+/g, "") + "." + extension;
-	//link.href = blobby;
-	//link.click();
-	//$delay(500).then(() => {
-	//	URL.revokeObjectURL(blobby);
-	//});
 };
 
 export default doExport;

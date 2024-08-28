@@ -45,7 +45,7 @@ import ExportMS from './modals/ExportSyntaxDoc';
 const translations = [
 	"ShortDescriptionMsg", "MorphoSyntaxSettings",
 	"noInfoToClearMsg", "msTitle",
-	"needInfoToExportMsg",
+	"needInfoToExportMsg", "confirmClear",
 	"UsuallyLangName", "clearMSInfo", "clearedMS",
 	"clearAllMS", "DeleteSavedMorphoSyntaxInfo", "ExportMorphoSyntaxInfo",
 	"LoadMorphoSyntaxInfo", "SaveMorphoSyntaxInfo"
@@ -53,20 +53,19 @@ const translations = [
 
 const commons = [
 	"Cancel", "DeleteEverythingQ", "Ok", "PleaseWait",
-	"SaveAsNew", "confirmDelAll", "error", "Description",
-	"missingTitleMsg"
+	"SaveAsNew", "error", "Description", "missingTitleMsg"
 ];
 
 const Syntax: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [
-		tCancel, tDelAll, tOk, tPlease, tSaveNew, tConfDel,
+		tCancel, tDelAll, tOk, tPlease, tSaveNew,
 		tError, tDesc, tMissingTitle
 	] = useI18Memo(commons);
 	const [
-		tShortDesc, tMSett, tNoInfo, tTitle, tAddFirst, tName,
-		tClearThings, tClearedThings, tClearAll, tDelSavedInfo,
+		tShortDesc, tMSett, tNoInfo, tTitle, tAddFirst, tConfDel,
+		tName, tClearThings, tClearedThings, tClearAll, tDelSavedInfo,
 		tExportThing, tLoadThing, tSaveThing
 	] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);

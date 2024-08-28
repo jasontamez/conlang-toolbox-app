@@ -173,7 +173,6 @@ const ExportSyntaxModal: FC<ExportModalProps> = (props) => {
 						<IonLabel className="ion-text-wrap">{tXML}</IonLabel>
 					</IonItem>
 				</IonList>
-				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>

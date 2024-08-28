@@ -184,13 +184,13 @@ export const appMenuInfo: MenuSection[] = [
 				title: tc("CharGroups", { ns: "wgwe" }),
 				url: '/wg/charGroups',
 				tab: 'charGroups',
-				tabTitle: 'Char Groups',
+				tabTitle: tc("CharGroups", { ns: "wgwe", context: "shorter" }),
 				id: 'menuitemWGcharGroup',
 				icon: gridOutline,
 				parent: 'wg'
 			},
 			{
-				title: tc("Syllables_other", { ns: "wg" }),
+				title: tc("SyllablesTitle", { ns: "wg" }),
 				url: '/wg/syllables',
 				tab: 'syllables',
 				id: 'menuitemWGsyl',
@@ -201,7 +201,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: tc("Transformations", { ns: "wgwe" }),
 				url: '/wg/transforms',
 				tab: 'transforms',
-				tabTitle: 'Transforms',
+				tabTitle: tc("Transformations", { ns: "wgwe", context: "shorter" }),
 				id: 'menuitemWGrew',
 				Icon: (props) => <TransformationsIcon {...props} />,
 				parent: 'wg'
@@ -250,7 +250,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: tc("CharGroups", { ns: "wgwe" }),
 				url: '/we/charGroups',
 				tab: 'charGroups',
-				tabTitle: 'Char Groups',
+				tabTitle: tc("CharGroups", { ns: "wgwe", context: "shorter" }),
 				id: 'menuitemWEcharGroup',
 				icon: gridOutline,
 				parent: 'we'
@@ -259,7 +259,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: tc("Transformations", { ns: "wgwe" }),
 				url: '/we/transformations',
 				tab: 'transformations',
-				tabTitle: 'Transforms',
+				tabTitle: tc("Transformations", { ns: "wgwe", context: "shorter" }),
 				id: 'menuitemWEtns',
 				Icon: (props) => <TransformationsIcon {...props} />,
 				parent: 'we'
@@ -268,7 +268,7 @@ export const appMenuInfo: MenuSection[] = [
 				title: tc("SoundChanges", { ns: "we" }),
 				url: '/we/soundchanges',
 				tab: 'soundchanges',
-				tabTitle: 'Changes',
+				tabTitle: tc("SoundChanges", { ns: "we", context: "shorter" }),
 				id: 'menuitemWEscs',
 				Icon: (props) => <SoundChangesIcon {...props} />,
 				parent: 'we'

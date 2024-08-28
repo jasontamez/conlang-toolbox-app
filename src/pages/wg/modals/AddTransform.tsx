@@ -36,7 +36,7 @@ function resetError() {
 const wgweWords = [
 	"DescOfTheTransformation", "noSearchMsg",
 	"replacementExpression", "searchExpression",
-	"transformationAdded", "addTransformation"
+	"TransformationAdded", "AddTransformation"
 ];
 
 const presentational = [

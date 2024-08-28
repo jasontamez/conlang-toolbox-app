@@ -46,7 +46,8 @@ const commons = [ "AddAndClose", "Cancel", "error" ];
 const translations = [
 	"OneCharOnly", "enterCharsInGroupHere", "LettersCharacters",
 	"noLabelMsg", "noRunMsg", "noTitleMsg", "ShortLabel",
-	"Suggest", "TitleOrDesc", "cantMakeLabelMsg", "addCharGroup"
+	"Suggest", "TitleOrDesc", "cantMakeLabelMsg", "AddCharGroup",
+	"CharGroupSaved"
 ];
 
 const AddCharGroupWEModal: FC<ExtraCharactersModalOpener> = (props) => {
@@ -54,7 +55,7 @@ const AddCharGroupWEModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tAddClose, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnter, tLetChar, tNoLabel, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitle, tNoSuggest, tAdding
+		tShort, tSuggest, tTitle, tNoSuggest, tAdding, tCGSaved
 	] = useI18Memo(translations, "wgwe");
 	const [ tpLetChar, tpShort, tpTitle ] = useI18Memo(presentations, "wgwe", context);
 
@@ -162,13 +163,13 @@ const AddCharGroupWEModal: FC<ExtraCharactersModalOpener> = (props) => {
 			(input) => input.value = ""
 		);
 		toaster({
-			message: tw("charGroupAdded"),
+			message: tCGSaved,
 			duration: 2500,
 			color: "success",
 			position: "top",
 			toast
 		});
-	}, [charGroupMap, dispatch, doAlert, setIsOpen, tCancel, tError, tNoLabel, tNoRun, tNoTitle, toast, tw]);
+	}, [charGroupMap, dispatch, doAlert, setIsOpen, tCancel, tError, tNoLabel, tNoRun, tNoTitle, toast, tw, tCGSaved]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	const adder = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
 	const addAndCloser = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);

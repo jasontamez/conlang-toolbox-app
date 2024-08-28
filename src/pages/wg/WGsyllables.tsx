@@ -104,7 +104,7 @@ const formals = [
 ];
 const formal = { context: "formal" };
 const translations = [
-	"Syllables_other",
+	"Syllables",
 	"From0To50",
 	"UseMultiSyllTypes",
 	"useLabelsToMakeSyllables",

@@ -51,7 +51,7 @@ const commons = [
 ];
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"WhatItChangesTo", "WhatToChange", "Transformation",
+	"WhatItChangesTo", "WhatToChange",
 	"SaveTrans", "TransSaved", "EditTrans",
 	"DeleteTrans", "TransDeleted"
 ];

@@ -53,7 +53,7 @@ const OverviewButton: FC<CardProps> = (props) => {
 };
 
 export const InputCard: FC<CardProps> = (props) => {
-	const [ t ] = useTranslator('we');
+	const [ t ] = useTranslator('dj');
 	const main = useMemo(() => t("info.input", { joinArrays: "\n"}), [t]);
 	const tInputTab = useMemo(() => t("InputTab"), [t]);
 	return (

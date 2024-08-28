@@ -74,7 +74,7 @@ const commons = [
 	"Cancel", "LoadError", "ManageCustomInfo", "NameOfSave",
 	"NameYourInfo", "NoSavedInfo", "Ok", "Save",
 	"YesOverwriteIt", "cannotUndo", "confirmLoad",
-	"Load", "Delete", "title", "SaveCurrentInfo",
+	"Load", "Delete", "missingTitleMsg", "SaveCurrentInfo",
 	"ClearOverwritePrevSave", "LoadSavedInfo"
 ];
 
@@ -84,10 +84,9 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const [
 		tCancel, tLoadErr, tManage, tNameSave, tNameInfo,
 		tNoInfo, tOk, tSave, tYes, tCannot, tConfLoad, tLoad, tDel,
-		tTitle, tSaveThing, tClearSave, tLoadThing
+		tMissing, tSaveThing, tClearSave, tLoadThing
 	] = useI18Memo(commons);
 	const tClearThings = useMemo(() => t("clearAllThingsMsg"), [t]);
-	const tMissing = useMemo(() => tc("missingThing", tTitle), [tc, tTitle]);
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();

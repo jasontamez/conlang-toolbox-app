@@ -17,6 +17,8 @@ export const $and = (array: string[], glue_: string = "", and_: string = ""): st
 	const input = array.slice();
 	if(input.length < 2) {
 		return input.join(" ");
+	} else if (input.length === 2) {
+		return and_ ? input.join(and_) : i18n.t("joinTwo", { one: input[0], two: input[1] });
 	}
 	const last = input.pop()!;
 	const glue = glue_ || i18n.t("andGlue");

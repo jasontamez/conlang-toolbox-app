@@ -113,7 +113,7 @@ const DeclenjugationInstance: FC<DeclenjugationInfo> = (props) => {
 
 const GroupInstance: FC<GroupInfo> = (props) => {
 	const [toggled, setToggled] = useState<boolean>(false);
-	const { t } = useTranslation('common');
+	const { t } = useTranslation('dj');
 	const { group, type, editGroup, maybeDeleteGroup, tEdit, tDel } = props;
 	const { title, id: mainID, appliesTo, declenjugations } = group;
 	const theDescription = useMemo(() => makeDJGroupDescription(group), [group]);

@@ -39,13 +39,13 @@ const commons = [
 	"deleteThisCannotUndo", "Cancel", "Close"
 ];
 const lexicons = [
-	"NoSavedLexicons", "DeleteStoredLexicon", "Lexicon Deleted"
+	"NoSavedLexicons", "DeleteStoredLexicon", "LexiconDeleted"
 ];
 
 const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
-	const [tNoSaved, tDeleteLexicon, tLexiconDeleted] = useI18Memo(lexicons);
+	const [tNoSaved, tDeleteLexicon, tLexiconDeleted] = useI18Memo(lexicons, 'lexicon');
 	const [ tYouSure, tCancel, tClose ] = useI18Memo(commons);
 
 	const { isOpen, setIsOpen, lexInfo, setLexInfo, setLoadingScreen } = props;
@@ -97,8 +97,7 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 				<IonLabel
 					className="ion-text-wrap"
 				>
-					{lex.title}
-					[{t("lexitems", { count: lex.lexicon.length })}]
+					{t("storedLexItems", { count: lex.lexicon.length, title: lex.title })}
 				</IonLabel>
 				<IonNote
 					className="ion-text-wrap ital"

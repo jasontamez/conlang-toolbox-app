@@ -45,10 +45,10 @@ const context = { context: "presentation" };
 const commons = [ "AddAndClose", "error", "Cancel" ];
 
 const wgweWords = [
-	"OneCharOnly", "addCharGroup", "enterCharsInGroupHere",
+	"OneCharOnly", "AddCharGroup", "enterCharsInGroupHere",
 	"LettersCharacters", "noRunMsg", "noTitleMsg", "ShortLabel",
 	"Suggest", "TitleOrDesc", "noLabelMsg",
-	"cantMakeLabelMsg", "charGroupSaved"
+	"cantMakeLabelMsg", "CharGroupSaved"
 ];
 
 const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {

@@ -393,7 +393,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 	}, [dispatch, savedWords, t, toast]);
 	const toggleLinking = useCallback(() => {
 		if(linking) {
-			if(savedWords.length > 1) {
+			if(savedWords.length > 0) {
 				// We have information left over. Do we want to keep it?
 				const handler = () => {
 					setSavedWords([]);

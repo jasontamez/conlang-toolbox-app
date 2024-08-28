@@ -34,17 +34,16 @@ type IonItemEvent = MouseEvent<HTMLIonItemElement, globalThis.MouseEvent>;
 
 const translations = [
 	"exportCSVFile", "exportCSVFileNoDesc", "fileJson",
-	"exportTextNewline", "exportTextSemicolon", "exportTextTab", "fileXml",
-	"TITLE", "ExportThing"
+	"exportTextNewline", "exportTextSemicolon",
+	"exportTextTab", "fileXml", "TITLE"
 ];
 
 const commons = [ "Cancel", "Close", "Description" ];
 
 const ExportLexiconModal: FC<ExportModalProps> = (props) => {
-	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
-	const [ tCancel, tClose, tDesc, tTITLE ] = useI18Memo(commons);
-	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML ] = useI18Memo(translations, "lexicon");
+	const [ tCancel, tClose, tDesc ] = useI18Memo(commons);
+	const [ tCSV, tCSVNoTitle, tJSON, tTxNew, tTxSemi, tTxTab, tXML, tTITLE ] = useI18Memo(translations, "lexicon");
 	const tFormat = useMemo(() => tc("ChooseFormat", { context: "presentation" }), [tc]);
 
 	const { isOpen, setIsOpen, setLoading } = props;
@@ -54,7 +53,7 @@ const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 		lexicon,
 		columns
 	} = useSelector((state: StateObject) => state.lexicon);
-	const tExportThing = useMemo(() => t("exportThing", { title }), [t, title]);
+	const tExportThing = useMemo(() => tc("exportTitle", { title }), [tc, title]);
 	const doClose = useCallback(() => {
 		setIsOpen(false);
 		setLoading(false);
@@ -206,7 +205,6 @@ const ExportLexiconModal: FC<ExportModalProps> = (props) => {
 						onClick={doXML}
 					>{tXML}</IonItem>
 				</IonList>
-				<a className="hide downloader" download={false} href=".">download it</a>
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>

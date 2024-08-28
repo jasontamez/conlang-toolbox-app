@@ -89,7 +89,9 @@ const LoadLexiconModal: FC<SavedLexProperties> = (props) => {
 					<IonItem key={key} button={true} onClick={() => loadThis(key)}>
 						<IonLabel
 							className="ion-text-wrap"
-						>{lex.title} [{t("lexitems", { count: lex.lexicon.length })}]</IonLabel>
+						>
+							{t("storedLexItems", { count: lex.lexicon.length, title: lex.title })}
+						</IonLabel>
 						<IonNote
 							className="ion-text-wrap ital"
 							slot="end"

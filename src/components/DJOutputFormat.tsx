@@ -597,7 +597,7 @@ export const exporter = (
 		);
 	}
 	return toaster({
-		message: "errorBadInternalFormatMsg",
+		message: t("errorBadInternalFormatMsg"),
 		color: "danger",
 		toast
 	});

@@ -28,7 +28,7 @@ const joiner = { joinArrays: "\n" };
 const MSinfo: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
-	const tWhat = useMemo(() => t("What is MorphoSyntax?"), [t]);
+	const tWhat = useMemo(() => t("WhatIsMS"), [t]);
 	const tOverview = useMemo(() => tc("overviewOf", { what: tc("MorphoSyntax")}), [tc]);
 	const [ tInfo, tMain, tSett, tTopic ] = useI18Memo(translations, "ms", joiner);
 

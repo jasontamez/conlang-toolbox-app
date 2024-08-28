@@ -27,7 +27,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { addLexiconItem } from '../../store/lexiconSlice';
 import { ExtraCharactersModalOpener, LexiconColumn, SorterFunc } from '../../store/types';
-import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import { $i } from '../../components/DollarSignExports';
@@ -38,13 +37,13 @@ interface LexItemProps extends ExtraCharactersModalOpener {
 	sorter: SorterFunc
 }
 
-const commons = [ "Close", "ExtraChars", "Ok", "error", "AddLexiconItem", "AddItem" ];
+const commons = [ "Close", "ExtraChars", "Ok", "error" ];
+
+const translations = [ "AddItem", "ItemSaved", "noInfoProvided", "AddLexiconItem" ];
 
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {
-	const [ t ] = useTranslator('lexicon');
-	const [ tClose, tExChar, tOk, tError, tAddItem, tAddLexItem ] = useI18Memo(commons);
-	const tThingAdded = useMemo(() => t("ItemSaved"), [t]);
-	const tNoInfo = useMemo(() => t("noInfoProvided"), [t]);
+	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
+	const [ tAddItem, tThingAdded, tNoInfo, tAddLexItem ] = useI18Memo(translations, "lexicon");
 
 	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
 	const dispatch = useDispatch();

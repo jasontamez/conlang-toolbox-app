@@ -42,7 +42,7 @@ const commons = [
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
 	"WhatItChangesTo", "WhatToChange",
-	"transformationAdded", "addTransformation"
+	"TransformationAdded", "AddTransformation"
 ];
 const formals = [
 	"atInputAtOutput", "atInput",
