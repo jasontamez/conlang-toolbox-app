@@ -91,6 +91,11 @@ ion-app .hide {
 }
 
 
+.blankContents p {
+	display: contents;
+}
+
+
 .emphasizedSection {
 	display: block;
 	text-align: center;

@@ -95,6 +95,7 @@ const settings = {
 	DeleteSortButton: "Delete Sort",
 	SortDeleted: "Custom Sort deleted",
 	EditSort: "Edit Custom Sort",
+	SortEdited: "Custom Sort edited",
 	TitleOfSort: "Title for this sort",
 	UnicodeSort: "Unicode sort (language-independent)",
 	SortSensitivity: "Sort Sensitivity:",

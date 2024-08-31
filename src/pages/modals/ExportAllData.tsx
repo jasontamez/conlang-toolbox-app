@@ -378,7 +378,7 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 				<IonList lines="full">
 					<IonItem>
 						<IonLabel className="ion-text-center ion-text-wrap">
-							<h2 className="ion-text-center ion-text-wrap">
+							<h2 className="ion-text-center ion-text-wrap blankContents">
 								<Markdown>{tExportMsg}</Markdown>
 							</h2>
 						</IonLabel>

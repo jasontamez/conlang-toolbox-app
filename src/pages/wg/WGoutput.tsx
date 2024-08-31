@@ -255,7 +255,13 @@ const WGOut: FC<PageData> = (props) => {
 		// Every syllable, or a wordlist
 		setColsNum(getWidestWord(list));
 		setDisplayList(list);
-	}, [charGroupMap, characterGroups.length, monosyllablesRate, multipleSyllableTypes, regExpMap, singleWord.length, t, tMissing, tNoCG, tNoSyll, wg, wgSorter, wordFinal.length, wordInitial.length, wordMiddle.length]);
+		setCopyString(copy);
+	}, [
+		charGroupMap, characterGroups.length, monosyllablesRate,
+		multipleSyllableTypes, regExpMap, singleWord.length, t, tMissing,
+		tNoCG, tNoSyll, wg, wgSorter, wordFinal.length,
+		wordInitial.length, wordMiddle.length
+	]);
 
 	// // //
 	// Save to Lexicon

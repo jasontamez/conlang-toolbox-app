@@ -130,11 +130,10 @@ const commons = [
 
 const WESChange: FC<PageData> = (props) => {
 	const [ t ] = useTranslator('we');
-	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tSChs = useMemo(() => t("SoundChanges"), [t]);
 	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp ] = useI18Memo(commons);
-	const tThingDeleted = useMemo(() => tw("charGroupsDeleted", { count: 1 }), [tw]);
+	const tThingDeleted = useMemo(() => t("changesDeleted", { count: 1 }), [t]);
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();

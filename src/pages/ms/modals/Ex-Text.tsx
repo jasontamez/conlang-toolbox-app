@@ -121,10 +121,10 @@ const doText = (
 					const { textOutputBooleans, i18: expoI18 } = expo!;
 					const {
 						header,
-						labels: expoLabels
+						labels
 					} = i18n.t(i18, { ns: "ms", returnObjects: true }) as CheckboxTransProps;
 					const {
-						labels,
+						labels: expoLabels,
 						header: expoHeader,
 						textFormat
 					} = i18n.t(expoI18, { ns: "ms", returnObjects: true }) as CheckboxTransExportProps;

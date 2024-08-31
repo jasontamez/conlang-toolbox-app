@@ -412,7 +412,6 @@
 				"boxesPerRow": 1,
 				"export": {
 					"i18": "checkboxVerbClassesExport",
-					"header": "Verb Types that are handled in a special way:",
 					"labels": [
 						"Actions (Agent affects Patient)",
 						"Action-Processes (Agent only)",

@@ -95,7 +95,7 @@ const translations = [
 	"noEnteredInfoMsg",
 	"needTitleMsg", "alternateAlphabetExplanation",
 	"SortLanguage", "SortSensitivity", "AlphabetSeparator",
-	"DeleteSortButton", "DeleteSort", "SortAdded", "EditSort",
+	"DeleteSortButton", "DeleteSort", "SortEdited", "EditSort",
 	"SortDeleted"
 ];
 

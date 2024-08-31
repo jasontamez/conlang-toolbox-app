@@ -379,6 +379,7 @@ Each character in Extra Characters has an official Unicode name. You can find th
 | 🔴 | DeleteSortButton | Delete Sort |  |
 | 🟦2.5 | SortDeleted | Custom Sort deleted |  |
 | 🟥 | EditSort | Edit Custom Sort |  |
+| 🟦2.5 | SortEdited | Custom Sort edited |  |
 |  | TitleOfSort | Title for this sort |  |
 | 🔴 | UnicodeSort | Unicode sort (language-independent) |  |
 |  | SortSensitivity | Sort Sensitivity: | *(presentation context)* |
@@ -1924,17 +1925,19 @@ If you have a working app with the translation loaded, you can follow these step
         - Paste in data from clipboard
             - **If you are working with a non-clean version of the app, save this data elsewhere so you can restore your app state when you are done.**
         - Tap on Analyze
-        - Tap on Import, verify the warning messsage.
-        - Tap Yes, verify the toast message is correct.
-        - Repeat the process, but only import WordGen Storage.
-            - Verify messaging.
-        - Repeat the process again, importing WordGen and WordEvolve Storages.
-            - Verify messaging.
-        - Repeat the process again, selecting two non-Storage options.
-            - Verify messaging.
+        - Tap on Import, verify the warning messsage
+        - Tap Yes, verify the toast message is correct
+        - Repeat the process, but only import Stored WordGen Info
+            - Verify messaging
+        - Repeat the process again, importing Stored WordGen and Stored WordEvolve Info
+            - Verify messaging
+        - Repeat the process again, selecting only two non-Stored options
+            - Verify messaging
     - Go to Sort Settings
-        - Tap on Sort Sensitivity, verify all four options.
-        - Tap on Using Custom Sort and verify "WG Presets Sorter" is correct.
+        - Tap on Sort Sensitivity, verify all four options
+        - Verify "WG Presets Sorter" is present
+            - Swipe left on WG Presets Sorter and Tap Delete
+            - Verify the error message
         - Tap on New Custom Sort
             1. Attempt to save the blank sort: should say there is no title
             1. Add a title
@@ -1966,21 +1969,22 @@ If you have a working app with the translation loaded, you can follow these step
             1. Swipe left on the Custom Sort, tap the delete button, verify the message is correct
 2. Morphosyntax
     - **Note:** be sure to notice the "Loading" page!
-    - Go through each page, starting with the Overview, then going through pages 1-10.
-        - Hit every information button on every page, making sure the info text matches the section it's linked in.
-    - On the settings page, hit the Clear Info button to see the popup.
+    - Go through each page, starting with the Overview, then going through pages 1-10
+        - Hit every information button on every page, making sure the info text matches the section it's linked in
+    - On the settings page, hit the Clear Info button to see the popup
     - Tap Load, verify the "no saved docs" message
     - Tap Save, verify the "no title" message
     - Add a title and description, tap Save again, verify save message
     - Tap on Save New, verify save message
     - Tap on Load, tap on a saved document, verify warning message
     - Tap on Delete, tap on a saved document, verify warning message
-        - Confirm, verify the toast message.
+        - Confirm, verify the toast message
     - Go to page 1
         - Move **every** slider
         - Check at least one checkbox
         - Add text to at least one box
-    - Go to page 2 and check at least one checkbox
+    - Go to page 2 and check at least one checkbox under *2.2.2. Verb Classes*
+    - Go to page 3, choose all three options under *3.4. Adpositional Phrases*
     - Go to settings, tap on Export
         - Leave "Show Unused Sections" on
         - Export three times, once as Text File (plain), once as a Text File (markdown), and finally as a Word Document (docx)
@@ -2036,7 +2040,9 @@ If you have a working app with the translation loaded, you can follow these step
     5. Go to Output
         - Tap Generate, verify error message
         - Tap Copy button, verify error message
-        - Tap the Settings icon, verify modal, close it
+        - Tap the Settings icon
+            - Verify text
+            - Change to Wordlist, verify new text
     6. Go to Settings
         - Tap Save/Load info
             - Verify title, "no saved info" message
@@ -2057,14 +2063,14 @@ If you have a working app with the translation loaded, you can follow these step
                 - Go back to Character Groups, verify titles of all groups
             - Return to Settings, Load the Medium preset
                 - Go back to Character Groups, verify titles of all groups
-            - Return to Settings, Load the Complex preset.......
+            - Return to Settings, Load the Complex preset
                 - Go back to Character Groups, verify titles of all groups
                 - Go to Transformations, verify descriptions of all transforms
             - Return to Settings, Load the Pseudo-Latin preset
                 - Go back to Character Groups, verify titles of all groups
             - Return to Settings, Load the Pseudo-Chinese preset
                 - Go back to Character Groups, verify titles of all groups
-            - Return to Settings, Load the Pseudo-English preset......
+            - Return to Settings, Load the Pseudo-English preset
                 - Go back to Character Groups, verify titles of all groups
                 - Go to Transformations, verify descriptions of all transforms
             - Return to Settings, Load the Pseudo-Japanese preset
@@ -2079,10 +2085,10 @@ If you have a working app with the translation loaded, you can follow these step
     8. Generate the `unableToCreateXWords` message
         - Make a Character Group with a handful of characters
         - Add one or two Syllables using that Character Group
-        - Go to the Settings page, set max number of Syllables to 2
+        - Go to the Settings page, set Rate of monosyllable words to Always
         - Go back to Output page, tap on Settings icon
             - Set the option to generate a wordlist
-            - Max out the 'number of words' slider to 1000.
+            - Max out the 'number of words' slider to 1000
         - Tap Generate
 4. WordEvolve
     1. Start with Overview
@@ -2141,6 +2147,7 @@ If you have a working app with the translation loaded, you can follow these step
     4. Tap twice on the Favorites icon, verifying the toasts
     5. Tap on the Character Name icon
         - Go through each Display set and verify all characters and character names
+    6. Tap the help icon, verify new text
 6. Declenjugator
     1. Visit Overview
     2. Go to Input
@@ -2180,14 +2187,19 @@ If you have a working app with the translation loaded, you can follow these step
             - Swipe left and Tap Delete
                 - Verify the text
                 - Tap Yes, verify the toast message
+            - Change Type to a different type
+                - Use "Add New" to create a new subgroup
+                - Swipe left and delete it
+                - Verify that the saving and deleting messaging has changed
+            - Change to the third Type and repeat the above process
             - Tap Save
-        - Tap on the Save icon
+        - Tap on the Save icon in the title bar
             - Save as a new Custom Info
             - Attempt to save again using the same name
                 - Verify error message
                 - Tap on Yes, Overwrite It
                     - Verify toast message
-        - Swipe left on the new Group
+        - Swipe left on the new Group and Tap Edit
             - Verify the title
             - Tap the Delete button, verify the messaging
             - Close modal
