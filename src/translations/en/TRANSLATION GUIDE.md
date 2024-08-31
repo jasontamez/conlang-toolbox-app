@@ -1807,7 +1807,7 @@ This section describes the "Main" part of the Output page. It's used in the Over
 
 #### info.outputSettings
 
-This section describes the "Settings" part of the Output page. It's used in the Overview and Output help page.
+This section describes the "Settings" part of the Output page, which can be found by tapping on the Gear icon. It's used in the Overview and Output help page.
 
 ```javascript
 [
@@ -1915,7 +1915,7 @@ If you have a working app with the translation loaded, you can follow these step
 
 1. Settings
     - Attempt to use the Back Button to exit the app
-        - Verify messaging
+        - Verify messaging (if any)
     - Get to the Settings page via the Menu
     - Tap on Change Theme, verify all theme names
     - Tap on Export App Info
@@ -1934,10 +1934,10 @@ If you have a working app with the translation loaded, you can follow these step
         - Repeat the process again, selecting only two non-Stored options
             - Verify messaging
     - Go to Sort Settings
-        - Tap on Sort Sensitivity, verify all four options
         - Verify "WG Presets Sorter" is present
             - Swipe left on WG Presets Sorter and Tap Delete
             - Verify the error message
+        - Tap on Sort Sensitivity, verify all four options
         - Tap on New Custom Sort
             1. Attempt to save the blank sort: should say there is no title
             1. Add a title
@@ -1968,10 +1968,12 @@ If you have a working app with the translation loaded, you can follow these step
                 - Verify the title of the page, then tap Save and verify the message is correct
             1. Swipe left on the Custom Sort, tap the delete button, verify the message is correct
 2. Morphosyntax
-    - **Note:** be sure to notice the "Loading" page!
+    - **Note:** be sure to notice the "Loading" page when you open MorphoSyntax
+        - If you miss it this time, remember to look for it when you move to a new tool
+        - The message can be very brief, but it tends to remain longer when you load new tools
     - Go through each page, starting with the Overview, then going through pages 1-10
         - Hit every information button on every page, making sure the info text matches the section it's linked in
-    - On the settings page, hit the Clear Info button to see the popup
+    - On the Settings page (Gear icon), hit the Clear Info button to see the popup
     - Tap Load, verify the "no saved docs" message
     - Tap Save, verify the "no title" message
     - Add a title and description, tap Save again, verify save message
@@ -1985,7 +1987,7 @@ If you have a working app with the translation loaded, you can follow these step
         - Add text to at least one box
     - Go to page 2 and check at least one checkbox under *2.2.2. Verb Classes*
     - Go to page 3, choose all three options under *3.4. Adpositional Phrases*
-    - Go to settings, tap on Export
+    - Go to Settings, tap on Export
         - Leave "Show Unused Sections" on
         - Export three times, once as Text File (plain), once as a Text File (markdown), and finally as a Word Document (docx)
             - Verify each toast message
@@ -2040,9 +2042,9 @@ If you have a working app with the translation loaded, you can follow these step
     5. Go to Output
         - Tap Generate, verify error message
         - Tap Copy button, verify error message
-        - Tap the Settings icon
+        - Tap the Gear icon
             - Verify text
-            - Change to Wordlist, verify new text
+            - Change to Wordlist, verify new text that appears
     6. Go to Settings
         - Tap Save/Load info
             - Verify title, "no saved info" message
@@ -2083,13 +2085,16 @@ If you have a working app with the translation loaded, you can follow these step
             - Tap the Save icon
                 - Verify messaging
     8. Generate the `unableToCreateXWords` message
-        - Make a Character Group with a handful of characters
+        - Make a Character Group with no more than five characters
+            - e.g. *C=tkp*
         - Add one or two Syllables using that Character Group
-        - Go to the Settings page, set Rate of monosyllable words to Always
-        - Go back to Output page, tap on Settings icon
+            - e.g. *C* and *Co*
+        - Go to the Settings page, set *Rate of monosyllable words* to *Always*
+        - Go to the Output page, tap on the Gear icon
             - Set the option to generate a wordlist
-            - Max out the 'number of words' slider to 1000
+            - Set the 'number of words' slider to *1000*
         - Tap Generate
+            - If a list is generated successfully, delete characters or syllables and a
 4. WordEvolve
     1. Start with Overview
     2. Go to Input
@@ -2125,7 +2130,7 @@ If you have a working app with the translation loaded, you can follow these step
                 - Multiple underscores in context and exception
                 - Word-boundary in the middle of a word in context and exception
     6. Go to Output
-        - Tap on the Settings icon
+        - Tap on the Gear icon
             - Verify all text, close modal
         - Tap Copy, verify the error message
         - Tap Evolve, verify the error message
@@ -2265,7 +2270,7 @@ If you have a working app with the translation loaded, you can follow these step
             - Confirm, verify toast message
     1. Tap Save button again
         - Tap "Export", verify all text
-    1. Tap the Settings button
+    1. Tap the Gear icon
         - Tap on "Sort blank columns", verify all four options
         - Tap "Add Column"
             - Verify toast message
