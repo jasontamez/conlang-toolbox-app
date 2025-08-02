@@ -79,8 +79,11 @@ export const MainOutlet = memo(() => {
 	const navigator = useIonRouter();
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
-		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
-			if(modals.length) {
+		let running = true;
+		Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
+			if(!running) {
+				return;
+			} else if(modals.length) {
 				// Close an open modal
 //				dispatch(addToLog("Attempting to close modal."));
 				// Get last modal
@@ -106,10 +109,11 @@ export const MainOutlet = memo(() => {
 					doAlert
 				});
 			}
-		}).remove;
+		});
+		return () => { running = false; };
 	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
-		<IonRouterOutlet placeholder>
+		<IonRouterOutlet>
 			<Route path="/wg" component={() => <WG {...defaultProps} />} />
 			<Route path="/we" component={() => <WE {...defaultProps} />} />
 			<Route path="/dj" component={() => <DJ {...defaultProps} />} />
@@ -173,8 +177,11 @@ const App = memo(() => {
 	// Listen for back button
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
-		return Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
-			if(modals.length) {
+		let running = true;
+		Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
+			if(!running) {
+				return;
+			} else if(modals.length) {
 				// Close an open modal
 //				dispatch(addToLog("Attempting to close modal."));
 				// Get last modal
@@ -200,14 +207,15 @@ const App = memo(() => {
 					doAlert
 				});
 			}
-		}).remove;
+		});
+		return () => { running = false; };
 	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
 		<IonApp>
 			<IonReactRouter>
 				<IonSplitPane contentId="main" when="xl">
 					<Menu />
-					<IonRouterOutlet id="main" placeholder>
+					<IonRouterOutlet id="main">
 						<Route path="/wg" render={() => <Suspense fallback={<Loading />}><WG {...defaultProps} /></Suspense>} />
 						<Route path="/we" render={() => <Suspense fallback={<Loading />}><WE {...defaultProps} /></Suspense>} />
 						<Route path="/dj" render={() => <Suspense fallback={<Loading />}><DJ {...defaultProps} /></Suspense>} />
