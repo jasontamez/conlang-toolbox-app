@@ -12,7 +12,7 @@ import {
 	useIonRouter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { App as Capacitor, BackButtonListenerEvent } from '@capacitor/app';
+import { App as Capacitor } from '@capacitor/app';
 import { LanguageCode } from 'iso-639-1';
 import { useTranslation } from 'react-i18next';
 import { EdgeToEdge } from '@capawesome/capacitor-android-edge-to-edge-support';
@@ -85,7 +85,7 @@ export const MainOutlet = memo(() => {
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
 		let running = true;
-		Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
+		Capacitor.addListener('backButton', () => {
 			if(!running) {
 				return;
 			} else if(modals.length) {
@@ -188,7 +188,7 @@ const App = memo(() => {
 	useEffect((): (() => void) => {
 		// NOTE: Back Button will automatically go back in history for us.
 		let running = true;
-		Capacitor.addListener('backButton', (ev: BackButtonListenerEvent) => {
+		Capacitor.addListener('backButton', () => {
 			if(!running) {
 				return;
 			} else if(modals.length) {
