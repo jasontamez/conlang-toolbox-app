@@ -192,7 +192,7 @@ const Grouping: FC<GroupingInfo> = (props) => {
 			tEdit={tEdit}
 		/>
 	)), [groups, editGroup, maybeDeleteGroup, tDel, tEdit, type]);
-	const onReorder = useCallback((event: ReorderEndCustomEvent) => {console.log(event); doReorder(event.detail, type)}, [doReorder, type]);
+	const onReorder = useCallback((event: ReorderEndCustomEvent) => doReorder(event.detail, type), [doReorder, type]);
 	if(groups.length === 0) {
 		return <></>;
 	}
@@ -202,7 +202,6 @@ const Grouping: FC<GroupingInfo> = (props) => {
 			<IonReorderGroup
 				disabled={false}
 				onIonReorderEnd={onReorder}
-				onIonReorderStart={() => console.log("Started")}
 			>
 				{theGroups}
 			</IonReorderGroup>
@@ -370,7 +369,6 @@ const DJGroups: FC<PageData> = (props) => {
 
 
 	const doReorder = useCallback((ed: ReorderEndEventDetail, type: keyof DJCustomInfo) => {
-		console.log("Called");
 		// move things around
 		const { from, to } = ed;
 		let groups: DJGroup[] = [];

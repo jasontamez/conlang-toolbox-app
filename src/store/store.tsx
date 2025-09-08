@@ -228,8 +228,6 @@ const migrations = {
 			});
 			return obj;
 		}).filter(obj => obj);
-		console.log({...state});
-		console.log({...newState});
 		return newState;
 	}
 }
