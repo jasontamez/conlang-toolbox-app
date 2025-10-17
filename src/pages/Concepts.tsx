@@ -26,7 +26,8 @@ import Markdown from 'react-markdown';
 
 import {
 	updateConceptsDisplay,
-	toggleConceptsBoolean,
+	toggleTextCentered,
+	toggleCombos,
 	addCustomHybridMeaning,
 	deleteCustomHybridMeanings
 } from '../store/conceptsSlice';
@@ -70,15 +71,38 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	const [tConcepts, tHelp] = useI18Memo(pair);
 	const endButtons = useMemo(() => {
 		return [
-			<IonButton key="conceptsTextCenterButton" onClick={() => dispatch(toggleConceptsBoolean("textCenter"))}>
+			<IonButton
+				key="conceptsTextStartAlignButton"
+				fill="outline"
+				className={textCenter ? "duoTogglebutton buttonOff" : "duoTogglebutton"}
+				onClick={() => dispatch(toggleTextCentered(false))}
+			>
 				<IonIcon
 					flipRtl
 					size="small"
-					slot="end"
-					src={`svg/align-${textCenter ? "left" : "center" }-material.svg`}
+					slot="icon-only"
+					src={`svg/align-left-material.svg`}
 				/>
 			</IonButton>,
-			<IonButton key="conceptsHelpButton" aria-label={tHelp} disabled={pickAndSave} onClick={() => setIsOpenInfo(true)}>
+			<IonButton
+				key="conceptsTextCenterAlignButton"
+				fill="outline"
+				className={textCenter ? "duoTogglebutton" : "duoTogglebutton buttonOff"}
+				onClick={() => dispatch(toggleTextCentered(true))}
+			>
+				<IonIcon
+					size="small"
+					slot="icon-only"
+					src={`svg/align-center-material.svg`}
+				/>
+			</IonButton>,
+			<IonButton
+				key="conceptsHelpButton"
+				aria-label={tHelp}
+				disabled={pickAndSave}
+				onClick={() => setIsOpenInfo(true)}
+				className="conceptsHelpButton"
+			>
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];
@@ -86,6 +110,7 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	return (<>
 		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><ConceptCard /></ModalWrap>
 		<Header
+			id="conceptsHeader"
 			title={tConcepts}
 			endButtons={endButtons}
 		/>
@@ -520,7 +545,7 @@ const ConceptsPage: FC<PageData> = (props) => {
 		tc("Save")
 	], [ t, tc ]);
 
-	const toggleBool = useCallback(() => dispatch(toggleConceptsBoolean("showingCombos")), [dispatch]);
+	const toggleBool = useCallback(() => dispatch(toggleCombos()), [dispatch]);
 	const savedWordsList = useMemo(() => savedWords.map(word => word.word).join("; "), [savedWords]);
 
 	return (

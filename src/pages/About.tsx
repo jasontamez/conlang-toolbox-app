@@ -75,7 +75,7 @@ const Home: FC<PageData> = (props) => {
 			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...props.modalPropsMaker(isOpenConcepts, setIsOpenConcepts)}><ConceptCard /></ModalWrap>
 			<ModalWrap {...props.modalPropsMaker(isOpenLexicon, setIsOpenLexicon)}><LexCard /></ModalWrap>
-			<Header title={tConlangToolbox} />
+			<Header title={tConlangToolbox} id="aboutPageHeader" />
 			<IonContent className="containedCards" id="about">
 				<IonGrid>
 

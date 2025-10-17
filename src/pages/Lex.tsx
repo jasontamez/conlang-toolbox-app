@@ -235,7 +235,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 		/>
 		<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}><LexCard /></ModalWrap>
 		<Header
-			id="lexiconTopBar"
+			id="lexiconHeader"
 			title={tLex}
 			endButtons={endButtons}
 		/>
@@ -513,7 +513,7 @@ const Lex: FC<PageData> = (props) => {
 	const [hasLoaded, setHasLoaded] = useState<boolean>(false);
 	useIonViewDidEnter(() => setHasLoaded(true));
 	useIonViewDidLeave(() => setHasLoaded(false));
-	const topBar = $i<HTMLElement>("lexiconTopBar");
+	const topBar = $i<HTMLElement>("lexiconHeader");
 	const lexInfoHeader = $i<HTMLElement>("lexiconTitleAndDescription");
 	const lexHeader = $i<HTMLElement>("theLexiconHeader");
 	const lexColumnNames = $i<HTMLElement>("lexColumnNames");

@@ -54,7 +54,7 @@ const AppSettings: FC<PageData> = (props) => {
 			<ChooseThemeModal {...modalPropsMaker(isOpenTheme, setIsOpenTheme)} />
 			<ExportAllData {...modalPropsMaker(isOpenExportAll, setIsOpenExportAll)} />
 			<ImportData {...modalPropsMaker(isOpenImport, setIsOpenImport)} />
-			<Header title={tAppSettings} />
+			<Header title={tAppSettings} id="settingsPageHeader" />
 			<IonContent fullscreen>
 				<IonList lines="full">
 					<IonItem className="wrappableInnards">

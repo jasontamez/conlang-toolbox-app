@@ -128,7 +128,7 @@ const AppInfo: FC<PageData> = () => {
 
 	return (
 		<IonPage className={theme}>
-			<Header title={tAppInfo} />
+			<Header title={tAppInfo} id="appInfoPageHeader" />
 			<IonContent className="containedCards">
 				<IonGrid>
 					<IonRow>
