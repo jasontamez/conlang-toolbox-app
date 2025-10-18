@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useMemo, useState } from "react";
+import React, { FC, ReactElement, Ref, useMemo, useState } from "react";
 import {
 	IonButton,
 	IonButtons,
@@ -23,6 +23,7 @@ interface ModalProperties {
 	id?: string
 	color?: string
 	menu?: boolean
+	ref?: Ref<HTMLIonHeaderElement>
 }
 
 const Header: FC<ModalProperties> = (props) => {
@@ -34,7 +35,8 @@ const Header: FC<ModalProperties> = (props) => {
 		preEndButtons = [],
 		endButtons = [],
 		id,
-		color
+		color,
+		ref
 	} = props;
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [ tc ] = useTranslator('common');
@@ -46,7 +48,7 @@ const Header: FC<ModalProperties> = (props) => {
 		: <></>),
 	[extraChars, tc]);
 	return (
-		<IonHeader id={id}>
+		<IonHeader id={id} ref={ref}>
 			{extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>}
 			<IonToolbar color={color}>
 				<IonButtons slot="start">

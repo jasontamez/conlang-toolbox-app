@@ -37,7 +37,6 @@ import { DJCustomInfo, DJGroup, Declenjugation, PageData, StateObject } from '..
 import { deleteGroup, reorderGroups } from '../../store/declenjugatorSlice';
 import useTranslator from '../../store/translationHooks';
 
-import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -55,6 +54,7 @@ import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
 import CaseMaker from './modals/CaseMaker';
 import { GroupCard } from './DJinfo';
+import useElement from '../../components/useElement';
 
 interface GroupingInfo {
 	label: string
@@ -274,15 +274,14 @@ const DJGroups: FC<PageData> = (props) => {
 	const editDeclenjugationModalInfo = modalPropsMaker(editDeclenjugationOpen, setEditDeclenjugationOpen);
 	const caseMakerModalInfo = modalPropsMaker(caseMakerOpen, setCaseMakerOpen);
 
+	const [djGroupsList, djGroupsListRef] = useElement<HTMLIonListElement>();
 	const editGroup = useCallback((type: keyof DJCustomInfo, group: DJGroup) => {
-		const groups = $q<HTMLIonListElement>(".djGroups");
-		if(groups) { groups.closeSlidingItems(); }
+		if(djGroupsList) { djGroupsList.closeSlidingItems(); }
 		setEditingGroup([type, group]);
 		setIsOpenEditGroup(true);
-	}, []);
+	}, [djGroupsList]);
 	const maybeDeleteGroup = useCallback((type: keyof DJCustomInfo, group: DJGroup) => {
-		const groups = $q<HTMLIonListElement>(".djGroups");
-		if(groups) { groups.closeSlidingItems(); }
+		if(djGroupsList) { djGroupsList.closeSlidingItems(); }
 		const handler = () => {
 			dispatch(deleteGroup([type, group.id]));
 			toaster({
@@ -305,7 +304,7 @@ const DJGroups: FC<PageData> = (props) => {
 			return;
 		}
 		handler();
-	}, [disableConfirms, dispatch, doAlert, tc, tDelGroup, tGroupDeleted, tYouSure, toast]);
+	}, [disableConfirms, dispatch, doAlert, tc, tDelGroup, tGroupDeleted, tYouSure, toast, djGroupsList]);
 	const maybeClearEverything = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup(null));
@@ -474,7 +473,7 @@ const DJGroups: FC<PageData> = (props) => {
 				endButtons={headerButtons}
 			/>
 			<IonContent className="hasFabButton">
-				<IonList className="djGroups units dragArea" lines="full">
+				<IonList className="djGroups units dragArea" lines="full" ref={djGroupsListRef}>
 					<Grouping
 						groups={declensions}
 						label={tDecl}

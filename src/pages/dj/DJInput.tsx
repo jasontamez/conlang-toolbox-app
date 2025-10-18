@@ -19,12 +19,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { PageData, StateObject } from '../../store/types';
 import { setInput } from '../../store/declenjugatorSlice';
 
-import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from '../../components/ModalWrap';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
+import useElement from '../../components/useElement';
 
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
@@ -50,6 +50,7 @@ const DJInput: FC<PageData> = (props) => {
 	const { input } = useSelector((state: StateObject) => state.dj);
 	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [djInput, djInputRef] = useElement<HTMLTextAreaElement>();
 
 	const updateInput = useCallback((value: string) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
@@ -60,20 +61,17 @@ const DJInput: FC<PageData> = (props) => {
 		if(e.target && e.target.value) {
 			value = String(e.target.value);
 		} else {
-			const el = $i<HTMLInputElement>("djInput");
-			value = el ? el.value : "";
+			value = djInput ? djInput.value! : "";
 		}
 		debounce<(x: string) => void, string>(updateInput, [value], 500, "DJInput");
-	}, [updateInput]);
+	}, [updateInput, djInput]);
 	const acceptImport = useCallback((value: string) => {
-		const el = $i<HTMLInputElement>("djInput");
-		if(el) { el.value = value; }
+		if(djInput) { djInput.value = value; }
 		updateInput(value);
-	}, [updateInput]);
+	}, [updateInput, djInput]);
 	const clearInput = useCallback(() => {
 		const handler = () => {
-			const el = $i<HTMLInputElement>("djInput");
-			if(el) { el.value = ""; }
+			if(djInput) { djInput.value = ""; }
 			updateInput("");
 		};
 		if(disableConfirms) {
@@ -88,7 +86,7 @@ const DJInput: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, updateInput, tClear, tYes, tYouSure]);
+	}, [disableConfirms, doAlert, updateInput, tClear, tYes, tYouSure, djInput]);
 	const openLex = useCallback(() => setIsOpenLexImport(true), []);
 	const endButtons = useMemo(() => [
 		<IonButton key="dj-endbutton1" onClick={() => setIsOpenECM(true)} aria-label={tExChar}>
@@ -120,6 +118,7 @@ const DJInput: FC<PageData> = (props) => {
 						spellCheck={false}
 						aria-label={tWords}
 						id="djInput"
+						ref={djInputRef}
 						placeholder={tEnterHere}
 						defaultValue={input}
 						onChange={inputUpdated}

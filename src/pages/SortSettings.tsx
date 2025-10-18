@@ -42,8 +42,8 @@ import AddCustomSortEquality from './modals/AddCustomSortEquality';
 import EditCustomSortRelation from './modals/EditCustomSortRelation';
 import EditCustomSortEquality from './modals/EditCustomSortEquality';
 import EditCustomSort from './modals/EditCustomSort';
+import useElement from '../components/useElement';
 import yesNoAlert from '../components/yesNoAlert';
-import { $i } from '../components/DollarSignExports';
 import PermanentInfo from '../components/PermanentInfo';
 import useI18Memo from '../components/useI18Memo';
 
@@ -116,12 +116,12 @@ const SortSettings: FC<PageData> = (props) => {
 	const addEqualityModalInfo = modalPropsMaker(addEqualityOpen, setAddEqualityOpen);
 	const editRelationModalInfo = modalPropsMaker(editRelationOpen, setEditRelationOpen);
 	const editEqualityModalInfo = modalPropsMaker(editEqualityOpen, setEditEqualityOpen);
-	const openEditor = (sorter: SortObject) => {
-		const el = $i<HTMLIonListElement>("listOfCustomSorts");
-		if(el) { el.closeSlidingItems(); }
+	const [listOfCustomSorts, listOfCustomSortsRef] = useElement<HTMLIonListElement>();
+	const openEditor = useCallback((sorter: SortObject) => {
+		if(listOfCustomSorts) { listOfCustomSorts.closeSlidingItems(); }
 		setEditingCustomSort(sorter);
 		setEditModalOpen(true);
-	};
+	}, [listOfCustomSorts]);
 
 	const setLang = useCallback((e: SelectCustomEvent) => dispatch(setSortLanguageCustom(e.detail.value)), [dispatch]);
 	const setSens = useCallback((e: SelectCustomEvent) => dispatch(setSortSensitivity(e.detail.value)), [dispatch]);
@@ -164,8 +164,7 @@ const SortSettings: FC<PageData> = (props) => {
 			if(e > 0) { desc.push(t("equality", { count: e })); }
 		}
 		const maybeDeleteSort = (id: string, title: string) => {
-			const el = $i<HTMLIonListElement>("listOfCustomSorts");
-			if(el) { el.closeSlidingItems(); }
+			if(listOfCustomSorts) { listOfCustomSorts.closeSlidingItems(); }
 			const message = permanents[id];
 			if(message) {
 				return doAlert({
@@ -217,7 +216,7 @@ const SortSettings: FC<PageData> = (props) => {
 				</IonItem>
 			</IonItemSliding>
 		);
-	}), [customSorts, t, tc, doAlert, dispatch, tCustom, tDelete, tEdit, tOk, tYouSure]);
+	}), [customSorts, t, tc, doAlert, dispatch, tCustom, tDelete, tEdit, tOk, tYouSure, listOfCustomSorts, openEditor]);
 
 	const toggleUsingLang = useCallback(() => {
 		const newValue = !useLanguageSort;
@@ -322,7 +321,7 @@ const SortSettings: FC<PageData> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="listOfCustomSorts" className="buttonFilled sortSettings hasSpecialLabels">
+				<IonList lines="full" id="listOfCustomSorts" ref={listOfCustomSortsRef} className="buttonFilled sortSettings hasSpecialLabels">
 					<IonItemDivider>{tBasicSort}</IonItemDivider>
 					<IonItem className="wrappableInnards">
 						<IonToggle

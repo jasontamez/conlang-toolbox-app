@@ -25,7 +25,6 @@ import {
 import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
-//import { $a, $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 //import { LexiconOutlineIcon } from '../../components/icons';
 //import PermanentInfo from '../../components/PermanentInfo';

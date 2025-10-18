@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC, Ref, useRef } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -77,9 +77,9 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import ExportLexiconModal from './modals/ExportLexicon';
 import EditLexiconSortModal from './modals/EditSort';
 import MergeLexiconItemsModal from './modals/MergeLexiconItems';
+import useElement from '../components/useElement';
 import Header from '../components/Header';
 import PermanentInfo from '../components/PermanentInfo';
-import { $i } from '../components/DollarSignExports';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
@@ -124,6 +124,7 @@ interface InnerHeaderProps {
 	lexHeadersHidden: boolean
 	setLexHeadersHidden: SetBooleanState
 	isDeleting: boolean
+	topBarRef?: Ref<HTMLIonHeaderElement>
 }
 
 const innerCommons = [
@@ -137,7 +138,8 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 		modalPropsMaker,
 		lexHeadersHidden,
 		setLexHeadersHidden,
-		isDeleting
+		isDeleting,
+		topBarRef
 	} = props;
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isWorking, setIsWorking] = useState<boolean>(false);
@@ -238,6 +240,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 			id="lexiconHeader"
 			title={tLex}
 			endButtons={endButtons}
+			ref={topBarRef}
 		/>
 	</>);
 };
@@ -371,11 +374,6 @@ const otherItemData = memoizeOne((columns, lexicon, toggleDeleting, deletingObj)
 	columns, lexicon, toggleDeleting, deletingObj
 }));
 
-const closeSliders = () => {
-	const mainLexList = $i<HTMLIonListElement>("mainLexList");
-	if(mainLexList) { mainLexList.closeSlidingItems(); }
-};
-
 const translations = [
 	"LexiconTitle", "MergeSelected", "beginDeleteMode",
 	"lexDescriptionHelperText", "lexTitleHelperText",
@@ -392,6 +390,26 @@ const commons = [
 const presentations = [ "LexiconTitle", "Sort" ];
 const context = { context: "presentation" };
 
+interface ColumnInputProps extends LexiconColumn {
+	isDeleting: boolean
+	getElement: (node: HTMLIonInputElement | null) => void
+}
+
+const ColumnInput = (props: ColumnInputProps) => {
+	const { id, label, size, isDeleting, getElement } = props;
+	const [, inputRef] = useElement<HTMLIonInputElement>(getElement);
+	return (
+		<IonInput
+			id={`input_lex_${id}`}
+			aria-label={`${label} input`}
+			className={`${size} lexAddInput`}
+			type="text"
+			disabled={isDeleting}
+			ref={inputRef}
+		/>
+	);
+};
+
 const Lex: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
@@ -405,6 +423,14 @@ const Lex: FC<PageData> = (props) => {
 	] = useI18Memo(commons);
 	const [ tpLexTitle, tpSort ] = useI18Memo(presentations, "lexicon", context);
 	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
+	const [mainLexList, mainLexListRef] = useElement<HTMLIonListElement>();
+	const [ topBar, topBarRef ] = useElement<HTMLIonHeaderElement>();
+	const [ lexInfoHeader, lexInfoHeaderRef ] = useElement<HTMLIonListElement>();
+	const [ lexHeader, lexHeaderRef ] = useElement<HTMLDivElement>();
+	const [ lexColumnNames, lexColumnNamesRef ] = useElement<HTMLIonItemElement>();
+	const [ lexColumnInputs, lexColumnInputsRef ] = useElement<HTMLIonItemElement>();
+	const [ lexDesc, lexDescRef ] = useElement<HTMLIonTextareaElement>();
+	const [ lexTitle, lexTitleRef ] = useElement<HTMLIonInputElement>();
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -513,11 +539,6 @@ const Lex: FC<PageData> = (props) => {
 	const [hasLoaded, setHasLoaded] = useState<boolean>(false);
 	useIonViewDidEnter(() => setHasLoaded(true));
 	useIonViewDidLeave(() => setHasLoaded(false));
-	const topBar = $i<HTMLElement>("lexiconHeader");
-	const lexInfoHeader = $i<HTMLElement>("lexiconTitleAndDescription");
-	const lexHeader = $i<HTMLElement>("theLexiconHeader");
-	const lexColumnNames = $i<HTMLElement>("lexColumnNames");
-	const lexColumnInputs = $i<HTMLElement>("lexColumnInputs");
 	// Calculate height
 	useEffect(() => {
 		let used = 0;
@@ -535,8 +556,22 @@ const Lex: FC<PageData> = (props) => {
 		topBar, lexInfoHeader, lexHeader, lexColumnInputs, lexColumnNames // HTML elements
 	]);
 
+	// Managing element references
+	const columnInputElements = useRef<{ [key: string]: HTMLIonInputElement | null }>({});
+	useEffect(() => {
+		const newObj: { [key: string]: HTMLIonInputElement | null } = {};
+		columns.forEach(col => {
+			const { id } = col;
+			newObj[id] = columnInputElements.current[id] || null;
+		});
+		columnInputElements.current = newObj;
+	}, [columns]);
+	const updateColumnInputElement = (id: string, el: HTMLIonInputElement | null) => {
+		columnInputElements.current[id] = el;
+	};
+
 	// Add new Lexicon item
-	const addToLex = useCallback(() => {
+	const addToLex = () => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
 		const ids: string[] = [];
@@ -544,8 +579,9 @@ const Lex: FC<PageData> = (props) => {
 		columns.forEach((col: LexiconColumn) => {
 			const id = col.id;
 			const i_id = `input_lex_${id}`;
-			const el = $i<HTMLIonInputElement>(i_id);
+			const el = columnInputElements.current[id];
 			const info: string = (el && (el.value as string)) || "";
+			console.log(id, el, `[${info}]`);
 			newInfo.push(info);
 			if(info) { foundFlag = true; }
 			newBlank[id] = "";
@@ -572,16 +608,21 @@ const Lex: FC<PageData> = (props) => {
 			columns: newInfo
 		}, sorter]));
 		// clear all inputs
-		ids.forEach((id: string) => {
-			const el = $i<HTMLInputElement>(id);
-			if(el) { el.value = ""; }
+		columns.forEach(col => {
+			const el = columnInputElements.current[col.id];
+			if(el) {
+				el.value = "";
+				el.getInputElement().then(input => {
+					input.value = "";
+				});
+			}
 		});
-	}, [columns, dispatch, doAlert, sorter, tError, tNoText, tOk]);
+	};
 
 	// Delete Lexicon item
 	const delFromLex = useCallback((item: Lexicon) => {
 		const title: string = item.columns.join(" / ");
-		closeSliders();
+		mainLexList && mainLexList.closeSlidingItems();
 		if(disableConfirms) {
 			dispatch(deleteLexiconItem(item.id));
 		} else {
@@ -594,14 +635,14 @@ const Lex: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [dispatch, disableConfirms, doAlert, tYouSure, tc]);
+	}, [dispatch, mainLexList, disableConfirms, doAlert, tYouSure, tc]);
 
 	// Open Lexicon item for editing
 	const beginEdit = useCallback((item: Lexicon) => {
 		setEditingItem(item);
 		setIsOpenEditLexItem(true);
-		closeSliders();
-	}, []);
+		mainLexList && mainLexList.closeSlidingItems();
+	}, [mainLexList]);
 
 	// Set up item for merging
 	const maybeSetForMerge = useCallback((item: Lexicon) => {
@@ -617,8 +658,8 @@ const Lex: FC<PageData> = (props) => {
 			setMerging([...merging, id]);
 		}
 		setMergingObject(newObj);
-		closeSliders();
-	}, [merging, mergingObject]);
+		mainLexList && mainLexList.closeSlidingItems();
+	}, [merging, mergingObject, mainLexList]);
 	const mergeButton = useMemo(() => merging.length > 1 ? (
 		<IonFab vertical="bottom" horizontal="start" slot="fixed">
 			<IonFabButton color="tertiary" title={tMergSel} onClick={() => setIsOpenMergeItems(true)}>
@@ -647,13 +688,19 @@ const Lex: FC<PageData> = (props) => {
 
 	// Memoize functions
 	const updateTitle = useCallback(() => {
-		const el = $i<HTMLInputElement>("lexTitle");
-		if(el) { dispatch(updateLexiconText(["title", el.value.trim()])); }
-	}, [dispatch]);
+		if(lexTitle) {
+			let v = lexTitle.value;
+			if(v === undefined || v === null) {
+				v = "";
+			} else {
+				v = String(v);
+			}
+			dispatch(updateLexiconText(["title", v.trim()]));
+		}
+	}, [dispatch, lexTitle]);
 	const updateDescription = useCallback(() => {
-		const el = $i<HTMLInputElement>("lexDesc");
-		if(el) { dispatch(updateLexiconText(["description", el.value.trim()])); }
-	}, [dispatch]);
+		if(lexDesc) { dispatch(updateLexiconText(["description", (lexDesc.value || "").trim()])); }
+	}, [dispatch, lexDesc]);
 	const openLexSorter = useCallback(() => setIsOpenLexSorter(true), []);
 	const updateSortDir = useCallback(() => dispatch(updateLexiconSortDir([!sortDir, sorter])), [dispatch, sortDir, sorter]);
 	const openLexOrder = useCallback(() => setIsOpenLexOrder(true), []);
@@ -670,20 +717,11 @@ const Lex: FC<PageData> = (props) => {
 			key={column.id}
 		>{column.label}</div>
 	)), [columns, truncateColumns]);
-	const columnInputs = useMemo(() => columns.map((column: LexiconColumn) => {
-		const { id, label, size } = column;
-		const key = `input_lex_${id}`;
-		return (
-			<IonInput
-				id={key}
-				key={key}
-				aria-label={`${label} input`}
-				className={`${size} lexAddInput`}
-				type="text"
-				disabled={isDeleting}
-			/>
-		);
-	}), [columns, isDeleting]);
+	const columnInputs = columns.map((column: LexiconColumn) => {
+		const key = `input_lex_${column.id}`;
+		const getElement = (node: HTMLIonInputElement | null) => updateColumnInputElement(column.id, node);
+		return <ColumnInput key={key} {...column} isDeleting={isDeleting} getElement={getElement}  />;
+	});
 
 	// JSX
 	return (
@@ -725,12 +763,14 @@ const Lex: FC<PageData> = (props) => {
 				lexHeadersHidden={lexHeadersHidden}
 				setLexHeadersHidden={setLexHeadersHidden}
 				isDeleting={isDeleting}
+				topBarRef={topBarRef}
 			/>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
 				<IonList
 					lines="none"
 					id="lexiconTitleAndDescription"
 					className={lexHeadersHidden ? "hide" : undefined}
+					ref={lexInfoHeaderRef}
 				>
 					<IonItem className="labelled"><IonLabel>{tpLexTitle}</IonLabel></IonItem>
 					<IonItem>
@@ -739,6 +779,7 @@ const Lex: FC<PageData> = (props) => {
 							value={title}
 							id="lexTitle"
 							className="ion-margin-top"
+							ref={lexTitleRef}
 							helperText={tLexTitleHT}
 							onIonChange={updateTitle}
 						></IonInput>
@@ -751,13 +792,14 @@ const Lex: FC<PageData> = (props) => {
 							id="lexDesc"
 							className="ion-margin-top"
 							helperText={tLexDescHT}
+							ref={lexDescRef}
 							rows={3}
 							onIonChange={updateDescription}
 						/>
 					</IonItem>
 				</IonList>
-				<IonList lines="none" id="mainLexList">
-					<div id="theLexiconHeader">
+				<IonList lines="none" id="mainLexList" ref={mainLexListRef}>
+					<div id="theLexiconHeader" ref={lexHeaderRef}>
 						<div className="flex-basic">
 							<h1>{tLexItems}</h1>
 						</div>
@@ -795,6 +837,7 @@ const Lex: FC<PageData> = (props) => {
 								<IonItem
 									id="lexColumnNames"
 									className="lexRow lexHeader"
+									ref={lexColumnNamesRef}
 								>
 									{columnLabels}
 									<div className="xs overflow-y-none"></div>
@@ -802,6 +845,7 @@ const Lex: FC<PageData> = (props) => {
 								<IonItem
 									id="lexColumnInputs"
 									className="lexRow serifChars lexInputs"
+									ref={lexColumnInputsRef}
 								>
 									{columnInputs}
 									<div className="xs overflow-y-none">

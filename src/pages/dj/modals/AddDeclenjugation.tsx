@@ -30,11 +30,11 @@ import {
 } from '../../../store/types';
 import useTranslator from '../../../store/translationHooks';
 
-import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
 
 interface AddDJModal extends ExtraCharactersModalOpener {
 	setSavedDeclenjugation: SetState<Declenjugation | null>
@@ -89,34 +89,44 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const toast = useIonToast();
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
-	const onLoad = useCallback(() => {
+	const [addDJTitle, addDJTitleRef] = useElement<HTMLIonInputElement>();
+	const [addDJPrefix, addDJPrefixRef] = useElement<HTMLIonInputElement>();
+	const [addDJSuffix, addDJSuffixRef] = useElement<HTMLIonInputElement>();
+	const [addDJRegex1, addDJRegex1Ref] = useElement<HTMLIonInputElement>();
+	const [addDJRegex2, addDJRegex2Ref] = useElement<HTMLIonInputElement>();
+	const onLoad = () => {
 		setUseAdvancedMethod(false);
 		setUseWholeWord(false);
-		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
-		if(addDJTitle) { addDJTitle.value = ""; }
-		const addDJPrefix = $i<HTMLInputElement>("addDJPrefix");
-		if(addDJPrefix) { addDJPrefix.value = ""; }
-		const addDJSuffix = $i<HTMLInputElement>("addDJSuffix");
-		if(addDJSuffix) { addDJSuffix.value = ""; }
-		const addDJRegex1 = $i<HTMLInputElement>("addDJRegex1");
-		if(addDJRegex1) { addDJRegex1.value = ""; }
-		const addDJRegex2 = $i<HTMLInputElement>("addDJRegex2");
-		if(addDJRegex2) { addDJRegex2.value = ""; }
-	}, []);
+		if(addDJTitle) {
+			addDJTitle.value = "";
+			addDJTitle.getInputElement().then(el => el.value = "");
+		}
+		if(addDJPrefix) {
+			addDJPrefix.value = "";
+			addDJPrefix.getInputElement().then(el => el.value = "");
+		}
+		if(addDJSuffix) {
+			addDJSuffix.value = "";
+			addDJSuffix.getInputElement().then(el => el.value = "");
+		}
+		if(addDJRegex1) {
+			addDJRegex1.value = "";
+			addDJRegex1.getInputElement().then(el => el.value = "");
+		}
+		if(addDJRegex2) {
+			addDJRegex2.value = "";
+			addDJRegex2.getInputElement().then(el => el.value = "");
+		}
+	};
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = useCallback(() => {
-		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
-		const title = addDJTitle ? addDJTitle.value.trim() : "";
-		const addDJPrefix = $i<HTMLInputElement>("addDJPrefix");
-		const prefix = addDJPrefix && addDJPrefix.value ? addDJPrefix.value : "";
-		const addDJSuffix = $i<HTMLInputElement>("addDJSuffix");
-		const suffix = addDJSuffix && addDJSuffix.value ? addDJSuffix.value : "";
-		const addDJRegex1 = $i<HTMLInputElement>("addDJRegex1");
-		const regex1 = addDJRegex1 && addDJRegex1.value ? addDJRegex1.value : "";
-		const addDJRegex2 = $i<HTMLInputElement>("addDJRegex2");
-		const regex2 = addDJRegex2 && addDJRegex2.value ? addDJRegex2.value : "";
+		const title = addDJTitle ? (addDJTitle.value ? String(addDJTitle.value) : "").trim() : "";
+		const prefix = addDJPrefix && addDJPrefix.value ? String(addDJPrefix.value) : "";
+		const suffix = addDJSuffix && addDJSuffix.value ? String(addDJSuffix.value) : "";
+		const regex1 = addDJRegex1 && addDJRegex1.value ? String(addDJRegex1.value) : "";
+		const regex2 = addDJRegex2 && addDJRegex2.value ? String(addDJRegex2.value) : "";
 		return {
 			title,
 			prefix,
@@ -124,13 +134,12 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 			regex1,
 			regex2
 		};
-	}, []);
+	}, [addDJTitle, addDJPrefix, addDJSuffix, addDJRegex1, addDJRegex2]);
 
 	// Accept new title from other modal
 	useEffect(() => {
-		const addDJTitle = $i<HTMLInputElement>("addDJTitle");
 		if(isOpen && savedTitle && addDJTitle) {
-			const title = addDJTitle ? addDJTitle.value.trim() : "";
+			const title = addDJTitle && addDJTitle.value ? String(addDJTitle.value).trim() : "";
 			if(!title) {
 				addDJTitle.value = savedTitle;
 			} else {
@@ -138,7 +147,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 			}
 			setSavedTitle("");
 		}
-	}, [isOpen, savedTitle, setSavedTitle]);
+	}, [isOpen, savedTitle, setSavedTitle, addDJTitle]);
 
 	const maybeSaveNewDeclenjugation = useCallback(() => {
 		const {
@@ -259,6 +268,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 						<IonInput
 							aria-label={tTitleMethod}
 							id="addDJTitle"
+							ref={addDJTitleRef}
 						/>
 						<IonButton color="primary" onClick={openCase} slot="end">
 							<IonIcon icon={addCircle} slot="icon-only" />
@@ -293,6 +303,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex1"
+							ref={addDJRegex1Ref}
 							aria-label={tMEx}
 						/>
 					</IonItem>
@@ -302,6 +313,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
 						<IonInput
 							id="addDJRegex2"
+							ref={addDJRegex2Ref}
 							aria-label={tREx}
 						/>
 					</IonItem>
@@ -312,6 +324,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 					<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
 							id="addDJPrefix"
+							ref={addDJPrefixRef}
 							aria-label={tPref}
 							className="ion-text-end"
 						/>
@@ -320,6 +333,7 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 						</div>
 						<IonInput
 							id="addDJSuffix"
+							ref={addDJSuffixRef}
 							aria-label={tSuff}
 							className="ion-text-start"
 						/>

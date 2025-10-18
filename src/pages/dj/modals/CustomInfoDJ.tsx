@@ -26,12 +26,12 @@ import useTranslator from '../../../store/translationHooks';
 import { loadStateDJ } from '../../../store/declenjugatorSlice';
 
 import escape from '../../../components/EscapeForHTML';
-import { $i } from '../../../components/DollarSignExports';
 import { DeclenjugatorStorage } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -59,6 +59,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		tConfLoad, tLoadInfo, tSaveThings
 	] = useI18Memo(commons);
 	const [ tNoTitle, tClearEverything, tOverwritePrev ] = useI18Memo(translations, "dj");
+	const [currentDJInfoSaveName, currentDJInfoSaveNameRef] = useElement<HTMLIonInputElement>();
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
@@ -76,8 +77,9 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		setIsOpen(false);
 	}, [setIsOpen, setTitles]);
 	const maybeSaveInfo = useCallback(() => {
-		const el = $i<HTMLInputElement>("currentDJInfoSaveName");
-		const title = (el && escape(el.value).trim()) || "";
+		const title = (
+			currentDJInfoSaveName && escape(currentDJInfoSaveName.value ? String(currentDJInfoSaveName.value) : "").trim()
+		) || "";
 		if(title === "") {
 			return doAlert({
 				message: tNoTitle,
@@ -123,7 +125,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				});
 			}
 		});
-	}, [conjugations, declensions, disableConfirms, doAlert, doCleanClose, other, tNoTitle, tOk, tOverwritePrev, tYes, tc, toast]);
+	}, [conjugations, declensions, disableConfirms, doAlert, doCleanClose, other, tNoTitle, tOk, tOverwritePrev, tYes, tc, toast, currentDJInfoSaveName]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			DeclenjugatorStorage.getItem<DJCustomInfo>(title).then((value) => {
@@ -229,6 +231,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 							<IonInput
 								aria-label={tNameSave}
 								id="currentDJInfoSaveName"
+								ref={currentDJInfoSaveNameRef}
 								inputmode="text"
 								placeholder={tNameInfo}
 								type="text"
