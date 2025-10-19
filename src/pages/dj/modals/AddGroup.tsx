@@ -46,12 +46,13 @@ import {
 import { addGroup } from '../../../store/declenjugatorSlice';
 import useTranslator from '../../../store/translationHooks';
 
-import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import ltr from '../../../components/LTR';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
@@ -134,6 +135,13 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const [type, setType] = useState<keyof DJCustomInfo>("declensions");
 	const [typeString, setTypeString] = useState<string>("Declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [addTitle, addTitleRef] = useElement<HTMLIonInputElement>();
+	const [addAppliesTo, addAppliesToRef] = useElement<HTMLIonInputElement>();
+	const [addStarts, addStartsRef] = useElement<HTMLIonInputElement>();
+	const [addEnds, addEndsRef] = useElement<HTMLIonInputElement>();
+	const [addRegex1, addRegex1Ref] = useElement<HTMLIonInputElement>();
+	const [addRegex2, addRegex2Ref] = useElement<HTMLIonInputElement>();
+	const [addingDJGroup, addingDJGroupRef] = useElement<HTMLIonListElement>();
 	
 	// Accept new declenjugation from other modal
 	useEffect(() => {
@@ -186,53 +194,25 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		setTypeString(plural);
 	}, [t, type, setDeclenjugationType]);
 
-	const onLoad = useCallback(() => {
+	const onLoad = () => {
 		setSeparator(" ");
 		setDeclenjugations([]);
-		const addTitle = $i<HTMLInputElement>("addTitle");
-		if(addTitle) { addTitle.value = ""; }
-		const addAppliesTo = $i<HTMLInputElement>("addAppliesTo");
-		if(addAppliesTo) { addAppliesTo.value = ""; }
-		const addStarts = $i<HTMLInputElement>("addStarts");
-		if(addStarts) { addStarts.value = ""; }
-		const addEnds = $i<HTMLInputElement>("addEnds");
-		if(addEnds) { addEnds.value = ""; }
-		const addRegex1 = $i<HTMLInputElement>("addRegex1");
-		if(addRegex1) { addRegex1.value = ""; }
-		const addRegex2 = $i<HTMLInputElement>("addRegex2");
-		if(addRegex2) { addRegex2.value = ""; }
-	}, []);
-	const grabInfo = useCallback(() => {
-		const addTitle = $i<HTMLInputElement>("addTitle");
-		const title = addTitle ? addTitle.value.trim() : "";
-		const addAppliesTo = $i<HTMLInputElement>("addAppliesTo");
-		const appliesTo = addAppliesTo ? addAppliesTo.value.trim() : "";
-		const addStarts = $i<HTMLInputElement>("addStarts");
-		const startsWith: string[] = addStarts && addStarts.value ? clearBlanks(addStarts.value.split(separator)) : [];
-		const addEnds = $i<HTMLInputElement>("addEnds");
-		const endsWith: string[] = addEnds && addEnds.value ? clearBlanks(addEnds.value.split(separator)) : [];
-		const addRegex1 = $i<HTMLInputElement>("addRegex1");
-		const regex1: string = (addRegex1 && addRegex1.value) || "";
-		const addRegex2 = $i<HTMLInputElement>("addRegex2");
-		const regex2: string = (addRegex2 && addRegex2.value) || "";
-		return {
-			title,
-			appliesTo,
-			startsWith,
-			endsWith,
-			regex1,
-			regex2
-		};
-	}, [separator]);
-	const maybeSaveNewGroup = useCallback(() => {
-		const {
-			title,
-			appliesTo,
-			startsWith,
-			endsWith,
-			regex1,
-			regex2
-		} = grabInfo();
+		getSetValue(addTitle, "");
+		getSetValue(addAppliesTo, "");
+		getSetValue(addStarts, "");
+		getSetValue(addEnds, "");
+		getSetValue(addRegex1, "");
+		getSetValue(addRegex2, "");
+	};
+	const maybeSaveNewGroup = () => {
+		const title = getSetValue(addTitle);
+		const appliesTo = getSetValue(addAppliesTo);
+		const starting = getSetValue(addStarts);
+		const startsWith: string[] = starting ? clearBlanks(starting.split(separator)) : [];
+		const ending = getSetValue(addStarts);
+		const endsWith: string[] = ending ? clearBlanks(ending.split(separator)) : [];
+		const regex1: string = getSetValue(addRegex1);
+		const regex2: string = getSetValue(addRegex2);
 		if(!title) {
 			doAlert({
 				message: tNoTitle,
@@ -313,15 +293,15 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [declenjugations, dispatch, doAlert, grabInfo, separator, setIsOpen, tNeedExpr, tNoCond, tNoTitle, tOk, tThingSaved, tc, toast, type, useAdvancedMethod]);
-	const maybeCancel = useCallback(() => {
-		const {
-			title,
-			startsWith,
-			endsWith,
-			regex1,
-			regex2
-		} = grabInfo();
+	};
+	const maybeCancel = () => {
+		const title = getSetValue(addTitle);
+		const starting = getSetValue(addStarts);
+		const startsWith: string[] = starting ? clearBlanks(starting.split(separator)) : [];
+		const ending = getSetValue(addStarts);
+		const endsWith: string[] = ending ? clearBlanks(ending.split(separator)) : [];
+		const regex1: string = getSetValue(addRegex1);
+		const regex2: string = getSetValue(addRegex2);
 		if(title || regex1 || regex2 || (startsWith.length + endsWith.length > 0)) {
 			return yesNoAlert({
 				header: tUnsaved,
@@ -333,21 +313,19 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 			});
 		}
 		setIsOpen(false);
-	}, [doAlert, grabInfo, setIsOpen, tUnsaved, tYes, tYouSure]);
+	};
 
 	const maybeAddNewDeclenjugation = useCallback(() => {
 		setSavedDeclenjugation(null);
 		addDeclenjugationModalInfo.setIsOpen(true);
 	}, [addDeclenjugationModalInfo, setSavedDeclenjugation]);
 	const editDeclenjugation = useCallback((declenjugation: Declenjugation) => {
-		const el = $i<HTMLIonListElement>("addingDJGroup");
-		if(el) { el.closeSlidingItems(); }
+		addingDJGroup && addingDJGroup.closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
-	}, [editDeclenjugationModalInfo, setIncomingDeclenjugation]);
+	}, [editDeclenjugationModalInfo, setIncomingDeclenjugation, addingDJGroup]);
 	const maybeDeleteDeclenjugation = useCallback((id: string) => {
-		const el = $i<HTMLIonListElement>("addingDJGroup");
-		if(el) { el.closeSlidingItems(); }
+		addingDJGroup && addingDJGroup.closeSlidingItems();
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({
@@ -370,7 +348,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, t, typeString]);
+	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, t, typeString, addingDJGroup]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
@@ -457,7 +435,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<ModalHeader openECM={openECM} title={tAddGroup} closeModal={maybeCancel} />
 			<IonContent>
-				<IonList lines="full" id="addingDJGroup" className="hasSpecialLabels hasToggles">
+				<IonList lines="full" id="addingDJGroup" ref={addingDJGroupRef} className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleInput}</IonLabel>
 					</IonItem>
@@ -465,6 +443,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 						<IonInput
 							aria-label={tTitleInput}
 							id="addTitle"
+							ref={addTitleRef}
 						/>
 					</IonItem>
 					<IonItem>
@@ -497,6 +476,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 						<IonInput
 							aria-label={tTypes}
 							id="addAppliesTo"
+							ref={addAppliesToRef}
 							placeholder={tEx}
 						/>
 					</IonItem>
@@ -519,6 +499,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 						<IonInput
 							aria-label={tMatching}
 							id="addRegex1"
+							ref={addRegex1Ref}
 							labelPlacement="stacked"
 						/>
 					</IonItem>
@@ -529,6 +510,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 						<IonInput
 							aria-label={tReplacement}
 							id="addRegex2"
+							ref={addRegex2Ref}
 							labelPlacement="stacked"
 						/>
 					</IonItem>
@@ -538,6 +520,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
 						<IonInput
 							aria-label={tRemoveStart}
+							ref={addStartsRef}
 							id="addStarts"
 						/>
 					</IonItem>
@@ -548,6 +531,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 						<IonInput
 							aria-label={tRemoveEnd}
 							id="addEnds"
+							ref={addEndsRef}
 							labelPlacement="stacked"
 						/>
 					</IonItem>

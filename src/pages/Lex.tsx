@@ -86,6 +86,7 @@ import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
 import useI18Memo from '../components/useI18Memo';
+import getSetValue from '../components/getSetValue';
 import i18n from '../i18n';
 import './Lexicon.css';
 
@@ -580,7 +581,7 @@ const Lex: FC<PageData> = (props) => {
 			const id = col.id;
 			const i_id = `input_lex_${id}`;
 			const el = columnInputElements.current[id];
-			const info: string = (el && (el.value as string)) || "";
+			const info: string = getSetValue(el);
 			console.log(id, el, `[${info}]`);
 			newInfo.push(info);
 			if(info) { foundFlag = true; }
@@ -609,13 +610,7 @@ const Lex: FC<PageData> = (props) => {
 		}, sorter]));
 		// clear all inputs
 		columns.forEach(col => {
-			const el = columnInputElements.current[col.id];
-			if(el) {
-				el.value = "";
-				el.getInputElement().then(input => {
-					input.value = "";
-				});
-			}
+			getSetValue(columnInputElements.current[col.id], "");
 		});
 	};
 
@@ -689,17 +684,11 @@ const Lex: FC<PageData> = (props) => {
 	// Memoize functions
 	const updateTitle = useCallback(() => {
 		if(lexTitle) {
-			let v = lexTitle.value;
-			if(v === undefined || v === null) {
-				v = "";
-			} else {
-				v = String(v);
-			}
-			dispatch(updateLexiconText(["title", v.trim()]));
+			dispatch(updateLexiconText(["title", getSetValue(lexTitle).trim()]));
 		}
 	}, [dispatch, lexTitle]);
 	const updateDescription = useCallback(() => {
-		if(lexDesc) { dispatch(updateLexiconText(["description", (lexDesc.value || "").trim()])); }
+		if(lexDesc) { dispatch(updateLexiconText(["description", getSetValue(lexDesc).trim()])); }
 	}, [dispatch, lexDesc]);
 	const openLexSorter = useCallback(() => setIsOpenLexSorter(true), []);
 	const updateSortDir = useCallback(() => dispatch(updateLexiconSortDir([!sortDir, sorter])), [dispatch, sortDir, sorter]);

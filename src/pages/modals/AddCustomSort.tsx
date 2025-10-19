@@ -51,10 +51,11 @@ import {
 import { addNewCustomSort } from '../../store/sortingSlice';
 import useTranslator from '../../store/translationHooks';
 
-import { $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	langObj: {[key: string]: string}
@@ -150,17 +151,18 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [customizations, setCustomizations] = useState<(RelationObject | EqualityObject)[]>([]);
+	const [addSortTitle, addSortTitleRef] = useElement<HTMLIonInputElement>();
+	const [addCustomAlphabet, addCustomAlphabetRef] = useElement<HTMLIonInputElement>();
+	const [addingCustomSortList, addingCustomSortListRef] = useElement<HTMLIonListElement>();
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setCustomizations([]);
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
-		const addSortTitle = $i<HTMLInputElement>("addSortTitle");
-		if(addSortTitle) { addSortTitle.value = ""; }
-		const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
-		if(addCustomAlphabet) { addCustomAlphabet.value = ""; }
-	}, [setIsOpen]);
+		getSetValue(addSortTitle, "");
+		getSetValue(addCustomAlphabet, "")
+	}, [setIsOpen, addSortTitle, addCustomAlphabet]);
 	// Accept new relation from other modal
 	useEffect(() => {
 		if(isOpen && savedRelation) {
@@ -230,8 +232,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 		}
 	}, [isOpen, outgoingEquality, setOutgoingEquality, customizations]);
 	const maybeSaveNewSort = useCallback(() => {
-		const addSortTitle = $i<HTMLInputElement>("addSortTitle");
-		const title = addSortTitle ? addSortTitle.value.trim() : "";
+		const title = getSetValue(addSortTitle);
 		if(!title) {
 			doAlert({
 				message: tNoTitle,
@@ -252,8 +253,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 			title
 		};
 		if(usingAlpha) {
-			const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
-			const alpha: string[] = (addCustomAlphabet ? addCustomAlphabet.value : "")
+			const alpha: string[] = getSetValue(addCustomAlphabet)
 				.split(separator)
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
@@ -312,13 +312,12 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 	}, [
 		closeModal, customizations, dispatch, doAlert, separator, sortLang,
 		sortSensitivity, tBlankProv, tNoNewInfo, tNoTitle, tOk, tThingSaved,
-		toast, usingAlpha
+		toast, usingAlpha, addSortTitle, addCustomAlphabet
 	]);
 	const maybeCancel = useCallback(() => {
-		const addCustomAlphabet = $i<HTMLInputElement>("addCustomAlphabet");
 		if(
 			sortLang !== "default" || sortSensitivity !== "default"
-			|| (usingAlpha && addCustomAlphabet && addCustomAlphabet.value.trim())
+			|| (usingAlpha && getSetValue(addCustomAlphabet).trim())
 			|| (customizations.length > 0)
 		) {
 			return yesNoAlert({
@@ -333,7 +332,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 		closeModal();
 	}, [
 		closeModal, customizations.length, doAlert, sortLang, sortSensitivity,
-		tSureDiscard, tUnsaved, tYesDisc, usingAlpha
+		tSureDiscard, tUnsaved, tYesDisc, usingAlpha, addCustomAlphabet
 	]);
 	const maybeAddNewRelation = useCallback(() => {
 		setSavedRelation(null);
@@ -379,8 +378,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 							color="primary"
 							aria-label={tEdit}
 							onClick={() => {
-								const el = $i<HTMLIonListElement>("addingCustomSortList");
-								if(el) { el.closeSlidingItems(); }
+								addingCustomSortList && addingCustomSortList.closeSlidingItems();
 								setIncomingEquality(obj);
 								editEqualityModalInfo.setIsOpen(true);
 							}}
@@ -394,8 +392,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 							color="danger"
 							aria-label={tDelete}
 							onClick={() => {
-								const el = $i<HTMLIonListElement>("addingCustomSortList");
-								if(el) { el.closeSlidingItems(); }
+								addingCustomSortList && addingCustomSortList.closeSlidingItems();
 								yesNoAlert({
 									header: tDelThing,
 									message: tYouSure,
@@ -462,8 +459,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 							color="primary"
 							aria-label={tEdit}
 							onClick={() => {
-								const el = $i<HTMLIonListElement>("addingCustomSortList");
-								if(el) { el.closeSlidingItems(); }
+								addingCustomSortList && addingCustomSortList.closeSlidingItems();
 								setIncomingRelation(obj);
 								editRelationModalInfo.setIsOpen(true);
 							}}
@@ -477,8 +473,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 							color="danger"
 							aria-label={tDelete}
 							onClick={() => {
-								const el = $i<HTMLIonListElement>("addingCustomSortList");
-								if(el) { el.closeSlidingItems(); }
+								addingCustomSortList && addingCustomSortList.closeSlidingItems();
 								yesNoAlert({
 									header: tDelThing,
 									message: tRUSure,
@@ -546,7 +541,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 	}), [
 		customizations, tDelete, doAlert, tc, tDelThing, tRUSure,
 		tEdit, editEqualityModalInfo, editRelationModalInfo, tYouSure,
-		setIncomingEquality, setIncomingRelation
+		setIncomingEquality, setIncomingRelation, addingCustomSortList
 	]);
 	const allLanguages = useMemo(() => languages.map((language) => (
 		<IonSelectOption
@@ -571,13 +566,14 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="addingCustomSortList">
+				<IonList lines="full" id="addingCustomSortList" ref={addingCustomSortListRef}>
 					<IonItem>
 						<div slot="start" className="ion-margin-end">{tpTitle}</div>
 						<IonInput
 							aria-label={tTitle}
 							id="addSortTitle"
 							helperText={tTitleSort}
+							ref={addSortTitleRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -650,6 +646,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 									aria-label={tCustomAlpha}
 									id="addCustomAlphabet"
 									helperText={tWriteAlpha}
+									ref={addCustomAlphabetRef}
 								/>
 							</IonItem>
 							<IonItem className="wrappableInnards">

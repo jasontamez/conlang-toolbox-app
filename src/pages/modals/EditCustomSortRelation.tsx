@@ -30,9 +30,10 @@ import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } f
 import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	incomingRelation: RelationObject | null
@@ -70,9 +71,9 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [separator, setSeparator] = useState<SortSeparator>("");
-	const [_base, setBase] = useState<HTMLInputElement | null>(null);
-	const [_pre, setPre] = useState<HTMLInputElement | null>(null);
-	const [_post, setPost] = useState<HTMLInputElement | null>(null);
+	const [editBaseRelation, editBaseRelationRef] = useElement<HTMLIonInputElement>();
+	const [editPreRelation, editPreRelationRef] = useElement<HTMLIonInputElement>();
+	const [editPostRelation, editPostRelationRef] = useElement<HTMLIonInputElement>();
 	const onLoad = useCallback(() => {
 		const error = tError;
 		const {
@@ -82,24 +83,18 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 			post = [error]
 		} = incomingRelation || {};
 		setSeparator(separator);
-		const _base = $i<HTMLInputElement>("editBaseRelation");
-		const _pre = $i<HTMLInputElement>("editPreRelation");
-		const _post = $i<HTMLInputElement>("editPostRelation");
-		setBase(_base);
-		setPre(_pre);
-		setPost(_post);
-		if(_base) { _base.value = base; }
-		if(_pre) { _pre.value = pre.join(separator); }
-		if(_post) { _post.value = post.join(separator); }
-	}, [incomingRelation, tError]);
+		getSetValue(editBaseRelation, base);
+		getSetValue(editPreRelation, pre.join(separator));
+		getSetValue(editPostRelation, post.join(separator));
+	}, [incomingRelation, tError, editBaseRelation, editPreRelation, editPostRelation]);
 	const close = useCallback(() => {
-		if(_base) { _base.value = ""; }
-		if(_pre) { _pre.value = ""; }
-		if(_post) { _post.value = ""; }
+		getSetValue(editBaseRelation, "");
+		getSetValue(editPreRelation, "");
+		getSetValue(editPostRelation, "");
 		setIsOpen(false);
-	}, [_base, _pre, _post, setIsOpen]);
+	}, [editBaseRelation, editPreRelation, editPostRelation, setIsOpen]);
 	const maybeSaveRelation = useCallback(() => {
-		const base = (_base && _base.value) || "";
+		const base = getSetValue(editBaseRelation);
 		if(!base) {
 			doAlert({
 				message: tNoBase,
@@ -114,8 +109,8 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 			})
 			return;
 		}
-		const pre = _pre && _pre.value ? _pre.value.split(separator) : [];
-		const post = _post && _post.value ? _post.value.split(separator) : [];
+		const pre = getSetValue(editPreRelation).split(separator);
+		const post = getSetValue(editPostRelation).split(separator);
 		if(!(pre.length + post.length)) {
 			doAlert({
 				message: tNoPrePost,
@@ -140,7 +135,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [_base, _post, _pre, close, doAlert, incomingRelation, separator, setOutgoingRelation, tNoBase, tNoPrePost, tOk, tThingEdited, toast]);
+	}, [editBaseRelation, editPostRelation, editPreRelation, close, doAlert, incomingRelation, separator, setOutgoingRelation, tNoBase, tNoPrePost, tOk, tThingEdited, toast]);
 	const maybeDelete = useCallback(() => {
 		const handler = () => {
 			setOutgoingRelation(incomingRelation!.id);
@@ -183,6 +178,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tBase}
 							id="editBaseRelation"
 							placeholder={tTheBase}
+							ref={editBaseRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
@@ -193,6 +189,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tBeforeBase}
 							id="editPreRelation"
 							helperText={tEndBefore}
+							ref={editPreRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
@@ -203,6 +200,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tAfterBase}
 							id="editPostRelation"
 							helperText={tStartAfter}
+							ref={editPostRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">

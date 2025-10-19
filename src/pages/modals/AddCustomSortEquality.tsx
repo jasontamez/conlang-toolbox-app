@@ -29,9 +29,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	setSavedEquality: SetState<EqualityObject | null>
@@ -63,9 +64,10 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [addBaseEquality, addBaseEqualityRef] = useElement<HTMLIonInputElement>();
+	const [addEquality, addEqualityRef] = useElement<HTMLIonInputElement>();
 	const maybeSaveEquality = useCallback(() => {
-		const _base = $i<HTMLInputElement>("addBaseEquality");
-		const base = (_base && _base.value) || "";
+		const base = getSetValue(addBaseEquality);
 		if(!base) {
 			doAlert({
 				message: tNoBase,
@@ -80,8 +82,7 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 			})
 			return;
 		}
-		const _equals = $i<HTMLInputElement>("addEquality");
-		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
+		const equals = getSetValue(addEquality).split(separator);
 		if(!equals.length) {
 			doAlert({
 				message: tNoEqual,
@@ -98,8 +99,8 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 		}
 		const equality: EqualityObject = { id: uuidv4(), base, equals, separator };
 		setSavedEquality(equality);
-		if(_base) { _base.value = ""; }
-		if(_equals) { _equals.value = ""; }
+		getSetValue(addBaseEquality, "");
+		getSetValue(addEquality, "");
 		setIsOpen(false);
 		toaster({
 			message: tThingAdded,
@@ -108,28 +109,26 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 			duration: 2500,
 			toast
 		});
-	}, [setIsOpen, doAlert, separator, setSavedEquality, tNoBase, tNoEqual, tOk, tThingAdded, toast]);
+	}, [setIsOpen, doAlert, separator, setSavedEquality, tNoBase, tNoEqual, tOk, tThingAdded, toast, addBaseEquality, addEquality]);
 	const maybeCancel = useCallback(() => {
-		const _base = $i<HTMLInputElement>("addBaseEquality");
-		const _equals = $i<HTMLInputElement>("addEquality");
-		if(_base && _equals && (_base.value + _equals.value)) {
+		if(getSetValue(addBaseEquality) || getSetValue(addEquality)) {
 			return yesNoAlert({
 				header: tUnsaved,
 				message: tYouSure,
 				submit: tYesDisc,
 				cssClass: "warning",
 				handler: () => {
-					if(_base) { _base.value = ""; }
-					if(_equals) { _equals.value = ""; }
+					getSetValue(addBaseEquality, "");
+					getSetValue(addEquality, "");
 					setIsOpen(false);
 				},
 				doAlert
 			});
 		}
-		if(_base) { _base.value = ""; }
-		if(_equals) { _equals.value = ""; }
+		getSetValue(addBaseEquality, "");
+		getSetValue(addEquality, "");
 		setIsOpen(false);
-	}, [setIsOpen, doAlert, tUnsaved, tYesDisc, tYouSure]);
+	}, [setIsOpen, doAlert, tUnsaved, tYesDisc, tYouSure, addBaseEquality, addEquality]);
 	const openEx = useCallback(() => openECM(true), [openECM]);
 	const saveSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (
@@ -158,6 +157,7 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 							aria-label={tBase}
 							id="addBaseEquality"
 							placeholder={tTheBase}
+							ref={addBaseEqualityRef}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
@@ -168,6 +168,7 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 							aria-label={tCharBase}
 							id="addEquality"
 							placeholder={tCharEqual}
+							ref={addEqualityRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">

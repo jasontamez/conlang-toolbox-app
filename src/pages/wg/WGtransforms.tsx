@@ -32,13 +32,13 @@ import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import reorganize from '../../components/reorganizer';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
+import useElement from '../../components/useElement';
 
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
@@ -102,6 +102,7 @@ const WGRew: FC<PageData> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
 	const [ tAddNew, tDelete, tHelp ] = useI18Memo(commons);
+	const [transformGroup, transformGroupRef] = useElement<HTMLIonListElement>();
 
 	const { modalPropsMaker } = props;
 	const dispatch = useDispatch();
@@ -116,14 +117,12 @@ const WGRew: FC<PageData> = (props) => {
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const editTransform = useCallback((transform: WGTransformObject) => {
-		const groups = $q<HTMLIonListElement>((".transforms"));
-		if(groups) { groups.closeSlidingItems(); }
+		transformGroup && transformGroup.closeSlidingItems();
 		setEditing(transform);
 		setIsOpenEditTransform(true);
-	}, []);
+	}, [transformGroup]);
 	const maybeDeleteTransform = useCallback((transform: WGTransformObject) => {
-		const groups = $q<HTMLIonListElement>((".transforms"));
-		if(groups) { groups.closeSlidingItems(); }
+		transformGroup && transformGroup.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWG(transform.id));
 			toaster({
@@ -147,7 +146,7 @@ const WGRew: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, arrow]);
+	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, arrow, transformGroup]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WGTransformObject>(transforms, ed.from, ed.to);
@@ -233,7 +232,7 @@ const WGRew: FC<PageData> = (props) => {
 				endButtons={endButtons}
 			/>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="transforms units dragArea" lines="none">
+				<IonList className="transforms units dragArea" lines="none" ref={transformGroupRef}>
 					<IonReorderGroup
 						disabled={false}
 						className="hideWhileAdding"

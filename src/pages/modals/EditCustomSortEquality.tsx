@@ -30,9 +30,10 @@ import { ExtraCharactersModalOpener, EqualityObject, SortSeparator, SetState } f
 import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	incomingEquality: EqualityObject | null
@@ -69,8 +70,8 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [separator, setSeparator] = useState<SortSeparator>("");
-	const [_base, setBase] = useState<HTMLInputElement | null>(null);
-	const [_equals, setEquals] = useState<HTMLInputElement | null>(null);
+	const [editBaseEquality, editBaseEqualityRef] = useElement<HTMLIonInputElement>();
+	const [editEqualsEquality, editEqualsEqualityRef] = useElement<HTMLIonInputElement>();
 	const onLoad = useCallback(() => {
 		const {
 			separator = ",",
@@ -78,20 +79,16 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 			equals = [tError]
 		} = incomingEquality || {};
 		setSeparator(separator);
-		const _base = $i<HTMLInputElement>("editBaseEquality");
-		const _equals = $i<HTMLInputElement>("editEqualsEquality");
-		setBase(_base);
-		setEquals(_equals);
-		if(_base) { _base.value = base; }
-		if(_equals) { _equals.value = equals.join(separator); }
-	}, [incomingEquality, tError]);
+		getSetValue(editBaseEquality, base);
+		getSetValue(editEqualsEquality, equals.join(separator));
+	}, [incomingEquality, tError, editBaseEquality, editEqualsEquality]);
 	const close = useCallback(() => {
-		if(_base) { _base.value = ""; }
-		if(_equals) { _equals.value = ""; }
+		getSetValue(editBaseEquality, "");
+		getSetValue(editEqualsEquality, "");
 		setIsOpen(false);
-	}, [setIsOpen, _base, _equals]);
+	}, [setIsOpen, editBaseEquality, editEqualsEquality]);
 	const maybeSaveEquality = useCallback(() => {
-		const base = (_base && _base.value) || "";
+		const base = getSetValue(editBaseEquality);
 		if(!base) {
 			doAlert({
 				message: tNoBase,
@@ -106,7 +103,7 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 			})
 			return;
 		}
-		const equals = _equals && _equals.value ? _equals.value.split(separator) : [];
+		const equals = getSetValue(editEqualsEquality).split(separator);
 		if(equals.length === 0) {
 			doAlert({
 				message: tNoEqual,
@@ -131,7 +128,7 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [_base, _equals, close, doAlert, incomingEquality, separator, setOutgoingEquality, tNoBase, tNoEqual, tOk, tThingEdited, toast]);
+	}, [close, doAlert, incomingEquality, separator, setOutgoingEquality, tNoBase, tNoEqual, tOk, tThingEdited, toast, editBaseEquality, editEqualsEquality]);
 	const maybeDelete = useCallback(() => {
 		const handler = () => {
 			setOutgoingEquality(incomingEquality!.id);
@@ -174,6 +171,7 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 							aria-label={tBase}
 							id="editBaseEquality"
 							placeholder={tTheBase}
+							ref={editBaseEqualityRef}
 						/>
 					</IonItem>
 					<IonItem
@@ -187,6 +185,7 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 							aria-label={tCharEqual}
 							id="editEqualsEquality"
 							placeholder={tCharsToBeEqual}
+							ref={editEqualsEqualityRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">

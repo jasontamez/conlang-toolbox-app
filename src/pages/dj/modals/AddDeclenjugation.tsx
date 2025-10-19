@@ -35,6 +35,7 @@ import yesNoAlert from '../../../components/yesNoAlert';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface AddDJModal extends ExtraCharactersModalOpener {
 	setSavedDeclenjugation: SetState<Declenjugation | null>
@@ -97,36 +98,21 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const onLoad = () => {
 		setUseAdvancedMethod(false);
 		setUseWholeWord(false);
-		if(addDJTitle) {
-			addDJTitle.value = "";
-			addDJTitle.getInputElement().then(el => el.value = "");
-		}
-		if(addDJPrefix) {
-			addDJPrefix.value = "";
-			addDJPrefix.getInputElement().then(el => el.value = "");
-		}
-		if(addDJSuffix) {
-			addDJSuffix.value = "";
-			addDJSuffix.getInputElement().then(el => el.value = "");
-		}
-		if(addDJRegex1) {
-			addDJRegex1.value = "";
-			addDJRegex1.getInputElement().then(el => el.value = "");
-		}
-		if(addDJRegex2) {
-			addDJRegex2.value = "";
-			addDJRegex2.getInputElement().then(el => el.value = "");
-		}
+		getSetValue(addDJTitle, "");
+		getSetValue(addDJPrefix, "");
+		getSetValue(addDJSuffix, "");
+		getSetValue(addDJRegex1, "");
+		getSetValue(addDJRegex2, "");
 	};
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = useCallback(() => {
-		const title = addDJTitle ? (addDJTitle.value ? String(addDJTitle.value) : "").trim() : "";
-		const prefix = addDJPrefix && addDJPrefix.value ? String(addDJPrefix.value) : "";
-		const suffix = addDJSuffix && addDJSuffix.value ? String(addDJSuffix.value) : "";
-		const regex1 = addDJRegex1 && addDJRegex1.value ? String(addDJRegex1.value) : "";
-		const regex2 = addDJRegex2 && addDJRegex2.value ? String(addDJRegex2.value) : "";
+		const title = getSetValue(addDJTitle).trim();
+		const prefix =getSetValue(addDJPrefix);
+		const suffix = getSetValue(addDJSuffix);
+		const regex1 = getSetValue(addDJRegex1);
+		const regex2 = getSetValue(addDJRegex2);
 		return {
 			title,
 			prefix,
@@ -139,12 +125,8 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	// Accept new title from other modal
 	useEffect(() => {
 		if(isOpen && savedTitle && addDJTitle) {
-			const title = addDJTitle && addDJTitle.value ? String(addDJTitle.value).trim() : "";
-			if(!title) {
-				addDJTitle.value = savedTitle;
-			} else {
-				addDJTitle.value = addDJTitle.value + " " + savedTitle;
-			}
+			const title = getSetValue(addDJTitle).trim();
+			getSetValue(addDJTitle, title ? (title + " " + savedTitle) : savedTitle);
 			setSavedTitle("");
 		}
 	}, [isOpen, savedTitle, setSavedTitle, addDJTitle]);

@@ -26,12 +26,13 @@ import { loadStateWE } from '../../../store/weSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import escape from '../../../components/EscapeForHTML';
-import { $i } from '../../../components/DollarSignExports';
 import { CustomStorageWE } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface CustomInfoModalProps extends ExtraCharactersModalOpener {
 	titles: string[]
@@ -94,13 +95,13 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [currentInfoSaveName, currentInfoSaveNameRef] = useElement<HTMLIonInputElement>();
 	const doCleanClose = useCallback(() => {
 		setTitles([]);
 		setIsOpen(false);
 	}, [setIsOpen, setTitles]);
 	const maybeSaveInfo = useCallback(() => {
-		const el = $i<HTMLInputElement>("currentInfoSaveName");
-		const title = el ? escape(el.value).trim() : "";
+		const title = escape(getSetValue(currentInfoSaveName)).trim();
 		if(title === "") {
 			return doAlert({
 				header: tMissing,
@@ -147,7 +148,7 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 				});
 			}
 		});
-	}, [characterGroups, disableConfirms, doAlert, doCleanClose, soundChanges, toast, transforms, tCancel, tClearSave, tMissing, tYes, tc]);
+	}, [characterGroups, disableConfirms, doAlert, doCleanClose, soundChanges, toast, transforms, tCancel, tClearSave, tMissing, tYes, tc, currentInfoSaveName]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
@@ -241,6 +242,7 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 								inputmode="text"
 								placeholder={tNameInfo}
 								type="text"
+								ref={currentInfoSaveNameRef}
 							/>
 							<IonButton
 								slot="end"

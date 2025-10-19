@@ -45,12 +45,13 @@ import {
 import { addGroup, deleteGroup, editGroup } from '../../../store/declenjugatorSlice';
 import useTranslator from '../../../store/translationHooks';
 
-import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import ltr from '../../../components/LTR';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
@@ -141,6 +142,14 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	const [type, setType] = useState<keyof DJCustomInfo>("declensions");
 	const [typeString, setTypeString] = useState<string>("Declensions");
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [editTitle, editTitleRef] = useElement<HTMLIonInputElement>();
+	const [editAppliesTo, editAppliesToRef] = useElement<HTMLIonInputElement>();
+	const [editStarts, editStartsRef] = useElement<HTMLIonInputElement>();
+	const [editEnds, editEndsRef] = useElement<HTMLIonInputElement>();
+	const [editRegex1, editRegex1Ref] = useElement<HTMLIonInputElement>();
+	const [editRegex2, editRegex2Ref] = useElement<HTMLIonInputElement>();
+	const [editingDJGroup, editingDJGroupRef] = useElement<HTMLIonListElement>();
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
 		if(isOpen && savedDeclenjugation) {
@@ -193,7 +202,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 	}, [t, type, setDeclenjugationType]);
 
 	const onLoad = useCallback(() => {
-		const [editingType, editingGroup] = editingGroupInfo || [type, null];
+		const [editingType, editingGroup] = editingGroupInfo || [type, {}];
 		const error = tError;
 		const {
 			id = error,
@@ -204,62 +213,50 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			regex,
 			separator = " ",
 			declenjugations = []
-		} = editingGroup || {};
+		} = editingGroup;
 		setId(id);
 		setSeparator(separator);
 		if(editingType) { setType(editingType); }
 		setDeclenjugations(declenjugations);
-		const editTitle = $i<HTMLInputElement>("editTitle");
-		if(editTitle) { editTitle.value = title; }
-		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
-		if(editAppliesTo) { editAppliesTo.value = appliesTo; }
-		const editStarts = $i<HTMLInputElement>("editStarts");
-		if(editStarts) { editStarts.value = startsWith.join(separator); }
-		const editEnds = $i<HTMLInputElement>("editEnds");
-		if(editEnds) { editEnds.value = endsWith.join(separator); }
+		getSetValue(editTitle, title);
+		getSetValue(editAppliesTo, appliesTo);
+		getSetValue(editStarts, startsWith.join(separator));
+		getSetValue(editEnds, endsWith.join(separator));
 		if(regex) {
 			setUseAdvancedMethod(true);
-			const editRegex1 = $i<HTMLInputElement>("editRegex1");
-			if(editRegex1) { editRegex1.value = regex[0]; }
-			const editRegex2 = $i<HTMLInputElement>("editRegex2");
-			if(editRegex2) { editRegex2.value = regex[1]; }
+			getSetValue(editRegex1, regex[0]);
+			getSetValue(editRegex2, regex[1]);
 		} else {
 			setUseAdvancedMethod(false);
 		}
-	}, [editingGroupInfo, type, tError]);
+	}, [editingGroupInfo, type, tError, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
+
+	useEffect(() => {
+		if(isLoaded && editTitle && editAppliesTo && editStarts && editEnds && editRegex1 && editRegex2) { return; }
+		onLoad();
+		setIsLoaded(true);
+	}, [isLoaded, setIsLoaded, onLoad, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setId("");
-		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
-		if(editSortTitle) { editSortTitle.value = ""; }
-		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
-		if(editAppliesTo) { editAppliesTo.value = ""; }
+		getSetValue(editTitle, "");
+		getSetValue(editAppliesTo, "");
 		setSeparator(" ");
 		setDeclenjugations([]);
-		const editStarts = $i<HTMLInputElement>("editStarts");
-		if(editStarts) { editStarts.value = ""; }
-		const editEnds = $i<HTMLInputElement>("editEnds");
-		if(editEnds) { editEnds.value = ""; }
-		const editRegex1 = $i<HTMLInputElement>("editRegex1");
-		if(editRegex1) { editRegex1.value = ""; }
-		const editRegex2 = $i<HTMLInputElement>("editRegex2");
-		if(editRegex2) { editRegex2.value = ""; }
-	}, [setIsOpen]);
+		getSetValue(editStarts, "");
+		getSetValue(editEnds, "");
+		getSetValue(editRegex1, "");
+		getSetValue(editRegex2, "");
+	}, [setIsOpen, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
 
 	const grabInfo = useCallback(() => {
-		const editTitle = $i<HTMLInputElement>("editTitle");
-		const title = editTitle ? editTitle.value.trim() : "";
-		const editAppliesTo = $i<HTMLInputElement>("editAppliesTo");
-		const appliesTo = editAppliesTo ? editAppliesTo.value.trim() : "";
-		const editStarts = $i<HTMLInputElement>("editStarts");
-		const startsWith: string[] = editStarts && editStarts.value ? clearBlanks(editStarts.value.split(separator)) : [];
-		const editEnds = $i<HTMLInputElement>("editEnds");
-		const endsWith: string[] = editEnds && editEnds.value ? clearBlanks(editEnds.value.split(separator)) : [];
-		const editRegex1 = $i<HTMLInputElement>("editRegex1");
-		const regex1: string = (editRegex1 && editRegex1.value) || "";
-		const editRegex2 = $i<HTMLInputElement>("editRegex2");
-		const regex2: string = (editRegex2 && editRegex2.value) || "";
+		const title = getSetValue(editTitle).trim();
+		const appliesTo = getSetValue(editAppliesTo).trim();
+		const startsWith: string[] = clearBlanks(getSetValue(editStarts).split(separator));
+		const endsWith: string[] = clearBlanks(getSetValue(editEnds).split(separator));
+		const regex1 = getSetValue(editRegex1);
+		const regex2 = getSetValue(editRegex2);
 		return {
 			title,
 			appliesTo,
@@ -268,7 +265,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			regex1,
 			regex2
 		};
-	}, [separator]);
+	}, [separator, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
 	const maybeSaveGroup = useCallback(() => {
 		const {
 			title,
@@ -454,14 +451,12 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		addDeclenjugationModalInfo.setIsOpen(true);
 	}, [addDeclenjugationModalInfo, setSavedDeclenjugation]);
 	const editDeclenjugation = useCallback((declenjugation: Declenjugation) => {
-		const el = $i<HTMLIonListElement>("editingDJGroup");
-		if(el) { el.closeSlidingItems(); }
+		editingDJGroup && editingDJGroup.closeSlidingItems();
 		setIncomingDeclenjugation(declenjugation);
 		editDeclenjugationModalInfo.setIsOpen(true);
-	}, [editDeclenjugationModalInfo, setIncomingDeclenjugation]);
+	}, [editDeclenjugationModalInfo, setIncomingDeclenjugation, editingDJGroup]);
 	const maybeDeleteDeclenjugation = useCallback((id: string) => {
-		const el = $i<HTMLIonListElement>("editingDJGroup");
-		if(el) { el.closeSlidingItems(); }
+		editingDJGroup && editingDJGroup.closeSlidingItems();
 		const handler = () => {
 			setDeclenjugations(declenjugations.filter(obj => obj.id !== id));
 			toaster({
@@ -484,7 +479,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [typeString, t, declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast]);
+	}, [typeString, t, declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, editingDJGroup]);
 
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
@@ -572,7 +567,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 			<ModalHeader title={tEditGroup} openECM={openECM} closeModal={maybeCancel}  />
 			<IonContent>
-				<IonList lines="full" id="editingDJGroup" className="hasSpecialLabels hasToggles">
+				<IonList lines="full" id="editingDJGroup" ref={editingDJGroupRef} className="hasSpecialLabels hasToggles">
 					<IonItem className="labelled">
 						<IonLabel className="ion-text-wrap ion-padding-bottom">
 							{tTitleInput}
@@ -582,6 +577,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 						<IonInput
 							aria-label={tTitleInput}
 							id="editTitle"
+							ref={editTitleRef}
 						/>
 					</IonItem>
 					<IonItem>
@@ -617,6 +613,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 							aria-label={tTypes}
 							id="editAppliesTo"
 							placeholder={tExample}
+							ref={editAppliesToRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -639,6 +636,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 							aria-label={tMatching}
 							id="editRegex1"
 							labelPlacement="stacked"
+							ref={editRegex1Ref}
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
@@ -649,6 +647,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 							aria-label={tReplacement}
 							id="editRegex2"
 							labelPlacement="stacked"
+							ref={editRegex2Ref}
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
@@ -658,6 +657,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 						<IonInput
 							aria-label={tRemoveStart}
 							id="editStarts"
+							ref={editStartsRef}
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
@@ -668,6 +668,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 							aria-label={tRemoveEnd}
 							id="editEnds"
 							labelPlacement="stacked"
+							ref={editEndsRef}
 						/>
 					</IonItem>
 					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>

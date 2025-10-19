@@ -31,11 +31,12 @@ import {
 } from '../../../store/types';
 import useTranslator from '../../../store/translationHooks';
 
-import { $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface EditDJModal extends ExtraCharactersModalOpener {
 	incomingDeclenjugation: Declenjugation | null
@@ -99,6 +100,11 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const [useWholeWord, setUseWholeWord] = useState<boolean>(false);
 	const [useAdvancedMethod, setUseAdvancedMethod] = useState<boolean>(false);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [editDJTitle, editDJTitleRef] = useElement<HTMLIonInputElement>();
+	const [editDJPrefix, editDJPrefixRef] = useElement<HTMLIonInputElement>();
+	const [editDJSuffix, editDJSuffixRef] = useElement<HTMLIonInputElement>();
+	const [editDJRegex1, editDJRegex1Ref] = useElement<HTMLIonInputElement>();
+	const [editDJRegex2, editDJRegex2Ref] = useElement<HTMLIonInputElement>();
 	const onLoad = useCallback(() => {
 		const {
 			title = "",
@@ -112,17 +118,12 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		setUseAdvancedMethod((regex1 || regex2) ? true : false);
 		setUseWholeWord(uww);
 		setId(id);
-		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
-		if(editDJTitle) { editDJTitle.value = title; }
-		const editDJPrefix = $i<HTMLInputElement>("editDJPrefix");
-		if(editDJPrefix) { editDJPrefix.value = prefix; }
-		const editDJSuffix = $i<HTMLInputElement>("editDJSuffix");
-		if(editDJSuffix) { editDJSuffix.value = suffix; }
-		const editDJRegex1 = $i<HTMLInputElement>("editDJRegex1");
-		if(editDJRegex1) { editDJRegex1.value = regex1; }
-		const editDJRegex2 = $i<HTMLInputElement>("editDJRegex2");
-		if(editDJRegex2) { editDJRegex2.value = regex2; }
-	}, [incomingDeclenjugation]);
+		getSetValue(editDJTitle, title);
+		getSetValue(editDJPrefix, prefix);
+		getSetValue(editDJSuffix, suffix);
+		getSetValue(editDJRegex1, regex1);
+		getSetValue(editDJRegex2, regex2);
+	}, [incomingDeclenjugation, editDJTitle, editDJPrefix, editDJSuffix, editDJRegex1, editDJRegex2]);
 	useEffect(() => {
 		onLoad();
 	}, [onLoad])
@@ -130,16 +131,11 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const grabInfo = useCallback(() => {
-		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
-		const title = editDJTitle ? editDJTitle.value.trim() : "";
-		const editDJPrefix = $i<HTMLInputElement>("editDJPrefix");
-		const prefix = editDJPrefix && editDJPrefix.value ? editDJPrefix.value : "";
-		const editDJSuffix = $i<HTMLInputElement>("editDJSuffix");
-		const suffix = editDJSuffix && editDJSuffix.value ? editDJSuffix.value : "";
-		const editDJRegex1 = $i<HTMLInputElement>("editDJRegex1");
-		const regex1 = editDJRegex1 && editDJRegex1.value ? editDJRegex1.value : "";
-		const editDJRegex2 = $i<HTMLInputElement>("editDJRegex2");
-		const regex2 = editDJRegex2 && editDJRegex2.value ? editDJRegex2.value : "";
+		const title = getSetValue(editDJTitle).trim();
+		const prefix = getSetValue(editDJPrefix);
+		const suffix = getSetValue(editDJSuffix);
+		const regex1 = getSetValue(editDJRegex1);
+		const regex2 = getSetValue(editDJRegex2);
 		return {
 			title,
 			prefix,
@@ -147,23 +143,18 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 			regex1,
 			regex2
 		};
-	}, []);
+	}, [editDJPrefix, editDJSuffix, editDJTitle, editDJRegex1, editDJRegex2]);
 
 	const tWordOrStem = useMemo(() => t(useWholeWord ? "word" : "stem"), [t, useWholeWord]);
 
 	// Accept new title from other modal
 	useEffect(() => {
-		const editDJTitle = $i<HTMLInputElement>("editDJTitle");
 		if(isOpen && savedTitle && editDJTitle) {
-			const title = editDJTitle ? editDJTitle.value.trim() : "";
-			if(!title) {
-				editDJTitle.value = savedTitle;
-			} else {
-				editDJTitle.value = editDJTitle.value + " " + savedTitle;
-			}
+			const title = getSetValue(editDJTitle);
+			getSetValue(editDJTitle, title ? (title + " " + savedTitle) : savedTitle);
 			setSavedTitle("");
 		}
-	}, [isOpen, savedTitle, setSavedTitle]);
+	}, [isOpen, savedTitle, setSavedTitle, editDJTitle]);
 
 	const maybeSaveEditedDeclenjugation = useCallback(() => {
 		const {
@@ -316,6 +307,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 						<IonInput
 							aria-label={tTitleMethod}
 							id="editDJTitle"
+							ref={editDJTitleRef}
 						/>
 						<IonButton color="primary" onClick={openCase} slot="end">
 							<IonIcon icon={addCircle} slot="icon-only" />
@@ -351,6 +343,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 						<IonInput
 							id="editDJRegex1"
 							aria-label={tMatch}
+							ref={editDJRegex1Ref}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
@@ -360,6 +353,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 						<IonInput
 							id="editDJRegex2"
 							aria-label={tReplace}
+							ref={editDJRegex2Ref}
 						/>
 					</IonItem>
 					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
@@ -371,6 +365,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 							id="editDJPrefix"
 							aria-label={tPref}
 							className="ion-text-end"
+							ref={editDJPrefixRef}
 						/>
 						<div className="ion-text-center stem pad-horizontal-rem">
 							<strong>{tWordOrStem}</strong>
@@ -379,6 +374,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 							id="editDJSuffix"
 							aria-label={tSuff}
 							className="ion-text-start"
+							ref={editDJSuffixRef}
 						/>
 					</IonItem>
 				</IonList>

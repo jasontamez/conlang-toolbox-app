@@ -26,12 +26,13 @@ import { loadStateWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import escape from '../../../components/EscapeForHTML';
-import { $i } from '../../../components/DollarSignExports';
 import { CustomStorageWG } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface ExtraInfo extends ExtraCharactersModalOpener {
 	titles: string[] | null
@@ -86,6 +87,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		tConfirmLoad, tClearPrevSave, tSaveInfo, tLoadInfo, tMissingTitle
 	] = useI18Memo(commons);
 	const tClearAll = useMemo(() => { return t("clearAllThingsMsg"); }, [t]);
+	const [currentInfoSaveNameWG, currentInfoSaveNameWGRef] = useElement<HTMLIonInputElement>();
 
 	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
 	const dispatch = useDispatch();
@@ -99,8 +101,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		setIsOpen(false);
 	}, [setIsOpen, setTitles]);
 	const maybeSaveInfo = useCallback(() => {
-		const el = $i<HTMLInputElement>("currentInfoSaveNameWG");
-		const title = el ? escape(el.value).trim() : "";
+		const title = escape(getSetValue(currentInfoSaveNameWG)).trim();
 		if(title === "") {
 			return doAlert({
 				header: tMissingTitle,
@@ -148,7 +149,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				});
 			}
 		});
-	}, [disableConfirms, doAlert, doCleanClose, tc, toast, wg, tOk, tYesOverwrite, tClearPrevSave, tMissingTitle]);
+	}, [disableConfirms, doAlert, doCleanClose, tc, toast, wg, tOk, tYesOverwrite, tClearPrevSave, tMissingTitle, currentInfoSaveNameWG]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWG.getItem<Base_WG>(title).then((value) => {
@@ -244,6 +245,7 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 								inputmode="text"
 								placeholder={tNameCustom}
 								type="text"
+								ref={currentInfoSaveNameWGRef}
 							/>
 							<IonButton
 								slot="end"
