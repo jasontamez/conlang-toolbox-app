@@ -48,7 +48,6 @@ import {
 	LexiconStorage,
 	MorphoSyntaxStorage
 } from '../../components/PersistentInfo';
-import { $i } from '../../components/DollarSignExports';
 import copyText from '../../components/copyText';
 import useI18Memo from '../../components/useI18Memo';
 
@@ -145,8 +144,6 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 		const weS: storedWE = [];
 		const djS: storedDJ = [];
 		setOutputString(tLoading);
-		const where = $i<HTMLInputElement>("exportedData");
-		if(where) { where.value = tLoading; }
 
 		const copyDJGroup = (input: DJGroup) => {
 			const {startsWith, endsWith, regex, declenjugations} = input;
@@ -312,8 +309,6 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 		}
 		const final = JSON.stringify(exportable);
 		setOutputString(final);
-		const where = $i<HTMLInputElement>("exportedData");
-		if(where) { where.value = final; }
 	}, [
 		output,
 		export_wg,

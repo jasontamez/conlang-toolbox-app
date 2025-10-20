@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, FC } from 'react';
+import React, { useCallback, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -29,8 +29,9 @@ import { addLexiconItem } from '../../store/lexiconSlice';
 import { ExtraCharactersModalOpener, LexiconColumn, SorterFunc } from '../../store/types';
 
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import useI18Memo from '../../components/useI18Memo';
+import getSetValue from '../../components/getSetValue';
+import useElement, {useElementList} from '../../components/useElement';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	columnInfo: LexiconColumn[]
@@ -41,6 +42,48 @@ const commons = [ "Close", "ExtraChars", "Ok", "error" ];
 
 const translations = [ "AddItem", "ItemSaved", "noInfoProvided", "AddLexiconItem" ];
 
+type IonInput = HTMLIonInputElement | HTMLIonTextareaElement;
+
+interface InputItemProps {
+	col: LexiconColumn
+	getElement: (col: IonInput | null) => void
+}
+
+const InputItem: FC<InputItemProps> = ({col, getElement}) => {
+	const {id, size, label} = col;
+	const [, inputRef] = useElement<IonInput>(getElement);
+	return (
+		<React.Fragment>
+			<IonItem className="labelled">
+				<IonLabel>{label}</IonLabel>
+			</IonItem>
+			<IonItem>
+				{(size === "l") ?
+					//const rows = Math.min(12, Math.max(3, value.split(/\n/).length));
+					(
+						<IonTextarea
+							aria-label={label}
+							id={`input_lexicon_modal_${id}`}
+							className="ion-margin-top serifChars"
+							rows={5}
+							ref={inputRef}
+						></IonTextarea>
+					)
+				:
+					(
+						<IonInput
+							aria-label={label}
+							id={`input_lexicon_modal_${id}`}
+							className="ion-margin-top serifChars"
+							ref={inputRef}
+						></IonInput>
+					)
+				}
+			</IonItem>
+		</React.Fragment>
+	);
+};
+
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
 	const [ tAddItem, tThingAdded, tNoInfo, tAddLexItem ] = useI18Memo(translations, "lexicon");
@@ -49,15 +92,16 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [inputElements, updater] = useElementList<LexiconColumn, IonInput | null>(columnInfo, col => col.id);
 
-	const maybeSaveNewInfo = useCallback(() => {
+	const maybeSaveNewInfo = () => {
 		const newInfo: string[] = [];
 		const newBlank: { [key: string]: string } = {};
 		let foundFlag = false;
 		columnInfo.forEach((col: LexiconColumn) => {
 			const id = col.id;
-			const el = $i<HTMLInputElement>(`input_lexicon_modal_${id}`);
-			const info = (el && el.value) || "";
+			const el = inputElements.current[id];
+			const info = getSetValue(el);
 			newInfo.push(info);
 			if(info) { foundFlag = true; }
 			newBlank[id] = "";
@@ -91,43 +135,11 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 			color: "success",
 			toast
 		});
-	}, [columnInfo, dispatch, setIsOpen, doAlert, toast, sorter, tError, tNoInfo, tOk, tThingAdded]);
+	};
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
 	const opener = useCallback(() => openECM(true), [openECM]);
-
-	const columnarInfo = useMemo(() => columnInfo.map((col: LexiconColumn) => {
-		const {id, size, label} = col;
-		return (
-			<React.Fragment key={`${id}:addFragment`}>
-				<IonItem className="labelled">
-					<IonLabel>{label}</IonLabel>
-				</IonItem>
-				<IonItem>
-					{(size === "l") ?
-						//const rows = Math.min(12, Math.max(3, value.split(/\n/).length));
-						(
-							<IonTextarea
-								aria-label={label}
-								id={`input_lexicon_modal_${id}`}
-								className="ion-margin-top serifChars"
-								rows={5}
-							></IonTextarea>
-						)
-					:
-						(
-							<IonInput
-								aria-label={label}
-								id={`input_lexicon_modal_${id}`}
-								className="ion-margin-top serifChars"
-							></IonInput>
-						)
-					}
-				</IonItem>
-			</React.Fragment>
-		);
-	}), [columnInfo]);
 
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false}>
@@ -146,7 +158,10 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 			</IonHeader>
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels ion-margin-end">
-					{columnarInfo}
+					{columnInfo.map((col: LexiconColumn) => {
+						const getElement = (node: IonInput | null) => updater(col, node);
+						return <InputItem col={col} key={`${col.id}:addFragment`} getElement={getElement} />;
+					})}
 				</IonList>
 			</IonContent>
 			<IonFooter className="modalBorderTop">

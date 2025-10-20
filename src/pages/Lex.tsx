@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC, Ref, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC, Ref } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -67,9 +67,9 @@ import {
 } from '../store/types';
 import useTranslator from '../store/translationHooks';
 
-import AddLexiconItemModal from './modals/AddWord';
-import EditLexiconItemModal from './modals/EditWord';
-import EditLexiconOrderModal from './modals/EditWordOrder';
+import AddLexiconItemModal from './modals/AddLexiconWord';
+import EditLexiconItemModal from './modals/EditLexiconWord';
+import EditLexiconOrderModal from './modals/EditLexiconWordOrder';
 import LexiconStorageModal from './modals/LexiconStorage';
 import LoadLexiconModal from './modals/LoadLexicon';
 import DeleteLexiconModal from './modals/DeleteLexicon';
@@ -77,7 +77,7 @@ import ExtraCharactersModal from './modals/ExtraCharacters';
 import ExportLexiconModal from './modals/ExportLexicon';
 import EditLexiconSortModal from './modals/EditSort';
 import MergeLexiconItemsModal from './modals/MergeLexiconItems';
-import useElement from '../components/useElement';
+import useElement, {useElementList} from '../components/useElement';
 import Header from '../components/Header';
 import PermanentInfo from '../components/PermanentInfo';
 import yesNoAlert from '../components/yesNoAlert';
@@ -558,18 +558,8 @@ const Lex: FC<PageData> = (props) => {
 	]);
 
 	// Managing element references
-	const columnInputElements = useRef<{ [key: string]: HTMLIonInputElement | null }>({});
-	useEffect(() => {
-		const newObj: { [key: string]: HTMLIonInputElement | null } = {};
-		columns.forEach(col => {
-			const { id } = col;
-			newObj[id] = columnInputElements.current[id] || null;
-		});
-		columnInputElements.current = newObj;
-	}, [columns]);
-	const updateColumnInputElement = (id: string, el: HTMLIonInputElement | null) => {
-		columnInputElements.current[id] = el;
-	};
+	const [columnInputElements, updateColumnInputElement] =
+		useElementList<LexiconColumn, HTMLIonInputElement | null>(columns, (col) => col.id);
 
 	// Add new Lexicon item
 	const addToLex = () => {
@@ -708,7 +698,7 @@ const Lex: FC<PageData> = (props) => {
 	)), [columns, truncateColumns]);
 	const columnInputs = columns.map((column: LexiconColumn) => {
 		const key = `input_lex_${column.id}`;
-		const getElement = (node: HTMLIonInputElement | null) => updateColumnInputElement(column.id, node);
+		const getElement = (node: HTMLIonInputElement | null) => updateColumnInputElement(column, node);
 		return <ColumnInput key={key} {...column} isDeleting={isDeleting} getElement={getElement}  />;
 	});
 

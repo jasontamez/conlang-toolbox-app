@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 type ElementRef<T extends Element> = (node: T | null) => void;
 
@@ -20,3 +20,24 @@ const useElement = <T extends Element>(extraFunc?: (node: T | null) => void): [T
 };
 
 export default useElement;
+
+// useElementList(array, functionThatGetsAnIdFromArrayMember)
+//   => [RefObject, functionThatUpdatesRefObject]
+
+export const useElementList = <A,T>(input: A[], getIdFunc: ((x:A) => string)): [ RefObject<{[key: string]: T}>, (item: A, el: T) => void ] => {
+	// Managing element references
+	const inputElements = useRef<{ [key: string]: T }>({});
+	useEffect(() => {
+		const newObj: { [key: string]: T } = {};
+		input.forEach(bit => {
+			const id = getIdFunc(bit);
+			newObj[id] = inputElements.current[id];
+		});
+		inputElements.current = newObj;
+	}, [input, getIdFunc]);
+	const updateInputElement = (item: A, el: T) => {
+		const id = getIdFunc(item);
+		inputElements.current[id] = el;
+	};
+	return [inputElements, updateInputElement];
+};

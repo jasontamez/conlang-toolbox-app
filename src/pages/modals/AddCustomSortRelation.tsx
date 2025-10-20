@@ -29,9 +29,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	setSavedRelation: SetState<RelationObject | null>
@@ -64,9 +65,11 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [addBaseRelation, addBaseRelationRef] = useElement<HTMLIonInputElement>();
+	const [addPreRelation, addPreRelationRef] = useElement<HTMLIonInputElement>();
+	const [addPostRelation, addPostRelationRef] = useElement<HTMLIonInputElement>();
 	const maybeSaveRelation = useCallback(() => {
-		const _base = $i<HTMLInputElement>("addBaseRelation");
-		const base = (_base && _base.value) || "";
+		const base = getSetValue(addBaseRelation);
 		if(!base) {
 			doAlert({
 				message: tNoBase,
@@ -81,10 +84,8 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 			})
 			return;
 		}
-		const _pre = $i<HTMLInputElement>("addPreRelation");
-		const _post = $i<HTMLInputElement>("addPostRelation");
-		const pre = _pre && _pre.value ? _pre.value.split(separator) : [];
-		const post = _post && _post.value ? _post.value.split(separator) : [];
+		const pre = getSetValue(addPreRelation).split(separator);
+		const post = getSetValue(addPostRelation).split(separator);
 		if(!(pre.length + post.length)) {
 			doAlert({
 				message: tNoPrePost,
@@ -101,9 +102,9 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 		}
 		const relation: RelationObject = { id: uuidv4(), base, pre, post, separator };
 		setSavedRelation(relation);
-		if(_base) { _base.value = ""; }
-		if(_pre) { _pre.value = ""; }
-		if(_post) { _post.value = ""; }
+		getSetValue(addBaseRelation, "");
+		getSetValue(addPreRelation, "");
+		getSetValue(addPostRelation, "");
 		setIsOpen(false);
 		toaster({
 			message: tThingAdded,
@@ -112,31 +113,28 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 			duration: 2500,
 			toast
 		});
-	}, [doAlert, separator, setIsOpen, setSavedRelation, tNoBase, tNoPrePost, tOk, tThingAdded, toast]);
+	}, [doAlert, separator, setIsOpen, setSavedRelation, tNoBase, tNoPrePost, tOk, tThingAdded, toast, addBaseRelation, addPreRelation, addPostRelation]);
 	const maybeCancel = useCallback(() => {
-		const _base = $i<HTMLInputElement>("addBaseRelation");
-		const _pre = $i<HTMLInputElement>("addPreRelation");
-		const _post = $i<HTMLInputElement>("addPostRelation");
-		if(_base && _pre && _post && (_base.value + _pre.value + _post.value)) {
+		if(getSetValue(addBaseRelation) || getSetValue(addPreRelation) || getSetValue(addPostRelation)) {
 			return yesNoAlert({
 				header: tUnsaved,
 				message: tYouSure,
 				submit: tYesDisc,
 				cssClass: "warning",
 				handler: () => {
-					if(_base) { _base.value = ""; }
-					if(_pre) { _pre.value = ""; }
-					if(_post) { _post.value = ""; }
+					getSetValue(addBaseRelation, "");
+					getSetValue(addPreRelation, "");
+					getSetValue(addPostRelation, "");
 					setIsOpen(false);
 				},
 				doAlert
 			});
 		}
-		if(_base) { _base.value = ""; }
-		if(_pre) { _pre.value = ""; }
-		if(_post) { _post.value = ""; }
+		getSetValue(addBaseRelation, "");
+		getSetValue(addPreRelation, "");
+		getSetValue(addPostRelation, "");
 		setIsOpen(false);
-	}, [doAlert, setIsOpen, tUnsaved, tYesDisc, tYouSure]);
+	}, [doAlert, setIsOpen, tUnsaved, tYesDisc, tYouSure, addBaseRelation, addPreRelation, addPostRelation]);
 	const opener = useCallback(() => openECM(true), [openECM]);
 	const doSetSeparator = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 
@@ -166,6 +164,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tBase}
 							id="addBaseRelation"
 							placeholder={tTheBase}
+							ref={addBaseRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
@@ -176,6 +175,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tBeforeBase}
 							id="addPreRelation"
 							helperText={tEndBefore}
+							ref={addPreRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="labelled" lines="none">
@@ -186,6 +186,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 							aria-label={tAfterBase}
 							id="addPostRelation"
 							helperText={tStartAfter}
+							ref={addPostRelationRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
