@@ -83,7 +83,10 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, setIsOpen, setLexInfo, setLoadingScreen, tYouSure, tc, toast, tLexiconDeleted]);
+	}, [
+		disableConfirms, doAlert, setIsOpen, setLexInfo,
+		setLoadingScreen, tYouSure, tc, toast, tLexiconDeleted
+	]);
 	const listOfLexicons = useMemo(() => data.map((pair: [string, LexiconState]) => {
 		const key = pair[0];
 		const lex = pair[1];

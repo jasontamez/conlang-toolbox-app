@@ -37,13 +37,13 @@ import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import reorganize from '../../components/reorganizer';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
 import AddTransformModal from './modals/AddTransform';
 import EditTransformModal from './modals/EditTransform';
 import { TraCard } from "./WEinfo";
@@ -152,15 +152,14 @@ const WERew: FC<PageData> = (props) => {
 	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { transforms } = useSelector((state: StateObject) => state.we);
+	const [transformGroups, transformGroupsRef] = useElement<HTMLIonListElement>();
 	const editTransform = useCallback((transform: WETransformObject) => {
-		const groups = $q<HTMLIonListElement>((".transforms"));
-		if(groups) { groups.closeSlidingItems(); }
+		transformGroups && transformGroups.closeSlidingItems();
 		setEditing(transform);
 		setIsOpenEditTransform(true);
-	}, []);
+	}, [transformGroups]);
 	const maybeDeleteTransform = useCallback((trans: WETransformObject) => {
-		const groups = $q<HTMLIonListElement>((".transforms"));
-		if(groups) { groups.closeSlidingItems(); }
+		transformGroups && transformGroups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteTransformWE(trans.id));
 			toaster({
@@ -184,7 +183,7 @@ const WERew: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, tYouSure]);
+	}, [dispatch, tc, tw, toast, doAlert, disableConfirms, tYouSure, transformGroups]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WETransformObject>(transforms, ed.from, ed.to);
@@ -268,7 +267,7 @@ const WERew: FC<PageData> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="transforms units dragArea" lines="none">
+				<IonList className="transforms units dragArea" lines="none" ref={transformGroupsRef}>
 					<IonReorderGroup
 						disabled={false}
 						className="hideWhileAdding"

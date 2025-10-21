@@ -135,7 +135,12 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [editBaseRelation, editPostRelation, editPreRelation, close, doAlert, incomingRelation, separator, setOutgoingRelation, tNoBase, tNoPrePost, tOk, tThingEdited, toast]);
+	}, [
+		editBaseRelation, editPostRelation, editPreRelation,
+		close, doAlert, incomingRelation, separator,
+		setOutgoingRelation, tNoBase, tNoPrePost, tOk,
+		tThingEdited, toast
+	]);
 	const maybeDelete = useCallback(() => {
 		const handler = () => {
 			setOutgoingRelation(incomingRelation!.id);

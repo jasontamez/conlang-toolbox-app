@@ -201,7 +201,11 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [antiEl, contextEl, descEl, dispatch, doAlert, editing, replaceEl, seekEl, setIsOpen, toast, t, tCancel, tError, tNoSearch, tThingSaved]);
+	}, [
+		antiEl, contextEl, descEl, dispatch, doAlert,
+		editing, replaceEl, seekEl, setIsOpen, toast,
+		t, tCancel, tError, tNoSearch, tThingSaved
+	]);
 	const maybeDeleteSoundChange = useCallback(() => {
 		const groups = $q<HTMLIonListElement>((".soundChanges"));
 		if(groups) { groups.closeSlidingItems(); }

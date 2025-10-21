@@ -348,7 +348,11 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, t, typeString, addingDJGroup]);
+	}, [
+		declenjugations, disableConfirms, doAlert,
+		tc, tDeleted, tRUSure, toast, t,
+		typeString, addingDJGroup
+	]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around

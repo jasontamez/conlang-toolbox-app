@@ -149,7 +149,11 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				});
 			}
 		});
-	}, [disableConfirms, doAlert, doCleanClose, tc, toast, wg, tOk, tYesOverwrite, tClearPrevSave, tMissingTitle, currentInfoSaveNameWG]);
+	}, [
+		disableConfirms, doAlert, doCleanClose, tc,
+		toast, wg, tOk, tYesOverwrite, tClearPrevSave,
+		tMissingTitle, currentInfoSaveNameWG
+	]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWG.getItem<Base_WG>(title).then((value) => {
@@ -191,7 +195,10 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, doCleanClose, tc, tClearAll, toast, tConfirmLoad, tOk, tLoadError]);
+	}, [
+		disableConfirms, dispatch, doAlert, doCleanClose,
+		tc, tClearAll, toast, tConfirmLoad, tOk, tLoadError
+	]);
 	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);

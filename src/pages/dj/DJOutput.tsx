@@ -223,7 +223,12 @@ const DJOutput: FC<PageData> = (props) => {
 				}
 			]
 		});
-	}, [conjugations, data, declensions, dispatch, displayType, doAlert, other, showUnmatched, tCSV, tCancel, tChooseFormat, tChooseOne, tDocx, tExport, tNoFormat, tTxt, toast, type.length, typeObj]);
+	}, [
+		conjugations, data, declensions, dispatch, displayType,
+		doAlert, other, showUnmatched, tCSV, tCancel,
+		tChooseFormat, tChooseOne, tDocx, tExport, tNoFormat,
+		tTxt, toast, type.length, typeObj
+	]);
 
 	const doGenerate = useCallback(() => {
 		if(type.length === 0) {
@@ -282,7 +287,11 @@ const DJOutput: FC<PageData> = (props) => {
 		} else {
 			setDisplayUnmatched([]);
 		}
-	}, [conjugations, data, declensions, displayType, other, showUnmatched, tChooseOne, tUnmatchedWords, toast, type.length, typeObj]);
+	}, [
+		conjugations, data, declensions, displayType,
+		other, showUnmatched, tChooseOne, tUnmatchedWords,
+		toast, type.length, typeObj
+	]);
 
 	const endButtons = useMemo(() => [
 		<IonButton key="djOutputHelpButton" aria-label={tHelp} onClick={() => setIsOpenInfo(true)}>

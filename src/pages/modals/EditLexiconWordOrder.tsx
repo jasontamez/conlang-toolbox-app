@@ -53,10 +53,11 @@ import useTranslator from '../../store/translationHooks';
 
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import { $i } from '../../components/DollarSignExports';
 import PermanentInfo from '../../components/PermanentInfo';
 import makeSorter from '../../components/stringSorter';
 import useI18Memo from '../../components/useI18Memo';
+import useElement, { useElementList } from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
@@ -80,6 +81,83 @@ const commons = [
 	"Close", "defaultSort", "Delete", "ExtraChars",
 	"NothingToSave", "emphasizedError", "SortMethod"
 ];
+
+interface ReorderableColumnProps {
+	column: LexiconColumn
+	i: number
+	tFieldName: string
+	tDelete: string
+	tSmall: string
+	tMed: string
+	tLarge: string
+	deleteField: (i: number) => void
+	handleCheckboxes: (i: number, size: "s" | "m" | "l") => void
+	updater: (node: HTMLIonInputElement | null) => void
+}
+
+const ReorderableColumn: FC<ReorderableColumnProps> = (props) => {
+	const {column, i, tFieldName, tDelete, tSmall, tMed, tLarge, deleteField, handleCheckboxes, updater} = props;
+	const { id, size, label } = column;
+	const [, columnRef] = useElement<HTMLIonInputElement>(updater);
+	return (
+		<IonItem lines="full" key={`${id}:modal:editing`}>
+			<IonReorder
+				className="ion-padding-end"
+			><IonIcon icon={reorderTwo} /></IonReorder>
+			<IonGrid>
+				<IonRow className="ion-align-items-center">
+					<IonCol>
+						<IonInput
+							id={`input_colOrder_${id}`}
+							aria-label={tFieldName}
+							placeholder={tFieldName}
+							value={label}
+							ref={columnRef}
+						/>
+					</IonCol>
+					<IonCol size="auto">
+						<IonButton
+							color="danger"
+							onClick={() => deleteField(i)}
+							aria-label={tDelete}
+						>
+							<IonIcon icon={trashOutline} />
+						</IonButton>
+					</IonCol>
+				</IonRow>
+				<IonRow className="ion-align-items-center">
+					<IonCol>
+						<IonCheckbox
+							labelPlacement="start"
+							id={`${id}:${i}:s`}
+							justify="start"
+							checked={size === "s"}
+							onIonChange={() => handleCheckboxes(i, "s")}
+						>{tSmall}</IonCheckbox>
+					</IonCol>
+					<IonCol>
+						<IonCheckbox
+							labelPlacement="start"
+							id={`${id}:${i}:m`}
+							justify="start"
+							checked={size === "m"}
+							onIonChange={() => handleCheckboxes(i, "m")}
+						>{tMed}</IonCheckbox>
+					</IonCol>
+					<IonCol>
+						<IonCheckbox
+							labelPlacement="start"
+							id={`${id}:${i}:l`}
+							justify="start"
+							checked={size === "l"}
+							onIonChange={() => handleCheckboxes(i, "l")}
+						>{tLarge}</IonCheckbox>
+					</IonCol>
+				</IonRow>
+			</IonGrid>
+		</IonItem>
+	);
+};
 
 const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
@@ -112,6 +190,8 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [shadowCustomSort, setShadowCustomSort] = useState<string | null>(customSort || null);
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [columnReorderableElements, updateColumnReorderableElements] =
+		useElementList<LexiconColumn, HTMLIonInputElement | null>(columns, (col) => col.id);
 
 	const closeModal = useCallback(() => {
 		setShadowColumns(columns.slice().map(
@@ -130,14 +210,14 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		newCols[i].size = value;
 		// save any changes to labels that may have been entered
 		newCols.forEach((col, i: number) => {
-			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
+			const el = columnReorderableElements.current[col.id];
 			if(el) {
-				newCols[i].label = el.value || "";
+				newCols[i].label = getSetValue(el);
 			}
 		});
 		// save result
 		setShadowColumns(newCols);
-	}, [shadowColumns]);
+	}, [shadowColumns, columnReorderableElements]);
 	const doneEditingOrder = useCallback(() => {
 		const original = columns.map((col: LexiconColumn, i: number) => {
 			const {label, size} = col;
@@ -145,8 +225,8 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		}).join(" : ") + ` : ${truncateColumns} : ${blankSort} : ${customSort}`;
 		const testing = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
-			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
-			return `${el ? el.value : tEmphError}/${size}/${originalPosition}`;
+			const el = columnReorderableElements.current[id];
+			return `${getSetValue(el) || tEmphError}/${size}/${originalPosition}`;
 		}).join(" : ") + ` : ${shadowTruncate} : ${shadowBlankSort} : ${shadowCustomSort}`;
 		if(testing === original) {
 			toaster({
@@ -164,10 +244,10 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		const newColumns: LexiconColumn[] = shadowColumns.map((col: ShadowColumn) => {
 			const {id, size, originalPosition} = col;
 			guide.push(originalPosition);
-			const el = $i<HTMLInputElement>(`input_colOrder_${id}`);
+			const el = columnReorderableElements.current[id];
 			return {
 				id,
-				label: el ? el.value : tEmphError,
+				label: getSetValue(el) || tEmphError,
 				size
 			};
 		});
@@ -246,7 +326,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		blankSort, closeModal, columns, customSort, customSorts, dispatch,
 		lexicon, sensitivity, shadowBlankSort, shadowColumns, shadowCustomSort,
 		shadowTruncate, sortLang, sortPattern, tEmphError, tNothing, toast,
-		truncateColumns
+		truncateColumns, columnReorderableElements
 	]);
 	const addNewColumn = useCallback(() => {
 		const final: ShadowColumn[] = [
@@ -255,9 +335,9 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		];
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
-			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
+			const el = columnReorderableElements.current[col.id];
 			if(el) {
-				final[i].label = el.value || "";
+				final[i].label = getSetValue(el);
 			}
 		});
 		// save result
@@ -269,7 +349,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [shadowColumns, tNew, toast, tThingAdded]);
+	}, [shadowColumns, tNew, toast, tThingAdded, columnReorderableElements]);
 	const deleteField = useCallback((i: number) => {
 		if(shadowColumns.length === 1) {
 			return toaster({
@@ -285,9 +365,9 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 			const newColumns = shadowColumns.slice(0, i).concat(shadowColumns.slice(i+1));
 			// save any changes to labels that may have been entered
 			newColumns.forEach((col, i: number) => {
-				const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
+			const el = columnReorderableElements.current[col.id];
 				if(el) {
-					newColumns[i].label = el.value || "";
+					newColumns[i].label = getSetValue(el);
 				}
 			});
 			// save result
@@ -305,7 +385,11 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, shadowColumns, tc, tYouSure, tCannotDelete, toast]);
+	}, [
+		disableConfirms, doAlert, shadowColumns, tc,
+		tYouSure, tCannotDelete, toast,
+		columnReorderableElements
+	]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
@@ -315,76 +399,25 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 		const final = remains.slice(0, to).concat(moved, remains.slice(to));
 		// save any changes to labels that may have been entered
 		final.forEach((col, i: number) => {
-			const el = $i<HTMLInputElement>(`input_colOrder_${col.id}`);
+			const el = columnReorderableElements.current[col.id];
 			if(el) {
-				final[i].label = el.value || "";
+				final[i].label = getSetValue(el);
 			}
 		});
 		// save result
 		setShadowColumns(final);
 		ed.complete();
-	}, [shadowColumns]);
+	}, [shadowColumns, columnReorderableElements]);
 
 	const reorderColumns = useMemo(() => shadowColumns.map((column: LexiconColumn, i: number) => {
-		const { id, size, label } = column;
-		return (
-			<IonItem lines="full" key={`${id}:modal:editing`}>
-				<IonReorder
-					className="ion-padding-end"
-				><IonIcon icon={reorderTwo} /></IonReorder>
-				<IonGrid>
-					<IonRow className="ion-align-items-center">
-						<IonCol>
-							<IonInput
-								id={`input_colOrder_${id}`}
-								aria-label={tFieldName}
-								placeholder={tFieldName}
-								value={label}
-							/>
-						</IonCol>
-						<IonCol size="auto">
-							<IonButton
-								color="danger"
-								onClick={() => deleteField(i)}
-								aria-label={tDelete}
-							>
-								<IonIcon icon={trashOutline} />
-							</IonButton>
-						</IonCol>
-					</IonRow>
-					<IonRow className="ion-align-items-center">
-						<IonCol>
-							<IonCheckbox
-								labelPlacement="start"
-								id={`${id}:${i}:s`}
-								justify="start"
-								checked={size === "s"}
-								onIonChange={() => handleCheckboxes(i, "s")}
-							>{tSmall}</IonCheckbox>
-						</IonCol>
-						<IonCol>
-							<IonCheckbox
-								labelPlacement="start"
-								id={`${id}:${i}:m`}
-								justify="start"
-								checked={size === "m"}
-								onIonChange={() => handleCheckboxes(i, "m")}
-							>{tMed}</IonCheckbox>
-						</IonCol>
-						<IonCol>
-							<IonCheckbox
-								labelPlacement="start"
-								id={`${id}:${i}:l`}
-								justify="start"
-								checked={size === "l"}
-								onIonChange={() => handleCheckboxes(i, "l")}
-							>{tLarge}</IonCheckbox>
-						</IonCol>
-					</IonRow>
-				</IonGrid>
-			</IonItem>
-		);
-	}), [deleteField, handleCheckboxes, shadowColumns, tDelete, tFieldName, tLarge, tMed, tSmall]);
+		const key = `${column.id}:modal:editing`;
+		const getElement = (node: HTMLIonInputElement | null) => updateColumnReorderableElements(column, node);
+		return <ReorderableColumn key={key} column={column} i={i} tFieldName={tFieldName} tDelete={tDelete} tSmall={tSmall} tMed={tMed} tLarge={tLarge} handleCheckboxes={handleCheckboxes} deleteField={deleteField} updater={getElement} />;
+	}), [
+		deleteField, handleCheckboxes, shadowColumns,
+		tDelete, tFieldName, tLarge, tMed, tSmall,
+		updateColumnReorderableElements
+	]);
 
 	const opener = useCallback(() => openECM(true), [openECM]);
 	const toggleTruncate = useCallback(() => setShadowTruncate(!shadowTruncate), [shadowTruncate]);

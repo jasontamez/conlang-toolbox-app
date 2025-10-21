@@ -38,11 +38,11 @@ import useTranslator from '../../store/translationHooks';
 
 import reorganize from '../../components/reorganizer';
 import ModalWrap from "../../components/ModalWrap";
-import { $q } from '../../components/DollarSignExports';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import AddSoundChangeModal from './modals/AddSoundChange';
 import EditSoundChangeModal from './modals/EditSoundChange';
@@ -146,16 +146,15 @@ const WESChange: FC<PageData> = (props) => {
 	const toast = useIonToast();
 	const {disableConfirms} = useSelector((state: StateObject) => state.appSettings);
 	const { soundChanges } = useSelector((state: StateObject) => state.we);
+	const [soundGroups, soundGroupsRef] = useElement<HTMLIonListElement>();
 	const editSoundChange = useCallback((change: WESoundChangeObject) => {
-		const groups = $q<HTMLIonListElement>(".soundChanges");
-		if(groups) { groups.closeSlidingItems(); }
+		soundGroups && soundGroups.closeSlidingItems();
 		setEditing(change)
 		setIsOpenEditSoundChange(true);
-	}, []);
+	}, [soundGroups]);
 	const arrow = (ltr() ? "⟶" : "⟵");
 	const maybeDeleteSoundChange = useCallback((change: WESoundChangeObject) => {
-		const groups = $q<HTMLIonListElement>(".soundChanges");
-		if(groups) { groups.closeSlidingItems(); }
+		soundGroups && soundGroups.closeSlidingItems();
 		const handler = () => {
 			dispatch(deleteSoundChangeWE(change.id));
 			toaster({
@@ -182,7 +181,7 @@ const WESChange: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [arrow, disableConfirms, dispatch, doAlert, toast, tYouSure, tc, tThingDeleted]);
+	}, [arrow, disableConfirms, dispatch, doAlert, toast, tYouSure, tc, tThingDeleted, soundGroups]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		const reorganized = reorganize<WESoundChangeObject>(soundChanges, ed.from, ed.to);
@@ -270,7 +269,7 @@ const WESChange: FC<PageData> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="soundChanges units dragArea" lines="none">
+				<IonList className="soundChanges units dragArea" lines="none" ref={soundGroupsRef}>
 					<IonReorderGroup
 						disabled={false}
 						className="hideWhileAdding"

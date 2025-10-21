@@ -146,7 +146,11 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [descEl, dispatch, doAlert, editing, replaceEl, searchEl, setIsOpen, tThingSaved, toast, tCancel, tError, tNoSrch]);
+	}, [
+		descEl, dispatch, doAlert, editing,
+		replaceEl, searchEl, setIsOpen, tThingSaved,
+		toast, tCancel, tError, tNoSrch
+	]);
 	const maybeDeleteTransform = useCallback(() => {
 		const groups = $q<HTMLIonListElement>((".transforms"));
 		if(groups) { groups.closeSlidingItems(); }

@@ -33,11 +33,11 @@ import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { $q } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
-import { CopyFromOtherIcon } from '../../components/icons';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import { CopyFromOtherIcon } from '../../components/icons';
 import AddCharGroupWEModal from './modals/AddCharGroupWE';
 import EditCharGroupWEModal from './modals/EditCharGroupWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -123,15 +123,14 @@ const WECharGroup: FC<PageData> = (props) => {
 	const { characterGroups } = useSelector((state: StateObject) => state.we);
 	const { characterGroups: wgCharatcterGroups } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [charGroups, charGroupsRef] = useElement<HTMLIonListElement>();
 	const editCharGroup = useCallback((group: WECharGroupObject) => {
-		const groups = $q<HTMLIonListElement>(".charGroups");
-		if(groups) { groups.closeSlidingItems(); }
+		if(charGroups) { charGroups.closeSlidingItems(); }
 		setEditing(group);
 		setIsOpenEditCharGroupWE(true);
-	}, []);
+	}, [charGroups]);
 	const maybeDeleteCharGroup = useCallback((label: string, charGroup: WECharGroupObject) => {
-		const groups = $q<HTMLIonListElement>(".charGroups");
-		if(groups) { groups.closeSlidingItems(); }
+		if(charGroups) { charGroups.closeSlidingItems(); }
 		const { run } = charGroup;
 		const handler = () => {
 			dispatch(deleteCharacterGroupWE({...charGroup, label}));
@@ -155,7 +154,7 @@ const WECharGroup: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, tc, toast, tw, tYouSure]);
+	}, [disableConfirms, dispatch, doAlert, tc, toast, tw, tYouSure, charGroups]);
 	const maybeClearEverything = useCallback(() => {
 		const count = characterGroups.length;
 		const handler = () => {
@@ -263,7 +262,7 @@ const WECharGroup: FC<PageData> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="charGroups units" lines="none">
+				<IonList className="charGroups units" lines="none" ref={charGroupsRef}>
 					{cgroups}
 				</IonList>
 				<IonFab vertical="bottom" horizontal="end" slot="fixed">

@@ -81,9 +81,10 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 		setLexInfo
 	} = props;
 	const dispatch = useDispatch();
-	const [disableConfirms, stateLexicon]: [boolean, LexiconState] = useSelector(
-		(state: StateObject) => [state.appSettings.disableConfirms, state.lexicon]
+	const disableConfirms: boolean = useSelector(
+		(state: StateObject) => state.appSettings.disableConfirms
 	);
+	const stateLexicon = useSelector((state: StateObject) => state.lexicon);
 	const {
 		id,
 		title,
@@ -208,7 +209,10 @@ const LexiconStorageModal: FC<StorageModalProps> = (props) => {
 				});
 			}
 		);
-	}, [dispatch, id, lexicon, lexiconSaveError, setIsOpen, setLoading, stateLexicon, tThingSaved, title, toast]);
+	}, [
+		dispatch, id, lexicon, lexiconSaveError, setIsOpen,
+		setLoading, stateLexicon, tThingSaved, title, toast
+	]);
 	const saveLexiconNew = useCallback(() => {
 		if(!title) {
 			return lexiconSaveError();

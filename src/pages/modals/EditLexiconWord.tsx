@@ -222,7 +222,7 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 				<IonList lines="none">
 					{columnInfo.map((col: LexiconColumn, i: number) => {
 						const getElement = (node: HTMLIonInputElement | null) => updater([col, i], node);
-						return <ColumnInput col={col} index={i} value={cols[i]} getElement={getElement} />
+						return <ColumnInput key={`edit_lex_input_${id}_${i}`} col={col} index={i} value={cols[i]} getElement={getElement} />
 					})}
 				</IonList>
 			</IonContent>

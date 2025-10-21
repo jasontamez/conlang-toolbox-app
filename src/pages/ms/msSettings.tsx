@@ -12,7 +12,8 @@ import {
 	IonTextarea,
 	useIonAlert,
 	useIonToast,
-	IonRippleEffect
+	IonRippleEffect,
+	IonButton
 } from '@ionic/react';
 import {
 	addCircleOutline,
@@ -22,7 +23,6 @@ import {
 	trashOutline
 } from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
-import { Action, Dispatch } from 'redux';
 import { useDispatch, useSelector } from "react-redux";
 
 import { PageData, MSState, StateObject, SetBooleanState } from '../../store/types';
@@ -32,11 +32,11 @@ import blankAppState from '../../store/blankAppState';
 import useTranslator from '../../store/translationHooks';
 
 import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
-import debounce from '../../components/Debounce';
-import { $i } from '../../components/DollarSignExports';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 import { SyntaxHeader } from './MorphoSyntaxElements';
 import LoadMS from './modals/LoadSyntaxDoc';
@@ -124,7 +124,11 @@ const Syntax: FC<PageData> = (props) => {
 		} else {
 			handler();
 		}
-	}, [allProps, description, disableConfirms, tClearedThings, dispatch, doAlert, id, tClearAll, tConfDel, tDelAll, tNoInfo, title, toast]);
+	}, [
+		allProps, description, disableConfirms, tClearedThings,
+		dispatch, doAlert, id, tClearAll, tConfDel, tDelAll,
+		tNoInfo, title, toast
+	]);
 	const openMSModal = useCallback((modalOpener: SetBooleanState) => {
 		const info: [string, MSState][] = [];
 		setIsLoading(true);
@@ -233,21 +237,17 @@ const Syntax: FC<PageData> = (props) => {
 		saveMSDoc(key, false);
 	}, [MSSaveError, dispatch, saveMSDoc, title]);
 	const saveMSDocPlain = useCallback(() => saveMSDoc(), [saveMSDoc]);
-	const setNewInfo = useCallback((id: string, prop: "description" | "title") => {
-		const el = $i<HTMLInputElement>(id);
-		const value = el ? el.value.trim() : "";
-		debounce<Dispatch, Action>(
-			dispatch,
-			[setMorphoSyntaxText([prop, value])],
-			(prop === "description" ? 2000 : 1000),
-			"saveMS"
-		);
-	}, [dispatch]);
 	const closeLoading = useCallback(() => setIsLoading(false), [setIsLoading]);
 	const openLoad = useCallback(() => openMSModal(setIsOpenLoadMS), [openMSModal]);
 	const openDel = useCallback(() => openMSModal(setIsOpenDelMS), [openMSModal]);
-	const changeTitle = useCallback(() => setNewInfo("msTitle", "title"), [setNewInfo]);
-	const changeDesc = useCallback(() => setNewInfo("msTitle", "description"), [setNewInfo]);
+	const [msDesc, msDescRef] = useElement<HTMLIonTextareaElement>();
+	const [msTitle, msTitleRef] = useElement<HTMLIonInputElement>();
+	const saveAll = useCallback(() => {
+		const title = getSetValue(msTitle);
+		const desc = getSetValue(msDesc);
+		dispatch(setMorphoSyntaxText(["title", title]));
+		dispatch(setMorphoSyntaxText(["description", desc]));
+	}, [dispatch, msTitle, msDesc]);
 	return (
 		<IonPage>
 			<IonLoading
@@ -290,7 +290,7 @@ const Syntax: FC<PageData> = (props) => {
 							id="msTitle"
 							className="ion-margin-top"
 							placeholder={tName}
-							onIonChange={changeTitle}
+							ref={msTitleRef}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -304,8 +304,11 @@ const Syntax: FC<PageData> = (props) => {
 							className="ion-margin-top"
 							placeholder={tShortDesc}
 							rows={3}
-							onIonChange={changeDesc}
+							ref={msDescRef}
 						/>
+					</IonItem>
+					<IonItem>
+						<IonButton slot="end" color="success" onClick={saveAll}>Save Title and Description</IonButton>
 					</IonItem>
 				</IonList>
 				<div className="aside">

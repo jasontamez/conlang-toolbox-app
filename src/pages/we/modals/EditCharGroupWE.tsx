@@ -207,7 +207,10 @@ const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [cancelEditing, charGroupMap, dispatch, doAlert, editing, labelEl, runEl, titleEl, toast, tw, tCancel, tError, tNoLabel, tNoRun, tNoTitle, tThingSaved]);
+	}, [cancelEditing, charGroupMap, dispatch, doAlert,
+		editing, labelEl, runEl, titleEl, toast, tw,
+		tCancel, tError, tNoLabel, tNoRun, tNoTitle, tThingSaved
+	]);
 	const maybeDeleteCharGroup = useCallback(() => {
 		const { label = "", run } = editing!;
 		const handler = () => {

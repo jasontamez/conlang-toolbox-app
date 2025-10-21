@@ -41,8 +41,9 @@ import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
-import { $i } from '../../components/DollarSignExports';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface ImporterProps extends ExtraCharactersModalOpener {
 	currentInput: string
@@ -140,6 +141,10 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 	const [wordMatches, setWordMatches] = useState<string[]>([]);
 	const [columnMatches, setColumnMatches] = useState<ColumnTest[]>([]);
 	const [matchAll, setMatchAll] = useState<boolean>(false);
+	const [word, wordRef] = useElement<HTMLIonInputElement>();
+	const [wordMatch, wordMatchRef] = useElement<HTMLIonInputElement>();
+	const [colTest, colTestRef] = useElement<HTMLIonInputElement>();
+	const [colMatch, colMatchRef] = useElement<HTMLIonInputElement>();
 
 	const doClose = useCallback(() => {
 		setIsOpen(false);
@@ -174,7 +179,11 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			});
 		}
 		doClose();
-	}, [columnMatches.length, columnTests.length, doAlert, doClose, importing, tExWithout, tClose, wordMatches.length, wordTests.length]);
+	}, [
+		columnMatches.length, columnTests.length,
+		doAlert, doClose, importing, tExWithout, tClose,
+		wordMatches.length, wordTests.length
+	]);
 
 	const onLoad = useCallback(() => {
 		const bools: boolean[] = [];
@@ -284,7 +293,11 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			toast
 		});
 		doClose();
-	}, [columnMatches, columnTests, currentInput, doClose, importFunc, importing, lexicon, matchAll, tc, tNoImport, tSelOne, toast, wordMatches, wordTests]);
+	}, [
+		columnMatches, columnTests, currentInput, doClose,
+		importFunc, importing, lexicon, matchAll,
+		tc, tNoImport, tSelOne, toast, wordMatches, wordTests
+	]);
 	const toggleImport = useCallback((col: number) => {
 		const newImporting = [...importing];
 		newImporting[col] = !importing[col];
@@ -293,8 +306,8 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 
 	// Add various tests
 	const addWordTest = useCallback(() => {
-		const el = $i<HTMLInputElement>("word");
-		if(!el || !el.value) {
+		const input = getSetValue(word);
+		if(!input) {
 			return toaster({
 				message: tNothingToSave,
 				color: "danger",
@@ -303,10 +316,9 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 				toast
 			});
 		}
-		const input = el.value;
 		setWordTests([...wordTests.filter(x => x !== input), input]);
 		setAddingWordTest(false);
-		el.value = "";
+		getSetValue(word, "");
 		return toaster({
 			message: tSaved,
 			color: "success",
@@ -314,10 +326,10 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			position: "bottom",
 			toast
 		});
-	}, [tNothingToSave, tSaved, toast, wordTests]);
+	}, [tNothingToSave, tSaved, toast, wordTests, word]);
 	const addWordMatch = useCallback(() => {
-		const el = $i<HTMLInputElement>("wordMatch");
-		if(!el || !el.value) {
+		const input = getSetValue(wordMatch);
+		if(!input) {
 			return toaster({
 				message: tNothingToSave,
 				color: "danger",
@@ -326,10 +338,9 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 				toast
 			});
 		}
-		const input = el.value;
 		setWordMatches([...wordMatches.filter(x => x !== input), input]);
 		setAddingWordMatch(false);
-		el.value = "";
+		getSetValue(wordMatch);
 		return toaster({
 			message: tSaved,
 			color: "success",
@@ -337,10 +348,10 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			position: "bottom",
 			toast
 		});
-	}, [tNothingToSave, tSaved, toast, wordMatches]);
+	}, [tNothingToSave, tSaved, toast, wordMatches, wordMatch]);
 	const addColumnTest = useCallback(() => {
-		const el = $i<HTMLInputElement>("colTest");
-		if(!el || !el.value) {
+		const input = getSetValue(colTest);
+		if(!input) {
 			return toaster({
 				message: tNothingToSave,
 				color: "danger",
@@ -349,7 +360,6 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 				toast
 			});
 		}
-		const input = el.value;
 		setColumnTests([
 			...columnTests.filter(x => x.col !== addingColumn && x.test !== input),
 			{
@@ -359,7 +369,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		]);
 		setAddingColumnTest(false);
 		setAddingColumn(0);
-		el.value = "";
+		getSetValue(colTest, "");
 		return toaster({
 			message: tSaved,
 			color: "success",
@@ -367,10 +377,10 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			position: "bottom",
 			toast
 		});
-	}, [addingColumn, columnTests, tNothingToSave, tSaved, toast]);
+	}, [addingColumn, columnTests, tNothingToSave, tSaved, toast, colTest]);
 	const addColumnMatch = useCallback(() => {
-		const el = $i<HTMLInputElement>("colMatch");
-		if(!el || !el.value) {
+		const input = getSetValue(colMatch);
+		if(!input) {
 			return toaster({
 				message: tNothingToSave,
 				color: "danger",
@@ -379,7 +389,6 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 				toast
 			});
 		}
-		const input = el.value;
 		setColumnMatches([
 			...columnMatches.filter(x => x.col !== addingColumn && x.test !== input),
 			{
@@ -389,7 +398,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		]);
 		setAddingColumnMatch(false);
 		setAddingColumn(0);
-		el.value = "";
+		getSetValue(colMatch, "");
 		return toaster({
 			message: tSaved,
 			color: "success",
@@ -397,7 +406,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 			position: "bottom",
 			toast
 		});
-	}, [addingColumn, columnMatches, tNothingToSave, tSaved, toast]);
+	}, [addingColumn, columnMatches, tNothingToSave, tSaved, toast, colMatch]);
 
 	// Remove various tests
 	const deleteWordTest = useCallback((test: string) => {
@@ -540,7 +549,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 						><IonIcon icon={addingWordTest ? close : add} slot="icon-only" /></IonButton>
 					</IonItem>
 					<IonItem className={"toggleable wrappableInnards biggerToggle" + (addingWordTest ? "" : " toggled")}>
-						<IonInput id="word" helperText={tTypeWord} />
+						<IonInput id="word" ref={wordRef} helperText={tTypeWord} />
 						<IonButton
 							color="success"
 							slot="end"
@@ -559,7 +568,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 						><IonIcon icon={addingWordMatch ? close : add} slot="icon-only" /></IonButton>
 					</IonItem>
 					<IonItem className={"toggleable wrappableInnards" + (addingWordMatch ? "" : " toggled")}>
-						<IonInput id="wordMatch" helperText={tTypeRegex} />
+						<IonInput id="wordMatch" ref={wordMatchRef} helperText={tTypeRegex} />
 						<IonButton
 							color="success"
 							slot="end"
@@ -593,7 +602,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 						</IonSelect>
 					</IonItem>
 					<IonItem className={"toggleable wrappableInnards" + (addingColumnTest ? "" : " toggled")}>
-						<IonInput id="colTest" helperText={tTypeWord} />
+						<IonInput id="colTest" ref={colTestRef} helperText={tTypeWord} />
 						<IonButton
 							color="success"
 							slot="end"
@@ -627,7 +636,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 						</IonSelect>
 					</IonItem>
 					<IonItem className={"toggleable wrappableInnards" + (addingColumnMatch ? "" : " toggled")}>
-						<IonInput id="colMatch" helperText={tTypeRegex} />
+						<IonInput id="colMatch" ref={colMatchRef} helperText={tTypeRegex} />
 						<IonButton
 							color="success"
 							slot="end"

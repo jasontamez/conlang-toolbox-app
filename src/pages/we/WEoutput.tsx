@@ -412,7 +412,10 @@ const WEOut: FC<PageData> = (props) => {
 	useEffect(() => {
 		// If anything changes, mark that we need to generate again. Otherwise, everything remains the same.
 		setNeedToGenerate(true);
-	}, [outputStyle, input, transforms, soundChanges, characterGroups, inputLower, inputAlpha, customSort]);
+	}, [
+		outputStyle, input, transforms, soundChanges,
+		characterGroups, inputLower, inputAlpha, customSort
+	]);
 
 	const evolveOutput = () => {
 		if(!needToGenerate) {
@@ -789,7 +792,10 @@ const WEOut: FC<PageData> = (props) => {
 				}
 			]
 		});
-	}, [columns, dispatch, doAlert, lexSorter, navigator, tc, toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords]);
+	}, [
+		columns, dispatch, doAlert, lexSorter, navigator,
+		tc, toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords
+	]);
 	const donePickingAndSaving = useCallback(() => {
 		setIsPickingSaving(false);
 		if(savedWords.length > 0) {

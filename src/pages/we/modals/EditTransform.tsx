@@ -162,7 +162,11 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [cancelEditing, descEl, direction, dispatch, doAlert, editing, replaceEl, searchEl, tCancel, tError, tNoSeek, tThingSave, toast]);
+	}, [
+		cancelEditing, descEl, direction, dispatch, doAlert,
+		editing, replaceEl, searchEl, tCancel, tError,
+		tNoSeek, tThingSave, toast
+	]);
 	const maybeDeleteTransform = useCallback(() => {
 		const makeArrow = (dir: string) => (
 			dir === "both" ?

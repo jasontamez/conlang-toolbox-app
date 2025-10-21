@@ -93,17 +93,15 @@ const MExportAllData: FC<ModalProperties> = (props) => {
 	const [export_msStored, setExport_msStored] = useState<boolean>(true);
 	const [export_djStored, setExport_djStored] = useState<boolean>(true);
 	const [export_lexStored, setExport_lexStored] = useState<boolean>(true);
-	const {
-		wg,
-		we,
-		ms,
-		dj,
-		lexicon,
-		concepts,
-		ec,
-		appSettings,
-		sortSettings
-	} = useSelector((state: StateObject) => state);
+	const wg = useSelector((state: StateObject) => state.wg);
+	const we = useSelector((state: StateObject) => state.we);
+	const ms = useSelector((state: StateObject) => state.ms);
+	const dj = useSelector((state: StateObject) => state.dj);
+	const lexicon = useSelector((state: StateObject) => state.lexicon);
+	const concepts = useSelector((state: StateObject) => state.concepts);
+	const ec = useSelector((state: StateObject) => state.ec);
+	const appSettings = useSelector((state: StateObject) => state.appSettings);
+	const sortSettings = useSelector((state: StateObject) => state.sortSettings);
 
 	const exportedSortSettings = useMemo(() => {
 		const { customSorts, ...etc } = sortSettings;

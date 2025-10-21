@@ -31,8 +31,9 @@ import useI18Memo from '../../components/useI18Memo';
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from "../../components/ModalWrap";
-import { $i } from '../../components/DollarSignExports';
 import Header from '../../components/Header';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
 
@@ -57,18 +58,18 @@ interface SyllableButtonProps {
 	setIsEditing: SetState<SyllableTypes | null>
 	save: string
 	edit: string
+	el: HTMLIonTextareaElement | null
 }
 
 const SyllableButton: FC<SyllableButtonProps> = (props) => {
-	const { prop, dropoff, isEditing, setIsEditing, save, edit } = props;
+	const { prop, dropoff, isEditing, setIsEditing, save, edit, el } = props;
 	const dispatch = useDispatch();
 	const startEdit = useCallback(() => setIsEditing(prop), [prop, setIsEditing]);
 	const doSave = useCallback(() => {
-		const el = $i<HTMLInputElement>("Syl-" + prop);
-		const value = (el && el.value) || "";
+		const value = getSetValue(el);
 		dispatch(setSyllables({syllables: prop, value, override: dropoff }));
 		setIsEditing(null);
-	}, [dispatch, dropoff, prop, setIsEditing]);
+	}, [dispatch, dropoff, prop, setIsEditing, el]);
 	if (isEditing === prop) {
 		return (
 			<IonButton
@@ -157,6 +158,10 @@ const WGSyl: FC<PageData> = (props) => {
 		syllableDropoffOverrides
 	} = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [swEl, swRef] = useElement<HTMLIonTextareaElement>();
+	const [wiEl, wiRef] = useElement<HTMLIonTextareaElement>();
+	const [wmEl, wmRef] = useElement<HTMLIonTextareaElement>();
+	const [wfEl, wfRef] = useElement<HTMLIonTextareaElement>();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	useEffect(() => {
@@ -257,7 +262,10 @@ const WGSyl: FC<PageData> = (props) => {
 				<IonIcon icon={helpCircleOutline} />
 			</IonButton>
 		];
-	}, [maybeClearEverything, openEx, openInfo, singleWord, tDelete, tHelp, wordFinal, wordInitial, wordMiddle]);
+	}, [
+		maybeClearEverything, openEx, openInfo, singleWord,
+		tDelete, tHelp, wordFinal, wordInitial, wordMiddle
+	]);
 
 	return (
 		<IonPage>
@@ -320,6 +328,7 @@ const WGSyl: FC<PageData> = (props) => {
 							onIonChange={doSetSw}
 							inputmode="text"
 							placeholder={tUseCharLabel}
+							ref={swRef}
 						/>
 						<div className="button">
 							<SyllableButton
@@ -329,6 +338,7 @@ const WGSyl: FC<PageData> = (props) => {
 								setIsEditing={setIsEditing}
 								save={tSave}
 								edit={tEdit}
+								el={swEl}
 							/>
 						</div>
 					</IonItem>
@@ -380,6 +390,7 @@ const WGSyl: FC<PageData> = (props) => {
 							onIonChange={doSetWi}
 							inputmode="text"
 							placeholder={tWiSyllExpl}
+							ref={wiRef}
 						/>
 						<div className="button">
 							<SyllableButton
@@ -389,6 +400,7 @@ const WGSyl: FC<PageData> = (props) => {
 								setIsEditing={setIsEditing}
 								save={tSave}
 								edit={tEdit}
+								el={wiEl}
 							/>
 						</div>
 					</IonItem>
@@ -438,6 +450,7 @@ const WGSyl: FC<PageData> = (props) => {
 							onIonChange={doSetWm}
 							inputmode="text"
 							placeholder={tMwSyllExpl}
+							ref={wmRef}
 						/>
 						<div className="button">
 							<SyllableButton
@@ -447,6 +460,7 @@ const WGSyl: FC<PageData> = (props) => {
 								setIsEditing={setIsEditing}
 								save={tSave}
 								edit={tEdit}
+								el={wmEl}
 							/>
 						</div>
 					</IonItem>
@@ -496,6 +510,7 @@ const WGSyl: FC<PageData> = (props) => {
 							onIonChange={doSetWf}
 							inputmode="text"
 							placeholder={tWeSyllExpl}
+							ref={wfRef}
 						/>
 						<div className="button">
 							<SyllableButton
@@ -505,6 +520,7 @@ const WGSyl: FC<PageData> = (props) => {
 								setIsEditing={setIsEditing}
 								save={tSave}
 								edit={tEdit}
+								el={wfEl}
 							/>
 						</div>
 					</IonItem>

@@ -148,7 +148,11 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 				});
 			}
 		});
-	}, [characterGroups, disableConfirms, doAlert, doCleanClose, soundChanges, toast, transforms, tCancel, tClearSave, tMissing, tYes, tc, currentInfoSaveName]);
+	}, [
+		characterGroups, disableConfirms, doAlert, doCleanClose,
+		soundChanges, toast, transforms, tCancel, tClearSave,
+		tMissing, tYes, tc, currentInfoSaveName
+	]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			CustomStorageWE.getItem<WEPresetObject>(title).then((value) => {
@@ -189,7 +193,9 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, dispatch, doAlert, doCleanClose, toast, tClearThings, tConfLoad, tLoadErr, tOk, tc]);
+	}, [disableConfirms, dispatch, doAlert, doCleanClose,
+		toast, tClearThings, tConfLoad, tLoadErr, tOk, tc
+	]);
 	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			setTitles(titles.filter(ci => ci !== title));

@@ -125,7 +125,11 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				});
 			}
 		});
-	}, [conjugations, declensions, disableConfirms, doAlert, doCleanClose, other, tNoTitle, tOk, tOverwritePrev, tYes, tc, toast, currentDJInfoSaveName]);
+	}, [
+		conjugations, declensions, disableConfirms, doAlert,
+		doCleanClose, other, tNoTitle, tOk, tOverwritePrev,
+		tYes, tc, toast, currentDJInfoSaveName
+	]);
 	const maybeLoadInfo = useCallback((title: string) => {
 		const handler = () => {
 			DeclenjugatorStorage.getItem<DJCustomInfo>(title).then((value) => {
@@ -167,7 +171,10 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 				doAlert
 			});
 	}
-	}, [disableConfirms, dispatch, doAlert, doCleanClose, tConfLoad, tLoadErr, tOk, tClearEverything, tc, toast]);
+	}, [
+		disableConfirms, dispatch, doAlert, doCleanClose,
+		tConfLoad, tLoadErr, tOk, tClearEverything, tc, toast
+	]);
 	const maybeDeleteInfo = useCallback((title: string) => {
 		const handler = () => {
 			const newCustom = customInfo.filter(ci => ci !== title);

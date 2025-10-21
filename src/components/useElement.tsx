@@ -22,9 +22,13 @@ const useElement = <T extends Element>(extraFunc?: (node: T | null) => void): [T
 export default useElement;
 
 // useElementList(array, functionThatGetsAnIdFromArrayMember)
-//   => [RefObject, functionThatUpdatesRefObject]
+//   => [RefObject, functionThatUpdatesRefObject, functionThatClearsRefObject]
 
-export const useElementList = <A,T>(input: A[], getIdFunc: ((x:A) => string)): [ RefObject<{[key: string]: T}>, (item: A, el: T) => void ] => {
+export const useElementList = <A,T>(
+	input: A[],
+	getIdFunc: ((x:A) => string)): [ RefObject<{[key: string]: T}>, (item: A, el: T) => void,
+	() => void
+] => {
 	// Managing element references
 	const inputElements = useRef<{ [key: string]: T }>({});
 	useEffect(() => {
@@ -39,5 +43,6 @@ export const useElementList = <A,T>(input: A[], getIdFunc: ((x:A) => string)): [
 		const id = getIdFunc(item);
 		inputElements.current[id] = el;
 	};
-	return [inputElements, updateInputElement];
+	const clearInputElement = () => (inputElements.current = {});
+	return [inputElements, updateInputElement, clearInputElement];
 };

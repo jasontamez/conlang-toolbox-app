@@ -23,10 +23,10 @@ import { PageData, StateObject } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
-import { $i } from '../../components/DollarSignExports';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import LexiconImporterModal from '../modals/ImportFromLexicon';
 import { InpCard } from "./WEinfo";
@@ -54,29 +54,27 @@ const WEInput: FC<PageData> = (props) => {
 	const { lexicon } = useSelector((state: StateObject) => state.lexicon);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { input } = useSelector((state: StateObject) => state.we);
+	const [weInput, weInputRef] = useElement<HTMLTextAreaElement>();
 	const updateInput = useCallback((value: string) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
 		dispatch(setInputWE(trimmed));
 	}, [dispatch]);
 	const inputUpdated: ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
-		let value: string;
+		let value: string = "";
 		if(e.target && e.target.value !== undefined) {
-			value = (e.target.value);
-		} else {
-			const el = $i<HTMLInputElement>("weInput");
-			value = el ? el.value : "";
+			value = e.target.value;
+		} else if(weInput) {
+			value = weInput.value;
 		}
 		debounce<(x: string) => void, string>(updateInput, [value], 500, "WEinput");
-	}, [updateInput]);
+	}, [updateInput, weInput]);
 	const acceptImport = useCallback((value: string) => {
-		const el = $i<HTMLInputElement>("weInput");
-		if(el) { el.value = value; }
+		weInput && (weInput.value = value);
 		updateInput(value);
-	}, [updateInput]);
+	}, [updateInput, weInput]);
 	const clearInput = useCallback(() => {
 		const handler = () => {
-			const el = $i<HTMLInputElement>("weInput");
-			if(el) { el.value = ""; }
+			weInput && (weInput.value = "");
 			updateInput("");
 		};
 		if(disableConfirms) {
@@ -91,7 +89,7 @@ const WEInput: FC<PageData> = (props) => {
 				doAlert
 			});
 		}
-	}, [disableConfirms, doAlert, tClearInput, tYesClear, tYouSure, updateInput]);
+	}, [disableConfirms, doAlert, tClearInput, tYesClear, tYouSure, updateInput, weInput]);
 
 	const openExChar = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
@@ -133,6 +131,7 @@ const WEInput: FC<PageData> = (props) => {
 						placeholder={tOnePerLine}
 						defaultValue={input}
 						onChange={inputUpdated}
+						ref={weInputRef}
 					/>
 				</div>
 				<IonToolbar>

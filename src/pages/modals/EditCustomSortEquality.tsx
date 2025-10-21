@@ -128,7 +128,11 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [close, doAlert, incomingEquality, separator, setOutgoingEquality, tNoBase, tNoEqual, tOk, tThingEdited, toast, editBaseEquality, editEqualsEquality]);
+	}, [
+		close, doAlert, incomingEquality, separator,
+		setOutgoingEquality, tNoBase, tNoEqual, tOk,
+		tThingEdited, toast, editBaseEquality, editEqualsEquality
+	]);
 	const maybeDelete = useCallback(() => {
 		const handler = () => {
 			setOutgoingEquality(incomingEquality!.id);

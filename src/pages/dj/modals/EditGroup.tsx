@@ -229,13 +229,19 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 		} else {
 			setUseAdvancedMethod(false);
 		}
-	}, [editingGroupInfo, type, tError, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
+	}, [
+		editingGroupInfo, type, tError, editTitle, editAppliesTo,
+		editStarts, editEnds, editRegex1, editRegex2
+	]);
 
 	useEffect(() => {
 		if(isLoaded && editTitle && editAppliesTo && editStarts && editEnds && editRegex1 && editRegex2) { return; }
 		onLoad();
 		setIsLoaded(true);
-	}, [isLoaded, setIsLoaded, onLoad, editTitle, editAppliesTo, editStarts, editEnds, editRegex1, editRegex2]);
+	}, [
+		isLoaded, setIsLoaded, onLoad, editTitle, editAppliesTo,
+		editStarts, editEnds, editRegex1, editRegex2
+	]);
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
@@ -417,7 +423,10 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			});
 		}
 		closeModal();
-	}, [closeModal, declenjugations, doAlert, editingGroupInfo, grabInfo, separator, type, tUnsaved, tYes, tYouSure]);
+	}, [
+		closeModal, declenjugations, doAlert, editingGroupInfo,
+		grabInfo, separator, type, tUnsaved, tYes, tYouSure
+	]);
 	const maybeDeleteGroup = useCallback(() => {
 		const handler = () => {
 			dispatch(deleteGroup([editingGroupInfo![0], id]));
@@ -479,7 +488,10 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 				doAlert
 			});
 		}
-	}, [typeString, t, declenjugations, disableConfirms, doAlert, tc, tDeleted, tRUSure, toast, editingDJGroup]);
+	}, [
+		typeString, t, declenjugations, disableConfirms,
+		doAlert, tc, tDeleted, tRUSure, toast, editingDJGroup
+	]);
 
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;

@@ -109,7 +109,11 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 			duration: 2500,
 			toast
 		});
-	}, [setIsOpen, doAlert, separator, setSavedEquality, tNoBase, tNoEqual, tOk, tThingAdded, toast, addBaseEquality, addEquality]);
+	}, [
+		setIsOpen, doAlert, separator, setSavedEquality,
+		tNoBase, tNoEqual, tOk, tThingAdded, toast,
+		addBaseEquality, addEquality
+	]);
 	const maybeCancel = useCallback(() => {
 		if(getSetValue(addBaseEquality) || getSetValue(addEquality)) {
 			return yesNoAlert({

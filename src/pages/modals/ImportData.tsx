@@ -62,11 +62,13 @@ import {
 	MorphoSyntaxStorage
 } from '../../components/PersistentInfo';
 import toaster from '../../components/toaster';
-import { $and, $delay, $i, $q } from '../../components/DollarSignExports';
+import { $and, $delay } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
 import ModalHeader from '../../components/ModalHeader';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
@@ -120,6 +122,9 @@ const ImportData: FC<ModalProperties> = (props) => {
 	const dispatch = useDispatch();
 	const [readyToImport, setReadyToImport] = useState<boolean>(false);
 	const [hasImported, setHasImported] = useState<boolean>(false);
+	const [importDataContent, importDataContentRef] = useElement<HTMLIonContentElement>();
+	const [divider, dividerRef] = useElement<HTMLIonItemDividerElement>();
+	const [importingData, importingDataRef] = useElement<HTMLIonTextareaElement>();
 
 	const [do_import_wg, setDo_import_wg] = useState<boolean>(true);
 	const [do_import_we, setDo_import_we] = useState<boolean>(true);
@@ -153,8 +158,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 	const [potential_import_lexStored, setPotential_import_lexStored] = useState<storedLex | false>(false);
 
 	const resetAnalysis = useCallback(() => {
-		const el = $i<HTMLInputElement>("importingData");
-		if(el) { el.value = ""; }
+		getSetValue(importingData, "");
 		setReadyToImport(false);
 		setHasImported(false);
 		setPotential_import_wg(false);
@@ -168,7 +172,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 		setPotential_import_djStored(false);
 		setPotential_import_msStored(false);
 		setPotential_import_lexStored(false);
-	}, []);
+	}, [importingData]);
 
 	const doClose = useCallback(() => {
 		resetAnalysis();
@@ -187,8 +191,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 	}, [doAlert, doClose, hasImported, readyToImport, tNoImport, tRUSure, tYesClose]);
 
 	const onLoad = useCallback(() => {
-		const el = $i<HTMLInputElement>("importingData");
-		if(el) { el.value = ""; }
+		getSetValue(importingData, "");
 		setDo_import_wg(true);
 		setDo_import_we(true);
 		setDo_import_dj(true);
@@ -200,7 +203,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 		setDo_import_djStored(true);
 		setDo_import_msStored(true);
 		setDo_import_lexStored(true);
-	}, []);
+	}, [importingData]);
 
 	// Scan input for data and set state appropriately
 	function parseInput(object: ImportExportObject) {
@@ -280,20 +283,17 @@ const ImportData: FC<ModalProperties> = (props) => {
 
 	useEffect(() => {
 		$delay(500).then(() => {
-			const el = $i<HTMLIonContentElement>("importDataContent");
-			if(el && readyToImport) {
-				const inner = $q("ion-item-divider", el);
-				if(inner) { el.scrollToPoint(0, (inner.offsetTop || 50) - 50, 1500); }
-			} else if(el) {
-				el.scrollToTop(1500);
+			if(importDataContent && readyToImport) {
+				if(divider) { importDataContent.scrollToPoint(0, (divider.offsetTop || 50) - 50, 1500); }
+			} else if(importDataContent) {
+				importDataContent.scrollToTop(1500);
 			}
 		});
-	}, [readyToImport]);
+	}, [readyToImport, importDataContent, divider]);
 
 	// Look at the pasted import and try to make an object out of it
 	const analyze = useCallback(() => {
-		const el = $i<HTMLInputElement>("importingData");
-		const incoming = (el && el.value) || "";
+		const incoming = getSetValue(importingData);
 		try {
 			const parsed: ImportExportObject = JSON.parse(incoming);
 			if(parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
@@ -325,7 +325,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 				toast
 			});
 		}
-	}, [dispatch, toast]);
+	}, [dispatch, toast, importingData]);
 
 	const toggleImportMs = useCallback(() => setDo_import_ms(!do_import_ms), [ do_import_ms ]);
 	const toggleImportMsStored = useCallback(() => setDo_import_msStored(!do_import_msStored), [ do_import_msStored ]);
@@ -446,7 +446,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 			<IonHeader>
 				<ModalHeader title={tImportInfo} closeModal={maybeClose} />
 			</IonHeader>
-			<IonContent id="importDataContent">
+			<IonContent id="importDataContent" ref={importDataContentRef}>
 				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
 					<IonItem lines="none" className="permanent">
 						<IonLabel className="ion-text-center ion-text-wrap">
@@ -460,6 +460,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 							rows={12}
 							id="importingData"
 							disabled={readyToImport}
+							ref={importingDataRef}
 						></IonTextarea>
 					</IonItem>
 					<IonItem className="permanent">
@@ -483,7 +484,7 @@ const ImportData: FC<ModalProperties> = (props) => {
 							<IonIcon icon={sparkles} slot="start" />
 						</IonButton>
 					</IonItem>
-					<IonItemDivider>{tWhatToImp}</IonItemDivider>
+					<IonItemDivider ref={dividerRef}>{tWhatToImp}</IonItemDivider>
 					<IonItem
 						className={potential_import_ms ? "" : "notSelectable"}
 						lines={potential_import_msStored ? "none" : "full"}

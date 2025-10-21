@@ -50,11 +50,12 @@ import {
 import { deleteCustomSort, editCustomSort } from '../../store/sortingSlice';
 import useTranslator from '../../store/translationHooks';
 
-import { $i } from '../../components/DollarSignExports';
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
 import PermanentInfo from '../../components/PermanentInfo';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
+import getSetValue from '../../components/getSetValue';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	langObj: {[key: string]: string}
@@ -157,6 +158,9 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 	const [usingAlpha, setUsingAlpha] = useState<boolean>(false);
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [customizations, setCustomizations] = useState<(RelationObject | EqualityObject)[]>([]);
+	const [editSortTitle, editSortTitleRef] = useElement<HTMLIonInputElement>();
+	const [editCustomAlphabet, editCustomAlphabetRef] = useElement<HTMLIonInputElement>();
+	const [editingCustomSortList, editingCustomSortListRef] = useElement<HTMLIonListElement>();
 	const onLoad = useCallback(() => {
 		const {
 			id = "ERROR",
@@ -168,31 +172,27 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 			customizations = []
 		} = editingCustomSort || {};
 		setId(id);
-		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
-		if(editSortTitle) { editSortTitle.value = title; }
+		getSetValue(editSortTitle, title);
 		setSortLang(sortLanguage);
 		setSortSensitivity(sensitivity);
 		if(customAlphabet.length > 0) {
 			setUsingAlpha(true);
 		}
-		const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
-		if(editCustomAlphabet) { editCustomAlphabet.value = customAlphabet.join(separator); }
+		getSetValue(editCustomAlphabet, customAlphabet.join(separator));
 		setSeparator(separator);
 		setCustomizations(customizations);
-	}, [editingCustomSort, tError]);
+	}, [editingCustomSort, tError, editSortTitle, editCustomAlphabet]);
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		setId("");
-		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
-		if(editSortTitle) { editSortTitle.value = ""; }
+		getSetValue(editSortTitle, "");
 		setSortLang("default");
 		setSortSensitivity("default");
 		setUsingAlpha(false);
-		const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
-		if(editCustomAlphabet) { editCustomAlphabet.value = ""; }
+		getSetValue(editCustomAlphabet, "");
 		setSeparator(",");
 		setCustomizations([]);
-	}, [setIsOpen]);
+	}, [setIsOpen, editSortTitle, editCustomAlphabet]);
 	// Accept new relation from other modal
 	useEffect(() => {
 		if(isOpen && savedRelation) {
@@ -275,8 +275,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 				]
 			});
 		}
-		const editSortTitle = $i<HTMLInputElement>("editSortTitle");
-		const title = editSortTitle ? editSortTitle.value.trim() : "";
+		const title = getSetValue(editSortTitle).trim();
 		if(!title) {
 			doAlert({
 				message: tNoTitle,
@@ -297,8 +296,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 			title
 		};
 		if(usingAlpha) {
-			const editCustomAlphabet = $i<HTMLInputElement>("editCustomAlphabet");
-			const alpha: string[] = (editCustomAlphabet ? editCustomAlphabet.value : "")
+			const alpha: string[] = getSetValue(editCustomAlphabet)
 				.split(separator)
 				.filter((char: string) => char);
 			if(alpha.length === 0) {
@@ -354,7 +352,12 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 			duration: 2000,
 			toast
 		});
-	}, [closeModal, customizations, dispatch, doAlert, id, separator, sortLang, sortSensitivity, toast, usingAlpha, tBlank, tNoInfo, tNoTitle, tOk, tThingSaved]);
+	}, [
+		closeModal, customizations, dispatch, doAlert, id,
+		separator, sortLang, sortSensitivity, toast,
+		usingAlpha, tBlank, tNoInfo, tNoTitle, tOk,
+		tThingSaved, editSortTitle, editCustomAlphabet
+	]);
 	const maybeDeleteSort = useCallback(() => {
 		const message = permanents[id];
 		if(message) {
@@ -400,11 +403,10 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		addEqualityModalInfo.setIsOpen(true);
 	}, [addEqualityModalInfo, setSavedEquality]);
 	const editRelation = useCallback((relation: RelationObject) => {
-		const el = $i<HTMLIonListElement>("editingCustomSortList");
-		if(el) { el.closeSlidingItems(); }
+		if(editingCustomSortList) { editingCustomSortList.closeSlidingItems(); }
 		setIncomingRelation(relation);
 		editRelationModalInfo.setIsOpen(true);
-	}, [editRelationModalInfo, setIncomingRelation]);
+	}, [editRelationModalInfo, setIncomingRelation, editingCustomSortList]);
 	const maybeDeleteRelation = useCallback((id: string) => {
 		yesNoAlert({
 			header: tDelThisSort,
@@ -416,12 +418,12 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 		});
 	}, [customizations, doAlert, tDelThisSort, tc, tRUSure]);
 	const editEquality = useCallback((relation: EqualityObject) => {
-		const el = $i<HTMLIonListElement>("editingCustomSortList");
-		if(el) { el.closeSlidingItems(); }
+		if(editingCustomSortList) { editingCustomSortList.closeSlidingItems(); }
 		setIncomingEquality(relation);
 		editEqualityModalInfo.setIsOpen(true);
-	}, [editEqualityModalInfo, setIncomingEquality]);
+	}, [editEqualityModalInfo, setIncomingEquality, editingCustomSortList]);
 	const maybeDeleteEquality = useCallback((id: string) => {
+		if(editingCustomSortList) { editingCustomSortList.closeSlidingItems(); }
 		yesNoAlert({
 			header: tDelThisSort,
 			message: tRUSure,
@@ -430,7 +432,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 			handler: () => setCustomizations(customizations.filter(obj => obj.id !== id)),
 			doAlert
 		});
-	}, [customizations, doAlert, tDelThisSort, tc, tRUSure]);
+	}, [customizations, doAlert, tDelThisSort, tc, tRUSure, editingCustomSortList]);
 	const doReorder = useCallback((event: CustomEvent) => {
 		const ed = event.detail;
 		// move things around
@@ -620,13 +622,14 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
-				<IonList lines="full" id="editingCustomSortList">
+				<IonList lines="full" id="editingCustomSortList" ref={editingCustomSortListRef}>
 					<IonItem>
 					<div slot="start" className="ion-margin-end">{tpTitle}</div>
 						<IonInput
 							aria-label={tTitle}
 							id="editSortTitle"
 							helperText={tTitleSort}
+							ref={editSortTitleRef}
 						/>
 					</IonItem>
 					<IonItem className="wrappableInnards">
@@ -700,6 +703,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 							aria-label={tCustomAlpha}
 							id="editCustomAlphabet"
 							helperText={tWriteAlpha}
+							ref={editCustomAlphabetRef}
 						/>
 					</IonItem>
 					<IonItem

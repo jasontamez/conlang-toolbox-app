@@ -113,7 +113,11 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 			duration: 2500,
 			toast
 		});
-	}, [doAlert, separator, setIsOpen, setSavedRelation, tNoBase, tNoPrePost, tOk, tThingAdded, toast, addBaseRelation, addPreRelation, addPostRelation]);
+	}, [
+		doAlert, separator, setIsOpen, setSavedRelation,
+		tNoBase, tNoPrePost, tOk, tThingAdded, toast,
+		addBaseRelation, addPreRelation, addPostRelation
+	]);
 	const maybeCancel = useCallback(() => {
 		if(getSetValue(addBaseRelation) || getSetValue(addPreRelation) || getSetValue(addPostRelation)) {
 			return yesNoAlert({
@@ -134,7 +138,10 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 		getSetValue(addPreRelation, "");
 		getSetValue(addPostRelation, "");
 		setIsOpen(false);
-	}, [doAlert, setIsOpen, tUnsaved, tYesDisc, tYouSure, addBaseRelation, addPreRelation, addPostRelation]);
+	}, [
+		doAlert, setIsOpen, tUnsaved, tYesDisc, tYouSure,
+		addBaseRelation, addPreRelation, addPostRelation
+	]);
 	const opener = useCallback(() => openECM(true), [openECM]);
 	const doSetSeparator = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 
