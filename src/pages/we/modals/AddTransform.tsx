@@ -24,17 +24,11 @@ import { WETransformDirection, ExtraCharactersModalOpener } from '../../../store
 import { addTransformWE } from '../../../store/weSlice';
 import useTranslator from '../../../store/translationHooks';
 
-import { $q, $a, $i } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import ModalHeader from '../../../components/ModalHeader';
 import useI18Memo from '../../../components/useI18Memo';
-
-function resetError() {
-	// Remove danger color if present
-	// Debounce means this sometimes doesn't exist by the time this is called.
-	const where = $q(".seekLabel");
-	if(where) { where.classList.remove("invalidValue"); }
-}
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 const commons = [
 	"AddAndClose", "Cancel", "error", "optional"
@@ -64,6 +58,11 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);
 	const tpDesc = useMemo(() => tw("DescOfTheTransformation", context), [tw]);
+	const [seekLabel, seekLabelRef] = useElement<HTMLIonLabelElement>();
+	const [searchExWE, searchExWERef] = useElement<HTMLIonInputElement>();
+	const [replaceExWE, replaceExWERef] = useElement<HTMLIonInputElement>();
+	const [optDescWE, optDescWERef] = useElement<HTMLIonInputElement>();
+	const [radioGroup, radioGroupRef] = useElement<HTMLIonRadioGroupElement>();
 
 	const { isOpen, setIsOpen, openECM } = props;
 	const dispatch = useDispatch();
@@ -73,12 +72,10 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 
 	const maybeSaveNewTransform = useCallback((close: boolean = true) => {
 		const err: string[] = [];
-		const seekEl = $i<HTMLInputElement>("searchExWE");
-		const seek = seekEl ? seekEl.value : "";
+		const seek = getSetValue(searchExWE);
 		// Test info for validness, then save if needed and reset the newTransform
 		if(seek === "") {
-			const el = $q(".seekLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			seekLabel && seekLabel.classList.add("invalidValue")
 			err.push(tNoSeek);
 		}
 		try {
@@ -103,10 +100,8 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			return;
 		}
 		// Everything ok!
-		const replaceEl = $i<HTMLInputElement>("replaceExWE");
-		const replace = replaceEl ? replaceEl.value : "";
-		const descriptionEl = $i<HTMLInputElement>("optDescWE");
-		const description = descriptionEl ? descriptionEl.value : "";
+		const replace = getSetValue(replaceExWE);
+		const description = getSetValue(optDescWE).trim();
 		if(close) { setIsOpen(false); }
 		dispatch(addTransformWE({
 			id: uuidv4(),
@@ -115,9 +110,10 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			direction,
 			description
 		}));
-		$a<HTMLInputElement>("ion-list.weAddTransform ion-input").forEach((input) => input.value = "");
-		const el = $q<HTMLInputElement>("ion-list.weAddTransform ion-radio-group");
-		if(el) { el.value = "both"; }
+		getSetValue(searchExWE, "");
+		getSetValue(replaceExWE, "");
+		getSetValue(optDescWE, "");
+		radioGroup && (radioGroup.value = "both");
 		toaster({
 			message: tThingAdd,
 			duration: 2500,
@@ -125,7 +121,11 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [direction, dispatch, doAlert, setIsOpen, tCancel, tError, tNoSeek, tThingAdd, toast]);
+	}, [
+		direction, dispatch, doAlert, setIsOpen, tCancel,
+		tError, tNoSeek, tThingAdd, toast, seekLabel,
+		searchExWE, replaceExWE, optDescWE, radioGroup
+	]);
 	const saveClose = useCallback(() => maybeSaveNewTransform(), [maybeSaveNewTransform]);
 	const saveAdd = useCallback(() => maybeSaveNewTransform(false), [maybeSaveNewTransform]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
@@ -135,15 +135,16 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels weAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{tpInEx}</IonLabel>
+						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpInEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tInEx}
 							id="searchExWE"
+							ref={searchExWERef}
 							className="ion-margin-top serifChars"
 							helperText={tSeek}
-							onIonChange={resetError}
+							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -153,6 +154,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 						<IonInput
 							aria-label={tOutEx}
 							id="replaceExWE"
+							ref={replaceExWERef}
 							className="ion-margin-top serifChars"
 							helperText={tReplace}
 						></IonInput>
@@ -164,6 +166,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 						<IonInput
 							aria-label={tDesc}
 							id="optDescWE"
+							ref={optDescWERef}
 							className="ion-margin-top"
 							placeholder={tOptional}
 						></IonInput>
@@ -174,6 +177,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 					<IonRadioGroup
 						value={direction}
 						onIonChange={e => setDirection(e.detail.value as WETransformDirection)}
+						ref={radioGroupRef}
 					>
 						<IonItem>
 							<IonRadio

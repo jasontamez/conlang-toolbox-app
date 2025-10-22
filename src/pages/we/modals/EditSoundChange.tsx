@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -24,28 +24,18 @@ import { deleteSoundChangeWE, editSoundChangeWE } from '../../../store/weSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import repairRegexErrors from '../../../components/RepairRegex';
-import { $i, $q } from '../../../components/DollarSignExports';
 import ltr from '../../../components/LTR';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import ModalHeader from '../../../components/ModalHeader';
 import useI18Memo from '../../../components/useI18Memo';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WESoundChangeObject
 	setEditing: SetState<null | WESoundChangeObject>
 }
-
-function resetError(prop: string) {
-	// Remove danger color if present
-	// Debounce means this sometimes doesn't exist by the time this is called.
-	const where = $q("." + prop + "Label");
-	if(where) { where.classList.remove("invalidValue"); }
-}
-
-const resetSeek = () => resetError("seek");
-const resetContext = () => resetError("context");
-const resetException = () => resetError("anticontext");
 
 const translations = [
 	"soundChangeDesc", "soundChangesTo",
@@ -85,37 +75,34 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 	const toast = useIonToast();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 
-	const [seekEl, setSeekEl] = useState<HTMLInputElement | null>(null);
-	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
-	const [contextEl, setContextEl] = useState<HTMLInputElement | null>(null);
-	const [antiEl, setAntiEl] = useState<HTMLInputElement | null>(null);
-	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
+	const [editSeekExWESC, editSeekExWESCRef] = useElement<HTMLIonInputElement>();
+	const [editReplaceExWESC, editReplaceExWESCRef] = useElement<HTMLIonInputElement>();
+	const [editContextExWESC, editContextExWESCRef] = useElement<HTMLIonInputElement>();
+	const [editAnticontextExWESC, editAnticontextExWESCRef] = useElement<HTMLIonInputElement>();
+	const [editOptDescWESC, editOptDescWESCRef] = useElement<HTMLIonInputElement>();
+	const [seekLabel, seekLabelRef] = useElement<HTMLIonLabelElement>();
+	const [contextLabel, contextLabelRef] = useElement<HTMLIonLabelElement>();
+	const [anticontextLabel, anticontextLabelRef] = useElement<HTMLIonLabelElement>();
 	const onLoad = useCallback(() => {
-		const _seekEl = $i<HTMLInputElement>("editSeekExWESC");
-		const _replaceEl = $i<HTMLInputElement>("editReplaceExWESC");
-		const _contextEl = $i<HTMLInputElement>("editContextExWESC");
-		const _antiEl = $i<HTMLInputElement>("editAnticontextExWESC");
-		const _descEl = $i<HTMLInputElement>("editOptDescWESC");
 		if(editing) {
 			const { seek, replace, context, anticontext, description } = editing;
-			if(_seekEl) { _seekEl.value = seek; }
-			if(_replaceEl) { _replaceEl.value = replace; }
-			if(_contextEl) { _contextEl.value = context; }
-			if(_antiEl) { _antiEl.value = anticontext; }
-			if(_descEl) { _descEl.value = description; }
+			getSetValue(editSeekExWESC, seek);
+			getSetValue(editReplaceExWESC, replace);
+			getSetValue(editContextExWESC, context);
+			getSetValue(editAnticontextExWESC, anticontext);
+			getSetValue(editOptDescWESC, description);
 		} else {
-			if(_seekEl) { _seekEl.value = ""; }
-			if(_replaceEl) { _replaceEl.value = ""; }
-			if(_contextEl) { _contextEl.value = ""; }
-			if(_antiEl) { _antiEl.value = ""; }
-			if(_descEl) { _descEl.value = ""; }
+			getSetValue(editSeekExWESC, "");
+			getSetValue(editReplaceExWESC, "");
+			getSetValue(editContextExWESC, "");
+			getSetValue(editAnticontextExWESC, "");
+			getSetValue(editOptDescWESC, "");
 		}
-		setSeekEl(_seekEl);
-		setReplaceEl(_replaceEl);
-		setContextEl(_contextEl);
-		setAntiEl(_antiEl);
-		setDescEl(_descEl);
-	}, [editing]);
+	}, [
+		editing, editSeekExWESC, editReplaceExWESC,
+		editContextExWESC, editAnticontextExWESC,
+		editOptDescWESC
+	]);
 
 	const cancelEditing = useCallback(() => {
 		setEditing(null);
@@ -142,24 +129,21 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			return false;
 		};
 		// Test info for validness, then save if needed and reset the editingSoundChange
-		const seek = (seekEl && seekEl.value) || "";
-		const context = (contextEl && contextEl.value) || "_";
-		const anti = (antiEl && antiEl.value) || "";
+		const seek = getSetValue(editSeekExWESC);
+		const context = getSetValue(editContextExWESC) || "_";
+		const anti = getSetValue(editAnticontextExWESC);
 		let temp: boolean | string;
 		if(seek === "") {
-			const el = $q(".seekLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			seekLabel && seekLabel.classList.add("invalidValue");
 			err.push(tNoSearch);
 		}
 		if((temp = contextTest(context, "Context"))) {
+			contextLabel && contextLabel.classList.add("invalidValue");
 			err.push(temp);
-			const el = $q(".contextLabel");
-			if(el) { el.classList.add("invalidValue"); }
 		}
 		if(anti && (temp = contextTest(anti, "Exception"))) {
+			anticontextLabel && anticontextLabel.classList.add("invalidValue");
 			err.push(temp);
-			const el = $q(".anticontextLabel");
-			if(el) { el.classList.add("invalidValue"); }
 		}
 		try {
 			new RegExp(seek);
@@ -183,8 +167,8 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			return;
 		}
 		// Everything ok!
-		const replace = (replaceEl && replaceEl.value) || "";
-		const description = (descEl && descEl.value) || "";
+		const replace = getSetValue(editReplaceExWESC);
+		const description = getSetValue(editOptDescWESC);
 		setIsOpen(false);
 		dispatch(editSoundChangeWE({
 			id: editing!.id,
@@ -202,13 +186,13 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			toast
 		});
 	}, [
-		antiEl, contextEl, descEl, dispatch, doAlert,
-		editing, replaceEl, seekEl, setIsOpen, toast,
-		t, tCancel, tError, tNoSearch, tThingSaved
+		editAnticontextExWESC, editOptDescWESC, dispatch,
+		doAlert, editing, editReplaceExWESC, editContextExWESC,
+		setIsOpen, toast, t, tCancel, tError, tNoSearch,
+		tThingSaved, anticontextLabel, contextLabel,
+		editSeekExWESC, seekLabel
 	]);
 	const maybeDeleteSoundChange = useCallback(() => {
-		const groups = $q<HTMLIonListElement>((".soundChanges"));
-		if(groups) { groups.closeSlidingItems(); }
 		const handler = () => {
 			setIsOpen(false);
 			dispatch(deleteSoundChangeWE(editing!.id));
@@ -253,15 +237,16 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{tpSrch}</IonLabel>
+						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tfSrch}
 							id="editSeekExWESC"
+							ref={editSeekExWESCRef}
 							className="ion-margin-top serifChars"
 							helperText={tSearch}
-							onIonChange={resetSeek}
+							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -271,32 +256,35 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 						<IonInput
 							aria-label={tfRepl}
 							id="editReplaceExWESC"
+							ref={editReplaceExWESCRef}
 							helperText={tReplace}
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="contextLabel">{tpCEx}</IonLabel>
+						<IonLabel className="contextLabel" ref={contextLabelRef}>{tpCEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tfCEx}
 							id="editContextExWESC"
+							ref={editContextExWESCRef}
 							className="ion-margin-top serifChars"
 							helperText={tContext}
-							onIonChange={resetContext}
+							onIonChange={() => contextLabel && contextLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="anticontextLabel">{tpEEx}</IonLabel>
+						<IonLabel className="anticontextLabel" ref={anticontextLabelRef}>{tpEEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tfEEx}
 							id="editAnticontextExWESC"
+							ref={editAnticontextExWESCRef}
 							className="ion-margin-top serifChars"
 							helperText={tException}
-							onIonChange={resetException}
+							onIonChange={() => anticontextLabel && anticontextLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -306,6 +294,7 @@ const EditSoundChangeModal: FC<ModalProps> = (props) => {
 						<IonInput
 							aria-label={tSCDesc}
 							id="editOptDescWESC"
+							ref={editOptDescWESCRef}
 							className="ion-margin-top"
 							placeholder={tOptional}
 						></IonInput>

@@ -26,9 +26,8 @@ export default useElement;
 
 export const useElementList = <A,T>(
 	input: A[],
-	getIdFunc: ((x:A) => string)): [ RefObject<{[key: string]: T}>, (item: A, el: T) => void,
-	() => void
-] => {
+	getIdFunc: ((x:A) => string)
+): [ RefObject<{[key: string]: T}>, (item: A, el: T) => void, () => void ] => {
 	// Managing element references
 	const inputElements = useRef<{ [key: string]: T }>({});
 	useEffect(() => {

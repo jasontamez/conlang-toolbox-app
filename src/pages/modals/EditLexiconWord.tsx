@@ -108,26 +108,27 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 	const [ originalString, setOriginalString ] = useState<string>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const columnInfoNumbered: [LexiconColumn, number][] = columnInfo.map((col, i) => [col, i]);
+	const getId = (duo: [LexiconColumn, number]) => `${duo[0].id}, ${duo[1]}`;
 	const [inputElements, updater]
 		= useElementList<[LexiconColumn, number], HTMLIonInputElement | null>(
-			columnInfo.map((col, i) => [col, i]),
-			duo => `${duo[0].id}, ${duo[1]}`
+			columnInfoNumbered,
+			getId
 		);
 	const onLoad = () => {
 		const id = (itemToEdit ? itemToEdit.id : "");
 		const cols = (itemToEdit ? [...itemToEdit.columns] : []);
 		cols.forEach((col: string, i: number) => {
-			const id = columnInfo[i].id;
-			getSetValue(inputElements.current[`${id}, ${i}`], col);
+			const id = getId(columnInfoNumbered[i]);
+			getSetValue(inputElements.current[id], col);
 		});
 		setOriginalString(cols.join(nonsense));
 		setId(id);
 		setCols(cols);
 	};
 	const currentInfo = () => {
-		return columnInfo.map((col: LexiconColumn, i: number) => {
-			const id = columnInfo[i].id;
-			return getSetValue(inputElements.current[`${id}, ${i}`]);
+		return columnInfoNumbered.map((duo) => {
+			return getSetValue(inputElements.current[getId(duo)]);
 		});
 	};
 	const cancelEditing = () => {
@@ -220,8 +221,9 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 			</IonHeader>
 			<IonContent className="hasSpecialLabels">
 				<IonList lines="none">
-					{columnInfo.map((col: LexiconColumn, i: number) => {
-						const getElement = (node: HTMLIonInputElement | null) => updater([col, i], node);
+					{columnInfoNumbered.map(duo => {
+						const [col, i] = duo;
+						const getElement = (node: HTMLIonInputElement | null) => updater(duo, node);
 						return <ColumnInput key={`edit_lex_input_${id}_${i}`} col={col} index={i} value={cols[i]} getElement={getElement} />
 					})}
 				</IonList>

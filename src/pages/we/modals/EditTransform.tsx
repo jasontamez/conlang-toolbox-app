@@ -27,23 +27,17 @@ import { ExtraCharactersModalOpener, SetState, StateObject, WETransformDirection
 import { editTransformWE, deleteTransformWE } from '../../../store/weSlice';
 import useTranslator from '../../../store/translationHooks';
 
-import { $i, $q } from '../../../components/DollarSignExports';
 import ltr from '../../../components/LTR';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 interface ModalProps extends ExtraCharactersModalOpener {
 	editing: null | WETransformObject
 	setEditing: SetState<null | WETransformObject>
-}
-
-function resetError() {
-	// Remove danger color if present
-	// Debounce means this sometimes doesn't exist by the time this is called.
-	const where = $q(".seekLabel");
-	if(where) { where.classList.remove("invalidValue"); }
 }
 
 const commons = [
@@ -79,6 +73,10 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tInEx, tOutEx ] = useI18Memo(presentations, "we");
 	const [ tpInEx, tpOutEx ] = useI18Memo(presentations, "we", context);
 	const tpDesc = useMemo(() => tw("DescOfTheTransformation", context), [tw]);
+	const [seekLabel, seekLabelRef] = useElement<HTMLIonLabelElement>();
+	const [editSearchExWE, editSearchExWERef] = useElement<HTMLIonInputElement>();
+	const [editReplaceExWE, editReplaceExWERef] = useElement<HTMLIonInputElement>();
+	const [editOptDescWE, editOptDescWERef] = useElement<HTMLIonInputElement>();
 
 	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
 	const dispatch = useDispatch();
@@ -87,28 +85,19 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings)
 	const [ direction, setDirection ] = useState<WETransformDirection>("both");
-	const [searchEl, setSearchEl] = useState<HTMLInputElement | null>(null);
-	const [replaceEl, setReplaceEl] = useState<HTMLInputElement | null>(null);
-	const [descEl, setDescEl] = useState<HTMLInputElement | null>(null);
 	const onLoad = useCallback(() => {
-		const _searchEl = $i<HTMLInputElement>("editSearchExWE");
-		const _replaceEl = $i<HTMLInputElement>("editReplaceExWE");
-		const _descEl = $i<HTMLInputElement>("editOptDescWE");
 		if(editing) {
 			const { seek, replace, description, direction } = editing;
-			if(_searchEl) { _searchEl.value = seek; }
-			if(_replaceEl) { _replaceEl.value = replace; }
-			if(_descEl) { _descEl.value = description; }
+			getSetValue(editSearchExWE, seek);
+			getSetValue(editReplaceExWE, replace);
+			getSetValue(editOptDescWE, description);
 			setDirection(direction);
 		} else {
-			if(_searchEl) { _searchEl.value = ""; }
-			if(_replaceEl) { _replaceEl.value = ""; }
-			if(_descEl) { _descEl.value = ""; }
+			getSetValue(editSearchExWE, "");
+			getSetValue(editReplaceExWE, "");
+			getSetValue(editOptDescWE, "");
 		}
-		setSearchEl(_searchEl);
-		setReplaceEl(_replaceEl);
-		setDescEl(_descEl);
-	}, [editing]);
+	}, [editing, editSearchExWE, editReplaceExWE, editOptDescWE]);
 
 	const cancelEditing = useCallback(() => {
 		setIsOpen(false);
@@ -117,10 +106,9 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	const maybeSaveNewTransformInfo = useCallback(() => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the editingTransform
-		const seek = (searchEl && searchEl.value) || "";
+		const seek = getSetValue(editSearchExWE);
 		if(seek === "") {
-			const el = $q(".seekLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			seekLabel && seekLabel.classList.add("invalidValue");
 			err.push(tNoSeek);
 		}
 		try {
@@ -145,8 +133,8 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			return;
 		}
 		// Everything ok!
-		const replace = (replaceEl && replaceEl.value) || "";
-		const description = (descEl && descEl.value.trim()) || "";
+		const replace = getSetValue(editReplaceExWE);
+		const description = getSetValue(editOptDescWE).trim();
 		dispatch(editTransformWE({
 			id: editing!.id,
 			seek,
@@ -163,9 +151,10 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			toast
 		});
 	}, [
-		cancelEditing, descEl, direction, dispatch, doAlert,
-		editing, replaceEl, searchEl, tCancel, tError,
-		tNoSeek, tThingSave, toast
+		cancelEditing, direction, dispatch, doAlert,
+		editing, tCancel, tError, tNoSeek, tThingSave,
+		toast, editSearchExWE, editReplaceExWE,
+		editOptDescWE, seekLabel
 	]);
 	const maybeDeleteTransform = useCallback(() => {
 		const makeArrow = (dir: string) => (
@@ -174,8 +163,6 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			:
 				((ltr() ? dir === "in" : dir === "out") ? "⟶" : "⟵")
 		);
-		const groups = $q<HTMLIonListElement>((".transforms"));
-		if(groups) { groups.closeSlidingItems(); }
 		const handler = () => {
 			dispatch(deleteTransformWE(editing!.id));
 			cancelEditing();
@@ -213,15 +200,16 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{tpInEx}</IonLabel>
+						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpInEx}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tInEx}
 							helperText={tSeek}
 							id="editSearchExWE"
+							ref={editSearchExWERef}
 							className="ion-margin-top serifChars"
-							onIonChange={resetError}
+							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -232,6 +220,7 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 							aria-label={tOutEx}
 							helperText={tReplace}
 							id="editReplaceExWE"
+							ref={editReplaceExWERef}
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
@@ -243,6 +232,7 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 							aria-label={tDesc}
 							id="editOptDescWE"
 							className="ion-margin-top"
+							ref={editOptDescWERef}
 							placeholder={tOptional}
 						></IonInput>
 					</IonItem>
