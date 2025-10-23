@@ -30,7 +30,6 @@ import { v4 as uuidv4 } from 'uuid';
 import {
 	LexiconColumn,
 	PageData,
-	SetState,
 	SortObject,
 	StateObject,
 	WECharGroupObject,
@@ -40,8 +39,8 @@ import {
 import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 import useTranslator from '../../store/translationHooks';
 
-import { $i, $a } from '../../components/DollarSignExports';
 import calculateCharGroupReferenceRegex from '../../components/CharGroupRegex';
+import useElement from '../../components/useElement';
 import toaster from '../../components/toaster';
 import { LexiconOutlineIcon } from '../../components/icons';
 import ModalWrap from "../../components/ModalWrap";
@@ -57,6 +56,11 @@ import ManageCustomInfoWE from './modals/CustomInfoWE';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import OutputOptionsModal from './modals/OutputOptions';
 import MaybeLoadPreset from "./modals/MaybeLoadWEPreset";
+
+import WordList from './output/WordList';
+import InOut from './output/InOut';
+import OutIn from './output/OutIn';
+import RulesApplied from './output/RulesApplied';
 import { OutCard } from "./WEinfo";
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
@@ -71,7 +75,17 @@ interface soundChangeModified {
 
 type CharGroupMap = {[key: string]: WECharGroupObject};
 
-const interpretFromAndTo = (input: string, charGroupMap: CharGroupMap) => {
+type OneWayRawOutput = [number, string, string];
+type OneWayLine = [number, string, string, string];
+type OneWordRawOutput = [number, string];
+type OneWordLine = [number, string];
+type RulesAppliedRawOutput = [number, string, string, [string, string][]];
+type RulesAppliedLine = [number, string, string, string, [string, string][]];
+
+// This function parses from/to expressions that incorporate
+//   Character Groups, transforming them into arrays
+//   of strings and/or other arrays of strings
+const interpretFromAndTo = (input: string, charGroupMap: CharGroupMap): arrayOfStringsAndStringArrays => {
 	let rules: (string | string[])[] = [],
 		assembly: (string | string[])[] = [],
 		fromTo = "",
@@ -195,13 +209,13 @@ const WEOut: FC<PageData> = (props) => {
 
 	const { modalPropsMaker } = props;
 	const [savedWords, setSavedWords] = useState<string[]>([]);
-	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
+	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: Element | null }>({});
 	const [copyString, setCopyString] = useState<string>("");
 	const [errorString, setErrorString] = useState<string>("");
-	const [displayRulesApplied, setDisplayRulesApplied] = useState<string[][][]>([]);
-	const [displayInputOutput, setDisplayInputOutput] = useState<string[][]>([]);
-	const [displayOutputInput, setDisplayOutputInput] = useState<string[][]>([]);
-	const [displayList, setDisplayList] = useState<string[]>([]);
+	const [displayRulesApplied, setDisplayRulesApplied] = useState<RulesAppliedLine[]>([]);
+	const [displayInputOutput, setDisplayInputOutput] = useState<OneWayLine[]>([]);
+	const [displayOutputInput, setDisplayOutputInput] = useState<OneWayLine[]>([]);
+	const [displayList, setDisplayList] = useState<OneWordLine[]>([]);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);
@@ -211,6 +225,7 @@ const WEOut: FC<PageData> = (props) => {
 	const [loadingOpen, setLoadingOpen] = useState<boolean>(false);
 	const [storedInfo, setStoredInfo] = useState<string[]>([]);
 	const [needToGenerate, setNeedToGenerate] = useState<boolean>(true);
+	const [outputPaneWE, outputPaneWERef] = useElement<HTMLDivElement>();
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -326,7 +341,7 @@ const WEOut: FC<PageData> = (props) => {
 					seek = new RegExp(seek.join(""), "g");
 				}
 			} else {
-				seek = calculateCharGroupReferenceRegex(temp, charGroupMap) as RegExp;
+				seek = calculateCharGroupReferenceRegex(temp, charGroupMap);
 			}
 			// REPLACE
 			temp = change.replace;
@@ -337,8 +352,12 @@ const WEOut: FC<PageData> = (props) => {
 					charGroupFlag = false;
 					replace = replace.join("");
 					// Need to run through seek to get a single RegExp
-					const temp = (seek as (string | string[])[]).map(unit => typeof unit === "string" ? unit : "[" + unit.join("") + "]");
-					seek = new RegExp(temp.join(""), "g");
+					if(Array.isArray(seek)) {
+						const temp = seek.map(unit =>
+							typeof unit === "string" ? unit : ("[" + unit.join("") + "]")
+						);
+						seek = new RegExp(temp.join(""), "g");
+					} // Seek should always be an array in this case.
 				}
 			} else {
 				replace = temp;
@@ -445,56 +464,61 @@ const WEOut: FC<PageData> = (props) => {
 		const arrowLR = "⟶";
 		const arrowRL = "⟵";
 		const reverse = (outputStyle === "outputFirst");
-		const arrow = (ltr($i<HTMLElement>("outputPaneWE") || document.body) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
-		let setter: SetState<string[][]> = setDisplayOutputInput;
+		const arrow = (ltr(outputPaneWE || document.body) ? (reverse ? arrowRL : arrowLR) : (reverse ? arrowLR : arrowRL));
 		switch(outputStyle) {
 			case "outputOnly": {
 				// [word...]
 				const evolved = changeTheWords({input: rawInput});
-				setDisplayList(evolved as string[]);
-				setCopyString(evolved.join("\n"));
+				setDisplayList(evolved as OneWordLine[]);
+				setCopyString(evolved.map(e => e[1]).join("\n"));
 				break;
 			}
-			case "inputFirst":
-				// [[word, original]...]
-				setter = setDisplayInputOutput;
-			// eslint-disable-next-line no-fallthrough
+			case "inputFirst": {
+				// [[original, word]...]
+				// leadingWord class for the first word
+				const output: OneWayLine[] = [];
+				const copiable: string[] = [];
+				changeTheWords({input: rawInput, reverse: reverse ? 1 : -1}).forEach(bit => {
+					const [i, original, result] = bit as OneWayRawOutput;
+					output.push([i, original, arrow, result]);
+					copiable.push(`${original} ${arrow} ${result}`);
+				});
+				setDisplayInputOutput(output);
+				setCopyString(copiable.join("\n"));
+				break;
+			}
 			case "outputFirst": {
 				// [[original, word]...]
 				// leadingWord class for the first word
-				const output: string[][] = [];
+				const output: OneWayLine[] = [];
+				const copiable: string[] = [];
 				changeTheWords({input: rawInput, reverse: reverse ? 1 : -1}).forEach(bit => {
-					const [one, two] = bit as [string, string];
-					output.push([one, arrow, two]);
+					const [i, result, original] = bit as OneWayRawOutput;
+					output.push([i, result, arrow, original]);
+					copiable.push(`${original} ${arrow} ${result}`);
 				});
-				setter(output);
+				setDisplayOutputInput(output);
+				setCopyString(copiable.join("\n"));
 				break;
 			}
 			case "rulesApplied": {
 				// [original, word, [[rule, new word]...]]
-				const rulesApplied: string[][][] = [];
+				const output: RulesAppliedLine[] = [];
+				const copiable: string[] = [];
 				changeTheWords({input: rawInput, rulesFlag: true}).forEach(unit => {
-					const [one, two, units] = unit as [string, string, [string, string][]];
-					const rows: string[][] = [
-						[one, arrow, two]
-					];
+					const [i, one, two, units] = unit as RulesAppliedRawOutput;
+					const rules: [string, string][] = [];
+					const copyString: string[] = [ `${one} ${arrow} ${two}` ];
 					units.forEach((bit: string[]) => {
 						const [rule, to] = bit;
-						rows.push([rule, to]);
+						rules.push([rule, to]);
+						copyString.push(`\t${rule} ${arrow} ${to}`)
 					});
-					rulesApplied.push(rows);
+					output.push([i, one, arrow, two, rules]);
+					copiable.push(copyString.join("\n"));
 				});
-				setDisplayRulesApplied(rulesApplied);
-				/*
-				[
-					[
-						[from, arrow, to],
-						[rule, to],
-						...
-					],
-					...
-				]
-				*/
+				setDisplayRulesApplied(output);
+				setCopyString(copiable.join("\n"));
 				break;
 			}
 			default:
@@ -505,10 +529,10 @@ const WEOut: FC<PageData> = (props) => {
 	// Take an array of strings and apply each sound change rule to each string one at a time,
 	//  then return an array according to the style requested
 	const changeTheWords = (props: { input: string[], rulesFlag?: boolean, reverse?: number}) => {
-		const { input, rulesFlag, reverse = 0 } = props;
-		const output: (string | [string, string] | [string, string, [string, string][]])[] = [];
+		const { input, rulesFlag = false, reverse = 0 } = props;
+		const output: (OneWordRawOutput | OneWayRawOutput | RulesAppliedRawOutput)[] = [];
 		// Loop over every inputted word in order.
-		input.forEach((original: string) => {
+		input.forEach((original: string, index: number) => {
 			let word = original;
 			const rulesThatApplied: [string, string][] = [];
 			// Loop over the transforms.
@@ -722,13 +746,17 @@ const WEOut: FC<PageData> = (props) => {
 			});
 			// Add the mangled word to the output list.
 			if(rulesFlag) {
-				output.push([original, word, rulesThatApplied]);
+				// RulesAppliedRawOutput
+				output.push([index, original, word, rulesThatApplied]);
 			} else if (reverse > 1) {
-				output.push([word, original]);
+				// OneWayRawOutput
+				output.push([index, word, original]);
 			} else if (reverse) {
-				output.push([original, word])
+				// OneWayRawOutput
+				output.push([index, original, word])
 			} else {
-				output.push(word);
+				// OneWordRawOutput
+				output.push([index, word]);
 			}
 		});
 		// Return the output.
@@ -770,10 +798,10 @@ const WEOut: FC<PageData> = (props) => {
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
+						Object.values(savedWordsObject).forEach(el => el && el.classList.remove("saved"));
 						setSavedWords([]);
 						setSavedWordsObject({});
 						setIsPickingSaving(false);
-						$a(".word.saved").forEach((obj) => obj.classList.remove("saved"));
 						// Toast
 						toaster({
 							message: tc("saveToLexColumn", { count: words.length, column: col.label }),
@@ -793,8 +821,9 @@ const WEOut: FC<PageData> = (props) => {
 			]
 		});
 	}, [
-		columns, dispatch, doAlert, lexSorter, navigator,
-		tc, toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords
+		columns, dispatch, doAlert, lexSorter, navigator, tc,
+		toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords,
+		savedWordsObject
 	]);
 	const donePickingAndSaving = useCallback(() => {
 		setIsPickingSaving(false);
@@ -819,19 +848,17 @@ const WEOut: FC<PageData> = (props) => {
 			toast
 		});
 	}, [donePickingAndSaving, isPickingSaving, tTapSave, toast]);
-	const maybeSaveThisWord = useCallback((text: string, id: string = "") => {
+	const maybeSaveThisWord = useCallback(<T extends Element>(text: string, id: string, el: T | null) => {
 		if(isPickingSaving) {
 			if(text) {
 				const newObj = {...savedWordsObject};
 				if(savedWordsObject[text]) {
 					setSavedWords(savedWords.filter(word => word !== text));
 					delete newObj[text];
-					const el = id && $i<HTMLElement>(id);
 					if(el) { el.classList.remove("saved"); }
 				} else {
 					setSavedWords([...savedWords, text]);
-					newObj[text] = true;
-					const el = id && $i<HTMLElement>(id);
+					newObj[text] = el;
 					if(el) { el.classList.add("saved"); }
 				}
 				setSavedWordsObject(newObj);
@@ -863,114 +890,29 @@ const WEOut: FC<PageData> = (props) => {
 	// Display
 	// // //
 
-	const parsedWordList = useMemo(() => {
-		// No need to set copyList here
-		return displayList.map((word: string, i: number) => {
-			const id = `evolved:basic:${word}:${i}`;
-			return <div className="word selectable" key={id} id={id} onClick={() => maybeSaveThisWord(word, id)}>{word}</div>;
-		});
-	}, [displayList, maybeSaveThisWord]);
-	const parsedInputOutput = useMemo(() => {
-		if(displayInputOutput.length === 0) {
-			// Don't mess with copyString unless we have something to add to it.
-			return [];
-		}
-		const copiable: string[] = [];
-		const output = displayInputOutput.map((words: string[], i: number) => {
-			const [original, arrow, result] = words;
-			const copystring = `${original} ${arrow} ${result}`;
-			const id = `evolved:inout:${copystring}:${i}`;
-			copiable.push(copystring);
-			return (
-				<div className="inputToOutput selectable" key={id}>
-					<span>{original}</span>{' '}
-					<span>{arrow}</span>{' '}
-					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
-				</div>
-			);
-		});
-		setCopyString(copiable.join("\n"));
-		return output;
-	}, [displayInputOutput, maybeSaveThisWord]);
-	const parsedOutputInput = useMemo(() => {
-		if(displayOutputInput.length === 0) {
-			// Don't mess with copyString unless we have something to add to it.
-			return [];
-		}
-		const copiable: string[] = [];
-		const output = displayOutputInput.map((words: string[], i: number) => {
-			const [original, arrow, result] = words;
-			const copystring = `${result} ${arrow} ${original}`;
-			const id = `evolved:outin:${copystring}:${i}`;
-			copiable.push(copystring);
-			return (
-				<div className="outputToInput selectable" key={id}>
-					<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>{' '}
-					<span>{arrow}</span>{' '}
-					<span>{original}</span>
-				</div>
-			);
-		});
-		setCopyString(copiable.join("\n"));
-		return output;
-	}, [displayOutputInput, maybeSaveThisWord]);
-	const parsedRulesApplied = useMemo(() => {
-		if(displayRulesApplied.length === 0) {
-			// Don't mess with copyString unless we have something to add to it.
-			return [];
-		}
-		const copiable: string[] = [];
-		const output = displayRulesApplied.map((group: string[][], i: number) => {
-			const [final, ...rules] = group;
-			const [original, arrow, result] = final;
-			const line = `${original} ${arrow} ${result}`;
-			copiable.push(line);
-			const id = `evolved:rules:${line}:${i}`;
-			return (
-				<div className="rulesApplied" key={id}>
-					<div className="inputToOutput selectable">
-						<span>{original}</span>{' '}
-						<span>{arrow}</span>{' '}
-						<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id)}>{result}</span>
-					</div>
-					<div className="rules selectable">
-						{rules.map((pair: string[], i: number) => {
-							const [rule, result] = pair;
-							copiable.push(`\t${rule} ${arrow} ${result}`);
-							return (
-								<div className="inputToOutput selectable" key={`${id}:output:${rule}:${result}:${i}`}>
-									<span>{rule}</span>{' '}
-									<span>{arrow}</span>{' '}
-									<span>{result}</span>
-								</div>
-							);
-						})}
-					</div>
-				</div>
-			);
-		});
-		setCopyString(copiable.join("\n"));
-		return output;
-	}, [displayRulesApplied, maybeSaveThisWord]);
-	const makeOutput = useMemo(() => {
+	const evolvedOutput = useMemo(() => {
 		if (errorString) {
 			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
-		} else if (parsedWordList.length > 0) {
-			return parsedWordList;
-		} else if (parsedRulesApplied.length > 0) {
-			return parsedRulesApplied;
-		} else if (parsedInputOutput.length > 0) {
-			return parsedInputOutput;
-		} else if (parsedOutputInput.length > 0) {
-			return parsedOutputInput;
+		} else if (displayList.length > 0) {
+			return <WordList words={displayList} maybeSaveThisWord={maybeSaveThisWord} />;
+		} else if (displayRulesApplied.length > 0) {
+			return <RulesApplied words={displayRulesApplied} maybeSaveThisWord={maybeSaveThisWord} />;
+		} else if (displayInputOutput.length > 0) {
+			return <InOut words={displayInputOutput} maybeSaveThisWord={maybeSaveThisWord} />;
+		} else if (displayOutputInput.length > 0) {
+			return <OutIn words={displayOutputInput} maybeSaveThisWord={maybeSaveThisWord} />;
 		}
 		return <></>;
-	}, [errorString, parsedWordList, parsedRulesApplied, parsedInputOutput, parsedOutputInput]);
+	}, [
+		errorString, displayList, displayRulesApplied,
+		displayInputOutput, displayOutputInput,
+		maybeSaveThisWord
+	]);
 
 	const undoLoading = useCallback(() => setLoadingOpen(false), [setLoadingOpen]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
 	const openLoadPreset = useCallback(() => setIsOpenLoadPreset(true), [setIsOpenLoadPreset]);
-	const openOptions = useCallback(() => setIsOpenOptions(true), []);
+	const openOptions = useCallback(() => setIsOpenOptions(true), [setIsOpenOptions]);
 	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
 	return (
 		<IonPage>
@@ -1039,8 +981,9 @@ const WEOut: FC<PageData> = (props) => {
 							<div
 								id="outputPaneWE"
 								className={"largePane selectable" + (isPickingSaving ? " pickAndSave" : "")}
+								ref={outputPaneWERef}
 							>
-								{makeOutput}
+								{evolvedOutput}
 							</div>
 						</div>
 					</div>
