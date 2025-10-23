@@ -20,18 +20,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { addTransformWG } from '../../../store/wgSlice';
 import { ExtraCharactersModalOpener } from '../../../store/types';
 
-import { $q, $a, $i } from '../../../components/DollarSignExports';
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
-function resetError() {
-	// Remove danger color if present
-	// Debounce means this sometimes doesn't exist by the time this is called.
-	const where = $q(".seekLabel");
-	if(where) { where.classList.remove("invalidValue"); }
-}
 
 const wgweWords = [
 	"DescOfTheTransformation", "noSearchMsg",
@@ -58,15 +53,17 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
+	const [seekLabel, seekLabelRef] = useElement<HTMLIonLabelElement>();
+	const [searchEx, searchExRef] = useElement<HTMLIonInputElement>();
+	const [replaceEx, replaceExRef] = useElement<HTMLIonInputElement>();
+	const [optDesc, optDescRef] = useElement<HTMLIonInputElement>();
 
 	const maybeSaveNewTransform = useCallback((close: boolean = true) => {
-		const searchEl = $i<HTMLInputElement>("searchEx");
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newTransform
-		const seek = (searchEl && searchEl.value) || "";
+		const seek = getSetValue(searchEx);
 		if(seek === "") {
-			const el = $q(".seekLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			if(seekLabel) { seekLabel.classList.add("invalidValue"); }
 			err.push(tNoSearch);
 		}
 		try {
@@ -91,10 +88,8 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			return;
 		}
 		// Everything ok!
-		const descEl = $i<HTMLInputElement>("optDesc");
-		const replaceEl = $i<HTMLInputElement>("replaceEx");
-		const replace = repairRegexErrors((replaceEl && replaceEl.value) || "");
-		const description = (descEl && descEl.value) || "";
+		const replace = repairRegexErrors(getSetValue(replaceEx));
+		const description = getSetValue(optDesc);
 		if(close) { setIsOpen(false); }
 		dispatch(addTransformWG({
 			id: uuidv4(),
@@ -102,7 +97,9 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			replace,
 			description
 		}));
-		$a<HTMLInputElement>("ion-list.wgAddTransform ion-input").forEach((input) => input.value = "");
+		getSetValue(searchEx, "");
+		getSetValue(replaceEx, "");
+		getSetValue(optDesc, "");
 		toaster({
 			message: tThingAdd,
 			duration: 2500,
@@ -110,7 +107,11 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			position: "top",
 			toast
 		});
-	}, [dispatch, doAlert, setIsOpen, toast, tThingAdd, tCancel, tError, tNoSearch]);
+	}, [
+		dispatch, doAlert, setIsOpen, toast, tThingAdd,
+		tCancel, tError, tNoSearch, searchEx, replaceEx,
+		optDesc, seekLabel
+	]);
 	const maybeSaveAndAdd = useCallback(() => maybeSaveNewTransform(false), [maybeSaveNewTransform]);
 	const maybeSaveAndClose = useCallback(() => maybeSaveNewTransform(), [maybeSaveNewTransform]);
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
@@ -121,14 +122,15 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
 					<IonItem className="labelled">
-						<IonLabel className="seekLabel">{tpSrch}</IonLabel>
+						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tSrch}
 							id="searchEx"
+							ref={searchExRef}
 							className="ion-margin-top serifChars"
-							onIonChange={resetError}
+							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -138,6 +140,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 						<IonInput
 							aria-label={tRepl}
 							id="replaceEx"
+							ref={replaceExRef}
 							className="ion-margin-top serifChars"
 						></IonInput>
 					</IonItem>
@@ -148,6 +151,7 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 						<IonInput
 							aria-label={tTransDesc}
 							id="optDesc"
+							ref={optDescRef}
 							className="ion-margin-top"
 							placeholder={tOptional}
 						></IonInput>

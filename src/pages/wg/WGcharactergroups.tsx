@@ -38,13 +38,13 @@ import {
 } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
-import { $q } from '../../components/DollarSignExports';
 import ModalWrap from "../../components/ModalWrap";
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import { CopyFromOtherIcon } from '../../components/icons';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
+import useElement from '../../components/useElement';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -130,12 +130,12 @@ const WGCharGroup: FC<PageData> = (props) => {
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const { characterGroups: weCharatcterGroups } = useSelector((state: StateObject) => state.we);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
+	const [charGroups, charGroupsRef] = useElement<HTMLIonListElement>();
 	const editCharGroup = useCallback((charGroup: WGCharGroupObject) => {
-		const groups = $q<HTMLIonListElement>(".charGroups");
-		if(groups) { groups.closeSlidingItems(); }
+		if(charGroups) { charGroups.closeSlidingItems(); }
 		setIsOpenEditCharGroup(true);
 		setEditing(charGroup);
-	}, []);
+	}, [charGroups]);
 	const allGroups = useMemo(() => characterGroups.map(
 		(charGroup: WGCharGroupObject) =>
 			<CharGroup
@@ -143,8 +143,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 				charGroup={charGroup}
 				editCharGroup={editCharGroup}
 				maybeDeleteCharGroup={(label: string, charGroup: WGCharGroupObject) => {
-					const groups = $q<HTMLIonListElement>((".charGroups"));
-					if(groups) { groups.closeSlidingItems(); }
+					if(charGroups) { charGroups.closeSlidingItems(); }
 					const handler = () => {
 						dispatch(deleteCharGroupWG(charGroup));
 						toaster({
@@ -171,7 +170,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 				tDelete={tDelete}
 			/>
 		),
-		[characterGroups, editCharGroup, tDelete, dispatch, tc, tw, toast, disableConfirms, doAlert, tYouSure]
+		[characterGroups, editCharGroup, tDelete, dispatch, tc, tw, toast, disableConfirms, doAlert, tYouSure, charGroups]
 	);
 	const openHelp = useCallback(() => setIsOpenInfo(true), []);
 	const openAddCG = useCallback(() => setIsOpenAddCharGroup(true), []);
@@ -283,7 +282,7 @@ const WGCharGroup: FC<PageData> = (props) => {
 				endButtons={endButtons}
 			/>
 			<IonContent fullscreen className="hasFabButton">
-				<IonList className="charGroups units" lines="none">
+				<IonList className="charGroups units" lines="none" ref={charGroupsRef}>
 					<IonItem className="nonUnit">
 						<IonLabel className="wrappableInnards belongsToBelow">
 							<div><strong>{tDropoffFormal}</strong></div>

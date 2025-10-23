@@ -26,17 +26,11 @@ import { ExtraCharactersModalOpener, StateObject, WGCharGroupObject, Zero_Fifty 
 import { addCharGroupWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
-import { $q, $i, $a } from '../../../components/DollarSignExports';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
 import ModalHeader from '../../../components/ModalHeader';
-
-function resetError(prop: string) {
-	// Remove danger color if present
-	// Debounce means this sometimes doesn't exist by the time this is called.
-	const where = $q("." + prop + "Label");
-	if(where) { where.classList.remove("invalidValue"); }
-}
+import useElement from '../../../components/useElement';
+import getSetValue from '../../../components/getSetValue';
 
 const presentations = ["LettersCharacters", "ShortLabel", "TitleOrDesc" ];
 const context = { context: "presentation" };
@@ -69,6 +63,12 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [hasDropoff, setHasDropoff] = useState<boolean>(false);
 	const [dropoff, setDropoff] = useState<Zero_Fifty>(characterGroupDropoff);
 	const [charGroupMap, setCharGroupMap] = useState<{ [key: string]: boolean }>({});
+	const [titleLabel, titleLabelRef] = useElement<HTMLIonLabelElement>();
+	const [labelLabel, labelLabelRef] = useElement<HTMLDivElement>();
+	const [runLabel, runLabelRef] = useElement<HTMLIonLabelElement>();
+	const [newWGCharGroupTitle, newWGCharGroupTitleRef] = useElement<HTMLIonInputElement>();
+	const [newWGShortLabel, newWGShortLabelRef] = useElement<HTMLIonInputElement>();
+	const [newWGCharGroupRun, newWGCharGroupRunRef] = useElement<HTMLIonInputElement>();
 
 	useEffect(() => {
 		const newMap: { [key: string]: boolean } = {};
@@ -78,13 +78,8 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 		setCharGroupMap(newMap);
 	}, [characterGroups]);
 
-	const resetLabel = useCallback(() => resetError("label"), []);
-	const resetTitle = useCallback(() => resetError("title"), []);
-	const resetRun = useCallback(() => resetError("run"), []);
-
 	const generateLabel = useCallback(() => {
-		const el = $i<HTMLInputElement>("newWGCharGroupTitle");
-		const words = (el ? el.value as string : "") // Get the title/description
+		const words = getSetValue(newWGCharGroupTitle) // Get the title/description
 			.trim() // trim leading/trailing whitespace
 			.replace(/[$\\[\]{}.*+()?^|]/g, "") // remove invalid characters
 			.toUpperCase() // uppercase everything
@@ -111,45 +106,36 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 			});
 		} else {
 			// Suitable label found
-			const el = $i<HTMLInputElement>("newWGShortLabel");
-			if(el) { el.value = label; }
-			resetError("label");
+			getSetValue(newWGShortLabel, label);
+			labelLabel && labelLabel.classList.remove("invalidValue")
 		}
-	}, [charGroupMap, toast, tNoSuggest]);
+	}, [charGroupMap, toast, tNoSuggest, newWGCharGroupTitle, newWGShortLabel, labelLabel]);
 
 	const maybeSaveNewCharGroup = useCallback((close: boolean = true) => {
 		const err: string[] = [];
 		// Test info for validness, then save if needed and reset the newCharGroup
-		const titleEl = $i<HTMLInputElement>("newWGCharGroupTitle");
-		const title = titleEl ? titleEl.value.trim() : "";;
-		const labelEl = $i<HTMLInputElement>("newWGShortLabel");
-		const label = labelEl ? labelEl.value.trim() : "";;
-		const runEl = $i<HTMLInputElement>("newWGCharGroupRun");
-		const run = runEl ? runEl.value.trim() : "";;
+		const title = getSetValue(newWGCharGroupTitle).trim();
+		const label = getSetValue(newWGShortLabel).trim();
+		const run = getSetValue(newWGCharGroupRun).trim();
 		if(title === "") {
-			const el = $q(".titleLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			if(titleLabel) { titleLabel.classList.add("invalidValue"); }
 			err.push(tNoTitle);
 		}
 		if(!label) {
-			const el = $q(".labelLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			if(labelLabel) { labelLabel.classList.add("invalidValue"); }
 			err.push(tNoLabel);
 		} else if (charGroupMap[label]) {
-			const el = $q(".labelLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			if(labelLabel) { labelLabel.classList.add("invalidValue"); }
 			err.push(tw("duplicateLabel", { label }));
 		} else {
 			const invalid = "^$\\[]{}.*+()?|";
 			if (invalid.indexOf(label) !== -1) {
-				const el = $q(".labelLabel");
-				if(el) { el.classList.add("invalidValue"); }
+				if(labelLabel) { labelLabel.classList.add("invalidValue"); }
 				err.push(tw("invalidLabel", { label }));
 			}
 		}
 		if(run === "") {
-			const el = $q(".runLabel");
-			if(el) { el.classList.add("invalidValue"); }
+			if(runLabel) { runLabel.classList.add("invalidValue"); }
 			err.push(tNoRun);
 		}
 		if(err.length > 0) {
@@ -176,7 +162,9 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 			run,
 			dropoffOverride: hasDropoff ? dropoff : undefined
 		}));
-		$a<HTMLInputElement>("ion-list.addWGCharGroup ion-input").forEach((input) => input.value = "");
+		getSetValue(newWGCharGroupTitle, "");
+		getSetValue(newWGShortLabel, "");
+		getSetValue(newWGCharGroupRun, "");
 		setHasDropoff(false);
 		setDropoff(characterGroupDropoff);
 		toaster({
@@ -189,7 +177,8 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	}, [
 		charGroupMap, characterGroupDropoff, dispatch, doAlert, dropoff,
 		hasDropoff, setIsOpen, tError, tCancel, toast, tw, tNoTitle,
-		tNoRun, tThingAdd, tNoLabel
+		tNoRun, tThingAdd, tNoLabel, titleLabel, labelLabel, runLabel,
+		newWGCharGroupRun, newWGCharGroupTitle, newWGShortLabel
 	]);
 	const maybeSaveAndAdd = useCallback(() => maybeSaveNewCharGroup(false), [maybeSaveNewCharGroup]);
 	const maybeSaveAndClose = useCallback(() => maybeSaveNewCharGroup(), [maybeSaveNewCharGroup]);
@@ -204,14 +193,15 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 			<IonContent>
 				<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
 					<IonItem className="labelled">
-						<IonLabel className="titleLabel">{tpTitleDesc}</IonLabel>
+						<IonLabel className="titleLabel" ref={titleLabelRef}>{tpTitleDesc}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tTitleDesc}
 							id="newWGCharGroupTitle"
+							ref={newWGCharGroupTitleRef}
 							className="ion-margin-top"
-							onIonChange={resetTitle}
+							onIonChange={() => titleLabel && titleLabel.classList.remove("invalidValue")}
 							autocomplete="on"
 						/>
 					</IonItem>
@@ -219,13 +209,15 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 						<div
 							slot="start"
 							className="ion-margin-end labelLabel"
+							ref={labelLabelRef}
 						>{tpShort}</div>
 						<IonInput
 							aria-label={tShort}
 							id="newWGShortLabel"
+							ref={newWGShortLabelRef}
 							className="serifChars"
 							helperText={t1Char}
-							onIonChange={resetLabel}
+							onIonChange={() => labelLabel && labelLabel.classList.remove("invalidValue")}
 							maxlength={1}
 						/>
 						<IonButton slot="end" onClick={generateLabel}>
@@ -233,15 +225,16 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 						</IonButton>
 					</IonItem>
 					<IonItem className="labelled">
-						<IonLabel className="runLabel">{tpLettChar}</IonLabel>
+						<IonLabel className="runLabel" ref={runLabelRef}>{tpLettChar}</IonLabel>
 					</IonItem>
 					<IonItem>
 						<IonInput
 							aria-label={tLettChar}
 							id="newWGCharGroupRun"
+							ref={newWGCharGroupRunRef}
 							className="ion-margin-top serifChars"
 							helperText={tEnterChar}
-							onIonChange={resetRun}
+							onIonChange={() => runLabel && runLabel.classList.remove("invalidValue")}
 						/>
 					</IonItem>
 					<IonItem>
