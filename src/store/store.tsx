@@ -14,8 +14,6 @@ import {
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
-import debounce from '../components/Debounce';
-import maybeUpdateTheme from '../components/MaybeUpdateTheme';
 import { CustomStorageWE } from '../components/PersistentInfo';
 //import packageJson from '../package.json';
 import msSlice from './msSlice';
@@ -246,23 +244,6 @@ const reducerConfig = {
 	internals: internalsSlice
 };
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
-	if(
-		incomingState
-		&& originalState
-		&& incomingState.appSettings
-		&& originalState.appSettings
-		&& (incomingState.appSettings.theme !== originalState.appSettings.theme)
-	) {
-		debounce<(x: string, y: string) => void, string>(
-			maybeUpdateTheme,
-			[
-				originalState.appSettings.theme as string || "Default",
-				incomingState.appSettings.theme as string || "Default"
-			],
-			100,
-			"rehydrateTheme"
-		);
-	}
 	return autoMergeLevel1(incomingState, originalState, reducedState, config);
 };
 const persistConfig: PersistConfig<typeof initialAppState> = {

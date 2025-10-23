@@ -144,6 +144,7 @@ const App = memo(() => {
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
 	const { lastClean } = useSelector((state: StateObject) => state.internals)
+	const { theme = "Default" } = useSelector((state: StateObject) => state.appSettings);
 	const [hasSet, setHasSet] = useState(false);
 
 	if (!hasSet) {
@@ -221,7 +222,7 @@ const App = memo(() => {
 		return () => { running = false; };
 	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
-		<IonApp>
+		<IonApp className={theme}>
 			<IonReactRouter>
 				<IonSplitPane contentId="main" when="xl">
 					<Menu />
