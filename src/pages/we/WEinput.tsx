@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler, FC } from 'react';
+import React, { useState, useCallback, FC } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -59,14 +59,9 @@ const WEInput: FC<PageData> = (props) => {
 		const trimmed = value.replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
 		dispatch(setInputWE(trimmed));
 	}, [dispatch]);
-	const inputUpdated: ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => {
-		let value: string = "";
-		if(e.target && e.target.value !== undefined) {
-			value = e.target.value;
-		} else if(weInput) {
-			value = weInput.value;
-		}
-		debounce<(x: string) => void, string>(updateInput, [value], 500, "WEinput");
+	const inputUpdated = useCallback(() => {
+		const value = (weInput ? weInput.value : "").replace(/(?:\s*\r?\n\s*)+/g, "\n").trim();
+		debounce<(x: string) => void, string>(updateInput, [value], 100, "WEinput");
 	}, [updateInput, weInput]);
 	const acceptImport = useCallback((value: string) => {
 		weInput && (weInput.value = value);

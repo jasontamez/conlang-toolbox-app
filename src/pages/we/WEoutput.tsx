@@ -209,7 +209,7 @@ const WEOut: FC<PageData> = (props) => {
 
 	const { modalPropsMaker } = props;
 	const [savedWords, setSavedWords] = useState<string[]>([]);
-	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: Element | null }>({});
+	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const [copyString, setCopyString] = useState<string>("");
 	const [errorString, setErrorString] = useState<string>("");
 	const [displayRulesApplied, setDisplayRulesApplied] = useState<RulesAppliedLine[]>([]);
@@ -798,7 +798,6 @@ const WEOut: FC<PageData> = (props) => {
 						// Send off to the lexicon
 						dispatch(addItemsToLexiconColumn([words, col.id, lexSorter]));
 						// Clear info
-						Object.values(savedWordsObject).forEach(el => el && el.classList.remove("saved"));
 						setSavedWords([]);
 						setSavedWordsObject({});
 						setIsPickingSaving(false);
@@ -822,8 +821,7 @@ const WEOut: FC<PageData> = (props) => {
 		});
 	}, [
 		columns, dispatch, doAlert, lexSorter, navigator, tc,
-		toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords,
-		savedWordsObject
+		toast, tCancel, tGoLex, tSave, tSelCol, tSelectedWords
 	]);
 	const donePickingAndSaving = useCallback(() => {
 		setIsPickingSaving(false);
@@ -848,18 +846,16 @@ const WEOut: FC<PageData> = (props) => {
 			toast
 		});
 	}, [donePickingAndSaving, isPickingSaving, tTapSave, toast]);
-	const maybeSaveThisWord = useCallback(<T extends Element>(text: string, id: string, el: T | null) => {
+	const maybeSaveThisWord = useCallback((text: string) => {
 		if(isPickingSaving) {
 			if(text) {
 				const newObj = {...savedWordsObject};
 				if(savedWordsObject[text]) {
 					setSavedWords(savedWords.filter(word => word !== text));
 					delete newObj[text];
-					if(el) { el.classList.remove("saved"); }
 				} else {
 					setSavedWords([...savedWords, text]);
-					newObj[text] = el;
-					if(el) { el.classList.add("saved"); }
+					newObj[text] = true;
 				}
 				setSavedWordsObject(newObj);
 			}
@@ -894,19 +890,19 @@ const WEOut: FC<PageData> = (props) => {
 		if (errorString) {
 			return <h2 color="danger" className="ion-text-center">{errorString}</h2>;
 		} else if (displayList.length > 0) {
-			return <WordList words={displayList} maybeSaveThisWord={maybeSaveThisWord} />;
+			return <WordList words={displayList} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />;
 		} else if (displayRulesApplied.length > 0) {
-			return <RulesApplied words={displayRulesApplied} maybeSaveThisWord={maybeSaveThisWord} />;
+			return <RulesApplied words={displayRulesApplied} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />;
 		} else if (displayInputOutput.length > 0) {
-			return <InOut words={displayInputOutput} maybeSaveThisWord={maybeSaveThisWord} />;
+			return <InOut words={displayInputOutput} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />;
 		} else if (displayOutputInput.length > 0) {
-			return <OutIn words={displayOutputInput} maybeSaveThisWord={maybeSaveThisWord} />;
+			return <OutIn words={displayOutputInput} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />;
 		}
 		return <></>;
 	}, [
 		errorString, displayList, displayRulesApplied,
 		displayInputOutput, displayOutputInput,
-		maybeSaveThisWord
+		maybeSaveThisWord, savedWordsObject
 	]);
 
 	const undoLoading = useCallback(() => setLoadingOpen(false), [setLoadingOpen]);

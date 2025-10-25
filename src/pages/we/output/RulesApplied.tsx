@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import useElement from '../../../components/useElement';
 
 type Input = [number, string, string, string, [string, string][]];
-type SaveFunc = (text: string, id: string, el: HTMLDivElement | HTMLSpanElement | null) => void;
+type SaveFunc = (text: string) => void;
 
 interface Props {
 	words: Input[]
 	maybeSaveThisWord: SaveFunc
+	savedWordsObject: { [key: string]: boolean }
 }
 interface SelectableProps {
 	result: string
@@ -15,22 +15,23 @@ interface SelectableProps {
 	rules: [string, string][]
 	id: string
 	maybeSaveThisWord: SaveFunc
+	savedWordsObject: { [key: string]: boolean }
 }
 
-const InputToOutput: FC<Omit<SelectableProps, "rules">> = ({original, arrow, result, id, maybeSaveThisWord}) => {
-	const [thisEl, elementRef] = useElement<HTMLSpanElement>();
+const InputToOutput: FC<Omit<SelectableProps, "rules">> = ({original, arrow, result, id, maybeSaveThisWord, savedWordsObject}) => {
+	const className = savedWordsObject[result] ? "word saved" : "word";
 	return (
 		<div className="inputToOutput selectable">
 			<span>{original}</span>{' '}
 			<span>{arrow}</span>{' '}
-			<span className="word" id={id} onClick={() => maybeSaveThisWord(result, id, thisEl)} ref={elementRef}>{result}</span>
+			<span className={className} id={id} onClick={() => maybeSaveThisWord(result)}>{result}</span>
 		</div>
 	);
 }
-const RulesLine: FC<SelectableProps> = ({original, arrow, result, id, rules, maybeSaveThisWord}) => {
+const RulesLine: FC<SelectableProps> = ({original, arrow, result, id, rules, maybeSaveThisWord, savedWordsObject}) => {
 	return (
 		<div className="rulesApplied selectable">
-			<InputToOutput key={id} id={id} original={original} arrow={arrow} result={result} maybeSaveThisWord={maybeSaveThisWord} />
+			<InputToOutput key={id} id={id} original={original} arrow={arrow} result={result} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />
 			<div className="rules selectable">
 				{rules.map((pair: string[], i: number) => {
 					const [rule, result] = pair;
@@ -47,12 +48,12 @@ const RulesLine: FC<SelectableProps> = ({original, arrow, result, id, rules, may
 	);
 }
 
-const RulesApplied: FC<Props> = ({words, maybeSaveThisWord}) => {
+const RulesApplied: FC<Props> = ({words, maybeSaveThisWord, savedWordsObject}) => {
 	return (
 		<div>{words.map((input) => {
 			const [i, original, arrow, result, rules] = input;
 			const id = `evolved:rules:${original} ${arrow} ${result}:${i}`;
-			return <RulesLine key={id} id={id} original={original} arrow={arrow} result={result} maybeSaveThisWord={maybeSaveThisWord} rules={rules} />;
+			return <RulesLine key={id} id={id} original={original} arrow={arrow} result={result} maybeSaveThisWord={maybeSaveThisWord} rules={rules} savedWordsObject={savedWordsObject} />;
 		})}</div>
 	);
 };

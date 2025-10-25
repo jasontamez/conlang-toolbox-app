@@ -340,7 +340,7 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		}
 		setWordMatches([...wordMatches.filter(x => x !== input), input]);
 		setAddingWordMatch(false);
-		getSetValue(wordMatch);
+		getSetValue(wordMatch, "");
 		return toaster({
 			message: tSaved,
 			color: "success",

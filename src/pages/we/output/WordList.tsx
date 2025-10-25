@@ -1,29 +1,31 @@
 import React, { FC } from 'react';
-import useElement from '../../../components/useElement';
 
 type Input = [number, string];
+type SaveFunc = (text: string) => void;
 
 interface Props {
 	words: Input[]
-	maybeSaveThisWord: <T extends Element>(text: string, id: string, el: T | null) => void
+	maybeSaveThisWord: SaveFunc
+	savedWordsObject: { [key: string]: boolean }
 }
 interface MinSelectableProps {
 	result: string
 	id: string
-	maybeSaveThisWord: (text: string, id: string, el: HTMLDivElement | null) => void
+	maybeSaveThisWord: SaveFunc
+	savedWordsObject: { [key: string]: boolean }
 }
 
-const OutputOnly: FC<MinSelectableProps> = ({id, result: word, maybeSaveThisWord}) => {
-	const [thisEl, elementRef] = useElement<HTMLDivElement>();
-	return <div className="word selectable" key={id} id={id} onClick={() => maybeSaveThisWord(word, id, thisEl)} ref={elementRef}>{word}</div>;
+const OutputOnly: FC<MinSelectableProps> = ({id, result: word, maybeSaveThisWord, savedWordsObject}) => {
+	const className = savedWordsObject[word] ? "word selectable saved" : "selectable word";
+	return <div className={className} key={id} id={id} onClick={() => maybeSaveThisWord(word)}>{word}</div>;
 };
 
-const WordList: FC<Props> = ({words, maybeSaveThisWord}) => {
+const WordList: FC<Props> = ({words, maybeSaveThisWord, savedWordsObject}) => {
 	return (
 		<div>{words.map((input) => {
 			const [i, word] = input;
 			const id = `evolved:basic:${word}:${i}`;
-			return <OutputOnly key={id} id={id} result={word} maybeSaveThisWord={maybeSaveThisWord} />;
+			return <OutputOnly key={id} id={id} result={word} maybeSaveThisWord={maybeSaveThisWord} savedWordsObject={savedWordsObject} />;
 		})}</div>
 	);
 };

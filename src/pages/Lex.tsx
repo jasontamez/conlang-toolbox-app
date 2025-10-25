@@ -572,7 +572,6 @@ const Lex: FC<PageData> = (props) => {
 			const i_id = `input_lex_${id}`;
 			const el = columnInputElements.current[id];
 			const info: string = getSetValue(el);
-			console.log(id, el, `[${info}]`);
 			newInfo.push(info);
 			if(info) { foundFlag = true; }
 			newBlank[id] = "";

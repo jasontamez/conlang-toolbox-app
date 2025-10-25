@@ -45,6 +45,7 @@ import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 import useI18Memo from '../../components/useI18Memo';
+import useElement from '../../components/useElement';
 
 import ManageCustomInfo from './modals/CustomInfoDJ';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -54,7 +55,6 @@ import EditGroup from './modals/EditGroup';
 import EditDeclenjugation from './modals/EditDeclenjugation';
 import CaseMaker from './modals/CaseMaker';
 import { GroupCard } from './DJinfo';
-import useElement from '../../components/useElement';
 
 interface GroupingInfo {
 	label: string
