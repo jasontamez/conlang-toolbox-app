@@ -69,13 +69,13 @@ import useTranslator from '../store/translationHooks';
 
 import AddLexiconItemModal from './modals/AddLexiconWord';
 import EditLexiconItemModal from './modals/EditLexiconWord';
-import EditLexiconOrderModal from './modals/EditLexiconWordOrder';
+import LexiconSettingsModal from './modals/LexiconSettings';
 import LexiconStorageModal from './modals/LexiconStorage';
 import LoadLexiconModal from './modals/LoadLexicon';
 import DeleteLexiconModal from './modals/DeleteLexicon';
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import ExportLexiconModal from './modals/ExportLexicon';
-import EditLexiconSortModal from './modals/EditSort';
+import LexiconSortModal from './modals/LexiconSort';
 import MergeLexiconItemsModal from './modals/MergeLexiconItems';
 import useElement, {useElementList} from '../components/useElement';
 import Header from '../components/Header';
@@ -717,13 +717,13 @@ const Lex: FC<PageData> = (props) => {
 				columnInfo={columns}
 				sorter={sorter}
 			/>
-			<EditLexiconOrderModal
+			<LexiconSettingsModal
 				{...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
 				openECM={setIsOpenECM}
 				sortLang={sortLanguage || defaultSortLanguage}
 				sensitivity={sensitivity}
 			/>
-			<EditLexiconSortModal
+			<LexiconSortModal
 				{...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
 				sorter={sorter}
 			/>

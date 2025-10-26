@@ -159,7 +159,7 @@ const ReorderableColumn: FC<ReorderableColumnProps> = (props) => {
 	);
 };
 
-const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
+const LexiconSettingsModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tClose, tDefSort, tDelete, tExChar,
@@ -191,7 +191,7 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [columnReorderableElements, updateColumnReorderableElements] =
-		useElementList<LexiconColumn, HTMLIonInputElement | null>(columns, (col) => col.id);
+		useElementList<LexiconColumn, HTMLIonInputElement | null>(shadowColumns, (col) => col.id);
 
 	const closeModal = useCallback(() => {
 		setShadowColumns(columns.slice().map(
@@ -533,4 +533,4 @@ const EditLexiconOrderModal: FC<OrderModalProps> = (props) => {
 	);
 };
 
-export default EditLexiconOrderModal;
+export default LexiconSettingsModal;

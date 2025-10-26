@@ -36,7 +36,7 @@ interface EditSortModal extends ModalProperties {
 
 const translations = [ "LexiconSorting", "sortLexDescription" ];
 
-const EditLexiconSortModal: FC<EditSortModal> = (props) => {
+const LexiconSortModal: FC<EditSortModal> = (props) => {
 	const [ t ] = useTranslator('lexicon');
 	const [ tc ] = useTranslator('common');
 	const tClose = useMemo(() => tc("Close"), [tc]);
@@ -116,4 +116,4 @@ const EditLexiconSortModal: FC<EditSortModal> = (props) => {
 	);
 };
 
-export default EditLexiconSortModal;
+export default LexiconSortModal;
