@@ -13,7 +13,10 @@ import {
 	useIonAlert,
 	useIonToast,
 	IonRippleEffect,
-	IonButton
+	TextareaCustomEvent,
+	TextareaChangeEventDetail,
+	InputCustomEvent,
+	InputChangeEventDetail
 } from '@ionic/react';
 import {
 	addCircleOutline,
@@ -35,8 +38,6 @@ import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
-import useElement from '../../components/useElement';
-import getSetValue from '../../components/getSetValue';
 import { ModalContext } from '../../components/contexts';
 
 import { SyntaxHeader } from './MorphoSyntaxElements';
@@ -241,14 +242,12 @@ const Syntax: FC = () => {
 	const closeLoading = useCallback(() => setIsLoading(false), [setIsLoading]);
 	const openLoad = useCallback(() => openMSModal(setIsOpenLoadMS), [openMSModal]);
 	const openDel = useCallback(() => openMSModal(setIsOpenDelMS), [openMSModal]);
-	const [msDesc, msDescRef] = useElement<HTMLIonTextareaElement>();
-	const [msTitle, msTitleRef] = useElement<HTMLIonInputElement>();
-	const saveAll = useCallback(() => {
-		const title = getSetValue(msTitle);
-		const desc = getSetValue(msDesc);
-		dispatch(setMorphoSyntaxText(["title", title]));
-		dispatch(setMorphoSyntaxText(["description", desc]));
-	}, [dispatch, msTitle, msDesc]);
+	const saveTitle = useCallback(() => (e: InputCustomEvent<InputChangeEventDetail>) => {
+			dispatch(setMorphoSyntaxText(["title", String(e.target.value)]));
+		}, [dispatch]);
+	const saveDescription = useCallback((e: TextareaCustomEvent<TextareaChangeEventDetail>) => {
+		dispatch(setMorphoSyntaxText(["description", String(e.target.value)]));
+	}, [dispatch]);
 	return (
 		<IonPage>
 			<IonLoading
@@ -291,7 +290,7 @@ const Syntax: FC = () => {
 							id="msTitle"
 							className="ion-margin-top"
 							placeholder={tName}
-							ref={msTitleRef}
+							onIonChange={saveTitle}
 						></IonInput>
 					</IonItem>
 					<IonItem className="labelled">
@@ -304,12 +303,9 @@ const Syntax: FC = () => {
 							id="msDesc"
 							className="ion-margin-top"
 							placeholder={tShortDesc}
+							onIonChange={saveDescription}
 							rows={3}
-							ref={msDescRef}
 						/>
-					</IonItem>
-					<IonItem>
-						<IonButton slot="end" color="success" onClick={saveAll}>Save Title and Description</IonButton>
 					</IonItem>
 				</IonList>
 				<div className="aside">
