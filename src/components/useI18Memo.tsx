@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { InterpolationMap, TOptionsBase } from "i18next";
-import { $Dictionary } from "i18next/typescript/helpers";
+
+type $Dictionary = { [key: string]: unknown };
 
 type OptionsType = (TOptionsBase & $Dictionary & InterpolationMap<string>) | undefined;
 
