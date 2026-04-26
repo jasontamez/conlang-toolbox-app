@@ -8,6 +8,8 @@ const ms = {
 		"**NOTE: this option has no effect on JSON and XML exports.**"
 	],
 
+	info: "MorphoSyntax Info",
+
 	clearMSInfo: "Clear MorphoSyntax Info",
 	confirmClear: "Yes, Clear All",
 	noInfoToClearMsg: "You have no information to clear.",

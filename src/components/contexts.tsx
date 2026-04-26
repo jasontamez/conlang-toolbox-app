@@ -8,3 +8,6 @@ export interface ModalContextProps {
 export const ModalContext = createContext(
 	(isOpen: boolean, setIsOpen: SetBooleanState):ModalContextProps => ({ isOpen, setIsOpen })
 );
+export const ExCharContext = createContext(
+	() => { console.log("ExCharContext") }
+);

@@ -46,7 +46,7 @@ import useElement from '../components/useElement';
 import yesNoAlert from '../components/yesNoAlert';
 import PermanentInfo from '../components/PermanentInfo';
 import useI18Memo from '../components/useI18Memo';
-import { ModalContext } from '../components/contexts';
+import { ExCharContext, ModalContext } from '../components/contexts';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -87,6 +87,7 @@ const SortSettings: FC = () => {
 	const [doAlert] = useIonAlert();
 	// main modals
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const [addModalOpen, setAddModalOpen] = useState<boolean>(false);
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 	const [editingCustomSort, setEditingCustomSort] = useState<SortObject | null>(null);
@@ -237,79 +238,80 @@ const SortSettings: FC = () => {
 
 	return (
 		<IonPage>
-			<AddCustomSort
-				{...modalPropsMaker(addModalOpen, setAddModalOpen)}
-				openECM={setIsOpenECM}
+			<ExCharContext value={openEx}>
+				<AddCustomSort
+					{...modalPropsMaker(addModalOpen, setAddModalOpen)}
 
-				langObj={langObj}
-				languages={languages}
+					langObj={langObj}
+					languages={languages}
 
-				addRelationModalInfo={addRelationModalInfo}
-				savedRelation={savedRelation}
-				setSavedRelation={setSavedRelation}
+					addRelationModalInfo={addRelationModalInfo}
+					savedRelation={savedRelation}
+					setSavedRelation={setSavedRelation}
 
-				editRelationModalInfo={editRelationModalInfo}
-				setIncomingRelation={setIncomingRelation}
-				outgoingRelation={outgoingRelation}
-				setOutgoingRelation={setOutgoingRelation}
+					editRelationModalInfo={editRelationModalInfo}
+					setIncomingRelation={setIncomingRelation}
+					outgoingRelation={outgoingRelation}
+					setOutgoingRelation={setOutgoingRelation}
 
-				addEqualityModalInfo={addEqualityModalInfo}
-				savedEquality={savedEquality}
-				setSavedEquality={setSavedEquality}
+					addEqualityModalInfo={addEqualityModalInfo}
+					savedEquality={savedEquality}
+					setSavedEquality={setSavedEquality}
 
-				editEqualityModalInfo={editEqualityModalInfo}
-				setIncomingEquality={setIncomingEquality}
-				outgoingEquality={outgoingEquality}
-				setOutgoingEquality={setOutgoingEquality}
-			/>
-			<AddCustomSortRelation
-				{...addRelationModalInfo}
-				openECM={setIsOpenECM}
-				setSavedRelation={setSavedRelation}
-			/>
-			<EditCustomSortRelation
-				{...editRelationModalInfo}
-				openECM={setIsOpenECM}
-				incomingRelation={incomingRelation}
-				setOutgoingRelation={setOutgoingRelation}
-			/>
-			<AddCustomSortEquality
-				{...addEqualityModalInfo}
-				openECM={setIsOpenECM}
-				setSavedEquality={setSavedEquality}
-			/>
-			<EditCustomSortEquality
-				{...editEqualityModalInfo}
-				openECM={setIsOpenECM}
-				incomingEquality={incomingEquality}
-				setOutgoingEquality={setOutgoingEquality}
-			/>
-			<EditCustomSort
-				{...modalPropsMaker(editModalOpen, setEditModalOpen)}
-				openECM={setIsOpenECM}
-				editingCustomSort={editingCustomSort}
+					editEqualityModalInfo={editEqualityModalInfo}
+					setIncomingEquality={setIncomingEquality}
+					outgoingEquality={outgoingEquality}
+					setOutgoingEquality={setOutgoingEquality}
+				/>
+				<AddCustomSortRelation
+					{...addRelationModalInfo}
+					openECM={setIsOpenECM}
+					setSavedRelation={setSavedRelation}
+				/>
+				<EditCustomSortRelation
+					{...editRelationModalInfo}
+					openECM={setIsOpenECM}
+					incomingRelation={incomingRelation}
+					setOutgoingRelation={setOutgoingRelation}
+				/>
+				<AddCustomSortEquality
+					{...addEqualityModalInfo}
+					openECM={setIsOpenECM}
+					setSavedEquality={setSavedEquality}
+				/>
+				<EditCustomSortEquality
+					{...editEqualityModalInfo}
+					openECM={setIsOpenECM}
+					incomingEquality={incomingEquality}
+					setOutgoingEquality={setOutgoingEquality}
+				/>
+				<EditCustomSort
+					{...modalPropsMaker(editModalOpen, setEditModalOpen)}
+					openECM={setIsOpenECM}
+					editingCustomSort={editingCustomSort}
 
-				langObj={langObj}
-				languages={languages}
+					langObj={langObj}
+					languages={languages}
 
-				addRelationModalInfo={addRelationModalInfo}
-				savedRelation={savedRelation}
-				setSavedRelation={setSavedRelation}
+					addRelationModalInfo={addRelationModalInfo}
+					savedRelation={savedRelation}
+					setSavedRelation={setSavedRelation}
 
-				editRelationModalInfo={editRelationModalInfo}
-				setIncomingRelation={setIncomingRelation}
-				outgoingRelation={outgoingRelation}
-				setOutgoingRelation={setOutgoingRelation}
+					editRelationModalInfo={editRelationModalInfo}
+					setIncomingRelation={setIncomingRelation}
+					outgoingRelation={outgoingRelation}
+					setOutgoingRelation={setOutgoingRelation}
 
-				addEqualityModalInfo={addEqualityModalInfo}
-				savedEquality={savedEquality}
-				setSavedEquality={setSavedEquality}
+					addEqualityModalInfo={addEqualityModalInfo}
+					savedEquality={savedEquality}
+					setSavedEquality={setSavedEquality}
 
-				editEqualityModalInfo={editEqualityModalInfo}
-				setIncomingEquality={setIncomingEquality}
-				outgoingEquality={outgoingEquality}
-				setOutgoingEquality={setOutgoingEquality}
-			/>
+					editEqualityModalInfo={editEqualityModalInfo}
+					setIncomingEquality={setIncomingEquality}
+					outgoingEquality={outgoingEquality}
+					setOutgoingEquality={setOutgoingEquality}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<IonHeader>
 				<IonToolbar color="primary">
