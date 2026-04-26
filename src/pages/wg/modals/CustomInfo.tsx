@@ -21,7 +21,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Base_WG, ExtraCharactersModalOpener, SetState, StateObject } from '../../../store/types';
+import { Base_WG, ExtraCharactersModalOpener, SetState, StateObject, WGState } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
@@ -116,12 +116,15 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			});
 		}
 		const doSave = (title: string, msg: string) => {
-			const {
-				// Remove props we aren't saving
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				output, showSyllableBreaks, sentencesPerText, capitalizeWords, sortWordlist, wordlistMultiColumn, wordsPerWordlist,
-				...save
-			} = wg;
+			// Remove props we aren't saving
+			const save: Partial<WGState> = {...wg};
+			delete save.output;
+			delete save.showSyllableBreaks;
+			delete save.sentencesPerText;
+			delete save.capitalizeWords;
+			delete save.sortWordlist;
+			delete save.wordlistMultiColumn;
+			delete save.wordsPerWordlist;
 			CustomStorageWG.setItem(title, save).then(() => {
 				toaster({
 					message: tc(msg, { title }),

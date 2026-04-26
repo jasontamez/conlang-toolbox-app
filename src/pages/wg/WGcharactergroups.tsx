@@ -264,11 +264,11 @@ const WGCharGroup: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<AddCharGroupModal
-				{...props.modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
+				{...modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
 				openECM={setIsOpenECM}
 			/>
 			<EditCharGroupModal
-				{...props.modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)}
+				{...modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)}
 				openECM={setIsOpenECM}
 				editing={editing}
 				setEditing={setEditing}

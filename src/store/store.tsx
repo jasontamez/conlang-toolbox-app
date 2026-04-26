@@ -25,7 +25,6 @@ import weSlice from './weSlice';
 import extraCharactersSlice from './extraCharactersSlice';
 import sortingSlice from './sortingSlice';
 import declenjugatorSlice from './declenjugatorSlice';
-import blankAppState from './blankAppState';
 import internalsSlice from './internalsSlice';
 import { AppSettings, ConceptDisplay, ConceptDisplayObject, StateObject, ThemeNames } from './types';
 
@@ -33,8 +32,7 @@ import { AppSettings, ConceptDisplay, ConceptDisplayObject, StateObject, ThemeNa
 //
 //
 // ----- USE THIS to put in temporary changes for testing.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const initialAppState = {...blankAppState};
+//const initialAppState = {...blankAppState};
 // ----- END
 //
 //
@@ -246,7 +244,7 @@ const reducerConfig = {
 const stateReconciler = (incomingState: any, originalState: any, reducedState: any, config: any) => {
 	return autoMergeLevel1(incomingState, originalState, reducedState, config);
 };
-const persistConfig: PersistConfig<typeof initialAppState> = {
+const persistConfig: PersistConfig<StateObject> = {
 	key: 'root',
 	version: 4,
 	storage,

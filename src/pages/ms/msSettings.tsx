@@ -85,8 +85,7 @@ const Syntax: FC<PageData> = (props) => {
 		title,
 		description,
 		id,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		lastSave,
+	//	lastSave,
 		...msRemainder
 	} = useSelector((state: StateObject) => state.ms);
 	const allProps = Object.keys(msRemainder).length;
@@ -207,11 +206,11 @@ const Syntax: FC<PageData> = (props) => {
 		const ms: MSState = {
 			// Use possibly-new key
 			id: key,
-			// Use 'now'
-			lastSave: now,
 			title,
 			description,
-			...msRemainder
+			...msRemainder,
+			// Use 'now'
+			lastSave: now
 		};
 		MorphoSyntaxStorage.setItem(key, ms)
 			.then(() => {

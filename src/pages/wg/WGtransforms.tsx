@@ -214,11 +214,11 @@ const WGRew: FC<PageData> = (props) => {
 
 	return (
 		<IonPage>
-			<AddTransformModal {...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
+			<AddTransformModal {...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
 				openECM={setIsOpen}
 			/>
 			<EditTransformModal
-				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+				{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
 				openECM={setIsOpen}
 				editing={editing}
 				setEditing={setEditing}

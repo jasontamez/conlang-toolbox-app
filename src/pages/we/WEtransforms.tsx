@@ -230,11 +230,11 @@ const WERew: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<AddTransformModal
-				{...props.modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
+				{...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
 				openECM={setIsOpenECM}
 			/>
 			<EditTransformModal
-				{...props.modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+				{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
 				openECM={setIsOpenECM}
 				editing={editing}
 				setEditing={setEditing}

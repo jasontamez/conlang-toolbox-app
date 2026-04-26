@@ -232,11 +232,11 @@ const WESChange: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<AddSoundChangeModal
-				{...props.modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)}
+				{...modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)}
 				openECM={setIsOpenECM}
 			/>
 			<EditSoundChangeModal
-				{...props.modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
+				{...modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
 				openECM={setIsOpenECM}
 				editing={editing}
 				setEditing={setEditing}

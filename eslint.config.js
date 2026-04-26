@@ -27,7 +27,8 @@ export default tseslint.config(
       'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
       'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-expressions': ["error", { "allowShortCircuit": true }]
+      '@typescript-eslint/no-unused-expressions': ["error", { "allowShortCircuit": true }],
+      '@typescript-eslint/no-unused-vars': 'warn'
     },
   },
 )

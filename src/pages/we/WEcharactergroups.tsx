@@ -221,11 +221,11 @@ const WECharGroup: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<AddCharGroupWEModal
-				{...props.modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)}
+				{...modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)}
 				openECM={setIsOpenECM}
 			/>
 			<EditCharGroupWEModal
-				{...props.modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)}
+				{...modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)}
 				editing={editing}
 				setEditing={setEditing}
 				openECM={setIsOpenECM}

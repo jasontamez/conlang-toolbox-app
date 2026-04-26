@@ -99,7 +99,7 @@ const DJInput: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<InputCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
 			<LexiconImporterModal
