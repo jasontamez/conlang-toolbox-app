@@ -59,6 +59,7 @@ import './theme/variables.css';
 import './theme/App.css';
 
 import { StateStorage } from './components/PersistentInfo';
+import { ModalContext } from './components/contexts';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
@@ -105,9 +106,6 @@ const App = memo(() => {
 	const [modals, setModals] = useState<SetBooleanState[]>([]);
 	const [doAlert] = useIonAlert();
 	const modalPropsMaker = useMemo(() => modalPropertiesFunc(modals, setModals), [modals, setModals]);
-	const defaultProps = {
-		modalPropsMaker
-	};
 	// Check for default sort language
 	useEffect(() => {
 		getLanguage().then(result => {
@@ -155,27 +153,29 @@ const App = memo(() => {
 	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
 		<IonApp className={theme}>
-			<IonReactRouter>
-				<IonSplitPane contentId="main" when="xl">
-					<Menu />
-					<IonRouterOutlet id="main">
-						<Route path="/wg" render={() => <Suspense fallback={<Loading />}><WG {...defaultProps} /></Suspense>} />
-						<Route path="/we" render={() => <Suspense fallback={<Loading />}><WE {...defaultProps} /></Suspense>} />
-						<Route path="/dj" render={() => <Suspense fallback={<Loading />}><DJ {...defaultProps} /></Suspense>} />
-						<Route path="/lex" render={
-							() => <Suspense fallback={<Loading />}><Lexicon {...defaultProps} /></Suspense>
-						} />
-						<Route path="/ms" render={() => <Suspense fallback={<Loading />}><MS {...defaultProps} /></Suspense>} />
-						<Route path="/appinfo" exact render={() => <Info {...defaultProps} />} />
-						<Route path="/settings" exact render={() => <Settings {...defaultProps} />} />
-						<Route path="/sortSettings" exact render={() => <SortSettings {...defaultProps} />} />
-						<Route path="/wordlists" exact render={
-							() => <Suspense fallback={<Loading />}><ConceptsPage {...defaultProps} /></Suspense>
-						} />
-						<Route path="/" exact render={() => <About {...defaultProps} />} />
-					</IonRouterOutlet>
-				</IonSplitPane>
-			</IonReactRouter>
+			<ModalContext value={modalPropsMaker}>
+				<IonReactRouter>
+					<IonSplitPane contentId="main" when="xl">
+						<Menu />
+						<IonRouterOutlet id="main">
+							<Route path="/wg" render={() => <Suspense fallback={<Loading />}><WG /></Suspense>} />
+							<Route path="/we" render={() => <Suspense fallback={<Loading />}><WE /></Suspense>} />
+							<Route path="/dj" render={() => <Suspense fallback={<Loading />}><DJ /></Suspense>} />
+							<Route path="/lex" render={
+								() => <Suspense fallback={<Loading />}><Lexicon /></Suspense>
+							} />
+							<Route path="/ms" render={() => <Suspense fallback={<Loading />}><MS /></Suspense>} />
+							<Route path="/appinfo" exact render={() => <Info />} />
+							<Route path="/settings" exact render={() => <Settings />} />
+							<Route path="/sortSettings" exact render={() => <SortSettings />} />
+							<Route path="/wordlists" exact render={
+								() => <Suspense fallback={<Loading />}><ConceptsPage /></Suspense>
+							} />
+							<Route path="/" exact render={() => <About />} />
+						</IonRouterOutlet>
+					</IonSplitPane>
+				</IonReactRouter>
+			</ModalContext>
 		</IonApp>
 	);
 });

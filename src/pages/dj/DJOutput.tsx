@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useMemo, useState, FC, useCallback } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState, FC, useCallback, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -22,7 +22,7 @@ import {
 	copyOutline
 } from 'ionicons/icons';
 
-import { DJCustomInfo, PageData, SortObject, StateObject } from '../../store/types';
+import { DJCustomInfo, SortObject, StateObject } from '../../store/types';
 //import { addItemsToLexiconColumn } from '../../store/lexiconSlice';
 
 import toaster from '../../components/toaster';
@@ -42,6 +42,7 @@ import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
+import { ModalContext } from '../../components/contexts';
 import useI18Memo from '../../components/useI18Memo';
 import { OutputCard } from './DJinfo';
 
@@ -62,7 +63,7 @@ const commons = [
 	"Help", "Output", "fileCsv", "fileText", "fileDocx"
 ];
 
-const DJOutput: FC<PageData> = (props) => {
+const DJOutput: FC = () => {
 	const [
 		tCancel, tChooseFormat, tCopy, tGen,
 		tHelp, tOut, tCSV, tTxt, tDocx
@@ -75,7 +76,7 @@ const DJOutput: FC<PageData> = (props) => {
 		tExport, tpDisplayAs
 	] = useI18Memo(translations, "dj");
 
-//	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -356,7 +357,7 @@ const DJOutput: FC<PageData> = (props) => {
 
 	return (
 		<IonPage>
-			<ModalWrap {...props.modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
+			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<OutputCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
 			<Header

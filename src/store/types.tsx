@@ -401,10 +401,6 @@ export type SetState<T,> = Dispatch<SetStateAction<T>>;
 export type SetBooleanState = SetState<boolean>;
 export type ModalPropsMaker = (x: boolean, y: SetBooleanState) => ({isOpen: boolean, setIsOpen: SetBooleanState})
 
-export interface PageData {
-	modalPropsMaker: ModalPropsMaker
-}
-
 export interface ModalProperties {
 	isOpen: boolean
 	setIsOpen: SetBooleanState

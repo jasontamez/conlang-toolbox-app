@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useMemo, useState, FC, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -33,7 +33,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
 
-import { DJCustomInfo, DJGroup, Declenjugation, PageData, StateObject } from '../../store/types';
+import { DJCustomInfo, DJGroup, Declenjugation, StateObject } from '../../store/types';
 import { deleteGroup, reorderGroups } from '../../store/declenjugatorSlice';
 import useTranslator from '../../store/translationHooks';
 
@@ -43,6 +43,7 @@ import toaster from '../../components/toaster';
 import log from '../../components/Logging';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
+import { ModalContext } from '../../components/contexts';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
@@ -231,13 +232,13 @@ const commons = [
 ];
 
 
-const DJGroups: FC<PageData> = (props) => {
+const DJGroups: FC = () => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [ tAddNew, tDel, tHelp, tWait, tSave, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
 	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup, tGroupDeleted  ] = useI18Memo(translations, "dj");
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 
 	// main modals

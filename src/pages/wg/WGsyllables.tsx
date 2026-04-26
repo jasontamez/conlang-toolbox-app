@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactElement, Fragment, FC, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, ReactElement, Fragment, FC, useCallback, useMemo, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -23,7 +23,7 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, SetState, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
+import { SetState, StateObject, SyllableTypes, Zero_Fifty } from '../../store/types';
 import { setSyllables, setSyllableBoxDropoff, setMultipleSyllableTypes, clearSyllables } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
@@ -34,6 +34,7 @@ import ModalWrap from "../../components/ModalWrap";
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import { ModalContext } from '../../components/contexts';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
 
@@ -121,7 +122,7 @@ const translations = [
 	"dropoffRate"
 ];
 
-const WGSyl: FC<PageData> = (props) => {
+const WGSyl: FC = () => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [tSave, tEdit, tDelete, tHelp] = useI18Memo(commons);
@@ -135,7 +136,7 @@ const WGSyl: FC<PageData> = (props) => {
 		tDropoffFormal
 	] = useI18Memo(translations, "wg");
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

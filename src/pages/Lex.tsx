@@ -1,4 +1,8 @@
-import React, { useState, useCallback, useEffect, useMemo, memo, MouseEvent, MouseEventHandler, FC, Ref } from 'react';
+import React, {
+	useState, useCallback, useEffect, useMemo,
+	memo, MouseEvent, MouseEventHandler, FC,
+	Ref, useContext
+} from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -59,8 +63,6 @@ import {
 	Lexicon,
 	LexiconColumn,
 	LexiconState,
-	ModalPropsMaker,
-	PageData,
 	SetBooleanState,
 	SortObject,
 	StateObject
@@ -85,6 +87,7 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
+import { ModalContext } from '../components/contexts';
 import useI18Memo from '../components/useI18Memo';
 import getSetValue from '../components/getSetValue';
 import i18n from '../i18n';
@@ -121,7 +124,6 @@ interface LexItemDeleting {
 
 interface InnerHeaderProps {
 	setIsOpenECM: SetBooleanState
-	modalPropsMaker: ModalPropsMaker
 	lexHeadersHidden: boolean
 	setLexHeadersHidden: SetBooleanState
 	isDeleting: boolean
@@ -136,7 +138,6 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [ t ] = useTranslator("lexicon")
 	const {
 		setIsOpenECM,
-		modalPropsMaker,
 		lexHeadersHidden,
 		setLexHeadersHidden,
 		isDeleting,
@@ -152,6 +153,8 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [storedLexInfo, setStoredLexInfo] = useState<[string, LexiconState][]>([]);
 	const [tExChar, tHelp, tWait, tLex] = useI18Memo(innerCommons);
 	const tWorking = useMemo(() => t("workingMsg"), [t]);
+
+	const modalPropsMaker = useContext(ModalContext);
 
 	const endButtons = useMemo(() => [
 		<IonButton
@@ -411,7 +414,7 @@ const ColumnInput = (props: ColumnInputProps) => {
 	);
 };
 
-const Lex: FC<PageData> = (props) => {
+const Lex: FC = () => {
 	const [ tc ] = useTranslator('common');
 	const [ t ] = useTranslator('lexicon');
 	const [
@@ -432,6 +435,8 @@ const Lex: FC<PageData> = (props) => {
 	const [ lexColumnInputs, lexColumnInputsRef ] = useElement<HTMLIonItemElement>();
 	const [ lexDesc, lexDescRef ] = useElement<HTMLIonTextareaElement>();
 	const [ lexTitle, lexTitleRef ] = useElement<HTMLIonInputElement>();
+
+	const modalPropsMaker = useContext(ModalContext);
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -705,39 +710,38 @@ const Lex: FC<PageData> = (props) => {
 	return (
 		<IonPage>
 			<AddLexiconItemModal
-				{...props.modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
+				{...modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
 				openECM={setIsOpenECM}
 				columnInfo={columns}
 				sorter={sorter}
 			/>
 			<EditLexiconItemModal
-				{...props.modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
+				{...modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
 				openECM={setIsOpenECM}
 				itemToEdit={editingItem}
 				columnInfo={columns}
 				sorter={sorter}
 			/>
 			<LexiconSettingsModal
-				{...props.modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
+				{...modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
 				openECM={setIsOpenECM}
 				sortLang={sortLanguage || defaultSortLanguage}
 				sensitivity={sensitivity}
 			/>
 			<LexiconSortModal
-				{...props.modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
+				{...modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
 				sorter={sorter}
 			/>
 			<MergeLexiconItemsModal
-				{...props.modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
+				{...modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
 				merging={merging}
 				mergingObject={mergingObject}
 				clearInfo={clearMergedInfo}
 				sorter={sorter}
 			/>
-			<ExtraCharactersModal {...props.modalPropsMaker(isOpenECM, setIsOpenECM)} />
+			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<InnerHeader
 				setIsOpenECM={setIsOpenECM}
-				modalPropsMaker={props.modalPropsMaker}
 				lexHeadersHidden={lexHeadersHidden}
 				setLexHeadersHidden={setLexHeadersHidden}
 				isDeleting={isDeleting}

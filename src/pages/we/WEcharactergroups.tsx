@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback, useMemo } from 'react';
+import React, { useState, FC, useCallback, useMemo, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -28,11 +28,12 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, WECharGroupObject } from '../../store/types';
+import { StateObject, WECharGroupObject } from '../../store/types';
 import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../store/weSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
+import { ModalContext } from '../../components/contexts';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
@@ -104,14 +105,14 @@ const commons = [
 	"deleteThisCannotUndo", "AddNew", "Delete", "Help", "yesImport"
 ];
 
-const WECharGroup: FC<PageData> = (props) => {
+const WECharGroup: FC = () => {
 	const [ t ] = useTranslator('we');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
 	const [ tYouSure, tAddNew, tDelete, tHelp, tYesImp ] = useI18Memo(commons);
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

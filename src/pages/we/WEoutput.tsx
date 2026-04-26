@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect, FC } from 'react';
+import React, { useMemo, useState, useCallback, useEffect, FC, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -29,7 +29,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
 	LexiconColumn,
-	PageData,
 	SortObject,
 	StateObject,
 	WECharGroupObject,
@@ -62,6 +61,7 @@ import InOut from './output/InOut';
 import OutIn from './output/OutIn';
 import RulesApplied from './output/RulesApplied';
 import { OutCard } from "./WEinfo";
+import { ModalContext } from '../../components/contexts';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -198,7 +198,7 @@ const commons = [
 	"SaveToLexiconMessage"
 ];
 
-const WEOut: FC<PageData> = (props) => {
+const WEOut: FC = () => {
 	const [ tc ] = useTranslator('common');
 	const [
 		tHelp, tLoad, tOutput, tWait, tSave,
@@ -207,7 +207,7 @@ const WEOut: FC<PageData> = (props) => {
 	] = useI18Memo(commons)
 	const [ tEvolve, tNoWords, tNoSC ] = useI18Memo(translations, "we");
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const [copyString, setCopyString] = useState<string>("");

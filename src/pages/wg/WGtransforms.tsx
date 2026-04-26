@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC, useMemo, ReactElement } from 'react';
+import React, { useCallback, useState, FC, useMemo, ReactElement, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -27,11 +27,12 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, WGTransformObject } from '../../store/types';
+import { StateObject, WGTransformObject } from '../../store/types';
 import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
+import { ModalContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -97,14 +98,14 @@ const TransformItem: FC<TransformProps> = (props) => {
 
 const commons = [ "AddNew", "Delete", "Help" ];
 
-const WGRew: FC<PageData> = (props) => {
+const WGRew: FC = () => {
 	const [ tw ] = useTranslator('wgwe');
 	const [ tc ] = useTranslator('common');
 	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
 	const [ tAddNew, tDelete, tHelp ] = useI18Memo(commons);
 	const [transformGroup, transformGroupRef] = useElement<HTMLIonListElement>();
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, Ref, useMemo, useState } from "react";
+import React, { FC, ReactElement, Ref, useContext, useMemo, useState } from "react";
 import {
 	IonButton,
 	IonButtons,
@@ -10,13 +10,13 @@ import {
 } from "@ionic/react";
 import { globeOutline } from "ionicons/icons";
 import useTranslator from "../store/translationHooks";
+import { ModalContext } from '../components/contexts';
 
 import ExtraCharactersModal from "../pages/modals/ExtraCharacters";
-import { ModalPropsMaker } from "../store/types";
 
 interface ModalProperties {
 	title: string
-	extraChars?: ModalPropsMaker
+	extraChars?: boolean
 	startButtons?: ReactElement[]
 	preEndButtons?: ReactElement[]
 	endButtons?: ReactElement[]
@@ -47,9 +47,10 @@ const Header: FC<ModalProperties> = (props) => {
 			</IonButton>
 		: <></>),
 	[extraChars, tc]);
+	const modalPropsMaker = useContext(ModalContext);
 	return (
 		<IonHeader id={id} ref={ref}>
-			{extraChars ? <ExtraCharactersModal {...extraChars(isOpenECM, setIsOpenECM)} /> : <></>}
+			{extraChars ? <ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} /> : <></>}
 			<IonToolbar color={color}>
 				<IonButtons slot="start">
 					{menu ? <IonMenuButton /> : <></>}

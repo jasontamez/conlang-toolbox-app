@@ -11,7 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons/icons';
 
-import { PageData, StateObject } from '../store/types';
+import { StateObject } from '../store/types';
 
 import MSinfo from './ms/MSinfo';
 import MSPage from './ms/msPage';
@@ -46,7 +46,7 @@ const makeTab = (n: number, min: number, max: number) => {
 	);
 };
 
-const MS: FC<PageData> = (props) => {
+const MS: FC = () => {
 	const msPage: string = useSelector((state: StateObject) => state.internals.lastViewMS) || "msSettings";
 	const [lastPage, setLastPage] = useState<number>(Number(msPage.slice(-2)) || 0);
 	// 'center' should not fall more that two places from an edge
@@ -83,18 +83,18 @@ const MS: FC<PageData> = (props) => {
 					Using the render method prop cuts down the number of renders your components will have due to route changes.
 					Use the component prop when your component depends on the RouterComponentProps passed in automatically.
 				*/}
-				<Route path="/ms/overview" render={() => <MSinfo {...props} />} exact={true} />
-				<Route path="/ms/msSettings" render={() => <MSSettings {...props} />} exact={true} />
-				<Route path="/ms/ms01" render={() => <MSPage {...props} page="01" />} exact={true} />
-				<Route path="/ms/ms02" render={() => <MSPage {...props} page="02" />} exact={true} />
-				<Route path="/ms/ms03" render={() => <MSPage {...props} page="03" />} exact={true} />
-				<Route path="/ms/ms04" render={() => <MSPage {...props} page="04" />} exact={true} />
-				<Route path="/ms/ms05" render={() => <MSPage {...props} page="05" />} exact={true} />
-				<Route path="/ms/ms06" render={() => <MSPage {...props} page="06" />} exact={true} />
-				<Route path="/ms/ms07" render={() => <MSPage {...props} page="07" />} exact={true} />
-				<Route path="/ms/ms08" render={() => <MSPage {...props} page="08" />} exact={true} />
-				<Route path="/ms/ms09" render={() => <MSPage {...props} page="09" />} exact={true} />
-				<Route path="/ms/ms10" render={() => <MSPage {...props} page="10" />} exact={true} />
+				<Route path="/ms/overview" render={() => <MSinfo />} exact={true} />
+				<Route path="/ms/msSettings" render={() => <MSSettings />} exact={true} />
+				<Route path="/ms/ms01" render={() => <MSPage page="01" />} exact={true} />
+				<Route path="/ms/ms02" render={() => <MSPage page="02" />} exact={true} />
+				<Route path="/ms/ms03" render={() => <MSPage page="03" />} exact={true} />
+				<Route path="/ms/ms04" render={() => <MSPage page="04" />} exact={true} />
+				<Route path="/ms/ms05" render={() => <MSPage page="05" />} exact={true} />
+				<Route path="/ms/ms06" render={() => <MSPage page="06" />} exact={true} />
+				<Route path="/ms/ms07" render={() => <MSPage page="07" />} exact={true} />
+				<Route path="/ms/ms08" render={() => <MSPage page="08" />} exact={true} />
+				<Route path="/ms/ms09" render={() => <MSPage page="09" />} exact={true} />
+				<Route path="/ms/ms10" render={() => <MSPage page="10" />} exact={true} />
 			</IonRouterOutlet>
 			<IonTabBar className="iconsOnly" slot="bottom">
 				<IonTabButton

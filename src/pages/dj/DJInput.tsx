@@ -1,4 +1,4 @@
-import React, { useState, useCallback, ChangeEventHandler, FC, useMemo } from 'react';
+import React, { useState, useCallback, ChangeEventHandler, FC, useMemo, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -16,12 +16,13 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject } from '../../store/types';
+import { StateObject } from '../../store/types';
 import { setInput } from '../../store/declenjugatorSlice';
 
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from '../../components/ModalWrap';
+import { ModalContext } from '../../components/contexts';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
@@ -37,11 +38,11 @@ const commons = [
 	"MaybeClearEntireInput", "ImportFromLexicon"
 ];
 
-const DJInput: FC<PageData> = (props) => {
+const DJInput: FC = () => {
 	const [ tClear, tExChar, tHelp, tInput, tYes, tYouSure, tImportFrom ] = useI18Memo(commons);
 	const [ tEnterHere, tWords ] = useI18Memo(translations, "dj");
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

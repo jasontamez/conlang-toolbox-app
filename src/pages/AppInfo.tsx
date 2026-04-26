@@ -22,7 +22,7 @@ import { useSelector } from "react-redux";
 import Markdown from 'react-markdown';
 import { useWindowWidth } from '@react-hook/window-size/throttled';
 
-import { PageData, StateObject, ThemeNames } from '../store/types';
+import { StateObject, ThemeNames } from '../store/types';
 
 import Header from '../components/Header';
 import copyText from '../components/copyText';
@@ -58,7 +58,7 @@ const changelog = [
 ];
 const context = { joinArrays: "\n" };
 
-const AppInfo: FC<PageData> = () => {
+const AppInfo: FC = () => {
 	const width = useWindowWidth();
 	const [
 		tBugRep, tCLog, tCredits,

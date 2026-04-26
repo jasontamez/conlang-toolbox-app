@@ -1,4 +1,4 @@
-import React, { useState, useCallback, FC } from 'react';
+import React, { useState, useCallback, FC, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -19,10 +19,11 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject } from '../../store/types';
+import { StateObject } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
+import { ModalContext } from '../../components/contexts';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
@@ -41,11 +42,11 @@ const translations = [
 	"WordsToEvolve", "EnterWordsHere", "ClearInput"
 ];
 
-const WEInput: FC<PageData> = (props) => {
+const WEInput: FC = () => {
 	const [ tWordsToEvolve, tOnePerLine, tClearInput ] = useI18Memo(translations, "we");
 	const [ tYouSure, tClear, tExChar, tHelp, tInput, tYesClear, tImpFromLex ] = useI18Memo(commons);
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

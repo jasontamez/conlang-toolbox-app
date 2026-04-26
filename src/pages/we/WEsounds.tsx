@@ -1,4 +1,4 @@
-import React, { useState, FC, useCallback, useMemo } from 'react';
+import React, { useState, FC, useCallback, useMemo, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -32,12 +32,13 @@ import {
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { PageData, StateObject, WESoundChangeObject } from '../../store/types';
+import { StateObject, WESoundChangeObject } from '../../store/types';
 import { deleteSoundChangeWE, rearrangeSoundChangesWE } from '../../store/weSlice';
 import useTranslator from '../../store/translationHooks';
 
 import reorganize from '../../components/reorganizer';
 import ModalWrap from "../../components/ModalWrap";
+import { ModalContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -128,14 +129,14 @@ const commons = [
 	"AddNew", "deleteThisCannotUndo", "DeleteEverythingQ", "Delete", "Help"
 ];
 
-const WESChange: FC<PageData> = (props) => {
+const WESChange: FC = () => {
 	const [ t ] = useTranslator('we');
 	const [ tc ] = useTranslator('common');
 	const tSChs = useMemo(() => t("SoundChanges"), [t]);
 	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp ] = useI18Memo(commons);
 	const tThingDeleted = useMemo(() => t("changesDeleted", { count: 1 }), [t]);
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

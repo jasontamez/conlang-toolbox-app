@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useMemo, useState, FC, useContext } from 'react';
 import {
 	IonContent,
 	IonPage,
@@ -28,7 +28,6 @@ import { TFunction } from 'i18next';
 import {
 	WGTransformObject,
 	WGCharGroupObject,
-	PageData,
 	LexiconColumn,
 	StateObject,
 	SortObject,
@@ -47,6 +46,7 @@ import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
 import copyText from '../../components/copyText';
 import useI18Memo from '../../components/useI18Memo';
+import { ModalContext } from '../../components/contexts';
 
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGinfo";
@@ -106,13 +106,13 @@ const DivWord: FC<WordProps> = ({word, id, maybeSaveThisWord, savedWordsObject})
 	);
 };
 
-const WGOut: FC<PageData> = (props) => {
+const WGOut: FC = () => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [ tGenerate, tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
 	const [ tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);

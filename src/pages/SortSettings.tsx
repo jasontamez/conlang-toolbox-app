@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, FC } from 'react';
+import React, { useCallback, useMemo, useState, FC, useContext } from 'react';
 import {
 	IonItem,
 	IonIcon,
@@ -31,7 +31,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import ISO6391, { LanguageCode } from "iso-639-1";
 
-import { EqualityObject, PageData, RelationObject, SortObject, StateObject } from '../store/types';
+import { EqualityObject, RelationObject, SortObject, StateObject } from '../store/types';
 import { deleteCustomSort, setDefaultCustomSort, setSortLanguageCustom, setSortSensitivity } from '../store/sortingSlice';
 import useTranslator from '../store/translationHooks';
 
@@ -46,6 +46,7 @@ import useElement from '../components/useElement';
 import yesNoAlert from '../components/yesNoAlert';
 import PermanentInfo from '../components/PermanentInfo';
 import useI18Memo from '../components/useI18Memo';
+import { ModalContext } from '../components/contexts';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -71,7 +72,7 @@ const commons = [
 	"Close", "Delete", "Edit", "Ok", "Done", "deleteThisCannotUndo"
 ];
 
-const SortSettings: FC<PageData> = (props) => {
+const SortSettings: FC = () => {
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');
 	const [ tClose, tDelete, tEdit, tOk, tDone, tYouSure ] = useI18Memo(commons);
@@ -81,7 +82,7 @@ const SortSettings: FC<PageData> = (props) => {
 		tpUsing, tpSens
 	] = useI18Memo(translations, 'settings');
 
-	const { modalPropsMaker } = props;
+	const modalPropsMaker = useContext(ModalContext);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	// main modals

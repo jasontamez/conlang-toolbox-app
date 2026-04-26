@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useCallback } from 'react';
+import React, { FC, useState, useMemo, useCallback, useContext } from 'react';
 import {
 	IonPage,
 	IonContent,
@@ -25,7 +25,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from "react-redux";
 
-import { PageData, MSState, StateObject, SetBooleanState } from '../../store/types';
+import { MSState, StateObject, SetBooleanState } from '../../store/types';
 import { loadStateMS, setMorphoSyntaxNum, setMorphoSyntaxText } from '../../store/msSlice';
 import { setLastViewMS } from '../../store/internalsSlice';
 import blankAppState from '../../store/blankAppState';
@@ -37,6 +37,7 @@ import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import { ModalContext } from '../../components/contexts';
 
 import { SyntaxHeader } from './MorphoSyntaxElements';
 import LoadMS from './modals/LoadSyntaxDoc';
@@ -57,7 +58,7 @@ const commons = [
 	"SaveAsNew", "error", "Description", "missingTitleMsg"
 ];
 
-const Syntax: FC<PageData> = (props) => {
+const Syntax: FC = () => {
 	const [ t ] = useTranslator('ms');
 	const [ tc ] = useTranslator('common');
 	const [
@@ -71,6 +72,7 @@ const Syntax: FC<PageData> = (props) => {
 	] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
+	const modalPropsMaker = useContext(ModalContext);
 
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);
@@ -259,21 +261,21 @@ const Syntax: FC<PageData> = (props) => {
 				duration={1000}
 			/>
 			<LoadMS
-				{...props.modalPropsMaker(isOpenLoadMS, setIsOpenLoadMS)}
+				{...modalPropsMaker(isOpenLoadMS, setIsOpenLoadMS)}
 				storedInfo={storedInfo}
 				setStoredInfo={setStoredInfo}
 			/>
 			<ExportMS
-				{...props.modalPropsMaker(isOpenExportMS, setIsOpenExportMS)}
+				{...modalPropsMaker(isOpenExportMS, setIsOpenExportMS)}
 				setLoading={setIsLoading}
 			/>
 			<DeleteMS
-				{...props.modalPropsMaker(isOpenDelMS, setIsOpenDelMS)}
+				{...modalPropsMaker(isOpenDelMS, setIsOpenDelMS)}
 				storedInfo={storedInfo}
 				setStoredInfo={setStoredInfo}
 				setLoadingScreen={setIsLoading}
 			/>
-			<SyntaxHeader title={tMSett} {...props} />
+			<SyntaxHeader title={tMSett} />
 			<IonContent fullscreen
 				className="evenBackground disappearingHeaderKludgeFix"
 				id="morphoSyntaxPage"
