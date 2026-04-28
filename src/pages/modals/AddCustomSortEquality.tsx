@@ -1,29 +1,15 @@
 import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
-	IonButton,
-	IonTitle,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast,
 	IonSelect,
 	IonSelectOption,
 	SelectCustomEvent
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	saveOutline,
-	globeOutline
-} from 'ionicons/icons';
 import { v4 as uuidv4 } from 'uuid';
 
 import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
@@ -33,6 +19,7 @@ import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import Modal from '../../components/Modal';
 
 interface CustomSortModal extends ExtraCharactersModalOpener {
 	setSavedEquality: SetState<EqualityObject | null>
@@ -58,9 +45,9 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 		tSemi, tSpace, tTheBase, tNoBase, tNoEqual, tpBase, tpSep, tpEqual,
 		tAddThing
 	] = useI18Memo(translations, "settings");
-	const [ tYouSure, tCancel, tClose, tExChar, tOk, tSave, tUnsaved, tYesDisc ] = useI18Memo(commons);
+	const [ tYouSure, tOk, tUnsaved, tYesDisc ] = useI18Memo(commons);
 
-	const { isOpen, setIsOpen, openECM, setSavedEquality } = props;
+	const { isOpen, setIsOpen, setSavedEquality } = props;
 	const [separator, setSeparator] = useState<SortSeparator>("");
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -133,101 +120,73 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 		getSetValue(addEquality, "");
 		setIsOpen(false);
 	}, [setIsOpen, doAlert, tUnsaved, tYesDisc, tYouSure, addBaseEquality, addEquality]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
 	const saveSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tAddThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={maybeCancel} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent>
-				<IonList lines="full" className="hasSpecialLabels">
-					<IonItem>
-						<div
-							slot="start"
-							className="ion-margin-end"
-						>{tpBase}</div>
-						<IonInput
-							aria-label={tBase}
-							id="addBaseEquality"
-							placeholder={tTheBase}
-							ref={addBaseEqualityRef}
-						/>
-					</IonItem>
-					<IonItem className="labelled" lines="none">
-						<IonLabel>{tpEqual}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tCharBase}
-							id="addEquality"
-							placeholder={tCharEqual}
-							ref={addEqualityRef}
-						/>
-					</IonItem>
-					<IonItem className="wrappableInnards">
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label={tpSep}
-							value={separator}
-							onIonChange={saveSep}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=""
-							>{tNoSep}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=" "
-							>{tSpace}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=","
-							>{tComma}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="."
-							>{tPeriod}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=";"
-							>{tSemi}</IonSelectOption>
-						</IonSelect>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter className="modalBorderTop">
-				<IonToolbar>
-					<IonButton
-						color="warning"
+		<Modal
+			isOpen={isOpen}
+			closeFunc={maybeCancel}
+			backdropDismiss={false}
+			title={tAddThing}
+			action={maybeSaveEquality}
+			type="add"
+			extraChars
+		>
+			<IonList lines="full" className="hasSpecialLabels">
+				<IonItem>
+					<div
 						slot="start"
-						onClick={maybeCancel}
+						className="ion-margin-end"
+					>{tpBase}</div>
+					<IonInput
+						aria-label={tBase}
+						id="addBaseEquality"
+						placeholder={tTheBase}
+						ref={addBaseEqualityRef}
+					/>
+				</IonItem>
+				<IonItem className="labelled" lines="none">
+					<IonLabel>{tpEqual}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tCharBase}
+						id="addEquality"
+						placeholder={tCharEqual}
+						ref={addEqualityRef}
+					/>
+				</IonItem>
+				<IonItem className="wrappableInnards">
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						label={tpSep}
+						value={separator}
+						onIonChange={saveSep}
 					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tCancel}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveEquality}
-					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tSave}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=""
+						>{tNoSep}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=" "
+						>{tSpace}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=","
+						>{tComma}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="."
+						>{tPeriod}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=";"
+						>{tSemi}</IonSelectOption>
+					</IonSelect>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

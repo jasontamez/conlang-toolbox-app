@@ -23,7 +23,7 @@ import { StateObject } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
@@ -46,7 +46,7 @@ const WEInput: FC = () => {
 	const [ tWordsToEvolve, tOnePerLine, tClearInput ] = useI18Memo(translations, "we");
 	const [ tYouSure, tClear, tExChar, tHelp, tInput, tYesClear, tImpFromLex ] = useI18Memo(commons);
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

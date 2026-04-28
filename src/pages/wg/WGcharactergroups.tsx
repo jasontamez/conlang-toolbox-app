@@ -44,7 +44,7 @@ import { CopyFromOtherIcon } from '../../components/icons';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -118,7 +118,7 @@ const WGCharGroup: FC = () => {
 	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
 	const [ tAddNew, tCopy, tDelete, tHelp, tYouSure, tYes ] = useI18Memo(commons);
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

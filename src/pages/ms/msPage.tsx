@@ -15,7 +15,7 @@ import { setLastViewMS } from '../../store/internalsSlice';
 import { setSyntaxNum } from '../../store/msSlice';
 import useTranslator from '../../store/translationHooks';
 
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 import {
 	CheckboxItem,
@@ -49,7 +49,7 @@ const MSPage: FC<MSData> = ({page}) => {
 	const ms = useSelector((state: StateObject) => state.ms);
 	const info = msInfo[page] as SpecificMSPageData[];
 	const header = info[0].content;
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const pageContents = useMemo(() => info.map((block: SpecificMSPageData, i: number) => {
 		const { tag, prop, ...etc } = block;
 		const key = `${page}-${tag}-${i}`;

@@ -47,7 +47,7 @@ import { Concepts, ConceptsSources } from '../components/Concepts';
 import { ConceptsOutlineIcon, LexiconIcon, LexiconOutlineIcon } from '../components/icons';
 import Header from '../components/Header';
 import ModalWrap from "../components/ModalWrap";
-import { ModalContext } from '../components/contexts';
+import { ModalMakingContext } from '../components/contexts';
 import yesNoAlert from '../components/yesNoAlert';
 import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
@@ -67,7 +67,7 @@ const InnerHeader: FC<InnerHeaderProps> = (props) => {
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [tConcepts, tHelp] = useI18Memo(pair);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const endButtons = useMemo(() => {
 		return [
 			<IonButton

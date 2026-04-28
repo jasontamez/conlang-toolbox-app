@@ -37,7 +37,7 @@ import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -142,7 +142,7 @@ const WERew: FC= () => {
 	const tTransformations = useMemo(() => tw("Transformations"), [tw]);
 	const [ tAddNew, tDelete, tExChar, tHelp, tClearAll, tYouSure ] = useI18Memo(commons);
 	
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

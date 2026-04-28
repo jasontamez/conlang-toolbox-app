@@ -31,7 +31,7 @@ import {
 import Header from '../components/Header';
 import { AppPage, appPagesObject } from '../components/appPagesInfo';
 import ModalWrap from '../components/ModalWrap';
-import { ModalContext } from '../components/contexts';
+import { ModalMakingContext } from '../components/contexts';
 import useI18Memo from '../components/useI18Memo';
 import ExtraCharactersModal from './modals/ExtraCharacters';
 import { ConceptCard } from './Concepts';
@@ -70,7 +70,7 @@ const Home: FC = () => {
 	] = useI18Memo(translations);
 	const openLex = useCallback(() => setIsOpenLexicon(true), []);
 	const openConcepts = useCallback(() => setIsOpenConcepts(true), []);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	return (
 		<IonPage className={theme}>

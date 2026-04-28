@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, FC, useMemo, ReactElement, useContext } from 'react';
+import React, { PropsWithChildren, FC, useMemo, ReactElement, useContext } from 'react';
 import {
 	IonIcon,
 	IonContent,
@@ -8,7 +8,8 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter
+	IonFooter,
+	ModalOptions
 } from '@ionic/react';
 import {
 	addOutline,
@@ -20,18 +21,16 @@ import {
 	saveOutline,
 	trashOutline
 } from 'ionicons/icons';
-import { SetBooleanState } from '../store/types';
 import i18n from "../i18n";
 import useI18Memo from './useI18Memo';
 import { ExCharContext } from './contexts';
 
-interface BaseProps {
+interface BaseProps extends Omit<ModalOptions, "component"> {
 	isOpen: boolean
-	setIsOpen: SetBooleanState
+	closeFunc: () => void
 	title: string
 	action: () => void
 	cancel?: string
-	backdropDismiss?: boolean
 	pre?: ReactElement
 	post?: ReactElement
 	extraChars?: boolean
@@ -73,7 +72,7 @@ const getIcon = (input: Types) => {
 const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 	const {
 		isOpen,
-		setIsOpen,
+		closeFunc,
 		title,
 		button,
 		icon,
@@ -86,7 +85,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 		extraChars,
 		children
 	} = props;
-	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 	const openEx = useContext(ExCharContext);
 	const [tClose, tCancel, tExChar] = useI18Memo(translations);
 	const text = useMemo(() => {
@@ -101,7 +99,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 	return (
 		<IonModal
 			isOpen={isOpen}
-			onDidDismiss={closer}
+			onDidDismiss={closeFunc}
 			backdropDismiss={backdropDismiss}
 		>
 			<IonHeader>
@@ -114,7 +112,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 							</IonButton>
 						: <></>}
 						{pre || <></>}
-						<IonButton onClick={closer} aria-label={tClose}>
+						<IonButton onClick={closeFunc} aria-label={tClose}>
 							<IonIcon icon={closeOutline} />
 						</IonButton>
 						{post || <></>}
@@ -127,7 +125,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 			<IonFooter>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonButton onClick={closer} aria-label={tClose} color="danger">
+						<IonButton onClick={closeFunc} aria-label={tClose} color="danger">
 							{cancel || tCancel}
 							<IonIcon icon={closeOutline} slot="end" />
 						</IonButton>

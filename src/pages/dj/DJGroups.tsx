@@ -43,7 +43,7 @@ import toaster from '../../components/toaster';
 import log from '../../components/Logging';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
@@ -238,7 +238,7 @@ const DJGroups: FC = () => {
 	const [ tAddNew, tDel, tHelp, tWait, tSave, tEdit, tYouSure, tCannotUndo ] = useI18Memo(commons);
 	const [ tClear, tConj, tDecl, tGroups, tOther, tDelGroup, tGroupDeleted  ] = useI18Memo(translations, "dj");
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 
 	// main modals

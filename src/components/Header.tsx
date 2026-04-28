@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import { globeOutline } from "ionicons/icons";
 import useTranslator from "../store/translationHooks";
-import { ModalContext } from '../components/contexts';
+import { ModalMakingContext } from '../components/contexts';
 
 import ExtraCharactersModal from "../pages/modals/ExtraCharacters";
 
@@ -47,7 +47,7 @@ const Header: FC<ModalProperties> = (props) => {
 			</IonButton>
 		: <></>),
 	[extraChars, tc]);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	return (
 		<IonHeader id={id} ref={ref}>
 			{extraChars ? <ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} /> : <></>}

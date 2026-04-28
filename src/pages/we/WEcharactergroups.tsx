@@ -33,7 +33,7 @@ import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
@@ -112,7 +112,7 @@ const WECharGroup: FC = () => {
 	const tCharGroups = useMemo(() => tw("CharGroups"), [tw]);
 	const [ tYouSure, tAddNew, tDelete, tHelp, tYesImp ] = useI18Memo(commons);
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

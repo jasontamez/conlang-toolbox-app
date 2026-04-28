@@ -59,7 +59,7 @@ import './theme/variables.css';
 import './theme/App.css';
 
 import { StateStorage } from './components/PersistentInfo';
-import { ModalContext } from './components/contexts';
+import { ModalMakingContext } from './components/contexts';
 import modalPropertiesFunc from './components/ModalProperties';
 import yesNoAlert from './components/yesNoAlert';
 import getLanguage from './components/getLanguage';
@@ -153,7 +153,7 @@ const App = memo(() => {
 	}, [modals, navigator, dispatch, doAlert, t]);
 	return (
 		<IonApp className={theme}>
-			<ModalContext value={modalPropsMaker}>
+			<ModalMakingContext value={modalPropsMaker}>
 				<IonReactRouter>
 					<IonSplitPane contentId="main" when="xl">
 						<Menu />
@@ -175,7 +175,7 @@ const App = memo(() => {
 						</IonRouterOutlet>
 					</IonSplitPane>
 				</IonReactRouter>
-			</ModalContext>
+			</ModalMakingContext>
 		</IonApp>
 	);
 });

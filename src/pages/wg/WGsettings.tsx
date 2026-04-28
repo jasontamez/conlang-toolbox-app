@@ -50,7 +50,7 @@ import { CustomStorageWG } from '../../components/PersistentInfo';
 import ModalWrap from "../../components/ModalWrap";
 import useI18Memo from '../../components/useI18Memo';
 import log from '../../components/Logging';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import MaybeLoadPreset from './modals/MaybeLoadPreset';
@@ -92,7 +92,7 @@ const WGSet: FC = () => {
 	const [isOpenLoadPreset, setIsOpenLoadPreset] = useState<boolean>(false);
 	const [isOpenManageCustom, setIsOpenManageCustom] = useState<boolean>(false);
 	const [infoModalTitles, setInfoModalTitles] = useState<string[] | null>(null);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const {
 		monosyllablesRate,
 		maxSyllablesPerWord,

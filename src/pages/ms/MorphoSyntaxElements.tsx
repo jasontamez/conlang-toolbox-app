@@ -35,7 +35,7 @@ import useTranslator from '../../store/translationHooks';
 import Header from '../../components/Header';
 import RangeStartToEndMinusOne from '../../components/NumericRange';
 import ModalHeader from '../../components/ModalHeader';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 interface ModalProperties {
 	title?: string
@@ -192,7 +192,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	const [ tc ] = useTranslator('common');
 	const modalTitle = useMemo(() => title || t("MISSINGTITLE"), [title, t]);
 	const tDone = useMemo(() => tc("Done"), [tc]);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
 	const setOpen = useCallback(() => setIsOpen(true), [setIsOpen]);

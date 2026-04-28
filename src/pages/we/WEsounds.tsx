@@ -38,7 +38,7 @@ import useTranslator from '../../store/translationHooks';
 
 import reorganize from '../../components/reorganizer';
 import ModalWrap from "../../components/ModalWrap";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -136,7 +136,7 @@ const WESChange: FC = () => {
 	const [ tAddNew, tYouSure, tClearAll, tDelete, tHelp ] = useI18Memo(commons);
 	const tThingDeleted = useMemo(() => t("changesDeleted", { count: 1 }), [t]);
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

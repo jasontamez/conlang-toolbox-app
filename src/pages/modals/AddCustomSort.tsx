@@ -150,7 +150,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 		setSortSensitivity("default");
 		setUsingAlpha(false);
 		getSetValue(addSortTitle, "");
-		getSetValue(addCustomAlphabet, "")
+		getSetValue(addCustomAlphabet, "");
 	}, [setIsOpen, addSortTitle, addCustomAlphabet]);
 	// Accept new relation from other modal
 	useEffect(() => {
@@ -541,7 +541,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 	return (
 		<Modal
 			isOpen={isOpen}
-			setIsOpen={maybeCancel}
+			closeFunc={maybeCancel}
 			backdropDismiss={false}
 			title={tCustomSort}
 			action={maybeSaveNewSort}

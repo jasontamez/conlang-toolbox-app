@@ -87,7 +87,7 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
-import { ModalContext } from '../components/contexts';
+import { ModalMakingContext } from '../components/contexts';
 import useI18Memo from '../components/useI18Memo';
 import getSetValue from '../components/getSetValue';
 import i18n from '../i18n';
@@ -154,7 +154,7 @@ const InnerHeader: React.FC<InnerHeaderProps> = (props) => {
 	const [tExChar, tHelp, tWait, tLex] = useI18Memo(innerCommons);
 	const tWorking = useMemo(() => t("workingMsg"), [t]);
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const endButtons = useMemo(() => [
 		<IonButton
@@ -436,7 +436,7 @@ const Lex: FC = () => {
 	const [ lexDesc, lexDescRef ] = useElement<HTMLIonTextareaElement>();
 	const [ lexTitle, lexTitleRef ] = useElement<HTMLIonInputElement>();
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {

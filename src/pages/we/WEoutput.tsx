@@ -61,7 +61,7 @@ import InOut from './output/InOut';
 import OutIn from './output/OutIn';
 import RulesApplied from './output/RulesApplied';
 import { OutCard } from "./WEinfo";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -207,7 +207,7 @@ const WEOut: FC = () => {
 	] = useI18Memo(commons)
 	const [ tEvolve, tNoWords, tNoSC ] = useI18Memo(translations, "we");
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const [savedWords, setSavedWords] = useState<string[]>([]);
 	const [savedWordsObject, setSavedWordsObject] = useState<{ [key: string]: boolean }>({});
 	const [copyString, setCopyString] = useState<string>("");

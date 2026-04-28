@@ -22,7 +22,7 @@ import { setInput } from '../../store/declenjugatorSlice';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from '../../components/ModalWrap';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
@@ -42,7 +42,7 @@ const DJInput: FC = () => {
 	const [ tClear, tExChar, tHelp, tInput, tYes, tYouSure, tImportFrom ] = useI18Memo(commons);
 	const [ tEnterHere, tWords ] = useI18Memo(translations, "dj");
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

@@ -46,7 +46,7 @@ import PermanentInfo from '../../components/PermanentInfo';
 import log from '../../components/Logging';
 import copyText from '../../components/copyText';
 import useI18Memo from '../../components/useI18Memo';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 import OutputOptionsModal from './modals/OutputOptions';
 import { OutCard } from "./WGinfo";
@@ -112,7 +112,7 @@ const WGOut: FC = () => {
 	const [ tGenerate, tCancel, tHelp, tLoad, tOutput, tSave ] = useI18Memo(commons);
 	const [ tMissing, tNoCG, tNoSyll ] = useI18Memo(translations, 'wg');
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenOptions, setIsOpenOptions] = useState<boolean>(false);

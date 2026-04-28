@@ -38,7 +38,7 @@ import { MorphoSyntaxStorage } from '../../components/PersistentInfo';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 
 import { SyntaxHeader } from './MorphoSyntaxElements';
 import LoadMS from './modals/LoadSyntaxDoc';
@@ -73,7 +73,7 @@ const Syntax: FC = () => {
 	] = useI18Memo(translations, "ms");
 	const tpTitle = useMemo(() => t("msTitle", { context: "presentation" }), [t]);
 	const tpDesc = useMemo(() => tc("Description", { context: "presentation" }), [tc]);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const [isOpenLoadMS, setIsOpenLoadMS] = useState<boolean>(false);
 	const [isOpenExportMS, setIsOpenExportMS] = useState<boolean>(false);

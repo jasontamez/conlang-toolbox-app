@@ -46,7 +46,7 @@ import useElement from '../components/useElement';
 import yesNoAlert from '../components/yesNoAlert';
 import PermanentInfo from '../components/PermanentInfo';
 import useI18Memo from '../components/useI18Memo';
-import { ExCharContext, ModalContext } from '../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../components/contexts';
 
 const codes = ISO6391.getAllCodes();
 const names = ISO6391.getAllNativeNames();
@@ -82,7 +82,7 @@ const SortSettings: FC = () => {
 		tpUsing, tpSens
 	] = useI18Memo(translations, 'settings');
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	// main modals

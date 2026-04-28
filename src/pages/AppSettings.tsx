@@ -15,7 +15,7 @@ import { setDisableConfirms } from '../store/settingsSlice';
 import useTranslator from '../store/translationHooks';
 
 import Header from '../components/Header';
-import { ModalContext } from '../components/contexts';
+import { ModalMakingContext } from '../components/contexts';
 import useI18Memo from '../components/useI18Memo';
 import ChooseThemeModal from './modals/Theme';
 import ExportAllData from './modals/ExportAllData';
@@ -40,7 +40,7 @@ const AppSettings: FC = () => {
 	const openTheme = useCallback(() => setIsOpenTheme(true), []);
 	const openExportAll = useCallback(() => setIsOpenExportAll(true), []);
 	const openImport = useCallback(() => setIsOpenImport(true), []);
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const [ t ] = useTranslator('settings');
 	const [ tc ] = useTranslator('common');

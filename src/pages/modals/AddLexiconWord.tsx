@@ -10,7 +10,6 @@ import {
 	IonButtons,
 	IonButton,
 	IonTitle,
-	IonModal,
 	IonInput,
 	IonFooter,
 	IonTextarea,
@@ -32,6 +31,7 @@ import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
 import getSetValue from '../../components/getSetValue';
 import useElement, {useElementList} from '../../components/useElement';
+import Modal from '../../components/Modal';
 
 interface LexItemProps extends ExtraCharactersModalOpener {
 	columnInfo: LexiconColumn[]
@@ -142,7 +142,15 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const opener = useCallback(() => openECM(true), [openECM]);
 
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false}>
+		<Modal
+			isOpen={isOpen}
+			closeFunc={cancel}
+			backdropDismiss={false}
+			title={tAddLexItem}
+			action={maybeSaveNewInfo}
+			type="add"
+			extraChars
+		>
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>{tAddLexItem}</IonTitle>
@@ -176,7 +184,7 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 					</IonButton>
 				</IonToolbar>
 			</IonFooter>
-		</IonModal>
+		</Modal>
 	);
 };
 

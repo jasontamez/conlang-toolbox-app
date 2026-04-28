@@ -5,8 +5,8 @@ export interface ModalContextProps {
 	isOpen: boolean,
 	setIsOpen: SetBooleanState
 }
-export const ModalContext = createContext(
-	(isOpen: boolean, setIsOpen: SetBooleanState):ModalContextProps => ({ isOpen, setIsOpen })
+export const ModalMakingContext = createContext<(x:boolean, y:SetBooleanState) => ModalContextProps>(
+	(isOpen, setIsOpen) => ({ isOpen, setIsOpen })
 );
 export const ExCharContext = createContext(
 	() => { console.log("ExCharContext") }

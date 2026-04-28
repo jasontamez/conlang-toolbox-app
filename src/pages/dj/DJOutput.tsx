@@ -42,7 +42,7 @@ import makeSorter from '../../components/stringSorter';
 import PermanentInfo from '../../components/PermanentInfo';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import useI18Memo from '../../components/useI18Memo';
 import { OutputCard } from './DJinfo';
 
@@ -76,7 +76,7 @@ const DJOutput: FC = () => {
 		tExport, tpDisplayAs
 	] = useI18Memo(translations, "dj");
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();

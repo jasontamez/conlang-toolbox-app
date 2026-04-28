@@ -34,7 +34,7 @@ import ModalWrap from "../../components/ModalWrap";
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import { SylCard } from "./WGinfo";
 
@@ -136,7 +136,7 @@ const WGSyl: FC = () => {
 		tDropoffFormal
 	] = useI18Memo(translations, "wg");
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);

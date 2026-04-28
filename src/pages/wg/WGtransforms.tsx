@@ -32,7 +32,7 @@ import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalContext } from '../../components/contexts';
+import { ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -105,7 +105,7 @@ const WGRew: FC = () => {
 	const [ tAddNew, tDelete, tHelp ] = useI18Memo(commons);
 	const [transformGroup, transformGroupRef] = useElement<HTMLIonListElement>();
 
-	const modalPropsMaker = useContext(ModalContext);
+	const modalPropsMaker = useContext(ModalMakingContext);
 	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
