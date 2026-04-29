@@ -5,12 +5,8 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast,
 	IonSelect,
@@ -25,8 +21,6 @@ import {
 	SelectCustomEvent
 } from '@ionic/react';
 import {
-	closeCircleOutline,
-	saveOutline,
 	addCircleOutline,
 	trash,
 	reorderThree
@@ -38,7 +32,6 @@ import {
 	DJGroup,
 	DJSeparator,
 	Declenjugation,
-	ExtraCharactersModalOpener,
 	ModalProperties,
 	SetState,
 	StateObject
@@ -50,15 +43,15 @@ import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import ltr from '../../../components/LTR';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
 function clearBlanks (input: string[]) {
 	return input.filter(line => line);
 }
 
-interface AddGroupProps extends ExtraCharactersModalOpener {
+interface AddGroupProps extends ModalProperties {
 	addDeclenjugationModalInfo: ModalProperties
 	savedDeclenjugation: Declenjugation | null
 	setSavedDeclenjugation: SetState<Declenjugation | null>
@@ -88,8 +81,8 @@ const translations = [
 ];
 
 const commons = [
-	"AddNew", "MaybeDiscardEdits", "Cancel", 
-	"Delete", "Deleted", "Edit", "Ok", "Save", "UnsavedInfo", "YesDiscard",
+	"AddNew", "MaybeDiscardEdits",
+	"Delete", "Deleted", "Edit", "Ok", "UnsavedInfo", "YesDiscard",
 	"areYouSure"
 ];
 
@@ -102,7 +95,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 		tThingSaved, tEx, tWM, tRegEx, tpSeparate, tAddGroup, tTitleInput
 	] = useI18Memo(translations, "dj");
 	const [
-		tAddNew, tYouSure, tCancel, tDel, tDeleted, tEdit, tOk, tSave,
+		tAddNew, tYouSure, tDel, tDeleted, tEdit, tOk,
 		tUnsaved, tYes, tRUSure
 	] = useI18Memo(commons);
 	const [ tTypes, tMatching, tRemoveStart, tReplacement, tRemoveEnd ] = useI18Memo(presentations, "dj");
@@ -114,7 +107,6 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,
-		openECM,
 
 		addDeclenjugationModalInfo,
 		savedDeclenjugation,
@@ -436,175 +428,161 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 	const interfaceOperatorType = useMemo(() => ({header: tType}), [tType]);
 
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<ModalHeader openECM={openECM} title={tAddGroup} closeModal={maybeCancel} />
-			<IonContent>
-				<IonList lines="full" id="addingDJGroup" ref={addingDJGroupRef} className="hasSpecialLabels hasToggles">
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleInput}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTitleInput}
-							id="addTitle"
-							ref={addTitleRef}
-						/>
-					</IonItem>
-					<IonItem>
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label={tpType}
-							value={type}
-							onIonChange={doSetType}
-							interfaceOptions={interfaceOperatorType}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="declensions"
-							>{tDecl1}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="conjugations"
-							>{tConj1}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="other"
-							>{tOther1}</IonSelectOption>
-							</IonSelect>
-					</IonItem>
-					<IonLabel className="ion-text-wrap ion-padding-bottom">
-						{tpTypes}
-					</IonLabel>
-					<IonItem>
-						<IonInput
-							aria-label={tTypes}
-							id="addAppliesTo"
-							ref={addAppliesToRef}
-							placeholder={tEx}
-						/>
-					</IonItem>
-					<IonItem className="wrappableInnards">
-						<IonToggle
-							labelPlacement="start"
-							enableOnOffLabels
-							checked={useAdvancedMethod}
-							onIonChange={toggleAdvMeth}
-						>
-							<h2>{tUseAdv}</h2>
-							<p>{tUseRegex}</p>
-						</IonToggle>
-					</IonItem>
-					<IonItemDivider>{useAdvancedMethod ? tRegEx : tSimple}</IonItemDivider>
-					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMatching}</IonLabel>
-					</IonItem>
-					<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonInput
-							aria-label={tMatching}
-							id="addRegex1"
-							ref={addRegex1Ref}
-							labelPlacement="stacked"
-						/>
-					</IonItem>
-					<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpReplacement}</IonLabel>
-					</IonItem>
-					<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonInput
-							aria-label={tReplacement}
-							id="addRegex2"
-							ref={addRegex2Ref}
-							labelPlacement="stacked"
-						/>
-					</IonItem>
-					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveStart}</IonLabel>
-					</IonItem>
-					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonInput
-							aria-label={tRemoveStart}
-							ref={addStartsRef}
-							id="addStarts"
-						/>
-					</IonItem>
-					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveEnd}</IonLabel>
-					</IonItem>
-					<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonInput
-							aria-label={tRemoveEnd}
-							id="addEnds"
-							ref={addEndsRef}
-							labelPlacement="stacked"
-						/>
-					</IonItem>
-					<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpSeparate}</IonLabel>
-					</IonItem>
-					<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							aria-label={tChoose}
-							value={separator}
-							onIonChange={doSetSep}
-							interfaceOptions={interfaceOperatorSep}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=" "
-							>{tSpace}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=","
-							>{tComma}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=";"
-							>{tSemi}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="/"
-							>{tSlash}</IonSelectOption>
+		<Modal
+			title={tAddGroup}
+			closeFunc={maybeCancel}
+			isOpen={isOpen}
+			backdropDismiss={false}
+			onIonModalDidPresent={onLoad}
+			bottomStart={[{button: "cancel"}]}
+			bottomEnd={[{action: maybeSaveNewGroup, button: "save"}]}
+			extraChars
+		>
+			<IonList lines="full" id="addingDJGroup" ref={addingDJGroupRef} className="hasSpecialLabels hasToggles">
+				<IonItem className="labelled">
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleInput}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTitleInput}
+						id="addTitle"
+						ref={addTitleRef}
+					/>
+				</IonItem>
+				<IonItem>
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						label={tpType}
+						value={type}
+						onIonChange={doSetType}
+						interfaceOptions={interfaceOperatorType}
+					>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="declensions"
+						>{tDecl1}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="conjugations"
+						>{tConj1}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="other"
+						>{tOther1}</IonSelectOption>
 						</IonSelect>
-					</IonItem>
-					<IonItemDivider color="secondary">{typeString}</IonItemDivider>
-					<IonItem>
-						<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
-							<IonIcon slot="start" icon={addCircleOutline} />
-							{tAddNew}
-						</IonButton>
-					</IonItem>
-					<IonReorderGroup
-						disabled={false}
-						onIonReorderEnd={doReorder}
+				</IonItem>
+				<IonLabel className="ion-text-wrap ion-padding-bottom">
+					{tpTypes}
+				</IonLabel>
+				<IonItem>
+					<IonInput
+						aria-label={tTypes}
+						id="addAppliesTo"
+						ref={addAppliesToRef}
+						placeholder={tEx}
+					/>
+				</IonItem>
+				<IonItem className="wrappableInnards">
+					<IonToggle
+						labelPlacement="start"
+						enableOnOffLabels
+						checked={useAdvancedMethod}
+						onIonChange={toggleAdvMeth}
 					>
-						{allDeclenjugations}
-					</IonReorderGroup>
-				</IonList>
-			</IonContent>
-			<IonFooter className="modalBorderTop">
-				<IonToolbar>
-					<IonButton
-						color="warning"
-						slot="start"
-						onClick={maybeCancel}
+						<h2>{tUseAdv}</h2>
+						<p>{tUseRegex}</p>
+					</IonToggle>
+				</IonItem>
+				<IonItemDivider>{useAdvancedMethod ? tRegEx : tSimple}</IonItemDivider>
+				<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMatching}</IonLabel>
+				</IonItem>
+				<IonItem lines="none" className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonInput
+						aria-label={tMatching}
+						id="addRegex1"
+						ref={addRegex1Ref}
+						labelPlacement="stacked"
+					/>
+				</IonItem>
+				<IonItem className={`labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpReplacement}</IonLabel>
+				</IonItem>
+				<IonItem className={`toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonInput
+						aria-label={tReplacement}
+						id="addRegex2"
+						ref={addRegex2Ref}
+						labelPlacement="stacked"
+					/>
+				</IonItem>
+				<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveStart}</IonLabel>
+				</IonItem>
+				<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonInput
+						aria-label={tRemoveStart}
+						ref={addStartsRef}
+						id="addStarts"
+					/>
+				</IonItem>
+				<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpRemoveEnd}</IonLabel>
+				</IonItem>
+				<IonItem className={`toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonInput
+						aria-label={tRemoveEnd}
+						id="addEnds"
+						ref={addEndsRef}
+						labelPlacement="stacked"
+					/>
+				</IonItem>
+				<IonItem className={`labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpSeparate}</IonLabel>
+				</IonItem>
+				<IonItem className={`wrappableInnards toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						aria-label={tChoose}
+						value={separator}
+						onIonChange={doSetSep}
+						interfaceOptions={interfaceOperatorSep}
 					>
-						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tCancel}</IonLabel>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=" "
+						>{tSpace}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=","
+						>{tComma}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=";"
+						>{tSemi}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="/"
+						>{tSlash}</IonSelectOption>
+					</IonSelect>
+				</IonItem>
+				<IonItemDivider color="secondary">{typeString}</IonItemDivider>
+				<IonItem>
+					<IonButton slot="end" onClick={maybeAddNewDeclenjugation}>
+						<IonIcon slot="start" icon={addCircleOutline} />
+						{tAddNew}
 					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveNewGroup}
-					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tSave}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+				</IonItem>
+				<IonReorderGroup
+					disabled={false}
+					onIonReorderEnd={doReorder}
+				>
+					{allDeclenjugations}
+				</IonReorderGroup>
+			</IonList>
+		</Modal>
 	);
 };
 

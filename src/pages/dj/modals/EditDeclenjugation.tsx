@@ -4,12 +4,8 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast,
 	IonToggle,
@@ -17,14 +13,11 @@ import {
 } from '@ionic/react';
 import { useSelector } from 'react-redux';
 import {
-	saveOutline,
-	trashOutline,
 	addCircle
 } from 'ionicons/icons';
 
 import {
 	Declenjugation,
-	ExtraCharactersModalOpener,
 	ModalProperties,
 	SetState,
 	StateObject
@@ -34,11 +27,11 @@ import useTranslator from '../../../store/translationHooks';
 import toaster from '../../../components/toaster';
 import yesNoAlert from '../../../components/yesNoAlert';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface EditDJModal extends ExtraCharactersModalOpener {
+interface EditDJModal extends ModalProperties {
 	incomingDeclenjugation: Declenjugation | null
 	setOutgoingDeclenjugation: SetState<Declenjugation | null | string>
 	caseMakerModalInfo: ModalProperties
@@ -57,7 +50,7 @@ const translations = [
 
 const commons = [
 	"deleteThisCannotUndo", "MaybeDiscardEdits",
-	"Delete", "Deleted", "Ok", "Save", "UnsavedInfo", "YesDiscard"
+	"Deleted", "Ok", "UnsavedInfo", "YesDiscard"
 ];
 
 const presentations = [ "MatchingExpression", "ReplacementExpression" ];
@@ -68,7 +61,6 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,
-		openECM,
 		incomingDeclenjugation,
 		setOutgoingDeclenjugation,
 		caseMakerModalInfo,
@@ -80,8 +72,8 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const [ t ] = useTranslator('dj');
 	const [ tc ] = useTranslator('common');
 	const [
-		tYouSureDel, tYouSureDiscard, tDel, tDeleted, tOk,
-		tSave, tUnsaved, tYes
+		tYouSureDel, tYouSureDiscard, tDeleted, tOk,
+		tUnsaved, tYes
 	] = useI18Memo(commons);
 	const [
 		tMod, tPref, tSuff, tBaseWord, tAdvMeth, tWord,
@@ -296,110 +288,96 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	const toggleUseWholeWord = useCallback(() => setUseWholeWord(!useWholeWord), [useWholeWord]);
 	const toggleUseAdvanced = useCallback(() => setUseAdvancedMethod(!useAdvancedMethod), [useAdvancedMethod]);
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<ModalHeader title={tEditThing} openECM={openECM} closeModal={maybeCancel} />
-			<IonContent>
-				<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
-					<IonItem className="labelled">
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleMethod}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTitleMethod}
-							id="editDJTitle"
-							ref={editDJTitleRef}
-						/>
-						<IonButton color="primary" onClick={openCase} slot="end">
-							<IonIcon icon={addCircle} slot="icon-only" />
-						</IonButton>
-					</IonItem>
-					<IonItem className="wrappableInnards">
-						<IonToggle
-							labelPlacement="start"
-							enableOnOffLabels
-							checked={useWholeWord}
-							onIonChange={toggleUseWholeWord}
-						>
-							<h2>{tWord}</h2>
-							<p>{tBaseWord}</p>
-						</IonToggle>
-					</IonItem>
-					<IonItem className="wrappableInnards">
-						<IonToggle
-							labelPlacement="start"
-							enableOnOffLabels
-							checked={useAdvancedMethod}
-							onIonChange={toggleUseAdvanced}
-						>
-							<h2>{tAdvMeth}</h2>
-							<p>{tAdvExpl}</p>
-						</IonToggle>
-					</IonItem>
-					<IonItemDivider>{tMod}</IonItemDivider>
-					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMatch}</IonLabel>
-					</IonItem>
-					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonInput
-							id="editDJRegex1"
-							aria-label={tMatch}
-							ref={editDJRegex1Ref}
-						/>
-					</IonItem>
-					<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonLabel className="ion-text-wrap ion-padding-bottom">{tpReplace}</IonLabel>
-					</IonItem>
-					<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
-						<IonInput
-							id="editDJRegex2"
-							aria-label={tReplace}
-							ref={editDJRegex2Ref}
-						/>
-					</IonItem>
-					<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<div slot="start">{tPref}</div>
-						<div slot="end">{tSuff}</div>
-					</IonItem>
-					<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
-						<IonInput
-							id="editDJPrefix"
-							aria-label={tPref}
-							className="ion-text-end"
-							ref={editDJPrefixRef}
-						/>
-						<div className="ion-text-center stem pad-horizontal-rem">
-							<strong>{tWordOrStem}</strong>
-						</div>
-						<IonInput
-							id="editDJSuffix"
-							aria-label={tSuff}
-							className="ion-text-start"
-							ref={editDJSuffixRef}
-						/>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter className="modalBorderTop">
-				<IonToolbar>
-					<IonButton
-						color="warning"
-						slot="start"
-						onClick={maybeDelete}
-					>
-						<IonIcon icon={trashOutline} slot="end" />
-						<IonLabel>{tDel}</IonLabel>
+		<Modal
+			isOpen={isOpen}
+			backdropDismiss={false}
+			onIonModalDidPresent={onLoad}
+			title={tEditThing}
+			closeFunc={maybeCancel}
+			bottomEnd={[{button: "save", action: maybeSaveEditedDeclenjugation}]}
+			bottomStart={[{button: "delete", action: maybeDelete}]}
+			extraChars
+		>
+			<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
+				<IonItem className="labelled">
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleMethod}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTitleMethod}
+						id="editDJTitle"
+						ref={editDJTitleRef}
+					/>
+					<IonButton color="primary" onClick={openCase} slot="end">
+						<IonIcon icon={addCircle} slot="icon-only" />
 					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveEditedDeclenjugation}
+				</IonItem>
+				<IonItem className="wrappableInnards">
+					<IonToggle
+						labelPlacement="start"
+						enableOnOffLabels
+						checked={useWholeWord}
+						onIonChange={toggleUseWholeWord}
 					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tSave}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						<h2>{tWord}</h2>
+						<p>{tBaseWord}</p>
+					</IonToggle>
+				</IonItem>
+				<IonItem className="wrappableInnards">
+					<IonToggle
+						labelPlacement="start"
+						enableOnOffLabels
+						checked={useAdvancedMethod}
+						onIonChange={toggleUseAdvanced}
+					>
+						<h2>{tAdvMeth}</h2>
+						<p>{tAdvExpl}</p>
+					</IonToggle>
+				</IonItem>
+				<IonItemDivider>{tMod}</IonItemDivider>
+				<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpMatch}</IonLabel>
+				</IonItem>
+				<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonInput
+						id="editDJRegex1"
+						aria-label={tMatch}
+						ref={editDJRegex1Ref}
+					/>
+				</IonItem>
+				<IonItem className={`"labelled toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonLabel className="ion-text-wrap ion-padding-bottom">{tpReplace}</IonLabel>
+				</IonItem>
+				<IonItem className={`"wrappableInnards toggleable${useAdvancedMethod ? "" : " toggled"}`}>
+					<IonInput
+						id="editDJRegex2"
+						aria-label={tReplace}
+						ref={editDJRegex2Ref}
+					/>
+				</IonItem>
+				<IonItem className={`"labelled toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<div slot="start">{tPref}</div>
+					<div slot="end">{tSuff}</div>
+				</IonItem>
+				<IonItem className={`"wrappableInnards prefixSuffix toggleable${useAdvancedMethod ? " toggled" : ""}`}>
+					<IonInput
+						id="editDJPrefix"
+						aria-label={tPref}
+						className="ion-text-end"
+						ref={editDJPrefixRef}
+					/>
+					<div className="ion-text-center stem pad-horizontal-rem">
+						<strong>{tWordOrStem}</strong>
+					</div>
+					<IonInput
+						id="editDJSuffix"
+						aria-label={tSuff}
+						className="ion-text-start"
+						ref={editDJSuffixRef}
+					/>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

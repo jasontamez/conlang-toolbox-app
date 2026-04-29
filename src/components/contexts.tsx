@@ -1,11 +1,7 @@
 import { createContext } from 'react';
-import { SetBooleanState } from '../store/types';
+import { ModalProperties, SetBooleanState } from '../store/types';
 
-export interface ModalContextProps {
-	isOpen: boolean,
-	setIsOpen: SetBooleanState
-}
-export const ModalMakingContext = createContext<(x:boolean, y:SetBooleanState) => ModalContextProps>(
+export const ModalMakingContext = createContext<(x:boolean, y:SetBooleanState) => ModalProperties>(
 	(isOpen, setIsOpen) => ({ isOpen, setIsOpen })
 );
 export const ExCharContext = createContext(

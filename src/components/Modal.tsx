@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, FC, useMemo, ReactElement, useContext } from 'react';
+import React, { PropsWithChildren, FC, ReactElement, useContext } from 'react';
 import {
 	IonIcon,
 	IonContent,
@@ -8,8 +8,7 @@ import {
 	IonButton,
 	IonTitle,
 	IonModal,
-	IonFooter,
-	ModalOptions
+	IonFooter
 } from '@ionic/react';
 import {
 	addOutline,
@@ -25,40 +24,56 @@ import i18n from "../i18n";
 import useI18Memo from './useI18Memo';
 import { ExCharContext } from './contexts';
 
-interface BaseProps extends Omit<ModalOptions, "component"> {
+type IonModalProps = Parameters<typeof IonModal>[0];
+
+type ButtonType = "save" | "load" | "export" | "delete" | "add" | "cancel" | "add+close" | "done";
+interface ButtonBase {
+	action?: () => void
+	color?: string
+}
+interface TopButtonInfo extends Omit<ButtonBase, "color"> {
+	icon: ButtonType | string
+}
+interface ButtonInfo1 extends ButtonBase {
+	button: ButtonType
+	icon?: ButtonType | string
+	key?: never
+}
+interface ButtonInfo2 extends ButtonBase {
+	key: string
+	icon: ButtonType | string
+	button?: never
+}
+type ButtonInfo = ButtonInfo1 | ButtonInfo2; // { key, icon, action? } || { button, icon?, action? }
+
+type TopButtons = "close" | "extra";
+
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
+ 	Pick<T, Exclude<keyof T, Keys>> 
+	& {
+		[K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
+	}[Keys]
+
+interface BaseProps extends IonModalProps {
 	isOpen: boolean
 	closeFunc: () => void
 	title: string
-	action: () => void
-	cancel?: string
-	pre?: ReactElement
-	post?: ReactElement
+	topEnd?: (TopButtons | TopButtonInfo)[] // If TopButtons omitted, becomes ["extra", ..., "close"]
+	bottomStart?: ButtonInfo[]
+	bottomEnd?: ButtonInfo[]
 	extraChars?: boolean
 }
 
-type Types = "save" | "load" | "export" | "delete" | "add";
+type ModalProps = RequireAtLeastOne<BaseProps, "bottomStart" | "bottomEnd">;
 
-interface TextButtonProps extends BaseProps {
-	button: string
-	icon: string
-	type?: never
-}
+const translations = ["Close", "ExtraChars"];
 
-interface PreSelectedProps extends BaseProps {
-	type: Types
-	icon?: never
-	button?: never
-}
-
-type ModalProps = TextButtonProps | PreSelectedProps;
-
-const translations = ["Close", "Cancel", "ExtraChars"];
-
-const getIcon = (input: Types) => {
+const getIcon = (input: ButtonType | string) => {
 	switch(input) {
 		case "save":
 			return saveOutline;
 		case "add":
+		case "add+close":
 			return addOutline;
 		case "load":
 			return chevronDownCircleOutline;
@@ -66,7 +81,136 @@ const getIcon = (input: Types) => {
 			return downloadOutline;
 		case "delete":
 			return trashOutline;
+		case "cancel":
+			return closeOutline;
+		case "done":
+			return checkmarkOutline;
 	}
+	return input;
+};
+
+const getColor = (input: ButtonType | string) => {
+	switch(input) {
+		case "save":
+		case "export":
+		case "add":
+		case "add+close":
+		case "done":
+			return "success";
+		case "cancel":
+		case "load":
+			return "warning";
+		case "delete":
+			return "danger";
+	}
+	return input;
+};
+
+const getKey = (input: ButtonType | string) => {
+	switch(input) {
+		case "save":
+			return "modals.saveInfo";
+		case "add":
+			return "modals.addInfo";
+		case "add+close":
+			return "modals.addAndCloseInfo";
+		case "load":
+			return "modals.loadInfo";
+		case "export":
+			return "modals.exportInfo";
+		case "delete":
+			return "modals.deleteInfo";
+		case "cancel":
+			return "modals.Cancel";
+		case "done":
+			return "modals.Done";
+	}
+	return input;
+};
+
+const BottomButtons: FC<{input?: ButtonInfo[], title: string, cancel: () => void, slot: "start" | "end"}> = (props) => {
+	const { input, title, cancel, slot } = props;
+	if(!input || input.length === 0) {
+		return <></>;
+	}
+	return (
+		<IonButtons slot={slot}>
+			{
+				input.map((buttoninfo, i) => {
+					// { key, icon, action? } || { button, icon?, action? }
+					const { key, icon, action, button, color } = buttoninfo;
+					const obj = {
+						button: "",
+						icon: "",
+						color: ""
+					};
+					if(key !== undefined) {
+						// key
+						obj.button = i18n.t(key, { context: { title } });
+						obj.icon = getIcon(icon);
+						obj.color = getColor(color || icon);
+					} else {
+						// button
+						obj.button = i18n.t(getKey(button), { context: { title } });
+						obj.icon = getIcon(icon || button);
+						obj.color = getColor(color || icon || button);
+					}
+					return (
+						<IonButton onClick={action || cancel} color={obj.color} key={`modal-button-${i}-${title}-${obj.button}-${obj.icon}-${obj.color}`}>
+							{obj.button}
+							<IonIcon icon={obj.icon} slot="end" />
+						</IonButton>
+					);
+				})
+			}			
+		</IonButtons>
+	);
+};
+
+const TopButtons: FC<{input?: (TopButtons | TopButtonInfo)[], title: string, close: () => void, extra?: boolean}> = (props) => {
+	const openEx = useContext(ExCharContext);
+	const [tClose, tExChar] = useI18Memo(translations);
+	const { input, title, close, extra } = props;
+	const closebutton = (
+		<IonButton onClick={close} aria-label={tClose}>
+			<IonIcon icon={closeOutline} />
+		</IonButton>
+	);
+	const extrabutton = (
+		<IonButton onClick={openEx} aria-label={tExChar}>
+			<IonIcon icon={globeOutline} />
+		</IonButton>
+	);
+	const output:ReactElement[] = [];
+	let flagC = false, flagE = false;
+	(input || []).forEach((button, i) => {
+		if(button === "close") {
+			output.push(closebutton);
+			flagC = true;
+		} else if (button === "extra") {
+			extra && output.push(extrabutton);
+			flagE = true;
+		} else {
+			// { key, icon, action? } || { button, icon?, action? }
+			const { icon, action } = button;
+			output.push(
+				<IonButton onClick={action} key={`modal-button-top-${i}-${title}-${icon}`}>
+					<IonIcon icon={getIcon(icon)} slot="icon-only" />
+				</IonButton>
+			);
+		}
+	});
+	if(!flagC) {
+		output.push(closebutton);
+	}
+	if(extra && !flagE) {
+		output.unshift(extrabutton);
+	}
+	return (
+		<IonButtons slot="end">
+			{output}
+		</IonButtons>
+	);
 };
 
 const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
@@ -74,28 +218,13 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 		isOpen,
 		closeFunc,
 		title,
-		button,
-		icon,
-		type,
-		action,
-		cancel,
+		topEnd,
+		bottomStart,
+		bottomEnd,
 		backdropDismiss,
-		pre,
-		post,
-		extraChars,
-		children
+		children,
+		extraChars
 	} = props;
-	const openEx = useContext(ExCharContext);
-	const [tClose, tCancel, tExChar] = useI18Memo(translations);
-	const text = useMemo(() => {
-		if(button) {
-			return button;
-		} else if (type) {
-			return i18n.t(type.replace(/^(.+)$/, "modal.$1Info"), { context: { title } });
-		}
-		return "ERROR MODAL 1.1";
-	}, [button, type, title]);
-	const iconString = icon ? icon : (type ? getIcon(type) : checkmarkOutline);
 	return (
 		<IonModal
 			isOpen={isOpen}
@@ -105,18 +234,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 			<IonHeader>
 				<IonToolbar color="primary">
 					<IonTitle>{title}</IonTitle>
-					<IonButtons slot="end">
-						{extraChars ?
-							<IonButton onClick={openEx} aria-label={tExChar}>
-								<IonIcon icon={globeOutline} />
-							</IonButton>
-						: <></>}
-						{pre || <></>}
-						<IonButton onClick={closeFunc} aria-label={tClose}>
-							<IonIcon icon={closeOutline} />
-						</IonButton>
-						{post || <></>}
-					</IonButtons>
+					<TopButtons input={topEnd} title={title} close={closeFunc} extra={extraChars} />
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>
@@ -124,18 +242,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 			</IonContent>
 			<IonFooter>
 				<IonToolbar>
-					<IonButtons slot="start">
-						<IonButton onClick={closeFunc} aria-label={tClose} color="danger">
-							{cancel || tCancel}
-							<IonIcon icon={closeOutline} slot="end" />
-						</IonButton>
-					</IonButtons>
-					<IonButtons slot="end">
-						<IonButton onClick={action} color="warning">
-							{text}
-							<IonIcon icon={iconString} slot="end" />
-						</IonButton>
-					</IonButtons>
+					<BottomButtons slot="start" input={bottomStart} title={title} cancel={closeFunc} />
+					<BottomButtons slot="end" input={bottomEnd} title={title} cancel={closeFunc} />
 				</IonToolbar>
 			</IonFooter>
 		</IonModal>

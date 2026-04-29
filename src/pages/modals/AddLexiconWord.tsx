@@ -147,8 +147,8 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 			closeFunc={cancel}
 			backdropDismiss={false}
 			title={tAddLexItem}
-			action={maybeSaveNewInfo}
-			type="add"
+			bottomStart={[{button: "cancel"}]}
+			bottomEnd={[{button: "add", action: maybeSaveNewInfo}]}
 			extraChars
 		>
 			<IonHeader>

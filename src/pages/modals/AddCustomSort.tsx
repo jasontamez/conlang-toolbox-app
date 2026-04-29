@@ -544,8 +544,8 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 			closeFunc={maybeCancel}
 			backdropDismiss={false}
 			title={tCustomSort}
-			action={maybeSaveNewSort}
-			type="add"
+			bottomEnd={[{button: "add", action: maybeSaveNewSort}]}
+			bottomStart={[{button: "cancel"}]}
 			extraChars
 		>
 			<IonList lines="full" id="addingCustomSortList" ref={addingCustomSortListRef}>

@@ -127,8 +127,8 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 			closeFunc={maybeCancel}
 			backdropDismiss={false}
 			title={tAddThing}
-			action={maybeSaveEquality}
-			type="add"
+			bottomEnd={[{button: "add", action: maybeSaveEquality}]}
+			bottomStart={[{button: "cancel"}]}
 			extraChars
 		>
 			<IonList lines="full" className="hasSpecialLabels">

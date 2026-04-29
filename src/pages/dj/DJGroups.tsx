@@ -43,7 +43,7 @@ import toaster from '../../components/toaster';
 import log from '../../components/Logging';
 import Header from '../../components/Header';
 import ModalWrap from '../../components/ModalWrap';
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import { DeclenjugatorStorage } from '../../components/PersistentInfo';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
@@ -392,70 +392,67 @@ const DJGroups: FC = () => {
 
 	const setLoader = useCallback(() => setLoadingOpen(false), []);
 	const opener = useCallback(() => setIsOpenAddGroup(true), []);
+	const openEx = useCallback(() => setIsOpenECM(false), []);
 	return (
 		<IonPage>
-			<AddGroup
-				{...modalPropsMaker(isOpenAddGroup, setIsOpenAddGroup)}
-				openECM={setIsOpenECM}
+			<ExCharContext value={openEx}>
+				<AddGroup
+					{...modalPropsMaker(isOpenAddGroup, setIsOpenAddGroup)}
 
-				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
-				savedDeclenjugation={savedDeclenjugation}
-				setSavedDeclenjugation={setSavedDeclenjugation}
-				setDeclenjugationType={setDeclenjugationTypeString}
+					addDeclenjugationModalInfo={addDeclenjugationModalInfo}
+					savedDeclenjugation={savedDeclenjugation}
+					setSavedDeclenjugation={setSavedDeclenjugation}
+					setDeclenjugationType={setDeclenjugationTypeString}
 
-				editDeclenjugationModalInfo={editDeclenjugationModalInfo}
-				setIncomingDeclenjugation={setIncomingDeclenjugation}
-				outgoingDeclenjugation={outgoingDeclenjugation}
-				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
-			/>
-			<EditGroup
-				{...modalPropsMaker(isOpenEditGroup, setIsOpenEditGroup)}
-				openECM={setIsOpenECM}
+					editDeclenjugationModalInfo={editDeclenjugationModalInfo}
+					setIncomingDeclenjugation={setIncomingDeclenjugation}
+					outgoingDeclenjugation={outgoingDeclenjugation}
+					setOutgoingDeclenjugation={setOutgoingDeclenjugation}
+				/>
+				<EditGroup
+					{...modalPropsMaker(isOpenEditGroup, setIsOpenEditGroup)}
 
-				editingGroupInfo={editingGroup}
+					editingGroupInfo={editingGroup}
 
-				addDeclenjugationModalInfo={addDeclenjugationModalInfo}
-				savedDeclenjugation={savedDeclenjugation}
-				setSavedDeclenjugation={setSavedDeclenjugation}
-				setDeclenjugationType={setDeclenjugationTypeString}
+					addDeclenjugationModalInfo={addDeclenjugationModalInfo}
+					savedDeclenjugation={savedDeclenjugation}
+					setSavedDeclenjugation={setSavedDeclenjugation}
+					setDeclenjugationType={setDeclenjugationTypeString}
 
-				editDeclenjugationModalInfo={editDeclenjugationModalInfo}
-				setIncomingDeclenjugation={setIncomingDeclenjugation}
-				outgoingDeclenjugation={outgoingDeclenjugation}
-				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
-			/>
+					editDeclenjugationModalInfo={editDeclenjugationModalInfo}
+					setIncomingDeclenjugation={setIncomingDeclenjugation}
+					outgoingDeclenjugation={outgoingDeclenjugation}
+					setOutgoingDeclenjugation={setOutgoingDeclenjugation}
+				/>
 
-			<AddDeclenjugation
-				{...addDeclenjugationModalInfo}
-				openECM={setIsOpenECM}
-				setSavedDeclenjugation={setSavedDeclenjugation}
-				caseMakerModalInfo={caseMakerModalInfo}
-				savedTitle={savedTitle}
-				setSavedTitle={setSavedTitle}
-				typeString={declenjugationTypeString}
-			/>
-			<EditDeclenjugation
-				{...editDeclenjugationModalInfo}
-				openECM={setIsOpenECM}
-				incomingDeclenjugation={incomingDeclenjugation}
-				setOutgoingDeclenjugation={setOutgoingDeclenjugation}
-				caseMakerModalInfo={caseMakerModalInfo}
-				savedTitle={savedTitle}
-				setSavedTitle={setSavedTitle}
-				typeString={declenjugationTypeString}
-			/>
-			<CaseMaker
-				{...caseMakerModalInfo}
-				openECM={setIsOpenECM}
-				setSavedTitle={setSavedTitle}
-			/>
+				<AddDeclenjugation
+					{...addDeclenjugationModalInfo}
+					setSavedDeclenjugation={setSavedDeclenjugation}
+					caseMakerModalInfo={caseMakerModalInfo}
+					savedTitle={savedTitle}
+					setSavedTitle={setSavedTitle}
+					typeString={declenjugationTypeString}
+				/>
+				<EditDeclenjugation
+					{...editDeclenjugationModalInfo}
+					incomingDeclenjugation={incomingDeclenjugation}
+					setOutgoingDeclenjugation={setOutgoingDeclenjugation}
+					caseMakerModalInfo={caseMakerModalInfo}
+					savedTitle={savedTitle}
+					setSavedTitle={setSavedTitle}
+					typeString={declenjugationTypeString}
+				/>
+				<CaseMaker
+					{...caseMakerModalInfo}
+					setSavedTitle={setSavedTitle}
+				/>
 
-			<ManageCustomInfo
-				{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
-				openECM={setIsOpenECM}
-				titles={infoModalTitles}
-				setTitles={setInfoModalTitles}
-			/>
+				<ManageCustomInfo
+					{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
+					titles={infoModalTitles}
+					setTitles={setInfoModalTitles}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<GroupCard setIsOpenInfo={setIsOpenInfo} />
