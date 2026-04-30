@@ -1,32 +1,18 @@
 import React, { FC, useCallback, useState } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
-	IonButton,
-	IonTitle,
 	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast,
 	IonSelect,
 	IonSelectOption,
 	SelectCustomEvent
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	saveOutline,
-	globeOutline,
-	trashOutline
-} from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, RelationObject, SetState, SortSeparator } from '../../store/types';
+import { ModalProperties, RelationObject, SetState, SortSeparator } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
@@ -34,8 +20,9 @@ import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import Modal from '../../components/Modal';
 
-interface CustomSortModal extends ExtraCharactersModalOpener {
+interface CustomSortModal extends ModalProperties {
 	incomingRelation: RelationObject | null
 	setOutgoingRelation: SetState<RelationObject | null | string>
 }
@@ -54,20 +41,19 @@ const translations = [
 ];
 
 const commons = [
-	"Close", "Delete", "ExtraChars", "Ok", "Save",
-	"areYouSure", "emphasizedError"
+	"Ok", "areYouSure", "emphasizedError"
 ];
 
 const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	const [ tc ] = useTranslator('common');
-	const [ tClose, tDelete, tExChar, tOk, tSave, tRUSure, tError ] = useI18Memo(commons);
+	const [ tOk, tRUSure, tError ] = useI18Memo(commons);
 	const [
 		tBase, tAfterBase, tBeforeBase, tComma, tEndBefore, tNoSep, tPeriod,
 		tSemi, tSpace, tStartAfter, tTheBase, tNoBase, tNoPrePost, tpBase,
 		tpPrePost, tpAfter, tpBefore, tDelThing, tThingEdited, tEditThing
 	] = useI18Memo(translations, "settings");
 
-	const { isOpen, setIsOpen, openECM, incomingRelation, setOutgoingRelation } = props;
+	const { isOpen, setIsOpen, incomingRelation, setOutgoingRelation } = props;
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [separator, setSeparator] = useState<SortSeparator>("");
@@ -155,111 +141,86 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 			doAlert
 		});
 	}, [close, doAlert, incomingRelation, setOutgoingRelation, tc, tDelThing, tRUSure]);
-	const openEx = useCallback(() => openECM(true), [openECM]);
 	const doSetSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (
 		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tEditThing}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={close} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent>
-				<IonList lines="full" className="hasSpecialLabels">
-					<IonItem>
-						<div
-							slot="start"
-							className="ion-margin-end"
-						>{tpBase}</div>
-						<IonInput
-							aria-label={tBase}
-							id="editBaseRelation"
-							placeholder={tTheBase}
-							ref={editBaseRelationRef}
-						/>
-					</IonItem>
-					<IonItem className="labelled" lines="none">
-						<IonLabel>{tpBefore}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tBeforeBase}
-							id="editPreRelation"
-							helperText={tEndBefore}
-							ref={editPreRelationRef}
-						/>
-					</IonItem>
-					<IonItem className="labelled" lines="none">
-					<IonLabel>{tpAfter}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tAfterBase}
-							id="editPostRelation"
-							helperText={tStartAfter}
-							ref={editPostRelationRef}
-						/>
-					</IonItem>
-					<IonItem className="wrappableInnards">
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							label={tpPrePost}
-							value={separator}
-							onIonChange={doSetSep}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=""
-							>{tNoSep}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=" "
-							>{tSpace}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=","
-							>{tComma}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="."
-							>{tPeriod}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value=";"
-							>{tSemi}</IonSelectOption>
-						</IonSelect>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter className="modalBorderTop">
-				<IonToolbar>
-					<IonButton
-						color="danger"
+		<Modal
+			isOpen={isOpen}
+			closeFunc={close}
+			backdropDismiss={false}
+			onIonModalDidPresent={onLoad}
+			title={tEditThing}
+			bottomEnd={[{button: "save", action: maybeSaveRelation}]}
+			bottomStart={[{button: "delete", action: maybeDelete}]}
+			footerClass="modalBorderTop"
+			extraChars
+		></Modal>
+			<IonList lines="full" className="hasSpecialLabels">
+				<IonItem>
+					<div
 						slot="start"
-						onClick={maybeDelete}
+						className="ion-margin-end"
+					>{tpBase}</div>
+					<IonInput
+						aria-label={tBase}
+						id="editBaseRelation"
+						placeholder={tTheBase}
+						ref={editBaseRelationRef}
+					/>
+				</IonItem>
+				<IonItem className="labelled" lines="none">
+					<IonLabel>{tpBefore}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tBeforeBase}
+						id="editPreRelation"
+						helperText={tEndBefore}
+						ref={editPreRelationRef}
+					/>
+				</IonItem>
+				<IonItem className="labelled" lines="none">
+				<IonLabel>{tpAfter}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tAfterBase}
+						id="editPostRelation"
+						helperText={tStartAfter}
+						ref={editPostRelationRef}
+					/>
+				</IonItem>
+				<IonItem className="wrappableInnards">
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						label={tpPrePost}
+						value={separator}
+						onIonChange={doSetSep}
 					>
-						<IonIcon icon={trashOutline} slot="end" />
-						<IonLabel>{tDelete}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveRelation}
-					>
-						<IonIcon icon={saveOutline} slot="end" />
-						<IonLabel>{tSave}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=""
+						>{tNoSep}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=" "
+						>{tSpace}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=","
+						>{tComma}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="."
+						>{tPeriod}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value=";"
+						>{tSemi}</IonSelectOption>
+					</IonSelect>
+				</IonItem>
+			</IonList>
 		</IonModal>
 	);
 };

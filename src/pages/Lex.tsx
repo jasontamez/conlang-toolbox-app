@@ -87,7 +87,7 @@ import toaster from '../components/toaster';
 import makeSorter from '../components/stringSorter';
 import { LexiconIcon } from '../components/icons';
 import ModalWrap from '../components/ModalWrap';
-import { ModalMakingContext } from '../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../components/contexts';
 import useI18Memo from '../components/useI18Memo';
 import getSetValue from '../components/getSetValue';
 import i18n from '../i18n';
@@ -690,6 +690,7 @@ const Lex: FC = () => {
 	const openAdd = useCallback(() => setIsOpenAddLexItem(true), []);
 	const deleteSelected = useCallback(() => maybeFinishDeleting(), [maybeFinishDeleting]);
 	const cancelDeleting = useCallback(() => maybeFinishDeleting(true), [maybeFinishDeleting]);
+	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const columnLabels = useMemo(() => columns.map((column: LexiconColumn) => (
 		<div
 			className={
@@ -709,44 +710,44 @@ const Lex: FC = () => {
 	// JSX
 	return (
 		<IonPage>
-			<AddLexiconItemModal
-				{...modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
-				openECM={setIsOpenECM}
-				columnInfo={columns}
-				sorter={sorter}
-			/>
-			<EditLexiconItemModal
-				{...modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
-				openECM={setIsOpenECM}
-				itemToEdit={editingItem}
-				columnInfo={columns}
-				sorter={sorter}
-			/>
-			<LexiconSettingsModal
-				{...modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
-				openECM={setIsOpenECM}
-				sortLang={sortLanguage || defaultSortLanguage}
-				sensitivity={sensitivity}
-			/>
-			<LexiconSortModal
-				{...modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
-				sorter={sorter}
-			/>
-			<MergeLexiconItemsModal
-				{...modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
-				merging={merging}
-				mergingObject={mergingObject}
-				clearInfo={clearMergedInfo}
-				sorter={sorter}
-			/>
+			<ExCharContext value={openEx}>
+				<AddLexiconItemModal
+					{...modalPropsMaker(isOpenAddLexItem, setIsOpenAddLexItem)}
+					columnInfo={columns}
+					sorter={sorter}
+				/>
+				<EditLexiconItemModal
+					{...modalPropsMaker(isOpenEditLexItem, setIsOpenEditLexItem)}
+					itemToEdit={editingItem}
+					columnInfo={columns}
+					sorter={sorter}
+				/>
+				<LexiconSettingsModal
+					{...modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
+					openECM={setIsOpenECM}
+					sortLang={sortLanguage || defaultSortLanguage}
+					sensitivity={sensitivity}
+				/>
+				<LexiconSortModal
+					{...modalPropsMaker(isOpenLexSorter, setIsOpenLexSorter)}
+					sorter={sorter}
+				/>
+				<MergeLexiconItemsModal
+					{...modalPropsMaker(isOpenMergeItems, setIsOpenMergeItems)}
+					merging={merging}
+					mergingObject={mergingObject}
+					clearInfo={clearMergedInfo}
+					sorter={sorter}
+				/>
+				<InnerHeader
+					setIsOpenECM={setIsOpenECM}
+					lexHeadersHidden={lexHeadersHidden}
+					setLexHeadersHidden={setLexHeadersHidden}
+					isDeleting={isDeleting}
+					topBarRef={topBarRef}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
-			<InnerHeader
-				setIsOpenECM={setIsOpenECM}
-				lexHeadersHidden={lexHeadersHidden}
-				setLexHeadersHidden={setLexHeadersHidden}
-				isDeleting={isDeleting}
-				topBarRef={topBarRef}
-			/>
 			<IonContent fullscreen className="evenBackground hasSpecialLabels" id="lexiconPage">
 				<IonList
 					lines="none"

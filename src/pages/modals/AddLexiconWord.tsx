@@ -1,31 +1,18 @@
 import React, { useCallback, FC } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
-	IonButton,
-	IonTitle,
 	IonInput,
-	IonFooter,
 	IonTextarea,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import {
-	closeCircleOutline,
-	saveOutline,
-	globeOutline
-} from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { addLexiconItem } from '../../store/lexiconSlice';
-import { ExtraCharactersModalOpener, LexiconColumn, SorterFunc } from '../../store/types';
+import { LexiconColumn, ModalProperties, SorterFunc } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
@@ -33,12 +20,12 @@ import getSetValue from '../../components/getSetValue';
 import useElement, {useElementList} from '../../components/useElement';
 import Modal from '../../components/Modal';
 
-interface LexItemProps extends ExtraCharactersModalOpener {
+interface LexItemProps extends ModalProperties {
 	columnInfo: LexiconColumn[]
 	sorter: SorterFunc
 }
 
-const commons = [ "Close", "ExtraChars", "Ok", "error" ];
+const commons = [ "Ok", "error" ];
 
 const translations = [ "AddItem", "ItemSaved", "noInfoProvided", "AddLexiconItem" ];
 
@@ -85,10 +72,10 @@ const InputItem: FC<InputItemProps> = ({col, getElement}) => {
 };
 
 const AddLexiconItemModal: FC<LexItemProps> = (props) => {
-	const [ tClose, tExChar, tOk, tError ] = useI18Memo(commons);
+	const [ tOk, tError ] = useI18Memo(commons);
 	const [ tAddItem, tThingAdded, tNoInfo, tAddLexItem ] = useI18Memo(translations, "lexicon");
 
-	const { isOpen, setIsOpen, openECM, columnInfo, sorter } = props;
+	const { isOpen, setIsOpen, columnInfo, sorter } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -139,7 +126,6 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 	const cancel = useCallback(() => {
 		setIsOpen(false);
 	}, [setIsOpen]);
-	const opener = useCallback(() => openECM(true), [openECM]);
 
 	return (
 		<Modal
@@ -148,42 +134,16 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 			backdropDismiss={false}
 			title={tAddLexItem}
 			bottomStart={[{button: "cancel"}]}
-			bottomEnd={[{button: "add", action: maybeSaveNewInfo}]}
+			bottomEnd={[{key: tAddItem, icon: "add", isText: true, action: maybeSaveNewInfo}]}
+			footerClass="modalBorderTop"
 			extraChars
 		>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tAddLexItem}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={opener} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={cancel} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels ion-margin-end">
-					{columnInfo.map((col: LexiconColumn) => {
-						const getElement = (node: IonInput | null) => updater(col, node);
-						return <InputItem col={col} key={`${col.id}:addFragment`} getElement={getElement} />;
-					})}
-				</IonList>
-			</IonContent>
-			<IonFooter className="modalBorderTop">
-				<IonToolbar>
-					<IonButton
-						color="tertiary"
-						slot="end"
-						onClick={maybeSaveNewInfo}
-					>
-						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tAddItem}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
+			<IonList lines="none" className="hasSpecialLabels ion-margin-end">
+				{columnInfo.map((col: LexiconColumn) => {
+					const getElement = (node: IonInput | null) => updater(col, node);
+					return <InputItem col={col} key={`${col.id}:addFragment`} getElement={getElement} />;
+				})}
+			</IonList>
 		</Modal>
 	);
 };

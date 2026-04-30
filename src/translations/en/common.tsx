@@ -247,18 +247,6 @@ const common = {
 		"- [Geeks for Geeks: Write Reguar Expressions](https://www.geeksforgeeks.org/write-regular-expressions/)"
 	],
 
-	modal: {
-		loadInfo: "Load {{title}}",
-		saveInfo: "Save {{title}}",
-		addInfo: "Add {{title}}",
-		deleteInfo: "Delete {{title}}",
-
-		exportData: "Export {{title}}",
-
-		saveButton: "Save",
-		cancelButton: "Cancel"
-	}
-
 };
 
 export default common;

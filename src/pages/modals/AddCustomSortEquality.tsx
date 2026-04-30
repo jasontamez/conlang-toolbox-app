@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EqualityObject, ExtraCharactersModalOpener, SetState, SortSeparator } from '../../store/types';
+import { EqualityObject, ModalProperties, SetState, SortSeparator } from '../../store/types';
 
 import toaster from '../../components/toaster';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -21,7 +21,7 @@ import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
 import Modal from '../../components/Modal';
 
-interface CustomSortModal extends ExtraCharactersModalOpener {
+interface CustomSortModal extends ModalProperties {
 	setSavedEquality: SetState<EqualityObject | null>
 }
 

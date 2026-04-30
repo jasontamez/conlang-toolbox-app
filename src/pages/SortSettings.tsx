@@ -265,29 +265,24 @@ const SortSettings: FC = () => {
 				/>
 				<AddCustomSortRelation
 					{...addRelationModalInfo}
-					openECM={setIsOpenECM}
 					setSavedRelation={setSavedRelation}
 				/>
 				<EditCustomSortRelation
 					{...editRelationModalInfo}
-					openECM={setIsOpenECM}
 					incomingRelation={incomingRelation}
 					setOutgoingRelation={setOutgoingRelation}
 				/>
 				<AddCustomSortEquality
 					{...addEqualityModalInfo}
-					openECM={setIsOpenECM}
 					setSavedEquality={setSavedEquality}
 				/>
 				<EditCustomSortEquality
 					{...editEqualityModalInfo}
-					openECM={setIsOpenECM}
 					incomingEquality={incomingEquality}
 					setOutgoingEquality={setOutgoingEquality}
 				/>
 				<EditCustomSort
 					{...modalPropsMaker(editModalOpen, setEditModalOpen)}
-					openECM={setIsOpenECM}
 					editingCustomSort={editingCustomSort}
 
 					langObj={langObj}

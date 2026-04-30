@@ -38,13 +38,15 @@ interface ButtonInfo1 extends ButtonBase {
 	button: ButtonType
 	icon?: ButtonType | string
 	key?: never
+	isText?: never
 }
 interface ButtonInfo2 extends ButtonBase {
 	key: string
+	isText?: boolean
 	icon: ButtonType | string
 	button?: never
 }
-type ButtonInfo = ButtonInfo1 | ButtonInfo2; // { key, icon, action? } || { button, icon?, action? }
+type ButtonInfo = ButtonInfo1 | ButtonInfo2; // { key, icon, isText?, action? } || { button, icon?, action? }
 
 type TopButtons = "close" | "extra";
 
@@ -62,6 +64,9 @@ interface BaseProps extends IonModalProps {
 	bottomStart?: ButtonInfo[]
 	bottomEnd?: ButtonInfo[]
 	extraChars?: boolean
+	contentClass?: string
+	footerToolbarClass?: string
+	footerClass?: string
 }
 
 type ModalProps = RequireAtLeastOne<BaseProps, "bottomStart" | "bottomEnd">;
@@ -109,21 +114,21 @@ const getColor = (input: ButtonType | string) => {
 const getKey = (input: ButtonType | string) => {
 	switch(input) {
 		case "save":
-			return "modals.saveInfo";
+			return "Save";
 		case "add":
-			return "modals.addInfo";
+			return "Add";
 		case "add+close":
-			return "modals.addAndCloseInfo";
+			return "AddAndClose";
 		case "load":
-			return "modals.loadInfo";
+			return "Load";
 		case "export":
-			return "modals.exportInfo";
+			return "Export";
 		case "delete":
-			return "modals.deleteInfo";
+			return "Delete";
 		case "cancel":
-			return "modals.Cancel";
+			return "Cancel";
 		case "done":
-			return "modals.Done";
+			return "Done";
 	}
 	return input;
 };
@@ -137,8 +142,8 @@ const BottomButtons: FC<{input?: ButtonInfo[], title: string, cancel: () => void
 		<IonButtons slot={slot}>
 			{
 				input.map((buttoninfo, i) => {
-					// { key, icon, action? } || { button, icon?, action? }
-					const { key, icon, action, button, color } = buttoninfo;
+					// { key, icon, isText?, action? } || { button, icon?, action? }
+					const { key, icon, action, button, color, isText } = buttoninfo;
 					const obj = {
 						button: "",
 						icon: "",
@@ -146,12 +151,12 @@ const BottomButtons: FC<{input?: ButtonInfo[], title: string, cancel: () => void
 					};
 					if(key !== undefined) {
 						// key
-						obj.button = i18n.t(key, { context: { title } });
+						obj.button = isText ? key : i18n.t(key);
 						obj.icon = getIcon(icon);
 						obj.color = getColor(color || icon);
 					} else {
 						// button
-						obj.button = i18n.t(getKey(button), { context: { title } });
+						obj.button = i18n.t(getKey(button));
 						obj.icon = getIcon(icon || button);
 						obj.color = getColor(color || icon || button);
 					}
@@ -221,15 +226,17 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 		topEnd,
 		bottomStart,
 		bottomEnd,
-		backdropDismiss,
 		children,
-		extraChars
+		extraChars,
+		contentClass,
+		footerToolbarClass,
+		footerClass,
+		...rest
 	} = props;
 	return (
 		<IonModal
 			isOpen={isOpen}
-			onDidDismiss={closeFunc}
-			backdropDismiss={backdropDismiss}
+			{...rest}
 		>
 			<IonHeader>
 				<IonToolbar color="primary">
@@ -237,11 +244,11 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 					<TopButtons input={topEnd} title={title} close={closeFunc} extra={extraChars} />
 				</IonToolbar>
 			</IonHeader>
-			<IonContent>
+			<IonContent className={contentClass}>
 				{children}
 			</IonContent>
-			<IonFooter>
-				<IonToolbar>
+			<IonFooter className={footerClass}>
+				<IonToolbar className={footerToolbarClass}>
 					<BottomButtons slot="start" input={bottomStart} title={title} cancel={closeFunc} />
 					<BottomButtons slot="end" input={bottomEnd} title={title} cancel={closeFunc} />
 				</IonToolbar>
