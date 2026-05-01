@@ -6,8 +6,13 @@ import {
 	IonTabButton,
 	IonTabs,
 	IonRouterOutlet,
-	IonIcon
+	IonIcon,
+	IonActionSheet,
+	ActionSheetButton,
+	useIonRouter
 } from '@ionic/react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { useLongPress } from '@uidotdev/usehooks';
 import { useSelector } from "react-redux";
 import { chevronBackCircle, chevronForwardCircle, settingsSharp } from 'ionicons/icons';
 
@@ -20,18 +25,23 @@ import './ms/MS.css';
 
 const range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-const makeTab = (n: number, min: number, max: number) => {
-	let goto: string = "Settings";
+const getN = (n: number): string => {
 	if(n > 0) {
-		goto = String(n);
+		let goto = String(n);
 		while(goto.length < 2) {
 			goto = "0" + goto;
 		}
+		return goto;
 	}
+	return "Settings";
+};
+
+const makeTab = (n: number, min: number, max: number) => {
+	const goto = getN(n);
 	return (
 		<IonTabButton
 			className={n < min || n > max ? "possiblyTooFar" : ""}
-			key={n}
+			key={`MS-tab-${n}`}
 			tab={"Section-" + goto}
 			layout="icon-hide"
 			href={"/ms/ms" + goto}
@@ -53,6 +63,17 @@ const MS: FC = () => {
 	const [center, setCenter] = useState<number>(Math.min(Math.max(lastPage, 2), 8));
 	const [min, setMin] = useState<number>(center - 2);
 	const [max, setMax] = useState<number>(center + 2);
+	const [prevOpen, setPrevOpen] = useState<boolean>(false);
+	const [nextOpen, setNextOpen] = useState<boolean>(false);
+	const longPressPrev = useLongPress(() => {
+		Haptics.impact({ style: ImpactStyle.Light });
+		setPrevOpen(true);
+	}, {});
+	const longPressNext = useLongPress(() => {
+		Haptics.impact({ style: ImpactStyle.Light });
+		setNextOpen(true);
+	}, {});
+	const navigator = useIonRouter();
 	const modifyTabBar = useCallback((n: number) => {
 		// move center to 'n'
 		const mod = Math.min(Math.max(n, 2), 8);
@@ -103,6 +124,7 @@ const MS: FC = () => {
 					layout="label-hide"
 					onClick={modDown}
 					disabled={center <= 2}
+					{...longPressPrev}
 				>
 					<IonIcon icon={chevronBackCircle} className="align-middle" />
 				</IonTabButton>
@@ -113,10 +135,39 @@ const MS: FC = () => {
 					layout="label-hide"
 					onClick={modUp}
 					disabled={center >= 8}
+					{...longPressNext}
 				>
 					<IonIcon icon={chevronForwardCircle} className="align-middle" />
 				</IonTabButton>
 			</IonTabBar>
+			<IonActionSheet
+				className="historySheet pagesPrev"
+				isOpen={prevOpen}
+				onDidDismiss={() => setPrevOpen(false)}
+				buttons={
+					range.filter(n => n < min).map(n => ({
+						text: n ? `Page ${n}` : "Settings",
+						handler: () => {
+							Haptics.impact({ style: ImpactStyle.Light });
+							navigator.push(`/ms/ms${getN(n)}`);
+						}
+					} as ActionSheetButton)).concat([{ text: "Cancel", role: "cancel" }])
+				}
+			/>
+			<IonActionSheet
+				className="historySheet pagesNext"
+				isOpen={nextOpen}
+				onDidDismiss={() => setNextOpen(false)}
+				buttons={
+					range.filter(n => n > max).map(n => ({
+						text: `Page ${n}`,
+						handler: () => {
+							Haptics.impact({ style: ImpactStyle.Light });
+							navigator.push(`/ms/ms${getN(n)}`);
+						}
+					} as ActionSheetButton)).concat([{ text: "Cancel", role: "cancel" }])
+				}
+			/>
 		</IonTabs>
 	);
 };
