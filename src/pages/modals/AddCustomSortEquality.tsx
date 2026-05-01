@@ -125,7 +125,7 @@ const AddCustomSortEquality: FC<CustomSortModal> = (props) => {
 		<Modal
 			isOpen={isOpen}
 			closeFunc={maybeCancel}
-			backdropDismiss={false}
+			enclosed
 			title={tAddThing}
 			bottomEnd={[{button: "add", action: maybeSaveEquality}]}
 			bottomStart={[{button: "cancel"}]}

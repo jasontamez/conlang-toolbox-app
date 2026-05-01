@@ -135,7 +135,7 @@ const AddCustomSortRelation: FC<CustomSortModal> = (props) => {
 		<Modal
 			isOpen={isOpen}
 			closeFunc={maybeCancel}
-			backdropDismiss={false}
+			enclosed
 			title={tAddThing}
 			bottomEnd={[{button: "add", action: maybeSaveRelation}]}
 			bottomStart={[{button: "cancel"}]}

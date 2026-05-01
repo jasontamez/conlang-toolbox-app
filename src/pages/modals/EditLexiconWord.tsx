@@ -194,7 +194,7 @@ const EditLexiconItemModal: FC<LexItemProps> = (props) => {
 			isOpen={isOpen}
 			title={tEditLexicon}
 			closeFunc={cancelEditing}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			bottomStart={[{key: tDelThing, isText: true, icon: "delete", action: delFromLex}]}
 			bottomEnd={[{key: tSaveThing, isText: true, icon: "save", action: maybeSaveNewInfo}]}

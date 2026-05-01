@@ -221,7 +221,12 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 		);
 	}), [customInfo, maybeDeleteInfo, maybeLoadInfo, tDel, tLoad]);
 	return (
-		<Modal isOpen={isOpen} onDidDismiss={doCleanClose} closeFunc={doCleanClose} title={tManage} bottomEnd={[{button: "cancel", color: "danger"}]}>
+		<Modal
+			isOpen={isOpen}
+			closeFunc={doCleanClose}
+			title={tManage}
+			bottomEnd={[{button: "cancel", color: "danger"}]}
+		>
 			<IonList lines="none">
 				<IonItemGroup>
 					<IonItemDivider>

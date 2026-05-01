@@ -290,7 +290,7 @@ const EditDeclenjugation: FC<EditDJModal> = (props) => {
 	return (
 		<Modal
 			isOpen={isOpen}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			title={tEditThing}
 			closeFunc={maybeCancel}

@@ -595,7 +595,7 @@ const EditCustomSort: FC<CustomSortModal> = (props) => {
 			isOpen={isOpen}
 			closeFunc={closeModal}
 			title={tEditThing}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			bottomEnd={[{button: "save", action: maybeSaveEditedSort}]}
 			bottomStart={[{key: tDelSort, icon: "delete", isText: true, action: maybeDeleteSort}]}

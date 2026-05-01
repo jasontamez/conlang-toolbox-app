@@ -12,7 +12,8 @@ import {
 } from '@ionic/react';
 import {
 	addOutline,
-	checkmarkOutline,
+	arrowUpCircleOutline,
+	checkmarkDoneCircleOutline,
 	chevronDownCircleOutline,
 	closeOutline,
 	downloadOutline,
@@ -25,8 +26,11 @@ import useI18Memo from './useI18Memo';
 import { ExCharContext } from './contexts';
 
 type IonModalProps = Parameters<typeof IonModal>[0];
+type IonContentProps = Parameters<typeof IonContent>[0];
+type IonFooterProps = Parameters<typeof IonFooter>[0];
+type IonToolbarProps = Parameters<typeof IonToolbar>[0];
 
-type ButtonType = "save" | "load" | "export" | "delete" | "add" | "cancel" | "add+close" | "done";
+type ButtonType = "save" | "load" | "export" | "delete" | "add" | "cancel" | "add+close" | "done" | "import";
 interface ButtonBase {
 	action?: () => void
 	color?: string
@@ -60,13 +64,17 @@ interface BaseProps extends IonModalProps {
 	isOpen: boolean
 	closeFunc: () => void
 	title: string
+	enclosed?: boolean | (() => void)
 	topEnd?: (TopButtons | TopButtonInfo)[] // If TopButtons omitted, becomes ["extra", ..., "close"]
 	bottomStart?: ButtonInfo[]
 	bottomEnd?: ButtonInfo[]
 	extraChars?: boolean
 	contentClass?: string
+	contentProps?: IonContentProps
 	footerToolbarClass?: string
+	footerToolbarProps?: IonToolbarProps
 	footerClass?: string
+	footerProps?: IonFooterProps
 }
 
 type ModalProps = RequireAtLeastOne<BaseProps, "bottomStart" | "bottomEnd">;
@@ -84,12 +92,14 @@ const getIcon = (input: ButtonType | string) => {
 			return chevronDownCircleOutline;
 		case "export":
 			return downloadOutline;
+		case "import":
+			return arrowUpCircleOutline;
 		case "delete":
 			return trashOutline;
 		case "cancel":
 			return closeOutline;
 		case "done":
-			return checkmarkOutline;
+			return checkmarkDoneCircleOutline;
 	}
 	return input;
 };
@@ -104,6 +114,7 @@ const getColor = (input: ButtonType | string) => {
 			return "success";
 		case "cancel":
 		case "load":
+		case "import":
 			return "warning";
 		case "delete":
 			return "danger";
@@ -123,6 +134,8 @@ const getKey = (input: ButtonType | string) => {
 			return "Load";
 		case "export":
 			return "Export";
+		case "import":
+			return "Import";
 		case "delete":
 			return "Delete";
 		case "cancel":
@@ -223,19 +236,25 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 		isOpen,
 		closeFunc,
 		title,
+		enclosed,
 		topEnd,
 		bottomStart,
 		bottomEnd,
 		children,
 		extraChars,
 		contentClass,
+		contentProps,
 		footerToolbarClass,
+		footerToolbarProps,
 		footerClass,
+		footerProps,
 		...rest
 	} = props;
 	return (
 		<IonModal
 			isOpen={isOpen}
+			onDidDismiss={enclosed === true ? undefined : (enclosed || closeFunc)}
+			backdropDismiss={!enclosed}
 			{...rest}
 		>
 			<IonHeader>
@@ -244,11 +263,11 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
 					<TopButtons input={topEnd} title={title} close={closeFunc} extra={extraChars} />
 				</IonToolbar>
 			</IonHeader>
-			<IonContent className={contentClass}>
+			<IonContent className={contentClass} {...contentProps}>
 				{children}
 			</IonContent>
-			<IonFooter className={footerClass}>
-				<IonToolbar className={footerToolbarClass}>
+			<IonFooter className={footerClass} {...footerProps}>
+				<IonToolbar className={footerToolbarClass} {...footerToolbarProps}>
 					<BottomButtons slot="start" input={bottomStart} title={title} cancel={closeFunc} />
 					<BottomButtons slot="end" input={bottomEnd} title={title} cancel={closeFunc} />
 				</IonToolbar>

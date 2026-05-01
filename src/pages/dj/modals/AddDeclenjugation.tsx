@@ -230,7 +230,16 @@ const AddDeclenjugation: FC<AddDJModal> = (props) => {
 	const toggleUseWholeWord = useCallback(() => setUseWholeWord(!useWholeWord), [useWholeWord]);
 	const toggleUseAdvanced = useCallback(() => setUseAdvancedMethod(!useAdvancedMethod), [useAdvancedMethod]);
 	return (
-		<Modal bottomStart={[{button: "cancel"}]} bottomEnd={[{button: "add", action: maybeSaveNewDeclenjugation}]} isOpen={isOpen} closeFunc={maybeCancel} title={tAddThing} backdropDismiss={false} onIonModalDidPresent={onLoad} extraChars>
+		<Modal
+			bottomStart={[{button: "cancel"}]}
+			bottomEnd={[{button: "add", action: maybeSaveNewDeclenjugation}]}
+			isOpen={isOpen}
+			closeFunc={maybeCancel}
+			title={tAddThing}
+			enclosed
+			onIonModalDidPresent={onLoad}
+			extraChars
+		>
 			<IonList lines="full" id="addingCustomDeclenjugatorList" className="hasSpecialLabels hasToggles">
 				<IonItem className="labelled">
 					<IonLabel className="ion-text-wrap ion-padding-bottom">{tTitleMethod}</IonLabel>

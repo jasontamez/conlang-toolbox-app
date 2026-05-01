@@ -3,7 +3,6 @@ import {
 	IonItem,
 	IonLabel,
 	IonList,
-	IonModal,
 	IonInput,
 	useIonAlert,
 	useIonToast,
@@ -143,18 +142,17 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 	}, [close, doAlert, incomingRelation, setOutgoingRelation, tc, tDelThing, tRUSure]);
 	const doSetSep = useCallback((e: SelectCustomEvent) => setSeparator(e.detail.value), []);
 	return (
-		<IonModal isOpen={isOpen} backdropDismiss={false} onIonModalDidPresent={onLoad}>
 		<Modal
 			isOpen={isOpen}
 			closeFunc={close}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			title={tEditThing}
 			bottomEnd={[{button: "save", action: maybeSaveRelation}]}
 			bottomStart={[{button: "delete", action: maybeDelete}]}
 			footerClass="modalBorderTop"
 			extraChars
-		></Modal>
+		>
 			<IonList lines="full" className="hasSpecialLabels">
 				<IonItem>
 					<div
@@ -221,7 +219,7 @@ const EditCustomSortRelation: FC<CustomSortModal> = (props) => {
 					</IonSelect>
 				</IonItem>
 			</IonList>
-		</IonModal>
+		</Modal>
 	);
 };
 

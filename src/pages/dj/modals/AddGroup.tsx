@@ -432,7 +432,7 @@ const AddGroup: FC<AddGroupProps> = (props) => {
 			title={tAddGroup}
 			closeFunc={maybeCancel}
 			isOpen={isOpen}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			bottomStart={[{button: "cancel"}]}
 			bottomEnd={[{action: maybeSaveNewGroup, button: "save"}]}

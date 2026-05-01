@@ -131,7 +131,7 @@ const AddLexiconItemModal: FC<LexItemProps> = (props) => {
 		<Modal
 			isOpen={isOpen}
 			closeFunc={cancel}
-			backdropDismiss={false}
+			enclosed
 			title={tAddLexItem}
 			bottomStart={[{button: "cancel"}]}
 			bottomEnd={[{key: tAddItem, icon: "add", isText: true, action: maybeSaveNewInfo}]}

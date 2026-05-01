@@ -137,7 +137,7 @@ const EditCustomSortEquality: FC<CustomSortModal> = (props) => {
 		<Modal
 			isOpen={isOpen}
 			closeFunc={close}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			title={tEditThing}
 			bottomEnd={[{button: "save", action: maybeSaveEquality}]}

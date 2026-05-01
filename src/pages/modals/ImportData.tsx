@@ -4,19 +4,14 @@ import {
 	IonLabel,
 	IonList,
 	IonItem,
-	IonContent,
-	IonHeader,
-	IonToolbar,
 	IonButton,
-	IonModal,
-	IonFooter,
 	IonTextarea,
 	useIonToast,
 	IonItemDivider,
 	IonToggle,
 	useIonAlert
 } from '@ionic/react';
-import { arrowUpCircle, closeCircle, closeCircleOutline, sparkles } from "ionicons/icons";
+import { closeCircle, sparkles } from "ionicons/icons";
 import { useDispatch, useSelector } from 'react-redux';
 import { compare } from "compare-versions";
 
@@ -66,9 +61,9 @@ import { $and, $delay } from '../../components/DollarSignExports';
 import log from '../../components/Logging';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
-import ModalHeader from '../../components/ModalHeader';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import Modal from '../../components/Modal';
 
 type ImportSettings = [ AppSettings | null, SortSettings | null ];
 
@@ -79,9 +74,9 @@ function overwriteStorage (storage: LocalForage, data: [string, any][]) {
 };
 
 const commons = [
-	"AppSettings", "Cancel", "Concepts", "Declenjugator",
+	"AppSettings", "Concepts", "Declenjugator",
 	"ExtraChars", "Lexicon", "MorphoSyntax", "WordEvolve",
-	"WordGen", "areYouSure", "Import"
+	"WordGen", "areYouSure"
 ];
 
 const translations = [
@@ -95,8 +90,8 @@ const translations = [
 const ImportData: FC<ModalProperties> = (props) => {
 	const [ ts ] = useTranslator('settings');
 	const [
-		tAppSett, tCancel, tConcepts, tDJ, tExChar,
-		tLex, tMS, tWE, tWG, tRUSure, tImport
+		tAppSett, tConcepts, tDJ, tExChar,
+		tLex, tMS, tWE, tWG, tRUSure
 	] = useI18Memo(commons);
 	const [
 		tAnalyze, tYouSure, tData, tImportInfo, tOtherSett,
@@ -442,170 +437,162 @@ const ImportData: FC<ModalProperties> = (props) => {
 	]);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={doClose} onIonModalDidPresent={onLoad} backdropDismiss={false}>
-			<IonHeader>
-				<ModalHeader title={tImportInfo} closeModal={maybeClose} />
-			</IonHeader>
-			<IonContent id="importDataContent" ref={importDataContentRef}>
-				<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
-					<IonItem lines="none" className="permanent">
-						<IonLabel className="ion-text-center ion-text-wrap">
-							<h2 className="ion-text-center ion-text-wrap">{tImpDesc}</h2>
-						</IonLabel>
-					</IonItem>
-					<IonItem lines="none" className="permanent">
-						<IonTextarea
-							aria-label={tData}
-							wrap="soft"
-							rows={12}
-							id="importingData"
-							disabled={readyToImport}
-							ref={importingDataRef}
-						></IonTextarea>
-					</IonItem>
-					<IonItem className="permanent">
-						<IonButton
-							id="cancelButton"
-							color="warning"
-							slot="start"
-							className={readyToImport ? "showing" : "hiding"}
-							onClick={resetAnalysis}
-						>
-							<IonLabel>{tReset}</IonLabel>
-							<IonIcon icon={closeCircle} slot="end" />
-						</IonButton>
-						<IonButton
-							color="primary"
-							disabled={readyToImport}
-							slot="end"
-							onClick={analyze}
-						>
-							<IonLabel>{tAnalyze}</IonLabel>
-							<IonIcon icon={sparkles} slot="start" />
-						</IonButton>
-					</IonItem>
-					<IonItemDivider ref={dividerRef}>{tWhatToImp}</IonItemDivider>
-					<IonItem
-						className={potential_import_ms ? "" : "notSelectable"}
-						lines={potential_import_msStored ? "none" : "full"}
+		<Modal
+			isOpen={isOpen}
+			title={tImportInfo}
+			closeFunc={maybeClose}
+			enclosed={doClose}
+			onIonModalDidPresent={onLoad}
+			bottomEnd={[{button: "import", action: doImport}]}
+			bottomStart={[{button: "cancel"}]}
+			contentProps={{ id: "importDataContent", ref: importDataContentRef }}
+		>
+			<IonList lines="full" id="importData" className={readyToImport ? "" : "waitingForInput"}>
+				<IonItem lines="none" className="permanent">
+					<IonLabel className="ion-text-center ion-text-wrap">
+						<h2 className="ion-text-center ion-text-wrap">{tImpDesc}</h2>
+					</IonLabel>
+				</IonItem>
+				<IonItem lines="none" className="permanent">
+					<IonTextarea
+						aria-label={tData}
+						wrap="soft"
+						rows={12}
+						id="importingData"
+						disabled={readyToImport}
+						ref={importingDataRef}
+					></IonTextarea>
+				</IonItem>
+				<IonItem className="permanent">
+					<IonButton
+						id="cancelButton"
+						color="warning"
+						slot="start"
+						className={readyToImport ? "showing" : "hiding"}
+						onClick={resetAnalysis}
 					>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_ms}
-							onIonChange={toggleImportMs}
-						>{tCSMS}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_msStored ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_msStored}
-							onIonChange={toggleImportMsStored}
-						>{tSDMS}</IonToggle>
-					</IonItem>
-					<IonItem
-						className={potential_import_wg ? "" : "notSelectable"}
-						lines={potential_import_wgStored ? "none" : "full"}
-					>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_wg}
-							onIonChange={toggleImportWg}
-						>{tCSWG}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_wgStored ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_wgStored}
-							onIonChange={toggleImportWgStored}
-						>{tSSWG}</IonToggle>
-					</IonItem>
-					<IonItem
-						className={potential_import_we ? "" : "notSelectable"}
-						lines={potential_import_weStored ? "none" : "full"}
-					>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_we}
-							onIonChange={toggleImportWe}
-						>{tCSWE}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_weStored ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_weStored}
-							onIonChange={toggleImportWeStored}
-						>{tSSWE}</IonToggle>
-					</IonItem>
-					<IonItem
-						className={potential_import_dj ? "" : "notSelectable"}
-						lines={potential_import_djStored ? "none" : "full"}
-					>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_dj}
-							onIonChange={toggleImportDj}
-						>{tCSDJ}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_djStored ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_djStored}
-							onIonChange={toggleImportDjStored}
-						>{tSSDJ}</IonToggle>
-					</IonItem>
-					<IonItem
-						className={potential_import_lex ? "" : "notSelectable"}
-						lines={potential_import_lexStored ? "none" : "full"}
-					>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_lex}
-							onIonChange={toggleImportLex}
-						>{tCSLex}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_lexStored ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_lexStored}
-							onIonChange={toggleImportLexStored}
-						>{tSDLex}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_con ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_con}
-							onIonChange={toggleImportCon}
-						>{tASConcepts}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_ec ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_ec}
-							onIonChange={toggleImportEc}
-						>{tASExChar}</IonToggle>
-					</IonItem>
-					<IonItem className={potential_import_set ? "" : "notSelectable"}>
-						<IonToggle
-							enableOnOffLabels
-							checked={do_import_set}
-							onIonChange={toggleImportSet}
-						>{tOtherSett}</IonToggle>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="danger" slot="start" onClick={maybeClose}>
-						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tCancel}</IonLabel>
+						<IonLabel>{tReset}</IonLabel>
+						<IonIcon icon={closeCircle} slot="end" />
 					</IonButton>
-					<IonButton color="secondary" slot="end" onClick={doImport}>
-						<IonIcon icon={arrowUpCircle} slot="start" />
-						<IonLabel>{tImport}</IonLabel>
+					<IonButton
+						color="primary"
+						disabled={readyToImport}
+						slot="end"
+						onClick={analyze}
+					>
+						<IonLabel>{tAnalyze}</IonLabel>
+						<IonIcon icon={sparkles} slot="start" />
 					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+				</IonItem>
+				<IonItemDivider ref={dividerRef}>{tWhatToImp}</IonItemDivider>
+				<IonItem
+					className={potential_import_ms ? "" : "notSelectable"}
+					lines={potential_import_msStored ? "none" : "full"}
+				>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_ms}
+						onIonChange={toggleImportMs}
+					>{tCSMS}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_msStored ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_msStored}
+						onIonChange={toggleImportMsStored}
+					>{tSDMS}</IonToggle>
+				</IonItem>
+				<IonItem
+					className={potential_import_wg ? "" : "notSelectable"}
+					lines={potential_import_wgStored ? "none" : "full"}
+				>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_wg}
+						onIonChange={toggleImportWg}
+					>{tCSWG}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_wgStored ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_wgStored}
+						onIonChange={toggleImportWgStored}
+					>{tSSWG}</IonToggle>
+				</IonItem>
+				<IonItem
+					className={potential_import_we ? "" : "notSelectable"}
+					lines={potential_import_weStored ? "none" : "full"}
+				>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_we}
+						onIonChange={toggleImportWe}
+					>{tCSWE}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_weStored ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_weStored}
+						onIonChange={toggleImportWeStored}
+					>{tSSWE}</IonToggle>
+				</IonItem>
+				<IonItem
+					className={potential_import_dj ? "" : "notSelectable"}
+					lines={potential_import_djStored ? "none" : "full"}
+				>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_dj}
+						onIonChange={toggleImportDj}
+					>{tCSDJ}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_djStored ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_djStored}
+						onIonChange={toggleImportDjStored}
+					>{tSSDJ}</IonToggle>
+				</IonItem>
+				<IonItem
+					className={potential_import_lex ? "" : "notSelectable"}
+					lines={potential_import_lexStored ? "none" : "full"}
+				>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_lex}
+						onIonChange={toggleImportLex}
+					>{tCSLex}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_lexStored ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_lexStored}
+						onIonChange={toggleImportLexStored}
+					>{tSDLex}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_con ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_con}
+						onIonChange={toggleImportCon}
+					>{tASConcepts}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_ec ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_ec}
+						onIonChange={toggleImportEc}
+					>{tASExChar}</IonToggle>
+				</IonItem>
+				<IonItem className={potential_import_set ? "" : "notSelectable"}>
+					<IonToggle
+						enableOnOffLabels
+						checked={do_import_set}
+						onIonChange={toggleImportSet}
+					>{tOtherSett}</IonToggle>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

@@ -1,17 +1,12 @@
 import React, { FC, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import {
-	IonToolbar,
-	IonButtons,
 	IonButton,
 	IonIcon,
 	IonList,
 	IonItem,
 	IonLabel,
-	IonContent,
 	IonCheckbox,
 	IonTextarea,
-	IonModal,
-	IonFooter,
 	IonGrid,
 	IonRow,
 	IonCol,
@@ -19,7 +14,7 @@ import {
 	TextareaChangeEventDetail,
 	TextareaCustomEvent
 } from '@ionic/react';
-import { checkmarkCircleOutline, helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
+import { helpCircleOutline, informationCircleSharp } from 'ionicons/icons';
 import { useDispatch, useSelector } from "react-redux";
 //import doParse from 'html-react-parser';
 import Markdown, { Components } from 'react-markdown';
@@ -34,8 +29,8 @@ import useTranslator from '../../store/translationHooks';
 
 import Header from '../../components/Header';
 import RangeStartToEndMinusOne from '../../components/NumericRange';
-import ModalHeader from '../../components/ModalHeader';
 import { ModalMakingContext } from '../../components/contexts';
+import Modal from '../../components/Modal';
 
 interface ModalProperties {
 	title?: string
@@ -189,9 +184,7 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	} = props;
 
 	const [ t ] = useTranslator('ms');
-	const [ tc ] = useTranslator('common');
 	const modalTitle = useMemo(() => title || t("MISSINGTITLE"), [title, t]);
-	const tDone = useMemo(() => tc("Done"), [tc]);
 	const modalPropsMaker = useContext(ModalMakingContext);
 
 	const {isOpen, setIsOpen} = modalPropsMaker(modalOpen, setModalOpen);
@@ -199,34 +192,20 @@ export const InfoModal = (props: PropsWithChildren<InfoModalProps>) => {
 	const setClosed = useCallback(() => setIsOpen(false), [setIsOpen]);
 	return (
 		<IonItem className={className ? className + " infoModal" : "infoModal"}>
-			<IonModal isOpen={isOpen} onDidDismiss={setClosed}>
-				<ModalHeader title={modalTitle} closeModal={setIsOpen} />
-				<IonContent className="morphoSyntaxModal">
-					<IonList lines="none">
-						<IonItem>
-							{children}
-						</IonItem>
-					</IonList>
-				</IonContent>
-				<IonFooter>
-					<IonToolbar className="ion-text-wrap">
-						<IonButtons slot="end">
-							<IonButton
-								onClick={setClosed}
-								slot="end"
-								fill="solid"
-								color="success"
-							>
-								<IonIcon
-									icon={checkmarkCircleOutline}
-									slot="start"
-								/>
-								<IonLabel>{tDone}</IonLabel>
-							</IonButton>
-						</IonButtons>
-					</IonToolbar>
-				</IonFooter>
-			</IonModal>
+			<Modal
+				isOpen={isOpen}
+				title={modalTitle}
+				closeFunc={setClosed}
+				footerToolbarClass="ion-text-wrap"
+				bottomEnd={[{button: "done"}]}
+				contentClass="morphoSyntaxModal"
+			>
+				<IonList lines="none">
+					<IonItem>
+						{children}
+					</IonItem>
+				</IonList>
+			</Modal>
 			<IonButton color="primary" onClick={setOpen}>
 				<IonIcon
 					icon={informationCircleSharp}

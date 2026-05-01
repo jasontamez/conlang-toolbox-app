@@ -1,20 +1,13 @@
 import React, { FC, MouseEventHandler, useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
-	IonTitle,
 	IonButton,
 	IonIcon,
 	useIonAlert,
 	useIonToast,
-	IonModal,
 	IonList,
 	IonItem,
 	IonLabel,
-	IonFooter,
 	IonCheckbox,
 	IonToggle,
 	IonInput,
@@ -27,16 +20,13 @@ import {
 	SelectCustomEvent
 } from '@ionic/react';
 import {
-	enterOutline,
-	globeOutline,
-	closeCircleOutline,
 	add,
 	save,
 	close,
 	trash
 } from 'ionicons/icons';
 
-import { ExtraCharactersModalOpener, StateObject } from '../../store/types';
+import { ModalProperties, StateObject } from '../../store/types';
 import useTranslator from '../../store/translationHooks';
 
 import toaster from '../../components/toaster';
@@ -44,8 +34,9 @@ import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
 import useElement from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import Modal from '../../components/Modal';
 
-interface ImporterProps extends ExtraCharactersModalOpener {
+interface ImporterProps extends ModalProperties {
 	currentInput: string
 	importFunc: (a: string) => void
 }
@@ -89,11 +80,11 @@ const testMatches = (word: string, tests: string[], matchAll: boolean) => {
 
 
 const commons = [
-	"Close", "ExtraChars", "Save", "Help",
-	"AddConditions", "Cancel", "ColXMustHaveY",
+	"Close", "Save", "Help",
+	"AddConditions", "ColXMustHaveY",
 	"ColXMustMatchY", "NothingToImport",
 	"ExitWOImport", "ImportFromWhichColumns",
-	"ifMatchAllOff", "Import",
+	"ifMatchAllOff",
 	"MatchAllConditions", "NothingToSave",
 	"SelectOneCol",
 	"TypeWordHere", "TypeRegExHere",
@@ -106,11 +97,11 @@ const commons = [
 const LexiconImporterModal: FC<ImporterProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
-		tClose, tExChar, tSave, tHelp,
-		tAddCond, tCancel, tColXY,
+		tClose, tSave, tHelp,
+		tAddCond, tColXY,
 		tColXmY, tNoImport,
 		tExWithout, tImpFrom,
-		tIfOff, tImport,
+		tIfOff,
 		tMatchAll, tNothingToSave,
 		tSelOne,
 		tTypeWord, tTypeRegex,
@@ -122,7 +113,6 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 	const {
 		isOpen,
 		setIsOpen,
-		openECM,
 		currentInput,
 		importFunc
 	} = props;
@@ -422,8 +412,6 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 		setColumnMatches(columnMatches.filter(x => x.col !== col && x.test !== test));
 	}, [columnMatches]);
 
-	const openEx = useCallback(() => openECM(true), [openECM]);
-
 	const lexColumns = useMemo(() => columns.map((col, i) => {
 		return (
 			<IonItem
@@ -518,174 +506,156 @@ const LexiconImporterModal: FC<ImporterProps> = (props) => {
 	const toggleMatchAll = useCallback(() => setMatchAll(!matchAll), [matchAll]);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={doClose} onIonModalDidPresent={onLoad}>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tImpFromLexicon}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={openEx} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={maybeDoClose} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent>
-				<IonList id="lexiconImporter" lines="full" className="lexiconImporter hasToggles">
-					<IonItem>
-						<IonLabel>{tImpFrom}</IonLabel>
-					</IonItem>
-					{lexColumns}
-					<IonItemDivider>{tAddCond}</IonItemDivider>
-					<IonItem className={"wrappableInnards doubleable" + (addingWordTest ? " toggled" : "")}>
-						<IonLabel className="ion-text-wrap">{tX}</IonLabel>
-						<IonButton
-							color={addingWordTest ? "warning" : "primary"}
-							slot="end"
-							disabled={addingWordMatch || addingColumnTest || addingColumnMatch}
-							onClick={toggleAddingWordTest}
-						><IonIcon icon={addingWordTest ? close : add} slot="icon-only" /></IonButton>
-					</IonItem>
-					<IonItem className={"toggleable wrappableInnards biggerToggle" + (addingWordTest ? "" : " toggled")}>
-						<IonInput id="word" ref={wordRef} helperText={tTypeWord} />
-						<IonButton
-							color="success"
-							slot="end"
-							onClick={addWordTest}
-							aria-label={tSave}
-						><IonIcon icon={save} slot="icon-only" /></IonButton>
-					</IonItem>
+		<Modal
+			isOpen={isOpen}
+			title={tImpFromLexicon}
+			closeFunc={maybeDoClose}
+			onDidDismiss={doClose}
+			onIonModalDidPresent={onLoad}
+			bottomStart={[{ button: "cancel" }]}
+			bottomEnd={[{ button: "import", action: importLexicon }]}
+			extraChars
+		>
+			<IonList id="lexiconImporter" lines="full" className="lexiconImporter hasToggles">
+				<IonItem>
+					<IonLabel>{tImpFrom}</IonLabel>
+				</IonItem>
+				{lexColumns}
+				<IonItemDivider>{tAddCond}</IonItemDivider>
+				<IonItem className={"wrappableInnards doubleable" + (addingWordTest ? " toggled" : "")}>
+					<IonLabel className="ion-text-wrap">{tX}</IonLabel>
+					<IonButton
+						color={addingWordTest ? "warning" : "primary"}
+						slot="end"
+						disabled={addingWordMatch || addingColumnTest || addingColumnMatch}
+						onClick={toggleAddingWordTest}
+					><IonIcon icon={addingWordTest ? close : add} slot="icon-only" /></IonButton>
+				</IonItem>
+				<IonItem className={"toggleable wrappableInnards biggerToggle" + (addingWordTest ? "" : " toggled")}>
+					<IonInput id="word" ref={wordRef} helperText={tTypeWord} />
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={addWordTest}
+						aria-label={tSave}
+					><IonIcon icon={save} slot="icon-only" /></IonButton>
+				</IonItem>
 
-					<IonItem className={"wrappableInnards doubleable" + (addingWordMatch ? " toggled" : "")}>
-						<IonLabel className="ion-text-wrap">{tMX}</IonLabel>
-						<IonButton
-							color={addingWordMatch ? "warning" : "primary"}
-							slot="end"
-							disabled={addingWordTest || addingColumnTest || addingColumnMatch}
-							onClick={toggleAddingWordMatch}
-						><IonIcon icon={addingWordMatch ? close : add} slot="icon-only" /></IonButton>
-					</IonItem>
-					<IonItem className={"toggleable wrappableInnards" + (addingWordMatch ? "" : " toggled")}>
-						<IonInput id="wordMatch" ref={wordMatchRef} helperText={tTypeRegex} />
-						<IonButton
-							color="success"
-							slot="end"
-							onClick={addWordMatch}
-							aria-label={tSave}
-						><IonIcon icon={save} slot="icon-only" /></IonButton>
-					</IonItem>
+				<IonItem className={"wrappableInnards doubleable" + (addingWordMatch ? " toggled" : "")}>
+					<IonLabel className="ion-text-wrap">{tMX}</IonLabel>
+					<IonButton
+						color={addingWordMatch ? "warning" : "primary"}
+						slot="end"
+						disabled={addingWordTest || addingColumnTest || addingColumnMatch}
+						onClick={toggleAddingWordMatch}
+					><IonIcon icon={addingWordMatch ? close : add} slot="icon-only" /></IonButton>
+				</IonItem>
+				<IonItem className={"toggleable wrappableInnards" + (addingWordMatch ? "" : " toggled")}>
+					<IonInput id="wordMatch" ref={wordMatchRef} helperText={tTypeRegex} />
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={addWordMatch}
+						aria-label={tSave}
+					><IonIcon icon={save} slot="icon-only" /></IonButton>
+				</IonItem>
 
-					<IonItem className={"wrappableInnards doubleable" + (addingColumnTest ? " toggled" : "")}>
-						<IonLabel className="ion-text-wrap">{tColXY}</IonLabel>
-						<IonButton
-							color={addingColumnTest ? "warning" : "primary"}
-							slot="end"
-							disabled={addingWordTest || addingWordMatch || addingColumnMatch}
-							onClick={toggleAddingColumnTest}
-						><IonIcon icon={addingColumnTest ? close : add} slot="icon-only" /></IonButton>
-					</IonItem>
-					<IonItem
-						className={"toggleable wrappableInnards" + (addingColumnTest ? "" : " toggled")}
-						lines="none"
+				<IonItem className={"wrappableInnards doubleable" + (addingColumnTest ? " toggled" : "")}>
+					<IonLabel className="ion-text-wrap">{tColXY}</IonLabel>
+					<IonButton
+						color={addingColumnTest ? "warning" : "primary"}
+						slot="end"
+						disabled={addingWordTest || addingWordMatch || addingColumnMatch}
+						onClick={toggleAddingColumnTest}
+					><IonIcon icon={addingColumnTest ? close : add} slot="icon-only" /></IonButton>
+				</IonItem>
+				<IonItem
+					className={"toggleable wrappableInnards" + (addingColumnTest ? "" : " toggled")}
+					lines="none"
+				>
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						justify="start"
+						label={tTestCol}
+						value={addingColumn}
+						onIonChange={doSetAddingColumn}
 					>
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							justify="start"
-							label={tTestCol}
-							value={addingColumn}
-							onIonChange={doSetAddingColumn}
-						>
-							{addableColumns}
-						</IonSelect>
-					</IonItem>
-					<IonItem className={"toggleable wrappableInnards" + (addingColumnTest ? "" : " toggled")}>
-						<IonInput id="colTest" ref={colTestRef} helperText={tTypeWord} />
-						<IonButton
-							color="success"
-							slot="end"
-							onClick={addColumnTest}
-							aria-label={tSave}
-						><IonIcon icon={save} slot="icon-only" /></IonButton>
-					</IonItem>
+						{addableColumns}
+					</IonSelect>
+				</IonItem>
+				<IonItem className={"toggleable wrappableInnards" + (addingColumnTest ? "" : " toggled")}>
+					<IonInput id="colTest" ref={colTestRef} helperText={tTypeWord} />
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={addColumnTest}
+						aria-label={tSave}
+					><IonIcon icon={save} slot="icon-only" /></IonButton>
+				</IonItem>
 
-					<IonItem className={"wrappableInnards doubleable" + (addingColumnMatch ? " toggled" : "")}>
-						<IonLabel className="ion-text-wrap">{tColXmY}</IonLabel>
-						<IonButton
-							color={addingColumnMatch ? "warning" : "primary"}
-							slot="end"
-							disabled={addingWordTest || addingWordMatch || addingColumnTest}
-							onClick={toggleAddingColumnMatch}
-						><IonIcon icon={addingColumnMatch ? close : add} slot="icon-only" /></IonButton>
-					</IonItem>
-					<IonItem
-						className={"toggleable wrappableInnards" + (addingColumnMatch ? "" : " toggled")}
-						lines="none"
+				<IonItem className={"wrappableInnards doubleable" + (addingColumnMatch ? " toggled" : "")}>
+					<IonLabel className="ion-text-wrap">{tColXmY}</IonLabel>
+					<IonButton
+						color={addingColumnMatch ? "warning" : "primary"}
+						slot="end"
+						disabled={addingWordTest || addingWordMatch || addingColumnTest}
+						onClick={toggleAddingColumnMatch}
+					><IonIcon icon={addingColumnMatch ? close : add} slot="icon-only" /></IonButton>
+				</IonItem>
+				<IonItem
+					className={"toggleable wrappableInnards" + (addingColumnMatch ? "" : " toggled")}
+					lines="none"
+				>
+					<IonSelect
+						color="primary"
+						className="ion-text-wrap settings"
+						justify="start"
+						label={tTestCol}
+						value={addingColumn}
+						onIonChange={doSetAddingColumn}
 					>
-						<IonSelect
-							color="primary"
-							className="ion-text-wrap settings"
-							justify="start"
-							label={tTestCol}
-							value={addingColumn}
-							onIonChange={doSetAddingColumn}
-						>
-							{columnOptions}
-						</IonSelect>
-					</IonItem>
-					<IonItem className={"toggleable wrappableInnards" + (addingColumnMatch ? "" : " toggled")}>
-						<IonInput id="colMatch" ref={colMatchRef} helperText={tTypeRegex} />
-						<IonButton
-							color="success"
-							slot="end"
-							onClick={addColumnMatch}
-							aria-label={tSave}
-						><IonIcon icon={save} slot="icon-only" /></IonButton>
-					</IonItem>
+						{columnOptions}
+					</IonSelect>
+				</IonItem>
+				<IonItem className={"toggleable wrappableInnards" + (addingColumnMatch ? "" : " toggled")}>
+					<IonInput id="colMatch" ref={colMatchRef} helperText={tTypeRegex} />
+					<IonButton
+						color="success"
+						slot="end"
+						onClick={addColumnMatch}
+						aria-label={tSave}
+					><IonIcon icon={save} slot="icon-only" /></IonButton>
+				</IonItem>
 
-					{wordTestOutput}
-					{wordMatchesOutput}
-					{columnTestOutput}
-					{columnMatchesOutput}
+				{wordTestOutput}
+				{wordMatchesOutput}
+				{columnTestOutput}
+				{columnMatchesOutput}
 
-					<IonItem
-						className={
-							"wrappableInnards toggleable biggerToggle"
-							+ ((
-								wordTests.length
-								+ columnTests.length
-								+ wordMatches.length
-								+ columnMatches.length
-							> 1) ? "" : " toggled")
-						}
+				<IonItem
+					className={
+						"wrappableInnards toggleable biggerToggle"
+						+ ((
+							wordTests.length
+							+ columnTests.length
+							+ wordMatches.length
+							+ columnMatches.length
+						> 1) ? "" : " toggled")
+					}
+				>
+					<IonToggle
+						labelPlacement="start"
+						enableOnOffLabels
+						checked={matchAll}
+						onIonChange={toggleMatchAll}
 					>
-						<IonToggle
-							labelPlacement="start"
-							enableOnOffLabels
-							checked={matchAll}
-							onIonChange={toggleMatchAll}
-						>
-							<h2>{tMatchAll}</h2>
-							<p>{tIfOff}</p>
-						</IonToggle>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="warning" slot="start" onClick={maybeDoClose}>
-						<IonIcon icon={closeCircleOutline} slot="start" />
-						<IonLabel>{tCancel}</IonLabel>
-					</IonButton>
-					<IonButton color="success" slot="end" onClick={importLexicon}>
-						<IonIcon icon={enterOutline} slot="start" />
-						<IonLabel>{tImport}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						<h2>{tMatchAll}</h2>
+						<p>{tIfOff}</p>
+					</IonToggle>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

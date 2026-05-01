@@ -213,7 +213,7 @@ const CaseMaker: FC<CaseMakerModal> = (props) => {
 			title={tTitle}
 			bottomStart={[{button: "cancel"}]}
 			bottomEnd={[{button: "save", action: maybeSaveTitle}]}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 		>
 			<ModalHeader title={tTitle} closeModal={maybeCancel} />

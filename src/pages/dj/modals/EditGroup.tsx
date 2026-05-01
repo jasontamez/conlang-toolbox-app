@@ -574,7 +574,7 @@ const EditGroup: FC<EditGroupProps> = (props) => {
 			isOpen={isOpen}
 			closeFunc={maybeCancel}
 			title={tEditGroup}
-			backdropDismiss={false}
+			enclosed
 			onIonModalDidPresent={onLoad}
 			extraChars
 		>

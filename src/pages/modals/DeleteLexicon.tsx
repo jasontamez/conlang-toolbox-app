@@ -105,7 +105,6 @@ const DeleteLexiconModal: FC<SavedLexProperties> = (props) => {
 			isOpen={isOpen}
 			bottomEnd={[{button: "cancel"}]}
 			extraChars
-			onDidDismiss={doClose}
 			footerToolbarClass={data.length > 0 ? "" : "hide"}
 		>
 			<IonList lines="none" className="buttonFilled">

@@ -542,7 +542,7 @@ const AddCustomSort: FC<CustomSortModal> = (props) => {
 		<Modal
 			isOpen={isOpen}
 			closeFunc={maybeCancel}
-			backdropDismiss={false}
+			enclosed
 			title={tCustomSort}
 			bottomEnd={[{button: "add", action: maybeSaveNewSort}]}
 			bottomStart={[{button: "cancel"}]}

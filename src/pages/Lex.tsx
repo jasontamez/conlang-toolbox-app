@@ -724,7 +724,6 @@ const Lex: FC = () => {
 				/>
 				<LexiconSettingsModal
 					{...modalPropsMaker(isOpenLexOrder, setIsOpenLexOrder)}
-					openECM={setIsOpenECM}
 					sortLang={sortLanguage || defaultSortLanguage}
 					sensitivity={sensitivity}
 				/>

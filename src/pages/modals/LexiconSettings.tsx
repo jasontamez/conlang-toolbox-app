@@ -2,17 +2,9 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
 	IonItem,
 	IonIcon,
-	IonLabel,
 	IonList,
-	IonContent,
-	IonHeader,
-	IonToolbar,
-	IonButtons,
 	IonButton,
-	IonTitle,
-	IonModal,
 	IonInput,
-	IonFooter,
 	IonRow,
 	IonCol,
 	IonGrid,
@@ -28,21 +20,17 @@ import {
 	SelectCustomEvent
 } from '@ionic/react';
 import {
-	closeCircleOutline,
-	saveOutline,
 	reorderTwo,
-	trashOutline,
-	addCircleOutline,
-	globeOutline
+	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-	ExtraCharactersModalOpener,
 	Lexicon,
 	LexiconBlankSorts,
 	LexiconColumn,
+	ModalProperties,
 	SortLanguage,
 	SortObject,
 	SortSensitivity,
@@ -58,12 +46,13 @@ import makeSorter from '../../components/stringSorter';
 import useI18Memo from '../../components/useI18Memo';
 import useElement, { useElementList } from '../../components/useElement';
 import getSetValue from '../../components/getSetValue';
+import Modal from '../../components/Modal';
 
 interface ShadowColumn extends LexiconColumn {
 	originalPosition: number
 }
 
-interface OrderModalProps extends ExtraCharactersModalOpener {
+interface OrderModalProps extends ModalProperties {
 	sortLang: SortLanguage
 	sensitivity: SortSensitivity
 }
@@ -78,7 +67,7 @@ const translations = [
 ];
 
 const commons = [
-	"Close", "defaultSort", "Delete", "ExtraChars",
+	"defaultSort", "Delete",
 	"NothingToSave", "emphasizedError", "SortMethod"
 ];
 
@@ -162,7 +151,7 @@ const ReorderableColumn: FC<ReorderableColumnProps> = (props) => {
 const LexiconSettingsModal: FC<OrderModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [
-		tClose, tDefSort, tDelete, tExChar,
+		tDefSort, tDelete,
 		tNothing, tEmphError, tpMethod
 	] = useI18Memo(commons);
 	const [
@@ -171,7 +160,7 @@ const LexiconSettingsModal: FC<OrderModalProps> = (props) => {
 		tpBlank, tCannotDelete, tSaveThings, tThingAdded, tAddThing
 	] = useI18Memo(translations, "lexicon");
 
-	const { isOpen, setIsOpen, openECM, sortLang, sensitivity } = props;
+	const { isOpen, setIsOpen, sortLang, sensitivity } = props;
 	const dispatch = useDispatch();
 	const disableConfirms = useSelector((state: StateObject) => state.appSettings.disableConfirms);
 	const {
@@ -419,7 +408,6 @@ const LexiconSettingsModal: FC<OrderModalProps> = (props) => {
 		updateColumnReorderableElements
 	]);
 
-	const opener = useCallback(() => openECM(true), [openECM]);
 	const toggleTruncate = useCallback(() => setShadowTruncate(!shadowTruncate), [shadowTruncate]);
 	const doSetCustomSort = useCallback((e: SelectCustomEvent) => setShadowCustomSort(e.detail.value), []);
 	const doSetBlankSort = useCallback((e: SelectCustomEvent) => setShadowBlankSort(e.detail.value), []);
@@ -434,102 +422,72 @@ const LexiconSettingsModal: FC<OrderModalProps> = (props) => {
 		)
 	), [customSorts]);
 	return (
-		<IonModal
+		<Modal
 			isOpen={isOpen}
-			onDidDismiss={closeModal}
-			backdropDismiss={false}
+			title={tEditGeneral}
+			closeFunc={closeModal}
+			enclosed={closeModal}
 			onIonModalDidPresent={onLoad}
+			contentProps={{ id: "editLexiconItemOrder" }}
+			bottomStart={[{key: tAddThing, isText: true, icon: "add", action: addNewColumn}]}
+			bottomEnd={[{key: tSaveThings, isText: true, icon: "save", action: doneEditingOrder, color: "tertiary"}]}
+			extraChars
 		>
-			<IonHeader>
-				<IonToolbar color="primary">
-					<IonTitle>{tEditGeneral}</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={opener} aria-label={tExChar}>
-							<IonIcon icon={globeOutline} />
-						</IonButton>
-						<IonButton onClick={closeModal} aria-label={tClose}>
-							<IonIcon icon={closeCircleOutline} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent id="editLexiconItemOrder">
-				<IonList lines="full">
-					<IonItemDivider>{tLexOpts}</IonItemDivider>
-					<IonItem>
-						<IonToggle
-							labelPlacement="start"
-							enableOnOffLabels
-							checked={!shadowTruncate}
-							onIonChange={toggleTruncate}
-						>{tShowTitle}</IonToggle>
-					</IonItem>
-					<IonItem className="ion-text-wrap">
-						<IonSelect
-							className="ion-text-wrap"
-							label={tpMethod}
-							value={shadowCustomSort}
-							onIonChange={doSetCustomSort}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value={null}
-							>{tDefSort}</IonSelectOption>
-							{customSorters}
-						</IonSelect>
-					</IonItem>
-					<IonItem className="ion-text-wrap">
-						<IonSelect
-							className="ion-text-wrap"
-							label={tpBlank}
-							value={shadowBlankSort}
-							onIonChange={doSetBlankSort}
-						>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="first"
-							>{tToBeg}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="last"
-							>{tToEnd}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="alphaFirst"
-							>{tAlphaFirst}</IonSelectOption>
-							<IonSelectOption
-								className="ion-text-wrap ion-text-align-end"
-								value="alphaLast"
-							>{tAlphaLast}</IonSelectOption>
-						</IonSelect>
-					</IonItem>
-					<IonItemDivider>{tRearr}</IonItemDivider>
-					<IonReorderGroup disabled={false} onIonReorderEnd={doReorder}>
-						{reorderColumns}
-					</IonReorderGroup>
-				</IonList>
-			</IonContent>
-			<IonFooter id="footerElement">
-				<IonToolbar color="darker">
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={addNewColumn}
+			<IonList lines="full">
+				<IonItemDivider>{tLexOpts}</IonItemDivider>
+				<IonItem>
+					<IonToggle
+						labelPlacement="start"
+						enableOnOffLabels
+						checked={!shadowTruncate}
+						onIonChange={toggleTruncate}
+					>{tShowTitle}</IonToggle>
+				</IonItem>
+				<IonItem className="ion-text-wrap">
+					<IonSelect
+						className="ion-text-wrap"
+						label={tpMethod}
+						value={shadowCustomSort}
+						onIonChange={doSetCustomSort}
 					>
-						<IonIcon icon={addCircleOutline} slot="start" />
-						<IonLabel>{tAddThing}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="tertiary"
-						slot="end"
-						onClick={doneEditingOrder}
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value={null}
+						>{tDefSort}</IonSelectOption>
+						{customSorters}
+					</IonSelect>
+				</IonItem>
+				<IonItem className="ion-text-wrap">
+					<IonSelect
+						className="ion-text-wrap"
+						label={tpBlank}
+						value={shadowBlankSort}
+						onIonChange={doSetBlankSort}
 					>
-						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tSaveThings}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="first"
+						>{tToBeg}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="last"
+						>{tToEnd}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="alphaFirst"
+						>{tAlphaFirst}</IonSelectOption>
+						<IonSelectOption
+							className="ion-text-wrap ion-text-align-end"
+							value="alphaLast"
+						>{tAlphaLast}</IonSelectOption>
+					</IonSelect>
+				</IonItem>
+				<IonItemDivider>{tRearr}</IonItemDivider>
+				<IonReorderGroup disabled={false} onIonReorderEnd={doReorder}>
+					{reorderColumns}
+				</IonReorderGroup>
+			</IonList>
+		</Modal>
 	);
 };
 
