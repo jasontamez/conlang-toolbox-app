@@ -1,31 +1,24 @@
 import React, { useCallback, FC } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
-	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import { addOutline } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { addTransformWG } from '../../../store/wgSlice';
-import { ExtraCharactersModalOpener } from '../../../store/types';
+import { ModalProperties } from '../../../store/types';
 
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
 
 const wgweWords = [
@@ -41,15 +34,15 @@ const presentational = [
 const context = { context: "presentation" };
 
 const commons = [
-	"AddAndClose", "Cancel", "error", "optional"
+	"Cancel", "error", "optional"
 ];
 
-const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
-	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
+const AddTransformModal: FC<ModalProperties> = (props) => {
+	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [ tTransDesc, tNoSearch, tRepl, tSrch, tThingAdd, tAddThing ] = useI18Memo(wgweWords, "wgwe");
 	const [ tpTrandDesc, tpRepl, tpSrch ] = useI18Memo(presentational, "wgwe", context);
 
-	const { isOpen, setIsOpen, openECM } = props;
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -117,68 +110,54 @@ const AddTransformModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const closer = useCallback(() => setIsOpen(false), [setIsOpen]);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels wgAddTransform">
-					<IonItem className="labelled">
-						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tSrch}
-							id="searchEx"
-							ref={searchExRef}
-							className="ion-margin-top serifChars"
-							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tRepl}
-							id="replaceEx"
-							ref={replaceExRef}
-							className="ion-margin-top serifChars"
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel>{tpTrandDesc}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTransDesc}
-							id="optDesc"
-							ref={optDescRef}
-							className="ion-margin-top"
-							placeholder={tOptional}
-						></IonInput>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton
-						color="tertiary"
-						slot="end"
-						onClick={maybeSaveAndAdd}
-					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddThing}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveAndClose}
-					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddClose}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+		<Modal
+			isOpen={isOpen}
+			closeFunc={closer}
+			extraChars
+			title={tAddThing}
+			bottomEnd={[
+				{ button: "add", action: maybeSaveAndAdd, color: "secondary" },
+				{ button: "add+close", action: maybeSaveAndClose }
+			]}
+		>
+			<IonList lines="none" className="hasSpecialLabels wgAddTransform">
+				<IonItem className="labelled">
+					<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tSrch}
+						id="searchEx"
+						ref={searchExRef}
+						className="ion-margin-top serifChars"
+						onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tRepl}
+						id="replaceEx"
+						ref={replaceExRef}
+						className="ion-margin-top serifChars"
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel>{tpTrandDesc}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTransDesc}
+						id="optDesc"
+						ref={optDescRef}
+						className="ion-margin-top"
+						placeholder={tOptional}
+					></IonInput>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

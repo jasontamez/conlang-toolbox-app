@@ -4,11 +4,7 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
-	IonFooter,
 	IonItemGroup,
 	IonItemDivider,
 	IonInput,
@@ -16,12 +12,11 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	closeCircleSharp,
 	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WEPresetObject, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
+import { WEPresetObject, StateObject, SetState, ModalProperties } from '../../../store/types';
 import { loadStateWE } from '../../../store/weSlice';
 import useTranslator from '../../../store/translationHooks';
 
@@ -30,11 +25,11 @@ import { CustomStorageWE } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface CustomInfoModalProps extends ExtraCharactersModalOpener {
+interface CustomInfoModalProps extends ModalProperties {
 	titles: string[]
 	setTitles: SetState<string[]>
 }
@@ -89,7 +84,7 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 	] = useI18Memo(commons);
 	const tClearThings = useMemo(() => t("clearAllThingsMsg"), [t]);
 
-	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
+	const { isOpen, setIsOpen, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
 	const { characterGroups, transforms, soundChanges } = useSelector((state: StateObject) => state.we)
@@ -233,52 +228,47 @@ const ManageCustomInfoWE: FC<CustomInfoModalProps> = (props) => {
 		/>
 	), [maybeDeleteInfo, maybeLoadInfo, tLoad, tDel, titles]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={doCleanClose}>
-			<ModalHeader title={tManage} openECM={openECM} closeModal={doCleanClose} />
-			<IonContent>
-				<IonList lines="none">
-					<IonItemGroup>
-						<IonItemDivider>
-							<IonLabel>{tSaveThing}</IonLabel>
-						</IonItemDivider>
-						<IonItem>
-							<IonInput
-								aria-label={tNameSave}
-								id="currentInfoSaveName"
-								inputmode="text"
-								placeholder={tNameInfo}
-								type="text"
-								ref={currentInfoSaveNameRef}
-							/>
-							<IonButton
-								slot="end"
-								onClick={maybeSaveInfo}
-								strong={true}
-								color="success"
-							>{tSave}</IonButton>
-						</IonItem>
-					</IonItemGroup>
-					<IonItemGroup className="buttonFilled">
-						<IonItemDivider>
-							<IonLabel>{tLoadThing}</IonLabel>
-						</IonItemDivider>
-						{(titles.length === 0) ?
-							<IonItem color="warning"><IonLabel>{tNoInfo}</IonLabel></IonItem>
-						:
-							allTitles
-						}
-					</IonItemGroup>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={doCleanClose}>
-						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tCancel}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+		<Modal
+			isOpen={isOpen}
+			title={tManage}
+			closeFunc={doCleanClose}
+			bottomEnd={[{button: "cancel"}]}
+			extraChars
+		>
+			<IonList lines="none">
+				<IonItemGroup>
+					<IonItemDivider>
+						<IonLabel>{tSaveThing}</IonLabel>
+					</IonItemDivider>
+					<IonItem>
+						<IonInput
+							aria-label={tNameSave}
+							id="currentInfoSaveName"
+							inputmode="text"
+							placeholder={tNameInfo}
+							type="text"
+							ref={currentInfoSaveNameRef}
+						/>
+						<IonButton
+							slot="end"
+							onClick={maybeSaveInfo}
+							strong={true}
+							color="success"
+						>{tSave}</IonButton>
+					</IonItem>
+				</IonItemGroup>
+				<IonItemGroup className="buttonFilled">
+					<IonItemDivider>
+						<IonLabel>{tLoadThing}</IonLabel>
+					</IonItemDivider>
+					{(titles.length === 0) ?
+						<IonItem color="warning"><IonLabel>{tNoInfo}</IonLabel></IonItem>
+					:
+						allTitles
+					}
+				</IonItemGroup>
+			</IonList>
+		</Modal>
 	);
 };
 

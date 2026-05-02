@@ -22,7 +22,7 @@ import { setInput } from '../../store/declenjugatorSlice';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import ModalWrap from '../../components/ModalWrap';
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
@@ -89,6 +89,7 @@ const DJInput: FC = () => {
 		}
 	}, [disableConfirms, doAlert, updateInput, tClear, tYes, tYouSure, djInput]);
 	const openLex = useCallback(() => setIsOpenLexImport(true), []);
+	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const endButtons = useMemo(() => [
 		<IonButton key="dj-endbutton1" onClick={() => setIsOpenECM(true)} aria-label={tExChar}>
 			<IonIcon icon={globeOutline} />
@@ -103,12 +104,13 @@ const DJInput: FC = () => {
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<InputCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
-			<LexiconImporterModal
-				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
-				openECM={setIsOpenECM}
-				currentInput={input}
-				importFunc={acceptImport}
-			/>
+			<ExCharContext value={openEx}>
+				<LexiconImporterModal
+					{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
+					currentInput={input}
+					importFunc={acceptImport}
+				/>
+			</ExCharContext>
 			<Header
 				title={tInput}
 				endButtons={endButtons}

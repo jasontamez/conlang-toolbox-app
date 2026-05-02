@@ -44,7 +44,7 @@ import { CopyFromOtherIcon } from '../../components/icons';
 import useI18Memo from '../../components/useI18Memo';
 import Header from '../../components/Header';
 import useElement from '../../components/useElement';
-import { ModalMakingContext } from '../../components/contexts';
+import { ModalMakingContext, ExCharContext } from '../../components/contexts';
 import AddCharGroupModal from './modals/AddCharGroup';
 import EditCharGroupModal from './modals/EditCharGroup';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
@@ -123,6 +123,7 @@ const WGCharGroup: FC = () => {
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
 	const [isOpenECM, setIsOpenECM] = useState<boolean>(false);
+	const openEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM])
 	const [isOpenInfo, setIsOpenInfo] = useState<boolean>(false);
 	const [isOpenAddCharGroup, setIsOpenAddCharGroup] = useState<boolean>(false);
 	const [isOpenEditCharGroup, setIsOpenEditCharGroup] = useState<boolean>(false);
@@ -263,16 +264,16 @@ const WGCharGroup: FC = () => {
 	]);
 	return (
 		<IonPage>
-			<AddCharGroupModal
-				{...modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
-				openECM={setIsOpenECM}
-			/>
-			<EditCharGroupModal
-				{...modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)}
-				openECM={setIsOpenECM}
-				editing={editing}
-				setEditing={setEditing}
-			/>
+			<ExCharContext value={openEx}>
+				<AddCharGroupModal
+					{...modalPropsMaker(isOpenAddCharGroup, setIsOpenAddCharGroup)}
+				/>
+				<EditCharGroupModal
+					{...modalPropsMaker(isOpenEditCharGroup, setIsOpenEditCharGroup)}
+					editing={editing}
+					setEditing={setEditing}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<CharGroupCard setIsOpenInfo={setIsOpenInfo} />

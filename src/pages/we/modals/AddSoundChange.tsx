@@ -1,32 +1,25 @@
 import React, { useCallback, useMemo, FC } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
-	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import { addOutline } from 'ionicons/icons';
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { addSoundChangeWE } from '../../../store/weSlice';
-import { ExtraCharactersModalOpener } from '../../../store/types';
+import { ModalProperties } from '../../../store/types';
 import useTranslator from '../../../store/translationHooks';
 
 import repairRegexErrors from '../../../components/RepairRegex';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
 const wgweExp = [ "replacementExpression", "searchExpression" ];
 const weExp = [ "contextExpression", "exceptionExpression", "soundChangeDesc" ];
@@ -39,12 +32,12 @@ const translations = [
 	"whereChangeHappens", "AddSoundChange", "SoundChangeAdded"
 ];
 
-const commons = [ "AddAndClose", "Cancel", "error", "optional" ];
+const commons = [ "Cancel", "error", "optional" ];
 
-const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
+const AddSoundChangeModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('we');
 	const [ tw ] = useTranslator('wgwe');
-	const [ tAddClose, tCancel, tError, tOptional ] = useI18Memo(commons);
+	const [ tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [
 		tSCDesc, tReplace, tSearch, tException,
 		tContext, tAddThing, tThingSaved
@@ -63,7 +56,7 @@ const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const [replaceExWESC, replaceExWESCRef] = useElement<HTMLIonInputElement>();
 	const [optDescWESC, optDescWESCRef] = useElement<HTMLIonInputElement>();
 
-	const { isOpen, setIsOpen, openECM } = props;
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -163,97 +156,83 @@ const AddSoundChangeModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const saveAdd = useCallback(() => maybeSaveNewSoundChange(false), [maybeSaveNewSoundChange]);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels addSoundChangeWE">
-					<IonItem className="labelled">
-						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tfSrch}
-							id="searchExWESC"
-							ref={searchExWESCRef}
-							className="ion-margin-top serifChars"
-							helperText={tSearch}
-							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tfRepl}
-							id="replaceExWESC"
-							ref={replaceExWESCRef}
-							className="ion-margin-top serifChars"
-							helperText={tReplace}
-							placeholder="Changes into..."
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="contextLabel" ref={contextLabelRef}>{tpCEx}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tfCEx}
-							id="contextExWESC"
-							ref={contextExWESCRef}
-							className="ion-margin-top serifChars"
-							helperText={tContext}
-							onIonChange={() => contextLabel && contextLabel.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="anticontextLabel" ref={anticontextLabelRef}>{tpEEx}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tfEEx}
-							id="antiExWESC"
-							ref={antiExWESCRef}
-							className="ion-margin-top serifChars"
-							helperText={tException}
-							onIonChange={() => anticontextLabel && anticontextLabel.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel>{tpSCD}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tSCDesc}
-							id="optDescWESC"
-							ref={optDescWESCRef}
-							className="ion-margin-top"
-							placeholder={tOptional}
-						></IonInput>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton
-						color="primary"
-						slot="end"
-						onClick={saveAdd}
-					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddThing}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={saveClose}
-					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddClose}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+		<Modal
+			isOpen={isOpen}
+			closeFunc={closer}
+			title={tAddThing}
+			extraChars
+			bottomEnd={[
+				{ button: "add", action: saveAdd, color: "secondary" },
+				{ button: "add+close", action: saveClose }
+			]}
+		>
+			<IonList lines="none" className="hasSpecialLabels addSoundChangeWE">
+				<IonItem className="labelled">
+					<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tfSrch}
+						id="searchExWESC"
+						ref={searchExWESCRef}
+						className="ion-margin-top serifChars"
+						helperText={tSearch}
+						onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tfRepl}
+						id="replaceExWESC"
+						ref={replaceExWESCRef}
+						className="ion-margin-top serifChars"
+						helperText={tReplace}
+						placeholder="Changes into..."
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="contextLabel" ref={contextLabelRef}>{tpCEx}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tfCEx}
+						id="contextExWESC"
+						ref={contextExWESCRef}
+						className="ion-margin-top serifChars"
+						helperText={tContext}
+						onIonChange={() => contextLabel && contextLabel.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="anticontextLabel" ref={anticontextLabelRef}>{tpEEx}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tfEEx}
+						id="antiExWESC"
+						ref={antiExWESCRef}
+						className="ion-margin-top serifChars"
+						helperText={tException}
+						onIonChange={() => anticontextLabel && anticontextLabel.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel>{tpSCD}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tSCDesc}
+						id="optDescWESC"
+						ref={optDescWESCRef}
+						className="ion-margin-top"
+						placeholder={tOptional}
+					></IonInput>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

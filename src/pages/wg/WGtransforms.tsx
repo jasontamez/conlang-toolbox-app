@@ -32,7 +32,7 @@ import { deleteTransformWG, rearrangeTransformsWG } from '../../store/wgSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -215,15 +215,14 @@ const WGRew: FC = () => {
 
 	return (
 		<IonPage>
-			<AddTransformModal {...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
-				openECM={setIsOpen}
-			/>
-			<EditTransformModal
-				{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
-				openECM={setIsOpen}
-				editing={editing}
-				setEditing={setEditing}
-			/>
+			<ExCharContext value={openEx}>
+				<AddTransformModal {...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} />
+				<EditTransformModal
+					{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+					editing={editing}
+					setEditing={setEditing}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpen, setIsOpen)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<TransCard setIsOpenInfo={setIsOpenInfo} />

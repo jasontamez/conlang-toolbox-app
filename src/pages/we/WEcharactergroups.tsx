@@ -33,7 +33,7 @@ import { copyCharacterGroupsFromElsewhere, deleteCharacterGroupWE } from '../../
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
 import useI18Memo from '../../components/useI18Memo';
@@ -219,18 +219,17 @@ const WECharGroup: FC = () => {
 
 	const helper = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
 	const opener = useCallback(() => setIsOpenAddCharGroupWE(true), []);
+	const doOpenEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	return (
 		<IonPage>
-			<AddCharGroupWEModal
-				{...modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)}
-				openECM={setIsOpenECM}
-			/>
-			<EditCharGroupWEModal
-				{...modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)}
-				editing={editing}
-				setEditing={setEditing}
-				openECM={setIsOpenECM}
-			/>
+			<ExCharContext value={doOpenEx}>
+				<AddCharGroupWEModal {...modalPropsMaker(isOpenAddCharGroupWE, setIsOpenAddCharGroupWE)} />
+				<EditCharGroupWEModal
+					{...modalPropsMaker(isOpenEditCharGroupWE, setIsOpenEditCharGroupWE)}
+					editing={editing}
+					setEditing={setEditing}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<CharGroupCard setIsOpenInfo={setIsOpenInfo} />

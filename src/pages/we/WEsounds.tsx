@@ -38,7 +38,7 @@ import useTranslator from '../../store/translationHooks';
 
 import reorganize from '../../components/reorganizer';
 import ModalWrap from "../../components/ModalWrap";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import yesNoAlert from '../../components/yesNoAlert';
 import toaster from '../../components/toaster';
@@ -232,16 +232,14 @@ const WESChange: FC = () => {
 	const doAddSC = useCallback(() => setIsOpenAddSoundChange(true), []);
 	return (
 		<IonPage>
-			<AddSoundChangeModal
-				{...modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)}
-				openECM={setIsOpenECM}
-			/>
-			<EditSoundChangeModal
-				{...modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
-				openECM={setIsOpenECM}
-				editing={editing}
-				setEditing={setEditing}
-			/>
+			<ExCharContext value={doOpenEx}>
+				<AddSoundChangeModal {...modalPropsMaker(isOpenAddSoundChange, setIsOpenAddSoundChange)} />
+				<EditSoundChangeModal
+					{...modalPropsMaker(isOpenEditSoundChange, setIsOpenEditSoundChange)}
+					editing={editing}
+					setEditing={setEditing}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<SChCard setIsOpenInfo={setIsOpenInfo} />

@@ -4,11 +4,7 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
-	IonFooter,
 	IonItemGroup,
 	IonItemDivider,
 	IonInput,
@@ -16,12 +12,11 @@ import {
 	useIonToast
 } from '@ionic/react';
 import {
-	closeCircleSharp,
 	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { Base_WG, ExtraCharactersModalOpener, SetState, StateObject, WGState } from '../../../store/types';
+import { Base_WG, ModalProperties, SetState, StateObject, WGState } from '../../../store/types';
 import { loadStateWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
@@ -30,24 +25,24 @@ import { CustomStorageWG } from '../../../components/PersistentInfo';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface ExtraInfo extends ExtraCharactersModalOpener {
+interface ExtraInfo extends ModalProperties {
 	titles: string[] | null
 	setTitles: SetState<string[] | null>
 }
 
 interface SavedItemProps {
 	title: string
-	maybeLoad: () => void
-	maybeDelete: () => void
+	maybeLoadInfo: (x:string) => void
+	maybeDeleteInfo: (x:string) => void
 	tLoad: string
 	tDelete: string
 }
 const SavedItem: FC<SavedItemProps> = (props) => {
-	const { title, maybeLoad, maybeDelete, tLoad, tDelete } = props;
+	const { title, maybeLoadInfo, maybeDeleteInfo, tLoad, tDelete } = props;
 	return (
 		<IonItem key={title}>
 			<IonLabel className="ion-text-wrap">{title}</IonLabel>
@@ -55,7 +50,7 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 				className="loadButton"
 				slot="end"
 				color="warning"
-				onClick={maybeLoad}
+				onClick={() => maybeLoadInfo(title)}
 				strong={true}
 			>{tLoad}</IonButton>
 			<IonButton
@@ -63,7 +58,7 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 				className="ion-no-margin"
 				slot="end"
 				color="danger"
-				onClick={maybeDelete}
+				onClick={() => maybeDeleteInfo(title)}
 			>
 				<IonIcon icon={trashOutline} />
 			</IonButton>
@@ -72,7 +67,7 @@ const SavedItem: FC<SavedItemProps> = (props) => {
 };
 
 const commons = [
-	"Cancel", "Delete", "LoadError", "Load", "ManageCustomInfo",
+	"Delete", "LoadError", "Load", "ManageCustomInfo",
 	"NameOfSave", "NameYourInfo", "NoSavedInfo", "Ok", "Save",
 	"YesOverwriteIt", "cannotUndo", "confirmLoad", "ClearOverwritePrevSave",
 	"SaveCurrentInfo", "LoadSavedInfo", "missingTitleMsg"
@@ -82,14 +77,14 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tc ] = useTranslator('common');
 	const [
-		tCancel, tDelete, tLoadError, tLoad, tManage, tNameSave,
+		tDelete, tLoadError, tLoad, tManage, tNameSave,
 		tNameCustom, tNoSaved, tOk, tSave, tYesOverwrite, tCannotUndo,
 		tConfirmLoad, tClearPrevSave, tSaveInfo, tLoadInfo, tMissingTitle
 	] = useI18Memo(commons);
 	const tClearAll = useMemo(() => { return t("clearAllThingsMsg"); }, [t]);
 	const [currentInfoSaveNameWG, currentInfoSaveNameWGRef] = useElement<HTMLIonInputElement>();
 
-	const { isOpen, setIsOpen, openECM, titles, setTitles } = props;
+	const { isOpen, setIsOpen, titles, setTitles } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -229,63 +224,57 @@ const ManageCustomInfo: FC<ExtraInfo> = (props) => {
 			});
 		}
 	}, [customInfo, disableConfirms, doAlert, setTitles, tc, toast, tCannotUndo]);
-	const customInfoList = useMemo(() => customInfo.map((title: string) => (
-		<SavedItem
-			title={title}
-			maybeDelete={() => maybeDeleteInfo(title)}
-			maybeLoad={() => maybeLoadInfo(title)}
-			tLoad={tLoad}
-			tDelete={tDelete}
-			key={`wgPreset/1::${title}`}
-		/>
-	)), [customInfo, maybeDeleteInfo, maybeLoadInfo, tLoad, tDelete]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={doCleanClose}>
-			<ModalHeader title={tManage} openECM={openECM} closeModal={doCleanClose} />
-			<IonContent>
-				<IonList lines="none">
-					<IonItemGroup>
-						<IonItemDivider>
-							<IonLabel>{tSaveInfo}</IonLabel>
-						</IonItemDivider>
-						<IonItem>
-							<IonInput
-								aria-label={tNameSave}
-								id="currentInfoSaveNameWG"
-								inputmode="text"
-								placeholder={tNameCustom}
-								type="text"
-								ref={currentInfoSaveNameWGRef}
+		<Modal
+			isOpen={isOpen}
+			title={tManage}
+			closeFunc={doCleanClose}
+			bottomEnd={[{button: "cancel"}]}
+			extraChars
+		>
+			<IonList lines="none">
+				<IonItemGroup>
+					<IonItemDivider>
+						<IonLabel>{tSaveInfo}</IonLabel>
+					</IonItemDivider>
+					<IonItem>
+						<IonInput
+							aria-label={tNameSave}
+							id="currentInfoSaveNameWG"
+							inputmode="text"
+							placeholder={tNameCustom}
+							type="text"
+							ref={currentInfoSaveNameWGRef}
+						/>
+						<IonButton
+							slot="end"
+							onClick={maybeSaveInfo}
+							strong={true}
+							color="success"
+						>{tSave}</IonButton>
+					</IonItem>
+				</IonItemGroup>
+				<IonItemGroup className="buttonFilled">
+					<IonItemDivider>
+						<IonLabel>{tLoadInfo}</IonLabel>
+					</IonItemDivider>
+					{(customInfo.length === 0) ?
+						<IonItem color="warning"><IonLabel>{tNoSaved}</IonLabel></IonItem>
+					:
+						customInfo.map((title: string, i: number) => (
+							<SavedItem
+								title={title}
+								maybeDeleteInfo={maybeDeleteInfo}
+								maybeLoadInfo={maybeLoadInfo}
+								tLoad={tLoad}
+								tDelete={tDelete}
+								key={`wgPreset/1/${i}::${title}`}
 							/>
-							<IonButton
-								slot="end"
-								onClick={maybeSaveInfo}
-								strong={true}
-								color="success"
-							>{tSave}</IonButton>
-						</IonItem>
-					</IonItemGroup>
-					<IonItemGroup className="buttonFilled">
-						<IonItemDivider>
-							<IonLabel>{tLoadInfo}</IonLabel>
-						</IonItemDivider>
-						{(customInfo.length === 0) ?
-							<IonItem color="warning"><IonLabel>{tNoSaved}</IonLabel></IonItem>
-						:
-							customInfoList
-						}
-					</IonItemGroup>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="danger" slot="end" onClick={doCleanClose}>
-						<IonIcon icon={closeCircleSharp} slot="start" />
-						<IonLabel>{tCancel}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						))
+					}
+				</IonItemGroup>
+			</IonList>
+		</Modal>
 	);
 };
 

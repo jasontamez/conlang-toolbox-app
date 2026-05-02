@@ -61,7 +61,7 @@ import InOut from './output/InOut';
 import OutIn from './output/OutIn';
 import RulesApplied from './output/RulesApplied';
 import { OutCard } from "./WEinfo";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 
 type arrayOfStringsAndStringArrays = (string | string[])[];
 
@@ -910,6 +910,7 @@ const WEOut: FC = () => {
 	const openLoadPreset = useCallback(() => setIsOpenLoadPreset(true), [setIsOpenLoadPreset]);
 	const openOptions = useCallback(() => setIsOpenOptions(true), [setIsOpenOptions]);
 	const doCopy = useCallback(() => copyText(copyString, toast), [copyString, toast]);
+	const doOpenEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	return (
 		<IonPage>
 			<IonLoading
@@ -921,14 +922,15 @@ const WEOut: FC = () => {
 				/*duration={300000}*/
 				duration={1000}
 			/>
-			<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
-			<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfoWE
-				{...modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)}
-				openECM={setIsOpenECM}
-				titles={storedInfo}
-				setTitles={setStoredInfo}
-			/>
+			<ExCharContext value={doOpenEx}>
+				<OutputOptionsModal {...modalPropsMaker(isOpenOptions, setIsOpenOptions)} />
+				<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+				<ManageCustomInfoWE
+					{...modalPropsMaker(isOpenManageCustomWE, setIsOpenManageCustomWE)}
+					titles={storedInfo}
+					setTitles={setStoredInfo}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<OutCard setIsOpenInfo={setIsOpenInfo} />

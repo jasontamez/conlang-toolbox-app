@@ -23,7 +23,7 @@ import { StateObject } from '../../store/types';
 import { setInputWE } from '../../store/weSlice';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import debounce from '../../components/Debounce';
 import yesNoAlert from '../../components/yesNoAlert';
 import useI18Memo from '../../components/useI18Memo';
@@ -90,18 +90,20 @@ const WEInput: FC = () => {
 	const openExChar = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	const openInfo = useCallback(() => setIsOpenInfo(true), [setIsOpenInfo]);
 	const openLexImport = useCallback(() => setIsOpenLexImport(true), []);
+	const doOpenEx = useCallback(() => setIsOpenECM(true), [setIsOpenECM]);
 	return (
 		<IonPage>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<InpCard setIsOpenInfo={setIsOpenInfo} />
 			</ModalWrap>
-			<LexiconImporterModal
-				{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
-				openECM={setIsOpenECM}
-				currentInput={input}
-				importFunc={acceptImport}
-			/>
+			<ExCharContext value={doOpenEx}>
+				<LexiconImporterModal
+					{...modalPropsMaker(isOpenLexImport, setIsOpenLexImport)}
+					currentInput={input}
+					importFunc={acceptImport}
+				/>
+			</ExCharContext>
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">

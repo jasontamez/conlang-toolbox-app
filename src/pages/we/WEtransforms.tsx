@@ -37,7 +37,7 @@ import { deleteTransformWE, rearrangeTransformsWE } from '../../store/weSlice';
 import useTranslator from '../../store/translationHooks';
 
 import ModalWrap from "../../components/ModalWrap";
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 import ltr from '../../components/LTR';
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import yesNoAlert from '../../components/yesNoAlert';
@@ -230,16 +230,14 @@ const WERew: FC= () => {
 	const doAddTr = useCallback(() => setIsOpenAddTransform(true), []);
 	return (
 		<IonPage>
-			<AddTransformModal
-				{...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)}
-				openECM={setIsOpenECM}
-			/>
-			<EditTransformModal
-				{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
-				openECM={setIsOpenECM}
-				editing={editing}
-				setEditing={setEditing}
-			/>
+			<ExCharContext value={doOpenEx}>
+				<AddTransformModal {...modalPropsMaker(isOpenAddTransform, setIsOpenAddTransform)} />
+				<EditTransformModal
+					{...modalPropsMaker(isOpenEditTransform, setIsOpenEditTransform)}
+					editing={editing}
+					setEditing={setEditing}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<TraCard setIsOpenInfo={setIsOpenInfo} />

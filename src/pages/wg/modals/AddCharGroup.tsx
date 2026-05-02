@@ -4,12 +4,8 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	IonToggle,
 	IonRange,
 	useIonAlert,
@@ -17,26 +13,25 @@ import {
 	RangeCustomEvent
 } from '@ionic/react';
 import {
-	addOutline,
 	chevronBackOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, StateObject, WGCharGroupObject, Zero_Fifty } from '../../../store/types';
+import { ModalProperties, StateObject, WGCharGroupObject, Zero_Fifty } from '../../../store/types';
 import { addCharGroupWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
 const presentations = ["LettersCharacters", "ShortLabel", "TitleOrDesc" ];
 const context = { context: "presentation" };
 
 
-const commons = [ "AddAndClose", "error", "Cancel" ];
+const commons = [ "error", "Cancel" ];
 
 const wgweWords = [
 	"OneCharOnly", "AddCharGroup", "enterCharsInGroupHere",
@@ -45,17 +40,17 @@ const wgweWords = [
 	"cantMakeLabelMsg", "CharGroupSaved"
 ];
 
-const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
+const AddCharGroupModal: FC<ModalProperties> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const [ tw ] = useTranslator('wgwe');
 	const [ tpLettChar, tpShort, tpTitleDesc ] = useI18Memo(presentations, 'wgwe', context);
-	const [ tAddClose, tError, tCancel ] = useI18Memo(commons);
+	const [ tError, tCancel ] = useI18Memo(commons);
 	const tUseDrop = useMemo(() => t("useSepDropoffRate"), [t]);
 	const [
 		t1Char, tAddThing, tEnterChar, tLettChar, tNoRun, tNoTitle,
 		tShort, tSuggest, tTitleDesc, tNoLabel, tNoSuggest, tThingAdd		
 	] = useI18Memo(wgweWords, 'wgwe');
-	const { isOpen, setIsOpen, openECM } = props;
+	const { isOpen, setIsOpen } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -188,100 +183,86 @@ const AddCharGroupModal: FC<ExtraCharactersModalOpener> = (props) => {
 	const doDropoff = useCallback((e: RangeCustomEvent) => setDropoff(e.detail.value as Zero_Fifty), []);
 
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={closer}>
-			<ModalHeader title={tAddThing} openECM={openECM} closeModal={setIsOpen} />
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
-					<IonItem className="labelled">
-						<IonLabel className="titleLabel" ref={titleLabelRef}>{tpTitleDesc}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTitleDesc}
-							id="newWGCharGroupTitle"
-							ref={newWGCharGroupTitleRef}
-							className="ion-margin-top"
-							onIonChange={() => titleLabel && titleLabel.classList.remove("invalidValue")}
-							autocomplete="on"
-						/>
-					</IonItem>
-					<IonItem className="margin-top-quarter">
-						<div
-							slot="start"
-							className="ion-margin-end labelLabel"
-							ref={labelLabelRef}
-						>{tpShort}</div>
-						<IonInput
-							aria-label={tShort}
-							id="newWGShortLabel"
-							ref={newWGShortLabelRef}
-							className="serifChars"
-							helperText={t1Char}
-							onIonChange={() => labelLabel && labelLabel.classList.remove("invalidValue")}
-							maxlength={1}
-						/>
-						<IonButton slot="end" onClick={generateLabel}>
-							<IonIcon icon={chevronBackOutline} />{tSuggest}
-						</IonButton>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="runLabel" ref={runLabelRef}>{tpLettChar}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tLettChar}
-							id="newWGCharGroupRun"
-							ref={newWGCharGroupRunRef}
-							className="ion-margin-top serifChars"
-							helperText={tEnterChar}
-							onIonChange={() => runLabel && runLabel.classList.remove("invalidValue")}
-						/>
-					</IonItem>
-					<IonItem>
-						<IonToggle
-							enableOnOffLabels
-							labelPlacement="start"
-							justify="space-between"
-							onIonChange={toggleDropoff}
-							checked={hasDropoff}
-						>{tUseDrop}</IonToggle>
-					</IonItem>
-					<IonItem id="charGroupDropoffAddCWG" className={hasDropoff ? "" : "hide"}>
-						<IonRange
-							min={0}
-							max={50}
-							pin={true}
-							value={dropoff}
-							onIonChange={doDropoff}
-							debounce={250}
-						>
-							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
-							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
-						</IonRange>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton
-						color="secondary"
-						slot="end"
-						onClick={maybeSaveAndAdd}
-					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddThing}</IonLabel>
+		<Modal
+			isOpen={isOpen}
+			closeFunc={closer}
+			extraChars
+			title={tAddThing}
+			bottomEnd={[
+				{ button: "add", action: maybeSaveAndAdd, color: "secondary" },
+				{ button: "add+close", action: maybeSaveAndClose }
+			]}
+		>
+			<IonList lines="none" className="hasSpecialLabels addWGCharGroup">
+				<IonItem className="labelled">
+					<IonLabel className="titleLabel" ref={titleLabelRef}>{tpTitleDesc}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTitleDesc}
+						id="newWGCharGroupTitle"
+						ref={newWGCharGroupTitleRef}
+						className="ion-margin-top"
+						onIonChange={() => titleLabel && titleLabel.classList.remove("invalidValue")}
+						autocomplete="on"
+					/>
+				</IonItem>
+				<IonItem className="margin-top-quarter">
+					<div
+						slot="start"
+						className="ion-margin-end labelLabel"
+						ref={labelLabelRef}
+					>{tpShort}</div>
+					<IonInput
+						aria-label={tShort}
+						id="newWGShortLabel"
+						ref={newWGShortLabelRef}
+						className="serifChars"
+						helperText={t1Char}
+						onIonChange={() => labelLabel && labelLabel.classList.remove("invalidValue")}
+						maxlength={1}
+					/>
+					<IonButton slot="end" onClick={generateLabel}>
+						<IonIcon icon={chevronBackOutline} />{tSuggest}
 					</IonButton>
-					<IonButton
-						color="success"
-						slot="end"
-						onClick={maybeSaveAndClose}
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="runLabel" ref={runLabelRef}>{tpLettChar}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tLettChar}
+						id="newWGCharGroupRun"
+						ref={newWGCharGroupRunRef}
+						className="ion-margin-top serifChars"
+						helperText={tEnterChar}
+						onIonChange={() => runLabel && runLabel.classList.remove("invalidValue")}
+					/>
+				</IonItem>
+				<IonItem>
+					<IonToggle
+						enableOnOffLabels
+						labelPlacement="start"
+						justify="space-between"
+						onIonChange={toggleDropoff}
+						checked={hasDropoff}
+					>{tUseDrop}</IonToggle>
+				</IonItem>
+				<IonItem id="charGroupDropoffAddCWG" className={hasDropoff ? "" : "hide"}>
+					<IonRange
+						min={0}
+						max={50}
+						pin={true}
+						value={dropoff}
+						onIonChange={doDropoff}
+						debounce={250}
 					>
-						<IonIcon icon={addOutline} slot="start" />
-						<IonLabel>{tAddClose}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+						<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
+						<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
+					</IonRange>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

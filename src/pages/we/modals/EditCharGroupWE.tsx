@@ -4,34 +4,28 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
 import {
 	chevronBackOutline,
-	saveOutline,
-	trashOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import { deleteCharacterGroupWE, editCharacterGroupWE } from '../../../store/weSlice';
-import { ExtraCharactersModalOpener, SetState, StateObject, WECharGroupObject } from '../../../store/types';
+import { ModalProperties, SetState, StateObject, WECharGroupObject } from '../../../store/types';
 import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface ModalProps extends ExtraCharactersModalOpener {
+interface ModalProps extends ModalProperties {
 	editing: null | WECharGroupObject
 	setEditing: SetState<null | WECharGroupObject>
 }
@@ -47,8 +41,8 @@ const translations = [
 	"OneCharOnly", "enterCharsInGroupHere", "LettersCharacters",
 	"noLabelMsg", "noRunMsg", "noTitleMsg", "ShortLabel",
 	"Suggest", "TitleOrDesc", "cantMakeLabelMsg",
-	"DeleteCharGroup", "EditCharGroup",
-	"SaveCharGroup", "CharGroupDeleted", "CharGroupSaved"
+	"EditCharGroup",
+	"CharGroupDeleted", "CharGroupSaved"
 ];
 
 const EditCharGroupWEModal: FC<ModalProps> = (props) => {
@@ -57,12 +51,12 @@ const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnter, tLettChar, tNoLabel, tNoRun,
-		tNoTitle, tShort, tSuggest, tTitle, tUnable, tDelThing,
-		tEditThing, tSaveThing, tThingDel, tThingSaved
+		tNoTitle, tShort, tSuggest, tTitle, tUnable,
+		tEditThing, tThingDel, tThingSaved
 	] = useI18Memo(translations, "wgwe");
 	const [ tpLetChar, tpShort, tpTitle ] = useI18Memo(presentations, "wgwe", context);
 
-	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
+	const { isOpen, setIsOpen, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -232,78 +226,63 @@ const EditCharGroupWEModal: FC<ModalProps> = (props) => {
 		}
 	}, [cancelEditing, disableConfirms, dispatch, doAlert, editing, toast, tc, tThingDel, tYouSure]);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
-			<ModalHeader title={tEditThing} closeModal={cancelEditing} openECM={openECM} />
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
-					<IonItem className="labelled">
-						<IonLabel className="titleLabelEdit" ref={titleLabelEditRef}>{tpTitle}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTitle}
-							id="editingWECharGroupTitle"
-							ref={editingWECharGroupTitleRef}
-							className="ion-margin-top"
-							onIonChange={() => titleLabelEdit && titleLabelEdit.classList.remove("invalidValue")}
-							autocomplete="on"
-						></IonInput>
-					</IonItem>
-					<IonItem className="margin-top-quarter">
-						<div
-							slot="start"
-							className="ion-margin-end labelLabelEdit"
-							ref={labelLabelEditRef}
-						>{tpShort}</div>
-						<IonInput
-							aria-label={tShort}
-							id="editingWEShortLabel"
-							ref={editingWEShortLabelRef}
-							className="serifChars"
-							helperText={t1Char}
-							onIonChange={() => labelLabelEdit && labelLabelEdit.classList.remove("invalidValue")}
-							maxlength={1}
-						></IonInput>
-						<IonButton slot="end" onClick={generateLabel}>
-							<IonIcon icon={chevronBackOutline} />{tSuggest}
-						</IonButton>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="runLabelEdit" ref={runLabelEditRef}>{tpLetChar}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							id="editingWECharGroupRun"
-							ref={editingWECharGroupRunRef}
-							aria-label={tLettChar}
-							className="ion-margin-top serifChars"
-							helperText={tEnter}
-							onIonChange={() => runLabelEdit && runLabelEdit.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton
-						color="secondary"
-						slot="end"
-						onClick={maybeSaveNewInfo}
-					>
-						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tSaveThing}</IonLabel>
-					</IonButton>
-					<IonButton
-						color="danger"
+		<Modal
+			isOpen={isOpen}
+			title={tEditThing}
+			closeFunc={cancelEditing}
+			onIonModalDidPresent={onLoad}
+			bottomStart={[{button: "delete", action: maybeDeleteCharGroup}]}
+			bottomEnd={[{button: "save", action: maybeSaveNewInfo}]}
+			extraChars
+		>
+			<IonList lines="none" className="hasSpecialLabels">
+				<IonItem className="labelled">
+					<IonLabel className="titleLabelEdit" ref={titleLabelEditRef}>{tpTitle}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTitle}
+						id="editingWECharGroupTitle"
+						ref={editingWECharGroupTitleRef}
+						className="ion-margin-top"
+						onIonChange={() => titleLabelEdit && titleLabelEdit.classList.remove("invalidValue")}
+						autocomplete="on"
+					></IonInput>
+				</IonItem>
+				<IonItem className="margin-top-quarter">
+					<div
 						slot="start"
-						onClick={maybeDeleteCharGroup}
-					>
-						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tDelThing}</IonLabel>
+						className="ion-margin-end labelLabelEdit"
+						ref={labelLabelEditRef}
+					>{tpShort}</div>
+					<IonInput
+						aria-label={tShort}
+						id="editingWEShortLabel"
+						ref={editingWEShortLabelRef}
+						className="serifChars"
+						helperText={t1Char}
+						onIonChange={() => labelLabelEdit && labelLabelEdit.classList.remove("invalidValue")}
+						maxlength={1}
+					></IonInput>
+					<IonButton slot="end" onClick={generateLabel}>
+						<IonIcon icon={chevronBackOutline} />{tSuggest}
 					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="runLabelEdit" ref={runLabelEditRef}>{tpLetChar}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						id="editingWECharGroupRun"
+						ref={editingWECharGroupRunRef}
+						aria-label={tLettChar}
+						className="ion-margin-top serifChars"
+						helperText={tEnter}
+						onIonChange={() => runLabelEdit && runLabelEdit.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

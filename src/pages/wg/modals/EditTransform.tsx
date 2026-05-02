@@ -1,25 +1,15 @@
 import React, { useCallback, FC } from 'react';
 import {
 	IonItem,
-	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
-	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	useIonAlert,
 	useIonToast
 } from '@ionic/react';
-import {
-	saveOutline,
-	trashOutline
-} from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { ExtraCharactersModalOpener, SetState, StateObject, WGTransformObject } from '../../../store/types';
+import { ModalProperties, SetState, StateObject, WGTransformObject } from '../../../store/types';
 import { editTransformWG, deleteTransformWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
@@ -28,11 +18,11 @@ import ltr from '../../../components/LTR';
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface ModalProps extends ExtraCharactersModalOpener {
+interface ModalProps extends ModalProperties {
 	editing: null | WGTransformObject
 	setEditing: SetState<null | WGTransformObject>
 }
@@ -43,8 +33,8 @@ const commons = [
 
 const translations = [
 	"DescOfTheTransformation", "noSearchMsg",
-	"replacementExpression", "searchExpression", "DeleteTrans",
-	"EditTrans", "SaveTrans", "TransDeleted", "TransSaved"
+	"replacementExpression", "searchExpression",
+	"EditTrans", "TransDeleted", "TransSaved"
 ];
 
 const presentations = [
@@ -56,12 +46,12 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	const [ tc ] = useTranslator('common');
 	const [ tYouSure, tCancel, tError, tOptional ] = useI18Memo(commons);
 	const [
-		tTransDesc, tNoSrch, tRepl, tSrch, tDelThing, tEditThing,
-		tSaveThing, tThingDel, tThingSaved
+		tTransDesc, tNoSrch, tRepl, tSrch, tEditThing,
+		tThingDel, tThingSaved
 	] = useI18Memo(translations, 'wgwe');
 	const [ tpTransDesc, tpRepl, tpSrch ] = useI18Memo(presentations, 'wgwe', context);
 
-	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
+	const { isOpen, setIsOpen, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const [doAlert] = useIonAlert();
 	const toast = useIonToast();
@@ -167,64 +157,53 @@ const EditTransformModal: FC<ModalProps> = (props) => {
 	}, [disableConfirms, dispatch, doAlert, editing, setIsOpen, toast, tc, tYouSure, tThingDel]);
 
 	return (
-		<IonModal
+		<Modal
 			isOpen={isOpen}
-			onDidDismiss={cancelEditing}
+			title={tEditThing}
+			closeFunc={cancelEditing}
 			onIonModalDidPresent={onLoad}
+			bottomStart={[{button: "delete", action: maybeDeleteTransform}]}
+			bottomEnd={[{button: "save", action: maybeSaveNewTransformInfo}]}
+			extraChars
 		>
-			<ModalHeader title={tEditThing} openECM={openECM} closeModal={cancelEditing} />
-			<IonContent>
-				<IonList lines="none" className="hasSpecialLabels">
-					<IonItem className="labelled">
-						<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tSrch}
-							id="editSearchExWG"
-							ref={editSearchExWGRef}
-							className="ion-margin-top serifChars"
-							onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tRepl}
-							id="editReplaceExWG"
-							ref={editReplaceExWGRef}
-							className="ion-margin-top serifChars"
-						></IonInput>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel>{tpTransDesc}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTransDesc}
-							id="editOptDescWG"
-							ref={editOptDescWGRef}
-							className="ion-margin-top"
-							placeholder={tOptional}
-						></IonInput>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="tertiary" slot="end" onClick={maybeSaveNewTransformInfo}>
-						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tSaveThing}</IonLabel>
-					</IonButton>
-					<IonButton color="danger" slot="start" onClick={maybeDeleteTransform}>
-						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tDelThing}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+			<IonList lines="none" className="hasSpecialLabels">
+				<IonItem className="labelled">
+					<IonLabel className="seekLabel" ref={seekLabelRef}>{tpSrch}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tSrch}
+						id="editSearchExWG"
+						ref={editSearchExWGRef}
+						className="ion-margin-top serifChars"
+						onIonChange={() => seekLabel && seekLabel.classList.remove("invalidValue")}
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="replaceLabel">{tpRepl}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tRepl}
+						id="editReplaceExWG"
+						ref={editReplaceExWGRef}
+						className="ion-margin-top serifChars"
+					></IonInput>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel>{tpTransDesc}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTransDesc}
+						id="editOptDescWG"
+						ref={editOptDescWGRef}
+						className="ion-margin-top"
+						placeholder={tOptional}
+					></IonInput>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 

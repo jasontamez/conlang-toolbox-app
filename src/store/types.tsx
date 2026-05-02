@@ -406,12 +406,6 @@ export interface ModalProperties {
 	setIsOpen: SetBooleanState
 }
 
-export interface ExtraCharactersModalOpener {
-	isOpen: boolean
-	setIsOpen: SetBooleanState
-	openECM: SetBooleanState
-}
-
 // Import / Export/ Archive / Cleaning
 
 export type ARCHIVE_MSBool = "prefixMost" | "prefixLess" | "suffixMost" | "suffixLess"

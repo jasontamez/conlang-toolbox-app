@@ -50,7 +50,7 @@ import { CustomStorageWG } from '../../components/PersistentInfo';
 import ModalWrap from "../../components/ModalWrap";
 import useI18Memo from '../../components/useI18Memo';
 import log from '../../components/Logging';
-import { ModalMakingContext } from '../../components/contexts';
+import { ExCharContext, ModalMakingContext } from '../../components/contexts';
 
 import ExtraCharactersModal from '../modals/ExtraCharacters';
 import MaybeLoadPreset from './modals/MaybeLoadPreset';
@@ -136,13 +136,14 @@ const WGSet: FC = () => {
 	const doSetExclamatorySentencePost = useCallback((e: InputCustomEvent) => dispatch(setExclamatorySentencePost(e.target.value as string)), [dispatch]);
 	return (
 		<IonPage>
-			<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
-			<ManageCustomInfo
-				{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
-				openECM={setIsOpenECM}
-				titles={infoModalTitles}
-				setTitles={setInfoModalTitles}
-			/>
+			<ExCharContext value={openEx}>
+				<MaybeLoadPreset {...modalPropsMaker(isOpenLoadPreset, setIsOpenLoadPreset)} />
+				<ManageCustomInfo
+					{...modalPropsMaker(isOpenManageCustom, setIsOpenManageCustom)}
+					titles={infoModalTitles}
+					setTitles={setInfoModalTitles}
+				/>
+			</ExCharContext>
 			<ExtraCharactersModal {...modalPropsMaker(isOpenECM, setIsOpenECM)} />
 			<ModalWrap {...modalPropsMaker(isOpenInfo, setIsOpenInfo)}>
 				<OptCard setIsOpenInfo={setIsOpenInfo} />

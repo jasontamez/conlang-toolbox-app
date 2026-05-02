@@ -4,12 +4,8 @@ import {
 	IonIcon,
 	IonLabel,
 	IonList,
-	IonContent,
-	IonToolbar,
 	IonButton,
-	IonModal,
 	IonInput,
-	IonFooter,
 	IonToggle,
 	IonRange,
 	useIonAlert,
@@ -17,24 +13,22 @@ import {
 	RangeCustomEvent
 } from '@ionic/react';
 import {
-	chevronBackOutline,
-	saveOutline,
-	trashOutline
+	chevronBackOutline
 } from 'ionicons/icons';
 import { useSelector, useDispatch } from "react-redux";
 
-import { WGCharGroupObject, Zero_Fifty, ExtraCharactersModalOpener, StateObject, SetState } from '../../../store/types';
+import { WGCharGroupObject, Zero_Fifty, StateObject, SetState, ModalProperties } from '../../../store/types';
 import { editCharacterGroupWG, deleteCharGroupWG } from '../../../store/wgSlice';
 import useTranslator from '../../../store/translationHooks';
 
 import yesNoAlert from '../../../components/yesNoAlert';
 import toaster from '../../../components/toaster';
 import useI18Memo from '../../../components/useI18Memo';
-import ModalHeader from '../../../components/ModalHeader';
 import useElement from '../../../components/useElement';
 import getSetValue from '../../../components/getSetValue';
+import Modal from '../../../components/Modal';
 
-interface ModalProps extends ExtraCharactersModalOpener {
+interface ModalProps extends ModalProperties {
 	editing: null | WGCharGroupObject
 	setEditing: SetState<null | WGCharGroupObject>
 }
@@ -45,8 +39,8 @@ const translations = [
 	"OneCharOnly", "enterCharsInGroupHere",
 	"LettersCharacters", "noLabelMsg", "noRunMsg",
 	"noTitleMsg", "ShortLabel", "Suggest", "TitleOrDesc",
-	"cantMakeLabelMsg", "DeleteCharGroup", "EditCharGroup",
-	"SaveCharGroup", "CharGroupDeleted", "CharGroupSaved"
+	"cantMakeLabelMsg", "EditCharGroup",
+	"CharGroupDeleted", "CharGroupSaved"
 ];
 
 const presentations = [
@@ -62,12 +56,12 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const [ tYouSure, tCancel, tError ] = useI18Memo(commons);
 	const [
 		t1Char, tEnterHere, tLettChar, tNoLabel, tNoRun, tNoTitle,
-		tShort, tSuggest, tTitleDesc, tNoSuggest, tDelThing,
-		tEditThing, tSaveThing, tThingDel, tThingSaved
+		tShort, tSuggest, tTitleDesc, tNoSuggest,
+		tEditThing, tThingDel, tThingSaved
 	] = useI18Memo(translations, 'wgwe');
 	const [ tpTitleDesc, tpShort, tpLettChar ] = useI18Memo(presentations, 'wgwe', context);
 
-	const { isOpen, setIsOpen, openECM, editing, setEditing } = props;
+	const { isOpen, setIsOpen, editing, setEditing } = props;
 	const dispatch = useDispatch();
 	const { characterGroups, characterGroupDropoff } = useSelector((state: StateObject) => state.wg);
 	const { disableConfirms } = useSelector((state: StateObject) => state.appSettings);
@@ -255,89 +249,82 @@ const EditCharGroupModal: FC<ModalProps> = (props) => {
 	const toggleDropoff = useCallback(() => setHasDropoff(!hasDropoff), [hasDropoff]);
 	const doDropoff = useCallback((e: RangeCustomEvent) => {setDropoff(e.detail.value as Zero_Fifty)}, []);
 	return (
-		<IonModal isOpen={isOpen} onDidDismiss={cancelEditing} onIonModalDidPresent={onLoad}>
-			<ModalHeader title={tEditThing} openECM={openECM} closeModal={cancelEditing} />
-			<IonContent>
-				<IonList lines="none" class="hasSpecialLabels">
-					<IonItem className="labelled">
-						<IonLabel className="titleLabelEdit" ref={titleLabelRef}>{tpTitleDesc}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tTitleDesc}
-							id="editingWGCharGroupTitle"
-							ref={editingWGCharGroupTitleRef}
-							className="ion-margin-top"
-							onIonChange={() => titleLabel && titleLabel.classList.remove("invalidValue")}
-							autocomplete="on"
-						/>
-					</IonItem>
-					<IonItem className="margin-top-quarter">
-						<div
-							slot="start"
-							className="ion-margin-end labelLabel"
-							ref={labelLabelRef}
-						>{tpShort}</div>
-						<IonInput
-							aria-label={tShort}
-							id="editingWGShortLabel"
-							ref={editingWGShortLabelRef}
-							className="serifChars"
-							helperText={t1Char}
-							onIonChange={() => labelLabel && labelLabel.classList.remove("invalidValue")}
-							maxlength={1}
-						/>
-						<IonButton slot="end" onClick={generateLabel}>
-							<IonIcon icon={chevronBackOutline} />{tSuggest}
-						</IonButton>
-					</IonItem>
-					<IonItem className="labelled">
-						<IonLabel className="runLabelEdit" ref={runLabelRef}>{tpLettChar}</IonLabel>
-					</IonItem>
-					<IonItem>
-						<IonInput
-							aria-label={tLettChar}
-							id="editingWGCharGroupRun"
-							ref={editingWGCharGroupRunRef}
-							className="ion-margin-top serifChars"
-							helperText={tEnterHere}
-							onIonChange={() => runLabel && runLabel.classList.remove("invalidValue")}
-						/>
-					</IonItem>
-					<IonItem>
-						<IonToggle enableOnOffLabels
-							onClick={toggleDropoff}
-							labelPlacement="start"
-							checked={hasDropoff}
-						>{tUseSep}</IonToggle>
-					</IonItem>
-					<IonItem id="charGroupDropoffEditC" className={hasDropoff ? "" : "hide"}>
-						<IonRange
-							min={0}
-							max={50}
-							pin={true}
-							value={dropoff}
-							onIonChange={doDropoff}
-						>
-							<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
-							<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
-						</IonRange>
-					</IonItem>
-				</IonList>
-			</IonContent>
-			<IonFooter>
-				<IonToolbar>
-					<IonButton color="secondary" slot="end" onClick={maybeSaveNewInfo}>
-						<IonIcon icon={saveOutline} slot="start" />
-						<IonLabel>{tSaveThing}</IonLabel>
+		<Modal
+			isOpen={isOpen}
+			title={tEditThing}
+			closeFunc={cancelEditing}
+			onIonModalDidPresent={onLoad}
+			bottomStart={[{button: "delete", action: maybeDeleteCharGroup}]}
+			bottomEnd={[{button: "save", action: maybeSaveNewInfo}]}
+			extraChars
+		>
+			<IonList lines="none" class="hasSpecialLabels">
+				<IonItem className="labelled">
+					<IonLabel className="titleLabelEdit" ref={titleLabelRef}>{tpTitleDesc}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tTitleDesc}
+						id="editingWGCharGroupTitle"
+						ref={editingWGCharGroupTitleRef}
+						className="ion-margin-top"
+						onIonChange={() => titleLabel && titleLabel.classList.remove("invalidValue")}
+						autocomplete="on"
+					/>
+				</IonItem>
+				<IonItem className="margin-top-quarter">
+					<div
+						slot="start"
+						className="ion-margin-end labelLabel"
+						ref={labelLabelRef}
+					>{tpShort}</div>
+					<IonInput
+						aria-label={tShort}
+						id="editingWGShortLabel"
+						ref={editingWGShortLabelRef}
+						className="serifChars"
+						helperText={t1Char}
+						onIonChange={() => labelLabel && labelLabel.classList.remove("invalidValue")}
+						maxlength={1}
+					/>
+					<IonButton slot="end" onClick={generateLabel}>
+						<IonIcon icon={chevronBackOutline} />{tSuggest}
 					</IonButton>
-					<IonButton color="danger" slot="start" onClick={maybeDeleteCharGroup}>
-						<IonIcon icon={trashOutline} slot="start" />
-						<IonLabel>{tDelThing}</IonLabel>
-					</IonButton>
-				</IonToolbar>
-			</IonFooter>
-		</IonModal>
+				</IonItem>
+				<IonItem className="labelled">
+					<IonLabel className="runLabelEdit" ref={runLabelRef}>{tpLettChar}</IonLabel>
+				</IonItem>
+				<IonItem>
+					<IonInput
+						aria-label={tLettChar}
+						id="editingWGCharGroupRun"
+						ref={editingWGCharGroupRunRef}
+						className="ion-margin-top serifChars"
+						helperText={tEnterHere}
+						onIonChange={() => runLabel && runLabel.classList.remove("invalidValue")}
+					/>
+				</IonItem>
+				<IonItem>
+					<IonToggle enableOnOffLabels
+						onClick={toggleDropoff}
+						labelPlacement="start"
+						checked={hasDropoff}
+					>{tUseSep}</IonToggle>
+				</IonItem>
+				<IonItem id="charGroupDropoffEditC" className={hasDropoff ? "" : "hide"}>
+					<IonRange
+						min={0}
+						max={50}
+						pin={true}
+						value={dropoff}
+						onIonChange={doDropoff}
+					>
+						<IonIcon size="small" slot="start" src="svg/flatAngle.svg" />
+						<IonIcon size="small" slot="end" src="svg/steepAngle.svg" />
+					</IonRange>
+				</IonItem>
+			</IonList>
+		</Modal>
 	);
 };
 
