@@ -23,14 +23,14 @@ export default useI18Memo;
 
 // useI18Memo(string[], ns = "common", options?)
 //   Returns array of objects: memoized translations of the given strings in the given namespace
-export function useI18MemoObject (
+export function useI18MemoObject<T extends object> (
 	terms: string[],
 	ns: string | undefined = "common",
 	options: OptionsType = undefined
-): object[] {
+): T[] {
 	const { t } = useTranslation(ns);
 	return useMemo(() => {
 		const opts = options ? {...options} : {};
-		return terms.map(term => t(term, {...opts, returnObjects: true}));
+		return terms.map(term => t(term, {...opts, returnObjects: true}) as T);
 	}, [terms, options, t]);
 };

@@ -116,7 +116,7 @@ const syllInfo = [
 export const SylCard: FC<CardProps> = (props) => {
 	const [ t ] = useTranslator('wg');
 	const { isOverview } = props;
-	const [ charGroupExample, example ] = useI18MemoObject(syllExamples, 'wg');
+	const [ charGroupExample, example ] = useI18MemoObject<string[]>(syllExamples, 'wg');
 	const [
 		startIsOverview, startNotOverview,
 		plainText, endIsOverview, endNotOverview
