@@ -3,7 +3,6 @@ function getSetValue (input: HTMLIonInputElement | HTMLIonTextareaElement | null
 function getSetValue (input: HTMLIonInputElement | HTMLIonTextareaElement | null, toSet?: string): string | void {
 	if(toSet !== undefined) {
 		if(!input) {
-			console.log("Not set");
 			return;
 		}
 		input.value = toSet;

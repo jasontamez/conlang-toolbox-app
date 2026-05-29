@@ -190,12 +190,12 @@ const TopButtons: FC<{input?: (TopButtons | TopButtonInfo)[], title: string, clo
 	const [tClose, tExChar] = useI18Memo(translations);
 	const { input, title, close, extra } = props;
 	const closebutton = (
-		<IonButton onClick={close} aria-label={tClose}>
+		<IonButton onClick={close} key="closebutton-modal" aria-label={tClose}>
 			<IonIcon icon={closeOutline} />
 		</IonButton>
 	);
 	const extrabutton = (
-		<IonButton onClick={openEx} aria-label={tExChar}>
+		<IonButton onClick={openEx} key="extrabutton-modal" aria-label={tExChar}>
 			<IonIcon icon={globeOutline} />
 		</IonButton>
 	);
